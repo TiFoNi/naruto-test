@@ -150,6 +150,7 @@ export const VALUES: Record<string, [uk: string, en: string]> = {
 
   'Титан-оборотень': ['Титан-перевертень', 'Titan Shifter'],
   Титан: ['Титан', 'Titan'],
+  'Чистый титан': ['Чистий титан', 'Pure Titan'],
   Лошадь: ['Кінь', 'Horse'],
   Разведкорпус: ['Розвідкорпус', 'Survey Corps'],
   Гарнизон: ['Гарнізон', 'Garrison'],

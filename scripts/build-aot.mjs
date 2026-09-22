@@ -63,7 +63,7 @@ const ARC_ORDER = Object.keys(ARCS)
 const SPECIES = {
   Human: 'Человек',
   'Intelligent Titan': 'Титан-оборотень',
-  Titan: 'Титан',
+  Titan: 'Чистый титан',
   Horse: 'Лошадь',
   Unknown: 'Неизвестно',
 }
@@ -178,7 +178,9 @@ async function main() {
     const field = (f) => plainList(infobox(text, f))
     const arc = arcOf(name)
     const heldTitans = titans(name, text)
-    const species = field('Species').map((s) => SPECIES[stripParens(s)])
+    const species = field('Species').flatMap((s) =>
+      /formerly human/i.test(s) ? [SPECIES.Human, SPECIES[stripParens(s)]] : [SPECIES[stripParens(s)]],
+    )
     if (heldTitans.length) species.push(SPECIES['Intelligent Titan'])
     const occupations = [...field('Occupation'), ...field('F. Occupation')].map((o) => OCCUPATIONS[stripParens(o)]).filter(Boolean)
     result.push({
