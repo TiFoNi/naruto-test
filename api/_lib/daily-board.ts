@@ -1,24 +1,21 @@
-import { ObjectId } from 'mongodb'
-import { dailyKey, GAME_IDS, MODE_IDS, type GameId, type ModeId } from '../src/games/specs.js'
-import { dailyNumber, shiftDay, today } from './_lib/daily.js'
-import { rounds, users } from './_lib/db.js'
-import { fail, handle, json } from './_lib/http.js'
-import { currentUser, defaultNickname, unauthorized } from './_lib/profile.js'
+import type { ObjectId } from 'mongodb'
+import { dailyKey, GAME_IDS, MODE_IDS, type GameId, type ModeId } from '../../src/games/specs.js'
+import { dailyNumber, shiftDay, today } from './daily.js'
+import { rounds, users } from './db.js'
+import { fail, json } from './http.js'
+import { defaultNickname } from './profile.js'
 
 const LIMIT = 50
 
 type Person = { _id: ObjectId; username: string; nickname?: string }
 
-export const GET = handle(async (request) => {
-  const found = await currentUser(request)
-  if (!found) return unauthorized()
-  const params = new URL(request.url).searchParams
+export async function dailyBoard(userId: ObjectId, params: URLSearchParams) {
   const game = params.get('game') as GameId
   const mode = params.get('mode') as ModeId
   const sort = params.get('sort') ?? 'today'
   if (!GAME_IDS.includes(game) || !MODE_IDS.includes(mode) || !['today', 'streak'].includes(sort)) return fail(400, 'bad_request')
 
-  const me = found.doc._id!.toHexString()
+  const me = userId.toHexString()
   const day = today()
   const name = (p: Person) => p.nickname ?? defaultNickname(p.username)
 
@@ -58,4 +55,4 @@ export const GET = handle(async (request) => {
     me: p._id.toHexString() === me,
   }))
   return json({ sort, day, number: dailyNumber(day), total: rows.length, rows: rows.slice(0, LIMIT), me: rows.find((r) => r.me) ?? null })
-})
+}

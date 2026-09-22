@@ -71,7 +71,7 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
     let cancelled = false
     setBoard(null)
     setError(null)
-    api<Board>(`${daily ? 'daily-leaderboard' : 'leaderboard'}?game=${gameId}&mode=${mode}&sort=${sort}`)
+    api<Board>(`leaderboard?game=${gameId}&mode=${mode}&sort=${sort}${daily ? '&daily=1' : ''}`)
       .then(({ ok, data }) => {
         if (cancelled) return
         if (ok) setBoard(data)

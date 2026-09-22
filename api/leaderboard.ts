@@ -1,4 +1,5 @@
 import { STAT_KEYS, statsKey } from '../src/games/specs.js'
+import { dailyBoard } from './_lib/daily-board.js'
 import { users } from './_lib/db.js'
 import { fail, handle, json } from './_lib/http.js'
 import { currentUser, defaultNickname, unauthorized } from './_lib/profile.js'
@@ -18,6 +19,7 @@ export const GET = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
   const params = new URL(request.url).searchParams
+  if (params.get('daily') === '1') return dailyBoard(found.doc._id!, params)
   const key = statsKey(params.get('game') ?? '', params.get('mode') ?? '')
   const sort = (params.get('sort') ?? 'best') as Sort
   if (!STAT_KEYS.includes(key) || !(sort in SORTS)) return fail(400, 'bad_request')

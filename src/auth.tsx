@@ -70,7 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const resetStats = useCallback(async () => {
     try {
-      const { ok, data } = await call('stats/reset', {})
+      const { ok, data } = await call('profile', { action: 'reset' })
       if (!ok) return data.error ?? 'server'
       accept(data)
       return null
@@ -81,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const setNickname = useCallback(async (nickname: string) => {
     try {
-      const { ok, data } = await call('profile/nickname', { nickname })
+      const { ok, data } = await call('profile', { action: 'nickname', nickname })
       if (!ok) return data.error ?? 'server'
       accept(data)
       return null
