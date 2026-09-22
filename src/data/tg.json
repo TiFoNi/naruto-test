@@ -228,6 +228,32 @@
   "thumb": 9
  },
  {
+  "id": 2669,
+  "name": "Джиро",
+  "nameEn": "Jiro",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Древо Аогири",
+   "Анти-Аогири",
+   "Козёл",
+   "Объединённый фронт",
+   "Газовые маски"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 6,
+  "debutIndex": 6,
+  "answer": false,
+  "thumb": 10
+ },
+ {
   "id": 2375,
   "name": "Джузо Судзуя",
   "nameEn": "Juuzou Suzuya",
@@ -247,7 +273,7 @@
   "volume": 5,
   "debutIndex": 5,
   "answer": true,
-  "thumb": 10
+  "thumb": 11
  },
  {
   "id": 3762,
@@ -271,7 +297,7 @@
   "volume": 9,
   "debutIndex": 9,
   "answer": true,
-  "thumb": 11
+  "thumb": 12
  },
  {
   "id": 4562,
@@ -294,7 +320,7 @@
   "volume": 9,
   "debutIndex": 9,
   "answer": false,
-  "thumb": 12
+  "thumb": 13
  },
  {
   "id": 2845,
@@ -315,7 +341,7 @@
   "volume": 7,
   "debutIndex": 7,
   "answer": true,
-  "thumb": 13
+  "thumb": 14
  },
  {
   "id": 79441,
@@ -336,7 +362,7 @@
   "volume": 14,
   "debutIndex": 114,
   "answer": false,
-  "thumb": 14
+  "thumb": 15
  },
  {
   "id": 2254,
@@ -359,7 +385,7 @@
   "volume": 4,
   "debutIndex": 4,
   "answer": false,
-  "thumb": 15
+  "thumb": 16
  },
  {
   "id": 2266,
@@ -380,7 +406,7 @@
   "volume": 3,
   "debutIndex": 3,
   "answer": true,
-  "thumb": 16
+  "thumb": 17
  },
  {
   "id": 326906,
@@ -399,7 +425,7 @@
   "volume": 16,
   "debutIndex": 116,
   "answer": false,
-  "thumb": 17
+  "thumb": 18
  },
  {
   "id": 2250,
@@ -418,7 +444,7 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": false,
-  "thumb": 18
+  "thumb": 19
  },
  {
   "id": 2162,
@@ -442,7 +468,7 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 19
+  "thumb": 20
  },
  {
   "id": 2673,
@@ -470,7 +496,7 @@
   "volume": 5,
   "debutIndex": 5,
   "answer": true,
-  "thumb": 20
+  "thumb": 21
  },
  {
   "id": 2208,
@@ -489,7 +515,7 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": false,
-  "thumb": 21
+  "thumb": 22
  },
  {
   "id": 29081,
@@ -512,7 +538,7 @@
   "volume": 13,
   "debutIndex": 13,
   "answer": false,
-  "thumb": 22
+  "thumb": 23
  },
  {
   "id": 14076,
@@ -535,7 +561,7 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 23
+  "thumb": 24
  },
  {
   "id": 14024,
@@ -558,7 +584,7 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 24
+  "thumb": 25
  },
  {
   "id": 2272,
@@ -584,7 +610,7 @@
   "volume": 2,
   "debutIndex": 2,
   "answer": true,
-  "thumb": 25
+  "thumb": 26
  },
  {
   "id": 88904,
@@ -605,7 +631,7 @@
   "volume": 3,
   "debutIndex": 3,
   "answer": false,
-  "thumb": 26
+  "thumb": 27
  },
  {
   "id": 2153,
@@ -634,7 +660,7 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 27
+  "thumb": 28
  },
  {
   "id": 33454,
@@ -655,7 +681,7 @@
   "volume": 12,
   "debutIndex": 12,
   "answer": true,
-  "thumb": 28
+  "thumb": 29
  },
  {
   "id": 2248,
@@ -678,7 +704,7 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 29
+  "thumb": 30
  },
  {
   "id": 2267,
@@ -702,7 +728,7 @@
   "volume": 3,
   "debutIndex": 3,
   "answer": true,
-  "thumb": 30
+  "thumb": 31
  },
  {
   "id": 6954,
@@ -723,7 +749,7 @@
   "volume": 12,
   "debutIndex": 12,
   "answer": true,
-  "thumb": 31
+  "thumb": 32
  },
  {
   "id": 2269,
@@ -744,7 +770,7 @@
   "volume": 3,
   "debutIndex": 3,
   "answer": true,
-  "thumb": 32
+  "thumb": 33
  },
  {
   "id": 69781,
@@ -768,7 +794,7 @@
   "volume": 2,
   "debutIndex": 2,
   "answer": true,
-  "thumb": 33
+  "thumb": 34
  },
  {
   "id": 13164,
@@ -791,7 +817,7 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 34
+  "thumb": 35
  },
  {
   "id": 14791,
@@ -812,7 +838,7 @@
   "volume": 13,
   "debutIndex": 13,
   "answer": true,
-  "thumb": 35
+  "thumb": 36
  },
  {
   "id": 2221,
@@ -833,7 +859,7 @@
   "volume": 2,
   "debutIndex": 2,
   "answer": true,
-  "thumb": 36
+  "thumb": 37
  },
  {
   "id": 3684,
@@ -859,7 +885,7 @@
   "volume": 9,
   "debutIndex": 9,
   "answer": true,
-  "thumb": 37
+  "thumb": 38
  },
  {
   "id": 2246,
@@ -880,7 +906,7 @@
   "volume": 4,
   "debutIndex": 4,
   "answer": false,
-  "thumb": 38
+  "thumb": 39
  },
  {
   "id": 3765,
@@ -903,7 +929,7 @@
   "volume": 10,
   "debutIndex": 10,
   "answer": true,
-  "thumb": 39
+  "thumb": 40
  },
  {
   "id": 41320,
@@ -926,7 +952,7 @@
   "volume": 2,
   "debutIndex": 102,
   "answer": true,
-  "thumb": 40
+  "thumb": 41
  },
  {
   "id": 38847,
@@ -949,7 +975,7 @@
   "volume": 2,
   "debutIndex": 102,
   "answer": true,
-  "thumb": 41
+  "thumb": 42
  },
  {
   "id": 26824,
@@ -973,7 +999,7 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 42
+  "thumb": 43
  },
  {
   "id": 41933,
@@ -999,7 +1025,7 @@
   "volume": 2,
   "debutIndex": 102,
   "answer": true,
-  "thumb": 43
+  "thumb": 44
  },
  {
   "id": 88900,
@@ -1020,7 +1046,7 @@
   "volume": 3,
   "debutIndex": 3,
   "answer": false,
-  "thumb": 44
+  "thumb": 45
  },
  {
   "id": 48858,
@@ -1047,7 +1073,7 @@
   "volume": 2,
   "debutIndex": 102,
   "answer": false,
-  "thumb": 45
+  "thumb": 46
  },
  {
   "id": 2914,
@@ -1068,7 +1094,7 @@
   "volume": 7,
   "debutIndex": 7,
   "answer": false,
-  "thumb": 46
+  "thumb": 47
  },
  {
   "id": 11749,
@@ -1089,7 +1115,7 @@
   "volume": 12,
   "debutIndex": 12,
   "answer": false,
-  "thumb": 47
+  "thumb": 48
  },
  {
   "id": 3638,
@@ -1116,7 +1142,7 @@
   "volume": 10,
   "debutIndex": 10,
   "answer": true,
-  "thumb": 48
+  "thumb": 49
  },
  {
   "id": 3682,
@@ -1141,7 +1167,7 @@
   "volume": 9,
   "debutIndex": 9,
   "answer": true,
-  "thumb": 49
+  "thumb": 50
  },
  {
   "id": 2665,
@@ -1165,7 +1191,7 @@
   "volume": 6,
   "debutIndex": 6,
   "answer": true,
-  "thumb": 50
+  "thumb": 51
  },
  {
   "id": 2240,
@@ -1191,7 +1217,7 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 51
+  "thumb": 52
  },
  {
   "id": 14898,
@@ -1212,7 +1238,7 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": false,
-  "thumb": 52
+  "thumb": 53
  },
  {
   "id": 2807,
@@ -1235,7 +1261,7 @@
   "volume": 6,
   "debutIndex": 6,
   "answer": true,
-  "thumb": 53
+  "thumb": 54
  },
  {
   "id": 124191,
@@ -1258,7 +1284,7 @@
   "volume": 5,
   "debutIndex": 105,
   "answer": false,
-  "thumb": 54
+  "thumb": 55
  },
  {
   "id": 2237,
@@ -1283,7 +1309,7 @@
   "volume": 2,
   "debutIndex": 2,
   "answer": true,
-  "thumb": 55
+  "thumb": 56
  },
  {
   "id": 14894,
@@ -1304,7 +1330,7 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": false,
-  "thumb": 56
+  "thumb": 57
  },
  {
   "id": 2239,
@@ -1327,7 +1353,7 @@
   "volume": 2,
   "debutIndex": 2,
   "answer": false,
-  "thumb": 57
+  "thumb": 58
  },
  {
   "id": 2160,
@@ -1352,7 +1378,7 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 58
+  "thumb": 59
  },
  {
   "id": 289667,
@@ -1376,7 +1402,7 @@
   "volume": 8,
   "debutIndex": 108,
   "answer": false,
-  "thumb": 59
+  "thumb": 60
  },
  {
   "id": 3716,
@@ -1400,7 +1426,7 @@
   "volume": 9,
   "debutIndex": 9,
   "answer": true,
-  "thumb": 60
+  "thumb": 61
  },
  {
   "id": 13522,
@@ -1423,7 +1449,7 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 61
+  "thumb": 62
  },
  {
   "id": 2552,
@@ -1448,7 +1474,7 @@
   "volume": 5,
   "debutIndex": 5,
   "answer": true,
-  "thumb": 62
+  "thumb": 63
  },
  {
   "id": 2245,
@@ -1476,7 +1502,7 @@
   "volume": 4,
   "debutIndex": 4,
   "answer": true,
-  "thumb": 63
+  "thumb": 64
  },
  {
   "id": 2268,
@@ -1497,7 +1523,7 @@
   "volume": 3,
   "debutIndex": 3,
   "answer": true,
-  "thumb": 64
+  "thumb": 65
  },
  {
   "id": 2918,
@@ -1520,7 +1546,7 @@
   "volume": 7,
   "debutIndex": 7,
   "answer": true,
-  "thumb": 65
+  "thumb": 66
  },
  {
   "id": 26410,
@@ -1541,7 +1567,7 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 66
+  "thumb": 67
  },
  {
   "id": 2805,
@@ -1564,7 +1590,7 @@
   "volume": 6,
   "debutIndex": 6,
   "answer": true,
-  "thumb": 67
+  "thumb": 68
  },
  {
   "id": 13252,
@@ -1587,7 +1613,7 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 68
+  "thumb": 69
  },
  {
   "id": 2156,
@@ -1613,7 +1639,7 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 69
+  "thumb": 70
  },
  {
   "id": 165328,
@@ -1636,7 +1662,7 @@
   "volume": 6,
   "debutIndex": 106,
   "answer": false,
-  "thumb": 70
+  "thumb": 71
  },
  {
   "id": 4189,
@@ -1654,27 +1680,6 @@
   "series": "tg",
   "volume": 12,
   "debutIndex": 12,
-  "answer": false,
-  "thumb": 71
- },
- {
-  "id": 14231,
-  "name": "Урука Минами",
-  "nameEn": "Uruka Minami",
-  "gender": "Женский",
-  "species": [
-   "Гуль"
-  ],
-  "affiliations": [],
-  "kagune": [
-   "Бикаку"
-  ],
-  "rating": null,
-  "ratingIndex": -1,
-  "status": "Мёртв",
-  "series": "tg",
-  "volume": 1,
-  "debutIndex": 1,
   "answer": false,
   "thumb": 72
  },

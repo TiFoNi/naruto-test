@@ -228,6 +228,7 @@ export const VALUES: Record<string, [uk: string, en: string]> = {
   Эспада: ['Еспада', 'Espada'],
   Фрасьон: ['Фрасьйон', 'Fracción'],
   Штернриттер: ['Штернріттер', 'Sternritter'],
+  'Ученик академии': ['Учень академії', 'Academy student'],
   Школьник: ['Школяр', 'Student'],
   Шикай: ['Шікай', 'Shikai'],
   Банкай: ['Банкай', 'Bankai'],

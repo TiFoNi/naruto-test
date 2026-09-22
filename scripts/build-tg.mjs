@@ -108,7 +108,14 @@ async function main() {
     return { series: /^Re:/.test(title) ? 're' : 'tg', volume: vol }
   }
 
-  const candidates = names.filter((n) => pages[n]?.text && debut(n))
+  const mainSeries = await cachedJson(CACHE, 'series.json', async () => {
+    const res = await wikiQuery(API, names.filter((n) => pages[n]?.text), 'prop=categories&cllimit=500')
+    return Object.fromEntries(
+      Object.entries(res).map(([t, p]) => [t, (p.categories ?? []).some((c) => /Category:(TG|TG:re) Characters/.test(c.title))]),
+    )
+  })
+
+  const candidates = names.filter((n) => pages[n]?.text && debut(n) && mainSeries[n])
   const animeFile = (n) => {
     const text = pages[n].text
     const start = text.search(/Anime[^=\n]*=/)

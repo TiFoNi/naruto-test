@@ -82,7 +82,8 @@ const RANK_RULES = [
   ['Эспада', /espada/i],
   ['Фрасьон', /fracci[óo]n/i],
   ['Штернриттер', /sternritter/i],
-  ['Школьник', /student/i],
+  ['Ученик академии', /(shin'?[ōo] academy|shinigami academy)[^,;]*student|academy student/i],
+  ['Школьник', /(?<!academy )student/i],
 ]
 
 const POWER_FIELDS = [
@@ -218,7 +219,9 @@ async function main() {
   await fs.writeFile(path.join(CACHE, 'pages.json'), JSON.stringify(pages))
 
   const candidates = names.filter((n) => {
-    const m = infobox(pages[n]?.text, 'manga debut')?.match(/Chapter\s*(-?\d+)/)
+    const debut = infobox(pages[n]?.text, 'manga debut') ?? ''
+    if (/burn the witch/i.test(debut)) return false
+    const m = debut.match(/Chapter\s*(-?\d+)/)
     return m && Number(m[1]) <= MAX_CHAPTER && SEX[infobox(pages[n].text, 'gender')?.replace(/<.*$/s, '').trim()]
   })
 
