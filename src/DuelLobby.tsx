@@ -4,6 +4,7 @@ import { GAMES, gameById } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
 import { MODES, type ModeId } from './modes'
+import Picker from './Picker'
 import { href, navigate } from './router'
 
 type HistoryRow = {
@@ -78,26 +79,18 @@ export default function DuelLobby() {
       <section className="card duel-create">
         <h2>{t('duel.create')}</h2>
         <div className="duel-picker">
-          <label>
-            <span className="muted">{t('duel.game')}</span>
-            <select value={gameId} onChange={(e) => setGameId(e.target.value as GameId)}>
-              {GAMES.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {l(g.label)}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            <span className="muted">{t('duel.mode')}</span>
-            <select value={mode} onChange={(e) => setMode(e.target.value as ModeId)}>
-              {modes.map((m) => (
-                <option key={m.id} value={m.id}>
-                  {t(m.label)}
-                </option>
-              ))}
-            </select>
-          </label>
+          <Picker
+            label={t('duel.game')}
+            value={gameId}
+            onChange={(v) => setGameId(v as GameId)}
+            options={GAMES.map((g) => ({ value: g.id, label: l(g.label), accent: g.accent }))}
+          />
+          <Picker
+            label={t('duel.mode')}
+            value={mode}
+            onChange={(v) => setMode(v as ModeId)}
+            options={modes.map((m) => ({ value: m.id, label: `${m.icon} ${t(m.label)}` }))}
+          />
           <button className="primary" onClick={create} disabled={busy}>
             {busy ? t('duel.creating') : t('duel.create')}
           </button>
