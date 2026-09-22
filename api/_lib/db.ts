@@ -35,26 +35,32 @@ export type DuelPlayer = {
   userId: ObjectId
   nickname: string
   ready: boolean
+  wantsNext?: boolean
+  wins?: number
   guesses: number[]
-  solvedAt?: Date
+  solvedAt?: Date | null
   gaveUp?: boolean
-  lastGuessAt?: Date
+  lastGuessAt?: Date | null
 }
 
 export type DuelDoc = {
   _id?: ObjectId
   code: string
-  game: string
-  mode: string
-  answerId: number
-  extra?: string
-  status: 'waiting' | 'playing' | 'finished'
+  hostId: ObjectId
+  game?: string
+  mode?: string
+  answerId?: number
+  extra?: string | null
+  status: 'lobby' | 'playing' | 'finished'
+  round: number
+  draws: number
   players: DuelPlayer[]
   createdAt: Date
-  startedAt?: Date
-  endsAt?: Date
-  firstSolvedAt?: Date
-  finishedAt?: Date
+  touchedAt?: Date
+  startedAt?: Date | null
+  endsAt?: Date | null
+  firstSolvedAt?: Date | null
+  finishedAt?: Date | null
   winnerId?: ObjectId | null
 }
 
@@ -97,7 +103,8 @@ export async function duels(): Promise<Collection<DuelDoc>> {
   cache.__duelsIndexed ??= Promise.all([
     collection.createIndex({ code: 1 }, { unique: true }),
     collection.createIndex({ 'players.userId': 1, createdAt: -1 }),
-    collection.createIndex({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 30 }),
+    collection.createIndex({ touchedAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 7 }),
+    collection.dropIndex('createdAt_1').catch(() => undefined),
   ]).catch((error) => {
     cache.__duelsIndexed = undefined
     throw error

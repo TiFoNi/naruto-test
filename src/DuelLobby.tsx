@@ -1,40 +1,39 @@
 import { useEffect, useState, type CSSProperties, type FormEvent } from 'react'
 import { api } from './api'
-import { GAMES, gameById } from './games'
+import { gameById } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
-import { MODES, type ModeId } from './modes'
-import Picker from './Picker'
+import { MODES } from './modes'
 import { href, navigate } from './router'
 
 type HistoryRow = {
   code: string
-  game: string
-  mode: string
+  game: string | null
+  mode: string | null
   at: number
-  you: { nickname: string; guesses: number; solved: boolean }
-  rival?: { nickname: string; guesses: number; solved: boolean }
-  result: 'win' | 'loss' | 'draw'
+  rounds: number
+  draws: number
+  you: { nickname: string; wins: number }
+  rival?: { nickname: string; wins: number }
 }
 
 type DuelStats = { played?: number; wins?: number; losses?: number; draws?: number }
 
+const score = (row: HistoryRow) => {
+  const mine = row.you.wins
+  const theirs = row.rival?.wins ?? 0
+  return mine > theirs ? 'win' : mine < theirs ? 'loss' : 'draw'
+}
+
 export default function DuelLobby() {
   const { t, l, error: errorText } = useI18n()
-  const [gameId, setGameId] = useState<GameId>(GAMES[0].id)
-  const [mode, setMode] = useState<ModeId>('classic')
   const [code, setCode] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [history, setHistory] = useState<HistoryRow[] | null>(null)
   const [stats, setStats] = useState<DuelStats | null>(null)
 
-  const game = gameById(gameId)
-  const modes = MODES.filter((m) => game.modes.includes(m.id))
 
-  useEffect(() => {
-    if (!game.modes.includes(mode)) setMode(game.modes[0])
-  }, [game, mode])
 
   useEffect(() => {
     api<{ history: HistoryRow[]; stats: DuelStats | null }>('duel', { action: 'history' }).then(({ ok, data }) => {
@@ -46,7 +45,7 @@ export default function DuelLobby() {
 
   const create = async () => {
     setBusy(true)
-    const { ok, data } = await api<{ duel?: { code: string }; error?: string }>('duel', { action: 'create', game: gameId, mode })
+    const { ok, data } = await api<{ duel?: { code: string }; error?: string }>('duel', { action: 'create' })
     setBusy(false)
     if (ok && data.duel) navigate(href.duel(data.duel.code))
     else setError(data.error ?? 'server')
@@ -78,23 +77,10 @@ export default function DuelLobby() {
 
       <section className="card duel-create">
         <h2>{t('duel.create')}</h2>
-        <div className="duel-picker">
-          <Picker
-            label={t('duel.game')}
-            value={gameId}
-            onChange={(v) => setGameId(v as GameId)}
-            options={GAMES.map((g) => ({ value: g.id, label: l(g.label), accent: g.accent }))}
-          />
-          <Picker
-            label={t('duel.mode')}
-            value={mode}
-            onChange={(v) => setMode(v as ModeId)}
-            options={modes.map((m) => ({ value: m.id, label: `${m.icon} ${t(m.label)}` }))}
-          />
-          <button className="primary" onClick={create} disabled={busy}>
-            {busy ? t('duel.creating') : t('duel.create')}
-          </button>
-        </div>
+        <p className="muted">{t('duel.createHint')}</p>
+        <button className="primary big" onClick={create} disabled={busy}>
+          {busy ? t('duel.creating') : t('duel.create')}
+        </button>
       </section>
 
       <form className="card duel-join" onSubmit={join}>
@@ -123,13 +109,13 @@ export default function DuelLobby() {
                   <th>{t('duel.game')}</th>
                   <th>{t('duel.mode')}</th>
                   <th>{t('duel.opponent')}</th>
-                  <th>{t('daily.colGuesses')}</th>
-                  <th>{t('duel.result')}</th>
+                  <th>{t('duel.rounds')}</th>
+                  <th>{t('duel.series')}</th>
                 </tr>
               </thead>
               <tbody>
                 {history.map((row) => {
-                  const g = gameById(row.game as GameId)
+                  const g = gameById((row.game ?? 'naruto') as GameId)
                   return (
                     <tr key={row.code + row.at}>
                       <th scope="row" style={{ '--tab-accent': g.accent } as CSSProperties}>
@@ -138,11 +124,9 @@ export default function DuelLobby() {
                       </th>
                       <td>{t(MODES.find((m) => m.id === row.mode)?.label ?? 'mode.classic')}</td>
                       <td>{row.rival?.nickname ?? '—'}</td>
-                      <td>
-                        {row.you.guesses} : {row.rival?.guesses ?? '—'}
-                      </td>
-                      <td className={`duel-result ${row.result}`}>
-                        {t(row.result === 'win' ? 'duel.win' : row.result === 'loss' ? 'duel.loss' : 'duel.drawShort')}
+                      <td>{row.rounds}</td>
+                      <td className={`duel-result ${score(row)}`}>
+                        {row.you.wins} : {row.rival?.wins ?? 0}
                       </td>
                     </tr>
                   )

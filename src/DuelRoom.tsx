@@ -1,12 +1,14 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import AbilityIcon from './AbilityIcon'
 import CharacterSearch from './CharacterSearch'
 import GuessGrid, { Legend } from './GuessGrid'
+import Picker from './Picker'
 import Thumb from './Thumb'
 import ZoomImage from './ZoomImage'
-import { gameById } from './games'
+import { GAMES, gameById } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
+import { MODES, type ModeId } from './modes'
 import { href } from './router'
 import { useDuel } from './useDuel'
 import type { Guess } from './useRound'
@@ -20,16 +22,16 @@ const clock = (ms: number) => {
 
 export default function DuelRoom({ code }: { code: string }) {
   const { t, l, name, lang, error: errorText } = useI18n()
-  const { duel, error, busy, pending, serverNow, ready, giveUp, guess, refresh } = useDuel(code)
+  const { duel, error, busy, pending, serverNow, ready, setup, next, toLobby, giveUp, guess, refresh } = useDuel(code)
   const [copied, setCopied] = useState(false)
-  const [, tick] = useState(0)
+  const [, redraw] = useState(0)
 
   useEffect(() => {
-    const timer = setInterval(() => tick((n) => n + 1), 500)
+    const timer = setInterval(() => redraw((n) => n + 1), 500)
     return () => clearInterval(timer)
   }, [])
 
-  const game = duel ? gameById(duel.game as GameId) : null
+  const game = duel?.game ? gameById(duel.game as GameId) : null
   const byId = useMemo(() => new Map((game?.entities ?? []).map((e) => [e.id, e])), [game])
 
   const guesses: Guess[] = useMemo(() => {
@@ -56,17 +58,20 @@ export default function DuelRoom({ code }: { code: string }) {
     )
   }
 
-  if (!duel || !game) return <div className="card center muted">{t('loading')}</div>
+  if (!duel) return <div className="card center muted">{t('loading')}</div>
 
-  const link = `${window.location.origin}/${href.duel(duel.code)}`
   const you = duel.you
   const rival = duel.rival
+  const inLobby = duel.status === 'lobby'
   const over = duel.status === 'finished'
+  const link = `${window.location.origin}/${href.duel(duel.code)}`
   const answer = duel.answerId !== undefined ? byId.get(duel.answerId) : undefined
   const wrong = guesses.filter((g) => !g.pending).length - (you?.solved ? 1 : 0)
   const zoom = over || you?.solved ? 1 : ZOOM_LEVELS[Math.min(wrong, ZOOM_LEVELS.length - 1)]
   const left = duel.endsAt ? duel.endsAt - serverNow() : 0
   const youDone = Boolean(you?.solved || you?.gaveUp)
+  const modes = game ? MODES.filter((m) => game.modes.includes(m.id)) : []
+  const modeLabel = duel.mode ? t(MODES.find((m) => m.id === duel.mode)?.label ?? 'mode.classic') : null
 
   const copy = () => {
     navigator.clipboard?.writeText(link).then(
@@ -84,12 +89,13 @@ export default function DuelRoom({ code }: { code: string }) {
         {t('duel.back')}
       </a>
 
-      <header className="duel-head card" style={{ '--tab-accent': game.accent } as React.CSSProperties}>
+      <header className="duel-head card" style={{ '--tab-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
         <div>
-          <h1>
-            ⚔️ {l(game.label)} · {t(`mode.${duel.mode}` as 'mode.classic')}
-          </h1>
-          <p className="muted">{t('duel.code', { code: duel.code })}</p>
+          <h1>⚔️ {game ? `${l(game.label)} · ${modeLabel}` : t('duel.room')}</h1>
+          <p className="muted">
+            {t('duel.code', { code: duel.code })}
+            {duel.round > 0 ? ` · ${t('duel.roundNo', { round: duel.round })}` : ''}
+          </p>
         </div>
         {duel.status === 'playing' && <div className={`duel-timer ${left < 60000 ? 'hot' : ''}`}>{clock(left)}</div>}
       </header>
@@ -98,17 +104,25 @@ export default function DuelRoom({ code }: { code: string }) {
         <div className={`duel-player ${you?.solved ? 'solved' : ''}`}>
           <b>{you?.nickname}</b>
           <span className="muted">
-            {t('duel.guesses', { count: guesses.filter((g) => !g.pending).length })}
-            {you?.solved ? ` · ${t('duel.solved')}` : you?.gaveUp ? ` · ${t('duel.gaveUp')}` : ''}
+            {inLobby
+              ? you?.ready
+                ? t('duel.isReady')
+                : t('duel.notReady')
+              : t('duel.guesses', { count: guesses.filter((g) => !g.pending).length })}
+            {!inLobby && you?.solved ? ` · ${t('duel.solved')}` : !inLobby && you?.gaveUp ? ` · ${t('duel.gaveUp')}` : ''}
           </span>
         </div>
-        <span className="duel-vs">VS</span>
+        <span className="duel-vs">{duel.round > 0 ? `${you?.wins ?? 0} : ${rival?.wins ?? 0}` : 'VS'}</span>
         {rival ? (
           <div className={`duel-player ${rival.solved ? 'solved' : ''}`}>
             <b>{rival.nickname}</b>
             <span className="muted">
-              {t('duel.guesses', { count: rival.guessCount })}
-              {rival.solved ? ` · ${t('duel.solved')}` : rival.gaveUp ? ` · ${t('duel.gaveUp')}` : duel.status === 'waiting' && rival.ready ? ` · ${t('duel.isReady')}` : ''}
+              {inLobby
+                ? rival.ready
+                  ? t('duel.isReady')
+                  : t('duel.notReady')
+                : t('duel.guesses', { count: rival.guessCount })}
+              {!inLobby && rival.solved ? ` · ${t('duel.solved')}` : !inLobby && rival.gaveUp ? ` · ${t('duel.gaveUp')}` : ''}
             </span>
           </div>
         ) : (
@@ -116,9 +130,28 @@ export default function DuelRoom({ code }: { code: string }) {
         )}
       </section>
 
-      {duel.status === 'waiting' && (
+      {inLobby && (
         <section className="card duel-invite">
-          <h2>{t('duel.inviteTitle')}</h2>
+          <h2>{t('duel.setupTitle')}</h2>
+          {duel.host ? (
+            <div className="duel-picker">
+              <Picker
+                label={t('duel.game')}
+                value={duel.game ?? GAMES[0].id}
+                onChange={(v) => setup(v, modesFor(v, duel.mode))}
+                options={GAMES.map((g) => ({ value: g.id, label: l(g.label), accent: g.accent }))}
+              />
+              <Picker
+                label={t('duel.mode')}
+                value={duel.mode ?? 'classic'}
+                onChange={(v) => setup(duel.game ?? GAMES[0].id, v)}
+                options={(modes.length ? modes : MODES.slice(0, 2)).map((m) => ({ value: m.id, label: `${m.icon} ${t(m.label)}` }))}
+              />
+            </div>
+          ) : (
+            <p className="muted">{game ? `${l(game.label)} · ${modeLabel}` : t('duel.hostPicks')}</p>
+          )}
+
           <p className="muted">{t('duel.inviteHint')}</p>
           <div className="inline-field">
             <input readOnly value={link} onFocus={(e) => e.currentTarget.select()} />
@@ -126,18 +159,24 @@ export default function DuelRoom({ code }: { code: string }) {
               {copied ? t('duel.copied') : t('duel.copy')}
             </button>
           </div>
-          <button className="primary big" onClick={ready} disabled={busy || you?.ready}>
+          <button className="primary big" onClick={ready} disabled={busy || you?.ready || !duel.game || !rival}>
             {you?.ready ? t('duel.readyWait') : t('duel.ready')}
           </button>
+          {!duel.game && <p className="muted small">{t('duel.pickFirst')}</p>}
         </section>
       )}
 
-      {duel.status !== 'waiting' && (
+      {!inLobby && game && (
         <section className="mode">
           <div className="card intro">
             <h2>{t(duel.mode === 'ability' ? 'play.abilityTitle' : duel.mode === 'image' ? 'play.imageTitle' : 'play.classicTitle')}</h2>
-            {duel.mode === 'image' && <ZoomImage game={game} src={duel.image} zoom={zoom} resetKey={duel.code} />}
-            {duel.mode === 'ability' && <AbilityIcon src={duel.image ? `${duel.image}&v=${over ? 'done' : wrong}` : undefined} resetKey={duel.code} />}
+            {duel.mode === 'image' && <ZoomImage game={game} src={duel.image} zoom={zoom} resetKey={`${duel.code}-${duel.round}`} />}
+            {duel.mode === 'ability' && (
+              <AbilityIcon
+                src={duel.image ? `${duel.image}&v=${over ? 'done' : wrong}` : undefined}
+                resetKey={`${duel.code}-${duel.round}`}
+              />
+            )}
             {duel.ability && (
               <p className="ability-hint">
                 {t(over ? 'ability.was' : 'ability.hint')} <b>{duel.ability[lang]}</b>
@@ -155,21 +194,21 @@ export default function DuelRoom({ code }: { code: string }) {
                 {you?.nickname}: {t('duel.guesses', { count: you?.guesses.length ?? 0 })}
                 {rival ? ` · ${rival.nickname}: ${t('duel.guesses', { count: rival.guessCount })}` : ''}
               </p>
-              <a className="primary" href={href.duels}>
-                {t('duel.newDuel')}
-              </a>
+              <div className="result-actions">
+                <button className="primary" onClick={next} disabled={busy || you?.wantsNext}>
+                  {you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
+                </button>
+                <button className="ghost" onClick={toLobby} disabled={busy}>
+                  {t('duel.toLobby')}
+                </button>
+              </div>
+              {rival?.wantsNext && !you?.wantsNext && <p className="muted small">{t('duel.rivalWantsNext', { name: rival.nickname })}</p>}
             </div>
           ) : youDone ? (
             <div className="card round-status muted">{you?.solved ? t('duel.waitRival') : t('duel.gaveUpWait')}</div>
           ) : (
             <>
-              <CharacterSearch
-                game={game}
-                exclude={new Set(guesses.map((g) => g.entity.id))}
-                active
-                busy={busy}
-                onPick={guess}
-              />
+              <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} active busy={busy} onPick={guess} />
               <button className="link-button" onClick={giveUp} disabled={busy}>
                 {t('play.giveUp')}
               </button>
@@ -195,4 +234,9 @@ export default function DuelRoom({ code }: { code: string }) {
       )}
     </div>
   )
+}
+
+function modesFor(gameId: string, current: string | null) {
+  const game = gameById(gameId as GameId)
+  return current && game.modes.includes(current as ModeId) ? current : game.modes[0]
 }

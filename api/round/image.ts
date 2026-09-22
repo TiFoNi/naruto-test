@@ -8,12 +8,12 @@ import { abilityStage, ownedRound } from '../_lib/rounds.js'
 async function duelSource(code: string, userId: ObjectId) {
   const duel = await findDuel(code)
   const side = duel && sideOf(duel, userId)
-  if (!duel || !side || duel.status === 'waiting') return null
+  if (!duel || !side || duel.status === 'lobby' || duel.answerId === undefined) return null
   return {
     game: duel.game,
     mode: duel.mode,
     answerId: duel.answerId,
-    extra: duel.extra,
+    extra: duel.extra ?? undefined,
     stage: abilityStageOf(duel, side),
   }
 }

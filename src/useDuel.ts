@@ -4,13 +4,16 @@ import { useAuth } from './auth'
 import type { Entity } from './games/types'
 import type { Judgement } from './games/specs'
 
-export type DuelSide = { nickname: string; ready: boolean; solved: boolean; gaveUp: boolean }
+export type DuelSide = { nickname: string; ready: boolean; wantsNext: boolean; wins: number; solved: boolean; gaveUp: boolean }
 
 export type DuelView = {
   code: string
-  game: string
-  mode: string
-  status: 'waiting' | 'playing' | 'finished'
+  game: string | null
+  mode: string | null
+  status: 'lobby' | 'playing' | 'finished'
+  round: number
+  draws: number
+  host: boolean
   now: number
   startedAt?: number
   endsAt?: number
@@ -64,10 +67,11 @@ export function useDuel(code: string) {
   }, [send])
 
   useEffect(() => {
-    if (duel?.status === 'finished') return
-    const timer = setInterval(() => send({ action: 'state' }, true), POLL_MS)
+    const timer = setInterval(() => {
+      if (document.visibilityState === 'visible') send({ action: 'state' }, true)
+    }, POLL_MS)
     return () => clearInterval(timer)
-  }, [send, duel?.status])
+  }, [send])
 
   useEffect(() => () => clearTimeout(coolTimer.current), [])
 
@@ -90,6 +94,9 @@ export function useDuel(code: string) {
     pending,
     serverNow: () => Date.now() + offset.current,
     ready: () => send({ action: 'ready' }),
+    setup: (game: string, mode: string) => send({ action: 'setup', game, mode }),
+    next: () => send({ action: 'next' }),
+    toLobby: () => send({ action: 'lobby' }),
     giveUp: () => send({ action: 'giveup' }),
     refresh: () => send({ action: 'state' }),
     guess,
