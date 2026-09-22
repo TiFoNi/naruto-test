@@ -1,4 +1,4 @@
-import { useState, type CSSProperties, type FormEvent } from 'react'
+import { useEffect, useState, type CSSProperties, type FormEvent } from 'react'
 import { statsKey, useAuth } from './auth'
 import { dailyKey } from './games/specs'
 import { GAMES } from './games'
@@ -7,7 +7,7 @@ import { MODES } from './modes'
 import { average, emptyStats } from './stats'
 
 export default function Profile({ onBack }: { onBack: () => void }) {
-  const { user, stats, duels, setNickname, resetStats, logout } = useAuth()
+  const { user, stats, duels, setNickname, resetStats, logout, refresh } = useAuth()
   const { t, l, error: errorText } = useI18n()
   const [nickname, setNicknameDraft] = useState(user?.nickname ?? '')
   const [nickMessage, setNickMessage] = useState<{ ok: boolean; text: string } | null>(null)
@@ -15,6 +15,10 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   const [confirmReset, setConfirmReset] = useState(false)
   const [resetting, setResetting] = useState(false)
   const [resetMessage, setResetMessage] = useState<{ ok: boolean; text: string } | null>(null)
+
+  useEffect(() => {
+    refresh()
+  }, [refresh])
 
   if (!user) return null
 

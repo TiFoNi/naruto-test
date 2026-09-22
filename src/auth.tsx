@@ -21,6 +21,7 @@ type AuthState = {
   submit: (mode: Mode, username: string, password: string) => Promise<string | null>
   logout: () => Promise<void>
   setStats: (key: string, stats: Stats) => void
+  refresh: () => Promise<void>
   expire: () => void
   resetStats: () => Promise<string | null>
   setNickname: (nickname: string) => Promise<string | null>
@@ -47,6 +48,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .then(({ ok, data }) => (ok && data.user ? accept(data) : setProfile(null)))
       .catch(() => setProfile(null))
       .finally(() => setLoading(false))
+  }, [])
+
+  const refresh = useCallback(async () => {
+    const { ok, data } = await call('auth/me').catch(() => ({ ok: false, data: {} as ApiData }))
+    if (ok && data.user) accept(data)
   }, [])
 
   const submit = useCallback(async (mode: Mode, username: string, password: string) => {
@@ -97,7 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user: profile?.user ?? null, stats: profile?.stats ?? {}, duels: profile?.duels ?? EMPTY_DUELS, loading, submit, logout, setStats, expire, resetStats, setNickname }}
+      value={{ user: profile?.user ?? null, stats: profile?.stats ?? {}, duels: profile?.duels ?? EMPTY_DUELS, loading, submit, logout, setStats, expire, resetStats, setNickname, refresh }}
     >
       {children}
     </AuthContext.Provider>

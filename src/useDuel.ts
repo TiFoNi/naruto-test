@@ -31,13 +31,14 @@ const POLL_MS = 2000
 const GUESS_GAP_MS = 1000
 
 export function useDuel(code: string) {
-  const { expire } = useAuth()
+  const { expire, refresh } = useAuth()
   const [duel, setDuel] = useState<DuelView | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [pending, setPending] = useState<Entity | null>(null)
   const [cooling, setCooling] = useState(false)
   const offset = useRef(0)
+  const lastStatus = useRef<DuelView['status'] | null>(null)
   const lastGuess = useRef(0)
   const coolTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
 
@@ -51,6 +52,8 @@ export function useDuel(code: string) {
         if (!ok || !data.duel) return setError(data.error ?? 'server')
         offset.current = data.duel.now - Date.now()
         setError(null)
+        if (data.duel.status === 'finished' && lastStatus.current !== 'finished') refresh()
+        lastStatus.current = data.duel.status
         setDuel(data.duel)
         setPending(null)
       } catch {
@@ -59,7 +62,7 @@ export function useDuel(code: string) {
         if (!quiet) setBusy(false)
       }
     },
-    [code, expire],
+    [code, expire, refresh],
   )
 
   useEffect(() => {
