@@ -7,7 +7,7 @@ export const POST = handle(async (request) => {
   const body = await readJson(request)
 
   if (body.action === 'reset') {
-    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $unset: { stats: '' } }, { returnDocument: 'after' })
+    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $unset: { stats: '', duelStats: '' } }, { returnDocument: 'after' })
     return json(toProfile(doc ?? found.doc))
   }
 

@@ -4,7 +4,6 @@ import {
   backToLobby,
   createDuel,
   duelGuess,
-  duelHistory,
   duelView,
   findDuel,
   giveUpDuel,
@@ -27,8 +26,6 @@ export const POST = handle(async (request) => {
     const duel = await createDuel(found.doc)
     return duel ? json({ duel: duelView(duel, userId) }) : fail(400, 'bad_request')
   }
-
-  if (action === 'history') return json({ history: await duelHistory(userId), stats: found.doc.duelStats ?? null })
 
   const duel = await findDuel(body.code)
   if (!duel) return fail(404, 'not_found')

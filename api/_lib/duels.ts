@@ -12,7 +12,6 @@ export const MIN_GAP_MS = 800
 const ABILITY_STAGES = 5
 const ABILITY_HINT_AT = 7
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-const HISTORY = 20
 
 const code = () => Array.from({ length: 6 }, () => CODE_ALPHABET[randomInt(CODE_ALPHABET.length)]).join('')
 
@@ -300,24 +299,4 @@ export function duelView(duel: DuelDoc, userId: ObjectId) {
       guessCount: rival.guesses.length,
     },
   }
-}
-
-export async function duelHistory(userId: ObjectId) {
-  const list = await (await duels())
-    .find({ 'players.userId': userId, finishedAt: { $ne: null } }, { sort: { finishedAt: -1 }, limit: HISTORY })
-    .toArray()
-  return list.map((duel) => {
-    const you = sideOf(duel, userId)!
-    const rival = duel.players.find((p) => !p.userId.equals(userId))
-    return {
-      code: duel.code,
-      game: duel.game,
-      mode: duel.mode,
-      at: duel.finishedAt?.getTime() ?? duel.createdAt.getTime(),
-      rounds: duel.round,
-      you: { nickname: you.nickname, wins: you.wins ?? 0 },
-      rival: rival && { nickname: rival.nickname, wins: rival.wins ?? 0 },
-      draws: duel.draws ?? 0,
-    }
-  })
 }

@@ -1528,7 +1528,7 @@ footer p {
 
 .totals {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 10px;
 }
 
@@ -2244,18 +2244,8 @@ footer p {
 }
 
 
-.duel-score {
-  margin: 0;
-  font-weight: 700;
-}
 
-.duel-result.win {
-  color: var(--correct);
-}
 
-.duel-result.loss {
-  color: #e2606b;
-}
 
 .small {
   font-size: 13px;

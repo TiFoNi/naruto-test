@@ -7,7 +7,7 @@ import { MODES } from './modes'
 import { average, emptyStats } from './stats'
 
 export default function Profile({ onBack }: { onBack: () => void }) {
-  const { user, stats, setNickname, resetStats, logout } = useAuth()
+  const { user, stats, duels, setNickname, resetStats, logout } = useAuth()
   const { t, l, error: errorText } = useI18n()
   const [nickname, setNicknameDraft] = useState(user?.nickname ?? '')
   const [nickMessage, setNickMessage] = useState<{ ok: boolean; text: string } | null>(null)
@@ -86,6 +86,10 @@ export default function Profile({ onBack }: { onBack: () => void }) {
         <div className="card">
           <span>{t('profile.bestStreak')}</span>
           <b>{bestStreak}</b>
+        </div>
+        <div className="card">
+          <span>{t('profile.duelWins')}</span>
+          <b>{duels.wins}</b>
         </div>
         <div className="card">
           <span>{t('stats.avg')}</span>

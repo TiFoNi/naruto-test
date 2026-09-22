@@ -232,8 +232,6 @@ const ui = {
   'duel.nextWait': { ru: 'Ждём соперника…', uk: 'Чекаємо суперника…', en: 'Waiting for the rival…' },
   'duel.toLobby': { ru: 'В комнату', uk: 'У кімнату', en: 'Back to the room' },
   'duel.rivalWantsNext': { ru: '{name} хочет ещё раунд', uk: '{name} хоче ще раунд', en: '{name} wants another round' },
-  'duel.series': { ru: 'Счёт серии', uk: 'Рахунок серії', en: 'Series score' },
-  'duel.rounds': { ru: 'Раундов', uk: 'Раундів', en: 'Rounds' },
   'duel.inviteTitle': { ru: 'Позови друга', uk: 'Поклич друга', en: 'Invite a friend' },
   'duel.inviteHint': {
     ru: 'Отправь ссылку — игра начнётся, когда оба нажмут «Готов».',
@@ -260,16 +258,9 @@ const ui = {
   'duel.youLost': { ru: 'Победил {name}', uk: 'Переміг {name}', en: '{name} wins' },
   'duel.draw': { ru: 'Ничья — никто не угадал', uk: 'Нічия — ніхто не вгадав', en: 'Draw — nobody solved it' },
   'duel.newDuel': { ru: 'Новая дуэль ➜', uk: 'Нова дуель ➜', en: 'New duel ➜' },
-  'duel.history': { ru: 'История дуэлей', uk: 'Історія дуелей', en: 'Duel history' },
-  'duel.empty': { ru: 'Дуэлей пока не было', uk: 'Дуелей поки не було', en: 'No duels yet' },
-  'duel.opponent': { ru: 'Соперник', uk: 'Суперник', en: 'Opponent' },
-  'duel.result': { ru: 'Итог', uk: 'Підсумок', en: 'Result' },
-  'duel.win': { ru: 'Победа', uk: 'Перемога', en: 'Win' },
-  'duel.loss': { ru: 'Поражение', uk: 'Поразка', en: 'Loss' },
-  'duel.drawShort': { ru: 'Ничья', uk: 'Нічия', en: 'Draw' },
-  'duel.score': { ru: 'Победы: {wins} · Поражения: {losses} · Ничьи: {draws}', uk: 'Перемоги: {wins} · Поразки: {losses} · Нічиї: {draws}', en: 'Wins: {wins} · Losses: {losses} · Draws: {draws}' },
   'duel.full': { ru: 'В комнате уже двое', uk: 'У кімнаті вже двоє', en: 'This room is full' },
 
+  'profile.duelWins': { ru: 'Побед в дуэлях', uk: 'Перемог у дуелях', en: 'Duel wins' },
   'profile.back': { ru: '← Назад', uk: '← Назад', en: '← Back' },
   'profile.nickname': { ru: 'Ник', uk: 'Нік', en: 'Nickname' },
   'profile.nicknameHint': {
