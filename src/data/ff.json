@@ -1,0 +1,1185 @@
+[
+ {
+  "id": 157,
+  "name": "Айрис",
+  "nameEn": "Iris",
+  "gender": "Женский",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "8-я рота",
+   "Храм Святого Солнца"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 0
+ },
+ {
+  "id": 144,
+  "name": "Акитару Оби",
+  "nameEn": "Akitaru Ōbi",
+  "gender": "Мужской",
+  "generations": [
+   "Без силы"
+  ],
+  "affiliations": [
+   "8-я рота",
+   "Токийская армия"
+  ],
+  "rank": "Капитан",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 1
+ },
+ {
+  "id": 4486,
+  "name": "Аматэрасу",
+  "nameEn": "Amaterasu",
+  "gender": "Женский",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "Адолла"
+  ],
+  "rank": "Нет",
+  "side": "Злодей",
+  "status": "Мёртв",
+  "arc": "Преисподняя",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 2
+ },
+ {
+  "id": 5132,
+  "name": "Амон Хаджики",
+  "nameEn": "Amon Hajiki",
+  "gender": "Мужской",
+  "generations": [
+   "Второе"
+  ],
+  "affiliations": [
+   "2-я рота"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Против 1-й роты",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 3
+ },
+ {
+  "id": 6493,
+  "name": "Антон",
+  "nameEn": "Anton",
+  "gender": "Мужской",
+  "generations": [
+   "Без силы"
+  ],
+  "affiliations": [
+   "2-я рота"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Совместное расследование",
+  "arcIndex": 9,
+  "answer": false,
+  "thumb": 4
+ },
+ {
+  "id": 489,
+  "name": "Артур Бойл",
+  "nameEn": "Arthur Boyle",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "8-я рота"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 5
+ },
+ {
+  "id": 4544,
+  "name": "Асако Хааг",
+  "nameEn": "Asako Hague",
+  "gender": "Женский",
+  "generations": [
+   "Второе"
+  ],
+  "affiliations": [
+   "6-я рота"
+  ],
+  "rank": "Лейтенант",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Преисподняя",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 6
+ },
+ {
+  "id": 4094,
+  "name": "Ассолт",
+  "nameEn": "Assault",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "Белые Одежды"
+  ],
+  "rank": "Нет",
+  "side": "Бывший злодей",
+  "status": "Жив",
+  "arc": "Преисподняя",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 7
+ },
+ {
+  "id": 3205,
+  "name": "Бенимару Шинмон",
+  "nameEn": "Benimaru Shinmon",
+  "gender": "Мужской",
+  "generations": [
+   "Второе",
+   "Третье"
+  ],
+  "affiliations": [
+   "7-я рота",
+   "Асакуса",
+   "Герои мира"
+  ],
+  "rank": "Капитан",
+  "side": "Бывший злодей",
+  "status": "Жив",
+  "arc": "Против 1-й роты",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 8
+ },
+ {
+  "id": 1763,
+  "name": "Виктор Лихт",
+  "nameEn": "Viktor Licht",
+  "gender": "Мужской",
+  "generations": [
+   "Без силы"
+  ],
+  "affiliations": [
+   "8-я рота",
+   "Хаиджима"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 9
+ },
+ {
+  "id": 3803,
+  "name": "Вулкан Джозеф",
+  "nameEn": "Vulcan Joseph",
+  "gender": "Мужской",
+  "generations": [
+   "Без силы"
+  ],
+  "affiliations": [
+   "8-я рота"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Мастерская Вулкана",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 10
+ },
+ {
+  "id": 4881,
+  "name": "Гурэо Хайджима",
+  "nameEn": "Gureo Haijima",
+  "gender": "Мужской",
+  "generations": [
+   "Без силы"
+  ],
+  "affiliations": [
+   "Хаиджима"
+  ],
+  "rank": "Нет",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 11
+ },
+ {
+  "id": 1346,
+  "name": "Густав Хонда",
+  "nameEn": "Gustav Honda",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "2-я рота"
+  ],
+  "rank": "Капитан",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 12
+ },
+ {
+  "id": 6611,
+  "name": "Дайкоку Огуру",
+  "nameEn": "Daikoku Oguru",
+  "gender": "Мужской",
+  "generations": [
+   "Без силы"
+  ],
+  "affiliations": [
+   "Хаиджима"
+  ],
+  "rank": "Нет",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Каменные столпы",
+  "arcIndex": 11,
+  "answer": true,
+  "thumb": 13
+ },
+ {
+  "id": 5050,
+  "name": "Данро Озэ",
+  "nameEn": "Danrou Oze",
+  "gender": "Мужской",
+  "generations": [
+   "Без силы"
+  ],
+  "affiliations": [
+   "Токийская армия",
+   "Асакуса"
+  ],
+  "rank": "Командир",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Совместное расследование",
+  "arcIndex": 9,
+  "answer": false,
+  "thumb": 14
+ },
+ {
+  "id": 3262,
+  "name": "Джованни",
+  "nameEn": "Giovanni",
+  "gender": "Мужской",
+  "generations": [
+   "Второе"
+  ],
+  "affiliations": [
+   "3-я рота",
+   "Белые Одежды"
+  ],
+  "rank": "Капитан",
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Асакуса",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 15
+ },
+ {
+  "id": 1159,
+  "name": "Джокер",
+  "nameEn": "Joker",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "Храм Святого Солнца"
+  ],
+  "rank": "Нет",
+  "side": "Бывший злодей",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 16
+ },
+ {
+  "id": 3568,
+  "name": "Евангелист",
+  "nameEn": "Evangelist",
+  "gender": "Женский",
+  "generations": [
+   "Без силы"
+  ],
+  "affiliations": [
+   "Белые Одежды"
+  ],
+  "rank": "Нет",
+  "side": "Злодей",
+  "status": "Мёртв",
+  "arc": "Преисподняя",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 17
+ },
+ {
+  "id": 4551,
+  "name": "Инка Касугатани",
+  "nameEn": "Inca Kasugatani",
+  "gender": "Женский",
+  "generations": [
+   "Третье",
+   "Четвёртое"
+  ],
+  "affiliations": [
+   "Белые Одежды"
+  ],
+  "rank": "Нет",
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Пятый столп",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 18
+ },
+ {
+  "id": 3667,
+  "name": "Иона",
+  "nameEn": "Yona",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "Белые Одежды"
+  ],
+  "rank": "Нет",
+  "side": "Злодей",
+  "status": "Мёртв",
+  "arc": "Асакуса",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 19
+ },
+ {
+  "id": 3267,
+  "name": "Каёко Хуан",
+  "nameEn": "Kayoko Huang",
+  "gender": "Женский",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "6-я рота"
+  ],
+  "rank": "Капитан",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Асакуса",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 6036,
+  "name": "Кантаро",
+  "nameEn": "Kantarō",
+  "gender": "Мужской",
+  "generations": [
+   "Первое"
+  ],
+  "affiliations": [
+   "Гражданские"
+  ],
+  "rank": "Нет",
+  "side": "Герой",
+  "status": "Мёртв",
+  "arc": "Асакуса",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 21
+ },
+ {
+  "id": 2701,
+  "name": "Карим Флам",
+  "nameEn": "Karim Flam",
+  "gender": "Мужской",
+  "generations": [
+   "Второе"
+  ],
+  "affiliations": [
+   "1-я рота"
+  ],
+  "rank": "Лейтенант",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Против 5-й роты",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 22
+ },
+ {
+  "id": 2827,
+  "name": "Карин Сасаки",
+  "nameEn": "Karin Sasaki",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "4-я рота"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Пятый столп",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 3510,
+  "name": "Конро Сагамия",
+  "nameEn": "Konro Sagamiya",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "7-я рота"
+  ],
+  "rank": "Лейтенант",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Асакуса",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 24
+ },
+ {
+  "id": 1309,
+  "name": "Леонард Бёрнс",
+  "nameEn": "Leonard Burns",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "1-я рота",
+   "Белые Одежды"
+  ],
+  "rank": "Капитан",
+  "side": "Бывший злодей",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 25
+ },
+ {
+  "id": 3816,
+  "name": "Лиза Исариби",
+  "nameEn": "Lisa Isaribi",
+  "gender": "Женский",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "8-я рота",
+   "Белые Одежды"
+  ],
+  "rank": "Пожарный",
+  "side": "Бывший злодей",
+  "status": "Жив",
+  "arc": "Мастерская Вулкана",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 26
+ },
+ {
+  "id": 5057,
+  "name": "Мадока Озэ",
+  "nameEn": "Madoka Oze",
+  "gender": "Женский",
+  "generations": [
+   "Второе"
+  ],
+  "affiliations": [
+   "Асакуса"
+  ],
+  "rank": "Нет",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Совместное расследование",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 210,
+  "name": "Маки Озэ",
+  "nameEn": "Maki Oze",
+  "gender": "Женский",
+  "generations": [
+   "Второе"
+  ],
+  "affiliations": [
+   "8-я рота",
+   "Токийская армия"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 4394,
+  "name": "Мари Кусакабэ",
+  "nameEn": "Mari Kusakabe",
+  "gender": "Женский",
+  "generations": [
+   "Первое"
+  ],
+  "affiliations": [
+   "Гражданские"
+  ],
+  "rank": "Нет",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 29
+ },
+ {
+  "id": 3920,
+  "name": "Мираж",
+  "nameEn": "Mirage",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "3-я рота",
+   "Белые Одежды"
+  ],
+  "rank": "Пожарный",
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Мастерская Вулкана",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 30
+ },
+ {
+  "id": 3015,
+  "name": "Натаку Сон",
+  "nameEn": "Nataku Son",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "Хаиджима"
+  ],
+  "rank": "Нет",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Против 1-й роты",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 31
+ },
+ {
+  "id": 4473,
+  "name": "Огун Монтгомери",
+  "nameEn": "Ogun Montgomery",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "4-я рота"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Пятый столп",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 4586,
+  "name": "Оньянго",
+  "nameEn": "Onyango",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "1-я рота"
+  ],
+  "rank": "Лейтенант",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Преисподняя",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 5147,
+  "name": "Орочи",
+  "nameEn": "Orochi",
+  "gender": "Женский",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "Белые Одежды"
+  ],
+  "rank": "Нет",
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Совместное расследование",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 4472,
+  "name": "Пан Ко Паат",
+  "nameEn": "Pan Ko Paat",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "4-я рота"
+  ],
+  "rank": "Капитан",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Пятый столп",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 35
+ },
+ {
+  "id": 3275,
+  "name": "Раффлс III",
+  "nameEn": "Raffles III",
+  "gender": "Мужской",
+  "generations": [
+   "Без силы"
+  ],
+  "affiliations": [
+   "Храм Святого Солнца"
+  ],
+  "rank": "Нет",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Асакуса",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 36
+ },
+ {
+  "id": 4959,
+  "name": "Рицу",
+  "nameEn": "Ritsu",
+  "gender": "Женский",
+  "generations": [
+   "Без силы"
+  ],
+  "affiliations": [
+   "Белые Одежды"
+  ],
+  "rank": "Нет",
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Хаиджима",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 2704,
+  "name": "Рэкка Хошимия",
+  "nameEn": "Rekka Hoshimiya",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "1-я рота",
+   "Белые Одежды"
+  ],
+  "rank": "Лейтенант",
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Против 5-й роты",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 38
+ },
+ {
+  "id": 5043,
+  "name": "Саки",
+  "nameEn": "Saki",
+  "gender": "Женский",
+  "generations": [
+   "Без силы"
+  ],
+  "affiliations": [
+   "Гражданские"
+  ],
+  "rank": "Нет",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Хаиджима",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 39
+ },
+ {
+  "id": 6301,
+  "name": "Сакура",
+  "nameEn": "Sakura",
+  "gender": "Женский",
+  "generations": [
+   "Первое"
+  ],
+  "affiliations": [
+   "Храм Святого Солнца"
+  ],
+  "rank": "Священник",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Против 5-й роты",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 40
+ },
+ {
+  "id": 3272,
+  "name": "Соитиро Хааг",
+  "nameEn": "Sōichirō Hague",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "4-я рота"
+  ],
+  "rank": "Капитан",
+  "side": "Герой",
+  "status": "Мёртв",
+  "arc": "Асакуса",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 41
+ },
+ {
+  "id": 2997,
+  "name": "Сумирэ",
+  "nameEn": "Sumire",
+  "gender": "Женский",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "Белые Одежды",
+   "Храм Святого Солнца"
+  ],
+  "rank": "Священник",
+  "side": "Злодей",
+  "status": "Мёртв",
+  "arc": "Против 5-й роты",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 42
+ },
+ {
+  "id": 1461,
+  "name": "Сэцуо Миямото",
+  "nameEn": "Setsuo Miyamoto",
+  "gender": "Мужской",
+  "generations": [
+   "Первое"
+  ],
+  "affiliations": [
+   "5-я рота",
+   "Токийская армия"
+  ],
+  "rank": "Пожарный",
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 43
+ },
+ {
+  "id": 1348,
+  "name": "Такеру Ното",
+  "nameEn": "Takeru Noto",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "2-я рота"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 44
+ },
+ {
+  "id": 211,
+  "name": "Такехиса Хинава",
+  "nameEn": "Takehisa Hinawa",
+  "gender": "Мужской",
+  "generations": [
+   "Второе"
+  ],
+  "affiliations": [
+   "8-я рота",
+   "Токийская армия"
+  ],
+  "rank": "Лейтенант",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 5058,
+  "name": "Такиги Озэ",
+  "nameEn": "Takigi Oze",
+  "gender": "Мужской",
+  "generations": [
+   "Второе"
+  ],
+  "affiliations": [
+   "Токийская армия",
+   "Асакуса"
+  ],
+  "rank": "Лейтенант",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Совместное расследование",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 1000,
+  "name": "Тамаки Котацу",
+  "nameEn": "Tamaki Kotatsu",
+  "gender": "Женский",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "1-я рота",
+   "8-я рота"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 47
+ },
+ {
+  "id": 4524,
+  "name": "Тодзё",
+  "nameEn": "Tōjō",
+  "gender": "Мужской",
+  "generations": [
+   "Первое"
+  ],
+  "affiliations": [
+   "Токийская армия"
+  ],
+  "rank": "Нет",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Асакуса",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 2270,
+  "name": "Тору Кишири",
+  "nameEn": "Tōru Kishiri",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "5-я рота"
+  ],
+  "rank": "Пожарный",
+  "side": "Бывший злодей",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 49
+ },
+ {
+  "id": 3922,
+  "name": "Флейл",
+  "nameEn": "Flail",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "3-я рота",
+   "Белые Одежды"
+  ],
+  "rank": "Пожарный",
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Асакуса",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 50
+ },
+ {
+  "id": 4479,
+  "name": "Харон",
+  "nameEn": "Charon",
+  "gender": "Мужской",
+  "generations": [
+   "Второе"
+  ],
+  "affiliations": [
+   "Белые Одежды"
+  ],
+  "rank": "Нет",
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Преисподняя",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 51
+ },
+ {
+  "id": 4366,
+  "name": "Хаумеа",
+  "nameEn": "Haumea",
+  "gender": "Женский",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "Белые Одежды"
+  ],
+  "rank": "Нет",
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Преисподняя",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 52
+ },
+ {
+  "id": 1399,
+  "name": "Хибана",
+  "nameEn": "Hibana",
+  "gender": "Женский",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "5-я рота",
+   "Хаиджима",
+   "Храм Святого Солнца"
+  ],
+  "rank": "Капитан",
+  "side": "Бывший злодей",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 53
+ },
+ {
+  "id": 3488,
+  "name": "Хикагэ",
+  "nameEn": "Hikage",
+  "gender": "Женский",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "7-я рота"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Асакуса",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 54
+ },
+ {
+  "id": 3494,
+  "name": "Хината",
+  "nameEn": "Hinata",
+  "gender": "Женский",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "7-я рота"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Асакуса",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 55
+ },
+ {
+  "id": 2708,
+  "name": "Хуо Янь Ли",
+  "nameEn": "Huo Yan Li",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "1-я рота"
+  ],
+  "rank": "Капитан",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Против 5-й роты",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 56
+ },
+ {
+  "id": 6201,
+  "name": "Шинра Кусакабэ",
+  "nameEn": "Shinra Kusakabe",
+  "gender": "Мужской",
+  "generations": [
+   "Третье",
+   "Четвёртое"
+  ],
+  "affiliations": [
+   "8-я рота",
+   "Герои мира"
+  ],
+  "rank": "Пожарный",
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Вступление",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 57
+ },
+ {
+  "id": 587,
+  "name": "Шо Кусакабэ",
+  "nameEn": "Shō Kusakabe",
+  "gender": "Мужской",
+  "generations": [
+   "Четвёртое"
+  ],
+  "affiliations": [
+   "Белые Одежды"
+  ],
+  "rank": "Командир",
+  "side": "Бывший злодей",
+  "status": "Жив",
+  "arc": "Асакуса",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 58
+ },
+ {
+  "id": 3678,
+  "name": "Эрроу",
+  "nameEn": "Arrow",
+  "gender": "Женский",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "Белые Одежды"
+  ],
+  "rank": "Нет",
+  "side": "Бывший злодей",
+  "status": "Жив",
+  "arc": "Против 1-й роты",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 59
+ },
+ {
+  "id": 4901,
+  "name": "Юитиро Куроно",
+  "nameEn": "Yūichirō Kurono",
+  "gender": "Мужской",
+  "generations": [
+   "Третье"
+  ],
+  "affiliations": [
+   "Хаиджима"
+  ],
+  "rank": "Командир",
+  "side": "Бывший злодей",
+  "status": "Жив",
+  "arc": "Хаиджима",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 60
+ }
+]

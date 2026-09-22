@@ -58,6 +58,21 @@ const rules = {
     ['кровавая техника у человека', (c) => has(c.styles, 'Кровавая техника') && c.species !== 'Демон'],
     ['демон с рангом корпуса', (c) => c.species === 'Демон' && ['Столп', 'Цугуко', 'Истребитель', 'Какуши'].includes(c.rank)],
   ],
+  se: [
+    ['мастер и оружие сразу', (c) => c.role === 'Мастер' && has(c.species, 'Демоническое оружие')],
+    ['класс EAT без Шибусэна', (c) => has(c.affiliations, 'Класс EAT') && !has(c.affiliations, 'Шибусэн')],
+    ['спартой без Шибусэна', (c) => has(c.affiliations, 'Спартой') && !has(c.affiliations, 'Шибусэн')],
+    ['ведьма без вида ведьма', (c) => has(c.affiliations, 'Орден ведьм') && !any(c.species, ['Ведьма', 'Колдун'])],
+    ['нет вида', (c) => !c.species.length],
+    ['нет организации', (c) => !c.affiliations.length],
+  ],
+  ff: [
+    ['капитан без роты', (c) => c.rank === 'Капитан' && !c.affiliations.some((a) => /рота/.test(a))],
+    ['инферналец не первого поколения', (c) => has(c.generations, 'Первое') && c.generations.length > 1],
+    ['без силы и с поколением', (c) => has(c.generations, 'Без силы') && c.generations.length > 1],
+    ['нет поколения', (c) => !c.generations.length],
+    ['нет организации', (c) => !c.affiliations.length],
+  ],
   jojo: [
     ['люди из столбов не человек из столба', (c) => has(c.groups, 'Люди из столбов') && !has(c.species, 'Человек из столба')],
     ['хамон после 2-й части', (c) => has(c.powers, 'Хамон') && c.partIndex > 2 && !has(c.powers, 'Стенд')],

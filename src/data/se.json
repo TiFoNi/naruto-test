@@ -1,0 +1,1040 @@
+[
+ {
+  "id": 2029,
+  "name": "Адзуса Юми",
+  "nameEn": "Azusa Yumi",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Оружие Смерти"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Предатели",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 0
+ },
+ {
+  "id": 2038,
+  "name": "Анджела Леон",
+  "nameEn": "Angela Leon",
+  "gender": "Женский",
+  "species": [
+   "Ведьма"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Орден ведьм",
+   "Арахнофобия"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 1
+ },
+ {
+  "id": 2039,
+  "name": "Арахна Горгон",
+  "nameEn": "Arachne Gorgon",
+  "gender": "Женский",
+  "species": [
+   "Ведьма"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Орден ведьм",
+   "Арахнофобия"
+  ],
+  "side": "Злодей",
+  "status": "Мёртв",
+  "arc": "Фестиваль смерти",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 2
+ },
+ {
+  "id": 2108,
+  "name": "Асура",
+  "nameEn": "Asura",
+  "gender": "Мужской",
+  "species": [
+   "Бог смерти",
+   "Великий древний",
+   "Истинный бог",
+   "Яйцо кишина"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Арахнофобия"
+  ],
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Предатели",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 3
+ },
+ {
+  "id": 1969,
+  "name": "Блэк☆Стар",
+  "nameEn": "Black☆Star",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой"
+  ],
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 4
+ },
+ {
+  "id": 2035,
+  "name": "Блэр",
+  "nameEn": "Blair",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Шибусэн"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 5
+ },
+ {
+  "id": 2040,
+  "name": "Гирико",
+  "nameEn": "Giriko",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Арахнофобия",
+   "Банда Ноя"
+  ],
+  "side": "Нейтралитет",
+  "status": "Мёртв",
+  "arc": "Предатели",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 6
+ },
+ {
+  "id": 18647,
+  "name": "Горшок Грома",
+  "nameEn": "Thunder",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Фестиваль смерти",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 7
+ },
+ {
+  "id": 18648,
+  "name": "Горшок Огня",
+  "nameEn": "Fire",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Фестиваль смерти",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 8
+ },
+ {
+  "id": 3287,
+  "name": "Гофер",
+  "nameEn": "Gopher",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Банда Ноя"
+  ],
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Операция «Баба-яга»",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 9
+ },
+ {
+  "id": 2024,
+  "name": "Джастин Ло",
+  "nameEn": "Justin Law",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Банда Ноя",
+   "Оружие Смерти"
+  ],
+  "side": "Злодей",
+  "status": "Мёртв",
+  "arc": "Предатели",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 10
+ },
+ {
+  "id": 7087,
+  "name": "Джинн Галланд",
+  "nameEn": "Jinn Galland",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Оружие Смерти"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Безумная кровь",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 11
+ },
+ {
+  "id": 2080,
+  "name": "Джо Буттатаки",
+  "nameEn": "Joe Buttataki",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн"
+  ],
+  "side": "Нейтралитет",
+  "status": "Мёртв",
+  "arc": "Фестиваль смерти",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 12
+ },
+ {
+  "id": 2092,
+  "name": "Жаклин Дюпре",
+  "nameEn": "Jacqueline O'Lantern Dupre",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой",
+   "Арахнофобия"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Фестиваль смерти",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 13
+ },
+ {
+  "id": 2032,
+  "name": "Килик Рун",
+  "nameEn": "Kirikou Rung",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Особые уроки",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 14
+ },
+ {
+  "id": 2033,
+  "name": "Ким Диль",
+  "nameEn": "Kimial Diehl",
+  "gender": "Женский",
+  "species": [
+   "Ведьма"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой",
+   "Орден ведьм",
+   "Арахнофобия"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Фестиваль смерти",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 15
+ },
+ {
+  "id": 2025,
+  "name": "Крона",
+  "nameEn": "Crona",
+  "gender": "Неизвестно",
+  "species": [
+   "Человек"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Фракция Медузы"
+  ],
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Особые уроки",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 16
+ },
+ {
+  "id": 2128,
+  "name": "Летучий Голландец",
+  "nameEn": "Flying Dutchman",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Сами по себе"
+  ],
+  "side": "Нейтралитет",
+  "status": "Мёртв",
+  "arc": "Чёрный дракон",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 17
+ },
+ {
+  "id": 2085,
+  "name": "Лиз Томпсон",
+  "nameEn": "Elizabeth Thompson",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой"
+  ],
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 18
+ },
+ {
+  "id": 15583,
+  "name": "Мабаа",
+  "nameEn": "Mabaa",
+  "gender": "Женский",
+  "species": [
+   "Ведьма"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Орден ведьм"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Чёрный дракон",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 19
+ },
+ {
+  "id": 1950,
+  "name": "Мака Альбарн",
+  "nameEn": "Maka Albarn",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой"
+  ],
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 2004,
+  "name": "Мари Мьёльнир",
+  "nameEn": "Marie Mjolnir",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Оружие Смерти"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Предатели",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 21
+ },
+ {
+  "id": 2042,
+  "name": "Масамунэ Накацукаса",
+  "nameEn": "Masamune Nakatsukasa",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Яйцо кишина"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Сами по себе"
+  ],
+  "side": "Нейтралитет",
+  "status": "Мёртв",
+  "arc": "Особые уроки",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 22
+ },
+ {
+  "id": 1987,
+  "name": "Медуза Горгон",
+  "nameEn": "Medusa Gorgon",
+  "gender": "Женский",
+  "species": [
+   "Ведьма"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Шибусэн",
+   "Орден ведьм",
+   "Фракция Медузы"
+  ],
+  "side": "Злодей",
+  "status": "Мёртв",
+  "arc": "Особые уроки",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 30135,
+  "name": "Мизунэ",
+  "nameEn": "Mizune",
+  "gender": "Женский",
+  "species": [
+   "Ведьма"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Орден ведьм"
+  ],
+  "side": "Нейтралитет",
+  "status": "Мёртв",
+  "arc": "Чёрный дракон",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 24
+ },
+ {
+  "id": 2031,
+  "name": "Мира Найгус",
+  "nameEn": "Mira Naigus",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Разведка Шибусэна"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Чёрный дракон",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 25
+ },
+ {
+  "id": 2041,
+  "name": "Мифунэ",
+  "nameEn": "Mifune",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Арахнофобия"
+  ],
+  "side": "Злодей",
+  "status": "Мёртв",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 26
+ },
+ {
+  "id": 2166,
+  "name": "Москит",
+  "nameEn": "Mosquito",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Яйцо кишина"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Арахнофобия"
+  ],
+  "side": "Злодей",
+  "status": "Мёртв",
+  "arc": "Предатели",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 2563,
+  "name": "Ной",
+  "nameEn": "Noah",
+  "gender": "Мужской",
+  "species": [
+   "Колдун"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Арахнофобия",
+   "Банда Ноя"
+  ],
+  "side": "Злодей",
+  "status": "Мёртв",
+  "arc": "Операция «Баба-яга»",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 2028,
+  "name": "Окс Форд",
+  "nameEn": "Ox Ford",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Чёрный дракон",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 29
+ },
+ {
+  "id": 2084,
+  "name": "Патти Томпсон",
+  "nameEn": "Patricia Thompson",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой"
+  ],
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 30
+ },
+ {
+  "id": 2026,
+  "name": "Рагнарёк",
+  "nameEn": "Ragnarok",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Фракция Медузы"
+  ],
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Особые уроки",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 31
+ },
+ {
+  "id": 2738,
+  "name": "Рэйчел Бойд",
+  "nameEn": "Rachel Boyd",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Сами по себе"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Фестиваль смерти",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 16369,
+  "name": "Сид Барретт",
+  "nameEn": "Sid Barrett",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн",
+   "Разведка Шибусэна"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Особые уроки",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 1970,
+  "name": "Смерть-Кид",
+  "nameEn": "Death the Kid",
+  "gender": "Мужской",
+  "species": [
+   "Бог смерти",
+   "Истинный бог"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой"
+  ],
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 3181,
+  "name": "Соул Эванс",
+  "nameEn": "Soul Evans",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой",
+   "Оружие Смерти"
+  ],
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 35
+ },
+ {
+  "id": 2005,
+  "name": "Спирит Альбарн",
+  "nameEn": "Spirit Albarn",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Оружие Смерти"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 36
+ },
+ {
+  "id": 2556,
+  "name": "Тескатлипока",
+  "nameEn": "Tezca Tlipoca",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Оружие Смерти"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Операция «Баба-яга»",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 2186,
+  "name": "Уайт☆Стар",
+  "nameEn": "White☆Star",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Сами по себе"
+  ],
+  "side": "Нейтралитет",
+  "status": "Мёртв",
+  "arc": "Особые уроки",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 38
+ },
+ {
+  "id": 2180,
+  "name": "Уэс Эванс",
+  "nameEn": "Wes Evans",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Сами по себе"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Операция «Баба-яга»",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 39
+ },
+ {
+  "id": 5448,
+  "name": "Фёдор",
+  "nameEn": "Feodor",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн"
+  ],
+  "side": "Нейтралитет",
+  "status": "Мёртв",
+  "arc": "Безумная кровь",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 40
+ },
+ {
+  "id": 1982,
+  "name": "Франкен Штейн",
+  "nameEn": "Franken Stein",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Особые уроки",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 41
+ },
+ {
+  "id": 2105,
+  "name": "Фри",
+  "nameEn": "Free",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Ведьма",
+   "Оборотень"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Орден ведьм",
+   "Арахнофобия",
+   "Фракция Медузы"
+  ],
+  "side": "Злодей",
+  "status": "Жив",
+  "arc": "Чёрный дракон",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 42
+ },
+ {
+  "id": 2088,
+  "name": "Харвар Эклер",
+  "nameEn": "Harvar D. Éclair",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Фестиваль смерти",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 43
+ },
+ {
+  "id": 2184,
+  "name": "Хиро",
+  "nameEn": "Hero",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Фестиваль смерти",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 44
+ },
+ {
+  "id": 2034,
+  "name": "Цубаки Накацукаса",
+  "nameEn": "Tsubaki Nakatsukasa",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "role": "Оружие",
+  "affiliations": [
+   "Шибусэн",
+   "Класс EAT",
+   "Спартой"
+  ],
+  "side": "Герой",
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 6286,
+  "name": "Шаула Горгон",
+  "nameEn": "Shaula Gorgon",
+  "gender": "Женский",
+  "species": [
+   "Ведьма"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Орден ведьм"
+  ],
+  "side": "Злодей",
+  "status": "Мёртв",
+  "arc": "Книга Эйбона",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 1960,
+  "name": "Шинигами",
+  "nameEn": "Death",
+  "gender": "Мужской",
+  "species": [
+   "Бог смерти",
+   "Великий древний",
+   "Истинный бог"
+  ],
+  "role": "Мастер",
+  "affiliations": [
+   "Шибусэн",
+   "Легионы Жнеца"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 47
+ },
+ {
+  "id": 2115,
+  "name": "Эйбон",
+  "nameEn": "Eibon",
+  "gender": "Мужской",
+  "species": [
+   "Колдун",
+   "Великий древний"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Сами по себе"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Предатели",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 2006,
+  "name": "Экскалибур",
+  "nameEn": "Excalibur",
+  "gender": "Мужской",
+  "species": [
+   "Великий древний"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Шибусэн",
+   "Легионы Жнеца"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Особые уроки",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 49
+ },
+ {
+  "id": 2169,
+  "name": "Эрука Фрог",
+  "nameEn": "Eruka Frog",
+  "gender": "Женский",
+  "species": [
+   "Ведьма"
+  ],
+  "role": "Нет",
+  "affiliations": [
+   "Орден ведьм",
+   "Арахнофобия",
+   "Фракция Медузы"
+  ],
+  "side": "Нейтралитет",
+  "status": "Жив",
+  "arc": "Чёрный дракон",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 50
+ }
+]
