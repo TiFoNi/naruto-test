@@ -1,0 +1,1379 @@
+[
+ {
+  "id": 4689,
+  "name": "Август Кира Кловер XIII",
+  "nameEn": "Augustus Kira Clover XIII",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Свет"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Штурм столицы",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 0
+ },
+ {
+  "id": 3722,
+  "name": "Алекдора Сандлер",
+  "nameEn": "Alecdora Sandler",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Земля"
+  ],
+  "squad": "Золотой Рассвет",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Подземелье",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 1
+ },
+ {
+  "id": 2194,
+  "name": "Аста",
+  "nameEn": "Asta",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Антимагия",
+   "Звери"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 2
+ },
+ {
+  "id": 4776,
+  "name": "Асье Сильва",
+  "nameEn": "Acier Silva",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Вода",
+   "Оружие"
+  ],
+  "squad": "Серебряные Орлы",
+  "country": "Королевство Клевера",
+  "status": "Мёртв",
+  "arc": "Королевские рыцари",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 3
+ },
+ {
+  "id": 3427,
+  "name": "Вальтос",
+  "nameEn": "Valtos",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Пространство"
+  ],
+  "squad": "Глаз полуночного солнца",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Штурм столицы",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 4
+ },
+ {
+  "id": 2274,
+  "name": "Ванесса Энотека",
+  "nameEn": "Vanessa Enoteca",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Нити"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 5
+ },
+ {
+  "id": 9870,
+  "name": "Ваника Зогратис",
+  "nameEn": "Vanica Zogratis",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Кровь",
+   "Проклятия"
+  ],
+  "squad": "Тёмная троица",
+  "country": "Королевство Пик",
+  "status": "Жив",
+  "arc": "Королевство Сердца",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 6
+ },
+ {
+  "id": 3530,
+  "name": "Ветто",
+  "nameEn": "Vetto",
+  "gender": "Мужской",
+  "species": "Эльф",
+  "magic": [
+   "Звери"
+  ],
+  "squad": "Глаз полуночного солнца",
+  "country": "Неизвестно",
+  "status": "Жив",
+  "arc": "Око полуночного солнца",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 7
+ },
+ {
+  "id": 2207,
+  "name": "Вильям Ванженс",
+  "nameEn": "William Vangeance",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Деревья"
+  ],
+  "squad": "Золотой Рассвет",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 8
+ },
+ {
+  "id": 9645,
+  "name": "Гаджа",
+  "nameEn": "Gadjah",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Свет",
+   "Молния"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Сердца",
+  "status": "Жив",
+  "arc": "Перерождение эльфов",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 9
+ },
+ {
+  "id": 5707,
+  "name": "Генри Леголант",
+  "nameEn": "Henry Legolant",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Лес ведьм",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 10
+ },
+ {
+  "id": 4288,
+  "name": "Гордон Агриппа",
+  "nameEn": "Gordon Agrippa",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Яд"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 11
+ },
+ {
+  "id": 3440,
+  "name": "Гош Адлай",
+  "nameEn": "Gauche Adlai",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Зеркала",
+   "Стекло"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 12
+ },
+ {
+  "id": 3757,
+  "name": "Грей",
+  "nameEn": "Grey",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 13
+ },
+ {
+  "id": 4139,
+  "name": "Гуэлдре Пойзот",
+  "nameEn": "Gueldre Poizot",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Пурпурные Косатки",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 14
+ },
+ {
+  "id": 9260,
+  "name": "Дамнатио Кира",
+  "nameEn": "Damnatio Kira",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Перерождение эльфов",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 15
+ },
+ {
+  "id": 9869,
+  "name": "Данте Зогратис",
+  "nameEn": "Dante Zogratis",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Гравитация"
+  ],
+  "squad": "Тёмная троица",
+  "country": "Королевство Пик",
+  "status": "Жив",
+  "arc": "Королевство Сердца",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 16
+ },
+ {
+  "id": 3590,
+  "name": "Джек Потрошитель",
+  "nameEn": "Jack the Ripper",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Оружие",
+   "Пепел"
+  ],
+  "squad": "Изумрудный Богомол",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 17
+ },
+ {
+  "id": 4262,
+  "name": "Дороти Ансворт",
+  "nameEn": "Dorothy Unsworth",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Сны"
+  ],
+  "squad": "Коралловые Павлины",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 18
+ },
+ {
+  "id": 9151,
+  "name": "Загред",
+  "nameEn": "Zagred",
+  "gender": "Мужской",
+  "species": "Дьявол",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Нет отряда",
+  "country": "Неизвестно",
+  "status": "Мёртв",
+  "arc": "Перерождение эльфов",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 19
+ },
+ {
+  "id": 9867,
+  "name": "Зенон Зогратис",
+  "nameEn": "Zenon Zogratis",
+  "gender": "Мужской",
+  "species": "Дьявол",
+  "magic": [
+   "Пространство",
+   "Оружие"
+  ],
+  "squad": "Тёмная троица",
+  "country": "Королевство Пик",
+  "status": "Жив",
+  "arc": "Перерождение эльфов",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 4877,
+  "name": "Зора Идеале",
+  "nameEn": "Zora Ideale",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Оружие",
+   "Пепел"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Королевские рыцари",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 21
+ },
+ {
+  "id": 3268,
+  "name": "Катхерине",
+  "nameEn": "Catherine",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Оружие",
+   "Пепел"
+  ],
+  "squad": "Глаз полуночного солнца",
+  "country": "Лес ведьм",
+  "status": "Мёртв",
+  "arc": "Штурм столицы",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 22
+ },
+ {
+  "id": 3687,
+  "name": "Кахоно",
+  "nameEn": "Kahono",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Звук"
+  ],
+  "squad": "Нет отряда",
+  "country": "Неизвестно",
+  "status": "Жив",
+  "arc": "Подводный храм",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 3745,
+  "name": "Киато",
+  "nameEn": "Kiato",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Нет отряда",
+  "country": "Неизвестно",
+  "status": "Жив",
+  "arc": "Подводный храм",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 24
+ },
+ {
+  "id": 4870,
+  "name": "Кирш Вермиллион",
+  "nameEn": "Kirsch Vermillion",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Коралловые Павлины",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Королевские рыцари",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 25
+ },
+ {
+  "id": 2726,
+  "name": "Клаус Люнетт",
+  "nameEn": "Klaus Lunettes",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Оружие"
+  ],
+  "squad": "Золотой Рассвет",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Подземелье",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 26
+ },
+ {
+  "id": 4227,
+  "name": "Ладрос",
+  "nameEn": "Ladros",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Бубен",
+  "status": "Жив",
+  "arc": "Лес ведьм",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 27
+ },
+ {
+  "id": 2488,
+  "name": "Лак Вольтиа",
+  "nameEn": "Luck Voltia",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Свет",
+   "Молния"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 4013,
+  "name": "Лангрис Вауде",
+  "nameEn": "Langris Vaude",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Пространство"
+  ],
+  "squad": "Золотой Рассвет",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Подводный храм",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 29
+ },
+ {
+  "id": 2220,
+  "name": "Лебучи Салик",
+  "nameEn": "Revchi Salik",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Пурпурные Косатки",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 30
+ },
+ {
+  "id": 8287,
+  "name": "Лемьель Сильвамиллион Кловер",
+  "nameEn": "Lemiel Silvamillion Clover",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Свет"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Клевера",
+  "status": "Мёртв",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 31
+ },
+ {
+  "id": 3165,
+  "name": "Леопольд Вермиллион",
+  "nameEn": "Leopold Vermillion",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Огонь"
+  ],
+  "squad": "Багровые Львы",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 9164,
+  "name": "Либе",
+  "nameEn": "Liebe",
+  "gender": "Мужской",
+  "species": "Дьявол",
+  "magic": [
+   "Антимагия",
+   "Звери"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 4337,
+  "name": "Лили Акуария",
+  "nameEn": "Lily Aquaria",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Вода",
+   "Пространство"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 6128,
+  "name": "Лира",
+  "nameEn": "Lira",
+  "gender": "Мужской",
+  "species": "Эльф",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Нет отряда",
+  "country": "Неизвестно",
+  "status": "Мёртв",
+  "arc": "Перерождение эльфов",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 35
+ },
+ {
+  "id": 3457,
+  "name": "Лихт",
+  "nameEn": "Licht",
+  "gender": "Мужской",
+  "species": "Эльф",
+  "magic": [
+   "Оружие"
+  ],
+  "squad": "Нет отряда",
+  "country": "Неизвестно",
+  "status": "Мёртв",
+  "arc": "Подводный храм",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 36
+ },
+ {
+  "id": 9729,
+  "name": "Лолопечка",
+  "nameEn": "Lolopechka",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Вода"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Сердца",
+  "status": "Жив",
+  "arc": "Перерождение эльфов",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 2877,
+  "name": "Лотус Уомальт",
+  "nameEn": "Lotus Whomalt",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Пепел"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Пик",
+  "status": "Жив",
+  "arc": "Подземелье",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 38
+ },
+ {
+  "id": 13218,
+  "name": "Люциус Зогратис",
+  "nameEn": "Lucius Zogratis",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Кровь",
+   "Время",
+   "Оружие"
+  ],
+  "squad": "Тёмная троица",
+  "country": "Королевство Пик",
+  "status": "Мёртв",
+  "arc": "Королевство Пик",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 39
+ },
+ {
+  "id": 10562,
+  "name": "Люциферо",
+  "nameEn": "Lucifero",
+  "gender": "Мужской",
+  "species": "Дьявол",
+  "magic": [
+   "Гравитация"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Пик",
+  "status": "Мёртв",
+  "arc": "Королевство Сердца",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 40
+ },
+ {
+  "id": 2277,
+  "name": "Магна Суинг",
+  "nameEn": "Magna Swing",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Огонь"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 41
+ },
+ {
+  "id": 4335,
+  "name": "Мари Адлаи",
+  "nameEn": "Marie Adlai",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 42
+ },
+ {
+  "id": 3414,
+  "name": "Маркс Франсуа",
+  "nameEn": "Marx Francois",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Бирюзовые Олени",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 43
+ },
+ {
+  "id": 2664,
+  "name": "Марс",
+  "nameEn": "Mars",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Огонь"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Бубен",
+  "status": "Жив",
+  "arc": "Подземелье",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 44
+ },
+ {
+  "id": 4701,
+  "name": "Мереолеона Вермиллион",
+  "nameEn": "Mereoleona Vermillion",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Огонь"
+  ],
+  "squad": "Багровые Львы",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Королевские рыцари",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 2767,
+  "name": "Мимоза Вермиллион",
+  "nameEn": "Mimosa Vermillion",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Растения",
+   "Звери"
+  ],
+  "squad": "Золотой Рассвет",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Подземелье",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 4960,
+  "name": "Морис Либардирт",
+  "nameEn": "Moris Libardirt",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Земля",
+   "Гравитация"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Пик",
+  "status": "Мёртв",
+  "arc": "Лес ведьм",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 47
+ },
+ {
+  "id": 11543,
+  "name": "Нахт Фауст",
+  "nameEn": "Nacht Faust",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Тьма"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Королевство Сердца",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 3449,
+  "name": "Небра Сильва",
+  "nameEn": "Nebra Silva",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Туман"
+  ],
+  "squad": "Серебряные Орлы",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 49
+ },
+ {
+  "id": 3429,
+  "name": "Нозель Сильва",
+  "nameEn": "Nozel Silva",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Серебряные Орлы",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 50
+ },
+ {
+  "id": 2251,
+  "name": "Ноэль Сильва",
+  "nameEn": "Noelle Silva",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Вода"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 51
+ },
+ {
+  "id": 5988,
+  "name": "Патри",
+  "nameEn": "Patolli",
+  "gender": "Мужской",
+  "species": "Эльф",
+  "magic": [
+   "Свет"
+  ],
+  "squad": "Глаз полуночного солнца",
+  "country": "Неизвестно",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 52
+ },
+ {
+  "id": 3246,
+  "name": "Радес Спирито",
+  "nameEn": "Rades Spirito",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Пурпурные Косатки",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Штурм столицы",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 53
+ },
+ {
+  "id": 4263,
+  "name": "Рилл Буамортье",
+  "nameEn": "Rill Boismortier",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Бирюзовые Олени",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 54
+ },
+ {
+  "id": 3537,
+  "name": "Рия",
+  "nameEn": "Rhya",
+  "gender": "Мужской",
+  "species": "Эльф",
+  "magic": [
+   "Превращение"
+  ],
+  "squad": "Глаз полуночного солнца",
+  "country": "Неизвестно",
+  "status": "Жив",
+  "arc": "Око полуночного солнца",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 55
+ },
+ {
+  "id": 13347,
+  "name": "Рюдо Рюя",
+  "nameEn": "Ryuya Ryudo",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Огонь"
+  ],
+  "squad": "Нет отряда",
+  "country": "Неизвестно",
+  "status": "Жив",
+  "arc": "Финал",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 56
+ },
+ {
+  "id": 3416,
+  "name": "Салли",
+  "nameEn": "Sally",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Слизь"
+  ],
+  "squad": "Глаз полуночного солнца",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Штурм столицы",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 57
+ },
+ {
+  "id": 2364,
+  "name": "Секке Бронзаза",
+  "nameEn": "Sekke Bronzazza",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Изумрудный Богомол",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 58
+ },
+ {
+  "id": 2805,
+  "name": "Секре Своллоутейл",
+  "nameEn": "Secre Swallowtail",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Проклятия"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 59
+ },
+ {
+  "id": 3535,
+  "name": "Сильфида",
+  "nameEn": "Sylph",
+  "gender": "Женский",
+  "species": "Дух",
+  "magic": [
+   "Ветер"
+  ],
+  "squad": "Золотой Рассвет",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Подземелье",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 60
+ },
+ {
+  "id": 4312,
+  "name": "Сол Маррон",
+  "nameEn": "Sol Marron",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Земля"
+  ],
+  "squad": "Синяя Роза",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Штурм столицы",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 61
+ },
+ {
+  "id": 3011,
+  "name": "Солид Сильва",
+  "nameEn": "Solid Silva",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Вода"
+  ],
+  "squad": "Серебряные Орлы",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Штурм столицы",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 62
+ },
+ {
+  "id": 3604,
+  "name": "Тхереса Рапуал",
+  "nameEn": "Theresa Rapual",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Огонь"
+  ],
+  "squad": "Багровые Львы",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Око полуночного солнца",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 63
+ },
+ {
+  "id": 9677,
+  "name": "Ундина",
+  "nameEn": "Undine",
+  "gender": "Женский",
+  "species": "Дух",
+  "magic": [
+   "Вода"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Сердца",
+  "status": "Жив",
+  "arc": "Перерождение эльфов",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 64
+ },
+ {
+  "id": 4411,
+  "name": "Урсула Блудлорд",
+  "nameEn": "Ursula Bloodlord",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Кровь"
+  ],
+  "squad": "Нет отряда",
+  "country": "Лес ведьм",
+  "status": "Жив",
+  "arc": "Лес ведьм",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 65
+ },
+ {
+  "id": 6039,
+  "name": "Фана",
+  "nameEn": "Fana (elf)",
+  "gender": "Женский",
+  "species": "Эльф",
+  "magic": [
+   "Огонь"
+  ],
+  "squad": "Глаз полуночного солнца",
+  "country": "Неизвестно",
+  "status": "Жив",
+  "arc": "Око полуночного солнца",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 66
+ },
+ {
+  "id": 3529,
+  "name": "Фана",
+  "nameEn": "Fana",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Огонь"
+  ],
+  "squad": "Глаз полуночного солнца",
+  "country": "Королевство Бубен",
+  "status": "Жив",
+  "arc": "Подземелье",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 67
+ },
+ {
+  "id": 4222,
+  "name": "Фанзелль Крюгер",
+  "nameEn": "Fanzell Kruger",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Ветер"
+  ],
+  "squad": "Нет отряда",
+  "country": "Королевство Бубен",
+  "status": "Жив",
+  "arc": "Лес ведьм",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 68
+ },
+ {
+  "id": 3625,
+  "name": "Финрал Рулакас",
+  "nameEn": "Finral Roulacase",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Пространство"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 69
+ },
+ {
+  "id": 3036,
+  "name": "Фуэголеон Вермиллион",
+  "nameEn": "Fuegoleon Vermillion",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Огонь"
+  ],
+  "squad": "Багровые Львы",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 70
+ },
+ {
+  "id": 3441,
+  "name": "Хамон Касеус",
+  "nameEn": "Hamon Caseus",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Стекло"
+  ],
+  "squad": "Золотой Рассвет",
+  "country": "Королевство Клевера",
+  "status": "Мёртв",
+  "arc": "Штурм столицы",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 71
+ },
+ {
+  "id": 2382,
+  "name": "Хеатх Грайке",
+  "nameEn": "Heath Graice",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Лёд"
+  ],
+  "squad": "Глаз полуночного солнца",
+  "country": "Королевство Клевера",
+  "status": "Мёртв",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 72
+ },
+ {
+  "id": 3132,
+  "name": "Чарми Паппитсон",
+  "nameEn": "Charmy Pappitson",
+  "gender": "Женский",
+  "species": "Гном",
+  "magic": [
+   "Хлопок"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 73
+ },
+ {
+  "id": 3621,
+  "name": "Шарлотта Розелей",
+  "nameEn": "Charlotte Roselei",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Синяя Роза",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 74
+ },
+ {
+  "id": 5044,
+  "name": "Эн Рингард",
+  "nameEn": "En Ringard",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Другая магия"
+  ],
+  "squad": "Изумрудный Богомол",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Королевские рыцари",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 75
+ },
+ {
+  "id": 3077,
+  "name": "Юлиус Новакроно",
+  "nameEn": "Julius Novachrono",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Время"
+  ],
+  "squad": "Бирюзовые Олени",
+  "country": "Королевство Клевера",
+  "status": "Мёртв",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 76
+ },
+ {
+  "id": 2198,
+  "name": "Юно Гринберриол",
+  "nameEn": "Yuno Grinberryall",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Ветер"
+  ],
+  "squad": "Золотой Рассвет",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 77
+ },
+ {
+  "id": 13362,
+  "name": "Ями Ичика",
+  "nameEn": "Ichika Yami",
+  "gender": "Женский",
+  "species": "Человек",
+  "magic": [
+   "Тьма"
+  ],
+  "squad": "Нет отряда",
+  "country": "Неизвестно",
+  "status": "Жив",
+  "arc": "Финал",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 78
+ },
+ {
+  "id": 2204,
+  "name": "Ями Сукехиро",
+  "nameEn": "Yami Sukehiro",
+  "gender": "Мужской",
+  "species": "Человек",
+  "magic": [
+   "Свет",
+   "Тьма"
+  ],
+  "squad": "Чёрный Бык",
+  "country": "Королевство Клевера",
+  "status": "Жив",
+  "arc": "Вступление в Рыцари",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 79
+ }
+]

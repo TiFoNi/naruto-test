@@ -47,8 +47,11 @@ function GameView({ game, mode, daily, visible }: { game: Game; mode: ModeId; da
   return (
     <div className="game-view" hidden={!visible}>
       <section className="game-head">
-        <div>
+        <div className="game-head-top">
           <h1>{l(game.label)}</h1>
+          <StatsBar stats={statsFor(mode, daily)} daily={daily} />
+        </div>
+        <div className="game-head-bar">
           <div className="game-switches">
             <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
               <a role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
@@ -72,9 +75,6 @@ function GameView({ game, mode, daily, visible }: { game: Game; mode: ModeId; da
               ))}
             </div>
           </div>
-        </div>
-        <div className="game-head-side">
-          <StatsBar stats={statsFor(mode, daily)} daily={daily} />
           <a className="lb-link" href={href.leaderboard(game.id, mode, daily)}>
             🏆 {t('nav.leaderboard')}
           </a>
@@ -240,7 +240,7 @@ export default function App() {
       <footer>
         <p>{t('footer.disclaimer')}</p>
         <p>
-          {t('footer.data')}: Naruto Wiki, Dattebayo API, Valve, OpenDota, Dota 2 Wiki, Attack on Titan Wiki, Bleach Wiki, Tokyo Ghoul Wiki, Berserk Wiki, Kimetsu no Yaiba Wiki, Blue Lock Wiki, One Piece Wiki, Mortal Kombat Wiki, MyAnimeList.
+          {t('footer.data')}: Naruto Wiki, Dattebayo API, Valve, OpenDota, Dota 2 Wiki, Attack on Titan Wiki, Bleach Wiki, Tokyo Ghoul Wiki, Berserk Wiki, Kimetsu no Yaiba Wiki, Blue Lock Wiki, One Piece Wiki, Mortal Kombat Wiki, Hunterpedia, Black Clover Wiki, MyAnimeList.
         </p>
       </footer>
     </div>

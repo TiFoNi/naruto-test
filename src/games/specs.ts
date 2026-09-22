@@ -1,4 +1,4 @@
-export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'bluelock' | 'onepiece' | 'mk'
+export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'bluelock' | 'onepiece' | 'mk' | 'hxh' | 'bc'
 
 export type ModeId = 'classic' | 'image' | 'ability'
 
@@ -89,6 +89,31 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('fruits', 'list'),
       col('haki', 'list'),
       col('bounty', 'order'),
+      col('arcIndex', 'order'),
+    ],
+  },
+  hxh: {
+    data: 'hxh',
+    images: 'hxh',
+    columns: [
+      col('gender', 'exact'),
+      col('species', 'list'),
+      col('nen', 'exact'),
+      col('affiliations', 'list'),
+      col('status', 'exact'),
+      col('arcIndex', 'order'),
+    ],
+  },
+  bc: {
+    data: 'bc',
+    images: 'bc',
+    columns: [
+      col('gender', 'exact'),
+      col('species', 'exact'),
+      col('magic', 'list'),
+      col('squad', 'exact'),
+      col('country', 'exact'),
+      col('status', 'exact'),
       col('arcIndex', 'order'),
     ],
   },
