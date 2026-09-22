@@ -3,9 +3,9 @@ import type { Entity, Game } from './games/types'
 import { useI18n } from './i18n'
 import type { Stats } from './stats'
 
-type Props = { game: Game; answer: Entity; guesses: number; won: boolean; stats: Stats; onNext: () => void }
+type Props = { game: Game; answer: Entity; guesses: number; won: boolean; skipped: boolean; stats: Stats; onNext: () => void }
 
-export default function RoundResult({ game, answer, guesses, won, stats, onNext }: Props) {
+export default function RoundResult({ game, answer, guesses, won, skipped, stats, onNext }: Props) {
   const { t, name, alt } = useI18n()
   const ref = useRef<HTMLDivElement>(null)
 
@@ -21,12 +21,14 @@ export default function RoundResult({ game, answer, guesses, won, stats, onNext 
   }, [onNext])
 
   return (
-    <div ref={ref} className={`card result ${won ? 'won' : 'lost'}`}>
-      <h2>{t(won ? 'result.won' : 'result.lost')}</h2>
+    <div ref={ref} className={`card result ${won ? 'won' : skipped ? 'skipped' : 'lost'}`}>
+      <h2>{t(won ? 'result.won' : skipped ? 'result.skipped' : 'result.lost')}</h2>
       <img className="result-image" src={game.fullUrl(answer)} alt={name(answer)} />
       <div className="result-name">{name(answer)}</div>
       {alt(answer) && <div className="result-name-en">{alt(answer)}</div>}
-      <p className="round">{t('result.summary', { guesses, streak: stats.streak, best: stats.best })}</p>
+      <p className="round">
+        {skipped ? t('result.notCounted') : t('result.summary', { guesses, streak: stats.streak, best: stats.best })}
+      </p>
       <button className="primary" onClick={onNext}>
         {t('result.next')}
       </button>

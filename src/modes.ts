@@ -1,7 +1,8 @@
 import type { UiKey } from './i18n/ui'
 import type { Category } from './games/types'
+import type { ModeId } from './games/specs'
 
-export type ModeId = 'classic' | 'image'
+export type { ModeId }
 
 export const MODES: { id: ModeId; label: UiKey; description: UiKey; icon: string }[] = [
   { id: 'classic', label: 'mode.classic', description: 'mode.classic.desc', icon: '▦' },

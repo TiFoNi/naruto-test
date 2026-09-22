@@ -1,6 +1,6 @@
 import raw from '../data/characters.json'
 import atlas from '../data/atlas.json'
-import { cells, compareLists, compareOrdered, l10n, EMPTY, type Column, type Entity, type Game, type Icon } from './types'
+import { cells, l10n, EMPTY, type Column, type Entity, type Game, type Icon } from './types'
 
 type Character = Entity & {
   nameEn: string
@@ -29,20 +29,18 @@ const NATURE_ICONS: Record<string, Omit<Icon, 'label'>> = {
 }
 
 const columns: Column<Character>[] = [
-  { title: l10n('Пол', 'Стать', 'Gender'), render: exact('gender') },
-  { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), render: list('affiliations') },
-  { title: l10n('Виды дзюцу', 'Види дзюцу', 'Jutsu types'), render: list('jutsuTypes') },
-  { title: l10n('Кеккей генкай', 'Кеккей ґенкай', 'Kekkei genkai'), render: list('kekkeiGenkai') },
+  { title: l10n('Пол', 'Стать', 'Gender'), ...exact('gender') },
+  { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), ...list('affiliations') },
+  { title: l10n('Виды дзюцу', 'Види дзюцу', 'Jutsu types'), ...list('jutsuTypes') },
+  { title: l10n('Кеккей генкай', 'Кеккей ґенкай', 'Kekkei genkai'), ...list('kekkeiGenkai') },
   {
     title: l10n('Природа чакры', 'Природа чакри', 'Nature type'),
-    render: (g, a, { tv }) => ({
-      verdict: compareLists(g.natureTypes, a.natureTypes),
-      text: g.natureTypes.map(tv).join(', ') || tv(EMPTY),
-      icons: g.natureTypes.map((n) => ({ label: tv(n), ...NATURE_ICONS[n] })),
-    }),
+    key: 'natureTypes',
+    text: (g, { tv }) => g.natureTypes.map(tv).join(', ') || tv(EMPTY),
+    icons: (g, { tv }) => g.natureTypes.map((n) => ({ label: tv(n), ...NATURE_ICONS[n] })),
   },
-  { title: l10n('Атрибуты', 'Атрибути', 'Attributes'), render: list('attributes') },
-  { title: l10n('Дебют', 'Дебют', 'Debut'), render: (g, a, { tv }) => ({ ...compareOrdered(g.arcIndex, a.arcIndex), text: tv(g.arc) }) },
+  { title: l10n('Атрибуты', 'Атрибути', 'Attributes'), ...list('attributes') },
+  { title: l10n('Дебют', 'Дебют', 'Debut'), key: 'arcIndex', text: (g, { tv }) => tv(g.arc) },
 ]
 
 export const naruto: Game<Character> = {

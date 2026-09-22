@@ -12,10 +12,40 @@ export type UserDoc = {
 
 export type Stats = { solved: number; streak: number; best: number; totalGuesses: number }
 
+export type RoundStatus = 'active' | 'won' | 'lost' | 'skipped'
+
+export type RoundDoc = {
+  _id?: ObjectId
+  userId: ObjectId
+  game: string
+  mode: string
+  answerId: number
+  guesses: number[]
+  status: RoundStatus
+  createdAt: Date
+  finishedAt?: Date
+}
+
 const cache = globalThis as typeof globalThis & {
   __mongo?: Promise<MongoClient>
   __usersIndexed?: Promise<unknown>
   __attemptsIndexed?: Promise<unknown>
+  __roundsIndexed?: Promise<unknown>
+}
+
+const database = async () => (await client()).db(process.env.MONGODB_DB || 'nandaguessr')
+
+export async function rounds(): Promise<Collection<RoundDoc>> {
+  const collection = (await database()).collection<RoundDoc>('rounds')
+  cache.__roundsIndexed ??= Promise.all([
+    collection.createIndex({ userId: 1, game: 1, mode: 1, status: 1 }),
+    collection.createIndex({ userId: 1, game: 1, mode: 1, createdAt: -1 }),
+  ]).catch((error) => {
+    cache.__roundsIndexed = undefined
+    throw error
+  })
+  await cache.__roundsIndexed
+  return collection
 }
 
 export function client() {
@@ -29,7 +59,7 @@ export function client() {
 }
 
 export async function users(): Promise<Collection<UserDoc>> {
-  const collection = (await client()).db(process.env.MONGODB_DB || 'nandaguessr').collection<UserDoc>('users')
+  const collection = (await database()).collection<UserDoc>('users')
   cache.__usersIndexed ??= collection.createIndex({ usernameLower: 1 }, { unique: true }).catch((error) => {
     cache.__usersIndexed = undefined
     throw error
@@ -41,7 +71,7 @@ export async function users(): Promise<Collection<UserDoc>> {
 export type AttemptDoc = { key: string; at: Date }
 
 export async function attempts(): Promise<Collection<AttemptDoc>> {
-  const collection = (await client()).db(process.env.MONGODB_DB || 'nandaguessr').collection<AttemptDoc>('attempts')
+  const collection = (await database()).collection<AttemptDoc>('attempts')
   cache.__attemptsIndexed ??= Promise.all([
     collection.createIndex({ at: 1 }, { expireAfterSeconds: 60 * 60 }),
     collection.createIndex({ key: 1, at: 1 }),

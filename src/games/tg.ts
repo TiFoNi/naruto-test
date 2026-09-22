@@ -1,6 +1,6 @@
 import raw from '../data/tg.json'
 import atlas from '../data/tg-atlas.json'
-import { cells, compareOrdered, l10n, EMPTY, type Cell, type Column, type Entity, type Game, type RenderContext } from './types'
+import { cells, l10n, EMPTY, type Column, type Entity, type Game } from './types'
 
 type Character = Entity & {
   nameEn: string
@@ -22,26 +22,18 @@ const { list, exact } = cells<Character>()
 const VOLUME = l10n('том {v}', 'том {v}', 'vol. {v}')
 const ONESHOT = l10n('ваншот', 'ваншот', 'oneshot')
 
-function rating(g: Character, a: Character, { tv }: RenderContext): Cell {
-  const text = g.rating ?? tv(EMPTY)
-  if (g.ratingIndex >= 0 && a.ratingIndex >= 0) return { ...compareOrdered(g.ratingIndex, a.ratingIndex), text }
-  return { verdict: g.ratingIndex === a.ratingIndex ? 'correct' : 'wrong', text }
-}
-
-function debut(g: Character, a: Character, { lang }: RenderContext): Cell {
-  const series = g.series === 're' ? ':re' : 'TG'
-  const part = g.volume === 0 ? ONESHOT[lang] : VOLUME[lang].replace('{v}', String(g.volume))
-  return { ...compareOrdered(g.debutIndex, a.debutIndex), text: `${series} · ${part}` }
-}
-
 const columns: Column<Character>[] = [
-  { title: l10n('Пол', 'Стать', 'Gender'), render: exact('gender') },
-  { title: l10n('Вид', 'Вид', 'Species'), render: list('species') },
-  { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), render: list('affiliations') },
-  { title: l10n('Кагуне', 'Кагуне', 'Kagune'), render: list('kagune') },
-  { title: l10n('Рейтинг', 'Рейтинг', 'Rating'), render: rating },
-  { title: l10n('Статус', 'Статус', 'Status'), render: exact('status') },
-  { title: l10n('Дебют', 'Дебют', 'Debut'), render: debut },
+  { title: l10n('Пол', 'Стать', 'Gender'), ...exact('gender') },
+  { title: l10n('Вид', 'Вид', 'Species'), ...list('species') },
+  { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), ...list('affiliations') },
+  { title: l10n('Кагуне', 'Кагуне', 'Kagune'), ...list('kagune') },
+  { title: l10n('Рейтинг', 'Рейтинг', 'Rating'), key: 'ratingIndex', text: (g, { tv }) => g.rating ?? tv(EMPTY) },
+  { title: l10n('Статус', 'Статус', 'Status'), ...exact('status') },
+  {
+    title: l10n('Дебют', 'Дебют', 'Debut'),
+    key: 'debutIndex',
+    text: (g, { lang }) => `${g.series === 're' ? ':re' : 'TG'} · ${g.volume === 0 ? ONESHOT[lang] : VOLUME[lang].replace('{v}', String(g.volume))}`,
+  },
 ]
 
 export const tg: Game<Character> = {

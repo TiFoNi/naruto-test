@@ -30,6 +30,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: clip;
   background:
     radial-gradient(900px 420px at 50% -160px, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%),
     var(--bg);
@@ -1212,16 +1213,17 @@ footer p {
 }
 
 .franchise {
+  position: relative;
   display: flex;
   flex-direction: column;
   border-radius: 18px;
-  overflow: hidden;
   background: var(--card);
   border: 1px solid var(--line);
   transition: border-color 0.2s, transform 0.2s;
 }
 
 .franchise:hover {
+  z-index: 5;
   border-color: color-mix(in srgb, var(--tab-accent) 60%, var(--line));
   transform: translateY(-2px);
 }
@@ -1230,7 +1232,8 @@ footer p {
   position: relative;
   display: block;
   height: 190px;
-  overflow: hidden;
+  border-radius: 17px 17px 0 0;
+  clip-path: inset(-400px -400px 0 -400px);
   background:
     radial-gradient(120% 90% at 50% 120%, color-mix(in srgb, var(--tab-accent) 45%, transparent), transparent 70%),
     linear-gradient(160deg, color-mix(in srgb, var(--tab-accent) 14%, var(--card-2)), var(--card));
@@ -1270,16 +1273,28 @@ footer p {
   transform: translateX(calc(-50% + 88px)) rotate(9deg);
 }
 
-.franchise:hover .fan-0 {
-  transform: translateX(-50%) translateY(-6px);
+.fan-0,
+.fan-1,
+.fan-2 {
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.25, 1.15), box-shadow 0.4s;
 }
 
-.franchise:hover .fan-1 {
-  transform: translateX(calc(-50% - 108px)) rotate(-13deg);
-}
+@media (hover: hover) {
+  .franchise:hover .fan {
+    box-shadow: 0 22px 44px rgba(0, 0, 0, 0.65);
+  }
 
-.franchise:hover .fan-2 {
-  transform: translateX(calc(-50% + 108px)) rotate(13deg);
+  .franchise:hover .fan-0 {
+    transform: translateX(-50%) translateY(-32px) scale(1.08);
+  }
+
+  .franchise:hover .fan-1 {
+    transform: translateX(calc(-50% - 112px)) translateY(-18px) rotate(-13deg) scale(1.04);
+  }
+
+  .franchise:hover .fan-2 {
+    transform: translateX(calc(-50% + 112px)) translateY(-18px) rotate(13deg) scale(1.04);
+  }
 }
 
 .franchise-body {
@@ -1658,5 +1673,190 @@ footer p {
 
   .franchise-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+.topbar-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.topbar-link:hover,
+.topbar-link.active {
+  border-color: var(--line);
+  background: var(--card);
+}
+
+.game-head-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.lb-link,
+.lb-mini {
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--text-2);
+  text-decoration: none;
+}
+
+.lb-link:hover,
+.lb-mini:hover {
+  color: var(--text);
+}
+
+.lb-mini {
+  align-self: flex-start;
+}
+
+.round-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.round-status.error {
+  border-color: color-mix(in srgb, #e5483b 45%, var(--line));
+  color: #ffb4ab;
+  font-weight: 700;
+}
+
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.lb-head h1 {
+  font-size: clamp(28px, 6vw, 40px);
+}
+
+.lb-head p {
+  margin: 8px 0 0;
+}
+
+.lb-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.lb-sort {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+
+.lb-sort button {
+  padding: 7px 12px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-2);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.lb-sort button.active {
+  background: var(--card-2);
+  color: var(--text);
+}
+
+.lb-note {
+  margin: -6px 0 0;
+  font-size: 13px;
+}
+
+.lb-card {
+  width: 100%;
+}
+
+.lb-table th.sorted {
+  color: var(--accent);
+}
+
+.lb-table td:nth-child(3),
+.lb-table td:nth-child(4),
+.lb-table td:nth-child(5),
+.lb-table td:nth-child(6) {
+  font-variant-numeric: tabular-nums;
+}
+
+.lb-rank {
+  width: 44px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.lb-name {
+  color: var(--text) !important;
+  font-weight: 800 !important;
+  white-space: normal;
+}
+
+.lb-you {
+  margin-left: 8px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #0d0f12;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.lb-table tr.me td {
+  background: var(--accent-soft);
+}
+
+.lb-table tr.gap td {
+  border-top: 2px dashed var(--line);
+}
+
+.lb-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.lb-empty .primary {
+  text-decoration: none;
+}
+
+@media (max-width: 760px) {
+  .game-head-side {
+    align-items: stretch;
+  }
+
+  .lb-link {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 560px) {
+  .topbar-link-label {
+    display: none;
   }
 }

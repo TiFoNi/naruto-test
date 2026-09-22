@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
-import { applyResult, emptyStats, type Stats } from './stats'
+import { api } from './api'
+import { statsKey } from './games/specs'
+import type { Stats } from './stats'
 
 export type User = { id: string; username: string; nickname: string }
 
@@ -15,26 +17,17 @@ type AuthState = {
   loading: boolean
   submit: (mode: Mode, username: string, password: string) => Promise<string | null>
   logout: () => Promise<void>
-  record: (game: string, mode: string, won: boolean, guesses: number) => void
+  setStats: (key: string, stats: Stats) => void
+  expire: () => void
   resetStats: () => Promise<string | null>
   setNickname: (nickname: string) => Promise<string | null>
 }
 
 const AuthContext = createContext<AuthState | null>(null)
 
-async function call(path: string, body?: unknown) {
-  const response = await fetch(`/api/${path}`, {
-    signal: AbortSignal.timeout(15000),
-    method: body === undefined ? 'GET' : 'POST',
-    headers: body === undefined ? undefined : { 'content-type': 'application/json' },
-    body: body === undefined ? undefined : JSON.stringify(body),
-    credentials: 'same-origin',
-  })
-  const data = (await response.json().catch(() => ({}))) as ApiData
-  return { ok: response.ok, status: response.status, data }
-}
+const call = (path: string, body?: unknown) => api<ApiData>(path, body)
 
-export const statsKey = (game: string, mode: string) => `${game}_${mode}`
+export { statsKey }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null)
@@ -69,21 +62,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile(null)
   }, [])
 
-  const record = useCallback((game: string, mode: string, won: boolean, guesses: number) => {
-    const key = statsKey(game, mode)
-    setProfile((p) => p && { ...p, stats: { ...p.stats, [key]: applyResult(p.stats[key] ?? emptyStats, won, guesses) } })
-    const resync = () =>
-      call('auth/me')
-        .then(({ ok, data }) => (ok && data.user ? accept(data) : setProfile(null)))
-        .catch(() => null)
-    call('stats/record', { game, mode, won, guesses })
-      .then(({ ok, status, data }) => {
-        if (ok && data.key) setProfile((p) => p && { ...p, stats: { ...p.stats, [data.key!]: data.stats as Stats } })
-        else if (status === 401) setProfile(null)
-        else resync()
-      })
-      .catch(resync)
+  const setStats = useCallback((key: string, stats: Stats) => {
+    setProfile((p) => p && { ...p, stats: { ...p.stats, [key]: stats } })
   }, [])
+
+  const expire = useCallback(() => setProfile(null), [])
 
   const resetStats = useCallback(async () => {
     try {
@@ -109,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user: profile?.user ?? null, stats: profile?.stats ?? {}, loading, submit, logout, record, resetStats, setNickname }}
+      value={{ user: profile?.user ?? null, stats: profile?.stats ?? {}, loading, submit, logout, setStats, expire, resetStats, setNickname }}
     >
       {children}
     </AuthContext.Provider>

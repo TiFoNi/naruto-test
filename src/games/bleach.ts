@@ -1,6 +1,6 @@
 import raw from '../data/bleach.json'
 import atlas from '../data/bleach-atlas.json'
-import { cells, compareOrdered, l10n, EMPTY, type Cell, type Column, type Entity, type Game, type RenderContext } from './types'
+import { cells, l10n, EMPTY, type Column, type Entity, type Game } from './types'
 
 type Character = Entity & {
   nameEn: string
@@ -19,20 +19,15 @@ const { list, exact } = cells<Character>()
 
 const DIVISION = l10n('{n}-й отряд', '{n}-й загін', 'Division {n}')
 
-function division(g: Character, a: Character, { tv, lang }: RenderContext): Cell {
-  const text = g.division ? DIVISION[lang].replace('{n}', String(g.division)) : tv(EMPTY)
-  if (g.division && a.division) return { ...compareOrdered(g.division, a.division), text }
-  return { verdict: g.division === a.division ? 'correct' : 'wrong', text }
-}
 
 const columns: Column<Character>[] = [
-  { title: l10n('Пол', 'Стать', 'Gender'), render: exact('gender') },
-  { title: l10n('Раса', 'Раса', 'Race'), render: list('races') },
-  { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), render: list('affiliations') },
-  { title: l10n('Должность', 'Посада', 'Rank'), render: list('ranks') },
-  { title: l10n('Отряд', 'Загін', 'Division'), render: division },
-  { title: l10n('Силы', 'Сили', 'Powers'), render: list('powers') },
-  { title: l10n('Дебют', 'Дебют', 'Debut'), render: (g, a, { tv }) => ({ ...compareOrdered(g.arcIndex, a.arcIndex), text: tv(g.arc) }) },
+  { title: l10n('Пол', 'Стать', 'Gender'), ...exact('gender') },
+  { title: l10n('Раса', 'Раса', 'Race'), ...list('races') },
+  { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), ...list('affiliations') },
+  { title: l10n('Должность', 'Посада', 'Rank'), ...list('ranks') },
+  { title: l10n('Отряд', 'Загін', 'Division'), key: 'division', text: (g, { tv, lang }) => (g.division ? DIVISION[lang].replace('{n}', String(g.division)) : tv(EMPTY)) },
+  { title: l10n('Силы', 'Сили', 'Powers'), ...list('powers') },
+  { title: l10n('Дебют', 'Дебют', 'Debut'), key: 'arcIndex', text: (g, { tv }) => tv(g.arc) },
 ]
 
 export const bleach: Game<Character> = {

@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import CharacterSearch from './CharacterSearch'
 import RoundResult from './RoundResult'
+import RoundStatus from './RoundStatus'
 import Thumb from './Thumb'
-import type { Entity, Game } from './games/types'
+import type { Game } from './games/types'
 import { useI18n } from './i18n'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
-import { pickAnswer, preload } from './util'
 
 const ZOOM_LEVELS = [7, 5.6, 4.5, 3.6, 2.9, 2.35, 1.9, 1.55, 1.25, 1]
 const MAX_RETRIES = 3
@@ -34,39 +34,25 @@ function pickFocus(img: HTMLImageElement): Focus {
   return pool.length ? pool[Math.floor(Math.random() * pool.length)] : fallback
 }
 
-type Props = { game: Game; active: boolean; onSolved: (guesses: number) => void; onGaveUp: () => void; stats: Stats }
+type Props = { game: Game; active: boolean; stats: Stats }
 
-export default function ImageMode({ game, active, onSolved, onGaveUp, stats }: Props) {
+export default function ImageMode({ game, active, stats }: Props) {
   const { t, name } = useI18n()
-  const { answer, guesses, won, over, round, exclude, guess, giveUp, next } = useRound({ game, mode: 'image', onSolved, onGaveUp })
-  const [upcoming, setUpcoming] = useState<Entity | null>(null)
-  const [seen, setSeen] = useState(active)
+  const { round, guesses, exclude, over, won, skipped, answer, busy, error, guess, giveUp, next, retry: retryRound } = useRound(game, 'image', active)
   const [focus, setFocus] = useState<Focus | null>(null)
   const [retry, setRetry] = useState(0)
   const retryTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
 
-  const wrong = guesses.filter((g) => g.id !== answer.id).length
+  const wrong = guesses.length - (won ? 1 : 0)
   const zoom = over ? 1 : ZOOM_LEVELS[Math.min(wrong, ZOOM_LEVELS.length - 1)]
 
   useEffect(() => {
-    if (!active) return
-    setSeen(true)
-    setUpcoming((u) => u ?? pickAnswer(game))
-  }, [active, game])
-
-  useEffect(() => {
-    if (active && upcoming) preload(game, upcoming)
-  }, [active, game, upcoming])
-
-  useEffect(() => () => clearTimeout(retryTimer.current), [])
-
-  const nextRound = () => {
     clearTimeout(retryTimer.current)
-    next(upcoming ?? undefined)
-    setUpcoming(pickAnswer(game))
     setFocus(null)
     setRetry(0)
-  }
+  }, [round?.id])
+
+  useEffect(() => () => clearTimeout(retryTimer.current), [])
 
   return (
     <section className="mode">
@@ -74,47 +60,51 @@ export default function ImageMode({ game, active, onSolved, onGaveUp, stats }: P
         <h2>{t('play.imageTitle')}</h2>
         <p className="muted">{t('play.imagePrompt')}</p>
         <div className={`zoom-frame ${game.wideImages ? 'wide' : ''}`}>
-          {seen && !focus && <div className="zoom-loading">{t(retry > MAX_RETRIES ? 'image.failed' : 'image.loading')}</div>}
-          {seen && (
-          <img
-            key={`${answer.id}-${retry}`}
-            src={retry ? `${game.fullUrl(answer)}?retry=${retry}` : game.fullUrl(answer)}
-            alt=""
-            draggable={false}
-            onLoad={(e) => setFocus(pickFocus(e.currentTarget))}
-            onError={() => {
-              clearTimeout(retryTimer.current)
-              retryTimer.current = setTimeout(() => setRetry((r) => (r <= MAX_RETRIES ? r + 1 : r)), 800)
-            }}
-            style={{
-              opacity: focus ? 1 : 0,
-              transform: `scale(${zoom})`,
-              transformOrigin: focus ? `${focus.x}% ${focus.y}%` : 'center',
-            }}
-          />
+          {round?.image && !focus && (
+            <div className="zoom-loading">{t(retry > MAX_RETRIES ? 'image.failed' : 'image.loading')}</div>
+          )}
+          {round?.image && (
+            <img
+              key={`${round.id}-${retry}`}
+              src={retry ? `${round.image}&retry=${retry}` : round.image}
+              alt=""
+              draggable={false}
+              onLoad={(e) => setFocus(pickFocus(e.currentTarget))}
+              onError={() => {
+                clearTimeout(retryTimer.current)
+                retryTimer.current = setTimeout(() => setRetry((r) => (r <= MAX_RETRIES ? r + 1 : r)), 800)
+              }}
+              style={{
+                opacity: focus ? 1 : 0,
+                transform: `scale(${zoom})`,
+                transformOrigin: focus ? `${focus.x}% ${focus.y}%` : 'center',
+              }}
+            />
           )}
         </div>
-        <p className="round">
-          {t('play.round', { round, guesses: guesses.length })} · {t('play.zoom', { zoom: zoom.toFixed(1) })}
-        </p>
+        {round && (
+          <p className="round">
+            {t('play.round', { round: round.number, guesses: guesses.length })} · {t('play.zoom', { zoom: zoom.toFixed(1) })}
+          </p>
+        )}
       </div>
 
-      {over ? (
-        <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} stats={stats} onNext={nextRound} />
-      ) : (
+      <RoundStatus loading={!round && !error} error={error} onRetry={retryRound} />
+
+      {round && over && answer ? (
+        <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} skipped={skipped} stats={stats} onNext={next} />
+      ) : round ? (
         <>
-          <CharacterSearch game={game} exclude={exclude} active={active} onPick={guess} />
-          {guesses.length >= 3 && (
-            <button className="link-button" onClick={giveUp}>
-              {t('play.giveUp')}
-            </button>
-          )}
+          <CharacterSearch game={game} exclude={exclude} active={active} busy={busy} onPick={guess} />
+          <button className="link-button" onClick={giveUp} disabled={busy}>
+            {t('play.giveUp')}
+          </button>
         </>
-      )}
+      ) : null}
 
       <div className="guess-list">
-        {guesses.map((g) => (
-          <div key={g.id} className={`guess-chip ${g.id === answer.id ? 'correct' : 'wrong'}`}>
+        {guesses.map(({ entity: g }) => (
+          <div key={g.id} className={`guess-chip ${won && g.id === answer?.id ? 'correct' : 'wrong'}`}>
             <Thumb game={game} entity={g} size={44} />
             <span>{name(g)}</span>
           </div>

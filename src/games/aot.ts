@@ -1,6 +1,6 @@
 import raw from '../data/aot.json'
 import atlas from '../data/aot-atlas.json'
-import { cells, compareOrdered, l10n, type Column, type Entity, type Game } from './types'
+import { cells, l10n, type Column, type Entity, type Game } from './types'
 
 type Character = Entity & {
   nameEn: string
@@ -18,13 +18,13 @@ const base = import.meta.env.BASE_URL
 const { list, exact } = cells<Character>()
 
 const columns: Column<Character>[] = [
-  { title: l10n('Пол', 'Стать', 'Gender'), render: exact('gender') },
-  { title: l10n('Вид', 'Вид', 'Species'), render: list('species') },
-  { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), render: list('affiliations') },
-  { title: l10n('Род занятий', 'Рід занять', 'Occupation'), render: list('occupations') },
-  { title: l10n('Сила титана', 'Сила титана', 'Titan power'), render: list('titans') },
-  { title: l10n('Статус', 'Статус', 'Status'), render: exact('status') },
-  { title: l10n('Дебют', 'Дебют', 'Debut'), render: (g, a, { tv }) => ({ ...compareOrdered(g.arcIndex, a.arcIndex), text: tv(g.arc) }) },
+  { title: l10n('Пол', 'Стать', 'Gender'), ...exact('gender') },
+  { title: l10n('Вид', 'Вид', 'Species'), ...list('species') },
+  { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), ...list('affiliations') },
+  { title: l10n('Род занятий', 'Рід занять', 'Occupation'), ...list('occupations') },
+  { title: l10n('Сила титана', 'Сила титана', 'Titan power'), ...list('titans') },
+  { title: l10n('Статус', 'Статус', 'Status'), ...exact('status') },
+  { title: l10n('Дебют', 'Дебют', 'Debut'), key: 'arcIndex', text: (g, { tv }) => tv(g.arc) },
 ]
 
 export const aot: Game<Character> = {

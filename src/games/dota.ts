@@ -1,6 +1,6 @@
 import raw from '../data/dota.json'
 import atlas from '../data/dota-atlas.json'
-import { cells, compareOrdered, exact as same, l10n, type Column, type Entity, type Game, type Icon } from './types'
+import { cells, l10n, type Column, type Entity, type Game, type Icon } from './types'
 
 type Hero = Entity & {
   aliases: string
@@ -26,20 +26,18 @@ const ATTRIBUTE_ICONS: Record<string, Omit<Icon, 'label'>> = {
 const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(3 - n)
 
 const columns: Column<Hero>[] = [
-  { title: l10n('Пол', 'Стать', 'Gender'), render: exact('gender') },
-  { title: l10n('Раса', 'Раса', 'Species'), render: list('species') },
-  { title: l10n('Роли', 'Ролі', 'Roles'), render: list('roles') },
+  { title: l10n('Пол', 'Стать', 'Gender'), ...exact('gender') },
+  { title: l10n('Раса', 'Раса', 'Species'), ...list('species') },
+  { title: l10n('Роли', 'Ролі', 'Roles'), ...list('roles') },
   {
     title: l10n('Атрибут', 'Атрибут', 'Attribute'),
-    render: (g, a, { tv }) => ({
-      verdict: same(g.attribute, a.attribute),
-      text: tv(g.attribute),
-      icons: [{ label: tv(g.attribute), ...ATTRIBUTE_ICONS[g.attribute] }],
-    }),
+    key: 'attribute',
+    text: (g, { tv }) => tv(g.attribute),
+    icons: (g, { tv }) => [{ label: tv(g.attribute), ...ATTRIBUTE_ICONS[g.attribute] }],
   },
-  { title: l10n('Тип атаки', 'Тип атаки', 'Attack type'), render: exact('attack') },
-  { title: l10n('Сложность', 'Складність', 'Complexity'), render: (g, a) => ({ ...compareOrdered(g.complexity, a.complexity), text: stars(g.complexity) }) },
-  { title: l10n('Год выхода', 'Рік виходу', 'Release year'), render: (g, a) => ({ ...compareOrdered(g.year, a.year), text: String(g.year) }) },
+  { title: l10n('Тип атаки', 'Тип атаки', 'Attack type'), ...exact('attack') },
+  { title: l10n('Сложность', 'Складність', 'Complexity'), key: 'complexity', text: (g) => stars(g.complexity) },
+  { title: l10n('Год выхода', 'Рік виходу', 'Release year'), key: 'year', text: (g) => String(g.year) },
 ]
 
 export const dota: Game<Hero> = {

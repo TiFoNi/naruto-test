@@ -8,10 +8,11 @@ type Props = {
   game: Game
   exclude: Set<number>
   active: boolean
+  busy?: boolean
   onPick: (e: Entity) => void
 }
 
-export default function CharacterSearch({ game, exclude, active: visible, onPick }: Props) {
+export default function CharacterSearch({ game, exclude, active: visible, busy = false, onPick }: Props) {
   const { t, name, alt } = useI18n()
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
@@ -53,7 +54,7 @@ export default function CharacterSearch({ game, exclude, active: visible, onPick
   }, [query, exclude, index])
 
   const pick = (e: Entity | undefined) => {
-    if (!e) return
+    if (!e || busy) return
     onPick(e)
     setQuery('')
     setActive(0)
@@ -84,7 +85,7 @@ export default function CharacterSearch({ game, exclude, active: visible, onPick
             }
           }}
         />
-        <button className="send" aria-label={t('play.send')} disabled={!matches.length} onClick={() => pick(matches[active])}>
+        <button className="send" aria-label={t('play.send')} disabled={!matches.length || busy} onClick={() => pick(matches[active])}>
           ➤
         </button>
       </div>

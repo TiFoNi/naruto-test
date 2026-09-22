@@ -1,24 +1,19 @@
-import { useEffect } from 'react'
 import CharacterSearch from './CharacterSearch'
 import RoundResult from './RoundResult'
+import RoundStatus from './RoundStatus'
 import Thumb from './Thumb'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
-import { preload } from './util'
 
 const sizeClass = (text: string) => (text.length > 44 ? 'size-xs' : text.length > 26 ? 'size-s' : '')
 
-type Props = { game: Game; active: boolean; onSolved: (guesses: number) => void; onGaveUp: () => void; stats: Stats }
+type Props = { game: Game; active: boolean; stats: Stats }
 
-export default function ClassicMode({ game, active, onSolved, onGaveUp, stats }: Props) {
+export default function ClassicMode({ game, active, stats }: Props) {
   const { t, l, tv, lang, name } = useI18n()
-  const { answer, guesses, won, over, round, exclude, guess, giveUp, next } = useRound({ game, mode: 'classic', onSolved, onGaveUp })
-
-  useEffect(() => {
-    if (active) preload(game, answer)
-  }, [active, game, answer])
+  const { round, guesses, exclude, over, won, skipped, answer, busy, error, guess, giveUp, next, retry } = useRound(game, 'classic', active)
 
   const legend = game.legend === 'debut' ? (['legend.debutLater', 'legend.debutEarlier'] as const) : (['legend.higher', 'legend.lower'] as const)
 
@@ -27,21 +22,21 @@ export default function ClassicMode({ game, active, onSolved, onGaveUp, stats }:
       <div className="card intro">
         <h2>{t('play.classicTitle')}</h2>
         <p className="muted">{t('play.classicPrompt')}</p>
-        <p className="round">{t('play.round', { round, guesses: guesses.length })}</p>
+        {round && <p className="round">{t('play.round', { round: round.number, guesses: guesses.length })}</p>}
       </div>
 
-      {over ? (
-        <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} stats={stats} onNext={() => next()} />
-      ) : (
+      <RoundStatus loading={!round && !error} error={error} onRetry={retry} />
+
+      {round && over && answer ? (
+        <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} skipped={skipped} stats={stats} onNext={next} />
+      ) : round ? (
         <>
-          <CharacterSearch game={game} exclude={exclude} active={active} onPick={guess} />
-          {guesses.length >= 3 && (
-            <button className="link-button" onClick={giveUp}>
-              {t('play.giveUp')}
-            </button>
-          )}
+          <CharacterSearch game={game} exclude={exclude} active={active} busy={busy} onPick={guess} />
+          <button className="link-button" onClick={giveUp} disabled={busy}>
+            {t('play.giveUp')}
+          </button>
         </>
-      )}
+      ) : null}
 
       {guesses.length > 0 && (
         <div className="grid-scroll">
@@ -49,39 +44,42 @@ export default function ClassicMode({ game, active, onSolved, onGaveUp, stats }:
             <div className="grid-row header">
               <div>{t(game.unit === 'hero' ? 'play.hero' : 'play.character')}</div>
               {game.columns.map((c) => (
-                <div key={c.title.en}>{l(c.title)}</div>
+                <div key={c.key}>{l(c.title)}</div>
               ))}
             </div>
-            {guesses.map((g) => (
+            {guesses.map(({ entity: g, judgement }) => (
               <div className="grid-row" key={g.id}>
                 <div className="cell portrait" title={name(g)}>
                   <Thumb game={game} entity={g} className="portrait-thumb" />
                   <span className="portrait-name">{name(g)}</span>
                 </div>
                 {game.columns.map((col, i) => {
-                  const r = col.render(g, answer, { tv, lang })
+                  const ctx = { tv, lang }
+                  const text = col.text(g, ctx)
+                  const icons = col.icons?.(g, ctx) ?? []
+                  const verdict = judgement?.[col.key]
                   return (
                     <div
-                      key={col.title.en}
-                      title={r.text}
-                      className={`cell ${r.verdict} ${sizeClass(r.text)}`}
+                      key={col.key}
+                      title={text}
+                      className={`cell ${verdict?.verdict ?? 'wrong'} ${sizeClass(text)}`}
                       style={{ animationDelay: `${(i + 1) * 0.25}s` }}
                     >
-                      {r.icons?.length ? (
+                      {icons.length ? (
                         <div className="icons">
-                          {r.icons.map((icon) => (
+                          {icons.map((icon) => (
                             <i key={icon.label} title={icon.label} style={{ background: icon.color }} className={icon.dark ? 'dark' : ''}>
                               {icon.symbol}
                             </i>
                           ))}
-                          {r.icons.length === 1 && <span className="icon-label">{r.icons[0].label}</span>}
+                          {icons.length === 1 && <span className="icon-label">{icons[0].label}</span>}
                         </div>
                       ) : (
-                        <span>{r.text}</span>
+                        <span>{text}</span>
                       )}
-                      {r.arrow && (
-                        <b className="arrow" aria-label={t(r.arrow === 'up' ? legend[0] : legend[1])}>
-                          {r.arrow === 'up' ? '↑' : '↓'}
+                      {verdict?.arrow && (
+                        <b className="arrow" aria-label={t(verdict.arrow === 'up' ? legend[0] : legend[1])}>
+                          {verdict.arrow === 'up' ? '↑' : '↓'}
                         </b>
                       )}
                     </div>

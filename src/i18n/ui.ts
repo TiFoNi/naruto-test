@@ -61,6 +61,10 @@ const ui = {
     en: 'Too many attempts, wait 15 minutes',
   },
   'err.forbidden': { ru: 'Запрос отклонён', uk: 'Запит відхилено', en: 'Request rejected' },
+  'err.bad_request': { ru: 'Некорректный запрос', uk: 'Некоректний запит', en: 'Bad request' },
+  'err.not_found': { ru: 'Раунд не найден', uk: 'Раунд не знайдено', en: 'Round not found' },
+  'err.duplicate': { ru: 'Этого персонажа ты уже называл', uk: 'Цього персонажа ти вже називав', en: 'You already guessed this one' },
+  'err.round_over': { ru: 'Раунд уже закончен', uk: 'Раунд уже закінчено', en: 'The round is already over' },
   'err.network': { ru: 'Нет связи с сервером', uk: 'Немає зв’язку з сервером', en: 'Cannot reach the server' },
 
   'mode.classic': { ru: 'По признакам', uk: 'За ознаками', en: 'By traits' },
@@ -99,6 +103,7 @@ const ui = {
     uk: 'Введи будь-якого персонажа — клітинки підкажуть, наскільки ти близько.',
     en: 'Enter any character — the tiles will tell you how close you are.',
   },
+  'play.retry': { ru: 'Повторить', uk: 'Повторити', en: 'Retry' },
   'play.classicTitle': { ru: 'Кто загадан?', uk: 'Хто загаданий?', en: 'Who is it?' },
   'play.imageTitle': { ru: 'Кто на картинке?', uk: 'Хто на картинці?', en: 'Who is in the picture?' },
   'play.imagePrompt': {
@@ -116,6 +121,12 @@ const ui = {
   'image.loading': { ru: 'Загрузка…', uk: 'Завантаження…', en: 'Loading…' },
   'image.failed': { ru: 'Не удалось загрузить картинку', uk: 'Не вдалося завантажити картинку', en: 'Could not load the picture' },
   'result.won': { ru: 'Угадал!', uk: 'Вгадав!', en: 'Got it!' },
+  'result.skipped': { ru: 'Это был…', uk: 'Це був…', en: 'It was…' },
+  'result.notCounted': {
+    ru: 'Сдался — раунд не засчитан в статистику',
+    uk: 'Здався — раунд не зараховано в статистику',
+    en: 'Gave up — this round does not count toward your stats',
+  },
   'result.lost': { ru: 'Не в этот раз', uk: 'Не цього разу', en: 'Not this time' },
   'result.summary': {
     ru: 'Попыток: {guesses} · Серия: {streak} · Рекорд: {best}',
@@ -177,6 +188,29 @@ const ui = {
   'dash.gamesHint': { ru: 'Герои видеоигр', uk: 'Герої відеоігор', en: 'Video game heroes' },
   'dash.characters': { ru: 'Персонажей: {count}', uk: 'Персонажів: {count}', en: 'Characters: {count}' },
   'dash.heroes': { ru: 'Героев: {count}', uk: 'Героїв: {count}', en: 'Heroes: {count}' },
+  'nav.leaderboard': { ru: 'Лидеры', uk: 'Лідери', en: 'Leaderboard' },
+  'lb.title': { ru: 'Таблица лидеров', uk: 'Таблиця лідерів', en: 'Leaderboard' },
+  'lb.hint': {
+    ru: 'Отдельно для каждой вселенной и режима. Результаты считает сервер — накрутить нельзя.',
+    uk: 'Окремо для кожного всесвіту й режиму. Результати рахує сервер — накрутити не можна.',
+    en: 'Separate for every universe and mode. Results are checked by the server.',
+  },
+  'lb.sortBy': { ru: 'Сортировка', uk: 'Сортування', en: 'Sort by' },
+  'lb.sortBest': { ru: 'Самая длинная серия', uk: 'Найдовша серія', en: 'Longest streak' },
+  'lb.sortSolved': { ru: 'Всего угадано', uk: 'Всього вгадано', en: 'Total solved' },
+  'lb.sortAvg': { ru: 'Меньше попыток', uk: 'Менше спроб', en: 'Fewest guesses' },
+  'lb.avgNote': {
+    ru: 'В рейтинге по попыткам — игроки, угадавшие хотя бы {min} раз.',
+    uk: 'У рейтингу за спробами — гравці, що вгадали щонайменше {min} разів.',
+    en: 'Only players with at least {min} solves are ranked by guesses.',
+  },
+  'lb.colBest': { ru: 'Самая длинная серия', uk: 'Найдовша серія', en: 'Longest streak' },
+  'lb.colSolved': { ru: 'Всего угадано', uk: 'Всього вгадано', en: 'Total solved' },
+  'lb.colAvg': { ru: 'Среднее число попыток', uk: 'Середня кількість спроб', en: 'Average guesses' },
+  'lb.player': { ru: 'Игрок', uk: 'Гравець', en: 'Player' },
+  'lb.you': { ru: 'ты', uk: 'ти', en: 'you' },
+  'lb.empty': { ru: 'Здесь пока пусто — стань первым!', uk: 'Тут поки порожньо — стань першим!', en: 'Nobody here yet — be the first!' },
+  'lb.play': { ru: 'Играть', uk: 'Грати', en: 'Play' },
   'dash.howTitle': { ru: 'Как играть', uk: 'Як грати', en: 'How to play' },
 } satisfies Record<string, L10n>
 

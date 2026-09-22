@@ -4,6 +4,7 @@ import { statsKey, useAuth } from './auth'
 import { BRAND } from './brand'
 import ClassicMode from './ClassicMode'
 import Dashboard from './Dashboard'
+import Leaderboard from './Leaderboard'
 import ImageMode from './ImageMode'
 import Profile from './Profile'
 import { GAMES, gameById } from './games'
@@ -34,14 +35,9 @@ function StatsBar({ stats }: { stats: Stats }) {
 }
 
 function GameView({ game, mode, visible }: { game: Game; mode: ModeId; visible: boolean }) {
-  const { stats, record } = useAuth()
+  const { stats } = useAuth()
   const { t, l } = useI18n()
   const statsFor = (m: ModeId) => stats[statsKey(game.id, m)] ?? emptyStats
-  const handlers = (m: ModeId) => ({
-    stats: statsFor(m),
-    onSolved: (guesses: number) => record(game.id, m, true, guesses),
-    onGaveUp: () => record(game.id, m, false, 1),
-  })
 
   return (
     <div className="game-view" hidden={!visible}>
@@ -56,13 +52,18 @@ function GameView({ game, mode, visible }: { game: Game; mode: ModeId; visible: 
             ))}
           </div>
         </div>
-        <StatsBar stats={statsFor(mode)} />
+        <div className="game-head-side">
+          <StatsBar stats={statsFor(mode)} />
+          <a className="lb-link" href={href.leaderboard(game.id, mode)}>
+            🏆 {t('nav.leaderboard')}
+          </a>
+        </div>
       </section>
       <div hidden={mode !== 'classic'}>
-        <ClassicMode game={game} active={visible && mode === 'classic'} {...handlers('classic')} />
+        <ClassicMode game={game} active={visible && mode === 'classic'} stats={statsFor('classic')} />
       </div>
       <div hidden={mode !== 'image'}>
-        <ImageMode game={game} active={visible && mode === 'image'} {...handlers('image')} />
+        <ImageMode game={game} active={visible && mode === 'image'} stats={statsFor('image')} />
       </div>
     </div>
   )
@@ -111,6 +112,16 @@ export default function App() {
         <div className="topbar-right">
           <LangSwitch />
           {user && (
+            <a
+              className={`topbar-link ${route.name === 'leaderboard' ? 'active' : ''}`}
+              href={href.leaderboard(game?.id ?? 'naruto', route.name === 'play' ? route.mode : 'classic')}
+              title={t('nav.leaderboard')}
+            >
+              <span aria-hidden>🏆</span>
+              <span className="topbar-link-label">{t('nav.leaderboard')}</span>
+            </a>
+          )}
+          {user && (
             <div className="account">
               <a className={`account-link ${route.name === 'profile' ? 'active' : ''}`} href={href.profile} title={t('nav.profile')}>
                 <span className="avatar small" aria-hidden>
@@ -134,6 +145,7 @@ export default function App() {
             <Dashboard />
           </div>
           {route.name === 'profile' && <Profile onBack={() => navigate(href.home)} />}
+          {route.name === 'leaderboard' && <Leaderboard gameId={route.game} mode={route.mode} />}
           <div className="play" hidden={route.name !== 'play'}>
             <div className="play-nav">
               <a className="back" href={href.home}>

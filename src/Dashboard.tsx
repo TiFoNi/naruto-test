@@ -49,6 +49,9 @@ function FranchiseCard({ game }: { game: Game }) {
             )
           })}
         </div>
+        <a className="lb-mini" href={href.leaderboard(game.id, game.modes[0])}>
+          🏆 {t('nav.leaderboard')}
+        </a>
         {upcoming.length > 0 && (
           <p className="mode-soon">
             <b>{t('soon')}:</b> {upcoming.map((m) => t(m.label).toLowerCase()).join(', ')}
