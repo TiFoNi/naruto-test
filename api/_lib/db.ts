@@ -10,7 +10,7 @@ export type UserDoc = {
   createdAt: Date
 }
 
-export type Stats = { solved: number; streak: number; best: number; totalGuesses: number }
+export type Stats = { solved: number; streak: number; best: number; totalGuesses: number; lastDay?: string }
 
 export type RoundStatus = 'active' | 'won' | 'lost' | 'skipped'
 
@@ -22,9 +22,13 @@ export type RoundDoc = {
   answerId: number
   guesses: number[]
   status: RoundStatus
+  daily?: string
+  guessCount?: number
   createdAt: Date
   finishedAt?: Date
 }
+
+export type DailyDoc = { _id: string; day: string; game: string; mode: string; answerId: number; createdAt: Date }
 
 const cache = globalThis as typeof globalThis & {
   __mongo?: Promise<MongoClient>
@@ -40,12 +44,21 @@ export async function rounds(): Promise<Collection<RoundDoc>> {
   cache.__roundsIndexed ??= Promise.all([
     collection.createIndex({ userId: 1, game: 1, mode: 1, status: 1 }),
     collection.createIndex({ userId: 1, game: 1, mode: 1, createdAt: -1 }),
+    collection.createIndex(
+      { userId: 1, game: 1, mode: 1, daily: 1 },
+      { unique: true, partialFilterExpression: { daily: { $type: 'string' } } },
+    ),
+    collection.createIndex({ daily: 1, game: 1, mode: 1, status: 1, guessCount: 1, finishedAt: 1 }),
   ]).catch((error) => {
     cache.__roundsIndexed = undefined
     throw error
   })
   await cache.__roundsIndexed
   return collection
+}
+
+export async function dailies(): Promise<Collection<DailyDoc>> {
+  return (await database()).collection<DailyDoc>('dailies')
 }
 
 export function client() {

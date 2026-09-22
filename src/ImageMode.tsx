@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import CharacterSearch from './CharacterSearch'
 import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
+import Yesterday from './Yesterday'
 import Thumb from './Thumb'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
@@ -34,11 +35,11 @@ function pickFocus(img: HTMLImageElement): Focus {
   return pool.length ? pool[Math.floor(Math.random() * pool.length)] : fallback
 }
 
-type Props = { game: Game; active: boolean; stats: Stats }
+type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean }
 
-export default function ImageMode({ game, active, stats }: Props) {
+export default function ImageMode({ game, active, stats, daily = false }: Props) {
   const { t, name } = useI18n()
-  const { round, guesses, exclude, over, won, skipped, answer, busy, error, guess, giveUp, next, retry: retryRound } = useRound(game, 'image', active)
+  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry: retryRound } = useRound(game, 'image', active, daily)
   const [focus, setFocus] = useState<Focus | null>(null)
   const [retry, setRetry] = useState(0)
   const retryTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
@@ -84,15 +85,16 @@ export default function ImageMode({ game, active, stats }: Props) {
         </div>
         {round && (
           <p className="round">
-            {t('play.round', { round: round.number, guesses: guesses.length })} · {t('play.zoom', { zoom: zoom.toFixed(1) })}
+            {t(round.daily ? 'daily.round' : 'play.round', { round: round.number, guesses: guesses.length })} · {t('play.zoom', { zoom: zoom.toFixed(1) })}
           </p>
         )}
+        {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
       </div>
 
       <RoundStatus loading={!round && !error} error={error} onRetry={retryRound} />
 
       {round && over && answer ? (
-        <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} skipped={skipped} stats={stats} onNext={next} />
+        <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} skipped={skipped} stats={stats} onNext={next} mode="image" nextAt={round.nextAt} />
       ) : round ? (
         <>
           <CharacterSearch game={game} exclude={exclude} active={active} busy={busy} onPick={guess} />
@@ -103,8 +105,8 @@ export default function ImageMode({ game, active, stats }: Props) {
       ) : null}
 
       <div className="guess-list">
-        {guesses.map(({ entity: g }) => (
-          <div key={g.id} className={`guess-chip ${won && g.id === answer?.id ? 'correct' : 'wrong'}`}>
+        {guesses.map(({ entity: g, pending }) => (
+          <div key={g.id} className={`guess-chip ${pending ? 'pending' : won && g.id === answer?.id ? 'correct' : 'wrong'}`}>
             <Thumb game={game} entity={g} size={44} />
             <span>{name(g)}</span>
           </div>

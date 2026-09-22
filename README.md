@@ -74,3 +74,7 @@ npm run dev
 ## Деплой
 
 Vercel, подключён к GitHub-репозиторию: каждый push в `main` деплоится автоматически (Framework Preset: Vite, Build Command: `npm run build`, Output: `dist`).
+
+## Ежедневные
+
+Для каждой игры и режима раз в день (00:00 по Киеву) загадывается один персонаж для всех — `api/_lib/daily.ts`. Порядок — перестановка пула по HMAC от `DAILY_SECRET` (или `AUTH_SECRET`), без повторов до конца цикла; ответ дня фиксируется в коллекции `dailies`. У игрока один ежедневный раунд в день (`rounds.daily = YYYY-MM-DD`, уникальный индекс), статистика — в `stats.<game>_<mode>_daily` с серией дней подряд. Лидеры дня и серии — `api/daily-leaderboard.ts`, маршруты `#/play/:game/:mode/daily` и `#/leaderboard/:game/:mode/daily`.

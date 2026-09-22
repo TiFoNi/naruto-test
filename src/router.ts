@@ -6,24 +6,24 @@ import type { ModeId } from './modes'
 export type Route =
   | { name: 'home' }
   | { name: 'profile' }
-  | { name: 'play'; game: GameId; mode: ModeId }
-  | { name: 'leaderboard'; game: GameId; mode: ModeId }
+  | { name: 'play'; game: GameId; mode: ModeId; daily: boolean }
+  | { name: 'leaderboard'; game: GameId; mode: ModeId; daily: boolean }
 
 export const href = {
   home: '#/',
   profile: '#/profile',
-  play: (game: GameId, mode: ModeId) => `#/play/${game}/${mode}`,
-  leaderboard: (game: GameId, mode: ModeId) => `#/leaderboard/${game}/${mode}`,
+  play: (game: GameId, mode: ModeId, daily = false) => `#/play/${game}/${mode}${daily ? '/daily' : ''}`,
+  leaderboard: (game: GameId, mode: ModeId, daily = false) => `#/leaderboard/${game}/${mode}${daily ? '/daily' : ''}`,
 }
 
 function parse(hash: string): Route {
-  const [, section, gameId, modeId] = hash.replace(/^#/, '').split('/')
+  const [, section, gameId, modeId, variant] = hash.replace(/^#/, '').split('/')
   if (section === 'profile') return { name: 'profile' }
   if (section === 'play' || section === 'leaderboard') {
     const game = GAMES.find((g) => g.id === gameId) ?? (section === 'leaderboard' ? GAMES[0] : undefined)
     if (game) {
       const mode = game.modes.includes(modeId as ModeId) ? (modeId as ModeId) : game.modes[0]
-      return { name: section, game: game.id, mode }
+      return { name: section, game: game.id, mode, daily: variant === 'daily' }
     }
   }
   return { name: 'home' }

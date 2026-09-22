@@ -1,4 +1,5 @@
 {
+  "regions": ["arn1"],
   "functions": {
     "api/**/*.ts": {
       "includeFiles": "src/data/*.json"

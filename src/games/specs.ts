@@ -137,7 +137,11 @@ export const MODE_IDS: ModeId[] = ['classic', 'image']
 
 export const statsKey = (game: string, mode: string) => `${game}_${mode}`
 
+export const dailyKey = (game: string, mode: string) => `${statsKey(game, mode)}_daily`
+
 export const STAT_KEYS = GAME_IDS.flatMap((g) => MODE_IDS.map((m) => statsKey(g, m)))
+
+export const DAILY_KEYS = GAME_IDS.flatMap((g) => MODE_IDS.map((m) => dailyKey(g, m)))
 
 const present = (value: unknown) => typeof value === 'number' && value >= 0
 

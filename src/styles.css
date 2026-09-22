@@ -490,7 +490,18 @@ main {
   overflow: hidden;
   hyphens: auto;
   overflow-wrap: anywhere;
-  animation: reveal 0.45s both;
+  animation: reveal 0.28s both;
+}
+
+.cell.pending {
+  background: var(--card-2);
+  border-color: var(--line);
+  animation: pulse 0.9s ease-in-out infinite;
+}
+
+.guess-chip.pending {
+  opacity: 0.6;
+  animation: pulse 0.9s ease-in-out infinite;
 }
 
 .cell.size-s {
@@ -1859,4 +1870,111 @@ footer p {
   .topbar-link-label {
     display: none;
   }
+}
+
+.game-switches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.variant-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  width: fit-content;
+}
+
+.variant-tabs a {
+  text-decoration: none;
+  padding: 7px 12px;
+  border-radius: 9px;
+  color: var(--text-2);
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.variant-tabs a.active {
+  background: color-mix(in srgb, var(--accent) 22%, var(--card-2));
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.yesterday {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 0;
+  font-size: 14px;
+}
+
+.yesterday b {
+  font-weight: 700;
+}
+
+.daily-next {
+  margin: 4px 0 14px;
+  color: var(--text-2);
+}
+
+.countdown {
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  font-size: 18px;
+  margin-left: 4px;
+}
+
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.result-actions a {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.daily-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.daily-links-title {
+  flex-basis: 100%;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-2);
+  margin-right: 2px;
+}
+
+.daily-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--tab-accent) 45%, var(--line));
+  color: var(--text);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.daily-link:hover {
+  background: color-mix(in srgb, var(--tab-accent) 16%, transparent);
+}
+
+.daily-link.done {
+  background: color-mix(in srgb, var(--correct, #3fb56b) 22%, transparent);
+  border-color: color-mix(in srgb, var(--correct, #3fb56b) 60%, var(--line));
 }

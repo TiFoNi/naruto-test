@@ -1,5 +1,6 @@
 import { ObjectId, type Collection } from 'mongodb'
-import { STAT_KEYS } from '../../src/games/specs.js'
+import { DAILY_KEYS, STAT_KEYS } from '../../src/games/specs.js'
+import { shiftDay, today } from './daily.js'
 import { users, type Stats, type UserDoc } from './db.js'
 import { fail } from './http.js'
 import { readSession } from './session.js'
@@ -29,6 +30,24 @@ export function normalizeStats(stats: Partial<Stats> | undefined): Stats {
   }
 }
 
+export function dailyStats(stats: Partial<Stats> | undefined) {
+  const base = normalizeStats(stats)
+  const day = today()
+  const alive = stats?.lastDay === day || stats?.lastDay === shiftDay(day, -1)
+  return { ...base, streak: alive ? base.streak : 0, lastDay: stats?.lastDay ?? null }
+}
+
+export async function applyDailyResult(collection: Collection<UserDoc>, userId: ObjectId, key: string, day: string, guesses: number) {
+  const doc = await collection.findOne({ _id: userId }, { projection: { [`stats.${key}`]: 1 } })
+  const prev = doc?.stats?.[key]
+  const base = normalizeStats(prev)
+  if (prev?.lastDay === day) return dailyStats(prev)
+  const streak = prev?.lastDay === shiftDay(day, -1) ? base.streak + 1 : 1
+  const next = { solved: base.solved + 1, streak, best: Math.max(base.best, streak), totalGuesses: base.totalGuesses + guesses, lastDay: day }
+  await collection.updateOne({ _id: userId }, { $set: { [`stats.${key}`]: next } })
+  return dailyStats(next)
+}
+
 export function toProfile(doc: UserDoc) {
   return {
     user: {
@@ -36,7 +55,10 @@ export function toProfile(doc: UserDoc) {
       username: doc.username,
       nickname: doc.nickname ?? defaultNickname(doc.username),
     },
-    stats: Object.fromEntries(STAT_KEYS.map((key) => [key, normalizeStats(doc.stats?.[key])])),
+    stats: Object.fromEntries([
+      ...STAT_KEYS.map((key) => [key, normalizeStats(doc.stats?.[key])]),
+      ...DAILY_KEYS.map((key) => [key, dailyStats(doc.stats?.[key])]),
+    ]),
   }
 }
 
@@ -49,6 +71,11 @@ export async function currentUser(request: Request) {
 }
 
 export const unauthorized = () => fail(401, 'unauthorized')
+
+export async function sessionUserId(request: Request) {
+  const session = await readSession(request)
+  return session && ObjectId.isValid(session.id) ? new ObjectId(session.id) : null
+}
 
 const orZero = (path: string) => ({ $ifNull: [`$${path}`, 0] })
 

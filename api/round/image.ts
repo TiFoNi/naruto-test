@@ -1,13 +1,13 @@
 import { GAME_SPECS, type GameId } from '../../src/games/specs.js'
 import { fail, handle } from '../_lib/http.js'
-import { currentUser, unauthorized } from '../_lib/profile.js'
+import { sessionUserId, unauthorized } from '../_lib/profile.js'
 import { ownedRound } from '../_lib/rounds.js'
 
 export const GET = handle(async (request) => {
-  const found = await currentUser(request)
-  if (!found) return unauthorized()
+  const userId = await sessionUserId(request)
+  if (!userId) return unauthorized()
   const url = new URL(request.url)
-  const round = await ownedRound(found.doc._id!, url.searchParams.get('id'))
+  const round = await ownedRound(userId, url.searchParams.get('id'))
   if (!round) return fail(404, 'not_found')
   const source = `${url.origin}/${GAME_SPECS[round.game as GameId].images}/full/${round.answerId}.webp`
   const image = await fetch(source)

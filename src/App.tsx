@@ -1,6 +1,7 @@
 import { useEffect, type CSSProperties } from 'react'
 import AuthScreen from './AuthScreen'
 import { statsKey, useAuth } from './auth'
+import { dailyKey } from './games/specs'
 import { BRAND } from './brand'
 import ClassicMode from './ClassicMode'
 import Dashboard from './Dashboard'
@@ -14,12 +15,12 @@ import { MODES, type ModeId } from './modes'
 import { href, navigate, useRoute } from './router'
 import { average, emptyStats, type Stats } from './stats'
 
-function StatsBar({ stats }: { stats: Stats }) {
+function StatsBar({ stats, daily }: { stats: Stats; daily: boolean }) {
   const { t } = useI18n()
   const items = [
     [t('stats.solved'), stats.solved],
-    [t('stats.streak'), stats.streak],
-    [t('stats.best'), stats.best],
+    [t(daily ? 'daily.streak' : 'stats.streak'), stats.streak],
+    [t(daily ? 'daily.best' : 'stats.best'), stats.best],
     [t('stats.avg'), average(stats)],
   ] as const
   return (
@@ -34,37 +35,57 @@ function StatsBar({ stats }: { stats: Stats }) {
   )
 }
 
-function GameView({ game, mode, visible }: { game: Game; mode: ModeId; visible: boolean }) {
+function GameView({ game, mode, daily, visible }: { game: Game; mode: ModeId; daily: boolean; visible: boolean }) {
   const { stats } = useAuth()
   const { t, l } = useI18n()
-  const statsFor = (m: ModeId) => stats[statsKey(game.id, m)] ?? emptyStats
+  const statsFor = (m: ModeId, d: boolean) => stats[d ? dailyKey(game.id, m) : statsKey(game.id, m)] ?? emptyStats
 
   return (
     <div className="game-view" hidden={!visible}>
       <section className="game-head">
         <div>
           <h1>{l(game.label)}</h1>
-          <div className="mode-tabs" role="tablist">
-            {MODES.filter((m) => game.modes.includes(m.id)).map((m) => (
-              <a key={m.id} role="tab" aria-selected={mode === m.id} className={mode === m.id ? 'active' : ''} href={href.play(game.id, m.id)}>
-                {t(m.label)}
+          <div className="game-switches">
+            <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
+              <a role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
+                ∞ {t('daily.endless')}
               </a>
-            ))}
+              <a role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, mode, true)}>
+                📅 {t('daily.daily')}
+              </a>
+            </div>
+            <div className="mode-tabs" role="tablist">
+              {MODES.filter((m) => game.modes.includes(m.id)).map((m) => (
+                <a
+                  key={m.id}
+                  role="tab"
+                  aria-selected={mode === m.id}
+                  className={mode === m.id ? 'active' : ''}
+                  href={href.play(game.id, m.id, daily)}
+                >
+                  {t(m.label)}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
         <div className="game-head-side">
-          <StatsBar stats={statsFor(mode)} />
-          <a className="lb-link" href={href.leaderboard(game.id, mode)}>
+          <StatsBar stats={statsFor(mode, daily)} daily={daily} />
+          <a className="lb-link" href={href.leaderboard(game.id, mode, daily)}>
             🏆 {t('nav.leaderboard')}
           </a>
         </div>
       </section>
-      <div hidden={mode !== 'classic'}>
-        <ClassicMode game={game} active={visible && mode === 'classic'} stats={statsFor('classic')} />
-      </div>
-      <div hidden={mode !== 'image'}>
-        <ImageMode game={game} active={visible && mode === 'image'} stats={statsFor('image')} />
-      </div>
+      {[false, true].map((d) => (
+        <div key={String(d)} hidden={daily !== d}>
+          <div hidden={mode !== 'classic'}>
+            <ClassicMode game={game} active={visible && daily === d && mode === 'classic'} stats={statsFor('classic', d)} daily={d} />
+          </div>
+          <div hidden={mode !== 'image'}>
+            <ImageMode game={game} active={visible && daily === d && mode === 'image'} stats={statsFor('image', d)} daily={d} />
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
@@ -114,7 +135,7 @@ export default function App() {
           {user && (
             <a
               className={`topbar-link ${route.name === 'leaderboard' ? 'active' : ''}`}
-              href={href.leaderboard(game?.id ?? 'naruto', route.name === 'play' ? route.mode : 'classic')}
+              href={href.leaderboard(game?.id ?? 'naruto', route.name === 'play' ? route.mode : 'classic', route.name === 'play' && route.daily)}
               title={t('nav.leaderboard')}
             >
               <span aria-hidden>🏆</span>
@@ -145,7 +166,7 @@ export default function App() {
             <Dashboard />
           </div>
           {route.name === 'profile' && <Profile onBack={() => navigate(href.home)} />}
-          {route.name === 'leaderboard' && <Leaderboard gameId={route.game} mode={route.mode} />}
+          {route.name === 'leaderboard' && <Leaderboard gameId={route.game} mode={route.mode} daily={route.daily} />}
           <div className="play" hidden={route.name !== 'play'}>
             <div className="play-nav">
               <a className="back" href={href.home}>
@@ -157,7 +178,7 @@ export default function App() {
                     key={g.id}
                     className={g.id === game?.id ? 'active' : ''}
                     style={{ '--tab-accent': g.accent } as CSSProperties}
-                    href={href.play(g.id, route.name === 'play' && g.modes.includes(route.mode) ? route.mode : g.modes[0])}
+                    href={href.play(g.id, route.name === 'play' && g.modes.includes(route.mode) ? route.mode : g.modes[0], route.name === 'play' && route.daily)}
                   >
                     <span className="dot" />
                     {l(g.label)}
@@ -171,6 +192,7 @@ export default function App() {
                   key={g.id}
                   game={g}
                   mode={route.name === 'play' && route.game === g.id ? route.mode : g.modes[0]}
+                  daily={route.name === 'play' && route.game === g.id && route.daily}
                   visible={route.name === 'play' && route.game === g.id}
                 />
               ))}

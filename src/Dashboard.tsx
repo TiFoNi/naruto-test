@@ -5,7 +5,8 @@ import type { Category, Game } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES, UPCOMING_MODES } from './modes'
 import { href } from './router'
-import { emptyStats } from './stats'
+import { dailyKey } from './games/specs'
+import { emptyStats, kyivToday } from './stats'
 
 const CATEGORIES: { id: Category; title: UiKey; hint: UiKey }[] = [
   { id: 'anime', title: 'dash.anime', hint: 'dash.animeHint' },
@@ -45,6 +46,23 @@ function FranchiseCard({ game }: { game: Game }) {
                 </span>
                 <span>{t(m.label)}</span>
                 {solved > 0 && <small>{solved}</small>}
+              </a>
+            )
+          })}
+        </div>
+        <div className="daily-links">
+          <span className="daily-links-title">📅 {t('daily.dashTitle')}</span>
+          {MODES.filter((m) => game.modes.includes(m.id)).map((m) => {
+            const done = stats[dailyKey(game.id, m.id)]?.lastDay === kyivToday()
+            return (
+              <a
+                key={m.id}
+                className={`daily-link ${done ? 'done' : ''}`}
+                href={href.play(game.id, m.id, true)}
+                title={done ? t('daily.done') : undefined}
+              >
+                {done && <span aria-label={t('daily.done')}>✓</span>}
+                {t(m.label)}
               </a>
             )
           })}

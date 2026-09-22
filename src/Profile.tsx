@@ -1,5 +1,6 @@
 import { useState, type CSSProperties, type FormEvent } from 'react'
 import { statsKey, useAuth } from './auth'
+import { dailyKey } from './games/specs'
 import { GAMES } from './games'
 import { useI18n } from './i18n'
 import { MODES } from './modes'
@@ -108,8 +109,13 @@ export default function Profile({ onBack }: { onBack: () => void }) {
             </thead>
             <tbody>
               {GAMES.map((g) =>
-                MODES.filter((m) => g.modes.includes(m.id)).map((m, i, list) => {
-                  const s = stats[statsKey(g.id, m.id)] ?? emptyStats
+                MODES.filter((m) => g.modes.includes(m.id))
+                  .flatMap((m) => [
+                    { id: m.id, label: t(m.label), key: statsKey(g.id, m.id) },
+                    { id: `${m.id}-daily`, label: `📅 ${t(m.label)}`, key: dailyKey(g.id, m.id) },
+                  ])
+                  .map((m, i, list) => {
+                  const s = stats[m.key] ?? emptyStats
                   return (
                     <tr key={`${g.id}-${m.id}`} className={i === 0 ? 'group-start' : ''}>
                       {i === 0 && (
@@ -118,7 +124,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
                           {l(g.label)}
                         </th>
                       )}
-                      <td>{t(m.label)}</td>
+                      <td>{m.label}</td>
                       <td>{s.solved}</td>
                       <td>{s.streak}</td>
                       <td>{s.best}</td>
