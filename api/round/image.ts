@@ -33,6 +33,6 @@ export const GET = handle(async (request) => {
   const image = await fetch(source)
   if (!image.ok) return fail(502, 'server')
   return new Response(await image.arrayBuffer(), {
-    headers: { 'content-type': 'image/webp', 'cache-control': round.mode === 'ability' ? 'private, no-store' : 'private, max-age=86400' },
+    headers: { 'content-type': 'image/webp', 'cache-control': round.mode === 'ability' || duelCode ? 'private, no-store' : 'private, max-age=86400' },
   })
 })
