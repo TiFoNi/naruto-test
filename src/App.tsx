@@ -1,105 +1,196 @@
-import { useEffect } from 'react'
+import { useEffect, type CSSProperties } from 'react'
+import AuthScreen from './AuthScreen'
+import { statsKey, useAuth } from './auth'
+import { BRAND } from './brand'
 import ClassicMode from './ClassicMode'
+import Dashboard from './Dashboard'
 import ImageMode from './ImageMode'
+import Profile from './Profile'
 import { GAMES, gameById } from './games'
-import type { Game, GameId } from './games/types'
-import { emptyStats, useStoredState, type Stats } from './storage'
+import type { Game } from './games/types'
+import { LANGS, useI18n } from './i18n'
+import { MODES, type ModeId } from './modes'
+import { href, navigate, useRoute } from './router'
+import { average, emptyStats, type Stats } from './stats'
 
-type Mode = 'classic' | 'image'
-
-const statsKey = (game: GameId, mode: Mode) => (game === 'naruto' ? `stats-${mode}` : `stats-${game}-${mode}`)
-
-function useModeStats(key: string) {
-  const [stats, setStats] = useStoredState<Stats>(key, emptyStats)
-  const solved = (guesses: number) =>
-    setStats((s) => {
-      const streak = s.streak + 1
-      return { solved: s.solved + 1, streak, best: Math.max(s.best, streak), totalGuesses: s.totalGuesses + guesses }
-    })
-  const gaveUp = () => setStats((s) => ({ ...s, streak: 0 }))
-  return { stats, solved, gaveUp }
+function StatsBar({ stats }: { stats: Stats }) {
+  const { t } = useI18n()
+  const items = [
+    [t('stats.solved'), stats.solved],
+    [t('stats.streak'), stats.streak],
+    [t('stats.best'), stats.best],
+    [t('stats.avg'), average(stats)],
+  ] as const
+  return (
+    <dl className="stats">
+      {items.map(([label, value]) => (
+        <div key={label}>
+          <dt>{label}</dt>
+          <dd>{value}</dd>
+        </div>
+      ))}
+    </dl>
+  )
 }
 
-function GameModes({ game, mode, visible }: { game: Game; mode: Mode; visible: boolean }) {
-  const classic = useModeStats(statsKey(game.id, 'classic'))
-  const image = useModeStats(statsKey(game.id, 'image'))
-  const current = mode === 'classic' ? classic : image
+function GameView({ game, mode, visible }: { game: Game; mode: ModeId; visible: boolean }) {
+  const { stats, record } = useAuth()
+  const { t, l } = useI18n()
+  const statsFor = (m: ModeId) => stats[statsKey(game.id, m)] ?? emptyStats
+  const handlers = (m: ModeId) => ({
+    stats: statsFor(m),
+    onSolved: (guesses: number) => record(game.id, m, true, guesses),
+    onGaveUp: () => record(game.id, m, false, 1),
+  })
 
   return (
-    <div hidden={!visible}>
-      <div className="stats">
+    <div className="game-view" hidden={!visible}>
+      <section className="game-head">
         <div>
-          <b>{current.stats.solved}</b>угадано
+          <h1>{l(game.label)}</h1>
+          <div className="mode-tabs" role="tablist">
+            {MODES.filter((m) => game.modes.includes(m.id)).map((m) => (
+              <a key={m.id} role="tab" aria-selected={mode === m.id} className={mode === m.id ? 'active' : ''} href={href.play(game.id, m.id)}>
+                {t(m.label)}
+              </a>
+            ))}
+          </div>
         </div>
-        <div>
-          <b>{current.stats.streak}</b>серия
-        </div>
-        <div>
-          <b>{current.stats.best}</b>рекорд
-        </div>
-        <div>
-          <b>{current.stats.solved ? (current.stats.totalGuesses / current.stats.solved).toFixed(1) : '–'}</b>
-          ср. попыток
-        </div>
-      </div>
+        <StatsBar stats={statsFor(mode)} />
+      </section>
       <div hidden={mode !== 'classic'}>
-        <ClassicMode game={game} active={visible && mode === 'classic'} stats={classic.stats} onSolved={classic.solved} onGaveUp={classic.gaveUp} />
+        <ClassicMode game={game} active={visible && mode === 'classic'} {...handlers('classic')} />
       </div>
       <div hidden={mode !== 'image'}>
-        <ImageMode game={game} active={visible && mode === 'image'} stats={image.stats} onSolved={image.solved} onGaveUp={image.gaveUp} />
+        <ImageMode game={game} active={visible && mode === 'image'} {...handlers('image')} />
       </div>
     </div>
   )
 }
 
+function LangSwitch() {
+  const { lang, setLang, t } = useI18n()
+  return (
+    <div className="lang-switch" role="group" aria-label={t('nav.language')}>
+      {LANGS.map((l) => (
+        <button key={l.id} className={lang === l.id ? 'active' : ''} aria-pressed={lang === l.id} onClick={() => setLang(l.id)}>
+          {l.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 export default function App() {
-  const [gameId, setGameId] = useStoredState<GameId>('game', 'naruto')
-  const [mode, setMode] = useStoredState<Mode>('mode', 'classic')
-  const game = gameById(gameId)
+  const { user, loading, logout } = useAuth()
+  const { t, l } = useI18n()
+  const route = useRoute()
+  const game = route.name === 'play' ? gameById(route.game) : null
+  const accent = user && game ? game.accent : BRAND.accent
 
   useEffect(() => {
-    document.documentElement.dataset.game = game.id
-  }, [game.id])
+    document.documentElement.style.setProperty('--accent', accent)
+  }, [accent])
 
-  const modes: { id: Mode; label: string; icon: string }[] = [
-    { id: 'classic', label: 'Классика', icon: '?' },
-    { id: 'image', label: game.image.label, icon: '🖼' },
-  ]
+  useEffect(() => {
+    if (!loading && !user) navigate(href.home)
+  }, [loading, user])
 
   return (
     <div className="app">
-      <header>
-        <nav className="games">
-          {GAMES.map((g) => (
-            <button key={g.id} className={`game-button ${g.id === game.id ? 'active' : ''}`} onClick={() => setGameId(g.id)}>
-              {g.label}
-            </button>
-          ))}
-        </nav>
-        <h1 className="logo">
-          {game.logo[0]}
-          <span>{game.logo[1]}</span>
-        </h1>
-        <div className="tagline">бесконечный режим</div>
-        <nav className="modes">
-          {modes.map((m) => (
-            <button key={m.id} className={`mode-button ${mode === m.id ? 'active' : ''}`} onClick={() => setMode(m.id)}>
-              <span className="mode-icon">{m.icon}</span>
-              {m.label}
-            </button>
-          ))}
-        </nav>
+      <header className="topbar">
+        <a className="brand" href={href.home}>
+          <span className="brand-mark" aria-hidden>
+            {BRAND.mark}
+          </span>
+          <span className="brand-name">
+            {BRAND.parts[0]}
+            <em>{BRAND.parts[1]}</em>
+          </span>
+        </a>
+        <div className="topbar-right">
+          <LangSwitch />
+          {user && (
+            <div className="account">
+              <a className={`account-link ${route.name === 'profile' ? 'active' : ''}`} href={href.profile} title={t('nav.profile')}>
+                <span className="avatar small" aria-hidden>
+                  {user.nickname.charAt(0).toUpperCase()}
+                </span>
+                <span className="account-name">{user.nickname}</span>
+              </a>
+              <button className="logout" onClick={logout}>
+                {t('nav.logout')}
+              </button>
+            </div>
+          )}
+        </div>
       </header>
 
-      <main>
-        {GAMES.map((g) => (
-          <GameModes key={g.id} game={g} mode={mode} visible={g.id === game.id} />
-        ))}
-      </main>
+      {loading ? (
+        <div className="card center muted">{t('loading')}</div>
+      ) : user ? (
+        <>
+          <div hidden={route.name !== 'home'}>
+            <Dashboard />
+          </div>
+          {route.name === 'profile' && <Profile onBack={() => navigate(href.home)} />}
+          <div className="play" hidden={route.name !== 'play'}>
+            <div className="play-nav">
+              <a className="back" href={href.home}>
+                {t('play.back')}
+              </a>
+              <nav className="game-tabs" aria-label={t('profile.game')}>
+                {GAMES.map((g) => (
+                  <a
+                    key={g.id}
+                    className={g.id === game?.id ? 'active' : ''}
+                    style={{ '--tab-accent': g.accent } as CSSProperties}
+                    href={href.play(g.id, route.name === 'play' && g.modes.includes(route.mode) ? route.mode : g.modes[0])}
+                  >
+                    <span className="dot" />
+                    {l(g.label)}
+                  </a>
+                ))}
+              </nav>
+            </div>
+            <main>
+              {GAMES.map((g) => (
+                <GameView
+                  key={g.id}
+                  game={g}
+                  mode={route.name === 'play' && route.game === g.id ? route.mode : g.modes[0]}
+                  visible={route.name === 'play' && route.game === g.id}
+                />
+              ))}
+            </main>
+          </div>
+        </>
+      ) : (
+        <main className="landing">
+          <div className="landing-copy">
+            <h1>
+              {BRAND.parts[0]}
+              <em>{BRAND.parts[1]}</em>
+            </h1>
+            <p>{t('brand.tagline')}</p>
+            <ul className="landing-games">
+              {GAMES.map((g) => (
+                <li key={g.id} style={{ '--tab-accent': g.accent } as CSSProperties}>
+                  <span className="dot" />
+                  {l(g.label)}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <AuthScreen />
+        </main>
+      )}
 
       <footer>
-        Фанатский проект · данные и изображения: Naruto Wiki, Dattebayo API, Valve, OpenDota, Dota 2 Wiki, Attack on Titan Wiki,
-        Bleach Wiki, MyAnimeList
+        <p>{t('footer.disclaimer')}</p>
+        <p>
+          {t('footer.data')}: Naruto Wiki, Dattebayo API, Valve, OpenDota, Dota 2 Wiki, Attack on Titan Wiki, Bleach Wiki, MyAnimeList.
+        </p>
       </footer>
     </div>
   )

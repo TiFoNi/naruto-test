@@ -1,6 +1,6 @@
 import raw from '../data/aot.json'
 import atlas from '../data/aot-atlas.json'
-import { compareLists, compareOrdered, exact, type Column, type Entity, type Game } from './types'
+import { cells, compareOrdered, l10n, type Column, type Entity, type Game } from './types'
 
 type Character = Entity & {
   nameEn: string
@@ -14,45 +14,37 @@ type Character = Entity & {
   arcIndex: number
 }
 
-const EMPTY = 'Нет'
 const base = import.meta.env.BASE_URL
-
-const list = (key: 'species' | 'affiliations' | 'occupations' | 'titans') => (g: Character, a: Character) => ({
-  verdict: compareLists(g[key], a[key]),
-  text: g[key].join(', ') || EMPTY,
-})
+const { list, exact } = cells<Character>()
 
 const columns: Column<Character>[] = [
-  { title: 'Пол', render: (g, a) => ({ verdict: exact(g.gender, a.gender), text: g.gender }) },
-  { title: 'Вид', render: list('species') },
-  { title: 'Принадлеж­ность', render: list('affiliations') },
-  { title: 'Род занятий', render: list('occupations') },
-  { title: 'Сила титана', render: list('titans') },
-  { title: 'Статус', render: (g, a) => ({ verdict: exact(g.status, a.status), text: g.status }) },
-  { title: 'Дебют', render: (g, a) => ({ ...compareOrdered(g.arcIndex, a.arcIndex), text: g.arc }) },
+  { title: l10n('Пол', 'Стать', 'Gender'), render: exact('gender') },
+  { title: l10n('Вид', 'Вид', 'Species'), render: list('species') },
+  { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), render: list('affiliations') },
+  { title: l10n('Род занятий', 'Рід занять', 'Occupation'), render: list('occupations') },
+  { title: l10n('Сила титана', 'Сила титана', 'Titan power'), render: list('titans') },
+  { title: l10n('Статус', 'Статус', 'Status'), render: exact('status') },
+  { title: l10n('Дебют', 'Дебют', 'Debut'), render: (g, a, { tv }) => ({ ...compareOrdered(g.arcIndex, a.arcIndex), text: tv(g.arc) }) },
 ]
 
 export const aot: Game<Character> = {
   id: 'aot',
-  label: 'Атака титанов',
-  logo: ['TITAN', 'DLE'],
+  label: l10n('Атака титанов', 'Атака титанів', 'Attack on Titan'),
+  category: 'anime',
+  description: l10n(
+    'Разведкорпус, воины Марли и держатели Девяти титанов — от падения Шиганшины до Гула.',
+    'Розвідкорпус, воїни Марлі та носії Дев’яти титанів — від падіння Шіґаншини до Гулу.',
+    'The Survey Corps, Marley’s warriors and the Nine Titans — from the fall of Shiganshina to the Rumbling.',
+  ),
+  accent: '#b89b62',
+  modes: ['classic', 'image'],
+  featured: ['Eren Yeager', 'Mikasa Ackerman', 'Levi Ackerman', 'Armin Arlert'],
+  unit: 'character',
   entities: raw as Character[],
   columns,
-  searchTerms: (c) => [c.name, c.nameEn],
-  subtitle: (c) => c.nameEn,
   atlas,
   atlasUrl: `${base}aot/thumbs.webp`,
   fullUrl: (c) => `${base}aot/full/${c.id}.webp`,
-  placeholder: 'Введи имя персонажа…',
-  classic: {
-    title: 'Угадай персонажа из «Атаки титанов»',
-    prompt: 'Введи любого персонажа — клетки подскажут, насколько ты близко.',
-  },
-  image: {
-    label: 'Картинка',
-    title: 'Кто на картинке?',
-    prompt: 'С каждой неудачной попыткой картинка немного отдаляется.',
-    wide: false,
-  },
-  legend: { up: 'Дебют позже', down: 'Дебют раньше' },
+  wideImages: false,
+  legend: 'debut',
 }

@@ -1,6 +1,6 @@
 import raw from '../data/characters.json'
 import atlas from '../data/atlas.json'
-import { compareLists, compareOrdered, exact, type Column, type Entity, type Game, type Icon } from './types'
+import { cells, compareLists, compareOrdered, l10n, EMPTY, type Column, type Entity, type Game, type Icon } from './types'
 
 type Character = Entity & {
   nameEn: string
@@ -15,8 +15,8 @@ type Character = Entity & {
   arcIndex: number
 }
 
-const EMPTY = 'Нет'
 const base = import.meta.env.BASE_URL
+const { list, exact } = cells<Character>()
 
 const NATURE_ICONS: Record<string, Omit<Icon, 'label'>> = {
   Катон: { symbol: '火', color: '#e8542c' },
@@ -28,49 +28,41 @@ const NATURE_ICONS: Record<string, Omit<Icon, 'label'>> = {
   Ян: { symbol: '陽', color: '#f2efe6', dark: true },
 }
 
-const list = (key: 'affiliations' | 'jutsuTypes' | 'kekkeiGenkai' | 'attributes') => (g: Character, a: Character) => ({
-  verdict: compareLists(g[key], a[key]),
-  text: g[key].join(', ') || EMPTY,
-})
-
 const columns: Column<Character>[] = [
-  { title: 'Пол', render: (g, a) => ({ verdict: exact(g.gender, a.gender), text: g.gender }) },
-  { title: 'Принадлеж­ность', render: list('affiliations') },
-  { title: 'Виды дзюцу', render: list('jutsuTypes') },
-  { title: 'Кеккей генкай', render: list('kekkeiGenkai') },
+  { title: l10n('Пол', 'Стать', 'Gender'), render: exact('gender') },
+  { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), render: list('affiliations') },
+  { title: l10n('Виды дзюцу', 'Види дзюцу', 'Jutsu types'), render: list('jutsuTypes') },
+  { title: l10n('Кеккей генкай', 'Кеккей ґенкай', 'Kekkei genkai'), render: list('kekkeiGenkai') },
   {
-    title: 'Природа чакры',
-    render: (g, a) => ({
+    title: l10n('Природа чакры', 'Природа чакри', 'Nature type'),
+    render: (g, a, { tv }) => ({
       verdict: compareLists(g.natureTypes, a.natureTypes),
-      text: g.natureTypes.join(', ') || EMPTY,
-      icons: g.natureTypes.map((n) => ({ label: n, ...NATURE_ICONS[n] })),
+      text: g.natureTypes.map(tv).join(', ') || tv(EMPTY),
+      icons: g.natureTypes.map((n) => ({ label: tv(n), ...NATURE_ICONS[n] })),
     }),
   },
-  { title: 'Атрибуты', render: list('attributes') },
-  { title: 'Дебют', render: (g, a) => ({ ...compareOrdered(g.arcIndex, a.arcIndex), text: g.arc }) },
+  { title: l10n('Атрибуты', 'Атрибути', 'Attributes'), render: list('attributes') },
+  { title: l10n('Дебют', 'Дебют', 'Debut'), render: (g, a, { tv }) => ({ ...compareOrdered(g.arcIndex, a.arcIndex), text: tv(g.arc) }) },
 ]
 
 export const naruto: Game<Character> = {
   id: 'naruto',
-  label: 'Наруто',
-  logo: ['NARUTO', 'DLE'],
+  label: l10n('Наруто', 'Наруто', 'Naruto'),
+  category: 'anime',
+  description: l10n(
+    'Шиноби Конохи, Акацуки, каге и хвостатые — от Пролога до финала Четвёртой войны.',
+    'Шинобі Конохи, Акацукі, каґе та хвостаті — від Прологу до фіналу Четвертої війни.',
+    'Konoha shinobi, Akatsuki, Kage and tailed beasts — from the Prologue to the end of the Fourth War.',
+  ),
+  accent: '#ff8a1f',
+  modes: ['classic', 'image'],
+  featured: ['Naruto Uzumaki', 'Sasuke Uchiha', 'Kakashi Hatake', 'Itachi Uchiha'],
+  unit: 'character',
   entities: raw as Character[],
   columns,
-  searchTerms: (c) => [c.name, c.nameEn],
-  subtitle: (c) => c.nameEn,
   atlas,
   atlasUrl: `${base}characters/thumbs.webp`,
   fullUrl: (c) => `${base}characters/full/${c.id}.webp`,
-  placeholder: 'Введи имя персонажа…',
-  classic: {
-    title: 'Угадай персонажа из «Наруто»',
-    prompt: 'Введи любого персонажа — клетки подскажут, насколько ты близко.',
-  },
-  image: {
-    label: 'Картинка',
-    title: 'Кто на картинке?',
-    prompt: 'С каждой неудачной попыткой картинка немного отдаляется.',
-    wide: false,
-  },
-  legend: { up: 'Дебют позже', down: 'Дебют раньше' },
+  wideImages: false,
+  legend: 'debut',
 }

@@ -1,17 +1,19 @@
 import type { Entity, Game } from './games/types'
+import { useI18n } from './i18n'
 
 type Props = { game: Game; entity: Entity; size?: number; className?: string }
 
 const percent = (index: number, count: number) => (count > 1 ? (index / (count - 1)) * 100 : 0)
 
 export default function Thumb({ game, entity, size, className }: Props) {
+  const { name } = useI18n()
   const { cols, rows } = game.atlas
   const col = entity.thumb % cols
   const row = Math.floor(entity.thumb / cols)
   return (
     <div
       role="img"
-      aria-label={entity.name}
+      aria-label={name(entity)}
       className={`thumb ${className ?? ''}`}
       style={{
         width: size,

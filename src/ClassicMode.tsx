@@ -3,7 +3,8 @@ import CharacterSearch from './CharacterSearch'
 import RoundResult from './RoundResult'
 import Thumb from './Thumb'
 import type { Entity, Game } from './games/types'
-import type { Stats } from './storage'
+import { useI18n } from './i18n'
+import type { Stats } from './stats'
 import { pickAnswer, preload } from './util'
 
 const sizeClass = (text: string) => (text.length > 44 ? 'size-xs' : text.length > 26 ? 'size-s' : '')
@@ -11,6 +12,7 @@ const sizeClass = (text: string) => (text.length > 44 ? 'size-xs' : text.length 
 type Props = { game: Game; active: boolean; onSolved: (guesses: number) => void; onGaveUp: () => void; stats: Stats }
 
 export default function ClassicMode({ game, active, onSolved, onGaveUp, stats }: Props) {
+  const { t, l, tv, lang, name } = useI18n()
   const [answer, setAnswer] = useState(() => pickAnswer(game))
   const [guesses, setGuesses] = useState<Entity[]>([])
   const [gaveUp, setGaveUp] = useState(false)
@@ -34,14 +36,14 @@ export default function ClassicMode({ game, active, onSolved, onGaveUp, stats }:
     setGaveUp(false)
   }
 
+  const legend = game.legend === 'debut' ? (['legend.debutLater', 'legend.debutEarlier'] as const) : (['legend.higher', 'legend.lower'] as const)
+
   return (
     <section className="mode">
-      <div className="panel intro">
-        <h2>{game.classic.title}</h2>
-        <p>{game.classic.prompt}</p>
-        <p className="muted">
-          Раунд {stats.solved + (won ? 0 : 1)} · попыток: {guesses.length}
-        </p>
+      <div className="card intro">
+        <h2>{t('play.classicTitle')}</h2>
+        <p className="muted">{t('play.classicPrompt')}</p>
+        <p className="round">{t('play.round', { round: stats.solved + (won ? 0 : 1), guesses: guesses.length })}</p>
       </div>
 
       {over ? (
@@ -57,7 +59,7 @@ export default function ClassicMode({ game, active, onSolved, onGaveUp, stats }:
                 onGaveUp()
               }}
             >
-              Сдаюсь, покажи ответ
+              {t('play.giveUp')}
             </button>
           )}
         </>
@@ -67,24 +69,24 @@ export default function ClassicMode({ game, active, onSolved, onGaveUp, stats }:
         <div className="grid-scroll">
           <div className="grid" style={{ ['--cols' as string]: game.columns.length + 1 }}>
             <div className="grid-row header">
-              <div>{game.id === 'dota' ? 'Герой' : 'Персонаж'}</div>
+              <div>{t(game.unit === 'hero' ? 'play.hero' : 'play.character')}</div>
               {game.columns.map((c) => (
-                <div key={c.title}>{c.title}</div>
+                <div key={c.title.en}>{l(c.title)}</div>
               ))}
             </div>
             {guesses.map((g) => (
               <div className="grid-row" key={g.id}>
-                <div className="cell portrait" title={g.name}>
+                <div className="cell portrait" title={name(g)}>
                   <Thumb game={game} entity={g} className="portrait-thumb" />
-                  <span className="portrait-name">{g.name}</span>
+                  <span className="portrait-name">{name(g)}</span>
                 </div>
                 {game.columns.map((col, i) => {
-                  const r = col.render(g, answer)
+                  const r = col.render(g, answer, { tv, lang })
                   return (
                     <div
-                      key={col.title}
+                      key={col.title.en}
                       title={r.text}
-                      className={`cell ${r.verdict} ${r.arrow ? `arrow-${r.arrow}` : ''} ${sizeClass(r.text)}`}
+                      className={`cell ${r.verdict} ${sizeClass(r.text)}`}
                       style={{ animationDelay: `${(i + 1) * 0.25}s` }}
                     >
                       {r.icons?.length ? (
@@ -99,6 +101,11 @@ export default function ClassicMode({ game, active, onSolved, onGaveUp, stats }:
                       ) : (
                         <span>{r.text}</span>
                       )}
+                      {r.arrow && (
+                        <b className="arrow" aria-label={t(r.arrow === 'up' ? legend[0] : legend[1])}>
+                          {r.arrow === 'up' ? '↑' : '↓'}
+                        </b>
+                      )}
                     </div>
                   )
                 })}
@@ -108,16 +115,13 @@ export default function ClassicMode({ game, active, onSolved, onGaveUp, stats }:
         </div>
       )}
 
-      <div className="panel legend">
-        <h3>Цвета</h3>
-        <div className="legend-items">
-          <div><span className="swatch correct" />Верно</div>
-          <div><span className="swatch partial" />Частично</div>
-          <div><span className="swatch wrong" />Неверно</div>
-          <div><span className="swatch wrong arrow-up" />{game.legend.up}</div>
-          <div><span className="swatch wrong arrow-down" />{game.legend.down}</div>
-        </div>
-      </div>
+      <ul className="legend">
+        <li><span className="swatch correct" />{t('legend.correct')}</li>
+        <li><span className="swatch partial" />{t('legend.partial')}</li>
+        <li><span className="swatch wrong" />{t('legend.wrong')}</li>
+        <li><b className="arrow">↑</b>{t(legend[0])}</li>
+        <li><b className="arrow">↓</b>{t(legend[1])}</li>
+      </ul>
     </section>
   )
 }

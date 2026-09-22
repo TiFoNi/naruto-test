@@ -3,7 +3,8 @@ import CharacterSearch from './CharacterSearch'
 import RoundResult from './RoundResult'
 import Thumb from './Thumb'
 import type { Entity, Game } from './games/types'
-import type { Stats } from './storage'
+import { useI18n } from './i18n'
+import type { Stats } from './stats'
 import { pickAnswer, preload } from './util'
 
 const ZOOM_LEVELS = [7, 5.6, 4.5, 3.6, 2.9, 2.35, 1.9, 1.55, 1.25, 1]
@@ -35,6 +36,7 @@ function pickFocus(img: HTMLImageElement): Focus {
 type Props = { game: Game; active: boolean; onSolved: (guesses: number) => void; onGaveUp: () => void; stats: Stats }
 
 export default function ImageMode({ game, active, onSolved, onGaveUp, stats }: Props) {
+  const { t, name } = useI18n()
   const [answer, setAnswer] = useState(() => pickAnswer(game))
   const [upcoming, setUpcoming] = useState(() => pickAnswer(game))
   const [focus, setFocus] = useState<Focus | null>(null)
@@ -69,11 +71,11 @@ export default function ImageMode({ game, active, onSolved, onGaveUp, stats }: P
 
   return (
     <section className="mode">
-      <div className="panel intro">
-        <h2>{game.image.title}</h2>
-        <p>{game.image.prompt}</p>
-        <div className={`zoom-frame ${game.image.wide ? 'wide' : ''}`}>
-          {!focus && <div className="zoom-loading">{retry > MAX_RETRIES ? 'Не удалось загрузить картинку' : 'Загрузка…'}</div>}
+      <div className="card intro">
+        <h2>{t('play.imageTitle')}</h2>
+        <p className="muted">{t('play.imagePrompt')}</p>
+        <div className={`zoom-frame ${game.wideImages ? 'wide' : ''}`}>
+          {!focus && <div className="zoom-loading">{t(retry > MAX_RETRIES ? 'image.failed' : 'image.loading')}</div>}
           <img
             key={`${answer.id}-${retry}`}
             src={retry ? `${game.fullUrl(answer)}?retry=${retry}` : game.fullUrl(answer)}
@@ -90,12 +92,12 @@ export default function ImageMode({ game, active, onSolved, onGaveUp, stats }: P
           />
         </div>
         <div className="zoom-meta">
-          <span className="muted">
-            Раунд {stats.solved + (won ? 0 : 1)} · попыток: {guesses.length} · зум ×{zoom.toFixed(1)}
+          <span className="round">
+            {t('play.round', { round: stats.solved + (won ? 0 : 1), guesses: guesses.length })} · {t('play.zoom', { zoom: zoom.toFixed(1) })}
           </span>
           <label className="toggle">
             <input type="checkbox" checked={grayscale} onChange={(e) => setGrayscale(e.target.checked)} />
-            Чёрно-белое
+            {t('image.grayscale')}
           </label>
         </div>
       </div>
@@ -113,7 +115,7 @@ export default function ImageMode({ game, active, onSolved, onGaveUp, stats }: P
                 onGaveUp()
               }}
             >
-              Сдаюсь, покажи ответ
+              {t('play.giveUp')}
             </button>
           )}
         </>
@@ -123,7 +125,7 @@ export default function ImageMode({ game, active, onSolved, onGaveUp, stats }: P
         {guesses.map((g) => (
           <div key={g.id} className={`guess-chip ${g.id === answer.id ? 'correct' : 'wrong'}`}>
             <Thumb game={game} entity={g} size={44} />
-            <span>{g.name}</span>
+            <span>{name(g)}</span>
           </div>
         ))}
       </div>

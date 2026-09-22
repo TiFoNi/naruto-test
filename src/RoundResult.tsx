@@ -1,36 +1,34 @@
 import { useEffect, useRef } from 'react'
 import type { Entity, Game } from './games/types'
-import type { Stats } from './storage'
+import { useI18n } from './i18n'
+import type { Stats } from './stats'
 
 type Props = { game: Game; answer: Entity; guesses: number; won: boolean; stats: Stats; onNext: () => void }
 
 export default function RoundResult({ game, answer, guesses, won, stats, onNext }: Props) {
+  const { t, name, alt } = useI18n()
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Enter' && ref.current?.offsetParent) onNext()
     }
-    const t = setTimeout(() => window.addEventListener('keydown', onKey), 300)
+    const timer = setTimeout(() => window.addEventListener('keydown', onKey), 300)
     return () => {
-      clearTimeout(t)
+      clearTimeout(timer)
       window.removeEventListener('keydown', onKey)
     }
   }, [onNext])
 
-  const subtitle = game.subtitle(answer)
-
   return (
-    <div ref={ref} className={`panel result ${won ? 'won' : 'lost'}`}>
-      <h2>{won ? 'Угадал!' : 'Не в этот раз'}</h2>
-      <img className="result-image" src={game.fullUrl(answer)} alt={answer.name} />
-      <div className="result-name">{answer.name}</div>
-      {subtitle && <div className="result-name-en">{subtitle}</div>}
-      <p>
-        Попыток: {guesses} · Серия: {stats.streak} · Рекорд: {stats.best}
-      </p>
+    <div ref={ref} className={`card result ${won ? 'won' : 'lost'}`}>
+      <h2>{t(won ? 'result.won' : 'result.lost')}</h2>
+      <img className="result-image" src={game.fullUrl(answer)} alt={name(answer)} />
+      <div className="result-name">{name(answer)}</div>
+      {alt(answer) && <div className="result-name-en">{alt(answer)}</div>}
+      <p className="round">{t('result.summary', { guesses, streak: stats.streak, best: stats.best })}</p>
       <button className="primary" onClick={onNext}>
-        Следующий ➜
+        {t('result.next')}
       </button>
     </div>
   )

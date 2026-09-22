@@ -1,6 +1,6 @@
 import raw from '../data/bleach.json'
 import atlas from '../data/bleach-atlas.json'
-import { compareLists, compareOrdered, exact, type Cell, type Column, type Entity, type Game } from './types'
+import { cells, compareOrdered, l10n, EMPTY, type Cell, type Column, type Entity, type Game, type RenderContext } from './types'
 
 type Character = Entity & {
   nameEn: string
@@ -14,51 +14,45 @@ type Character = Entity & {
   arcIndex: number
 }
 
-const EMPTY = 'Нет'
 const base = import.meta.env.BASE_URL
+const { list, exact } = cells<Character>()
 
-const list = (key: 'races' | 'affiliations' | 'ranks' | 'powers') => (g: Character, a: Character) => ({
-  verdict: compareLists(g[key], a[key]),
-  text: g[key].join(', ') || EMPTY,
-})
+const DIVISION = l10n('{n}-й отряд', '{n}-й загін', 'Division {n}')
 
-function division(g: Character, a: Character): Cell {
-  const text = g.division ? `${g.division}-й отряд` : EMPTY
+function division(g: Character, a: Character, { tv, lang }: RenderContext): Cell {
+  const text = g.division ? DIVISION[lang].replace('{n}', String(g.division)) : tv(EMPTY)
   if (g.division && a.division) return { ...compareOrdered(g.division, a.division), text }
   return { verdict: g.division === a.division ? 'correct' : 'wrong', text }
 }
 
 const columns: Column<Character>[] = [
-  { title: 'Пол', render: (g, a) => ({ verdict: exact(g.gender, a.gender), text: g.gender }) },
-  { title: 'Раса', render: list('races') },
-  { title: 'Принадлеж­ность', render: list('affiliations') },
-  { title: 'Должность', render: list('ranks') },
-  { title: 'Отряд', render: division },
-  { title: 'Силы', render: list('powers') },
-  { title: 'Дебют', render: (g, a) => ({ ...compareOrdered(g.arcIndex, a.arcIndex), text: g.arc }) },
+  { title: l10n('Пол', 'Стать', 'Gender'), render: exact('gender') },
+  { title: l10n('Раса', 'Раса', 'Race'), render: list('races') },
+  { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), render: list('affiliations') },
+  { title: l10n('Должность', 'Посада', 'Rank'), render: list('ranks') },
+  { title: l10n('Отряд', 'Загін', 'Division'), render: division },
+  { title: l10n('Силы', 'Сили', 'Powers'), render: list('powers') },
+  { title: l10n('Дебют', 'Дебют', 'Debut'), render: (g, a, { tv }) => ({ ...compareOrdered(g.arcIndex, a.arcIndex), text: tv(g.arc) }) },
 ]
 
 export const bleach: Game<Character> = {
   id: 'bleach',
-  label: 'Блич',
-  logo: ['BLEACH', 'DLE'],
+  label: l10n('Блич', 'Бліч', 'Bleach'),
+  category: 'anime',
+  description: l10n(
+    'Шинигами Готея 13, арранкары Айзена и квинси Ванденрейха — от агента шинигами до Тысячелетней войны.',
+    'Шінігамі Ґотею 13, арранкари Айзена та квінсі Ванденрайху — від агента шінігамі до Тисячолітньої війни.',
+    'Gotei 13 Shinigami, Aizen’s Arrancar and the Wandenreich Quincy — from Substitute Shinigami to the Thousand-Year Blood War.',
+  ),
+  accent: '#5aa9ff',
+  modes: ['classic', 'image'],
+  featured: ['Ichigo Kurosaki', 'Rukia Kuchiki', 'Sousuke Aizen', 'Byakuya Kuchiki'],
+  unit: 'character',
   entities: raw as Character[],
   columns,
-  searchTerms: (c) => [c.name, c.nameEn],
-  subtitle: (c) => c.nameEn,
   atlas,
   atlasUrl: `${base}bleach/thumbs.webp`,
   fullUrl: (c) => `${base}bleach/full/${c.id}.webp`,
-  placeholder: 'Введи имя персонажа…',
-  classic: {
-    title: 'Угадай персонажа из «Блича»',
-    prompt: 'Введи любого персонажа — клетки подскажут, насколько ты близко.',
-  },
-  image: {
-    label: 'Картинка',
-    title: 'Кто на картинке?',
-    prompt: 'С каждой неудачной попыткой картинка немного отдаляется.',
-    wide: false,
-  },
-  legend: { up: 'Позже / больше', down: 'Раньше / меньше' },
+  wideImages: false,
+  legend: 'debut',
 }

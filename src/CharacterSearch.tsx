@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Thumb from './Thumb'
 import type { Entity, Game } from './games/types'
+import { ruToUk, useI18n } from './i18n'
 import { normalize } from './util'
 
 type Props = {
@@ -11,6 +12,7 @@ type Props = {
 }
 
 export default function CharacterSearch({ game, exclude, active: visible, onPick }: Props) {
+  const { t, name, alt } = useI18n()
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
   const input = useRef<HTMLInputElement>(null)
@@ -20,7 +22,11 @@ export default function CharacterSearch({ game, exclude, active: visible, onPick
   }, [visible])
 
   const index = useMemo(
-    () => game.entities.map((e) => ({ e, terms: game.searchTerms(e).map(normalize) })),
+    () =>
+      game.entities.map((e) => ({
+        e,
+        terms: [e.name, ruToUk(e.name), e.nameEn, e.aliases].filter((s): s is string => !!s).map(normalize),
+      })),
     [game],
   )
 
@@ -28,11 +34,11 @@ export default function CharacterSearch({ game, exclude, active: visible, onPick
     const q = normalize(query.trim())
     if (!q) return []
     const rank = ({ e, terms }: (typeof index)[number]) => {
-      const tier = terms.some((t) => t.startsWith(q))
+      const tier = terms.some((term) => term.startsWith(q))
         ? 0
-        : terms.some((t) => t.split(/[\s-]+/).some((w) => w.startsWith(q)))
+        : terms.some((term) => term.split(/[\s-]+/).some((w) => w.startsWith(q)))
           ? 1
-          : terms.some((t) => t.includes(q))
+          : terms.some((term) => term.includes(q))
             ? 2
             : -1
       return tier < 0 ? -1 : tier * 2 + (e.answer ? 0 : 1)
@@ -59,7 +65,7 @@ export default function CharacterSearch({ game, exclude, active: visible, onPick
         <input
           ref={input}
           value={query}
-          placeholder={game.placeholder}
+          placeholder={t(game.unit === 'hero' ? 'play.searchHero' : 'play.searchCharacter')}
           onChange={(e) => {
             setQuery(e.target.value)
             setActive(0)
@@ -78,7 +84,7 @@ export default function CharacterSearch({ game, exclude, active: visible, onPick
             }
           }}
         />
-        <button className="send" disabled={!matches.length} onClick={() => pick(matches[active])}>
+        <button className="send" aria-label={t('play.send')} disabled={!matches.length} onClick={() => pick(matches[active])}>
           ➤
         </button>
       </div>
@@ -96,8 +102,8 @@ export default function CharacterSearch({ game, exclude, active: visible, onPick
             >
               <Thumb game={game} entity={e} size={44} />
               <span className="suggestion-name">
-                {e.name}
-                {game.subtitle(e) && <small>{game.subtitle(e)}</small>}
+                {name(e)}
+                {alt(e) && <small>{alt(e)}</small>}
               </span>
             </li>
           ))}

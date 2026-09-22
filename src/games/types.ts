@@ -1,30 +1,40 @@
+import type { L10n, Lang } from '../i18n/ui'
+import type { ModeId } from '../modes'
+
 export type Verdict = 'correct' | 'partial' | 'wrong'
 
 export type Icon = { label: string; symbol: string; color: string; dark?: boolean }
 
 export type Cell = { verdict: Verdict; text: string; arrow?: 'up' | 'down'; icons?: Icon[] }
 
-export type Entity = { id: number; name: string; thumb: number; answer: boolean }
+export type Entity = { id: number; name: string; nameEn?: string; aliases?: string; thumb: number; answer: boolean }
 
-export type Column<T> = { title: string; render: (guess: T, answer: T) => Cell }
+export type Translate = (value: string) => string
+
+export type RenderContext = { tv: Translate; lang: Lang }
+
+export type Column<T> = { title: L10n; render: (guess: T, answer: T, ctx: RenderContext) => Cell }
 
 export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach'
 
+export type Category = 'anime' | 'games'
+
 export type Game<T extends Entity = Entity> = {
   id: GameId
-  label: string
-  logo: [string, string]
+  label: L10n
+  category: Category
+  description: L10n
+  accent: string
+  modes: ModeId[]
+  featured: string[]
+  unit: 'character' | 'hero'
   entities: T[]
   columns: Column<T>[]
-  searchTerms: (e: T) => string[]
-  subtitle: (e: T) => string | undefined
   atlas: { cols: number; rows: number }
   atlasUrl: string
   fullUrl: (e: T) => string
-  placeholder: string
-  classic: { title: string; prompt: string }
-  image: { label: string; title: string; prompt: string; wide: boolean }
-  legend: { up: string; down: string }
+  wideImages: boolean
+  legend: 'debut' | 'order'
 }
 
 export function compareLists(guess: string[], answer: string[]): Verdict {
@@ -39,3 +49,26 @@ export function compareOrdered(guess: number, answer: number): Pick<Cell, 'verdi
 }
 
 export const exact = (guess: string, answer: string): Verdict => (guess === answer ? 'correct' : 'wrong')
+
+export const EMPTY = 'Нет'
+
+type KeysOf<T, V> = { [K in keyof T]: T[K] extends V ? K : never }[keyof T]
+
+export function cells<T>() {
+  return {
+    list:
+      (key: KeysOf<T, string[]>) =>
+      (g: T, a: T, { tv }: RenderContext): Cell => {
+        const guess = g[key] as string[]
+        return { verdict: compareLists(guess, a[key] as string[]), text: guess.map(tv).join(', ') || tv(EMPTY) }
+      },
+    exact:
+      (key: KeysOf<T, string>) =>
+      (g: T, a: T, { tv }: RenderContext): Cell => ({
+        verdict: exact(g[key] as string, a[key] as string),
+        text: tv(g[key] as string),
+      }),
+  }
+}
+
+export const l10n = (ru: string, uk: string, en: string): L10n => ({ ru, uk, en })
