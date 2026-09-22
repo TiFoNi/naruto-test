@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import Thumb from './Thumb'
 import type { Entity, Game } from './games/types'
 import { ruToUk, useI18n } from './i18n'
@@ -18,6 +18,8 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
   const [active, setActive] = useState(0)
   const input = useRef<HTMLInputElement>(null)
   const list = useRef<HTMLUListElement>(null)
+  const box = useRef<HTMLDivElement>(null)
+  const [place, setPlace] = useState<{ up: boolean; max: number }>({ up: false, max: 400 })
 
   useEffect(() => {
     if (visible) input.current?.focus()
@@ -53,6 +55,28 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
       .map(({ x }) => x.e)
   }, [query, exclude, index])
 
+  const open = matches.length > 0
+
+  useLayoutEffect(() => {
+    if (!open) return
+    const fit = () => {
+      const rect = box.current?.getBoundingClientRect()
+      if (!rect) return
+      const gap = 12
+      const below = window.innerHeight - rect.bottom - gap
+      const above = rect.top - gap
+      const up = below < 220 && above > below
+      setPlace({ up, max: Math.max(120, Math.min(400, up ? above : below)) })
+    }
+    fit()
+    window.addEventListener('resize', fit)
+    window.addEventListener('scroll', fit, { passive: true })
+    return () => {
+      window.removeEventListener('resize', fit)
+      window.removeEventListener('scroll', fit)
+    }
+  }, [open])
+
   useEffect(() => {
     list.current?.children[active]?.scrollIntoView({ block: 'nearest' })
   }, [active])
@@ -70,7 +94,7 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
 
   return (
     <div className="search">
-      <div className="search-box">
+      <div className="search-box" ref={box}>
         <input
           ref={input}
           value={query}
@@ -104,7 +128,7 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
         </button>
       </div>
       {matches.length > 0 && (
-        <ul className="suggestions" ref={list}>
+        <ul className={`suggestions ${place.up ? 'up' : ''}`} ref={list} style={{ maxHeight: place.max }}>
           {matches.map((e, i) => (
             <li
               key={e.id}

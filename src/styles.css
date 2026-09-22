@@ -391,7 +391,6 @@ main {
   border: 1px solid var(--line);
   border-radius: 14px;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
-  max-height: min(400px, 45vh);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -2087,4 +2086,10 @@ footer p {
   .scroll-arrow {
     display: none;
   }
+}
+
+.suggestions.up {
+  top: auto;
+  bottom: calc(100% + 6px);
+  box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.45);
 }
