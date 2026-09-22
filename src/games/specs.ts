@@ -1,4 +1,4 @@
-export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'bluelock' | 'onepiece' | 'mk' | 'hxh' | 'bc'
+export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'onepiece' | 'mk' | 'hxh' | 'bc' | 'jojo'
 
 export type ModeId = 'classic' | 'image' | 'ability'
 
@@ -92,6 +92,19 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('arcIndex', 'order'),
     ],
   },
+  jojo: {
+    data: 'jojo',
+    images: 'jojo',
+    columns: [
+      col('gender', 'exact'),
+      col('species', 'list'),
+      col('powers', 'list'),
+      col('groups', 'list'),
+      col('side', 'exact'),
+      col('nation', 'exact'),
+      col('partIndex', 'order'),
+    ],
+  },
   hxh: {
     data: 'hxh',
     images: 'hxh',
@@ -127,17 +140,6 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('rank', 'exact'),
       col('styles', 'list'),
       col('status', 'exact'),
-      col('arcIndex', 'order'),
-    ],
-  },
-  bluelock: {
-    data: 'bluelock',
-    images: 'bluelock',
-    columns: [
-      col('role', 'exact'),
-      col('positions', 'list'),
-      col('country', 'exact'),
-      col('club', 'exact'),
       col('arcIndex', 'order'),
     ],
   },

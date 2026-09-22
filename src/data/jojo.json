@@ -1,0 +1,2157 @@
+[
+ {
+  "id": 2453,
+  "name": "Акира Отойши",
+  "nameEn": "Akira Otoishi",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Япония",
+  "status": "Жив",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": true,
+  "thumb": 0
+ },
+ {
+  "id": 2226,
+  "name": "Алесси",
+  "nameEn": "Alessi",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Жив",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": false,
+  "thumb": 1
+ },
+ {
+  "id": 2910,
+  "name": "Анджуро Катагири",
+  "nameEn": "Anjuro Katagiri",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Япония",
+  "status": "Жив",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": false,
+  "thumb": 2
+ },
+ {
+  "id": 2002,
+  "name": "Анне",
+  "nameEn": "Anne",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [],
+  "side": "Нейтралитет",
+  "nation": "Неизвестно",
+  "status": "Жив",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": false,
+  "thumb": 3
+ },
+ {
+  "id": 2723,
+  "name": "Ая Цуджи",
+  "nameEn": "Aya Tsuji",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Нейтралитет",
+  "nation": "Япония",
+  "status": "Мёртв",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": false,
+  "thumb": 4
+ },
+ {
+  "id": 1990,
+  "name": "Бойнго",
+  "nameEn": "Boingo",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Египет",
+  "status": "Жив",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": false,
+  "thumb": 5
+ },
+ {
+  "id": 45520,
+  "name": "Бруно Буччеллати",
+  "nameEn": "Bruno Bucciarati",
+  "gender": "Мужской",
+  "species": [
+   "Нежить"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Союзник",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 6
+ },
+ {
+  "id": 2586,
+  "name": "Бруфорд",
+  "nameEn": "Bruford",
+  "gender": "Мужской",
+  "species": [
+   "Нежить"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Призрачная кровь",
+  "partIndex": 0,
+  "answer": false,
+  "thumb": 7
+ },
+ {
+  "id": 1959,
+  "name": "Вамуу",
+  "nameEn": "Wamuu",
+  "gender": "Мужской",
+  "species": [
+   "Человек из столба"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [
+   "Люди из столбов"
+  ],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Боевая тенденция",
+  "partIndex": 1,
+  "answer": true,
+  "thumb": 8
+ },
+ {
+  "id": 2228,
+  "name": "Ванг Чан",
+  "nameEn": "Wang Chan",
+  "gender": "Мужской",
+  "species": [
+   "Нежить"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Китай",
+  "status": "Мёртв",
+  "part": "Призрачная кровь",
+  "partIndex": 0,
+  "answer": false,
+  "thumb": 9
+ },
+ {
+  "id": 2001,
+  "name": "Ванилла Айс",
+  "nameEn": "Vanilla Ice",
+  "gender": "Мужской",
+  "species": [
+   "Вампир"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 10
+ },
+ {
+  "id": 2482,
+  "name": "Векапипо",
+  "nameEn": "Wekapipo",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Спин"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Стальной шар",
+  "partIndex": 6,
+  "answer": false,
+  "thumb": 11
+ },
+ {
+  "id": 44416,
+  "name": "Винегар Доппио",
+  "nameEn": "Vinegar Doppio",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 12
+ },
+ {
+  "id": 1972,
+  "name": "Гвидо Миста",
+  "nameEn": "Guido Mista",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Союзник",
+  "nation": "Италия",
+  "status": "Жив",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 13
+ },
+ {
+  "id": 2064,
+  "name": "Георге Джоэстар Ии",
+  "nameEn": "George Joestar II",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [
+   "Семья Джостар",
+   "Фонд Спидвагона"
+  ],
+  "side": "Союзник",
+  "nation": "Британия",
+  "status": "Мёртв",
+  "part": "Боевая тенденция",
+  "partIndex": 1,
+  "answer": false,
+  "thumb": 14
+ },
+ {
+  "id": 2839,
+  "name": "Гхиаккио",
+  "nameEn": "Ghiaccio",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 15
+ },
+ {
+  "id": 2667,
+  "name": "Даниэл Дж. Дарби",
+  "nameEn": "Daniel J. D'Arby",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "США",
+  "status": "Жив",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 16
+ },
+ {
+  "id": 2523,
+  "name": "Дево",
+  "nameEn": "Devo",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "США",
+  "status": "Мёртв",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 17
+ },
+ {
+  "id": 1988,
+  "name": "Дж. Гейл",
+  "nameEn": "J. Geil",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": false,
+  "thumb": 18
+ },
+ {
+  "id": 2239,
+  "name": "Джайро Цеппели",
+  "nameEn": "Gyro Zeppeli",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд",
+   "Спин"
+  ],
+  "groups": [
+   "Отряд Джостара",
+   "Гонка Стального шара"
+  ],
+  "side": "Союзник",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Стальной шар",
+  "partIndex": 6,
+  "answer": true,
+  "thumb": 19
+ },
+ {
+  "id": 1887,
+  "name": "Джозеф Джостар",
+  "nameEn": "Joseph Joestar",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд",
+   "Хамон"
+  ],
+  "groups": [
+   "Семья Джостар",
+   "Отряд Джостара",
+   "Фонд Спидвагона"
+  ],
+  "side": "Союзник",
+  "nation": "Британия",
+  "status": "Жив",
+  "part": "Боевая тенденция",
+  "partIndex": 1,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 1900,
+  "name": "Джолин Куджо",
+  "nameEn": "Jolyne Cujoh",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Семья Джостар",
+   "Отряд Джостара",
+   "Тюрьма Грин Долфин",
+   "Фонд Спидвагона"
+  ],
+  "side": "Союзник",
+  "nation": "США",
+  "status": "Мёртв",
+  "part": "Каменный океан",
+  "partIndex": 5,
+  "answer": true,
+  "thumb": 21
+ },
+ {
+  "id": 1886,
+  "name": "Джонатан Джостар",
+  "nameEn": "Jonathan Joestar",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд",
+   "Хамон"
+  ],
+  "groups": [
+   "Семья Джостар",
+   "Отряд Джостара"
+  ],
+  "side": "Союзник",
+  "nation": "Британия",
+  "status": "Мёртв",
+  "part": "Призрачная кровь",
+  "partIndex": 0,
+  "answer": true,
+  "thumb": 22
+ },
+ {
+  "id": 2005,
+  "name": "Джонни Джостар",
+  "nameEn": "Johnny Joestar",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд",
+   "Спин"
+  ],
+  "groups": [
+   "Семья Джостар",
+   "Отряд Джостара",
+   "Гонка Стального шара",
+   "Семья Хигашиката"
+  ],
+  "side": "Союзник",
+  "nation": "США",
+  "status": "Мёртв",
+  "part": "Стальной шар",
+  "partIndex": 6,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 1897,
+  "name": "Джорно Джованна",
+  "nameEn": "Giorno Giovanna",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Семья Джостар",
+   "Пассионе",
+   "Фонд Спидвагона"
+  ],
+  "side": "Союзник",
+  "nation": "Италия",
+  "status": "Жив",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 24
+ },
+ {
+  "id": 1896,
+  "name": "Джоске Хигашиката",
+  "nameEn": "Josuke Higashikata",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Семья Джостар",
+   "Отряд Джостара",
+   "Семья Хигашиката"
+  ],
+  "side": "Союзник",
+  "nation": "Япония",
+  "status": "Жив",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": true,
+  "thumb": 25
+ },
+ {
+  "id": 1875,
+  "name": "Джотаро Куджо",
+  "nameEn": "Jotaro Kujo",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Семья Джостар",
+   "Отряд Джостара"
+  ],
+  "side": "Союзник",
+  "nation": "Япония",
+  "status": "Мёртв",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 26
+ },
+ {
+  "id": 1982,
+  "name": "Диаволо",
+  "nameEn": "Diavolo",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Италия",
+  "status": "Жив",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 1882,
+  "name": "Дио Брандо",
+  "nameEn": "Dio Brando",
+  "gender": "Мужской",
+  "species": [
+   "Вампир"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Семья Джостар"
+  ],
+  "side": "Злодей",
+  "nation": "Британия",
+  "status": "Мёртв",
+  "part": "Призрачная кровь",
+  "partIndex": 0,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 2510,
+  "name": "Донателло Версус",
+  "nameEn": "Donatello Versus",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Семья Джостар"
+  ],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Каменный океан",
+  "partIndex": 5,
+  "answer": false,
+  "thumb": 29
+ },
+ {
+  "id": 1956,
+  "name": "Ёшикаге Кира",
+  "nameEn": "Yoshikage Kira",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Япония",
+  "status": "Мёртв",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": true,
+  "thumb": 30
+ },
+ {
+  "id": 2024,
+  "name": "Ёшихиро Кира",
+  "nameEn": "Yoshihiro Kira",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Япония",
+  "status": "Мёртв",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": false,
+  "thumb": 31
+ },
+ {
+  "id": 1944,
+  "name": "Жан-Пьер Польнарефф",
+  "nameEn": "Jean Pierre Polnareff",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Отряд Джостара",
+   "Пассионе"
+  ],
+  "side": "Союзник",
+  "nation": "Франция",
+  "status": "Мёртв",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 1947,
+  "name": "Игги",
+  "nameEn": "Iggy",
+  "gender": "Мужской",
+  "species": [
+   "Животное"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Отряд Джостара"
+  ],
+  "side": "Союзник",
+  "nation": "США",
+  "status": "Мёртв",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 2833,
+  "name": "Иллусо",
+  "nameEn": "Illuso",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 1958,
+  "name": "Карс",
+  "nameEn": "Kars",
+  "gender": "Мужской",
+  "species": [
+   "Человек из столба"
+  ],
+  "powers": [
+   "Стенд",
+   "Хамон"
+  ],
+  "groups": [
+   "Люди из столбов"
+  ],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Жив",
+  "part": "Боевая тенденция",
+  "partIndex": 1,
+  "answer": true,
+  "thumb": 35
+ },
+ {
+  "id": 2451,
+  "name": "Кейчо Ниджимура",
+  "nameEn": "Keicho Nijimura",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": false,
+  "thumb": 36
+ },
+ {
+  "id": 2743,
+  "name": "Киокколата",
+  "nameEn": "Cioccolata",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 1953,
+  "name": "Коичи Хиросе",
+  "nameEn": "Koichi Hirose",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Отряд Джостара"
+  ],
+  "side": "Союзник",
+  "nation": "Япония",
+  "status": "Жив",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": true,
+  "thumb": 38
+ },
+ {
+  "id": 1973,
+  "name": "Леоне Аббаккио",
+  "nameEn": "Leone Abbacchio",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Союзник",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 39
+ },
+ {
+  "id": 1936,
+  "name": "Лиза Лиза",
+  "nameEn": "Lisa Lisa",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Хамон"
+  ],
+  "groups": [
+   "Семья Джостар",
+   "Отряд Джостара",
+   "Фонд Спидвагона"
+  ],
+  "side": "Союзник",
+  "nation": "Британия",
+  "status": "Мёртв",
+  "part": "Призрачная кровь",
+  "partIndex": 0,
+  "answer": true,
+  "thumb": 40
+ },
+ {
+  "id": 2476,
+  "name": "Люси Стил",
+  "nameEn": "Lucy Steel",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Отряд Джостара"
+  ],
+  "side": "Союзник",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Стальной шар",
+  "partIndex": 6,
+  "answer": true,
+  "thumb": 41
+ },
+ {
+  "id": 2765,
+  "name": "Мариах",
+  "nameEn": "Mariah",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Жив",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 42
+ },
+ {
+  "id": 2845,
+  "name": "Марио Зукчеро",
+  "nameEn": "Mario Zucchero",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": false,
+  "thumb": 43
+ },
+ {
+  "id": 2935,
+  "name": "Мидлер",
+  "nameEn": "Midler",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Жив",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": false,
+  "thumb": 44
+ },
+ {
+  "id": 2466,
+  "name": "Микитака Хазекура",
+  "nameEn": "Mikitaka Hazekura",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Нейтралитет",
+  "nation": "Неизвестно",
+  "status": "Жив",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 1946,
+  "name": "Мухаммед Авдол",
+  "nameEn": "Muhammad Avdol",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Отряд Джостара",
+   "Фонд Спидвагона"
+  ],
+  "side": "Союзник",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 1974,
+  "name": "Наранча Гирга",
+  "nameEn": "Narancia Ghirga",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Союзник",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 47
+ },
+ {
+  "id": 1999,
+  "name": "Нарцисо Анасуи",
+  "nameEn": "Narciso Anasui",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Отряд Джостара",
+   "Тюрьма Грин Долфин"
+  ],
+  "side": "Союзник",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Каменный океан",
+  "partIndex": 5,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 3175,
+  "name": "Ндоул",
+  "nameEn": "N'Doul",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 49
+ },
+ {
+  "id": 1945,
+  "name": "Нориаки Какёин",
+  "nameEn": "Noriaki Kakyoin",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Отряд Джостара"
+  ],
+  "side": "Союзник",
+  "nation": "Япония",
+  "status": "Мёртв",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 50
+ },
+ {
+  "id": 1989,
+  "name": "Ойнго",
+  "nameEn": "Oingo",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Египет",
+  "status": "Жив",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": false,
+  "thumb": 51
+ },
+ {
+  "id": 1954,
+  "name": "Окуясу Нидзимура",
+  "nameEn": "Okuyasu Nijimura",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Отряд Джостара"
+  ],
+  "side": "Союзник",
+  "nation": "Япония",
+  "status": "Жив",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": true,
+  "thumb": 52
+ },
+ {
+  "id": 1975,
+  "name": "Паннакотта Фуго",
+  "nameEn": "Pannacotta Fugo",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Союзник",
+  "nation": "Италия",
+  "status": "Жив",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 53
+ },
+ {
+  "id": 2736,
+  "name": "Пески",
+  "nameEn": "Pesci",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 54
+ },
+ {
+  "id": 2516,
+  "name": "Пет Шоп",
+  "nameEn": "Pet Shop",
+  "gender": "Мужской",
+  "species": [
+   "Животное"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 55
+ },
+ {
+  "id": 2392,
+  "name": "Поколоко",
+  "nameEn": "Pocoloco",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Гонка Стального шара"
+  ],
+  "side": "Нейтралитет",
+  "nation": "США",
+  "status": "Жив",
+  "part": "Стальной шар",
+  "partIndex": 6,
+  "answer": false,
+  "thumb": 56
+ },
+ {
+  "id": 2645,
+  "name": "Полпо",
+  "nameEn": "Polpo",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": false,
+  "thumb": 57
+ },
+ {
+  "id": 2232,
+  "name": "Проскиутто",
+  "nameEn": "Prosciutto",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 58
+ },
+ {
+  "id": 2719,
+  "name": "Рейми Сугимото",
+  "nameEn": "Reimi Sugimoto",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [
+   "Отряд Джостара"
+  ],
+  "side": "Союзник",
+  "nation": "Япония",
+  "status": "Мёртв",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": false,
+  "thumb": 59
+ },
+ {
+  "id": 2781,
+  "name": "Ринго Роадагайн",
+  "nameEn": "Ringo Roadagain",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "США",
+  "status": "Мёртв",
+  "part": "Стальной шар",
+  "partIndex": 6,
+  "answer": true,
+  "thumb": 60
+ },
+ {
+  "id": 2626,
+  "name": "Рисотто Неро",
+  "nameEn": "Risotto Nero",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 61
+ },
+ {
+  "id": 1933,
+  "name": "Роберт Спидвагон",
+  "nameEn": "Robert E. O. Speedwagon",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [
+   "Отряд Джостара",
+   "Фонд Спидвагона"
+  ],
+  "side": "Союзник",
+  "nation": "Британия",
+  "status": "Мёртв",
+  "part": "Призрачная кровь",
+  "partIndex": 0,
+  "answer": true,
+  "thumb": 62
+ },
+ {
+  "id": 1955,
+  "name": "Рохан Кишибе",
+  "nameEn": "Rohan Kishibe",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Отряд Джостара"
+  ],
+  "side": "Союзник",
+  "nation": "Япония",
+  "status": "Жив",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": true,
+  "thumb": 63
+ },
+ {
+  "id": 2297,
+  "name": "Руббер Соул",
+  "nameEn": "Rubber Soul",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Жив",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 64
+ },
+ {
+  "id": 2469,
+  "name": "Рудольф фон Штрохайм",
+  "nameEn": "Rudol von Stroheim",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [
+   "Отряд Джостара",
+   "Фонд Спидвагона"
+  ],
+  "side": "Союзник",
+  "nation": "Германия",
+  "status": "Мёртв",
+  "part": "Боевая тенденция",
+  "partIndex": 1,
+  "answer": true,
+  "thumb": 65
+ },
+ {
+  "id": 2841,
+  "name": "Сале",
+  "nameEn": "Sale",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": false,
+  "thumb": 66
+ },
+ {
+  "id": 2480,
+  "name": "Сандман",
+  "nameEn": "Sandman",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Гонка Стального шара"
+  ],
+  "side": "Злодей",
+  "nation": "США",
+  "status": "Мёртв",
+  "part": "Стальной шар",
+  "partIndex": 6,
+  "answer": false,
+  "thumb": 67
+ },
+ {
+  "id": 1961,
+  "name": "Сантана",
+  "nameEn": "Santana",
+  "gender": "Мужской",
+  "species": [
+   "Человек из столба"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [
+   "Люди из столбов"
+  ],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Жив",
+  "part": "Боевая тенденция",
+  "partIndex": 1,
+  "answer": true,
+  "thumb": 68
+ },
+ {
+  "id": 2741,
+  "name": "Секко",
+  "nameEn": "Secco",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 69
+ },
+ {
+  "id": 2895,
+  "name": "Скуало и Тизиано",
+  "nameEn": "Squalo and Tiziano",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": false,
+  "thumb": 70
+ },
+ {
+  "id": 2918,
+  "name": "Стевен Стеэл",
+  "nameEn": "Steven Steel",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [],
+  "side": "Союзник",
+  "nation": "США",
+  "status": "Мёртв",
+  "part": "Стальной шар",
+  "partIndex": 6,
+  "answer": false,
+  "thumb": 71
+ },
+ {
+  "id": 1978,
+  "name": "Страйзо",
+  "nameEn": "Straizo",
+  "gender": "Мужской",
+  "species": [
+   "Вампир"
+  ],
+  "powers": [
+   "Хамон"
+  ],
+  "groups": [
+   "Фонд Спидвагона"
+  ],
+  "side": "Союзник",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Призрачная кровь",
+  "partIndex": 0,
+  "answer": true,
+  "thumb": 72
+ },
+ {
+  "id": 2457,
+  "name": "Тамами Кобаяши",
+  "nameEn": "Tamami Kobayashi",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Япония",
+  "status": "Жив",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": false,
+  "thumb": 73
+ },
+ {
+  "id": 2591,
+  "name": "Таркус",
+  "nameEn": "Tarkus",
+  "gender": "Мужской",
+  "species": [
+   "Нежить"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Британия",
+  "status": "Мёртв",
+  "part": "Призрачная кровь",
+  "partIndex": 0,
+  "answer": false,
+  "thumb": 74
+ },
+ {
+  "id": 3176,
+  "name": "Теленке Т. Дарби",
+  "nameEn": "Telence T. D'Arby",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "США",
+  "status": "Жив",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 75
+ },
+ {
+  "id": 2698,
+  "name": "Тонио Труссарди",
+  "nameEn": "Tonio Trussardi",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Нейтралитет",
+  "nation": "Италия",
+  "status": "Жив",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": true,
+  "thumb": 76
+ },
+ {
+  "id": 2460,
+  "name": "Тошиказу Хазамада",
+  "nameEn": "Toshikazu Hazamada",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Жив",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": false,
+  "thumb": 77
+ },
+ {
+  "id": 1976,
+  "name": "Триш Уна",
+  "nameEn": "Trish Una",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Союзник",
+  "nation": "Италия",
+  "status": "Жив",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 78
+ },
+ {
+  "id": 1934,
+  "name": "Уилл Цеппели",
+  "nameEn": "Will Anthonio Zeppeli",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Хамон"
+  ],
+  "groups": [
+   "Отряд Джостара"
+  ],
+  "side": "Союзник",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Призрачная кровь",
+  "partIndex": 0,
+  "answer": true,
+  "thumb": 79
+ },
+ {
+  "id": 143038,
+  "name": "Ултимате Дио",
+  "nameEn": "Ultimate Dio",
+  "gender": "Мужской",
+  "species": [
+   "Вампир"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Семья Джостар"
+  ],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Жив",
+  "part": "Призрачная кровь",
+  "partIndex": 0,
+  "answer": false,
+  "thumb": 80
+ },
+ {
+  "id": 2236,
+  "name": "Уэзер Репорт",
+  "nameEn": "Weather Report",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Отряд Джостара",
+   "Тюрьма Грин Долфин"
+  ],
+  "side": "Союзник",
+  "nation": "США",
+  "status": "Мёртв",
+  "part": "Каменный океан",
+  "partIndex": 5,
+  "answer": true,
+  "thumb": 81
+ },
+ {
+  "id": 2217,
+  "name": "Фанни Валентайн",
+  "nameEn": "Funny Valentine",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "США",
+  "status": "Мёртв",
+  "part": "Стальной шар",
+  "partIndex": 6,
+  "answer": true,
+  "thumb": 82
+ },
+ {
+  "id": 2835,
+  "name": "Формаггио",
+  "nameEn": "Formaggio",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Пассионе"
+  ],
+  "side": "Злодей",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Золотой ветер",
+  "partIndex": 4,
+  "answer": true,
+  "thumb": 83
+ },
+ {
+  "id": 1984,
+  "name": "Фу Файтерс",
+  "nameEn": "Foo Fighters",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Отряд Джостара"
+  ],
+  "side": "Союзник",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Каменный океан",
+  "partIndex": 5,
+  "answer": true,
+  "thumb": 84
+ },
+ {
+  "id": 2878,
+  "name": "Хаято Каваджири",
+  "nameEn": "Hayato Kawajiri",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [
+   "Отряд Джостара"
+  ],
+  "side": "Союзник",
+  "nation": "Япония",
+  "status": "Жив",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": true,
+  "thumb": 85
+ },
+ {
+  "id": 1986,
+  "name": "Хол Хорсе",
+  "nameEn": "Hol Horse",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Жив",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 86
+ },
+ {
+  "id": 1948,
+  "name": "Холи Куджо",
+  "nameEn": "Holy Kujo",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Семья Джостар",
+   "Фонд Спидвагона"
+  ],
+  "side": "Нейтралитет",
+  "nation": "США",
+  "status": "Жив",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": false,
+  "thumb": 87
+ },
+ {
+  "id": 2478,
+  "name": "Хот Пэнтс",
+  "nameEn": "Hot Pants",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Гонка Стального шара"
+  ],
+  "side": "Союзник",
+  "nation": "США",
+  "status": "Мёртв",
+  "part": "Стальной шар",
+  "partIndex": 6,
+  "answer": true,
+  "thumb": 88
+ },
+ {
+  "id": 1935,
+  "name": "Цезарь Цеппели",
+  "nameEn": "Caesar Anthonio Zeppeli",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Хамон"
+  ],
+  "groups": [
+   "Отряд Джостара",
+   "Фонд Спидвагона"
+  ],
+  "side": "Союзник",
+  "nation": "Италия",
+  "status": "Мёртв",
+  "part": "Боевая тенденция",
+  "partIndex": 1,
+  "answer": true,
+  "thumb": 89
+ },
+ {
+  "id": 4096,
+  "name": "Чака",
+  "nameEn": "Chaka",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Египет",
+  "status": "Жив",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": false,
+  "thumb": 90
+ },
+ {
+  "id": 2848,
+  "name": "Шигекиё Янгу",
+  "nameEn": "Shigekiyo Yangu",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Япония",
+  "status": "Мёртв",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": true,
+  "thumb": 91
+ },
+ {
+  "id": 1960,
+  "name": "Эйсидиси",
+  "nameEn": "Esidisi",
+  "gender": "Мужской",
+  "species": [
+   "Человек из столба"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [
+   "Люди из столбов"
+  ],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Боевая тенденция",
+  "partIndex": 1,
+  "answer": true,
+  "thumb": 92
+ },
+ {
+  "id": 2643,
+  "name": "Эмпорио Альниньо",
+  "nameEn": "Emporio Alniño",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Отряд Джостара"
+  ],
+  "side": "Союзник",
+  "nation": "Неизвестно",
+  "status": "Жив",
+  "part": "Каменный океан",
+  "partIndex": 5,
+  "answer": true,
+  "thumb": 93
+ },
+ {
+  "id": 1998,
+  "name": "Энрико Пуччи",
+  "nameEn": "Enrico Pucci",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "США",
+  "status": "Мёртв",
+  "part": "Каменный океан",
+  "partIndex": 5,
+  "answer": true,
+  "thumb": 94
+ },
+ {
+  "id": 1987,
+  "name": "Энья Тхе Хаг",
+  "nameEn": "Enya the Hag",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Мёртв",
+  "part": "Крестоносцы звёздной пыли",
+  "partIndex": 2,
+  "answer": true,
+  "thumb": 95
+ },
+ {
+  "id": 1963,
+  "name": "Эрина Пендлтон",
+  "nameEn": "Erina Pendleton",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Нет"
+  ],
+  "groups": [
+   "Семья Джостар",
+   "Фонд Спидвагона"
+  ],
+  "side": "Нейтралитет",
+  "nation": "Британия",
+  "status": "Мёртв",
+  "part": "Призрачная кровь",
+  "partIndex": 0,
+  "answer": true,
+  "thumb": 96
+ },
+ {
+  "id": 1983,
+  "name": "Эрмес Костелло",
+  "nameEn": "Ermes Costello",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [
+   "Отряд Джостара",
+   "Тюрьма Грин Долфин"
+  ],
+  "side": "Союзник",
+  "nation": "США",
+  "status": "Мёртв",
+  "part": "Каменный океан",
+  "partIndex": 5,
+  "answer": true,
+  "thumb": 97
+ },
+ {
+  "id": 2697,
+  "name": "Юкако Ямагиши",
+  "nameEn": "Yukako Yamagishi",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Япония",
+  "status": "Жив",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": true,
+  "thumb": 98
+ },
+ {
+  "id": 2817,
+  "name": "Юя Фунгами",
+  "nameEn": "Yuya Fungami",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "powers": [
+   "Стенд"
+  ],
+  "groups": [],
+  "side": "Злодей",
+  "nation": "Неизвестно",
+  "status": "Жив",
+  "part": "Несокрушимый алмаз",
+  "partIndex": 3,
+  "answer": false,
+  "thumb": 99
+ }
+]
