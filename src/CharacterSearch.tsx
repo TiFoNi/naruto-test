@@ -27,10 +27,23 @@ export default function CharacterSearch({ game, exclude, active: visible, onPick
   const matches = useMemo(() => {
     const q = normalize(query.trim())
     if (!q) return []
-    const available = index.filter(({ e }) => !exclude.has(e.id))
-    const starts = available.filter(({ terms }) => terms.some((t) => t.split(/[\s-]+/).some((w) => w.startsWith(q))))
-    const contains = available.filter((x) => !starts.includes(x) && x.terms.some((t) => t.includes(q)))
-    return [...starts, ...contains].slice(0, 8).map(({ e }) => e)
+    const rank = ({ e, terms }: (typeof index)[number]) => {
+      const tier = terms.some((t) => t.startsWith(q))
+        ? 0
+        : terms.some((t) => t.split(/[\s-]+/).some((w) => w.startsWith(q)))
+          ? 1
+          : terms.some((t) => t.includes(q))
+            ? 2
+            : -1
+      return tier < 0 ? -1 : tier * 2 + (e.answer ? 0 : 1)
+    }
+    return index
+      .filter(({ e }) => !exclude.has(e.id))
+      .map((x) => ({ x, r: rank(x) }))
+      .filter(({ r }) => r >= 0)
+      .sort((a, b) => a.r - b.r)
+      .slice(0, 8)
+      .map(({ x }) => x.e)
   }, [query, exclude, index])
 
   const pick = (e: Entity | undefined) => {

@@ -1,0 +1,5328 @@
+[
+ {
+  "id": 2222,
+  "name": "Аарониро Арруруэри",
+  "nameEn": "Aaroniero Arruruerie",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 0
+ },
+ {
+  "id": 3142,
+  "name": "Абирама Реддер",
+  "nameEn": "Abirama Redder",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Поддельная Каракура",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 1
+ },
+ {
+  "id": 3997,
+  "name": "Айон",
+  "nameEn": "Ayon",
+  "gender": "Мужской",
+  "races": [
+   "Пустой"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Поддельная Каракура",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 2
+ },
+ {
+  "id": 2679,
+  "name": "Айсслингер Вернарр",
+  "nameEn": "Aisslinger Wernarr",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 3
+ },
+ {
+  "id": 2956,
+  "name": "Акон",
+  "nameEn": "Akon",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант",
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 12,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 4
+ },
+ {
+  "id": 140595,
+  "name": "Алгора Лаллау",
+  "nameEn": "Algora Lallau",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 5
+ },
+ {
+  "id": 5404,
+  "name": "Аога",
+  "nameEn": "Aoga",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 4,
+  "arc": "Поворот маятника",
+  "arcIndex": 3.5,
+  "answer": true,
+  "thumb": 6
+ },
+ {
+  "id": 57377,
+  "name": "Асгуиаро Эберн",
+  "nameEn": "Asguiaro Ebern",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 7
+ },
+ {
+  "id": 76301,
+  "name": "Аскин Накк ле Вар",
+  "nameEn": "Askin Nakk Le Vaar",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 8
+ },
+ {
+  "id": 60922,
+  "name": "Асука Катакура",
+  "nameEn": "Asuka Katakura",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 9
+ },
+ {
+  "id": 2948,
+  "name": "Бавабава",
+  "nameEn": "Bawabawa",
+  "gender": "Мужской",
+  "races": [
+   "Пустой"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 10
+ },
+ {
+  "id": 61457,
+  "name": "Базз-Би",
+  "nameEn": "Bazz-B",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 11
+ },
+ {
+  "id": 120054,
+  "name": "Балго Паркс",
+  "nameEn": "Balgo Parks",
+  "gender": "Мужской",
+  "races": [
+   "Человек",
+   "Дракон"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 12
+ },
+ {
+  "id": 61172,
+  "name": "Бамбиетта Бастербайн",
+  "nameEn": "Bambietta Basterbine",
+  "gender": "Женский",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 13
+ },
+ {
+  "id": 2315,
+  "name": "Барагган Луизенбарн",
+  "nameEn": "Baraggan Louisenbairn",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 14
+ },
+ {
+  "id": 120087,
+  "name": "Билли Банкс Джр.",
+  "nameEn": "Billy Banx Jr.",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 15
+ },
+ {
+  "id": 16755,
+  "name": "Бонниэ",
+  "nameEn": "Bonnie",
+  "gender": "Женский",
+  "races": [
+   "Кабан",
+   "Душа"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 16
+ },
+ {
+  "id": 130648,
+  "name": "Бруно Бэнгнайф",
+  "nameEn": "Rickenbacker",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 17
+ },
+ {
+  "id": 9426,
+  "name": "Булбоус Г",
+  "nameEn": "Bulbous G",
+  "gender": "Мужской",
+  "races": [
+   "Пустой"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 18
+ },
+ {
+  "id": 2133,
+  "name": "Бьякуя Кучики",
+  "nameEn": "Byakuya Kuchiki",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 6,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 19
+ },
+ {
+  "id": 2418,
+  "name": "Вандервайс Марджела",
+  "nameEn": "Wonderweiss Margela",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 2383,
+  "name": "Великий Удильщик",
+  "nameEn": "Grand Fisher",
+  "gender": "Мужской",
+  "races": [
+   "Пустой",
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 21
+ },
+ {
+  "id": 86464,
+  "name": "Волфман Клан Элдер",
+  "nameEn": "Wolfman Clan Elder",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 22
+ },
+ {
+  "id": 2392,
+  "name": "Ганджу Шиба",
+  "nameEn": "Ganju Shiba",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 14516,
+  "name": "Ганджус Ганг",
+  "nameEn": "Ganju's Gang",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 24
+ },
+ {
+  "id": 2356,
+  "name": "Гантенбайн Москеда",
+  "nameEn": "Gantenbainne Mosqueda",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 25
+ },
+ {
+  "id": 88611,
+  "name": "Гвенаэль Ли",
+  "nameEn": "Guenael Lee",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 26
+ },
+ {
+  "id": 3637,
+  "name": "Ггио Вега",
+  "nameEn": "Ggio Vega",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Поддельная Каракура",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 11506,
+  "name": "Гексаподус",
+  "nameEn": "Hexapodus",
+  "gender": "Мужской",
+  "races": [
+   "Пустой"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 5400,
+  "name": "Генгоро Онабара",
+  "nameEn": "Gengorō Ōunabara",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Поворот маятника",
+  "arcIndex": 3.5,
+  "answer": false,
+  "thumb": 29
+ },
+ {
+  "id": 8582,
+  "name": "Генрюусай Шигекуни Ямамото",
+  "nameEn": "Genryūsai Shigekuni Yamamoto",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 30
+ },
+ {
+  "id": 60909,
+  "name": "Генширо Окикиба",
+  "nameEn": "Genshirō Okikiba",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант",
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 1,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 31
+ },
+ {
+  "id": 2067,
+  "name": "Гин Ичимару",
+  "nameEn": "Gin Ichimaru",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Капитан",
+   "Лейтенант",
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 2505,
+  "name": "Гинрей Кучики",
+  "nameEn": "Ginrei Kuchiki",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Поворот маятника",
+  "arcIndex": 3.5,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 40543,
+  "name": "Гирико Куцузава",
+  "nameEn": "Giriko Kutsuzawa",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Экскюшн"
+  ],
+  "ranks": [],
+  "powers": [
+   "Фулбринг"
+  ],
+  "division": null,
+  "arc": "Потерянный агент",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 3661,
+  "name": "Гитано Шигео",
+  "nameEn": "Gitano Shigeo",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 35
+ },
+ {
+  "id": 3631,
+  "name": "Готейтайши",
+  "nameEn": "Goteitaishi",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 11,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 36
+ },
+ {
+  "id": 2138,
+  "name": "Гриммджоу Джагерджак",
+  "nameEn": "Grimmjow Jaegerjaquez",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 89335,
+  "name": "Грэмми Тумо",
+  "nameEn": "Gremmy Thoumeaux",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 38
+ },
+ {
+  "id": 6396,
+  "name": "Данзомару",
+  "nameEn": "Danzōmaru",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: спасение",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 39
+ },
+ {
+  "id": 2202,
+  "name": "Деад Гирл",
+  "nameEn": "Dead Girl",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 40
+ },
+ {
+  "id": 3168,
+  "name": "Демоура Зодд",
+  "nameEn": "Demoura Zodd",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 41
+ },
+ {
+  "id": 42381,
+  "name": "Джаккиэ Тристан",
+  "nameEn": "Jackie Tristan",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Экскюшн"
+  ],
+  "ranks": [],
+  "powers": [
+   "Фулбринг"
+  ],
+  "division": null,
+  "arc": "Потерянный агент",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 42
+ },
+ {
+  "id": 85179,
+  "name": "Джамес",
+  "nameEn": "James",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 43
+ },
+ {
+  "id": 63304,
+  "name": "Джероме Гуизбатт",
+  "nameEn": "Jerome Guizbatt",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 44
+ },
+ {
+  "id": 2834,
+  "name": "Джиданбо Икканзака",
+  "nameEn": "Jidanbō Ikkanzaka",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 2803,
+  "name": "Джинта Ханакари",
+  "nameEn": "Jinta Hanakari",
+  "gender": "Мужской",
+  "races": [
+   "Модифицированная душа"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 2765,
+  "name": "Джиробо Икканзака",
+  "nameEn": "Jirōbō Ikkanzaka",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 47
+ },
+ {
+  "id": 140653,
+  "name": "Джоханн Сеидлитз",
+  "nameEn": "Johann Seydlitz",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 48
+ },
+ {
+  "id": 2171,
+  "name": "Джуширо Укитаке",
+  "nameEn": "Jūshirō Ukitake",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 49
+ },
+ {
+  "id": 2413,
+  "name": "Ди Рои Ринкер",
+  "nameEn": "Di Roy Rinker",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 50
+ },
+ {
+  "id": 2194,
+  "name": "Дон Канонджи",
+  "nameEn": "Don Kanonji",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 51
+ },
+ {
+  "id": 2950,
+  "name": "Дондочакка Бирстанне",
+  "nameEn": "Dondochakka Birstanne",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Фрасьон"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 52
+ },
+ {
+  "id": 2088,
+  "name": "Дордони Алессандро Дел Сокаккио",
+  "nameEn": "Dordoni Alessandro Del Socaccio",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 53
+ },
+ {
+  "id": 63273,
+  "name": "Дрисколл Берки",
+  "nameEn": "Driscoll Berci",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 54
+ },
+ {
+  "id": 11104,
+  "name": "Ёкочини",
+  "nameEn": "Yokochini",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 55
+ },
+ {
+  "id": 2176,
+  "name": "Ёруичи Шихойн",
+  "nameEn": "Yoruichi Shihōin",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 56
+ },
+ {
+  "id": 96990,
+  "name": "Жерар Валькирия",
+  "nameEn": "Gerard Valkyrie",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Нулевой отряд",
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 57
+ },
+ {
+  "id": 76950,
+  "name": "Жизель Жевель",
+  "nameEn": "Giselle Gewelle",
+  "gender": "Женский",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 58
+ },
+ {
+  "id": 2198,
+  "name": "Заельапорро Гранц",
+  "nameEn": "Szayelaporro Granz",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена",
+   "Ад"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 59
+ },
+ {
+  "id": 2774,
+  "name": "Зангецу (дух занпакто)",
+  "nameEn": "Zangetsu (Zanpakutō spirit)",
+  "gender": "Мужской",
+  "races": [
+   "Дух занпакто"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 60
+ },
+ {
+  "id": 11774,
+  "name": "Зангецу (Яхве)",
+  "nameEn": "Zangetsu (Quincy Powers)",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 61
+ },
+ {
+  "id": 2896,
+  "name": "Зенносуке Курумадани",
+  "nameEn": "Zennosuke Kurumadani",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 13,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 62
+ },
+ {
+  "id": 2285,
+  "name": "Зоммари Руреаукс",
+  "nameEn": "Zommari Rureaux",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 63
+ },
+ {
+  "id": 4086,
+  "name": "Изаэмон Тодо",
+  "nameEn": "Izaemon Tōdō",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Поворот маятника",
+  "arcIndex": 3.5,
+  "answer": false,
+  "thumb": 64
+ },
+ {
+  "id": 137717,
+  "name": "Изуми Ишида",
+  "nameEn": "Izumi Ishida",
+  "gender": "Женский",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 65
+ },
+ {
+  "id": 2172,
+  "name": "Изуру Кира",
+  "nameEn": "Izuru Kira",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 3,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 66
+ },
+ {
+  "id": 2412,
+  "name": "Иилфордт Гранц",
+  "nameEn": "Yylfordt Granz",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 67
+ },
+ {
+  "id": 2181,
+  "name": "Иккаку Мадараме",
+  "nameEn": "Ikkaku Madarame",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант",
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 11,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 68
+ },
+ {
+  "id": 40135,
+  "name": "Икуми Унагия",
+  "nameEn": "Ikumi Unagiya",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Потерянный агент",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 69
+ },
+ {
+  "id": 4902,
+  "name": "Ино",
+  "nameEn": "Ino",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 70
+ },
+ {
+  "id": 2187,
+  "name": "Исане Котецу",
+  "nameEn": "Isane Kotetsu",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан",
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 4,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 71
+ },
+ {
+  "id": 107741,
+  "name": "Исузу Исе",
+  "nameEn": "Isuzu Ise",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 72
+ },
+ {
+  "id": 66267,
+  "name": "Ичибей Хьёсубе",
+  "nameEn": "Ichibe'e Hyōsube",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Нулевой отряд",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 73
+ },
+ {
+  "id": 48924,
+  "name": "Ичиго Куросаки",
+  "nameEn": "Ichigo Kurosaki",
+  "gender": "Мужской",
+  "races": [
+   "Человек",
+   "Шинигами",
+   "Пустой",
+   "Квинси"
+  ],
+  "affiliations": [
+   "Общество душ",
+   "Вайзарды",
+   "Экскюшн",
+   "Каракура"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 74
+ },
+ {
+  "id": 113828,
+  "name": "Ичика Абарай",
+  "nameEn": "Ichika Abarai",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 75
+ },
+ {
+  "id": 2108,
+  "name": "Ишшин Куросаки",
+  "nameEn": "Isshin Kurosaki",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ",
+   "Каракура"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 76
+ },
+ {
+  "id": 4714,
+  "name": "Кагине",
+  "nameEn": "Kagine",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 77
+ },
+ {
+  "id": 113832,
+  "name": "Казуи Куросаки",
+  "nameEn": "Kazui Kurosaki",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 78
+ },
+ {
+  "id": 74576,
+  "name": "Казуо Анд Казухиро",
+  "nameEn": "Kazuo and Kazuhiro",
+  "gender": "Женский",
+  "races": [
+   "Дух занпакто"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 79
+ },
+ {
+  "id": 76868,
+  "name": "Казуя Усака",
+  "nameEn": "Kazuya Usaka",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 80
+ },
+ {
+  "id": 2174,
+  "name": "Каиэн Шиба",
+  "nameEn": "Kaien Shiba",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 81
+ },
+ {
+  "id": 6395,
+  "name": "Кайван",
+  "nameEn": "Kaiwan",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: спасение",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 82
+ },
+ {
+  "id": 132477,
+  "name": "Какё",
+  "nameEn": "Kakyō",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Общество душ: спасение",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 83
+ },
+ {
+  "id": 2162,
+  "name": "Канаме Тосен",
+  "nameEn": "Kaname Tōsen",
+  "gender": "Мужской",
+  "races": [
+   "Гибрид"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Капитан",
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай",
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 84
+ },
+ {
+  "id": 72724,
+  "name": "Канан Ёшизава",
+  "nameEn": "Kanan Yoshizawa",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 85
+ },
+ {
+  "id": 71277,
+  "name": "Канаэ Катагири",
+  "nameEn": "Kanae Katagiri",
+  "gender": "Женский",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 86
+ },
+ {
+  "id": 76949,
+  "name": "Кандиса Кэтнипп",
+  "nameEn": "Candice Catnipp",
+  "gender": "Женский",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 87
+ },
+ {
+  "id": 4901,
+  "name": "Канеда",
+  "nameEn": "Kaneda",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 88
+ },
+ {
+  "id": 40138,
+  "name": "Каору Унагия",
+  "nameEn": "Kaoru Unagiya",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Потерянный агент",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 89
+ },
+ {
+  "id": 2236,
+  "name": "Карин Куросаки",
+  "nameEn": "Karin Kurosaki",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 90
+ },
+ {
+  "id": 10723,
+  "name": "Катен Кёкоцу",
+  "nameEn": "Katen Kyōkotsu (Zanpakutō spirit)",
+  "gender": "Женский",
+  "races": [
+   "Дух занпакто"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 91
+ },
+ {
+  "id": 2435,
+  "name": "Кейго Асано",
+  "nameEn": "Keigo Asano",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 92
+ },
+ {
+  "id": 42841,
+  "name": "Кейсуке Соримачи",
+  "nameEn": "Keisuke Sorimachi",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 93
+ },
+ {
+  "id": 2164,
+  "name": "Кенпачи Зараки",
+  "nameEn": "Kenpachi Zaraki",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 11,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 94
+ },
+ {
+  "id": 34785,
+  "name": "Кенпачи Киганджоу",
+  "nameEn": "Kenpachi Kiganjō",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 95
+ },
+ {
+  "id": 2395,
+  "name": "Кенсей Мугурума",
+  "nameEn": "Kensei Muguruma",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами",
+   "Пустой"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ",
+   "Вайзарды"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 9,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 96
+ },
+ {
+  "id": 2380,
+  "name": "Киёне Котецу",
+  "nameEn": "Kiyone Kotetsu",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант",
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 4,
+  "arc": "Общество душ: спасение",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 97
+ },
+ {
+  "id": 130814,
+  "name": "Киндерелла",
+  "nameEn": "Cinderella",
+  "gender": "Женский",
+  "races": [
+   "Дракон"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 98
+ },
+ {
+  "id": 2671,
+  "name": "Кирио Хикифуне",
+  "nameEn": "Kirio Hikifune",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Нулевой отряд",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 99
+ },
+ {
+  "id": 2086,
+  "name": "Кирукки Сандервикки",
+  "nameEn": "Cirucci Sanderwicci",
+  "gender": "Женский",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 100
+ },
+ {
+  "id": 2069,
+  "name": "Кисуке Урахара",
+  "nameEn": "Kisuke Urahara",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ",
+   "Каракура"
+  ],
+  "ranks": [
+   "Капитан",
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 101
+ },
+ {
+  "id": 2146,
+  "name": "Койот Старк",
+  "nameEn": "Coyote Starrk",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 102
+ },
+ {
+  "id": 2160,
+  "name": "Кон",
+  "nameEn": "Kon",
+  "gender": "Мужской",
+  "races": [
+   "Модифицированная душа"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 103
+ },
+ {
+  "id": 16631,
+  "name": "Король душ",
+  "nameEn": "Soul King",
+  "gender": "Мужской",
+  "races": [
+   "Неизвестно"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 104
+ },
+ {
+  "id": 40536,
+  "name": "Куго Гинджо",
+  "nameEn": "Kūgo Ginjō",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Общество душ",
+   "Экскюшн"
+  ],
+  "ranks": [],
+  "powers": [
+   "Фулбринг"
+  ],
+  "division": null,
+  "arc": "Потерянный агент",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 105
+ },
+ {
+  "id": 59304,
+  "name": "Куилге Опиэ",
+  "nameEn": "Quilge Opie",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 106
+ },
+ {
+  "id": 52748,
+  "name": "Куккапуро",
+  "nameEn": "Kukkapūro",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Поддельная Каракура",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 107
+ },
+ {
+  "id": 2314,
+  "name": "Куукаку Шиба",
+  "nameEn": "Kūkaku Shiba",
+  "gender": "Женский",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 108
+ },
+ {
+  "id": 2800,
+  "name": "Кян Сунг-Сун",
+  "nameEn": "Cyan Sung-Sun",
+  "gender": "Женский",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Фрасьон"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 109
+ },
+ {
+  "id": 2459,
+  "name": "Лав Айкава",
+  "nameEn": "Love Aikawa",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами",
+   "Пустой"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ",
+   "Вайзарды"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 110
+ },
+ {
+  "id": 2420,
+  "name": "Лилинетт Джинджербак",
+  "nameEn": "Lilynette Gingerbuck",
+  "gender": "Женский",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 111
+ },
+ {
+  "id": 96991,
+  "name": "Лилле Барро",
+  "nameEn": "Lille Barro",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 112
+ },
+ {
+  "id": 76947,
+  "name": "Лилтотто Ламперд",
+  "nameEn": "Liltotto Lamperd",
+  "gender": "Женский",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 113
+ },
+ {
+  "id": 2460,
+  "name": "Лиса Ядомару",
+  "nameEn": "Lisa Yadōmaru",
+  "gender": "Женский",
+  "races": [
+   "Шинигами",
+   "Пустой"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ",
+   "Вайзарды"
+  ],
+  "ranks": [
+   "Капитан",
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 8,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 114
+ },
+ {
+  "id": 63307,
+  "name": "Лоид Ллоид",
+  "nameEn": "Loyd Lloyd",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 115
+ },
+ {
+  "id": 2415,
+  "name": "Лоли Айвиррне",
+  "nameEn": "Loly Aivirrne",
+  "gender": "Женский",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 116
+ },
+ {
+  "id": 58713,
+  "name": "Людерс Фриген",
+  "nameEn": "Luders Friegen",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 117
+ },
+ {
+  "id": 2311,
+  "name": "Люппи Антенор",
+  "nameEn": "Luppi Antenor",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 118
+ },
+ {
+  "id": 130813,
+  "name": "Маки Балджуре",
+  "nameEn": "Macy Baljure",
+  "gender": "Женский",
+  "races": [
+   "Человек",
+   "Дракон"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 119
+ },
+ {
+  "id": 2928,
+  "name": "Макизо Арамаки",
+  "nameEn": "Makizō Aramaki",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 11,
+  "arc": "Общество душ: спасение",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 120
+ },
+ {
+  "id": 2189,
+  "name": "Маречиё Омаэда",
+  "nameEn": "Marechiyo Ōmaeda",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 2,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 121
+ },
+ {
+  "id": 2298,
+  "name": "Масаки Куросаки",
+  "nameEn": "Masaki Kurosaki",
+  "gender": "Женский",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 122
+ },
+ {
+  "id": 76298,
+  "name": "Маск Де Маскулин",
+  "nameEn": "Mask De Masculine",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 123
+ },
+ {
+  "id": 2461,
+  "name": "Маширо Куна",
+  "nameEn": "Mashiro Kuna",
+  "gender": "Женский",
+  "races": [
+   "Шинигами",
+   "Пустой"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ",
+   "Вайзарды"
+  ],
+  "ranks": [
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 9,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 124
+ },
+ {
+  "id": 2166,
+  "name": "Маюри Куротсучи",
+  "nameEn": "Mayuri Kurotsuchi",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан",
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 12,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 125
+ },
+ {
+  "id": 2923,
+  "name": "Медазеппи",
+  "nameEn": "Medazeppi",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Фрасьон"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 126
+ },
+ {
+  "id": 76948,
+  "name": "Менинас Мкаллон",
+  "nameEn": "Meninas McAllon",
+  "gender": "Женский",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 127
+ },
+ {
+  "id": 2416,
+  "name": "Меноли Маллиа",
+  "nameEn": "Menoly Mallia",
+  "gender": "Женский",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 128
+ },
+ {
+  "id": 2947,
+  "name": "Метастакиа",
+  "nameEn": "Metastacia",
+  "gender": "Мужской",
+  "races": [
+   "Пустой"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: спасение",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 129
+ },
+ {
+  "id": 3647,
+  "name": "Мидорико Тоно",
+  "nameEn": "Midoriko Tōno",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 130
+ },
+ {
+  "id": 2436,
+  "name": "Мизуиро Коджима",
+  "nameEn": "Mizuiro Kojima",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 131
+ },
+ {
+  "id": 3209,
+  "name": "Мизухо Асано",
+  "nameEn": "Mizuho Asano",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 132
+ },
+ {
+  "id": 3660,
+  "name": "Мисато Очи",
+  "nameEn": "Misato Ochi",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 133
+ },
+ {
+  "id": 3640,
+  "name": "Мичиру Огава",
+  "nameEn": "Michiru Ogawa",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 134
+ },
+ {
+  "id": 2175,
+  "name": "Момо Хинамори",
+  "nameEn": "Momo Hinamori",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 5,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 135
+ },
+ {
+  "id": 43827,
+  "name": "Моэ Шишигавара",
+  "nameEn": "Moe Shishigawara",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Экскюшн"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [
+   "Фулбринг"
+  ],
+  "division": null,
+  "arc": "Потерянный агент",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 136
+ },
+ {
+  "id": 43292,
+  "name": "Мр. Порк",
+  "nameEn": "Mr. Pork",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Потерянный агент",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 137
+ },
+ {
+  "id": 2414,
+  "name": "Наким Гриндина",
+  "nameEn": "Nakeem Grindina",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 138
+ },
+ {
+  "id": 61182,
+  "name": "Нанана Наджахкооп",
+  "nameEn": "NaNaNa Najahkoop",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 139
+ },
+ {
+  "id": 2190,
+  "name": "Нанао Исе",
+  "nameEn": "Nanao Ise",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай"
+  ],
+  "division": 1,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 140
+ },
+ {
+  "id": 2092,
+  "name": "Неллиэль Ту Одельшванк",
+  "nameEn": "Nelliel Tu Odelschwanck",
+  "gender": "Женский",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена",
+   "Каракура"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 141
+ },
+ {
+  "id": 2317,
+  "name": "Нему Куроцучи",
+  "nameEn": "Nemu Kurotsuchi",
+  "gender": "Женский",
+  "races": [
+   "Искусственная душа"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 142
+ },
+ {
+  "id": 113575,
+  "name": "Немури Хачиго",
+  "nameEn": "Hachigō Nemuri",
+  "gender": "Женский",
+  "races": [
+   "Искусственная душа"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 12,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 143
+ },
+ {
+  "id": 96100,
+  "name": "Нианзол Вейзол",
+  "nameEn": "Nianzol Weizol",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 144
+ },
+ {
+  "id": 11866,
+  "name": "Нико Куна",
+  "nameEn": "Niko Kuna",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 12,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 145
+ },
+ {
+  "id": 120049,
+  "name": "Нинни Спэнгкоул",
+  "nameEn": "Ninny Spangcole",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 146
+ },
+ {
+  "id": 3770,
+  "name": "Ниргге Пардуок",
+  "nameEn": "Nirgge Parduoc",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Поддельная Каракура",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 147
+ },
+ {
+  "id": 59244,
+  "name": "Нобуцуне Сейке",
+  "nameEn": "Nobutsune Seike",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 148
+ },
+ {
+  "id": 129117,
+  "name": "Нозараши",
+  "nameEn": "Nozarashi (Zanpakutō spirit)",
+  "gender": "Женский",
+  "races": [
+   "Дух занпакто"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 149
+ },
+ {
+  "id": 2150,
+  "name": "Нойтра Джилга",
+  "nameEn": "Nnoitra Gilga",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 150
+ },
+ {
+  "id": 120024,
+  "name": "Ноэл Ниихаши",
+  "nameEn": "Noel Niihashi",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 151
+ },
+ {
+  "id": 11504,
+  "name": "Нумб Чанделиэр",
+  "nameEn": "Numb Chandelier",
+  "gender": "Женский",
+  "races": [
+   "Пустой"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 152
+ },
+ {
+  "id": 40137,
+  "name": "Обута",
+  "nameEn": "Obuta",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Потерянный агент",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 153
+ },
+ {
+  "id": 2144,
+  "name": "Орихиме Иноуэ",
+  "nameEn": "Orihime Inoue",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 154
+ },
+ {
+  "id": 3285,
+  "name": "Оскар Джоакуин Де Ла Роса",
+  "nameEn": "Oscar Joaquín de la Rosa",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 155
+ },
+ {
+  "id": 120086,
+  "name": "Осуши",
+  "nameEn": "Osushi",
+  "gender": "Мужской",
+  "races": [
+   "Дракон"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 156
+ },
+ {
+  "id": 67109,
+  "name": "Оэцу Нимайя",
+  "nameEn": "Ōetsu Nimaiya",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Нулевой отряд",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 157
+ },
+ {
+  "id": 89690,
+  "name": "ПеПе Ваккабрада",
+  "nameEn": "PePe Waccabrada",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 158
+ },
+ {
+  "id": 2949,
+  "name": "Песче Гуатиче",
+  "nameEn": "Pesche Guatiche",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Фрасьон"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 159
+ },
+ {
+  "id": 2112,
+  "name": "Рангику Мацумото",
+  "nameEn": "Rangiku Matsumoto",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 10,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 160
+ },
+ {
+  "id": 2601,
+  "name": "Рё Куниэда",
+  "nameEn": "Ryō Kunieda",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 161
+ },
+ {
+  "id": 3659,
+  "name": "Рейичи Ошима",
+  "nameEn": "Reiichi Ōshima",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 162
+ },
+ {
+  "id": 2131,
+  "name": "Ренджи Абарай",
+  "nameEn": "Renji Abarai",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ",
+   "Каракура"
+  ],
+  "ranks": [
+   "Лейтенант",
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 6,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 163
+ },
+ {
+  "id": 2163,
+  "name": "Ретсу Унохана",
+  "nameEn": "Retsu Unohana",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 164
+ },
+ {
+  "id": 2925,
+  "name": "Рикичи Юки",
+  "nameEn": "Rikichi Yuki",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 6,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 165
+ },
+ {
+  "id": 60915,
+  "name": "Рику Тогакуши",
+  "nameEn": "Rikū Togakushi",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 166
+ },
+ {
+  "id": 2954,
+  "name": "Рин Цубокура",
+  "nameEn": "Rin Tsubokura",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 12,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 167
+ },
+ {
+  "id": 46468,
+  "name": "Рирука Докугамине",
+  "nameEn": "Riruka Dokugamine",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Экскюшн"
+  ],
+  "ranks": [],
+  "powers": [
+   "Фулбринг"
+  ],
+  "division": null,
+  "arc": "Потерянный агент",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 168
+ },
+ {
+  "id": 61737,
+  "name": "Роберт Аккутроне",
+  "nameEn": "Robert Accutrone",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 169
+ },
+ {
+  "id": 2462,
+  "name": "Роджуро Оторибаши",
+  "nameEn": "Rōjūrō Ōtoribashi",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами",
+   "Пустой"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ",
+   "Вайзарды"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 3,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 170
+ },
+ {
+  "id": 64728,
+  "name": "Роид Ллоид",
+  "nameEn": "Royd Lloyd",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 171
+ },
+ {
+  "id": 126388,
+  "name": "Рока Парамия",
+  "nameEn": "Roka Paramia",
+  "gender": "Женский",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 172
+ },
+ {
+  "id": 2827,
+  "name": "Рудборнн Челуте",
+  "nameEn": "Rudbornn Chelute",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 173
+ },
+ {
+  "id": 2177,
+  "name": "Рукия Кучики",
+  "nameEn": "Rukia Kuchiki",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ",
+   "Каракура"
+  ],
+  "ranks": [
+   "Капитан",
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 13,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 174
+ },
+ {
+  "id": 11507,
+  "name": "Рыбокост D",
+  "nameEn": "Fishbone D",
+  "gender": "Мужской",
+  "races": [
+   "Пустой"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 175
+ },
+ {
+  "id": 57110,
+  "name": "Рюносуке Юки",
+  "nameEn": "Ryūnosuke Yuki",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 13,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 176
+ },
+ {
+  "id": 2159,
+  "name": "Рюукен Исида",
+  "nameEn": "Ryūken Ishida",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: спасение",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 177
+ },
+ {
+  "id": 2165,
+  "name": "Саджин Комамура",
+  "nameEn": "Sajin Komamura",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 178
+ },
+ {
+  "id": 66256,
+  "name": "Сенджумару Шутара",
+  "nameEn": "Senjumaru Shutara",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Нулевой отряд",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 179
+ },
+ {
+  "id": 2602,
+  "name": "Сентаро Коцубаки",
+  "nameEn": "Sentarō Kotsubaki",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант",
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 13,
+  "arc": "Общество душ: спасение",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 180
+ },
+ {
+  "id": 2161,
+  "name": "Сой Фон",
+  "nameEn": "Suì-Fēng",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 2,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 181
+ },
+ {
+  "id": 2443,
+  "name": "Сокен Исида",
+  "nameEn": "Sōken Ishida",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 182
+ },
+ {
+  "id": 2080,
+  "name": "Сора Иноуэ",
+  "nameEn": "Sora Inoue",
+  "gender": "Мужской",
+  "races": [
+   "Душа",
+   "Пустой"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 183
+ },
+ {
+  "id": 2143,
+  "name": "Сосуке Айзен",
+  "nameEn": "Sousuke Aizen",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Капитан",
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 184
+ },
+ {
+  "id": 130647,
+  "name": "Сулливан Скуире",
+  "nameEn": "Sullivan Squire",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 185
+ },
+ {
+  "id": 2173,
+  "name": "Сюнсуй Кьёраку",
+  "nameEn": "Shunsui Kyōraku",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 1,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 186
+ },
+ {
+  "id": 60919,
+  "name": "Такецуна Гори",
+  "nameEn": "Taketsuna Gori",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 187
+ },
+ {
+  "id": 2433,
+  "name": "Тацуки Арисава",
+  "nameEn": "Tatsuki Arisawa",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 188
+ },
+ {
+  "id": 3196,
+  "name": "Тацуфуса Энджоджи",
+  "nameEn": "Tatsufusa Enjōji",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 8,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 189
+ },
+ {
+  "id": 66703,
+  "name": "Тенджиро Киринджи",
+  "nameEn": "Tenjirō Kirinji",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Нулевой отряд",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 190
+ },
+ {
+  "id": 2417,
+  "name": "Тесра Линдокруз",
+  "nameEn": "Tesra Lindocruz",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Фрасьон"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 191
+ },
+ {
+  "id": 2186,
+  "name": "Тецузаэмон Иба",
+  "nameEn": "Tetsuzaemon Iba",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан",
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 7,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 192
+ },
+ {
+  "id": 2139,
+  "name": "Тиэр Харрибел",
+  "nameEn": "Tier Harribel",
+  "gender": "Женский",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 193
+ },
+ {
+  "id": 3221,
+  "name": "Тошимори Умесада",
+  "nameEn": "Toshimori Umesada",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 9,
+  "arc": "Общество душ: спасение",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 194
+ },
+ {
+  "id": 2132,
+  "name": "Тоширо Хицугая",
+  "nameEn": "Tōshirō Hitsugaya",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Капитан",
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 10,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 195
+ },
+ {
+  "id": 32587,
+  "name": "Тхе Деми-Холлов",
+  "nameEn": "The Demi-Hollow",
+  "gender": "Мужской",
+  "races": [
+   "Пустой"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 196
+ },
+ {
+  "id": 37637,
+  "name": "Тхе Менос Гранде",
+  "nameEn": "The Menos Grande",
+  "gender": "Мужской",
+  "races": [
+   "Пустой"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 197
+ },
+ {
+  "id": 2085,
+  "name": "Улькиорра Сифер",
+  "nameEn": "Ulquiorra Cifer",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 198
+ },
+ {
+  "id": 2507,
+  "name": "Уруру Цумугия",
+  "nameEn": "Ururu Tsumugiya",
+  "gender": "Женский",
+  "races": [
+   "Модифицированная душа"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 199
+ },
+ {
+  "id": 2197,
+  "name": "Урю Ишида",
+  "nameEn": "Uryū Ishida",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх",
+   "Каракура"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 200
+ },
+ {
+  "id": 3243,
+  "name": "Финдорр Калиус",
+  "nameEn": "Findorr Calius",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Фрасьон"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Поддельная Каракура",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 201
+ },
+ {
+  "id": 2942,
+  "name": "Франкеска Мила Росе",
+  "nameEn": "Franceska Mila Rose",
+  "gender": "Женский",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Фрасьон"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 202
+ },
+ {
+  "id": 10004,
+  "name": "Фулер",
+  "nameEn": "Hooleer",
+  "gender": "Мужской",
+  "races": [
+   "Пустой"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: спасение",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 203
+ },
+ {
+  "id": 2180,
+  "name": "Ханатаро Ямада",
+  "nameEn": "Hanatarō Yamada",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 4,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 204
+ },
+ {
+  "id": 2929,
+  "name": "Харунобу Огидо",
+  "nameEn": "Harunobu Ogidō",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 4,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 205
+ },
+ {
+  "id": 4707,
+  "name": "Харутоки Иде",
+  "nameEn": "Harutoki Ide",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 206
+ },
+ {
+  "id": 4900,
+  "name": "Хашигами",
+  "nameEn": "Hashigami",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 207
+ },
+ {
+  "id": 4177,
+  "name": "Хейзо Касаки",
+  "nameEn": "Heizō Kasaki",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Поворот маятника",
+  "arcIndex": 3.5,
+  "answer": false,
+  "thumb": 208
+ },
+ {
+  "id": 10708,
+  "name": "Хёринмару",
+  "nameEn": "Hyōrinmaru (Zanpakutō spirit)",
+  "gender": "Мужской",
+  "races": [
+   "Дух занпакто"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Поворот маятника",
+  "arcIndex": 3.5,
+  "answer": true,
+  "thumb": 209
+ },
+ {
+  "id": 6394,
+  "name": "Хигонюудо",
+  "nameEn": "Higonyūdō",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: спасение",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 210
+ },
+ {
+  "id": 60554,
+  "name": "Хидетомо Каджоумару",
+  "nameEn": "Hidetomo Kajōmaru",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 211
+ },
+ {
+  "id": 2955,
+  "name": "Хиёсу",
+  "nameEn": "Hiyosu",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 12,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 212
+ },
+ {
+  "id": 2455,
+  "name": "Хиори Саругаки",
+  "nameEn": "Hiyori Sarugaki",
+  "gender": "Женский",
+  "races": [
+   "Шинигами",
+   "Пустой"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ",
+   "Вайзарды",
+   "Каракура"
+  ],
+  "ranks": [
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 213
+ },
+ {
+  "id": 3340,
+  "name": "Хиронари Хориучи",
+  "nameEn": "Hironari Horiuchi",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 214
+ },
+ {
+  "id": 2824,
+  "name": "Хисана Кучики",
+  "nameEn": "Hisana Kuchiki",
+  "gender": "Женский",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Общество душ: спасение",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 215
+ },
+ {
+  "id": 5402,
+  "name": "Хотару Канисава",
+  "nameEn": "Hotaru Kanisawa",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Поворот маятника",
+  "arcIndex": 3.5,
+  "answer": false,
+  "thumb": 216
+ },
+ {
+  "id": 140654,
+  "name": "Хубурт Александер Клейч",
+  "nameEn": "Huburt Alexander Kleich",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [],
+  "ranks": [
+   "Капитан",
+   "Лейтенант",
+   "Штернриттер"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 217
+ },
+ {
+  "id": 76299,
+  "name": "Цан Ду",
+  "nameEn": "Cang Du",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 218
+ },
+ {
+  "id": 2940,
+  "name": "Чарлотте Чухлхоурне",
+  "nameEn": "Charlotte Chuhlhourne",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Поддельная Каракура",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 219
+ },
+ {
+  "id": 2683,
+  "name": "Чизуру Хоншо",
+  "nameEn": "Chizuru Honshō",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 220
+ },
+ {
+  "id": 119911,
+  "name": "Чоуджиро Сасакибе",
+  "nameEn": "Chōjirō Sasakibe",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 221
+ },
+ {
+  "id": 3001,
+  "name": "Чоэ Ненг Повв",
+  "nameEn": "Choe Neng Poww",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Поддельная Каракура",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 222
+ },
+ {
+  "id": 2410,
+  "name": "Шавлонг Коуфанг",
+  "nameEn": "Shawlong Koufang",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 223
+ },
+ {
+  "id": 65250,
+  "name": "Шаз Домино",
+  "nameEn": "Shaz Domino",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 224
+ },
+ {
+  "id": 120071,
+  "name": "Шелби",
+  "nameEn": "Shelby",
+  "gender": "Мужской",
+  "races": [
+   "Дракон"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 225
+ },
+ {
+  "id": 2310,
+  "name": "Шинджи Хирако",
+  "nameEn": "Shinji Hirako",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами",
+   "Пустой"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ",
+   "Вайзарды"
+  ],
+  "ranks": [
+   "Капитан"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 5,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 226
+ },
+ {
+  "id": 7019,
+  "name": "Шинмура",
+  "nameEn": "Shinmura",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 227
+ },
+ {
+  "id": 57109,
+  "name": "Шино Мадараме",
+  "nameEn": "Shino Madarame",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 13,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 228
+ },
+ {
+  "id": 4420,
+  "name": "Шинобу Эйшима",
+  "nameEn": "Shinobu Eishima",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Поворот маятника",
+  "arcIndex": 3.5,
+  "answer": true,
+  "thumb": 229
+ },
+ {
+  "id": 5211,
+  "name": "Шриэкер",
+  "nameEn": "Shrieker",
+  "gender": "Мужской",
+  "races": [
+   "Пустой"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 230
+ },
+ {
+  "id": 43808,
+  "name": "Шукуро Цукишима",
+  "nameEn": "Shūkurō Tsukishima",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Экскюшн"
+  ],
+  "ranks": [],
+  "powers": [
+   "Фулбринг"
+  ],
+  "division": null,
+  "arc": "Потерянный агент",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 231
+ },
+ {
+  "id": 140667,
+  "name": "Шунзан Кёраку",
+  "nameEn": "Shunzan Kyōraku",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 232
+ },
+ {
+  "id": 2185,
+  "name": "Шухей Хисаги",
+  "nameEn": "Shūhei Hisagi",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 9,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 233
+ },
+ {
+  "id": 2411,
+  "name": "Эдрад Лионес",
+  "nameEn": "Edrad Liones",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 234
+ },
+ {
+  "id": 2941,
+  "name": "Эмилоу Апакки",
+  "nameEn": "Emilou Apacci",
+  "gender": "Женский",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Фрасьон"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Уэко Мундо",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 235
+ },
+ {
+  "id": 61174,
+  "name": "Эс Нот",
+  "nameEn": "Äs Nödt",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 236
+ },
+ {
+  "id": 59567,
+  "name": "Юграм Хашвальт",
+  "nameEn": "Jugram Haschwalth",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [
+   "Штернриттер"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 237
+ },
+ {
+  "id": 2434,
+  "name": "Юзу Куросаки",
+  "nameEn": "Yuzu Kurosaki",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Каракура"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 238
+ },
+ {
+  "id": 3095,
+  "name": "Юичи Шибата",
+  "nameEn": "Yūichi Shibata",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 239
+ },
+ {
+  "id": 42405,
+  "name": "Юкио Ханс Форарльберна",
+  "nameEn": "Yukio Hans Vorarlberna",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Экскюшн"
+  ],
+  "ranks": [],
+  "powers": [
+   "Фулбринг"
+  ],
+  "division": null,
+  "arc": "Потерянный агент",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 240
+ },
+ {
+  "id": 2182,
+  "name": "Юмичика Аясегава",
+  "nameEn": "Yumichika Ayasegawa",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 11,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 241
+ },
+ {
+  "id": 98942,
+  "name": "Юширо Шихоин",
+  "nameEn": "Yūshirō Shihōin",
+  "gender": "Мужской",
+  "races": [
+   "Душа"
+  ],
+  "affiliations": [
+   "Общество душ"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 242
+ },
+ {
+  "id": 2201,
+  "name": "Ямми Льярго",
+  "nameEn": "Yammy Llargo",
+  "gender": "Мужской",
+  "races": [
+   "Арранкар"
+  ],
+  "affiliations": [
+   "Армия Айзена"
+  ],
+  "ranks": [
+   "Эспада"
+  ],
+  "powers": [
+   "Ресуррексион"
+  ],
+  "division": null,
+  "arc": "Арранкары",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 243
+ },
+ {
+  "id": 2863,
+  "name": "Ясочика Иэмура",
+  "nameEn": "Yasochika Iemura",
+  "gender": "Мужской",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Офицер"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": 4,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 244
+ },
+ {
+  "id": 2216,
+  "name": "Ясутора Садо",
+  "nameEn": "Yasutora Sado",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Экскюшн",
+   "Каракура"
+  ],
+  "ranks": [
+   "Школьник"
+  ],
+  "powers": [
+   "Фулбринг"
+  ],
+  "division": null,
+  "arc": "Агент шинигами",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 245
+ },
+ {
+  "id": 59050,
+  "name": "Яхве",
+  "nameEn": "Yhwach",
+  "gender": "Мужской",
+  "races": [
+   "Квинси"
+  ],
+  "affiliations": [
+   "Ванденрейх"
+  ],
+  "ranks": [],
+  "powers": [],
+  "division": null,
+  "arc": "Тысячелетняя кровавая война",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 246
+ },
+ {
+  "id": 2184,
+  "name": "Ячиру Кусаджиши",
+  "nameEn": "Yachiru Kusajishi",
+  "gender": "Женский",
+  "races": [
+   "Шинигами"
+  ],
+  "affiliations": [
+   "Готей 13",
+   "Общество душ"
+  ],
+  "ranks": [
+   "Лейтенант"
+  ],
+  "powers": [
+   "Шикай",
+   "Банкай"
+  ],
+  "division": null,
+  "arc": "Общество душ: проникновение",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 247
+ }
+]

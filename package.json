@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "data": "node scripts/build-data.mjs && node scripts/build-dota.mjs",
+    "data": "node scripts/build-data.mjs && node scripts/build-dota.mjs && node scripts/build-aot.mjs && node scripts/build-bleach.mjs",
     "data:naruto": "node scripts/build-data.mjs",
-    "data:dota": "node scripts/build-dota.mjs"
+    "data:dota": "node scripts/build-dota.mjs",
+    "data:aot": "node scripts/build-aot.mjs",
+    "data:bleach": "node scripts/build-bleach.mjs"
   },
   "dependencies": {
     "react": "^19.3.0",

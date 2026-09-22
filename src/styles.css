@@ -160,9 +160,11 @@ main > div > div:not(.stats) {
 
 .games {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 4px;
   padding: 4px;
-  border-radius: 999px;
+  border-radius: 22px;
   background: rgba(0, 0, 0, 0.3);
 }
 
@@ -370,6 +372,8 @@ main > div > div:not(.stats) {
 }
 
 .cell {
+  hyphens: auto;
+  overflow-wrap: anywhere;
   height: 104px;
   border-radius: 8px;
   border: 3px solid rgba(0, 0, 0, 0.35);
@@ -770,4 +774,85 @@ footer {
 
 :root[data-game='dota'] .mode-button:not(.active) {
   color: var(--ink);
+}
+
+:root[data-game='aot'] {
+  --bg-top: #5d6b52;
+  --bg-bottom: #1f2419;
+  --paper: #e9e2cf;
+  --paper-edge: #c9bf9f;
+  --ink: #1f1d17;
+  --ink-soft: #5b5747;
+  --frame: #3f4a33;
+  --frame-dark: #20261a;
+  --accent: #8c6a3b;
+}
+
+:root[data-game='aot'] body {
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(255, 255, 255, 0.18), transparent 55%),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.05) 0 2px, transparent 2px 60px),
+    linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+  background-attachment: fixed;
+}
+
+:root[data-game='aot'] .logo {
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 6px;
+  color: #efe6cc;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 4px 0 #20261a, 0 8px 18px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-game='aot'] .logo span {
+  color: #c7a26a;
+}
+
+:root[data-game='aot'] .result-name {
+  font-family: 'Oswald', sans-serif;
+  color: var(--frame);
+}
+
+:root[data-game='bleach'] {
+  --bg-top: #20242c;
+  --bg-bottom: #050608;
+  --paper: #f4f4f2;
+  --paper-edge: #d5d5d0;
+  --ink: #111;
+  --ink-soft: #555;
+  --frame: #111;
+  --frame-dark: #000;
+  --accent: #e8661c;
+}
+
+:root[data-game='bleach'] body {
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(232, 102, 28, 0.25), transparent 60%),
+    radial-gradient(ellipse at 50% -20%, rgba(120, 160, 255, 0.18), transparent 55%),
+    linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+  background-attachment: fixed;
+}
+
+:root[data-game='bleach'] .logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 400;
+  letter-spacing: 8px;
+  color: #fff;
+  -webkit-text-stroke: 0;
+  text-shadow: 0 0 24px rgba(255, 255, 255, 0.25);
+}
+
+:root[data-game='bleach'] .logo span {
+  color: var(--accent);
+}
+
+:root[data-game='bleach'] .panel {
+  outline-color: #e0e0da;
+}
+
+:root[data-game='bleach'] .result-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: #111;
 }

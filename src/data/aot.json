@@ -1,0 +1,3702 @@
+[
+ {
+  "id": 21860,
+  "name": "11-й Командор",
+  "nameEn": "11th Commander",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Возвращение в Шиганшину",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 0
+ },
+ {
+  "id": 18381,
+  "name": "Абель",
+  "nameEn": "Abel",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 1
+ },
+ {
+  "id": 22632,
+  "name": "Абель Рейсс",
+  "nameEn": "Abel Reiss",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 2
+ },
+ {
+  "id": 19736,
+  "name": "Альма",
+  "nameEn": "Alma",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 3
+ },
+ {
+  "id": 7037,
+  "name": "Анка Рейнбергер",
+  "nameEn": "Anka Rheinberger",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Гарнизон"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 4
+ },
+ {
+  "id": 2069,
+  "name": "Армин Арлерт",
+  "nameEn": "Armin Arlert",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 5
+ },
+ {
+  "id": 36668,
+  "name": "Аурилл",
+  "nameEn": "Aurille",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Дворянин"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 6
+ },
+ {
+  "id": 6016,
+  "name": "Бертольд Гувер",
+  "nameEn": "Bertolt Hoover",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Кадетский корпус",
+   "Армия Марли",
+   "Воины Марли"
+  ],
+  "occupations": [
+   "Воин",
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 7
+ },
+ {
+  "id": 8196,
+  "name": "Борис Фойльнер",
+  "nameEn": "Boris Feulner",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Военная полиция",
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 8
+ },
+ {
+  "id": 78194,
+  "name": "Бучвалд",
+  "nameEn": "Buchwald",
+  "gender": "Мужской",
+  "species": [
+   "Лошадь"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Лошадь"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 9
+ },
+ {
+  "id": 34613,
+  "name": "Вальц",
+  "nameEn": "Waltz",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Военная полиция"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 10
+ },
+ {
+  "id": 63572,
+  "name": "Варис",
+  "nameEn": "Varis",
+  "gender": "Мужской",
+  "species": [
+   "Титан"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 11
+ },
+ {
+  "id": 49391,
+  "name": "Вилли Тайбер",
+  "nameEn": "Willy Tybur",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Знать"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 12
+ },
+ {
+  "id": 61060,
+  "name": "Вим",
+  "nameEn": "Wim",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Йегеристы"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Война за Парадиз",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 13
+ },
+ {
+  "id": 17711,
+  "name": "Г-жа Аккерман",
+  "nameEn": "Mikasa's mother",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 14
+ },
+ {
+  "id": 50269,
+  "name": "Г-жа Арлерт",
+  "nameEn": "Mrs. Arlert",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 15
+ },
+ {
+  "id": 39456,
+  "name": "Г-жа Йегер",
+  "nameEn": "Mrs. Yeager",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Возвращение в Шиганшину",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 16
+ },
+ {
+  "id": 20808,
+  "name": "Г-жа Спрингер",
+  "nameEn": "Ms. Springer",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [
+   "Домохозяйка"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Схватка титанов",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 17
+ },
+ {
+  "id": 52881,
+  "name": "Г-жа Тайбер",
+  "nameEn": "Lara Tybur",
+  "gender": "Женский",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Знать"
+  ],
+  "occupations": [],
+  "titans": [
+   "Молотобоец"
+  ],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 18
+ },
+ {
+  "id": 17713,
+  "name": "Г-н Аккерман",
+  "nameEn": "Ackerman",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 19
+ },
+ {
+  "id": 50268,
+  "name": "Г-н Арлерт",
+  "nameEn": "Mr. Arlert",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 20
+ },
+ {
+  "id": 20803,
+  "name": "Г-н Блауз",
+  "nameEn": "Artur Blouse",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [
+   "Охотник"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Схватка титанов",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 21
+ },
+ {
+  "id": 39376,
+  "name": "Г-н Йегер",
+  "nameEn": "Yeager",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [
+   "Врач"
+  ],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Возвращение в Шиганшину",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 22
+ },
+ {
+  "id": 21108,
+  "name": "Г-н Леонхарт",
+  "nameEn": "Leonhart",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Кадетский корпус",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 23
+ },
+ {
+  "id": 21120,
+  "name": "Г-н Рейсс",
+  "nameEn": "Rod and Uri's father",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Король"
+  ],
+  "titans": [
+   "Прародитель"
+  ],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 24
+ },
+ {
+  "id": 21106,
+  "name": "Г-н Смит",
+  "nameEn": "Erwin's father",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [
+   "Учитель"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 25
+ },
+ {
+  "id": 42018,
+  "name": "Г-н Спрингер",
+  "nameEn": "Mr. Springer",
+  "gender": "Мужской",
+  "species": [
+   "Титан"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Схватка титанов",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 26
+ },
+ {
+  "id": 43714,
+  "name": "Габи Браун",
+  "nameEn": "Gabi Braun",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли",
+   "Воины Марли"
+  ],
+  "occupations": [
+   "Воин"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 59220,
+  "name": "Геральд",
+  "nameEn": "Gerald",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Дворянин"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 28
+ },
+ {
+  "id": 2608,
+  "name": "Герга",
+  "nameEn": "Gelgar",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Схватка титанов",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 29
+ },
+ {
+  "id": 50950,
+  "name": "Герос",
+  "nameEn": "Helos",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 30
+ },
+ {
+  "id": 34993,
+  "name": "Гордон",
+  "nameEn": "Gordon",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Гарнизон",
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 31
+ },
+ {
+  "id": 40926,
+  "name": "Грайс",
+  "nameEn": "Grice",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Реставраторы Элдии"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Возвращение в Шиганшину",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 32
+ },
+ {
+  "id": 5814,
+  "name": "Гриша Йегер",
+  "nameEn": "Grisha Yeager",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Реставраторы Элдии"
+  ],
+  "occupations": [
+   "Врач"
+  ],
+  "titans": [
+   "Атакующий",
+   "Прародитель"
+  ],
+  "status": "Мёртв",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 63173,
+  "name": "Гриэз",
+  "nameEn": "Griez",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли",
+   "Антимарлийские добровольцы"
+  ],
+  "occupations": [
+   "Официант",
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Война за Парадиз",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 34
+ },
+ {
+  "id": 40946,
+  "name": "Гросс",
+  "nameEn": "Gross",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Возвращение в Шиганшину",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 35
+ },
+ {
+  "id": 7257,
+  "name": "Густав",
+  "nameEn": "Gustav",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Гарнизон"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 36
+ },
+ {
+  "id": 2373,
+  "name": "Гюнтер Шульц",
+  "nameEn": "Gunther Schultz",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 2658,
+  "name": "Даз",
+  "nameEn": "Daz",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Кадетский корпус",
+   "Йегеристы"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 38
+ },
+ {
+  "id": 9053,
+  "name": "Дариус Байер-Варбрун",
+  "nameEn": "Darius Baer-Varbrun",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 39
+ },
+ {
+  "id": 2631,
+  "name": "Дариус Закклай",
+  "nameEn": "Darius Zackly",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 40
+ },
+ {
+  "id": 20896,
+  "name": "Дед Аккерман",
+  "nameEn": "Kenny's grandfather",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 41
+ },
+ {
+  "id": 59531,
+  "name": "Делтофф",
+  "nameEn": "Deltoff",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Дворянин"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 42
+ },
+ {
+  "id": 8970,
+  "name": "Деннис Айбрингер",
+  "nameEn": "Dennis Aiblinger",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Военная полиция"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 43
+ },
+ {
+  "id": 11101,
+  "name": "Джер Санес",
+  "nameEn": "Djel Sannes",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Военная полиция",
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 44
+ },
+ {
+  "id": 12441,
+  "name": "Димо Ривз",
+  "nameEn": "Dimo Reeves",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Компания Ривза"
+  ],
+  "occupations": [
+   "Торговец"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 39314,
+  "name": "Дина Фриц",
+  "nameEn": "Dina Fritz",
+  "gender": "Женский",
+  "species": [
+   "Титан"
+  ],
+  "affiliations": [
+   "Знать",
+   "Реставраторы Элдии"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 32579,
+  "name": "Дирк",
+  "nameEn": "Dirk",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 47
+ },
+ {
+  "id": 22617,
+  "name": "Дирк Рейсс",
+  "nameEn": "Dirk Reiss",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 48
+ },
+ {
+  "id": 2637,
+  "name": "Дита Несс",
+  "nameEn": "Dita Ness",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 49
+ },
+ {
+  "id": 2152,
+  "name": "Дот Пиксис",
+  "nameEn": "Dot Pixis",
+  "gender": "Мужской",
+  "species": [
+   "Титан"
+  ],
+  "affiliations": [
+   "Гарнизон"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 50
+ },
+ {
+  "id": 39302,
+  "name": "Дьявол Земли",
+  "nameEn": "Devil of All Earth",
+  "gender": "Мужской",
+  "species": [
+   "Неизвестно"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 51
+ },
+ {
+  "id": 34757,
+  "name": "Дюран",
+  "nameEn": "Duran",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Военная полиция"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 52
+ },
+ {
+  "id": 57200,
+  "name": "Елена",
+  "nameEn": "Yelena",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли",
+   "Антимарлийские добровольцы"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 53
+ },
+ {
+  "id": 2146,
+  "name": "Жан Кирштейн",
+  "nameEn": "Jean Kirstein",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат",
+   "Посол"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 54
+ },
+ {
+  "id": 2599,
+  "name": "Зик Йегер",
+  "nameEn": "Zeke Yeager",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Знать",
+   "Армия Марли",
+   "Воины Марли",
+   "Реставраторы Элдии",
+   "Антимарлийские добровольцы"
+  ],
+  "occupations": [
+   "Воин"
+  ],
+  "titans": [
+   "Звероподобный"
+  ],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 55
+ },
+ {
+  "id": 6485,
+  "name": "Имир",
+  "nameEn": "Ymir",
+  "gender": "Женский",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [
+   "Челюсти"
+  ],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 56
+ },
+ {
+  "id": 39298,
+  "name": "Имир Фриц",
+  "nameEn": "Ymir Fritz",
+  "gender": "Женский",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [],
+  "titans": [
+   "Прародитель"
+  ],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 57
+ },
+ {
+  "id": 51896,
+  "name": "Калви",
+  "nameEn": "Calvi",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 58
+ },
+ {
+  "id": 48188,
+  "name": "Карина Браун",
+  "nameEn": "Karina Braun",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 59
+ },
+ {
+  "id": 19721,
+  "name": "Карл Фриц",
+  "nameEn": "Karl Fritz",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Король"
+  ],
+  "titans": [
+   "Прародитель"
+  ],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 60
+ },
+ {
+  "id": 29460,
+  "name": "Карла Йегер",
+  "nameEn": "Carla Yeager",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [
+   "Домохозяйка"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 61
+ },
+ {
+  "id": 54979,
+  "name": "Карло",
+  "nameEn": "Carlo",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 62
+ },
+ {
+  "id": 61056,
+  "name": "Кая",
+  "nameEn": "Kaya",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Схватка титанов",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 63
+ },
+ {
+  "id": 2635,
+  "name": "Кейджи",
+  "nameEn": "Keiji",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 64
+ },
+ {
+  "id": 13368,
+  "name": "Кенни Аккерман",
+  "nameEn": "Kenny Ackerman",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Военная полиция",
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 65
+ },
+ {
+  "id": 51892,
+  "name": "Киёми Азумабито",
+  "nameEn": "Kiyomi Azumabito",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Знать"
+  ],
+  "occupations": [
+   "Посол"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 66
+ },
+ {
+  "id": 3284,
+  "name": "Кис Шадис",
+  "nameEn": "Keith Shadis",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 67
+ },
+ {
+  "id": 7262,
+  "name": "Китс Верман",
+  "nameEn": "Kitz Weilman",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Гарнизон"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 68
+ },
+ {
+  "id": 32581,
+  "name": "Клаус",
+  "nameEn": "Klaus",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Возвращение в Шиганшину",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 69
+ },
+ {
+  "id": 78179,
+  "name": "Кловн",
+  "nameEn": "Clown",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Война за Парадиз",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 70
+ },
+ {
+  "id": 66956,
+  "name": "Кольт Грайс",
+  "nameEn": "Colt Grice",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли",
+   "Воины Марли"
+  ],
+  "occupations": [
+   "Воин"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 71
+ },
+ {
+  "id": 2443,
+  "name": "Конни Спрингер",
+  "nameEn": "Connie Springer",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Посол",
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 72
+ },
+ {
+  "id": 48184,
+  "name": "Косло",
+  "nameEn": "Koslow",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 73
+ },
+ {
+  "id": 19475,
+  "name": "Кушель Аккерман",
+  "nameEn": "Kuchel Ackerman",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [
+   "Проститутка"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 74
+ },
+ {
+  "id": 10918,
+  "name": "Лауда",
+  "nameEn": "Lauda",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 75
+ },
+ {
+  "id": 30377,
+  "name": "Леви Аккерман",
+  "nameEn": "Levi Ackerman",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат",
+   "Бандит"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 76
+ },
+ {
+  "id": 22611,
+  "name": "Леди Рейсс",
+  "nameEn": "Rod's wife",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 77
+ },
+ {
+  "id": 58517,
+  "name": "Лиза Браус",
+  "nameEn": "Lisa Blouse",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Война за Парадиз",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 78
+ },
+ {
+  "id": 53382,
+  "name": "Лобов",
+  "nameEn": "Lobov",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Гарнизон"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 79
+ },
+ {
+  "id": 61057,
+  "name": "Луиза",
+  "nameEn": "Louise",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Йегеристы"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 80
+ },
+ {
+  "id": 2639,
+  "name": "Люк Цис",
+  "nameEn": "Luke Siss",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 81
+ },
+ {
+  "id": 52337,
+  "name": "Мария Фриц",
+  "nameEn": "Maria Fritz",
+  "gender": "Женский",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 82
+ },
+ {
+  "id": 2411,
+  "name": "Марко Ботт",
+  "nameEn": "Marco Bott",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 83
+ },
+ {
+  "id": 32576,
+  "name": "Марлен",
+  "nameEn": "Marlene",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Возвращение в Шиганшину",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 84
+ },
+ {
+  "id": 2623,
+  "name": "Марло Фройденберг",
+  "nameEn": "Marlowe Freudenberg",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Военная полиция",
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 85
+ },
+ {
+  "id": 5514,
+  "name": "Марсель Галлиард",
+  "nameEn": "Marcel Galliard",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Армия Марли",
+   "Воины Марли"
+  ],
+  "occupations": [
+   "Воин"
+  ],
+  "titans": [
+   "Челюсти"
+  ],
+  "status": "Мёртв",
+  "arc": "Схватка титанов",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 86
+ },
+ {
+  "id": 42033,
+  "name": "Мартин Спрингер",
+  "nameEn": "Martin Springer",
+  "gender": "Мужской",
+  "species": [
+   "Титан"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Схватка титанов",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 87
+ },
+ {
+  "id": 2273,
+  "name": "Мик Закариас",
+  "nameEn": "Mike Zacharias",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 88
+ },
+ {
+  "id": 2060,
+  "name": "Микаса Аккерман",
+  "nameEn": "Mikasa Ackerman",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 89
+ },
+ {
+  "id": 4598,
+  "name": "Милиус Зельмски",
+  "nameEn": "Mylius Zeramuski",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 90
+ },
+ {
+  "id": 33063,
+  "name": "Милый Титан",
+  "nameEn": "Peering Titan",
+  "gender": "Мужской",
+  "species": [
+   "Титан"
+  ],
+  "affiliations": [
+   "Реставраторы Элдии"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 91
+ },
+ {
+  "id": 3521,
+  "name": "Мина Каролина",
+  "nameEn": "Mina Carolina",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 92
+ },
+ {
+  "id": 2643,
+  "name": "Митаби Ярнах",
+  "nameEn": "Mitabi Jarnach",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Гарнизон",
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 93
+ },
+ {
+  "id": 7486,
+  "name": "Моблит Бернер",
+  "nameEn": "Moblit Berner",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 94
+ },
+ {
+  "id": 4505,
+  "name": "Мозес Браун",
+  "nameEn": "Moses Braun",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 95
+ },
+ {
+  "id": 73750,
+  "name": "Муллер",
+  "nameEn": "Muller",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Война за Парадиз",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 96
+ },
+ {
+  "id": 28519,
+  "name": "Мэр района Стохес",
+  "nameEn": "Stohess District Mayor",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Мэр"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 97
+ },
+ {
+  "id": 2235,
+  "name": "Найл Док",
+  "nameEn": "Nile Dok",
+  "gender": "Мужской",
+  "species": [
+   "Титан"
+  ],
+  "affiliations": [
+   "Военная полиция"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 98
+ },
+ {
+  "id": 4593,
+  "name": "Нак Тиас",
+  "nameEn": "Nac Tias",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 99
+ },
+ {
+  "id": 51373,
+  "name": "Намбия",
+  "nameEn": "Nambia",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [
+   "Посол"
+  ],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 100
+ },
+ {
+  "id": 2610,
+  "name": "Нанаба",
+  "nameEn": "Nanaba",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 101
+ },
+ {
+  "id": 2594,
+  "name": "Ник",
+  "nameEn": "Nick",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Культ Стен"
+  ],
+  "occupations": [
+   "Министр"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 102
+ },
+ {
+  "id": 57912,
+  "name": "Николо",
+  "nameEn": "Niccolo",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли"
+  ],
+  "occupations": [
+   "Повар",
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 103
+ },
+ {
+  "id": 13339,
+  "name": "Нифа",
+  "nameEn": "Nifa",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Схватка титанов",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 104
+ },
+ {
+  "id": 51371,
+  "name": "Огвено",
+  "nameEn": "Ogweno",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [
+   "Посол"
+  ],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 105
+ },
+ {
+  "id": 70140,
+  "name": "Оливер",
+  "nameEn": "Oliver",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Йегеристы"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Война за Парадиз",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 106
+ },
+ {
+  "id": 56399,
+  "name": "Оньянкопон",
+  "nameEn": "Onyankopon",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли",
+   "Антимарлийские добровольцы"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 107
+ },
+ {
+  "id": 61143,
+  "name": "Орвуд Дистрикт Гаррисон Коммандер",
+  "nameEn": "Orvud District Garrison commander",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Гарнизон"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 108
+ },
+ {
+  "id": 2276,
+  "name": "Оруо Бозард",
+  "nameEn": "Oluo Bozado",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 109
+ },
+ {
+  "id": 59097,
+  "name": "Отец Райнера Брауна",
+  "nameEn": "Reiner's father",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [
+   "Повар"
+  ],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 110
+ },
+ {
+  "id": 2278,
+  "name": "Петра Рал",
+  "nameEn": "Petra Ral",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 111
+ },
+ {
+  "id": 22720,
+  "name": "Петрас Фатхер",
+  "nameEn": "Petra's father",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 112
+ },
+ {
+  "id": 24737,
+  "name": "Пик Фингер",
+  "nameEn": "Pieck Finger",
+  "gender": "Женский",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Армия Марли",
+   "Воины Марли"
+  ],
+  "occupations": [
+   "Воин"
+  ],
+  "titans": [
+   "Перевозчик"
+  ],
+  "status": "Жив",
+  "arc": "Возвращение в Шиганшину",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 113
+ },
+ {
+  "id": 66955,
+  "name": "Порко Галлиард",
+  "nameEn": "Porco Galliard",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Армия Марли",
+   "Воины Марли"
+  ],
+  "occupations": [
+   "Воин"
+  ],
+  "titans": [
+   "Челюсти"
+  ],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 114
+ },
+ {
+  "id": 31307,
+  "name": "Похитители",
+  "nameEn": "The three robbers",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 115
+ },
+ {
+  "id": 15261,
+  "name": "Пьер",
+  "nameEn": "Peaure",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [
+   "Журналист"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 116
+ },
+ {
+  "id": 2142,
+  "name": "Райнер Браун",
+  "nameEn": "Reiner Braun",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Кадетский корпус",
+   "Армия Марли",
+   "Воины Марли"
+  ],
+  "occupations": [
+   "Воин",
+   "Солдат"
+  ],
+  "titans": [
+   "Бронированный"
+  ],
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 117
+ },
+ {
+  "id": 12864,
+  "name": "Ральф",
+  "nameEn": "Ralph",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Военная полиция",
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 118
+ },
+ {
+  "id": 72539,
+  "name": "Рамзи",
+  "nameEn": "Ramzi",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Война за Парадиз",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 119
+ },
+ {
+  "id": 20427,
+  "name": "Рашад",
+  "nameEn": "Rashad",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Схватка титанов",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 120
+ },
+ {
+  "id": 2612,
+  "name": "Рене",
+  "nameEn": "Lynne",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Схватка титанов",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 121
+ },
+ {
+  "id": 2617,
+  "name": "Рико Брженская",
+  "nameEn": "Rico Brzenska",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Гарнизон",
+   "Кадетский корпус",
+   "Йегеристы"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 122
+ },
+ {
+  "id": 59825,
+  "name": "Рогер",
+  "nameEn": "Roger",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Военная полиция"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 123
+ },
+ {
+  "id": 11160,
+  "name": "Род Рейсс",
+  "nameEn": "Rod Reiss",
+  "gender": "Мужской",
+  "species": [
+   "Титан"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Король"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 124
+ },
+ {
+  "id": 59528,
+  "name": "Родерич",
+  "nameEn": "Roderich",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство",
+   "Культ Стен"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 125
+ },
+ {
+  "id": 52338,
+  "name": "Роза Фриц",
+  "nameEn": "Rose Fritz",
+  "gender": "Женский",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 126
+ },
+ {
+  "id": 15260,
+  "name": "Рой",
+  "nameEn": "Roy",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [
+   "Журналист"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 127
+ },
+ {
+  "id": 59937,
+  "name": "Роэг",
+  "nameEn": "Roeg",
+  "gender": "Мужской",
+  "species": [
+   "Титан"
+  ],
+  "affiliations": [
+   "Военная полиция"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Война за Парадиз",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 128
+ },
+ {
+  "id": 31755,
+  "name": "Рут Д. Кляйн",
+  "nameEn": "Ruth D. Kline",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Кадетский корпус",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 129
+ },
+ {
+  "id": 34982,
+  "name": "Сандра",
+  "nameEn": "Sandra",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Гарнизон",
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 130
+ },
+ {
+  "id": 42035,
+  "name": "Санни Спрингер",
+  "nameEn": "Sunny Springer",
+  "gender": "Женский",
+  "species": [
+   "Титан"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Схватка титанов",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 131
+ },
+ {
+  "id": 23339,
+  "name": "Саша Браус",
+  "nameEn": "Sasha Blouse",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат",
+   "Охотник"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 132
+ },
+ {
+  "id": 52339,
+  "name": "Сина Фриц",
+  "nameEn": "Sheena Fritz",
+  "gender": "Женский",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 133
+ },
+ {
+  "id": 43715,
+  "name": "Софи",
+  "nameEn": "Zofia",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли",
+   "Воины Марли"
+  ],
+  "occupations": [
+   "Воин"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 134
+ },
+ {
+  "id": 50351,
+  "name": "Сурвеи Корпсман Браунс Мотхер",
+  "nameEn": "Survey Corpsman Braun's mother",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 135
+ },
+ {
+  "id": 63573,
+  "name": "Сурма",
+  "nameEn": "Surma",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кадетский корпус",
+   "Йегеристы"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Война за Парадиз",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 136
+ },
+ {
+  "id": 2660,
+  "name": "Сэмюэль Линк-Джексон",
+  "nameEn": "Samuel",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Кадетский корпус",
+   "Йегеристы"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 137
+ },
+ {
+  "id": 43720,
+  "name": "Тео Магат",
+  "nameEn": "Theo Magath",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 138
+ },
+ {
+  "id": 7030,
+  "name": "Том",
+  "nameEn": "Tom",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 139
+ },
+ {
+  "id": 63574,
+  "name": "Том Ксавьер",
+  "nameEn": "Tom Ksaver",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Армия Марли",
+   "Воины Марли"
+  ],
+  "occupations": [
+   "Воин"
+  ],
+  "titans": [
+   "Звероподобный"
+  ],
+  "status": "Мёртв",
+  "arc": "Возвращение в Шиганшину",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 140
+ },
+ {
+  "id": 10520,
+  "name": "Томас",
+  "nameEn": "Thomas",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 141
+ },
+ {
+  "id": 2104,
+  "name": "Томас Вагнер",
+  "nameEn": "Thomas Wagner",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 142
+ },
+ {
+  "id": 22859,
+  "name": "Траут Карвен",
+  "nameEn": "Traute Caven",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Военная полиция",
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 143
+ },
+ {
+  "id": 43723,
+  "name": "Удо",
+  "nameEn": "Udo",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Армия Марли",
+   "Воины Марли"
+  ],
+  "occupations": [
+   "Воин"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 144
+ },
+ {
+  "id": 22614,
+  "name": "Улькин Рейсс",
+  "nameEn": "Urklyn Reiss",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 145
+ },
+ {
+  "id": 20482,
+  "name": "Ури Рейсс",
+  "nameEn": "Uri Reiss",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Король"
+  ],
+  "titans": [
+   "Прародитель"
+  ],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 146
+ },
+ {
+  "id": 66957,
+  "name": "Фалько Грайс",
+  "nameEn": "Falco Grice",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Армия Марли",
+   "Воины Марли"
+  ],
+  "occupations": [
+   "Воин"
+  ],
+  "titans": [
+   "Челюсти"
+  ],
+  "status": "Жив",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 147
+ },
+ {
+  "id": 20434,
+  "name": "Фил",
+  "nameEn": "Phil",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Гарнизон"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 148
+ },
+ {
+  "id": 73217,
+  "name": "Фингер",
+  "nameEn": "Finger",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Марли",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 149
+ },
+ {
+  "id": 13388,
+  "name": "Флегель Ривз",
+  "nameEn": "Flegel Reeves",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Компания Ривза"
+  ],
+  "occupations": [
+   "Торговец"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 150
+ },
+ {
+  "id": 72859,
+  "name": "Флок Форстер",
+  "nameEn": "Floch Forster",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Гарнизон",
+   "Кадетский корпус",
+   "Йегеристы"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 151
+ },
+ {
+  "id": 22633,
+  "name": "Флориана Рейсс",
+  "nameEn": "Florian Reiss",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 152
+ },
+ {
+  "id": 2664,
+  "name": "Франц Кефка",
+  "nameEn": "Franz Kefka",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 153
+ },
+ {
+  "id": 12394,
+  "name": "Фрида Рейсс",
+  "nameEn": "Frieda Reiss",
+  "gender": "Женский",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Королева"
+  ],
+  "titans": [
+   "Прародитель"
+  ],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 154
+ },
+ {
+  "id": 68386,
+  "name": "Фритз",
+  "nameEn": "Fritz",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Война за Парадиз",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 155
+ },
+ {
+  "id": 12393,
+  "name": "Фриц",
+  "nameEn": "Fritz (Figurehead)",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Король"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": false,
+  "thumb": 156
+ },
+ {
+  "id": 39322,
+  "name": "Фэй Йегер",
+  "nameEn": "Faye Yeager",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Возвращение в Шиганшину",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 157
+ },
+ {
+  "id": 72540,
+  "name": "Халил",
+  "nameEn": "Halil",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Война за Парадиз",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 158
+ },
+ {
+  "id": 72839,
+  "name": "Ханджи Зое",
+  "nameEn": "Hange Zoë",
+  "gender": "Другое",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 159
+ },
+ {
+  "id": 2662,
+  "name": "Ханна Диамант",
+  "nameEn": "Hannah Diamant",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 160
+ },
+ {
+  "id": 2493,
+  "name": "Ханнес",
+  "nameEn": "Hannes",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Гарнизон"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 161
+ },
+ {
+  "id": 50313,
+  "name": "Харолд",
+  "nameEn": "Harold",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Возвращение в Шиганшину",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 162
+ },
+ {
+  "id": 2614,
+  "name": "Хеннинг",
+  "nameEn": "Henning",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Схватка титанов",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 163
+ },
+ {
+  "id": 25815,
+  "name": "Хистория Рейсс",
+  "nameEn": "Historia Reiss",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Кадетский корпус",
+   "Знать",
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Королева",
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 164
+ },
+ {
+  "id": 2633,
+  "name": "Хитч Дрейс",
+  "nameEn": "Hitch Dreyse",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Военная полиция",
+   "Кадетский корпус",
+   "Йегеристы"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 165
+ },
+ {
+  "id": 61069,
+  "name": "Холгер",
+  "nameEn": "Holger",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Йегеристы"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Война за Парадиз",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 166
+ },
+ {
+  "id": 7933,
+  "name": "Хьюго",
+  "nameEn": "Fugo",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Гарнизон"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Неизвестно",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 167
+ },
+ {
+  "id": 72913,
+  "name": "Чарлотте",
+  "nameEn": "Charlotte",
+  "gender": "Женский",
+  "species": [
+   "Лошадь"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Лошадь"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 168
+ },
+ {
+  "id": 14153,
+  "name": "Эллиэ",
+  "nameEn": "Ellie",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "occupations": [],
+  "titans": [],
+  "status": "Жив",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 169
+ },
+ {
+  "id": 2081,
+  "name": "Энни Леонхарт",
+  "nameEn": "Annie Leonhart",
+  "gender": "Женский",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Военная полиция",
+   "Кадетский корпус",
+   "Армия Марли",
+   "Воины Марли"
+  ],
+  "occupations": [
+   "Воин"
+  ],
+  "titans": [
+   "Женская особь"
+  ],
+  "status": "Жив",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 170
+ },
+ {
+  "id": 30428,
+  "name": "Эрвин Смит",
+  "nameEn": "Erwin Smith",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 171
+ },
+ {
+  "id": 2284,
+  "name": "Эрд Джин",
+  "nameEn": "Eld Jinn",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Разведкорпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Женская особь",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 172
+ },
+ {
+  "id": 30294,
+  "name": "Эрен Йегер",
+  "nameEn": "Eren Yeager",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Разведкорпус",
+   "Кадетский корпус",
+   "Йегеристы"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [
+   "Атакующий",
+   "Прародитель",
+   "Молотобоец"
+  ],
+  "status": "Мёртв",
+  "arc": "Пролог",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 173
+ },
+ {
+  "id": 39543,
+  "name": "Эрен Крюгер",
+  "nameEn": "Eren Kruger",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Титан-оборотень"
+  ],
+  "affiliations": [
+   "Армия Марли",
+   "Реставраторы Элдии"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [
+   "Атакующий"
+  ],
+  "status": "Мёртв",
+  "arc": "Возвращение в Шиганшину",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 174
+ },
+ {
+  "id": 2641,
+  "name": "Ян Дитрих",
+  "nameEn": "Ian Dietrich",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Гарнизон",
+   "Кадетский корпус"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Битва за Трост",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 175
+ }
+]

@@ -8,7 +8,7 @@ export type Entity = { id: number; name: string; thumb: number; answer: boolean 
 
 export type Column<T> = { title: string; render: (guess: T, answer: T) => Cell }
 
-export type GameId = 'naruto' | 'dota'
+export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach'
 
 export type Game<T extends Entity = Entity> = {
   id: GameId

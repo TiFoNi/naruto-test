@@ -98,7 +98,8 @@ export default function App() {
       </main>
 
       <footer>
-        Фанатский проект · Наруто: Naruto Wiki через Dattebayo API · Dota 2: Valve, OpenDota, Dota 2 Wiki
+        Фанатский проект · данные и изображения: Naruto Wiki, Dattebayo API, Valve, OpenDota, Dota 2 Wiki, Attack on Titan Wiki,
+        Bleach Wiki, MyAnimeList
       </footer>
     </div>
   )

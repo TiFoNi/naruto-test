@@ -177,12 +177,9 @@ const VOWELS = new Set(['a', 'e', 'i', 'o', 'u'])
 
 function transliterateWord(word) {
   const w = word
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
-    .replace(/[āâ]/g, 'a')
-    .replace(/[ōô]/g, 'o')
-    .replace(/[ūû]/g, 'u')
-    .replace(/[īî]/g, 'i')
-    .replace(/[ēê]/g, 'e')
   let out = ''
   let i = 0
   while (i < w.length) {
@@ -196,6 +193,7 @@ function transliterateWord(word) {
     const prev = w[i - 1]
     if (ch === 'e') out += i === 0 || VOWELS.has(prev) ? 'э' : 'е'
     else if (ch === 'i' && prev && 'aeo'.includes(prev) && !VOWELS.has(w[i + 1] ?? '')) out += 'й'
+    else if (ch === 'y' && !VOWELS.has(w[i + 1] ?? '')) out += 'и'
     else out += LETTERS[ch] ?? ch
     i++
   }
