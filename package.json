@@ -7,13 +7,16 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "data": "node scripts/build-data.mjs && node scripts/build-dota.mjs && node scripts/build-aot.mjs && node scripts/build-bleach.mjs && node scripts/build-tg.mjs && node scripts/build-berserk.mjs",
+    "data": "node scripts/build-data.mjs && node scripts/build-dota.mjs && node scripts/build-aot.mjs && node scripts/build-bleach.mjs && node scripts/build-tg.mjs && node scripts/build-berserk.mjs && node scripts/build-kny.mjs && node scripts/build-bluelock.mjs && node scripts/build-onepiece.mjs",
     "data:naruto": "node scripts/build-data.mjs",
     "data:dota": "node scripts/build-dota.mjs",
     "data:aot": "node scripts/build-aot.mjs",
     "data:bleach": "node scripts/build-bleach.mjs",
     "data:tg": "node scripts/build-tg.mjs",
     "data:berserk": "node scripts/build-berserk.mjs",
+    "data:kny": "node scripts/build-kny.mjs",
+    "data:bluelock": "node scripts/build-bluelock.mjs",
+    "data:onepiece": "node scripts/build-onepiece.mjs",
     "check:data": "node scripts/check-data.mjs"
   },
   "dependencies": {

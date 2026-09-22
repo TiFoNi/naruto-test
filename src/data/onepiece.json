@@ -1,0 +1,3513 @@
+[
+ {
+  "id": 5325,
+  "name": "Абсалом",
+  "nameEn": "Absalom",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Триллер Барка"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Триллер Барк",
+  "arcIndex": 14,
+  "answer": false,
+  "thumb": 0
+ },
+ {
+  "id": 2545,
+  "name": "Айсбёрг",
+  "nameEn": "Iceburg",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Галлей-Ла"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Water 7",
+  "arcIndex": 12,
+  "answer": true,
+  "thumb": 1
+ },
+ {
+  "id": 1701,
+  "name": "Альвида",
+  "nameEn": "Alvida",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кросс Гильдия",
+   "Пираты Багги"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 5000000,
+  "arc": "Ромэнс Дон",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 2
+ },
+ {
+  "id": 1781,
+  "name": "Арлонг",
+  "nameEn": "Arlong",
+  "gender": "Мужской",
+  "races": [
+   "Рыболюд"
+  ],
+  "affiliations": [
+   "Пираты Арлонга"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 20000000,
+  "arc": "Арлонг Парк",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 3
+ },
+ {
+  "id": 319192,
+  "name": "Багги",
+  "nameEn": "Buggy",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кросс Гильдия",
+   "Пираты Багги"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 3189000000,
+  "arc": "Оранж-Таун",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 4
+ },
+ {
+  "id": 199939,
+  "name": "Бартоломео",
+  "nameEn": "Bartolomeo",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другие пираты"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 200000000,
+  "arc": "Дрессроза",
+  "arcIndex": 21,
+  "answer": true,
+  "thumb": 5
+ },
+ {
+  "id": 1838,
+  "name": "Бартоломью Кума",
+  "nameEn": "Bartholomew Kuma",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Революционная армия"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 296000000,
+  "arc": "Джая",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 6
+ },
+ {
+  "id": 1713,
+  "name": "Белл-мэр",
+  "nameEn": "Bell-mère",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Арлонг Парк",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 7
+ },
+ {
+  "id": 2079,
+  "name": "Беллами",
+  "nameEn": "Bellamy",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Семья Донкихот"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 195000000,
+  "arc": "Джая",
+  "arcIndex": 10,
+  "answer": false,
+  "thumb": 8
+ },
+ {
+  "id": 1651,
+  "name": "Бенн Бекман",
+  "nameEn": "Benn Beckman",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Рыжего"
+  ],
+  "fruits": [],
+  "haki": [
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Ромэнс Дон",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 9
+ },
+ {
+  "id": 1831,
+  "name": "Бентам (Мистер 2)",
+  "nameEn": "Bentham",
+  "gender": "Другое",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 32000000,
+  "arc": "Литл Гарден",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 10
+ },
+ {
+  "id": 9356,
+  "name": "Бепо",
+  "nameEn": "Bepo",
+  "gender": "Мужской",
+  "races": [
+   "Минк"
+  ],
+  "affiliations": [
+   "Пираты Сердца"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 1500,
+  "arc": "Сабаоди",
+  "arcIndex": 15,
+  "answer": false,
+  "thumb": 11
+ },
+ {
+  "id": 321780,
+  "name": "Блэк Мария",
+  "nameEn": "Black Maria",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Зверей"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 480000000,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": false,
+  "thumb": 12
+ },
+ {
+  "id": 10318,
+  "name": "Боа Хэнкок",
+  "nameEn": "Boa Hancock",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пиратки Куджа"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 1659000000,
+  "arc": "Амазон Лили",
+  "arcIndex": 16,
+  "answer": true,
+  "thumb": 13
+ },
+ {
+  "id": 1673,
+  "name": "Борсалино (Кизару)",
+  "nameEn": "Borsalino",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [
+   "Логия"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Сабаоди",
+  "arcIndex": 15,
+  "answer": true,
+  "thumb": 14
+ },
+ {
+  "id": 2089,
+  "name": "Броги",
+  "nameEn": "Brogy",
+  "gender": "Мужской",
+  "races": [
+   "Великан"
+  ],
+  "affiliations": [
+   "Другие пираты"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 1800000000,
+  "arc": "Литл Гарден",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 15
+ },
+ {
+  "id": 4866,
+  "name": "Брук",
+  "nameEn": "Brook",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Соломенной Шляпы"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 383000000,
+  "arc": "Триллер Барк",
+  "arcIndex": 14,
+  "answer": true,
+  "thumb": 16
+ },
+ {
+  "id": 8556,
+  "name": "Бэзил Хокинс",
+  "nameEn": "Basil Hawkins",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Зверей"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 320000000,
+  "arc": "Сабаоди",
+  "arcIndex": 15,
+  "answer": true,
+  "thumb": 17
+ },
+ {
+  "id": 3104,
+  "name": "Вайпер",
+  "nameEn": "Wyper",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Скайпия",
+  "arcIndex": 11,
+  "answer": false,
+  "thumb": 18
+ },
+ {
+  "id": 1992,
+  "name": "Ван Авгур",
+  "nameEn": "Van Augur",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Чёрной Бороды"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 64000000,
+  "arc": "Джая",
+  "arcIndex": 10,
+  "answer": false,
+  "thumb": 19
+ },
+ {
+  "id": 2095,
+  "name": "Вапол",
+  "nameEn": "Wapol",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Остров Драм",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 7898,
+  "name": "Вегапанк",
+  "nameEn": "Vegapunk",
+  "gender": "Мужской",
+  "races": [
+   "Человек",
+   "Киборг"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Панк Хазард",
+  "arcIndex": 20,
+  "answer": true,
+  "thumb": 21
+ },
+ {
+  "id": 161463,
+  "name": "Верго",
+  "nameEn": "Vergo",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Семья Донкихот"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Панк Хазард",
+  "arcIndex": 20,
+  "answer": true,
+  "thumb": 22
+ },
+ {
+  "id": 287673,
+  "name": "Винсмок Джадж",
+  "nameEn": "Vinsmoke Judge",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Джерма 66"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 285759,
+  "name": "Винсмок Ёнджи",
+  "nameEn": "Vinsmoke Yonji",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Джерма 66"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": false,
+  "thumb": 24
+ },
+ {
+  "id": 289748,
+  "name": "Винсмок Ичиджи",
+  "nameEn": "Vinsmoke Ichiji",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Джерма 66"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": false,
+  "thumb": 25
+ },
+ {
+  "id": 289749,
+  "name": "Винсмок Ниджи",
+  "nameEn": "Vinsmoke Niji",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Джерма 66"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": false,
+  "thumb": 26
+ },
+ {
+  "id": 285757,
+  "name": "Винсмок Рэйджу",
+  "nameEn": "Vinsmoke Reiju",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Джерма 66"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 198819,
+  "name": "Виола",
+  "nameEn": "Viola",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Дрессроза"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Дрессроза",
+  "arcIndex": 21,
+  "answer": false,
+  "thumb": 28
+ },
+ {
+  "id": 2271,
+  "name": "Гальдино (Мистер 3)",
+  "nameEn": "Galdino",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кросс Гильдия",
+   "Пираты Багги"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 24000000,
+  "arc": "Литл Гарден",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 29
+ },
+ {
+  "id": 352569,
+  "name": "Гекко Мория",
+  "nameEn": "Gecko Moria",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Триллер Барка"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 320000000,
+  "arc": "Триллер Барк",
+  "arcIndex": 14,
+  "answer": true,
+  "thumb": 30
+ },
+ {
+  "id": 1670,
+  "name": "Гол Д. Роджер",
+  "nameEn": "Gol D. Roger",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Роджера"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 5564800000,
+  "arc": "Ромэнс Дон",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 31
+ },
+ {
+  "id": 1829,
+  "name": "Даз Бонс (Мистер 1)",
+  "nameEn": "Daz Bonez",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кросс Гильдия"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 75000000,
+  "arc": "Алабаста",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 197527,
+  "name": "Деллинджер",
+  "nameEn": "Dellinger",
+  "gender": "Другое",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Семья Донкихот"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 15000000,
+  "arc": "Дрессроза",
+  "arcIndex": 21,
+  "answer": false,
+  "thumb": 33
+ },
+ {
+  "id": 339396,
+  "name": "Джейгарсия Сатурн",
+  "nameEn": "Jaygarcia Saturn",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Мировое правительство"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Королевская"
+  ],
+  "bounty": 0,
+  "arc": "Джая",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 276036,
+  "name": "Джек",
+  "nameEn": "Jack",
+  "gender": "Мужской",
+  "races": [
+   "Рыболюд"
+  ],
+  "affiliations": [
+   "Пираты Зверей"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 1000000000,
+  "arc": "Дрессроза",
+  "arcIndex": 21,
+  "answer": true,
+  "thumb": 35
+ },
+ {
+  "id": 2086,
+  "name": "Джизус Бёрджесс",
+  "nameEn": "Jesus Burgess",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Чёрной Бороды"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 20000000,
+  "arc": "Джая",
+  "arcIndex": 10,
+  "answer": false,
+  "thumb": 36
+ },
+ {
+  "id": 2044,
+  "name": "Джимбей",
+  "nameEn": "Jinbe",
+  "gender": "Мужской",
+  "races": [
+   "Рыболюд"
+  ],
+  "affiliations": [
+   "Пираты Соломенной Шляпы"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 1100000000,
+  "arc": "Импел Даун",
+  "arcIndex": 17,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 2592,
+  "name": "Джоз",
+  "nameEn": "Jozu",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Белоуса"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Джая",
+  "arcIndex": 10,
+  "answer": false,
+  "thumb": 38
+ },
+ {
+  "id": 8549,
+  "name": "Джюэлри Бонни",
+  "nameEn": "Jewelry Bonney",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другие пираты"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Вооружения"
+  ],
+  "bounty": 320000000,
+  "arc": "Сабаоди",
+  "arcIndex": 15,
+  "answer": true,
+  "thumb": 39
+ },
+ {
+  "id": 194013,
+  "name": "Диаманте",
+  "nameEn": "Diamante",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Семья Донкихот"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 99000000,
+  "arc": "Дрессроза",
+  "arcIndex": 21,
+  "answer": false,
+  "thumb": 40
+ },
+ {
+  "id": 174873,
+  "name": "Дон Криг",
+  "nameEn": "Krieg",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другие пираты"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 17000000,
+  "arc": "Барати",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 41
+ },
+ {
+  "id": 1837,
+  "name": "Донкихот Дофламинго",
+  "nameEn": "Donquixote Doflamingo",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Семья Донкихот"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 340000000,
+  "arc": "Джая",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 42
+ },
+ {
+  "id": 2090,
+  "name": "Дорри",
+  "nameEn": "Dorry",
+  "gender": "Мужской",
+  "races": [
+   "Великан"
+  ],
+  "affiliations": [
+   "Другие пираты"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 1800000000,
+  "arc": "Литл Гарден",
+  "arcIndex": 7,
+  "answer": false,
+  "thumb": 43
+ },
+ {
+  "id": 11821,
+  "name": "Дракуль Михок",
+  "nameEn": "Dracule Mihawk",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кросс Гильдия"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 3590000000,
+  "arc": "Барати",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 44
+ },
+ {
+  "id": 310455,
+  "name": "Дэндзиро",
+  "nameEn": "Denjiro",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": false,
+  "thumb": 45
+ },
+ {
+  "id": 1825,
+  "name": "Зефф",
+  "nameEn": "Zeff",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Барати",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 35456,
+  "name": "Изо",
+  "nameEn": "Izou",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 510000000,
+  "arc": "Маринфорд",
+  "arcIndex": 18,
+  "answer": false,
+  "thumb": 47
+ },
+ {
+  "id": 8547,
+  "name": "Икс Дрейк",
+  "nameEn": "X Drake",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 222000000,
+  "arc": "Сабаоди",
+  "arcIndex": 15,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 308206,
+  "name": "Имму",
+  "nameEn": "Nerona Imu",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Мировое правительство"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Королевская"
+  ],
+  "bounty": 0,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": true,
+  "thumb": 49
+ },
+ {
+  "id": 279068,
+  "name": "Инуараси",
+  "nameEn": "Inuarashi",
+  "gender": "Мужской",
+  "races": [
+   "Минк"
+  ],
+  "affiliations": [
+   "Вано",
+   "Минки"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Зоу",
+  "arcIndex": 22,
+  "answer": true,
+  "thumb": 50
+ },
+ {
+  "id": 194047,
+  "name": "Иссё (Фудзитора)",
+  "nameEn": "Issho",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Дрессроза",
+  "arcIndex": 21,
+  "answer": true,
+  "thumb": 51
+ },
+ {
+  "id": 310990,
+  "name": "Кавамацу",
+  "nameEn": "Kawamatsu",
+  "gender": "Мужской",
+  "races": [
+   "Рыболюд"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": false,
+  "thumb": 52
+ },
+ {
+  "id": 199938,
+  "name": "Кавендиш",
+  "nameEn": "Cavendish",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другие пираты"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 330000000,
+  "arc": "Дрессроза",
+  "arcIndex": 21,
+  "answer": true,
+  "thumb": 53
+ },
+ {
+  "id": 10603,
+  "name": "Кайдо",
+  "nameEn": "Kaidou",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Зверей"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 4611100000,
+  "arc": "Дрессроза",
+  "arcIndex": 21,
+  "answer": true,
+  "thumb": 54
+ },
+ {
+  "id": 2078,
+  "name": "Каку",
+  "nameEn": "Kaku",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Мировое правительство"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Water 7",
+  "arcIndex": 12,
+  "answer": true,
+  "thumb": 55
+ },
+ {
+  "id": 2687,
+  "name": "Калифа",
+  "nameEn": "Kalifa",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Мировое правительство"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Water 7",
+  "arcIndex": 12,
+  "answer": true,
+  "thumb": 56
+ },
+ {
+  "id": 8548,
+  "name": "Капоне Бэдж",
+  "nameEn": "Capone Bege",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другие пираты"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 350000000,
+  "arc": "Сабаоди",
+  "arcIndex": 15,
+  "answer": true,
+  "thumb": 57
+ },
+ {
+  "id": 1835,
+  "name": "Кая",
+  "nameEn": "Kaya",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Деревня Сиропа",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 58
+ },
+ {
+  "id": 309124,
+  "name": "Кикунодзё",
+  "nameEn": "Kikunojo",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": false,
+  "thumb": 59
+ },
+ {
+  "id": 312139,
+  "name": "Киллер",
+  "nameEn": "Killer",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Кида"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 200000000,
+  "arc": "Сабаоди",
+  "arcIndex": 15,
+  "answer": true,
+  "thumb": 60
+ },
+ {
+  "id": 311916,
+  "name": "Кинг",
+  "nameEn": "King",
+  "gender": "Мужской",
+  "races": [
+   "Лунарианец"
+  ],
+  "affiliations": [
+   "Пираты Зверей"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 1390000000,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": true,
+  "thumb": 61
+ },
+ {
+  "id": 324999,
+  "name": "Кинъэмон",
+  "nameEn": "Kin'emon",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Панк Хазард",
+  "arcIndex": 20,
+  "answer": true,
+  "thumb": 62
+ },
+ {
+  "id": 199974,
+  "name": "Кирос",
+  "nameEn": "Kyros",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Дрессроза"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Дрессроза",
+  "arcIndex": 21,
+  "answer": true,
+  "thumb": 63
+ },
+ {
+  "id": 73893,
+  "name": "Коала",
+  "nameEn": "Koala",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Революционная армия"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Остров рыболюдей",
+  "arcIndex": 19,
+  "answer": true,
+  "thumb": 64
+ },
+ {
+  "id": 1686,
+  "name": "Коби",
+  "nameEn": "Koby",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Ромэнс Дон",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 65
+ },
+ {
+  "id": 140659,
+  "name": "Кодзуки Момоносукэ",
+  "nameEn": "Kouzuki Momonosuke",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения"
+  ],
+  "bounty": 0,
+  "arc": "Панк Хазард",
+  "arcIndex": 20,
+  "answer": true,
+  "thumb": 66
+ },
+ {
+  "id": 283205,
+  "name": "Кодзуки Одэн",
+  "nameEn": "Kouzuki Oden",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 0,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": true,
+  "thumb": 67
+ },
+ {
+  "id": 312347,
+  "name": "Кодзуки Хиёри",
+  "nameEn": "Kouzuki Hiyori",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": true,
+  "thumb": 68
+ },
+ {
+  "id": 1691,
+  "name": "Кокоро",
+  "nameEn": "Kokoro",
+  "gender": "Женский",
+  "races": [
+   "Русал"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Water 7",
+  "arcIndex": 12,
+  "answer": false,
+  "thumb": 69
+ },
+ {
+  "id": 324831,
+  "name": "Крокодайл",
+  "nameEn": "Crocodile",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Кросс Гильдия"
+  ],
+  "fruits": [
+   "Логия"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 1965000000,
+  "arc": "Литл Гарден",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 70
+ },
+ {
+  "id": 2935,
+  "name": "Крокус",
+  "nameEn": "Crocus",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения"
+  ],
+  "bounty": 0,
+  "arc": "Реверс Маунтин",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 71
+ },
+ {
+  "id": 2160,
+  "name": "Кузан (Аокидзи)",
+  "nameEn": "Kuzan",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Чёрной Бороды"
+  ],
+  "fruits": [
+   "Логия"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Скайпия",
+  "arcIndex": 11,
+  "answer": true,
+  "thumb": 72
+ },
+ {
+  "id": 311946,
+  "name": "Куин",
+  "nameEn": "Queen",
+  "gender": "Мужской",
+  "races": [
+   "Человек",
+   "Киборг"
+  ],
+  "affiliations": [
+   "Пираты Зверей"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 1320000000,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": true,
+  "thumb": 73
+ },
+ {
+  "id": 1721,
+  "name": "Куина",
+  "nameEn": "Shimotsuki Kuina",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Ромэнс Дон",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 74
+ },
+ {
+  "id": 1716,
+  "name": "Куреха",
+  "nameEn": "Kureha",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Остров Драм",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 75
+ },
+ {
+  "id": 3809,
+  "name": "Курли Дадан",
+  "nameEn": "Curly Dadan",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 7800000,
+  "arc": "Эниес Лобби",
+  "arcIndex": 13,
+  "answer": false,
+  "thumb": 76
+ },
+ {
+  "id": 1966,
+  "name": "Куро",
+  "nameEn": "Kuro",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другие пираты"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 16000000,
+  "arc": "Деревня Сиропа",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 77
+ },
+ {
+  "id": 194037,
+  "name": "Куродзуми Канджуро",
+  "nameEn": "Kurozumi Kanjuro",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Дрессроза",
+  "arcIndex": 21,
+  "answer": true,
+  "thumb": 78
+ },
+ {
+  "id": 308530,
+  "name": "Куродзуми Орочи",
+  "nameEn": "Kurozumi Orochi",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": true,
+  "thumb": 79
+ },
+ {
+  "id": 4221,
+  "name": "Кэррот",
+  "nameEn": "Carrot",
+  "gender": "Женский",
+  "races": [
+   "Минк"
+  ],
+  "affiliations": [
+   "Минки"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Зоу",
+  "arcIndex": 22,
+  "answer": true,
+  "thumb": 80
+ },
+ {
+  "id": 1968,
+  "name": "Лабоон",
+  "nameEn": "Laboon",
+  "gender": "Мужской",
+  "races": [
+   "Животное"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Реверс Маунтин",
+  "arcIndex": 6,
+  "answer": false,
+  "thumb": 81
+ },
+ {
+  "id": 1648,
+  "name": "Лаки Ру",
+  "nameEn": "Lucky Roux",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Рыжего"
+  ],
+  "fruits": [],
+  "haki": [
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Ромэнс Дон",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 82
+ },
+ {
+  "id": 2088,
+  "name": "Лаффит",
+  "nameEn": "Laffitte",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Чёрной Бороды"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 42200000,
+  "arc": "Джая",
+  "arcIndex": 10,
+  "answer": false,
+  "thumb": 83
+ },
+ {
+  "id": 11017,
+  "name": "Магеллан",
+  "nameEn": "Magellan",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Мировое правительство"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Импел Даун",
+  "arcIndex": 17,
+  "answer": true,
+  "thumb": 84
+ },
+ {
+  "id": 1816,
+  "name": "Макино",
+  "nameEn": "Makino",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Ромэнс Дон",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 85
+ },
+ {
+  "id": 2240,
+  "name": "Марко",
+  "nameEn": "Polo Marco",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Белоуса"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 1374000000,
+  "arc": "Джая",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 86
+ },
+ {
+  "id": 1698,
+  "name": "Маршалл Д. Тич (Чёрная Борода)",
+  "nameEn": "Marshall D. Teach",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Чёрной Бороды"
+  ],
+  "fruits": [
+   "Парамеция",
+   "Логия"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 3996000000,
+  "arc": "Джая",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 87
+ },
+ {
+  "id": 146906,
+  "name": "Моне",
+  "nameEn": "Monet",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Семья Донкихот"
+  ],
+  "fruits": [
+   "Логия"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Панк Хазард",
+  "arcIndex": 20,
+  "answer": true,
+  "thumb": 88
+ },
+ {
+  "id": 1703,
+  "name": "Монки Д. Гарп",
+  "nameEn": "Monkey D. Garp",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 0,
+  "arc": "Арлонг Парк",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 89
+ },
+ {
+  "id": 1813,
+  "name": "Монки Д. Драгон",
+  "nameEn": "Monkey D. Dragon",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Революционная армия"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Логтаун",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 90
+ },
+ {
+  "id": 1444,
+  "name": "Монки Д. Луффи",
+  "nameEn": "Monkey D. Luffy",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Соломенной Шляпы"
+  ],
+  "fruits": [
+   "Парамеция",
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 3000000000,
+  "arc": "Ромэнс Дон",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 91
+ },
+ {
+  "id": 1584,
+  "name": "Нами",
+  "nameEn": "Nami",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Соломенной Шляпы"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 366000000,
+  "arc": "Оранж-Таун",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 92
+ },
+ {
+  "id": 58053,
+  "name": "Нептун",
+  "nameEn": "Neptune",
+  "gender": "Мужской",
+  "races": [
+   "Русал"
+  ],
+  "affiliations": [
+   "Королевство Рюгу"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Остров рыболюдей",
+  "arcIndex": 19,
+  "answer": false,
+  "thumb": 93
+ },
+ {
+  "id": 311539,
+  "name": "Нефертари Виви",
+  "nameEn": "Nefertari Vivi",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Королевство Алабаста"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Реверс Маунтин",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 94
+ },
+ {
+  "id": 311540,
+  "name": "Нефертари Кобра",
+  "nameEn": "Nefertari Cobra",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Королевство Алабаста"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Остров Драм",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 95
+ },
+ {
+  "id": 2352,
+  "name": "Нико Ольвия",
+  "nameEn": "Nico Olvia",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Эниес Лобби",
+  "arcIndex": 13,
+  "answer": false,
+  "thumb": 96
+ },
+ {
+  "id": 1558,
+  "name": "Нико Робин",
+  "nameEn": "Nico Robin",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Соломенной Шляпы"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 930000000,
+  "arc": "Реверс Маунтин",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 97
+ },
+ {
+  "id": 1714,
+  "name": "Нодзико",
+  "nameEn": "Nojiko",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Арлонг Парк",
+  "arcIndex": 4,
+  "answer": false,
+  "thumb": 98
+ },
+ {
+  "id": 278402,
+  "name": "Нэкомамуси",
+  "nameEn": "Nekomamushi",
+  "gender": "Мужской",
+  "races": [
+   "Минк",
+   "Киборг"
+  ],
+  "affiliations": [
+   "Вано",
+   "Минки"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Зоу",
+  "arcIndex": 22,
+  "answer": true,
+  "thumb": 99
+ },
+ {
+  "id": 2691,
+  "name": "Паули",
+  "nameEn": "Paulie",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Галлей-Ла"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Water 7",
+  "arcIndex": 12,
+  "answer": false,
+  "thumb": 100
+ },
+ {
+  "id": 278026,
+  "name": "Педро",
+  "nameEn": "Pedro",
+  "gender": "Мужской",
+  "races": [
+   "Минк"
+  ],
+  "affiliations": [
+   "Минки"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 382000000,
+  "arc": "Зоу",
+  "arcIndex": 22,
+  "answer": false,
+  "thumb": 101
+ },
+ {
+  "id": 123132,
+  "name": "Пекомс",
+  "nameEn": "Pekoms",
+  "gender": "Мужской",
+  "races": [
+   "Минк"
+  ],
+  "affiliations": [
+   "Пираты Большой Мамочки"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 330000000,
+  "arc": "Остров рыболюдей",
+  "arcIndex": 19,
+  "answer": false,
+  "thumb": 102
+ },
+ {
+  "id": 5485,
+  "name": "Перона",
+  "nameEn": "Perona",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Триллер Барка"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Триллер Барк",
+  "arcIndex": 14,
+  "answer": true,
+  "thumb": 103
+ },
+ {
+  "id": 306850,
+  "name": "Портгас Д. Эйс",
+  "nameEn": "Portgas D. Ace",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Белоуса"
+  ],
+  "fruits": [
+   "Логия"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 550000000,
+  "arc": "Остров Драм",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 104
+ },
+ {
+  "id": 277094,
+  "name": "Райдзо",
+  "nameEn": "Raizo",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Зоу",
+  "arcIndex": 22,
+  "answer": false,
+  "thumb": 105
+ },
+ {
+  "id": 199943,
+  "name": "Ребекка",
+  "nameEn": "Rebecca",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Дрессроза"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения"
+  ],
+  "bounty": 0,
+  "arc": "Дрессроза",
+  "arcIndex": 21,
+  "answer": true,
+  "thumb": 106
+ },
+ {
+  "id": 215592,
+  "name": "Рёкугю",
+  "nameEn": "Aramaki",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [
+   "Логия"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": false,
+  "thumb": 107
+ },
+ {
+  "id": 1528,
+  "name": "Роб Луччи",
+  "nameEn": "Rob Lucci",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Мировое правительство"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Water 7",
+  "arcIndex": 12,
+  "answer": true,
+  "thumb": 108
+ },
+ {
+  "id": 308027,
+  "name": "Рокс Д. Зибек",
+  "nameEn": "Rocks D. Xebec",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Рокса"
+  ],
+  "fruits": [],
+  "haki": [
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 0,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": true,
+  "thumb": 109
+ },
+ {
+  "id": 1520,
+  "name": "Ророноа Зоро",
+  "nameEn": "Roronoa Zoro",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Соломенной Шляпы"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 1111000000,
+  "arc": "Ромэнс Дон",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 110
+ },
+ {
+  "id": 9532,
+  "name": "Сабо",
+  "nameEn": "Sabo",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Революционная армия"
+  ],
+  "fruits": [
+   "Логия"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Маринфорд",
+  "arcIndex": 18,
+  "answer": true,
+  "thumb": 111
+ },
+ {
+  "id": 1672,
+  "name": "Сакадзуки (Акаину)",
+  "nameEn": "Sakazuki",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [
+   "Логия"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Эниес Лобби",
+  "arcIndex": 13,
+  "answer": true,
+  "thumb": 112
+ },
+ {
+  "id": 1621,
+  "name": "Санджи",
+  "nameEn": "Sanji",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Соломенной Шляпы"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 1032000000,
+  "arc": "Барати",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 113
+ },
+ {
+  "id": 8693,
+  "name": "Сильвер Рэйли",
+  "nameEn": "Silvers Rayleigh",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Роджера"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 0,
+  "arc": "Оранж-Таун",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 114
+ },
+ {
+  "id": 310906,
+  "name": "Синобу",
+  "nameEn": "Shinobu",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": false,
+  "thumb": 115
+ },
+ {
+  "id": 17494,
+  "name": "Сирахоси",
+  "nameEn": "Shirahoshi",
+  "gender": "Женский",
+  "races": [
+   "Русал"
+  ],
+  "affiliations": [
+   "Королевство Рюгу"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения"
+  ],
+  "bounty": 0,
+  "arc": "Остров рыболюдей",
+  "arcIndex": 19,
+  "answer": true,
+  "thumb": 116
+ },
+ {
+  "id": 12878,
+  "name": "Сирю",
+  "nameEn": "Shiryu",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Чёрной Бороды"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Импел Даун",
+  "arcIndex": 17,
+  "answer": false,
+  "thumb": 117
+ },
+ {
+  "id": 8551,
+  "name": "Скретчмен Апу",
+  "nameEn": "Scratchmen Apoo",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другие пираты"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 350000000,
+  "arc": "Сабаоди",
+  "arcIndex": 15,
+  "answer": true,
+  "thumb": 118
+ },
+ {
+  "id": 327207,
+  "name": "Смокер",
+  "nameEn": "Smoker",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [
+   "Логия"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Логтаун",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 119
+ },
+ {
+  "id": 2671,
+  "name": "Спандам",
+  "nameEn": "Spandam",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Мировое правительство"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Water 7",
+  "arcIndex": 12,
+  "answer": false,
+  "thumb": 120
+ },
+ {
+  "id": 295771,
+  "name": "Стусси",
+  "nameEn": "Stussy",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Мировое правительство"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": false,
+  "thumb": 121
+ },
+ {
+  "id": 1671,
+  "name": "Сэнгоку",
+  "nameEn": "Sengoku",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 0,
+  "arc": "Джая",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 122
+ },
+ {
+  "id": 9611,
+  "name": "Сэнтомару",
+  "nameEn": "Sentomaru",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 500000000,
+  "arc": "Сабаоди",
+  "arcIndex": 15,
+  "answer": false,
+  "thumb": 123
+ },
+ {
+  "id": 308841,
+  "name": "Тама",
+  "nameEn": "Kurozumi Tama",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": false,
+  "thumb": 124
+ },
+ {
+  "id": 1684,
+  "name": "Тасиги",
+  "nameEn": "Tashigi",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Логтаун",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 125
+ },
+ {
+  "id": 1626,
+  "name": "Тони Тони Чоппер",
+  "nameEn": "Tony Tony Chopper",
+  "gender": "Мужской",
+  "races": [
+   "Животное"
+  ],
+  "affiliations": [
+   "Пираты Соломенной Шляпы"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [],
+  "bounty": 1000,
+  "arc": "Остров Драм",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 126
+ },
+ {
+  "id": 8554,
+  "name": "Трафальгар Ло",
+  "nameEn": "Trafalgar D. Water Law",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Сердца"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 3000000000,
+  "arc": "Сабаоди",
+  "arcIndex": 15,
+  "answer": true,
+  "thumb": 127
+ },
+ {
+  "id": 194006,
+  "name": "Требол",
+  "nameEn": "Trebol",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Семья Донкихот"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 99000000,
+  "arc": "Дрессроза",
+  "arcIndex": 21,
+  "answer": true,
+  "thumb": 128
+ },
+ {
+  "id": 321783,
+  "name": "Ульти",
+  "nameEn": "Ulti",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 400000000,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": false,
+  "thumb": 129
+ },
+ {
+  "id": 8552,
+  "name": "Урог",
+  "nameEn": "Urouge",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другие пираты"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 108000000,
+  "arc": "Сабаоди",
+  "arcIndex": 15,
+  "answer": true,
+  "thumb": 130
+ },
+ {
+  "id": 1630,
+  "name": "Усопп",
+  "nameEn": "Usopp",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Соломенной Шляпы"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения"
+  ],
+  "bounty": 500000000,
+  "arc": "Деревня Сиропа",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 131
+ },
+ {
+  "id": 333574,
+  "name": "Ута",
+  "nameEn": "Uta",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Рыжего"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": true,
+  "thumb": 132
+ },
+ {
+  "id": 10681,
+  "name": "Фишер Тигер",
+  "nameEn": "Fisher Tiger",
+  "gender": "Мужской",
+  "races": [
+   "Рыболюд"
+  ],
+  "affiliations": [
+   "Пираты Солнца"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 230000000,
+  "arc": "Амазон Лили",
+  "arcIndex": 16,
+  "answer": false,
+  "thumb": 133
+ },
+ {
+  "id": 2144,
+  "name": "Фокси",
+  "nameEn": "Foxy",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другие пираты"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 24000000,
+  "arc": "Скайпия",
+  "arcIndex": 11,
+  "answer": false,
+  "thumb": 134
+ },
+ {
+  "id": 1959,
+  "name": "Фрэнки",
+  "nameEn": "Franky",
+  "gender": "Мужской",
+  "races": [
+   "Человек",
+   "Киборг"
+  ],
+  "affiliations": [
+   "Пираты Соломенной Шляпы"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 394000000,
+  "arc": "Water 7",
+  "arcIndex": 12,
+  "answer": true,
+  "thumb": 135
+ },
+ {
+  "id": 1809,
+  "name": "Хаттян",
+  "nameEn": "Hatchan",
+  "gender": "Мужской",
+  "races": [
+   "Рыболюд"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 8000000,
+  "arc": "Арлонг Парк",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 136
+ },
+ {
+  "id": 1687,
+  "name": "Хелмеппо",
+  "nameEn": "Helmeppo",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [],
+  "haki": [
+   "Вооружения"
+  ],
+  "bounty": 100000000,
+  "arc": "Ромэнс Дон",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 137
+ },
+ {
+  "id": 1681,
+  "name": "Хина",
+  "nameEn": "Hina",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Алабаста",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 138
+ },
+ {
+  "id": 1717,
+  "name": "Хирилук",
+  "nameEn": "Hiriluk",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Остров Драм",
+  "arcIndex": 8,
+  "answer": false,
+  "thumb": 139
+ },
+ {
+  "id": 56093,
+  "name": "Ходи Джонс",
+  "nameEn": "Hody Jones",
+  "gender": "Мужской",
+  "races": [
+   "Рыболюд"
+  ],
+  "affiliations": [
+   "Другие пираты"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Остров рыболюдей",
+  "arcIndex": 19,
+  "answer": true,
+  "thumb": 140
+ },
+ {
+  "id": 321781,
+  "name": "Ху-из-Ху",
+  "nameEn": "Who's-Who",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Зверей"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 546000000,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": false,
+  "thumb": 141
+ },
+ {
+  "id": 149327,
+  "name": "Цезарь Клаун",
+  "nameEn": "Caesar Clown",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [
+   "Логия"
+  ],
+  "haki": [],
+  "bounty": 300000000,
+  "arc": "Панк Хазард",
+  "arcIndex": 20,
+  "answer": true,
+  "thumb": 142
+ },
+ {
+  "id": 1675,
+  "name": "Цуру",
+  "nameEn": "Tsuru",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Джая",
+  "arcIndex": 10,
+  "answer": false,
+  "thumb": 143
+ },
+ {
+  "id": 1617,
+  "name": "Шанкс",
+  "nameEn": "Shanks",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Рыжего"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 4048900000,
+  "arc": "Ромэнс Дон",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 144
+ },
+ {
+  "id": 287669,
+  "name": "Шарлотта Брюле",
+  "nameEn": "Charlotte Brûlée",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Большой Мамочки"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": false,
+  "thumb": 145
+ },
+ {
+  "id": 291389,
+  "name": "Шарлотта Катакури",
+  "nameEn": "Charlotte Katakuri",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Большой Мамочки"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 1057000000,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": true,
+  "thumb": 146
+ },
+ {
+  "id": 288690,
+  "name": "Шарлотта Крекер",
+  "nameEn": "Charlotte Cracker",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Большой Мамочки"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 860000000,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": false,
+  "thumb": 147
+ },
+ {
+  "id": 32174,
+  "name": "Шарлотта Линлин (Большая Мамочка)",
+  "nameEn": "Charlotte Linlin",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Большой Мамочки"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 4388000000,
+  "arc": "Остров рыболюдей",
+  "arcIndex": 19,
+  "answer": true,
+  "thumb": 148
+ },
+ {
+  "id": 295987,
+  "name": "Шарлотта Овен",
+  "nameEn": "Charlotte Oven",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Большой Мамочки"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 300000000,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": false,
+  "thumb": 149
+ },
+ {
+  "id": 288395,
+  "name": "Шарлотта Просперо",
+  "nameEn": "Charlotte Perospero",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Большой Мамочки"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 700000000,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": false,
+  "thumb": 150
+ },
+ {
+  "id": 281414,
+  "name": "Шарлотта Пурин",
+  "nameEn": "Charlotte Pudding",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Большой Мамочки"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Остров рыболюдей",
+  "arcIndex": 19,
+  "answer": true,
+  "thumb": 151
+ },
+ {
+  "id": 291332,
+  "name": "Шарлотта Смузи",
+  "nameEn": "Charlotte Smoothie",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Большой Мамочки"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 932000000,
+  "arc": "Пирожный остров",
+  "arcIndex": 23,
+  "answer": false,
+  "thumb": 152
+ },
+ {
+  "id": 234787,
+  "name": "Шугар",
+  "nameEn": "Sugar",
+  "gender": "Женский",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Семья Донкихот"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Панк Хазард",
+  "arcIndex": 20,
+  "answer": false,
+  "thumb": 153
+ },
+ {
+  "id": 327212,
+  "name": "Эдвард Ньюгейт (Белоус)",
+  "nameEn": "Edward Newgate",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Белоуса"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 5046000000,
+  "arc": "Алабаста",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 154
+ },
+ {
+  "id": 11838,
+  "name": "Эмпорио Иванков",
+  "nameEn": "Emporio Ivankov",
+  "gender": "Другое",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Революционная армия"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [],
+  "bounty": 100000000,
+  "arc": "Импел Даун",
+  "arcIndex": 17,
+  "answer": true,
+  "thumb": 155
+ },
+ {
+  "id": 1957,
+  "name": "Энель",
+  "nameEn": "Enel",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [
+   "Логия"
+  ],
+  "haki": [
+   "Наблюдения"
+  ],
+  "bounty": 0,
+  "arc": "Скайпия",
+  "arcIndex": 11,
+  "answer": true,
+  "thumb": 156
+ },
+ {
+  "id": 8550,
+  "name": "Юстасс Кид",
+  "nameEn": "Eustass Kid",
+  "gender": "Мужской",
+  "races": [
+   "Человек",
+   "Киборг"
+  ],
+  "affiliations": [
+   "Пираты Кида"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 3000000000,
+  "arc": "Сабаоди",
+  "arcIndex": 15,
+  "answer": true,
+  "thumb": 157
+ },
+ {
+  "id": 1677,
+  "name": "Ягуар Д. Саул",
+  "nameEn": "Jaguar D. Saul",
+  "gender": "Мужской",
+  "races": [
+   "Великан"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Эниес Лобби",
+  "arcIndex": 13,
+  "answer": false,
+  "thumb": 158
+ },
+ {
+  "id": 322112,
+  "name": "Ямато",
+  "nameEn": "Yamato",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Зверей"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения",
+   "Королевская"
+  ],
+  "bounty": 0,
+  "arc": "Вано",
+  "arcIndex": 24,
+  "answer": true,
+  "thumb": 159
+ },
+ {
+  "id": 1649,
+  "name": "Ясопп",
+  "nameEn": "Yasopp",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Рыжего"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения"
+  ],
+  "bounty": 0,
+  "arc": "Ромэнс Дон",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 160
+ }
+]

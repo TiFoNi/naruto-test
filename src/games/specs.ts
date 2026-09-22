@@ -1,4 +1,4 @@
-export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk'
+export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'bluelock' | 'onepiece'
 
 export type ModeId = 'classic' | 'image'
 
@@ -76,6 +76,43 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('affiliations', 'list'),
       col('occupations', 'list'),
       col('status', 'exact'),
+      col('arcIndex', 'order'),
+    ],
+  },
+  onepiece: {
+    data: 'onepiece',
+    images: 'onepiece',
+    columns: [
+      col('gender', 'exact'),
+      col('races', 'list'),
+      col('affiliations', 'list'),
+      col('fruits', 'list'),
+      col('haki', 'list'),
+      col('bounty', 'order'),
+      col('arcIndex', 'order'),
+    ],
+  },
+  kny: {
+    data: 'kny',
+    images: 'kny',
+    columns: [
+      col('gender', 'exact'),
+      col('species', 'exact'),
+      col('affiliations', 'list'),
+      col('rank', 'exact'),
+      col('styles', 'list'),
+      col('status', 'exact'),
+      col('arcIndex', 'order'),
+    ],
+  },
+  bluelock: {
+    data: 'bluelock',
+    images: 'bluelock',
+    columns: [
+      col('role', 'exact'),
+      col('positions', 'list'),
+      col('country', 'exact'),
+      col('club', 'exact'),
       col('arcIndex', 'order'),
     ],
   },
