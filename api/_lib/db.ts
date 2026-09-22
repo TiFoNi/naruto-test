@@ -7,6 +7,7 @@ export type UserDoc = {
   passwordHash: string
   nickname?: string
   stats?: Record<string, Partial<Stats>>
+  duelStats?: { played?: number; wins?: number; losses?: number; draws?: number }
   createdAt: Date
 }
 
@@ -30,6 +31,33 @@ export type RoundDoc = {
   finishedAt?: Date
 }
 
+export type DuelPlayer = {
+  userId: ObjectId
+  nickname: string
+  ready: boolean
+  guesses: number[]
+  solvedAt?: Date
+  gaveUp?: boolean
+  lastGuessAt?: Date
+}
+
+export type DuelDoc = {
+  _id?: ObjectId
+  code: string
+  game: string
+  mode: string
+  answerId: number
+  extra?: string
+  status: 'waiting' | 'playing' | 'finished'
+  players: DuelPlayer[]
+  createdAt: Date
+  startedAt?: Date
+  endsAt?: Date
+  firstSolvedAt?: Date
+  finishedAt?: Date
+  winnerId?: ObjectId | null
+}
+
 export type DailyDoc = { _id: string; day: string; game: string; mode: string; answerId: number; extra?: string; createdAt: Date }
 
 const cache = globalThis as typeof globalThis & {
@@ -37,6 +65,7 @@ const cache = globalThis as typeof globalThis & {
   __usersIndexed?: Promise<unknown>
   __attemptsIndexed?: Promise<unknown>
   __roundsIndexed?: Promise<unknown>
+  __duelsIndexed?: Promise<unknown>
 }
 
 const database = async () => (await client()).db(process.env.MONGODB_DB || 'nandaguessr')
@@ -61,6 +90,20 @@ export async function rounds(): Promise<Collection<RoundDoc>> {
 
 export async function dailies(): Promise<Collection<DailyDoc>> {
   return (await database()).collection<DailyDoc>('dailies')
+}
+
+export async function duels(): Promise<Collection<DuelDoc>> {
+  const collection = (await database()).collection<DuelDoc>('duels')
+  cache.__duelsIndexed ??= Promise.all([
+    collection.createIndex({ code: 1 }, { unique: true }),
+    collection.createIndex({ 'players.userId': 1, createdAt: -1 }),
+    collection.createIndex({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 30 }),
+  ]).catch((error) => {
+    cache.__duelsIndexed = undefined
+    throw error
+  })
+  await cache.__duelsIndexed
+  return collection
 }
 
 export function client() {

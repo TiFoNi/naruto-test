@@ -8,17 +8,23 @@ export type Route =
   | { name: 'profile' }
   | { name: 'play'; game: GameId; mode: ModeId; daily: boolean }
   | { name: 'leaderboard'; game: GameId; mode: ModeId; daily: boolean }
+  | { name: 'duels' }
+  | { name: 'duel'; code: string }
 
 export const href = {
   home: '#/',
   profile: '#/profile',
   play: (game: GameId, mode: ModeId, daily = false) => `#/play/${game}/${mode}${daily ? '/daily' : ''}`,
+  duels: '#/duels',
+  duel: (code: string) => `#/duel/${code}`,
   leaderboard: (game: GameId, mode: ModeId, daily = false) => `#/leaderboard/${game}/${mode}${daily ? '/daily' : ''}`,
 }
 
 function parse(hash: string): Route {
   const [, section, gameId, modeId, variant] = hash.replace(/^#/, '').split('/')
   if (section === 'profile') return { name: 'profile' }
+  if (section === 'duels') return { name: 'duels' }
+  if (section === 'duel' && /^[A-Z0-9]{6}$/.test(gameId ?? '')) return { name: 'duel', code: gameId }
   if (section === 'play' || section === 'leaderboard') {
     const game = GAMES.find((g) => g.id === gameId) ?? (section === 'leaderboard' ? GAMES[0] : undefined)
     if (game) {

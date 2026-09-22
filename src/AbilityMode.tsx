@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import AbilityIcon from './AbilityIcon'
 import CharacterSearch from './CharacterSearch'
 import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
@@ -19,23 +19,18 @@ export default function AbilityMode({ game, active, stats, daily = false }: Prop
     active,
     daily,
   )
-  const [loaded, setLoaded] = useState<string | null>(null)
 
   const wrong = guesses.filter((g) => !g.pending).length - (won ? 1 : 0)
   const src = round?.image ? `${round.image}&v=${over ? 'done' : wrong}` : null
   const hintIn = round?.hintAt !== undefined ? round.hintAt - wrong : 0
 
-  useEffect(() => setLoaded(null), [round?.id])
 
   return (
     <section className="mode">
       <div className="card intro">
         <h2>{t('play.abilityTitle')}</h2>
         <p className="muted">{t('play.abilityPrompt')}</p>
-        <div className="ability-frame">
-          {src && loaded !== src && <div className="zoom-loading">{t('image.loading')}</div>}
-          {src && <img key={src} src={src} alt="" draggable={false} onLoad={() => setLoaded(src)} style={{ opacity: loaded === src ? 1 : 0 }} />}
-        </div>
+        <AbilityIcon src={src ?? undefined} resetKey={round?.id} />
         {round && (
           <p className="round">
             {t(round.daily ? 'daily.round' : 'play.round', { round: round.number, guesses: guesses.length })}

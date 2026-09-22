@@ -5,6 +5,8 @@ import { dailyKey } from './games/specs'
 import { BRAND } from './brand'
 import ClassicMode from './ClassicMode'
 import Dashboard from './Dashboard'
+import DuelLobby from './DuelLobby'
+import DuelRoom from './DuelRoom'
 import Leaderboard from './Leaderboard'
 import ImageMode from './ImageMode'
 import AbilityMode from './AbilityMode'
@@ -150,6 +152,12 @@ export default function App() {
             </a>
           )}
           {user && (
+            <a className={`topbar-link ${route.name === 'duels' || route.name === 'duel' ? 'active' : ''}`} href={href.duels} title={t('nav.duels')}>
+              <span aria-hidden>⚔️</span>
+              <span className="topbar-link-label">{t('nav.duels')}</span>
+            </a>
+          )}
+          {user && (
             <div className="account">
               <a className={`account-link ${route.name === 'profile' ? 'active' : ''}`} href={href.profile} title={t('nav.profile')}>
                 <span className="avatar small" aria-hidden>
@@ -173,6 +181,8 @@ export default function App() {
             <Dashboard />
           </div>
           {route.name === 'profile' && <Profile onBack={() => navigate(href.home)} />}
+          {route.name === 'duels' && <DuelLobby />}
+          {route.name === 'duel' && <DuelRoom code={route.code} />}
           {route.name === 'leaderboard' && <Leaderboard gameId={route.game} mode={route.mode} daily={route.daily} />}
           <div className="play" hidden={route.name !== 'play'}>
             <div className="play-nav">
