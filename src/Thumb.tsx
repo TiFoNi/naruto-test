@@ -1,24 +1,24 @@
-import atlas from './data/atlas.json'
-import { atlasUrl, type Character } from './data'
+import type { Entity, Game } from './games/types'
 
-type Props = { character: Character; size?: number; className?: string }
+type Props = { game: Game; entity: Entity; size?: number; className?: string }
 
 const percent = (index: number, count: number) => (count > 1 ? (index / (count - 1)) * 100 : 0)
 
-export default function Thumb({ character, size, className }: Props) {
-  const col = character.thumb % atlas.cols
-  const row = Math.floor(character.thumb / atlas.cols)
+export default function Thumb({ game, entity, size, className }: Props) {
+  const { cols, rows } = game.atlas
+  const col = entity.thumb % cols
+  const row = Math.floor(entity.thumb / cols)
   return (
     <div
       role="img"
-      aria-label={character.name}
+      aria-label={entity.name}
       className={`thumb ${className ?? ''}`}
       style={{
         width: size,
         height: size,
-        backgroundImage: `url(${atlasUrl})`,
-        backgroundSize: `${atlas.cols * 100}% ${atlas.rows * 100}%`,
-        backgroundPosition: `${percent(col, atlas.cols)}% ${percent(row, atlas.rows)}%`,
+        backgroundImage: `url(${game.atlasUrl})`,
+        backgroundSize: `${cols * 100}% ${rows * 100}%`,
+        backgroundPosition: `${percent(col, cols)}% ${percent(row, rows)}%`,
       }}
     />
   )

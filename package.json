@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "data": "node scripts/build-data.mjs"
+    "data": "node scripts/build-data.mjs && node scripts/build-dota.mjs",
+    "data:naruto": "node scripts/build-data.mjs",
+    "data:dota": "node scripts/build-dota.mjs"
   },
   "dependencies": {
     "react": "^19.3.0",

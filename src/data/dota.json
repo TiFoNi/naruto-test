@@ -1,0 +1,2661 @@
+[
+ {
+  "id": 102,
+  "name": "Abaddon",
+  "aliases": "абаддон аба",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Саппорт",
+   "Керри",
+   "Живучий"
+  ],
+  "attribute": "Универсал",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2013,
+  "answer": true,
+  "thumb": 0
+ },
+ {
+  "id": 73,
+  "name": "Alchemist",
+  "aliases": "алхимик алх",
+  "gender": "Мужской",
+  "species": [
+   "Кин",
+   "Огр"
+  ],
+  "roles": [
+   "Керри",
+   "Саппорт",
+   "Живучий",
+   "Дизейблер",
+   "Инициатор",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 1
+ },
+ {
+  "id": 68,
+  "name": "Ancient Apparition",
+  "aliases": "эншент апарейшн аа апарат",
+  "gender": "Мужской",
+  "species": [
+   "Дух"
+  ],
+  "roles": [
+   "Саппорт",
+   "Дизейблер",
+   "Нюкер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 2
+ },
+ {
+  "id": 1,
+  "name": "Anti-Mage",
+  "aliases": "антимаг ам",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Побег",
+   "Нюкер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 3
+ },
+ {
+  "id": 113,
+  "name": "Arc Warden",
+  "aliases": "арк варден зет",
+  "gender": "Мужской",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Керри",
+   "Побег",
+   "Нюкер"
+  ],
+  "attribute": "Универсал",
+  "attack": "Дальний бой",
+  "complexity": 3,
+  "year": 2015,
+  "answer": true,
+  "thumb": 4
+ },
+ {
+  "id": 2,
+  "name": "Axe",
+  "aliases": "акс",
+  "gender": "Мужской",
+  "species": [
+   "Оглоди"
+  ],
+  "roles": [
+   "Инициатор",
+   "Живучий",
+   "Дизейблер",
+   "Керри"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 5
+ },
+ {
+  "id": 3,
+  "name": "Bane",
+  "aliases": "бейн",
+  "gender": "Мужской",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Саппорт",
+   "Дизейблер",
+   "Нюкер",
+   "Живучий"
+  ],
+  "attribute": "Универсал",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 6
+ },
+ {
+  "id": 65,
+  "name": "Batrider",
+  "aliases": "бэтрайдер бетрайдер бэт",
+  "gender": "Мужской",
+  "species": [
+   "Тролль"
+  ],
+  "roles": [
+   "Инициатор",
+   "Дизейблер",
+   "Побег"
+  ],
+  "attribute": "Универсал",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 7
+ },
+ {
+  "id": 38,
+  "name": "Beastmaster",
+  "aliases": "бистмастер бм",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Инициатор",
+   "Дизейблер",
+   "Живучий",
+   "Нюкер"
+  ],
+  "attribute": "Универсал",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 8
+ },
+ {
+  "id": 4,
+  "name": "Bloodseeker",
+  "aliases": "бладсикер блад",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Дизейблер",
+   "Нюкер",
+   "Инициатор"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 9
+ },
+ {
+  "id": 62,
+  "name": "Bounty Hunter",
+  "aliases": "баунти хантер бх",
+  "gender": "Мужской",
+  "species": [
+   "Зверь"
+  ],
+  "roles": [
+   "Побег",
+   "Нюкер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 10
+ },
+ {
+  "id": 78,
+  "name": "Brewmaster",
+  "aliases": "брюмастер бревмастер панда",
+  "gender": "Мужской",
+  "species": [
+   "Зверь"
+  ],
+  "roles": [
+   "Керри",
+   "Инициатор",
+   "Живучий",
+   "Дизейблер",
+   "Нюкер"
+  ],
+  "attribute": "Универсал",
+  "attack": "Ближний бой",
+  "complexity": 3,
+  "year": 2012,
+  "answer": true,
+  "thumb": 11
+ },
+ {
+  "id": 99,
+  "name": "Bristleback",
+  "aliases": "бристлбек бристл",
+  "gender": "Мужской",
+  "species": [
+   "Зверь"
+  ],
+  "roles": [
+   "Керри",
+   "Живучий",
+   "Инициатор",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2013,
+  "answer": true,
+  "thumb": 12
+ },
+ {
+  "id": 61,
+  "name": "Broodmother",
+  "aliases": "бурдмазер бруда паучиха",
+  "gender": "Женский",
+  "species": [
+   "Насекомое"
+  ],
+  "roles": [
+   "Керри",
+   "Пушер",
+   "Побег",
+   "Нюкер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 13
+ },
+ {
+  "id": 96,
+  "name": "Centaur Warrunner",
+  "aliases": "кентавр цента",
+  "gender": "Мужской",
+  "species": [
+   "Кентавр"
+  ],
+  "roles": [
+   "Живучий",
+   "Инициатор",
+   "Дизейблер",
+   "Нюкер",
+   "Побег"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2012,
+  "answer": true,
+  "thumb": 14
+ },
+ {
+  "id": 81,
+  "name": "Chaos Knight",
+  "aliases": "хаос найт цк хаос",
+  "gender": "Мужской",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Керри",
+   "Дизейблер",
+   "Живучий",
+   "Пушер",
+   "Инициатор"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2012,
+  "answer": true,
+  "thumb": 15
+ },
+ {
+  "id": 66,
+  "name": "Chen",
+  "aliases": "чен",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Саппорт",
+   "Пушер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 3,
+  "year": 2011,
+  "answer": true,
+  "thumb": 16
+ },
+ {
+  "id": 56,
+  "name": "Clinkz",
+  "aliases": "клинкз",
+  "gender": "Мужской",
+  "species": [
+   "Нежить"
+  ],
+  "roles": [
+   "Керри",
+   "Побег",
+   "Пушер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 17
+ },
+ {
+  "id": 51,
+  "name": "Clockwerk",
+  "aliases": "клокверк клок",
+  "gender": "Мужской",
+  "species": [
+   "Кин"
+  ],
+  "roles": [
+   "Инициатор",
+   "Дизейблер",
+   "Живучий",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 18
+ },
+ {
+  "id": 5,
+  "name": "Crystal Maiden",
+  "aliases": "кристал мейден цм црыса",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Саппорт",
+   "Дизейблер",
+   "Нюкер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 19
+ },
+ {
+  "id": 55,
+  "name": "Dark Seer",
+  "aliases": "дарк сир",
+  "gender": "Мужской",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Инициатор",
+   "Побег",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 119,
+  "name": "Dark Willow",
+  "aliases": "дарк виллоу вилоу",
+  "gender": "Женский",
+  "species": [
+   "Фея"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Дизейблер",
+   "Побег"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2017,
+  "answer": true,
+  "thumb": 21
+ },
+ {
+  "id": 135,
+  "name": "Dawnbreaker",
+  "aliases": "даунбрейкер",
+  "gender": "Женский",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Керри",
+   "Живучий"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2021,
+  "answer": true,
+  "thumb": 22
+ },
+ {
+  "id": 50,
+  "name": "Dazzle",
+  "aliases": "дазл",
+  "gender": "Мужской",
+  "species": [
+   "Тролль"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Дизейблер"
+  ],
+  "attribute": "Универсал",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 43,
+  "name": "Death Prophet",
+  "aliases": "дез профет дп",
+  "gender": "Женский",
+  "species": [
+   "Нежить"
+  ],
+  "roles": [
+   "Керри",
+   "Пушер",
+   "Нюкер",
+   "Дизейблер"
+  ],
+  "attribute": "Универсал",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 24
+ },
+ {
+  "id": 87,
+  "name": "Disruptor",
+  "aliases": "дизраптор",
+  "gender": "Мужской",
+  "species": [
+   "Оглоди"
+  ],
+  "roles": [
+   "Саппорт",
+   "Дизейблер",
+   "Нюкер",
+   "Инициатор"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 25
+ },
+ {
+  "id": 69,
+  "name": "Doom",
+  "aliases": "дум",
+  "gender": "Мужской",
+  "species": [
+   "Демон"
+  ],
+  "roles": [
+   "Керри",
+   "Дизейблер",
+   "Инициатор",
+   "Живучий",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 26
+ },
+ {
+  "id": 49,
+  "name": "Dragon Knight",
+  "aliases": "драгон найт дк",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Дракон"
+  ],
+  "roles": [
+   "Керри",
+   "Пушер",
+   "Живучий",
+   "Дизейблер",
+   "Инициатор",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 6,
+  "name": "Drow Ranger",
+  "aliases": "дров дровка траксекс",
+  "gender": "Женский",
+  "species": [
+   "Эльф",
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Дизейблер",
+   "Пушер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 107,
+  "name": "Earth Spirit",
+  "aliases": "эрс спирит земля",
+  "gender": "Мужской",
+  "species": [
+   "Элементаль"
+  ],
+  "roles": [
+   "Нюкер",
+   "Побег",
+   "Дизейблер",
+   "Инициатор",
+   "Живучий"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 3,
+  "year": 2013,
+  "answer": true,
+  "thumb": 29
+ },
+ {
+  "id": 7,
+  "name": "Earthshaker",
+  "aliases": "эртшейкер шейкер",
+  "gender": "Мужской",
+  "species": [
+   "Дух"
+  ],
+  "roles": [
+   "Саппорт",
+   "Инициатор",
+   "Дизейблер",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2010,
+  "answer": true,
+  "thumb": 30
+ },
+ {
+  "id": 103,
+  "name": "Elder Titan",
+  "aliases": "элдер титан титан",
+  "gender": "Мужской",
+  "species": [
+   "Великан"
+  ],
+  "roles": [
+   "Инициатор",
+   "Дизейблер",
+   "Нюкер",
+   "Живучий"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2013,
+  "answer": true,
+  "thumb": 31
+ },
+ {
+  "id": 106,
+  "name": "Ember Spirit",
+  "aliases": "эмбер спирит эмбер",
+  "gender": "Мужской",
+  "species": [
+   "Элементаль"
+  ],
+  "roles": [
+   "Керри",
+   "Побег",
+   "Нюкер",
+   "Дизейблер",
+   "Инициатор"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2013,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 58,
+  "name": "Enchantress",
+  "aliases": "энчантресс энча",
+  "gender": "Женский",
+  "species": [
+   "Дух"
+  ],
+  "roles": [
+   "Саппорт",
+   "Пушер",
+   "Живучий",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 33,
+  "name": "Enigma",
+  "aliases": "энигма",
+  "gender": "Другое",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Дизейблер",
+   "Инициатор",
+   "Пушер"
+  ],
+  "attribute": "Универсал",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 41,
+  "name": "Faceless Void",
+  "aliases": "фейслес войд войд",
+  "gender": "Мужской",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Керри",
+   "Инициатор",
+   "Дизейблер",
+   "Побег",
+   "Живучий"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 35
+ },
+ {
+  "id": 121,
+  "name": "Grimstroke",
+  "aliases": "гримстрок",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Дизейблер",
+   "Побег"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2018,
+  "answer": true,
+  "thumb": 36
+ },
+ {
+  "id": 72,
+  "name": "Gyrocopter",
+  "aliases": "гирокоптер гиро",
+  "gender": "Мужской",
+  "species": [
+   "Кин"
+  ],
+  "roles": [
+   "Керри",
+   "Нюкер",
+   "Дизейблер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2012,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 123,
+  "name": "Hoodwink",
+  "aliases": "худвинк белка",
+  "gender": "Женский",
+  "species": [
+   "Зверь"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Побег",
+   "Дизейблер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2020,
+  "answer": true,
+  "thumb": 38
+ },
+ {
+  "id": 59,
+  "name": "Huskar",
+  "aliases": "хускар",
+  "gender": "Мужской",
+  "species": [
+   "Тролль"
+  ],
+  "roles": [
+   "Керри",
+   "Живучий",
+   "Инициатор"
+  ],
+  "attribute": "Сила",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 39
+ },
+ {
+  "id": 74,
+  "name": "Invoker",
+  "aliases": "инвокер инвок",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Нюкер",
+   "Дизейблер",
+   "Побег",
+   "Пушер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 3,
+  "year": 2012,
+  "answer": true,
+  "thumb": 40
+ },
+ {
+  "id": 91,
+  "name": "Io",
+  "aliases": "ио висп",
+  "gender": "Другое",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Саппорт",
+   "Побег",
+   "Нюкер"
+  ],
+  "attribute": "Универсал",
+  "attack": "Дальний бой",
+  "complexity": 3,
+  "year": 2012,
+  "answer": true,
+  "thumb": 41
+ },
+ {
+  "id": 64,
+  "name": "Jakiro",
+  "aliases": "джакиро",
+  "gender": "Мужской",
+  "species": [
+   "Дракон"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Пушер",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 42
+ },
+ {
+  "id": 8,
+  "name": "Juggernaut",
+  "aliases": "джагернаут джагер джага",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Пушер",
+   "Побег"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 43
+ },
+ {
+  "id": 90,
+  "name": "Keeper of the Light",
+  "aliases": "кипер оф зе лайт котл кипер",
+  "gender": "Мужской",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 44
+ },
+ {
+  "id": 145,
+  "name": "Kez",
+  "aliases": "кез",
+  "gender": "Мужской",
+  "species": [
+   "Зверь"
+  ],
+  "roles": [
+   "Керри",
+   "Побег",
+   "Дизейблер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 3,
+  "year": 2024,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 23,
+  "name": "Kunkka",
+  "aliases": "кунка адмирал",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Саппорт",
+   "Дизейблер",
+   "Инициатор",
+   "Живучий",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 155,
+  "name": "Largo",
+  "aliases": "ларго",
+  "gender": "Мужской",
+  "species": [
+   "Зверь"
+  ],
+  "roles": [
+   "Живучий",
+   "Дизейблер",
+   "Саппорт"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2025,
+  "answer": true,
+  "thumb": 47
+ },
+ {
+  "id": 104,
+  "name": "Legion Commander",
+  "aliases": "легион коммандер легионка",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Дизейблер",
+   "Инициатор",
+   "Живучий",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2013,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 52,
+  "name": "Leshrac",
+  "aliases": "лешрак",
+  "gender": "Мужской",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Керри",
+   "Саппорт",
+   "Нюкер",
+   "Пушер",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 49
+ },
+ {
+  "id": 31,
+  "name": "Lich",
+  "aliases": "лич",
+  "gender": "Мужской",
+  "species": [
+   "Нежить"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 50
+ },
+ {
+  "id": 54,
+  "name": "Lifestealer",
+  "aliases": "лайфстилер гуля",
+  "gender": "Мужской",
+  "species": [
+   "Нежить"
+  ],
+  "roles": [
+   "Керри",
+   "Живучий",
+   "Побег",
+   "Дизейблер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 51
+ },
+ {
+  "id": 25,
+  "name": "Lina",
+  "aliases": "лина",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Саппорт",
+   "Керри",
+   "Нюкер",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 52
+ },
+ {
+  "id": 26,
+  "name": "Lion",
+  "aliases": "лион",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Демон"
+  ],
+  "roles": [
+   "Саппорт",
+   "Дизейблер",
+   "Нюкер",
+   "Инициатор"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 53
+ },
+ {
+  "id": 80,
+  "name": "Lone Druid",
+  "aliases": "лон друид друид",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Пушер",
+   "Живучий"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 3,
+  "year": 2012,
+  "answer": true,
+  "thumb": 54
+ },
+ {
+  "id": 48,
+  "name": "Luna",
+  "aliases": "луна",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Нюкер",
+   "Пушер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2012,
+  "answer": true,
+  "thumb": 55
+ },
+ {
+  "id": 77,
+  "name": "Lycan",
+  "aliases": "ликан",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Зверь"
+  ],
+  "roles": [
+   "Керри",
+   "Пушер",
+   "Живучий",
+   "Побег"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 56
+ },
+ {
+  "id": 97,
+  "name": "Magnus",
+  "aliases": "магнус",
+  "gender": "Мужской",
+  "species": [
+   "Зверь"
+  ],
+  "roles": [
+   "Инициатор",
+   "Дизейблер",
+   "Нюкер",
+   "Побег"
+  ],
+  "attribute": "Универсал",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 57
+ },
+ {
+  "id": 136,
+  "name": "Marci",
+  "aliases": "марси",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Саппорт",
+   "Керри",
+   "Инициатор",
+   "Дизейблер",
+   "Побег"
+  ],
+  "attribute": "Универсал",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2021,
+  "answer": true,
+  "thumb": 58
+ },
+ {
+  "id": 129,
+  "name": "Mars",
+  "aliases": "марс",
+  "gender": "Мужской",
+  "species": [
+   "Божество"
+  ],
+  "roles": [
+   "Керри",
+   "Инициатор",
+   "Дизейблер",
+   "Живучий"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2019,
+  "answer": true,
+  "thumb": 59
+ },
+ {
+  "id": 94,
+  "name": "Medusa",
+  "aliases": "медуза дуза",
+  "gender": "Женский",
+  "species": [
+   "Морской народ"
+  ],
+  "roles": [
+   "Керри",
+   "Дизейблер",
+   "Живучий"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2013,
+  "answer": true,
+  "thumb": 60
+ },
+ {
+  "id": 82,
+  "name": "Meepo",
+  "aliases": "мипо",
+  "gender": "Мужской",
+  "species": [
+   "Кин"
+  ],
+  "roles": [
+   "Керри",
+   "Побег",
+   "Нюкер",
+   "Дизейблер",
+   "Инициатор",
+   "Пушер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 3,
+  "year": 2012,
+  "answer": true,
+  "thumb": 61
+ },
+ {
+  "id": 9,
+  "name": "Mirana",
+  "aliases": "мирана пот",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Саппорт",
+   "Побег",
+   "Нюкер",
+   "Дизейблер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2010,
+  "answer": true,
+  "thumb": 62
+ },
+ {
+  "id": 114,
+  "name": "Monkey King",
+  "aliases": "манки кинг обезьяна",
+  "gender": "Мужской",
+  "species": [
+   "Зверь"
+  ],
+  "roles": [
+   "Керри",
+   "Побег",
+   "Дизейблер",
+   "Инициатор"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2016,
+  "answer": true,
+  "thumb": 63
+ },
+ {
+  "id": 10,
+  "name": "Morphling",
+  "aliases": "морфлинг морф",
+  "gender": "Мужской",
+  "species": [
+   "Элементаль"
+  ],
+  "roles": [
+   "Керри",
+   "Побег",
+   "Живучий",
+   "Нюкер",
+   "Дизейблер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 3,
+  "year": 2010,
+  "answer": true,
+  "thumb": 64
+ },
+ {
+  "id": 138,
+  "name": "Muerta",
+  "aliases": "муэрта",
+  "gender": "Женский",
+  "species": [
+   "Нежить"
+  ],
+  "roles": [
+   "Керри",
+   "Нюкер",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2023,
+  "answer": true,
+  "thumb": 65
+ },
+ {
+  "id": 89,
+  "name": "Naga Siren",
+  "aliases": "нага сирена нага",
+  "gender": "Женский",
+  "species": [
+   "Морской народ"
+  ],
+  "roles": [
+   "Керри",
+   "Саппорт",
+   "Пушер",
+   "Дизейблер",
+   "Инициатор",
+   "Побег"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 66
+ },
+ {
+  "id": 53,
+  "name": "Nature's Prophet",
+  "aliases": "нейчерс профет фурион профет",
+  "gender": "Мужской",
+  "species": [
+   "Дух"
+  ],
+  "roles": [
+   "Керри",
+   "Пушер",
+   "Побег",
+   "Нюкер"
+  ],
+  "attribute": "Универсал",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 67
+ },
+ {
+  "id": 36,
+  "name": "Necrophos",
+  "aliases": "некрофос некр",
+  "gender": "Мужской",
+  "species": [
+   "Нежить"
+  ],
+  "roles": [
+   "Керри",
+   "Нюкер",
+   "Живучий",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 68
+ },
+ {
+  "id": 60,
+  "name": "Night Stalker",
+  "aliases": "найт сталкер баланар",
+  "gender": "Мужской",
+  "species": [
+   "Демон"
+  ],
+  "roles": [
+   "Керри",
+   "Инициатор",
+   "Живучий",
+   "Дизейблер",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 69
+ },
+ {
+  "id": 88,
+  "name": "Nyx Assassin",
+  "aliases": "никс ассасин никс",
+  "gender": "Мужской",
+  "species": [
+   "Насекомое"
+  ],
+  "roles": [
+   "Дизейблер",
+   "Нюкер",
+   "Инициатор",
+   "Побег"
+  ],
+  "attribute": "Универсал",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 70
+ },
+ {
+  "id": 84,
+  "name": "Ogre Magi",
+  "aliases": "огр маги огр",
+  "gender": "Мужской",
+  "species": [
+   "Огр"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Дизейблер",
+   "Живучий",
+   "Инициатор"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2012,
+  "answer": true,
+  "thumb": 71
+ },
+ {
+  "id": 57,
+  "name": "Omniknight",
+  "aliases": "омнинайт омник",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Саппорт",
+   "Живучий",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 72
+ },
+ {
+  "id": 111,
+  "name": "Oracle",
+  "aliases": "оракл",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Дизейблер",
+   "Побег"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 3,
+  "year": 2015,
+  "answer": true,
+  "thumb": 73
+ },
+ {
+  "id": 76,
+  "name": "Outworld Destroyer",
+  "aliases": "аутворлд дестроер од",
+  "gender": "Мужской",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Керри",
+   "Нюкер",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 74
+ },
+ {
+  "id": 120,
+  "name": "Pangolier",
+  "aliases": "панголиер панго",
+  "gender": "Мужской",
+  "species": [
+   "Зверь"
+  ],
+  "roles": [
+   "Керри",
+   "Нюкер",
+   "Дизейблер",
+   "Живучий",
+   "Побег",
+   "Инициатор"
+  ],
+  "attribute": "Универсал",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2017,
+  "answer": true,
+  "thumb": 75
+ },
+ {
+  "id": 44,
+  "name": "Phantom Assassin",
+  "aliases": "фантом ассасин па фантомка",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Побег"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2012,
+  "answer": true,
+  "thumb": 76
+ },
+ {
+  "id": 12,
+  "name": "Phantom Lancer",
+  "aliases": "фантом лансер пл",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Побег",
+   "Пушер",
+   "Нюкер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 77
+ },
+ {
+  "id": 110,
+  "name": "Phoenix",
+  "aliases": "феникс",
+  "gender": "Другое",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Инициатор",
+   "Побег",
+   "Дизейблер"
+  ],
+  "attribute": "Сила",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2014,
+  "answer": true,
+  "thumb": 78
+ },
+ {
+  "id": 137,
+  "name": "Primal Beast",
+  "aliases": "праймал бист",
+  "gender": "Мужской",
+  "species": [
+   "Зверь"
+  ],
+  "roles": [
+   "Инициатор",
+   "Живучий",
+   "Дизейблер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2022,
+  "answer": true,
+  "thumb": 79
+ },
+ {
+  "id": 13,
+  "name": "Puck",
+  "aliases": "пак",
+  "gender": "Другое",
+  "species": [
+   "Дракон",
+   "Фея"
+  ],
+  "roles": [
+   "Инициатор",
+   "Дизейблер",
+   "Побег",
+   "Нюкер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2010,
+  "answer": true,
+  "thumb": 80
+ },
+ {
+  "id": 14,
+  "name": "Pudge",
+  "aliases": "пудж",
+  "gender": "Мужской",
+  "species": [
+   "Человек",
+   "Нежить"
+  ],
+  "roles": [
+   "Дизейблер",
+   "Инициатор",
+   "Живучий",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2010,
+  "answer": true,
+  "thumb": 81
+ },
+ {
+  "id": 45,
+  "name": "Pugna",
+  "aliases": "пугна",
+  "gender": "Мужской",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Нюкер",
+   "Пушер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 82
+ },
+ {
+  "id": 39,
+  "name": "Queen of Pain",
+  "aliases": "квин оф пейн квопа",
+  "gender": "Женский",
+  "species": [
+   "Демон"
+  ],
+  "roles": [
+   "Керри",
+   "Нюкер",
+   "Побег"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 83
+ },
+ {
+  "id": 15,
+  "name": "Razor",
+  "aliases": "разор",
+  "gender": "Мужской",
+  "species": [
+   "Дух"
+  ],
+  "roles": [
+   "Керри",
+   "Живучий",
+   "Нюкер",
+   "Пушер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 84
+ },
+ {
+  "id": 32,
+  "name": "Riki",
+  "aliases": "рики",
+  "gender": "Мужской",
+  "species": [
+   "Сатир"
+  ],
+  "roles": [
+   "Керри",
+   "Побег",
+   "Дизейблер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 85
+ },
+ {
+  "id": 131,
+  "name": "Ringmaster",
+  "aliases": "рингмастер",
+  "gender": "Мужской",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Побег",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2024,
+  "answer": true,
+  "thumb": 86
+ },
+ {
+  "id": 86,
+  "name": "Rubick",
+  "aliases": "рубик",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Саппорт",
+   "Дизейблер",
+   "Нюкер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 3,
+  "year": 2012,
+  "answer": true,
+  "thumb": 87
+ },
+ {
+  "id": 16,
+  "name": "Sand King",
+  "aliases": "сенд кинг ск",
+  "gender": "Мужской",
+  "species": [
+   "Насекомое"
+  ],
+  "roles": [
+   "Инициатор",
+   "Дизейблер",
+   "Саппорт",
+   "Нюкер",
+   "Побег"
+  ],
+  "attribute": "Универсал",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2010,
+  "answer": true,
+  "thumb": 88
+ },
+ {
+  "id": 79,
+  "name": "Shadow Demon",
+  "aliases": "шадоу демон сд",
+  "gender": "Мужской",
+  "species": [
+   "Демон"
+  ],
+  "roles": [
+   "Саппорт",
+   "Дизейблер",
+   "Инициатор",
+   "Нюкер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 89
+ },
+ {
+  "id": 11,
+  "name": "Shadow Fiend",
+  "aliases": "шадоу финд сф невермор",
+  "gender": "Мужской",
+  "species": [
+   "Демон"
+  ],
+  "roles": [
+   "Керри",
+   "Нюкер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 90
+ },
+ {
+  "id": 27,
+  "name": "Shadow Shaman",
+  "aliases": "шадоу шаман шаман раста",
+  "gender": "Мужской",
+  "species": [
+   "Оглоди"
+  ],
+  "roles": [
+   "Саппорт",
+   "Пушер",
+   "Дизейблер",
+   "Нюкер",
+   "Инициатор"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 91
+ },
+ {
+  "id": 75,
+  "name": "Silencer",
+  "aliases": "сайленсер",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Саппорт",
+   "Дизейблер",
+   "Инициатор",
+   "Нюкер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 92
+ },
+ {
+  "id": 101,
+  "name": "Skywrath Mage",
+  "aliases": "скайрат мейдж скайрат",
+  "gender": "Мужской",
+  "species": [
+   "Небесный народ"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2013,
+  "answer": true,
+  "thumb": 93
+ },
+ {
+  "id": 28,
+  "name": "Slardar",
+  "aliases": "слардар",
+  "gender": "Мужской",
+  "species": [
+   "Морской народ"
+  ],
+  "roles": [
+   "Керри",
+   "Живучий",
+   "Инициатор",
+   "Дизейблер",
+   "Побег"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 94
+ },
+ {
+  "id": 93,
+  "name": "Slark",
+  "aliases": "сларк",
+  "gender": "Мужской",
+  "species": [
+   "Морской народ"
+  ],
+  "roles": [
+   "Керри",
+   "Побег",
+   "Дизейблер",
+   "Нюкер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 95
+ },
+ {
+  "id": 128,
+  "name": "Snapfire",
+  "aliases": "снапфаер бабка",
+  "gender": "Женский",
+  "species": [
+   "Кин"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Дизейблер",
+   "Побег"
+  ],
+  "attribute": "Универсал",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2019,
+  "answer": true,
+  "thumb": 96
+ },
+ {
+  "id": 35,
+  "name": "Sniper",
+  "aliases": "снайпер",
+  "gender": "Мужской",
+  "species": [
+   "Кин"
+  ],
+  "roles": [
+   "Керри",
+   "Нюкер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 97
+ },
+ {
+  "id": 67,
+  "name": "Spectre",
+  "aliases": "спектра спектр",
+  "gender": "Женский",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Керри",
+   "Живучий",
+   "Побег"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 98
+ },
+ {
+  "id": 71,
+  "name": "Spirit Breaker",
+  "aliases": "спирит брейкер бара",
+  "gender": "Мужской",
+  "species": [
+   "Дух",
+   "Зверь"
+  ],
+  "roles": [
+   "Керри",
+   "Инициатор",
+   "Дизейблер",
+   "Живучий",
+   "Побег"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2012,
+  "answer": true,
+  "thumb": 99
+ },
+ {
+  "id": 17,
+  "name": "Storm Spirit",
+  "aliases": "шторм спирит шторм",
+  "gender": "Мужской",
+  "species": [
+   "Элементаль"
+  ],
+  "roles": [
+   "Керри",
+   "Побег",
+   "Нюкер",
+   "Инициатор",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2010,
+  "answer": true,
+  "thumb": 100
+ },
+ {
+  "id": 18,
+  "name": "Sven",
+  "aliases": "свен",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Дизейблер",
+   "Инициатор",
+   "Живучий",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 101
+ },
+ {
+  "id": 105,
+  "name": "Techies",
+  "aliases": "течис минер",
+  "gender": "Мужской",
+  "species": [
+   "Кин"
+  ],
+  "roles": [
+   "Нюкер",
+   "Дизейблер"
+  ],
+  "attribute": "Универсал",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2014,
+  "answer": true,
+  "thumb": 102
+ },
+ {
+  "id": 46,
+  "name": "Templar Assassin",
+  "aliases": "темплар ассасин та лана",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Побег"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 103
+ },
+ {
+  "id": 109,
+  "name": "Terrorblade",
+  "aliases": "терорблейд тб",
+  "gender": "Мужской",
+  "species": [
+   "Демон"
+  ],
+  "roles": [
+   "Керри",
+   "Пушер",
+   "Нюкер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2014,
+  "answer": true,
+  "thumb": 104
+ },
+ {
+  "id": 29,
+  "name": "Tidehunter",
+  "aliases": "тайдхантер тайд",
+  "gender": "Мужской",
+  "species": [
+   "Морской народ"
+  ],
+  "roles": [
+   "Инициатор",
+   "Живучий",
+   "Дизейблер",
+   "Нюкер",
+   "Керри"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 105
+ },
+ {
+  "id": 98,
+  "name": "Timbersaw",
+  "aliases": "тимберсо тимбер пила",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Нюкер",
+   "Живучий",
+   "Побег"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 106
+ },
+ {
+  "id": 34,
+  "name": "Tinker",
+  "aliases": "тинкер",
+  "gender": "Мужской",
+  "species": [
+   "Кин"
+  ],
+  "roles": [
+   "Керри",
+   "Нюкер",
+   "Пушер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 107
+ },
+ {
+  "id": 19,
+  "name": "Tiny",
+  "aliases": "тини",
+  "gender": "Мужской",
+  "species": [
+   "Великан"
+  ],
+  "roles": [
+   "Керри",
+   "Нюкер",
+   "Пушер",
+   "Инициатор",
+   "Живучий",
+   "Дизейблер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 108
+ },
+ {
+  "id": 83,
+  "name": "Treant Protector",
+  "aliases": "трент протектор трент дерево",
+  "gender": "Мужской",
+  "species": [
+   "Древень"
+  ],
+  "roles": [
+   "Саппорт",
+   "Инициатор",
+   "Живучий",
+   "Дизейблер",
+   "Побег"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2012,
+  "answer": true,
+  "thumb": 109
+ },
+ {
+  "id": 95,
+  "name": "Troll Warlord",
+  "aliases": "тролль варлорд тролль",
+  "gender": "Мужской",
+  "species": [
+   "Тролль"
+  ],
+  "roles": [
+   "Керри",
+   "Пушер",
+   "Дизейблер",
+   "Живучий"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2013,
+  "answer": true,
+  "thumb": 110
+ },
+ {
+  "id": 100,
+  "name": "Tusk",
+  "aliases": "туск",
+  "gender": "Мужской",
+  "species": [
+   "Зверь"
+  ],
+  "roles": [
+   "Инициатор",
+   "Дизейблер",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2013,
+  "answer": true,
+  "thumb": 111
+ },
+ {
+  "id": 108,
+  "name": "Underlord",
+  "aliases": "андерлорд питлорд",
+  "gender": "Мужской",
+  "species": [
+   "Демон"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Дизейблер",
+   "Живучий",
+   "Побег"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2016,
+  "answer": true,
+  "thumb": 112
+ },
+ {
+  "id": 85,
+  "name": "Undying",
+  "aliases": "андаинг андайинг дирге",
+  "gender": "Мужской",
+  "species": [
+   "Нежить"
+  ],
+  "roles": [
+   "Саппорт",
+   "Живучий",
+   "Дизейблер",
+   "Нюкер"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2012,
+  "answer": true,
+  "thumb": 113
+ },
+ {
+  "id": 70,
+  "name": "Ursa",
+  "aliases": "урса",
+  "gender": "Мужской",
+  "species": [
+   "Зверь"
+  ],
+  "roles": [
+   "Керри",
+   "Живучий",
+   "Дизейблер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 114
+ },
+ {
+  "id": 20,
+  "name": "Vengeful Spirit",
+  "aliases": "венгеф спирит венга",
+  "gender": "Женский",
+  "species": [
+   "Небесный народ",
+   "Дух"
+  ],
+  "roles": [
+   "Саппорт",
+   "Инициатор",
+   "Дизейблер",
+   "Нюкер",
+   "Побег"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 115
+ },
+ {
+  "id": 40,
+  "name": "Venomancer",
+  "aliases": "веномансер веник",
+  "gender": "Мужской",
+  "species": [
+   "Зверь"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Инициатор",
+   "Пушер",
+   "Дизейблер"
+  ],
+  "attribute": "Универсал",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 116
+ },
+ {
+  "id": 47,
+  "name": "Viper",
+  "aliases": "вайпер",
+  "gender": "Мужской",
+  "species": [
+   "Дракон"
+  ],
+  "roles": [
+   "Керри",
+   "Живучий",
+   "Инициатор",
+   "Дизейблер"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 117
+ },
+ {
+  "id": 92,
+  "name": "Visage",
+  "aliases": "визаж",
+  "gender": "Мужской",
+  "species": [
+   "Сущность"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Живучий",
+   "Дизейблер",
+   "Пушер"
+  ],
+  "attribute": "Универсал",
+  "attack": "Дальний бой",
+  "complexity": 3,
+  "year": 2012,
+  "answer": true,
+  "thumb": 118
+ },
+ {
+  "id": 126,
+  "name": "Void Spirit",
+  "aliases": "войд спирит",
+  "gender": "Мужской",
+  "species": [
+   "Элементаль"
+  ],
+  "roles": [
+   "Керри",
+   "Побег",
+   "Нюкер",
+   "Дизейблер"
+  ],
+  "attribute": "Универсал",
+  "attack": "Ближний бой",
+  "complexity": 2,
+  "year": 2019,
+  "answer": true,
+  "thumb": 119
+ },
+ {
+  "id": 37,
+  "name": "Warlock",
+  "aliases": "варлок",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Саппорт",
+   "Инициатор",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 120
+ },
+ {
+  "id": 63,
+  "name": "Weaver",
+  "aliases": "вивер",
+  "gender": "Мужской",
+  "species": [
+   "Насекомое"
+  ],
+  "roles": [
+   "Керри",
+   "Побег"
+  ],
+  "attribute": "Ловкость",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2011,
+  "answer": true,
+  "thumb": 121
+ },
+ {
+  "id": 21,
+  "name": "Windranger",
+  "aliases": "виндраннер винда",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "roles": [
+   "Керри",
+   "Саппорт",
+   "Дизейблер",
+   "Побег",
+   "Нюкер"
+  ],
+  "attribute": "Универсал",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2010,
+  "answer": true,
+  "thumb": 122
+ },
+ {
+  "id": 112,
+  "name": "Winter Wyvern",
+  "aliases": "винтер виверн виверна",
+  "gender": "Женский",
+  "species": [
+   "Дракон"
+  ],
+  "roles": [
+   "Саппорт",
+   "Дизейблер",
+   "Нюкер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 2,
+  "year": 2015,
+  "answer": true,
+  "thumb": 123
+ },
+ {
+  "id": 30,
+  "name": "Witch Doctor",
+  "aliases": "вич доктор вд",
+  "gender": "Мужской",
+  "species": [
+   "Тролль"
+  ],
+  "roles": [
+   "Саппорт",
+   "Нюкер",
+   "Дизейблер"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 124
+ },
+ {
+  "id": 42,
+  "name": "Wraith King",
+  "aliases": "врейс кинг вк скелет",
+  "gender": "Мужской",
+  "species": [
+   "Нежить"
+  ],
+  "roles": [
+   "Керри",
+   "Саппорт",
+   "Живучий",
+   "Дизейблер",
+   "Инициатор"
+  ],
+  "attribute": "Сила",
+  "attack": "Ближний бой",
+  "complexity": 1,
+  "year": 2011,
+  "answer": true,
+  "thumb": 125
+ },
+ {
+  "id": 22,
+  "name": "Zeus",
+  "aliases": "зевс",
+  "gender": "Мужской",
+  "species": [
+   "Божество"
+  ],
+  "roles": [
+   "Нюкер",
+   "Керри"
+  ],
+  "attribute": "Интеллект",
+  "attack": "Дальний бой",
+  "complexity": 1,
+  "year": 2010,
+  "answer": true,
+  "thumb": 126
+ }
+]

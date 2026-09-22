@@ -1,30 +1,41 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Thumb from './Thumb'
-import { characters, normalize, type Character } from './data'
+import type { Entity, Game } from './games/types'
+import { normalize } from './util'
 
 type Props = {
+  game: Game
   exclude: Set<number>
-  disabled?: boolean
-  onPick: (c: Character) => void
+  active: boolean
+  onPick: (e: Entity) => void
 }
 
-export default function CharacterSearch({ exclude, disabled, onPick }: Props) {
+export default function CharacterSearch({ game, exclude, active: visible, onPick }: Props) {
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
+  const input = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (visible) input.current?.focus()
+  }, [visible])
+
+  const index = useMemo(
+    () => game.entities.map((e) => ({ e, terms: game.searchTerms(e).map(normalize) })),
+    [game],
+  )
 
   const matches = useMemo(() => {
     const q = normalize(query.trim())
     if (!q) return []
-    const available = characters.filter((c) => !exclude.has(c.id))
-    const names = (c: Character) => [normalize(c.name), normalize(c.nameEn)]
-    const starts = available.filter((c) => names(c).some((n) => n.split(/\s+/).some((w) => w.startsWith(q))))
-    const contains = available.filter((c) => !starts.includes(c) && names(c).some((n) => n.includes(q)))
-    return [...starts, ...contains].slice(0, 8)
-  }, [query, exclude])
+    const available = index.filter(({ e }) => !exclude.has(e.id))
+    const starts = available.filter(({ terms }) => terms.some((t) => t.split(/[\s-]+/).some((w) => w.startsWith(q))))
+    const contains = available.filter((x) => !starts.includes(x) && x.terms.some((t) => t.includes(q)))
+    return [...starts, ...contains].slice(0, 8).map(({ e }) => e)
+  }, [query, exclude, index])
 
-  const pick = (c: Character | undefined) => {
-    if (!c) return
-    onPick(c)
+  const pick = (e: Entity | undefined) => {
+    if (!e) return
+    onPick(e)
     setQuery('')
     setActive(0)
   }
@@ -33,10 +44,9 @@ export default function CharacterSearch({ exclude, disabled, onPick }: Props) {
     <div className="search">
       <div className="search-box">
         <input
-          autoFocus
-          disabled={disabled}
+          ref={input}
           value={query}
-          placeholder="Введи имя персонажа…"
+          placeholder={game.placeholder}
           onChange={(e) => {
             setQuery(e.target.value)
             setActive(0)
@@ -55,26 +65,26 @@ export default function CharacterSearch({ exclude, disabled, onPick }: Props) {
             }
           }}
         />
-        <button className="send" disabled={disabled || !matches.length} onClick={() => pick(matches[active])}>
+        <button className="send" disabled={!matches.length} onClick={() => pick(matches[active])}>
           ➤
         </button>
       </div>
       {matches.length > 0 && (
         <ul className="suggestions">
-          {matches.map((c, i) => (
+          {matches.map((e, i) => (
             <li
-              key={c.id}
+              key={e.id}
               className={i === active ? 'active' : ''}
               onMouseEnter={() => setActive(i)}
-              onMouseDown={(e) => {
-                e.preventDefault()
-                pick(c)
+              onMouseDown={(ev) => {
+                ev.preventDefault()
+                pick(e)
               }}
             >
-              <Thumb character={c} size={44} />
+              <Thumb game={game} entity={e} size={44} />
               <span className="suggestion-name">
-                {c.name}
-                <small>{c.nameEn}</small>
+                {e.name}
+                {game.subtitle(e) && <small>{game.subtitle(e)}</small>}
               </span>
             </li>
           ))}

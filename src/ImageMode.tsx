@@ -2,16 +2,15 @@ import { useEffect, useMemo, useState } from 'react'
 import CharacterSearch from './CharacterSearch'
 import RoundResult from './RoundResult'
 import Thumb from './Thumb'
-import { fullUrl, pickAnswer, preload, type Character } from './data'
+import type { Entity, Game } from './games/types'
 import type { Stats } from './storage'
-
-const MAX_RETRIES = 3
+import { pickAnswer, preload } from './util'
 
 const ZOOM_LEVELS = [7, 5.6, 4.5, 3.6, 2.9, 2.35, 1.9, 1.55, 1.25, 1]
+const MAX_RETRIES = 3
+const SAMPLE = 48
 
 type Focus = { x: number; y: number }
-
-const SAMPLE = 48
 
 function pickFocus(img: HTMLImageElement): Focus {
   const canvas = document.createElement('canvas')
@@ -33,14 +32,14 @@ function pickFocus(img: HTMLImageElement): Focus {
   return pool.length ? pool[Math.floor(Math.random() * pool.length)] : fallback
 }
 
-type Props = { onSolved: (guesses: number) => void; onGaveUp: () => void; stats: Stats }
+type Props = { game: Game; active: boolean; onSolved: (guesses: number) => void; onGaveUp: () => void; stats: Stats }
 
-export default function ImageMode({ onSolved, onGaveUp, stats }: Props) {
-  const [answer, setAnswer] = useState(pickAnswer)
-  const [upcoming, setUpcoming] = useState(pickAnswer)
+export default function ImageMode({ game, active, onSolved, onGaveUp, stats }: Props) {
+  const [answer, setAnswer] = useState(() => pickAnswer(game))
+  const [upcoming, setUpcoming] = useState(() => pickAnswer(game))
   const [focus, setFocus] = useState<Focus | null>(null)
   const [retry, setRetry] = useState(0)
-  const [guesses, setGuesses] = useState<Character[]>([])
+  const [guesses, setGuesses] = useState<Entity[]>([])
   const [gaveUp, setGaveUp] = useState(false)
   const [grayscale, setGrayscale] = useState(false)
 
@@ -50,34 +49,34 @@ export default function ImageMode({ onSolved, onGaveUp, stats }: Props) {
   const wrong = guesses.filter((g) => g.id !== answer.id).length
   const zoom = over ? 1 : ZOOM_LEVELS[Math.min(wrong, ZOOM_LEVELS.length - 1)]
 
-  const guess = (c: Character) => {
+  useEffect(() => preload(game, upcoming), [game, upcoming])
+
+  const guess = (e: Entity) => {
     if (over) return
-    const next = [c, ...guesses]
+    const next = [e, ...guesses]
     setGuesses(next)
-    if (c.id === answer.id) onSolved(next.length)
+    if (e.id === answer.id) onSolved(next.length)
   }
 
   const nextRound = () => {
     setAnswer(upcoming)
-    setUpcoming(pickAnswer())
+    setUpcoming(pickAnswer(game))
     setFocus(null)
     setRetry(0)
     setGuesses([])
     setGaveUp(false)
   }
 
-  useEffect(() => preload(upcoming), [upcoming])
-
   return (
     <section className="mode">
       <div className="panel intro">
-        <h2>Кто на картинке?</h2>
-        <p>С каждой неудачной попыткой картинка немного отдаляется.</p>
-        <div className="zoom-frame">
+        <h2>{game.image.title}</h2>
+        <p>{game.image.prompt}</p>
+        <div className={`zoom-frame ${game.image.wide ? 'wide' : ''}`}>
           {!focus && <div className="zoom-loading">{retry > MAX_RETRIES ? 'Не удалось загрузить картинку' : 'Загрузка…'}</div>}
           <img
             key={`${answer.id}-${retry}`}
-            src={retry ? `${fullUrl(answer)}?retry=${retry}` : fullUrl(answer)}
+            src={retry ? `${game.fullUrl(answer)}?retry=${retry}` : game.fullUrl(answer)}
             alt=""
             draggable={false}
             onLoad={(e) => setFocus(pickFocus(e.currentTarget))}
@@ -102,10 +101,10 @@ export default function ImageMode({ onSolved, onGaveUp, stats }: Props) {
       </div>
 
       {over ? (
-        <RoundResult answer={answer} guesses={guesses.length} won={won} stats={stats} onNext={nextRound} />
+        <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} stats={stats} onNext={nextRound} />
       ) : (
         <>
-          <CharacterSearch exclude={exclude} onPick={guess} />
+          <CharacterSearch game={game} exclude={exclude} active={active} onPick={guess} />
           {guesses.length >= 3 && (
             <button
               className="link-button"
@@ -123,7 +122,7 @@ export default function ImageMode({ onSolved, onGaveUp, stats }: Props) {
       <div className="guess-list">
         {guesses.map((g) => (
           <div key={g.id} className={`guess-chip ${g.id === answer.id ? 'correct' : 'wrong'}`}>
-            <Thumb character={g} size={44} />
+            <Thumb game={game} entity={g} size={44} />
             <span>{g.name}</span>
           </div>
         ))}

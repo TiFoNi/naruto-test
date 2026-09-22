@@ -1,13 +1,13 @@
+import { useEffect } from 'react'
 import ClassicMode from './ClassicMode'
 import ImageMode from './ImageMode'
+import { GAMES, gameById } from './games'
+import type { Game, GameId } from './games/types'
 import { emptyStats, useStoredState, type Stats } from './storage'
 
 type Mode = 'classic' | 'image'
 
-const MODES: { id: Mode; label: string; icon: string }[] = [
-  { id: 'classic', label: 'Классика', icon: '?' },
-  { id: 'image', label: 'Картинка', icon: '🖼' },
-]
+const statsKey = (game: GameId, mode: Mode) => (game === 'naruto' ? `stats-${mode}` : `stats-${game}-${mode}`)
 
 function useModeStats(key: string) {
   const [stats, setStats] = useStoredState<Stats>(key, emptyStats)
@@ -20,58 +20,86 @@ function useModeStats(key: string) {
   return { stats, solved, gaveUp }
 }
 
-export default function App() {
-  const [mode, setMode] = useStoredState<Mode>('mode', 'classic')
-  const classic = useModeStats('stats-classic')
-  const image = useModeStats('stats-image')
+function GameModes({ game, mode, visible }: { game: Game; mode: Mode; visible: boolean }) {
+  const classic = useModeStats(statsKey(game.id, 'classic'))
+  const image = useModeStats(statsKey(game.id, 'image'))
   const current = mode === 'classic' ? classic : image
+
+  return (
+    <div hidden={!visible}>
+      <div className="stats">
+        <div>
+          <b>{current.stats.solved}</b>угадано
+        </div>
+        <div>
+          <b>{current.stats.streak}</b>серия
+        </div>
+        <div>
+          <b>{current.stats.best}</b>рекорд
+        </div>
+        <div>
+          <b>{current.stats.solved ? (current.stats.totalGuesses / current.stats.solved).toFixed(1) : '–'}</b>
+          ср. попыток
+        </div>
+      </div>
+      <div hidden={mode !== 'classic'}>
+        <ClassicMode game={game} active={visible && mode === 'classic'} stats={classic.stats} onSolved={classic.solved} onGaveUp={classic.gaveUp} />
+      </div>
+      <div hidden={mode !== 'image'}>
+        <ImageMode game={game} active={visible && mode === 'image'} stats={image.stats} onSolved={image.solved} onGaveUp={image.gaveUp} />
+      </div>
+    </div>
+  )
+}
+
+export default function App() {
+  const [gameId, setGameId] = useStoredState<GameId>('game', 'naruto')
+  const [mode, setMode] = useStoredState<Mode>('mode', 'classic')
+  const game = gameById(gameId)
+
+  useEffect(() => {
+    document.documentElement.dataset.game = game.id
+  }, [game.id])
+
+  const modes: { id: Mode; label: string; icon: string }[] = [
+    { id: 'classic', label: 'Классика', icon: '?' },
+    { id: 'image', label: game.image.label, icon: '🖼' },
+  ]
 
   return (
     <div className="app">
       <header>
+        <nav className="games">
+          {GAMES.map((g) => (
+            <button key={g.id} className={`game-button ${g.id === game.id ? 'active' : ''}`} onClick={() => setGameId(g.id)}>
+              {g.label}
+            </button>
+          ))}
+        </nav>
         <h1 className="logo">
-          NARUTO<span>DLE</span>
+          {game.logo[0]}
+          <span>{game.logo[1]}</span>
         </h1>
         <div className="tagline">бесконечный режим</div>
         <nav className="modes">
-          {MODES.map((m) => (
-            <button
-              key={m.id}
-              className={`mode-button ${mode === m.id ? 'active' : ''}`}
-              onClick={() => setMode(m.id)}
-            >
+          {modes.map((m) => (
+            <button key={m.id} className={`mode-button ${mode === m.id ? 'active' : ''}`} onClick={() => setMode(m.id)}>
               <span className="mode-icon">{m.icon}</span>
               {m.label}
             </button>
           ))}
         </nav>
-        <div className="stats">
-          <div>
-            <b>{current.stats.solved}</b>угадано
-          </div>
-          <div>
-            <b>{current.stats.streak}</b>серия
-          </div>
-          <div>
-            <b>{current.stats.best}</b>рекорд
-          </div>
-          <div>
-            <b>{current.stats.solved ? (current.stats.totalGuesses / current.stats.solved).toFixed(1) : '–'}</b>
-            ср. попыток
-          </div>
-        </div>
       </header>
 
       <main>
-        <div hidden={mode !== 'classic'}>
-          <ClassicMode stats={classic.stats} onSolved={classic.solved} onGaveUp={classic.gaveUp} />
-        </div>
-        <div hidden={mode !== 'image'}>
-          <ImageMode stats={image.stats} onSolved={image.solved} onGaveUp={image.gaveUp} />
-        </div>
+        {GAMES.map((g) => (
+          <GameModes key={g.id} game={g} mode={mode} visible={g.id === game.id} />
+        ))}
       </main>
 
-      <footer>Данные и изображения: Naruto Wiki (Fandom) через Dattebayo API · фанатский проект</footer>
+      <footer>
+        Фанатский проект · Наруто: Naruto Wiki через Dattebayo API · Dota 2: Valve, OpenDota, Dota 2 Wiki
+      </footer>
     </div>
   )
 }

@@ -1,10 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
-import { atlasUrl } from './data'
+import { GAMES } from './games'
 import './styles.css'
 
-new Image().src = atlasUrl
+for (const game of GAMES) new Image().src = game.atlasUrl
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
