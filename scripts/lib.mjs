@@ -75,9 +75,10 @@ export async function categoryMembers(api, category) {
 
 export function infobox(text, fieldName) {
   if (!text) return null
-  const re = new RegExp(`^\\|\\s*${fieldName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*=([\\s\\S]*?)(?=^\\||^\\}\\})`, 'mi')
-  const value = text.match(re)?.[1]?.trim()
-  return value || null
+  const name = fieldName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const value = text.match(new RegExp(`^\\|\\s*${name}\\s*=([\\s\\S]*?)(?=^\\||^\\}\\})`, 'mi'))?.[1]?.trim()
+  if (value) return value
+  return text.match(new RegExp(`^\\|\\s*${name}\\s*=\\s*(.+?)\\}\\}\\s*$`, 'mi'))?.[1]?.trim() || null
 }
 
 export function plain(value) {
@@ -121,7 +122,7 @@ export async function cachedDownload(dir, key, urls) {
   try {
     return await fs.readFile(file)
   } catch {
-    for (const url of urls.filter(Boolean)) {
+    for (const url of (urls ?? []).filter(Boolean)) {
       const buf = await download(url)
       if (buf) {
         await fs.writeFile(file, buf)
@@ -173,5 +174,21 @@ export async function pool(items, size, fn) {
 }
 
 export function ruName(enName, ruTitle, transliterate) {
-  return ruTitle ? stripParens(ruTitle) : transliterate(stripParens(enName))
+  if (ruTitle) return stripParens(ruTitle)
+  return stripParens(enName)
+    .split(/\s+and\s+/i)
+    .map((part) => transliterate(part))
+    .join(' и ')
+}
+
+const GENERIC_NAME =
+  /'s (father|mother|wife|husband|son|daughter|grandfather|grandmother|brother|sister|parents|relatives)\b|\b(unidentified|unnamed|nameless)\b|\brelatives\b|^the three\b|\bcommander$|^mayor of\b|^(mr|mrs|ms|miss)\.? /i
+
+export function keepNotable(ranked, keep) {
+  return ranked.filter((c, i) => !GENERIC_NAME.test(c.nameEn ?? c.name) && (c.answer || i < keep))
+}
+
+export async function pruneImages(dir, entities) {
+  const keep = new Set(entities.map((e) => `${e.id}.webp`))
+  for (const file of await fs.readdir(dir)) if (!keep.has(file)) await fs.unlink(path.join(dir, file))
 }

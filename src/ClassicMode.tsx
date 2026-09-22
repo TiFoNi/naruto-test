@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect } from 'react'
 import CharacterSearch from './CharacterSearch'
 import RoundResult from './RoundResult'
 import Thumb from './Thumb'
-import type { Entity, Game } from './games/types'
+import type { Game } from './games/types'
 import { useI18n } from './i18n'
 import type { Stats } from './stats'
-import { pickAnswer, preload } from './util'
+import { useRound } from './useRound'
+import { preload } from './util'
 
 const sizeClass = (text: string) => (text.length > 44 ? 'size-xs' : text.length > 26 ? 'size-s' : '')
 
@@ -13,28 +14,11 @@ type Props = { game: Game; active: boolean; onSolved: (guesses: number) => void;
 
 export default function ClassicMode({ game, active, onSolved, onGaveUp, stats }: Props) {
   const { t, l, tv, lang, name } = useI18n()
-  const [answer, setAnswer] = useState(() => pickAnswer(game))
-  const [guesses, setGuesses] = useState<Entity[]>([])
-  const [gaveUp, setGaveUp] = useState(false)
+  const { answer, guesses, won, over, round, exclude, guess, giveUp, next } = useRound({ game, mode: 'classic', onSolved, onGaveUp })
 
-  const won = guesses[0]?.id === answer.id
-  const over = won || gaveUp
-  const exclude = useMemo(() => new Set(guesses.map((g) => g.id)), [guesses])
-
-  useEffect(() => preload(game, answer), [game, answer])
-
-  const guess = (e: Entity) => {
-    if (over) return
-    const next = [e, ...guesses]
-    setGuesses(next)
-    if (e.id === answer.id) onSolved(next.length)
-  }
-
-  const nextRound = () => {
-    setAnswer(pickAnswer(game))
-    setGuesses([])
-    setGaveUp(false)
-  }
+  useEffect(() => {
+    if (active) preload(game, answer)
+  }, [active, game, answer])
 
   const legend = game.legend === 'debut' ? (['legend.debutLater', 'legend.debutEarlier'] as const) : (['legend.higher', 'legend.lower'] as const)
 
@@ -43,22 +27,16 @@ export default function ClassicMode({ game, active, onSolved, onGaveUp, stats }:
       <div className="card intro">
         <h2>{t('play.classicTitle')}</h2>
         <p className="muted">{t('play.classicPrompt')}</p>
-        <p className="round">{t('play.round', { round: stats.solved + (won ? 0 : 1), guesses: guesses.length })}</p>
+        <p className="round">{t('play.round', { round, guesses: guesses.length })}</p>
       </div>
 
       {over ? (
-        <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} stats={stats} onNext={nextRound} />
+        <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} stats={stats} onNext={() => next()} />
       ) : (
         <>
           <CharacterSearch game={game} exclude={exclude} active={active} onPick={guess} />
           {guesses.length >= 3 && (
-            <button
-              className="link-button"
-              onClick={() => {
-                setGaveUp(true)
-                onGaveUp()
-              }}
-            >
+            <button className="link-button" onClick={giveUp}>
               {t('play.giveUp')}
             </button>
           )}

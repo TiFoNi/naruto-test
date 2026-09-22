@@ -16,7 +16,8 @@ const ui = {
   },
   'nav.logout': { ru: 'Выйти', uk: 'Вийти', en: 'Log out' },
   'nav.profile': { ru: 'Профиль', uk: 'Профіль', en: 'Profile' },
-  'nav.home': { ru: 'На главную', uk: 'На головну', en: 'Home' },
+  'brand.title': { ru: 'угадай персонажа', uk: 'вгадай персонажа', en: 'guess the character' },
+  'nav.games': { ru: 'Игры', uk: 'Ігри', en: 'Games' },
   'nav.language': { ru: 'Язык', uk: 'Мова', en: 'Language' },
   loading: { ru: 'Загрузка…', uk: 'Завантаження…', en: 'Loading…' },
   'footer.disclaimer': {
@@ -54,6 +55,12 @@ const ui = {
   },
   'err.bad_result': { ru: 'Некорректный результат', uk: 'Некоректний результат', en: 'Invalid result' },
   'err.server': { ru: 'Ошибка сервера, попробуй позже', uk: 'Помилка сервера, спробуй пізніше', en: 'Server error, try again later' },
+  'err.too_many': {
+    ru: 'Слишком много попыток, подожди 15 минут',
+    uk: 'Забагато спроб, зачекай 15 хвилин',
+    en: 'Too many attempts, wait 15 minutes',
+  },
+  'err.forbidden': { ru: 'Запрос отклонён', uk: 'Запит відхилено', en: 'Request rejected' },
   'err.network': { ru: 'Нет связи с сервером', uk: 'Немає зв’язку з сервером', en: 'Cannot reach the server' },
 
   'mode.classic': { ru: 'По признакам', uk: 'За ознаками', en: 'By traits' },

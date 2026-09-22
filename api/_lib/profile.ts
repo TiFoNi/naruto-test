@@ -3,7 +3,7 @@ import { users, type Stats, type UserDoc } from './db.js'
 import { fail } from './http.js'
 import { readSession } from './session.js'
 
-const GAMES = ['naruto', 'dota', 'aot', 'bleach']
+const GAMES = ['naruto', 'dota', 'aot', 'bleach', 'tg', 'berserk']
 const MODES = ['classic', 'image']
 export const STAT_KEYS = GAMES.flatMap((g) => MODES.map((m) => `${g}_${m}`))
 

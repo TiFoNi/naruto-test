@@ -13,6 +13,8 @@ import {
   stripParens,
   wikiPages,
   wikiQuery,
+  keepNotable,
+  pruneImages,
   writeAtlas,
   writeFullAndThumb,
 } from './lib.mjs'
@@ -25,6 +27,9 @@ const OUT_IMG = path.join(ROOT, 'public', 'aot')
 const OUT_JSON = path.join(ROOT, 'src', 'data', 'aot.json')
 const OUT_ATLAS = path.join(ROOT, 'src', 'data', 'aot-atlas.json')
 const EXTRA_NAMES = ['Hange Zoë']
+const EXCLUDE = new Set(['Ackerman', 'Yeager', 'Leonhart'])
+const NAMES = { 'Lara Tybur': 'Лара Тайбер', 'Artur Blouse': 'Артур Браус' }
+const KEEP = 100
 
 const ANSWER_POOL = [
   'Eren Yeager', 'Mikasa Ackerman', 'Armin Arlert', 'Levi Ackerman', 'Hange Zoë', 'Erwin Smith', 'Jean Kirstein',
@@ -64,7 +69,8 @@ const SPECIES = {
 }
 
 const AFFILIATION_RULES = [
-  ['Разведкорпус', /survey corps|scout regiment|special operations squad|squad (mike|klaus|darius|levi|hange)|fourth squad|titan biology|idol unit/i],
+  ['Разведкорпус', /survey corps|scout regiment|special operations squad|squad (mike|klaus|darius|levi|hange)|fourth squad|idol unit/i],
+  ['Исследователи титанов', /titan biology/i],
   ['Гарнизон', /garrison/i],
   ['Военная полиция', /military police|interior squad|anti-personnel control/i],
   ['Кадетский корпус', /training corps/i],
@@ -114,6 +120,7 @@ const TITANS = {
   Attack: 'Атакующий',
   Founding: 'Прародитель',
   Colossal: 'Колоссальный',
+  Colossus: 'Колоссальный',
   Armored: 'Бронированный',
   Female: 'Женская особь',
   Beast: 'Звероподобный',
@@ -127,7 +134,11 @@ const STATUS = { Alive: 'Жив', Deceased: 'Мёртв', Unknown: 'Неизве
 const matchRules = (rules, texts) => rules.filter(([, re]) => texts.some((t) => re.test(t))).map(([label]) => label)
 const link = (value) => value?.match(/\[\[([^\]|#]+)/)?.[1]?.trim() ?? null
 
-function titans(text) {
+const YMIR_POWER = 'Сила Имир'
+const YMIR_DAUGHTERS = new Set(['Maria Fritz', 'Rose Fritz', 'Sheena Fritz'])
+
+function titans(name, text) {
+  if (YMIR_DAUGHTERS.has(name)) return [YMIR_POWER]
   const found = [...text.matchAll(/\|\s*Title\s*=\s*([A-Za-z ]+?) Titans?\b/g)].map((m) => TITANS[m[1].trim()])
   return [...new Set(found.filter(Boolean))]
 }
@@ -145,7 +156,7 @@ async function main() {
   const chapters = await cachedJson(CACHE, 'chapters.json', () => wikiPages(API, [...new Set(names.map(debutOf).filter(Boolean))]))
   const arcOf = (n) => plain(infobox(chapters[debutOf(n)]?.text, 'Arc')).trim()
 
-  const candidates = names.filter((n) => pages[n]?.text && ARCS[arcOf(n)])
+  const candidates = names.filter((n) => !EXCLUDE.has(n) && pages[n]?.text && ARCS[arcOf(n)])
   const animePage = (n) => pages[n].text.match(/\|\s*A\s*=\s*([^\n|}]+)/)?.[1]?.trim() || null
   const images = await cachedJson(CACHE, 'images.json', async () => {
     const titles = [...candidates, ...candidates.map(animePage).filter(Boolean)]
@@ -156,7 +167,7 @@ async function main() {
 
   const result = []
   await pool(candidates, 10, async (name) => {
-    const { id, text, ru } = pages[name]
+    const { id, text, ru, length } = pages[name]
     const buf = await cachedDownload(path.join(CACHE, 'img'), String(id), images[name])
     if (!buf) return console.warn('no image', name)
     try {
@@ -166,13 +177,13 @@ async function main() {
     }
     const field = (f) => plainList(infobox(text, f))
     const arc = arcOf(name)
-    const heldTitans = titans(text)
+    const heldTitans = titans(name, text)
     const species = field('Species').map((s) => SPECIES[stripParens(s)])
     if (heldTitans.length) species.push(SPECIES['Intelligent Titan'])
     const occupations = [...field('Occupation'), ...field('F. Occupation')].map((o) => OCCUPATIONS[stripParens(o)]).filter(Boolean)
     result.push({
       id,
-      name: ruName(name, ru, transliterate),
+      name: NAMES[name] ?? ruName(name, ru, transliterate),
       nameEn: name,
       gender: SEX[plain(infobox(text, 'Gender')).trim()] ?? OTHER_SEX,
       species: [...new Set(species.filter(Boolean))],
@@ -183,13 +194,20 @@ async function main() {
       arc: ARCS[arc],
       arcIndex: ARC_ORDER.indexOf(arc),
       answer: ANSWER_POOL.includes(name),
+      length,
     })
   })
 
   const missing = ANSWER_POOL.filter((n) => !result.some((c) => c.nameEn === n))
   if (missing.length) console.warn('answer pool names not found:', missing.join(', '))
+  result.sort((a, b) => b.length - a.length)
+  result.forEach((c) => delete c.length)
+  const kept = keepNotable(result, KEEP)
+  result.length = 0
+  result.push(...kept)
   result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
   await writeAtlas(result, THUMBS, path.join(OUT_IMG, 'thumbs.webp'), OUT_ATLAS, 16, 96)
+  await pruneImages(path.join(OUT_IMG, 'full'), result)
   await fs.writeFile(OUT_JSON, JSON.stringify(result, null, 1))
   console.log(`wrote ${result.length} characters (${result.filter((c) => c.answer).length} answerable)`)
 }

@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import sharp from 'sharp'
+import { keepNotable, pruneImages } from './lib.mjs'
 import { AFFILIATIONS, ARCS, CLASSIFICATIONS, JUTSU, KEKKEI_GENKAI, NAMES, NATURES, OTHER_SEX, SEX, transliterate } from './ru.mjs'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
@@ -14,6 +15,7 @@ const ATLAS_CELL = 96
 const API = 'https://dattebayo-api.onrender.com/characters?page=1&limit=3000'
 const MAX_CHAPTER = 699
 const ANSWER_POOL_SIZE = 150
+const KEEP = 250
 
 const NON_CANON = /\((anime|novel|game|movie|ova|databook)[^)]*only\)|non-canon/i
 
@@ -28,7 +30,7 @@ const JUTSU_RULES = [
   [JUTSU.kenjutsu, /sword|blade|kenjutsu|slash|silent homicide|crescent moon dance|iaido|samehada|kubikiribōchō/i],
   [JUTSU.fuinjutsu, /seal|fūinjutsu|sealing|reaper death|tetragram/i],
   [JUTSU.senjutsu, /sage mode|sage art|senjutsu|sage transformation|frog kata/i],
-  [JUTSU.dojutsu, /sharingan|byakugan|rinnegan|amaterasu|kamui|susanoo|tsukuyomi|kagutsuchi|izanagi|izanami|tenseigan|ketsuryūgan|shinra tensei|chibaku tensei|preta path|naraka path|human path|animal path|asura path|deva path/i],
+  [JUTSU.dojutsu, /sharingan|byakugan|rinnegan|amaterasu|kamui|susanoo|tsukuyomi|kagutsuchi|izanagi|izanami|tenseigan|ketsuryūgan/i],
   [JUTSU.medical, /mystical palm|healing|medical|chakra scalpel|cell activation|creation rebirth|strength of a hundred/i],
 ]
 const DOJUTSU_KG = /sharingan|byakugan|rinnegan|tenseigan|ketsuryūgan/i
@@ -42,6 +44,9 @@ const OVERRIDES = {
   'Shikamaru Nara': { jutsuTypes: [JUTSU.ninjutsu] },
   Kimimaro: { jutsuTypes: [JUTSU.taijutsu] },
   Orochimaru: { gender: SEX.Male },
+  'Kaguya Ōtsutsuki': { kekkeiGenkai: ['Бьякуган', 'Риннэ-Шаринган'] },
+  'Hagoromo Ōtsutsuki': { kekkeiGenkai: ['Риннеган'] },
+  'Hamura Ōtsutsuki': { kekkeiGenkai: ['Бьякуган', 'Тенсейган'] },
 }
 
 const WIKI_API = 'https://naruto.fandom.com/api.php'
@@ -96,6 +101,17 @@ function kekkeiGenkai(p) {
 
 function attributes(p) {
   return uniq(canon(p.classification).map(clean).map((a) => CLASSIFICATIONS[a] ?? a))
+}
+
+const DOJUTSU_VALUES = ['Шаринган', 'Мангекьё Шаринган', 'Вечный Мангекьё Шаринган', 'Бьякуган', 'Риннеган', 'Риннэ-Шаринган', 'Тенсейган']
+
+function consistent(c) {
+  const jutsu = new Set(c.jutsuTypes)
+  if (c.kekkeiGenkai.some((k) => DOJUTSU_VALUES.includes(k))) jutsu.add(JUTSU.dojutsu)
+  else jutsu.delete(JUTSU.dojutsu)
+  if (c.attributes.includes('Мудрец')) jutsu.add(JUTSU.senjutsu)
+  if (c.natureTypes.length) jutsu.add(JUTSU.ninjutsu)
+  return { ...c, jutsuTypes: Object.values(JUTSU).filter((t) => jutsu.has(t)) }
 }
 
 async function fetchArticleLengths(names) {
@@ -279,7 +295,7 @@ async function main() {
     }
     const chapter = Number(/#(\d+)/.exec(c.debut.manga)[1])
     const p = c.personal
-    result.push({
+    const character = {
       id: c.id,
       name: c.name,
       gender: SEX[p.sex] ?? OTHER_SEX,
@@ -291,12 +307,16 @@ async function main() {
       debutChapter: chapter,
       ...arcFor(chapter),
       ...OVERRIDES[c.name],
-    })
+    }
+    result.push(consistent(character))
   })
 
   const lengths = await fetchArticleLengths(result.map((c) => c.name))
   result.sort((a, b) => (lengths[b.name] ?? 0) - (lengths[a.name] ?? 0))
   result.forEach((c, i) => (c.answer = i < ANSWER_POOL_SIZE))
+  const kept = keepNotable(result, KEEP)
+  result.length = 0
+  result.push(...kept)
 
   const names = result.map((c) => c.name)
   const ru = russianNames(names, await fetchRussianTitles(names))
@@ -307,6 +327,7 @@ async function main() {
   result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
 
   await writeAtlas(result)
+  await pruneImages(path.join(OUT_IMG, 'full'), result)
   await fs.writeFile(OUT_JSON, JSON.stringify(result, null, 1))
   console.log(`wrote ${result.length} characters (${result.filter((c) => c.answer).length} answerable)`)
 }

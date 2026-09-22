@@ -6,7 +6,7 @@ export async function GET() {
   const secret = process.env.AUTH_SECRET ?? ''
   const checks = {
     mongodbUri: uri ? (uri.includes('<') ? 'set, but contains a <placeholder>' : 'set') : 'missing',
-    authSecret: secret ? (secret.length >= 32 ? 'set' : `too short (${secret.length} chars, need 32+)`) : 'missing',
+    authSecret: secret ? (secret.length >= 32 ? 'set' : 'too short (need 32+ chars)') : 'missing',
     database: 'not checked',
   }
   if (uri) {
@@ -15,8 +15,12 @@ export async function GET() {
       checks.database = 'ok'
     } catch (error) {
       const e = error as Error
-      const hint = e.name === 'MongoServerSelectionError' ? ' — check Atlas IP Access List (0.0.0.0/0)' : ''
-      checks.database = `error: ${e.name}: ${e.message.replace(/mongodb(\+srv)?:\/\/[^\s]+/g, '[uri]').slice(0, 160)}${hint}`
+      const hints: Record<string, string> = {
+        MongoServerSelectionError: 'cannot reach the cluster — check Atlas IP Access List (0.0.0.0/0)',
+        MongoServerError: /auth/i.test(e.message) ? 'authentication failed — check user/password in MONGODB_URI' : 'server error',
+        MongoParseError: 'MONGODB_URI is malformed',
+      }
+      checks.database = `error: ${hints[e.name] ?? e.name}`
     }
   }
   const ok = checks.mongodbUri === 'set' && checks.authSecret === 'set' && checks.database === 'ok'

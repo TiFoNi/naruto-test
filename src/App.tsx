@@ -139,7 +139,7 @@ export default function App() {
               <a className="back" href={href.home}>
                 {t('play.back')}
               </a>
-              <nav className="game-tabs" aria-label={t('profile.game')}>
+              <nav className="game-tabs" aria-label={t('nav.games')}>
                 {GAMES.map((g) => (
                   <a
                     key={g.id}
@@ -189,7 +189,7 @@ export default function App() {
       <footer>
         <p>{t('footer.disclaimer')}</p>
         <p>
-          {t('footer.data')}: Naruto Wiki, Dattebayo API, Valve, OpenDota, Dota 2 Wiki, Attack on Titan Wiki, Bleach Wiki, MyAnimeList.
+          {t('footer.data')}: Naruto Wiki, Dattebayo API, Valve, OpenDota, Dota 2 Wiki, Attack on Titan Wiki, Bleach Wiki, Tokyo Ghoul Wiki, Berserk Wiki, MyAnimeList.
         </p>
       </footer>
     </div>

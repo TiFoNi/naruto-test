@@ -7,13 +7,17 @@ export type { L10n, Lang, UiKey }
 
 const STORAGE_KEY = 'lang'
 
-function initialLang(): Lang {
+function storedLang() {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored === 'ru' || stored === 'uk' || stored === 'en') return stored
+    return localStorage.getItem(STORAGE_KEY)
   } catch {
-    return 'ru'
+    return null
   }
+}
+
+function initialLang(): Lang {
+  const stored = storedLang()
+  if (stored === 'ru' || stored === 'uk' || stored === 'en') return stored
   const browser = navigator.language.toLowerCase()
   if (browser.startsWith('uk')) return 'uk'
   if (browser.startsWith('ru')) return 'ru'
@@ -54,6 +58,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = lang
+    document.title = `NandaGuessr — ${ui['brand.title'][lang]}`
   }, [lang])
 
   const setLang = useCallback((next: Lang) => {

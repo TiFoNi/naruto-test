@@ -12,7 +12,11 @@ export type UserDoc = {
 
 export type Stats = { solved: number; streak: number; best: number; totalGuesses: number }
 
-const cache = globalThis as typeof globalThis & { __mongo?: Promise<MongoClient>; __usersIndexed?: Promise<unknown> }
+const cache = globalThis as typeof globalThis & {
+  __mongo?: Promise<MongoClient>
+  __usersIndexed?: Promise<unknown>
+  __attemptsIndexed?: Promise<unknown>
+}
 
 export function client() {
   const uri = process.env.MONGODB_URI
@@ -26,7 +30,25 @@ export function client() {
 
 export async function users(): Promise<Collection<UserDoc>> {
   const collection = (await client()).db(process.env.MONGODB_DB || 'nandaguessr').collection<UserDoc>('users')
-  cache.__usersIndexed ??= collection.createIndex({ usernameLower: 1 }, { unique: true })
+  cache.__usersIndexed ??= collection.createIndex({ usernameLower: 1 }, { unique: true }).catch((error) => {
+    cache.__usersIndexed = undefined
+    throw error
+  })
   await cache.__usersIndexed
+  return collection
+}
+
+export type AttemptDoc = { key: string; at: Date }
+
+export async function attempts(): Promise<Collection<AttemptDoc>> {
+  const collection = (await client()).db(process.env.MONGODB_DB || 'nandaguessr').collection<AttemptDoc>('attempts')
+  cache.__attemptsIndexed ??= Promise.all([
+    collection.createIndex({ at: 1 }, { expireAfterSeconds: 60 * 60 }),
+    collection.createIndex({ key: 1, at: 1 }),
+  ]).catch((error) => {
+    cache.__attemptsIndexed = undefined
+    throw error
+  })
+  await cache.__attemptsIndexed
   return collection
 }

@@ -15,8 +15,18 @@ export async function readJson(request: Request): Promise<Record<string, unknown
   }
 }
 
+function crossSite(request: Request) {
+  if (request.method === 'GET') return false
+  const site = request.headers.get('sec-fetch-site')
+  if (site && site !== 'same-origin' && site !== 'none') return true
+  const origin = request.headers.get('origin')
+  if (origin && origin !== new URL(request.url).origin) return true
+  return !request.headers.get('content-type')?.includes('application/json')
+}
+
 export function handle(fn: (request: Request) => Promise<Response>) {
   return async (request: Request) => {
+    if (crossSite(request)) return fail(403, 'forbidden')
     try {
       return await fn(request)
     } catch (error) {

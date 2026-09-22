@@ -12,6 +12,8 @@ import {
   stripParens,
   wikiPages,
   wikiQuery,
+  keepNotable,
+  pruneImages,
   writeAtlas,
   writeFullAndThumb,
 } from './lib.mjs'
@@ -25,6 +27,7 @@ const OUT_JSON = path.join(ROOT, 'src', 'data', 'bleach.json')
 const OUT_ATLAS = path.join(ROOT, 'src', 'data', 'bleach-atlas.json')
 const MAL = path.join(ROOT, '.cache', 'mal-269.json')
 const ANSWER_POOL_SIZE = 130
+const KEEP = 160
 const MAX_CHAPTER = 686
 
 const SEX = { Male: 'Мужской', Female: 'Женский' }
@@ -125,6 +128,7 @@ function races(text, affiliations, powers) {
     else if (RACES[r]) out.add(RACES[r])
   }
   if (affiliations.includes('Вайзарды')) out.add('Пустой')
+  if (division(text)) out.add('Шинигами')
   return [...out]
 }
 
@@ -142,8 +146,45 @@ const nameKey = (s) =>
     .join(' ')
 
 function division(text) {
-  const m = plainList(infobox(text, 'division')).join(' ').match(/(\d+)(?:st|nd|rd|th)? Division/i)
-  return m ? Number(m[1]) : null
+  const fields = ['division', 'previous division', 'position', 'previous position']
+  for (const field of fields) {
+    const value = plainList(infobox(text, field)).join(' ')
+    const m = field.includes('division')
+      ? value.match(/(\d+)(?:st|nd|rd|th)? Division/i)
+      : value.match(/(?:captain|lieutenant) of the (\d+)(?:st|nd|rd|th) Division/i)
+    if (m) return Number(m[1])
+  }
+  return null
+}
+
+function consistent(c) {
+  const races = new Set(c.races)
+  const affiliations = new Set(c.affiliations)
+  let ranks = [...c.ranks]
+  const artificial = races.has('Искусственная душа') || races.has('Модифицированная душа')
+  if ((c.powers.includes('Шикай') || c.powers.includes('Банкай')) && !artificial) {
+    races.delete('Душа')
+    races.add('Шинигами')
+  }
+  if (c.powers.includes('Фулбринг')) races.add('Человек')
+  if (c.powers.includes('Ресуррексион') && !races.has('Шинигами')) races.add('Арранкар')
+  if (ranks.includes('Штернриттер')) {
+    races.add('Квинси')
+    affiliations.add('Ванденрейх')
+  }
+  if (ranks.includes('Эспада') || ranks.includes('Фрасьон')) {
+    races.add('Арранкар')
+    affiliations.add('Армия Айзена')
+  }
+  if (c.division) affiliations.add('Готей 13')
+  if (!affiliations.has('Готей 13') && !affiliations.has('Нулевой отряд')) ranks = ranks.filter((r) => r !== 'Капитан' && r !== 'Лейтенант')
+  const order = (list, all) => all.filter((x) => list.has(x)).concat([...list].filter((x) => !all.includes(x)))
+  return {
+    ...c,
+    races: order(races, [...new Set(Object.values(RACES).concat(['Шинигами']))]),
+    affiliations: order(affiliations, AFFILIATION_RULES.map(([label]) => label)),
+    ranks,
+  }
 }
 
 function malFavorites() {
@@ -205,7 +246,7 @@ async function main() {
     )
     const affiliations = matchRules(AFFILIATION_RULES, affiliationTexts)
     const powers = [...new Set(POWER_FIELDS.filter(([f]) => infobox(text, f)).map(([, label]) => label))]
-    result.push({
+    result.push(consistent({
       id,
       name: NAMES[name] ?? ruName(name, pages[name].ru, transliterate),
       nameEn: name,
@@ -219,20 +260,26 @@ async function main() {
       popularity: favorites[nameKey(name)] ?? 0,
       length: pages[name].length,
       ...OVERRIDES[name],
-    })
+    }))
   })
 
   const unique = [...new Map(result.map((c) => [c.id, c])).values()]
   result.length = 0
   result.push(...unique)
   result.sort((a, b) => b.popularity - a.popularity || b.length - a.length)
-  result.forEach((c, i) => {
-    c.answer = i < ANSWER_POOL_SIZE
+  let picked = 0
+  for (const c of result) {
+    c.answer = picked < ANSWER_POOL_SIZE && c.affiliations.length + c.ranks.length + c.powers.length > 0
+    if (c.answer) picked++
     delete c.popularity
     delete c.length
-  })
+  }
+  const kept = keepNotable(result, KEEP)
+  result.length = 0
+  result.push(...kept)
   result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
   await writeAtlas(result, THUMBS, path.join(OUT_IMG, 'thumbs.webp'), OUT_ATLAS, 20, 96)
+  await pruneImages(path.join(OUT_IMG, 'full'), result)
   await fs.writeFile(OUT_JSON, JSON.stringify(result, null, 1))
   console.log(`wrote ${result.length} characters (${result.filter((c) => c.answer).length} answerable)`)
 }

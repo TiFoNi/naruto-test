@@ -11,7 +11,7 @@ export default function RoundResult({ game, answer, guesses, won, stats, onNext 
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && ref.current?.offsetParent) onNext()
+      if (e.key === 'Enter' && !e.repeat && ref.current?.offsetParent) onNext()
     }
     const timer = setTimeout(() => window.addEventListener('keydown', onKey), 300)
     return () => {

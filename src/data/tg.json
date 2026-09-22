@@ -1,0 +1,2288 @@
+[
+ {
+  "id": 3395,
+  "name": "Акира Мадо",
+  "nameEn": "Akira Mado",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG",
+   "Козёл"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 9,
+  "debutIndex": 9,
+  "answer": true,
+  "thumb": 0
+ },
+ {
+  "id": 2212,
+  "name": "Акихиро Кано",
+  "nameEn": "Akihiro Kanou",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG",
+   "Клан Вашу",
+   "Древо Аогири",
+   "Клоуны",
+   "Канао"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 1,
+  "debutIndex": 1,
+  "answer": true,
+  "thumb": 1
+ },
+ {
+  "id": 3099,
+  "name": "Арата Киришима",
+  "nameEn": "Arata Kirishima",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [],
+  "kagune": [
+   "Коукаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Неизвестно",
+  "series": "tg",
+  "volume": 8,
+  "debutIndex": 8,
+  "answer": true,
+  "thumb": 2
+ },
+ {
+  "id": 11762,
+  "name": "Аюму Хоги",
+  "nameEn": "Ayumu Hogi",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 13,
+  "debutIndex": 13,
+  "answer": false,
+  "thumb": 3
+ },
+ {
+  "id": 2441,
+  "name": "Аято Киришима",
+  "nameEn": "Ayato Kirishima",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Древо Аогири",
+   "Козёл",
+   ":re",
+   "Объединённый фронт"
+  ],
+  "kagune": [
+   "Укаку"
+  ],
+  "rating": "SS",
+  "ratingIndex": 7,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 6,
+  "debutIndex": 6,
+  "answer": true,
+  "thumb": 4
+ },
+ {
+  "id": 38701,
+  "name": "Биг Мадам",
+  "nameEn": "Big Madam",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Гуль-ресторан"
+  ],
+  "kagune": [
+   "Бикаку"
+  ],
+  "rating": "SS",
+  "ratingIndex": 7,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 13,
+  "debutIndex": 13,
+  "answer": false,
+  "thumb": 5
+ },
+ {
+  "id": 2811,
+  "name": "Братья Бин",
+  "nameEn": "Bin brothers",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Древо Аогири"
+  ],
+  "kagune": [
+   "Бикаку"
+  ],
+  "rating": "S",
+  "ratingIndex": 5,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 6,
+  "debutIndex": 6,
+  "answer": false,
+  "thumb": 6
+ },
+ {
+  "id": 56445,
+  "name": "Гаги и Гуге",
+  "nameEn": "Gagi and Guge",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Древо Аогири",
+   "Белые костюмы"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 10,
+  "debutIndex": 10,
+  "answer": false,
+  "thumb": 7
+ },
+ {
+  "id": 13521,
+  "name": "Гинши Ширазу",
+  "nameEn": "Ginshi Shirazu",
+  "gender": "Мужской",
+  "species": [
+   "Квинкс"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [
+   "Укаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "re",
+  "volume": 1,
+  "debutIndex": 101,
+  "answer": true,
+  "thumb": 8
+ },
+ {
+  "id": 55925,
+  "name": "Гоумаса Токаге",
+  "nameEn": "Goumasa Tokage",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 7,
+  "debutIndex": 7,
+  "answer": false,
+  "thumb": 9
+ },
+ {
+  "id": 2375,
+  "name": "Джузо Судзуя",
+  "nameEn": "Juuzou Suzuya",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG",
+   "Гуль-ресторан"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 5,
+  "debutIndex": 5,
+  "answer": true,
+  "thumb": 10
+ },
+ {
+  "id": 3762,
+  "name": "Донато Порпора",
+  "nameEn": "Donato Porpora",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Клан Вашу",
+   "Клоуны"
+  ],
+  "kagune": [
+   "Коукаку"
+  ],
+  "rating": "SS",
+  "ratingIndex": 7,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 9,
+  "debutIndex": 9,
+  "answer": true,
+  "thumb": 11
+ },
+ {
+  "id": 4562,
+  "name": "Ёшитоки Вашуу",
+  "nameEn": "Yoshitoki Washuu",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Клан Вашу",
+   "V"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 9,
+  "debutIndex": 9,
+  "answer": false,
+  "thumb": 12
+ },
+ {
+  "id": 2845,
+  "name": "Ивао Куроива",
+  "nameEn": "Iwao Kuroiwa",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 7,
+  "debutIndex": 7,
+  "answer": true,
+  "thumb": 13
+ },
+ {
+  "id": 79441,
+  "name": "Икума Момочи",
+  "nameEn": "Ikuma Momochi",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [],
+  "kagune": [
+   "Коукаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "re",
+  "volume": 14,
+  "debutIndex": 114,
+  "answer": false,
+  "thumb": 14
+ },
+ {
+  "id": 2254,
+  "name": "Итори",
+  "nameEn": "Itori",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Клоуны"
+  ],
+  "kagune": [
+   "Укаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 4,
+  "debutIndex": 4,
+  "answer": false,
+  "thumb": 15
+ },
+ {
+  "id": 2266,
+  "name": "Ицуки Маруде",
+  "nameEn": "Itsuki Marude",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 3,
+  "debutIndex": 3,
+  "answer": true,
+  "thumb": 16
+ },
+ {
+  "id": 326906,
+  "name": "Ичика Канеки",
+  "nameEn": "Ichika Kaneki",
+  "gender": "Женский",
+  "species": [
+   "Одноглазый гуль"
+  ],
+  "affiliations": [],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "re",
+  "volume": 16,
+  "debutIndex": 116,
+  "answer": false,
+  "thumb": 17
+ },
+ {
+  "id": 2250,
+  "name": "Йорико Косака",
+  "nameEn": "Yoriko Kuroiwa",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 1,
+  "debutIndex": 1,
+  "answer": false,
+  "thumb": 18
+ },
+ {
+  "id": 2162,
+  "name": "Йошимура",
+  "nameEn": "Yoshimura",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Антейку",
+   "V"
+  ],
+  "kagune": [
+   "Укаку"
+  ],
+  "rating": "SSS",
+  "ratingIndex": 9,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 1,
+  "debutIndex": 1,
+  "answer": true,
+  "thumb": 19
+ },
+ {
+  "id": 2673,
+  "name": "Казуичи Банджо",
+  "nameEn": "Kazuichi Banjou",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Древо Аогири",
+   "Анти-Аогири",
+   "Козёл",
+   "Объединённый фронт",
+   "Газовые маски"
+  ],
+  "kagune": [
+   "Укаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 5,
+  "debutIndex": 5,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 2208,
+  "name": "Казуо Йошида",
+  "nameEn": "Kazuo Yoshida",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 1,
+  "debutIndex": 1,
+  "answer": false,
+  "thumb": 21
+ },
+ {
+  "id": 29081,
+  "name": "Кайко",
+  "nameEn": "Kaiko",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Клан Вашу",
+   "V"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 13,
+  "debutIndex": 13,
+  "answer": false,
+  "thumb": 22
+ },
+ {
+  "id": 14076,
+  "name": "Канае фон Розевальд",
+  "nameEn": "Karren von Rosewald",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Семья Цукиямы"
+  ],
+  "kagune": [
+   "Ринкаку"
+  ],
+  "rating": "SS",
+  "ratingIndex": 7,
+  "status": "Мёртв",
+  "series": "re",
+  "volume": 1,
+  "debutIndex": 101,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 14024,
+  "name": "Карао Саэки",
+  "nameEn": "Karao Saeki",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Древо Аогири"
+  ],
+  "kagune": [
+   "Ринкаку"
+  ],
+  "rating": "A",
+  "ratingIndex": 3,
+  "status": "Мёртв",
+  "series": "re",
+  "volume": 1,
+  "debutIndex": 101,
+  "answer": true,
+  "thumb": 24
+ },
+ {
+  "id": 2272,
+  "name": "Кая Ирими",
+  "nameEn": "Kaya Irimi",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Антейку",
+   "Козёл",
+   ":re",
+   "Чёрные доберы"
+  ],
+  "kagune": [
+   "Укаку"
+  ],
+  "rating": "SS",
+  "ratingIndex": 7,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 2,
+  "debutIndex": 2,
+  "answer": true,
+  "thumb": 25
+ },
+ {
+  "id": 88904,
+  "name": "Кейджин Накарай",
+  "nameEn": "Keijin Nakarai",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 3,
+  "debutIndex": 3,
+  "answer": false,
+  "thumb": 26
+ },
+ {
+  "id": 2153,
+  "name": "Кен Канеки",
+  "nameEn": "Ken Kaneki",
+  "gender": "Мужской",
+  "species": [
+   "Одноглазый гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Антейку",
+   "Древо Аогири",
+   "Анти-Аогири",
+   "Козёл",
+   ":re",
+   "Объединённый фронт"
+  ],
+  "kagune": [
+   "Ринкаку"
+  ],
+  "rating": "SS",
+  "ratingIndex": 7,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 1,
+  "debutIndex": 1,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 33454,
+  "name": "Кийоко Аура",
+  "nameEn": "Kiyoko Aura",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 12,
+  "debutIndex": 12,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 2248,
+  "name": "Кими Нишино",
+  "nameEn": "Kimi Nishino",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG",
+   "Древо Аогири",
+   "Канао"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 1,
+  "debutIndex": 1,
+  "answer": true,
+  "thumb": 29
+ },
+ {
+  "id": 2267,
+  "name": "Кишо Арима",
+  "nameEn": "Kishou Arima",
+  "gender": "Мужской",
+  "species": [
+   "Полулюдь"
+  ],
+  "affiliations": [
+   "CCG",
+   "Клан Вашу",
+   "Древо Аогири",
+   "V"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 3,
+  "debutIndex": 3,
+  "answer": true,
+  "thumb": 30
+ },
+ {
+  "id": 6954,
+  "name": "Коори Уи",
+  "nameEn": "Koori Ui",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 12,
+  "debutIndex": 12,
+  "answer": true,
+  "thumb": 31
+ },
+ {
+  "id": 2269,
+  "name": "Косуке Ходжи",
+  "nameEn": "Kousuke Houji",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 3,
+  "debutIndex": 3,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 69781,
+  "name": "Котаро Амон",
+  "nameEn": "Koutarou Amon",
+  "gender": "Мужской",
+  "species": [
+   "Одноглазый гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Козёл"
+  ],
+  "kagune": [
+   "Укаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 2,
+  "debutIndex": 2,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 13164,
+  "name": "Куки Урие",
+  "nameEn": "Kuki Urie",
+  "gender": "Мужской",
+  "species": [
+   "Квинкс"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [
+   "Коукаку"
+  ],
+  "rating": "S",
+  "ratingIndex": 5,
+  "status": "Жив",
+  "series": "re",
+  "volume": 1,
+  "debutIndex": 101,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 14791,
+  "name": "Курамото Итоу",
+  "nameEn": "Kuramoto Itou",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 13,
+  "debutIndex": 13,
+  "answer": true,
+  "thumb": 35
+ },
+ {
+  "id": 2221,
+  "name": "Курео Мадо",
+  "nameEn": "Kureo Mado",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 2,
+  "debutIndex": 2,
+  "answer": true,
+  "thumb": 36
+ },
+ {
+  "id": 3684,
+  "name": "Курона Ясухиса",
+  "nameEn": "Kurona Yasuhisa",
+  "gender": "Женский",
+  "species": [
+   "Одноглазый гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Козёл",
+   "Гуль-ресторан",
+   "Канао"
+  ],
+  "kagune": [
+   "Ринкаку"
+  ],
+  "rating": "SS",
+  "ratingIndex": 7,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 9,
+  "debutIndex": 9,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 2246,
+  "name": "Майко Абе",
+  "nameEn": "Maiko Abe",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Гуль-ресторан"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 4,
+  "debutIndex": 4,
+  "answer": false,
+  "thumb": 38
+ },
+ {
+  "id": 3765,
+  "name": "Матасака Камиширо",
+  "nameEn": "Matasaka Kamishiro",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Древо Аогири"
+  ],
+  "kagune": [
+   "Бикаку"
+  ],
+  "rating": "SSS",
+  "ratingIndex": 9,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 10,
+  "debutIndex": 10,
+  "answer": true,
+  "thumb": 39
+ },
+ {
+  "id": 41320,
+  "name": "Мацумае",
+  "nameEn": "Matsumae",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Семья Цукиямы"
+  ],
+  "kagune": [
+   "Коукаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "re",
+  "volume": 2,
+  "debutIndex": 102,
+  "answer": true,
+  "thumb": 40
+ },
+ {
+  "id": 38847,
+  "name": "Мацури Вашу",
+  "nameEn": "Matsuri Washuu",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Клан Вашу",
+   "V"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "re",
+  "volume": 2,
+  "debutIndex": 102,
+  "answer": true,
+  "thumb": 41
+ },
+ {
+  "id": 26824,
+  "name": "Маю",
+  "nameEn": "Nutcracker",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Гуль-ресторан"
+  ],
+  "kagune": [
+   "Коукаку",
+   "Бикаку"
+  ],
+  "rating": "S",
+  "ratingIndex": 5,
+  "status": "Мёртв",
+  "series": "re",
+  "volume": 1,
+  "debutIndex": 101,
+  "answer": true,
+  "thumb": 42
+ },
+ {
+  "id": 41933,
+  "name": "Миза Кусакари",
+  "nameEn": "Miza Kusakari",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Древо Аогири",
+   "Козёл",
+   "Объединённый фронт"
+  ],
+  "kagune": [
+   "Бикаку"
+  ],
+  "rating": "S",
+  "ratingIndex": 5,
+  "status": "Жив",
+  "series": "re",
+  "volume": 2,
+  "debutIndex": 102,
+  "answer": true,
+  "thumb": 43
+ },
+ {
+  "id": 88900,
+  "name": "Мизуроу Тамаки",
+  "nameEn": "Mizurou Tamaki",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 3,
+  "debutIndex": 3,
+  "answer": false,
+  "thumb": 44
+ },
+ {
+  "id": 48858,
+  "name": "Мирумо Цукияма",
+  "nameEn": "Mirumo Tsukiyama",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Козёл",
+   "Гуль-ресторан",
+   "Семья Цукиямы",
+   "Объединённый фронт"
+  ],
+  "kagune": [
+   "Коукаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "re",
+  "volume": 2,
+  "debutIndex": 102,
+  "answer": false,
+  "thumb": 45
+ },
+ {
+  "id": 2914,
+  "name": "Мисато Гори",
+  "nameEn": "Misato Gori",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 7,
+  "debutIndex": 7,
+  "answer": false,
+  "thumb": 46
+ },
+ {
+  "id": 11749,
+  "name": "Моуган Танакамару",
+  "nameEn": "Mougan Tanakamaru",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 12,
+  "debutIndex": 12,
+  "answer": false,
+  "thumb": 47
+ },
+ {
+  "id": 3638,
+  "name": "Наки",
+  "nameEn": "Naki",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Древо Аогири",
+   "Козёл",
+   "Объединённый фронт",
+   "Белые костюмы"
+  ],
+  "kagune": [
+   "Коукаку"
+  ],
+  "rating": "S",
+  "ratingIndex": 5,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 10,
+  "debutIndex": 10,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 3682,
+  "name": "Наширо Ясухиса",
+  "nameEn": "Nashiro Yasuhisa",
+  "gender": "Женский",
+  "species": [
+   "Одноглазый гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Гуль-ресторан",
+   "Канао"
+  ],
+  "kagune": [
+   "Ринкаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 9,
+  "debutIndex": 9,
+  "answer": true,
+  "thumb": 49
+ },
+ {
+  "id": 2665,
+  "name": "Нико",
+  "nameEn": "Nico",
+  "gender": "Другое",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Древо Аогири",
+   "Клоуны"
+  ],
+  "kagune": [
+   "Ринкаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 6,
+  "debutIndex": 6,
+  "answer": true,
+  "thumb": 50
+ },
+ {
+  "id": 2240,
+  "name": "Нишики Нишио",
+  "nameEn": "Nishiki Nishio",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Антейку",
+   "Козёл",
+   ":re"
+  ],
+  "kagune": [
+   "Бикаку"
+  ],
+  "rating": "S",
+  "ratingIndex": 5,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 1,
+  "debutIndex": 1,
+  "answer": true,
+  "thumb": 51
+ },
+ {
+  "id": 14898,
+  "name": "Нобу Шимогучи",
+  "nameEn": "Nobu Shimoguchi",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "re",
+  "volume": 1,
+  "debutIndex": 101,
+  "answer": false,
+  "thumb": 52
+ },
+ {
+  "id": 2807,
+  "name": "Норо",
+  "nameEn": "Noro",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Древо Аогири"
+  ],
+  "kagune": [
+   "Бикаку"
+  ],
+  "rating": "SS",
+  "ratingIndex": 7,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 6,
+  "debutIndex": 6,
+  "answer": true,
+  "thumb": 53
+ },
+ {
+  "id": 124191,
+  "name": "Окахира",
+  "nameEn": "Okahira",
+  "gender": "Мужской",
+  "species": [
+   "Квинкс"
+  ],
+  "affiliations": [
+   "CCG",
+   "Древо Аогири",
+   "Канао"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "re",
+  "volume": 5,
+  "debutIndex": 105,
+  "answer": false,
+  "thumb": 54
+ },
+ {
+  "id": 2237,
+  "name": "Ренджи Йомо",
+  "nameEn": "Renji Yomo",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Антейку",
+   "Козёл",
+   ":re"
+  ],
+  "kagune": [
+   "Укаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 2,
+  "debutIndex": 2,
+  "answer": true,
+  "thumb": 55
+ },
+ {
+  "id": 14894,
+  "name": "Рёуджироу Шиба",
+  "nameEn": "Ryoujirou Shiba",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "re",
+  "volume": 1,
+  "debutIndex": 101,
+  "answer": false,
+  "thumb": 56
+ },
+ {
+  "id": 2239,
+  "name": "Рёуко Фуэгучи",
+  "nameEn": "Ryouko Fueguchi",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Антейку"
+  ],
+  "kagune": [
+   "Коукаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 2,
+  "debutIndex": 2,
+  "answer": false,
+  "thumb": 57
+ },
+ {
+  "id": 2160,
+  "name": "Ризе Камиширо",
+  "nameEn": "Rize Kamishiro",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Клан Вашу",
+   "V"
+  ],
+  "kagune": [
+   "Ринкаку"
+  ],
+  "rating": "S",
+  "ratingIndex": 5,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 1,
+  "debutIndex": 1,
+  "answer": true,
+  "thumb": 58
+ },
+ {
+  "id": 289667,
+  "name": "Рикай Сузу",
+  "nameEn": "Rikai Souzu",
+  "gender": "Мужской",
+  "species": [
+   "Полулюдь"
+  ],
+  "affiliations": [
+   "CCG",
+   "Клан Вашу",
+   "Козёл",
+   ":re"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "re",
+  "volume": 8,
+  "debutIndex": 108,
+  "answer": false,
+  "thumb": 59
+ },
+ {
+  "id": 3716,
+  "name": "Рома Хойто",
+  "nameEn": "Roma Hoito",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Антейку",
+   "Клоуны"
+  ],
+  "kagune": [
+   "Бикаку"
+  ],
+  "rating": "SSS",
+  "ratingIndex": 9,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 9,
+  "debutIndex": 9,
+  "answer": true,
+  "thumb": 60
+ },
+ {
+  "id": 13522,
+  "name": "Сайко Йонэбаяши",
+  "nameEn": "Saiko Yonebayashi",
+  "gender": "Женский",
+  "species": [
+   "Квинкс"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [
+   "Ринкаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "re",
+  "volume": 1,
+  "debutIndex": 101,
+  "answer": true,
+  "thumb": 61
+ },
+ {
+  "id": 2552,
+  "name": "Сейдо Такидзава",
+  "nameEn": "Seidou Takizawa",
+  "gender": "Мужской",
+  "species": [
+   "Одноглазый гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Древо Аогири",
+   "Козёл"
+  ],
+  "kagune": [
+   "Укаку"
+  ],
+  "rating": "SS+",
+  "ratingIndex": 8,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 5,
+  "debutIndex": 5,
+  "answer": true,
+  "thumb": 62
+ },
+ {
+  "id": 2245,
+  "name": "Соута Вашу Фурута",
+  "nameEn": "Kichimura Washuu",
+  "gender": "Мужской",
+  "species": [
+   "Одноглазый гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Клан Вашу",
+   "Клоуны",
+   "V",
+   "Гуль-ресторан",
+   "Канао"
+  ],
+  "kagune": [
+   "Ринкаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 4,
+  "debutIndex": 4,
+  "answer": true,
+  "thumb": 63
+ },
+ {
+  "id": 2268,
+  "name": "Таиши Фура",
+  "nameEn": "Taishi Fura",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 3,
+  "debutIndex": 3,
+  "answer": true,
+  "thumb": 64
+ },
+ {
+  "id": 2918,
+  "name": "Таке Хирако",
+  "nameEn": "Take Hirako",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG",
+   "Козёл",
+   ":re"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 7,
+  "debutIndex": 7,
+  "answer": true,
+  "thumb": 65
+ },
+ {
+  "id": 26410,
+  "name": "Такеоми Куройва",
+  "nameEn": "Takeomi Kuroiwa",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "re",
+  "volume": 1,
+  "debutIndex": 101,
+  "answer": true,
+  "thumb": 66
+ },
+ {
+  "id": 2805,
+  "name": "Татара",
+  "nameEn": "Tatara",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Древо Аогири"
+  ],
+  "kagune": [
+   "Бикаку"
+  ],
+  "rating": "SS",
+  "ratingIndex": 7,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 6,
+  "debutIndex": 6,
+  "answer": true,
+  "thumb": 67
+ },
+ {
+  "id": 13252,
+  "name": "Тоору Муцуки",
+  "nameEn": "Tooru Mutsuki",
+  "gender": "Мужской",
+  "species": [
+   "Квинкс"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [
+   "Бикаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "re",
+  "volume": 1,
+  "debutIndex": 101,
+  "answer": true,
+  "thumb": 68
+ },
+ {
+  "id": 2156,
+  "name": "Тоука Киришима",
+  "nameEn": "Touka Kirishima",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Антейку",
+   "Козёл",
+   ":re",
+   "Газовые маски"
+  ],
+  "kagune": [
+   "Укаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 1,
+  "debutIndex": 1,
+  "answer": true,
+  "thumb": 69
+ },
+ {
+  "id": 165328,
+  "name": "Тоума Хигемару",
+  "nameEn": "Touma Higemaru",
+  "gender": "Мужской",
+  "species": [
+   "Квинкс"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [
+   "Бикаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "re",
+  "volume": 6,
+  "debutIndex": 106,
+  "answer": false,
+  "thumb": 70
+ },
+ {
+  "id": 4189,
+  "name": "Укина",
+  "nameEn": "Ukina",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 12,
+  "debutIndex": 12,
+  "answer": false,
+  "thumb": 71
+ },
+ {
+  "id": 14231,
+  "name": "Урука Минами",
+  "nameEn": "Uruka Minami",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [],
+  "kagune": [
+   "Бикаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 1,
+  "debutIndex": 1,
+  "answer": false,
+  "thumb": 72
+ },
+ {
+  "id": 2253,
+  "name": "Ута",
+  "nameEn": "Uta",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Клоуны",
+   "Газовые маски"
+  ],
+  "kagune": [
+   "Коукаку"
+  ],
+  "rating": "SS",
+  "ratingIndex": 7,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 2,
+  "debutIndex": 2,
+  "answer": true,
+  "thumb": 73
+ },
+ {
+  "id": 300321,
+  "name": "Хаджиме Хазуки",
+  "nameEn": "Hajime Hazuki",
+  "gender": "Мужской",
+  "species": [
+   "Квинкс"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [
+   "Ринкаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 2,
+  "debutIndex": 2,
+  "answer": false,
+  "thumb": 74
+ },
+ {
+  "id": 92509,
+  "name": "Хаиру Ихей",
+  "nameEn": "Hairu Ihei",
+  "gender": "Женский",
+  "species": [
+   "Полулюдь"
+  ],
+  "affiliations": [
+   "CCG",
+   "Клан Вашу"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 14,
+  "debutIndex": 14,
+  "answer": true,
+  "thumb": 75
+ },
+ {
+  "id": 27593,
+  "name": "Ханбеэ Абара",
+  "nameEn": "Hanbee Abara",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 3,
+  "debutIndex": 3,
+  "answer": true,
+  "thumb": 76
+ },
+ {
+  "id": 48857,
+  "name": "Хидеёши Нагачика",
+  "nameEn": "Hideyoshi Nagachika",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 1,
+  "debutIndex": 1,
+  "answer": true,
+  "thumb": 77
+ },
+ {
+  "id": 4791,
+  "name": "Хикари Киришима",
+  "nameEn": "Hikari Kirishima",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 8,
+  "debutIndex": 8,
+  "answer": false,
+  "thumb": 78
+ },
+ {
+  "id": 2235,
+  "name": "Хинами Фуэгучи",
+  "nameEn": "Hinami Fueguchi",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Антейку",
+   "Древо Аогири",
+   "Козёл",
+   ":re",
+   "Объединённый фронт"
+  ],
+  "kagune": [
+   "Коукаку",
+   "Ринкаку"
+  ],
+  "rating": "SS",
+  "ratingIndex": 7,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 2,
+  "debutIndex": 2,
+  "answer": true,
+  "thumb": 79
+ },
+ {
+  "id": 2164,
+  "name": "Хисаши Огура",
+  "nameEn": "Hisashi Ogura",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Козёл"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 1,
+  "debutIndex": 1,
+  "answer": false,
+  "thumb": 80
+ },
+ {
+  "id": 102111,
+  "name": "Хоогуро",
+  "nameEn": "Hooguro",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Древо Аогири",
+   "Козёл",
+   "Объединённый фронт",
+   "Белые костюмы"
+  ],
+  "kagune": [
+   "Ринкаку"
+  ],
+  "rating": "A+",
+  "ratingIndex": 4,
+  "status": "Жив",
+  "series": "re",
+  "volume": 4,
+  "debutIndex": 104,
+  "answer": false,
+  "thumb": 81
+ },
+ {
+  "id": 165326,
+  "name": "Цзинь Ли Сяо",
+  "nameEn": "Ching-Li Hsiao",
+  "gender": "Женский",
+  "species": [
+   "Квинкс"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [
+   "Коукаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "re",
+  "volume": 6,
+  "debutIndex": 106,
+  "answer": false,
+  "thumb": 82
+ },
+ {
+  "id": 3142,
+  "name": "Цунеёши Вашуу",
+  "nameEn": "Tsuneyoshi Washuu",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Клан Вашу",
+   "V"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 9,
+  "debutIndex": 9,
+  "answer": false,
+  "thumb": 83
+ },
+ {
+  "id": 14079,
+  "name": "Чиэ Хори",
+  "nameEn": "Chie Hori",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG",
+   "Козёл",
+   "Семья Цукиямы"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 9,
+  "debutIndex": 9,
+  "answer": true,
+  "thumb": 84
+ },
+ {
+  "id": 11741,
+  "name": "Чуу Хачикава",
+  "nameEn": "Chuu Hachikawa",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 13,
+  "debutIndex": 13,
+  "answer": false,
+  "thumb": 85
+ },
+ {
+  "id": 90431,
+  "name": "Шики Киджима",
+  "nameEn": "Shiki Kijima",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "re",
+  "volume": 4,
+  "debutIndex": 104,
+  "answer": false,
+  "thumb": 86
+ },
+ {
+  "id": 102131,
+  "name": "Шикорае",
+  "nameEn": "Shikorae",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Древо Аогири",
+   "Клоуны"
+  ],
+  "kagune": [
+   "Укаку",
+   "Коукаку",
+   "Ринкаку",
+   "Бикаку"
+  ],
+  "rating": "SSS",
+  "ratingIndex": 9,
+  "status": "Жив",
+  "series": "re",
+  "volume": 4,
+  "debutIndex": 104,
+  "answer": true,
+  "thumb": 87
+ },
+ {
+  "id": 165334,
+  "name": "Шинсанпей Аура",
+  "nameEn": "Shinsanpei Aura",
+  "gender": "Мужской",
+  "species": [
+   "Квинкс"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [
+   "Укаку"
+  ],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "re",
+  "volume": 6,
+  "debutIndex": 106,
+  "answer": true,
+  "thumb": 88
+ },
+ {
+  "id": 289669,
+  "name": "Шио Ихей",
+  "nameEn": "Shio Ihei",
+  "gender": "Мужской",
+  "species": [
+   "Полулюдь"
+  ],
+  "affiliations": [
+   "CCG",
+   "Клан Вашу",
+   "Козёл",
+   ":re"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "re",
+  "volume": 8,
+  "debutIndex": 108,
+  "answer": false,
+  "thumb": 89
+ },
+ {
+  "id": 102110,
+  "name": "Шосей Идера",
+  "nameEn": "Shousei Idera",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Древо Аогири",
+   "Козёл",
+   "Объединённый фронт",
+   "Белые костюмы"
+  ],
+  "kagune": [
+   "Укаку"
+  ],
+  "rating": "A+",
+  "ratingIndex": 4,
+  "status": "Жив",
+  "series": "re",
+  "volume": 4,
+  "debutIndex": 104,
+  "answer": false,
+  "thumb": 90
+ },
+ {
+  "id": 2258,
+  "name": "Шу Цукияма",
+  "nameEn": "Shuu Tsukiyama",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "CCG",
+   "Козёл",
+   "Гуль-ресторан",
+   "Семья Цукиямы",
+   ":re",
+   "Объединённый фронт",
+   "Белые костюмы"
+  ],
+  "kagune": [
+   "Коукаку"
+  ],
+  "rating": "S",
+  "ratingIndex": 5,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 4,
+  "debutIndex": 4,
+  "answer": true,
+  "thumb": 91
+ },
+ {
+  "id": 65397,
+  "name": "Шунджи Шионо",
+  "nameEn": "Shunji Shiono",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 11,
+  "debutIndex": 11,
+  "answer": false,
+  "thumb": 92
+ },
+ {
+  "id": 2210,
+  "name": "Энджи Кома",
+  "nameEn": "Enji Koma",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Антейку",
+   "Козёл",
+   ":re"
+  ],
+  "kagune": [
+   "Бикаку"
+  ],
+  "rating": "SS",
+  "ratingIndex": 7,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 2,
+  "debutIndex": 2,
+  "answer": true,
+  "thumb": 93
+ },
+ {
+  "id": 2809,
+  "name": "Это Йошимура",
+  "nameEn": "Eto Yoshimura",
+  "gender": "Женский",
+  "species": [
+   "Одноглазый гуль"
+  ],
+  "affiliations": [
+   "Древо Аогири"
+  ],
+  "kagune": [
+   "Укаку"
+  ],
+  "rating": "SSS",
+  "ratingIndex": 9,
+  "status": "Неизвестно",
+  "series": "tg",
+  "volume": 6,
+  "debutIndex": 6,
+  "answer": true,
+  "thumb": 94
+ },
+ {
+  "id": 2214,
+  "name": "Юкинори Шинохара",
+  "nameEn": "Yukinori Shinohara",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "CCG"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "tg",
+  "volume": 3,
+  "debutIndex": 3,
+  "answer": true,
+  "thumb": 95
+ },
+ {
+  "id": 102116,
+  "name": "Юмицу Томоэ",
+  "nameEn": "Yumitsu Tomoe",
+  "gender": "Женский",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Древо Аогири"
+  ],
+  "kagune": [
+   "Бикаку"
+  ],
+  "rating": "A+",
+  "ratingIndex": 4,
+  "status": "Жив",
+  "series": "re",
+  "volume": 4,
+  "debutIndex": 104,
+  "answer": false,
+  "thumb": 96
+ },
+ {
+  "id": 289668,
+  "name": "Юса Арима",
+  "nameEn": "Yusa Arima",
+  "gender": "Мужской",
+  "species": [
+   "Полулюдь"
+  ],
+  "affiliations": [
+   "CCG",
+   "Клан Вашу",
+   "Козёл",
+   ":re"
+  ],
+  "kagune": [],
+  "rating": null,
+  "ratingIndex": -1,
+  "status": "Жив",
+  "series": "re",
+  "volume": 8,
+  "debutIndex": 108,
+  "answer": false,
+  "thumb": 97
+ },
+ {
+  "id": 2657,
+  "name": "Якумо Оомори",
+  "nameEn": "Yakumo Oomori",
+  "gender": "Мужской",
+  "species": [
+   "Гуль"
+  ],
+  "affiliations": [
+   "Древо Аогири",
+   "Белые костюмы"
+  ],
+  "kagune": [
+   "Ринкаку"
+  ],
+  "rating": "S",
+  "ratingIndex": 5,
+  "status": "Мёртв",
+  "series": "tg",
+  "volume": 6,
+  "debutIndex": 6,
+  "answer": true,
+  "thumb": 98
+ }
+]

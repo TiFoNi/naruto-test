@@ -4,10 +4,17 @@ import { fail, handle, json, readJson } from '../_lib/http.js'
 import { hashPassword } from '../_lib/password.js'
 import { defaultNickname, toProfile } from '../_lib/profile.js'
 import { sessionCookie } from '../_lib/session.js'
+import { clientIp, remember, tooMany } from '../_lib/throttle.js'
+
+const PER_IP = 10
 
 export const POST = handle(async (request) => {
   const credentials = parseCredentials(await readJson(request))
   if (typeof credentials === 'string') return fail(400, credentials)
+
+  const ipKey = `register:ip:${clientIp(request)}`
+  if (await tooMany([ipKey], PER_IP)) return fail(429, 'too_many')
+  await remember([ipKey])
 
   const collection = await users()
   const doc = {

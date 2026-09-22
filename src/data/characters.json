@@ -1,77 +1,5 @@
 [
  {
-  "id": 7,
-  "name": "Абиру",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 129,
-  "arc": "Разрушение Конохи",
-  "arcIndex": 3,
-  "answer": false,
-  "nameEn": "Abiru",
-  "thumb": 0
- },
- {
-  "id": 18,
-  "name": "Агара",
-  "gender": "Мужской",
-  "affiliations": [
-   "Таки"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 487,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Agara",
-  "thumb": 1
- },
- {
-  "id": 19,
-  "name": "Агари",
-  "gender": "Женский",
-  "affiliations": [
-   "Страна Волн"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 31,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Agari",
-  "thumb": 2
- },
- {
-  "id": 20,
-  "name": "Агеха",
-  "gender": "Женский",
-  "affiliations": [
-   "Страна Волн"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 19,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Ageha",
-  "thumb": 3
- },
- {
   "id": 24,
   "name": "Аджисай",
   "gender": "Женский",
@@ -89,7 +17,7 @@
   "arcIndex": 13,
   "answer": true,
   "nameEn": "Ajisai",
-  "thumb": 4
+  "thumb": 0
  },
  {
   "id": 29,
@@ -109,25 +37,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Akamaru",
-  "thumb": 5
- },
- {
-  "id": 31,
-  "name": "Акане",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Волн"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 20,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Akane",
-  "thumb": 6
+  "thumb": 1
  },
  {
   "id": 35,
@@ -149,7 +59,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Akatsuchi",
-  "thumb": 7
+  "thumb": 2
  },
  {
   "id": 48,
@@ -169,7 +79,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Akino",
-  "thumb": 8
+  "thumb": 3
  },
  {
   "id": 975,
@@ -189,25 +99,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Ameyuri Ringo",
-  "thumb": 9
- },
- {
-  "id": 64,
-  "name": "Ами",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 71,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Ami",
-  "thumb": 10
+  "thumb": 4
  },
  {
   "id": 809,
@@ -229,7 +121,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Anko Mitarashi",
-  "thumb": 11
+  "thumb": 5
  },
  {
   "id": 80,
@@ -259,7 +151,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Ao",
-  "thumb": 12
+  "thumb": 6
  },
  {
   "id": 1372,
@@ -279,7 +171,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Aoba Yamashiro",
-  "thumb": 13
+  "thumb": 7
  },
  {
   "id": 81,
@@ -300,25 +192,7 @@
   "arcIndex": 18,
   "answer": false,
   "nameEn": "Aoda",
-  "thumb": 14
- },
- {
-  "id": 89,
-  "name": "Армадико",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 513,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Armadiko",
-  "thumb": 15
+  "thumb": 8
  },
  {
   "id": 1034,
@@ -342,7 +216,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Asuma Sarutobi",
-  "thumb": 16
+  "thumb": 9
  },
  {
   "id": 934,
@@ -372,23 +246,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Asura Ōtsutsuki",
-  "thumb": 17
- },
- {
-  "id": 21,
-  "name": "Ахико",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 350,
-  "arc": "Преследование Итачи",
-  "arcIndex": 10,
-  "answer": false,
-  "nameEn": "Ahiko",
-  "thumb": 18
+  "thumb": 10
  },
  {
   "id": 100,
@@ -410,43 +268,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Atsui",
-  "thumb": 19
- },
- {
-  "id": 1338,
-  "name": "Ашина Узумаки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Узушио"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 500,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Ashina Uzumaki",
-  "thumb": 20
- },
- {
-  "id": 105,
-  "name": "Баиу",
-  "gender": "Мужской",
-  "affiliations": [
-   "Амэ"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 58,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Baiu",
-  "thumb": 21
+  "thumb": 11
  },
  {
   "id": 107,
@@ -468,100 +290,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Baki",
-  "thumb": 22
- },
- {
-  "id": 108,
-  "name": "Баку",
-  "gender": "Другое",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Призыв"
-  ],
-  "debutChapter": 479,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Baku",
-  "thumb": 23
- },
- {
-  "id": 109,
-  "name": "Баку (Анбу)",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 399,
-  "arc": "Битва братьев",
-  "arcIndex": 12,
-  "answer": false,
-  "nameEn": "Baku (Anbu)",
-  "thumb": 24
- },
- {
-  "id": 110,
-  "name": "Бакуто",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 348,
-  "arc": "Преследование Итачи",
-  "arcIndex": 10,
-  "answer": false,
-  "nameEn": "Bakuto",
-  "thumb": 25
- },
- {
-  "id": 115,
-  "name": "Бансай",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня",
-   "Храм Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Монах"
-  ],
-  "debutChapter": 320,
-  "arc": "Подавление Акацуки",
-  "arcIndex": 9,
-  "answer": false,
-  "nameEn": "Bansai",
-  "thumb": 26
- },
- {
-  "id": 118,
-  "name": "Бекко",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 1,
-  "arc": "Пролог",
-  "arcIndex": 0,
-  "answer": false,
-  "nameEn": "Bekkō",
-  "thumb": 27
+  "thumb": 12
  },
  {
   "id": 1426,
@@ -593,7 +322,7 @@
   "arcIndex": 5,
   "answer": true,
   "nameEn": "White Zetsu",
-  "thumb": 28
+  "thumb": 13
  },
  {
   "id": 1353,
@@ -615,7 +344,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "White Snake Sage",
-  "thumb": 29
+  "thumb": 14
  },
  {
   "id": 1035,
@@ -635,7 +364,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Biwako Sarutobi",
-  "thumb": 30
+  "thumb": 15
  },
  {
   "id": 121,
@@ -655,7 +384,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Bisuke",
-  "thumb": 31
+  "thumb": 16
  },
  {
   "id": 124,
@@ -677,7 +406,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "Blue B",
-  "thumb": 32
+  "thumb": 17
  },
  {
   "id": 353,
@@ -697,7 +426,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Three Haimaru Brothers",
-  "thumb": 33
+  "thumb": 18
  },
  {
   "id": 129,
@@ -717,25 +446,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Bull",
-  "thumb": 34
- },
- {
-  "id": 130,
-  "name": "Буна",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 144,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Buna",
-  "thumb": 35
+  "thumb": 19
  },
  {
   "id": 131,
@@ -755,7 +466,7 @@
   "arcIndex": 19,
   "answer": false,
   "nameEn": "Bunpuku",
-  "thumb": 36
+  "thumb": 20
  },
  {
   "id": 1062,
@@ -771,7 +482,7 @@
   "arcIndex": 18,
   "answer": false,
   "nameEn": "Butsuma Senju",
-  "thumb": 37
+  "thumb": 21
  },
  {
   "id": 134,
@@ -789,7 +500,7 @@
   "arcIndex": 19,
   "answer": false,
   "nameEn": "Byakuren",
-  "thumb": 38
+  "thumb": 22
  },
  {
   "id": 1350,
@@ -811,7 +522,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Waraji",
-  "thumb": 39
+  "thumb": 23
  },
  {
   "id": 259,
@@ -839,66 +550,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Gaara",
-  "thumb": 40
- },
- {
-  "id": 291,
-  "name": "Газеру",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 422,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Gazeru",
-  "thumb": 41
- },
- {
-  "id": 464,
-  "name": "Гаку Инузука",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 542,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Gaku Inuzuka",
-  "thumb": 42
- },
- {
-  "id": 260,
-  "name": "Гама",
-  "gender": "Мужской",
-  "affiliations": [
-   "Гора Мёбоку",
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Призыв"
-  ],
-  "debutChapter": 90,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Gama",
-  "thumb": 43
+  "thumb": 24
  },
  {
   "id": 261,
@@ -924,25 +576,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Gamabunta",
-  "thumb": 44
- },
- {
-  "id": 262,
-  "name": "Гамаден",
-  "gender": "Мужской",
-  "affiliations": [
-   "Гора Мёбоку"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 429,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Gamaden",
-  "thumb": 45
+  "thumb": 25
  },
  {
   "id": 265,
@@ -963,7 +597,7 @@
   "arcIndex": 11,
   "answer": false,
   "nameEn": "Gamaken",
-  "thumb": 46
+  "thumb": 26
  },
  {
   "id": 266,
@@ -991,7 +625,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Gamakichi",
-  "thumb": 47
+  "thumb": 27
  },
  {
   "id": 267,
@@ -1002,7 +636,8 @@
    "Коноха"
   ],
   "jutsuTypes": [
-   "Ниндзюцу"
+   "Ниндзюцу",
+   "Сендзюцу"
   ],
   "kekkeiGenkai": [],
   "natureTypes": [],
@@ -1014,25 +649,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Gamamaru",
-  "thumb": 48
- },
- {
-  "id": 270,
-  "name": "Гаматама",
-  "gender": "Мужской",
-  "affiliations": [
-   "Гора Мёбоку"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 429,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Gamatama",
-  "thumb": 49
+  "thumb": 28
  },
  {
   "id": 271,
@@ -1053,7 +670,7 @@
   "arcIndex": 4,
   "answer": false,
   "nameEn": "Gamatatsu",
-  "thumb": 50
+  "thumb": 29
  },
  {
   "id": 264,
@@ -1074,28 +691,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Gamahiro",
-  "thumb": 51
- },
- {
-  "id": 279,
-  "name": "Гантецу",
-  "gender": "Мужской",
-  "affiliations": [
-   "Ива",
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Нукенин"
-  ],
-  "debutChapter": 150,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Gantetsu (Iwagakure)",
-  "thumb": 52
+  "thumb": 30
  },
  {
   "id": 282,
@@ -1120,7 +716,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "Gari",
-  "thumb": 53
+  "thumb": 31
  },
  {
   "id": 284,
@@ -1138,7 +734,7 @@
   "arcIndex": 15,
   "answer": false,
   "nameEn": "Garuda",
-  "thumb": 54
+  "thumb": 32
  },
  {
   "id": 289,
@@ -1156,7 +752,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Gatō",
-  "thumb": 55
+  "thumb": 33
  },
  {
   "id": 295,
@@ -1174,7 +770,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Genbu",
-  "thumb": 56
+  "thumb": 34
  },
  {
   "id": 428,
@@ -1201,43 +797,7 @@
   "arcIndex": 17,
   "answer": true,
   "nameEn": "Gengetsu Hōzuki",
-  "thumb": 57
- },
- {
-  "id": 299,
-  "name": "Генджи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кири"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 454,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Genji",
-  "thumb": 58
- },
- {
-  "id": 305,
-  "name": "Гензо",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 2,
-  "arc": "Пролог",
-  "arcIndex": 0,
-  "answer": false,
-  "nameEn": "Genzō",
-  "thumb": 59
+  "thumb": 35
  },
  {
   "id": 1110,
@@ -1257,7 +817,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Genma Shiranui",
-  "thumb": 60
+  "thumb": 36
  },
  {
   "id": 301,
@@ -1275,7 +835,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Gennai",
-  "thumb": 61
+  "thumb": 37
  },
  {
   "id": 304,
@@ -1291,7 +851,7 @@
   "arcIndex": 5,
   "answer": false,
   "nameEn": "Gen'yūmaru",
-  "thumb": 62
+  "thumb": 38
  },
  {
   "id": 306,
@@ -1312,25 +872,7 @@
   "arcIndex": 11,
   "answer": false,
   "nameEn": "Gerotora",
-  "thumb": 63
- },
- {
-  "id": 317,
-  "name": "Гигантский многоголовый пёс",
-  "gender": "Другое",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Призыв"
-  ],
-  "debutChapter": 375,
-  "arc": "Джирайя",
-  "arcIndex": 11,
-  "answer": false,
-  "nameEn": "Giant Multi-Headed Dog",
-  "thumb": 64
+  "thumb": 39
  },
  {
   "id": 310,
@@ -1355,43 +897,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Giant Clam",
-  "thumb": 65
- },
- {
-  "id": 324,
-  "name": "Гиичи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Волн"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 19,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Giichi",
-  "thumb": 66
- },
- {
-  "id": 325,
-  "name": "Гинджи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Акацуки"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 355,
-  "arc": "Преследование Итачи",
-  "arcIndex": 10,
-  "answer": false,
-  "nameEn": "Ginji",
-  "thumb": 67
+  "thumb": 40
  },
  {
   "id": 326,
@@ -1411,7 +917,7 @@
   "arcIndex": 17,
   "answer": true,
   "nameEn": "Ginkaku",
-  "thumb": 68
+  "thumb": 41
  },
  {
   "id": 338,
@@ -1436,81 +942,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Gōzu",
-  "thumb": 69
- },
- {
-  "id": 332,
-  "name": "Гонбеэ",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кири"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 454,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Gonbee",
-  "thumb": 70
- },
- {
-  "id": 337,
-  "name": "Гоуза",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 266,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Gōza",
-  "thumb": 71
- },
- {
-  "id": 333,
-  "name": "Гошики",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 157,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Goshiki",
-  "thumb": 72
- },
- {
-  "id": 343,
-  "name": "Гуруко",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Призыв"
-  ],
-  "debutChapter": 29,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Guruko",
-  "thumb": 73
+  "thumb": 42
  },
  {
   "id": 345,
@@ -1532,165 +964,7 @@
   "arcIndex": 13,
   "answer": true,
   "nameEn": "Gyūki",
-  "thumb": 74
- },
- {
-  "id": 249,
-  "name": "Дайкоку Фунено",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 221,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Daikoku Funeno",
-  "thumb": 75
- },
- {
-  "id": 185,
-  "name": "Даймё Ветра (Часть I)",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Ветра"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Даймё"
-  ],
-  "debutChapter": 95,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Wind Daimyō (Part I)",
-  "thumb": 76
- },
- {
-  "id": 186,
-  "name": "Даймё Ветра (Часть II)",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Ветра"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Даймё"
-  ],
-  "debutChapter": 488,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Wind Daimyō (Part II)",
-  "thumb": 77
- },
- {
-  "id": 184,
-  "name": "Даймё Воды",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Воды"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Даймё"
-  ],
-  "debutChapter": 488,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Water Daimyō",
-  "thumb": 78
- },
- {
-  "id": 177,
-  "name": "Даймё Горячих Источников",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Горячих Источников"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Даймё"
-  ],
-  "debutChapter": 517,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Hot Water Daimyō",
-  "thumb": 79
- },
- {
-  "id": 173,
-  "name": "Даймё Земли",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Земли"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Даймё"
-  ],
-  "debutChapter": 488,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Earth Daimyō",
-  "thumb": 80
- },
- {
-  "id": 176,
-  "name": "Даймё Инея",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Инея"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Даймё"
-  ],
-  "debutChapter": 517,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Frost Daimyō",
-  "thumb": 81
- },
- {
-  "id": 178,
-  "name": "Даймё Молнии",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Молнии"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Даймё"
-  ],
-  "debutChapter": 488,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Lightning Daimyō",
-  "thumb": 82
+  "thumb": 43
  },
  {
   "id": 175,
@@ -1710,25 +984,7 @@
   "arcIndex": 14,
   "answer": false,
   "nameEn": "Fire Daimyō (Part I-II)",
-  "thumb": 83
- },
- {
-  "id": 167,
-  "name": "Дайчи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 94,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Daichi",
-  "thumb": 84
+  "thumb": 44
  },
  {
   "id": 605,
@@ -1754,43 +1010,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Dan Katō",
-  "thumb": 85
- },
- {
-  "id": 188,
-  "name": "Данго",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 450,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Dangō",
-  "thumb": 86
- },
- {
-  "id": 814,
-  "name": "Данго Мицуки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 490,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Dango Mitsuki",
-  "thumb": 87
+  "thumb": 45
  },
  {
   "id": 1093,
@@ -1826,7 +1046,7 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Danzō Shimura",
-  "thumb": 88
+  "thumb": 46
  },
  {
   "id": 190,
@@ -1852,29 +1072,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Darui",
-  "thumb": 89
- },
- {
-  "id": 871,
-  "name": "Даэн Нара",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Инь"
-  ],
-  "attributes": [],
-  "debutChapter": 616,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": false,
-  "nameEn": "Daen Nara",
-  "thumb": 90
+  "thumb": 47
  },
  {
   "id": 193,
@@ -1905,7 +1103,7 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Deidara",
-  "thumb": 91
+  "thumb": 48
  },
  {
   "id": 195,
@@ -1925,41 +1123,7 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Demonic Statue of the Outer Path",
-  "thumb": 92
- },
- {
-  "id": 196,
-  "name": "Денгаку",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 159,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Dengaku",
-  "thumb": 93
- },
- {
-  "id": 197,
-  "name": "Денка",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 354,
-  "arc": "Преследование Итачи",
-  "arcIndex": 10,
-  "answer": false,
-  "nameEn": "Denka",
-  "thumb": 94
+  "thumb": 49
  },
  {
   "id": 1,
@@ -1990,61 +1154,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Ten-Tails",
-  "thumb": 95
- },
- {
-  "id": 501,
-  "name": "Дж",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 414,
-  "arc": "Восьмихвостый",
-  "arcIndex": 13,
-  "answer": false,
-  "nameEn": "J",
-  "thumb": 96
- },
- {
-  "id": 506,
-  "name": "Джанто",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 149,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Jantō",
-  "thumb": 97
- },
- {
-  "id": 513,
-  "name": "Джимей",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 42,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Jimei",
-  "thumb": 98
+  "thumb": 50
  },
  {
   "id": 36,
@@ -2064,7 +1174,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Jinin Akebino",
-  "thumb": 99
+  "thumb": 51
  },
  {
   "id": 853,
@@ -2084,7 +1194,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Jinpachi Munashi",
-  "thumb": 100
+  "thumb": 52
  },
  {
   "id": 515,
@@ -2117,7 +1227,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Jiraiya",
-  "thumb": 101
+  "thumb": 53
  },
  {
   "id": 517,
@@ -2139,25 +1249,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Jirōbō",
-  "thumb": 102
- },
- {
-  "id": 520,
-  "name": "Джоусэки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 266,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Jōseki",
-  "thumb": 103
+  "thumb": 54
  },
  {
   "id": 521,
@@ -2189,7 +1281,7 @@
   "arcIndex": 10,
   "answer": true,
   "nameEn": "Jūgo",
-  "thumb": 104
+  "thumb": 55
  },
  {
   "id": 122,
@@ -2209,7 +1301,7 @@
   "arcIndex": 19,
   "answer": false,
   "nameEn": "Jūzō Biwa",
-  "thumb": 105
+  "thumb": 56
  },
  {
   "id": 199,
@@ -2234,31 +1326,7 @@
   "arcIndex": 17,
   "answer": true,
   "nameEn": "Dodai",
-  "thumb": 106
- },
- {
-  "id": 201,
-  "name": "Доки",
-  "gender": "Другое",
-  "affiliations": [
-   "Ото"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Инь"
-  ],
-  "attributes": [
-   "Призыв"
-  ],
-  "debutChapter": 202,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Doki",
-  "thumb": 107
+  "thumb": 57
  },
  {
   "id": 644,
@@ -2278,29 +1346,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Dosu Kinuta",
-  "thumb": 108
- },
- {
-  "id": 43,
-  "name": "Дото Акимичи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Ян"
-  ],
-  "attributes": [],
-  "debutChapter": 542,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Dōtō Akimichi",
-  "thumb": 109
+  "thumb": 58
  },
  {
   "id": 27,
@@ -2323,7 +1369,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Yoroi Akadō",
-  "thumb": 110
+  "thumb": 59
  },
  {
   "id": 880,
@@ -2341,29 +1387,7 @@
   "arcIndex": 5,
   "answer": false,
   "nameEn": "Yoshino Nara",
-  "thumb": 111
- },
- {
-  "id": 1389,
-  "name": "Ёшитеру",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Железа"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Самурай"
-  ],
-  "debutChapter": 460,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Yoshiteru",
-  "thumb": 112
+  "thumb": 60
  },
  {
   "id": 831,
@@ -2389,7 +1413,7 @@
   "arcIndex": 1,
   "answer": true,
   "nameEn": "Zabuza Momochi",
-  "thumb": 113
+  "thumb": 61
  },
  {
   "id": 1418,
@@ -2411,7 +1435,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Zaji",
-  "thumb": 114
+  "thumb": 62
  },
  {
   "id": 8,
@@ -2431,47 +1455,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Zaku Abumi",
-  "thumb": 115
- },
- {
-  "id": 1420,
-  "name": "Зангей",
-  "gender": "Мужской",
-  "affiliations": [
-   "Акацуки",
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 320,
-  "arc": "Подавление Акацуки",
-  "arcIndex": 9,
-  "answer": false,
-  "nameEn": "Zangei",
-  "thumb": 116
- },
- {
-  "id": 1423,
-  "name": "Зенза",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня",
-   "Храм Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Монах"
-  ],
-  "debutChapter": 320,
-  "arc": "Подавление Акацуки",
-  "arcIndex": 9,
-  "answer": false,
-  "nameEn": "Zenza",
-  "thumb": 117
+  "thumb": 63
  },
  {
   "id": 1427,
@@ -2493,7 +1477,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Zō",
-  "thumb": 118
+  "thumb": 64
  },
  {
   "id": 1428,
@@ -2515,25 +1499,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Zōri",
-  "thumb": 119
- },
- {
-  "id": 447,
-  "name": "Ибара",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 1,
-  "arc": "Пролог",
-  "arcIndex": 0,
-  "answer": false,
-  "nameEn": "Ibara",
-  "thumb": 120
+  "thumb": 65
  },
  {
   "id": 835,
@@ -2553,47 +1519,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Ibiki Morino",
-  "thumb": 121
- },
- {
-  "id": 448,
-  "name": "Ибусе",
-  "gender": "Мужской",
-  "affiliations": [
-   "Амэ"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Призыв"
-  ],
-  "debutChapter": 369,
-  "arc": "Джирайя",
-  "arcIndex": 11,
-  "answer": false,
-  "nameEn": "Ibuse",
-  "thumb": 122
- },
- {
-  "id": 30,
-  "name": "Ивана Акаме",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 1,
-  "arc": "Пролог",
-  "arcIndex": 0,
-  "answer": false,
-  "nameEn": "Iwana Akame",
-  "thumb": 123
+  "thumb": 66
  },
  {
   "id": 1196,
@@ -2611,7 +1537,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Iwashi Tatami",
-  "thumb": 124
+  "thumb": 67
  },
  {
   "id": 571,
@@ -2634,7 +1560,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Izumo Kamizuki",
-  "thumb": 125
+  "thumb": 68
  },
  {
   "id": 1296,
@@ -2655,25 +1581,7 @@
   "arcIndex": 12,
   "answer": true,
   "nameEn": "Izuna Uchiha",
-  "thumb": 126
- },
- {
-  "id": 1324,
-  "name": "Иккаку Умино",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 503,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Ikkaku Umino",
-  "thumb": 127
+  "thumb": 69
  },
  {
   "id": 1292,
@@ -2695,7 +1603,7 @@
   "arcIndex": 5,
   "answer": false,
   "nameEn": "Inabi Uchiha",
-  "thumb": 128
+  "thumb": 70
  },
  {
   "id": 458,
@@ -2713,7 +1621,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Inari",
-  "thumb": 129
+  "thumb": 71
  },
  {
   "id": 457,
@@ -2731,7 +1639,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Inaho",
-  "thumb": 130
+  "thumb": 72
  },
  {
   "id": 938,
@@ -2757,7 +1665,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Indra Ōtsutsuki",
-  "thumb": 131
+  "thumb": 73
  },
  {
   "id": 1365,
@@ -2787,7 +1695,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Ino Yamanaka",
-  "thumb": 132
+  "thumb": 74
  },
  {
   "id": 1367,
@@ -2811,47 +1719,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Inoichi Yamanaka",
-  "thumb": 133
- },
- {
-  "id": 460,
-  "name": "Иномацу",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 330,
-  "arc": "Подавление Акацуки",
-  "arcIndex": 9,
-  "answer": false,
-  "nameEn": "Inomatsu",
-  "thumb": 134
- },
- {
-  "id": 441,
-  "name": "Ироха Хьюга",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Додзюцу"
-  ],
-  "kekkeiGenkai": [
-   "Бьякуган"
-  ],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 536,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Iroha Hyūga",
-  "thumb": 135
+  "thumb": 75
  },
  {
   "id": 1325,
@@ -2875,25 +1743,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Iruka Umino",
-  "thumb": 136
- },
- {
-  "id": 473,
-  "name": "Исаго",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 250,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Isago",
-  "thumb": 137
+  "thumb": 76
  },
  {
   "id": 480,
@@ -2918,41 +1768,7 @@
   "arcIndex": 9,
   "answer": true,
   "nameEn": "Isobu",
-  "thumb": 138
- },
- {
-  "id": 476,
-  "name": "Исэ",
-  "gender": "Мужской",
-  "affiliations": [
-   "Амэ"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 444,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Ise",
-  "thumb": 139
- },
- {
-  "id": 1064,
-  "name": "Итама Сенджу",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 622,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": false,
-  "nameEn": "Itama Senju",
-  "thumb": 140
+  "thumb": 77
  },
  {
   "id": 1293,
@@ -2989,68 +1805,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Itachi Uchiha",
-  "thumb": 141
- },
- {
-  "id": 485,
-  "name": "Иттан",
-  "gender": "Мужской",
-  "affiliations": [
-   "Ива"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Дотон"
-  ],
-  "attributes": [],
-  "debutChapter": 515,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Ittan",
-  "thumb": 142
- },
- {
-  "id": 486,
-  "name": "Иттецу",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 280,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Ittetsu",
-  "thumb": 143
- },
- {
-  "id": 451,
-  "name": "Ичиген",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня",
-   "Храм Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Монах"
-  ],
-  "debutChapter": 314,
-  "arc": "Подавление Акацуки",
-  "arcIndex": 9,
-  "answer": false,
-  "nameEn": "Ichigen",
-  "thumb": 144
+  "thumb": 78
  },
  {
   "id": 479,
@@ -3072,63 +1827,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Ishikawa",
-  "thumb": 145
- },
- {
-  "id": 494,
-  "name": "Ияши",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 68,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Iyashi",
-  "thumb": 146
- },
- {
-  "id": 524,
-  "name": "К",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 414,
-  "arc": "Восьмихвостый",
-  "arcIndex": 13,
-  "answer": false,
-  "nameEn": "K",
-  "thumb": 147
- },
- {
-  "id": 1241,
-  "name": "Кабуре Токисуки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 491,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Kabure Tokisuki",
-  "thumb": 148
+  "thumb": 79
  },
  {
   "id": 1359,
@@ -3172,23 +1871,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Kabuto Yakushi",
-  "thumb": 149
- },
- {
-  "id": 1065,
-  "name": "Каварама Сенджу",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 624,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": false,
-  "nameEn": "Kawarama Senju",
-  "thumb": 150
+  "thumb": 80
  },
  {
   "id": 1297,
@@ -3210,7 +1893,7 @@
   "arcIndex": 15,
   "answer": false,
   "nameEn": "Kagami Uchiha",
-  "thumb": 151
+  "thumb": 81
  },
  {
   "id": 526,
@@ -3233,25 +1916,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Kagari",
-  "thumb": 152
- },
- {
-  "id": 528,
-  "name": "Каге (АНБУ)",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 301,
-  "arc": "Мост Тенчи",
-  "arcIndex": 8,
-  "answer": false,
-  "nameEn": "Kage (Anbu)",
-  "thumb": 153
+  "thumb": 82
  },
  {
   "id": 940,
@@ -3263,7 +1928,10 @@
    "Гендзюцу",
    "Додзюцу"
   ],
-  "kekkeiGenkai": [],
+  "kekkeiGenkai": [
+   "Бьякуган",
+   "Риннэ-Шаринган"
+  ],
   "natureTypes": [
    "Катон",
    "Футон",
@@ -3281,43 +1949,7 @@
   "arcIndex": 20,
   "answer": true,
   "nameEn": "Kaguya Ōtsutsuki",
-  "thumb": 154
- },
- {
-  "id": 545,
-  "name": "Каджи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Волн"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 11,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Kaji",
-  "thumb": 155
- },
- {
-  "id": 614,
-  "name": "Казабуне",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 150,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Kazabune",
-  "thumb": 156
+  "thumb": 83
  },
  {
   "id": 544,
@@ -3335,7 +1967,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Kaiza",
-  "thumb": 157
+  "thumb": 84
  },
  {
   "id": 376,
@@ -3371,55 +2003,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Kakashi Hatake",
-  "thumb": 158
- },
- {
-  "id": 552,
-  "name": "Какко",
-  "gender": "Мужской",
-  "affiliations": [
-   "Ива"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу",
-   "Гендзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Дотон",
-   "Инь"
-  ],
-  "attributes": [],
-  "debutChapter": 241,
-  "arc": "Какаши Гайден",
-  "arcIndex": 6,
-  "answer": false,
-  "nameEn": "Kakkō",
-  "thumb": 159
- },
- {
-  "id": 554,
-  "name": "Какои",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Суйтон"
-  ],
-  "attributes": [
-   "Сенсор"
-  ],
-  "debutChapter": 419,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Kakoi",
-  "thumb": 160
+  "thumb": 85
  },
  {
   "id": 558,
@@ -3449,27 +2033,7 @@
   "arcIndex": 9,
   "answer": true,
   "nameEn": "Kakuzu",
-  "thumb": 161
- },
- {
-  "id": 565,
-  "name": "Каматари",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Призыв"
-  ],
-  "debutChapter": 214,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Kamatari",
-  "thumb": 162
+  "thumb": 86
  },
  {
   "id": 577,
@@ -3494,64 +2058,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Kankurō",
-  "thumb": 163
- },
- {
-  "id": 583,
-  "name": "Канпо",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 105,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Kanpō",
-  "thumb": 164
- },
- {
-  "id": 584,
-  "name": "Канпу",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха",
-   "Приют Конохи"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 582,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": false,
-  "nameEn": "Kanpu",
-  "thumb": 165
- },
- {
-  "id": 586,
-  "name": "Каори",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 93,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Kaori",
-  "thumb": 166
+  "thumb": 87
  },
  {
   "id": 593,
@@ -3580,7 +2087,7 @@
   "arcIndex": 10,
   "answer": true,
   "nameEn": "Karin",
-  "thumb": 167
+  "thumb": 88
  },
  {
   "id": 596,
@@ -3601,7 +2108,7 @@
   "arcIndex": 13,
   "answer": true,
   "nameEn": "Karui",
-  "thumb": 168
+  "thumb": 89
  },
  {
   "id": 597,
@@ -3619,47 +2126,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Karura",
-  "thumb": 169
- },
- {
-  "id": 874,
-  "name": "Касуга Нара",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Инь"
-  ],
-  "attributes": [],
-  "debutChapter": 616,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": false,
-  "nameEn": "Kasuga Nara",
-  "thumb": 170
- },
- {
-  "id": 601,
-  "name": "Касуми",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 71,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Kasumi",
-  "thumb": 171
+  "thumb": 90
  },
  {
   "id": 608,
@@ -3683,84 +2150,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Katsuyu",
-  "thumb": 172
- },
- {
-  "id": 599,
-  "name": "Кашике",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 129,
-  "arc": "Разрушение Конохи",
-  "arcIndex": 3,
-  "answer": false,
-  "nameEn": "Kashike",
-  "thumb": 173
- },
- {
-  "id": 734,
-  "name": "Кёдайгумо",
-  "gender": "Женский",
-  "affiliations": [
-   "Ото"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Призыв"
-  ],
-  "debutChapter": 194,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Kyodaigumo",
-  "thumb": 174
- },
- {
-  "id": 625,
-  "name": "Кейри",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха",
-   "Приют Конохи"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 582,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": false,
-  "nameEn": "Keiri",
-  "thumb": 175
- },
- {
-  "id": 735,
-  "name": "Кёя",
-  "gender": "Мужской",
-  "affiliations": [
-   "Акацуки"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 355,
-  "arc": "Преследование Итачи",
-  "arcIndex": 10,
-  "answer": false,
-  "nameEn": "Kyōya",
-  "thumb": 176
+  "thumb": 91
  },
  {
   "id": 466,
@@ -3783,7 +2173,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Kiba Inuzuka",
-  "thumb": 177
+  "thumb": 92
  },
  {
   "id": 626,
@@ -3803,25 +2193,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Kidōmaru",
-  "thumb": 178
- },
- {
-  "id": 1392,
-  "name": "Киёй Ёцуки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 408,
-  "arc": "Восьмихвостый",
-  "arcIndex": 13,
-  "answer": false,
-  "nameEn": "Kiyoi Yotsuki",
-  "thumb": 179
+  "thumb": 93
  },
  {
   "id": 636,
@@ -3850,7 +2222,7 @@
   "arcIndex": 13,
   "answer": true,
   "nameEn": "Killer B",
-  "thumb": 180
+  "thumb": 94
  },
  {
   "id": 637,
@@ -3872,7 +2244,7 @@
   "arcIndex": 5,
   "answer": true,
   "nameEn": "Kimimaro",
-  "thumb": 181
+  "thumb": 95
  },
  {
   "id": 1265,
@@ -3892,7 +2264,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Kin Tsuchi",
-  "thumb": 182
+  "thumb": 96
  },
  {
   "id": 641,
@@ -3914,49 +2286,7 @@
   "arcIndex": 17,
   "answer": true,
   "nameEn": "Kinkaku",
-  "thumb": 183
- },
- {
-  "id": 643,
-  "name": "Кинтоки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 493,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Kintoki",
-  "thumb": 184
- },
- {
-  "id": 646,
-  "name": "Кири",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кири"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу",
-   "Тайдзюцу",
-   "Ирё-ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 515,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Kiri (ninja)",
-  "thumb": 185
+  "thumb": 97
  },
  {
   "id": 421,
@@ -3985,30 +2315,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Kisame Hoshigaki",
-  "thumb": 186
- },
- {
-  "id": 652,
-  "name": "Кито",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу",
-   "Ирё-ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 235,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Kitō",
-  "thumb": 187
+  "thumb": 98
  },
  {
   "id": 653,
@@ -4030,26 +2337,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "Kitsuchi",
-  "thumb": 188
- },
- {
-  "id": 627,
-  "name": "Киэ",
-  "gender": "Мужской",
-  "affiliations": [
-   "Амэ",
-   "Акацуки"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 509,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Kie",
-  "thumb": 189
+  "thumb": 99
  },
  {
   "id": 442,
@@ -4071,47 +2359,7 @@
   "arcIndex": 14,
   "answer": false,
   "nameEn": "Kō Hyūga",
-  "thumb": 190
- },
- {
-  "id": 666,
-  "name": "Коджи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 94,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Kōji",
-  "thumb": 191
- },
- {
-  "id": 1374,
-  "name": "Кокаге Янагикаге",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Футон"
-  ],
-  "attributes": [],
-  "debutChapter": 423,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Kokage Yanagikage",
-  "thumb": 192
+  "thumb": 100
  },
  {
   "id": 669,
@@ -4138,25 +2386,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Kokuō",
-  "thumb": 193
- },
- {
-  "id": 676,
-  "name": "Комаза",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 42,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Komaza",
-  "thumb": 194
+  "thumb": 101
  },
  {
   "id": 681,
@@ -4174,7 +2404,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Komugi",
-  "thumb": 195
+  "thumb": 102
  },
  {
   "id": 684,
@@ -4203,7 +2433,7 @@
   "arcIndex": 10,
   "answer": true,
   "nameEn": "Konan",
-  "thumb": 196
+  "thumb": 103
  },
  {
   "id": 1037,
@@ -4228,25 +2458,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Konohamaru Sarutobi",
-  "thumb": 197
- },
- {
-  "id": 639,
-  "name": "Король",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 492,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "King",
-  "thumb": 198
+  "thumb": 104
  },
  {
   "id": 640,
@@ -4262,64 +2474,7 @@
   "arcIndex": 14,
   "answer": false,
   "nameEn": "King of Hell",
-  "thumb": 199
- },
- {
-  "id": 697,
-  "name": "Косуке",
-  "gender": "Мужской",
-  "affiliations": [
-   "Гора Мёбоку",
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Призыв"
-  ],
-  "debutChapter": 421,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Kōsuke",
-  "thumb": 200
- },
- {
-  "id": 695,
-  "name": "Косуке (Киригакуре)",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кири"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 605,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": false,
-  "nameEn": "Kosuke",
-  "thumb": 201
- },
- {
-  "id": 698,
-  "name": "Кота",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 221,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Kōta",
-  "thumb": 202
+  "thumb": 105
  },
  {
   "id": 348,
@@ -4343,43 +2498,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Kotetsu Hagane",
-  "thumb": 203
- },
- {
-  "id": 663,
-  "name": "Кохада",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 140,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Kohada",
-  "thumb": 204
- },
- {
-  "id": 1326,
-  "name": "Кохари Умино",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 503,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Kohari Umino",
-  "thumb": 205
+  "thumb": 106
  },
  {
   "id": 1336,
@@ -4397,63 +2516,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Koharu Utatane",
-  "thumb": 206
- },
- {
-  "id": 1253,
-  "name": "Кумаде Ториичи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 12,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Kumade Toriichi",
-  "thumb": 207
- },
- {
-  "id": 706,
-  "name": "Кумадори",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 406,
-  "arc": "Восьмихвостый",
-  "arcIndex": 13,
-  "answer": false,
-  "nameEn": "Kumadori",
-  "thumb": 208
- },
- {
-  "id": 825,
-  "name": "Кунуги Мокуме",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 160,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Kunugi Mokume",
-  "thumb": 209
+  "thumb": 107
  },
  {
   "id": 711,
@@ -4463,7 +2526,8 @@
    "Коноха"
   ],
   "jutsuTypes": [
-   "Ниндзюцу"
+   "Ниндзюцу",
+   "Сендзюцу"
   ],
   "kekkeiGenkai": [],
   "natureTypes": [],
@@ -4477,7 +2541,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Kurama",
-  "thumb": 210
+  "thumb": 108
  },
  {
   "id": 1397,
@@ -4502,45 +2566,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Kurenai Yūhi",
-  "thumb": 211
- },
- {
-  "id": 727,
-  "name": "Курозука",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Лесов"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 456,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Kurozuka",
-  "thumb": 212
- },
- {
-  "id": 721,
-  "name": "Куромару",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 137,
-  "arc": "Разрушение Конохи",
-  "arcIndex": 3,
-  "answer": false,
-  "nameEn": "Kuromaru",
-  "thumb": 213
+  "thumb": 109
  },
  {
   "id": 725,
@@ -4567,87 +2593,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Kurotsuchi",
-  "thumb": 214
- },
- {
-  "id": 728,
-  "name": "Кусаби",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Волн"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 33,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Kusabi",
-  "thumb": 215
- },
- {
-  "id": 729,
-  "name": "Куссаку",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кири"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Суйтон"
-  ],
-  "attributes": [
-   "Сенсор"
-  ],
-  "debutChapter": 515,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Kussaku",
-  "thumb": 216
- },
- {
-  "id": 730,
-  "name": "Кусума",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 150,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Kusuma",
-  "thumb": 217
- },
- {
-  "id": 733,
-  "name": "Кусуши",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 235,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Kusushi",
-  "thumb": 218
+  "thumb": 110
  },
  {
   "id": 716,
@@ -4668,7 +2614,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Kushimaru Kuriarare",
-  "thumb": 219
+  "thumb": 111
  },
  {
   "id": 1341,
@@ -4695,7 +2641,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Kushina Uzumaki",
-  "thumb": 220
+  "thumb": 112
  },
  {
   "id": 736,
@@ -4714,7 +2660,7 @@
   "arcIndex": 14,
   "answer": false,
   "nameEn": "Kyūsuke",
-  "thumb": 221
+  "thumb": 113
  },
  {
   "id": 749,
@@ -4734,45 +2680,7 @@
   "arcIndex": 13,
   "answer": false,
   "nameEn": "Mabui",
-  "thumb": 222
- },
- {
-  "id": 203,
-  "name": "Маваши Докураку",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 418,
-  "arc": "Восьмихвостый",
-  "arcIndex": 13,
-  "answer": false,
-  "nameEn": "Mawashi Dokuraku",
-  "thumb": 223
- },
- {
-  "id": 1089,
-  "name": "Мадам Шиджими",
-  "gender": "Женский",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 9,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Madam Shijimi",
-  "thumb": 224
+  "thumb": 114
  },
  {
   "id": 1299,
@@ -4817,7 +2725,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Madara Uchiha",
-  "thumb": 225
+  "thumb": 115
  },
  {
   "id": 344,
@@ -4841,7 +2749,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Might Guy",
-  "thumb": 226
+  "thumb": 116
  },
  {
   "id": 210,
@@ -4861,29 +2769,7 @@
   "arcIndex": 19,
   "answer": false,
   "nameEn": "Might Duy",
-  "thumb": 227
- },
- {
-  "id": 44,
-  "name": "Макаро Акимичи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Ян"
-  ],
-  "attributes": [],
-  "debutChapter": 631,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": false,
-  "nameEn": "Makaro Akimichi",
-  "thumb": 228
+  "thumb": 117
  },
  {
   "id": 754,
@@ -4903,25 +2789,7 @@
   "arcIndex": 7,
   "answer": false,
   "nameEn": "Maki",
-  "thumb": 229
- },
- {
-  "id": 26,
-  "name": "Манабу Акадо",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 43,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Manabu Akado",
-  "thumb": 230
+  "thumb": 118
  },
  {
   "id": 429,
@@ -4943,7 +2811,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Mangetsu Hōzuki",
-  "thumb": 231
+  "thumb": 119
  },
  {
   "id": 761,
@@ -4964,7 +2832,7 @@
   "arcIndex": 4,
   "answer": false,
   "nameEn": "Manda",
-  "thumb": 232
+  "thumb": 120
  },
  {
   "id": 762,
@@ -4982,29 +2850,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Manda II",
-  "thumb": 233
- },
- {
-  "id": 45,
-  "name": "Марутен Акимичи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Ян"
-  ],
-  "attributes": [],
-  "debutChapter": 534,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Maruten Akimichi",
-  "thumb": 234
+  "thumb": 121
  },
  {
   "id": 771,
@@ -5028,48 +2874,7 @@
   "arcIndex": 9,
   "answer": true,
   "nameEn": "Matatabi",
-  "thumb": 235
- },
- {
-  "id": 753,
-  "name": "Махиру",
-  "gender": "Мужской",
-  "affiliations": [
-   "Ива"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Дотон"
-  ],
-  "attributes": [],
-  "debutChapter": 239,
-  "arc": "Какаши Гайден",
-  "arcIndex": 6,
-  "answer": false,
-  "nameEn": "Mahiru",
-  "thumb": 236
- },
- {
-  "id": 772,
-  "name": "Мацу",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха",
-   "Страна Луны"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 320,
-  "arc": "Подавление Акацуки",
-  "arcIndex": 9,
-  "answer": false,
-  "nameEn": "Matsu",
-  "thumb": 237
+  "thumb": 122
  },
  {
   "id": 774,
@@ -5087,47 +2892,7 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Matsuri",
-  "thumb": 238
- },
- {
-  "id": 775,
-  "name": "Мацури (Коноха)",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 94,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Matsuri (Konoha)",
-  "thumb": 239
- },
- {
-  "id": 875,
-  "name": "Маэн Нара",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Инь"
-  ],
-  "attributes": [],
-  "debutChapter": 616,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": false,
-  "nameEn": "Maen Nara",
-  "thumb": 240
+  "thumb": 123
  },
  {
   "id": 1223,
@@ -5155,7 +2920,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Mei Terumī",
-  "thumb": 241
+  "thumb": 124
  },
  {
   "id": 779,
@@ -5180,63 +2945,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Meizu",
-  "thumb": 242
- },
- {
-  "id": 795,
-  "name": "Мигаки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 210,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Migaki",
-  "thumb": 243
- },
- {
-  "id": 790,
-  "name": "Мидаре",
-  "gender": "Мужской",
-  "affiliations": [
-   "Амэ"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 58,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Midare",
-  "thumb": 244
- },
- {
-  "id": 792,
-  "name": "Мидори",
-  "gender": "Мужской",
-  "affiliations": [
-   "Куса"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 110,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Midori",
-  "thumb": 245
+  "thumb": 125
  },
  {
   "id": 818,
@@ -5256,26 +2965,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Mizuki",
-  "thumb": 246
- },
- {
-  "id": 820,
-  "name": "Мизуното",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха",
-   "Корень"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 424,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Mizunoto",
-  "thumb": 247
+  "thumb": 126
  },
  {
   "id": 1300,
@@ -5293,7 +2983,7 @@
   "arcIndex": 4,
   "answer": false,
   "nameEn": "Mikoto Uchiha",
-  "thumb": 248
+  "thumb": 127
  },
  {
   "id": 865,
@@ -5328,25 +3018,7 @@
   "arcIndex": 6,
   "answer": true,
   "nameEn": "Minato Namikaze",
-  "thumb": 249
- },
- {
-  "id": 805,
-  "name": "Миноджи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 60,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Minoji",
-  "thumb": 250
+  "thumb": 128
  },
  {
   "id": 1038,
@@ -5371,25 +3043,7 @@
   "arcIndex": 17,
   "answer": true,
   "nameEn": "Mirai Sarutobi",
-  "thumb": 251
- },
- {
-  "id": 807,
-  "name": "Миру",
-  "gender": "Женский",
-  "affiliations": [
-   "Кири"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 507,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Miru",
-  "thumb": 252
+  "thumb": 129
  },
  {
   "id": 1283,
@@ -5412,27 +3066,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Misumi Tsurugi",
-  "thumb": 253
- },
- {
-  "id": 810,
-  "name": "Митате",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 87,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Mitate",
-  "thumb": 254
+  "thumb": 130
  },
  {
   "id": 1343,
@@ -5454,25 +3088,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Mito Uzumaki",
-  "thumb": 255
- },
- {
-  "id": 812,
-  "name": "Митоку",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 406,
-  "arc": "Восьмихвостый",
-  "arcIndex": 13,
-  "answer": false,
-  "nameEn": "Mitoku",
-  "thumb": 256
+  "thumb": 131
  },
  {
   "id": 794,
@@ -5495,102 +3111,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Mifune",
-  "thumb": 257
- },
- {
-  "id": 824,
-  "name": "Могуса",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу",
-   "Ирё-ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 235,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Mogusa",
-  "thumb": 258
- },
- {
-  "id": 841,
-  "name": "Мозуку",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 40,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Mozuku",
-  "thumb": 259
- },
- {
-  "id": 827,
-  "name": "Момиджи",
-  "gender": "Женский",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 150,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Momiji (Tanzaku)",
-  "thumb": 260
- },
- {
-  "id": 837,
-  "name": "Морио",
-  "gender": "Мужской",
-  "affiliations": [
-   "Ива"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 539,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Morio",
-  "thumb": 261
- },
- {
-  "id": 838,
-  "name": "Морой",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 536,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Moroi",
-  "thumb": 262
+  "thumb": 132
  },
  {
   "id": 840,
@@ -5610,7 +3131,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Motoi",
-  "thumb": 263
+  "thumb": 133
  },
  {
   "id": 618,
@@ -5637,7 +3158,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Moegi Kazamatsuri",
-  "thumb": 264
+  "thumb": 134
  },
  {
   "id": 845,
@@ -5661,28 +3182,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Mubi",
-  "thumb": 265
- },
- {
-  "id": 850,
-  "name": "Мукаде",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна",
-   "Акацуки"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Нукенин"
-  ],
-  "debutChapter": 260,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Mukade",
-  "thumb": 266
+  "thumb": 135
  },
  {
   "id": 855,
@@ -5700,7 +3200,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Musai",
-  "thumb": 267
+  "thumb": 136
  },
  {
   "id": 10,
@@ -5720,7 +3220,7 @@
   "arcIndex": 14,
   "answer": false,
   "nameEn": "Muta Aburame",
-  "thumb": 268
+  "thumb": 137
  },
  {
   "id": 844,
@@ -5749,25 +3249,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "Mū",
-  "thumb": 269
- },
- {
-  "id": 886,
-  "name": "Наваки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 160,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Nawaki",
-  "thumb": 270
+  "thumb": 138
  },
  {
   "id": 861,
@@ -5801,7 +3283,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Nagato",
-  "thumb": 271
+  "thumb": 139
  },
  {
   "id": 1344,
@@ -5816,8 +3298,7 @@
    "Тайдзюцу",
    "Кендзюцу",
    "Фуиндзюцу",
-   "Сендзюцу",
-   "Додзюцу"
+   "Сендзюцу"
   ],
   "kekkeiGenkai": [
    "Ёотон",
@@ -5843,43 +3324,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Naruto Uzumaki",
-  "thumb": 272
- },
- {
-  "id": 882,
-  "name": "Натори",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 250,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Natori",
-  "thumb": 273
- },
- {
-  "id": 859,
-  "name": "Наэ",
-  "gender": "Женский",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 286,
-  "arc": "Мост Тенчи",
-  "arcIndex": 8,
-  "answer": false,
-  "nameEn": "Nae",
-  "thumb": 274
+  "thumb": 140
  },
  {
   "id": 444,
@@ -5907,98 +3352,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Neji Hyūga",
-  "thumb": 275
- },
- {
-  "id": 888,
-  "name": "Неджири",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 41,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Nejiri",
-  "thumb": 276
- },
- {
-  "id": 889,
-  "name": "Некобаа",
-  "gender": "Женский",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 354,
-  "arc": "Преследование Итачи",
-  "arcIndex": 10,
-  "answer": false,
-  "nameEn": "Nekobaa",
-  "thumb": 277
- },
- {
-  "id": 899,
-  "name": "Нингаме",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Призыв"
-  ],
-  "debutChapter": 37,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Ningame",
-  "thumb": 278
- },
- {
-  "id": 900,
-  "name": "Ниши",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха",
-   "Страна Луны"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 320,
-  "arc": "Подавление Акацуки",
-  "arcIndex": 9,
-  "answer": false,
-  "nameEn": "Nishi",
-  "thumb": 279
- },
- {
-  "id": 902,
-  "name": "Нобори",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 94,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Nobori",
-  "thumb": 280
+  "thumb": 141
  },
  {
   "id": 1361,
@@ -6020,27 +3374,7 @@
   "arcIndex": 18,
   "answer": false,
   "nameEn": "Nonō Yakushi",
-  "thumb": 281
- },
- {
-  "id": 905,
-  "name": "Нонота",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 546,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Nonota",
-  "thumb": 282
+  "thumb": 142
  },
  {
   "id": 1303,
@@ -6085,7 +3419,7 @@
   "arcIndex": 6,
   "answer": true,
   "nameEn": "Obito Uchiha",
-  "thumb": 283
+  "thumb": 143
  },
  {
   "id": 911,
@@ -6108,63 +3442,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Oboro",
-  "thumb": 284
- },
- {
-  "id": 948,
-  "name": "Оёне",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 406,
-  "arc": "Восьмихвостый",
-  "arcIndex": 13,
-  "answer": false,
-  "nameEn": "Oyone",
-  "thumb": 285
- },
- {
-  "id": 918,
-  "name": "Окё",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 92,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Okyō",
-  "thumb": 286
- },
- {
-  "id": 915,
-  "name": "Окей",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 41,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Ōkei",
-  "thumb": 287
+  "thumb": 144
  },
  {
   "id": 916,
@@ -6184,7 +3462,7 @@
   "arcIndex": 15,
   "answer": false,
   "nameEn": "Okisuke",
-  "thumb": 288
+  "thumb": 145
  },
  {
   "id": 920,
@@ -6206,7 +3484,7 @@
   "arcIndex": 13,
   "answer": true,
   "nameEn": "Omoi",
-  "thumb": 289
+  "thumb": 146
  },
  {
   "id": 925,
@@ -6232,7 +3510,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Ōnoki",
-  "thumb": 290
+  "thumb": 147
  },
  {
   "id": 928,
@@ -6275,61 +3553,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Orochimaru",
-  "thumb": 291
- },
- {
-  "id": 931,
-  "name": "Отоказе",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 140,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Otokaze",
-  "thumb": 292
- },
- {
-  "id": 932,
-  "name": "Отора",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 130,
-  "arc": "Разрушение Конохи",
-  "arcIndex": 3,
-  "answer": false,
-  "nameEn": "Ōtora",
-  "thumb": 293
- },
- {
-  "id": 930,
-  "name": "Отоха",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 90,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Otoha",
-  "thumb": 294
+  "thumb": 148
  },
  {
   "id": 949,
@@ -6349,7 +3573,7 @@
   "arcIndex": 1,
   "answer": true,
   "nameEn": "Pakkun",
-  "thumb": 295
+  "thumb": 149
  },
  {
   "id": 950,
@@ -6374,93 +3598,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "Pakura",
-  "thumb": 296
- },
- {
-  "id": 953,
-  "name": "Понта",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 468,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Ponta",
-  "thumb": 297
- },
- {
-  "id": 952,
-  "name": "Почи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Волн"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 20,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Pochi",
-  "thumb": 298
- },
- {
-  "id": 99,
-  "name": "Путь Асуры",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 379,
-  "arc": "Джирайя",
-  "arcIndex": 11,
-  "answer": false,
-  "nameEn": "Asura Path (character)",
-  "thumb": 299
- },
- {
-  "id": 956,
-  "name": "Путь Голодных Духов",
-  "gender": "Мужской",
-  "affiliations": [
-   "Куса"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 376,
-  "arc": "Джирайя",
-  "arcIndex": 11,
-  "answer": false,
-  "nameEn": "Preta Path (character)",
-  "thumb": 300
- },
- {
-  "id": 78,
-  "name": "Путь Животных",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 371,
-  "arc": "Джирайя",
-  "arcIndex": 11,
-  "answer": false,
-  "nameEn": "First Animal Path (character)",
-  "thumb": 301
+  "thumb": 150
  },
  {
   "id": 724,
@@ -6480,7 +3618,7 @@
   "arcIndex": 19,
   "answer": true,
   "nameEn": "Raiga Kurosuki",
-  "thumb": 302
+  "thumb": 151
  },
  {
   "id": 863,
@@ -6500,25 +3638,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Raidō Namiashi",
-  "thumb": 303
- },
- {
-  "id": 964,
-  "name": "Ранка",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 489,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Ranka",
-  "thumb": 304
+  "thumb": 152
  },
  {
   "id": 967,
@@ -6545,63 +3665,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Rasa",
-  "thumb": 305
- },
- {
-  "id": 968,
-  "name": "Рашии",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 529,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Rashii",
-  "thumb": 306
- },
- {
-  "id": 987,
-  "name": "Рёкан",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 251,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Ryōkan",
-  "thumb": 307
- },
- {
-  "id": 969,
-  "name": "Реки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 280,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Reki",
-  "thumb": 308
+  "thumb": 153
  },
  {
   "id": 971,
@@ -6619,44 +3683,7 @@
   "arcIndex": 19,
   "answer": false,
   "nameEn": "Reto",
-  "thumb": 309
- },
- {
-  "id": 972,
-  "name": "Риичи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 144,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Riichi",
-  "thumb": 310
- },
- {
-  "id": 974,
-  "name": "Рикумару",
-  "gender": "Мужской",
-  "affiliations": [
-   "Клан Нара",
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 342,
-  "arc": "Подавление Акацуки",
-  "arcIndex": 9,
-  "answer": false,
-  "nameEn": "Rikumaru",
-  "thumb": 311
+  "thumb": 154
  },
  {
   "id": 903,
@@ -6683,7 +3710,7 @@
   "arcIndex": 6,
   "answer": true,
   "nameEn": "Rin Nohara",
-  "thumb": 312
+  "thumb": 155
  },
  {
   "id": 739,
@@ -6703,7 +3730,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Rock Lee",
-  "thumb": 313
+  "thumb": 156
  },
  {
   "id": 983,
@@ -6730,43 +3757,7 @@
   "arcIndex": 10,
   "answer": true,
   "nameEn": "Rōshi",
-  "thumb": 314
- },
- {
-  "id": 995,
-  "name": "Рюса",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 247,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Ryūsa",
-  "thumb": 315
- },
- {
-  "id": 996,
-  "name": "Рюсуи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Амэ"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 368,
-  "arc": "Джирайя",
-  "arcIndex": 11,
-  "answer": false,
-  "nameEn": "Ryūsui",
-  "thumb": 316
+  "thumb": 157
  },
  {
   "id": 1000,
@@ -6784,65 +3775,7 @@
   "arcIndex": 15,
   "answer": false,
   "nameEn": "Sabu",
-  "thumb": 317
- },
- {
-  "id": 1005,
-  "name": "Саган",
-  "gender": "Мужской",
-  "affiliations": [
-   "Ива"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Сенсор"
-  ],
-  "debutChapter": 561,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Sagan",
-  "thumb": 318
- },
- {
-  "id": 1011,
-  "name": "Саджин",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 137,
-  "arc": "Разрушение Конохи",
-  "arcIndex": 3,
-  "answer": false,
-  "nameEn": "Sajin",
-  "thumb": 319
- },
- {
-  "id": 1013,
-  "name": "Саджо",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 247,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Sajō",
-  "thumb": 320
+  "thumb": 158
  },
  {
   "id": 1008,
@@ -6869,7 +3802,7 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Sai",
-  "thumb": 321
+  "thumb": 159
  },
  {
   "id": 1009,
@@ -6893,7 +3826,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Saiken",
-  "thumb": 322
+  "thumb": 160
  },
  {
   "id": 563,
@@ -6911,7 +3844,7 @@
   "arcIndex": 14,
   "answer": false,
   "nameEn": "Saisu Kamano",
-  "thumb": 323
+  "thumb": 161
  },
  {
   "id": 1015,
@@ -6933,7 +3866,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Sakon and Ukon",
-  "thumb": 324
+  "thumb": 162
  },
  {
   "id": 377,
@@ -6953,7 +3886,7 @@
   "arcIndex": 14,
   "answer": true,
   "nameEn": "Sakumo Hatake",
-  "thumb": 325
+  "thumb": 163
  },
  {
   "id": 374,
@@ -6984,7 +3917,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Sakura Haruno",
-  "thumb": 326
+  "thumb": 164
  },
  {
   "id": 1019,
@@ -7002,47 +3935,7 @@
   "arcIndex": 13,
   "answer": true,
   "nameEn": "Samui",
-  "thumb": 327
- },
- {
-  "id": 1370,
-  "name": "Санта Яманака",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Сенсор"
-  ],
-  "debutChapter": 523,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Santa Yamanaka",
-  "thumb": 328
- },
- {
-  "id": 1032,
-  "name": "Сари",
-  "gender": "Женский",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 280,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Sari",
-  "thumb": 329
+  "thumb": 165
  },
  {
   "id": 1307,
@@ -7083,7 +3976,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Sasuke Uchiha",
-  "thumb": 330
+  "thumb": 166
  },
  {
   "id": 1042,
@@ -7107,124 +4000,7 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Sasori",
-  "thumb": 331
- },
- {
-  "id": 1044,
-  "name": "Сасорис Мотхер",
-  "gender": "Женский",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 261,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Sasori's Mother",
-  "thumb": 332
- },
- {
-  "id": 1043,
-  "name": "Сасорис Фатхер",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 261,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Sasori's Father",
-  "thumb": 333
- },
- {
-  "id": 1045,
-  "name": "Сатецу",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 140,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Satetsu",
-  "thumb": 334
- },
- {
-  "id": 1057,
-  "name": "Секка",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 251,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Sekka",
-  "thumb": 335
- },
- {
-  "id": 1072,
-  "name": "Сентоки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня",
-   "Храм Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Монах"
-  ],
-  "debutChapter": 314,
-  "arc": "Подавление Акацуки",
-  "arcIndex": 9,
-  "answer": false,
-  "nameEn": "Sentoki",
-  "thumb": 336
- },
- {
-  "id": 1308,
-  "name": "Сецуна Учиха",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Додзюцу"
-  ],
-  "kekkeiGenkai": [
-   "Шаринган"
-  ],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 399,
-  "arc": "Битва братьев",
-  "arcIndex": 12,
-  "answer": false,
-  "nameEn": "Setsuna Uchiha",
-  "thumb": 337
+  "thumb": 167
  },
  {
   "id": 135,
@@ -7250,25 +4026,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "C",
-  "thumb": 338
- },
- {
-  "id": 1138,
-  "name": "Созу",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 149,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Sōzu",
-  "thumb": 339
+  "thumb": 168
  },
  {
   "id": 1134,
@@ -7278,7 +4036,8 @@
    "Ива"
   ],
   "jutsuTypes": [
-   "Ниндзюцу"
+   "Ниндзюцу",
+   "Сендзюцу"
   ],
   "kekkeiGenkai": [
    "Ёотон"
@@ -7296,7 +4055,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Son Gokū",
-  "thumb": 340
+  "thumb": 169
  },
  {
   "id": 434,
@@ -7318,65 +4077,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Hyūga Elder",
-  "thumb": 341
- },
- {
-  "id": 708,
-  "name": "Старший Ниндзя Кумогакуре",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 102,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Head Ninja of Kumogakure",
-  "thumb": 342
- },
- {
-  "id": 879,
-  "name": "Сузаку Нара",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Инь"
-  ],
-  "attributes": [],
-  "debutChapter": 534,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Suzaku Nara",
-  "thumb": 343
- },
- {
-  "id": 1164,
-  "name": "Сузуме",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 71,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Suzume",
-  "thumb": 344
+  "thumb": 170
  },
  {
   "id": 430,
@@ -7401,140 +4102,7 @@
   "arcIndex": 10,
   "answer": true,
   "nameEn": "Suigetsu Hōzuki",
-  "thumb": 345
- },
- {
-  "id": 1151,
-  "name": "Сукима",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 41,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Sukima",
-  "thumb": 346
- },
- {
-  "id": 1155,
-  "name": "Сумаши",
-  "gender": "Мужской",
-  "affiliations": [
-   "Ива"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу",
-   "Тайдзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Дотон"
-  ],
-  "attributes": [],
-  "debutChapter": 244,
-  "arc": "Какаши Гайден",
-  "arcIndex": 6,
-  "answer": false,
-  "nameEn": "Sumashi",
-  "thumb": 347
- },
- {
-  "id": 1156,
-  "name": "Сумире",
-  "gender": "Женский",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 286,
-  "arc": "Мост Тенчи",
-  "arcIndex": 8,
-  "answer": false,
-  "nameEn": "Sumire (citizen)",
-  "thumb": 348
- },
- {
-  "id": 1159,
-  "name": "Сунаме",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 248,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Suname",
-  "thumb": 349
- },
- {
-  "id": 1160,
-  "name": "Сусуки",
-  "gender": "Женский",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 150,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Susuki",
-  "thumb": 350
- },
- {
-  "id": 1175,
-  "name": "Таджи",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 500,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Taji",
-  "thumb": 351
- },
- {
-  "id": 1176,
-  "name": "Таджики",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 522,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Tajiki",
-  "thumb": 352
+  "thumb": 171
  },
  {
   "id": 1312,
@@ -7554,7 +4122,7 @@
   "arcIndex": 18,
   "answer": false,
   "nameEn": "Tajima Uchiha",
-  "thumb": 353
+  "thumb": 172
  },
  {
   "id": 1204,
@@ -7572,79 +4140,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Tazuna",
-  "thumb": 354
- },
- {
-  "id": 1173,
-  "name": "Тайсеки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Ива"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 241,
-  "arc": "Какаши Гайден",
-  "arcIndex": 6,
-  "answer": false,
-  "nameEn": "Taiseki",
-  "thumb": 355
- },
- {
-  "id": 1254,
-  "name": "Такаджо Торикай",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 451,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Takajō Torikai",
-  "thumb": 356
- },
- {
-  "id": 1177,
-  "name": "Такамару",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 250,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Takamaru",
-  "thumb": 357
- },
- {
-  "id": 1180,
-  "name": "Такиши",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 351,
-  "arc": "Преследование Итачи",
-  "arcIndex": 10,
-  "answer": false,
-  "nameEn": "Takishi",
-  "thumb": 358
+  "thumb": 173
  },
  {
   "id": 1183,
@@ -7662,100 +4158,7 @@
   "arcIndex": 10,
   "answer": false,
   "nameEn": "Tamaki",
-  "thumb": 359
- },
- {
-  "id": 1182,
-  "name": "Тамаэ",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 421,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Tamae",
-  "thumb": 360
- },
- {
-  "id": 1185,
-  "name": "Тами",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 421,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Tami",
-  "thumb": 361
- },
- {
-  "id": 1186,
-  "name": "Танго",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 515,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Tango",
-  "thumb": 362
- },
- {
-  "id": 1188,
-  "name": "Танзо",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 60,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Tanzō",
-  "thumb": 363
- },
- {
-  "id": 14,
-  "name": "Тацума Абураме",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха",
-   "Корень"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 583,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": false,
-  "nameEn": "Tatsuma Aburame",
-  "thumb": 364
+  "thumb": 174
  },
  {
   "id": 1203,
@@ -7779,49 +4182,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Tayuya",
-  "thumb": 365
- },
- {
-  "id": 1206,
-  "name": "Тегусе",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Волн"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 19,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Teguse",
-  "thumb": 366
- },
- {
-  "id": 1313,
-  "name": "Текка Учиха",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Додзюцу"
-  ],
-  "kekkeiGenkai": [
-   "Шаринган"
-  ],
-  "natureTypes": [],
-  "attributes": [
-   "Сенсор"
-  ],
-  "debutChapter": 221,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Tekka Uchiha",
-  "thumb": 367
+  "thumb": 175
  },
  {
   "id": 1208,
@@ -7844,43 +4205,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Temari",
-  "thumb": 368
- },
- {
-  "id": 1209,
-  "name": "Темуи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 534,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Temui",
-  "thumb": 369
- },
- {
-  "id": 1212,
-  "name": "Тенга",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 488,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Tenga",
-  "thumb": 370
+  "thumb": 176
  },
  {
   "id": 1216,
@@ -7902,133 +4227,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Tenten",
-  "thumb": 371
- },
- {
-  "id": 1220,
-  "name": "Терай",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха",
-   "Корень"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 454,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Terai",
-  "thumb": 372
- },
- {
-  "id": 1222,
-  "name": "Терубо",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха",
-   "Приют Конохи"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 582,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": false,
-  "nameEn": "Terubō",
-  "thumb": 373
- },
- {
-  "id": 1224,
-  "name": "Тесса",
-  "gender": "Женский",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 516,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Tessa",
-  "thumb": 374
- },
- {
-  "id": 1236,
-  "name": "Тессен Тогейто",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 423,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Tessen Togeito",
-  "thumb": 375
- },
- {
-  "id": 1225,
-  "name": "Тецу",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кири"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 540,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Tetsu",
-  "thumb": 376
- },
- {
-  "id": 1226,
-  "name": "Тецуру",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 348,
-  "arc": "Преследование Итачи",
-  "arcIndex": 10,
-  "answer": false,
-  "nameEn": "Tetsuru",
-  "thumb": 377
- },
- {
-  "id": 1314,
-  "name": "Теяки Учиха",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 225,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Teyaki Uchiha",
-  "thumb": 378
+  "thumb": 177
  },
  {
   "id": 1229,
@@ -8056,43 +4255,7 @@
   "arcIndex": 18,
   "answer": true,
   "nameEn": "Tobi (Zetsu)",
-  "thumb": 379
- },
- {
-  "id": 1230,
-  "name": "Тобимару",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 488,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Tobimaru",
-  "thumb": 380
- },
- {
-  "id": 1231,
-  "name": "Тобио",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 3,
-  "arc": "Пролог",
-  "arcIndex": 0,
-  "answer": false,
-  "nameEn": "Tobio",
-  "thumb": 381
+  "thumb": 178
  },
  {
   "id": 1066,
@@ -8123,45 +4286,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Tobirama Senju",
-  "thumb": 382
- },
- {
-  "id": 1067,
-  "name": "Тока Сенджу",
-  "gender": "Женский",
-  "affiliations": [],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Инь"
-  ],
-  "attributes": [],
-  "debutChapter": 399,
-  "arc": "Битва братьев",
-  "arcIndex": 12,
-  "answer": false,
-  "nameEn": "Tōka Senju",
-  "thumb": 383
- },
- {
-  "id": 1238,
-  "name": "Токара",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 599,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": false,
-  "nameEn": "Tokara",
-  "thumb": 384
+  "thumb": 179
  },
  {
   "id": 445,
@@ -8183,43 +4308,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Tokuma Hyūga",
-  "thumb": 385
- },
- {
-  "id": 1243,
-  "name": "Томари",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 129,
-  "arc": "Разрушение Конохи",
-  "arcIndex": 3,
-  "answer": false,
-  "nameEn": "Tomari",
-  "thumb": 386
- },
- {
-  "id": 802,
-  "name": "Томару Минакура",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 247,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Tomaru Minakura",
-  "thumb": 387
+  "thumb": 180
  },
  {
   "id": 1232,
@@ -8239,43 +4328,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Tonbo Tobitake",
-  "thumb": 388
- },
- {
-  "id": 1251,
-  "name": "Тора",
-  "gender": "Женский",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 9,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Tora",
-  "thumb": 389
- },
- {
-  "id": 1252,
-  "name": "Тора (Анбу)",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 399,
-  "arc": "Битва братьев",
-  "arcIndex": 12,
-  "answer": false,
-  "nameEn": "Tora (Anbu)",
-  "thumb": 390
+  "thumb": 181
  },
  {
   "id": 47,
@@ -8297,7 +4350,7 @@
   "arcIndex": 15,
   "answer": false,
   "nameEn": "Torifu Akimichi",
-  "thumb": 391
+  "thumb": 182
  },
  {
   "id": 1255,
@@ -8324,7 +4377,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Toroi",
-  "thumb": 392
+  "thumb": 183
  },
  {
   "id": 15,
@@ -8345,7 +4398,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Torune Aburame",
-  "thumb": 393
+  "thumb": 184
  },
  {
   "id": 621,
@@ -8370,63 +4423,7 @@
   "arcIndex": 20,
   "answer": false,
   "nameEn": "Third Kazekage",
-  "thumb": 394
- },
- {
-  "id": 817,
-  "name": "Третий Мизукаге",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кири"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 648,
-  "arc": "Джинчуурики Десятихвостого",
-  "arcIndex": 19,
-  "answer": false,
-  "nameEn": "Third Mizukage",
-  "thumb": 395
- },
- {
-  "id": 1318,
-  "name": "Угай",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 210,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Ugai",
-  "thumb": 396
- },
- {
-  "id": 1319,
-  "name": "Угацу",
-  "gender": "Мужской",
-  "affiliations": [
-   "Амэ"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 369,
-  "arc": "Джирайя",
-  "arcIndex": 11,
-  "answer": false,
-  "nameEn": "Ugatsu",
-  "thumb": 397
+  "thumb": 185
  },
  {
   "id": 477,
@@ -8446,63 +4443,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Udon Ise",
-  "thumb": 398
- },
- {
-  "id": 1018,
-  "name": "Унмо Самидаре",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кири"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 305,
-  "arc": "Мост Тенчи",
-  "arcIndex": 8,
-  "answer": false,
-  "nameEn": "Unmo Samidare",
-  "thumb": 399
- },
- {
-  "id": 1331,
-  "name": "Уракаку",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Железа"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Самурай"
-  ],
-  "debutChapter": 456,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Urakaku",
-  "thumb": 400
- },
- {
-  "id": 1315,
-  "name": "Уручи Учиха",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 225,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Uruchi Uchiha",
-  "thumb": 401
+  "thumb": 186
  },
  {
   "id": 1332,
@@ -8521,7 +4462,7 @@
   "arcIndex": 18,
   "answer": false,
   "nameEn": "Urushi",
-  "thumb": 402
+  "thumb": 187
  },
  {
   "id": 1333,
@@ -8543,7 +4484,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Urushi (summon)",
-  "thumb": 403
+  "thumb": 188
  },
  {
   "id": 1335,
@@ -8569,7 +4510,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "Utakata",
-  "thumb": 404
+  "thumb": 189
  },
  {
   "id": 1320,
@@ -8589,43 +4530,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Ūhei",
-  "thumb": 405
- },
- {
-  "id": 1334,
-  "name": "Уши",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 399,
-  "arc": "Битва братьев",
-  "arcIndex": 12,
-  "answer": false,
-  "nameEn": "Ushi",
-  "thumb": 406
- },
- {
-  "id": 219,
-  "name": "Ф",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 545,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "F",
-  "thumb": 407
+  "thumb": 190
  },
  {
   "id": 1364,
@@ -8649,7 +4554,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Fū Yamanaka",
-  "thumb": 408
+  "thumb": 191
  },
  {
   "id": 1289,
@@ -8674,7 +4579,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Fugaku Uchiha",
-  "thumb": 409
+  "thumb": 192
  },
  {
   "id": 1145,
@@ -8694,7 +4599,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Fuguki Suikazan",
-  "thumb": 410
+  "thumb": 193
  },
  {
   "id": 230,
@@ -8724,115 +4629,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Fukasaku",
-  "thumb": 411
- },
- {
-  "id": 231,
-  "name": "Фуки",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 71,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Fuki",
-  "thumb": 412
- },
- {
-  "id": 235,
-  "name": "Фукуэмон",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Призыв"
-  ],
-  "debutChapter": 512,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Fukuemon",
-  "thumb": 413
- },
- {
-  "id": 241,
-  "name": "Фунари",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 355,
-  "arc": "Преследование Итачи",
-  "arcIndex": 10,
-  "answer": false,
-  "nameEn": "Funari",
-  "thumb": 414
- },
- {
-  "id": 251,
-  "name": "Фуруи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 494,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Furui",
-  "thumb": 415
- },
- {
-  "id": 252,
-  "name": "Фусоу",
-  "gender": "Женский",
-  "affiliations": [
-   "Амэ"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 444,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Fusō",
-  "thumb": 416
- },
- {
-  "id": 253,
-  "name": "Футаба",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 94,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Futaba",
-  "thumb": 417
+  "thumb": 194
  },
  {
   "id": 221,
@@ -8854,7 +4651,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "Fū",
-  "thumb": 418
+  "thumb": 195
  },
  {
   "id": 935,
@@ -8866,7 +4663,9 @@
    "Сендзюцу",
    "Додзюцу"
   ],
-  "kekkeiGenkai": [],
+  "kekkeiGenkai": [
+   "Риннеган"
+  ],
   "natureTypes": [
    "Катон",
    "Футон",
@@ -8886,7 +4685,7 @@
   "arcIndex": 17,
   "answer": true,
   "nameEn": "Hagoromo Ōtsutsuki",
-  "thumb": 419
+  "thumb": 196
  },
  {
   "id": 356,
@@ -8913,45 +4712,7 @@
   "arcIndex": 1,
   "answer": true,
   "nameEn": "Haku",
-  "thumb": 420
- },
- {
-  "id": 361,
-  "name": "Хакуи",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 539,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Hakui (medic)",
-  "thumb": 421
- },
- {
-  "id": 801,
-  "name": "Хамаки Мимура",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 242,
-  "arc": "Какаши Гайден",
-  "arcIndex": 6,
-  "answer": false,
-  "nameEn": "Hamaki Mimura",
-  "thumb": 422
+  "thumb": 197
  },
  {
   "id": 936,
@@ -8965,7 +4726,10 @@
    "Сендзюцу",
    "Додзюцу"
   ],
-  "kekkeiGenkai": [],
+  "kekkeiGenkai": [
+   "Бьякуган",
+   "Тенсейган"
+  ],
   "natureTypes": [
    "Катон",
    "Футон",
@@ -8983,7 +4747,7 @@
   "arcIndex": 19,
   "answer": true,
   "nameEn": "Hamura Ōtsutsuki",
-  "thumb": 423
+  "thumb": 198
  },
  {
   "id": 363,
@@ -9011,7 +4775,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "Han",
-  "thumb": 424
+  "thumb": 199
  },
  {
   "id": 465,
@@ -9033,7 +4797,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Hana Inuzuka",
-  "thumb": 425
+  "thumb": 200
  },
  {
   "id": 435,
@@ -9055,7 +4819,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Hanabi Hyūga",
-  "thumb": 426
+  "thumb": 201
  },
  {
   "id": 368,
@@ -9078,26 +4842,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Hanzō",
-  "thumb": 427
- },
- {
-  "id": 370,
-  "name": "Харине",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха",
-   "Приют Конохи"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 582,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": false,
-  "nameEn": "Harine",
-  "thumb": 428
+  "thumb": 202
  },
  {
   "id": 1063,
@@ -9131,25 +4876,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Hashirama Senju",
-  "thumb": 429
- },
- {
-  "id": 379,
-  "name": "Хаясе",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 44,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Hayase",
-  "thumb": 430
+  "thumb": 203
  },
  {
   "id": 293,
@@ -9169,46 +4896,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Hayate Gekkō",
-  "thumb": 431
- },
- {
-  "id": 432,
-  "name": "Хё",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха",
-   "Корень"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 285,
-  "arc": "Мост Тенчи",
-  "arcIndex": 8,
-  "answer": false,
-  "nameEn": "Hyō",
-  "thumb": 432
- },
- {
-  "id": 384,
-  "name": "Хеки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кири"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 454,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Heki",
-  "thumb": 433
+  "thumb": 204
  },
  {
   "id": 436,
@@ -9230,25 +4918,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Hiashi Hyūga",
-  "thumb": 434
- },
- {
-  "id": 386,
-  "name": "Хибари",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 94,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Hibari",
-  "thumb": 435
+  "thumb": 205
  },
  {
   "id": 388,
@@ -9272,7 +4942,7 @@
   "arcIndex": 9,
   "answer": true,
   "nameEn": "Hidan",
-  "thumb": 436
+  "thumb": 206
  },
  {
   "id": 439,
@@ -9294,61 +4964,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Hizashi Hyūga",
-  "thumb": 437
- },
- {
-  "id": 1291,
-  "name": "Хикаку Учиха",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [
-   "Додзюцу"
-  ],
-  "kekkeiGenkai": [
-   "Шаринган"
-  ],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 398,
-  "arc": "Битва братьев",
-  "arcIndex": 12,
-  "answer": false,
-  "nameEn": "Hikaku Uchiha",
-  "thumb": 438
- },
- {
-  "id": 392,
-  "name": "Хикару",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 491,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Hikaru",
-  "thumb": 439
- },
- {
-  "id": 398,
-  "name": "Хина",
-  "gender": "Женский",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 354,
-  "arc": "Преследование Итачи",
-  "arcIndex": 10,
-  "answer": false,
-  "nameEn": "Hina",
-  "thumb": 440
+  "thumb": 207
  },
  {
   "id": 437,
@@ -9375,7 +4991,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Hinata Hyūga",
-  "thumb": 441
+  "thumb": 208
  },
  {
   "id": 1036,
@@ -9407,25 +5023,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Hiruzen Sarutobi",
-  "thumb": 442
- },
- {
-  "id": 416,
-  "name": "Хоки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Таки"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 43,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Hōki (Takigakure)",
-  "thumb": 443
+  "thumb": 209
  },
  {
   "id": 811,
@@ -9443,137 +5041,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Homura Mitokado",
-  "thumb": 444
- },
- {
-  "id": 420,
-  "name": "Хоусей",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 43,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Hōsei",
-  "thumb": 445
- },
- {
-  "id": 440,
-  "name": "Хохето Хьюга",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Додзюцу"
-  ],
-  "kekkeiGenkai": [
-   "Бьякуган"
-  ],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 515,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Hoheto Hyūga",
-  "thumb": 446
- },
- {
-  "id": 425,
-  "name": "Хошо",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Ирьёнин"
-  ],
-  "debutChapter": 235,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Hōshō",
-  "thumb": 447
- },
- {
-  "id": 1261,
-  "name": "Цубаки",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 1,
-  "arc": "Пролог",
-  "arcIndex": 0,
-  "answer": false,
-  "nameEn": "Tsubaki (parent)",
-  "thumb": 448
- },
- {
-  "id": 1264,
-  "name": "Цубуса",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 247,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Tsubusa",
-  "thumb": 449
- },
- {
-  "id": 1033,
-  "name": "Цузуми Саругаку",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 109,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Tsuzumi Sarugaku",
-  "thumb": 450
- },
- {
-  "id": 1278,
-  "name": "Цукуши",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 350,
-  "arc": "Преследование Итачи",
-  "arcIndex": 10,
-  "answer": false,
-  "nameEn": "Tsukushi",
-  "thumb": 451
+  "thumb": 210
  },
  {
   "id": 468,
@@ -9593,7 +5061,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Tsume Inuzuka",
-  "thumb": 452
+  "thumb": 211
  },
  {
   "id": 1280,
@@ -9626,43 +5094,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Tsunade",
-  "thumb": 453
- },
- {
-  "id": 1281,
-  "name": "Цунами",
-  "gender": "Женский",
-  "affiliations": [
-   "Страна Волн"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 16,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Tsunami",
-  "thumb": 454
- },
- {
-  "id": 1267,
-  "name": "Цучино",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 129,
-  "arc": "Разрушение Конохи",
-  "arcIndex": 3,
-  "answer": false,
-  "nameEn": "Tsuchino",
-  "thumb": 455
+  "thumb": 212
  },
  {
   "id": 1425,
@@ -9700,23 +5132,7 @@
   "arcIndex": 5,
   "answer": true,
   "nameEn": "Black Zetsu",
-  "thumb": 456
- },
- {
-  "id": 141,
-  "name": "Чиби",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 445,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Chibi",
-  "thumb": 457
+  "thumb": 213
  },
  {
   "id": 148,
@@ -9742,27 +5158,7 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Chiyo",
-  "thumb": 458
- },
- {
-  "id": 150,
-  "name": "Чиёмацу",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Железа"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Самурай"
-  ],
-  "debutChapter": 460,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Chiyomatsu",
-  "thumb": 459
+  "thumb": 214
  },
  {
   "id": 146,
@@ -9785,28 +5181,7 @@
   "arcIndex": 9,
   "answer": false,
   "nameEn": "Chiriku",
-  "thumb": 460
- },
- {
-  "id": 154,
-  "name": "Чосеки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Ива",
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Нукенин"
-  ],
-  "debutChapter": 150,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Chōseki",
-  "thumb": 461
+  "thumb": 215
  },
  {
   "id": 40,
@@ -9830,7 +5205,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Chōji Akimichi",
-  "thumb": 462
+  "thumb": 216
  },
  {
   "id": 152,
@@ -9851,7 +5226,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Chōjūrō",
-  "thumb": 463
+  "thumb": 217
  },
  {
   "id": 42,
@@ -9873,7 +5248,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Chōza Akimichi",
-  "thumb": 464
+  "thumb": 218
  },
  {
   "id": 153,
@@ -9895,25 +5270,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Chōmei",
-  "thumb": 465
- },
- {
-  "id": 151,
-  "name": "Чохан",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 149,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Chōhan",
-  "thumb": 466
+  "thumb": 219
  },
  {
   "id": 157,
@@ -9935,7 +5292,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Chūkichi",
-  "thumb": 467
+  "thumb": 220
  },
  {
   "id": 1077,
@@ -9955,7 +5312,7 @@
   "arcIndex": 19,
   "answer": false,
   "nameEn": "Shamon",
-  "thumb": 468
+  "thumb": 221
  },
  {
   "id": 1079,
@@ -9975,25 +5332,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Shiba",
-  "thumb": 469
- },
- {
-  "id": 1080,
-  "name": "Шиба (Кусагакуре)",
-  "gender": "Мужской",
-  "affiliations": [
-   "Куса"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 110,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Shiba (Kusagakure)",
-  "thumb": 470
+  "thumb": 222
  },
  {
   "id": 11,
@@ -10013,63 +5352,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Shibi Aburame",
-  "thumb": 471
- },
- {
-  "id": 1081,
-  "name": "Шибире",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 60,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Shibire",
-  "thumb": 472
- },
- {
-  "id": 103,
-  "name": "Шибито Азума",
-  "gender": "Мужской",
-  "affiliations": [
-   "Ива"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 242,
-  "arc": "Какаши Гайден",
-  "arcIndex": 6,
-  "answer": false,
-  "nameEn": "Shibito Azuma",
-  "thumb": 473
- },
- {
-  "id": 1085,
-  "name": "Шигуре",
-  "gender": "Мужской",
-  "affiliations": [
-   "Амэ"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 58,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Shigure",
-  "thumb": 474
+  "thumb": 223
  },
  {
   "id": 1122,
@@ -10093,7 +5376,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Shizune",
-  "thumb": 475
+  "thumb": 224
  },
  {
   "id": 877,
@@ -10115,7 +5398,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Shikaku Nara",
-  "thumb": 476
+  "thumb": 225
  },
  {
   "id": 878,
@@ -10139,7 +5422,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Shikamaru Nara",
-  "thumb": 477
+  "thumb": 226
  },
  {
   "id": 1091,
@@ -10169,45 +5452,7 @@
   "arcIndex": 11,
   "answer": false,
   "nameEn": "Shima",
-  "thumb": 478
- },
- {
-  "id": 1092,
-  "name": "Шимеджи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 144,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Shimeji",
-  "thumb": 479
- },
- {
-  "id": 391,
-  "name": "Шимон Хиджири",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 40,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Shimon Hijiri",
-  "thumb": 480
+  "thumb": 227
  },
  {
   "id": 1094,
@@ -10228,7 +5473,7 @@
   "arcIndex": 8,
   "answer": false,
   "nameEn": "Shin",
-  "thumb": 481
+  "thumb": 228
  },
  {
   "id": 1099,
@@ -10244,25 +5489,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Shinigami",
-  "thumb": 482
- },
- {
-  "id": 1398,
-  "name": "Шинку Юхи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 503,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Shinku Yūhi",
-  "thumb": 483
+  "thumb": 229
  },
  {
   "id": 13,
@@ -10286,7 +5513,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Shino Aburame",
-  "thumb": 484
+  "thumb": 230
  },
  {
   "id": 787,
@@ -10304,43 +5531,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Shinobu Mibu",
-  "thumb": 485
- },
- {
-  "id": 1102,
-  "name": "Шинта",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 190,
-  "arc": "Возвращение Саске",
-  "arcIndex": 5,
-  "answer": false,
-  "nameEn": "Shinta",
-  "thumb": 486
- },
- {
-  "id": 1105,
-  "name": "Шиоре",
-  "gender": "Мужской",
-  "affiliations": [
-   "Куса"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 45,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Shiore",
-  "thumb": 487
+  "thumb": 231
  },
  {
   "id": 1310,
@@ -10370,29 +5561,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Shisui Uchiha",
-  "thumb": 488
- },
- {
-  "id": 46,
-  "name": "Шито Акимичи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Ян"
-  ],
-  "attributes": [],
-  "debutChapter": 422,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Shitō Akimichi",
-  "thumb": 489
+  "thumb": 232
  },
  {
   "id": 1086,
@@ -10410,25 +5579,7 @@
   "arcIndex": 13,
   "answer": false,
   "nameEn": "Shiho",
-  "thumb": 490
- },
- {
-  "id": 1125,
-  "name": "Шу",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 151,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Shū",
-  "thumb": 491
+  "thumb": 233
  },
  {
   "id": 1127,
@@ -10456,7 +5607,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Shukaku",
-  "thumb": 492
+  "thumb": 234
  },
  {
   "id": 213,
@@ -10474,7 +5625,7 @@
   "arcIndex": 7,
   "answer": false,
   "nameEn": "Ebizō",
-  "thumb": 493
+  "thumb": 235
  },
  {
   "id": 212,
@@ -10494,7 +5645,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Ebisu",
-  "thumb": 494
+  "thumb": 236
  },
  {
   "id": 6,
@@ -10519,7 +5670,7 @@
   "arcIndex": 13,
   "answer": true,
   "nameEn": "A (Fourth Raikage)",
-  "thumb": 495
+  "thumb": 237
  },
  {
   "id": 4,
@@ -10537,7 +5688,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "A (Second Raikage)",
-  "thumb": 496
+  "thumb": 238
  },
  {
   "id": 3,
@@ -10555,7 +5706,7 @@
   "arcIndex": 19,
   "answer": false,
   "nameEn": "A (First Raikage)",
-  "thumb": 497
+  "thumb": 239
  },
  {
   "id": 5,
@@ -10579,43 +5730,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "A (Third Raikage)",
-  "thumb": 498
- },
- {
-  "id": 214,
-  "name": "Эми",
-  "gender": "Женский",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 144,
-  "arc": "Поиски Цунаде",
-  "arcIndex": 4,
-  "answer": false,
-  "nameEn": "Emi",
-  "thumb": 499
- },
- {
-  "id": 216,
-  "name": "Эмиру",
-  "gender": "Женский",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 286,
-  "arc": "Мост Тенчи",
-  "arcIndex": 8,
-  "answer": false,
-  "nameEn": "Emiru",
-  "thumb": 500
+  "thumb": 240
  },
  {
   "id": 873,
@@ -10637,7 +5752,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Ensui Nara",
-  "thumb": 501
+  "thumb": 241
  },
  {
   "id": 1337,
@@ -10657,7 +5772,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Yūgao Uzuki",
-  "thumb": 502
+  "thumb": 242
  },
  {
   "id": 898,
@@ -10681,61 +5796,7 @@
   "arcIndex": 9,
   "answer": true,
   "nameEn": "Yugito Nii",
-  "thumb": 503
- },
- {
-  "id": 1395,
-  "name": "Юдачи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Амэ"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 368,
-  "arc": "Джирайя",
-  "arcIndex": 11,
-  "answer": false,
-  "nameEn": "Yūdachi",
-  "thumb": 504
- },
- {
-  "id": 1399,
-  "name": "Юи",
-  "gender": "Женский",
-  "affiliations": [
-   "Страна Огня"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 286,
-  "arc": "Мост Тенчи",
-  "arcIndex": 8,
-  "answer": false,
-  "nameEn": "Yui",
-  "thumb": 505
- },
- {
-  "id": 1410,
-  "name": "Юрика",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 250,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Yurika",
-  "thumb": 506
+  "thumb": 243
  },
  {
   "id": 1409,
@@ -10754,7 +5815,7 @@
   "arcIndex": 7,
   "answer": false,
   "nameEn": "Yūra",
-  "thumb": 507
+  "thumb": 244
  },
  {
   "id": 591,
@@ -10779,61 +5840,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Yagura Karatachi",
-  "thumb": 508
- },
- {
-  "id": 1357,
-  "name": "Яджиробеэ",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 1,
-  "arc": "Пролог",
-  "arcIndex": 0,
-  "answer": false,
-  "nameEn": "Yajirobee",
-  "thumb": 509
- },
- {
-  "id": 1358,
-  "name": "Якку",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 253,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": false,
-  "nameEn": "Yakku",
-  "thumb": 510
- },
- {
-  "id": 1316,
-  "name": "Якуми Учиха",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 399,
-  "arc": "Битва братьев",
-  "arcIndex": 12,
-  "answer": false,
-  "nameEn": "Yakumi Uchiha",
-  "thumb": 511
+  "thumb": 245
  },
  {
   "id": 1373,
@@ -10861,25 +5868,7 @@
   "arcIndex": 8,
   "answer": true,
   "nameEn": "Yamato",
-  "thumb": 512
- },
- {
-  "id": 993,
-  "name": "Ятого Рюген",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 581,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Yatogo Ryūgen",
-  "thumb": 513
+  "thumb": 246
  },
  {
   "id": 1356,
@@ -10904,7 +5893,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Yahiko",
-  "thumb": 514
+  "thumb": 247
  },
  {
   "id": 1376,
@@ -10926,7 +5915,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Yashamaru",
-  "thumb": 515
+  "thumb": 248
  },
  {
   "id": 1317,
@@ -10948,6 +5937,6 @@
   "arcIndex": 5,
   "answer": false,
   "nameEn": "Yashiro Uchiha",
-  "thumb": 516
+  "thumb": 249
  }
 ]

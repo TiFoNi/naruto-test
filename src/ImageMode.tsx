@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import CharacterSearch from './CharacterSearch'
 import RoundResult from './RoundResult'
 import Thumb from './Thumb'
 import type { Entity, Game } from './games/types'
 import { useI18n } from './i18n'
 import type { Stats } from './stats'
+import { useRound } from './useRound'
 import { pickAnswer, preload } from './util'
 
 const ZOOM_LEVELS = [7, 5.6, 4.5, 3.6, 2.9, 2.35, 1.9, 1.55, 1.25, 1]
@@ -37,35 +38,34 @@ type Props = { game: Game; active: boolean; onSolved: (guesses: number) => void;
 
 export default function ImageMode({ game, active, onSolved, onGaveUp, stats }: Props) {
   const { t, name } = useI18n()
-  const [answer, setAnswer] = useState(() => pickAnswer(game))
-  const [upcoming, setUpcoming] = useState(() => pickAnswer(game))
+  const { answer, guesses, won, over, round, exclude, guess, giveUp, next } = useRound({ game, mode: 'image', onSolved, onGaveUp })
+  const [upcoming, setUpcoming] = useState<Entity | null>(null)
+  const [seen, setSeen] = useState(active)
   const [focus, setFocus] = useState<Focus | null>(null)
   const [retry, setRetry] = useState(0)
-  const [guesses, setGuesses] = useState<Entity[]>([])
-  const [gaveUp, setGaveUp] = useState(false)
+  const retryTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
 
-  const won = guesses[0]?.id === answer.id
-  const over = won || gaveUp
-  const exclude = useMemo(() => new Set(guesses.map((g) => g.id)), [guesses])
   const wrong = guesses.filter((g) => g.id !== answer.id).length
   const zoom = over ? 1 : ZOOM_LEVELS[Math.min(wrong, ZOOM_LEVELS.length - 1)]
 
-  useEffect(() => preload(game, upcoming), [game, upcoming])
+  useEffect(() => {
+    if (!active) return
+    setSeen(true)
+    setUpcoming((u) => u ?? pickAnswer(game))
+  }, [active, game])
 
-  const guess = (e: Entity) => {
-    if (over) return
-    const next = [e, ...guesses]
-    setGuesses(next)
-    if (e.id === answer.id) onSolved(next.length)
-  }
+  useEffect(() => {
+    if (active && upcoming) preload(game, upcoming)
+  }, [active, game, upcoming])
+
+  useEffect(() => () => clearTimeout(retryTimer.current), [])
 
   const nextRound = () => {
-    setAnswer(upcoming)
+    clearTimeout(retryTimer.current)
+    next(upcoming ?? undefined)
     setUpcoming(pickAnswer(game))
     setFocus(null)
     setRetry(0)
-    setGuesses([])
-    setGaveUp(false)
   }
 
   return (
@@ -74,23 +74,28 @@ export default function ImageMode({ game, active, onSolved, onGaveUp, stats }: P
         <h2>{t('play.imageTitle')}</h2>
         <p className="muted">{t('play.imagePrompt')}</p>
         <div className={`zoom-frame ${game.wideImages ? 'wide' : ''}`}>
-          {!focus && <div className="zoom-loading">{t(retry > MAX_RETRIES ? 'image.failed' : 'image.loading')}</div>}
+          {seen && !focus && <div className="zoom-loading">{t(retry > MAX_RETRIES ? 'image.failed' : 'image.loading')}</div>}
+          {seen && (
           <img
             key={`${answer.id}-${retry}`}
             src={retry ? `${game.fullUrl(answer)}?retry=${retry}` : game.fullUrl(answer)}
             alt=""
             draggable={false}
             onLoad={(e) => setFocus(pickFocus(e.currentTarget))}
-            onError={() => setTimeout(() => setRetry((r) => (r <= MAX_RETRIES ? r + 1 : r)), 800)}
+            onError={() => {
+              clearTimeout(retryTimer.current)
+              retryTimer.current = setTimeout(() => setRetry((r) => (r <= MAX_RETRIES ? r + 1 : r)), 800)
+            }}
             style={{
               opacity: focus ? 1 : 0,
               transform: `scale(${zoom})`,
               transformOrigin: focus ? `${focus.x}% ${focus.y}%` : 'center',
             }}
           />
+          )}
         </div>
         <p className="round">
-          {t('play.round', { round: stats.solved + (won ? 0 : 1), guesses: guesses.length })} · {t('play.zoom', { zoom: zoom.toFixed(1) })}
+          {t('play.round', { round, guesses: guesses.length })} · {t('play.zoom', { zoom: zoom.toFixed(1) })}
         </p>
       </div>
 
@@ -100,13 +105,7 @@ export default function ImageMode({ game, active, onSolved, onGaveUp, stats }: P
         <>
           <CharacterSearch game={game} exclude={exclude} active={active} onPick={guess} />
           {guesses.length >= 3 && (
-            <button
-              className="link-button"
-              onClick={() => {
-                setGaveUp(true)
-                onGaveUp()
-              }}
-            >
+            <button className="link-button" onClick={giveUp}>
               {t('play.giveUp')}
             </button>
           )}

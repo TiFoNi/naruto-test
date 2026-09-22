@@ -15,7 +15,7 @@ export type RenderContext = { tv: Translate; lang: Lang }
 
 export type Column<T> = { title: L10n; render: (guess: T, answer: T, ctx: RenderContext) => Cell }
 
-export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach'
+export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk'
 
 export type Category = 'anime' | 'games'
 
