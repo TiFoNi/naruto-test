@@ -275,7 +275,7 @@ export function duelView(duel: DuelDoc, userId: ObjectId) {
     hintAt: duel.mode === 'ability' ? ABILITY_HINT_AT : undefined,
     ability,
     image: playing || finished ? (duel.mode === 'image' || duel.mode === 'ability' ? `/api/round/image?duel=${duel.code}&r=${duel.round}` : undefined) : undefined,
-    answerId: finished ? duel.answerId : undefined,
+    answerId: finished || you?.solvedAt ? duel.answerId : undefined,
     winner: finished ? (duel.winnerId ? duel.players.find((p) => p.userId.equals(duel.winnerId!))?.nickname ?? null : null) : undefined,
     youWon: finished ? Boolean(duel.winnerId && duel.winnerId.equals(userId)) : undefined,
     you: you && {

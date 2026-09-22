@@ -26,7 +26,7 @@ export default function ImageMode({ game, active, stats, daily = false }: Props)
       <div className="card intro">
         <h2>{t('play.imageTitle')}</h2>
         <p className="muted">{t('play.imagePrompt')}</p>
-        <ZoomImage game={game} src={round?.image} zoom={zoom} resetKey={round?.id} />
+        <ZoomImage game={game} src={round?.image} zoom={zoom} resetKey={round?.id} seed={round?.daily ? `${game.id}-${round.daily}` : undefined} />
         {round && (
           <p className="round">
             {t(round.daily ? 'daily.round' : 'play.round', { round: round.number, guesses: guesses.length })} · {t('play.zoom', { zoom: zoom.toFixed(1) })}

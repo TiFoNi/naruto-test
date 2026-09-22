@@ -170,7 +170,9 @@ export default function DuelRoom({ code }: { code: string }) {
         <section className="mode">
           <div className="card intro">
             <h2>{t(duel.mode === 'ability' ? 'play.abilityTitle' : duel.mode === 'image' ? 'play.imageTitle' : 'play.classicTitle')}</h2>
-            {duel.mode === 'image' && <ZoomImage game={game} src={duel.image} zoom={zoom} resetKey={`${duel.code}-${duel.round}`} />}
+            {duel.mode === 'image' && (
+              <ZoomImage game={game} src={duel.image} zoom={zoom} resetKey={`${duel.code}-${duel.round}`} seed={`${duel.code}-${duel.round}`} />
+            )}
             {duel.mode === 'ability' && (
               <AbilityIcon
                 src={duel.image ? `${duel.image}&v=${over ? 'done' : wrong}` : undefined}

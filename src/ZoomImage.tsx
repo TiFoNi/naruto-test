@@ -7,12 +7,27 @@ const SAMPLE = 48
 
 type Focus = { x: number; y: number }
 
-function pickFocus(img: HTMLImageElement): Focus {
+function seeded(seed: string) {
+  let h = 2166136261
+  for (let i = 0; i < seed.length; i++) {
+    h ^= seed.charCodeAt(i)
+    h = Math.imul(h, 16777619)
+  }
+  return () => {
+    h += 0x6d2b79f5
+    let t = Math.imul(h ^ (h >>> 15), 1 | h)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function pickFocus(img: HTMLImageElement, seed?: string): Focus {
+  const random = seed ? seeded(seed) : Math.random
   const canvas = document.createElement('canvas')
   canvas.width = SAMPLE
   canvas.height = SAMPLE
   const ctx = canvas.getContext('2d', { willReadFrequently: true })
-  const fallback = { x: 25 + Math.random() * 50, y: 15 + Math.random() * 45 }
+  const fallback = { x: 25 + random() * 50, y: 15 + random() * 45 }
   if (!ctx) return fallback
   ctx.drawImage(img, 0, 0, SAMPLE, SAMPLE)
   const { data } = ctx.getImageData(0, 0, SAMPLE, SAMPLE)
@@ -24,10 +39,22 @@ function pickFocus(img: HTMLImageElement): Focus {
   }
   const inner = opaque.filter((p) => p.x > 15 && p.x < 85 && p.y > 8 && p.y < 60)
   const pool = inner.length ? inner : opaque
-  return pool.length ? pool[Math.floor(Math.random() * pool.length)] : fallback
+  return pool.length ? pool[Math.floor(random() * pool.length)] : fallback
 }
 
-export default function ZoomImage({ game, src, zoom, resetKey }: { game: Game; src?: string; zoom: number; resetKey?: string }) {
+export default function ZoomImage({
+  game,
+  src,
+  zoom,
+  resetKey,
+  seed,
+}: {
+  game: Game
+  src?: string
+  zoom: number
+  resetKey?: string
+  seed?: string
+}) {
   const { t } = useI18n()
   const [focus, setFocus] = useState<Focus | null>(null)
   const [retry, setRetry] = useState(0)
@@ -47,10 +74,13 @@ export default function ZoomImage({ game, src, zoom, resetKey }: { game: Game; s
       {src && (
         <img
           key={`${src}-${retry}`}
+          ref={(el) => {
+            if (el?.complete && el.naturalWidth) setFocus((f) => f ?? pickFocus(el, seed))
+          }}
           src={retry ? `${src}&retry=${retry}` : src}
           alt=""
           draggable={false}
-          onLoad={(e) => setFocus(pickFocus(e.currentTarget))}
+          onLoad={(e) => setFocus(pickFocus(e.currentTarget, seed))}
           onError={() => {
             clearTimeout(timer.current)
             timer.current = setTimeout(() => setRetry((r) => (r <= MAX_RETRIES ? r + 1 : r)), 800)
