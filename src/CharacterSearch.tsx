@@ -17,6 +17,7 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
   const input = useRef<HTMLInputElement>(null)
+  const list = useRef<HTMLUListElement>(null)
 
   useEffect(() => {
     if (visible) input.current?.focus()
@@ -49,9 +50,16 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
       .map((x) => ({ x, r: rank(x) }))
       .filter(({ r }) => r >= 0)
       .sort((a, b) => a.r - b.r)
-      .slice(0, 8)
       .map(({ x }) => x.e)
   }, [query, exclude, index])
+
+  useEffect(() => {
+    list.current?.children[active]?.scrollIntoView({ block: 'nearest' })
+  }, [active])
+
+  useEffect(() => {
+    list.current?.scrollTo({ top: 0 })
+  }, [query])
 
   const pick = (e: Entity | undefined) => {
     if (!e || busy) return
@@ -80,6 +88,12 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
               setActive((a) => Math.max(a - 1, 0))
             } else if (e.key === 'Enter') {
               pick(matches[active])
+            } else if (e.key === 'PageDown') {
+              e.preventDefault()
+              setActive((a) => Math.min(a + 5, matches.length - 1))
+            } else if (e.key === 'PageUp') {
+              e.preventDefault()
+              setActive((a) => Math.max(a - 5, 0))
             } else if (e.key === 'Escape') {
               setQuery('')
             }
@@ -90,7 +104,7 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
         </button>
       </div>
       {matches.length > 0 && (
-        <ul className="suggestions">
+        <ul className="suggestions" ref={list}>
           {matches.map((e, i) => (
             <li
               key={e.id}

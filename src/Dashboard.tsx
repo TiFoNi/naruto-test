@@ -96,6 +96,7 @@ export default function Dashboard() {
           <p>{t('dash.lead')}</p>
           <ul className="features">
             <li>{t('dash.feature.unlimited')}</li>
+            <li>{t('dash.feature.daily')}</li>
             <li>{t('dash.feature.modes')}</li>
             <li>{t('dash.feature.stats')}</li>
           </ul>

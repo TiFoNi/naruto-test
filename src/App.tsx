@@ -223,7 +223,7 @@ export default function App() {
       <footer>
         <p>{t('footer.disclaimer')}</p>
         <p>
-          {t('footer.data')}: Naruto Wiki, Dattebayo API, Valve, OpenDota, Dota 2 Wiki, Attack on Titan Wiki, Bleach Wiki, Tokyo Ghoul Wiki, Berserk Wiki, Kimetsu no Yaiba Wiki, Blue Lock Wiki, One Piece Wiki, MyAnimeList.
+          {t('footer.data')}: Naruto Wiki, Dattebayo API, Valve, OpenDota, Dota 2 Wiki, Attack on Titan Wiki, Bleach Wiki, Tokyo Ghoul Wiki, Berserk Wiki, Kimetsu no Yaiba Wiki, Blue Lock Wiki, One Piece Wiki, Mortal Kombat Wiki, MyAnimeList.
         </p>
       </footer>
     </div>
