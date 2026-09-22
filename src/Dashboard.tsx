@@ -6,7 +6,6 @@ import { useI18n, type UiKey } from './i18n'
 import { MODES, UPCOMING_MODES } from './modes'
 import { href } from './router'
 import { emptyStats } from './stats'
-import Thumb from './Thumb'
 
 const CATEGORIES: { id: Category; title: UiKey; hint: UiKey }[] = [
   { id: 'anime', title: 'dash.anime', hint: 'dash.animeHint' },
@@ -24,8 +23,8 @@ function FranchiseCard({ game }: { game: Game }) {
   return (
     <article className="franchise" style={{ '--tab-accent': game.accent } as CSSProperties}>
       <a className="franchise-art" href={href.play(game.id, game.modes[0])} aria-label={l(game.label)}>
-        {featured.map((e) => (
-          <Thumb key={e.id} game={game} entity={e} />
+        {featured.slice(0, 3).map((e, i) => (
+          <img key={e.id} className={`fan fan-${i}`} src={game.fullUrl(e)} alt="" loading="lazy" draggable={false} />
         ))}
       </a>
       <div className="franchise-body">

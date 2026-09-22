@@ -43,7 +43,6 @@ export default function ImageMode({ game, active, onSolved, onGaveUp, stats }: P
   const [retry, setRetry] = useState(0)
   const [guesses, setGuesses] = useState<Entity[]>([])
   const [gaveUp, setGaveUp] = useState(false)
-  const [grayscale, setGrayscale] = useState(false)
 
   const won = guesses[0]?.id === answer.id
   const over = won || gaveUp
@@ -87,19 +86,12 @@ export default function ImageMode({ game, active, onSolved, onGaveUp, stats }: P
               opacity: focus ? 1 : 0,
               transform: `scale(${zoom})`,
               transformOrigin: focus ? `${focus.x}% ${focus.y}%` : 'center',
-              filter: grayscale && !over ? 'grayscale(1)' : undefined,
             }}
           />
         </div>
-        <div className="zoom-meta">
-          <span className="round">
-            {t('play.round', { round: stats.solved + (won ? 0 : 1), guesses: guesses.length })} · {t('play.zoom', { zoom: zoom.toFixed(1) })}
-          </span>
-          <label className="toggle">
-            <input type="checkbox" checked={grayscale} onChange={(e) => setGrayscale(e.target.checked)} />
-            {t('image.grayscale')}
-          </label>
-        </div>
+        <p className="round">
+          {t('play.round', { round: stats.solved + (won ? 0 : 1), guesses: guesses.length })} · {t('play.zoom', { zoom: zoom.toFixed(1) })}
+        </p>
       </div>
 
       {over ? (

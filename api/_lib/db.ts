@@ -14,10 +14,10 @@ export type Stats = { solved: number; streak: number; best: number; totalGuesses
 
 const cache = globalThis as typeof globalThis & { __mongo?: Promise<MongoClient>; __usersIndexed?: Promise<unknown> }
 
-function client() {
+export function client() {
   const uri = process.env.MONGODB_URI
   if (!uri) throw new Error('MONGODB_URI is not set')
-  cache.__mongo ??= new MongoClient(uri).connect().catch((error) => {
+  cache.__mongo ??= new MongoClient(uri, { serverSelectionTimeoutMS: 5000, connectTimeoutMS: 5000 }).connect().catch((error) => {
     cache.__mongo = undefined
     throw error
   })

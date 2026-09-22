@@ -108,7 +108,6 @@ const ui = {
   'legend.lower': { ru: 'Меньше / раньше', uk: 'Менше / раніше', en: 'Lower / earlier' },
   'image.loading': { ru: 'Загрузка…', uk: 'Завантаження…', en: 'Loading…' },
   'image.failed': { ru: 'Не удалось загрузить картинку', uk: 'Не вдалося завантажити картинку', en: 'Could not load the picture' },
-  'image.grayscale': { ru: 'Чёрно-белое', uk: 'Чорно-біле', en: 'Grayscale' },
   'result.won': { ru: 'Угадал!', uk: 'Вгадав!', en: 'Got it!' },
   'result.lost': { ru: 'Не в этот раз', uk: 'Не цього разу', en: 'Not this time' },
   'result.summary': {
