@@ -8,6 +8,7 @@ import {
   plain,
   pool,
   pruneImages,
+  wikiImageUrls,
   wikiPages,
   wikiQuery,
   writeAtlas,
@@ -146,6 +147,11 @@ const ORIGIN_RULES = [
   ['Вампирий мир', /vaeternus/i],
 ]
 
+const IMAGE_OVERRIDES = {
+  'Kuai Liang': 'Sub-Zero MK11 render.png',
+  'Bi-Han': 'Noob Saibot MK11 render.png',
+}
+
 const MALE = new Set(['Kung Lao', 'Kotal Kahn', 'Cyrax', 'Sektor', 'Takeda Takahashi'])
 
 const DEBUT_OVERRIDES = { 'Kenshi Takahashi': 4, "Bo' Rai Cho": 4, Onaga: 5 }
@@ -241,12 +247,14 @@ async function main() {
     const res = await wikiQuery(API, titles, 'prop=pageimages&piprop=original')
     return Object.fromEntries(Object.entries(res).map(([t, p]) => [t, p.original?.source ?? null]))
   })
+  const fixed = await cachedJson(CACHE, 'image-overrides.json', () => wikiImageUrls(API, Object.values(IMAGE_OVERRIDES)))
 
   const result = []
   await pool(FIGHTERS, 8, async ([title, nameEn, nameRu, answer, affiliations, alignment]) => {
     const page = pages[title]
     if (!page?.text) return console.warn('missing page', title)
-    const buf = await cachedDownload(path.join(CACHE, 'img'), String(page.id), [images[title]])
+    const override = IMAGE_OVERRIDES[title]
+    const buf = await cachedDownload(path.join(CACHE, 'img'), override ? `${page.id}-fixed` : String(page.id), override ? [fixed[override]] : [images[title]])
     if (!buf) return console.warn('no image', title)
     try {
       await writeFullAndThumb(buf, path.join(OUT_IMG, 'full', `${page.id}.webp`), path.join(THUMBS, `${page.id}.webp`), 96)
@@ -257,8 +265,8 @@ async function main() {
     if (debut === null) return console.warn('no debut', title)
     const speciesText = plain(firstTimeline(field(page.text, 'Species')))
     const originText = plain(firstTimeline(field(page.text, 'Origin')))
-    const override = OVERRIDES[title] ?? {}
-    const species = override.species ?? SPECIES_RULES.filter(([, re]) => re.test(speciesText)).map(([l]) => l).slice(0, 2)
+    const known = OVERRIDES[title] ?? {}
+    const species = known.species ?? SPECIES_RULES.filter(([, re]) => re.test(speciesText)).map(([l]) => l).slice(0, 2)
     result.push({
       id: page.id,
       name: nameRu,
@@ -267,7 +275,7 @@ async function main() {
       gender: MALE.has(title) ? 'Мужской' : (SEX[plain(field(page.text, 'Gender')).trim()] ?? 'Другое'),
       species: species.length ? species : ['Человек'],
       affiliations: affiliations.length ? affiliations : ['Одиночка'],
-      origin: override.origin ?? ORIGIN_RULES.find(([, re]) => re.test(originText))?.[0] ?? 'Земное царство',
+      origin: known.origin ?? ORIGIN_RULES.find(([, re]) => re.test(originText))?.[0] ?? 'Земное царство',
       alignment,
       debut: GAMES[debut][0],
       debutIndex: debut,
