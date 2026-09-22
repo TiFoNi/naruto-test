@@ -4,6 +4,11 @@ import { dailyAnswer, dailyNumber, nextReset, pastAnswer, shiftDay, today } from
 import { rounds, type RoundDoc, type UserDoc } from './db.js'
 import { gameData, isGame, isMode } from './games.js'
 import { applyDailyResult, applyResult } from './profile.js'
+import { abilityByKey } from './abilities.js'
+import { roundExtra } from './extra.js'
+
+const ABILITY_HINT_AT = 7
+const ABILITY_STAGES = 5
 import type { Collection } from 'mongodb'
 
 const RECENT = 25
@@ -21,7 +26,8 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId) 
   const fresh = pool.filter((e) => !seen.has(e.id))
   const choices = fresh.length ? fresh : pool
   const answer = choices[Math.floor(Math.random() * choices.length)]
-  const doc: RoundDoc = { userId, game, mode, answerId: answer.id, guesses: [], status: 'active', createdAt: new Date() }
+  const extra = roundExtra(mode, answer.id)
+  const doc: RoundDoc = { userId, game, mode, answerId: answer.id, ...(extra ? { extra } : {}), guesses: [], status: 'active', createdAt: new Date() }
   const { insertedId } = await collection.insertOne(doc)
   return { ...doc, _id: insertedId }
 }
@@ -36,7 +42,7 @@ export async function dailyRound(userId: ObjectId, game: GameId, mode: ModeId) {
     game,
     mode,
     daily: day,
-    answerId: await dailyAnswer(game, mode, day),
+    ...(await dailyAnswer(game, mode, day)),
     guesses: [],
     status: 'active',
     createdAt: new Date(),
@@ -81,8 +87,22 @@ export async function roundView(round: RoundDoc, full = true) {
       judgement: round.mode === 'classic' ? judgeAll(game, byId.get(guessId)!, answer) : undefined,
     })),
     answerId: round.status === 'active' ? undefined : round.answerId,
-    image: round.mode === 'image' ? `/api/round/image?id=${id}` : undefined,
+    image: round.mode === 'image' || round.mode === 'ability' ? `/api/round/image?id=${id}` : undefined,
+    ...(round.mode === 'ability' ? abilityInfo(round) : {}),
   }
+}
+
+const wrongGuesses = (round: RoundDoc) => round.guesses.filter((g) => g !== round.answerId).length
+
+export function abilityStage(round: RoundDoc) {
+  const wrong = wrongGuesses(round)
+  return round.status !== 'active' || wrong >= ABILITY_STAGES ? '' : `s${wrong}/`
+}
+
+function abilityInfo(round: RoundDoc) {
+  const wrong = wrongGuesses(round)
+  const reveal = round.status !== 'active' || wrong >= ABILITY_HINT_AT
+  return { hintAt: ABILITY_HINT_AT, ability: reveal ? abilityByKey(round.answerId, round.extra)?.name : undefined }
 }
 
 export async function ownedRound(userId: ObjectId, roundId: unknown) {

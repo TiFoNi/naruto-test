@@ -1,6 +1,6 @@
 export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'bluelock' | 'onepiece' | 'mk'
 
-export type ModeId = 'classic' | 'image'
+export type ModeId = 'classic' | 'image' | 'ability'
 
 export type Verdict = 'correct' | 'partial' | 'wrong'
 
@@ -10,7 +10,7 @@ export type JudgeKind = 'exact' | 'list' | 'order' | 'optionalOrder'
 
 export type JudgeSpec = { key: string; kind: JudgeKind }
 
-export type GameSpec = { data: string; images: string; columns: JudgeSpec[] }
+export type GameSpec = { data: string; images: string; columns: JudgeSpec[]; modes?: ModeId[] }
 
 const col = (key: string, kind: JudgeKind): JudgeSpec => ({ key, kind })
 
@@ -131,6 +131,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
   dota: {
     data: 'dota',
     images: 'dota',
+    modes: ['classic', 'image', 'ability'],
     columns: [
       col('gender', 'exact'),
       col('species', 'list'),
@@ -145,15 +146,21 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
-export const MODE_IDS: ModeId[] = ['classic', 'image']
+export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability']
+
+const DEFAULT_MODES: ModeId[] = ['classic', 'image']
+
+export const modesOf = (game: GameId) => GAME_SPECS[game].modes ?? DEFAULT_MODES
+
+export const hasMode = (game: GameId, mode: ModeId) => modesOf(game).includes(mode)
 
 export const statsKey = (game: string, mode: string) => `${game}_${mode}`
 
 export const dailyKey = (game: string, mode: string) => `${statsKey(game, mode)}_daily`
 
-export const STAT_KEYS = GAME_IDS.flatMap((g) => MODE_IDS.map((m) => statsKey(g, m)))
+export const STAT_KEYS = GAME_IDS.flatMap((g) => modesOf(g).map((m) => statsKey(g, m)))
 
-export const DAILY_KEYS = GAME_IDS.flatMap((g) => MODE_IDS.map((m) => dailyKey(g, m)))
+export const DAILY_KEYS = GAME_IDS.flatMap((g) => modesOf(g).map((m) => dailyKey(g, m)))
 
 const present = (value: unknown) => typeof value === 'number' && value >= 0
 

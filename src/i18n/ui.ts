@@ -69,6 +69,12 @@ const ui = {
 
   'mode.classic': { ru: 'По признакам', uk: 'За ознаками', en: 'By traits' },
   'mode.image': { ru: 'По картинке', uk: 'За картинкою', en: 'By picture' },
+  'mode.ability': { ru: 'По способности', uk: 'За здібністю', en: 'By ability' },
+  'mode.ability.desc': {
+    ru: 'Иконка одной способности героя — сначала серая и размытая, с каждой ошибкой всё чётче и цветнее.',
+    uk: 'Іконка однієї здібності героя — спершу сіра й розмита, з кожною помилкою все чіткіша й кольоровіша.',
+    en: "One of the hero's ability icons — grey and blurred at first, sharper and more colourful after every miss.",
+  },
   'mode.cover': { ru: 'По обложке манги', uk: 'За обкладинкою манги', en: 'By manga cover' },
   'mode.page': { ru: 'По странице манги', uk: 'За сторінкою манги', en: 'By manga page' },
   'mode.quote': { ru: 'По цитате', uk: 'За цитатою', en: 'By quote' },
@@ -105,6 +111,19 @@ const ui = {
   },
   'play.retry': { ru: 'Повторить', uk: 'Повторити', en: 'Retry' },
   'play.classicTitle': { ru: 'Кто загадан?', uk: 'Хто загаданий?', en: 'Who is it?' },
+  'play.abilityTitle': { ru: 'Чья это способность?', uk: 'Чия це здібність?', en: 'Whose ability is this?' },
+  'play.abilityPrompt': {
+    ru: 'Угадай героя по иконке способности. Каждая ошибка делает её чётче.',
+    uk: 'Вгадай героя за іконкою здібності. Кожна помилка робить її чіткішою.',
+    en: 'Guess the hero from an ability icon. Every miss makes it clearer.',
+  },
+  'ability.hint': { ru: 'Подсказка — способность:', uk: 'Підказка — здібність:', en: 'Hint — the ability is' },
+  'ability.was': { ru: 'Способность:', uk: 'Здібність:', en: 'Ability:' },
+  'ability.hintIn': {
+    ru: 'Ещё ошибок до подсказки с названием: {count}',
+    uk: 'Ще помилок до підказки з назвою: {count}',
+    en: 'Misses until the name hint: {count}',
+  },
   'play.imageTitle': { ru: 'Кто на картинке?', uk: 'Хто на картинці?', en: 'Who is in the picture?' },
   'play.imagePrompt': {
     ru: 'С каждой неудачной попыткой картинка немного отдаляется.',
@@ -231,6 +250,8 @@ const ui = {
   'dash.gamesHint': { ru: 'Герои видеоигр', uk: 'Герої відеоігор', en: 'Video game heroes' },
   'dash.characters': { ru: 'Персонажей: {count}', uk: 'Персонажів: {count}', en: 'Characters: {count}' },
   'dash.heroes': { ru: 'Героев: {count}', uk: 'Героїв: {count}', en: 'Heroes: {count}' },
+  'nav.scrollLeft': { ru: 'Прокрутить влево', uk: 'Прокрутити ліворуч', en: 'Scroll left' },
+  'nav.scrollRight': { ru: 'Прокрутить вправо', uk: 'Прокрутити праворуч', en: 'Scroll right' },
   'nav.leaderboard': { ru: 'Лидеры', uk: 'Лідери', en: 'Leaderboard' },
   'lb.title': { ru: 'Таблица лидеров', uk: 'Таблиця лідерів', en: 'Leaderboard' },
   'lb.hint': {

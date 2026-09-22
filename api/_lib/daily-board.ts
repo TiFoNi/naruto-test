@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { dailyKey, GAME_IDS, MODE_IDS, type GameId, type ModeId } from '../../src/games/specs.js'
+import { dailyKey, GAME_IDS, hasMode, MODE_IDS, type GameId, type ModeId } from '../../src/games/specs.js'
 import { dailyNumber, shiftDay, today } from './daily.js'
 import { rounds, users } from './db.js'
 import { fail, json } from './http.js'
@@ -13,7 +13,7 @@ export async function dailyBoard(userId: ObjectId, params: URLSearchParams) {
   const game = params.get('game') as GameId
   const mode = params.get('mode') as ModeId
   const sort = params.get('sort') ?? 'today'
-  if (!GAME_IDS.includes(game) || !MODE_IDS.includes(mode) || !['today', 'streak'].includes(sort)) return fail(400, 'bad_request')
+  if (!GAME_IDS.includes(game) || !MODE_IDS.includes(mode) || !hasMode(game, mode) || !['today', 'streak'].includes(sort)) return fail(400, 'bad_request')
 
   const me = userId.toHexString()
   const day = today()

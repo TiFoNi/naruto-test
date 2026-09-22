@@ -7,6 +7,7 @@ export type { ModeId }
 export const MODES: { id: ModeId; label: UiKey; description: UiKey; icon: string }[] = [
   { id: 'classic', label: 'mode.classic', description: 'mode.classic.desc', icon: '▦' },
   { id: 'image', label: 'mode.image', description: 'mode.image.desc', icon: '◎' },
+  { id: 'ability', label: 'mode.ability', description: 'mode.ability.desc', icon: '✦' },
 ]
 
 export const UPCOMING_MODES: { label: UiKey; categories: Category[] }[] = [

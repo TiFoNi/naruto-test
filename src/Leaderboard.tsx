@@ -5,6 +5,7 @@ import type { GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES, type ModeId } from './modes'
 import { href } from './router'
+import ScrollRow from './ScrollRow'
 
 type Sort = 'best' | 'solved' | 'avg' | 'today' | 'streak'
 
@@ -95,7 +96,7 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
         <p className="muted">{t('lb.hint')}</p>
       </header>
 
-      <nav className="game-tabs" aria-label={t('nav.games')}>
+      <ScrollRow className="game-tabs" label={t('nav.games')} activeKey={gameId}>
         {GAMES.map((g) => (
           <a
             key={g.id}
@@ -107,7 +108,7 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
             {l(g.label)}
           </a>
         ))}
-      </nav>
+      </ScrollRow>
 
       <div className="lb-controls">
         <div className="game-switches">

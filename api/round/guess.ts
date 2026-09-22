@@ -6,6 +6,7 @@ import { sessionUserId, unauthorized } from '../_lib/profile.js'
 import { finishRound, roundView } from '../_lib/rounds.js'
 
 const MAX_GUESSES = 300
+const MIN_GAP_MS = 800
 
 export const POST = handle(async (request) => {
   const userId = await sessionUserId(request)
@@ -18,9 +19,17 @@ export const POST = handle(async (request) => {
 
   const collection = await rounds()
   const _id = new ObjectId(body.roundId)
+  const now = new Date()
   const updated = await collection.findOneAndUpdate(
-    { _id, userId, status: 'active', guesses: { $ne: entityId }, [`guesses.${MAX_GUESSES}`]: { $exists: false } },
-    { $push: { guesses: entityId } },
+    {
+      _id,
+      userId,
+      status: 'active',
+      guesses: { $ne: entityId },
+      [`guesses.${MAX_GUESSES}`]: { $exists: false },
+      $or: [{ lastGuessAt: { $exists: false } }, { lastGuessAt: { $lte: new Date(now.getTime() - MIN_GAP_MS) } }],
+    },
+    { $push: { guesses: entityId }, $set: { lastGuessAt: now } },
     { returnDocument: 'after' },
   )
 
@@ -29,7 +38,8 @@ export const POST = handle(async (request) => {
     if (!round || !isGame(round.game)) return fail(404, 'not_found')
     if (round.status !== 'active') return fail(409, 'round_over')
     if (!gameData(round.game).byId.has(entityId)) return fail(400, 'bad_request')
-    return fail(409, 'duplicate')
+    if (round.guesses.includes(entityId)) return fail(409, 'duplicate')
+    return fail(429, 'too_fast')
   }
 
   if (!isGame(updated.game) || !gameData(updated.game).byId.has(entityId)) {

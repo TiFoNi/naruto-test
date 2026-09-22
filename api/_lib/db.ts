@@ -23,12 +23,14 @@ export type RoundDoc = {
   guesses: number[]
   status: RoundStatus
   daily?: string
+  extra?: string
   guessCount?: number
+  lastGuessAt?: Date
   createdAt: Date
   finishedAt?: Date
 }
 
-export type DailyDoc = { _id: string; day: string; game: string; mode: string; answerId: number; createdAt: Date }
+export type DailyDoc = { _id: string; day: string; game: string; mode: string; answerId: number; extra?: string; createdAt: Date }
 
 const cache = globalThis as typeof globalThis & {
   __mongo?: Promise<MongoClient>

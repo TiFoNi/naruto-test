@@ -50,7 +50,7 @@ export const dota: Game<Hero> = {
     'Every Dota 2 hero: attributes, roles, complexity and release year.',
   ),
   accent: '#e5483b',
-  modes: ['classic', 'image'],
+  modes: ['classic', 'image', 'ability'],
   featured: ['Pudge', 'Invoker', 'Crystal Maiden', 'Juggernaut'],
   unit: 'hero',
   entities: raw as Hero[],

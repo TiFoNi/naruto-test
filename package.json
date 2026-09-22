@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "data": "node scripts/build-data.mjs && node scripts/build-dota.mjs && node scripts/build-aot.mjs && node scripts/build-bleach.mjs && node scripts/build-tg.mjs && node scripts/build-berserk.mjs && node scripts/build-kny.mjs && node scripts/build-bluelock.mjs && node scripts/build-onepiece.mjs && node scripts/build-mk.mjs",
     "data:naruto": "node scripts/build-data.mjs",
-    "data:dota": "node scripts/build-dota.mjs",
+    "data:dota": "node scripts/build-dota.mjs && node scripts/build-dota-abilities.mjs",
     "data:aot": "node scripts/build-aot.mjs",
     "data:bleach": "node scripts/build-bleach.mjs",
     "data:tg": "node scripts/build-tg.mjs",

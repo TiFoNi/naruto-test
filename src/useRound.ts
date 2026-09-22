@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api } from './api'
 import { useAuth } from './auth'
 import type { Entity, Game, Judgement } from './games/types'
@@ -13,6 +13,8 @@ export type RoundView = {
   answerId?: number
   image?: string
   daily?: string
+  hintAt?: number
+  ability?: { ru: string; uk: string; en: string }
   nextAt?: number
   yesterdayId?: number | null
 }
@@ -21,11 +23,16 @@ type RoundResponse = { round?: RoundView; stats?: { key: string; value: Stats } 
 
 export type Guess = { entity: Entity; judgement?: Record<string, Judgement>; pending?: boolean }
 
+const GUESS_GAP_MS = 1000
+
 export function useRound(game: Game, mode: ModeId, active: boolean, daily = false) {
   const { setStats, expire } = useAuth()
   const [round, setRound] = useState<RoundView | null>(null)
   const [pending, setPending] = useState<Entity | null>(null)
   const [busy, setBusy] = useState(false)
+  const [cooling, setCooling] = useState(false)
+  const lastGuess = useRef(0)
+  const coolTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const [error, setError] = useState<string | null>(null)
 
   const byId = useMemo(() => new Map(game.entities.map((e) => [e.id, e])), [game])
@@ -33,6 +40,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
   const accept = useCallback(
     ({ ok, status, data }: { ok: boolean; status: number; data: RoundResponse & { error?: string } }) => {
       if (status === 401) return expire()
+      if (status === 429 && data.error === 'too_fast') return
       if (!ok || !data.round) return setError(data.error ?? 'server')
       setError(null)
       const next = data.round
@@ -81,8 +89,16 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
   const answer = round?.answerId !== undefined ? byId.get(round.answerId) : undefined
   const yesterday = round?.yesterdayId != null ? byId.get(round.yesterdayId) : undefined
 
+  useEffect(() => () => clearTimeout(coolTimer.current), [])
+
   const guess = (entity: Entity) => {
-    if (!round || over || busy || exclude.has(entity.id)) return
+    if (!round || over || busy || cooling || exclude.has(entity.id)) return
+    const now = Date.now()
+    if (now - lastGuess.current < GUESS_GAP_MS) return
+    lastGuess.current = now
+    setCooling(true)
+    clearTimeout(coolTimer.current)
+    coolTimer.current = setTimeout(() => setCooling(false), GUESS_GAP_MS)
     setPending(entity)
     request('round/guess', { roundId: round.id, entityId: entity.id, game: game.id })
   }
@@ -98,5 +114,5 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
 
   const retry = () => setError(null)
 
-  return { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry }
+  return { round, guesses, exclude, over, won, skipped, answer, yesterday, busy: busy || cooling, error, guess, giveUp, next, retry }
 }

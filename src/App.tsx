@@ -7,7 +7,9 @@ import ClassicMode from './ClassicMode'
 import Dashboard from './Dashboard'
 import Leaderboard from './Leaderboard'
 import ImageMode from './ImageMode'
+import AbilityMode from './AbilityMode'
 import Profile from './Profile'
+import ScrollRow from './ScrollRow'
 import { GAMES, gameById } from './games'
 import type { Game } from './games/types'
 import { LANGS, useI18n } from './i18n'
@@ -84,6 +86,11 @@ function GameView({ game, mode, daily, visible }: { game: Game; mode: ModeId; da
           <div hidden={mode !== 'image'}>
             <ImageMode game={game} active={visible && daily === d && mode === 'image'} stats={statsFor('image', d)} daily={d} />
           </div>
+          {game.modes.includes('ability') && (
+            <div hidden={mode !== 'ability'}>
+              <AbilityMode game={game} active={visible && daily === d && mode === 'ability'} stats={statsFor('ability', d)} daily={d} />
+            </div>
+          )}
         </div>
       ))}
     </div>
@@ -172,7 +179,7 @@ export default function App() {
               <a className="back" href={href.home}>
                 {t('play.back')}
               </a>
-              <nav className="game-tabs" aria-label={t('nav.games')}>
+              <ScrollRow className="game-tabs" label={t('nav.games')} activeKey={game?.id}>
                 {GAMES.map((g) => (
                   <a
                     key={g.id}
@@ -184,7 +191,7 @@ export default function App() {
                     {l(g.label)}
                   </a>
                 ))}
-              </nav>
+              </ScrollRow>
             </div>
             <main>
               {GAMES.map((g) => (

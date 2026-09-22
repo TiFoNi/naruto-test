@@ -2,6 +2,7 @@ import { createHmac } from 'node:crypto'
 import type { GameId, ModeId } from '../../src/games/specs.js'
 import { dailies } from './db.js'
 import { gameData } from './games.js'
+import { roundExtra } from './extra.js'
 
 const ZONE = 'Europe/Kyiv'
 const LAUNCH = '2026-09-22'
@@ -58,10 +59,16 @@ export async function dailyAnswer(game: GameId, mode: ModeId, day: string) {
   const _id = `${day}:${game}:${mode}`
   const doc = await collection.findOneAndUpdate(
     { _id },
-    { $setOnInsert: { day, game, mode, answerId: pick(game, mode, day), createdAt: new Date() } },
+    { $setOnInsert: dailySeed(game, mode, day) },
     { upsert: true, returnDocument: 'after' },
   )
-  return doc!.answerId
+  return { answerId: doc!.answerId, extra: doc!.extra }
+}
+
+function dailySeed(game: GameId, mode: ModeId, day: string) {
+  const answerId = pick(game, mode, day)
+  const roll = parseInt(createHmac('sha256', secret()).update(`${game}:${mode}:${day}:extra`).digest('hex').slice(0, 8), 16) / 0x100000000
+  return { day, game, mode, answerId, extra: roundExtra(mode, answerId, roll), createdAt: new Date() }
 }
 
 export async function pastAnswer(game: GameId, mode: ModeId, day: string) {
