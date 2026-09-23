@@ -13,7 +13,8 @@ export default function PageMode({ game, active, stats, daily = false }: Props) 
   const { round, guesses, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(game, 'page', active, daily)
 
   const byId = new Map(game.entities.map((e) => [e.id, e]))
-  const picked = new Set(guesses.map((g) => g.entity.id))
+  const missed = new Set(guesses.filter((g) => !g.pending).map((g) => g.entity.id))
+  const waiting = guesses.find((g) => g.pending)?.entity.id
   const options = (round?.options ?? []).map((id) => byId.get(id)).filter((e) => e !== undefined)
 
   return (
@@ -47,8 +48,8 @@ export default function PageMode({ game, active, stats, daily = false }: Props) 
             {options.map((option) => (
               <button
                 key={option.id}
-                className={`option ${picked.has(option.id) ? 'wrong' : ''}`}
-                disabled={busy || picked.has(option.id)}
+                className={`option ${waiting === option.id ? 'waiting' : missed.has(option.id) ? 'wrong' : ''}`}
+                disabled={busy || missed.has(option.id) || waiting === option.id}
                 onClick={() => guess(option)}
               >
                 <span className="option-name">{name(option)}</span>

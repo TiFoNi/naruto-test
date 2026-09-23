@@ -6,7 +6,7 @@ import { useI18n, type UiKey } from './i18n'
 import { MODES, type ModeId } from './modes'
 import { href, navigate } from './router'
 import Picker from './Picker'
-import { CalendarIcon, InfinityIcon, MedalIcon } from './icons'
+import { CalendarIcon, InfinityIcon, MedalIcon, SortIcon } from './icons'
 
 type Sort = 'best' | 'solved' | 'avg' | 'today' | 'streak'
 
@@ -22,7 +22,7 @@ type Row = {
   streak?: number
 }
 
-type Board = { rows: Row[]; me: Row | null; total: number; minForAvg?: number; number?: number }
+type Board = { rows: Row[]; me: Row | null; total: number; number?: number }
 
 type Column = { label: UiKey; sort?: Sort; value: (row: Row) => string | number }
 
@@ -65,31 +65,41 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
   const game = gameById(gameId)
   const sorts = daily ? DAILY_SORTS : ENDLESS_SORTS
   const [chosen, setSort] = useState<Sort>('best')
+  const [reversed, setReversed] = useState(false)
   const sort = sorts.some((s) => s.id === chosen) ? chosen : sorts[0].id
+
+  const pick = (next: Sort) => {
+    if (next === sort) return setReversed((r) => !r)
+    setSort(next)
+    setReversed(false)
+  }
   const [board, setBoard] = useState<Board | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     let cancelled = false
-    setLoading(true)
+    const slow = setTimeout(() => !cancelled && setLoading(true), 300)
     setError(null)
-    api<Board>(`leaderboard?game=${gameId}&mode=${mode}&sort=${sort}${daily ? '&daily=1' : ''}`)
+    api<Board>(`leaderboard?game=${gameId}&mode=${mode}&sort=${sort}${reversed ? '&dir=rev' : ''}${daily ? '&daily=1' : ''}`)
       .then(({ ok, data }) => {
         if (cancelled) return
         if (ok) setBoard(data)
         else setError(data.error ?? 'server')
+        clearTimeout(slow)
         setLoading(false)
       })
       .catch(() => {
         if (cancelled) return
         setError('network')
+        clearTimeout(slow)
         setLoading(false)
       })
     return () => {
       cancelled = true
+      clearTimeout(slow)
     }
-  }, [gameId, mode, sort, daily])
+  }, [gameId, mode, sort, reversed, daily])
 
   const meOutside = board?.me && !board.rows.some((r) => r.me) ? board.me : null
 
@@ -136,20 +146,17 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
               ),
             }))}
           />
-          <Picker
-            label={t('lb.sortBy')}
-            value={sort}
-            onChange={(next) => setSort(next as Sort)}
-            options={sorts.map((s) => ({ value: s.id, label: t(s.label) }))}
-          />
         </div>
       </div>
 
-      {sort === 'avg' && board && <p className="muted lb-note">{t('lb.avgNote', { min: board.minForAvg ?? 0 })}</p>}
-      {daily && board?.number && (
-        <p className="muted lb-note">
-          {t(sort === 'today' ? 'daily.boardToday' : 'daily.boardStreak', { number: board.number })}
-        </p>
+      {daily && (
+        <div className="variant-tabs lb-daily-sort" role="tablist" aria-label={t('lb.sortBy')}>
+          {sorts.map((s) => (
+            <button key={s.id} role="tab" aria-selected={sort === s.id} className={sort === s.id ? 'active' : ''} onClick={() => pick(s.id)}>
+              {t(s.label)}
+            </button>
+          ))}
+        </div>
       )}
 
       <section className={`card lb-card ${loading ? 'loading' : ''}`}>
@@ -157,13 +164,6 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
           <div className="lb-state">{errorText(error)}</div>
         ) : !board ? (
           <div className="lb-state">{t('loading')}</div>
-        ) : board.rows.length === 0 ? (
-          <div className="lb-empty">
-            <p>{t(daily && sort === 'today' ? 'daily.empty' : 'lb.empty')}</p>
-            <a className="primary" href={href.play(gameId, mode, daily)}>
-              {t('lb.play')}
-            </a>
-          </div>
         ) : (
           <div className="lb-scroll">
             <table className="lb-table">
@@ -171,14 +171,33 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
                 <tr>
                   <th>#</th>
                   <th>{t('lb.player')}</th>
-                  {COLUMNS[sort].map((c) => (
-                    <th key={c.label} className={c.sort === sort ? 'sorted' : ''}>
-                      {t(c.label)}
-                    </th>
-                  ))}
+                  {COLUMNS[sort].map((c) =>
+                    c.sort ? (
+                      <th key={c.label} className={c.sort === sort ? 'sorted' : 'sortable'}>
+                        <button type="button" onClick={() => pick(c.sort!)}>
+                          {t(c.label)}
+                          {c.sort === sort && <SortIcon className={reversed ? 'up' : ''} />}
+                        </button>
+                      </th>
+                    ) : (
+                      <th key={c.label}>{t(c.label)}</th>
+                    ),
+                  )}
                 </tr>
               </thead>
               <tbody>
+                {board.rows.length === 0 && (
+                  <tr className="lb-blank">
+                    <td colSpan={COLUMNS[sort].length + 2}>
+                      <div className="lb-blank-inner">
+                        <span>{t(daily && sort === 'today' ? 'daily.empty' : 'lb.empty')}</span>
+                        <a className="primary" href={href.play(gameId, mode, daily)}>
+                          {t('lb.play')}
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                )}
                 {[...board.rows, ...(meOutside ? [meOutside] : [])].map((row, i) => (
                   <tr key={`${row.rank}-${row.nickname}`} className={`${row.me ? 'me' : ''} ${meOutside && i === board.rows.length ? 'gap' : ''}`}>
                     <td className="lb-rank">
@@ -198,6 +217,10 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
               </tbody>
             </table>
           </div>
+        )}
+
+        {daily && board?.number && (
+          <p className="lb-note">{t(sort === 'today' ? 'daily.boardToday' : 'daily.boardStreak', { number: board.number })}</p>
         )}
       </section>
     </div>

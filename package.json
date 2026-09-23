@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "data": "node scripts/build-data.mjs && node scripts/build-dota.mjs && node scripts/build-aot.mjs && node scripts/build-bleach.mjs && node scripts/build-tg.mjs && node scripts/build-berserk.mjs && node scripts/build-kny.mjs && node scripts/build-onepiece.mjs && node scripts/build-mk.mjs && node scripts/build-hxh.mjs && node scripts/build-bc.mjs && node scripts/build-jojo.mjs && node scripts/build-se.mjs && node scripts/build-ff.mjs && node scripts/build-manga.mjs",
+    "data": "node scripts/build-data.mjs && node scripts/build-dota.mjs && node scripts/build-aot.mjs && node scripts/build-bleach.mjs && node scripts/build-tg.mjs && node scripts/build-berserk.mjs && node scripts/build-kny.mjs && node scripts/build-onepiece.mjs && node scripts/build-mk.mjs && node scripts/build-hxh.mjs && node scripts/build-bc.mjs && node scripts/build-jojo.mjs && node scripts/build-se.mjs && node scripts/build-ff.mjs && node scripts/build-manga.mjs && node scripts/build-dn.mjs",
     "data:naruto": "node scripts/build-data.mjs",
     "data:dota": "node scripts/build-dota.mjs && node scripts/build-dota-abilities.mjs",
     "data:aot": "node scripts/build-aot.mjs",
@@ -23,6 +23,7 @@
     "data:se": "node scripts/build-se.mjs",
     "data:ff": "node scripts/build-ff.mjs",
     "data:manga": "node scripts/build-manga.mjs",
+    "data:dn": "node scripts/build-dn.mjs",
     "check:data": "node scripts/check-data.mjs",
     "pics": "node --env-file-if-exists=.env.local scripts/upload-pics.mjs"
   },

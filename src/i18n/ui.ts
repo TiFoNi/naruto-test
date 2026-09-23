@@ -355,11 +355,6 @@ const ui = {
   'lb.sortBest': { ru: 'Самая длинная серия', uk: 'Найдовша серія', en: 'Longest streak' },
   'lb.sortSolved': { ru: 'Всего угадано', uk: 'Всього вгадано', en: 'Total solved' },
   'lb.sortAvg': { ru: 'Меньше попыток', uk: 'Менше спроб', en: 'Fewest guesses' },
-  'lb.avgNote': {
-    ru: 'В рейтинге по попыткам — игроки, угадавшие хотя бы {min} раз.',
-    uk: 'У рейтингу за спробами — гравці, що вгадали щонайменше {min} разів.',
-    en: 'Only players with at least {min} solves are ranked by guesses.',
-  },
   'lb.colBest': { ru: 'Самая длинная серия', uk: 'Найдовша серія', en: 'Longest streak' },
   'lb.colSolved': { ru: 'Всего угадано', uk: 'Всього вгадано', en: 'Total solved' },
   'lb.colAvg': { ru: 'Среднее число попыток', uk: 'Середня кількість спроб', en: 'Average guesses' },

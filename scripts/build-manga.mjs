@@ -41,10 +41,40 @@ const TITLES = [
   ['dorohedoro', 'Дорохедоро', 'Dorohedoro', 'Кю Хаясида', 2000, 'Сэйнэн', 'Завершена'],
   ['ashita-no-joe', 'Завтрашний Джо', 'Ashita no Joe', 'Тэцуя Тиба', 1968, 'Сёнэн', 'Завершена'],
   ['hellsing', 'Хеллсинг', 'Hellsing', 'Кота Хирано', 1997, 'Сэйнэн', 'Завершена'],
+  ['liar-game', 'Игра лжецов', 'Liar Game', 'Синобу Кайтани', 2005, 'Сэйнэн', 'Завершена'],
+  ['witch-hat', 'Ателье колдовских колпаков', 'Witch Hat Atelier', 'Камомэ Сирахама', 2016, 'Сэйнэн', 'Выходит'],
+  ['houseki', 'Страна самоцветов', 'Land of the Lustrous', 'Харуко Итикава', 2012, 'Сэйнэн', 'Завершена'],
+  ['evangelion', 'Евангелион', 'Neon Genesis Evangelion', 'Ёсиюки Садамото', 1994, 'Сёнэн', 'Завершена'],
+  ['beck', 'Бек', 'Beck', 'Харольд Сакуиси', 1999, 'Сёнэн', 'Завершена'],
+  ['my-dearest-self', 'Моё дорогое я со злым умыслом', 'My Dearest Self with Malice Aforethought', 'Хадзимэ Инорю, Сёта Ито', 2020, 'Сёнэн', 'Завершена'],
+  ['homunculus', 'Гомункул', 'Homunculus', 'Хидэо Ямамото', 2003, 'Сэйнэн', 'Завершена'],
+  ['real', 'Реальность', 'Real', 'Такэхико Иноуэ', 1999, 'Сэйнэн', 'Выходит'],
+  ['dungeon-meshi', 'Подземелье вкусностей', 'Delicious in Dungeon', 'Рёко Куи', 2014, 'Сэйнэн', 'Завершена'],
+  ['yotsuba', 'Ёцуба!', 'Yotsuba&!', 'Киёхико Адзума', 2003, 'Сэйнэн', 'Выходит'],
+  ['claymore', 'Клеймор', 'Claymore', 'Норихиро Яги', 2001, 'Сёнэн', 'Завершена'],
+  ['jigokuraku', 'Адский рай', "Hell's Paradise", 'Юдзи Каку', 2018, 'Сёнэн', 'Завершена'],
+  ['black-clover', 'Чёрный клевер', 'Black Clover', 'Юки Табата', 2015, 'Сёнэн', 'Выходит'],
+  ['tomodachi-game', 'Игра друзей', 'Tomodachi Game', 'Микото Ямагути', 2013, 'Сёнэн', 'Выходит'],
+  ['kokou-no-hito', 'Скалолаз', 'The Climber', 'Синъити Сакамото', 2007, 'Сэйнэн', 'Завершена'],
+  ['ajin', 'Получеловек', 'Ajin', 'Гамон Сакураи', 2012, 'Сэйнэн', 'Завершена'],
+  ['gantz', 'Ганц', 'Gantz', 'Хироя Оку', 2000, 'Сэйнэн', 'Завершена'],
+  ['fire-punch', 'Огненный удар', 'Fire Punch', 'Тацуки Фудзимото', 2016, 'Сёнэн', 'Завершена'],
+  ['fable', 'Басня', 'The Fable', 'Кацухиса Минами', 2014, 'Сэйнэн', 'Выходит'],
   ['kingdom', 'Царство', 'Kingdom', 'Ясухиса Хара', 2006, 'Сэйнэн', 'Выходит'],
 ]
 
 const MANGADEX_IDS = {
+  'witch-hat': '67e7453b-9ee5-4ae5-9316-215b03e4a71d',
+  houseki: '37bf7574-641e-4665-b992-f2ba8d4652b8',
+  beck: '4cf9b503-439a-48f7-9fc5-21831087a421',
+  homunculus: '231d5196-1f41-4eba-af8d-841d40bc548d',
+  'dungeon-meshi': 'd90ea6cb-7bc3-4d80-8af0-28557e6c4e17',
+  yotsuba: '58be6aa6-06cb-4ca5-bd20-f1392ce451fb',
+  'black-clover': 'e7eabe96-aa17-476f-b431-2497d5e9d060',
+  'kokou-no-hito': 'bb8310e4-6050-4a43-984e-f7bbdfce23b1',
+  gantz: 'f7268daa-9d63-4e3b-9d2a-97b85b39d0cd',
+  'fire-punch': '6fef1f74-a0ad-4f0d-99db-d32a7cd24098',
+  fable: '5209fe10-4a14-403f-8837-2ccf8cced253',
   fma: 'dd8a907a-3850-4f95-ba03-ba201a8399e3',
   'death-note': '75ee72ab-c6bf-4b87-badd-de839156934c',
   hxh: 'db692d58-4b13-4174-ae8c-30c515c0689c',
@@ -88,9 +118,12 @@ async function resolveId(slug, nameEn, year) {
 }
 
 async function coverUrl(id) {
-  const list = await getJson(`https://api.mangadex.org/cover?manga[]=${id}&order[volume]=asc&limit=20`)
+  const list = await getJson(`https://api.mangadex.org/cover?manga[]=${id}&order[volume]=asc&limit=40`)
   const covers = list?.data ?? []
-  const first = covers.find((c) => c.attributes.volume === '1') ?? covers[0]
+  const first =
+    ['ja', 'en'].map((locale) => covers.find((c) => c.attributes.volume === '1' && c.attributes.locale === locale)).find(Boolean) ??
+    covers.find((c) => c.attributes.volume === '1') ??
+    covers[0]
   if (first) return `https://uploads.mangadex.org/covers/${id}/${first.attributes.fileName}`
   const manga = await getJson(`https://api.mangadex.org/manga/${id}?includes[]=cover_art`)
   const art = manga?.data?.relationships?.find((r) => r.type === 'cover_art')

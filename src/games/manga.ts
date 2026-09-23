@@ -12,6 +12,9 @@ type Manga = Entity & {
   pages: number
 }
 
+const ready = (raw as Manga[]).filter((m) => m.answer).map((m) => m.nameEn)
+const preferred = ['Berserk', 'Vagabond', 'Slam Dunk']
+
 export const manga: Game<Manga> = {
   id: 'manga',
   label: l10n('Манга', 'Манга', 'Manga'),
@@ -23,7 +26,7 @@ export const manga: Game<Manga> = {
   ),
   accent: '#7f8cff',
   modes: ['page'],
-  featured: (raw as Manga[]).filter((m) => m.answer).slice(0, 3).map((m) => m.nameEn),
+  featured: [...new Set([...preferred.filter((n) => ready.includes(n)), ...ready])].slice(0, 3),
   unit: 'manga',
   entities: raw as Manga[],
   columns: [],

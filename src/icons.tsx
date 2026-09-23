@@ -134,3 +134,11 @@ export function MedalIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function SortIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2.4}>
+      <path d="m7 10 5-5 5 5M7 14l5 5 5-5" />
+    </svg>
+  )
+}

@@ -1,0 +1,927 @@
+[
+ {
+  "id": 1863,
+  "name": "Айбер",
+  "nameEn": "Aiber",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Опергруппа"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Ёцуба",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 0
+ },
+ {
+  "id": 2337,
+  "name": "Араёси Хатори",
+  "nameEn": "Arayoshi Hatori",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Ёцуба",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 1
+ },
+ {
+  "id": 1963,
+  "name": "Армония Джастин",
+  "nameEn": "Armonia Justin Beyondormason",
+  "gender": "Мужской",
+  "species": "Синигами",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Владел",
+  "eyes": "Есть",
+  "status": "Жив",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 2
+ },
+ {
+  "id": 1828,
+  "name": "Ватари",
+  "nameEn": "Watari",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Опергруппа",
+   "Дом Вамми"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 3
+ },
+ {
+  "id": 2319,
+  "name": "Деридовели",
+  "nameEn": "Deridovely",
+  "gender": "Мужской",
+  "species": "Синигами",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Владел",
+  "eyes": "Есть",
+  "status": "Жив",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 4
+ },
+ {
+  "id": 1953,
+  "name": "Джек Нейлон",
+  "nameEn": "Jack Neylon",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Мафия"
+  ],
+  "note": "Владел",
+  "eyes": "Есть",
+  "status": "Мёртв",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 5
+ },
+ {
+  "id": 1960,
+  "name": "Джелус",
+  "nameEn": "Gelus",
+  "gender": "Мужской",
+  "species": "Синигами",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Владел",
+  "eyes": "Есть",
+  "status": "Мёртв",
+  "arc": "Второй Кира",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 6
+ },
+ {
+  "id": 3311,
+  "name": "Джон Макинрой",
+  "nameEn": "John McEnroe",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "SPK",
+   "ФБР"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 7
+ },
+ {
+  "id": 3387,
+  "name": "Джордж Сайрас",
+  "nameEn": "George Sairas",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 8
+ },
+ {
+  "id": 4413,
+  "name": "Закк Ириус",
+  "nameEn": "Zakk Irius",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Мафия"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 9
+ },
+ {
+  "id": 4415,
+  "name": "Ито Широба",
+  "nameEn": "Ito Shiroba",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Ёцуба",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 10
+ },
+ {
+  "id": 1832,
+  "name": "Кандзо Моги",
+  "nameEn": "Kanzo Mogi",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Опергруппа"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 11
+ },
+ {
+  "id": 2001,
+  "name": "Кёскэ Хигути",
+  "nameEn": "Kyosuke Higuchi",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Кира"
+  ],
+  "note": "Владел",
+  "eyes": "Есть",
+  "status": "Мёртв",
+  "arc": "Ёцуба",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 12
+ },
+ {
+  "id": 1798,
+  "name": "Киёми Такада",
+  "nameEn": "Kiyomi Takada",
+  "gender": "Женский",
+  "species": "Человек",
+  "orgs": [
+   "Кира"
+  ],
+  "note": "Владел",
+  "eyes": "Есть",
+  "status": "Мёртв",
+  "arc": "Второй Кира",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 13
+ },
+ {
+  "id": 2342,
+  "name": "Киитиро Осорэда",
+  "nameEn": "Kiichiro Osoreda",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 14
+ },
+ {
+  "id": 4872,
+  "name": "Корэёси Китамура",
+  "nameEn": "Koreyoshi Kitamura",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Второй Кира",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 15
+ },
+ {
+  "id": 2936,
+  "name": "Куро Отохарада",
+  "nameEn": "Kurou Otoharada",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 16
+ },
+ {
+  "id": 1780,
+  "name": "Лайт Ягами",
+  "nameEn": "Light Yagami",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Опергруппа",
+   "Кира"
+  ],
+  "note": "Владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 17
+ },
+ {
+  "id": 1886,
+  "name": "Линд Л. Тейлор",
+  "nameEn": "Lind L. Tailor",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 18
+ },
+ {
+  "id": 1998,
+  "name": "Масахико Кида",
+  "nameEn": "Masahiko Kida",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Ёцуба",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 19
+ },
+ {
+  "id": 1788,
+  "name": "Мелло",
+  "nameEn": "Mello",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Мафия",
+   "Дом Вамми"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 8421,
+  "name": "Миса Аманес Фриэнд",
+  "nameEn": "Misa Amane's friend",
+  "gender": "Женский",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Второй Кира",
+  "arcIndex": 1,
+  "answer": false,
+  "thumb": 21
+ },
+ {
+  "id": 1790,
+  "name": "Миса Аманэ",
+  "nameEn": "Misa Amane",
+  "gender": "Женский",
+  "species": "Человек",
+  "orgs": [
+   "Кира"
+  ],
+  "note": "Владел",
+  "eyes": "Есть",
+  "status": "Мёртв",
+  "arc": "Второй Кира",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 22
+ },
+ {
+  "id": 1797,
+  "name": "Мэтт",
+  "nameEn": "Matt",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Дом Вамми"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 1871,
+  "name": "Наоми Мисора",
+  "nameEn": "Naomi Misora",
+  "gender": "Женский",
+  "species": "Человек",
+  "orgs": [
+   "ФБР"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 24
+ },
+ {
+  "id": 1787,
+  "name": "Ниа",
+  "nameEn": "Near",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "SPK",
+   "Дом Вамми"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 25
+ },
+ {
+  "id": 1795,
+  "name": "Рем",
+  "nameEn": "Rem",
+  "gender": "Женский",
+  "species": "Синигами",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Владел",
+  "eyes": "Есть",
+  "status": "Мёртв",
+  "arc": "Второй Кира",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 26
+ },
+ {
+  "id": 2563,
+  "name": "Род Росс",
+  "nameEn": "Rod Ross",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Мафия"
+  ],
+  "note": "Владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 2074,
+  "name": "Роджер Руви",
+  "nameEn": "Roger Ruvie",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Дом Вамми"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 1873,
+  "name": "Рэй Пенбер",
+  "nameEn": "Raye Penber",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "ФБР"
+  ],
+  "note": "Владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 29
+ },
+ {
+  "id": 1996,
+  "name": "Рэйдзи Намикава",
+  "nameEn": "Reiji Namikawa",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Ёцуба",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 30
+ },
+ {
+  "id": 1792,
+  "name": "Рюк",
+  "nameEn": "Ryuk",
+  "gender": "Мужской",
+  "species": "Синигами",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Владел",
+  "eyes": "Есть",
+  "status": "Жив",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 31
+ },
+ {
+  "id": 1869,
+  "name": "Сатико Ягами",
+  "nameEn": "Sachiko Yagami",
+  "gender": "Женский",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 1803,
+  "name": "Саю Ягами",
+  "nameEn": "Sayu Yagami",
+  "gender": "Женский",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 1950,
+  "name": "Сидо",
+  "nameEn": "Sidoh",
+  "gender": "Мужской",
+  "species": "Синигами",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Владел",
+  "eyes": "Есть",
+  "status": "Жив",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 2201,
+  "name": "Синго Мидо",
+  "nameEn": "Shingo Mido",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Ёцуба",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 35
+ },
+ {
+  "id": 1825,
+  "name": "Соитиро Ягами",
+  "nameEn": "Soichiro Yagami",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Опергруппа"
+  ],
+  "note": "Владел",
+  "eyes": "Есть",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 36
+ },
+ {
+  "id": 4709,
+  "name": "Стеве Масон",
+  "nameEn": "Steve Mason",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "SPK",
+   "ФБР"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 37
+ },
+ {
+  "id": 2190,
+  "name": "Стивен Джеванни",
+  "nameEn": "Stephen Gevanni",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "SPK"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 38
+ },
+ {
+  "id": 2468,
+  "name": "Сугуру Симура",
+  "nameEn": "Suguru Shimura",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Ёцуба",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 39
+ },
+ {
+  "id": 1831,
+  "name": "Сюити Айдзава",
+  "nameEn": "Shuichi Aizawa",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Опергруппа"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 40
+ },
+ {
+  "id": 2168,
+  "name": "Такуо Сибуимару",
+  "nameEn": "Takuo Shibuimaru",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": false,
+  "thumb": 41
+ },
+ {
+  "id": 2221,
+  "name": "Такэси Ои",
+  "nameEn": "Takeshi Ooi",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Ёцуба",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 42
+ },
+ {
+  "id": 1791,
+  "name": "Теру Миками",
+  "nameEn": "Teru Mikami",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Кира"
+  ],
+  "note": "Владел",
+  "eyes": "Есть",
+  "status": "Мёртв",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 43
+ },
+ {
+  "id": 1826,
+  "name": "Тота Мацуда",
+  "nameEn": "Touta Matsuda",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Опергруппа"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 44
+ },
+ {
+  "id": 1866,
+  "name": "Уэди",
+  "nameEn": "Wedy",
+  "gender": "Женский",
+  "species": "Человек",
+  "orgs": [
+   "Опергруппа"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Ёцуба",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 2175,
+  "name": "Халле Линднер",
+  "nameEn": "Halle Lidner",
+  "gender": "Женский",
+  "species": "Человек",
+  "orgs": [
+   "SPK"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 1875,
+  "name": "Хидэки Идэ",
+  "nameEn": "Hideki Ide",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Опергруппа"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 47
+ },
+ {
+  "id": 1833,
+  "name": "Хирокадзу Укита",
+  "nameEn": "Hirokazu Ukita",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Опергруппа"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 1883,
+  "name": "Хитоси Дэмэгава",
+  "nameEn": "Hitoshi Demegawa",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Второй Кира",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 49
+ },
+ {
+  "id": 2225,
+  "name": "Эйити Такахаси",
+  "nameEn": "Eiichi Takahashi",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Ёцуба",
+  "arcIndex": 2,
+  "answer": false,
+  "thumb": 50
+ },
+ {
+  "id": 2181,
+  "name": "Энтони Рестер",
+  "nameEn": "Anthony Rester",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "SPK"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "answer": false,
+  "thumb": 51
+ },
+ {
+  "id": 3274,
+  "name": "Юри",
+  "nameEn": "Yuri",
+  "gender": "Женский",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 52
+ },
+ {
+  "id": 1784,
+  "name": "L",
+  "nameEn": "L",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Опергруппа",
+   "Дом Вамми"
+  ],
+  "note": "Владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 53
+ }
+]

@@ -2,6 +2,7 @@ import { aot } from './aot'
 import { berserk } from './berserk'
 import { bleach } from './bleach'
 import { bc } from './bc'
+import { dn } from './dn'
 import { dota } from './dota'
 import { hxh } from './hxh'
 import { ff } from './ff'
@@ -15,7 +16,7 @@ import { onepiece } from './onepiece'
 import { tg } from './tg'
 import type { Entity, Game, GameId } from './types'
 
-const ALL = [naruto, onepiece, aot, bleach, kny, tg, berserk, hxh, bc, jojo, se, ff, dota, mk, manga] as unknown as Game<Entity>[]
+const ALL = [naruto, onepiece, aot, bleach, kny, tg, berserk, hxh, bc, jojo, se, ff, dn, dota, mk, manga] as unknown as Game<Entity>[]
 
 export const GAMES = ALL.filter((g) => g.entities.some((e) => e.answer))
 

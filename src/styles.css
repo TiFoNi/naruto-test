@@ -1471,7 +1471,6 @@ footer p {
 }
 
 .lb-card {
-  min-height: 190px;
   transition: opacity 0.18s ease;
 }
 
@@ -2073,8 +2072,11 @@ button.ghost.small {
 }
 
 .lb-note {
-  margin: -4px 0 0;
-  font-size: 13.5px;
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+  color: var(--text-3);
+  font-size: 12.5px;
 }
 
 .lb-card {
@@ -2139,6 +2141,33 @@ button.ghost.small {
   color: var(--text);
 }
 
+.lb-table th button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.lb-table th.sortable button:hover {
+  color: var(--text-2);
+}
+
+.lb-table th .icon {
+  font-size: 13px;
+}
+
+.lb-daily-sort {
+  align-self: flex-start;
+}
+
 .lb-table th.sorted {
   color: var(--accent);
 }
@@ -2185,17 +2214,33 @@ button.ghost.small {
   padding-top: 14px;
 }
 
-.lb-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 20px 0;
+.lb-blank td {
+  padding: 26px 0 10px;
+  color: var(--text-3);
   text-align: center;
 }
 
-.lb-empty .primary {
+.lb-blank-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.lb-blank .primary {
   text-decoration: none;
+}
+
+.lb-blank:hover td {
+  background: none;
+}
+
+.lb-table th .icon {
+  transition: transform 0.2s ease;
+}
+
+.lb-table th .icon.up {
+  transform: rotate(180deg);
 }
 
 @media (max-width: 760px) {
@@ -2257,8 +2302,9 @@ button.ghost.small {
 
 .manga-page {
   display: block;
-  width: 100%;
-  max-width: 420px;
+  width: auto;
+  max-width: 100%;
+  max-height: min(49vh, 460px);
   margin: 4px auto 10px;
   border-radius: 12px;
   border: 1px solid var(--line);
@@ -2308,6 +2354,18 @@ button.ghost.small {
 .option-en {
   color: var(--text-3);
   font-size: 12.5px;
+}
+
+.option.waiting {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  background: color-mix(in srgb, var(--accent) 8%, var(--card));
+  animation: option-wait 0.9s ease-in-out infinite;
+}
+
+@keyframes option-wait {
+  50% {
+    opacity: 0.6;
+  }
 }
 
 .option.wrong {

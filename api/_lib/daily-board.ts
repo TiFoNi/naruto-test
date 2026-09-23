@@ -13,6 +13,7 @@ export async function dailyBoard(userId: ObjectId, params: URLSearchParams) {
   const game = params.get('game') as GameId
   const mode = params.get('mode') as ModeId
   const sort = params.get('sort') ?? 'today'
+  const reversed = params.get('dir') === 'rev'
   if (!GAME_IDS.includes(game) || !MODE_IDS.includes(mode) || !hasMode(game, mode) || !['today', 'streak'].includes(sort)) return fail(400, 'bad_request')
 
   const me = userId.toHexString()
@@ -22,7 +23,7 @@ export async function dailyBoard(userId: ObjectId, params: URLSearchParams) {
   if (sort === 'today') {
     const won = await (await rounds())
       .find({ daily: day, game, mode, status: 'won' }, { projection: { userId: 1, guessCount: 1, createdAt: 1, finishedAt: 1 } })
-      .sort({ guessCount: 1, finishedAt: 1 })
+      .sort({ guessCount: reversed ? -1 : 1, finishedAt: 1 })
       .toArray()
     const people = await (await users())
       .find({ _id: { $in: won.map((r) => r.userId) } }, { projection: { username: 1, nickname: 1 } })
@@ -44,7 +45,7 @@ export async function dailyBoard(userId: ObjectId, params: URLSearchParams) {
       { [`stats.${key}.lastDay`]: { $in: [day, shiftDay(day, -1)] }, [`stats.${key}.streak`]: { $gte: 1 } },
       { projection: { username: 1, nickname: 1, [`stats.${key}`]: 1 } },
     )
-    .sort({ [`stats.${key}.streak`]: -1, [`stats.${key}.best`]: -1, _id: 1 })
+    .sort({ [`stats.${key}.streak`]: reversed ? 1 : -1, [`stats.${key}.best`]: -1, _id: 1 })
     .toArray()) as (Person & { stats: Record<string, { streak: number; best: number; solved: number }> })[]
   const rows = people.map((p, i) => ({
     rank: i + 1,

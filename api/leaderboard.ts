@@ -5,11 +5,10 @@ import { fail, handle, json } from './_lib/http.js'
 import { currentUser, defaultNickname, unauthorized } from './_lib/profile.js'
 
 const LIMIT = 50
-const MIN_FOR_AVG = 5
 const SORTS = {
-  best: { best: -1, solved: -1 },
-  solved: { solved: -1, best: -1 },
-  avg: { avg: 1, solved: -1 },
+  best: { field: 'best', natural: -1, tie: { solved: -1 } },
+  solved: { field: 'solved', natural: -1, tie: { best: -1 } },
+  avg: { field: 'avg', natural: 1, tie: { solved: -1 } },
 } as const
 
 type Sort = keyof typeof SORTS
@@ -23,12 +22,14 @@ export const GET = handle(async (request) => {
   const key = statsKey(params.get('game') ?? '', params.get('mode') ?? '')
   const sort = (params.get('sort') ?? 'best') as Sort
   if (!STAT_KEYS.includes(key) || !(sort in SORTS)) return fail(400, 'bad_request')
+  const reversed = params.get('dir') === 'rev'
+  const spec = SORTS[sort]
+  const order = { [spec.field]: reversed ? -spec.natural : spec.natural, ...spec.tie, _id: 1 }
 
   const path = `$stats.${key}`
-  const minSolved = sort === 'avg' ? MIN_FOR_AVG : 1
   const rows = (await (await users())
     .aggregate([
-      { $match: { [`stats.${key}.solved`]: { $gte: minSolved } } },
+      { $match: { [`stats.${key}.solved`]: { $gte: 1 } } },
       {
         $project: {
           username: 1,
@@ -38,7 +39,7 @@ export const GET = handle(async (request) => {
           avg: { $divide: [{ $ifNull: [`${path}.totalGuesses`, 0] }, `${path}.solved`] },
         },
       },
-      { $sort: { ...SORTS[sort], _id: 1 } },
+      { $sort: order },
     ])
     .toArray()) as Row[]
 
@@ -52,5 +53,5 @@ export const GET = handle(async (request) => {
     me: String(row._id) === me,
   })
   const all = rows.map(view)
-  return json({ sort, minForAvg: MIN_FOR_AVG, total: all.length, rows: all.slice(0, LIMIT), me: all.find((r) => r.me) ?? null })
+  return json({ sort, reversed, total: all.length, rows: all.slice(0, LIMIT), me: all.find((r) => r.me) ?? null })
 })
