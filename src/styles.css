@@ -32,8 +32,45 @@ body {
   min-height: 100vh;
   overflow-x: clip;
   background:
-    radial-gradient(900px 420px at 50% -160px, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%),
+    radial-gradient(
+      900px 420px at 50% -160px,
+      color-mix(in srgb, var(--accent) 22%, transparent),
+      color-mix(in srgb, var(--accent) 16%, transparent) 26%,
+      color-mix(in srgb, var(--accent) 9%, transparent) 46%,
+      color-mix(in srgb, var(--accent) 4%, transparent) 62%,
+      color-mix(in srgb, var(--accent) 1.5%, transparent) 78%,
+      transparent 92%
+    ),
     var(--bg);
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: -60px;
+  z-index: -1;
+  pointer-events: none;
+  will-change: transform;
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--text) 14%, transparent) 1px, transparent 1.4px);
+  background-size: 38px 38px;
+  opacity: 0.85;
+  mask-image: radial-gradient(70% 60% at 50% 20%, #000, transparent 85%);
+  animation: bg-grid 9s linear infinite;
+}
+
+@keyframes bg-grid {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-38px, -38px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after {
+    animation: none;
+  }
 }
 
 button {
