@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb'
 import { dailyKey, judgeAll, statsKey, type GameId, type ModeId } from '../../src/games/specs.js'
 import { dailyAnswer, dailyNumber, nextReset, pastAnswer, shiftDay, today } from './daily.js'
 import { rounds, type RoundDoc, type UserDoc } from './db.js'
-import { gameData, isGame, isMode } from './games.js'
+import { gameData, isGame, isMode, knows } from './games.js'
 import { applyDailyResult, applyResult, defaultNickname } from './profile.js'
 import { abilityByKey } from './abilities.js'
 import { optionsOf, roundExtra } from './extra.js'
@@ -14,10 +14,13 @@ import type { Collection } from 'mongodb'
 
 const RECENT = 25
 
+const playable = (round: RoundDoc) => isGame(round.game) && knows(round.game, round.answerId)
+
 export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId) {
   const collection = await rounds()
   const existing = await collection.findOne({ userId, game, mode, status: 'active', daily: { $exists: false } })
-  if (existing) return existing
+  if (existing && playable(existing)) return existing
+  if (existing) await collection.deleteOne({ _id: existing._id })
 
   const recent = await collection
     .find({ userId, game, mode }, { projection: { answerId: 1 }, sort: { createdAt: -1 }, limit: RECENT })
@@ -35,7 +38,7 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId) 
 
 export async function challengeRound(userId: ObjectId, code: string) {
   const doc = await findChallenge(code)
-  if (!doc) return null
+  if (!doc || !isGame(doc.game) || !knows(doc.game, doc.answerId)) return null
   const collection = await rounds()
   const existing = await collection.findOne({ userId, challenge: code })
   if (existing) return existing
@@ -63,7 +66,8 @@ export async function dailyRound(userId: ObjectId, game: GameId, mode: ModeId) {
   const collection = await rounds()
   const day = today()
   const existing = await collection.findOne({ userId, game, mode, daily: day })
-  if (existing) return existing
+  if (existing && playable(existing)) return existing
+  if (existing) await collection.deleteOne({ _id: existing._id })
   const doc: RoundDoc = {
     userId,
     game,
@@ -110,10 +114,12 @@ export async function roundView(round: RoundDoc, full = true) {
     ...(round.daily && full ? await dailyInfo(round) : {}),
     ...(round.challenge ? { challenge: round.challenge } : {}),
     status: round.status,
-    guesses: round.guesses.map((guessId) => ({
-      id: guessId,
-      judgement: round.mode === 'classic' ? judgeAll(game, byId.get(guessId)!, answer) : undefined,
-    })),
+    guesses: round.guesses
+      .filter((guessId) => byId.has(guessId))
+      .map((guessId) => ({
+        id: guessId,
+        judgement: round.mode === 'classic' ? judgeAll(game, byId.get(guessId)!, answer) : undefined,
+      })),
     answerId: round.status === 'active' ? undefined : round.answerId,
     image: round.mode === 'image' || round.mode === 'ability' || round.mode === 'page' ? `/api/round/image?id=${id}` : undefined,
     ...(round.mode === 'ability' ? abilityInfo(round) : {}),

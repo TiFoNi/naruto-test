@@ -62,7 +62,10 @@ export async function dailyAnswer(game: GameId, mode: ModeId, day: string) {
     { $setOnInsert: dailySeed(game, mode, day) },
     { upsert: true, returnDocument: 'after' },
   )
-  return { answerId: doc!.answerId, extra: doc!.extra }
+  if (gameData(game).byId.has(doc!.answerId)) return { answerId: doc!.answerId, extra: doc!.extra }
+  const seed = dailySeed(game, mode, day)
+  await collection.updateOne({ _id }, { $set: { answerId: seed.answerId, extra: seed.extra } })
+  return { answerId: seed.answerId, extra: seed.extra }
 }
 
 function dailySeed(game: GameId, mode: ModeId, day: string) {
@@ -73,5 +76,5 @@ function dailySeed(game: GameId, mode: ModeId, day: string) {
 
 export async function pastAnswer(game: GameId, mode: ModeId, day: string) {
   const doc = await (await dailies()).findOne({ _id: `${day}:${game}:${mode}` })
-  return doc?.answerId ?? null
+  return doc && gameData(game).byId.has(doc.answerId) ? doc.answerId : null
 }

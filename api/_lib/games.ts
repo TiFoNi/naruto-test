@@ -9,6 +9,8 @@ type GameData = { byId: Map<number, Entity>; pool: Entity[]; stamp: number }
 const cache = new Map<GameId, GameData>()
 
 export const isGame = (value: unknown): value is GameId => typeof value === 'string' && value in GAME_SPECS
+export const knows = (game: GameId, id: number) => gameData(game).byId.has(id)
+
 export const isMode = (value: unknown): value is ModeId => typeof value === 'string' && (MODE_IDS as string[]).includes(value)
 
 export function gameData(game: GameId): GameData {

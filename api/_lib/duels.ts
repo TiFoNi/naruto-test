@@ -286,7 +286,9 @@ export function duelView(duel: DuelDoc, userId: ObjectId) {
       solved: Boolean(you.solvedAt),
       gaveUp: Boolean(you.gaveUp),
       guesses: (playing || finished) && byId && answer
-        ? you.guesses.map((id) => ({ id, judgement: duel.mode === 'classic' ? judgeAll(game!, byId.get(id)!, answer) : undefined }))
+        ? you.guesses
+            .filter((id) => byId.has(id))
+            .map((id) => ({ id, judgement: duel.mode === 'classic' ? judgeAll(game!, byId.get(id)!, answer) : undefined }))
         : [],
     },
     rival: rival && {
