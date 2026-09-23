@@ -10,11 +10,11 @@ import type { Stats } from './stats'
 import { useRound } from './useRound'
 
 const ZOOM_LEVELS = [7, 5.6, 4.5, 3.6, 2.9, 2.35, 1.9, 1.55, 1.25, 1]
-type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean }
+type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
 
-export default function ImageMode({ game, active, stats, daily = false }: Props) {
+export default function ImageMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t, name } = useI18n()
-  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(game, 'image', active, daily)
+  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(game, 'image', active, daily, challenge)
 
   const wrong = guesses.length - (won ? 1 : 0)
   const zoom = over ? 1 : ZOOM_LEVELS[Math.min(wrong, ZOOM_LEVELS.length - 1)]
@@ -41,7 +41,7 @@ export default function ImageMode({ game, active, stats, daily = false }: Props)
 
       {round && over && answer ? (
         <>
-          <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} skipped={skipped} stats={stats} onNext={next} mode="image" nextAt={round.nextAt} />
+          <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} skipped={skipped} stats={stats} onNext={next} challenge={challenge} mode="image" nextAt={round.nextAt} />
           {round.daily && yesterday && (
             <div className="card yesterday-card">
               <Yesterday game={game} entity={yesterday} />

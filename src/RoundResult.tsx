@@ -17,13 +17,14 @@ type Props = {
   skipped: boolean
   stats: Stats
   onNext: () => void
+  challenge?: string
   nextAt?: number
 }
 
-export default function RoundResult({ game, mode, answer, guesses, won, skipped, stats, onNext, nextAt }: Props) {
+export default function RoundResult({ game, mode, answer, guesses, won, skipped, stats, onNext, challenge, nextAt }: Props) {
   const { t, name, alt } = useI18n()
   const ref = useRef<HTMLDivElement>(null)
-  const daily = nextAt !== undefined
+  const daily = nextAt !== undefined && !challenge
 
   useEffect(() => {
     if (daily) return
@@ -37,7 +38,9 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
     }
   }, [onNext, daily])
 
-  const summary = skipped
+  const summary = challenge
+    ? t('challenge.summary', { guesses })
+    : skipped
     ? t('result.notCounted')
     : daily
       ? t('daily.summary', { guesses, streak: stats.streak, best: stats.best })
@@ -65,9 +68,20 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
           </div>
         </>
       ) : (
-        <button className="primary" onClick={onNext}>
-          {t('result.next')}
-        </button>
+        challenge ? (
+          <div className="result-actions">
+            <a className="primary" href={href.play(game.id, mode)}>
+              {t('challenge.answerBack')}
+            </a>
+            <a className="ghost" href={href.home}>
+              {t('play.back')}
+            </a>
+          </div>
+        ) : (
+          <button className="primary" onClick={onNext}>
+            {t('result.next')}
+          </button>
+        )
       )}
     </div>
   )

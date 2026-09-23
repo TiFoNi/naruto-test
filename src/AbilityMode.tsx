@@ -9,15 +9,16 @@ import { useI18n } from './i18n'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
 
-type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean }
+type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
 
-export default function AbilityMode({ game, active, stats, daily = false }: Props) {
+export default function AbilityMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t, name, lang } = useI18n()
   const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(
     game,
     'ability',
     active,
     daily,
+    challenge,
   )
 
   const wrong = guesses.filter((g) => !g.pending).length - (won ? 1 : 0)
@@ -57,6 +58,7 @@ export default function AbilityMode({ game, active, stats, daily = false }: Prop
           skipped={skipped}
           stats={stats}
           onNext={next}
+          challenge={challenge}
           mode="ability"
           nextAt={round.nextAt}
         />

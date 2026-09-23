@@ -24,8 +24,8 @@ const THUMBS = path.join(CACHE, 'thumb')
 const OUT_IMG = path.join(ROOT, 'public', 'dn')
 const OUT_JSON = path.join(ROOT, 'src', 'data', 'dn.json')
 const OUT_ATLAS = path.join(ROOT, 'src', 'data', 'dn-atlas.json')
-const ANSWER_POOL_SIZE = 40
-const KEEP = 55
+const ANSWER_POOL_SIZE = 26
+const KEEP = 40
 
 const ARCS = [
   [1, 'Знакомство'],
@@ -68,7 +68,43 @@ const ORGS = [
   ['Дом Вамми', /^Category:Wammy's House$/],
 ]
 
-const EXCLUDE = new Set(["Misa Amane's stalker", 'Gook', 'Sasaki', 'Ill Ratt'])
+const KEEP_ONLY = new Set([
+  'Light Yagami',
+  'L (character)',
+  'Near',
+  'Mello',
+  'Matt',
+  'Misa Amane',
+  'Ryuk',
+  'Rem',
+  'Sidoh',
+  'Gelus',
+  'Armonia Justin Beyondormason',
+  'Watari',
+  'Soichiro Yagami',
+  'Sachiko Yagami',
+  'Sayu Yagami',
+  'Touta Matsuda',
+  'Shuichi Aizawa',
+  'Kanzo Mogi',
+  'Hideki Ide',
+  'Hirokazu Ukita',
+  'Naomi Misora',
+  'Raye Penber',
+  'Kiyomi Takada',
+  'Teru Mikami',
+  'Kyosuke Higuchi',
+  'Reiji Namikawa',
+  'Shingo Mido',
+  'Aiber',
+  'Wedy',
+  'Rod Ross',
+  'Halle Lidner',
+  'Stephen Gevanni',
+  'Anthony Rester',
+  'Hitoshi Demegawa',
+  'Lind L. Tailor',
+])
 
 const NAMES = {
   'John McEnroe': 'Джон Макинрой',
@@ -188,7 +224,7 @@ async function main() {
 
   const names = await cachedJson(CACHE, 'members.json', () => categoryMembers(API, 'Manga characters'))
   const pages = await cachedJson(CACHE, 'pages.json', () => wikiPages(API, names))
-  const candidates = names.filter((n) => !EXCLUDE.has(n) && pages[n]?.text && /\{\{(Humans?|Shinigami)\b/i.test(pages[n].text) && debutChapter(pages[n].text) !== null)
+  const candidates = names.filter((n) => KEEP_ONLY.has(n) && pages[n]?.text && /\{\{(Humans?|Shinigami)\b/i.test(pages[n].text) && debutChapter(pages[n].text) !== null)
   const categories = await cachedJson(CACHE, 'categories.json', async () => {
     const res = await wikiQuery(API, candidates, 'prop=categories&cllimit=500')
     return Object.fromEntries(Object.entries(res).map(([t, p]) => [t, (p.categories ?? []).map((c) => c.title)]))

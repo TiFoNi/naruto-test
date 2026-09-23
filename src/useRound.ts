@@ -18,6 +18,7 @@ export type RoundView = {
   nextAt?: number
   yesterdayId?: number | null
   options?: number[]
+  challenge?: string
 }
 
 type RoundResponse = { round?: RoundView; stats?: { key: string; value: Stats } | null }
@@ -26,7 +27,7 @@ export type Guess = { entity: Entity; judgement?: Record<string, Judgement>; pen
 
 const GUESS_GAP_MS = 1000
 
-export function useRound(game: Game, mode: ModeId, active: boolean, daily = false) {
+export function useRound(game: Game, mode: ModeId, active: boolean, daily = false, challenge?: string) {
   const { setStats, expire } = useAuth()
   const [round, setRound] = useState<RoundView | null>(null)
   const [pending, setPending] = useState<Entity | null>(null)
@@ -70,7 +71,10 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
     [accept],
   )
 
-  const load = useCallback(() => request('round/current', { game: game.id, mode, daily }), [request, game.id, mode, daily])
+  const load = useCallback(
+    () => request('round/current', challenge ? { challenge } : { game: game.id, mode, daily }),
+    [request, game.id, mode, daily, challenge],
+  )
 
   useEffect(() => {
     if (active && !round && !busy && !error) load()

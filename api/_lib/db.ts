@@ -15,6 +15,21 @@ export type Stats = { solved: number; streak: number; best: number; totalGuesses
 
 export type RoundStatus = 'active' | 'won' | 'lost' | 'skipped'
 
+export type ChallengeSolve = { userId: ObjectId; nickname: string; guesses: number; solved: boolean; at: Date }
+
+export type ChallengeDoc = {
+  _id?: ObjectId
+  code: string
+  authorId: ObjectId
+  author: string
+  game: string
+  mode: string
+  answerId: number
+  extra?: string
+  solves: ChallengeSolve[]
+  createdAt: Date
+}
+
 export type RoundDoc = {
   _id?: ObjectId
   userId: ObjectId
@@ -24,6 +39,7 @@ export type RoundDoc = {
   guesses: number[]
   status: RoundStatus
   daily?: string
+  challenge?: string
   extra?: string
   guessCount?: number
   lastGuessAt?: Date
@@ -72,6 +88,7 @@ const cache = globalThis as typeof globalThis & {
   __attemptsIndexed?: Promise<unknown>
   __roundsIndexed?: Promise<unknown>
   __duelsIndexed?: Promise<unknown>
+  __challengesIndexed?: Promise<unknown>
 }
 
 const database = async () => (await client()).db(process.env.MONGODB_DB || 'nandaguessr')
@@ -81,6 +98,7 @@ export async function rounds(): Promise<Collection<RoundDoc>> {
   cache.__roundsIndexed ??= Promise.all([
     collection.createIndex({ userId: 1, game: 1, mode: 1, status: 1 }),
     collection.createIndex({ userId: 1, game: 1, mode: 1, createdAt: -1 }),
+    collection.createIndex({ userId: 1, challenge: 1 }, { unique: true, partialFilterExpression: { challenge: { $exists: true } } }),
     collection.createIndex(
       { userId: 1, game: 1, mode: 1, daily: 1 },
       { unique: true, partialFilterExpression: { daily: { $type: 'string' } } },
@@ -96,6 +114,20 @@ export async function rounds(): Promise<Collection<RoundDoc>> {
 
 export async function dailies(): Promise<Collection<DailyDoc>> {
   return (await database()).collection<DailyDoc>('dailies')
+}
+
+export async function challenges(): Promise<Collection<ChallengeDoc>> {
+  const collection = (await database()).collection<ChallengeDoc>('challenges')
+  cache.__challengesIndexed ??= Promise.all([
+    collection.createIndex({ code: 1 }, { unique: true }),
+    collection.createIndex({ authorId: 1, createdAt: -1 }),
+    collection.createIndex({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 60 }),
+  ]).catch((error) => {
+    cache.__challengesIndexed = undefined
+    throw error
+  })
+  await cache.__challengesIndexed
+  return collection
 }
 
 export async function duels(): Promise<Collection<DuelDoc>> {

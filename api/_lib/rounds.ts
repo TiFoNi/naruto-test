@@ -6,6 +6,7 @@ import { gameData, isGame, isMode } from './games.js'
 import { applyDailyResult, applyResult } from './profile.js'
 import { abilityByKey } from './abilities.js'
 import { optionsOf, roundExtra } from './extra.js'
+import { findChallenge, recordSolve } from './challenges.js'
 
 const ABILITY_HINT_AT = 7
 const ABILITY_STAGES = 5
@@ -30,6 +31,32 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId) 
   const doc: RoundDoc = { userId, game, mode, answerId: answer.id, ...(extra ? { extra } : {}), guesses: [], status: 'active', createdAt: new Date() }
   const { insertedId } = await collection.insertOne(doc)
   return { ...doc, _id: insertedId }
+}
+
+export async function challengeRound(userId: ObjectId, code: string) {
+  const doc = await findChallenge(code)
+  if (!doc) return null
+  const collection = await rounds()
+  const existing = await collection.findOne({ userId, challenge: code })
+  if (existing) return existing
+  const round: RoundDoc = {
+    userId,
+    game: doc.game,
+    mode: doc.mode,
+    challenge: code,
+    answerId: doc.answerId,
+    ...(doc.extra ? { extra: doc.extra } : {}),
+    guesses: [],
+    status: 'active',
+    createdAt: new Date(),
+  }
+  try {
+    const { insertedId } = await collection.insertOne(round)
+    return { ...round, _id: insertedId }
+  } catch (error) {
+    if ((error as { code?: number }).code !== 11000) throw error
+    return (await collection.findOne({ userId, challenge: code }))!
+  }
 }
 
 export async function dailyRound(userId: ObjectId, game: GameId, mode: ModeId) {
@@ -81,6 +108,7 @@ export async function roundView(round: RoundDoc, full = true) {
     mode: round.mode,
     number,
     ...(round.daily && full ? await dailyInfo(round) : {}),
+    ...(round.challenge ? { challenge: round.challenge } : {}),
     status: round.status,
     guesses: round.guesses.map((guessId) => ({
       id: guessId,
@@ -131,6 +159,11 @@ export async function finishRound(users: Collection<UserDoc>, round: RoundDoc, w
   )
   if (!updated) return { round: (await collection.findOne({ _id: round._id }))!, stats: null }
   const guesses = Math.max(round.guesses.length, 1)
+  if (round.challenge) {
+    const doc = await users.findOne({ _id: round.userId }, { projection: { username: 1, nickname: 1 } })
+    await recordSolve(round.challenge, { id: round.userId, nickname: doc?.nickname ?? doc?.username ?? '?' }, guesses, won)
+    return { round: updated, stats: null }
+  }
   if (round.daily) {
     const key = dailyKey(round.game, round.mode)
     return { round: updated, stats: { key, value: await applyDailyResult(users, round.userId, key, round.daily, guesses) } }

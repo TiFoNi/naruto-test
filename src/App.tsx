@@ -10,7 +10,9 @@ import DuelRoom from './DuelRoom'
 import Leaderboard from './Leaderboard'
 import ImageMode from './ImageMode'
 import AbilityMode from './AbilityMode'
+import ChallengeMaker from './ChallengeMaker'
 import PageMode from './PageMode'
+import ChallengeRoom from './ChallengeRoom'
 import Profile from './Profile'
 import { CalendarIcon, InfinityIcon, SwordsIcon, TrophyIcon } from './icons'
 import { GAMES, gameById } from './games'
@@ -76,11 +78,14 @@ function GameView({ game, mode, daily, visible }: { game: Game; mode: ModeId; da
               ))}
             </div>
           </div>
-          <a className="lb-link" href={href.leaderboard(game.id, mode, daily)}>
-            <TrophyIcon /> {t('nav.leaderboard')}
-          </a>
+          <div className="game-head-side">
+            <a className="lb-link" href={href.leaderboard(game.id, mode, daily)}>
+              <TrophyIcon /> {t('nav.leaderboard')}
+            </a>
+          </div>
         </div>
       </section>
+      {!daily && <ChallengeMaker game={game} mode={mode} />}
       {[false, true].map((d) => (
         <div key={String(d)} hidden={daily !== d}>
           {game.modes.includes('classic') && (
@@ -193,6 +198,7 @@ export default function App() {
           {route.name === 'profile' && <Profile onBack={() => navigate(href.home)} />}
           {route.name === 'duels' && <DuelLobby />}
           {route.name === 'duel' && <DuelRoom code={route.code} />}
+          {route.name === 'challenge' && <ChallengeRoom code={route.code} />}
           {route.name === 'leaderboard' && <Leaderboard gameId={route.game} mode={route.mode} daily={route.daily} />}
           <div className="play" hidden={route.name !== 'play'}>
             <div className="play-nav">

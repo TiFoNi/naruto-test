@@ -11,6 +11,7 @@ export const POST = handle(async (request) => {
   if (!round) return fail(404, 'not_found')
   if (round.status !== 'active') return json({ round: await roundView(round, false) })
   const skipped = await skipRound(round)
+  if (round.challenge) return json({ round: await roundView(skipped, false) })
   const game = round.game as GameId
   const mode = round.mode as ModeId
   const key = round.daily ? dailyKey(game, mode) : statsKey(game, mode)

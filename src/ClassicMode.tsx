@@ -8,11 +8,11 @@ import { useI18n } from './i18n'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
 
-type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean }
+type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
 
-export default function ClassicMode({ game, active, stats, daily = false }: Props) {
+export default function ClassicMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t } = useI18n()
-  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(game, 'classic', active, daily)
+  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(game, 'classic', active, daily, challenge)
 
 
   return (
@@ -27,7 +27,7 @@ export default function ClassicMode({ game, active, stats, daily = false }: Prop
       <RoundStatus loading={!round && !error} error={error} onRetry={retry} />
 
       {round && over && answer ? (
-        <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} skipped={skipped} stats={stats} onNext={next} mode="classic" nextAt={round.nextAt} />
+        <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} skipped={skipped} stats={stats} onNext={next} challenge={challenge} mode="classic" nextAt={round.nextAt} />
       ) : round ? (
         <>
           <CharacterSearch game={game} exclude={exclude} active={active} busy={busy} onPick={guess} />

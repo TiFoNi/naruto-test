@@ -6,11 +6,11 @@ import { useI18n } from './i18n'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
 
-type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean }
+type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
 
-export default function PageMode({ game, active, stats, daily = false }: Props) {
+export default function PageMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t, name } = useI18n()
-  const { round, guesses, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(game, 'page', active, daily)
+  const { round, guesses, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(game, 'page', active, daily, challenge)
 
   const byId = new Map(game.entities.map((e) => [e.id, e]))
   const missed = new Set(guesses.filter((g) => !g.pending).map((g) => g.entity.id))
@@ -35,7 +35,7 @@ export default function PageMode({ game, active, stats, daily = false }: Props) 
 
       {round && over && answer ? (
         <>
-          <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} skipped={skipped} stats={stats} onNext={next} mode="page" nextAt={round.nextAt} />
+          <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} skipped={skipped} stats={stats} onNext={next} challenge={challenge} mode="page" nextAt={round.nextAt} />
           {round.daily && yesterday && (
             <div className="card yesterday-card">
               <Yesterday game={game} entity={yesterday} />
