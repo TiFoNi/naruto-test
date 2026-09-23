@@ -3,7 +3,7 @@ import { statsKey, useAuth } from './auth'
 import { GAMES } from './games'
 import type { Category, Game } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { MODES, UPCOMING_MODES } from './modes'
+import { MODES } from './modes'
 import { href } from './router'
 import { dailyKey } from './games/specs'
 import { average, emptyStats, kyivToday } from './stats'
@@ -22,7 +22,6 @@ function FranchiseCard({ game }: { game: Game }) {
   const featured = game.featured
     .map((f) => game.entities.find((e) => e.nameEn === f || e.name === f))
     .filter((e): e is NonNullable<typeof e> => !!e)
-  const upcoming = UPCOMING_MODES.filter((m) => m.categories.includes(game.category))
 
   return (
     <article className="franchise" style={{ '--tab-accent': game.accent } as CSSProperties}>
@@ -95,11 +94,6 @@ function FranchiseCard({ game }: { game: Game }) {
             )
           })}
         </div>
-        {upcoming.length > 0 && (
-          <p className="mode-soon">
-            <b>{t('soon')}:</b> {upcoming.map((m) => t(m.label).toLowerCase()).join(', ')}
-          </p>
-        )}
       </div>
     </article>
   )

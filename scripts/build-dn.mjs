@@ -17,7 +17,7 @@ import {
   writeFullAndThumb,
 } from './lib.mjs'
 import { transliterate } from './ru.mjs'
-import { dropDeleted } from './dropped.mjs'
+import { dropDeleted, onlyAnswers } from './dropped.mjs'
 
 const API = 'https://deathnote.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'dn')
@@ -276,6 +276,7 @@ async function main() {
   result.length = 0
   result.push(...kept)
   dropDeleted(result, 'dn')
+  onlyAnswers(result)
   result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
   await writeAtlas(result, THUMBS, path.join(OUT_IMG, 'thumbs.webp'), OUT_ATLAS, 10, 96)
   await pruneImages(path.join(OUT_IMG, 'full'), result)

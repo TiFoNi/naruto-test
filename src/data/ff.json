@@ -78,25 +78,6 @@
   "thumb": 3
  },
  {
-  "id": 6493,
-  "name": "Антон",
-  "nameEn": "Anton",
-  "gender": "Мужской",
-  "generations": [
-   "Без силы"
-  ],
-  "affiliations": [
-   "2-я рота"
-  ],
-  "rank": "Пожарный",
-  "side": "Герой",
-  "status": "Жив",
-  "arc": "Совместное расследование",
-  "arcIndex": 9,
-  "answer": false,
-  "thumb": 4
- },
- {
   "id": 489,
   "name": "Артур Бойл",
   "nameEn": "Arthur Boyle",
@@ -113,26 +94,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 5
- },
- {
-  "id": 4544,
-  "name": "Асако Хааг",
-  "nameEn": "Asako Hague",
-  "gender": "Женский",
-  "generations": [
-   "Второе"
-  ],
-  "affiliations": [
-   "6-я рота"
-  ],
-  "rank": "Лейтенант",
-  "side": "Герой",
-  "status": "Жив",
-  "arc": "Преисподняя",
-  "arcIndex": 5,
-  "answer": false,
-  "thumb": 6
+  "thumb": 4
  },
  {
   "id": 3205,
@@ -154,7 +116,7 @@
   "arc": "Против 1-й роты",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 7
+  "thumb": 5
  },
  {
   "id": 1763,
@@ -174,7 +136,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 8
+  "thumb": 6
  },
  {
   "id": 3803,
@@ -193,7 +155,7 @@
   "arc": "Мастерская Вулкана",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 9
+  "thumb": 7
  },
  {
   "id": 4881,
@@ -212,7 +174,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 10
+  "thumb": 8
  },
  {
   "id": 1346,
@@ -231,7 +193,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 11
+  "thumb": 9
  },
  {
   "id": 6611,
@@ -250,27 +212,7 @@
   "arc": "Каменные столпы",
   "arcIndex": 11,
   "answer": true,
-  "thumb": 12
- },
- {
-  "id": 5050,
-  "name": "Данро Озэ",
-  "nameEn": "Danrou Oze",
-  "gender": "Мужской",
-  "generations": [
-   "Без силы"
-  ],
-  "affiliations": [
-   "Токийская армия",
-   "Асакуса"
-  ],
-  "rank": "Командир",
-  "side": "Герой",
-  "status": "Жив",
-  "arc": "Совместное расследование",
-  "arcIndex": 9,
-  "answer": false,
-  "thumb": 13
+  "thumb": 10
  },
  {
   "id": 3262,
@@ -290,7 +232,7 @@
   "arc": "Асакуса",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 14
+  "thumb": 11
  },
  {
   "id": 1159,
@@ -309,7 +251,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 15
+  "thumb": 12
  },
  {
   "id": 3568,
@@ -328,7 +270,7 @@
   "arc": "Преисподняя",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 16
+  "thumb": 13
  },
  {
   "id": 4551,
@@ -348,7 +290,7 @@
   "arc": "Пятый столп",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 17
+  "thumb": 14
  },
  {
   "id": 3267,
@@ -367,26 +309,7 @@
   "arc": "Асакуса",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 18
- },
- {
-  "id": 6036,
-  "name": "Кантаро",
-  "nameEn": "Kantarō",
-  "gender": "Мужской",
-  "generations": [
-   "Первое"
-  ],
-  "affiliations": [
-   "Гражданские"
-  ],
-  "rank": "Нет",
-  "side": "Герой",
-  "status": "Мёртв",
-  "arc": "Асакуса",
-  "arcIndex": 3,
-  "answer": false,
-  "thumb": 19
+  "thumb": 15
  },
  {
   "id": 2701,
@@ -405,7 +328,7 @@
   "arc": "Против 5-й роты",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 20
+  "thumb": 16
  },
  {
   "id": 3510,
@@ -424,7 +347,7 @@
   "arc": "Асакуса",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 21
+  "thumb": 17
  },
  {
   "id": 1309,
@@ -444,7 +367,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 22
+  "thumb": 18
  },
  {
   "id": 3816,
@@ -464,7 +387,7 @@
   "arc": "Мастерская Вулкана",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 23
+  "thumb": 19
  },
  {
   "id": 5057,
@@ -483,7 +406,7 @@
   "arc": "Совместное расследование",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 24
+  "thumb": 20
  },
  {
   "id": 210,
@@ -503,7 +426,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 25
+  "thumb": 21
  },
  {
   "id": 4394,
@@ -522,7 +445,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 26
+  "thumb": 22
  },
  {
   "id": 3015,
@@ -541,7 +464,7 @@
   "arc": "Против 1-й роты",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 27
+  "thumb": 23
  },
  {
   "id": 4473,
@@ -560,7 +483,7 @@
   "arc": "Пятый столп",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 28
+  "thumb": 24
  },
  {
   "id": 4586,
@@ -579,7 +502,7 @@
   "arc": "Преисподняя",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 29
+  "thumb": 25
  },
  {
   "id": 4472,
@@ -598,7 +521,7 @@
   "arc": "Пятый столп",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 30
+  "thumb": 26
  },
  {
   "id": 3275,
@@ -617,7 +540,7 @@
   "arc": "Асакуса",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 31
+  "thumb": 27
  },
  {
   "id": 4959,
@@ -636,7 +559,7 @@
   "arc": "Хаиджима",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 32
+  "thumb": 28
  },
  {
   "id": 2704,
@@ -656,45 +579,7 @@
   "arc": "Против 5-й роты",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 33
- },
- {
-  "id": 5043,
-  "name": "Саки",
-  "nameEn": "Saki",
-  "gender": "Женский",
-  "generations": [
-   "Без силы"
-  ],
-  "affiliations": [
-   "Гражданские"
-  ],
-  "rank": "Нет",
-  "side": "Герой",
-  "status": "Жив",
-  "arc": "Хаиджима",
-  "arcIndex": 8,
-  "answer": false,
-  "thumb": 34
- },
- {
-  "id": 6301,
-  "name": "Сакура",
-  "nameEn": "Sakura",
-  "gender": "Женский",
-  "generations": [
-   "Первое"
-  ],
-  "affiliations": [
-   "Храм Святого Солнца"
-  ],
-  "rank": "Священник",
-  "side": "Герой",
-  "status": "Жив",
-  "arc": "Против 5-й роты",
-  "arcIndex": 1,
-  "answer": false,
-  "thumb": 35
+  "thumb": 29
  },
  {
   "id": 3272,
@@ -713,7 +598,7 @@
   "arc": "Асакуса",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 36
+  "thumb": 30
  },
  {
   "id": 1461,
@@ -733,7 +618,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 37
+  "thumb": 31
  },
  {
   "id": 1348,
@@ -752,7 +637,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 38
+  "thumb": 32
  },
  {
   "id": 211,
@@ -772,7 +657,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 39
+  "thumb": 33
  },
  {
   "id": 5058,
@@ -792,7 +677,7 @@
   "arc": "Совместное расследование",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 40
+  "thumb": 34
  },
  {
   "id": 1000,
@@ -812,7 +697,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 41
+  "thumb": 35
  },
  {
   "id": 2270,
@@ -831,7 +716,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 42
+  "thumb": 36
  },
  {
   "id": 4479,
@@ -850,7 +735,7 @@
   "arc": "Преисподняя",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 43
+  "thumb": 37
  },
  {
   "id": 4366,
@@ -869,7 +754,7 @@
   "arc": "Преисподняя",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 44
+  "thumb": 38
  },
  {
   "id": 1399,
@@ -890,7 +775,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 45
+  "thumb": 39
  },
  {
   "id": 3488,
@@ -909,7 +794,7 @@
   "arc": "Асакуса",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 46
+  "thumb": 40
  },
  {
   "id": 3494,
@@ -928,7 +813,7 @@
   "arc": "Асакуса",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 47
+  "thumb": 41
  },
  {
   "id": 2708,
@@ -947,7 +832,7 @@
   "arc": "Против 5-й роты",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 48
+  "thumb": 42
  },
  {
   "id": 6201,
@@ -968,7 +853,7 @@
   "arc": "Вступление",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 49
+  "thumb": 43
  },
  {
   "id": 587,
@@ -987,7 +872,7 @@
   "arc": "Асакуса",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 50
+  "thumb": 44
  },
  {
   "id": 3678,
@@ -1006,7 +891,7 @@
   "arc": "Против 1-й роты",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 51
+  "thumb": 45
  },
  {
   "id": 4901,
@@ -1025,6 +910,6 @@
   "arc": "Хаиджима",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 52
+  "thumb": 46
  }
 ]

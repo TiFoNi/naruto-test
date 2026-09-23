@@ -20,106 +20,6 @@
   "thumb": 0
  },
  {
-  "id": 2226,
-  "name": "Алесси",
-  "nameEn": "Alessi",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Неизвестно",
-  "status": "Жив",
-  "part": "Крестоносцы звёздной пыли",
-  "partIndex": 2,
-  "answer": false,
-  "thumb": 1
- },
- {
-  "id": 2910,
-  "name": "Анджуро Катагири",
-  "nameEn": "Anjuro Katagiri",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Япония",
-  "status": "Жив",
-  "part": "Несокрушимый алмаз",
-  "partIndex": 3,
-  "answer": false,
-  "thumb": 2
- },
- {
-  "id": 2002,
-  "name": "Анне",
-  "nameEn": "Anne",
-  "gender": "Женский",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Нет"
-  ],
-  "groups": [],
-  "side": "Нейтралитет",
-  "nation": "Неизвестно",
-  "status": "Жив",
-  "part": "Крестоносцы звёздной пыли",
-  "partIndex": 2,
-  "answer": false,
-  "thumb": 3
- },
- {
-  "id": 2723,
-  "name": "Ая Цуджи",
-  "nameEn": "Aya Tsuji",
-  "gender": "Женский",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [],
-  "side": "Нейтралитет",
-  "nation": "Япония",
-  "status": "Мёртв",
-  "part": "Несокрушимый алмаз",
-  "partIndex": 3,
-  "answer": false,
-  "thumb": 4
- },
- {
-  "id": 1990,
-  "name": "Бойнго",
-  "nameEn": "Boingo",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Египет",
-  "status": "Жив",
-  "part": "Крестоносцы звёздной пыли",
-  "partIndex": 2,
-  "answer": false,
-  "thumb": 5
- },
- {
   "id": 45520,
   "name": "Бруно Буччеллати",
   "nameEn": "Bruno Bucciarati",
@@ -139,27 +39,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 6
- },
- {
-  "id": 2586,
-  "name": "Бруфорд",
-  "nameEn": "Bruford",
-  "gender": "Мужской",
-  "species": [
-   "Нежить"
-  ],
-  "powers": [
-   "Нет"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Неизвестно",
-  "status": "Мёртв",
-  "part": "Призрачная кровь",
-  "partIndex": 0,
-  "answer": false,
-  "thumb": 7
+  "thumb": 1
  },
  {
   "id": 1959,
@@ -181,27 +61,7 @@
   "part": "Боевая тенденция",
   "partIndex": 1,
   "answer": true,
-  "thumb": 8
- },
- {
-  "id": 2228,
-  "name": "Ванг Чан",
-  "nameEn": "Wang Chan",
-  "gender": "Мужской",
-  "species": [
-   "Нежить"
-  ],
-  "powers": [
-   "Нет"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Китай",
-  "status": "Мёртв",
-  "part": "Призрачная кровь",
-  "partIndex": 0,
-  "answer": false,
-  "thumb": 9
+  "thumb": 2
  },
  {
   "id": 2001,
@@ -221,27 +81,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 10
- },
- {
-  "id": 2482,
-  "name": "Векапипо",
-  "nameEn": "Wekapipo",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Спин"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Неизвестно",
-  "status": "Мёртв",
-  "part": "Стальной шар",
-  "partIndex": 6,
-  "answer": false,
-  "thumb": 11
+  "thumb": 3
  },
  {
   "id": 44416,
@@ -263,7 +103,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 12
+  "thumb": 4
  },
  {
   "id": 1972,
@@ -285,30 +125,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 13
- },
- {
-  "id": 2064,
-  "name": "Георге Джоэстар Ии",
-  "nameEn": "George Joestar II",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Нет"
-  ],
-  "groups": [
-   "Семья Джостар",
-   "Фонд Спидвагона"
-  ],
-  "side": "Союзник",
-  "nation": "Британия",
-  "status": "Мёртв",
-  "part": "Боевая тенденция",
-  "partIndex": 1,
-  "answer": false,
-  "thumb": 14
+  "thumb": 5
  },
  {
   "id": 2839,
@@ -330,7 +147,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 15
+  "thumb": 6
  },
  {
   "id": 2667,
@@ -350,7 +167,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 16
+  "thumb": 7
  },
  {
   "id": 2523,
@@ -370,27 +187,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 17
- },
- {
-  "id": 1988,
-  "name": "Дж. Гейл",
-  "nameEn": "J. Geil",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Неизвестно",
-  "status": "Мёртв",
-  "part": "Крестоносцы звёздной пыли",
-  "partIndex": 2,
-  "answer": false,
-  "thumb": 18
+  "thumb": 8
  },
  {
   "id": 2239,
@@ -414,7 +211,7 @@
   "part": "Стальной шар",
   "partIndex": 6,
   "answer": true,
-  "thumb": 19
+  "thumb": 9
  },
  {
   "id": 1887,
@@ -439,7 +236,7 @@
   "part": "Боевая тенденция",
   "partIndex": 1,
   "answer": true,
-  "thumb": 20
+  "thumb": 10
  },
  {
   "id": 1900,
@@ -464,7 +261,7 @@
   "part": "Каменный океан",
   "partIndex": 5,
   "answer": true,
-  "thumb": 21
+  "thumb": 11
  },
  {
   "id": 1886,
@@ -488,7 +285,7 @@
   "part": "Призрачная кровь",
   "partIndex": 0,
   "answer": true,
-  "thumb": 22
+  "thumb": 12
  },
  {
   "id": 2005,
@@ -514,7 +311,7 @@
   "part": "Стальной шар",
   "partIndex": 6,
   "answer": true,
-  "thumb": 23
+  "thumb": 13
  },
  {
   "id": 1897,
@@ -538,7 +335,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 24
+  "thumb": 14
  },
  {
   "id": 1896,
@@ -562,7 +359,7 @@
   "part": "Несокрушимый алмаз",
   "partIndex": 3,
   "answer": true,
-  "thumb": 25
+  "thumb": 15
  },
  {
   "id": 1875,
@@ -585,7 +382,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 26
+  "thumb": 16
  },
  {
   "id": 1982,
@@ -607,7 +404,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 27
+  "thumb": 17
  },
  {
   "id": 1882,
@@ -629,29 +426,7 @@
   "part": "Призрачная кровь",
   "partIndex": 0,
   "answer": true,
-  "thumb": 28
- },
- {
-  "id": 2510,
-  "name": "Донателло Версус",
-  "nameEn": "Donatello Versus",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [
-   "Семья Джостар"
-  ],
-  "side": "Злодей",
-  "nation": "Неизвестно",
-  "status": "Мёртв",
-  "part": "Каменный океан",
-  "partIndex": 5,
-  "answer": false,
-  "thumb": 29
+  "thumb": 18
  },
  {
   "id": 1956,
@@ -671,27 +446,7 @@
   "part": "Несокрушимый алмаз",
   "partIndex": 3,
   "answer": true,
-  "thumb": 30
- },
- {
-  "id": 2024,
-  "name": "Ёшихиро Кира",
-  "nameEn": "Yoshihiro Kira",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Япония",
-  "status": "Мёртв",
-  "part": "Несокрушимый алмаз",
-  "partIndex": 3,
-  "answer": false,
-  "thumb": 31
+  "thumb": 19
  },
  {
   "id": 1944,
@@ -714,7 +469,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 32
+  "thumb": 20
  },
  {
   "id": 1947,
@@ -736,7 +491,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 33
+  "thumb": 21
  },
  {
   "id": 2833,
@@ -758,7 +513,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 34
+  "thumb": 22
  },
  {
   "id": 1958,
@@ -781,27 +536,7 @@
   "part": "Боевая тенденция",
   "partIndex": 1,
   "answer": true,
-  "thumb": 35
- },
- {
-  "id": 2451,
-  "name": "Кейчо Ниджимура",
-  "nameEn": "Keicho Nijimura",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Неизвестно",
-  "status": "Мёртв",
-  "part": "Несокрушимый алмаз",
-  "partIndex": 3,
-  "answer": false,
-  "thumb": 36
+  "thumb": 23
  },
  {
   "id": 2743,
@@ -823,7 +558,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 37
+  "thumb": 24
  },
  {
   "id": 1953,
@@ -845,7 +580,7 @@
   "part": "Несокрушимый алмаз",
   "partIndex": 3,
   "answer": true,
-  "thumb": 38
+  "thumb": 25
  },
  {
   "id": 1973,
@@ -867,7 +602,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 39
+  "thumb": 26
  },
  {
   "id": 1936,
@@ -891,7 +626,7 @@
   "part": "Призрачная кровь",
   "partIndex": 0,
   "answer": true,
-  "thumb": 40
+  "thumb": 27
  },
  {
   "id": 2476,
@@ -913,7 +648,7 @@
   "part": "Стальной шар",
   "partIndex": 6,
   "answer": true,
-  "thumb": 41
+  "thumb": 28
  },
  {
   "id": 2765,
@@ -933,49 +668,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 42
- },
- {
-  "id": 2845,
-  "name": "Марио Зукчеро",
-  "nameEn": "Mario Zucchero",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [
-   "Пассионе"
-  ],
-  "side": "Злодей",
-  "nation": "Италия",
-  "status": "Мёртв",
-  "part": "Золотой ветер",
-  "partIndex": 4,
-  "answer": false,
-  "thumb": 43
- },
- {
-  "id": 2935,
-  "name": "Мидлер",
-  "nameEn": "Midler",
-  "gender": "Женский",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Неизвестно",
-  "status": "Жив",
-  "part": "Крестоносцы звёздной пыли",
-  "partIndex": 2,
-  "answer": false,
-  "thumb": 44
+  "thumb": 29
  },
  {
   "id": 2466,
@@ -995,7 +688,7 @@
   "part": "Несокрушимый алмаз",
   "partIndex": 3,
   "answer": true,
-  "thumb": 45
+  "thumb": 30
  },
  {
   "id": 1946,
@@ -1018,7 +711,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 46
+  "thumb": 31
  },
  {
   "id": 1974,
@@ -1040,7 +733,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 47
+  "thumb": 32
  },
  {
   "id": 1999,
@@ -1063,7 +756,7 @@
   "part": "Каменный океан",
   "partIndex": 5,
   "answer": true,
-  "thumb": 48
+  "thumb": 33
  },
  {
   "id": 3175,
@@ -1083,7 +776,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 49
+  "thumb": 34
  },
  {
   "id": 1945,
@@ -1105,27 +798,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 50
- },
- {
-  "id": 1989,
-  "name": "Ойнго",
-  "nameEn": "Oingo",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Египет",
-  "status": "Жив",
-  "part": "Крестоносцы звёздной пыли",
-  "partIndex": 2,
-  "answer": false,
-  "thumb": 51
+  "thumb": 35
  },
  {
   "id": 1954,
@@ -1147,7 +820,7 @@
   "part": "Несокрушимый алмаз",
   "partIndex": 3,
   "answer": true,
-  "thumb": 52
+  "thumb": 36
  },
  {
   "id": 1975,
@@ -1169,7 +842,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 53
+  "thumb": 37
  },
  {
   "id": 2736,
@@ -1191,7 +864,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 54
+  "thumb": 38
  },
  {
   "id": 2516,
@@ -1211,51 +884,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 55
- },
- {
-  "id": 2392,
-  "name": "Поколоко",
-  "nameEn": "Pocoloco",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [
-   "Гонка Стального шара"
-  ],
-  "side": "Нейтралитет",
-  "nation": "США",
-  "status": "Жив",
-  "part": "Стальной шар",
-  "partIndex": 6,
-  "answer": false,
-  "thumb": 56
- },
- {
-  "id": 2645,
-  "name": "Полпо",
-  "nameEn": "Polpo",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [
-   "Пассионе"
-  ],
-  "side": "Злодей",
-  "nation": "Италия",
-  "status": "Мёртв",
-  "part": "Золотой ветер",
-  "partIndex": 4,
-  "answer": false,
-  "thumb": 57
+  "thumb": 39
  },
  {
   "id": 2232,
@@ -1277,29 +906,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 58
- },
- {
-  "id": 2719,
-  "name": "Рейми Сугимото",
-  "nameEn": "Reimi Sugimoto",
-  "gender": "Женский",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Нет"
-  ],
-  "groups": [
-   "Отряд Джостара"
-  ],
-  "side": "Союзник",
-  "nation": "Япония",
-  "status": "Мёртв",
-  "part": "Несокрушимый алмаз",
-  "partIndex": 3,
-  "answer": false,
-  "thumb": 59
+  "thumb": 40
  },
  {
   "id": 2781,
@@ -1319,7 +926,7 @@
   "part": "Стальной шар",
   "partIndex": 6,
   "answer": true,
-  "thumb": 60
+  "thumb": 41
  },
  {
   "id": 2626,
@@ -1341,7 +948,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 61
+  "thumb": 42
  },
  {
   "id": 1933,
@@ -1364,7 +971,7 @@
   "part": "Призрачная кровь",
   "partIndex": 0,
   "answer": true,
-  "thumb": 62
+  "thumb": 43
  },
  {
   "id": 1955,
@@ -1386,7 +993,7 @@
   "part": "Несокрушимый алмаз",
   "partIndex": 3,
   "answer": true,
-  "thumb": 63
+  "thumb": 44
  },
  {
   "id": 2297,
@@ -1406,7 +1013,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 64
+  "thumb": 45
  },
  {
   "id": 2469,
@@ -1429,51 +1036,7 @@
   "part": "Боевая тенденция",
   "partIndex": 1,
   "answer": true,
-  "thumb": 65
- },
- {
-  "id": 2841,
-  "name": "Сале",
-  "nameEn": "Sale",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [
-   "Пассионе"
-  ],
-  "side": "Злодей",
-  "nation": "Неизвестно",
-  "status": "Мёртв",
-  "part": "Золотой ветер",
-  "partIndex": 4,
-  "answer": false,
-  "thumb": 66
- },
- {
-  "id": 2480,
-  "name": "Сандман",
-  "nameEn": "Sandman",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [
-   "Гонка Стального шара"
-  ],
-  "side": "Злодей",
-  "nation": "США",
-  "status": "Мёртв",
-  "part": "Стальной шар",
-  "partIndex": 6,
-  "answer": false,
-  "thumb": 67
+  "thumb": 46
  },
  {
   "id": 1961,
@@ -1495,7 +1058,7 @@
   "part": "Боевая тенденция",
   "partIndex": 1,
   "answer": true,
-  "thumb": 68
+  "thumb": 47
  },
  {
   "id": 2741,
@@ -1517,49 +1080,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 69
- },
- {
-  "id": 2895,
-  "name": "Скуало и Тизиано",
-  "nameEn": "Squalo and Tiziano",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [
-   "Пассионе"
-  ],
-  "side": "Злодей",
-  "nation": "Италия",
-  "status": "Мёртв",
-  "part": "Золотой ветер",
-  "partIndex": 4,
-  "answer": false,
-  "thumb": 70
- },
- {
-  "id": 2918,
-  "name": "Стевен Стеэл",
-  "nameEn": "Steven Steel",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Нет"
-  ],
-  "groups": [],
-  "side": "Союзник",
-  "nation": "США",
-  "status": "Мёртв",
-  "part": "Стальной шар",
-  "partIndex": 6,
-  "answer": false,
-  "thumb": 71
+  "thumb": 48
  },
  {
   "id": 1978,
@@ -1581,47 +1102,7 @@
   "part": "Призрачная кровь",
   "partIndex": 0,
   "answer": true,
-  "thumb": 72
- },
- {
-  "id": 2457,
-  "name": "Тамами Кобаяши",
-  "nameEn": "Tamami Kobayashi",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Япония",
-  "status": "Жив",
-  "part": "Несокрушимый алмаз",
-  "partIndex": 3,
-  "answer": false,
-  "thumb": 73
- },
- {
-  "id": 2591,
-  "name": "Таркус",
-  "nameEn": "Tarkus",
-  "gender": "Мужской",
-  "species": [
-   "Нежить"
-  ],
-  "powers": [
-   "Нет"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Британия",
-  "status": "Мёртв",
-  "part": "Призрачная кровь",
-  "partIndex": 0,
-  "answer": false,
-  "thumb": 74
+  "thumb": 49
  },
  {
   "id": 3176,
@@ -1641,7 +1122,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 75
+  "thumb": 50
  },
  {
   "id": 2698,
@@ -1661,27 +1142,7 @@
   "part": "Несокрушимый алмаз",
   "partIndex": 3,
   "answer": true,
-  "thumb": 76
- },
- {
-  "id": 2460,
-  "name": "Тошиказу Хазамада",
-  "nameEn": "Toshikazu Hazamada",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Неизвестно",
-  "status": "Жив",
-  "part": "Несокрушимый алмаз",
-  "partIndex": 3,
-  "answer": false,
-  "thumb": 77
+  "thumb": 51
  },
  {
   "id": 1976,
@@ -1701,7 +1162,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 78
+  "thumb": 52
  },
  {
   "id": 1934,
@@ -1723,29 +1184,7 @@
   "part": "Призрачная кровь",
   "partIndex": 0,
   "answer": true,
-  "thumb": 79
- },
- {
-  "id": 143038,
-  "name": "Ултимате Дио",
-  "nameEn": "Ultimate Dio",
-  "gender": "Мужской",
-  "species": [
-   "Вампир"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [
-   "Семья Джостар"
-  ],
-  "side": "Злодей",
-  "nation": "Неизвестно",
-  "status": "Жив",
-  "part": "Призрачная кровь",
-  "partIndex": 0,
-  "answer": false,
-  "thumb": 80
+  "thumb": 53
  },
  {
   "id": 2236,
@@ -1768,7 +1207,7 @@
   "part": "Каменный океан",
   "partIndex": 5,
   "answer": true,
-  "thumb": 81
+  "thumb": 54
  },
  {
   "id": 2217,
@@ -1788,7 +1227,7 @@
   "part": "Стальной шар",
   "partIndex": 6,
   "answer": true,
-  "thumb": 82
+  "thumb": 55
  },
  {
   "id": 2835,
@@ -1810,7 +1249,7 @@
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
-  "thumb": 83
+  "thumb": 56
  },
  {
   "id": 1984,
@@ -1832,7 +1271,7 @@
   "part": "Каменный океан",
   "partIndex": 5,
   "answer": true,
-  "thumb": 84
+  "thumb": 57
  },
  {
   "id": 2878,
@@ -1854,7 +1293,7 @@
   "part": "Несокрушимый алмаз",
   "partIndex": 3,
   "answer": true,
-  "thumb": 85
+  "thumb": 58
  },
  {
   "id": 1986,
@@ -1874,30 +1313,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 86
- },
- {
-  "id": 1948,
-  "name": "Холи Куджо",
-  "nameEn": "Holy Kujo",
-  "gender": "Женский",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [
-   "Семья Джостар",
-   "Фонд Спидвагона"
-  ],
-  "side": "Нейтралитет",
-  "nation": "США",
-  "status": "Жив",
-  "part": "Крестоносцы звёздной пыли",
-  "partIndex": 2,
-  "answer": false,
-  "thumb": 87
+  "thumb": 59
  },
  {
   "id": 2478,
@@ -1919,7 +1335,7 @@
   "part": "Стальной шар",
   "partIndex": 6,
   "answer": true,
-  "thumb": 88
+  "thumb": 60
  },
  {
   "id": 1935,
@@ -1942,27 +1358,7 @@
   "part": "Боевая тенденция",
   "partIndex": 1,
   "answer": true,
-  "thumb": 89
- },
- {
-  "id": 4096,
-  "name": "Чака",
-  "nameEn": "Chaka",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Нет"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Египет",
-  "status": "Жив",
-  "part": "Крестоносцы звёздной пыли",
-  "partIndex": 2,
-  "answer": false,
-  "thumb": 90
+  "thumb": 61
  },
  {
   "id": 2848,
@@ -1982,7 +1378,7 @@
   "part": "Несокрушимый алмаз",
   "partIndex": 3,
   "answer": true,
-  "thumb": 91
+  "thumb": 62
  },
  {
   "id": 1960,
@@ -2004,7 +1400,7 @@
   "part": "Боевая тенденция",
   "partIndex": 1,
   "answer": true,
-  "thumb": 92
+  "thumb": 63
  },
  {
   "id": 2643,
@@ -2026,7 +1422,7 @@
   "part": "Каменный океан",
   "partIndex": 5,
   "answer": true,
-  "thumb": 93
+  "thumb": 64
  },
  {
   "id": 1998,
@@ -2046,7 +1442,7 @@
   "part": "Каменный океан",
   "partIndex": 5,
   "answer": true,
-  "thumb": 94
+  "thumb": 65
  },
  {
   "id": 1987,
@@ -2066,7 +1462,7 @@
   "part": "Крестоносцы звёздной пыли",
   "partIndex": 2,
   "answer": true,
-  "thumb": 95
+  "thumb": 66
  },
  {
   "id": 1963,
@@ -2089,7 +1485,7 @@
   "part": "Призрачная кровь",
   "partIndex": 0,
   "answer": true,
-  "thumb": 96
+  "thumb": 67
  },
  {
   "id": 1983,
@@ -2112,7 +1508,7 @@
   "part": "Каменный океан",
   "partIndex": 5,
   "answer": true,
-  "thumb": 97
+  "thumb": 68
  },
  {
   "id": 2697,
@@ -2132,26 +1528,6 @@
   "part": "Несокрушимый алмаз",
   "partIndex": 3,
   "answer": true,
-  "thumb": 98
- },
- {
-  "id": 2817,
-  "name": "Юя Фунгами",
-  "nameEn": "Yuya Fungami",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "powers": [
-   "Стенд"
-  ],
-  "groups": [],
-  "side": "Злодей",
-  "nation": "Неизвестно",
-  "status": "Жив",
-  "part": "Несокрушимый алмаз",
-  "partIndex": 3,
-  "answer": false,
-  "thumb": 99
+  "thumb": 69
  }
 ]

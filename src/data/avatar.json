@@ -1,0 +1,1776 @@
+[
+ {
+  "id": 62,
+  "name": "Аанг",
+  "nameEn": "Aang",
+  "gender": "Мужской",
+  "nation": "Воздушные кочевники",
+  "bending": [
+   "Вода",
+   "Земля",
+   "Огонь",
+   "Воздух",
+   "Энергия"
+  ],
+  "skills": [
+   "Молния",
+   "Сейсмическое чутьё"
+  ],
+  "groups": [
+   "Команда Аватара",
+   "Аватары"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 0
+ },
+ {
+  "id": 1653,
+  "name": "Азула",
+  "nameEn": "Azula",
+  "gender": "Женский",
+  "nation": "Народ Огня",
+  "bending": [
+   "Огонь"
+  ],
+  "skills": [
+   "Молния"
+  ],
+  "groups": [
+   "Дай Ли",
+   "Королевская семья Народа Огня",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 1
+ },
+ {
+  "id": 1960,
+  "name": "Азулон",
+  "nameEn": "Azulon",
+  "gender": "Мужской",
+  "nation": "Народ Огня",
+  "bending": [
+   "Огонь"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Королевская семья Народа Огня",
+   "Армия"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 2
+ },
+ {
+  "id": 137,
+  "name": "Айро",
+  "nameEn": "Iroh",
+  "gender": "Мужской",
+  "nation": "Духи",
+  "bending": [
+   "Огонь"
+  ],
+  "skills": [
+   "Молния"
+  ],
+  "groups": [
+   "Белый Лотос",
+   "Королевская семья Народа Огня",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 3
+ },
+ {
+  "id": 643414,
+  "name": "Айро II",
+  "nameEn": "Iroh (United Forces general)",
+  "gender": "Мужской",
+  "nation": "Народ Огня",
+  "bending": [
+   "Огонь"
+  ],
+  "skills": [
+   "Молния"
+  ],
+  "groups": [
+   "Королевская семья Народа Огня",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 4
+ },
+ {
+  "id": 251669,
+  "name": "Амон",
+  "nameEn": "Amon",
+  "gender": "Мужской",
+  "nation": "Племя Воды",
+  "bending": [
+   "Вода"
+  ],
+  "skills": [
+   "Кровь",
+   "Блокировка ци"
+  ],
+  "groups": [
+   "Уравнители"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 5
+ },
+ {
+  "id": 118,
+  "name": "Аппа",
+  "nameEn": "Appa",
+  "gender": "Мужской",
+  "nation": "Воздушные кочевники",
+  "bending": [
+   "Воздух"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Команда Аватара"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 6
+ },
+ {
+  "id": 172185,
+  "name": "Асами Сато",
+  "nameEn": "Asami Sato",
+  "gender": "Женский",
+  "nation": "Объединённая Республика",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Команда Аватара",
+   "Земная Империя",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 7
+ },
+ {
+  "id": 1251714,
+  "name": "Баатар-младший",
+  "nameEn": "Baatar Jr.",
+  "gender": "Мужской",
+  "nation": "Царство Земли",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Земная Империя",
+   "Клан Металла",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 5,
+  "answer": true,
+  "arc": "Корра: Книга 3",
+  "thumb": 8
+ },
+ {
+  "id": 172269,
+  "name": "Болин",
+  "nameEn": "Bolin",
+  "gender": "Мужской",
+  "nation": "Объединённая Республика",
+  "bending": [
+   "Земля"
+  ],
+  "skills": [
+   "Лава"
+  ],
+  "groups": [
+   "Команда Аватара",
+   "Земная Империя",
+   "Полиция Республики",
+   "Триады",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 9
+ },
+ {
+  "id": 428054,
+  "name": "Буми (брат Тензина)",
+  "nameEn": "Bumi",
+  "gender": "Мужской",
+  "nation": "Племя Воды",
+  "bending": [
+   "Воздух"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 10
+ },
+ {
+  "id": 3455,
+  "name": "Буми (король Омашу)",
+  "nameEn": "Bumi (King of Omashu)",
+  "gender": "Мужской",
+  "nation": "Царство Земли",
+  "bending": [
+   "Земля"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Белый Лотос"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 11
+ },
+ {
+  "id": 1126978,
+  "name": "Ван",
+  "nameEn": "Wan",
+  "gender": "Мужской",
+  "nation": "Духи",
+  "bending": [
+   "Вода",
+   "Земля",
+   "Огонь",
+   "Воздух",
+   "Энергия"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Аватары"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 4,
+  "answer": true,
+  "arc": "Корра: Книга 2",
+  "thumb": 12
+ },
+ {
+  "id": 2211,
+  "name": "Ван Ши Тонг",
+  "nameEn": "Wan Shi Tong",
+  "gender": "Мужской",
+  "nation": "Духи",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Животные"
+  ],
+  "status": "Жив",
+  "arcIndex": 1,
+  "answer": true,
+  "arc": "Книга 2: Земля",
+  "thumb": 13
+ },
+ {
+  "id": 759506,
+  "name": "Варрик",
+  "nameEn": "Iknik Blackstone Varrick",
+  "gender": "Мужской",
+  "nation": "Племя Воды",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Земная Империя",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 4,
+  "answer": true,
+  "arc": "Корра: Книга 2",
+  "thumb": 14
+ },
+ {
+  "id": 1181089,
+  "name": "Вату",
+  "nameEn": "Vaatu",
+  "gender": "Мужской",
+  "nation": "Духи",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 4,
+  "answer": true,
+  "arc": "Корра: Книга 2",
+  "thumb": 15
+ },
+ {
+  "id": 2846,
+  "name": "Взрывник",
+  "nameEn": "Combustion Man",
+  "gender": "Мужской",
+  "nation": "Народ Огня",
+  "bending": [
+   "Огонь"
+  ],
+  "skills": [
+   "Взрыв"
+  ],
+  "groups": [
+   "Армия"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 2,
+  "answer": true,
+  "arc": "Книга 3: Огонь",
+  "thumb": 16
+ },
+ {
+  "id": 1278118,
+  "name": "Ву",
+  "nameEn": "Wu",
+  "gender": "Мужской",
+  "nation": "Царство Земли",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 6,
+  "answer": true,
+  "arc": "Корра: Книга 4",
+  "thumb": 17
+ },
+ {
+  "id": 1242592,
+  "name": "Газан",
+  "nameEn": "Ghazan",
+  "gender": "Мужской",
+  "nation": "Неизвестно",
+  "bending": [
+   "Земля"
+  ],
+  "skills": [
+   "Лава"
+  ],
+  "groups": [
+   "Красный Лотос"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 5,
+  "answer": true,
+  "arc": "Корра: Книга 3",
+  "thumb": 18
+ },
+ {
+  "id": 2275,
+  "name": "Глыба",
+  "nameEn": "The Boulder",
+  "gender": "Мужской",
+  "nation": "Царство Земли",
+  "bending": [
+   "Земля"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 1,
+  "answer": true,
+  "arc": "Книга 2: Земля",
+  "thumb": 19
+ },
+ {
+  "id": 1493,
+  "name": "Гьяцо",
+  "nameEn": "Gyatso",
+  "gender": "Мужской",
+  "nation": "Воздушные кочевники",
+  "bending": [
+   "Воздух"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 20
+ },
+ {
+  "id": 759546,
+  "name": "Десна и Эска",
+  "nameEn": "Desna and Eska",
+  "gender": "Другое",
+  "nation": "Племя Воды",
+  "bending": [
+   "Вода"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 4,
+  "answer": true,
+  "arc": "Корра: Книга 2",
+  "thumb": 21
+ },
+ {
+  "id": 153,
+  "name": "Джет",
+  "nameEn": "Jet",
+  "gender": "Мужской",
+  "nation": "Царство Земли",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Свободные бойцы",
+   "Армия"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 22
+ },
+ {
+  "id": 172264,
+  "name": "Джинора",
+  "nameEn": "Jinora",
+  "gender": "Женский",
+  "nation": "Объединённая Республика",
+  "bending": [
+   "Воздух"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 23
+ },
+ {
+  "id": 4050,
+  "name": "Джун",
+  "nameEn": "June",
+  "gender": "Женский",
+  "nation": "Царство Земли",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 24
+ },
+ {
+  "id": 1242583,
+  "name": "Захир",
+  "nameEn": "Zaheer",
+  "gender": "Мужской",
+  "nation": "Неизвестно",
+  "bending": [
+   "Воздух"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Красный Лотос"
+  ],
+  "status": "Жив",
+  "arcIndex": 5,
+  "answer": true,
+  "arc": "Корра: Книга 3",
+  "thumb": 25
+ },
+ {
+  "id": 90,
+  "name": "Зуко",
+  "nameEn": "Zuko",
+  "gender": "Мужской",
+  "nation": "Народ Огня",
+  "bending": [
+   "Огонь"
+  ],
+  "skills": [
+   "Молния"
+  ],
+  "groups": [
+   "Команда Аватара",
+   "Королевская семья Народа Огня",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 26
+ },
+ {
+  "id": 194153,
+  "name": "Икки",
+  "nameEn": "Ikki",
+  "gender": "Женский",
+  "nation": "Объединённая Республика",
+  "bending": [
+   "Воздух"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 27
+ },
+ {
+  "id": 1242594,
+  "name": "Кай",
+  "nameEn": "Kai",
+  "gender": "Мужской",
+  "nation": "Царство Земли",
+  "bending": [
+   "Воздух"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 5,
+  "answer": true,
+  "arc": "Корра: Книга 3",
+  "thumb": 28
+ },
+ {
+  "id": 58,
+  "name": "Канна",
+  "nameEn": "Kanna",
+  "gender": "Женский",
+  "nation": "Племя Воды",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 29
+ },
+ {
+  "id": 61,
+  "name": "Катара",
+  "nameEn": "Katara",
+  "gender": "Женский",
+  "nation": "Племя Воды",
+  "bending": [
+   "Вода"
+  ],
+  "skills": [
+   "Кровь",
+   "Исцеление"
+  ],
+  "groups": [
+   "Команда Аватара"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 30
+ },
+ {
+  "id": 4043,
+  "name": "Кая (мать Катары)",
+  "nameEn": "Kya (nonbender)",
+  "gender": "Женский",
+  "nation": "Племя Воды",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 31
+ },
+ {
+  "id": 1497,
+  "name": "Киоши",
+  "nameEn": "Kyoshi",
+  "gender": "Женский",
+  "nation": "Царство Земли",
+  "bending": [
+   "Вода",
+   "Земля",
+   "Огонь",
+   "Воздух",
+   "Энергия"
+  ],
+  "skills": [
+   "Лава",
+   "Исцеление"
+  ],
+  "groups": [
+   "Аватары",
+   "Дай Ли",
+   "Воины Киоши",
+   "Триады"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 32
+ },
+ {
+  "id": 428053,
+  "name": "Кия (дочь Аанга)",
+  "nameEn": "Kya",
+  "gender": "Женский",
+  "nation": "Племя Воды",
+  "bending": [
+   "Вода"
+  ],
+  "skills": [
+   "Исцеление"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 33
+ },
+ {
+  "id": 2704,
+  "name": "Ко",
+  "nameEn": "Koh",
+  "gender": "Мужской",
+  "nation": "Духи",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 34
+ },
+ {
+  "id": 40924,
+  "name": "Корра",
+  "nameEn": "Korra",
+  "gender": "Женский",
+  "nation": "Племя Воды",
+  "bending": [
+   "Вода",
+   "Земля",
+   "Огонь",
+   "Воздух",
+   "Энергия"
+  ],
+  "skills": [
+   "Металл",
+   "Исцеление"
+  ],
+  "groups": [
+   "Команда Аватара",
+   "Аватары"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 35
+ },
+ {
+  "id": 1251490,
+  "name": "Кувира",
+  "nameEn": "Kuvira",
+  "gender": "Женский",
+  "nation": "Царство Земли",
+  "bending": [
+   "Земля"
+  ],
+  "skills": [
+   "Металл"
+  ],
+  "groups": [
+   "Земная Империя",
+   "Клан Металла",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 5,
+  "answer": true,
+  "arc": "Корра: Книга 3",
+  "thumb": 36
+ },
+ {
+  "id": 1913,
+  "name": "Курук",
+  "nameEn": "Kuruk",
+  "gender": "Мужской",
+  "nation": "Племя Воды",
+  "bending": [
+   "Вода",
+   "Земля",
+   "Огонь",
+   "Воздух",
+   "Энергия"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Аватары"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 37
+ },
+ {
+  "id": 2044,
+  "name": "Куэй",
+  "nameEn": "Kuei",
+  "gender": "Мужской",
+  "nation": "Царство Земли",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 1,
+  "answer": true,
+  "arc": "Книга 2: Земля",
+  "thumb": 38
+ },
+ {
+  "id": 251644,
+  "name": "Лин Бейфонг",
+  "nameEn": "Lin Beifong",
+  "gender": "Женский",
+  "nation": "Объединённая Республика",
+  "bending": [
+   "Земля"
+  ],
+  "skills": [
+   "Металл",
+   "Сейсмическое чутьё"
+  ],
+  "groups": [
+   "Полиция Республики"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 39
+ },
+ {
+  "id": 1797,
+  "name": "Лонг Фенг",
+  "nameEn": "Long Feng",
+  "gender": "Мужской",
+  "nation": "Царство Земли",
+  "bending": [
+   "Земля"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Дай Ли",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 1,
+  "answer": true,
+  "arc": "Книга 2: Земля",
+  "thumb": 40
+ },
+ {
+  "id": 1759,
+  "name": "Лу Тен",
+  "nameEn": "Lu Ten",
+  "gender": "Мужской",
+  "nation": "Народ Огня",
+  "bending": [
+   "Огонь"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Королевская семья Народа Огня",
+   "Армия"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 41
+ },
+ {
+  "id": 1798,
+  "name": "Май",
+  "nameEn": "Mai",
+  "gender": "Женский",
+  "nation": "Народ Огня",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 1,
+  "answer": true,
+  "arc": "Книга 2: Земля",
+  "thumb": 42
+ },
+ {
+  "id": 172241,
+  "name": "Мако",
+  "nameEn": "Mako",
+  "gender": "Мужской",
+  "nation": "Объединённая Республика",
+  "bending": [
+   "Огонь"
+  ],
+  "skills": [
+   "Молния"
+  ],
+  "groups": [
+   "Команда Аватара",
+   "Земная Империя",
+   "Полиция Республики",
+   "Триады",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 43
+ },
+ {
+  "id": 43886,
+  "name": "Мило",
+  "nameEn": "Meelo",
+  "gender": "Мужской",
+  "nation": "Объединённая Республика",
+  "bending": [
+   "Воздух"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 44
+ },
+ {
+  "id": 1242591,
+  "name": "Мин-Хуа",
+  "nameEn": "Ming-Hua",
+  "gender": "Женский",
+  "nation": "Неизвестно",
+  "bending": [
+   "Вода"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Красный Лотос"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 5,
+  "answer": true,
+  "arc": "Корра: Книга 3",
+  "thumb": 45
+ },
+ {
+  "id": 1184989,
+  "name": "Момо",
+  "nameEn": "Momo",
+  "gender": "Мужской",
+  "nation": "Воздушные кочевники",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Команда Аватара"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 46
+ },
+ {
+  "id": 250170,
+  "name": "Нага",
+  "nameEn": "Naga",
+  "gender": "Женский",
+  "nation": "Племя Воды",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Команда Аватара"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 47
+ },
+ {
+  "id": 96,
+  "name": "Озай",
+  "nameEn": "Ozai",
+  "gender": "Мужской",
+  "nation": "Народ Огня",
+  "bending": [
+   "Огонь"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Королевская семья Народа Огня",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 48
+ },
+ {
+  "id": 1246894,
+  "name": "Опал",
+  "nameEn": "Opal",
+  "gender": "Женский",
+  "nation": "Царство Земли",
+  "bending": [
+   "Воздух"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Клан Металла"
+  ],
+  "status": "Жив",
+  "arcIndex": 5,
+  "answer": true,
+  "arc": "Корра: Книга 3",
+  "thumb": 49
+ },
+ {
+  "id": 251691,
+  "name": "Пабу",
+  "nameEn": "Pabu",
+  "gender": "Мужской",
+  "nation": "Объединённая Республика",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Команда Аватара"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 50
+ },
+ {
+  "id": 205,
+  "name": "Пакку",
+  "nameEn": "Pakku",
+  "gender": "Мужской",
+  "nation": "Племя Воды",
+  "bending": [
+   "Вода"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Белый Лотос"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 51
+ },
+ {
+  "id": 194149,
+  "name": "Пема",
+  "nameEn": "Pema",
+  "gender": "Женский",
+  "nation": "Объединённая Республика",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Воздушные аколиты"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 52
+ },
+ {
+  "id": 1242590,
+  "name": "Пи Ли",
+  "nameEn": "P'Li",
+  "gender": "Женский",
+  "nation": "Неизвестно",
+  "bending": [
+   "Огонь"
+  ],
+  "skills": [
+   "Взрыв"
+  ],
+  "groups": [
+   "Красный Лотос"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 5,
+  "answer": true,
+  "arc": "Корра: Книга 3",
+  "thumb": 53
+ },
+ {
+  "id": 2692,
+  "name": "Пьяндао",
+  "nameEn": "Piandao",
+  "gender": "Мужской",
+  "nation": "Народ Огня",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Белый Лотос",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 2,
+  "answer": true,
+  "arc": "Книга 3: Огонь",
+  "thumb": 54
+ },
+ {
+  "id": 1181087,
+  "name": "Рава",
+  "nameEn": "Raava",
+  "gender": "Женский",
+  "nation": "Духи",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 4,
+  "answer": true,
+  "arc": "Корра: Книга 2",
+  "thumb": 55
+ },
+ {
+  "id": 1162218,
+  "name": "Райко",
+  "nameEn": "Raiko",
+  "gender": "Мужской",
+  "nation": "Объединённая Республика",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 4,
+  "answer": true,
+  "arc": "Корра: Книга 2",
+  "thumb": 56
+ },
+ {
+  "id": 126,
+  "name": "Року",
+  "nameEn": "Roku",
+  "gender": "Мужской",
+  "nation": "Народ Огня",
+  "bending": [
+   "Вода",
+   "Земля",
+   "Огонь",
+   "Воздух",
+   "Энергия"
+  ],
+  "skills": [
+   "Лава"
+  ],
+  "groups": [
+   "Аватары"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 57
+ },
+ {
+  "id": 777876,
+  "name": "Сенна",
+  "nameEn": "Senna",
+  "gender": "Другое",
+  "nation": "Племя Воды",
+  "bending": [
+   "Вода"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 58
+ },
+ {
+  "id": 1961,
+  "name": "Созин",
+  "nameEn": "Sozin",
+  "gender": "Мужской",
+  "nation": "Народ Огня",
+  "bending": [
+   "Огонь"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Королевская семья Народа Огня",
+   "Армия"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 59
+ },
+ {
+  "id": 59,
+  "name": "Сокка",
+  "nameEn": "Sokka",
+  "gender": "Мужской",
+  "nation": "Племя Воды",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Команда Аватара",
+   "Армия"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 60
+ },
+ {
+  "id": 1246592,
+  "name": "Суинь Бейфонг",
+  "nameEn": "Suyin Beifong",
+  "gender": "Женский",
+  "nation": "Царство Земли",
+  "bending": [
+   "Земля"
+  ],
+  "skills": [
+   "Металл",
+   "Сейсмическое чутьё"
+  ],
+  "groups": [
+   "Клан Металла",
+   "Триады"
+  ],
+  "status": "Жив",
+  "arcIndex": 5,
+  "answer": true,
+  "arc": "Корра: Книга 3",
+  "thumb": 61
+ },
+ {
+  "id": 1750,
+  "name": "Суки",
+  "nameEn": "Suki",
+  "gender": "Женский",
+  "nation": "Царство Земли",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Блокировка ци"
+  ],
+  "groups": [
+   "Команда Аватара",
+   "Воины Киоши",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 62
+ },
+ {
+  "id": 1793,
+  "name": "Тай Ли",
+  "nameEn": "Ty Lee",
+  "gender": "Женский",
+  "nation": "Народ Огня",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Блокировка ци"
+  ],
+  "groups": [
+   "Воины Киоши",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 1,
+  "answer": true,
+  "arc": "Книга 2: Земля",
+  "thumb": 63
+ },
+ {
+  "id": 440814,
+  "name": "Тарлок",
+  "nameEn": "Tarrlok",
+  "gender": "Мужской",
+  "nation": "Племя Воды",
+  "bending": [
+   "Вода"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 64
+ },
+ {
+  "id": 41559,
+  "name": "Тензин",
+  "nameEn": "Tenzin",
+  "gender": "Мужской",
+  "nation": "Объединённая Республика",
+  "bending": [
+   "Воздух"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 65
+ },
+ {
+  "id": 777888,
+  "name": "Тонрак",
+  "nameEn": "Tonraq",
+  "gender": "Мужской",
+  "nation": "Племя Воды",
+  "bending": [
+   "Вода"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 66
+ },
+ {
+  "id": 2216,
+  "name": "Торговец капустой",
+  "nameEn": "Cabbage merchant",
+  "gender": "Мужской",
+  "nation": "Царство Земли",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 67
+ },
+ {
+  "id": 1013955,
+  "name": "Тоф Бейфонг",
+  "nameEn": "Toph Beifong",
+  "gender": "Женский",
+  "nation": "Царство Земли",
+  "bending": [
+   "Земля"
+  ],
+  "skills": [
+   "Металл",
+   "Сейсмическое чутьё"
+  ],
+  "groups": [
+   "Команда Аватара",
+   "Полиция Республики"
+  ],
+  "status": "Жив",
+  "arcIndex": 1,
+  "answer": true,
+  "arc": "Книга 2: Земля",
+  "thumb": 68
+ },
+ {
+  "id": 758947,
+  "name": "Уналак",
+  "nameEn": "Unalaq",
+  "gender": "Мужской",
+  "nation": "Племя Воды",
+  "bending": [
+   "Вода"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Красный Лотос"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 4,
+  "answer": true,
+  "arc": "Корра: Книга 2",
+  "thumb": 69
+ },
+ {
+  "id": 2115,
+  "name": "Урса",
+  "nameEn": "Ursa",
+  "gender": "Женский",
+  "nation": "Народ Огня",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Королевская семья Народа Огня"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 70
+ },
+ {
+  "id": 1796,
+  "name": "Хакода",
+  "nameEn": "Hakoda",
+  "gender": "Мужской",
+  "nation": "Племя Воды",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 71
+ },
+ {
+  "id": 2961,
+  "name": "Хама",
+  "nameEn": "Hama",
+  "gender": "Женский",
+  "nation": "Племя Воды",
+  "bending": [
+   "Вода"
+  ],
+  "skills": [
+   "Кровь"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 72
+ },
+ {
+  "id": 1974,
+  "name": "Хару",
+  "nameEn": "Haru",
+  "gender": "Мужской",
+  "nation": "Царство Земли",
+  "bending": [
+   "Земля"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 73
+ },
+ {
+  "id": 172215,
+  "name": "Хироши Сато",
+  "nameEn": "Hiroshi Sato",
+  "gender": "Мужской",
+  "nation": "Объединённая Республика",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Уравнители"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 74
+ },
+ {
+  "id": 1242668,
+  "name": "Хоу-Тинг",
+  "nameEn": "Hou-Ting",
+  "gender": "Женский",
+  "nation": "Царство Земли",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 5,
+  "answer": true,
+  "arc": "Корра: Книга 3",
+  "thumb": 75
+ },
+ {
+  "id": 159,
+  "name": "Чжао",
+  "nameEn": "Zhao",
+  "gender": "Мужской",
+  "nation": "Народ Огня",
+  "bending": [
+   "Огонь"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 76
+ },
+ {
+  "id": 168,
+  "name": "Чжон Чжон",
+  "nameEn": "Jeong Jeong",
+  "gender": "Мужской",
+  "nation": "Народ Огня",
+  "bending": [
+   "Огонь"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Белый Лотос"
+  ],
+  "status": "Жив",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 77
+ },
+ {
+  "id": 1162079,
+  "name": "Чжу Ли",
+  "nameEn": "Zhu Li Moon",
+  "gender": "Женский",
+  "nation": "Объединённая Республика",
+  "bending": [
+   "Нет"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Земная Империя",
+   "Армия"
+  ],
+  "status": "Жив",
+  "arcIndex": 4,
+  "answer": true,
+  "arc": "Корра: Книга 2",
+  "thumb": 78
+ },
+ {
+  "id": 204,
+  "name": "Юи",
+  "nameEn": "Yue",
+  "gender": "Женский",
+  "nation": "Духи",
+  "bending": [
+   "Вода"
+  ],
+  "skills": [
+   "Исцеление"
+  ],
+  "groups": [
+   "Сами по себе"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 0,
+  "answer": true,
+  "arc": "Книга 1: Вода",
+  "thumb": 79
+ },
+ {
+  "id": 487361,
+  "name": "Якон",
+  "nameEn": "Yakone",
+  "gender": "Мужской",
+  "nation": "Племя Воды",
+  "bending": [
+   "Вода"
+  ],
+  "skills": [
+   "Нет"
+  ],
+  "groups": [
+   "Триады"
+  ],
+  "status": "Мёртв",
+  "arcIndex": 3,
+  "answer": true,
+  "arc": "Корра: Книга 1",
+  "thumb": 80
+ }
+]

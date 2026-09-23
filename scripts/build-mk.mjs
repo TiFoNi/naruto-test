@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import {
-import { dropDeleted } from './dropped.mjs'
   ROOT,
   cachedDownload,
   cachedJson,
@@ -15,6 +14,7 @@ import { dropDeleted } from './dropped.mjs'
   writeAtlas,
   writeFullAndThumb,
 } from './lib.mjs'
+import { dropDeleted, onlyAnswers } from './dropped.mjs'
 
 const API = 'https://mortalkombat.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'mk')
@@ -285,6 +285,8 @@ async function main() {
   })
 
   dropDeleted(result, 'mk')
+
+  onlyAnswers(result)
   result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
   await writeAtlas(result, THUMBS, path.join(OUT_IMG, 'thumbs.webp'), OUT_ATLAS, 12, 96)
   await pruneImages(path.join(OUT_IMG, 'full'), result)

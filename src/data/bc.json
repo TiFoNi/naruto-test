@@ -17,23 +17,6 @@
   "thumb": 0
  },
  {
-  "id": 3722,
-  "name": "Алекдора Сандлер",
-  "nameEn": "Alecdora Sandler",
-  "gender": "Мужской",
-  "species": "Человек",
-  "magic": [
-   "Земля"
-  ],
-  "squad": "Золотой Рассвет",
-  "country": "Королевство Клевера",
-  "status": "Жив",
-  "arc": "Подземелье",
-  "arcIndex": 1,
-  "answer": false,
-  "thumb": 1
- },
- {
   "id": 2194,
   "name": "Аста",
   "nameEn": "Asta",
@@ -49,42 +32,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 2
- },
- {
-  "id": 4776,
-  "name": "Асье Сильва",
-  "nameEn": "Acier Silva",
-  "gender": "Женский",
-  "species": "Человек",
-  "magic": [
-   "Вода",
-   "Оружие"
-  ],
-  "squad": "Серебряные Орлы",
-  "country": "Королевство Клевера",
-  "status": "Мёртв",
-  "arc": "Королевские рыцари",
-  "arcIndex": 6,
-  "answer": false,
-  "thumb": 3
- },
- {
-  "id": 3427,
-  "name": "Вальтос",
-  "nameEn": "Valtos",
-  "gender": "Мужской",
-  "species": "Человек",
-  "magic": [
-   "Пространство"
-  ],
-  "squad": "Глаз полуночного солнца",
-  "country": "Королевство Клевера",
-  "status": "Жив",
-  "arc": "Штурм столицы",
-  "arcIndex": 2,
-  "answer": false,
-  "thumb": 4
+  "thumb": 1
  },
  {
   "id": 2274,
@@ -101,7 +49,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 5
+  "thumb": 2
  },
  {
   "id": 9870,
@@ -119,7 +67,7 @@
   "arc": "Королевство Сердца",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 6
+  "thumb": 3
  },
  {
   "id": 3530,
@@ -136,7 +84,7 @@
   "arc": "Око полуночного солнца",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 7
+  "thumb": 4
  },
  {
   "id": 2207,
@@ -153,7 +101,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 8
+  "thumb": 5
  },
  {
   "id": 9645,
@@ -171,7 +119,7 @@
   "arc": "Перерождение эльфов",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 9
+  "thumb": 6
  },
  {
   "id": 5707,
@@ -188,7 +136,7 @@
   "arc": "Лес ведьм",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 10
+  "thumb": 7
  },
  {
   "id": 4288,
@@ -205,7 +153,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 11
+  "thumb": 8
  },
  {
   "id": 3440,
@@ -223,7 +171,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 12
+  "thumb": 9
  },
  {
   "id": 3757,
@@ -240,41 +188,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 13
- },
- {
-  "id": 4139,
-  "name": "Гуэлдре Пойзот",
-  "nameEn": "Gueldre Poizot",
-  "gender": "Мужской",
-  "species": "Человек",
-  "magic": [
-   "Другая магия"
-  ],
-  "squad": "Пурпурные Косатки",
-  "country": "Королевство Клевера",
-  "status": "Жив",
-  "arc": "Вступление в Рыцари",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 14
- },
- {
-  "id": 9260,
-  "name": "Дамнатио Кира",
-  "nameEn": "Damnatio Kira",
-  "gender": "Мужской",
-  "species": "Человек",
-  "magic": [
-   "Другая магия"
-  ],
-  "squad": "Нет отряда",
-  "country": "Королевство Клевера",
-  "status": "Жив",
-  "arc": "Перерождение эльфов",
-  "arcIndex": 7,
-  "answer": false,
-  "thumb": 15
+  "thumb": 10
  },
  {
   "id": 9869,
@@ -291,7 +205,7 @@
   "arc": "Королевство Сердца",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 16
+  "thumb": 11
  },
  {
   "id": 3590,
@@ -309,7 +223,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 17
+  "thumb": 12
  },
  {
   "id": 4262,
@@ -326,7 +240,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 18
+  "thumb": 13
  },
  {
   "id": 9151,
@@ -343,7 +257,7 @@
   "arc": "Перерождение эльфов",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 19
+  "thumb": 14
  },
  {
   "id": 9867,
@@ -361,7 +275,7 @@
   "arc": "Перерождение эльфов",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 20
+  "thumb": 15
  },
  {
   "id": 4877,
@@ -379,25 +293,7 @@
   "arc": "Королевские рыцари",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 21
- },
- {
-  "id": 3268,
-  "name": "Катхерине",
-  "nameEn": "Catherine",
-  "gender": "Женский",
-  "species": "Человек",
-  "magic": [
-   "Оружие",
-   "Пепел"
-  ],
-  "squad": "Глаз полуночного солнца",
-  "country": "Лес ведьм",
-  "status": "Мёртв",
-  "arc": "Штурм столицы",
-  "arcIndex": 2,
-  "answer": false,
-  "thumb": 22
+  "thumb": 16
  },
  {
   "id": 3687,
@@ -414,24 +310,7 @@
   "arc": "Подводный храм",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 23
- },
- {
-  "id": 3745,
-  "name": "Киато",
-  "nameEn": "Kiato",
-  "gender": "Мужской",
-  "species": "Человек",
-  "magic": [
-   "Другая магия"
-  ],
-  "squad": "Нет отряда",
-  "country": "Неизвестно",
-  "status": "Жив",
-  "arc": "Подводный храм",
-  "arcIndex": 4,
-  "answer": false,
-  "thumb": 24
+  "thumb": 17
  },
  {
   "id": 4870,
@@ -448,7 +327,7 @@
   "arc": "Королевские рыцари",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 25
+  "thumb": 18
  },
  {
   "id": 2726,
@@ -465,24 +344,7 @@
   "arc": "Подземелье",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 26
- },
- {
-  "id": 4227,
-  "name": "Ладрос",
-  "nameEn": "Ladros",
-  "gender": "Мужской",
-  "species": "Человек",
-  "magic": [
-   "Другая магия"
-  ],
-  "squad": "Нет отряда",
-  "country": "Королевство Бубен",
-  "status": "Жив",
-  "arc": "Лес ведьм",
-  "arcIndex": 5,
-  "answer": false,
-  "thumb": 27
+  "thumb": 19
  },
  {
   "id": 2488,
@@ -500,7 +362,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 28
+  "thumb": 20
  },
  {
   "id": 4013,
@@ -517,24 +379,7 @@
   "arc": "Подводный храм",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 29
- },
- {
-  "id": 2220,
-  "name": "Лебучи Салик",
-  "nameEn": "Revchi Salik",
-  "gender": "Мужской",
-  "species": "Человек",
-  "magic": [
-   "Другая магия"
-  ],
-  "squad": "Пурпурные Косатки",
-  "country": "Королевство Клевера",
-  "status": "Жив",
-  "arc": "Вступление в Рыцари",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 30
+  "thumb": 21
  },
  {
   "id": 8287,
@@ -551,7 +396,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 31
+  "thumb": 22
  },
  {
   "id": 3165,
@@ -568,7 +413,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 32
+  "thumb": 23
  },
  {
   "id": 9164,
@@ -586,7 +431,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 33
+  "thumb": 24
  },
  {
   "id": 4337,
@@ -604,24 +449,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 34
- },
- {
-  "id": 6128,
-  "name": "Лира",
-  "nameEn": "Lira",
-  "gender": "Мужской",
-  "species": "Эльф",
-  "magic": [
-   "Другая магия"
-  ],
-  "squad": "Нет отряда",
-  "country": "Неизвестно",
-  "status": "Мёртв",
-  "arc": "Перерождение эльфов",
-  "arcIndex": 7,
-  "answer": false,
-  "thumb": 35
+  "thumb": 25
  },
  {
   "id": 3457,
@@ -638,7 +466,7 @@
   "arc": "Подводный храм",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 36
+  "thumb": 26
  },
  {
   "id": 9729,
@@ -655,24 +483,7 @@
   "arc": "Перерождение эльфов",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 37
- },
- {
-  "id": 2877,
-  "name": "Лотус Уомальт",
-  "nameEn": "Lotus Whomalt",
-  "gender": "Мужской",
-  "species": "Человек",
-  "magic": [
-   "Пепел"
-  ],
-  "squad": "Нет отряда",
-  "country": "Королевство Пик",
-  "status": "Жив",
-  "arc": "Подземелье",
-  "arcIndex": 1,
-  "answer": false,
-  "thumb": 38
+  "thumb": 27
  },
  {
   "id": 13218,
@@ -691,7 +502,7 @@
   "arc": "Королевство Пик",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 39
+  "thumb": 28
  },
  {
   "id": 10562,
@@ -708,7 +519,7 @@
   "arc": "Королевство Сердца",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 40
+  "thumb": 29
  },
  {
   "id": 2277,
@@ -725,41 +536,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 41
- },
- {
-  "id": 4335,
-  "name": "Мари Адлаи",
-  "nameEn": "Marie Adlai",
-  "gender": "Женский",
-  "species": "Человек",
-  "magic": [
-   "Другая магия"
-  ],
-  "squad": "Нет отряда",
-  "country": "Королевство Клевера",
-  "status": "Жив",
-  "arc": "Вступление в Рыцари",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 42
- },
- {
-  "id": 3414,
-  "name": "Маркс Франсуа",
-  "nameEn": "Marx Francois",
-  "gender": "Мужской",
-  "species": "Человек",
-  "magic": [
-   "Другая магия"
-  ],
-  "squad": "Бирюзовые Олени",
-  "country": "Королевство Клевера",
-  "status": "Жив",
-  "arc": "Вступление в Рыцари",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 43
+  "thumb": 30
  },
  {
   "id": 2664,
@@ -776,7 +553,7 @@
   "arc": "Подземелье",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 44
+  "thumb": 31
  },
  {
   "id": 4701,
@@ -793,7 +570,7 @@
   "arc": "Королевские рыцари",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 45
+  "thumb": 32
  },
  {
   "id": 2767,
@@ -811,7 +588,7 @@
   "arc": "Подземелье",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 46
+  "thumb": 33
  },
  {
   "id": 4960,
@@ -829,7 +606,7 @@
   "arc": "Лес ведьм",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 47
+  "thumb": 34
  },
  {
   "id": 11543,
@@ -846,24 +623,7 @@
   "arc": "Королевство Сердца",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 48
- },
- {
-  "id": 3449,
-  "name": "Небра Сильва",
-  "nameEn": "Nebra Silva",
-  "gender": "Женский",
-  "species": "Человек",
-  "magic": [
-   "Туман"
-  ],
-  "squad": "Серебряные Орлы",
-  "country": "Королевство Клевера",
-  "status": "Жив",
-  "arc": "Вступление в Рыцари",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 49
+  "thumb": 35
  },
  {
   "id": 3429,
@@ -880,7 +640,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 50
+  "thumb": 36
  },
  {
   "id": 2251,
@@ -897,7 +657,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 51
+  "thumb": 37
  },
  {
   "id": 5988,
@@ -914,7 +674,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 52
+  "thumb": 38
  },
  {
   "id": 3246,
@@ -931,7 +691,7 @@
   "arc": "Штурм столицы",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 53
+  "thumb": 39
  },
  {
   "id": 4263,
@@ -948,7 +708,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 54
+  "thumb": 40
  },
  {
   "id": 3537,
@@ -965,7 +725,7 @@
   "arc": "Око полуночного солнца",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 55
+  "thumb": 41
  },
  {
   "id": 13347,
@@ -982,7 +742,7 @@
   "arc": "Финал",
   "arcIndex": 10,
   "answer": true,
-  "thumb": 56
+  "thumb": 42
  },
  {
   "id": 3416,
@@ -999,7 +759,7 @@
   "arc": "Штурм столицы",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 57
+  "thumb": 43
  },
  {
   "id": 2364,
@@ -1016,7 +776,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 58
+  "thumb": 44
  },
  {
   "id": 2805,
@@ -1033,7 +793,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 59
+  "thumb": 45
  },
  {
   "id": 3535,
@@ -1050,7 +810,7 @@
   "arc": "Подземелье",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 60
+  "thumb": 46
  },
  {
   "id": 4312,
@@ -1067,7 +827,7 @@
   "arc": "Штурм столицы",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 61
+  "thumb": 47
  },
  {
   "id": 3011,
@@ -1084,41 +844,7 @@
   "arc": "Штурм столицы",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 62
- },
- {
-  "id": 3604,
-  "name": "Тхереса Рапуал",
-  "nameEn": "Theresa Rapual",
-  "gender": "Женский",
-  "species": "Человек",
-  "magic": [
-   "Огонь"
-  ],
-  "squad": "Багровые Львы",
-  "country": "Королевство Клевера",
-  "status": "Жив",
-  "arc": "Око полуночного солнца",
-  "arcIndex": 3,
-  "answer": false,
-  "thumb": 63
- },
- {
-  "id": 9677,
-  "name": "Ундина",
-  "nameEn": "Undine",
-  "gender": "Женский",
-  "species": "Дух",
-  "magic": [
-   "Вода"
-  ],
-  "squad": "Нет отряда",
-  "country": "Королевство Сердца",
-  "status": "Жив",
-  "arc": "Перерождение эльфов",
-  "arcIndex": 7,
-  "answer": false,
-  "thumb": 64
+  "thumb": 48
  },
  {
   "id": 4411,
@@ -1135,7 +861,7 @@
   "arc": "Лес ведьм",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 65
+  "thumb": 49
  },
  {
   "id": 6039,
@@ -1152,24 +878,7 @@
   "arc": "Око полуночного солнца",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 66
- },
- {
-  "id": 3529,
-  "name": "Фана",
-  "nameEn": "Fana",
-  "gender": "Женский",
-  "species": "Человек",
-  "magic": [
-   "Огонь"
-  ],
-  "squad": "Глаз полуночного солнца",
-  "country": "Королевство Бубен",
-  "status": "Жив",
-  "arc": "Подземелье",
-  "arcIndex": 1,
-  "answer": false,
-  "thumb": 67
+  "thumb": 50
  },
  {
   "id": 4222,
@@ -1186,7 +895,7 @@
   "arc": "Лес ведьм",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 68
+  "thumb": 51
  },
  {
   "id": 3625,
@@ -1203,7 +912,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 69
+  "thumb": 52
  },
  {
   "id": 3036,
@@ -1220,41 +929,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 70
- },
- {
-  "id": 3441,
-  "name": "Хамон Касеус",
-  "nameEn": "Hamon Caseus",
-  "gender": "Мужской",
-  "species": "Человек",
-  "magic": [
-   "Стекло"
-  ],
-  "squad": "Золотой Рассвет",
-  "country": "Королевство Клевера",
-  "status": "Мёртв",
-  "arc": "Штурм столицы",
-  "arcIndex": 2,
-  "answer": false,
-  "thumb": 71
- },
- {
-  "id": 2382,
-  "name": "Хеатх Грайке",
-  "nameEn": "Heath Graice",
-  "gender": "Мужской",
-  "species": "Человек",
-  "magic": [
-   "Лёд"
-  ],
-  "squad": "Глаз полуночного солнца",
-  "country": "Королевство Клевера",
-  "status": "Мёртв",
-  "arc": "Вступление в Рыцари",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 72
+  "thumb": 53
  },
  {
   "id": 3132,
@@ -1271,7 +946,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 73
+  "thumb": 54
  },
  {
   "id": 3621,
@@ -1288,24 +963,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 74
- },
- {
-  "id": 5044,
-  "name": "Эн Рингард",
-  "nameEn": "En Ringard",
-  "gender": "Мужской",
-  "species": "Человек",
-  "magic": [
-   "Другая магия"
-  ],
-  "squad": "Изумрудный Богомол",
-  "country": "Королевство Клевера",
-  "status": "Жив",
-  "arc": "Королевские рыцари",
-  "arcIndex": 6,
-  "answer": false,
-  "thumb": 75
+  "thumb": 55
  },
  {
   "id": 3077,
@@ -1322,7 +980,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 76
+  "thumb": 56
  },
  {
   "id": 2198,
@@ -1339,7 +997,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 77
+  "thumb": 57
  },
  {
   "id": 13362,
@@ -1356,7 +1014,7 @@
   "arc": "Финал",
   "arcIndex": 10,
   "answer": true,
-  "thumb": 78
+  "thumb": 58
  },
  {
   "id": 2204,
@@ -1374,6 +1032,6 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 79
+  "thumb": 59
  }
 ]

@@ -455,19 +455,6 @@
   "thumb": 34
  },
  {
-  "id": 36,
-  "slug": "my-dearest-self",
-  "name": "Моё дорогое я со злым умыслом",
-  "nameEn": "My Dearest Self with Malice Aforethought",
-  "author": "Хадзимэ Инорю, Сёта Ито",
-  "year": 2020,
-  "demographic": "Сёнэн",
-  "status": "Завершена",
-  "pages": 0,
-  "answer": false,
-  "thumb": 0
- },
- {
   "id": 37,
   "slug": "homunculus",
   "name": "Гомункул",
@@ -520,32 +507,6 @@
   "thumb": 38
  },
  {
-  "id": 41,
-  "slug": "claymore",
-  "name": "Клеймор",
-  "nameEn": "Claymore",
-  "author": "Норихиро Яги",
-  "year": 2001,
-  "demographic": "Сёнэн",
-  "status": "Завершена",
-  "pages": 0,
-  "answer": false,
-  "thumb": 0
- },
- {
-  "id": 42,
-  "slug": "jigokuraku",
-  "name": "Адский рай",
-  "nameEn": "Hell's Paradise",
-  "author": "Юдзи Каку",
-  "year": 2018,
-  "demographic": "Сёнэн",
-  "status": "Завершена",
-  "pages": 0,
-  "answer": false,
-  "thumb": 0
- },
- {
   "id": 43,
   "slug": "black-clover",
   "name": "Чёрный клевер",
@@ -559,19 +520,6 @@
   "thumb": 39
  },
  {
-  "id": 44,
-  "slug": "tomodachi-game",
-  "name": "Игра друзей",
-  "nameEn": "Tomodachi Game",
-  "author": "Микото Ямагути",
-  "year": 2013,
-  "demographic": "Сёнэн",
-  "status": "Выходит",
-  "pages": 0,
-  "answer": false,
-  "thumb": 0
- },
- {
   "id": 45,
   "slug": "kokou-no-hito",
   "name": "Скалолаз",
@@ -583,19 +531,6 @@
   "pages": 3,
   "answer": true,
   "thumb": 40
- },
- {
-  "id": 46,
-  "slug": "ajin",
-  "name": "Получеловек",
-  "nameEn": "Ajin",
-  "author": "Гамон Сакураи",
-  "year": 2012,
-  "demographic": "Сэйнэн",
-  "status": "Завершена",
-  "pages": 0,
-  "answer": false,
-  "thumb": 0
  },
  {
   "id": 47,

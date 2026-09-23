@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import sharp from 'sharp'
 import { ROOT, pruneImages, writeAtlas } from './lib.mjs'
+import { dropDeleted, onlyAnswers } from './dropped.mjs'
 
 const SEEDS = path.join(ROOT, 'seeds', 'manga')
 const CACHE = path.join(ROOT, '.cache', 'manga')
@@ -212,6 +213,8 @@ async function main() {
     result.push({ id, slug, name, nameEn, author, year, demographic, status, pages: pages.length, answer: pages.length > 0 })
   }
 
+  dropDeleted(result, 'manga')
+  onlyAnswers(result)
   const withImages = result.filter((m) => m.pages > 0)
   if (withImages.length) {
     await writeAtlas(withImages, THUMBS, path.join(OUT_IMG, 'thumbs.webp'), OUT_ATLAS, 8, CELL)

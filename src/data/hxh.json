@@ -18,24 +18,6 @@
   "thumb": 0
  },
  {
-  "id": 2035,
-  "name": "Аллука Золдик",
-  "nameEn": "Alluka Zoldyck",
-  "gender": "Женский",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Специализация",
-  "affiliations": [
-   "Семья Золдик"
-  ],
-  "status": "Жив",
-  "arc": "Экзамен на охотника",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 1
- },
- {
   "id": 65658,
   "name": "Бальсамилько Майт",
   "nameEn": "Balsamilco Might",
@@ -51,7 +33,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 2
+  "thumb": 1
  },
  {
   "id": 2417,
@@ -69,7 +51,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 3
+  "thumb": 2
  },
  {
   "id": 29453,
@@ -87,25 +69,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 4
- },
- {
-  "id": 58162,
-  "name": "Билл",
-  "nameEn": "Bill",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Усиление",
-  "affiliations": [
-   "Ассоциация охотников"
-  ],
-  "status": "Жив",
-  "arc": "Тёмный континент",
-  "arcIndex": 6,
-  "answer": false,
-  "thumb": 5
+  "thumb": 3
  },
  {
   "id": 2267,
@@ -124,7 +88,7 @@
   "arc": "Небесная арена",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 6
+  "thumb": 4
  },
  {
   "id": 2170,
@@ -142,7 +106,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 7
+  "thumb": 5
  },
  {
   "id": 96718,
@@ -160,7 +124,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 8
+  "thumb": 6
  },
  {
   "id": 2337,
@@ -178,7 +142,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 9
+  "thumb": 7
  },
  {
   "id": 2291,
@@ -194,7 +158,7 @@
   "arc": "Жадный остров",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 10
+  "thumb": 8
  },
  {
   "id": 87205,
@@ -212,25 +176,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 11
- },
- {
-  "id": 1976,
-  "name": "Горейну",
-  "nameEn": "Goreinu",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Нет",
-  "affiliations": [
-   "Ассоциация охотников"
-  ],
-  "status": "Жив",
-  "arc": "Жадный остров",
-  "arcIndex": 3,
-  "answer": false,
-  "thumb": 12
+  "thumb": 9
  },
  {
   "id": 1959,
@@ -249,7 +195,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 13
+  "thumb": 10
  },
  {
   "id": 1968,
@@ -267,25 +213,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 14
- },
- {
-  "id": 30452,
-  "name": "Зханг Лей Хуэй Го Роу",
-  "nameEn": "Zhang Lei Hui Guo Rou",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Нет",
-  "affiliations": [
-   "Королевство Какин"
-  ],
-  "status": "Жив",
-  "arc": "Тёмный континент",
-  "arcIndex": 6,
-  "answer": true,
-  "thumb": 15
+  "thumb": 11
  },
  {
   "id": 3302,
@@ -303,7 +231,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 16
+  "thumb": 12
  },
  {
   "id": 2032,
@@ -323,7 +251,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 17
+  "thumb": 13
  },
  {
   "id": 98235,
@@ -341,7 +269,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 18
+  "thumb": 14
  },
  {
   "id": 1990,
@@ -361,7 +289,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 19
+  "thumb": 15
  },
  {
   "id": 2034,
@@ -380,7 +308,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 20
+  "thumb": 16
  },
  {
   "id": 30450,
@@ -398,7 +326,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 21
+  "thumb": 17
  },
  {
   "id": 30293,
@@ -416,23 +344,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 22
- },
- {
-  "id": 72361,
-  "name": "Кени Ванг",
-  "nameEn": "Ken'i Wang",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Нет",
-  "affiliations": [],
-  "status": "Жив",
-  "arc": "Тёмный континент",
-  "arcIndex": 6,
-  "answer": false,
-  "thumb": 23
+  "thumb": 18
  },
  {
   "id": 1940,
@@ -451,7 +363,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 24
+  "thumb": 19
  },
  {
   "id": 2048,
@@ -469,7 +381,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 25
+  "thumb": 20
  },
  {
   "id": 2247,
@@ -487,7 +399,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 26
+  "thumb": 21
  },
  {
   "id": 87212,
@@ -506,7 +418,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 27
+  "thumb": 22
  },
  {
   "id": 2077,
@@ -525,7 +437,7 @@
   "arc": "Небесная арена",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 28
+  "thumb": 23
  },
  {
   "id": 2338,
@@ -543,7 +455,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 29
+  "thumb": 24
  },
  {
   "id": 1961,
@@ -561,59 +473,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 30
- },
- {
-  "id": 68285,
-  "name": "Лонгхи",
-  "nameEn": "Longhi",
-  "gender": "Женский",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Нет",
-  "affiliations": [
-   "Королевство Какин"
-  ],
-  "status": "Жив",
-  "arc": "Тёмный континент",
-  "arcIndex": 6,
-  "answer": false,
-  "thumb": 31
- },
- {
-  "id": 29458,
-  "name": "Лузурус Хуэй Го Роу",
-  "nameEn": "Luzurus Hui Guo Rou",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Нет",
-  "affiliations": [
-   "Королевство Какин"
-  ],
-  "status": "Жив",
-  "arc": "Тёмный континент",
-  "arcIndex": 6,
-  "answer": false,
-  "thumb": 32
- },
- {
-  "id": 72354,
-  "name": "Луини",
-  "nameEn": "Luini",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Испускание",
-  "affiliations": [],
-  "status": "Мёртв",
-  "arc": "Тёмный континент",
-  "arcIndex": 6,
-  "answer": false,
-  "thumb": 33
+  "thumb": 25
  },
  {
   "id": 2016,
@@ -631,7 +491,7 @@
   "arc": "Небесная арена",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 34
+  "thumb": 26
  },
  {
   "id": 2339,
@@ -649,7 +509,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 35
+  "thumb": 27
  },
  {
   "id": 2344,
@@ -668,7 +528,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 36
+  "thumb": 28
  },
  {
   "id": 2223,
@@ -686,7 +546,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 37
+  "thumb": 29
  },
  {
   "id": 3289,
@@ -704,25 +564,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 38
- },
- {
-  "id": 2033,
-  "name": "Миллуки Золдик",
-  "nameEn": "Milluki Zoldyck",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Манипуляция",
-  "affiliations": [
-   "Семья Золдик"
-  ],
-  "status": "Жив",
-  "arc": "Экзамен на охотника",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 39
+  "thumb": 30
  },
  {
   "id": 2046,
@@ -740,7 +582,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 40
+  "thumb": 31
  },
  {
   "id": 72296,
@@ -756,7 +598,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 41
+  "thumb": 32
  },
  {
   "id": 2004,
@@ -774,25 +616,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 42
- },
- {
-  "id": 7566,
-  "name": "Насуби Хуэй Го Роу",
-  "nameEn": "Nasubi Hui Guo Rou",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Нет",
-  "affiliations": [
-   "Королевство Какин"
-  ],
-  "status": "Жив",
-  "arc": "Тёмный континент",
-  "arcIndex": 6,
-  "answer": false,
-  "thumb": 43
+  "thumb": 33
  },
  {
   "id": 2141,
@@ -810,25 +634,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 44
- },
- {
-  "id": 30304,
-  "name": "Ойто Хуэй Го Роу",
-  "nameEn": "Oito Hui Guo Rou",
-  "gender": "Женский",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Нет",
-  "affiliations": [
-   "Королевство Какин"
-  ],
-  "status": "Жив",
-  "arc": "Тёмный континент",
-  "arcIndex": 6,
-  "answer": false,
-  "thumb": 45
+  "thumb": 34
  },
  {
   "id": 2201,
@@ -846,7 +652,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 46
+  "thumb": 35
  },
  {
   "id": 2026,
@@ -864,7 +670,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 47
+  "thumb": 36
  },
  {
   "id": 3212,
@@ -882,7 +688,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 48
+  "thumb": 37
  },
  {
   "id": 2136,
@@ -900,7 +706,7 @@
   "arc": "Жадный остров",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 49
+  "thumb": 38
  },
  {
   "id": 2313,
@@ -918,41 +724,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 50
- },
- {
-  "id": 2030,
-  "name": "Силва Золдик",
-  "nameEn": "Silva Zoldyck",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Испускание",
-  "affiliations": [
-   "Семья Золдик"
-  ],
-  "status": "Жив",
-  "arc": "Экзамен на охотника",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 51
- },
- {
-  "id": 2305,
-  "name": "Томпа",
-  "nameEn": "Tonpa",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Нет",
-  "affiliations": [],
-  "status": "Жив",
-  "arc": "Экзамен на охотника",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 52
+  "thumb": 39
  },
  {
   "id": 2092,
@@ -970,7 +742,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 53
+  "thumb": 40
  },
  {
   "id": 2089,
@@ -988,7 +760,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 54
+  "thumb": 41
  },
  {
   "id": 2099,
@@ -1006,7 +778,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 55
+  "thumb": 42
  },
  {
   "id": 2103,
@@ -1024,7 +796,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 56
+  "thumb": 43
  },
  {
   "id": 30295,
@@ -1042,25 +814,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 57
- },
- {
-  "id": 66719,
-  "name": "Фуриков",
-  "nameEn": "Furykov",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Специализация",
-  "affiliations": [
-   "Королевство Какин"
-  ],
-  "status": "Жив",
-  "arc": "Тёмный континент",
-  "arcIndex": 6,
-  "answer": false,
-  "thumb": 58
+  "thumb": 44
  },
  {
   "id": 30291,
@@ -1078,25 +832,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 59
- },
- {
-  "id": 2226,
-  "name": "Ханзо",
-  "nameEn": "Hanzo",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "nen": "Трансформация",
-  "affiliations": [
-   "Ассоциация охотников"
-  ],
-  "status": "Жив",
-  "arc": "Экзамен на охотника",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 60
+  "thumb": 45
  },
  {
   "id": 72360,
@@ -1112,7 +848,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 61
+  "thumb": 46
  },
  {
   "id": 2042,
@@ -1132,7 +868,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 62
+  "thumb": 47
  },
  {
   "id": 1974,
@@ -1150,7 +886,7 @@
   "arc": "Жадный остров",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 63
+  "thumb": 48
  },
  {
   "id": 28024,
@@ -1168,25 +904,25 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 64
+  "thumb": 49
  },
  {
-  "id": 3533,
-  "name": "Чидл Йоркшир",
-  "nameEn": "Cheadle Yorkshire",
-  "gender": "Женский",
+  "id": 30452,
+  "name": "Чжан Лей Хуэй Го Роу",
+  "nameEn": "Zhang Lei Hui Guo Rou",
+  "gender": "Мужской",
   "species": [
    "Человек"
   ],
   "nen": "Нет",
   "affiliations": [
-   "Ассоциация охотников"
+   "Королевство Какин"
   ],
   "status": "Жив",
-  "arc": "Муравьи-химеры",
-  "arcIndex": 4,
-  "answer": false,
-  "thumb": 65
+  "arc": "Тёмный континент",
+  "arcIndex": 6,
+  "answer": true,
+  "thumb": 50
  },
  {
   "id": 2249,
@@ -1205,7 +941,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 66
+  "thumb": 51
  },
  {
   "id": 2240,
@@ -1224,7 +960,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 67
+  "thumb": 52
  },
  {
   "id": 2125,
@@ -1242,7 +978,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 68
+  "thumb": 53
  },
  {
   "id": 2050,
@@ -1260,6 +996,6 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 69
+  "thumb": 54
  }
 ]

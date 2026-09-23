@@ -13,6 +13,13 @@ export const DROPPED = {
   se: [18647, 18648, 2738, 5448, 2128, 7087],
   ff: [4094, 3922, 3920, 3667, 2997, 4524, 5147, 2827],
   dn: [],
+  avatar: [],
+  manga: [],
+}
+
+export function onlyAnswers(list) {
+  for (let i = list.length - 1; i >= 0; i--) if (!list[i].answer) list.splice(i, 1)
+  return list
 }
 
 export function dropDeleted(list, game) {

@@ -81,14 +81,12 @@ const ui = {
     uk: 'Іконка однієї здібності героя — спершу сіра й розмита, з кожною помилкою все чіткіша й кольоровіша.',
     en: "One of the hero's ability icons — grey and blurred at first, sharper and more colourful after every miss.",
   },
-  'mode.cover': { ru: 'По обложке манги', uk: 'За обкладинкою манги', en: 'By manga cover' },
   'mode.page': { ru: 'По странице', uk: 'За сторінкою', en: 'By page' },
   'mode.page.desc': {
     ru: 'Страница из манги и три варианта ответа',
     uk: 'Сторінка з манги і три варіанти відповіді',
     en: 'A manga page and three answers',
   },
-  'mode.quote': { ru: 'По цитате', uk: 'За цитатою', en: 'By quote' },
   'mode.classic.desc': {
     ru: 'Вводишь любого персонажа — клетки показывают, что совпало: пол, принадлежность, способности, арку дебюта.',
     uk: 'Вводиш будь-якого персонажа — клітинки показують, що збіглося: стать, належність, здібності, арку дебюту.',
@@ -99,7 +97,6 @@ const ui = {
     uk: 'Сильно збільшений фрагмент картинки. Кожна помилка трохи віддаляє її.',
     en: 'A heavily zoomed-in crop. Every miss zooms out a little.',
   },
-  soon: { ru: 'скоро', uk: 'скоро', en: 'soon' },
 
   'stats.solved': { ru: 'Угадано', uk: 'Вгадано', en: 'Solved' },
   'stats.streak': { ru: 'Серия', uk: 'Серія', en: 'Streak' },

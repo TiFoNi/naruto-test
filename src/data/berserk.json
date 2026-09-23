@@ -62,24 +62,6 @@
   "thumb": 2
  },
  {
-  "id": 2046,
-  "name": "Базусо",
-  "nameEn": "Bazuso",
-  "gender": "Другое",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [
-   "Военный"
-  ],
-  "status": "Мёртв",
-  "arc": "Золотой век",
-  "arcIndex": 1,
-  "answer": false,
-  "thumb": 3
- },
- {
   "id": 2181,
   "name": "Барон-Змей",
   "nameEn": "Snake Lord",
@@ -95,46 +77,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 4
- },
- {
-  "id": 2088,
-  "name": "Бонебеард",
-  "nameEn": "Bonebeard",
-  "gender": "Мужской",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [
-   "Военный",
-   "Бандит"
-  ],
-  "status": "Мёртв",
-  "arc": "Сокол тысячелетия",
-  "arcIndex": 3,
-  "answer": false,
-  "thumb": 5
- },
- {
-  "id": 2067,
-  "name": "Босконь",
-  "nameEn": "Boscogn",
-  "gender": "Мужской",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Тюдор"
-  ],
-  "occupations": [
-   "Военный"
-  ],
-  "status": "Мёртв",
-  "arc": "Золотой век",
-  "arcIndex": 1,
-  "answer": false,
-  "thumb": 6
+  "thumb": 3
  },
  {
   "id": 2292,
@@ -154,7 +97,7 @@
   "arc": "Фантазия",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 7
+  "thumb": 4
  },
  {
   "id": 2052,
@@ -176,7 +119,7 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 8
+  "thumb": 5
  },
  {
   "id": 2047,
@@ -196,7 +139,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 9
+  "thumb": 6
  },
  {
   "id": 2071,
@@ -214,7 +157,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 10
+  "thumb": 7
  },
  {
   "id": 2020,
@@ -234,7 +177,7 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 11
+  "thumb": 8
  },
  {
   "id": 1911,
@@ -254,28 +197,7 @@
   "arc": "Сокол тысячелетия",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 12
- },
- {
-  "id": 2104,
-  "name": "Гастон",
-  "nameEn": "Gaston",
-  "gender": "Другое",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Отряд Ястреба"
-  ],
-  "occupations": [
-   "Наёмник",
-   "Простолюдин"
-  ],
-  "status": "Мёртв",
-  "arc": "Золотой век",
-  "arcIndex": 1,
-  "answer": false,
-  "thumb": 13
+  "thumb": 9
  },
  {
   "id": 1891,
@@ -299,43 +221,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 14
- },
- {
-  "id": 13404,
-  "name": "Гедфринг",
-  "nameEn": "Gedfring",
-  "gender": "Мужской",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [
-   "Маг"
-  ],
-  "status": "Жив",
-  "arc": "Фантазия",
-  "arcIndex": 4,
-  "answer": false,
-  "thumb": 15
- },
- {
-  "id": 1965,
-  "name": "Гейзерих",
-  "nameEn": "Gaiseric",
-  "gender": "Мужской",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [
-   "Знать"
-  ],
-  "status": "Неизвестно",
-  "arc": "Золотой век",
-  "arcIndex": 1,
-  "answer": false,
-  "thumb": 16
+  "thumb": 10
  },
  {
   "id": 1926,
@@ -353,7 +239,7 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 17
+  "thumb": 11
  },
  {
   "id": 2097,
@@ -371,7 +257,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 18
+  "thumb": 12
  },
  {
   "id": 1892,
@@ -397,7 +283,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 19
+  "thumb": 13
  },
  {
   "id": 2055,
@@ -419,7 +305,7 @@
   "arc": "Сокол тысячелетия",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 20
+  "thumb": 14
  },
  {
   "id": 3318,
@@ -438,25 +324,7 @@
   "arc": "Сокол тысячелетия",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 21
- },
- {
-  "id": 2149,
-  "name": "Джером",
-  "nameEn": "Jerome",
-  "gender": "Мужской",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Святой Престол"
-  ],
-  "occupations": [],
-  "status": "Жив",
-  "arc": "Осуждение",
-  "arcIndex": 2,
-  "answer": false,
-  "thumb": 22
+  "thumb": 15
  },
  {
   "id": 2177,
@@ -474,7 +342,7 @@
   "arc": "Осуждение",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 23
+  "thumb": 16
  },
  {
   "id": 1918,
@@ -498,7 +366,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 24
+  "thumb": 17
  },
  {
   "id": 2079,
@@ -514,27 +382,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 25
- },
- {
-  "id": 2037,
-  "name": "Донован",
-  "nameEn": "Donovan",
-  "gender": "Мужской",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Наёмники"
-  ],
-  "occupations": [
-   "Наёмник"
-  ],
-  "status": "Мёртв",
-  "arc": "Чёрный мечник",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 26
+  "thumb": 18
  },
  {
   "id": 2083,
@@ -550,7 +398,7 @@
   "arc": "Осуждение",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 27
+  "thumb": 19
  },
  {
   "id": 1921,
@@ -571,7 +419,7 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 28
+  "thumb": 20
  },
  {
   "id": 2179,
@@ -591,41 +439,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 29
- },
- {
-  "id": 2133,
-  "name": "Иварела",
-  "nameEn": "Ivalera",
-  "gender": "Женский",
-  "kinds": [
-   "Эльф"
-  ],
-  "affiliations": [],
-  "occupations": [],
-  "status": "Жив",
-  "arc": "Сокол тысячелетия",
-  "arcIndex": 3,
-  "answer": false,
-  "thumb": 30
- },
- {
-  "id": 1925,
-  "name": "Идея Зла",
-  "nameEn": "Idea of Evil",
-  "gender": "Другое",
-  "kinds": [
-   "Сущность"
-  ],
-  "affiliations": [
-   "Длань Господа"
-  ],
-  "occupations": [],
-  "status": "Жив",
-  "arc": "Золотой век",
-  "arcIndex": 1,
-  "answer": false,
-  "thumb": 31
+  "thumb": 21
  },
  {
   "id": 2009,
@@ -646,7 +460,7 @@
   "arc": "Сокол тысячелетия",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 32
+  "thumb": 22
  },
  {
   "id": 2065,
@@ -664,43 +478,7 @@
   "arc": "Осуждение",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 33
- },
- {
-  "id": 2752,
-  "name": "Исма",
-  "nameEn": "Isma",
-  "gender": "Женский",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Отряд Чёрного мечника"
-  ],
-  "occupations": [],
-  "status": "Неизвестно",
-  "arc": "Фантазия",
-  "arcIndex": 4,
-  "answer": false,
-  "thumb": 34
- },
- {
-  "id": 2155,
-  "name": "Йоахим",
-  "nameEn": "Joachim",
-  "gender": "Мужской",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [
-   "Простолюдин"
-  ],
-  "status": "Жив",
-  "arc": "Осуждение",
-  "arcIndex": 2,
-  "answer": false,
-  "thumb": 35
+  "thumb": 23
  },
  {
   "id": 1919,
@@ -724,61 +502,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 36
- },
- {
-  "id": 2824,
-  "name": "Козлиная Голова",
-  "nameEn": "Great Goat",
-  "gender": "Мужской",
-  "kinds": [
-   "Псевдоапостол"
-  ],
-  "affiliations": [
-   "Святой Престол"
-  ],
-  "occupations": [
-   "Культист"
-  ],
-  "status": "Мёртв",
-  "arc": "Осуждение",
-  "arcIndex": 2,
-  "answer": false,
-  "thumb": 37
- },
- {
-  "id": 2772,
-  "name": "Коллетта",
-  "nameEn": "Collette",
-  "gender": "Женский",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [],
-  "status": "Мёртв",
-  "arc": "Чёрный мечник",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 38
- },
- {
-  "id": 2070,
-  "name": "Конрад",
-  "nameEn": "Conrad",
-  "gender": "Мужской",
-  "kinds": [
-   "Демон"
-  ],
-  "affiliations": [
-   "Длань Господа"
-  ],
-  "occupations": [],
-  "status": "Жив",
-  "arc": "Чёрный мечник",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 39
+  "thumb": 24
  },
  {
   "id": 1917,
@@ -799,7 +523,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 40
+  "thumb": 25
  },
  {
   "id": 2093,
@@ -819,7 +543,7 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 41
+  "thumb": 26
  },
  {
   "id": 2028,
@@ -839,25 +563,7 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 42
- },
- {
-  "id": 14464,
-  "name": "Кукка",
-  "nameEn": "Kukka",
-  "gender": "Женский",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [
-   "Маг"
-  ],
-  "status": "Жив",
-  "arc": "Фантазия",
-  "arcIndex": 4,
-  "answer": false,
-  "thumb": 43
+  "thumb": 27
  },
  {
   "id": 1986,
@@ -879,7 +585,7 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 44
+  "thumb": 28
  },
  {
   "id": 3023,
@@ -899,7 +605,7 @@
   "arc": "Сокол тысячелетия",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 45
+  "thumb": 29
  },
  {
   "id": 2010,
@@ -921,7 +627,7 @@
   "arc": "Сокол тысячелетия",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 46
+  "thumb": 30
  },
  {
   "id": 2426,
@@ -940,7 +646,7 @@
   "arc": "Осуждение",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 47
+  "thumb": 31
  },
  {
   "id": 9147,
@@ -956,7 +662,7 @@
   "arc": "Сокол тысячелетия",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 48
+  "thumb": 32
  },
  {
   "id": 2151,
@@ -974,43 +680,7 @@
   "arc": "Осуждение",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 49
- },
- {
-  "id": 11966,
-  "name": "Молда",
-  "nameEn": "Molda",
-  "gender": "Женский",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Маги"
-  ],
-  "occupations": [
-   "Маг"
-  ],
-  "status": "Жив",
-  "arc": "Фантазия",
-  "arcIndex": 4,
-  "answer": false,
-  "thumb": 50
- },
- {
-  "id": 1991,
-  "name": "Морган",
-  "nameEn": "Morgan",
-  "gender": "Мужской",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [],
-  "status": "Жив",
-  "arc": "Сокол тысячелетия",
-  "arcIndex": 3,
-  "answer": false,
-  "thumb": 51
+  "thumb": 33
  },
  {
   "id": 2998,
@@ -1026,66 +696,7 @@
   "arc": "Фантазия",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 52
- },
- {
-  "id": 2175,
-  "name": "Мьюл",
-  "nameEn": "Mule",
-  "gender": "Мужской",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Отряд Ястреба"
-  ],
-  "occupations": [
-   "Рыцарь",
-   "Знать",
-   "Военный"
-  ],
-  "status": "Жив",
-  "arc": "Сокол тысячелетия",
-  "arcIndex": 3,
-  "answer": false,
-  "thumb": 53
- },
- {
-  "id": 2152,
-  "name": "Нина",
-  "nameEn": "Nina",
-  "gender": "Женский",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Девушки Луки"
-  ],
-  "occupations": [
-   "Проститутка",
-   "Культист"
-  ],
-  "status": "Жив",
-  "arc": "Осуждение",
-  "arcIndex": 2,
-  "answer": false,
-  "thumb": 54
- },
- {
-  "id": 2781,
-  "name": "Отец Коллетт",
-  "nameEn": "Adolf",
-  "gender": "Мужской",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [],
-  "status": "Мёртв",
-  "arc": "Чёрный мечник",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 55
+  "thumb": 34
  },
  {
   "id": 1993,
@@ -1106,7 +717,7 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 56
+  "thumb": 35
  },
  {
   "id": 2176,
@@ -1127,7 +738,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 57
+  "thumb": 36
  },
  {
   "id": 2099,
@@ -1148,23 +759,7 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 58
- },
- {
-  "id": 2189,
-  "name": "Пиркаф",
-  "nameEn": "Peekaf",
-  "gender": "Другое",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [],
-  "status": "Неизвестно",
-  "arc": "Осуждение",
-  "arcIndex": 2,
-  "answer": false,
-  "thumb": 59
+  "thumb": 37
  },
  {
   "id": 2196,
@@ -1185,7 +780,7 @@
   "arc": "Сокол тысячелетия",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 60
+  "thumb": 38
  },
  {
   "id": 1920,
@@ -1203,7 +798,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 61
+  "thumb": 39
  },
  {
   "id": 1989,
@@ -1224,7 +819,7 @@
   "arc": "Сокол тысячелетия",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 62
+  "thumb": 40
  },
  {
   "id": 2096,
@@ -1242,7 +837,7 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 63
+  "thumb": 41
  },
  {
   "id": 1905,
@@ -1258,7 +853,7 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 64
+  "thumb": 42
  },
  {
   "id": 2059,
@@ -1280,7 +875,7 @@
   "arc": "Осуждение",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 65
+  "thumb": 43
  },
  {
   "id": 2095,
@@ -1298,7 +893,7 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 66
+  "thumb": 44
  },
  {
   "id": 2069,
@@ -1316,7 +911,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 67
+  "thumb": 45
  },
  {
   "id": 25061,
@@ -1332,7 +927,7 @@
   "arc": "Осуждение",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 68
+  "thumb": 46
  },
  {
   "id": 2015,
@@ -1350,23 +945,7 @@
   "arc": "Сокол тысячелетия",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 69
- },
- {
-  "id": 2186,
-  "name": "Терезия",
-  "nameEn": "Theresia",
-  "gender": "Женский",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [],
-  "status": "Жив",
-  "arc": "Чёрный мечник",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 70
+  "thumb": 47
  },
  {
   "id": 2068,
@@ -1384,7 +963,7 @@
   "arc": "Чёрный мечник",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 71
+  "thumb": 48
  },
  {
   "id": 2011,
@@ -1407,27 +986,7 @@
   "arc": "Осуждение",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 72
- },
- {
-  "id": 2060,
-  "name": "Федерико де Вандимион III",
-  "nameEn": "Federico III",
-  "gender": "Мужской",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Семья Вандимион"
-  ],
-  "occupations": [
-   "Знать"
-  ],
-  "status": "Жив",
-  "arc": "Сокол тысячелетия",
-  "arcIndex": 3,
-  "answer": false,
-  "thumb": 73
+  "thumb": 49
  },
  {
   "id": 1972,
@@ -1446,71 +1005,7 @@
   "arc": "Сокол тысячелетия",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 74
- },
- {
-  "id": 2019,
-  "name": "Фосс",
-  "nameEn": "Foss",
-  "gender": "Мужской",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [],
-  "status": "Неизвестно",
-  "arc": "Золотой век",
-  "arcIndex": 1,
-  "answer": false,
-  "thumb": 75
- },
- {
-  "id": 6783,
-  "name": "Четыре Мировых Короля",
-  "nameEn": "Four Kings of the World",
-  "gender": "Другое",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [],
-  "status": "Неизвестно",
-  "arc": "Сокол тысячелетия",
-  "arcIndex": 3,
-  "answer": false,
-  "thumb": 76
- },
- {
-  "id": 24774,
-  "name": "Чимиморё",
-  "nameEn": "Chimimoryo",
-  "gender": "Другое",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [],
-  "status": "Неизвестно",
-  "arc": "Сокол тысячелетия",
-  "arcIndex": 3,
-  "answer": false,
-  "thumb": 77
- },
- {
-  "id": 3602,
-  "name": "Чиччи",
-  "nameEn": "Chitch",
-  "gender": "Женский",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "occupations": [],
-  "status": "Мёртв",
-  "arc": "Фантазия",
-  "arcIndex": 4,
-  "answer": false,
-  "thumb": 78
+  "thumb": 50
  },
  {
   "id": 2090,
@@ -1530,7 +1025,7 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 79
+  "thumb": 51
  },
  {
   "id": 2014,
@@ -1550,7 +1045,7 @@
   "arc": "Сокол тысячелетия",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 80
+  "thumb": 52
  },
  {
   "id": 1927,
@@ -1566,27 +1061,6 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 81
- },
- {
-  "id": 2026,
-  "name": "Юлиус",
-  "nameEn": "Julius",
-  "gender": "Другое",
-  "kinds": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Мидленд"
-  ],
-  "occupations": [
-   "Знать",
-   "Военный"
-  ],
-  "status": "Мёртв",
-  "arc": "Золотой век",
-  "arcIndex": 1,
-  "answer": false,
-  "thumb": 82
+  "thumb": 53
  }
 ]

@@ -37,24 +37,6 @@
   "thumb": 1
  },
  {
-  "id": 1791,
-  "name": "Блейз",
-  "nameEn": "Blaze",
-  "gender": "Мужской",
-  "species": [
-   "Бог"
-  ],
-  "affiliations": [
-   "Одиночка"
-  ],
-  "origin": "Эдения",
-  "alignment": "Добро",
-  "debut": "MK II",
-  "debutIndex": 1,
-  "answer": false,
-  "thumb": 2
- },
- {
   "id": 1697,
   "name": "Бо Рай Чо",
   "nameEn": "Bo' Rai Cho",
@@ -70,7 +52,7 @@
   "debut": "Deadly Alliance",
   "debutIndex": 4,
   "answer": true,
-  "thumb": 3
+  "thumb": 2
  },
  {
   "id": 120440,
@@ -88,7 +70,7 @@
   "debut": "MK 11",
   "debutIndex": 11,
   "answer": true,
-  "thumb": 4
+  "thumb": 3
  },
  {
   "id": 1684,
@@ -107,7 +89,7 @@
   "debut": "MK (1992)",
   "debutIndex": 0,
   "answer": true,
-  "thumb": 5
+  "thumb": 4
  },
  {
   "id": 1549,
@@ -127,25 +109,7 @@
   "debut": "MK II",
   "debutIndex": 1,
   "answer": true,
-  "thumb": 6
- },
- {
-  "id": 1870,
-  "name": "Джарек",
-  "nameEn": "Jarek",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Чёрный Дракон"
-  ],
-  "origin": "Земное царство",
-  "alignment": "Зло",
-  "debut": "MK 4",
-  "debutIndex": 3,
-  "answer": false,
-  "thumb": 7
+  "thumb": 5
  },
  {
   "id": 1846,
@@ -163,7 +127,7 @@
   "debut": "MK II",
   "debutIndex": 1,
   "answer": true,
-  "thumb": 8
+  "thumb": 6
  },
  {
   "id": 77212,
@@ -181,7 +145,7 @@
   "debut": "MK 11",
   "debutIndex": 11,
   "answer": true,
-  "thumb": 9
+  "thumb": 7
  },
  {
   "id": 1570,
@@ -199,7 +163,7 @@
   "debut": "MK (1992)",
   "debutIndex": 0,
   "answer": true,
-  "thumb": 10
+  "thumb": 8
  },
  {
   "id": 64299,
@@ -217,43 +181,7 @@
   "debut": "MK X",
   "debutIndex": 10,
   "answer": true,
-  "thumb": 11
- },
- {
-  "id": 1995,
-  "name": "Драмин",
-  "nameEn": "Drahmin",
-  "gender": "Мужской",
-  "species": [
-   "Демон"
-  ],
-  "affiliations": [
-   "Братство Тени"
-  ],
-  "origin": "Преисподняя",
-  "alignment": "Зло",
-  "debut": "Deadly Alliance",
-  "debutIndex": 4,
-  "answer": false,
-  "thumb": 12
- },
- {
-  "id": 1790,
-  "name": "Дэгон",
-  "nameEn": "Daegon",
-  "gender": "Мужской",
-  "species": [
-   "Бог"
-  ],
-  "affiliations": [
-   "Красный Дракон"
-  ],
-  "origin": "Эдения",
-  "alignment": "Зло",
-  "debut": "Armageddon",
-  "debutIndex": 7,
-  "answer": false,
-  "thumb": 13
+  "thumb": 9
  },
  {
   "id": 2009,
@@ -271,26 +199,7 @@
   "debut": "MK 3",
   "debutIndex": 2,
   "answer": true,
-  "thumb": 14
- },
- {
-  "id": 1867,
-  "name": "Кай",
-  "nameEn": "Kai",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Шаолинь",
-   "Белый Лотос"
-  ],
-  "origin": "Земное царство",
-  "alignment": "Добро",
-  "debut": "MK 4",
-  "debutIndex": 3,
-  "answer": false,
-  "thumb": 15
+  "thumb": 10
  },
  {
   "id": 1908,
@@ -308,7 +217,7 @@
   "debut": "MK (1992)",
   "debutIndex": 0,
   "answer": true,
-  "thumb": 16
+  "thumb": 11
  },
  {
   "id": 1935,
@@ -327,7 +236,7 @@
   "debut": "Deadly Alliance",
   "debutIndex": 4,
   "answer": true,
-  "thumb": 17
+  "thumb": 12
  },
  {
   "id": 1811,
@@ -346,25 +255,7 @@
   "debut": "MK II",
   "debutIndex": 1,
   "answer": true,
-  "thumb": 18
- },
- {
-  "id": 1572,
-  "name": "Кира",
-  "nameEn": "Kira",
-  "gender": "Женский",
-  "species": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Чёрный Дракон"
-  ],
-  "origin": "Земное царство",
-  "alignment": "Зло",
-  "debut": "Deception",
-  "debutIndex": 5,
-  "answer": false,
-  "thumb": 19
+  "thumb": 13
  },
  {
   "id": 1763,
@@ -382,25 +273,7 @@
   "debut": "MK II",
   "debutIndex": 1,
   "answer": true,
-  "thumb": 20
- },
- {
-  "id": 1979,
-  "name": "Кобра",
-  "nameEn": "Kobra",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Чёрный Дракон"
-  ],
-  "origin": "Земное царство",
-  "alignment": "Зло",
-  "debut": "Deception",
-  "debutIndex": 5,
-  "answer": false,
-  "thumb": 21
+  "thumb": 14
  },
  {
   "id": 121391,
@@ -418,7 +291,7 @@
   "debut": "MK 11",
   "debutIndex": 11,
   "answer": true,
-  "thumb": 22
+  "thumb": 15
  },
  {
   "id": 64298,
@@ -436,7 +309,7 @@
   "debut": "MK X",
   "debutIndex": 10,
   "answer": true,
-  "thumb": 23
+  "thumb": 16
  },
  {
   "id": 120466,
@@ -455,7 +328,7 @@
   "debut": "MK 11",
   "debutIndex": 11,
   "answer": true,
-  "thumb": 24
+  "thumb": 17
  },
  {
   "id": 1812,
@@ -473,7 +346,7 @@
   "debut": "MK 4",
   "debutIndex": 3,
   "answer": true,
-  "thumb": 25
+  "thumb": 18
  },
  {
   "id": 1813,
@@ -492,7 +365,7 @@
   "debut": "MK (1992)",
   "debutIndex": 0,
   "answer": true,
-  "thumb": 26
+  "thumb": 19
  },
  {
   "id": 78979,
@@ -510,25 +383,7 @@
   "debut": "MK X",
   "debutIndex": 10,
   "answer": true,
-  "thumb": 27
- },
- {
-  "id": 1765,
-  "name": "Кхамелеон",
-  "nameEn": "Khameleon",
-  "gender": "Женский",
-  "species": [
-   "Заурианец"
-  ],
-  "affiliations": [
-   "Одиночка"
-  ],
-  "origin": "Мир Зетерры",
-  "alignment": "Нейтралитет",
-  "debut": "MK 3",
-  "debutIndex": 2,
-  "answer": false,
-  "thumb": 28
+  "thumb": 20
  },
  {
   "id": 64300,
@@ -546,7 +401,7 @@
   "debut": "MK X",
   "debutIndex": 10,
   "answer": true,
-  "thumb": 29
+  "thumb": 21
  },
  {
   "id": 1541,
@@ -564,7 +419,7 @@
   "debut": "Deadly Alliance",
   "debutIndex": 4,
   "answer": true,
-  "thumb": 30
+  "thumb": 22
  },
  {
   "id": 1693,
@@ -583,25 +438,7 @@
   "debut": "MK (1992)",
   "debutIndex": 0,
   "answer": true,
-  "thumb": 31
- },
- {
-  "id": 2021,
-  "name": "Мавадо",
-  "nameEn": "Mavado",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Красный Дракон"
-  ],
-  "origin": "Земное царство",
-  "alignment": "Зло",
-  "debut": "Deadly Alliance",
-  "debutIndex": 4,
-  "answer": false,
-  "thumb": 32
+  "thumb": 23
  },
  {
   "id": 1533,
@@ -619,25 +456,7 @@
   "debut": "MK II",
   "debutIndex": 1,
   "answer": true,
-  "thumb": 33
- },
- {
-  "id": 2023,
-  "name": "Молох",
-  "nameEn": "Moloch",
-  "gender": "Мужской",
-  "species": [
-   "Демон"
-  ],
-  "affiliations": [
-   "Братство Тени"
-  ],
-  "origin": "Преисподняя",
-  "alignment": "Зло",
-  "debut": "Deadly Alliance",
-  "debutIndex": 4,
-  "answer": false,
-  "thumb": 34
+  "thumb": 24
  },
  {
   "id": 1969,
@@ -655,7 +474,7 @@
   "debut": "MK 3",
   "debutIndex": 2,
   "answer": true,
-  "thumb": 35
+  "thumb": 25
  },
  {
   "id": 1599,
@@ -673,7 +492,7 @@
   "debut": "Deadly Alliance",
   "debutIndex": 4,
   "answer": true,
-  "thumb": 36
+  "thumb": 26
  },
  {
   "id": 1820,
@@ -691,7 +510,7 @@
   "debut": "MK 3",
   "debutIndex": 2,
   "answer": true,
-  "thumb": 37
+  "thumb": 27
  },
  {
   "id": 1589,
@@ -711,7 +530,7 @@
   "debut": "MK (1992)",
   "debutIndex": 0,
   "answer": true,
-  "thumb": 38
+  "thumb": 28
  },
  {
   "id": 1691,
@@ -729,7 +548,7 @@
   "debut": "Deception",
   "debutIndex": 5,
   "answer": true,
-  "thumb": 39
+  "thumb": 29
  },
  {
   "id": 1650,
@@ -747,25 +566,7 @@
   "debut": "MK (1992)",
   "debutIndex": 0,
   "answer": true,
-  "thumb": 40
- },
- {
-  "id": 1815,
-  "name": "Рейко",
-  "nameEn": "Reiko",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Братство Тени"
-  ],
-  "origin": "Внешний мир",
-  "alignment": "Зло",
-  "debut": "MK 4",
-  "debutIndex": 3,
-  "answer": false,
-  "thumb": 41
+  "thumb": 30
  },
  {
   "id": 1616,
@@ -784,7 +585,7 @@
   "debut": "MK 3",
   "debutIndex": 2,
   "answer": true,
-  "thumb": 42
+  "thumb": 31
  },
  {
   "id": 1773,
@@ -802,7 +603,7 @@
   "debut": "MK II",
   "debutIndex": 1,
   "answer": true,
-  "thumb": 43
+  "thumb": 32
  },
  {
   "id": 66711,
@@ -821,7 +622,7 @@
   "debut": "MK II",
   "debutIndex": 1,
   "answer": true,
-  "thumb": 44
+  "thumb": 33
  },
  {
   "id": 1834,
@@ -840,25 +641,7 @@
   "debut": "MK 3",
   "debutIndex": 2,
   "answer": true,
-  "thumb": 45
- },
- {
-  "id": 1932,
-  "name": "Сарина",
-  "nameEn": "Sareena",
-  "gender": "Женский",
-  "species": [
-   "Демон"
-  ],
-  "affiliations": [
-   "Братство Тени"
-  ],
-  "origin": "Преисподняя",
-  "alignment": "Нейтралитет",
-  "debut": "MK 4",
-  "debutIndex": 3,
-  "answer": false,
-  "thumb": 46
+  "thumb": 34
  },
  {
   "id": 1972,
@@ -877,7 +660,7 @@
   "debut": "MK 3",
   "debutIndex": 2,
   "answer": true,
-  "thumb": 47
+  "thumb": 35
  },
  {
   "id": 1655,
@@ -895,7 +678,7 @@
   "debut": "MK 3",
   "debutIndex": 2,
   "answer": true,
-  "thumb": 48
+  "thumb": 36
  },
  {
   "id": 13791,
@@ -913,7 +696,7 @@
   "debut": "MK (2011)",
   "debutIndex": 9,
   "answer": true,
-  "thumb": 49
+  "thumb": 37
  },
  {
   "id": 1692,
@@ -932,7 +715,7 @@
   "debut": "MK (1992)",
   "debutIndex": 0,
   "answer": true,
-  "thumb": 50
+  "thumb": 38
  },
  {
   "id": 1564,
@@ -951,7 +734,7 @@
   "debut": "MK II",
   "debutIndex": 1,
   "answer": true,
-  "thumb": 51
+  "thumb": 39
  },
  {
   "id": 1526,
@@ -969,7 +752,7 @@
   "debut": "MK (1992)",
   "debutIndex": 0,
   "answer": true,
-  "thumb": 52
+  "thumb": 40
  },
  {
   "id": 1920,
@@ -988,43 +771,7 @@
   "debut": "MK 3",
   "debutIndex": 2,
   "answer": true,
-  "thumb": 53
- },
- {
-  "id": 2019,
-  "name": "Сю Хао",
-  "nameEn": "Hsu Hao",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Красный Дракон"
-  ],
-  "origin": "Земное царство",
-  "alignment": "Зло",
-  "debut": "Deadly Alliance",
-  "debutIndex": 4,
-  "answer": false,
-  "thumb": 54
- },
- {
-  "id": 1770,
-  "name": "Тавен",
-  "nameEn": "Taven",
-  "gender": "Мужской",
-  "species": [
-   "Бог"
-  ],
-  "affiliations": [
-   "Одиночка"
-  ],
-  "origin": "Эдения",
-  "alignment": "Добро",
-  "debut": "Armageddon",
-  "debutIndex": 7,
-  "answer": false,
-  "thumb": 55
+  "thumb": 41
  },
  {
   "id": 75453,
@@ -1044,7 +791,7 @@
   "debut": "MK X",
   "debutIndex": 10,
   "answer": true,
-  "thumb": 56
+  "thumb": 42
  },
  {
   "id": 1583,
@@ -1062,25 +809,7 @@
   "debut": "MK 4",
   "debutIndex": 3,
   "answer": true,
-  "thumb": 57
- },
- {
-  "id": 1800,
-  "name": "Тремор",
-  "nameEn": "Tremor",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Чёрный Дракон"
-  ],
-  "origin": "Земное царство",
-  "alignment": "Зло",
-  "debut": "MK 4",
-  "debutIndex": 3,
-  "answer": false,
-  "thumb": 58
+  "thumb": 43
  },
  {
   "id": 64301,
@@ -1098,7 +827,7 @@
   "debut": "MK X",
   "debutIndex": 10,
   "answer": true,
-  "thumb": 59
+  "thumb": 44
  },
  {
   "id": 1575,
@@ -1117,7 +846,7 @@
   "debut": "Deadly Alliance",
   "debutIndex": 4,
   "answer": true,
-  "thumb": 60
+  "thumb": 45
  },
  {
   "id": 1814,
@@ -1135,7 +864,7 @@
   "debut": "MK 4",
   "debutIndex": 3,
   "answer": true,
-  "thumb": 61
+  "thumb": 46
  },
  {
   "id": 1652,
@@ -1153,43 +882,7 @@
   "debut": "Deception",
   "debutIndex": 5,
   "answer": true,
-  "thumb": 62
- },
- {
-  "id": 1594,
-  "name": "Хамелеон",
-  "nameEn": "Chameleon",
-  "gender": "Мужской",
-  "species": [
-   "Заурианец"
-  ],
-  "affiliations": [
-   "Одиночка"
-  ],
-  "origin": "Мир Зетерры",
-  "alignment": "Нейтралитет",
-  "debut": "MK 3",
-  "debutIndex": 2,
-  "answer": false,
-  "thumb": 63
- },
- {
-  "id": 2015,
-  "name": "Хотару",
-  "nameEn": "Hotaru",
-  "gender": "Мужской",
-  "species": [
-   "Орденцарец"
-  ],
-  "affiliations": [
-   "Армия Внешнего мира"
-  ],
-  "origin": "Орденцарство",
-  "alignment": "Нейтралитет",
-  "debut": "Deception",
-  "debutIndex": 5,
-  "answer": false,
-  "thumb": 64
+  "thumb": 47
  },
  {
   "id": 121955,
@@ -1207,7 +900,7 @@
   "debut": "MK 11",
   "debutIndex": 11,
   "answer": true,
-  "thumb": 65
+  "thumb": 48
  },
  {
   "id": 1810,
@@ -1225,7 +918,7 @@
   "debut": "MK (1992)",
   "debutIndex": 0,
   "answer": true,
-  "thumb": 66
+  "thumb": 49
  },
  {
   "id": 1604,
@@ -1243,7 +936,7 @@
   "debut": "MK II",
   "debutIndex": 1,
   "answer": true,
-  "thumb": 67
+  "thumb": 50
  },
  {
   "id": 1683,
@@ -1262,7 +955,7 @@
   "debut": "MK 3",
   "debutIndex": 2,
   "answer": true,
-  "thumb": 68
+  "thumb": 51
  },
  {
   "id": 1675,
@@ -1281,25 +974,7 @@
   "debut": "MK 4",
   "debutIndex": 3,
   "answer": true,
-  "thumb": 69
- },
- {
-  "id": 1809,
-  "name": "Шуджинко",
-  "nameEn": "Shujinko",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Одиночка"
-  ],
-  "origin": "Земное царство",
-  "alignment": "Добро",
-  "debut": "Deception",
-  "debutIndex": 5,
-  "answer": false,
-  "thumb": 70
+  "thumb": 52
  },
  {
   "id": 1782,
@@ -1317,7 +992,7 @@
   "debut": "MK 3",
   "debutIndex": 2,
   "answer": true,
-  "thumb": 71
+  "thumb": 53
  },
  {
   "id": 77911,
@@ -1335,6 +1010,6 @@
   "debut": "MK X",
   "debutIndex": 10,
   "answer": true,
-  "thumb": 72
+  "thumb": 54
  }
 ]
