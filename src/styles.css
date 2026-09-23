@@ -1317,8 +1317,6 @@ footer p {
   border-radius: 18px;
   background: var(--card);
   border: 1px solid var(--line);
-  content-visibility: auto;
-  contain-intrinsic-size: auto 470px;
   transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
 }
 
