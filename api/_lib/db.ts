@@ -8,6 +8,8 @@ export type UserDoc = {
   nickname?: string
   stats?: Record<string, Partial<Stats>>
   duelStats?: { played?: number; wins?: number; losses?: number; draws?: number }
+  // Ranked duel rating, shared by every game. Deliberately outside duelStats so a stats reset keeps it.
+  rating?: number
   challengeStats?: { solved?: number }
   createdAt: Date
 }
@@ -69,6 +71,7 @@ export type DuelDoc = {
   answerId?: number
   extra?: string | null
   status: 'lobby' | 'playing' | 'finished'
+  ranked?: boolean
   round: number
   draws: number
   players: DuelPlayer[]

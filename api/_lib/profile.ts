@@ -4,6 +4,7 @@ import { shiftDay, today } from './daily.js'
 import { users, type Stats, type UserDoc } from './db.js'
 import { fail } from './http.js'
 import { readSession } from './session.js'
+import { ratingOf } from '../../src/rating.js'
 
 export { STAT_KEYS }
 
@@ -62,6 +63,7 @@ export function toProfile(doc: UserDoc) {
     ]),
     challenges: { solved: number(doc.challengeStats?.solved) },
     duels: {
+      rating: ratingOf(doc.rating),
       played: number(doc.duelStats?.played),
       wins: number(doc.duelStats?.wins),
       losses: number(doc.duelStats?.losses),

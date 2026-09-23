@@ -236,6 +236,28 @@ const ui = {
   },
   'duel.create': { ru: 'Создать комнату', uk: 'Створити кімнату', en: 'Create a room' },
   'duel.creating': { ru: 'Создаём…', uk: 'Створюємо…', en: 'Creating…' },
+  'duel.kind': { ru: 'Тип дуэли', uk: 'Тип дуелі', en: 'Duel type' },
+  'duel.casual': { ru: 'Обычная', uk: 'Звичайна', en: 'Casual' },
+  'duel.ranked': { ru: 'Рейтинговая', uk: 'Рейтингова', en: 'Ranked' },
+  'duel.rankedBadge': { ru: 'Рейтинговая · {rating}', uk: 'Рейтингова · {rating}', en: 'Ranked · {rating}' },
+  'duel.rankedSoon': {
+    ru: 'Рейтинговые дуэли скоро — пока играем обычные, рейтинг не меняется.',
+    uk: 'Рейтингові дуелі скоро — поки граємо звичайні, рейтинг не змінюється.',
+    en: 'Ranked duels are coming soon — for now every duel is casual and rating stays put.',
+  },
+  'duel.casualHint': {
+    ru: 'Рейтинг не меняется — играем просто так.',
+    uk: 'Рейтинг не змінюється — граємо просто так.',
+    en: 'Rating stays as it is — just for fun.',
+  },
+  'duel.rankedHint': {
+    ru: 'Каждый выигранный раунд +{step} к рейтингу, проигранный −{step}. Сейчас у тебя {rating}.',
+    uk: 'Кожен виграний раунд +{step} до рейтингу, програний −{step}. Зараз у тебе {rating}.',
+    en: 'Every round you win is +{step} rating, every round you lose −{step}. You are at {rating}.',
+  },
+  'duel.ratingUp': { ru: 'Рейтинг +{step} → {rating}', uk: 'Рейтинг +{step} → {rating}', en: 'Rating +{step} → {rating}' },
+  'duel.ratingDown': { ru: 'Рейтинг −{step} → {rating}', uk: 'Рейтинг −{step} → {rating}', en: 'Rating −{step} → {rating}' },
+  'duel.ratingSame': { ru: 'Ничья — рейтинг без изменений ({rating})', uk: 'Нічия — рейтинг без змін ({rating})', en: 'Draw — rating unchanged ({rating})' },
   'duel.game': { ru: 'Игра', uk: 'Гра', en: 'Game' },
   'duel.mode': { ru: 'Режим', uk: 'Режим', en: 'Mode' },
   'duel.joinTitle': { ru: 'Зайти по коду', uk: 'Зайти за кодом', en: 'Join by code' },
@@ -286,6 +308,7 @@ const ui = {
 
   'profile.challengeSolved': { ru: 'Отгадано загадок', uk: 'Розгадано загадок', en: 'Puzzles solved' },
   'profile.duelWins': { ru: 'Побед в дуэлях', uk: 'Перемог у дуелях', en: 'Duel wins' },
+  'profile.rating': { ru: 'Рейтинг дуэлей', uk: 'Рейтинг дуелей', en: 'Duel rating' },
   'profile.back': { ru: '← Назад', uk: '← Назад', en: '← Back' },
   'profile.nickname': { ru: 'Ник', uk: 'Нік', en: 'Nickname' },
   'profile.nicknameHint': {
