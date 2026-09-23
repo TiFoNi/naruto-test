@@ -24,9 +24,19 @@ async function collect() {
   const files = []
   for (const game of games) {
     if (!game.isDirectory() || (only && game.name !== only)) continue
-    const dir = path.join(ROOT, 'public', game.name, 'full')
-    for (const file of await fs.readdir(dir).catch(() => [])) {
-      if (file.endsWith('.webp')) files.push({ key: `${game.name}/full/${file}`, path: path.join(dir, file) })
+
+    const full = path.join(ROOT, 'public', game.name, 'full')
+    for (const file of await fs.readdir(full).catch(() => [])) {
+      if (file.endsWith('.webp')) files.push({ key: `${game.name}/full/${file}`, path: path.join(full, file) })
+    }
+
+    const pages = path.join(ROOT, 'public', game.name, 'pages')
+    for (const entry of await fs.readdir(pages, { withFileTypes: true }).catch(() => [])) {
+      if (!entry.isDirectory()) continue
+      const dir = path.join(pages, entry.name)
+      for (const file of await fs.readdir(dir).catch(() => [])) {
+        if (file.endsWith('.webp')) files.push({ key: `${game.name}/pages/${entry.name}/${file}`, path: path.join(dir, file) })
+      }
     }
   }
   return files
@@ -44,7 +54,7 @@ async function exists(key, size) {
 
 async function main() {
   const files = await collect()
-  if (!files.length) return console.log(only ? `у public/${only}/full нічого не знайшов` : 'картинок не знайшов')
+  if (!files.length) return console.log(only ? `у public/${only} нічого не знайшов` : 'картинок не знайшов')
   console.log(`знайшов ${files.length} картинок${only ? ` (гра ${only})` : ''}`)
 
   let uploaded = 0
