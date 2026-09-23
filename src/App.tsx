@@ -144,11 +144,6 @@ export default function App() {
 
   return (
     <div className="app">
-      <div className="bg-grid" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-      </div>
       <header className="topbar">
         <a className="brand" href={href.home}>
           <span className="brand-mark" aria-hidden>
