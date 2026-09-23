@@ -398,9 +398,9 @@
   "year": 2005,
   "demographic": "Сэйнэн",
   "status": "Завершена",
-  "pages": 0,
-  "answer": false,
-  "thumb": 0
+  "pages": 3,
+  "answer": true,
+  "thumb": 30
  },
  {
   "id": 32,
@@ -413,7 +413,7 @@
   "status": "Выходит",
   "pages": 3,
   "answer": true,
-  "thumb": 30
+  "thumb": 31
  },
  {
   "id": 33,
@@ -426,7 +426,7 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 31
+  "thumb": 32
  },
  {
   "id": 34,
@@ -437,9 +437,9 @@
   "year": 1994,
   "demographic": "Сёнэн",
   "status": "Завершена",
-  "pages": 0,
-  "answer": false,
-  "thumb": 0
+  "pages": 3,
+  "answer": true,
+  "thumb": 33
  },
  {
   "id": 35,
@@ -452,7 +452,7 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 32
+  "thumb": 34
  },
  {
   "id": 36,
@@ -478,7 +478,7 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 33
+  "thumb": 35
  },
  {
   "id": 38,
@@ -489,9 +489,9 @@
   "year": 1999,
   "demographic": "Сэйнэн",
   "status": "Выходит",
-  "pages": 0,
-  "answer": false,
-  "thumb": 0
+  "pages": 3,
+  "answer": true,
+  "thumb": 36
  },
  {
   "id": 39,
@@ -504,7 +504,7 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 34
+  "thumb": 37
  },
  {
   "id": 40,
@@ -517,7 +517,7 @@
   "status": "Выходит",
   "pages": 3,
   "answer": true,
-  "thumb": 35
+  "thumb": 38
  },
  {
   "id": 41,
@@ -556,7 +556,7 @@
   "status": "Выходит",
   "pages": 3,
   "answer": true,
-  "thumb": 36
+  "thumb": 39
  },
  {
   "id": 44,
@@ -582,7 +582,7 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 37
+  "thumb": 40
  },
  {
   "id": 46,
@@ -608,7 +608,7 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 38
+  "thumb": 41
  },
  {
   "id": 48,
@@ -621,7 +621,7 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 39
+  "thumb": 42
  },
  {
   "id": 49,
@@ -634,7 +634,7 @@
   "status": "Выходит",
   "pages": 3,
   "answer": true,
-  "thumb": 40
+  "thumb": 43
  },
  {
   "id": 50,
@@ -647,6 +647,6 @@
   "status": "Выходит",
   "pages": 3,
   "answer": true,
-  "thumb": 41
+  "thumb": 44
  }
 ]

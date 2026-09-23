@@ -64,6 +64,13 @@ const TITLES = [
 ]
 
 const MANGADEX_IDS = {
+  real: '62b74aa6-24df-4b91-b76d-39e7ab3c3ca5',
+  evangelion: 'dc33209f-d9d4-40df-a468-cca047b63979',
+  'liar-game': 'd8779116-f000-446a-af46-cc221c0e7fc9',
+  claymore: 'be8fe64b-37da-4fba-b14d-603aba19be1f',
+  jigokuraku: 'cb77e4a6-3921-43b9-9d64-7d78cd3205ce',
+  ajin: '331deec0-fb1a-4680-9248-8a0fc55b5b07',
+  'tomodachi-game': 'b35f67b6-bfb9-4cbd-86f0-621f37e6cb41',
   'witch-hat': '67e7453b-9ee5-4ae5-9316-215b03e4a71d',
   houseki: '37bf7574-641e-4665-b992-f2ba8d4652b8',
   beck: '4cf9b503-439a-48f7-9fc5-21831087a421',
@@ -157,7 +164,7 @@ async function pagesOf(slug) {
   const files = (await fs.readdir(dir).catch(() => [])).filter((f) => IMAGE.test(f)).sort((a, b) => a.localeCompare(b, 'en', { numeric: true }))
   const cover = files.find((f) => /^cover\./i.test(f))
   const pages = files.filter((f) => f !== cover)
-  return { dir, cover, pages: pages.length ? pages : cover ? [cover] : [] }
+  return { dir, cover, pages }
 }
 
 async function main() {
@@ -173,7 +180,7 @@ async function main() {
     const { dir, cover, pages: found } = await pagesOf(slug)
     if (!found.length) missing++
 
-    const fetched = found.length && !cover ? await fetchCover(slug, nameEn, year) : null
+    const fetched = cover ? null : await fetchCover(slug, nameEn, year)
     const fromPage = found.length > 1 && !cover && !fetched
     const pages = fromPage ? found.slice(1) : found
 
@@ -213,7 +220,7 @@ async function main() {
     for (const manga of result) manga.thumb = 0
     await fs.writeFile(OUT_ATLAS, JSON.stringify({ cols: 1, rows: 1, cell: CELL }))
   }
-  await pruneImages(path.join(OUT_IMG, 'full'), withImages)
+  await pruneImages(path.join(OUT_IMG, 'full'), result)
   await fs.writeFile(OUT_JSON, JSON.stringify(result, null, 1))
 
   console.log(`wrote ${result.length} titles, ${withImages.length} with pages (${result.reduce((s, m) => s + m.pages, 0)} pages total)`)
