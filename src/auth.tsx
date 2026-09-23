@@ -2,10 +2,11 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 import { api } from './api'
 import { statsKey } from './games/specs'
 import type { Stats } from './stats'
+import { RATING_START } from './rating'
 
 export type User = { id: string; username: string; nickname: string }
 
-export type DuelRecord = { played: number; wins: number; losses: number; draws: number }
+export type DuelRecord = { rating: number; played: number; wins: number; losses: number; draws: number }
 
 export type ChallengeRecord = { solved: number }
 
@@ -32,7 +33,7 @@ type AuthState = {
 
 const AuthContext = createContext<AuthState | null>(null)
 
-const EMPTY_DUELS: DuelRecord = { played: 0, wins: 0, losses: 0, draws: 0 }
+const EMPTY_DUELS: DuelRecord = { rating: RATING_START, played: 0, wins: 0, losses: 0, draws: 0 }
 const EMPTY_CHALLENGES: ChallengeRecord = { solved: 0 }
 
 const call = (path: string, body?: unknown) => api<ApiData>(path, body)

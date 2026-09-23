@@ -99,6 +99,10 @@ export default function Profile({ onBack }: { onBack: () => void }) {
       </form>
 
       <section className="totals">
+        <div className="card rating-card">
+          <span>{t('profile.rating')}</span>
+          <b>{duels.rating}</b>
+        </div>
         <div className="card">
           <span>{t('profile.total')}</span>
           <b>{totalSolved}</b>

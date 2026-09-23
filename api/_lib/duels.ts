@@ -6,6 +6,7 @@ import { duels, users, type DuelDoc, type DuelPlayer, type UserDoc } from './db.
 import { roundExtra } from './extra.js'
 import { gameData, isGame, isMode } from './games.js'
 import { defaultNickname } from './profile.js'
+import { RATING_FLOOR, RATING_START, RATING_STEP } from '../../src/rating.js'
 
 export const DUEL_MS = 10 * 60 * 1000
 export const MIN_GAP_MS = 800
@@ -30,7 +31,7 @@ export const sideOf = (duel: DuelDoc, userId: ObjectId) => duel.players.find((p)
 
 export const isHost = (duel: DuelDoc, userId: ObjectId) => duel.hostId.equals(userId)
 
-export async function createDuel(doc: UserDoc) {
+export async function createDuel(doc: UserDoc, ranked: boolean) {
   const collection = await duels()
   for (let attempt = 0; attempt < 5; attempt++) {
     const duel: DuelDoc = {
@@ -39,6 +40,7 @@ export async function createDuel(doc: UserDoc) {
       game: 'naruto',
       mode: 'classic',
       status: 'lobby',
+      ranked,
       round: 0,
       draws: 0,
       players: [player(doc)],
@@ -178,12 +180,30 @@ function decide(duel: DuelDoc) {
   return null
 }
 
-async function applyDuelStats(winnerId: ObjectId | null, players: DuelPlayer[]) {
+async function applyDuelStats(winnerId: ObjectId | null, players: DuelPlayer[], ranked: boolean) {
   const collection = await users()
   await Promise.all(
     players.map((side) => {
       const field = !winnerId ? 'draws' : winnerId.equals(side.userId) ? 'wins' : 'losses'
-      return collection.updateOne({ _id: side.userId }, { $inc: { 'duelStats.played': 1, [`duelStats.${field}`]: 1 } })
+      const counters = { 'duelStats.played': 1, [`duelStats.${field}`]: 1 }
+      // A draw moves nobody, so rating only shifts when the round had a winner.
+      if (!ranked || !winnerId) return collection.updateOne({ _id: side.userId }, { $inc: counters })
+      const delta = field === 'wins' ? RATING_STEP : -RATING_STEP
+      return collection.updateOne({ _id: side.userId }, [
+        {
+          $set: {
+            rating: {
+              $max: [RATING_FLOOR, { $add: [{ $ifNull: ['$rating', RATING_START] }, delta] }],
+            },
+            duelStats: {
+              played: { $add: [{ $ifNull: ['$duelStats.played', 0] }, 1] },
+              wins: { $add: [{ $ifNull: ['$duelStats.wins', 0] }, field === 'wins' ? 1 : 0] },
+              losses: { $add: [{ $ifNull: ['$duelStats.losses', 0] }, field === 'losses' ? 1 : 0] },
+              draws: { $ifNull: ['$duelStats.draws', 0] },
+            },
+          },
+        },
+      ])
     }),
   )
 }
@@ -203,7 +223,7 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
     { returnDocument: 'after' },
   )
   if (!finished) return (await duels()).findOne({ _id: duel._id }) as Promise<DuelDoc>
-  await applyDuelStats(winnerId, finished.players)
+  await applyDuelStats(winnerId, finished.players, Boolean(duel.ranked))
   return finished
 }
 
@@ -263,6 +283,7 @@ export function duelView(duel: DuelDoc, userId: ObjectId) {
       : undefined
   return {
     code: duel.code,
+    ranked: Boolean(duel.ranked),
     game: duel.game ?? null,
     mode: duel.mode ?? null,
     status: duel.status,

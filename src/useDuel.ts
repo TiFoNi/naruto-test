@@ -8,6 +8,7 @@ export type DuelSide = { nickname: string; ready: boolean; wantsNext: boolean; w
 
 export type DuelView = {
   code: string
+  ranked: boolean
   game: string | null
   mode: string | null
   status: 'lobby' | 'playing' | 'finished'

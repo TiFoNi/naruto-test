@@ -1655,7 +1655,8 @@ footer p {
 
 .totals {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   gap: 10px;
 }
 
@@ -1969,6 +1970,11 @@ button.ghost.small {
 @media (max-width: 760px) {
   .hero {
     grid-template-columns: 1fr;
+  }
+
+  .totals {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   }
 
   .totals b {
@@ -3044,4 +3050,74 @@ button.ghost.small {
   .game-head-bar .lb-link {
     align-self: flex-start;
   }
+}
+
+.duel-kind {
+  margin-top: 4px;
+}
+
+.duel-kind-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.duel-kind-badge.ranked {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.duel-rating {
+  margin: 6px 0 0;
+  font-weight: 800;
+  color: var(--text-2);
+}
+
+.duel-rating.up {
+  color: var(--correct);
+}
+
+.duel-rating.down {
+  color: var(--partial);
+}
+
+.totals .rating-card {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  background: linear-gradient(180deg, var(--accent-soft), var(--card));
+}
+
+.totals .rating-card b {
+  color: var(--accent);
+}
+
+.variant-tabs button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.variant-tabs button:disabled:hover {
+  color: var(--text-2);
+}
+
+.soon-tag {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  color: var(--text-3);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }

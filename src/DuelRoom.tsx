@@ -7,8 +7,10 @@ import Thumb from './Thumb'
 import ZoomImage from './ZoomImage'
 import { GAMES, gameById } from './games'
 import type { GameId } from './games/types'
+import { useAuth } from './auth'
 import { useI18n } from './i18n'
 import { MODES, type ModeId } from './modes'
+import { RATING_STEP } from './rating'
 import { href } from './router'
 import { useDuel } from './useDuel'
 import type { Guess } from './useRound'
@@ -25,6 +27,7 @@ const clock = (ms: number) => {
 export default function DuelRoom({ code }: { code: string }) {
   const { t, l, name, lang, error: errorText } = useI18n()
   const { duel, error, busy, pending, serverNow, ready, setup, next, toLobby, giveUp, guess, refresh } = useDuel(code)
+  const { duels } = useAuth()
   const [copied, setCopied] = useState(false)
   const [, redraw] = useState(0)
 
@@ -100,6 +103,9 @@ export default function DuelRoom({ code }: { code: string }) {
             {t('duel.code', { code: duel.code })}
             {duel.round > 0 ? ` · ${t('duel.roundNo', { round: duel.round })}` : ''}
           </p>
+          <span className={`duel-kind-badge ${duel.ranked ? 'ranked' : ''}`}>
+            {duel.ranked ? t('duel.rankedBadge', { rating: duels.rating }) : t('duel.casual')}
+          </span>
         </div>
         {duel.status === 'playing' && <div className={`duel-timer ${left < 60000 ? 'hot' : ''}`}>{clock(left)}</div>}
       </header>
@@ -207,6 +213,13 @@ export default function DuelRoom({ code }: { code: string }) {
                 {you?.nickname}: {t('duel.guesses', { count: you?.guesses.length ?? 0 })}
                 {rival ? ` · ${rival.nickname}: ${t('duel.guesses', { count: rival.guessCount })}` : ''}
               </p>
+              {duel.ranked && (
+                <p className={`duel-rating ${duel.winner === null ? '' : duel.youWon ? 'up' : 'down'}`}>
+                  {duel.winner === null
+                    ? t('duel.ratingSame', { rating: duels.rating })
+                    : t(duel.youWon ? 'duel.ratingUp' : 'duel.ratingDown', { step: RATING_STEP, rating: duels.rating })}
+                </p>
+              )}
               <div className="result-actions">
                 <button className="primary" onClick={next} disabled={busy || you?.wantsNext}>
                   {you?.wantsNext ? t('duel.nextWait') : t('duel.next')}

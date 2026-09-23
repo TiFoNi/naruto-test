@@ -1,8 +1,15 @@
+import dns from 'node:dns'
 import fs from 'node:fs'
 import type { IncomingMessage } from 'node:http'
 import path from 'node:path'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
+
+// Node sometimes falls back to a loopback resolver on Windows, which breaks the
+// mongodb+srv SRV lookup with ECONNREFUSED. Dev only: point it at real servers.
+if (dns.getServers().every((s) => s === '127.0.0.1' || s === '::1')) {
+  dns.setServers(['1.1.1.1', '8.8.8.8'])
+}
 
 type Handler = (request: Request) => Promise<Response>
 

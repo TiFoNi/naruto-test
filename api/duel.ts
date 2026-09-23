@@ -14,6 +14,7 @@ import {
   sideOf,
   wantNext,
 } from './_lib/duels.js'
+import { RANKED_ENABLED } from '../src/rating.js'
 
 export const POST = handle(async (request) => {
   const found = await currentUser(request)
@@ -23,7 +24,7 @@ export const POST = handle(async (request) => {
   const action = body.action
 
   if (action === 'create') {
-    const duel = await createDuel(found.doc)
+    const duel = await createDuel(found.doc, RANKED_ENABLED && body.ranked === true)
     return duel ? json({ duel: duelView(duel, userId) }) : fail(400, 'bad_request')
   }
 
