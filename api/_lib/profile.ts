@@ -27,6 +27,7 @@ export function normalizeStats(stats: Partial<Stats> | undefined): Stats {
     streak: number(stats?.streak),
     best: number(stats?.best),
     totalGuesses: number(stats?.totalGuesses),
+    skipped: number(stats?.skipped),
   }
 }
 
@@ -43,7 +44,7 @@ export async function applyDailyResult(collection: Collection<UserDoc>, userId: 
   const base = normalizeStats(prev)
   if (prev?.lastDay === day) return dailyStats(prev)
   const streak = prev?.lastDay === shiftDay(day, -1) ? base.streak + 1 : 1
-  const next = { solved: base.solved + 1, streak, best: Math.max(base.best, streak), totalGuesses: base.totalGuesses + guesses, lastDay: day }
+  const next = { ...base, solved: base.solved + 1, streak, best: Math.max(base.best, streak), totalGuesses: base.totalGuesses + guesses, lastDay: day }
   await collection.updateOne({ _id: userId }, { $set: { [`stats.${key}`]: next } })
   return dailyStats(next)
 }
@@ -85,6 +86,15 @@ export async function sessionUserId(request: Request) {
 
 const orZero = (path: string) => ({ $ifNull: [`$${path}`, 0] })
 
+export async function applySkip(collection: Collection<UserDoc>, userId: ObjectId, key: string) {
+  const doc = await collection.findOneAndUpdate(
+    { _id: userId },
+    { $inc: { [`stats.${key}.skipped`]: 1 } },
+    { returnDocument: 'after', projection: { [`stats.${key}`]: 1 } },
+  )
+  return normalizeStats(doc?.stats?.[key])
+}
+
 export async function applyResult(collection: Collection<UserDoc>, userId: ObjectId, key: string, won: boolean, guesses: number) {
   const path = `stats.${key}`
   const update = won
@@ -96,6 +106,7 @@ export async function applyResult(collection: Collection<UserDoc>, userId: Objec
               streak: { $add: [orZero(`${path}.streak`), 1] },
               best: { $max: [orZero(`${path}.best`), { $add: [orZero(`${path}.streak`), 1] }] },
               totalGuesses: { $add: [orZero(`${path}.totalGuesses`), guesses] },
+              skipped: orZero(`${path}.skipped`),
             },
           },
         },

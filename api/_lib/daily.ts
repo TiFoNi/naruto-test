@@ -68,7 +68,7 @@ export async function dailyAnswer(game: GameId, mode: ModeId, day: string) {
 function dailySeed(game: GameId, mode: ModeId, day: string) {
   const answerId = pick(game, mode, day)
   const roll = parseInt(createHmac('sha256', secret()).update(`${game}:${mode}:${day}:extra`).digest('hex').slice(0, 8), 16) / 0x100000000
-  return { day, game, mode, answerId, extra: roundExtra(mode, answerId, roll), createdAt: new Date() }
+  return { day, game, mode, answerId, extra: roundExtra(game, mode, answerId, roll), createdAt: new Date() }
 }
 
 export async function pastAnswer(game: GameId, mode: ModeId, day: string) {

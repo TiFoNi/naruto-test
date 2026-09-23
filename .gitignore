@@ -4,3 +4,7 @@ dist
 .DS_Store
 .env
 .env*.local
+seeds/*
+!seeds/manga
+seeds/manga/*
+!seeds/manga/README.md

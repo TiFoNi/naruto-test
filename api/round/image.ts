@@ -4,6 +4,7 @@ import { fail, handle } from '../_lib/http.js'
 import { sessionUserId, unauthorized } from '../_lib/profile.js'
 import { abilityStageOf, findDuel, sideOf } from '../_lib/duels.js'
 import { abilityStage, ownedRound } from '../_lib/rounds.js'
+import { pageOf } from '../_lib/extra.js'
 
 async function duelSource(code: string, userId: ObjectId) {
   const duel = await findDuel(code)
@@ -30,7 +31,9 @@ export const GET = handle(async (request) => {
   const source =
     round.mode === 'ability' && round.extra
       ? `${url.origin}/${folder}/abilities/${'stage' in round ? round.stage : abilityStage(round)}${round.extra}.webp`
-      : `${pics}/${folder}/full/${round.answerId}.webp`
+      : round.mode === 'page'
+        ? `${pics}/${folder}/pages/${round.answerId}/${pageOf(round.extra)}.webp`
+        : `${pics}/${folder}/full/${round.answerId}.webp`
   const image = await fetch(source)
   if (!image.ok) return fail(502, 'server')
   return new Response(await image.arrayBuffer(), {

@@ -149,7 +149,14 @@ export default function DuelRoom({ code }: { code: string }) {
                 label={t('duel.mode')}
                 value={duel.mode ?? 'classic'}
                 onChange={(v) => setup(duel.game ?? GAMES[0].id, v)}
-                options={(modes.length ? modes : MODES.slice(0, 2)).map((m) => ({ value: m.id, label: `${m.icon} ${t(m.label)}` }))}
+                options={(modes.length ? modes : MODES.slice(0, 2)).map((m) => ({
+                  value: m.id,
+                  label: (
+                    <>
+                      {m.icon} {t(m.label)}
+                    </>
+                  ),
+                }))}
               />
             </div>
           ) : (

@@ -10,6 +10,7 @@ import DuelRoom from './DuelRoom'
 import Leaderboard from './Leaderboard'
 import ImageMode from './ImageMode'
 import AbilityMode from './AbilityMode'
+import PageMode from './PageMode'
 import Profile from './Profile'
 import { CalendarIcon, InfinityIcon, SwordsIcon, TrophyIcon } from './icons'
 import { GAMES, gameById } from './games'
@@ -82,15 +83,24 @@ function GameView({ game, mode, daily, visible }: { game: Game; mode: ModeId; da
       </section>
       {[false, true].map((d) => (
         <div key={String(d)} hidden={daily !== d}>
-          <div hidden={mode !== 'classic'}>
-            <ClassicMode game={game} active={visible && daily === d && mode === 'classic'} stats={statsFor('classic', d)} daily={d} />
-          </div>
-          <div hidden={mode !== 'image'}>
-            <ImageMode game={game} active={visible && daily === d && mode === 'image'} stats={statsFor('image', d)} daily={d} />
-          </div>
+          {game.modes.includes('classic') && (
+            <div hidden={mode !== 'classic'}>
+              <ClassicMode game={game} active={visible && daily === d && mode === 'classic'} stats={statsFor('classic', d)} daily={d} />
+            </div>
+          )}
+          {game.modes.includes('image') && (
+            <div hidden={mode !== 'image'}>
+              <ImageMode game={game} active={visible && daily === d && mode === 'image'} stats={statsFor('image', d)} daily={d} />
+            </div>
+          )}
           {game.modes.includes('ability') && (
             <div hidden={mode !== 'ability'}>
               <AbilityMode game={game} active={visible && daily === d && mode === 'ability'} stats={statsFor('ability', d)} daily={d} />
+            </div>
+          )}
+          {game.modes.includes('page') && (
+            <div hidden={mode !== 'page'}>
+              <PageMode game={game} active={visible && daily === d && mode === 'page'} stats={statsFor('page', d)} daily={d} />
             </div>
           )}
         </div>

@@ -86,7 +86,7 @@ function roundStart(duel: DuelDoc) {
   const { pool } = gameData(game)
   const fresh = pool.filter((e) => e.id !== duel.answerId)
   const answer = (fresh.length ? fresh : pool)[randomInt(fresh.length || pool.length)]
-  const extra = roundExtra(duel.mode as ModeId, answer.id)
+  const extra = roundExtra(duel.game as GameId, duel.mode as ModeId, answer.id)
   const startedAt = new Date()
   return {
     status: 'playing' as const,

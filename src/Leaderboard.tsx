@@ -1,12 +1,12 @@
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useEffect, useState } from 'react'
 import { api } from './api'
 import { GAMES, gameById } from './games'
 import type { GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES, type ModeId } from './modes'
-import { href } from './router'
-import ScrollRow from './ScrollRow'
-import { CalendarIcon, InfinityIcon } from './icons'
+import { href, navigate } from './router'
+import Picker from './Picker'
+import { CalendarIcon, InfinityIcon, MedalIcon } from './icons'
 
 type Sort = 'best' | 'solved' | 'avg' | 'today' | 'streak'
 
@@ -68,18 +68,24 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
   const sort = sorts.some((s) => s.id === chosen) ? chosen : sorts[0].id
   const [board, setBoard] = useState<Board | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     let cancelled = false
-    setBoard(null)
+    setLoading(true)
     setError(null)
     api<Board>(`leaderboard?game=${gameId}&mode=${mode}&sort=${sort}${daily ? '&daily=1' : ''}`)
       .then(({ ok, data }) => {
         if (cancelled) return
         if (ok) setBoard(data)
         else setError(data.error ?? 'server')
+        setLoading(false)
       })
-      .catch(() => !cancelled && setError('network'))
+      .catch(() => {
+        if (cancelled) return
+        setError('network')
+        setLoading(false)
+      })
     return () => {
       cancelled = true
     }
@@ -97,50 +103,45 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
         <p className="muted">{t('lb.hint')}</p>
       </header>
 
-      <ScrollRow className="game-tabs" label={t('nav.games')} activeKey={gameId}>
-        {GAMES.map((g) => (
-          <a
-            key={g.id}
-            className={g.id === gameId ? 'active' : ''}
-            style={{ '--tab-accent': g.accent } as CSSProperties}
-            href={href.leaderboard(g.id, g.modes.includes(mode) ? mode : g.modes[0], daily)}
-          >
-            <span className="dot" />
-            {l(g.label)}
+      <div className="lb-pickers card">
+        <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
+          <a role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.leaderboard(gameId, mode)}>
+            <InfinityIcon /> {t('daily.endless')}
           </a>
-        ))}
-      </ScrollRow>
-
-      <div className="lb-controls">
-        <div className="game-switches">
-          <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
-            <a role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.leaderboard(gameId, mode)}>
-              <InfinityIcon /> {t('daily.endless')}
-            </a>
-            <a role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.leaderboard(gameId, mode, true)}>
-              <CalendarIcon /> {t('daily.daily')}
-            </a>
-          </div>
-          <div className="mode-tabs" role="tablist">
-            {MODES.filter((m) => game.modes.includes(m.id)).map((m) => (
-              <a
-                key={m.id}
-                role="tab"
-                aria-selected={mode === m.id}
-                className={mode === m.id ? 'active' : ''}
-                href={href.leaderboard(gameId, m.id, daily)}
-              >
-                {t(m.label)}
-              </a>
-            ))}
-          </div>
+          <a role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.leaderboard(gameId, mode, true)}>
+            <CalendarIcon /> {t('daily.daily')}
+          </a>
         </div>
-        <div className="lb-sort" role="group" aria-label={t('lb.sortBy')}>
-          {sorts.map((s) => (
-            <button key={s.id} className={sort === s.id ? 'active' : ''} aria-pressed={sort === s.id} onClick={() => setSort(s.id)}>
-              {t(s.label)}
-            </button>
-          ))}
+
+        <div className="lb-picker-row">
+          <Picker
+            label={t('duel.game')}
+            value={gameId}
+            onChange={(next) => {
+              const picked = gameById(next as GameId)
+              navigate(href.leaderboard(picked.id, picked.modes.includes(mode) ? mode : picked.modes[0], daily))
+            }}
+            options={GAMES.map((g) => ({ value: g.id, label: l(g.label), accent: g.accent }))}
+          />
+          <Picker
+            label={t('duel.mode')}
+            value={mode}
+            onChange={(next) => navigate(href.leaderboard(gameId, next as ModeId, daily))}
+            options={MODES.filter((m) => game.modes.includes(m.id)).map((m) => ({
+              value: m.id,
+              label: (
+                <>
+                  {m.icon} {t(m.label)}
+                </>
+              ),
+            }))}
+          />
+          <Picker
+            label={t('lb.sortBy')}
+            value={sort}
+            onChange={(next) => setSort(next as Sort)}
+            options={sorts.map((s) => ({ value: s.id, label: t(s.label) }))}
+          />
         </div>
       </div>
 
@@ -151,11 +152,11 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
         </p>
       )}
 
-      <section className="card lb-card">
+      <section className={`card lb-card ${loading ? 'loading' : ''}`}>
         {error ? (
-          <p className="muted">{errorText(error)}</p>
+          <div className="lb-state">{errorText(error)}</div>
         ) : !board ? (
-          <p className="muted">{t('loading')}</p>
+          <div className="lb-state">{t('loading')}</div>
         ) : board.rows.length === 0 ? (
           <div className="lb-empty">
             <p>{t(daily && sort === 'today' ? 'daily.empty' : 'lb.empty')}</p>
@@ -164,8 +165,8 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
             </a>
           </div>
         ) : (
-          <div className="stats-table-scroll">
-            <table className="stats-table lb-table">
+          <div className="lb-scroll">
+            <table className="lb-table">
               <thead>
                 <tr>
                   <th>#</th>
@@ -180,13 +181,17 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
               <tbody>
                 {[...board.rows, ...(meOutside ? [meOutside] : [])].map((row, i) => (
                   <tr key={`${row.rank}-${row.nickname}`} className={`${row.me ? 'me' : ''} ${meOutside && i === board.rows.length ? 'gap' : ''}`}>
-                    <td className="lb-rank">{row.rank <= 3 ? ['🥇', '🥈', '🥉'][row.rank - 1] : row.rank}</td>
+                    <td className="lb-rank">
+                      {row.rank <= 3 ? <MedalIcon className={`lb-medal ${['gold', 'silver', 'bronze'][row.rank - 1]}`} /> : row.rank}
+                    </td>
                     <td className="lb-name">
                       {row.nickname}
                       {row.me && <span className="lb-you">{t('lb.you')}</span>}
                     </td>
                     {COLUMNS[sort].map((c) => (
-                      <td key={c.label}>{c.value(row)}</td>
+                      <td key={c.label} className={c.sort === sort ? 'sorted' : ''}>
+                        {c.value(row)}
+                      </td>
                     ))}
                   </tr>
                 ))}

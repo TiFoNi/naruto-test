@@ -6,6 +6,7 @@ import { dota } from './dota'
 import { hxh } from './hxh'
 import { ff } from './ff'
 import { jojo } from './jojo'
+import { manga } from './manga'
 import { se } from './se'
 import { kny } from './kny'
 import { mk } from './mk'
@@ -14,6 +15,8 @@ import { onepiece } from './onepiece'
 import { tg } from './tg'
 import type { Entity, Game, GameId } from './types'
 
-export const GAMES = [naruto, onepiece, aot, bleach, kny, tg, berserk, hxh, bc, jojo, se, ff, dota, mk] as unknown as Game<Entity>[]
+const ALL = [naruto, onepiece, aot, bleach, kny, tg, berserk, hxh, bc, jojo, se, ff, dota, mk, manga] as unknown as Game<Entity>[]
+
+export const GAMES = ALL.filter((g) => g.entities.some((e) => e.answer))
 
 export const gameById = (id: GameId) => GAMES.find((g) => g.id === id) ?? GAMES[0]

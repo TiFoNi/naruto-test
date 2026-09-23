@@ -1395,12 +1395,114 @@ footer p {
   background: color-mix(in srgb, var(--tab-accent) 30%, var(--card-2));
 }
 
-.mode-link small {
-  padding: 1px 7px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.3);
+.mode-stat-hint {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.32);
   color: var(--text-2);
-  font-size: 11px;
+  font-size: 13px;
+  cursor: help;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.mode-stat-hint:hover,
+.mode-stat-hint:focus-visible {
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--text);
+  outline: none;
+}
+
+.mode-tip {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 50%;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 158px;
+  padding: 10px 12px;
+  border-radius: 11px;
+  border: 1px solid var(--line);
+  background: #11151a;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.7);
+  color: var(--text-2);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 4px);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0.15s;
+}
+
+.mode-tip b {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.mode-stat-hint:hover .mode-tip,
+.mode-stat-hint:focus-visible .mode-tip,
+.mode-stat-hint:focus-within .mode-tip {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.mode-tip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -6px;
+  border: 6px solid transparent;
+  border-top-color: #11151a;
+}
+
+.lb-card {
+  min-height: 190px;
+  transition: opacity 0.18s ease;
+}
+
+.lb-card.loading {
+  opacity: 0.45;
+}
+
+.lb-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 130px;
+  color: var(--text-3);
+}
+
+.lb-medal {
+  width: 22px;
+  height: 22px;
+  font-size: 20px;
+}
+
+.lb-medal.gold {
+  color: #f0b429;
+}
+
+.lb-medal.silver {
+  color: #b9c2cf;
+}
+
+.lb-medal.bronze {
+  color: #c1743a;
 }
 
 .mode-icon {
@@ -1737,7 +1839,7 @@ button.ghost.small {
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 14px 16px 10px;
-  background: var(--bg-2);
+  background: var(--card-2);
 }
 
 .mode-stat h3 {
@@ -1957,46 +2059,84 @@ button.ghost.small {
   margin: 8px 0 0;
 }
 
-.lb-controls {
+.lb-pickers {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  flex-direction: column;
+  gap: 14px;
+  width: min(100%, 720px);
 }
 
-.lb-sort {
-  display: flex;
-  gap: 4px;
-  padding: 4px;
-  border-radius: 12px;
-  background: var(--card);
-  border: 1px solid var(--line);
-}
-
-.lb-sort button {
-  padding: 7px 12px;
-  border: none;
-  border-radius: 9px;
-  background: transparent;
-  color: var(--text-2);
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.lb-sort button.active {
-  background: var(--card-2);
-  color: var(--text);
+.lb-picker-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
 }
 
 .lb-note {
-  margin: -6px 0 0;
-  font-size: 13px;
+  margin: -4px 0 0;
+  font-size: 13.5px;
 }
 
 .lb-card {
   width: 100%;
+}
+
+.lb-scroll {
+  overflow-x: auto;
+}
+
+.lb-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 5px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.lb-table th,
+.lb-table td {
+  padding: 11px 14px;
+  text-align: right;
+}
+
+.lb-table th:first-child,
+.lb-table td:first-child,
+.lb-table th:nth-child(2),
+.lb-table td:nth-child(2) {
+  text-align: left;
+}
+
+.lb-table thead th {
+  padding-bottom: 9px;
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--line);
+}
+
+.lb-table tbody td {
+  color: var(--text-2);
+  font-weight: 700;
+}
+
+.lb-table tbody td:first-child {
+  border-top-left-radius: 11px;
+  border-bottom-left-radius: 11px;
+}
+
+.lb-table tbody td:last-child {
+  border-top-right-radius: 11px;
+  border-bottom-right-radius: 11px;
+}
+
+.lb-table tbody tr:not(.me):hover td {
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+
+.lb-table td.sorted {
+  color: var(--text);
 }
 
 .lb-table th.sorted {
@@ -2036,8 +2176,13 @@ button.ghost.small {
   background: var(--accent-soft);
 }
 
+.lb-table tr.me:hover td {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
 .lb-table tr.gap td {
   border-top: 2px dashed var(--line);
+  padding-top: 14px;
 }
 
 .lb-empty {
@@ -2108,6 +2253,83 @@ button.ghost.small {
   gap: 8px;
   margin: 10px 0 0;
   font-size: 14px;
+}
+
+.manga-page {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  margin: 4px auto 10px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: min(100%, 560px);
+}
+
+.option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 84px;
+  padding: 14px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text-1);
+  text-align: center;
+  text-wrap: balance;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.option:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+  background: color-mix(in srgb, var(--accent) 10%, var(--card));
+  transform: translateY(-2px);
+}
+
+.option-name {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.option-en {
+  color: var(--text-3);
+  font-size: 12.5px;
+}
+
+.option.wrong {
+  border-color: color-mix(in srgb, #e5483b 45%, var(--line));
+  background: color-mix(in srgb, #e5483b 12%, transparent);
+  opacity: 0.55;
+  cursor: default;
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+@media (max-width: 560px) {
+  .options {
+    grid-template-columns: 1fr;
+  }
+
+  .option {
+    min-height: 0;
+    padding: 13px 14px;
+  }
 }
 
 .yesterday-card {
@@ -2490,7 +2712,7 @@ button.ghost.small {
 
 .picker-caret {
   color: var(--text-3);
-  font-size: 12px;
+  font-size: 15px;
   transition: transform 0.2s;
 }
 
@@ -2522,6 +2744,10 @@ button.ghost.small {
   background: var(--card-2);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
   animation: reveal 0.16s ease-out;
+}
+
+.picker-list li .icon {
+  color: var(--text-3);
 }
 
 .picker-list li {

@@ -6,12 +6,13 @@ import { useI18n, type UiKey } from './i18n'
 import { MODES, UPCOMING_MODES } from './modes'
 import { href } from './router'
 import { dailyKey } from './games/specs'
-import { emptyStats, kyivToday } from './stats'
-import { CalendarIcon, CheckIcon } from './icons'
+import { average, emptyStats, kyivToday } from './stats'
+import { CalendarIcon, ChartIcon, CheckIcon } from './icons'
 import { fullUrl } from './pics'
 
 const CATEGORIES: { id: Category; title: UiKey; hint: UiKey }[] = [
   { id: 'anime', title: 'dash.anime', hint: 'dash.animeHint' },
+  { id: 'manga', title: 'dash.mangaTitle', hint: 'dash.mangaHint' },
   { id: 'games', title: 'dash.games', hint: 'dash.gamesHint' },
 ]
 
@@ -34,20 +35,39 @@ function FranchiseCard({ game }: { game: Game }) {
         <div className="franchise-title">
           <h3>{l(game.label)}</h3>
           <span className="count">
-            {t(game.unit === 'hero' ? 'dash.heroes' : 'dash.characters', { count: game.entities.length })}
+            {t(game.unit === 'manga' ? 'dash.titles' : game.unit === 'hero' ? 'dash.heroes' : 'dash.characters', { count: game.entities.length })}
           </span>
         </div>
         <p>{l(game.description)}</p>
         <div className="franchise-modes">
           {MODES.filter((m) => game.modes.includes(m.id)).map((m) => {
-            const solved = (stats[statsKey(game.id, m.id)] ?? emptyStats).solved
+            const own = stats[statsKey(game.id, m.id)] ?? emptyStats
+            const played = own.solved > 0 || own.skipped > 0
             return (
               <a key={m.id} className="mode-link" href={href.play(game.id, m.id)}>
                 <span className="mode-icon" aria-hidden>
                   {m.icon}
                 </span>
                 <span>{t(m.label)}</span>
-                {solved > 0 && <small>{solved}</small>}
+                {played && (
+                  <span
+                    className="mode-stat-hint"
+                    tabIndex={0}
+                    role="button"
+                    aria-label={t('dash.statsHint')}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.currentTarget.focus()
+                    }}
+                  >
+                    <ChartIcon />
+                    <span className="mode-tip" role="tooltip">
+                      <b>{t('dash.tipSolved', { count: own.solved })}</b>
+                      <b>{t('dash.tipSkipped', { count: own.skipped })}</b>
+                      <b>{t('dash.tipAvg', { value: average(own) })}</b>
+                    </span>
+                  </span>
+                )}
               </a>
             )
           })}

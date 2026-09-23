@@ -5,7 +5,7 @@ import { rounds, type RoundDoc, type UserDoc } from './db.js'
 import { gameData, isGame, isMode } from './games.js'
 import { applyDailyResult, applyResult } from './profile.js'
 import { abilityByKey } from './abilities.js'
-import { roundExtra } from './extra.js'
+import { optionsOf, roundExtra } from './extra.js'
 
 const ABILITY_HINT_AT = 7
 const ABILITY_STAGES = 5
@@ -26,7 +26,7 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId) 
   const fresh = pool.filter((e) => !seen.has(e.id))
   const choices = fresh.length ? fresh : pool
   const answer = choices[Math.floor(Math.random() * choices.length)]
-  const extra = roundExtra(mode, answer.id)
+  const extra = roundExtra(game, mode, answer.id)
   const doc: RoundDoc = { userId, game, mode, answerId: answer.id, ...(extra ? { extra } : {}), guesses: [], status: 'active', createdAt: new Date() }
   const { insertedId } = await collection.insertOne(doc)
   return { ...doc, _id: insertedId }
@@ -87,8 +87,9 @@ export async function roundView(round: RoundDoc, full = true) {
       judgement: round.mode === 'classic' ? judgeAll(game, byId.get(guessId)!, answer) : undefined,
     })),
     answerId: round.status === 'active' ? undefined : round.answerId,
-    image: round.mode === 'image' || round.mode === 'ability' ? `/api/round/image?id=${id}` : undefined,
+    image: round.mode === 'image' || round.mode === 'ability' || round.mode === 'page' ? `/api/round/image?id=${id}` : undefined,
     ...(round.mode === 'ability' ? abilityInfo(round) : {}),
+    ...(round.mode === 'page' ? { options: optionsOf(round.extra) } : {}),
   }
 }
 

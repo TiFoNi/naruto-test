@@ -102,3 +102,35 @@ export function SparkIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function PageIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <rect x="4.5" y="3" width="15" height="18" rx="2.5" />
+      <path d="M8 7.5h8v5H8z" />
+      <path d="M8 16h4.5M14.5 16H16" />
+    </svg>
+  )
+}
+
+export function ChartIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2}>
+      <path d="M5 20V11M12 20V5M19 20v-6" />
+    </svg>
+  )
+}
+
+export function MedalIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M8.5 3 11 9M15.5 3 13 9" />
+      <circle cx="12" cy="15" r="6" />
+      <path
+        d="M12 11.6 12.85 13.83 15.23 13.95 13.38 15.45 14 17.75 12 16.45 10 17.75 10.62 15.45 8.77 13.95 11.15 13.83Z"
+        fill="currentColor"
+        stroke="none"
+      />
+    </svg>
+  )
+}

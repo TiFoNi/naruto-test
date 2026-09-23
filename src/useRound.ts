@@ -17,6 +17,7 @@ export type RoundView = {
   ability?: { ru: string; uk: string; en: string }
   nextAt?: number
   yesterdayId?: number | null
+  options?: number[]
 }
 
 type RoundResponse = { round?: RoundView; stats?: { key: string; value: Stats } | null }

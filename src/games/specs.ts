@@ -1,6 +1,6 @@
-export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'onepiece' | 'mk' | 'hxh' | 'bc' | 'jojo' | 'se' | 'ff'
+export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'onepiece' | 'mk' | 'hxh' | 'bc' | 'jojo' | 'se' | 'ff' | 'manga'
 
-export type ModeId = 'classic' | 'image' | 'ability'
+export type ModeId = 'classic' | 'image' | 'ability' | 'page'
 
 export type Verdict = 'correct' | 'partial' | 'wrong'
 
@@ -105,6 +105,12 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('partIndex', 'order'),
     ],
   },
+  manga: {
+    data: 'manga',
+    images: 'manga',
+    modes: ['page'],
+    columns: [],
+  },
   se: {
     data: 'se',
     images: 'se',
@@ -199,7 +205,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
-export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability']
+export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page']
 
 const DEFAULT_MODES: ModeId[] = ['classic', 'image']
 

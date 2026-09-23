@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { ChevronIcon } from './icons'
 
 export type Option = { value: string; label: ReactNode; accent?: string }
 
@@ -72,9 +73,7 @@ export default function Picker({ label, value, options, onChange }: Props) {
       >
         {current?.accent && <span className="dot" />}
         <span className="picker-value">{current?.label}</span>
-        <span className="picker-caret" aria-hidden>
-          ▾
-        </span>
+        <ChevronIcon className="picker-caret" />
       </button>
       {open && (
         <ul className="picker-list" role="listbox" style={{ maxHeight: place.max }}>

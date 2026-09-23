@@ -11,7 +11,7 @@ export type UserDoc = {
   createdAt: Date
 }
 
-export type Stats = { solved: number; streak: number; best: number; totalGuesses: number; lastDay?: string }
+export type Stats = { solved: number; streak: number; best: number; totalGuesses: number; skipped: number; lastDay?: string }
 
 export type RoundStatus = 'active' | 'won' | 'lost' | 'skipped'
 
