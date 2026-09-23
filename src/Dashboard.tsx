@@ -8,6 +8,7 @@ import { href } from './router'
 import { dailyKey } from './games/specs'
 import { emptyStats, kyivToday } from './stats'
 import { CalendarIcon, CheckIcon } from './icons'
+import { fullUrl } from './pics'
 
 const CATEGORIES: { id: Category; title: UiKey; hint: UiKey }[] = [
   { id: 'anime', title: 'dash.anime', hint: 'dash.animeHint' },
@@ -26,7 +27,7 @@ function FranchiseCard({ game }: { game: Game }) {
     <article className="franchise" style={{ '--tab-accent': game.accent } as CSSProperties}>
       <a className="franchise-art" href={href.play(game.id, game.modes[0])} aria-label={l(game.label)}>
         {featured.slice(0, 3).map((e, i) => (
-          <img key={e.id} className={`fan fan-${i}`} src={game.fullUrl(e)} alt="" loading="lazy" draggable={false} />
+          <img key={e.id} className={`fan fan-${i}`} src={fullUrl(game.id, e.id)} alt="" loading="lazy" draggable={false} />
         ))}
       </a>
       <div className="franchise-body">

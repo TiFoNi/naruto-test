@@ -22,7 +22,8 @@
     "data:jojo": "node scripts/build-jojo.mjs",
     "data:se": "node scripts/build-se.mjs",
     "data:ff": "node scripts/build-ff.mjs",
-    "check:data": "node scripts/check-data.mjs"
+    "check:data": "node scripts/check-data.mjs",
+    "pics": "node --env-file-if-exists=.env.local scripts/upload-pics.mjs"
   },
   "dependencies": {
     "jose": "^6.2.12",
@@ -31,6 +32,7 @@
     "react-dom": "^19.3.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.1138.0",
     "@types/node": "^22.20.4",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",

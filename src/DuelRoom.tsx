@@ -13,6 +13,7 @@ import { href } from './router'
 import { useDuel } from './useDuel'
 import type { Guess } from './useRound'
 import { SwordsIcon } from './icons'
+import { fullUrl } from './pics'
 
 const ZOOM_LEVELS = [7, 5.6, 4.5, 3.6, 2.9, 2.35, 1.9, 1.55, 1.25, 1]
 
@@ -173,7 +174,7 @@ export default function DuelRoom({ code }: { code: string }) {
         <section className="mode">
           <div className="card intro">
             <h2>{t(duel.mode === 'ability' ? 'play.abilityTitle' : duel.mode === 'image' ? 'play.imageTitle' : 'play.classicTitle')}</h2>
-            {duel.mode === 'image' && (
+            {duel.mode === 'image' && !over && (
               <ZoomImage game={game} src={duel.image} zoom={zoom} resetKey={`${duel.code}-${duel.round}`} seed={`${duel.code}-${duel.round}`} />
             )}
             {duel.mode === 'ability' && (
@@ -193,7 +194,7 @@ export default function DuelRoom({ code }: { code: string }) {
           {over && answer ? (
             <div className={`card result ${duel.youWon ? 'won' : duel.winner === null ? 'skipped' : 'lost'}`}>
               <h2>{duel.youWon ? t('duel.youWon') : duel.winner ? t('duel.youLost', { name: duel.winner }) : t('duel.draw')}</h2>
-              <img className="result-image" src={game.fullUrl(answer)} alt={name(answer)} />
+              <img className="result-image" src={fullUrl(game.id, answer.id)} alt={name(answer)} />
               <div className="result-name">{name(answer)}</div>
               <p className="round">
                 {you?.nickname}: {t('duel.guesses', { count: you?.guesses.length ?? 0 })}

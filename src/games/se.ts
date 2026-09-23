@@ -14,7 +14,6 @@ type Character = Entity & {
   arcIndex: number
 }
 
-const base = import.meta.env.BASE_URL
 const { list, exact } = cells<Character>()
 
 const columns: Column<Character>[] = [
@@ -43,8 +42,6 @@ export const se: Game<Character> = {
   entities: raw as Character[],
   columns,
   atlas,
-  atlasUrl: `${base}se/thumbs.webp`,
-  fullUrl: (c) => `${base}se/full/${c.id}.webp`,
   wideImages: false,
   legend: 'debut',
 }

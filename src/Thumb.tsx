@@ -1,4 +1,5 @@
 import type { Entity, Game } from './games/types'
+import { atlasUrl } from './pics'
 import { useI18n } from './i18n'
 
 type Props = { game: Game; entity: Entity; size?: number; className?: string }
@@ -18,7 +19,7 @@ export default function Thumb({ game, entity, size, className }: Props) {
       style={{
         width: size,
         height: size,
-        backgroundImage: `url(${game.atlasUrl})`,
+        backgroundImage: `url(${atlasUrl(game.id)})`,
         backgroundSize: `${cols * 100}% ${rows * 100}%`,
         backgroundPosition: `${percent(col, cols)}% ${percent(row, rows)}%`,
       }}

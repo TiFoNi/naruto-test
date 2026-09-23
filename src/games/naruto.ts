@@ -15,7 +15,6 @@ type Character = Entity & {
   arcIndex: number
 }
 
-const base = import.meta.env.BASE_URL
 const { list, exact } = cells<Character>()
 
 const NATURE_ICONS: Record<string, Omit<Icon, 'label'>> = {
@@ -59,8 +58,6 @@ export const naruto: Game<Character> = {
   entities: raw as Character[],
   columns,
   atlas,
-  atlasUrl: `${base}characters/thumbs.webp`,
-  fullUrl: (c) => `${base}characters/full/${c.id}.webp`,
   wideImages: false,
   legend: 'debut',
 }

@@ -4,9 +4,10 @@ import App from './App'
 import { AuthProvider } from './auth'
 import { I18nProvider } from './i18n'
 import { GAMES } from './games'
+import { atlasUrl } from './pics'
 import './styles.css'
 
-for (const game of GAMES) new Image().src = game.atlasUrl
+for (const game of GAMES) new Image().src = atlasUrl(game.id)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

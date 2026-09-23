@@ -44,20 +44,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    call('auth/me')
+    call('auth')
       .then(({ ok, data }) => (ok && data.user ? accept(data) : setProfile(null)))
       .catch(() => setProfile(null))
       .finally(() => setLoading(false))
   }, [])
 
   const refresh = useCallback(async () => {
-    const { ok, data } = await call('auth/me').catch(() => ({ ok: false, data: {} as ApiData }))
+    const { ok, data } = await call('auth').catch(() => ({ ok: false, data: {} as ApiData }))
     if (ok && data.user) accept(data)
   }, [])
 
   const submit = useCallback(async (mode: Mode, username: string, password: string) => {
     try {
-      const { ok, data } = await call(`auth/${mode}`, { username, password })
+      const { ok, data } = await call('auth', { action: mode, username, password })
       if (ok && data.user) {
         accept(data)
         return null
@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const logout = useCallback(async () => {
-    await call('auth/logout', {}).catch(() => null)
+    await call('auth', { action: 'logout' }).catch(() => null)
     setProfile(null)
   }, [])
 

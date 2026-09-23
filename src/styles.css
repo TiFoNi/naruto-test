@@ -2110,6 +2110,14 @@ button.ghost.small {
   font-size: 14px;
 }
 
+.yesterday-card {
+  padding: 14px 16px;
+}
+
+.yesterday-card .yesterday {
+  margin: 0;
+}
+
 .yesterday b {
   font-weight: 700;
 }

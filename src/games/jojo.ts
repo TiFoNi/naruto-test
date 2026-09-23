@@ -14,7 +14,6 @@ type Character = Entity & {
   partIndex: number
 }
 
-const base = import.meta.env.BASE_URL
 const { list, exact } = cells<Character>()
 
 const columns: Column<Character>[] = [
@@ -43,8 +42,6 @@ export const jojo: Game<Character> = {
   entities: raw as Character[],
   columns,
   atlas,
-  atlasUrl: `${base}jojo/thumbs.webp`,
-  fullUrl: (c) => `${base}jojo/full/${c.id}.webp`,
   wideImages: false,
   legend: 'debut',
 }

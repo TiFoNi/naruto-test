@@ -13,7 +13,6 @@ type Hero = Entity & {
   year: number
 }
 
-const base = import.meta.env.BASE_URL
 const { list, exact } = cells<Hero>()
 
 const ATTRIBUTE_ICONS: Record<string, Omit<Icon, 'label'>> = {
@@ -56,8 +55,6 @@ export const dota: Game<Hero> = {
   entities: raw as Hero[],
   columns,
   atlas,
-  atlasUrl: `${base}dota/thumbs.webp`,
-  fullUrl: (h) => `${base}dota/full/${h.id}.webp`,
   wideImages: true,
   legend: 'order',
 }

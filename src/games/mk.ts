@@ -13,7 +13,6 @@ type Fighter = Entity & {
   debutIndex: number
 }
 
-const base = import.meta.env.BASE_URL
 const { list, exact } = cells<Fighter>()
 
 const columns: Column<Fighter>[] = [
@@ -41,8 +40,6 @@ export const mk: Game<Fighter> = {
   entities: raw as Fighter[],
   columns,
   atlas,
-  atlasUrl: `${base}mk/thumbs.webp`,
-  fullUrl: (c) => `${base}mk/full/${c.id}.webp`,
   wideImages: false,
   legend: 'debut',
 }

@@ -32,8 +32,6 @@ export type Game<T extends Entity = Entity> = {
   entities: T[]
   columns: Column<T>[]
   atlas: { cols: number; rows: number }
-  atlasUrl: string
-  fullUrl: (e: T) => string
   wideImages: boolean
   legend: 'debut' | 'order'
 }

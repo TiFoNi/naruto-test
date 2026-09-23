@@ -6,6 +6,7 @@ import type { ModeId } from './modes'
 import { href } from './router'
 import type { Stats } from './stats'
 import { TrophyIcon } from './icons'
+import { fullUrl } from './pics'
 
 type Props = {
   game: Game
@@ -45,7 +46,7 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
   return (
     <div ref={ref} className={`card result ${won ? 'won' : skipped ? 'skipped' : 'lost'}`}>
       <h2>{t(won ? 'result.won' : skipped ? 'result.skipped' : 'result.lost')}</h2>
-      <img className="result-image" src={game.fullUrl(answer)} alt={name(answer)} />
+      <img className="result-image" src={fullUrl(game.id, answer.id)} alt={name(answer)} />
       <div className="result-name">{name(answer)}</div>
       {alt(answer) && <div className="result-name-en">{alt(answer)}</div>}
       <p className="round">{summary}</p>

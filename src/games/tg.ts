@@ -16,7 +16,6 @@ type Character = Entity & {
   debutIndex: number
 }
 
-const base = import.meta.env.BASE_URL
 const { list, exact } = cells<Character>()
 
 const VOLUME = l10n('том {v}', 'том {v}', 'vol. {v}')
@@ -52,8 +51,6 @@ export const tg: Game<Character> = {
   entities: raw as Character[],
   columns,
   atlas,
-  atlasUrl: `${base}tg/thumbs.webp`,
-  fullUrl: (c) => `${base}tg/full/${c.id}.webp`,
   wideImages: false,
   legend: 'order',
 }

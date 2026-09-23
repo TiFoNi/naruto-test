@@ -14,7 +14,6 @@ type Character = Entity & {
   arcIndex: number
 }
 
-const base = import.meta.env.BASE_URL
 const { list, exact } = cells<Character>()
 
 const NO_BOUNTY = l10n('Нет награды', 'Без нагороди', 'No bounty')
@@ -59,8 +58,6 @@ export const onepiece: Game<Character> = {
   entities: raw as Character[],
   columns,
   atlas,
-  atlasUrl: `${base}onepiece/thumbs.webp`,
-  fullUrl: (c) => `${base}onepiece/full/${c.id}.webp`,
   wideImages: false,
   legend: 'order',
 }
