@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import {
+  PUBLIC,
   ROOT,
   cachedDownload,
   cachedJson,
@@ -21,7 +22,7 @@ import { dropDeleted, onlyAnswers } from './dropped.mjs'
 const API = 'https://onepiece.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'onepiece')
 const THUMBS = path.join(CACHE, 'thumb')
-const OUT_IMG = path.join(ROOT, 'public', 'onepiece')
+const OUT_IMG = path.join(PUBLIC, 'onepiece')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'onepiece.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'onepiece-atlas.json')
 

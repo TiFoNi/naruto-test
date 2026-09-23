@@ -1,5 +1,5 @@
-public/*/full
-public/*/pages
-public/*/card
+apps/web/public/*/full
+apps/web/public/*/pages
+apps/web/public/*/card
 .cache
 seeds

@@ -1,10 +1,10 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import sharp from 'sharp'
-import { ROOT, cachedDownload, cachedJson, getJson, pool } from './lib.mjs'
+import { PUBLIC, ROOT, cachedDownload, cachedJson, getJson, pool } from './lib.mjs'
 
 const CACHE = path.join(ROOT, '.cache', 'dota-abilities')
-const OUT_IMG = path.join(ROOT, 'public', 'dota', 'abilities')
+const OUT_IMG = path.join(PUBLIC, 'dota', 'abilities')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'dota-abilities.json')
 const HERODATA = (lang, id) => `https://www.dota2.com/datafeed/herodata?language=${lang}&hero_id=${id}`
 const ICON = (key) => `https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/abilities/${key}.png`

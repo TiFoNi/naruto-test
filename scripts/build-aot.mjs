@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import {
+  PUBLIC,
   ROOT,
   cachedDownload,
   cachedJson,
@@ -24,7 +25,7 @@ import { dropDeleted, onlyAnswers } from './dropped.mjs'
 const API = 'https://attackontitan.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'aot')
 const THUMBS = path.join(CACHE, 'thumb')
-const OUT_IMG = path.join(ROOT, 'public', 'aot')
+const OUT_IMG = path.join(PUBLIC, 'aot')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'aot.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'aot-atlas.json')
 const EXTRA_NAMES = ['Hange Zoë']

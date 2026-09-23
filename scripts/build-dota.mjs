@@ -6,7 +6,7 @@ import { ATTACK, ATTRIBUTES, HEROES, RELEASE_FALLBACK, ROLES } from './dota-hero
 const ROOT = path.resolve(import.meta.dirname, '..')
 const CACHE = path.join(ROOT, '.cache', 'dota')
 const THUMBS = path.join(CACHE, 'thumb')
-const OUT_IMG = path.join(ROOT, 'public', 'dota')
+const OUT_IMG = path.join(PUBLIC, 'dota')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'dota.json')
 const OUT_ATLAS_META = path.join(ROOT, 'packages', 'game', 'data', 'dota-atlas.json')
 const HEROLIST = 'https://www.dota2.com/datafeed/herolist?language=english'

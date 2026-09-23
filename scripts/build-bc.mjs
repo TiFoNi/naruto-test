@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import {
+  PUBLIC,
   ROOT,
   cachedDownload,
   cachedJson,
@@ -23,7 +24,7 @@ import { dropDeleted, onlyAnswers } from './dropped.mjs'
 const API = 'https://blackclover.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'bc')
 const THUMBS = path.join(CACHE, 'thumb')
-const OUT_IMG = path.join(ROOT, 'public', 'bc')
+const OUT_IMG = path.join(PUBLIC, 'bc')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'bc.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'bc-atlas.json')
 const ANSWER_POOL_SIZE = 60

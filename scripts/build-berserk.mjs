@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import {
+  PUBLIC,
   ROOT,
   cachedDownload,
   cachedJson,
@@ -23,7 +24,7 @@ import { dropDeleted, onlyAnswers } from './dropped.mjs'
 const API = 'https://berserk.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'berserk')
 const THUMBS = path.join(CACHE, 'thumb')
-const OUT_IMG = path.join(ROOT, 'public', 'berserk')
+const OUT_IMG = path.join(PUBLIC, 'berserk')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'berserk.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'berserk-atlas.json')
 const ANSWER_POOL_SIZE = 55

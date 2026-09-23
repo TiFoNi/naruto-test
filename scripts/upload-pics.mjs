@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import { ROOT, pool } from './lib.mjs'
+import { PUBLIC, ROOT, pool } from './lib.mjs'
 
 const { R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET } = process.env
 const missing = ['R2_ACCOUNT_ID', 'R2_ACCESS_KEY_ID', 'R2_SECRET_ACCESS_KEY', 'R2_BUCKET'].filter((k) => !process.env[k])
@@ -20,19 +20,19 @@ const client = new S3Client({
 })
 
 async function collect() {
-  const games = await fs.readdir(path.join(ROOT, 'public'), { withFileTypes: true })
+  const games = await fs.readdir(path.join(PUBLIC), { withFileTypes: true })
   const files = []
   for (const game of games) {
     if (!game.isDirectory() || (only && game.name !== only)) continue
 
     for (const kind of ['full', 'card']) {
-      const dir = path.join(ROOT, 'public', game.name, kind)
+      const dir = path.join(PUBLIC, game.name, kind)
       for (const file of await fs.readdir(dir).catch(() => [])) {
         if (file.endsWith('.webp')) files.push({ key: `${game.name}/${kind}/${file}`, path: path.join(dir, file) })
       }
     }
 
-    const pages = path.join(ROOT, 'public', game.name, 'pages')
+    const pages = path.join(PUBLIC, game.name, 'pages')
     for (const entry of await fs.readdir(pages, { withFileTypes: true }).catch(() => [])) {
       if (!entry.isDirectory()) continue
       const dir = path.join(pages, entry.name)

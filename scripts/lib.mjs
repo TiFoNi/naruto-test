@@ -3,6 +3,7 @@ import path from 'node:path'
 import sharp from 'sharp'
 
 export const ROOT = path.resolve(import.meta.dirname, '..')
+export const PUBLIC = path.join(ROOT, 'apps', 'web', 'public')
 export const UA = { 'User-Agent': 'naruto-test-build/1.0' }
 
 export async function getJson(url) {

@@ -7,7 +7,7 @@ import { dropDeleted, onlyAnswers } from './dropped.mjs'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
 const CACHE = path.join(ROOT, '.cache')
-const OUT_IMG = path.join(ROOT, 'public', 'characters')
+const OUT_IMG = path.join(PUBLIC, 'characters')
 const THUMBS = path.join(CACHE, 'thumb')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'characters.json')
 const OUT_ATLAS_META = path.join(ROOT, 'packages', 'game', 'data', 'atlas.json')

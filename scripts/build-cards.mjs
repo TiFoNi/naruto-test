@@ -1,8 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { ROOT, pool, writeCard } from './lib.mjs'
-
-const PUBLIC = path.join(ROOT, 'public')
+import { PUBLIC, pool, writeCard } from './lib.mjs'
 
 async function collect() {
   const jobs = []

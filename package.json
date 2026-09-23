@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --noEmit && vite build",
-    "preview": "vite preview",
+    "dev": "npm run dev --workspace @nanda/web",
+    "build": "npm run build --workspace @nanda/web",
+    "typecheck": "npm run typecheck --workspace @nanda/web",
     "data": "node scripts/build-data.mjs && node scripts/build-dota.mjs && node scripts/build-aot.mjs && node scripts/build-bleach.mjs && node scripts/build-tg.mjs && node scripts/build-berserk.mjs && node scripts/build-kny.mjs && node scripts/build-onepiece.mjs && node scripts/build-mk.mjs && node scripts/build-hxh.mjs && node scripts/build-bc.mjs && node scripts/build-jojo.mjs && node scripts/build-se.mjs && node scripts/build-ff.mjs && node scripts/build-manga.mjs && node scripts/build-dn.mjs && node scripts/build-avatar.mjs && node scripts/build-cards.mjs",
     "data:naruto": "node scripts/build-data.mjs",
     "data:dota": "node scripts/build-dota.mjs && node scripts/build-dota-abilities.mjs",
@@ -29,23 +29,14 @@
     "check:data": "node scripts/check-data.mjs",
     "pics": "node --env-file-if-exists=.env.local scripts/upload-pics.mjs"
   },
-  "dependencies": {
-    "jose": "^6.2.12",
-    "mongodb": "^7.6.0",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.1138.0",
     "@types/node": "^22.20.4",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.1.1",
-    "sharp": "^0.35.4",
-    "typescript": "^7.0.2",
-    "vite": "^8.3.0"
+    "sharp": "^0.35.4"
   },
   "workspaces": [
+    "apps/*",
     "packages/*"
   ]
 }

@@ -1,13 +1,13 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import sharp from 'sharp'
-import { ROOT, pruneImages, writeAtlas } from './lib.mjs'
+import { PUBLIC, ROOT, pruneImages, writeAtlas } from './lib.mjs'
 import { dropDeleted, onlyAnswers } from './dropped.mjs'
 
 const SEEDS = path.join(ROOT, 'seeds', 'manga')
 const CACHE = path.join(ROOT, '.cache', 'manga')
 const THUMBS = path.join(CACHE, 'thumb')
-const OUT_IMG = path.join(ROOT, 'public', 'manga')
+const OUT_IMG = path.join(PUBLIC, 'manga')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'manga.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'manga-atlas.json')
 

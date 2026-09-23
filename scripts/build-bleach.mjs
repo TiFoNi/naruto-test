@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import {
+  PUBLIC,
   ROOT,
   cachedDownload,
   cachedJson,
@@ -23,7 +24,7 @@ import { dropDeleted, onlyAnswers } from './dropped.mjs'
 const API = 'https://bleach.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'bleach')
 const THUMBS = path.join(CACHE, 'thumb')
-const OUT_IMG = path.join(ROOT, 'public', 'bleach')
+const OUT_IMG = path.join(PUBLIC, 'bleach')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'bleach.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'bleach-atlas.json')
 const MAL = path.join(ROOT, '.cache', 'mal-269.json')

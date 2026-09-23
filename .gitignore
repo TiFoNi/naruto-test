@@ -8,4 +8,6 @@ seeds/*
 !seeds/manga
 seeds/manga/*
 !seeds/manga/README.md
-public/*/card
+apps/web/public/*/card
+.next
+next-env.d.ts
