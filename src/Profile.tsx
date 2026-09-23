@@ -5,6 +5,7 @@ import { GAMES } from './games'
 import { useI18n } from './i18n'
 import { MODES } from './modes'
 import { average, emptyStats } from './stats'
+import { CalendarIcon, ChevronIcon, InfinityIcon } from './icons'
 
 export default function Profile({ onBack }: { onBack: () => void }) {
   const { user, stats, duels, setNickname, resetStats, logout, refresh } = useAuth()
@@ -15,6 +16,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   const [confirmReset, setConfirmReset] = useState(false)
   const [resetting, setResetting] = useState(false)
   const [resetMessage, setResetMessage] = useState<{ ok: boolean; text: string } | null>(null)
+  const [open, setOpen] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     refresh()
@@ -26,6 +28,20 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   const totalSolved = all.reduce((sum, s) => sum + s.solved, 0)
   const bestStreak = all.reduce((max, s) => Math.max(max, s.best), 0)
   const totalGuesses = all.reduce((sum, s) => sum + s.totalGuesses, 0)
+
+  const rows = GAMES.map((game) => {
+    const own = game.modes.flatMap((m) => [stats[statsKey(game.id, m)], stats[dailyKey(game.id, m)]].map((s) => s ?? emptyStats))
+    const solved = own.reduce((sum, s) => sum + s.solved, 0)
+    const best = own.reduce((max, s) => Math.max(max, s.best), 0)
+    return { game, solved, best, played: own.some((s) => s.solved > 0 || s.streak > 0) }
+  }).sort((a, b) => b.solved - a.solved)
+
+  const toggle = (id: string) =>
+    setOpen((current) => {
+      const next = new Set(current)
+      if (!next.delete(id)) next.add(id)
+      return next
+    })
 
   const saveNickname = async (e: FormEvent) => {
     e.preventDefault()
@@ -101,49 +117,94 @@ export default function Profile({ onBack }: { onBack: () => void }) {
         </div>
       </section>
 
-      <section className="card stats-table-card">
-        <h2>{t('profile.byGame')}</h2>
-        <div className="stats-table-scroll">
-          <table className="stats-table">
-            <thead>
-              <tr>
-                <th>{t('profile.game')}</th>
-                <th>{t('profile.mode')}</th>
-                <th>{t('stats.solved')}</th>
-                <th>{t('stats.streak')}</th>
-                <th>{t('stats.best')}</th>
-                <th>{t('stats.avg')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {GAMES.map((g) =>
-                MODES.filter((m) => g.modes.includes(m.id))
-                  .flatMap((m) => [
-                    { id: m.id, label: t(m.label), key: statsKey(g.id, m.id) },
-                    { id: `${m.id}-daily`, label: `📅 ${t(m.label)}`, key: dailyKey(g.id, m.id) },
-                  ])
-                  .map((m, i, list) => {
-                  const s = stats[m.key] ?? emptyStats
-                  return (
-                    <tr key={`${g.id}-${m.id}`} className={i === 0 ? 'group-start' : ''}>
-                      {i === 0 && (
-                        <th rowSpan={list.length} scope="rowgroup" style={{ '--tab-accent': g.accent } as CSSProperties}>
-                          <span className="dot" />
-                          {l(g.label)}
-                        </th>
-                      )}
-                      <td>{m.label}</td>
-                      <td>{s.solved}</td>
-                      <td>{s.streak}</td>
-                      <td>{s.best}</td>
-                      <td>{average(s)}</td>
-                    </tr>
-                  )
-                }),
-              )}
-            </tbody>
-          </table>
+      <section className="card stats-card">
+        <div className="stats-card-head">
+          <h2>{t('profile.byGame')}</h2>
+          <button className="ghost small" onClick={() => setOpen(open.size ? new Set() : new Set(GAMES.map((g) => g.id)))}>
+            {open.size ? t('profile.collapseAll') : t('profile.expandAll')}
+          </button>
         </div>
+
+        <ul className="game-stats">
+          {rows.map(({ game, solved, best, played }) => {
+            const expanded = open.has(game.id)
+            return (
+              <li
+                key={game.id}
+                className={`game-stat ${expanded ? 'open' : ''} ${played ? '' : 'idle'}`}
+                style={{ '--tab-accent': game.accent } as CSSProperties}
+              >
+                <button className="game-stat-head" aria-expanded={expanded} onClick={() => toggle(game.id)}>
+                  <span className="dot" />
+                  <b>{l(game.label)}</b>
+                  {played ? (
+                    <span className="game-stat-sum">
+                      <i>{solved}</i> {t('stats.solved').toLowerCase()}
+                      <em>·</em>
+                      <i>{best}</i> {t('stats.best').toLowerCase()}
+                    </span>
+                  ) : (
+                    <span className="game-stat-sum muted">{t('profile.notPlayed')}</span>
+                  )}
+                  <ChevronIcon className="chev" />
+                </button>
+
+                <div className="game-stat-panel">
+                  <div className="game-stat-clip">
+                    <div className="game-stat-body">
+                    {MODES.filter((m) => game.modes.includes(m.id)).map((m) => {
+                      const endless = stats[statsKey(game.id, m.id)] ?? emptyStats
+                      const daily = stats[dailyKey(game.id, m.id)] ?? emptyStats
+                      return (
+                        <div key={m.id} className="mode-stat">
+                          <h3>
+                            <span aria-hidden>{m.icon}</span> {t(m.label)}
+                          </h3>
+                          <table>
+                            <thead>
+                              <tr>
+                                <th />
+                                <th title={t('daily.endless')}>
+                                  <InfinityIcon />
+                                </th>
+                                <th title={t('daily.daily')}>
+                                  <CalendarIcon />
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th>{t('stats.solved')}</th>
+                                <td>{endless.solved}</td>
+                                <td>{daily.solved}</td>
+                              </tr>
+                              <tr>
+                                <th>{t('stats.streak')}</th>
+                                <td>{endless.streak}</td>
+                                <td>{daily.streak}</td>
+                              </tr>
+                              <tr>
+                                <th>{t('stats.best')}</th>
+                                <td>{endless.best}</td>
+                                <td>{daily.best}</td>
+                              </tr>
+                              <tr>
+                                <th>{t('stats.avg')}</th>
+                                <td>{average(endless)}</td>
+                                <td>{average(daily)}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </li>
+            )
+          })}
+        </ul>
       </section>
 
       <section className="card danger">

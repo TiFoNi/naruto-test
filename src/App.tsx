@@ -11,7 +11,7 @@ import Leaderboard from './Leaderboard'
 import ImageMode from './ImageMode'
 import AbilityMode from './AbilityMode'
 import Profile from './Profile'
-import ScrollRow from './ScrollRow'
+import { CalendarIcon, InfinityIcon, SwordsIcon, TrophyIcon } from './icons'
 import { GAMES, gameById } from './games'
 import type { Game } from './games/types'
 import { LANGS, useI18n } from './i18n'
@@ -55,10 +55,10 @@ function GameView({ game, mode, daily, visible }: { game: Game; mode: ModeId; da
           <div className="game-switches">
             <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
               <a role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
-                ∞ {t('daily.endless')}
+                <InfinityIcon /> {t('daily.endless')}
               </a>
               <a role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, mode, true)}>
-                📅 {t('daily.daily')}
+                <CalendarIcon /> {t('daily.daily')}
               </a>
             </div>
             <div className="mode-tabs" role="tablist">
@@ -76,7 +76,7 @@ function GameView({ game, mode, daily, visible }: { game: Game; mode: ModeId; da
             </div>
           </div>
           <a className="lb-link" href={href.leaderboard(game.id, mode, daily)}>
-            🏆 {t('nav.leaderboard')}
+            <TrophyIcon /> {t('nav.leaderboard')}
           </a>
         </div>
       </section>
@@ -147,13 +147,13 @@ export default function App() {
               href={href.leaderboard(game?.id ?? 'naruto', route.name === 'play' ? route.mode : 'classic', route.name === 'play' && route.daily)}
               title={t('nav.leaderboard')}
             >
-              <span aria-hidden>🏆</span>
+              <TrophyIcon />
               <span className="topbar-link-label">{t('nav.leaderboard')}</span>
             </a>
           )}
           {user && (
             <a className={`topbar-link ${route.name === 'duels' || route.name === 'duel' ? 'active' : ''}`} href={href.duels} title={t('nav.duels')}>
-              <span aria-hidden>⚔️</span>
+              <SwordsIcon />
               <span className="topbar-link-label">{t('nav.duels')}</span>
             </a>
           )}
@@ -189,19 +189,6 @@ export default function App() {
               <a className="back" href={href.home}>
                 {t('play.back')}
               </a>
-              <ScrollRow className="game-tabs" label={t('nav.games')} activeKey={game?.id}>
-                {GAMES.map((g) => (
-                  <a
-                    key={g.id}
-                    className={g.id === game?.id ? 'active' : ''}
-                    style={{ '--tab-accent': g.accent } as CSSProperties}
-                    href={href.play(g.id, route.name === 'play' && g.modes.includes(route.mode) ? route.mode : g.modes[0], route.name === 'play' && route.daily)}
-                  >
-                    <span className="dot" />
-                    {l(g.label)}
-                  </a>
-                ))}
-              </ScrollRow>
             </div>
             <main>
               {GAMES.map((g) => (

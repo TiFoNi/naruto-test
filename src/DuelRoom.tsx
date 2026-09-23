@@ -12,6 +12,7 @@ import { MODES, type ModeId } from './modes'
 import { href } from './router'
 import { useDuel } from './useDuel'
 import type { Guess } from './useRound'
+import { SwordsIcon } from './icons'
 
 const ZOOM_LEVELS = [7, 5.6, 4.5, 3.6, 2.9, 2.35, 1.9, 1.55, 1.25, 1]
 
@@ -91,7 +92,9 @@ export default function DuelRoom({ code }: { code: string }) {
 
       <header className="duel-head card" style={{ '--tab-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
         <div>
-          <h1>⚔️ {game ? `${l(game.label)} · ${modeLabel}` : t('duel.room')}</h1>
+          <h1>
+            <SwordsIcon /> {game ? `${l(game.label)} · ${modeLabel}` : t('duel.room')}
+          </h1>
           <p className="muted">
             {t('duel.code', { code: duel.code })}
             {duel.round > 0 ? ` · ${t('duel.roundNo', { round: duel.round })}` : ''}

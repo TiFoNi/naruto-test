@@ -6,6 +6,7 @@ import { useI18n, type UiKey } from './i18n'
 import { MODES, type ModeId } from './modes'
 import { href } from './router'
 import ScrollRow from './ScrollRow'
+import { CalendarIcon, InfinityIcon } from './icons'
 
 type Sort = 'best' | 'solved' | 'avg' | 'today' | 'streak'
 
@@ -114,10 +115,10 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
         <div className="game-switches">
           <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
             <a role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.leaderboard(gameId, mode)}>
-              ∞ {t('daily.endless')}
+              <InfinityIcon /> {t('daily.endless')}
             </a>
             <a role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.leaderboard(gameId, mode, true)}>
-              📅 {t('daily.daily')}
+              <CalendarIcon /> {t('daily.daily')}
             </a>
           </div>
           <div className="mode-tabs" role="tablist">

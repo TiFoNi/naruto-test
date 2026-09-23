@@ -5,6 +5,7 @@ import { useI18n } from './i18n'
 import type { ModeId } from './modes'
 import { href } from './router'
 import type { Stats } from './stats'
+import { TrophyIcon } from './icons'
 
 type Props = {
   game: Game
@@ -58,7 +59,7 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
               {t('daily.playEndless')}
             </a>
             <a className="ghost" href={href.leaderboard(game.id, mode, true)}>
-              🏆 {t('daily.todayBoard')}
+              <TrophyIcon /> {t('daily.todayBoard')}
             </a>
           </div>
         </>

@@ -7,6 +7,7 @@ import { MODES, UPCOMING_MODES } from './modes'
 import { href } from './router'
 import { dailyKey } from './games/specs'
 import { emptyStats, kyivToday } from './stats'
+import { CalendarIcon, CheckIcon } from './icons'
 
 const CATEGORIES: { id: Category; title: UiKey; hint: UiKey }[] = [
   { id: 'anime', title: 'dash.anime', hint: 'dash.animeHint' },
@@ -51,7 +52,9 @@ function FranchiseCard({ game }: { game: Game }) {
           })}
         </div>
         <div className="daily-links">
-          <span className="daily-links-title">📅 {t('daily.dashTitle')}</span>
+          <span className="daily-links-title">
+            <CalendarIcon /> {t('daily.dashTitle')}
+          </span>
           {MODES.filter((m) => game.modes.includes(m.id)).map((m) => {
             const done = stats[dailyKey(game.id, m.id)]?.lastDay === kyivToday()
             return (
@@ -61,15 +64,16 @@ function FranchiseCard({ game }: { game: Game }) {
                 href={href.play(game.id, m.id, true)}
                 title={done ? t('daily.done') : undefined}
               >
-                {done && <span aria-label={t('daily.done')}>✓</span>}
+                {done && (
+                  <span aria-label={t('daily.done')}>
+                    <CheckIcon />
+                  </span>
+                )}
                 {t(m.label)}
               </a>
             )
           })}
         </div>
-        <a className="lb-mini" href={href.leaderboard(game.id, game.modes[0])}>
-          🏆 {t('nav.leaderboard')}
-        </a>
         {upcoming.length > 0 && (
           <p className="mode-soon">
             <b>{t('soon')}:</b> {upcoming.map((m) => t(m.label).toLowerCase()).join(', ')}

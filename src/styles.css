@@ -1571,59 +1571,231 @@ footer p {
   font-size: 26px;
 }
 
-.stats-table-card h2 {
+.stats-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.stats-card-head h2 {
   font-size: 17px;
-  margin-bottom: 12px;
 }
 
-.stats-table-scroll {
-  overflow-x: auto;
+button.ghost.small {
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 700;
 }
 
-.stats-table {
+.icon {
+  flex: none;
+  display: inline-block;
+  vertical-align: -0.16em;
+}
+
+.daily-links-title .icon,
+.variant-tabs .icon,
+.lb-link .icon,
+.topbar-link .icon {
+  font-size: 1.05em;
+}
+
+.daily-link .icon {
+  font-size: 0.95em;
+}
+
+.duel-head h1 .icon,
+.lb-head h1 .icon,
+.duels h1 .icon {
+  color: var(--accent);
+}
+
+.game-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+}
+
+.game-stat {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--tab-accent) 5%, transparent);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.game-stat.idle {
+  background: none;
+}
+
+.game-stat.open {
+  border-color: color-mix(in srgb, var(--tab-accent) 45%, var(--line));
+  background: color-mix(in srgb, var(--tab-accent) 8%, transparent);
+}
+
+.game-stat-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
+  padding: 14px 16px;
+  background: none;
+  border: 0;
+  border-radius: 13px;
+  color: var(--text-1);
+  text-align: left;
+  cursor: pointer;
+  transition: border-radius 0.2s ease;
+}
+
+.game-stat.open .game-stat-head {
+  border-radius: 13px 13px 0 0;
+}
+
+.game-stat-head:hover {
+  background: color-mix(in srgb, var(--tab-accent) 9%, transparent);
+}
+
+.game-stat-head b {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.game-stat.idle .game-stat-head b {
+  color: var(--text-2);
+  font-weight: 700;
+}
+
+.game-stat-sum {
+  margin-left: auto;
+  color: var(--text-2);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-.stats-table th,
-.stats-table td {
-  padding: 9px 10px;
-  text-align: left;
+.game-stat-sum i {
+  color: var(--text-1);
+  font-style: normal;
+  font-weight: 800;
 }
 
-.stats-table thead th {
+.game-stat-sum em {
+  margin: 0 7px;
   color: var(--text-3);
-  font-size: 11px;
+  font-style: normal;
+}
+
+.game-stat .chev {
+  flex: none;
+  color: var(--text-3);
+  font-size: 17px;
+  transition: transform 0.25s ease;
+}
+
+.game-stat.open .chev {
+  transform: rotate(180deg);
+}
+
+.game-stat-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.game-stat.open .game-stat-panel {
+  grid-template-rows: 1fr;
+}
+
+.game-stat-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.game-stat-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 10px;
+  padding: 12px 14px 14px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.game-stat.open .game-stat-body {
+  opacity: 1;
+  transform: none;
+}
+
+.mode-stat {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px 10px;
+  background: var(--bg-2);
+}
+
+.mode-stat h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  border-bottom: 1px solid var(--line);
+  color: var(--text-3);
 }
 
-.stats-table td {
+.mode-stat h3 span {
+  color: var(--tab-accent);
+  font-size: 14px;
+}
+
+.mode-stat table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.mode-stat thead th {
+  width: 62px;
+  padding: 10px 0 8px;
+  color: var(--text-3);
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.mode-stat thead th:first-child {
+  width: auto;
+}
+
+.mode-stat tbody th {
+  padding: 8px 12px 8px 0;
   color: var(--text-2);
   font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
 }
 
-.stats-table td:nth-child(n + 2) {
+.mode-stat tbody td {
+  padding: 8px 0;
+  font-weight: 800;
+  text-align: center;
   font-variant-numeric: tabular-nums;
 }
 
-.stats-table tbody th {
-  font-weight: 800;
-  vertical-align: top;
-}
-
-.stats-table tbody th .dot {
-  display: inline-block;
-  margin-right: 8px;
-}
-
-.stats-table tr.group-start th,
-.stats-table tr.group-start td {
-  border-top: 1px solid var(--line);
+.mode-stat tbody tr + tr th,
+.mode-stat tbody tr + tr td {
+  border-top: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
 }
 
 .danger {
@@ -1735,17 +1907,6 @@ footer p {
 }
 
 
-.lb-mini {
-  font-weight: 800;
-  font-size: 13px;
-  color: var(--text-2);
-  text-decoration: none;
-}
-
-.lb-mini:hover {
-  color: var(--text);
-}
-
 .lb-link {
   display: inline-flex;
   align-items: center;
@@ -1764,10 +1925,6 @@ footer p {
 .lb-link:hover {
   color: var(--text);
   border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
-}
-
-.lb-mini {
-  align-self: flex-start;
 }
 
 .round-status {

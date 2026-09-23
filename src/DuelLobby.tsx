@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { api } from './api'
 import { useI18n } from './i18n'
 import { href, navigate } from './router'
+import { SwordsIcon } from './icons'
 
 export default function DuelLobby() {
   const { t, error: errorText } = useI18n()
@@ -33,7 +34,9 @@ export default function DuelLobby() {
         {t('play.back')}
       </a>
       <header className="lb-head">
-        <h1>⚔️ {t('duel.title')}</h1>
+        <h1>
+          <SwordsIcon /> {t('duel.title')}
+        </h1>
         <p className="muted">{t('duel.lead')}</p>
         <p className="muted small">{t('duel.rules')}</p>
       </header>
