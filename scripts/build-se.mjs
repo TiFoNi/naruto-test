@@ -51,12 +51,26 @@ const SPECIES_RULES = [
   ['Яйцо кишина', /^Category:Kishin Egg$/],
   ['Искусственное создание', /^Category:(Artificial Creation|Golem)$/],
   ['Оборотень', /^Category:Werewolf$/],
+  ['Монстр', /^Category:Monste ?r( Cat)?$/],
 ]
 
 const ROLE_RULES = [
-  ['Мастер', /^Category:Meister$/],
-  ['Оружие', /^Category:Demon Weapon$/],
+  ['Оружие', /^Category:(Demon Weapon|Autonomous Weapon|Sword)$/],
+  ['Мастер', /^Category:(Meister|.*-Meister|.* Meister)$/],
 ]
+
+const DEAD = new Set(['Asura'])
+
+const VILLAIN = ['Арахнофобия', 'Банда Ноя', 'Фракция Медузы']
+const HERO = ['Шибусэн', 'Класс EAT', 'Класс NOT', 'Спартой', 'Оружие Смерти', 'Разведка Шибусэна', 'Легионы Жнеца']
+
+const sideOf = (cats, affiliations) => {
+  if (cats.includes('Category:Antagonist')) return 'Злодей'
+  if (cats.includes('Category:Protagonists')) return 'Герой'
+  if (affiliations.some((a) => HERO.includes(a))) return 'Герой'
+  if (affiliations.some((a) => VILLAIN.includes(a))) return 'Злодей'
+  return 'Нейтралитет'
+}
 
 const AFFILIATION_RULES = [
   ['Шибусэн', /^Category:DWMA$/],
@@ -321,6 +335,7 @@ async function main() {
     }
     const arcIndex = arcIndexOf(debutChapter(text, name))
     const species = matchRules(SPECIES_RULES, cats)
+    const affiliations = affiliationsOf(cats)
     result.push({
       id,
       name: NAMES[name] ?? ruName(name, ru, transliterate),
@@ -328,9 +343,9 @@ async function main() {
       gender: genderOf(cats, text),
       species: species.length ? species : ['Человек'],
       role: matchRules(ROLE_RULES, cats)[0] ?? 'Нет',
-      affiliations: affiliationsOf(cats),
-      side: cats.includes('Category:Antagonist') ? 'Злодей' : cats.includes('Category:Protagonists') ? 'Герой' : 'Нейтралитет',
-      status: cats.includes('Category:Deceased') ? 'Мёртв' : 'Жив',
+      affiliations,
+      side: sideOf(cats, affiliations),
+      status: cats.includes('Category:Deceased') || DEAD.has(name) ? 'Мёртв' : 'Жив',
       arc: ARCS[arcIndex][1],
       arcIndex,
       length,
