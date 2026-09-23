@@ -20,7 +20,8 @@ function crossSite(request: Request) {
   const site = request.headers.get('sec-fetch-site')
   if (site && site !== 'same-origin' && site !== 'none') return true
   const origin = request.headers.get('origin')
-  if (origin && origin !== new URL(request.url).origin) return true
+  const host = request.headers.get('host')
+  if (origin && host && new URL(origin).host !== host) return true
   return !request.headers.get('content-type')?.includes('application/json')
 }
 

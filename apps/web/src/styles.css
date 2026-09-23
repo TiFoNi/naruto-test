@@ -1109,17 +1109,22 @@ footer p {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 10px 4px 4px;
+  padding: 4px 12px 4px 4px;
   border-radius: 999px;
-  border: 1px solid transparent;
+  color: var(--text);
   text-decoration: none;
   min-width: 0;
+  transition:
+    color 0.18s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .account-link:hover,
 .account-link.active {
-  border-color: var(--line);
-  background: var(--card);
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
 .avatar {
@@ -2044,20 +2049,36 @@ button.ghost.small {
 .topbar-link {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  border: 1px solid transparent;
+  gap: 7px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  color: var(--text);
   font-weight: 700;
   font-size: 14px;
   text-decoration: none;
   white-space: nowrap;
+  transition:
+    color 0.18s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.topbar-link .icon {
+  font-size: 1.25em;
+  color: var(--text-2);
+  transition: color 0.18s ease;
 }
 
 .topbar-link:hover,
 .topbar-link.active {
-  border-color: var(--line);
-  background: var(--card);
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.topbar-link:hover .icon,
+.topbar-link.active .icon {
+  color: var(--accent);
 }
 
 
