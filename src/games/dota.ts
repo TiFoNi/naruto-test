@@ -22,7 +22,7 @@ const ATTRIBUTE_ICONS: Record<string, Omit<Icon, 'label'>> = {
   Универсал: { symbol: '全', color: '#b48be0' },
 }
 
-const stars = (n: number) => '★'.repeat(n) + '☆'.repeat(3 - n)
+const stars = (n: number) => '★'.repeat(n)
 
 const columns: Column<Hero>[] = [
   { title: l10n('Пол', 'Стать', 'Gender'), ...exact('gender') },
