@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import Thumb from './Thumb'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
@@ -5,8 +6,14 @@ import type { Guess } from './useRound'
 
 const sizeClass = (text: string) => (text.length > 44 ? 'size-xs' : text.length > 26 ? 'size-s' : '')
 
+const ROW_STEP = 0.06
+const COL_STEP = 0.05
+const MAX_ROW_DELAY = 0.5
+
 export default function GuessGrid({ game, guesses }: { game: Game; guesses: Guess[] }) {
   const { t, l, tv, lang, name } = useI18n()
+  const firstBatch = useRef<number | null>(null)
+  if (firstBatch.current === null && guesses.length > 0) firstBatch.current = guesses.length
   const legend = game.legend === 'debut' ? (['legend.debutLater', 'legend.debutEarlier'] as const) : (['legend.higher', 'legend.lower'] as const)
 
   if (!guesses.length) return null
@@ -20,9 +27,13 @@ export default function GuessGrid({ game, guesses }: { game: Game; guesses: Gues
             <div key={c.key}>{l(c.title)}</div>
           ))}
         </div>
-        {guesses.map(({ entity: g, judgement, pending }) => (
+        {guesses.map(({ entity: g, judgement, pending }, row) => (
           <div className={`grid-row ${pending ? 'pending' : ''}`} key={g.id}>
-            <div className="cell portrait" title={name(g)}>
+            <div
+              className="cell portrait"
+              title={name(g)}
+              style={{ animationDelay: `${row < (firstBatch.current ?? 0) ? Math.min(row * ROW_STEP, MAX_ROW_DELAY) : 0}s` }}
+            >
               <Thumb game={game} entity={g} className="portrait-thumb" />
               <span className="portrait-name">{name(g)}</span>
             </div>
@@ -37,7 +48,7 @@ export default function GuessGrid({ game, guesses }: { game: Game; guesses: Gues
                   key={col.key}
                   title={text}
                   className={`cell ${verdict?.verdict ?? 'wrong'} ${sizeClass(text)}`}
-                  style={{ animationDelay: `${i * 0.07}s` }}
+                  style={{ animationDelay: `${(row < (firstBatch.current ?? 0) ? Math.min(row * ROW_STEP, MAX_ROW_DELAY) : 0) + i * COL_STEP}s` }}
                 >
                   {icons.length ? (
                     <div className="icons">

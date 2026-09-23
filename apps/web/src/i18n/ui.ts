@@ -359,6 +359,7 @@ const ui = {
     uk: 'Це твоя загадка — надішли посилання другу й стеж за результатами тут.',
     en: "This is your puzzle — send the link and watch the results here.",
   },
+  'challenge.ogHint': { ru: 'угадай, кто это', uk: 'вгадай, хто це', en: 'guess who it is' },
   'challenge.hiddenIs': { ru: 'Ты загадал', uk: 'Ти загадав', en: 'You hid' },
   'challenge.noSolves': { ru: 'Пока никто не угадывал', uk: 'Поки ніхто не вгадував', en: 'Nobody has tried yet' },
   'challenge.answerWas': { ru: 'Был загадан', uk: 'Було загадано', en: 'The answer was' },
