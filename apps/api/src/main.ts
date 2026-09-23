@@ -5,9 +5,11 @@ import { AppModule } from './app.module'
 const origins = (process.env.CORS_ORIGINS ?? 'http://localhost:5173').split(',').map((o) => o.trim())
 
 async function bootstrap() {
+  const port = Number(process.env.PORT ?? 4000)
   const app = await NestFactory.create(AppModule)
   app.enableCors({ origin: origins, credentials: true })
-  await app.listen(Number(process.env.PORT ?? 4000), '0.0.0.0')
+  await app.listen(port, '0.0.0.0')
+  console.log(`[nanda] слухаю порт ${port}, CORS для: ${origins.join(', ')}`)
 }
 
 void bootstrap()
