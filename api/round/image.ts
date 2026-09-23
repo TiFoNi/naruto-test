@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { GAME_SPECS, type GameId } from '../../src/games/specs.js'
+import { GAME_SPECS, type GameId } from '@nanda/game'
 import { fail, handle } from '../_lib/http.js'
 import { sessionUserId, unauthorized } from '../_lib/profile.js'
 import { abilityStageOf, findDuel, sideOf } from '../_lib/duels.js'

@@ -1,5 +1,5 @@
 import { ObjectId, type Collection } from 'mongodb'
-import { DAILY_KEYS, STAT_KEYS } from '../../src/games/specs.js'
+import { DAILY_KEYS, STAT_KEYS } from '@nanda/game'
 import { shiftDay, today } from './daily.js'
 import { users, type Stats, type UserDoc } from './db.js'
 import { fail } from './http.js'

@@ -1,5 +1,5 @@
-import raw from '../data/dota.json'
-import atlas from '../data/dota-atlas.json'
+import raw from '@nanda/game/data/dota.json'
+import atlas from '@nanda/game/data/dota-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game, type Icon } from './types'
 
 type Hero = Entity & {

@@ -1,4 +1,4 @@
-import { GAME_SPECS, type GameId } from './games/specs'
+import { GAME_SPECS, type GameId } from '@nanda/game'
 
 const local = import.meta.env.BASE_URL
 const remote = import.meta.env.VITE_PICS_URL

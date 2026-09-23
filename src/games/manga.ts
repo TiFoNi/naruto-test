@@ -1,5 +1,5 @@
-import raw from '../data/manga.json'
-import atlas from '../data/manga-atlas.json'
+import raw from '@nanda/game/data/manga.json'
+import atlas from '@nanda/game/data/manga-atlas.json'
 import { l10n, type Entity, type Game } from './types'
 
 type Manga = Entity & {

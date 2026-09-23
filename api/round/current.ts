@@ -1,5 +1,5 @@
 import { fail, handle, json, readJson } from '../_lib/http.js'
-import { hasMode } from '../../src/games/specs.js'
+import { hasMode } from '@nanda/game'
 import { gameData, isGame, isMode } from '../_lib/games.js'
 import { currentUser, unauthorized } from '../_lib/profile.js'
 import { activeRound, challengeRound, dailyRound, roundView } from '../_lib/rounds.js'

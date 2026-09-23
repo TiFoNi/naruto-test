@@ -1,5 +1,5 @@
-import raw from '../data/onepiece.json'
-import atlas from '../data/onepiece-atlas.json'
+import raw from '@nanda/game/data/onepiece.json'
+import atlas from '@nanda/game/data/onepiece-atlas.json'
 import { EMPTY, cells, l10n, type Column, type Entity, type Game } from './types'
 
 type Character = Entity & {

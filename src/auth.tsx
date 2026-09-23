@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
 import { api } from './api'
-import { statsKey } from './games/specs'
+import { statsKey } from '@nanda/game'
 import type { Stats } from './stats'
 
 export type User = { id: string; username: string; nickname: string }

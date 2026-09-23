@@ -1,7 +1,7 @@
 import { useEffect, type CSSProperties } from 'react'
 import AuthScreen from './AuthScreen'
 import { statsKey, useAuth } from './auth'
-import { dailyKey } from './games/specs'
+import { dailyKey } from '@nanda/game'
 import { BRAND } from './brand'
 import ClassicMode from './ClassicMode'
 import Dashboard from './Dashboard'

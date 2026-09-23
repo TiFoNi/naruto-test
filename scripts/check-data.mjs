@@ -1,5 +1,5 @@
 import fs from 'fs'
-const root = new URL('../src/data/', import.meta.url).pathname
+const root = new URL('../packages/game/data/', import.meta.url).pathname
 const load = (f) => JSON.parse(fs.readFileSync(root + f + '.json', 'utf8'))
 const has = (arr, v) => (arr ?? []).includes(v)
 const any = (arr, list) => list.some((v) => has(arr, v))

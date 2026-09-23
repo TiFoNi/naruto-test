@@ -23,8 +23,8 @@ const API = 'https://jojo.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'jojo')
 const THUMBS = path.join(CACHE, 'thumb')
 const OUT_IMG = path.join(ROOT, 'public', 'jojo')
-const OUT_JSON = path.join(ROOT, 'src', 'data', 'jojo.json')
-const OUT_ATLAS = path.join(ROOT, 'src', 'data', 'jojo-atlas.json')
+const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'jojo.json')
+const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'jojo-atlas.json')
 const ANSWER_POOL_SIZE = 70
 const KEEP = 100
 

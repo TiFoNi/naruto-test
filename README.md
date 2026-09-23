@@ -36,6 +36,12 @@ npm run dev
 
 `npm run dev` поднимает эти функции и локально (плагин в `vite.config.ts`).
 
+## Структура
+
+Репозиторий — монорепо на npm workspaces. Общий код лежит в `packages/game` (`@nanda/game`): правила сравнения подсказок (`src/specs.ts`) и данные игр (`data/*.json`). Их импортируют обе стороны — фронт для поиска и колонок, функции для выбора ответа и судейства, — поэтому они не могут жить внутри одной из сторон: расходящиеся копии означали бы, что сервер судит не по тем правилам, что рисует клиент.
+
+Дальше сюда же встанут `apps/web` (Next) и `apps/api` (Nest); пока фронт и функции остаются в корне (`src/`, `api/`).
+
 ## Данные
 
 `npm run data` пересобирает все игры (`npm run data:naruto`, `data:dota`, `data:aot`, `data:bleach`, `data:tg`, `data:berserk`, `data:kny`, `data:onepiece`, `data:mk`, `data:hxh`, `data:bc`, `data:jojo`, `data:se`, `data:ff`, `data:manga`, `data:dn` — по отдельности).

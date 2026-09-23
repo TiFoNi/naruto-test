@@ -1,6 +1,6 @@
 import { useEffect, useState, type CSSProperties, type FormEvent } from 'react'
 import { statsKey, useAuth } from './auth'
-import { dailyKey } from './games/specs'
+import { dailyKey } from '@nanda/game'
 import { GAMES } from './games'
 import { useI18n } from './i18n'
 import { MODES } from './modes'

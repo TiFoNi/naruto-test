@@ -24,8 +24,8 @@ const API = 'https://fireforce.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'ff')
 const THUMBS = path.join(CACHE, 'thumb')
 const OUT_IMG = path.join(ROOT, 'public', 'ff')
-const OUT_JSON = path.join(ROOT, 'src', 'data', 'ff.json')
-const OUT_ATLAS = path.join(ROOT, 'src', 'data', 'ff-atlas.json')
+const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'ff.json')
+const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'ff-atlas.json')
 const ANSWER_POOL_SIZE = 55
 const KEEP = 65
 

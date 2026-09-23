@@ -9,8 +9,8 @@ const ROOT = path.resolve(import.meta.dirname, '..')
 const CACHE = path.join(ROOT, '.cache')
 const OUT_IMG = path.join(ROOT, 'public', 'characters')
 const THUMBS = path.join(CACHE, 'thumb')
-const OUT_JSON = path.join(ROOT, 'src', 'data', 'characters.json')
-const OUT_ATLAS_META = path.join(ROOT, 'src', 'data', 'atlas.json')
+const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'characters.json')
+const OUT_ATLAS_META = path.join(ROOT, 'packages', 'game', 'data', 'atlas.json')
 const ATLAS_COLS = 24
 const ATLAS_CELL = 96
 const API = 'https://dattebayo-api.onrender.com/characters?page=1&limit=3000'

@@ -8,8 +8,8 @@ const SEEDS = path.join(ROOT, 'seeds', 'manga')
 const CACHE = path.join(ROOT, '.cache', 'manga')
 const THUMBS = path.join(CACHE, 'thumb')
 const OUT_IMG = path.join(ROOT, 'public', 'manga')
-const OUT_JSON = path.join(ROOT, 'src', 'data', 'manga.json')
-const OUT_ATLAS = path.join(ROOT, 'src', 'data', 'manga-atlas.json')
+const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'manga.json')
+const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'manga-atlas.json')
 
 const TITLES = [
   ['one-piece', 'Ван Пис', 'One Piece', 'Эйитиро Ода', 1997, 'Сёнэн', 'Выходит'],

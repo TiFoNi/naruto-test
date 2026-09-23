@@ -23,8 +23,8 @@ const API = 'https://deathnote.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'dn')
 const THUMBS = path.join(CACHE, 'thumb')
 const OUT_IMG = path.join(ROOT, 'public', 'dn')
-const OUT_JSON = path.join(ROOT, 'src', 'data', 'dn.json')
-const OUT_ATLAS = path.join(ROOT, 'src', 'data', 'dn-atlas.json')
+const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'dn.json')
+const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'dn-atlas.json')
 const ANSWER_POOL_SIZE = 26
 const KEEP = 40
 

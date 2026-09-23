@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { GridIcon, PageIcon, PictureIcon, SparkIcon } from './icons'
 import type { UiKey } from './i18n/ui'
-import type { ModeId } from './games/specs'
+import type { ModeId } from '@nanda/game'
 
 export type { ModeId }
 

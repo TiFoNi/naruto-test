@@ -1,5 +1,5 @@
-import raw from '../data/berserk.json'
-import atlas from '../data/berserk-atlas.json'
+import raw from '@nanda/game/data/berserk.json'
+import atlas from '@nanda/game/data/berserk-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
 type Character = Entity & {

@@ -22,8 +22,8 @@ const API = 'https://onepiece.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'onepiece')
 const THUMBS = path.join(CACHE, 'thumb')
 const OUT_IMG = path.join(ROOT, 'public', 'onepiece')
-const OUT_JSON = path.join(ROOT, 'src', 'data', 'onepiece.json')
-const OUT_ATLAS = path.join(ROOT, 'src', 'data', 'onepiece-atlas.json')
+const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'onepiece.json')
+const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'onepiece-atlas.json')
 
 const ANSWERS = [
   'Monkey D. Luffy', 'Roronoa Zoro', 'Nami', 'Usopp', 'Sanji', 'Tony Tony Chopper', 'Nico Robin', 'Franky', 'Brook', 'Jinbe',

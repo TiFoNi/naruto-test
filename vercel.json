@@ -1,8 +1,10 @@
 {
-  "regions": ["arn1"],
+  "regions": [
+    "arn1"
+  ],
   "functions": {
     "api/**/*.ts": {
-      "includeFiles": "src/data/*.json"
+      "includeFiles": "packages/game/data/*.json"
     }
   }
 }

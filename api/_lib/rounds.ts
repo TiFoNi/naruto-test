@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { dailyKey, judgeAll, statsKey, type GameId, type ModeId } from '../../src/games/specs.js'
+import { dailyKey, judgeAll, statsKey, type GameId, type ModeId } from '@nanda/game'
 import { dailyAnswer, dailyNumber, nextReset, pastAnswer, shiftDay, today } from './daily.js'
 import { rounds, type RoundDoc, type UserDoc } from './db.js'
 import { gameData, isGame, isMode, knows } from './games.js'

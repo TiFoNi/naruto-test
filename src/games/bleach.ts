@@ -1,5 +1,5 @@
-import raw from '../data/bleach.json'
-import atlas from '../data/bleach-atlas.json'
+import raw from '@nanda/game/data/bleach.json'
+import atlas from '@nanda/game/data/bleach-atlas.json'
 import { cells, l10n, EMPTY, type Column, type Entity, type Game } from './types'
 
 type Character = Entity & {

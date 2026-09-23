@@ -1,5 +1,5 @@
-import raw from '../data/aot.json'
-import atlas from '../data/aot-atlas.json'
+import raw from '@nanda/game/data/aot.json'
+import atlas from '@nanda/game/data/aot-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
 type Character = Entity & {

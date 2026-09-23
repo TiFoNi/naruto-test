@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { GAME_SPECS, MODE_IDS, type GameId, type ModeId } from '../../src/games/specs.js'
+import { GAME_SPECS, MODE_IDS, type GameId, type ModeId } from '@nanda/game'
+import { DATA_DIR } from './data-dir.js'
 
 export type Entity = Record<string, unknown> & { id: number; answer: boolean }
 
@@ -14,7 +15,7 @@ export const knows = (game: GameId, id: number) => gameData(game).byId.has(id)
 export const isMode = (value: unknown): value is ModeId => typeof value === 'string' && (MODE_IDS as string[]).includes(value)
 
 export function gameData(game: GameId): GameData {
-  const file = path.join(process.cwd(), 'src', 'data', `${GAME_SPECS[game].data}.json`)
+  const file = path.join(DATA_DIR, `${GAME_SPECS[game].data}.json`)
   const stamp = fs.statSync(file).mtimeMs
   const cached = cache.get(game)
   if (cached?.stamp === stamp) return cached

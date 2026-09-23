@@ -1,4 +1,4 @@
-import { dailyKey, statsKey, type GameId, type ModeId } from '../../src/games/specs.js'
+import { dailyKey, statsKey, type GameId, type ModeId } from '@nanda/game'
 import { users } from '../_lib/db.js'
 import { fail, handle, json, readJson } from '../_lib/http.js'
 import { applySkip, sessionUserId, unauthorized } from '../_lib/profile.js'

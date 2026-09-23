@@ -1,6 +1,6 @@
 import { randomInt } from 'node:crypto'
 import { ObjectId } from 'mongodb'
-import { hasMode, judgeAll, type GameId, type ModeId } from '../../src/games/specs.js'
+import { hasMode, judgeAll, type GameId, type ModeId } from '@nanda/game'
 import { abilityByKey } from './abilities.js'
 import { duels, users, type DuelDoc, type DuelPlayer, type UserDoc } from './db.js'
 import { roundExtra } from './extra.js'

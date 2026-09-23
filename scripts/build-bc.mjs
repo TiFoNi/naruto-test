@@ -24,8 +24,8 @@ const API = 'https://blackclover.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'bc')
 const THUMBS = path.join(CACHE, 'thumb')
 const OUT_IMG = path.join(ROOT, 'public', 'bc')
-const OUT_JSON = path.join(ROOT, 'src', 'data', 'bc.json')
-const OUT_ATLAS = path.join(ROOT, 'src', 'data', 'bc-atlas.json')
+const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'bc.json')
+const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'bc-atlas.json')
 const ANSWER_POOL_SIZE = 60
 const KEEP = 80
 

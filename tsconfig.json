@@ -18,11 +18,20 @@
     "types": [
       "vite/client",
       "node"
-    ]
+    ],
+    "paths": {
+      "@nanda/game": [
+        "./packages/game/src/specs.ts"
+      ],
+      "@nanda/game/data/*": [
+        "./packages/game/data/*"
+      ]
+    }
   },
   "include": [
     "src",
     "api",
+    "packages/game/src",
     "vite.config.ts"
   ]
 }

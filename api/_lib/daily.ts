@@ -1,5 +1,5 @@
 import { createHmac } from 'node:crypto'
-import type { GameId, ModeId } from '../../src/games/specs.js'
+import type { GameId, ModeId } from '@nanda/game'
 import { dailies } from './db.js'
 import { gameData } from './games.js'
 import { roundExtra } from './extra.js'

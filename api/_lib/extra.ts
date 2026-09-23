@@ -1,4 +1,4 @@
-import type { GameId, ModeId } from '../../src/games/specs.js'
+import type { GameId, ModeId } from '@nanda/game'
 import { abilitiesOf } from './abilities.js'
 import { gameData } from './games.js'
 

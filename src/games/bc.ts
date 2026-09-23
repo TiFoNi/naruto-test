@@ -1,5 +1,5 @@
-import raw from '../data/bc.json'
-import atlas from '../data/bc-atlas.json'
+import raw from '@nanda/game/data/bc.json'
+import atlas from '@nanda/game/data/bc-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
 type Character = Entity & {

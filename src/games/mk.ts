@@ -1,5 +1,5 @@
-import raw from '../data/mk.json'
-import atlas from '../data/mk-atlas.json'
+import raw from '@nanda/game/data/mk.json'
+import atlas from '@nanda/game/data/mk-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
 type Fighter = Entity & {

@@ -5,7 +5,7 @@ import { ROOT, cachedDownload, cachedJson, getJson, pool } from './lib.mjs'
 
 const CACHE = path.join(ROOT, '.cache', 'dota-abilities')
 const OUT_IMG = path.join(ROOT, 'public', 'dota', 'abilities')
-const OUT_JSON = path.join(ROOT, 'src', 'data', 'dota-abilities.json')
+const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'dota-abilities.json')
 const HERODATA = (lang, id) => `https://www.dota2.com/datafeed/herodata?language=${lang}&hero_id=${id}`
 const ICON = (key) => `https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/abilities/${key}.png`
 const LANGS = { en: 'english', ru: 'russian', uk: 'ukrainian' }
@@ -23,7 +23,7 @@ async function main() {
   await fs.mkdir(path.join(CACHE, 'img'), { recursive: true })
   await fs.mkdir(OUT_IMG, { recursive: true })
   for (const i of STAGES.keys()) await fs.mkdir(path.join(OUT_IMG, `s${i}`), { recursive: true })
-  const heroes = JSON.parse(await fs.readFile(path.join(ROOT, 'src', 'data', 'dota.json'), 'utf8'))
+  const heroes = JSON.parse(await fs.readFile(path.join(ROOT, 'packages', 'game', 'data', 'dota.json'), 'utf8'))
 
   const feeds = {}
   await pool(heroes, 6, async (hero) => {

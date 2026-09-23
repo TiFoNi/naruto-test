@@ -1,7 +1,7 @@
 import type { L10n, Lang } from '../i18n/ui'
-import type { GameId, ModeId } from './specs'
+import type { GameId, ModeId } from '@nanda/game'
 
-export type { GameId, Judgement, Verdict } from './specs'
+export type { GameId, Judgement, Verdict } from '@nanda/game'
 
 export type Icon = { label: string; symbol: string; color: string; dark?: boolean }
 

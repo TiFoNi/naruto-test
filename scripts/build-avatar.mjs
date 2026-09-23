@@ -24,8 +24,8 @@ const API = 'https://avatar.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'avatar')
 const THUMBS = path.join(CACHE, 'thumb')
 const OUT_IMG = path.join(ROOT, 'public', 'avatar')
-const OUT_JSON = path.join(ROOT, 'src', 'data', 'avatar.json')
-const OUT_ATLAS = path.join(ROOT, 'src', 'data', 'avatar-atlas.json')
+const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'avatar.json')
+const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'avatar-atlas.json')
 const ANSWER_POOL_SIZE = 70
 const KEEP = 95
 

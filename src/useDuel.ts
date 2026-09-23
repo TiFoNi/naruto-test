@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { api } from './api'
 import { useAuth } from './auth'
 import type { Entity } from './games/types'
-import type { Judgement } from './games/specs'
+import type { Judgement } from '@nanda/game'
 
 export type DuelSide = { nickname: string; ready: boolean; wantsNext: boolean; wins: number; solved: boolean; gaveUp: boolean }
 

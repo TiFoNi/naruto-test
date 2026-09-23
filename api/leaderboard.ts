@@ -1,4 +1,4 @@
-import { STAT_KEYS, statsKey } from '../src/games/specs.js'
+import { STAT_KEYS, statsKey } from '@nanda/game'
 import { dailyBoard } from './_lib/daily-board.js'
 import { users } from './_lib/db.js'
 import { fail, handle, json } from './_lib/http.js'

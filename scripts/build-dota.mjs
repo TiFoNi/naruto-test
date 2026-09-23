@@ -7,8 +7,8 @@ const ROOT = path.resolve(import.meta.dirname, '..')
 const CACHE = path.join(ROOT, '.cache', 'dota')
 const THUMBS = path.join(CACHE, 'thumb')
 const OUT_IMG = path.join(ROOT, 'public', 'dota')
-const OUT_JSON = path.join(ROOT, 'src', 'data', 'dota.json')
-const OUT_ATLAS_META = path.join(ROOT, 'src', 'data', 'dota-atlas.json')
+const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'dota.json')
+const OUT_ATLAS_META = path.join(ROOT, 'packages', 'game', 'data', 'dota-atlas.json')
 const HEROLIST = 'https://www.dota2.com/datafeed/herolist?language=english'
 const OPENDOTA = 'https://api.opendota.com/api/constants/heroes'
 const WIKI_API = 'https://dota2.fandom.com/api.php'

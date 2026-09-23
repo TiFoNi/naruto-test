@@ -1,0 +1,10 @@
+{
+  "name": "@nanda/game",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/specs.ts",
+    "./data/*.json": "./data/*.json"
+  }
+}

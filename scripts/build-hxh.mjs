@@ -23,8 +23,8 @@ const API = 'https://hunterxhunter.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'hxh')
 const THUMBS = path.join(CACHE, 'thumb')
 const OUT_IMG = path.join(ROOT, 'public', 'hxh')
-const OUT_JSON = path.join(ROOT, 'src', 'data', 'hxh.json')
-const OUT_ATLAS = path.join(ROOT, 'src', 'data', 'hxh-atlas.json')
+const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'hxh.json')
+const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'hxh-atlas.json')
 const ANSWER_POOL_SIZE = 55
 const KEEP = 70
 
