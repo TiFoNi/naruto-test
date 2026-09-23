@@ -1,25 +1,5 @@
 [
  {
-  "id": 24,
-  "name": "Аджисай",
-  "gender": "Женский",
-  "affiliations": [
-   "Амэ"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 407,
-  "arc": "Восьмихвостый",
-  "arcIndex": 13,
-  "answer": true,
-  "nameEn": "Ajisai",
-  "thumb": 0
- },
- {
   "id": 29,
   "name": "Акамару",
   "gender": "Мужской",
@@ -37,29 +17,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Akamaru",
-  "thumb": 1
- },
- {
-  "id": 35,
-  "name": "Акацучи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Ива"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Дотон"
-  ],
-  "attributes": [],
-  "debutChapter": 454,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": true,
-  "nameEn": "Akatsuchi",
-  "thumb": 2
+  "thumb": 0
  },
  {
   "id": 48,
@@ -79,7 +37,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Akino",
-  "thumb": 3
+  "thumb": 1
  },
  {
   "id": 975,
@@ -99,7 +57,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Ameyuri Ringo",
-  "thumb": 4
+  "thumb": 2
  },
  {
   "id": 809,
@@ -121,7 +79,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Anko Mitarashi",
-  "thumb": 5
+  "thumb": 3
  },
  {
   "id": 80,
@@ -151,7 +109,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Ao",
-  "thumb": 6
+  "thumb": 4
  },
  {
   "id": 1372,
@@ -171,7 +129,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Aoba Yamashiro",
-  "thumb": 7
+  "thumb": 5
  },
  {
   "id": 81,
@@ -192,7 +150,7 @@
   "arcIndex": 18,
   "answer": false,
   "nameEn": "Aoda",
-  "thumb": 8
+  "thumb": 6
  },
  {
   "id": 1034,
@@ -216,7 +174,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Asuma Sarutobi",
-  "thumb": 9
+  "thumb": 7
  },
  {
   "id": 934,
@@ -246,7 +204,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Asura Ōtsutsuki",
-  "thumb": 10
+  "thumb": 8
  },
  {
   "id": 100,
@@ -268,7 +226,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Atsui",
-  "thumb": 11
+  "thumb": 9
  },
  {
   "id": 107,
@@ -290,7 +248,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Baki",
-  "thumb": 12
+  "thumb": 10
  },
  {
   "id": 1426,
@@ -322,7 +280,7 @@
   "arcIndex": 5,
   "answer": true,
   "nameEn": "White Zetsu",
-  "thumb": 13
+  "thumb": 11
  },
  {
   "id": 1353,
@@ -344,7 +302,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "White Snake Sage",
-  "thumb": 14
+  "thumb": 12
  },
  {
   "id": 1035,
@@ -364,7 +322,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Biwako Sarutobi",
-  "thumb": 15
+  "thumb": 13
  },
  {
   "id": 121,
@@ -384,29 +342,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Bisuke",
-  "thumb": 16
- },
- {
-  "id": 124,
-  "name": "Блу Би",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Джинчуурики",
-   "Псевдо-джинчуурики",
-   "Сенсор"
-  ],
-  "debutChapter": 494,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": true,
-  "nameEn": "Blue B",
-  "thumb": 17
+  "thumb": 14
  },
  {
   "id": 353,
@@ -426,7 +362,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Three Haimaru Brothers",
-  "thumb": 18
+  "thumb": 15
  },
  {
   "id": 129,
@@ -446,7 +382,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Bull",
-  "thumb": 19
+  "thumb": 16
  },
  {
   "id": 131,
@@ -466,7 +402,7 @@
   "arcIndex": 19,
   "answer": false,
   "nameEn": "Bunpuku",
-  "thumb": 20
+  "thumb": 17
  },
  {
   "id": 1062,
@@ -482,7 +418,7 @@
   "arcIndex": 18,
   "answer": false,
   "nameEn": "Butsuma Senju",
-  "thumb": 21
+  "thumb": 18
  },
  {
   "id": 134,
@@ -500,7 +436,7 @@
   "arcIndex": 19,
   "answer": false,
   "nameEn": "Byakuren",
-  "thumb": 22
+  "thumb": 19
  },
  {
   "id": 1350,
@@ -522,7 +458,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Waraji",
-  "thumb": 23
+  "thumb": 20
  },
  {
   "id": 259,
@@ -550,7 +486,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Gaara",
-  "thumb": 24
+  "thumb": 21
  },
  {
   "id": 261,
@@ -576,7 +512,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Gamabunta",
-  "thumb": 25
+  "thumb": 22
  },
  {
   "id": 265,
@@ -597,7 +533,7 @@
   "arcIndex": 11,
   "answer": false,
   "nameEn": "Gamaken",
-  "thumb": 26
+  "thumb": 23
  },
  {
   "id": 266,
@@ -625,7 +561,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Gamakichi",
-  "thumb": 27
+  "thumb": 24
  },
  {
   "id": 267,
@@ -649,7 +585,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Gamamaru",
-  "thumb": 28
+  "thumb": 25
  },
  {
   "id": 271,
@@ -670,7 +606,7 @@
   "arcIndex": 4,
   "answer": false,
   "nameEn": "Gamatatsu",
-  "thumb": 29
+  "thumb": 26
  },
  {
   "id": 264,
@@ -691,32 +627,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Gamahiro",
-  "thumb": 30
- },
- {
-  "id": 282,
-  "name": "Гари",
-  "gender": "Мужской",
-  "affiliations": [
-   "Ива"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [
-   "Бакутон"
-  ],
-  "natureTypes": [
-   "Дотон",
-   "Райтон"
-  ],
-  "attributes": [],
-  "debutChapter": 515,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": true,
-  "nameEn": "Gari",
-  "thumb": 31
+  "thumb": 27
  },
  {
   "id": 284,
@@ -734,7 +645,7 @@
   "arcIndex": 15,
   "answer": false,
   "nameEn": "Garuda",
-  "thumb": 32
+  "thumb": 28
  },
  {
   "id": 289,
@@ -752,7 +663,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Gatō",
-  "thumb": 33
+  "thumb": 29
  },
  {
   "id": 295,
@@ -770,7 +681,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Genbu",
-  "thumb": 34
+  "thumb": 30
  },
  {
   "id": 428,
@@ -797,7 +708,7 @@
   "arcIndex": 17,
   "answer": true,
   "nameEn": "Gengetsu Hōzuki",
-  "thumb": 35
+  "thumb": 31
  },
  {
   "id": 1110,
@@ -817,7 +728,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Genma Shiranui",
-  "thumb": 36
+  "thumb": 32
  },
  {
   "id": 301,
@@ -835,7 +746,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Gennai",
-  "thumb": 37
+  "thumb": 33
  },
  {
   "id": 304,
@@ -851,7 +762,7 @@
   "arcIndex": 5,
   "answer": false,
   "nameEn": "Gen'yūmaru",
-  "thumb": 38
+  "thumb": 34
  },
  {
   "id": 306,
@@ -872,7 +783,7 @@
   "arcIndex": 11,
   "answer": false,
   "nameEn": "Gerotora",
-  "thumb": 39
+  "thumb": 35
  },
  {
   "id": 310,
@@ -897,7 +808,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Giant Clam",
-  "thumb": 40
+  "thumb": 36
  },
  {
   "id": 326,
@@ -917,7 +828,7 @@
   "arcIndex": 17,
   "answer": true,
   "nameEn": "Ginkaku",
-  "thumb": 41
+  "thumb": 37
  },
  {
   "id": 338,
@@ -942,7 +853,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Gōzu",
-  "thumb": 42
+  "thumb": 38
  },
  {
   "id": 345,
@@ -964,7 +875,7 @@
   "arcIndex": 13,
   "answer": true,
   "nameEn": "Gyūki",
-  "thumb": 43
+  "thumb": 39
  },
  {
   "id": 175,
@@ -984,7 +895,7 @@
   "arcIndex": 14,
   "answer": false,
   "nameEn": "Fire Daimyō (Part I-II)",
-  "thumb": 44
+  "thumb": 40
  },
  {
   "id": 605,
@@ -1010,7 +921,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Dan Katō",
-  "thumb": 45
+  "thumb": 41
  },
  {
   "id": 1093,
@@ -1046,7 +957,7 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Danzō Shimura",
-  "thumb": 46
+  "thumb": 42
  },
  {
   "id": 190,
@@ -1072,7 +983,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Darui",
-  "thumb": 47
+  "thumb": 43
  },
  {
   "id": 193,
@@ -1103,7 +1014,7 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Deidara",
-  "thumb": 48
+  "thumb": 44
  },
  {
   "id": 195,
@@ -1123,7 +1034,7 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Demonic Statue of the Outer Path",
-  "thumb": 49
+  "thumb": 45
  },
  {
   "id": 1,
@@ -1154,7 +1065,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Ten-Tails",
-  "thumb": 50
+  "thumb": 46
  },
  {
   "id": 36,
@@ -1174,7 +1085,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Jinin Akebino",
-  "thumb": 51
+  "thumb": 47
  },
  {
   "id": 853,
@@ -1194,7 +1105,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Jinpachi Munashi",
-  "thumb": 52
+  "thumb": 48
  },
  {
   "id": 515,
@@ -1227,7 +1138,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Jiraiya",
-  "thumb": 53
+  "thumb": 49
  },
  {
   "id": 517,
@@ -1249,7 +1160,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Jirōbō",
-  "thumb": 54
+  "thumb": 50
  },
  {
   "id": 521,
@@ -1281,7 +1192,7 @@
   "arcIndex": 10,
   "answer": true,
   "nameEn": "Jūgo",
-  "thumb": 55
+  "thumb": 51
  },
  {
   "id": 122,
@@ -1301,32 +1212,7 @@
   "arcIndex": 19,
   "answer": false,
   "nameEn": "Jūzō Biwa",
-  "thumb": 56
- },
- {
-  "id": 199,
-  "name": "Додай",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [
-   "Ёотон"
-  ],
-  "natureTypes": [
-   "Катон",
-   "Дотон"
-  ],
-  "attributes": [],
-  "debutChapter": 541,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": true,
-  "nameEn": "Dodai",
-  "thumb": 57
+  "thumb": 52
  },
  {
   "id": 644,
@@ -1346,7 +1232,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Dosu Kinuta",
-  "thumb": 58
+  "thumb": 53
  },
  {
   "id": 27,
@@ -1369,7 +1255,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Yoroi Akadō",
-  "thumb": 59
+  "thumb": 54
  },
  {
   "id": 880,
@@ -1387,7 +1273,7 @@
   "arcIndex": 5,
   "answer": false,
   "nameEn": "Yoshino Nara",
-  "thumb": 60
+  "thumb": 55
  },
  {
   "id": 831,
@@ -1413,29 +1299,7 @@
   "arcIndex": 1,
   "answer": true,
   "nameEn": "Zabuza Momochi",
-  "thumb": 61
- },
- {
-  "id": 1418,
-  "name": "Заджи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Сенсор"
-  ],
-  "debutChapter": 515,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": false,
-  "nameEn": "Zaji",
-  "thumb": 62
+  "thumb": 56
  },
  {
   "id": 8,
@@ -1455,7 +1319,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Zaku Abumi",
-  "thumb": 63
+  "thumb": 57
  },
  {
   "id": 1427,
@@ -1477,7 +1341,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Zō",
-  "thumb": 64
+  "thumb": 58
  },
  {
   "id": 1428,
@@ -1499,7 +1363,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Zōri",
-  "thumb": 65
+  "thumb": 59
  },
  {
   "id": 835,
@@ -1519,25 +1383,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Ibiki Morino",
-  "thumb": 66
- },
- {
-  "id": 1196,
-  "name": "Иваши Татами",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 57,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Iwashi Tatami",
-  "thumb": 67
+  "thumb": 60
  },
  {
   "id": 571,
@@ -1560,7 +1406,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Izumo Kamizuki",
-  "thumb": 68
+  "thumb": 61
  },
  {
   "id": 1296,
@@ -1581,7 +1427,7 @@
   "arcIndex": 12,
   "answer": true,
   "nameEn": "Izuna Uchiha",
-  "thumb": 69
+  "thumb": 62
  },
  {
   "id": 1292,
@@ -1603,7 +1449,7 @@
   "arcIndex": 5,
   "answer": false,
   "nameEn": "Inabi Uchiha",
-  "thumb": 70
+  "thumb": 63
  },
  {
   "id": 458,
@@ -1621,25 +1467,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Inari",
-  "thumb": 71
- },
- {
-  "id": 457,
-  "name": "Инахо",
-  "gender": "Женский",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 43,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Inaho",
-  "thumb": 72
+  "thumb": 64
  },
  {
   "id": 938,
@@ -1665,7 +1493,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Indra Ōtsutsuki",
-  "thumb": 73
+  "thumb": 65
  },
  {
   "id": 1365,
@@ -1695,7 +1523,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Ino Yamanaka",
-  "thumb": 74
+  "thumb": 66
  },
  {
   "id": 1367,
@@ -1719,7 +1547,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Inoichi Yamanaka",
-  "thumb": 75
+  "thumb": 67
  },
  {
   "id": 1325,
@@ -1743,7 +1571,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Iruka Umino",
-  "thumb": 76
+  "thumb": 68
  },
  {
   "id": 480,
@@ -1768,7 +1596,7 @@
   "arcIndex": 9,
   "answer": true,
   "nameEn": "Isobu",
-  "thumb": 77
+  "thumb": 69
  },
  {
   "id": 1293,
@@ -1805,7 +1633,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Itachi Uchiha",
-  "thumb": 78
+  "thumb": 70
  },
  {
   "id": 479,
@@ -1827,7 +1655,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Ishikawa",
-  "thumb": 79
+  "thumb": 71
  },
  {
   "id": 1359,
@@ -1871,7 +1699,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Kabuto Yakushi",
-  "thumb": 80
+  "thumb": 72
  },
  {
   "id": 1297,
@@ -1893,7 +1721,7 @@
   "arcIndex": 15,
   "answer": false,
   "nameEn": "Kagami Uchiha",
-  "thumb": 81
+  "thumb": 73
  },
  {
   "id": 526,
@@ -1916,7 +1744,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Kagari",
-  "thumb": 82
+  "thumb": 74
  },
  {
   "id": 940,
@@ -1949,7 +1777,7 @@
   "arcIndex": 20,
   "answer": true,
   "nameEn": "Kaguya Ōtsutsuki",
-  "thumb": 83
+  "thumb": 75
  },
  {
   "id": 544,
@@ -1967,7 +1795,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Kaiza",
-  "thumb": 84
+  "thumb": 76
  },
  {
   "id": 376,
@@ -2003,7 +1831,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Kakashi Hatake",
-  "thumb": 85
+  "thumb": 77
  },
  {
   "id": 558,
@@ -2033,7 +1861,7 @@
   "arcIndex": 9,
   "answer": true,
   "nameEn": "Kakuzu",
-  "thumb": 86
+  "thumb": 78
  },
  {
   "id": 577,
@@ -2058,7 +1886,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Kankurō",
-  "thumb": 87
+  "thumb": 79
  },
  {
   "id": 593,
@@ -2087,7 +1915,7 @@
   "arcIndex": 10,
   "answer": true,
   "nameEn": "Karin",
-  "thumb": 88
+  "thumb": 80
  },
  {
   "id": 596,
@@ -2108,7 +1936,7 @@
   "arcIndex": 13,
   "answer": true,
   "nameEn": "Karui",
-  "thumb": 89
+  "thumb": 81
  },
  {
   "id": 597,
@@ -2126,7 +1954,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Karura",
-  "thumb": 90
+  "thumb": 82
  },
  {
   "id": 608,
@@ -2150,7 +1978,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Katsuyu",
-  "thumb": 91
+  "thumb": 83
  },
  {
   "id": 466,
@@ -2173,7 +2001,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Kiba Inuzuka",
-  "thumb": 92
+  "thumb": 84
  },
  {
   "id": 626,
@@ -2193,7 +2021,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Kidōmaru",
-  "thumb": 93
+  "thumb": 85
  },
  {
   "id": 636,
@@ -2222,7 +2050,7 @@
   "arcIndex": 13,
   "answer": true,
   "nameEn": "Killer B",
-  "thumb": 94
+  "thumb": 86
  },
  {
   "id": 637,
@@ -2244,7 +2072,7 @@
   "arcIndex": 5,
   "answer": true,
   "nameEn": "Kimimaro",
-  "thumb": 95
+  "thumb": 87
  },
  {
   "id": 1265,
@@ -2264,7 +2092,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Kin Tsuchi",
-  "thumb": 96
+  "thumb": 88
  },
  {
   "id": 641,
@@ -2286,7 +2114,7 @@
   "arcIndex": 17,
   "answer": true,
   "nameEn": "Kinkaku",
-  "thumb": 97
+  "thumb": 89
  },
  {
   "id": 421,
@@ -2315,29 +2143,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Kisame Hoshigaki",
-  "thumb": 98
- },
- {
-  "id": 653,
-  "name": "Кицучи",
-  "gender": "Мужской",
-  "affiliations": [
-   "Ива"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [
-   "Дотон"
-  ],
-  "attributes": [],
-  "debutChapter": 515,
-  "arc": "Война: отсчёт",
-  "arcIndex": 16,
-  "answer": true,
-  "nameEn": "Kitsuchi",
-  "thumb": 99
+  "thumb": 90
  },
  {
   "id": 442,
@@ -2359,7 +2165,7 @@
   "arcIndex": 14,
   "answer": false,
   "nameEn": "Kō Hyūga",
-  "thumb": 100
+  "thumb": 91
  },
  {
   "id": 669,
@@ -2386,7 +2192,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Kokuō",
-  "thumb": 101
+  "thumb": 92
  },
  {
   "id": 681,
@@ -2404,7 +2210,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Komugi",
-  "thumb": 102
+  "thumb": 93
  },
  {
   "id": 684,
@@ -2433,7 +2239,7 @@
   "arcIndex": 10,
   "answer": true,
   "nameEn": "Konan",
-  "thumb": 103
+  "thumb": 94
  },
  {
   "id": 1037,
@@ -2458,7 +2264,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Konohamaru Sarutobi",
-  "thumb": 104
+  "thumb": 95
  },
  {
   "id": 640,
@@ -2474,7 +2280,7 @@
   "arcIndex": 14,
   "answer": false,
   "nameEn": "King of Hell",
-  "thumb": 105
+  "thumb": 96
  },
  {
   "id": 348,
@@ -2498,7 +2304,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Kotetsu Hagane",
-  "thumb": 106
+  "thumb": 97
  },
  {
   "id": 1336,
@@ -2516,7 +2322,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Koharu Utatane",
-  "thumb": 107
+  "thumb": 98
  },
  {
   "id": 711,
@@ -2541,7 +2347,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Kurama",
-  "thumb": 108
+  "thumb": 99
  },
  {
   "id": 1397,
@@ -2566,7 +2372,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Kurenai Yūhi",
-  "thumb": 109
+  "thumb": 100
  },
  {
   "id": 725,
@@ -2593,7 +2399,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Kurotsuchi",
-  "thumb": 110
+  "thumb": 101
  },
  {
   "id": 716,
@@ -2614,7 +2420,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Kushimaru Kuriarare",
-  "thumb": 111
+  "thumb": 102
  },
  {
   "id": 1341,
@@ -2641,26 +2447,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Kushina Uzumaki",
-  "thumb": 112
- },
- {
-  "id": 736,
-  "name": "Кьюсуке",
-  "gender": "Мужской",
-  "affiliations": [
-   "Амэ",
-   "Акацуки"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 446,
-  "arc": "Вторжение Пейна",
-  "arcIndex": 14,
-  "answer": false,
-  "nameEn": "Kyūsuke",
-  "thumb": 113
+  "thumb": 103
  },
  {
   "id": 749,
@@ -2680,7 +2467,7 @@
   "arcIndex": 13,
   "answer": false,
   "nameEn": "Mabui",
-  "thumb": 114
+  "thumb": 104
  },
  {
   "id": 1299,
@@ -2725,7 +2512,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Madara Uchiha",
-  "thumb": 115
+  "thumb": 105
  },
  {
   "id": 344,
@@ -2749,7 +2536,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Might Guy",
-  "thumb": 116
+  "thumb": 106
  },
  {
   "id": 210,
@@ -2769,7 +2556,7 @@
   "arcIndex": 19,
   "answer": false,
   "nameEn": "Might Duy",
-  "thumb": 117
+  "thumb": 107
  },
  {
   "id": 754,
@@ -2789,7 +2576,7 @@
   "arcIndex": 7,
   "answer": false,
   "nameEn": "Maki",
-  "thumb": 118
+  "thumb": 108
  },
  {
   "id": 429,
@@ -2811,7 +2598,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Mangetsu Hōzuki",
-  "thumb": 119
+  "thumb": 109
  },
  {
   "id": 761,
@@ -2832,7 +2619,7 @@
   "arcIndex": 4,
   "answer": false,
   "nameEn": "Manda",
-  "thumb": 120
+  "thumb": 110
  },
  {
   "id": 762,
@@ -2850,7 +2637,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Manda II",
-  "thumb": 121
+  "thumb": 111
  },
  {
   "id": 771,
@@ -2874,25 +2661,7 @@
   "arcIndex": 9,
   "answer": true,
   "nameEn": "Matatabi",
-  "thumb": 122
- },
- {
-  "id": 774,
-  "name": "Мацури",
-  "gender": "Женский",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 280,
-  "arc": "Спасение Казекаге",
-  "arcIndex": 7,
-  "answer": true,
-  "nameEn": "Matsuri",
-  "thumb": 123
+  "thumb": 112
  },
  {
   "id": 1223,
@@ -2920,7 +2689,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Mei Terumī",
-  "thumb": 124
+  "thumb": 113
  },
  {
   "id": 779,
@@ -2945,7 +2714,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Meizu",
-  "thumb": 125
+  "thumb": 114
  },
  {
   "id": 818,
@@ -2965,7 +2734,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Mizuki",
-  "thumb": 126
+  "thumb": 115
  },
  {
   "id": 1300,
@@ -2983,7 +2752,7 @@
   "arcIndex": 4,
   "answer": false,
   "nameEn": "Mikoto Uchiha",
-  "thumb": 127
+  "thumb": 116
  },
  {
   "id": 865,
@@ -3018,7 +2787,7 @@
   "arcIndex": 6,
   "answer": true,
   "nameEn": "Minato Namikaze",
-  "thumb": 128
+  "thumb": 117
  },
  {
   "id": 1038,
@@ -3043,7 +2812,7 @@
   "arcIndex": 17,
   "answer": true,
   "nameEn": "Mirai Sarutobi",
-  "thumb": 129
+  "thumb": 118
  },
  {
   "id": 1283,
@@ -3066,7 +2835,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Misumi Tsurugi",
-  "thumb": 130
+  "thumb": 119
  },
  {
   "id": 1343,
@@ -3088,7 +2857,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Mito Uzumaki",
-  "thumb": 131
+  "thumb": 120
  },
  {
   "id": 794,
@@ -3111,7 +2880,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Mifune",
-  "thumb": 132
+  "thumb": 121
  },
  {
   "id": 840,
@@ -3131,7 +2900,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Motoi",
-  "thumb": 133
+  "thumb": 122
  },
  {
   "id": 618,
@@ -3158,7 +2927,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Moegi Kazamatsuri",
-  "thumb": 134
+  "thumb": 123
  },
  {
   "id": 845,
@@ -3182,25 +2951,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Mubi",
-  "thumb": 135
- },
- {
-  "id": 855,
-  "name": "Мусай",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кумо"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 546,
-  "arc": "Война: противостояние",
-  "arcIndex": 17,
-  "answer": false,
-  "nameEn": "Musai",
-  "thumb": 136
+  "thumb": 124
  },
  {
   "id": 10,
@@ -3220,7 +2971,7 @@
   "arcIndex": 14,
   "answer": false,
   "nameEn": "Muta Aburame",
-  "thumb": 137
+  "thumb": 125
  },
  {
   "id": 844,
@@ -3249,7 +3000,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "Mū",
-  "thumb": 138
+  "thumb": 126
  },
  {
   "id": 861,
@@ -3283,7 +3034,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Nagato",
-  "thumb": 139
+  "thumb": 127
  },
  {
   "id": 1344,
@@ -3324,7 +3075,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Naruto Uzumaki",
-  "thumb": 140
+  "thumb": 128
  },
  {
   "id": 444,
@@ -3352,7 +3103,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Neji Hyūga",
-  "thumb": 141
+  "thumb": 129
  },
  {
   "id": 1361,
@@ -3374,7 +3125,7 @@
   "arcIndex": 18,
   "answer": false,
   "nameEn": "Nonō Yakushi",
-  "thumb": 142
+  "thumb": 130
  },
  {
   "id": 1303,
@@ -3419,7 +3170,7 @@
   "arcIndex": 6,
   "answer": true,
   "nameEn": "Obito Uchiha",
-  "thumb": 143
+  "thumb": 131
  },
  {
   "id": 911,
@@ -3442,27 +3193,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Oboro",
-  "thumb": 144
- },
- {
-  "id": 916,
-  "name": "Окисуке",
-  "gender": "Мужской",
-  "affiliations": [
-   "Страна Железа"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Самурай"
-  ],
-  "debutChapter": 456,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Okisuke",
-  "thumb": 145
+  "thumb": 132
  },
  {
   "id": 920,
@@ -3484,7 +3215,7 @@
   "arcIndex": 13,
   "answer": true,
   "nameEn": "Omoi",
-  "thumb": 146
+  "thumb": 133
  },
  {
   "id": 925,
@@ -3510,7 +3241,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Ōnoki",
-  "thumb": 147
+  "thumb": 134
  },
  {
   "id": 928,
@@ -3553,7 +3284,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Orochimaru",
-  "thumb": 148
+  "thumb": 135
  },
  {
   "id": 949,
@@ -3573,7 +3304,7 @@
   "arcIndex": 1,
   "answer": true,
   "nameEn": "Pakkun",
-  "thumb": 149
+  "thumb": 136
  },
  {
   "id": 950,
@@ -3598,47 +3329,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "Pakura",
-  "thumb": 150
- },
- {
-  "id": 724,
-  "name": "Райга Куросуки",
-  "gender": "Мужской",
-  "affiliations": [
-   "Кири"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Нукенин"
-  ],
-  "debutChapter": 668,
-  "arc": "Джинчуурики Десятихвостого",
-  "arcIndex": 19,
-  "answer": true,
-  "nameEn": "Raiga Kurosuki",
-  "thumb": 151
- },
- {
-  "id": 863,
-  "name": "Райдо Намиаши",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 93,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": true,
-  "nameEn": "Raidō Namiashi",
-  "thumb": 152
+  "thumb": 137
  },
  {
   "id": 967,
@@ -3665,25 +3356,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Rasa",
-  "thumb": 153
- },
- {
-  "id": 971,
-  "name": "Рето",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 648,
-  "arc": "Джинчуурики Десятихвостого",
-  "arcIndex": 19,
-  "answer": false,
-  "nameEn": "Reto",
-  "thumb": 154
+  "thumb": 138
  },
  {
   "id": 903,
@@ -3710,7 +3383,7 @@
   "arcIndex": 6,
   "answer": true,
   "nameEn": "Rin Nohara",
-  "thumb": 155
+  "thumb": 139
  },
  {
   "id": 739,
@@ -3730,7 +3403,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Rock Lee",
-  "thumb": 156
+  "thumb": 140
  },
  {
   "id": 983,
@@ -3757,25 +3430,7 @@
   "arcIndex": 10,
   "answer": true,
   "nameEn": "Rōshi",
-  "thumb": 157
- },
- {
-  "id": 1000,
-  "name": "Сабу",
-  "gender": "Мужской",
-  "affiliations": [],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 468,
-  "arc": "Совет Пяти Каге",
-  "arcIndex": 15,
-  "answer": false,
-  "nameEn": "Sabu",
-  "thumb": 158
+  "thumb": 141
  },
  {
   "id": 1008,
@@ -3802,7 +3457,7 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Sai",
-  "thumb": 159
+  "thumb": 142
  },
  {
   "id": 1009,
@@ -3826,7 +3481,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Saiken",
-  "thumb": 160
+  "thumb": 143
  },
  {
   "id": 563,
@@ -3844,7 +3499,7 @@
   "arcIndex": 14,
   "answer": false,
   "nameEn": "Saisu Kamano",
-  "thumb": 161
+  "thumb": 144
  },
  {
   "id": 1015,
@@ -3866,7 +3521,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Sakon and Ukon",
-  "thumb": 162
+  "thumb": 145
  },
  {
   "id": 377,
@@ -3886,7 +3541,7 @@
   "arcIndex": 14,
   "answer": true,
   "nameEn": "Sakumo Hatake",
-  "thumb": 163
+  "thumb": 146
  },
  {
   "id": 374,
@@ -3917,7 +3572,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Sakura Haruno",
-  "thumb": 164
+  "thumb": 147
  },
  {
   "id": 1019,
@@ -3935,7 +3590,7 @@
   "arcIndex": 13,
   "answer": true,
   "nameEn": "Samui",
-  "thumb": 165
+  "thumb": 148
  },
  {
   "id": 1307,
@@ -3976,7 +3631,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Sasuke Uchiha",
-  "thumb": 166
+  "thumb": 149
  },
  {
   "id": 1042,
@@ -4000,7 +3655,7 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Sasori",
-  "thumb": 167
+  "thumb": 150
  },
  {
   "id": 135,
@@ -4026,7 +3681,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "C",
-  "thumb": 168
+  "thumb": 151
  },
  {
   "id": 1134,
@@ -4055,7 +3710,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Son Gokū",
-  "thumb": 169
+  "thumb": 152
  },
  {
   "id": 434,
@@ -4077,7 +3732,7 @@
   "arcIndex": 2,
   "answer": false,
   "nameEn": "Hyūga Elder",
-  "thumb": 170
+  "thumb": 153
  },
  {
   "id": 430,
@@ -4102,7 +3757,7 @@
   "arcIndex": 10,
   "answer": true,
   "nameEn": "Suigetsu Hōzuki",
-  "thumb": 171
+  "thumb": 154
  },
  {
   "id": 1312,
@@ -4122,7 +3777,7 @@
   "arcIndex": 18,
   "answer": false,
   "nameEn": "Tajima Uchiha",
-  "thumb": 172
+  "thumb": 155
  },
  {
   "id": 1204,
@@ -4140,7 +3795,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Tazuna",
-  "thumb": 173
+  "thumb": 156
  },
  {
   "id": 1183,
@@ -4158,7 +3813,7 @@
   "arcIndex": 10,
   "answer": false,
   "nameEn": "Tamaki",
-  "thumb": 174
+  "thumb": 157
  },
  {
   "id": 1203,
@@ -4182,7 +3837,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Tayuya",
-  "thumb": 175
+  "thumb": 158
  },
  {
   "id": 1208,
@@ -4205,7 +3860,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Temari",
-  "thumb": 176
+  "thumb": 159
  },
  {
   "id": 1216,
@@ -4227,7 +3882,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Tenten",
-  "thumb": 177
+  "thumb": 160
  },
  {
   "id": 1229,
@@ -4255,7 +3910,7 @@
   "arcIndex": 18,
   "answer": true,
   "nameEn": "Tobi (Zetsu)",
-  "thumb": 178
+  "thumb": 161
  },
  {
   "id": 1066,
@@ -4286,7 +3941,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Tobirama Senju",
-  "thumb": 179
+  "thumb": 162
  },
  {
   "id": 445,
@@ -4308,27 +3963,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Tokuma Hyūga",
-  "thumb": 180
- },
- {
-  "id": 1232,
-  "name": "Тонбо Тобитаке",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 40,
-  "arc": "Экзамен на чуунина",
-  "arcIndex": 2,
-  "answer": false,
-  "nameEn": "Tonbo Tobitake",
-  "thumb": 181
+  "thumb": 163
  },
  {
   "id": 47,
@@ -4350,7 +3985,7 @@
   "arcIndex": 15,
   "answer": false,
   "nameEn": "Torifu Akimichi",
-  "thumb": 182
+  "thumb": 164
  },
  {
   "id": 1255,
@@ -4377,7 +4012,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Toroi",
-  "thumb": 183
+  "thumb": 165
  },
  {
   "id": 15,
@@ -4398,7 +4033,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Torune Aburame",
-  "thumb": 184
+  "thumb": 166
  },
  {
   "id": 621,
@@ -4423,7 +4058,7 @@
   "arcIndex": 20,
   "answer": false,
   "nameEn": "Third Kazekage",
-  "thumb": 185
+  "thumb": 167
  },
  {
   "id": 477,
@@ -4443,7 +4078,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Udon Ise",
-  "thumb": 186
+  "thumb": 168
  },
  {
   "id": 1332,
@@ -4462,7 +4097,7 @@
   "arcIndex": 18,
   "answer": false,
   "nameEn": "Urushi",
-  "thumb": 187
+  "thumb": 169
  },
  {
   "id": 1333,
@@ -4484,7 +4119,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Urushi (summon)",
-  "thumb": 188
+  "thumb": 170
  },
  {
   "id": 1335,
@@ -4510,27 +4145,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "Utakata",
-  "thumb": 189
- },
- {
-  "id": 1320,
-  "name": "Ухей",
-  "gender": "Мужской",
-  "affiliations": [
-   "Коноха"
-  ],
-  "jutsuTypes": [],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [
-   "Призыв"
-  ],
-  "debutChapter": 29,
-  "arc": "Страна Волн",
-  "arcIndex": 1,
-  "answer": false,
-  "nameEn": "Ūhei",
-  "thumb": 190
+  "thumb": 171
  },
  {
   "id": 1364,
@@ -4554,7 +4169,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Fū Yamanaka",
-  "thumb": 191
+  "thumb": 172
  },
  {
   "id": 1289,
@@ -4579,7 +4194,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Fugaku Uchiha",
-  "thumb": 192
+  "thumb": 173
  },
  {
   "id": 1145,
@@ -4599,7 +4214,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Fuguki Suikazan",
-  "thumb": 193
+  "thumb": 174
  },
  {
   "id": 230,
@@ -4629,7 +4244,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Fukasaku",
-  "thumb": 194
+  "thumb": 175
  },
  {
   "id": 221,
@@ -4651,7 +4266,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "Fū",
-  "thumb": 195
+  "thumb": 176
  },
  {
   "id": 935,
@@ -4685,7 +4300,7 @@
   "arcIndex": 17,
   "answer": true,
   "nameEn": "Hagoromo Ōtsutsuki",
-  "thumb": 196
+  "thumb": 177
  },
  {
   "id": 356,
@@ -4712,7 +4327,7 @@
   "arcIndex": 1,
   "answer": true,
   "nameEn": "Haku",
-  "thumb": 197
+  "thumb": 178
  },
  {
   "id": 936,
@@ -4747,7 +4362,7 @@
   "arcIndex": 19,
   "answer": true,
   "nameEn": "Hamura Ōtsutsuki",
-  "thumb": 198
+  "thumb": 179
  },
  {
   "id": 363,
@@ -4775,7 +4390,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "Han",
-  "thumb": 199
+  "thumb": 180
  },
  {
   "id": 465,
@@ -4797,7 +4412,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Hana Inuzuka",
-  "thumb": 200
+  "thumb": 181
  },
  {
   "id": 435,
@@ -4819,7 +4434,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Hanabi Hyūga",
-  "thumb": 201
+  "thumb": 182
  },
  {
   "id": 368,
@@ -4842,7 +4457,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Hanzō",
-  "thumb": 202
+  "thumb": 183
  },
  {
   "id": 1063,
@@ -4876,7 +4491,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Hashirama Senju",
-  "thumb": 203
+  "thumb": 184
  },
  {
   "id": 293,
@@ -4896,7 +4511,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Hayate Gekkō",
-  "thumb": 204
+  "thumb": 185
  },
  {
   "id": 436,
@@ -4918,7 +4533,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Hiashi Hyūga",
-  "thumb": 205
+  "thumb": 186
  },
  {
   "id": 388,
@@ -4942,7 +4557,7 @@
   "arcIndex": 9,
   "answer": true,
   "nameEn": "Hidan",
-  "thumb": 206
+  "thumb": 187
  },
  {
   "id": 439,
@@ -4964,7 +4579,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Hizashi Hyūga",
-  "thumb": 207
+  "thumb": 188
  },
  {
   "id": 437,
@@ -4991,7 +4606,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Hinata Hyūga",
-  "thumb": 208
+  "thumb": 189
  },
  {
   "id": 1036,
@@ -5023,7 +4638,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Hiruzen Sarutobi",
-  "thumb": 209
+  "thumb": 190
  },
  {
   "id": 811,
@@ -5041,7 +4656,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Homura Mitokado",
-  "thumb": 210
+  "thumb": 191
  },
  {
   "id": 468,
@@ -5061,7 +4676,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Tsume Inuzuka",
-  "thumb": 211
+  "thumb": 192
  },
  {
   "id": 1280,
@@ -5094,7 +4709,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Tsunade",
-  "thumb": 212
+  "thumb": 193
  },
  {
   "id": 1425,
@@ -5132,7 +4747,7 @@
   "arcIndex": 5,
   "answer": true,
   "nameEn": "Black Zetsu",
-  "thumb": 213
+  "thumb": 194
  },
  {
   "id": 148,
@@ -5158,7 +4773,7 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Chiyo",
-  "thumb": 214
+  "thumb": 195
  },
  {
   "id": 146,
@@ -5181,7 +4796,7 @@
   "arcIndex": 9,
   "answer": false,
   "nameEn": "Chiriku",
-  "thumb": 215
+  "thumb": 196
  },
  {
   "id": 40,
@@ -5205,7 +4820,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Chōji Akimichi",
-  "thumb": 216
+  "thumb": 197
  },
  {
   "id": 152,
@@ -5226,7 +4841,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Chōjūrō",
-  "thumb": 217
+  "thumb": 198
  },
  {
   "id": 42,
@@ -5248,7 +4863,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Chōza Akimichi",
-  "thumb": 218
+  "thumb": 199
  },
  {
   "id": 153,
@@ -5270,7 +4885,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Chōmei",
-  "thumb": 219
+  "thumb": 200
  },
  {
   "id": 157,
@@ -5292,27 +4907,7 @@
   "arcIndex": 16,
   "answer": false,
   "nameEn": "Chūkichi",
-  "thumb": 220
- },
- {
-  "id": 1077,
-  "name": "Шамон",
-  "gender": "Мужской",
-  "affiliations": [
-   "Суна"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [],
-  "natureTypes": [],
-  "attributes": [],
-  "debutChapter": 648,
-  "arc": "Джинчуурики Десятихвостого",
-  "arcIndex": 19,
-  "answer": false,
-  "nameEn": "Shamon",
-  "thumb": 221
+  "thumb": 201
  },
  {
   "id": 1079,
@@ -5332,7 +4927,7 @@
   "arcIndex": 1,
   "answer": false,
   "nameEn": "Shiba",
-  "thumb": 222
+  "thumb": 202
  },
  {
   "id": 11,
@@ -5352,7 +4947,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Shibi Aburame",
-  "thumb": 223
+  "thumb": 203
  },
  {
   "id": 1122,
@@ -5376,7 +4971,7 @@
   "arcIndex": 4,
   "answer": true,
   "nameEn": "Shizune",
-  "thumb": 224
+  "thumb": 204
  },
  {
   "id": 877,
@@ -5398,7 +4993,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Shikaku Nara",
-  "thumb": 225
+  "thumb": 205
  },
  {
   "id": 878,
@@ -5422,7 +5017,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Shikamaru Nara",
-  "thumb": 226
+  "thumb": 206
  },
  {
   "id": 1091,
@@ -5452,7 +5047,7 @@
   "arcIndex": 11,
   "answer": false,
   "nameEn": "Shima",
-  "thumb": 227
+  "thumb": 207
  },
  {
   "id": 1094,
@@ -5473,7 +5068,7 @@
   "arcIndex": 8,
   "answer": false,
   "nameEn": "Shin",
-  "thumb": 228
+  "thumb": 208
  },
  {
   "id": 1099,
@@ -5489,7 +5084,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Shinigami",
-  "thumb": 229
+  "thumb": 209
  },
  {
   "id": 13,
@@ -5513,7 +5108,7 @@
   "arcIndex": 2,
   "answer": true,
   "nameEn": "Shino Aburame",
-  "thumb": 230
+  "thumb": 210
  },
  {
   "id": 787,
@@ -5531,7 +5126,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Shinobu Mibu",
-  "thumb": 231
+  "thumb": 211
  },
  {
   "id": 1310,
@@ -5561,7 +5156,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Shisui Uchiha",
-  "thumb": 232
+  "thumb": 212
  },
  {
   "id": 1086,
@@ -5579,7 +5174,7 @@
   "arcIndex": 13,
   "answer": false,
   "nameEn": "Shiho",
-  "thumb": 233
+  "thumb": 213
  },
  {
   "id": 1127,
@@ -5607,7 +5202,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Shukaku",
-  "thumb": 234
+  "thumb": 214
  },
  {
   "id": 213,
@@ -5625,7 +5220,7 @@
   "arcIndex": 7,
   "answer": false,
   "nameEn": "Ebizō",
-  "thumb": 235
+  "thumb": 215
  },
  {
   "id": 212,
@@ -5645,7 +5240,7 @@
   "arcIndex": 0,
   "answer": true,
   "nameEn": "Ebisu",
-  "thumb": 236
+  "thumb": 216
  },
  {
   "id": 6,
@@ -5670,7 +5265,7 @@
   "arcIndex": 13,
   "answer": true,
   "nameEn": "A (Fourth Raikage)",
-  "thumb": 237
+  "thumb": 217
  },
  {
   "id": 4,
@@ -5688,7 +5283,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "A (Second Raikage)",
-  "thumb": 238
+  "thumb": 218
  },
  {
   "id": 3,
@@ -5706,7 +5301,7 @@
   "arcIndex": 19,
   "answer": false,
   "nameEn": "A (First Raikage)",
-  "thumb": 239
+  "thumb": 219
  },
  {
   "id": 5,
@@ -5730,7 +5325,7 @@
   "arcIndex": 16,
   "answer": true,
   "nameEn": "A (Third Raikage)",
-  "thumb": 240
+  "thumb": 220
  },
  {
   "id": 873,
@@ -5752,7 +5347,7 @@
   "arcIndex": 17,
   "answer": false,
   "nameEn": "Ensui Nara",
-  "thumb": 241
+  "thumb": 221
  },
  {
   "id": 1337,
@@ -5772,7 +5367,7 @@
   "arcIndex": 3,
   "answer": true,
   "nameEn": "Yūgao Uzuki",
-  "thumb": 242
+  "thumb": 222
  },
  {
   "id": 898,
@@ -5796,7 +5391,7 @@
   "arcIndex": 9,
   "answer": true,
   "nameEn": "Yugito Nii",
-  "thumb": 243
+  "thumb": 223
  },
  {
   "id": 1409,
@@ -5815,7 +5410,7 @@
   "arcIndex": 7,
   "answer": false,
   "nameEn": "Yūra",
-  "thumb": 244
+  "thumb": 224
  },
  {
   "id": 591,
@@ -5840,7 +5435,7 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Yagura Karatachi",
-  "thumb": 245
+  "thumb": 225
  },
  {
   "id": 1373,
@@ -5868,7 +5463,7 @@
   "arcIndex": 8,
   "answer": true,
   "nameEn": "Yamato",
-  "thumb": 246
+  "thumb": 226
  },
  {
   "id": 1356,
@@ -5893,7 +5488,7 @@
   "arcIndex": 11,
   "answer": true,
   "nameEn": "Yahiko",
-  "thumb": 247
+  "thumb": 227
  },
  {
   "id": 1376,
@@ -5915,7 +5510,7 @@
   "arcIndex": 3,
   "answer": false,
   "nameEn": "Yashamaru",
-  "thumb": 248
+  "thumb": 228
  },
  {
   "id": 1317,
@@ -5937,6 +5532,6 @@
   "arcIndex": 5,
   "answer": false,
   "nameEn": "Yashiro Uchiha",
-  "thumb": 249
+  "thumb": 229
  }
 ]

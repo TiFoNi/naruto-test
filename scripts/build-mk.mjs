@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import {
+import { dropDeleted } from './dropped.mjs'
   ROOT,
   cachedDownload,
   cachedJson,
@@ -283,6 +284,7 @@ async function main() {
     })
   })
 
+  dropDeleted(result, 'mk')
   result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
   await writeAtlas(result, THUMBS, path.join(OUT_IMG, 'thumbs.webp'), OUT_ATLAS, 12, 96)
   await pruneImages(path.join(OUT_IMG, 'full'), result)

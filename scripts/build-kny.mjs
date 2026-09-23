@@ -17,6 +17,7 @@ import {
   writeFullAndThumb,
 } from './lib.mjs'
 import { transliterate } from './ru.mjs'
+import { dropDeleted } from './dropped.mjs'
 
 const API = 'https://kimetsu-no-yaiba.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'kny')
@@ -247,6 +248,7 @@ async function main() {
   const kept = keepNotable(result, KEEP).concat(result.filter((c, i) => i >= KEEP && ALWAYS.has(c.nameEn)))
   result.length = 0
   result.push(...kept)
+  dropDeleted(result, 'kny')
   result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
   await writeAtlas(result, THUMBS, path.join(OUT_IMG, 'thumbs.webp'), OUT_ATLAS, 12, 96)
   await pruneImages(path.join(OUT_IMG, 'full'), result)

@@ -66,6 +66,14 @@ export function CheckIcon({ className }: IconProps) {
   )
 }
 
+export function CloseIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2.2}>
+      <path d="m6 6 12 12M18 6 6 18" />
+    </svg>
+  )
+}
+
 export function ChevronIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2.2}>

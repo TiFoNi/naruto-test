@@ -55,16 +55,22 @@ export function challengeView(doc: ChallengeDoc, viewerId: ObjectId) {
     code: doc.code,
     game: doc.game as GameId,
     mode: doc.mode as ModeId,
-    author: doc.author,
+    author: defaultNickname(doc.author),
     mine,
     answerId: mine || solve ? doc.answerId : undefined,
-    solves: doc.solves.map((s) => ({ nickname: s.nickname, guesses: s.guesses, solved: s.solved })),
+    solves: doc.solves.map((s) => ({ nickname: defaultNickname(s.nickname), guesses: s.guesses, guessIds: s.guessIds ?? [], solved: s.solved })),
   }
 }
 
-export async function recordSolve(code: string, user: { id: ObjectId; nickname: string }, guesses: number, solved: boolean) {
+export async function recordSolve(
+  code: string,
+  user: { id: ObjectId; nickname: string },
+  guesses: number,
+  guessIds: number[],
+  solved: boolean,
+) {
   const collection = await challenges()
   await collection.updateOne({ code, 'solves.userId': { $ne: user.id } }, {
-    $push: { solves: { userId: user.id, nickname: user.nickname, guesses, solved, at: new Date() } },
+    $push: { solves: { userId: user.id, nickname: user.nickname, guesses, guessIds, solved, at: new Date() } },
   })
 }

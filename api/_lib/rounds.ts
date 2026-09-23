@@ -3,7 +3,7 @@ import { dailyKey, judgeAll, statsKey, type GameId, type ModeId } from '../../sr
 import { dailyAnswer, dailyNumber, nextReset, pastAnswer, shiftDay, today } from './daily.js'
 import { rounds, type RoundDoc, type UserDoc } from './db.js'
 import { gameData, isGame, isMode } from './games.js'
-import { applyDailyResult, applyResult } from './profile.js'
+import { applyDailyResult, applyResult, defaultNickname } from './profile.js'
 import { abilityByKey } from './abilities.js'
 import { optionsOf, roundExtra } from './extra.js'
 import { findChallenge, recordSolve } from './challenges.js'
@@ -140,13 +140,23 @@ export async function ownedRound(userId: ObjectId, roundId: unknown) {
   return round && isGame(round.game) && isMode(round.mode) ? round : null
 }
 
-export async function skipRound(round: RoundDoc) {
+export async function skipRound(round: RoundDoc, users?: Collection<UserDoc>) {
   const collection = await rounds()
   const updated = await collection.findOneAndUpdate(
     { _id: round._id, status: 'active' },
     { $set: { status: 'skipped', finishedAt: new Date() } },
     { returnDocument: 'after' },
   )
+  if (updated && round.challenge && users) {
+    const doc = await users.findOne({ _id: round.userId }, { projection: { username: 1, nickname: 1 } })
+    await recordSolve(
+      round.challenge,
+      { id: round.userId, nickname: doc?.nickname ?? defaultNickname(doc?.username ?? '?') },
+      round.guesses.length,
+      round.guesses,
+      false,
+    )
+  }
   return updated ?? (await collection.findOne({ _id: round._id }))!
 }
 
@@ -161,7 +171,14 @@ export async function finishRound(users: Collection<UserDoc>, round: RoundDoc, w
   const guesses = Math.max(round.guesses.length, 1)
   if (round.challenge) {
     const doc = await users.findOne({ _id: round.userId }, { projection: { username: 1, nickname: 1 } })
-    await recordSolve(round.challenge, { id: round.userId, nickname: doc?.nickname ?? doc?.username ?? '?' }, guesses, won)
+    await recordSolve(
+      round.challenge,
+      { id: round.userId, nickname: doc?.nickname ?? defaultNickname(doc?.username ?? '?') },
+      guesses,
+      round.guesses,
+      won,
+    )
+    if (won) await users.updateOne({ _id: round.userId }, { $inc: { 'challengeStats.solved': 1 } })
     return { round: updated, stats: null }
   }
   if (round.daily) {

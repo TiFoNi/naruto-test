@@ -68,31 +68,6 @@
   "thumb": 2
  },
  {
-  "id": 5404,
-  "name": "Аога",
-  "nameEn": "Aoga",
-  "gender": "Мужской",
-  "races": [
-   "Шинигами"
-  ],
-  "affiliations": [
-   "Готей 13",
-   "Общество душ"
-  ],
-  "ranks": [
-   "Ученик академии"
-  ],
-  "powers": [
-   "Шикай",
-   "Банкай"
-  ],
-  "division": 4,
-  "arc": "Поворот маятника",
-  "arcIndex": 3.5,
-  "answer": true,
-  "thumb": 3
- },
- {
   "id": 76301,
   "name": "Аскин Накк ле Вар",
   "nameEn": "Askin Nakk Le Vaar",
@@ -109,7 +84,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 4
+  "thumb": 3
  },
  {
   "id": 2948,
@@ -128,7 +103,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 5
+  "thumb": 4
  },
  {
   "id": 61457,
@@ -147,7 +122,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 6
+  "thumb": 5
  },
  {
   "id": 61172,
@@ -166,7 +141,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 7
+  "thumb": 6
  },
  {
   "id": 2315,
@@ -189,7 +164,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 8
+  "thumb": 7
  },
  {
   "id": 2133,
@@ -214,7 +189,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 9
+  "thumb": 8
  },
  {
   "id": 2418,
@@ -235,7 +210,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 10
+  "thumb": 9
  },
  {
   "id": 2383,
@@ -257,7 +232,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 11
+  "thumb": 10
  },
  {
   "id": 2392,
@@ -276,7 +251,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 12
+  "thumb": 11
  },
  {
   "id": 2356,
@@ -299,7 +274,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 13
+  "thumb": 12
  },
  {
   "id": 3637,
@@ -320,24 +295,7 @@
   "arc": "Поддельная Каракура",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 14
- },
- {
-  "id": 11506,
-  "name": "Гексаподус",
-  "nameEn": "Hexapodus",
-  "gender": "Мужской",
-  "races": [
-   "Пустой"
-  ],
-  "affiliations": [],
-  "ranks": [],
-  "powers": [],
-  "division": null,
-  "arc": "Агент шинигами",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 15
+  "thumb": 13
  },
  {
   "id": 8582,
@@ -362,7 +320,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 16
+  "thumb": 14
  },
  {
   "id": 2067,
@@ -389,7 +347,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 17
+  "thumb": 15
  },
  {
   "id": 2505,
@@ -414,7 +372,7 @@
   "arc": "Поворот маятника",
   "arcIndex": 3.5,
   "answer": true,
-  "thumb": 18
+  "thumb": 16
  },
  {
   "id": 40543,
@@ -436,7 +394,7 @@
   "arc": "Потерянный агент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 19
+  "thumb": 17
  },
  {
   "id": 2138,
@@ -459,7 +417,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 20
+  "thumb": 18
  },
  {
   "id": 89335,
@@ -478,26 +436,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": false,
-  "thumb": 21
- },
- {
-  "id": 6396,
-  "name": "Данзомару",
-  "nameEn": "Danzōmaru",
-  "gender": "Мужской",
-  "races": [
-   "Душа"
-  ],
-  "affiliations": [
-   "Общество душ"
-  ],
-  "ranks": [],
-  "powers": [],
-  "division": null,
-  "arc": "Общество душ: спасение",
-  "arcIndex": 2,
-  "answer": true,
-  "thumb": 22
+  "thumb": 19
  },
  {
   "id": 42381,
@@ -518,7 +457,7 @@
   "arc": "Потерянный агент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 23
+  "thumb": 20
  },
  {
   "id": 2834,
@@ -537,7 +476,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 24
+  "thumb": 21
  },
  {
   "id": 2803,
@@ -556,32 +495,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 25
- },
- {
-  "id": 2765,
-  "name": "Джиробо Икканзака",
-  "nameEn": "Jirōbō Ikkanzaka",
-  "gender": "Мужской",
-  "races": [
-   "Шинигами"
-  ],
-  "affiliations": [
-   "Готей 13",
-   "Общество душ"
-  ],
-  "ranks": [
-   "Офицер"
-  ],
-  "powers": [
-   "Шикай",
-   "Банкай"
-  ],
-  "division": 7,
-  "arc": "Общество душ: проникновение",
-  "arcIndex": 1,
-  "answer": true,
-  "thumb": 26
+  "thumb": 22
  },
  {
   "id": 2171,
@@ -606,7 +520,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 27
+  "thumb": 23
  },
  {
   "id": 2413,
@@ -627,7 +541,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": false,
-  "thumb": 28
+  "thumb": 24
  },
  {
   "id": 2194,
@@ -644,7 +558,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": false,
-  "thumb": 29
+  "thumb": 25
  },
  {
   "id": 2950,
@@ -667,7 +581,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 30
+  "thumb": 26
  },
  {
   "id": 2088,
@@ -691,7 +605,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 31
+  "thumb": 27
  },
  {
   "id": 2176,
@@ -716,7 +630,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 32
+  "thumb": 28
  },
  {
   "id": 96990,
@@ -736,7 +650,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 33
+  "thumb": 29
  },
  {
   "id": 76950,
@@ -755,7 +669,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 34
+  "thumb": 30
  },
  {
   "id": 2198,
@@ -779,7 +693,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 35
+  "thumb": 31
  },
  {
   "id": 2774,
@@ -799,7 +713,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 36
+  "thumb": 32
  },
  {
   "id": 11774,
@@ -818,32 +732,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 37
- },
- {
-  "id": 2896,
-  "name": "Зенносуке Курумадани",
-  "nameEn": "Zennosuke Kurumadani",
-  "gender": "Мужской",
-  "races": [
-   "Шинигами"
-  ],
-  "affiliations": [
-   "Готей 13",
-   "Общество душ"
-  ],
-  "ranks": [
-   "Офицер"
-  ],
-  "powers": [
-   "Шикай",
-   "Банкай"
-  ],
-  "division": 13,
-  "arc": "Общество душ: проникновение",
-  "arcIndex": 1,
-  "answer": true,
-  "thumb": 38
+  "thumb": 33
  },
  {
   "id": 2285,
@@ -866,7 +755,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": false,
-  "thumb": 39
+  "thumb": 34
  },
  {
   "id": 2172,
@@ -891,7 +780,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 40
+  "thumb": 35
  },
  {
   "id": 2181,
@@ -917,7 +806,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 41
+  "thumb": 36
  },
  {
   "id": 40135,
@@ -936,7 +825,7 @@
   "arc": "Потерянный агент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 42
+  "thumb": 37
  },
  {
   "id": 2187,
@@ -962,7 +851,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 43
+  "thumb": 38
  },
  {
   "id": 66267,
@@ -984,7 +873,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 44
+  "thumb": 39
  },
  {
   "id": 48924,
@@ -1014,7 +903,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 45
+  "thumb": 40
  },
  {
   "id": 2108,
@@ -1040,7 +929,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 46
+  "thumb": 41
  },
  {
   "id": 74576,
@@ -1057,7 +946,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": false,
-  "thumb": 47
+  "thumb": 42
  },
  {
   "id": 2174,
@@ -1082,7 +971,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 48
+  "thumb": 43
  },
  {
   "id": 2162,
@@ -1110,26 +999,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 49
- },
- {
-  "id": 72724,
-  "name": "Канан Ёшизава",
-  "nameEn": "Kanan Yoshizawa",
-  "gender": "Мужской",
-  "races": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "ranks": [
-   "Школьник"
-  ],
-  "powers": [],
-  "division": null,
-  "arc": "Арранкары",
-  "arcIndex": 3,
-  "answer": true,
-  "thumb": 50
+  "thumb": 44
  },
  {
   "id": 76949,
@@ -1148,7 +1018,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": false,
-  "thumb": 51
+  "thumb": 45
  },
  {
   "id": 2236,
@@ -1169,7 +1039,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 52
+  "thumb": 46
  },
  {
   "id": 10723,
@@ -1189,7 +1059,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 53
+  "thumb": 47
  },
  {
   "id": 2435,
@@ -1210,7 +1080,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 54
+  "thumb": 48
  },
  {
   "id": 2164,
@@ -1235,7 +1105,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 55
+  "thumb": 49
  },
  {
   "id": 2395,
@@ -1262,7 +1132,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 56
+  "thumb": 50
  },
  {
   "id": 2380,
@@ -1288,7 +1158,7 @@
   "arc": "Общество душ: спасение",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 57
+  "thumb": 51
  },
  {
   "id": 2671,
@@ -1314,7 +1184,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": false,
-  "thumb": 58
+  "thumb": 52
  },
  {
   "id": 2086,
@@ -1338,7 +1208,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": false,
-  "thumb": 59
+  "thumb": 53
  },
  {
   "id": 2069,
@@ -1365,7 +1235,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 60
+  "thumb": 54
  },
  {
   "id": 2146,
@@ -1388,7 +1258,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 61
+  "thumb": 55
  },
  {
   "id": 2160,
@@ -1407,7 +1277,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 62
+  "thumb": 56
  },
  {
   "id": 16631,
@@ -1426,7 +1296,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": false,
-  "thumb": 63
+  "thumb": 57
  },
  {
   "id": 40536,
@@ -1449,7 +1319,7 @@
   "arc": "Потерянный агент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 64
+  "thumb": 58
  },
  {
   "id": 59304,
@@ -1468,7 +1338,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 65
+  "thumb": 59
  },
  {
   "id": 2314,
@@ -1487,7 +1357,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 66
+  "thumb": 60
  },
  {
   "id": 2800,
@@ -1510,7 +1380,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 67
+  "thumb": 61
  },
  {
   "id": 2459,
@@ -1537,7 +1407,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 68
+  "thumb": 62
  },
  {
   "id": 2420,
@@ -1560,7 +1430,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": false,
-  "thumb": 69
+  "thumb": 63
  },
  {
   "id": 96991,
@@ -1579,7 +1449,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 70
+  "thumb": 64
  },
  {
   "id": 76947,
@@ -1598,7 +1468,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": false,
-  "thumb": 71
+  "thumb": 65
  },
  {
   "id": 2460,
@@ -1626,7 +1496,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 72
+  "thumb": 66
  },
  {
   "id": 2415,
@@ -1647,7 +1517,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 73
+  "thumb": 67
  },
  {
   "id": 2311,
@@ -1671,30 +1541,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 74
- },
- {
-  "id": 2928,
-  "name": "Макизо Арамаки",
-  "nameEn": "Makizō Aramaki",
-  "gender": "Мужской",
-  "races": [
-   "Шинигами"
-  ],
-  "affiliations": [
-   "Готей 13",
-   "Общество душ"
-  ],
-  "ranks": [],
-  "powers": [
-   "Шикай",
-   "Банкай"
-  ],
-  "division": 11,
-  "arc": "Общество душ: спасение",
-  "arcIndex": 2,
-  "answer": true,
-  "thumb": 75
+  "thumb": 68
  },
  {
   "id": 2189,
@@ -1719,7 +1566,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 76
+  "thumb": 69
  },
  {
   "id": 2298,
@@ -1740,7 +1587,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 77
+  "thumb": 70
  },
  {
   "id": 76298,
@@ -1759,7 +1606,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 78
+  "thumb": 71
  },
  {
   "id": 2461,
@@ -1786,7 +1633,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 79
+  "thumb": 72
  },
  {
   "id": 2166,
@@ -1812,7 +1659,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 80
+  "thumb": 73
  },
  {
   "id": 76948,
@@ -1831,7 +1678,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": false,
-  "thumb": 81
+  "thumb": 74
  },
  {
   "id": 2416,
@@ -1852,7 +1699,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 82
+  "thumb": 75
  },
  {
   "id": 2436,
@@ -1873,45 +1720,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 83
- },
- {
-  "id": 3209,
-  "name": "Мизухо Асано",
-  "nameEn": "Mizuho Asano",
-  "gender": "Женский",
-  "races": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Каракура"
-  ],
-  "ranks": [
-   "Школьник"
-  ],
-  "powers": [],
-  "division": null,
-  "arc": "Арранкары",
-  "arcIndex": 3,
-  "answer": true,
-  "thumb": 84
- },
- {
-  "id": 3640,
-  "name": "Мичиру Огава",
-  "nameEn": "Michiru Ogawa",
-  "gender": "Женский",
-  "races": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "ranks": [],
-  "powers": [],
-  "division": null,
-  "arc": "Агент шинигами",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 85
+  "thumb": 76
  },
  {
   "id": 2175,
@@ -1936,30 +1745,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 86
- },
- {
-  "id": 43827,
-  "name": "Моэ Шишигавара",
-  "nameEn": "Moe Shishigawara",
-  "gender": "Мужской",
-  "races": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Экскюшн"
-  ],
-  "ranks": [
-   "Школьник"
-  ],
-  "powers": [
-   "Фулбринг"
-  ],
-  "division": null,
-  "arc": "Потерянный агент",
-  "arcIndex": 6,
-  "answer": true,
-  "thumb": 87
+  "thumb": 77
  },
  {
   "id": 61182,
@@ -1978,7 +1764,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": false,
-  "thumb": 88
+  "thumb": 78
  },
  {
   "id": 2190,
@@ -2002,7 +1788,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 89
+  "thumb": 79
  },
  {
   "id": 2092,
@@ -2026,7 +1812,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 90
+  "thumb": 80
  },
  {
   "id": 2317,
@@ -2052,30 +1838,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 91
- },
- {
-  "id": 11866,
-  "name": "Нико Куна",
-  "nameEn": "Niko Kuna",
-  "gender": "Женский",
-  "races": [
-   "Шинигами"
-  ],
-  "affiliations": [
-   "Готей 13",
-   "Общество душ"
-  ],
-  "ranks": [],
-  "powers": [
-   "Шикай",
-   "Банкай"
-  ],
-  "division": 12,
-  "arc": "Агент шинигами",
-  "arcIndex": 0,
-  "answer": true,
-  "thumb": 92
+  "thumb": 81
  },
  {
   "id": 2150,
@@ -2098,7 +1861,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 93
+  "thumb": 82
  },
  {
   "id": 2144,
@@ -2117,7 +1880,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 94
+  "thumb": 83
  },
  {
   "id": 67109,
@@ -2140,7 +1903,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 95
+  "thumb": 84
  },
  {
   "id": 89690,
@@ -2159,7 +1922,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": false,
-  "thumb": 96
+  "thumb": 85
  },
  {
   "id": 2949,
@@ -2182,7 +1945,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 97
+  "thumb": 86
  },
  {
   "id": 2112,
@@ -2207,45 +1970,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 98
- },
- {
-  "id": 2601,
-  "name": "Рё Куниэда",
-  "nameEn": "Ryō Kunieda",
-  "gender": "Женский",
-  "races": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "ranks": [
-   "Школьник"
-  ],
-  "powers": [],
-  "division": null,
-  "arc": "Агент шинигами",
-  "arcIndex": 0,
-  "answer": true,
-  "thumb": 99
- },
- {
-  "id": 3659,
-  "name": "Рейичи Ошима",
-  "nameEn": "Reiichi Ōshima",
-  "gender": "Мужской",
-  "races": [
-   "Человек"
-  ],
-  "affiliations": [],
-  "ranks": [
-   "Школьник"
-  ],
-  "powers": [],
-  "division": null,
-  "arc": "Агент шинигами",
-  "arcIndex": 0,
-  "answer": true,
-  "thumb": 100
+  "thumb": 87
  },
  {
   "id": 2131,
@@ -2272,7 +1997,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 101
+  "thumb": 88
  },
  {
   "id": 2163,
@@ -2297,7 +2022,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 102
+  "thumb": 89
  },
  {
   "id": 2925,
@@ -2320,30 +2045,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 103
- },
- {
-  "id": 2954,
-  "name": "Рин Цубокура",
-  "nameEn": "Rin Tsubokura",
-  "gender": "Мужской",
-  "races": [
-   "Шинигами"
-  ],
-  "affiliations": [
-   "Готей 13",
-   "Общество душ"
-  ],
-  "ranks": [],
-  "powers": [
-   "Шикай",
-   "Банкай"
-  ],
-  "division": 12,
-  "arc": "Арранкары",
-  "arcIndex": 3,
-  "answer": true,
-  "thumb": 104
+  "thumb": 90
  },
  {
   "id": 46468,
@@ -2364,7 +2066,7 @@
   "arc": "Потерянный агент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 105
+  "thumb": 91
  },
  {
   "id": 61737,
@@ -2383,7 +2085,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": false,
-  "thumb": 106
+  "thumb": 92
  },
  {
   "id": 2462,
@@ -2410,7 +2112,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 107
+  "thumb": 93
  },
  {
   "id": 64728,
@@ -2429,28 +2131,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": false,
-  "thumb": 108
- },
- {
-  "id": 126388,
-  "name": "Рока Парамия",
-  "nameEn": "Roka Paramia",
-  "gender": "Женский",
-  "races": [
-   "Арранкар"
-  ],
-  "affiliations": [
-   "Армия Айзена"
-  ],
-  "ranks": [],
-  "powers": [
-   "Ресуррексион"
-  ],
-  "division": null,
-  "arc": "Арранкары",
-  "arcIndex": 3,
-  "answer": true,
-  "thumb": 109
+  "thumb": 94
  },
  {
   "id": 2827,
@@ -2471,7 +2152,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 110
+  "thumb": 95
  },
  {
   "id": 2177,
@@ -2498,24 +2179,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 111
- },
- {
-  "id": 11507,
-  "name": "Рыбокост D",
-  "nameEn": "Fishbone D",
-  "gender": "Мужской",
-  "races": [
-   "Пустой"
-  ],
-  "affiliations": [],
-  "ranks": [],
-  "powers": [],
-  "division": null,
-  "arc": "Агент шинигами",
-  "arcIndex": 0,
-  "answer": false,
-  "thumb": 112
+  "thumb": 96
  },
  {
   "id": 2159,
@@ -2534,7 +2198,7 @@
   "arc": "Общество душ: спасение",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 113
+  "thumb": 97
  },
  {
   "id": 2165,
@@ -2559,7 +2223,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 114
+  "thumb": 98
  },
  {
   "id": 66256,
@@ -2582,7 +2246,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 115
+  "thumb": 99
  },
  {
   "id": 2602,
@@ -2608,7 +2272,7 @@
   "arc": "Общество душ: спасение",
   "arcIndex": 2,
   "answer": false,
-  "thumb": 116
+  "thumb": 100
  },
  {
   "id": 2161,
@@ -2633,7 +2297,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 117
+  "thumb": 101
  },
  {
   "id": 2080,
@@ -2651,7 +2315,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": false,
-  "thumb": 118
+  "thumb": 102
  },
  {
   "id": 2143,
@@ -2677,7 +2341,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 119
+  "thumb": 103
  },
  {
   "id": 2173,
@@ -2702,7 +2366,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 120
+  "thumb": 104
  },
  {
   "id": 2433,
@@ -2723,7 +2387,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 121
+  "thumb": 105
  },
  {
   "id": 66703,
@@ -2746,7 +2410,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": false,
-  "thumb": 122
+  "thumb": 106
  },
  {
   "id": 2186,
@@ -2772,7 +2436,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 123
+  "thumb": 107
  },
  {
   "id": 2139,
@@ -2795,32 +2459,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 124
- },
- {
-  "id": 3221,
-  "name": "Тошимори Умесада",
-  "nameEn": "Toshimori Umesada",
-  "gender": "Мужской",
-  "races": [
-   "Шинигами"
-  ],
-  "affiliations": [
-   "Готей 13",
-   "Общество душ"
-  ],
-  "ranks": [
-   "Офицер"
-  ],
-  "powers": [
-   "Шикай",
-   "Банкай"
-  ],
-  "division": 9,
-  "arc": "Общество душ: спасение",
-  "arcIndex": 2,
-  "answer": true,
-  "thumb": 125
+  "thumb": 108
  },
  {
   "id": 2132,
@@ -2846,7 +2485,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 126
+  "thumb": 109
  },
  {
   "id": 2085,
@@ -2869,7 +2508,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 127
+  "thumb": 110
  },
  {
   "id": 2507,
@@ -2888,7 +2527,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 128
+  "thumb": 111
  },
  {
   "id": 2197,
@@ -2910,7 +2549,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 129
+  "thumb": 112
  },
  {
   "id": 3243,
@@ -2933,7 +2572,7 @@
   "arc": "Поддельная Каракура",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 130
+  "thumb": 113
  },
  {
   "id": 2942,
@@ -2956,7 +2595,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 131
+  "thumb": 114
  },
  {
   "id": 2180,
@@ -2981,7 +2620,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 132
+  "thumb": 115
  },
  {
   "id": 10708,
@@ -3001,7 +2640,7 @@
   "arc": "Поворот маятника",
   "arcIndex": 3.5,
   "answer": true,
-  "thumb": 133
+  "thumb": 116
  },
  {
   "id": 2955,
@@ -3024,7 +2663,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": false,
-  "thumb": 134
+  "thumb": 117
  },
  {
   "id": 2455,
@@ -3052,7 +2691,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 135
+  "thumb": 118
  },
  {
   "id": 2824,
@@ -3071,7 +2710,7 @@
   "arc": "Общество душ: спасение",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 136
+  "thumb": 119
  },
  {
   "id": 76299,
@@ -3090,7 +2729,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": false,
-  "thumb": 137
+  "thumb": 120
  },
  {
   "id": 2940,
@@ -3112,7 +2751,7 @@
   "arc": "Поддельная Каракура",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 138
+  "thumb": 121
  },
  {
   "id": 2683,
@@ -3133,7 +2772,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 139
+  "thumb": 122
  },
  {
   "id": 119911,
@@ -3158,7 +2797,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": false,
-  "thumb": 140
+  "thumb": 123
  },
  {
   "id": 3001,
@@ -3179,7 +2818,7 @@
   "arc": "Поддельная Каракура",
   "arcIndex": 5,
   "answer": false,
-  "thumb": 141
+  "thumb": 124
  },
  {
   "id": 2410,
@@ -3200,7 +2839,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": false,
-  "thumb": 142
+  "thumb": 125
  },
  {
   "id": 2310,
@@ -3227,32 +2866,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 143
- },
- {
-  "id": 4420,
-  "name": "Шинобу Эйшима",
-  "nameEn": "Shinobu Eishima",
-  "gender": "Мужской",
-  "races": [
-   "Шинигами"
-  ],
-  "affiliations": [
-   "Готей 13",
-   "Общество душ"
-  ],
-  "ranks": [
-   "Офицер"
-  ],
-  "powers": [
-   "Шикай",
-   "Банкай"
-  ],
-  "division": 9,
-  "arc": "Поворот маятника",
-  "arcIndex": 3.5,
-  "answer": true,
-  "thumb": 144
+  "thumb": 126
  },
  {
   "id": 5211,
@@ -3269,7 +2883,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": false,
-  "thumb": 145
+  "thumb": 127
  },
  {
   "id": 43808,
@@ -3291,7 +2905,7 @@
   "arc": "Потерянный агент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 146
+  "thumb": 128
  },
  {
   "id": 2185,
@@ -3316,7 +2930,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 147
+  "thumb": 129
  },
  {
   "id": 2411,
@@ -3337,7 +2951,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": false,
-  "thumb": 148
+  "thumb": 130
  },
  {
   "id": 2941,
@@ -3360,7 +2974,7 @@
   "arc": "Уэко Мундо",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 149
+  "thumb": 131
  },
  {
   "id": 61174,
@@ -3379,7 +2993,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 150
+  "thumb": 132
  },
  {
   "id": 59567,
@@ -3400,7 +3014,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 151
+  "thumb": 133
  },
  {
   "id": 2434,
@@ -3421,7 +3035,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 152
+  "thumb": 134
  },
  {
   "id": 3095,
@@ -3438,7 +3052,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": false,
-  "thumb": 153
+  "thumb": 135
  },
  {
   "id": 42405,
@@ -3459,7 +3073,7 @@
   "arc": "Потерянный агент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 154
+  "thumb": 136
  },
  {
   "id": 2182,
@@ -3484,7 +3098,7 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 155
+  "thumb": 137
  },
  {
   "id": 2201,
@@ -3507,7 +3121,7 @@
   "arc": "Арранкары",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 156
+  "thumb": 138
  },
  {
   "id": 2216,
@@ -3531,7 +3145,7 @@
   "arc": "Агент шинигами",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 157
+  "thumb": 139
  },
  {
   "id": 59050,
@@ -3550,7 +3164,7 @@
   "arc": "Тысячелетняя кровавая война",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 158
+  "thumb": 140
  },
  {
   "id": 2184,
@@ -3575,6 +3189,6 @@
   "arc": "Общество душ: проникновение",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 159
+  "thumb": 141
  }
 ]

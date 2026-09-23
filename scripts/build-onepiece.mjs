@@ -16,6 +16,7 @@ import {
   writeFullAndThumb,
 } from './lib.mjs'
 import { transliterate } from './ru.mjs'
+import { dropDeleted } from './dropped.mjs'
 
 const API = 'https://onepiece.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'onepiece')
@@ -386,6 +387,7 @@ async function main() {
     })
   })
 
+  dropDeleted(result, 'onepiece')
   result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
   await writeAtlas(result, THUMBS, path.join(OUT_IMG, 'thumbs.webp'), OUT_ATLAS, 12, 96)
   await pruneImages(path.join(OUT_IMG, 'full'), result)

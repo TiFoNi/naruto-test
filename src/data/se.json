@@ -142,48 +142,6 @@
   "thumb": 6
  },
  {
-  "id": 18647,
-  "name": "Горшок Грома",
-  "nameEn": "Thunder",
-  "gender": "Женский",
-  "species": [
-   "Человек"
-  ],
-  "role": "Оружие",
-  "affiliations": [
-   "Шибусэн",
-   "Класс EAT",
-   "Спартой"
-  ],
-  "side": "Нейтралитет",
-  "status": "Жив",
-  "arc": "Фестиваль смерти",
-  "arcIndex": 4,
-  "answer": true,
-  "thumb": 7
- },
- {
-  "id": 18648,
-  "name": "Горшок Огня",
-  "nameEn": "Fire",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "role": "Оружие",
-  "affiliations": [
-   "Шибусэн",
-   "Класс EAT",
-   "Спартой"
-  ],
-  "side": "Нейтралитет",
-  "status": "Жив",
-  "arc": "Фестиваль смерти",
-  "arcIndex": 4,
-  "answer": true,
-  "thumb": 8
- },
- {
   "id": 3287,
   "name": "Гофер",
   "nameEn": "Gopher",
@@ -200,7 +158,7 @@
   "arc": "Операция «Баба-яга»",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 9
+  "thumb": 7
  },
  {
   "id": 2024,
@@ -221,27 +179,7 @@
   "arc": "Предатели",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 10
- },
- {
-  "id": 7087,
-  "name": "Джинн Галланд",
-  "nameEn": "Jinn Galland",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "role": "Оружие",
-  "affiliations": [
-   "Шибусэн",
-   "Оружие Смерти"
-  ],
-  "side": "Нейтралитет",
-  "status": "Жив",
-  "arc": "Безумная кровь",
-  "arcIndex": 7,
-  "answer": true,
-  "thumb": 11
+  "thumb": 8
  },
  {
   "id": 2080,
@@ -260,7 +198,7 @@
   "arc": "Фестиваль смерти",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 12
+  "thumb": 9
  },
  {
   "id": 2092,
@@ -282,7 +220,7 @@
   "arc": "Фестиваль смерти",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 13
+  "thumb": 10
  },
  {
   "id": 2032,
@@ -303,7 +241,7 @@
   "arc": "Особые уроки",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 14
+  "thumb": 11
  },
  {
   "id": 2033,
@@ -326,7 +264,7 @@
   "arc": "Фестиваль смерти",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 15
+  "thumb": 12
  },
  {
   "id": 2025,
@@ -347,26 +285,7 @@
   "arc": "Особые уроки",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 16
- },
- {
-  "id": 2128,
-  "name": "Летучий Голландец",
-  "nameEn": "Flying Dutchman",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "role": "Нет",
-  "affiliations": [
-   "Сами по себе"
-  ],
-  "side": "Нейтралитет",
-  "status": "Мёртв",
-  "arc": "Чёрный дракон",
-  "arcIndex": 2,
-  "answer": true,
-  "thumb": 17
+  "thumb": 13
  },
  {
   "id": 2085,
@@ -387,7 +306,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 18
+  "thumb": 14
  },
  {
   "id": 15583,
@@ -406,7 +325,7 @@
   "arc": "Чёрный дракон",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 19
+  "thumb": 15
  },
  {
   "id": 1950,
@@ -427,7 +346,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 20
+  "thumb": 16
  },
  {
   "id": 2004,
@@ -447,7 +366,7 @@
   "arc": "Предатели",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 21
+  "thumb": 17
  },
  {
   "id": 2042,
@@ -467,7 +386,7 @@
   "arc": "Особые уроки",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 22
+  "thumb": 18
  },
  {
   "id": 1987,
@@ -488,7 +407,7 @@
   "arc": "Особые уроки",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 23
+  "thumb": 19
  },
  {
   "id": 30135,
@@ -507,7 +426,7 @@
   "arc": "Чёрный дракон",
   "arcIndex": 2,
   "answer": false,
-  "thumb": 24
+  "thumb": 20
  },
  {
   "id": 2031,
@@ -527,7 +446,7 @@
   "arc": "Чёрный дракон",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 25
+  "thumb": 21
  },
  {
   "id": 2041,
@@ -546,7 +465,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 26
+  "thumb": 22
  },
  {
   "id": 2166,
@@ -566,7 +485,7 @@
   "arc": "Предатели",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 27
+  "thumb": 23
  },
  {
   "id": 2563,
@@ -586,7 +505,7 @@
   "arc": "Операция «Баба-яга»",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 28
+  "thumb": 24
  },
  {
   "id": 2028,
@@ -607,7 +526,7 @@
   "arc": "Чёрный дракон",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 29
+  "thumb": 25
  },
  {
   "id": 2084,
@@ -628,7 +547,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 30
+  "thumb": 26
  },
  {
   "id": 2026,
@@ -649,26 +568,7 @@
   "arc": "Особые уроки",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 31
- },
- {
-  "id": 2738,
-  "name": "Рэйчел Бойд",
-  "nameEn": "Rachel Boyd",
-  "gender": "Женский",
-  "species": [
-   "Человек"
-  ],
-  "role": "Нет",
-  "affiliations": [
-   "Сами по себе"
-  ],
-  "side": "Нейтралитет",
-  "status": "Жив",
-  "arc": "Фестиваль смерти",
-  "arcIndex": 4,
-  "answer": true,
-  "thumb": 32
+  "thumb": 27
  },
  {
   "id": 16369,
@@ -688,7 +588,7 @@
   "arc": "Особые уроки",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 33
+  "thumb": 28
  },
  {
   "id": 1970,
@@ -710,7 +610,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 34
+  "thumb": 29
  },
  {
   "id": 3181,
@@ -732,7 +632,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 35
+  "thumb": 30
  },
  {
   "id": 2005,
@@ -752,7 +652,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 36
+  "thumb": 31
  },
  {
   "id": 2556,
@@ -772,7 +672,7 @@
   "arc": "Операция «Баба-яга»",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 37
+  "thumb": 32
  },
  {
   "id": 2186,
@@ -791,7 +691,7 @@
   "arc": "Особые уроки",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 38
+  "thumb": 33
  },
  {
   "id": 2180,
@@ -810,26 +710,7 @@
   "arc": "Операция «Баба-яга»",
   "arcIndex": 5,
   "answer": false,
-  "thumb": 39
- },
- {
-  "id": 5448,
-  "name": "Фёдор",
-  "nameEn": "Feodor",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "role": "Мастер",
-  "affiliations": [
-   "Шибусэн"
-  ],
-  "side": "Нейтралитет",
-  "status": "Мёртв",
-  "arc": "Безумная кровь",
-  "arcIndex": 7,
-  "answer": true,
-  "thumb": 40
+  "thumb": 34
  },
  {
   "id": 1982,
@@ -848,7 +729,7 @@
   "arc": "Особые уроки",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 41
+  "thumb": 35
  },
  {
   "id": 2105,
@@ -871,7 +752,7 @@
   "arc": "Чёрный дракон",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 42
+  "thumb": 36
  },
  {
   "id": 2088,
@@ -892,7 +773,7 @@
   "arc": "Фестиваль смерти",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 43
+  "thumb": 37
  },
  {
   "id": 2184,
@@ -912,7 +793,7 @@
   "arc": "Фестиваль смерти",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 44
+  "thumb": 38
  },
  {
   "id": 2034,
@@ -933,7 +814,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 45
+  "thumb": 39
  },
  {
   "id": 6286,
@@ -952,7 +833,7 @@
   "arc": "Книга Эйбона",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 46
+  "thumb": 40
  },
  {
   "id": 1960,
@@ -974,7 +855,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 47
+  "thumb": 41
  },
  {
   "id": 2115,
@@ -994,7 +875,7 @@
   "arc": "Предатели",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 48
+  "thumb": 42
  },
  {
   "id": 2006,
@@ -1014,7 +895,7 @@
   "arc": "Особые уроки",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 49
+  "thumb": 43
  },
  {
   "id": 2169,
@@ -1035,6 +916,6 @@
   "arc": "Чёрный дракон",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 50
+  "thumb": 44
  }
 ]

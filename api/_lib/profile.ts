@@ -60,6 +60,7 @@ export function toProfile(doc: UserDoc) {
       ...STAT_KEYS.map((key) => [key, normalizeStats(doc.stats?.[key])]),
       ...DAILY_KEYS.map((key) => [key, dailyStats(doc.stats?.[key])]),
     ]),
+    challenges: { solved: number(doc.challengeStats?.solved) },
     duels: {
       played: number(doc.duelStats?.played),
       wins: number(doc.duelStats?.wins),

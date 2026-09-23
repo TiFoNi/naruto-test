@@ -70,9 +70,6 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
       ) : (
         challenge ? (
           <div className="result-actions">
-            <a className="primary" href={href.play(game.id, mode)}>
-              {t('challenge.answerBack')}
-            </a>
             <a className="ghost" href={href.home}>
               {t('play.back')}
             </a>

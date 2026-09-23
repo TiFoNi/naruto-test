@@ -13,6 +13,8 @@ import { MODES, type ModeId } from './modes'
 import { href } from './router'
 import { emptyStats } from './stats'
 
+type Solve = { nickname: string; guesses: number; guessIds: number[]; solved: boolean }
+
 type Challenge = {
   code: string
   game: GameId
@@ -20,7 +22,7 @@ type Challenge = {
   author: string
   mine: boolean
   answerId?: number
-  solves: { nickname: string; guesses: number; solved: boolean }[]
+  solves: Solve[]
 }
 
 export default function ChallengeRoom({ code }: { code: string }) {
@@ -84,32 +86,47 @@ export default function ChallengeRoom({ code }: { code: string }) {
         <p className="muted">
           {l(game.label)} · {modeLabel}
         </p>
-        {challenge.solves.length > 0 ? (
-          <ul className="challenge-solves">
-            {challenge.solves.map((s, i) => (
-              <li key={`${s.nickname}-${i}`}>
-                <b>{s.nickname}</b>
-                <span>{s.solved ? t('challenge.solvedIn', { guesses: s.guesses }) : t('challenge.gaveUp')}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          challenge.mine && <p className="muted challenge-empty">{t('challenge.noSolves')}</p>
-        )}
       </header>
 
-      {challenge.mine ? (
+      {answer ? (
         <section className="card challenge-mine">
-          {answer && (
-            <div className="challenge-answer">
-              <Thumb game={game} entity={answer} size={64} />
-              <div>
-                <span className="muted">{t('challenge.hiddenIs')}</span>
-                <b>{name(answer)}</b>
-              </div>
+          <div className="challenge-answer">
+            <Thumb game={game} entity={answer} size={64} />
+            <div>
+              <span className="muted">{challenge.mine ? t('challenge.hiddenIs') : t('challenge.answerWas')}</span>
+              <b>{name(answer)}</b>
             </div>
+          </div>
+
+          {challenge.solves.length > 0 ? (
+            <ul className="challenge-solves">
+              {challenge.solves.map((s, i) => (
+                <li key={`${s.nickname}-${i}`}>
+                  <div className="challenge-solve-head">
+                    <b>{s.nickname}</b>
+                    <span>{s.solved ? t('challenge.solvedIn', { guesses: s.guesses }) : t('challenge.gaveUp')}</span>
+                  </div>
+                  {s.guessIds.length > 0 && (
+                    <div className="challenge-tries">
+                      {s.guessIds.map((id) => {
+                        const entity = game.entities.find((e) => e.id === id)
+                        return entity ? (
+                          <div key={id} className={`guess-chip ${id === challenge.answerId ? 'correct' : 'wrong'}`}>
+                            <Thumb game={game} entity={entity} size={32} />
+                            <span>{name(entity)}</span>
+                          </div>
+                        ) : null
+                      })}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="muted challenge-empty">{t('challenge.noSolves')}</p>
           )}
-          <p className="muted">{t('challenge.mineHint')}</p>
+
+          <p className="muted">{challenge.mine ? t('challenge.mineHint') : t('challenge.doneHint')}</p>
           <div className="inline-field">
             <input readOnly value={link} onFocus={(e) => e.currentTarget.select()} />
             <button className="primary" onClick={copy}>

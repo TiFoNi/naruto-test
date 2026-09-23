@@ -79,13 +79,13 @@ function GameView({ game, mode, daily, visible }: { game: Game; mode: ModeId; da
             </div>
           </div>
           <div className="game-head-side">
+            {!daily && <ChallengeMaker game={game} mode={mode} />}
             <a className="lb-link" href={href.leaderboard(game.id, mode, daily)}>
               <TrophyIcon /> {t('nav.leaderboard')}
             </a>
           </div>
         </div>
       </section>
-      {!daily && <ChallengeMaker game={game} mode={mode} />}
       {[false, true].map((d) => (
         <div key={String(d)} hidden={daily !== d}>
           {game.modes.includes('classic') && (

@@ -8,7 +8,7 @@ import { average, emptyStats } from './stats'
 import { CalendarIcon, ChevronIcon, InfinityIcon } from './icons'
 
 export default function Profile({ onBack }: { onBack: () => void }) {
-  const { user, stats, duels, setNickname, resetStats, logout, refresh } = useAuth()
+  const { user, stats, duels, challenges, setNickname, resetStats, logout, refresh } = useAuth()
   const { t, l, error: errorText } = useI18n()
   const [nickname, setNicknameDraft] = useState(user?.nickname ?? '')
   const [nickMessage, setNickMessage] = useState<{ ok: boolean; text: string } | null>(null)
@@ -106,6 +106,10 @@ export default function Profile({ onBack }: { onBack: () => void }) {
         <div className="card">
           <span>{t('profile.bestStreak')}</span>
           <b>{bestStreak}</b>
+        </div>
+        <div className="card">
+          <span>{t('profile.challengeSolved')}</span>
+          <b>{challenges.solved}</b>
         </div>
         <div className="card">
           <span>{t('profile.duelWins')}</span>

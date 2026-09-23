@@ -7,16 +7,19 @@ export type User = { id: string; username: string; nickname: string }
 
 export type DuelRecord = { played: number; wins: number; losses: number; draws: number }
 
-type Profile = { user: User; stats: Record<string, Stats>; duels: DuelRecord }
+export type ChallengeRecord = { solved: number }
+
+type Profile = { user: User; stats: Record<string, Stats>; duels: DuelRecord; challenges: ChallengeRecord }
 
 type Mode = 'login' | 'register'
 
-type ApiData = { user?: User; stats?: unknown; duels?: DuelRecord; error?: string; key?: string }
+type ApiData = { user?: User; stats?: unknown; duels?: DuelRecord; challenges?: ChallengeRecord; error?: string; key?: string }
 
 type AuthState = {
   user: User | null
   stats: Record<string, Stats>
   duels: DuelRecord
+  challenges: ChallengeRecord
   loading: boolean
   submit: (mode: Mode, username: string, password: string) => Promise<string | null>
   logout: () => Promise<void>
@@ -30,6 +33,7 @@ type AuthState = {
 const AuthContext = createContext<AuthState | null>(null)
 
 const EMPTY_DUELS: DuelRecord = { played: 0, wins: 0, losses: 0, draws: 0 }
+const EMPTY_CHALLENGES: ChallengeRecord = { solved: 0 }
 
 const call = (path: string, body?: unknown) => api<ApiData>(path, body)
 
@@ -40,7 +44,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   const accept = (data: ApiData) => {
-    if (data.user) setProfile({ user: data.user, stats: (data.stats as Record<string, Stats>) ?? {}, duels: data.duels ?? EMPTY_DUELS })
+    if (data.user)
+      setProfile({
+        user: data.user,
+        stats: (data.stats as Record<string, Stats>) ?? {},
+        duels: data.duels ?? EMPTY_DUELS,
+        challenges: data.challenges ?? EMPTY_CHALLENGES,
+      })
   }
 
   useEffect(() => {
@@ -103,7 +113,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user: profile?.user ?? null, stats: profile?.stats ?? {}, duels: profile?.duels ?? EMPTY_DUELS, loading, submit, logout, setStats, expire, resetStats, setNickname, refresh }}
+      value={{ user: profile?.user ?? null, stats: profile?.stats ?? {}, duels: profile?.duels ?? EMPTY_DUELS,
+        challenges: profile?.challenges ?? EMPTY_CHALLENGES, loading, submit, logout, setStats, expire, resetStats, setNickname, refresh }}
     >
       {children}
     </AuthContext.Provider>

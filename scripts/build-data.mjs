@@ -3,6 +3,7 @@ import path from 'node:path'
 import sharp from 'sharp'
 import { keepNotable, pruneImages } from './lib.mjs'
 import { AFFILIATIONS, ARCS, CLASSIFICATIONS, JUTSU, KEKKEI_GENKAI, NAMES, NATURES, OTHER_SEX, SEX, transliterate } from './ru.mjs'
+import { dropDeleted } from './dropped.mjs'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
 const CACHE = path.join(ROOT, '.cache')
@@ -324,6 +325,7 @@ async function main() {
     c.nameEn = c.name
     c.name = ru[c.nameEn]
   }
+  dropDeleted(result, 'naruto')
   result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
 
   await writeAtlas(result)

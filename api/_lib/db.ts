@@ -8,6 +8,7 @@ export type UserDoc = {
   nickname?: string
   stats?: Record<string, Partial<Stats>>
   duelStats?: { played?: number; wins?: number; losses?: number; draws?: number }
+  challengeStats?: { solved?: number }
   createdAt: Date
 }
 
@@ -15,7 +16,7 @@ export type Stats = { solved: number; streak: number; best: number; totalGuesses
 
 export type RoundStatus = 'active' | 'won' | 'lost' | 'skipped'
 
-export type ChallengeSolve = { userId: ObjectId; nickname: string; guesses: number; solved: boolean; at: Date }
+export type ChallengeSolve = { userId: ObjectId; nickname: string; guesses: number; guessIds?: number[]; solved: boolean; at: Date }
 
 export type ChallengeDoc = {
   _id?: ObjectId
