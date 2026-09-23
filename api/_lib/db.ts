@@ -44,6 +44,7 @@ export type RoundDoc = {
   extra?: string
   guessCount?: number
   lastGuessAt?: Date
+  startedAt?: Date
   createdAt: Date
   finishedAt?: Date
 }

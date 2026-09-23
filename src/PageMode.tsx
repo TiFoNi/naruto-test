@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
 import Yesterday from './Yesterday'
@@ -16,6 +17,11 @@ export default function PageMode({ game, active, stats, daily = false, challenge
   const missed = new Set(guesses.filter((g) => !g.pending).map((g) => g.entity.id))
   const waiting = guesses.find((g) => g.pending)?.entity.id
   const options = (round?.options ?? []).map((id) => byId.get(id)).filter((e) => e !== undefined)
+  const src = round?.image
+  const [loaded, setLoaded] = useState<string | null>(null)
+  const ready = Boolean(src) && loaded === src
+
+  useEffect(() => setLoaded(null), [src])
 
   return (
     <section className="mode">
@@ -23,7 +29,22 @@ export default function PageMode({ game, active, stats, daily = false, challenge
         <div className="card intro">
           <h2>{t('play.pageTitle')}</h2>
           <p className="muted">{t('play.pagePrompt')}</p>
-          {round?.image && <img className="manga-page" src={round.image} alt={t('play.pageTitle')} />}
+          {src && (
+            <div className="manga-frame">
+              {!ready && <div className="zoom-loading">{t('image.loading')}</div>}
+              <img
+                key={src}
+                className="manga-page"
+                src={src}
+                alt={t('play.pageTitle')}
+                ref={(el) => {
+                  if (el?.complete && el.naturalWidth) setLoaded(src)
+                }}
+                onLoad={() => setLoaded(src)}
+                style={{ opacity: ready ? 1 : 0 }}
+              />
+            </div>
+          )}
           {round && (
             <p className="round">{t(round.daily ? 'daily.round' : 'play.round', { round: round.number, guesses: guesses.length })}</p>
           )}
@@ -49,7 +70,7 @@ export default function PageMode({ game, active, stats, daily = false, challenge
               <button
                 key={option.id}
                 className={`option ${waiting === option.id ? 'waiting' : missed.has(option.id) ? 'wrong' : ''}`}
-                disabled={busy || missed.has(option.id) || waiting === option.id}
+                disabled={busy || !ready || missed.has(option.id) || waiting === option.id}
                 onClick={() => guess(option)}
               >
                 <span className="option-name">{name(option)}</span>
@@ -57,7 +78,7 @@ export default function PageMode({ game, active, stats, daily = false, challenge
               </button>
             ))}
           </div>
-          <button className="link-button" onClick={giveUp} disabled={busy}>
+          <button className="link-button" onClick={giveUp} disabled={busy || !ready}>
             {t('play.giveUp')}
           </button>
         </>

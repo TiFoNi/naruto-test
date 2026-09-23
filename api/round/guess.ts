@@ -29,7 +29,7 @@ export const POST = handle(async (request) => {
       [`guesses.${MAX_GUESSES}`]: { $exists: false },
       $or: [{ lastGuessAt: { $exists: false } }, { lastGuessAt: { $lte: new Date(now.getTime() - MIN_GAP_MS) } }],
     },
-    { $push: { guesses: entityId }, $set: { lastGuessAt: now } },
+    { $push: { guesses: entityId }, $set: { lastGuessAt: now }, $min: { startedAt: now } },
     { returnDocument: 'after' },
   )
 

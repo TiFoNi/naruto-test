@@ -6,9 +6,9 @@ import { useI18n, type UiKey } from './i18n'
 import { MODES, type ModeId } from './modes'
 import { href, navigate } from './router'
 import Picker from './Picker'
-import { CalendarIcon, InfinityIcon, MedalIcon, SortIcon } from './icons'
+import { CalendarIcon, ChevronIcon, InfinityIcon, MedalIcon, SortIcon } from './icons'
 
-type Sort = 'best' | 'solved' | 'avg' | 'today' | 'streak'
+type Sort = 'best' | 'solved' | 'avg' | 'today' | 'time' | 'streak' | 'maxStreak'
 
 type Row = {
   rank: number
@@ -26,18 +26,12 @@ type Board = { rows: Row[]; me: Row | null; total: number; number?: number }
 
 type Column = { label: UiKey; sort?: Sort; value: (row: Row) => string | number }
 
-const ENDLESS_SORTS: { id: Sort; label: UiKey }[] = [
-  { id: 'best', label: 'lb.sortBest' },
-  { id: 'solved', label: 'lb.sortSolved' },
-  { id: 'avg', label: 'lb.sortAvg' },
-]
-
-const DAILY_SORTS: { id: Sort; label: UiKey }[] = [
-  { id: 'today', label: 'daily.sortToday' },
-  { id: 'streak', label: 'daily.sortStreak' },
-]
-
-const duration = (seconds = 0) => `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`
+const duration = (seconds = 0) => {
+  const hours = Math.floor(seconds / 3600)
+  const minutes = Math.floor((seconds % 3600) / 60)
+  const rest = String(seconds % 60).padStart(2, '0')
+  return hours ? `${hours}:${String(minutes).padStart(2, '0')}:${rest}` : `${minutes}:${rest}`
+}
 
 const COLUMNS: Record<Sort, Column[]> = {
   best: [
@@ -49,30 +43,38 @@ const COLUMNS: Record<Sort, Column[]> = {
   avg: [],
   today: [
     { label: 'daily.colGuesses', sort: 'today', value: (r) => r.guesses ?? 0 },
-    { label: 'daily.colTime', value: (r) => duration(r.seconds) },
-  ],
-  streak: [
+    { label: 'daily.colTime', sort: 'time', value: (r) => duration(r.seconds) },
     { label: 'daily.colStreak', sort: 'streak', value: (r) => r.streak ?? 0 },
-    { label: 'daily.colBest', value: (r) => r.best ?? 0 },
-    { label: 'daily.colSolved', value: (r) => r.solved ?? 0 },
+    { label: 'daily.colBest', sort: 'maxStreak', value: (r) => r.best ?? 0 },
   ],
+  time: [],
+  streak: [],
+  maxStreak: [],
 }
 COLUMNS.solved = COLUMNS.best
 COLUMNS.avg = COLUMNS.best
+COLUMNS.time = COLUMNS.today
+COLUMNS.streak = COLUMNS.today
+COLUMNS.maxStreak = COLUMNS.today
+
+const PAGE_SIZE = 10
+const SKELETON_ROWS = 5
+const lastSize = new Map<string, number>()
 
 export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; mode: ModeId; daily: boolean }) {
   const { t, l, error: errorText } = useI18n()
   const game = gameById(gameId)
-  const sorts = daily ? DAILY_SORTS : ENDLESS_SORTS
   const [chosen, setSort] = useState<Sort>('best')
   const [reversed, setReversed] = useState(false)
-  const sort = sorts.some((s) => s.id === chosen) ? chosen : sorts[0].id
+  const allowed: Sort[] = daily ? ['today', 'time', 'streak', 'maxStreak'] : ['best', 'solved', 'avg']
+  const sort: Sort = allowed.includes(chosen) ? chosen : allowed[0]
 
   const pick = (next: Sort) => {
     if (next === sort) return setReversed((r) => !r)
     setSort(next)
     setReversed(false)
   }
+  const [page, setPage] = useState(1)
   const [board, setBoard] = useState<Board | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -101,7 +103,19 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
     }
   }, [gameId, mode, sort, reversed, daily])
 
-  const meOutside = board?.me && !board.rows.some((r) => r.me) ? board.me : null
+  useEffect(() => setPage(1), [gameId, mode, sort, reversed, daily])
+
+  useEffect(() => {
+    if (board) lastSize.set(`${gameId}:${mode}:${daily}`, Math.min(board.rows.length, PAGE_SIZE))
+  }, [board, gameId, mode, daily])
+
+  const boardKey = `${gameId}:${mode}:${daily}`
+  const all = board?.rows ?? []
+  const pages = Math.max(1, Math.ceil(all.length / PAGE_SIZE))
+  const shown = all.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const meOutside = board?.me && !shown.some((r) => r.me) ? board.me : null
+  const fillers = Math.max(0, PAGE_SIZE - shown.length - (meOutside ? 1 : 0))
+  const span = COLUMNS[sort].length + 2
 
   return (
     <div className="leaderboard">
@@ -149,21 +163,9 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
         </div>
       </div>
 
-      {daily && (
-        <div className="variant-tabs lb-daily-sort" role="tablist" aria-label={t('lb.sortBy')}>
-          {sorts.map((s) => (
-            <button key={s.id} role="tab" aria-selected={sort === s.id} className={sort === s.id ? 'active' : ''} onClick={() => pick(s.id)}>
-              {t(s.label)}
-            </button>
-          ))}
-        </div>
-      )}
-
       <section className={`card lb-card ${loading ? 'loading' : ''}`}>
         {error ? (
           <div className="lb-state">{errorText(error)}</div>
-        ) : !board ? (
-          <div className="lb-state">{t('loading')}</div>
         ) : (
           <div className="lb-scroll">
             <table className="lb-table">
@@ -186,7 +188,17 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
                 </tr>
               </thead>
               <tbody>
-                {board.rows.length === 0 && (
+                {!board &&
+                  Array.from({ length: lastSize.get(boardKey) ?? SKELETON_ROWS }, (_, i) => (
+                    <tr key={`skeleton-${i}`} className="lb-skeleton-row">
+                      {Array.from({ length: span }, (_, c) => (
+                        <td key={c}>
+                          <span className="lb-skeleton" />
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                {board && all.length === 0 && (
                   <tr className="lb-blank">
                     <td colSpan={COLUMNS[sort].length + 2}>
                       <div className="lb-blank-inner">
@@ -198,10 +210,14 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
                     </td>
                   </tr>
                 )}
-                {[...board.rows, ...(meOutside ? [meOutside] : [])].map((row, i) => (
-                  <tr key={`${row.rank}-${row.nickname}`} className={`${row.me ? 'me' : ''} ${meOutside && i === board.rows.length ? 'gap' : ''}`}>
+                {[...shown, ...(meOutside ? [meOutside] : [])].map((row, i) => (
+                  <tr key={`${row.rank}-${row.nickname}`} className={`${row.me ? 'me' : ''} ${meOutside && i === shown.length ? 'gap' : ''}`}>
                     <td className="lb-rank">
-                      {row.rank <= 3 ? <MedalIcon className={`lb-medal ${['gold', 'silver', 'bronze'][row.rank - 1]}`} /> : row.rank}
+                      {!reversed && row.rank <= 3 ? (
+                        <MedalIcon className={`lb-medal ${['gold', 'silver', 'bronze'][row.rank - 1]}`} />
+                      ) : (
+                        row.rank
+                      )}
                     </td>
                     <td className="lb-name">
                       {row.nickname}
@@ -214,13 +230,32 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
                     ))}
                   </tr>
                 ))}
+                {board &&
+                  pages > 1 &&
+                  Array.from({ length: fillers }, (_, i) => (
+                    <tr key={`filler-${i}`} className="lb-filler">
+                      <td colSpan={span} />
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
         )}
 
+        {pages > 1 && (
+          <div className="lb-pager">
+            <button type="button" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} aria-label={t('lb.prev')}>
+              <ChevronIcon className="left" />
+            </button>
+            <span>{t('lb.page', { page, pages })}</span>
+            <button type="button" onClick={() => setPage((p) => Math.min(pages, p + 1))} disabled={page === pages} aria-label={t('lb.next')}>
+              <ChevronIcon className="right" />
+            </button>
+          </div>
+        )}
+
         {daily && board?.number && (
-          <p className="lb-note">{t(sort === 'today' ? 'daily.boardToday' : 'daily.boardStreak', { number: board.number })}</p>
+          <p className="lb-note">{t('daily.boardToday', { number: board.number })}</p>
         )}
       </section>
     </div>

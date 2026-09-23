@@ -27,13 +27,54 @@
   display: none !important;
 }
 
+html {
+  overscroll-behavior: none;
+  background:
+    radial-gradient(900px 420px at 50% -160px, color-mix(in srgb, var(--accent) 18%, transparent), transparent 70%) fixed,
+    var(--bg);
+}
+
 body {
   margin: 0;
   min-height: 100vh;
   overflow-x: clip;
-  background:
-    radial-gradient(900px 420px at 50% -160px, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%),
-    var(--bg);
+  overscroll-behavior: none;
+}
+
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-grid i {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, #9fb4d4 22%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, #9fb4d4 22%, transparent) 1px, transparent 1px);
+  background-size: 62px 62px;
+}
+
+.bg-grid i:nth-child(1) {
+  opacity: 0.008;
+}
+
+.bg-grid i:nth-child(2) {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, #bcd2f0 2.5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, #bcd2f0 2.5%, transparent) 1px, transparent 1px);
+  mask-image: linear-gradient(118deg, #000 0%, transparent 100%);
+}
+
+.bg-grid i:nth-child(3) {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--accent) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--accent) 3%, transparent) 1px, transparent 1px);
+  mask-image: linear-gradient(302deg, #000 0%, transparent 100%);
 }
 
 button {
@@ -1026,6 +1067,8 @@ footer p {
 
 .lang-switch {
   display: flex;
+  flex-shrink: 0;
+  order: 1;
   gap: 2px;
   padding: 3px;
   border-radius: 10px;
@@ -1034,19 +1077,30 @@ footer p {
 }
 
 .lang-switch button {
+  min-width: 34px;
   padding: 4px 8px;
   border: none;
   border-radius: 7px;
   background: transparent;
   color: var(--text-3);
+  font: inherit;
   font-size: 12px;
   font-weight: 800;
+  text-align: center;
   cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.lang-switch button:hover:not(.active) {
+  color: var(--text-2);
 }
 
 .lang-switch button.active {
-  background: var(--card-2);
+  background: color-mix(in srgb, var(--accent) 20%, var(--card-2));
   color: var(--text);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent);
 }
 
 .account-link {
@@ -2066,6 +2120,84 @@ button.ghost.small {
   gap: 12px;
 }
 
+.lb-skeleton {
+  display: block;
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--card-2) 0%, color-mix(in srgb, var(--card-2) 55%, var(--line)) 50%, var(--card-2) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+.lb-skeleton-row td:first-child .lb-skeleton {
+  width: 18px;
+}
+
+.lb-skeleton-row td:nth-child(2) .lb-skeleton {
+  width: min(60%, 160px);
+}
+
+.lb-skeleton-row td:nth-child(n + 3) .lb-skeleton {
+  width: 34px;
+  margin-left: auto;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.lb-filler td {
+  height: 41px;
+  border-bottom-color: transparent;
+}
+
+.lb-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 12px;
+  color: var(--text-2);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.lb-pager button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.lb-pager button:hover:not(:disabled) {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+}
+
+.lb-pager button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.lb-pager .left {
+  transform: rotate(90deg);
+}
+
+.lb-pager .right {
+  transform: rotate(-90deg);
+}
+
 .lb-note {
   margin: 12px 0 0;
   padding-top: 12px;
@@ -2157,10 +2289,6 @@ button.ghost.small {
 
 .lb-table th .icon {
   font-size: 13px;
-}
-
-.lb-daily-sort {
-  align-self: flex-start;
 }
 
 .lb-table th.sorted {
@@ -2490,6 +2618,13 @@ button.ghost.small {
 }
 
 
+.manga-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: min(49vh, 460px);
+}
+
 .manga-page {
   display: block;
   width: auto;
@@ -2499,6 +2634,7 @@ button.ghost.small {
   border-radius: 12px;
   border: 1px solid var(--line);
   background: #fff;
+  transition: opacity 0.2s ease;
 }
 
 .options {

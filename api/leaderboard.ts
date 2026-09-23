@@ -4,7 +4,7 @@ import { users } from './_lib/db.js'
 import { fail, handle, json } from './_lib/http.js'
 import { currentUser, defaultNickname, unauthorized } from './_lib/profile.js'
 
-const LIMIT = 50
+const LIMIT = 200
 const SORTS = {
   best: { field: 'best', natural: -1, tie: { solved: -1 } },
   solved: { field: 'solved', natural: -1, tie: { best: -1 } },

@@ -128,7 +128,7 @@ function LangSwitch() {
 }
 
 export default function App() {
-  const { user, loading, logout } = useAuth()
+  const { user, loading } = useAuth()
   const { t, l } = useI18n()
   const route = useRoute()
   const game = route.name === 'play' ? gameById(route.game) : null
@@ -144,6 +144,11 @@ export default function App() {
 
   return (
     <div className="app">
+      <div className="bg-grid" aria-hidden="true">
+        <i />
+        <i />
+        <i />
+      </div>
       <header className="topbar">
         <a className="brand" href={href.home}>
           <span className="brand-mark" aria-hidden>
@@ -155,7 +160,6 @@ export default function App() {
           </span>
         </a>
         <div className="topbar-right">
-          <LangSwitch />
           {user && (
             <a
               className={`topbar-link ${route.name === 'leaderboard' ? 'active' : ''}`}
@@ -180,11 +184,9 @@ export default function App() {
                 </span>
                 <span className="account-name">{user.nickname}</span>
               </a>
-              <button className="logout" onClick={logout}>
-                {t('nav.logout')}
-              </button>
             </div>
           )}
+          <LangSwitch />
         </div>
       </header>
 

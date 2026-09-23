@@ -27,7 +27,6 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   const all = GAMES.flatMap((g) => g.modes.map((m) => stats[statsKey(g.id, m)] ?? emptyStats))
   const totalSolved = all.reduce((sum, s) => sum + s.solved, 0)
   const bestStreak = all.reduce((max, s) => Math.max(max, s.best), 0)
-  const totalGuesses = all.reduce((sum, s) => sum + s.totalGuesses, 0)
 
   const rows = GAMES.map((game) => {
     const own = game.modes.flatMap((m) => [stats[statsKey(game.id, m)], stats[dailyKey(game.id, m)]].map((s) => s ?? emptyStats))
@@ -114,10 +113,6 @@ export default function Profile({ onBack }: { onBack: () => void }) {
         <div className="card">
           <span>{t('profile.duelWins')}</span>
           <b>{duels.wins}</b>
-        </div>
-        <div className="card">
-          <span>{t('stats.avg')}</span>
-          <b>{totalSolved ? (totalGuesses / totalSolved).toFixed(1) : '–'}</b>
         </div>
       </section>
 
