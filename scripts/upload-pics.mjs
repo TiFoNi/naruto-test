@@ -25,9 +25,11 @@ async function collect() {
   for (const game of games) {
     if (!game.isDirectory() || (only && game.name !== only)) continue
 
-    const full = path.join(ROOT, 'public', game.name, 'full')
-    for (const file of await fs.readdir(full).catch(() => [])) {
-      if (file.endsWith('.webp')) files.push({ key: `${game.name}/full/${file}`, path: path.join(full, file) })
+    for (const kind of ['full', 'card']) {
+      const dir = path.join(ROOT, 'public', game.name, kind)
+      for (const file of await fs.readdir(dir).catch(() => [])) {
+        if (file.endsWith('.webp')) files.push({ key: `${game.name}/${kind}/${file}`, path: path.join(dir, file) })
+      }
     }
 
     const pages = path.join(ROOT, 'public', game.name, 'pages')

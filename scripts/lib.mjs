@@ -133,6 +133,16 @@ export async function cachedDownload(dir, key, urls) {
   }
 }
 
+export const CARD = { width: 288, height: 384 }
+
+export async function writeCard(source, cardPath) {
+  await fs.mkdir(path.dirname(cardPath), { recursive: true })
+  await sharp(source)
+    .resize(CARD.width, CARD.height, { fit: 'cover', position: 'top' })
+    .webp({ quality: 80 })
+    .toFile(cardPath)
+}
+
 export async function writeFullAndThumb(buf, fullPath, thumbPath, cell) {
   const trimmed = await sharp(buf).trim().png().toBuffer({ resolveWithObject: true })
   const { width, height } = trimmed.info
@@ -140,6 +150,7 @@ export async function writeFullAndThumb(buf, fullPath, thumbPath, cell) {
     .resize({ width: 800, height: 900, fit: 'inside', withoutEnlargement: true })
     .webp({ quality: 88 })
     .toFile(fullPath)
+  await writeCard(trimmed.data, fullPath.replace(`${path.sep}full${path.sep}`, `${path.sep}card${path.sep}`))
   const side = Math.min(width, height)
   await sharp(trimmed.data)
     .extract({ left: Math.floor((width - side) / 2), top: 0, width: side, height: side })

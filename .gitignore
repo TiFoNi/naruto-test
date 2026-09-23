@@ -8,3 +8,4 @@ seeds/*
 !seeds/manga
 seeds/manga/*
 !seeds/manga/README.md
+public/*/card
