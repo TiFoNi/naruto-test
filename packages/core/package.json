@@ -1,0 +1,15 @@
+{
+  "name": "@nanda/core",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    "./*": "./src/*.ts",
+    "./endpoints/*": "./src/endpoints/*.ts"
+  },
+  "dependencies": {
+    "@nanda/game": "*",
+    "jose": "^6.2.12",
+    "mongodb": "^7.6.0"
+  }
+}

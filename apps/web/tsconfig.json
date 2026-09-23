@@ -27,6 +27,12 @@
       ],
       "@nanda/game/data/*": [
         "../../packages/game/data/*"
+      ],
+      "@nanda/core/*": [
+        "../../packages/core/src/*"
+      ],
+      "@nanda/core/endpoints/*": [
+        "../../packages/core/src/endpoints/*"
       ]
     },
     "plugins": [

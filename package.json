@@ -27,7 +27,9 @@
     "data:avatar": "node scripts/build-avatar.mjs",
     "cards": "node scripts/build-cards.mjs",
     "check:data": "node scripts/check-data.mjs",
-    "pics": "node --env-file-if-exists=.env.local scripts/upload-pics.mjs"
+    "pics": "node --env-file-if-exists=.env.local scripts/upload-pics.mjs",
+    "dev:api": "npm run dev --workspace @nanda/api",
+    "build:api": "npm run build --workspace @nanda/api"
   },
   "dependencies": {},
   "devDependencies": {

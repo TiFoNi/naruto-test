@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { findChallenge } from '@/lib/challenges'
-import { defaultNickname } from '@/lib/profile'
+import { findChallenge } from '@nanda/core/challenges'
+import { defaultNickname } from '@nanda/core/profile'
 import ChallengeRoom from '@/src/ChallengeRoom'
 import { GAMES } from '@/src/games'
 import { MODES } from '@/src/modes'

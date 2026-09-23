@@ -1,0 +1,29 @@
+{
+  "name": "@nanda/api",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build && tsc-alias -p tsconfig.json",
+    "start": "node dist/apps/api/src/main.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@nanda/core": "*",
+    "@nanda/game": "*",
+    "@nestjs/common": "^11.1.6",
+    "@nestjs/core": "^11.1.6",
+    "@nestjs/platform-express": "^11.1.6",
+    "jose": "^6.2.12",
+    "mongodb": "^7.6.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.10",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.20.4",
+    "tsc-alias": "^1.9.5",
+    "typescript": "^5.9.3"
+  }
+}
