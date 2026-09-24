@@ -3,7 +3,8 @@ import { DAILY_KEYS, STAT_KEYS } from '@nanda/game'
 import { shiftDay, today } from './daily'
 import { users, type Stats, type UserDoc } from './db'
 import { fail } from './http'
-import { guestCookie, readGuest, readSession } from './session'
+import { authSession } from './auth'
+import { guestCookie, readGuest } from './session'
 
 export { STAT_KEYS }
 
@@ -71,11 +72,23 @@ export function toProfile(doc: UserDoc) {
 }
 
 export async function currentUser(request: Request) {
-  const session = await readSession(request)
+  const session = await authSession(request)
   if (!session || !ObjectId.isValid(session.id)) return null
+
   const collection = await users()
-  const doc = await collection.findOne({ _id: new ObjectId(session.id) })
-  return doc ? { doc, collection } : null
+  const _id = new ObjectId(session.id)
+  const existing = await collection.findOne({ _id })
+  if (existing) return { doc: existing, collection }
+
+  const doc: UserDoc = {
+    _id,
+    username: session.email,
+    usernameLower: session.email.toLowerCase(),
+    nickname: defaultNickname(session.name || session.email),
+    createdAt: new Date(),
+  }
+  await collection.insertOne(doc)
+  return { doc, collection }
 }
 
 export const unauthorized = () => fail(401, 'unauthorized')
@@ -83,7 +96,7 @@ export const unauthorized = () => fail(401, 'unauthorized')
 export type Owner = { id: ObjectId; guest: boolean; cookie?: string }
 
 export async function roundOwner(request: Request): Promise<Owner> {
-  const session = await readSession(request)
+  const session = await authSession(request)
   if (session && ObjectId.isValid(session.id)) return { id: new ObjectId(session.id), guest: false }
 
   const existing = await readGuest(request)

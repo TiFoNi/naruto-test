@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Req, Res } from '@nestjs/common'
+import { All, Controller, Get, Post, Req, Res } from '@nestjs/common'
 import type { Request, Response } from 'express'
 import * as auth from '@nanda/core/endpoints/auth'
+import * as me from '@nanda/core/endpoints/me'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as duel from '@nanda/core/endpoints/duel'
 import * as leaderboard from '@nanda/core/endpoints/leaderboard'
@@ -13,14 +14,14 @@ import { bridge } from './web-bridge'
 
 @Controller('api')
 export class GameController {
-  @Get('auth')
+  @Get('me')
   profileOf(@Req() req: Request, @Res() res: Response) {
-    return bridge(auth.GET, req, res)
+    return bridge(me.GET, req, res)
   }
 
-  @Post('auth')
-  signIn(@Req() req: Request, @Res() res: Response) {
-    return bridge(auth.POST, req, res)
+  @All('auth/*path')
+  authRoutes(@Req() req: Request, @Res() res: Response) {
+    return bridge(req.method === 'GET' ? auth.GET : auth.POST, req, res)
   }
 
   @Post('challenge')

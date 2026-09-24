@@ -1,3 +1,4 @@
+import { authClient } from './authClient'
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
 import { api } from './api'
 import { statsKey } from '@nanda/game'
@@ -11,7 +12,6 @@ export type ChallengeRecord = { solved: number }
 
 type Profile = { user: User; stats: Record<string, Stats>; duels: DuelRecord; challenges: ChallengeRecord }
 
-type Mode = 'login' | 'register'
 
 type ApiData = { user?: User; stats?: unknown; duels?: DuelRecord; challenges?: ChallengeRecord; error?: string; key?: string }
 
@@ -21,7 +21,6 @@ type AuthState = {
   duels: DuelRecord
   challenges: ChallengeRecord
   loading: boolean
-  submit: (mode: Mode, username: string, password: string) => Promise<string | null>
   logout: () => Promise<void>
   setStats: (key: string, stats: Stats) => void
   refresh: () => Promise<void>
@@ -54,32 +53,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    call('auth')
+    call('me')
       .then(({ ok, data }) => (ok && data.user ? accept(data) : setProfile(null)))
       .catch(() => setProfile(null))
       .finally(() => setLoading(false))
   }, [])
 
   const refresh = useCallback(async () => {
-    const { ok, data } = await call('auth').catch(() => ({ ok: false, data: {} as ApiData }))
+    const { ok, data } = await call('me').catch(() => ({ ok: false, data: {} as ApiData }))
     if (ok && data.user) accept(data)
   }, [])
 
-  const submit = useCallback(async (mode: Mode, username: string, password: string) => {
-    try {
-      const { ok, data } = await call('auth', { action: mode, username, password })
-      if (ok && data.user) {
-        accept(data)
-        return null
-      }
-      return data.error ?? 'server'
-    } catch {
-      return 'network'
-    }
-  }, [])
-
   const logout = useCallback(async () => {
-    await call('auth', { action: 'logout' }).catch(() => null)
+    await authClient.signOut().catch(() => null)
     setProfile(null)
   }, [])
 
@@ -114,7 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider
       value={{ user: profile?.user ?? null, stats: profile?.stats ?? {}, duels: profile?.duels ?? EMPTY_DUELS,
-        challenges: profile?.challenges ?? EMPTY_CHALLENGES, loading, submit, logout, setStats, expire, resetStats, setNickname, refresh }}
+        challenges: profile?.challenges ?? EMPTY_CHALLENGES, loading, logout, setStats, expire, resetStats, setNickname, refresh }}
     >
       {children}
     </AuthContext.Provider>

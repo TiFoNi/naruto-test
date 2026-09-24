@@ -9,13 +9,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@nanda/core": "*",
     "@nanda/game": "*",
+    "better-auth": "^1.7.5",
     "jose": "^6.2.12",
     "mongodb": "^7.6.0",
     "next": "^16.3.6",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0",
-    "@nanda/core": "*"
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
     "@types/node": "^22.20.4",

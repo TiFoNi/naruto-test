@@ -4,7 +4,7 @@ export type UserDoc = {
   _id?: ObjectId
   username: string
   usernameLower: string
-  passwordHash: string
+  passwordHash?: string
   nickname?: string
   stats?: Record<string, Partial<Stats>>
   duelStats?: { played?: number; wins?: number; losses?: number; draws?: number }
@@ -88,13 +88,12 @@ export type DailyDoc = { _id: string; day: string; game: string; mode: string; a
 const cache = globalThis as typeof globalThis & {
   __mongo?: Promise<MongoClient>
   __usersIndexed?: Promise<unknown>
-  __attemptsIndexed?: Promise<unknown>
   __roundsIndexed?: Promise<unknown>
   __duelsIndexed?: Promise<unknown>
   __challengesIndexed?: Promise<unknown>
 }
 
-const database = async () => (await client()).db(process.env.MONGODB_DB || 'nandaguessr')
+export const database = async () => (await client()).db(process.env.MONGODB_DB || 'nandaguessr')
 
 export async function rounds(): Promise<Collection<RoundDoc>> {
   const collection = (await database()).collection<RoundDoc>('rounds')
@@ -172,17 +171,3 @@ export async function users(): Promise<Collection<UserDoc>> {
   return collection
 }
 
-export type AttemptDoc = { key: string; at: Date }
-
-export async function attempts(): Promise<Collection<AttemptDoc>> {
-  const collection = (await database()).collection<AttemptDoc>('attempts')
-  cache.__attemptsIndexed ??= Promise.all([
-    collection.createIndex({ at: 1 }, { expireAfterSeconds: 60 * 60 }),
-    collection.createIndex({ key: 1, at: 1 }),
-  ]).catch((error) => {
-    cache.__attemptsIndexed = undefined
-    throw error
-  })
-  await cache.__attemptsIndexed
-  return collection
-}

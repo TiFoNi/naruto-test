@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@nanda/game": "*",
+    "better-auth": "^1.7.5",
     "jose": "^6.2.12",
-    "mongodb": "^7.6.0"
+    "mongodb": "^7.6.0",
+    "resend": "^6.28.1"
   }
 }
