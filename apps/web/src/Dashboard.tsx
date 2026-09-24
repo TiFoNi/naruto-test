@@ -20,7 +20,7 @@ const CATEGORIES: { id: Category; title: UiKey; hint: UiKey }[] = [
 
 function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
   const { t, l } = useI18n()
-  const { stats } = useAuth()
+  const { stats, user } = useAuth()
 
   return (
     <article className="franchise" style={{ '--tab-accent': game.accent } as CSSProperties}>
@@ -81,29 +81,31 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
             )
           })}
         </div>
-        <div className="daily-links">
-          <span className="daily-links-title">
-            <CalendarIcon /> {t('daily.dashTitle')}
-          </span>
-          {MODES.filter((m) => game.modes.includes(m.id)).map((m) => {
-            const done = stats[dailyKey(game.id, m.id)]?.lastDay === kyivToday()
-            return (
-              <a
-                key={m.id}
-                className={`daily-link ${done ? 'done' : ''}`}
-                href={href.play(game.id, m.id, true)}
-                title={done ? t('daily.done') : undefined}
-              >
-                {done && (
-                  <span aria-label={t('daily.done')}>
-                    <CheckIcon />
-                  </span>
-                )}
-                {t(m.label)}
-              </a>
-            )
-          })}
-        </div>
+        {user && (
+          <div className="daily-links">
+            <span className="daily-links-title">
+              <CalendarIcon /> {t('daily.dashTitle')}
+            </span>
+            {MODES.filter((m) => game.modes.includes(m.id)).map((m) => {
+              const done = stats[dailyKey(game.id, m.id)]?.lastDay === kyivToday()
+              return (
+                <a
+                  key={m.id}
+                  className={`daily-link ${done ? 'done' : ''}`}
+                  href={href.play(game.id, m.id, true)}
+                  title={done ? t('daily.done') : undefined}
+                >
+                  {done && (
+                    <span aria-label={t('daily.done')}>
+                      <CheckIcon />
+                    </span>
+                  )}
+                  {t(m.label)}
+                </a>
+              )
+            })}
+          </div>
+        )}
       </div>
     </article>
   )

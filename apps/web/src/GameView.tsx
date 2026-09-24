@@ -49,14 +49,16 @@ export default function GameView({ game, mode, daily, visible }: { game: Game; m
         </div>
         <div className="game-head-bar">
           <div className="game-switches">
-            <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
-              <a role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
-                <InfinityIcon /> {t('daily.endless')}
-              </a>
-              <a role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, mode, true)}>
-                <CalendarIcon /> {t('daily.daily')}
-              </a>
-            </div>
+            {user && (
+              <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
+                <a role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
+                  <InfinityIcon /> {t('daily.endless')}
+                </a>
+                <a role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, mode, true)}>
+                  <CalendarIcon /> {t('daily.daily')}
+                </a>
+              </div>
+            )}
             <div className="mode-tabs" role="tablist">
               {MODES.filter((m) => game.modes.includes(m.id)).map((m) => (
                 <a

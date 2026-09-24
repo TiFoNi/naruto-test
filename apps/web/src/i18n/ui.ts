@@ -341,6 +341,11 @@ const ui = {
     uk: 'Окремо для кожного всесвіту й режиму. Результати рахує сервер — накрутити не можна.',
     en: 'Separate for every universe and mode. Results are checked by the server.',
   },
+  'daily.needsAccount': {
+    ru: 'Ежедневный персонаж — для тех, кто вошёл: только так считаются серии.',
+    uk: 'Щоденний персонаж — для тих, хто увійшов: лише так рахуються серії.',
+    en: 'The daily character needs an account — that is the only way streaks are counted.',
+  },
   'nav.signIn': { ru: 'Войти', uk: 'Увійти', en: 'Sign in' },
   'landing.guestHint': {
     ru: 'Можно играть без регистрации — аккаунт нужен, чтобы сохранять прогресс и звать друзей.',

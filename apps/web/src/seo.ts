@@ -37,6 +37,7 @@ export function playMetadata(gameId: string, modeId: string, daily: boolean): Me
     title,
     description,
     alternates: { canonical: path },
+    ...(daily ? { robots: { index: false } } : {}),
     openGraph: { title, description, url: `${SITE}${path}`, type: 'website' },
   }
 }
