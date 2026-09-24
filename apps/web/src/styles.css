@@ -5052,3 +5052,77 @@ button.ghost.small {
     order: 7;
   }
 }
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.picker h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 15px;
+  color: var(--text-3);
+  font-weight: 700;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-height: 130px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(120% 100% at 80% 0%, color-mix(in srgb, var(--tile) 28%, transparent), transparent 70%),
+    var(--card);
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.12s;
+}
+
+.tile:hover {
+  border-color: color-mix(in srgb, var(--tile) 60%, var(--line));
+}
+
+.tile:active {
+  transform: scale(0.995);
+}
+
+.tile.on {
+  border-color: var(--tile);
+  box-shadow: 0 0 0 1px var(--tile) inset;
+}
+
+.tile-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-bottom: auto;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--tile) 26%, transparent);
+  color: var(--tile);
+  font-size: 18px;
+}
+
+.tile b {
+  font-family: var(--display);
+  font-size: 19px;
+}
+
+.tile small {
+  color: var(--text-3);
+  font-size: 13px;
+}

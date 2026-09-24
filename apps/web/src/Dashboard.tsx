@@ -1,6 +1,6 @@
 'use client'
 
-import type { CSSProperties } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import { statsKey, useAuth } from './auth'
 import type { GameMeta } from './games/meta'
 import type { Category } from './games/types'
@@ -9,14 +9,31 @@ import { MODES } from './modes'
 import { useHref } from './router'
 import { dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
-import { CalendarIcon, ChartIcon, CheckIcon } from './icons'
+import { CalendarIcon, ChartIcon, CheckIcon, GamepadIcon, PageIcon, TvIcon } from './icons'
 import { CARD, cardUrl } from './pics'
 
-const CATEGORIES: { id: Category; title: UiKey; hint: UiKey }[] = [
-  { id: 'anime', title: 'dash.anime', hint: 'dash.animeHint' },
-  { id: 'manga', title: 'dash.mangaTitle', hint: 'dash.mangaHint' },
-  { id: 'games', title: 'dash.games', hint: 'dash.gamesHint' },
+const CATEGORIES: { id: Category; title: UiKey; hint: UiKey; icon: (props: { className?: string }) => React.ReactElement }[] = [
+  { id: 'anime', title: 'dash.anime', hint: 'dash.animeHint', icon: TvIcon },
+  { id: 'manga', title: 'dash.mangaTitle', hint: 'dash.mangaHint', icon: PageIcon },
+  { id: 'games', title: 'dash.games', hint: 'dash.gamesHint', icon: GamepadIcon },
 ]
+
+const WORLDS = {
+  ru: ['вселенная', 'вселенные', 'вселенных'],
+  uk: ['всесвіт', 'всесвіти', 'всесвітів'],
+  en: ['world', 'worlds', 'worlds'],
+} as const
+
+const worldsOf = (count: number, lang: keyof typeof WORLDS) => {
+  if (lang === 'en') return WORLDS.en[count === 1 ? 0 : 1]
+  const ten = count % 10
+  const hundred = count % 100
+  if (ten === 1 && hundred !== 11) return WORLDS[lang][0]
+  if (ten >= 2 && ten <= 4 && (hundred < 12 || hundred > 14)) return WORLDS[lang][1]
+  return WORLDS[lang][2]
+}
+
+const REMEMBER = 'nanda.category'
 
 function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
   const { t, l } = useI18n()
@@ -113,12 +130,36 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
 }
 
 export default function Dashboard({ games }: { games: GameMeta[] }) {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const href = useHref()
   const { user, stats } = useAuth()
   const all = Object.values(stats)
   const totalSolved = all.reduce((sum, s) => sum + s.solved, 0)
   const bestStreak = all.reduce((max, s) => Math.max(max, s.best), 0)
+
+  const shown = CATEGORIES.filter((category) => games.some((g) => g.category === category.id))
+  const [active, setActive] = useState<Category>(shown[0]?.id ?? 'anime')
+  const current = shown.find((category) => category.id === active)
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(REMEMBER) as Category | null
+      if (saved && shown.some((category) => category.id === saved)) setActive(saved)
+    } catch {
+      /* приватний режим — просто лишаємо типову категорію */
+    }
+  }, [])
+
+  const pick = (id: Category) => {
+    setActive(id)
+    try {
+      localStorage.setItem(REMEMBER, id)
+    } catch {
+      /* не критично */
+    }
+  }
+
+  const accentOf = (id: Category) => games.find((g) => g.category === id)?.accent ?? 'var(--accent)'
 
   return (
     <div className="dashboard">
@@ -158,23 +199,48 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         )}
       </section>
 
-      {CATEGORIES.map((category, index) => {
-        const list = games.filter((g) => g.category === category.id)
-        if (!list.length) return null
-        return (
-          <section key={category.id} className="category">
-            <header>
-              <h2>{t(category.title)}</h2>
-              <p className="muted">{t(category.hint)}</p>
-            </header>
-            <div className="franchise-grid">
-              {list.map((g, i) => (
-                <FranchiseCard key={g.id} game={g} eager={index === 0 && i < 3} />
+      <section className="picker">
+        <h2>{t('dash.pick')}</h2>
+        <div className="tiles">
+          {shown.map((category) => {
+            const count = games.filter((g) => g.category === category.id).length
+            const Icon = category.icon
+            return (
+              <button
+                key={category.id}
+                type="button"
+                className={`tile ${category.id === active ? 'on' : ''}`}
+                style={{ '--tile': accentOf(category.id) } as CSSProperties}
+                onClick={() => pick(category.id)}
+              >
+                <span className="tile-icon" aria-hidden>
+                  <Icon />
+                </span>
+                <b>{t(category.title)}</b>
+                <small>
+                  {count} {worldsOf(count, lang)}
+                </small>
+              </button>
+            )
+          })}
+        </div>
+      </section>
+
+      {current && (
+        <section className="category">
+          <header>
+            <h2>{t(current.title)}</h2>
+            <p className="muted">{t(current.hint)}</p>
+          </header>
+          <div className="franchise-grid">
+            {games
+              .filter((g) => g.category === active)
+              .map((g, i) => (
+                <FranchiseCard key={g.id} game={g} eager={i < 3} />
               ))}
-            </div>
-          </section>
-        )
-      })}
+          </div>
+        </section>
+      )}
 
       <section className="category how">
         <header>

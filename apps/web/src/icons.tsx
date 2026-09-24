@@ -25,6 +25,26 @@ export function CalendarIcon({ className }: IconProps) {
   )
 }
 
+export function TvIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <rect x="2.5" y="7" width="19" height="13" rx="3" />
+      <path d="m8 3 4 4 4-4" />
+    </svg>
+  )
+}
+
+export function GamepadIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <rect x="2.5" y="7.5" width="19" height="10" rx="5" />
+      <path d="M7 10.5v4M5 12.5h4" />
+      <circle cx="16.4" cy="11.6" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="18.6" cy="14" r="1.1" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
 export function GiftIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

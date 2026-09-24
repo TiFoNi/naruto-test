@@ -340,6 +340,8 @@ const ui = {
   'quest.duel1': { ru: 'Выиграй дуэль', uk: 'Виграй дуель', en: 'Win a duel' },
   'quest.duel3': { ru: 'Выиграй 3 дуэли', uk: 'Виграй 3 дуелі', en: 'Win 3 duels' },
 
+  'dash.pick': { ru: 'Выбери категорию', uk: 'Обери категорію', en: 'Pick a category' },
+
   'profile.rank': { ru: 'Место в рейтинге', uk: 'Місце в рейтингу', en: 'Leaderboard place' },
   'profile.played': { ru: 'Сыграно игр', uk: 'Зіграно ігор', en: 'Rounds played' },
   'profile.favourite': { ru: 'Любимая вселенная', uk: 'Улюблений всесвіт', en: 'Favourite world' },
