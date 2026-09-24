@@ -2,6 +2,7 @@ import { All, Controller, Get, Post, Req, Res } from '@nestjs/common'
 import type { Request, Response } from 'express'
 import * as auth from '@nanda/core/endpoints/auth'
 import * as me from '@nanda/core/endpoints/me'
+import * as admin from '@nanda/core/endpoints/admin'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
@@ -33,6 +34,16 @@ export class GameController {
   @Post('duel')
   duels(@Req() req: Request, @Res() res: Response) {
     return bridge(duel.POST, req, res)
+  }
+
+  @Get('admin/entities')
+  adminList(@Req() req: Request, @Res() res: Response) {
+    return bridge(admin.GET, req, res)
+  }
+
+  @Post('admin/entity')
+  adminSave(@Req() req: Request, @Res() res: Response) {
+    return bridge(admin.POST, req, res)
   }
 
   @Get('entities')

@@ -3370,3 +3370,157 @@ button.ghost.small {
   color: var(--text);
   text-decoration: underline;
 }
+
+.admin {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 8px 0 48px;
+}
+
+.admin-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.admin-head h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 22px;
+  flex: 1;
+}
+
+.admin-head select,
+.admin-head input {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+
+.admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admin-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+
+.admin-row.is-hidden {
+  opacity: 0.5;
+}
+
+.admin-open {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 220px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.admin-open img {
+  width: 36px;
+  height: 48px;
+  border-radius: 6px;
+  object-fit: cover;
+  object-position: center top;
+  background: var(--card-2);
+}
+
+.admin-name {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-name small {
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.admin-flag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-2);
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.admin-edit {
+  flex-basis: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.admin-edit label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.admin-edit label em {
+  font-style: normal;
+  opacity: 0.7;
+}
+
+.admin-edit input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 13.5px;
+}
+
+.admin-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-actions .primary {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 0;
+  background: var(--accent);
+  color: #0d0f12;
+  font-weight: 800;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.admin-actions .primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
