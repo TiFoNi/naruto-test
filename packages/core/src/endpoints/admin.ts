@@ -74,12 +74,26 @@ export const CREATE = handle(async (request) => {
     blanks[key] = Array.isArray(value) ? [] : typeof value === 'number' ? 0 : ''
   }
 
-  const doc = { ...blanks, game, id, thumb: 0, name: name.trim(), answer: false, hidden: true, updatedAt: new Date() }
+  const doc = { ...blanks, game, id, thumb: -1, name: name.trim(), answer: false, hidden: true, updatedAt: new Date() }
   await collection.insertOne(doc)
 
   forget(game)
   const created = await collection.findOne({ game, id }, { projection: { _id: 0, game: 0, updatedAt: 0 } })
   return json({ entity: created }, 201)
+})
+
+export const DELETE = handle(async (request) => {
+  if (!(await adminSession(request))) return missing()
+
+  const body = await readJson(request)
+  const { game, id } = body as { game?: unknown; id?: unknown }
+  if (!isGame(game) || typeof id !== 'number') return fail(400, 'bad_request')
+
+  const result = await (await entities()).deleteOne({ game, id })
+  if (!result.deletedCount) return missing()
+
+  forget(game)
+  return json({ ok: true })
 })
 
 export const PUT = handle(async (request) => {

@@ -3455,6 +3455,45 @@ button.ghost.small {
   font-weight: 700;
 }
 
+.ask-buttons .danger {
+  border-color: transparent;
+  background: #c2402f;
+  color: #fff;
+  font-weight: 700;
+}
+
+.admin-delete {
+  flex-basis: 100%;
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: none;
+  color: #e0715f;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.admin-delete:hover {
+  border-color: #c2402f;
+  background: rgba(194, 64, 47, 0.12);
+}
+
+.admin-blank {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 48px;
+  border-radius: 8px;
+  background: var(--card-2);
+  color: var(--text-3);
+  font-family: var(--display);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .ask-buttons button:disabled {
   opacity: 0.45;
   cursor: default;
@@ -3552,6 +3591,17 @@ button.ghost.small {
   gap: 10px;
   padding-top: 12px;
   border-top: 1px solid var(--line);
+}
+
+.thumb-blank {
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--card-2);
+  color: var(--text-3);
+  font-family: var(--display);
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .admin-rest {

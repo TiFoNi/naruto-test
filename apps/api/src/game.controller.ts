@@ -58,6 +58,11 @@ export class GameController {
     return bridge(admin.CREATE, req, res)
   }
 
+  @Post('admin/delete')
+  adminDelete(@Req() req: Request, @Res() res: Response) {
+    return bridge(admin.DELETE, req, res)
+  }
+
   @Post('admin/settings')
   adminSettings(@Req() req: Request, @Res() res: Response) {
     return bridge(admin.SETTINGS, req, res)

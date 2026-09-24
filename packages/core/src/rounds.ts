@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { dailyKey, judgeAll, statsKey, type GameId, type ModeId } from '@nanda/game'
+import { ABILITY_HINT_AT, ABILITY_STAGES, dailyKey, judgeAll, statsKey, type GameId, type ModeId } from '@nanda/game'
 import { dailyAnswer, dailyNumber, nextReset, pastAnswer, shiftDay, today } from './daily'
 import { rounds, type RoundDoc, type UserDoc } from './db'
 import { gameData, isGame, isMode, knows } from './games'
@@ -8,8 +8,6 @@ import { abilityByKey } from './abilities'
 import { optionsOf, roundExtra } from './extra'
 import { findChallenge, recordSolve } from './challenges'
 
-const ABILITY_HINT_AT = 7
-const ABILITY_STAGES = 5
 import type { Collection } from 'mongodb'
 
 const RECENT = 25

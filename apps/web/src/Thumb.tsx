@@ -9,8 +9,15 @@ const percent = (index: number, count: number) => (count > 1 ? (index / (count -
 export default function Thumb({ game, entity, size, className }: Props) {
   const { name } = useI18n()
   const { cols, rows } = game.atlas
-  const col = entity.thumb % cols
-  const row = Math.floor(entity.thumb / cols)
+  const tile = entity.thumb >= 0
+
+  if (!entity.image && !tile) {
+    return (
+      <div role="img" aria-label={name(entity)} className={`thumb thumb-blank ${className ?? ''}`} style={{ width: size, height: size }}>
+        {name(entity).slice(0, 1)}
+      </div>
+    )
+  }
 
   const own = entity.image
     ? {
@@ -21,7 +28,7 @@ export default function Thumb({ game, entity, size, className }: Props) {
     : {
         backgroundImage: `url(${atlasUrl(game.id)})`,
         backgroundSize: `${cols * 100}% ${rows * 100}%`,
-        backgroundPosition: `${percent(col, cols)}% ${percent(row, rows)}%`,
+        backgroundPosition: `${percent(entity.thumb % cols, cols)}% ${percent(Math.floor(entity.thumb / cols), rows)}%`,
       }
 
   return (

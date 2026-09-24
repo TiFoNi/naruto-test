@@ -15,6 +15,12 @@ const SKIP = new Set(['id', 'thumb', 'answer', 'hidden', ...NAMES])
 
 const asList = (value: unknown) => (Array.isArray(value) ? (value as string[]) : [])
 
+const UNIT = {
+  character: { one: 'персонаж', many: 'Персонажи', accusative: 'персонажа', fresh: 'Новый', created: 'создан', removed: 'удалён', subject: 'Персонаж' },
+  hero: { one: 'герой', many: 'Герои', accusative: 'героя', fresh: 'Новый', created: 'создан', removed: 'удалён', subject: 'Герой' },
+  manga: { one: 'манга', many: 'Манга', accusative: 'мангу', fresh: 'Новая', created: 'создана', removed: 'удалена', subject: 'Манга' },
+} as const
+
 export default function Admin() {
   const [gameId, setGameId] = useState<GameId>(GAMES[0].id)
   const [tab, setTab] = useState<'people' | 'words'>('people')
@@ -27,6 +33,9 @@ export default function Admin() {
   const [note, setNote] = useState<string | null>(null)
   const [updated, setUpdated] = useState('')
   const [adding, setAdding] = useState(false)
+  const [removing, setRemoving] = useState<Row | null>(null)
+
+  const unit = UNIT[GAMES.find((g) => g.id === gameId)?.unit ?? 'character']
 
   const load = useCallback(async (game: GameId) => {
     setRows(null)
@@ -98,7 +107,16 @@ export default function Admin() {
     setRows((list) => [...(list ?? []), data.entity as Row])
     setOpenId((data.entity as Row).id)
     setQuery(name)
-    setNote('создан — заполни и сними «скрыт»')
+    setNote(`${unit.created} — заполни и сними «скрыт»`)
+  }
+
+  const remove = async (row: Row) => {
+    setRemoving(null)
+    const { ok } = await api('admin/delete', { game: gameId, id: row.id })
+    if (!ok) return setNote('не удалилось')
+    setRows((list) => (list ?? []).filter((r) => r.id !== row.id))
+    setOpenId(null)
+    setNote(unit.removed)
   }
 
   const saveUpdated = async (value: string) => {
@@ -114,10 +132,10 @@ export default function Admin() {
   return (
     <main className="admin">
       <header className="admin-head">
-        <h1>{tab === 'people' ? 'Персонажи' : 'Словарь'}</h1>
+        <h1>{tab === 'people' ? unit.many : 'Словарь'}</h1>
         <div className="admin-tabs">
           <button type="button" className={tab === 'people' ? 'active' : ''} onClick={() => setTab('people')}>
-            Персонажи
+            {unit.many}
           </button>
           <button
             type="button"
@@ -140,7 +158,7 @@ export default function Admin() {
         </label>
         {tab === 'people' && (
           <button type="button" className="admin-create" onClick={() => setAdding(true)}>
-            + персонаж
+            + {unit.one}
           </button>
         )}
         {note && <span className="muted">{note}</span>}
@@ -148,11 +166,22 @@ export default function Admin() {
 
       {adding && (
         <Ask
-          title="Новый персонаж"
-          hint="Имя по-русски — остальное заполнишь в карточке"
+          title={`${unit.fresh} ${unit.one}`}
+          hint="Название по-русски — остальное заполнишь в карточке"
           action="Создать"
           onClose={() => setAdding(false)}
           onSubmit={create}
+        />
+      )}
+
+      {removing && (
+        <Ask
+          title={`Удалить ${String(removing.name ?? removing.id)}?`}
+          hint={`${unit.subject} исчезнет из игры навсегда. Загруженные картинки останутся в хранилище.`}
+          action="Удалить"
+          danger
+          onClose={() => setRemoving(null)}
+          onSubmit={() => remove(removing)}
         />
       )}
 
@@ -165,7 +194,11 @@ export default function Admin() {
           {shown.map((row) => (
             <li key={row.id} className={`admin-row ${row.hidden ? 'is-hidden' : ''}`}>
               <button type="button" className="admin-open" onClick={() => setOpenId(openId === row.id ? null : row.id)}>
-                <img src={cardUrl(gameId, row.id, row.image as string | undefined)} alt="" width={36} height={48} loading="lazy" />
+                {row.image || (row.thumb ?? 0) >= 0 ? (
+                  <img src={cardUrl(gameId, row.id, row.image as string | undefined)} alt="" width={36} height={48} loading="lazy" />
+                ) : (
+                  <span className="admin-blank">{String(row.name ?? '?').slice(0, 1)}</span>
+                )}
                 <span className="admin-name">
                   <b>{String(row.name ?? row.id)}</b>
                   <small>{String(row.nameEn ?? '')}</small>
@@ -193,6 +226,9 @@ export default function Admin() {
                     onSave={save}
                     onAdd={addValue}
                   />
+                  <button type="button" className="admin-delete" onClick={() => setRemoving(row)}>
+                    Удалить {unit.accusative}
+                  </button>
                 </>
               )}
             </li>
@@ -361,12 +397,14 @@ function Ask({
   title,
   hint,
   action,
+  danger,
   onClose,
   onSubmit,
 }: {
   title: string
   hint: string
   action: string
+  danger?: boolean
   onClose: () => void
   onSubmit: (value: string) => void
 }) {
@@ -388,18 +426,19 @@ function Ask({
         onClick={(e) => e.stopPropagation()}
         onSubmit={(e) => {
           e.preventDefault()
+          if (danger) return onSubmit(value)
           const name = value.trim()
           if (name) onSubmit(name)
         }}
       >
         <h2>{title}</h2>
         <p className="muted">{hint}</p>
-        <input autoFocus value={value} onChange={(e) => setValue(e.target.value)} />
+        {!danger && <input autoFocus value={value} onChange={(e) => setValue(e.target.value)} />}
         <div className="ask-buttons">
           <button type="button" onClick={onClose}>
             Отмена
           </button>
-          <button type="submit" className="primary" disabled={!value.trim()}>
+          <button type="submit" className={danger ? 'danger' : 'primary'} disabled={!danger && !value.trim()} autoFocus={danger}>
             {action}
           </button>
         </div>

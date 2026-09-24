@@ -1,6 +1,6 @@
 import { randomInt } from 'node:crypto'
 import { ObjectId } from 'mongodb'
-import { hasMode, judgeAll, type GameId, type ModeId } from '@nanda/game'
+import { ABILITY_HINT_AT, ABILITY_STAGES, hasMode, judgeAll, type GameId, type ModeId } from '@nanda/game'
 import { abilityByKey } from './abilities'
 import { duels, users, type DuelDoc, type DuelPlayer, type UserDoc } from './db'
 import { roundExtra } from './extra'
@@ -9,8 +9,6 @@ import { defaultNickname } from './profile'
 
 export const DUEL_MS = 10 * 60 * 1000
 export const MIN_GAP_MS = 800
-const ABILITY_STAGES = 5
-const ABILITY_HINT_AT = 7
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
 
 const code = () => Array.from({ length: 6 }, () => CODE_ALPHABET[randomInt(CODE_ALPHABET.length)]).join('')

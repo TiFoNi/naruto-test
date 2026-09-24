@@ -31,12 +31,14 @@
     "dev:api": "npm run dev --workspace @nanda/api",
     "build:api": "npm run build --workspace @nanda/api",
     "start": "node apps/api/dist/apps/api/src/main.js",
-    "build:web": "npm run build --workspace @nanda/web"
+    "build:web": "npm run build --workspace @nanda/web",
+    "brand": "node scripts/brand.mjs",
+    "dictionary": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/fill-dictionary.mjs"
   },
-  "dependencies": {},
   "devDependencies": {
     "@aws-sdk/client-s3": "^3.1138.0",
     "@types/node": "^22.20.4",
+    "opentype.js": "^2.0.0",
     "sharp": "^0.35.4"
   },
   "workspaces": [

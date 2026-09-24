@@ -233,6 +233,9 @@ export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
 export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page']
 
+export const ABILITY_STAGES = 5
+export const ABILITY_HINT_AT = 5
+
 const DEFAULT_MODES: ModeId[] = ['classic', 'image']
 
 export const modesOf = (game: GameId) => GAME_SPECS[game].modes ?? DEFAULT_MODES

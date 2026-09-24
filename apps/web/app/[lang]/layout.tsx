@@ -32,10 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     description: copy.description,
     alternates: alternates(`/${lang}`),
     openGraph: { type: 'website', siteName: 'NandaGuessr', url: `${SITE}/${lang}`, title: copy.title, description: copy.description },
-    twitter: { card: 'summary_large_image' },
-    icons: {
-      icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='6' y='6' width='52' height='52' rx='16' fill='%23ff8a1f' transform='rotate(-6 32 32)'/><text x='32' y='45' font-family='Arial Black,Arial' font-weight='900' font-size='30' text-anchor='middle' fill='%230d0f12'>?!</text></svg>",
-    },
+    twitter: { card: 'summary_large_image', title: copy.title, description: copy.description },
   }
 }
 
