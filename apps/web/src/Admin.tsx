@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { GAME_SPECS } from '@nanda/game'
 import { api } from './api'
 import { GAMES } from './games'
 import type { Entity, GameId } from './games/types'
@@ -49,6 +50,17 @@ export default function Admin() {
   }, [gameId, load])
 
   const fields = useMemo(() => (rows?.[0] ? Object.keys(rows[0]).filter((key) => !SKIP.has(key)) : []), [rows])
+
+  const judged = useMemo(() => {
+    const keys = new Set(GAME_SPECS[gameId].columns.map((column) => column.key))
+    return (key: string) => keys.has(key) || !!options[key]
+  }, [gameId, options])
+
+  const twin = (field: string, value: string) => {
+    const key = `${field}Index`
+    const sample = (rows ?? []).find((row) => row[field] === value && typeof row[key] === 'number')
+    return sample ? { [key]: sample[key] } : {}
+  }
 
   const shown = useMemo(() => {
     const needle = query.trim().toLowerCase()
@@ -172,7 +184,15 @@ export default function Admin() {
               {openId === row.id && (
                 <>
                   <Pictures game={gameId} row={row} onDone={(entity) => setRows((list) => (list ?? []).map((r) => (r.id === entity.id ? entity : r)))} />
-                  <Editor row={row} fields={fields} options={options} onSave={save} onAdd={addValue} />
+                  <Editor
+                    row={row}
+                    fields={fields}
+                    options={options}
+                    judged={judged}
+                    twin={twin}
+                    onSave={save}
+                    onAdd={addValue}
+                  />
                 </>
               )}
             </li>
@@ -187,15 +207,79 @@ function Editor({
   row,
   fields,
   options,
+  judged,
+  twin,
   onSave,
   onAdd,
 }: {
   row: Row
   fields: string[]
   options: Record<string, string[]>
+  judged: (field: string) => boolean
+  twin: (field: string, value: string) => Record<string, unknown>
   onSave: (row: Row, changed: Record<string, unknown>) => void
   onAdd: (field: string, term: Term, row: Row) => void
 }) {
+  const field = (key: string) => {
+    const choices = options[key]
+    if (!choices) {
+      return (
+        <label key={key}>
+          <span>{key}</span>
+          <input
+            key={String(row[key] ?? '')}
+            defaultValue={String(row[key] ?? '')}
+            onBlur={(e) =>
+              e.target.value !== String(row[key] ?? '') &&
+              onSave(row, { [key]: typeof row[key] === 'number' ? Number(e.target.value) : e.target.value })
+            }
+          />
+        </label>
+      )
+    }
+
+    if (Array.isArray(row[key])) {
+      const picked = asList(row[key])
+      return (
+        <label key={key} className="admin-multi">
+          <span>{key}</span>
+          <div className="admin-chips">
+            {choices.map((choice) => (
+              <button
+                key={choice}
+                type="button"
+                className={picked.includes(choice) ? 'on' : ''}
+                onClick={() =>
+                  onSave(row, {
+                    [key]: picked.includes(choice) ? picked.filter((v) => v !== choice) : [...picked, choice],
+                  })
+                }
+              >
+                {choice}
+              </button>
+            ))}
+            <NewValue field={key} row={row} onAdd={onAdd} />
+          </div>
+        </label>
+      )
+    }
+
+    return (
+      <label key={key} className="admin-single">
+        <span>{key}</span>
+        <Dropdown
+          value={String(row[key] ?? '')}
+          choices={choices}
+          onPick={(picked) => onSave(row, { [key]: picked, ...twin(key, picked) })}
+        />
+        <NewValue field={key} row={row} onAdd={onAdd} />
+      </label>
+    )
+  }
+
+  const used = fields.filter(judged)
+  const rest = fields.filter((key) => !judged(key))
+
   return (
     <div className="admin-edit">
       {NAMES.map((key) => (
@@ -209,57 +293,14 @@ function Editor({
         </label>
       ))}
 
-      {fields.map((key) => {
-        const choices = options[key]
-        if (!choices) {
-          return (
-            <label key={key}>
-              <span>{key}</span>
-              <input
-                defaultValue={String(row[key] ?? '')}
-                onBlur={(e) =>
-                  e.target.value !== String(row[key] ?? '') &&
-                  onSave(row, { [key]: typeof row[key] === 'number' ? Number(e.target.value) : e.target.value })
-                }
-              />
-            </label>
-          )
-        }
+      {used.map(field)}
 
-        if (Array.isArray(row[key])) {
-          const picked = asList(row[key])
-          return (
-            <label key={key} className="admin-multi">
-              <span>{key}</span>
-              <div className="admin-chips">
-                {choices.map((choice) => (
-                  <button
-                    key={choice}
-                    type="button"
-                    className={picked.includes(choice) ? 'on' : ''}
-                    onClick={() =>
-                      onSave(row, {
-                        [key]: picked.includes(choice) ? picked.filter((v) => v !== choice) : [...picked, choice],
-                      })
-                    }
-                  >
-                    {choice}
-                  </button>
-                ))}
-                <NewValue field={key} row={row} onAdd={onAdd} />
-              </div>
-            </label>
-          )
-        }
-
-        return (
-          <label key={key} className="admin-single">
-            <span>{key}</span>
-            <Dropdown value={String(row[key] ?? '')} choices={choices} onPick={(picked) => onSave(row, { [key]: picked })} />
-            <NewValue field={key} row={row} onAdd={onAdd} />
-          </label>
-        )
-      })}
+      {rest.length > 0 && (
+        <div className="admin-rest">
+          <span className="admin-rest-title">в игре не участвует</span>
+          <div className="admin-rest-fields">{rest.map(field)}</div>
+        </div>
+      )}
     </div>
   )
 }

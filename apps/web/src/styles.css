@@ -3554,6 +3554,30 @@ button.ghost.small {
   border-top: 1px solid var(--line);
 }
 
+.admin-rest {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  opacity: 0.6;
+}
+
+.admin-rest-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-3);
+}
+
+.admin-rest-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+}
+
 .admin-edit label {
   display: flex;
   flex-direction: column;
