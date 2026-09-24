@@ -1,5 +1,7 @@
 import CharacterSearch from './CharacterSearch'
-import GuessGrid, { Legend } from './GuessGrid'
+import GuessGrid from './GuessGrid'
+import PlayPanel from './PlayPanel'
+import PlaySide from './PlaySide'
 import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
 import Yesterday from './Yesterday'
@@ -12,34 +14,55 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 
 export default function ClassicMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t } = useI18n()
-  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(game, 'classic', active, daily, challenge)
-
+  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(
+    game,
+    'classic',
+    active,
+    daily,
+    challenge,
+  )
+  const playing = !!round && !over
 
   return (
-    <section className="mode">
-      <div className="card intro">
-        <h2>{t('play.classicTitle')}</h2>
-        <p className="muted">{t('play.classicPrompt')}</p>
-        {round && <p className="round">{t(round.daily ? 'daily.round' : 'play.round', { round: round.number, guesses: guesses.length })}</p>}
+    <section className="play-layout">
+      <div className="play-main">
+        <PlayPanel
+          media={
+            <span className="play-mystery" aria-hidden>
+              ?
+            </span>
+          }
+          title={t('play.classicTitle')}
+          hint={t('play.classicPrompt')}
+          attempts={guesses.length}
+          streak={stats.streak}
+        >
+          {playing && <CharacterSearch game={game} exclude={exclude} active={active} busy={busy} onPick={guess} />}
+        </PlayPanel>
+
         {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
+
+        <RoundStatus loading={!round && !error} error={error} onRetry={retry} />
+
+        {round && over && answer && (
+          <RoundResult
+            game={game}
+            answer={answer}
+            guesses={guesses.length}
+            won={won}
+            skipped={skipped}
+            stats={stats}
+            onNext={next}
+            challenge={challenge}
+            mode="classic"
+            nextAt={round.nextAt}
+          />
+        )}
+
+        <GuessGrid game={game} guesses={guesses} />
       </div>
 
-      <RoundStatus loading={!round && !error} error={error} onRetry={retry} />
-
-      {round && over && answer ? (
-        <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} skipped={skipped} stats={stats} onNext={next} challenge={challenge} mode="classic" nextAt={round.nextAt} />
-      ) : round ? (
-        <>
-          <CharacterSearch game={game} exclude={exclude} active={active} busy={busy} onPick={guess} />
-          <button className="link-button" onClick={giveUp} disabled={busy}>
-            {t('play.giveUp')}
-          </button>
-        </>
-      ) : null}
-
-      <GuessGrid game={game} guesses={guesses} />
-
-      <Legend game={game} />
+      <PlaySide game={game} mode="classic" daily={daily} stats={stats} playing={playing} legend onGiveUp={giveUp} />
     </section>
   )
 }

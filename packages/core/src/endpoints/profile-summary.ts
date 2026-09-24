@@ -92,8 +92,9 @@ function streakOf(days: string[]) {
     best = Math.max(best, run)
   }
 
+  const monday = shiftDay(now, -((new Date(`${now}T00:00:00Z`).getUTCDay() + 6) % 7))
   const week = Array.from({ length: 7 }, (_, index) => {
-    const day = shiftDay(now, index - 6)
+    const day = shiftDay(monday, index)
     return { day, played: seen.has(day) }
   })
 

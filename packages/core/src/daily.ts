@@ -5,7 +5,6 @@ import { gameData } from './games'
 import { roundExtra } from './extra'
 
 const ZONE = 'Europe/Kyiv'
-const LAUNCH = '2026-09-22'
 const DAY_MS = 86_400_000
 
 const parts = (now: Date) =>
@@ -39,7 +38,6 @@ const dayNumber = (day: string) => Date.parse(`${day}T00:00:00Z`) / DAY_MS
 
 export const shiftDay = (day: string, delta: number) => new Date((dayNumber(day) + delta) * DAY_MS).toISOString().slice(0, 10)
 
-export const dailyNumber = (day: string) => dayNumber(day) - dayNumber(LAUNCH) + 1
 
 const secret = () => process.env.DAILY_SECRET || process.env.AUTH_SECRET || ''
 

@@ -3,18 +3,20 @@ import Thumb from './Thumb'
 import type { Entity, Game } from './games/types'
 import { ruToUk, useI18n } from './i18n'
 import { normalize } from './util'
+import { ArrowIcon, SearchIcon } from './icons'
 
-const LIMIT = 40
+const LIMIT = 8
 
 type Props = {
   game: Game
   exclude: Set<number>
   active: boolean
   busy?: boolean
+  compact?: boolean
   onPick: (e: Entity) => void
 }
 
-export default function CharacterSearch({ game, exclude, active: visible, busy = false, onPick }: Props) {
+export default function CharacterSearch({ game, exclude, active: visible, busy = false, compact = false, onPick }: Props) {
   const { t, name, alt } = useI18n()
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
@@ -106,8 +108,10 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
   }
 
   return (
-    <div className="search">
+    <div className={`search ${compact ? 'compact' : ''}`}>
+      <div className="search-row">
       <div className="search-box" ref={box}>
+        <SearchIcon />
         <input
           ref={input}
           value={query}
@@ -136,9 +140,11 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
             }
           }}
         />
-        <button className="send" aria-label={t('play.send')} disabled={!matches.length || busy} onClick={() => pick(matches[active])}>
-          ➤
-        </button>
+        {!compact && <span className="search-left">{t('play.left', { count: game.entities.length - exclude.size })}</span>}
+      </div>
+      <button className="send" aria-label={t('play.guess')} disabled={!matches.length || busy} onClick={() => pick(matches[active])}>
+        {compact ? <ArrowIcon /> : <>{t('play.guess')} <ArrowIcon /></>}
+      </button>
       </div>
       {matches.length > 0 && (
         <ul className={`suggestions ${place.up ? 'up' : ''}`} ref={list} style={{ maxHeight: place.max }}>

@@ -265,3 +265,27 @@ export function PlayIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function MinusIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2.6}>
+      <path d="M6 12h12" />
+    </svg>
+  )
+}
+
+export function UpIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2.6}>
+      <path d="M12 19V5M6 11l6-6 6 6" />
+    </svg>
+  )
+}
+
+export function DownIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2.6}>
+      <path d="M12 5v14M6 13l6 6 6-6" />
+    </svg>
+  )
+}

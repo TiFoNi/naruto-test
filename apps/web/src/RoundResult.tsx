@@ -20,9 +20,10 @@ type Props = {
   onNext: () => void
   challenge?: string
   nextAt?: number
+  compact?: boolean
 }
 
-export default function RoundResult({ game, mode, answer, guesses, won, skipped, stats, onNext, challenge, nextAt }: Props) {
+export default function RoundResult({ game, mode, answer, guesses, won, skipped, stats, onNext, challenge, nextAt, compact }: Props) {
   const { t, name, alt } = useI18n()
   const href = useHref()
   const ref = useRef<HTMLDivElement>(null)
@@ -51,7 +52,7 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
   return (
     <div ref={ref} className={`card result ${won ? 'won' : skipped ? 'skipped' : 'lost'}`}>
       <h2>{t(won ? 'result.won' : skipped ? 'result.skipped' : 'result.lost')}</h2>
-      <img className="result-image" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />
+      {!compact && <img className="result-image" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />}
       <div className="result-name">{name(answer)}</div>
       {alt(answer) && <div className="result-name-en">{alt(answer)}</div>}
       <p className="round">{summary}</p>

@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import PlayPanel from './PlayPanel'
+import PlaySide from './PlaySide'
 import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
 import Yesterday from './Yesterday'
@@ -24,66 +26,77 @@ export default function PageMode({ game, active, stats, daily = false, challenge
 
   useEffect(() => setLoaded(null), [src])
 
+  const playing = !!round && !over
+
   return (
-    <section className="mode">
-      {!over && (
-        <div className="card intro">
-          <h2>{t('play.pageTitle')}</h2>
-          <p className="muted">{t('play.pagePrompt')}</p>
-          {src && (
-            <div className="manga-frame">
-              {!ready && <div className="zoom-loading">{t('image.loading')}</div>}
-              <img
-                key={src}
-                className="manga-page"
-                src={src}
-                alt={t('play.pageTitle')}
-                ref={(el) => {
-                  if (el?.complete && el.naturalWidth) setLoaded(src)
-                }}
-                onLoad={() => setLoaded(src)}
-                style={{ opacity: ready ? 1 : 0 }}
-              />
+    <section className="play-layout">
+      <div className="play-main">
+        <PlayPanel
+          media={
+            src ? (
+              <div className="manga-frame">
+                {!ready && <div className="zoom-loading">{t('image.loading')}</div>}
+                <img
+                  key={src}
+                  className="manga-page"
+                  src={src}
+                  alt={t('play.pageTitle')}
+                  ref={(el) => {
+                    if (el?.complete && el.naturalWidth) setLoaded(src)
+                  }}
+                  onLoad={() => setLoaded(src)}
+                  style={{ opacity: ready ? 1 : 0 }}
+                />
+              </div>
+            ) : (
+              <span className="play-mystery" aria-hidden>
+                ?
+              </span>
+            )
+          }
+          title={t('play.pageTitle')}
+          hint={t('play.pagePrompt')}
+          attempts={guesses.length}
+          streak={stats.streak}
+        >
+          {playing && (
+            <div className="options">
+              {options.map((option) => (
+                <button
+                  key={option.id}
+                  className={`option ${waiting === option.id ? 'waiting' : missed.has(option.id) ? 'wrong' : ''}`}
+                  disabled={busy || !ready || missed.has(option.id) || waiting === option.id}
+                  onClick={() => guess(option)}
+                >
+                  <span className="option-name">{name(option)}</span>
+                  <span className="option-en">{option.nameEn}</span>
+                </button>
+              ))}
             </div>
           )}
-          {round && (
-            <p className="round">{t(round.daily ? 'daily.round' : 'play.round', { round: round.number, guesses: guesses.length })}</p>
-          )}
-          {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
-        </div>
-      )}
+        </PlayPanel>
 
-      <RoundStatus loading={!round && !error} error={error} onRetry={retry} />
+        {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
 
-      {round && over && answer ? (
-        <>
-          <RoundResult game={game} answer={answer} guesses={guesses.length} won={won} skipped={skipped} stats={stats} onNext={next} challenge={challenge} mode="page" nextAt={round.nextAt} />
-          {round.daily && yesterday && (
-            <div className="card yesterday-card">
-              <Yesterday game={game} entity={yesterday} />
-            </div>
-          )}
-        </>
-      ) : round ? (
-        <>
-          <div className="options">
-            {options.map((option) => (
-              <button
-                key={option.id}
-                className={`option ${waiting === option.id ? 'waiting' : missed.has(option.id) ? 'wrong' : ''}`}
-                disabled={busy || !ready || missed.has(option.id) || waiting === option.id}
-                onClick={() => guess(option)}
-              >
-                <span className="option-name">{name(option)}</span>
-                <span className="option-en">{option.nameEn}</span>
-              </button>
-            ))}
-          </div>
-          <button className="link-button" onClick={giveUp} disabled={busy || !ready}>
-            {t('play.giveUp')}
-          </button>
-        </>
-      ) : null}
+        <RoundStatus loading={!round && !error} error={error} onRetry={retry} />
+
+        {round && over && answer && (
+          <RoundResult
+            game={game}
+            answer={answer}
+            guesses={guesses.length}
+            won={won}
+            skipped={skipped}
+            stats={stats}
+            onNext={next}
+            challenge={challenge}
+            mode="page"
+            nextAt={round.nextAt}
+          />
+        )}
+      </div>
+
+      <PlaySide game={game} mode="page" daily={daily} stats={stats} playing={playing} busy={!ready} onGiveUp={giveUp} />
     </section>
   )
 }

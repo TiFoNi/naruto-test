@@ -7,7 +7,6 @@ import type { Stats } from './stats'
 
 export type RoundView = {
   id: string
-  number: number
   status: 'active' | 'won' | 'lost' | 'skipped'
   guesses: { id: number; judgement?: Record<string, Judgement> }[]
   answerId?: number
@@ -48,7 +47,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
       const next = data.round
       setRound((prev) =>
         prev && prev.id === next.id
-          ? { ...prev, ...next, number: next.number ?? prev.number, nextAt: next.nextAt ?? prev.nextAt, yesterdayId: next.yesterdayId ?? prev.yesterdayId, daily: next.daily ?? prev.daily }
+          ? { ...prev, ...next, nextAt: next.nextAt ?? prev.nextAt, yesterdayId: next.yesterdayId ?? prev.yesterdayId, daily: next.daily ?? prev.daily }
           : next,
       )
       if (data.stats) setStats(data.stats.key, data.stats.value)

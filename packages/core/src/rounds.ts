@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { ABILITY_HINT_AT, ABILITY_STAGES, dailyKey, judgeAll, statsKey, type GameId, type ModeId } from '@nanda/game'
-import { dailyAnswer, dailyNumber, nextReset, pastAnswer, shiftDay, today } from './daily'
+import { dailyAnswer, nextReset, pastAnswer, shiftDay, today } from './daily'
 import { rounds, type RoundDoc, type UserDoc } from './db'
 import { gameData, isGame, isMode, knows } from './games'
 import { applyDailyResult, applyResult, defaultNickname } from './profile'
@@ -109,17 +109,11 @@ export async function roundView(round: RoundDoc, full = true) {
   const game = round.game as GameId
   const { byId } = await gameData(game)
   const answer = byId.get(round.answerId)!
-  const number = !full
-    ? undefined
-    : round.daily
-      ? dailyNumber(round.daily)
-      : await (await rounds()).countDocuments({ userId: round.userId, game: round.game, mode: round.mode, daily: { $exists: false } })
   const id = round._id!.toHexString()
   return {
     id,
     game: round.game,
     mode: round.mode,
-    number,
     ...(round.daily && full ? await dailyInfo(round) : {}),
     ...(round.challenge ? { challenge: round.challenge } : {}),
     status: round.status,

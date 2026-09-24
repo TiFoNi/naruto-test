@@ -7,7 +7,8 @@ import { useI18n } from './i18n'
 import Quests, { type Level } from './Quests'
 import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
-import { CalendarIcon, TrophyIcon } from './icons'
+import { CalendarIcon, CheckIcon, TrophyIcon } from './icons'
+import { kyivToday } from './stats'
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -77,6 +78,7 @@ const percent = (part: number, whole: number) => (whole ? Math.round((part / who
 export default function Profile({ onBack }: { onBack: () => void }) {
   const { user, setNickname, resetStats, logout } = useAuth()
   const { t, l, lang, error: errorText } = useI18n()
+  const today = kyivToday()
 
   const [summary, setSummary] = useState<Summary | null>(null)
   const [nickname, setNicknameDraft] = useState(user?.nickname ?? '')
@@ -241,16 +243,14 @@ export default function Profile({ onBack }: { onBack: () => void }) {
               <b>{summary?.streak.current ?? 0}</b>
               <div>
                 <span>{pluralOf(summary?.streak.current ?? 0, lang, DAYS)}</span>
-                <small className={summary?.streak.week.at(-1)?.played ? 'ok' : 'muted'}>
-                  {summary?.streak.week.at(-1)?.played ? t('profile.streakToday') : t('profile.streakIdle')}
-                </small>
+                <small className={summary?.streak.week.find((d) => d.day === today)?.played ? 'ok' : 'muted'}>{summary?.streak.week.find((d) => d.day === today)?.played ? t('profile.streakToday') : t('profile.streakIdle')}</small>
               </div>
             </div>
             <ul className="streak-week">
-              {(summary?.streak.week ?? []).map((day, index) => (
-                <li key={day.day} className={day.played ? 'on' : ''}>
-                  <span aria-hidden>{day.played ? '✓' : ''}</span>
-                  <small>{WEEKDAYS[lang][(new Date(`${day.day}T00:00:00Z`).getUTCDay() + 6) % 7] ?? index}</small>
+              {(summary?.streak.week ?? []).map((day) => (
+                <li key={day.day} className={`${day.played ? 'on' : ''} ${day.day === today ? 'now' : day.day > today ? 'future' : ''}`}>
+                  <span aria-hidden>{day.played ? <CheckIcon /> : null}</span>
+                  <small>{WEEKDAYS[lang][(new Date(`${day.day}T00:00:00Z`).getUTCDay() + 6) % 7]}</small>
                 </li>
               ))}
             </ul>

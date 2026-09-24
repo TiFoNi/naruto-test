@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import Thumb from './Thumb'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
+import { DownIcon, UpIcon } from './icons'
 import type { Guess } from './useRound'
 
 const sizeClass = (text: string) => (text.length > 44 ? 'size-xs' : text.length > 26 ? 'size-s' : '')
@@ -12,15 +13,19 @@ const MAX_ROW_DELAY = 0.5
 
 export default function GuessGrid({ game, guesses }: { game: Game; guesses: Guess[] }) {
   const { t, l, tv, lang, name } = useI18n()
+  const legend = game.legend === 'debut' ? (['legend.debutLater', 'legend.debutEarlier'] as const) : (['legend.higher', 'legend.lower'] as const)
   const firstBatch = useRef<number | null>(null)
   if (firstBatch.current === null && guesses.length > 0) firstBatch.current = guesses.length
-  const legend = game.legend === 'debut' ? (['legend.debutLater', 'legend.debutEarlier'] as const) : (['legend.higher', 'legend.lower'] as const)
+  const cols = game.columns.length + 1
 
-  if (!guesses.length) return null
+  if (!guesses.length)
+    return (
+      <p className="grid-empty">{t('play.emptyGrid')}</p>
+    )
 
   return (
     <div className="grid-scroll">
-      <div className="grid" style={{ ['--cols' as string]: game.columns.length + 1 }}>
+      <div className="grid" style={{ ['--cols' as string]: cols }}>
         <div className="grid-row header">
           <div>{t(game.unit === 'manga' ? 'play.manga' : game.unit === 'hero' ? 'play.hero' : 'play.character')}</div>
           {game.columns.map((c) => (
@@ -43,13 +48,19 @@ export default function GuessGrid({ game, guesses }: { game: Game; guesses: Gues
               const text = col.text(g, ctx)
               const icons = col.icons?.(g, ctx) ?? []
               const verdict = judgement?.[col.key]
+              const kind = verdict?.verdict ?? 'wrong'
               return (
                 <div
                   key={col.key}
                   title={text}
-                  className={`cell ${verdict?.verdict ?? 'wrong'} ${sizeClass(text)}`}
+                  className={`cell ${kind} ${sizeClass(text)}`}
                   style={{ animationDelay: `${(row < (firstBatch.current ?? 0) ? Math.min(row * ROW_STEP, MAX_ROW_DELAY) : 0) + i * COL_STEP}s` }}
                 >
+                  {verdict?.arrow && (
+                    <b className="cell-arrow" aria-label={t(verdict.arrow === 'up' ? legend[0] : legend[1])}>
+                      {verdict.arrow === 'up' ? <UpIcon /> : <DownIcon />}
+                    </b>
+                  )}
                   {icons.length ? (
                     <div className="icons">
                       {icons.map((icon) => (
@@ -62,11 +73,6 @@ export default function GuessGrid({ game, guesses }: { game: Game; guesses: Gues
                   ) : (
                     <span>{text}</span>
                   )}
-                  {verdict?.arrow && (
-                    <b className="arrow" aria-label={t(verdict.arrow === 'up' ? legend[0] : legend[1])}>
-                      {verdict.arrow === 'up' ? '↑' : '↓'}
-                    </b>
-                  )}
                 </div>
               )
             })}
@@ -74,19 +80,5 @@ export default function GuessGrid({ game, guesses }: { game: Game; guesses: Gues
         ))}
       </div>
     </div>
-  )
-}
-
-export function Legend({ game }: { game: Game }) {
-  const { t } = useI18n()
-  const legend = game.legend === 'debut' ? (['legend.debutLater', 'legend.debutEarlier'] as const) : (['legend.higher', 'legend.lower'] as const)
-  return (
-    <ul className="legend">
-      <li><span className="swatch correct" />{t('legend.correct')}</li>
-      <li><span className="swatch partial" />{t('legend.partial')}</li>
-      <li><span className="swatch wrong" />{t('legend.wrong')}</li>
-      <li><b className="arrow">↑</b>{t(legend[0])}</li>
-      <li><b className="arrow">↓</b>{t(legend[1])}</li>
-    </ul>
   )
 }
