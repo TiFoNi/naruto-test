@@ -4382,19 +4382,15 @@ button.ghost.small {
   height: 18px;
 }
 
-.card-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--accent);
-  font-size: 13px;
-  font-weight: 700;
+.card-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.card-link svg {
-  width: 14px;
-  height: 14px;
-  transform: rotate(-90deg);
+.card-title p {
+  margin: 0;
+  font-size: 13px;
 }
 
 .streak-card,

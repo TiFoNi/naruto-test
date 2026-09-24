@@ -5,8 +5,7 @@ import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
 import { MODES } from './modes'
-import { useHref } from './router'
-import { CalendarIcon, ChevronIcon, TrophyIcon } from './icons'
+import { CalendarIcon, TrophyIcon } from './icons'
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -69,7 +68,6 @@ const percent = (part: number, whole: number) => (whole ? Math.round((part / who
 export default function Profile({ onBack }: { onBack: () => void }) {
   const { user, setNickname, resetStats, logout } = useAuth()
   const { t, l, lang, error: errorText } = useI18n()
-  const href = useHref()
 
   const [summary, setSummary] = useState<Summary | null>(null)
   const [nickname, setNicknameDraft] = useState(user?.nickname ?? '')
@@ -290,12 +288,11 @@ export default function Profile({ onBack }: { onBack: () => void }) {
             <div className="profile-column">
               <section className="card worlds-card">
                 <header>
-                  <h2>{t('profile.worlds')}</h2>
-                  <a className="card-link" href={href.home}>
-                    {t('nav.games')} <ChevronIcon />
-                  </a>
+                  <div className="card-title">
+                    <h2>{t('profile.worlds')}</h2>
+                    <p className="muted">{t('profile.worldsHint')}</p>
+                  </div>
                 </header>
-                <p className="muted">{t('profile.worldsHint')}</p>
                 {summary?.games.length ? (
                   <ul className="worlds">
                     {summary.games.map((row) => {
