@@ -234,7 +234,6 @@ export default function Profile({ onBack }: { onBack: () => void }) {
               <div>
                 <span>{t('profile.rank')}</span>
                 {summary?.rank ? <b>#{summary.rank.position}</b> : <b className="empty">—</b>}
-                {summary?.rank && <small>{`${lang === 'en' ? 'of' : lang === 'uk' ? 'з' : 'из'} ${summary.rank.players}`}</small>}
               </div>
               <div>
                 <span>{t('profile.played')}</span>
