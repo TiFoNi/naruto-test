@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Background from './Background'
@@ -33,11 +33,44 @@ function LangSwitch() {
   )
 }
 
+function useHidingHeader() {
+  const [hidden, setHidden] = useState(false)
+  const last = useRef(0)
+
+  useEffect(() => {
+    let frame = 0
+
+    const check = () => {
+      frame = 0
+      const y = window.scrollY
+      const step = y - last.current
+      if (Math.abs(step) > 4) {
+        setHidden(y > 90 && step > 0)
+        last.current = y
+      }
+    }
+
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(check)
+    }
+
+    last.current = window.scrollY
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (frame) cancelAnimationFrame(frame)
+    }
+  }, [])
+
+  return hidden
+}
+
 export default function Shell({ children, games }: { children: ReactNode; games: GameMeta[] }) {
   const { user, loading } = useAuth()
   const href = useHref()
   const { t } = useI18n()
   const pathname = usePathname()
+  const hidden = useHidingHeader()
   const [, , section, gameId, modeId, tail] = pathname.split('/')
   const open = PUBLIC.has(section ?? '')
   const game = section === 'play' ? metaById(games, gameId as never) : null
@@ -52,7 +85,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   return (
     <div className="app">
       <Background />
-      <header className="topbar">
+      <header className={`topbar ${hidden ? 'is-hidden' : ''}`}>
         <div className="topbar-inner">
           <Link className="brand" href={href.home}>
             <span className="brand-mark" aria-hidden>
