@@ -4328,6 +4328,14 @@ button.ghost.small {
 
 .profile-settings .notice {
   margin-top: 10px;
+  animation: notice-in 0.2s ease;
+}
+
+@keyframes notice-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 }
 
 .profile-settings p {

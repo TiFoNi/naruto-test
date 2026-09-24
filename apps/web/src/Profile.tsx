@@ -133,6 +133,12 @@ export default function Profile({ onBack }: { onBack: () => void }) {
     void load()
   }, [load])
 
+  useEffect(() => {
+    if (!nickMessage) return
+    const timer = setTimeout(() => setNickMessage(null), 3500)
+    return () => clearTimeout(timer)
+  }, [nickMessage])
+
   if (!user) return null
 
   const saveNickname = async (event: FormEvent) => {
