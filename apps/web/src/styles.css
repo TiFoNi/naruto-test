@@ -4234,16 +4234,6 @@ button.ghost.small {
     min-height: min-content;
   }
 
-  .profile-card {
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  .profile-settings {
-    min-height: 0;
-    overflow-y: auto;
-    scrollbar-width: thin;
-  }
 }
 
 .profile-column {
@@ -4317,55 +4307,62 @@ button.ghost.small {
   flex: 1;
 }
 
-.profile-settings {
+.profile .settings-modal {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--line);
+  gap: 18px;
+  width: min(100%, 420px);
 }
 
-.profile-settings form {
+.settings-modal header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings-modal h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 20px;
+}
+
+.settings-modal form {
   display: flex;
   flex-direction: column;
 }
 
-.profile-settings label {
+.settings-modal label {
   font-size: 13px;
   font-weight: 700;
 }
 
-.profile-settings p {
+.settings-modal p {
+  margin: 4px 0 10px;
   font-size: 12px;
 }
 
-.profile-settings .inline-field {
-  gap: 6px;
-}
-
-.profile-settings .inline-field input {
-  padding: 9px 11px;
+.settings-modal .inline-field input {
+  padding: 10px 12px;
   font-size: 14px;
-  border-radius: 10px;
   background: var(--card-2);
 }
 
-.profile-settings .primary,
-.profile-settings .ghost,
-.profile-settings .danger {
-  padding: 9px 14px;
+.settings-modal .primary,
+.settings-modal .ghost,
+.settings-modal .danger {
+  padding: 10px 16px;
   border-radius: 10px;
-  font-size: 13px;
+  font-size: 14px;
   white-space: nowrap;
 }
 
-.profile-settings .primary:disabled {
+.settings-modal .primary:disabled {
   opacity: 1;
   background: var(--card-2);
   color: var(--text-3);
 }
 
-.profile-settings .notice {
+.settings-modal .notice {
   margin-top: 10px;
   animation: notice-in 0.2s ease;
 }
@@ -4377,14 +4374,11 @@ button.ghost.small {
   }
 }
 
-.profile-settings p {
-  margin: 4px 0 8px;
-  font-size: 13px;
-}
-
 .profile-reset {
   display: flex;
   flex-direction: column;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
 }
 
 .profile-metrics {

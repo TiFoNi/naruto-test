@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useState, type FormEvent } from 'react'
 import { useAuth } from './auth'
 import { api } from './api'
 import { GAMES } from './games'
@@ -99,25 +99,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   } | null>(null)
   const [savingNick, setSavingNick] = useState(false)
   const [settings, setSettings] = useState(false)
-  const middle = useRef<HTMLDivElement>(null)
-  const [frame, setFrame] = useState<number | null>(null)
-
-  useEffect(() => {
-    if (settings) return
-    const measure = () => {
-      const wide = window.matchMedia('(min-width: 721px)').matches
-      setFrame(wide && middle.current ? middle.current.offsetHeight : null)
-    }
-    measure()
-    const observer = new ResizeObserver(measure)
-    if (middle.current) observer.observe(middle.current)
-    window.addEventListener('resize', measure)
-    return () => {
-      observer.disconnect()
-      window.removeEventListener('resize', measure)
-    }
-  }, [settings, summary, board])
-  const [confirmReset, setConfirmReset] = useState(false)
+ const [confirmReset, setConfirmReset] = useState(false)
   const [resetting, setResetting] = useState(false)
 
   const load = useCallback(async () => {
@@ -138,6 +120,13 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   useEffect(() => {
     void load()
   }, [load])
+
+  useEffect(() => {
+    if (!settings) return
+    const key = (event: KeyboardEvent) => event.key === 'Escape' && setSettings(false)
+    document.addEventListener('keydown', key)
+    return () => document.removeEventListener('keydown', key)
+  }, [settings])
 
   useEffect(() => {
     if (!nickMessage) return
@@ -198,7 +187,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
       </button>
 
       <div className="profile-grid">
-        <div className="profile-column" style={frame ? { maxHeight: frame } : undefined}>
+        <div className="profile-column">
           <section className="card profile-card">
             <div className="profile-id">
               <span className="avatar" aria-hidden>
@@ -269,49 +258,6 @@ export default function Profile({ onBack }: { onBack: () => void }) {
                 {t('nav.logout')}
               </button>
             </div>
-
-            {settings && (
-              <div className="profile-settings">
-                <form onSubmit={saveNickname}>
-                  <label htmlFor="nickname">{t('profile.nickname')}</label>
-                  <p className="muted">{t('profile.nicknameHint')}</p>
-                  <div className="inline-field">
-                    <input
-                      id="nickname"
-                      value={nickname}
-                      maxLength={24}
-                      onChange={(event) => {
-                        setNicknameDraft(event.target.value)
-                        setNickMessage(null)
-                      }}
-                    />
-                    <button className="primary" type="submit" disabled={savingNick || nickname.trim() === user.nickname}>
-                      {savingNick ? '…' : t('profile.save')}
-                    </button>
-                  </div>
-                  {nickMessage && <div className={nickMessage.ok ? 'notice ok' : 'notice error'}>{nickMessage.text}</div>}
-                </form>
-
-                <div className="profile-reset">
-                  <label>{t('profile.resetTitle')}</label>
-                  <p className="muted">{t('profile.resetHint')}</p>
-                  {confirmReset ? (
-                    <div className="inline-field">
-                      <button type="button" className="danger" onClick={reset} disabled={resetting}>
-                        {resetting ? t('profile.resetting') : t('profile.resetYes')}
-                      </button>
-                      <button type="button" className="ghost" onClick={() => setConfirmReset(false)}>
-                        {t('profile.cancel')}
-                      </button>
-                    </div>
-                  ) : (
-                    <button type="button" className="ghost" onClick={() => setConfirmReset(true)}>
-                      {t('profile.resetButton')}
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
           </section>
 
           <section className="card streak-card">
@@ -343,7 +289,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
 
        </div>
 
-        <div className="profile-middle" ref={middle}>
+        <div className="profile-middle">
           <section className="profile-metrics">
             <div className="card">
               <span>{t('profile.characters')}</span>
@@ -589,6 +535,64 @@ export default function Profile({ onBack }: { onBack: () => void }) {
           </section>
         </div>
       </div>
+
+      {settings && (
+        <div className="modal-backdrop" onClick={() => setSettings(false)} role="presentation">
+          <section
+            className="card modal settings-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('profile.settings')}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <header>
+              <h2>{t('profile.settings')}</h2>
+              <button type="button" className="modal-close" onClick={() => setSettings(false)} aria-label={t('profile.cancel')}>
+                ✕
+              </button>
+            </header>
+
+            <form onSubmit={saveNickname}>
+              <label htmlFor="nickname">{t('profile.nickname')}</label>
+              <p className="muted">{t('profile.nicknameHint')}</p>
+              <div className="inline-field">
+                <input
+                  id="nickname"
+                  value={nickname}
+                  maxLength={24}
+                  onChange={(event) => {
+                    setNicknameDraft(event.target.value)
+                    setNickMessage(null)
+                  }}
+                />
+                <button className="primary" type="submit" disabled={savingNick || nickname.trim() === user.nickname}>
+                  {savingNick ? '…' : t('profile.save')}
+                </button>
+              </div>
+              {nickMessage && <div className={nickMessage.ok ? 'notice ok' : 'notice error'}>{nickMessage.text}</div>}
+            </form>
+
+            <div className="profile-reset">
+              <label>{t('profile.resetTitle')}</label>
+              <p className="muted">{t('profile.resetHint')}</p>
+              {confirmReset ? (
+                <div className="inline-field">
+                  <button type="button" className="danger" onClick={reset} disabled={resetting}>
+                    {resetting ? t('profile.resetting') : t('profile.resetYes')}
+                  </button>
+                  <button type="button" className="ghost" onClick={() => setConfirmReset(false)}>
+                    {t('profile.cancel')}
+                  </button>
+                </div>
+              ) : (
+                <button type="button" className="ghost" onClick={() => setConfirmReset(true)}>
+                  {t('profile.resetButton')}
+                </button>
+              )}
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   )
 }
