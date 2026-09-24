@@ -215,25 +215,29 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
                 style={{ '--tile': accentOf(category.id) } as CSSProperties}
                 onClick={() => pick(category.id)}
               >
-                <span className="tile-fan" data-count={art.length} aria-hidden>
-                  {art.map(({ game, picture }, index) => (
-                    <img
-                      key={`${game.id}-${picture.id}`}
-                      className={`tile-card tile-card-${index}`}
-                      src={cardUrl(game.id, picture.id, picture.image)}
-                      alt=""
-                      width={CARD.width}
-                      height={CARD.height}
-                      loading="lazy"
-                      decoding="async"
-                      draggable={false}
-                    />
-                  ))}
+                <span className="tile-art" aria-hidden>
+                  <span className="tile-fan" data-count={art.length}>
+                    {art.map(({ game, picture }, index) => (
+                      <img
+                        key={`${game.id}-${picture.id}`}
+                        className={`tile-card tile-card-${index}`}
+                        src={cardUrl(game.id, picture.id, picture.image)}
+                        alt=""
+                        width={CARD.width}
+                        height={CARD.height}
+                        loading="lazy"
+                        decoding="async"
+                        draggable={false}
+                      />
+                    ))}
+                  </span>
                 </span>
-                <b>{t(category.title)}</b>
-                <small>
-                  {list.length} {worldsOf(list.length, lang)}
-                </small>
+                <span className="tile-body">
+                  <b>{t(category.title)}</b>
+                  <small>
+                    {list.length} {worldsOf(list.length, lang)}
+                  </small>
+                </span>
               </button>
             )
           })}
