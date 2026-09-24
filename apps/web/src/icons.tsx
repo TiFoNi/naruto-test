@@ -34,6 +34,16 @@ export function TvIcon({ className }: IconProps) {
   )
 }
 
+export function BookIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M12 7v12.5" />
+      <path d="M12 7C10.4 5.7 8.5 5 6 5H3.5v12.5H6c2.5 0 4.4.7 6 2" />
+      <path d="M12 7c1.6-1.3 3.5-2 6-2h2.5v12.5H18c-2.5 0-4.4.7-6 2" />
+    </svg>
+  )
+}
+
 export function GamepadIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

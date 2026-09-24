@@ -11,7 +11,7 @@ import Quests from './Quests'
 import { useHref } from './router'
 import { dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
-import { CalendarIcon, ChartIcon, CheckIcon, SearchIcon } from './icons'
+import { BookIcon, CalendarIcon, ChartIcon, CheckIcon, GamepadIcon, SearchIcon, TvIcon } from './icons'
 import { CARD, MINI, cardUrl, miniUrl } from './pics'
 
 const CATEGORIES: { id: Category; title: UiKey }[] = [
@@ -36,6 +36,8 @@ const worldsOf = (count: number, lang: keyof typeof WORLDS) => {
 }
 
 const REMEMBER = 'nanda.category'
+
+const categoryIcon = (id: Category) => (id === 'anime' ? <TvIcon /> : id === 'manga' ? <BookIcon /> : <GamepadIcon />)
 
 function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
   const { t, l } = useI18n()
@@ -181,9 +183,6 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         <div className="tiles">
           {shown.map((category) => {
             const list = games.filter((g) => g.category === category.id)
-            const first = list.map((game) => ({ game, picture: game.featured[0] })).filter((item) => item.picture)
-            const rest = list.flatMap((game) => game.featured.slice(1).map((picture) => ({ game, picture })))
-            const art = [...first, ...rest].slice(0, 3)
             return (
               <button
                 key={category.id}
@@ -194,27 +193,8 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
                 style={{ '--tile': accentOf(category.id) } as CSSProperties}
                 onClick={() => pick(category.id)}
               >
-                <span className="tile-art" aria-hidden>
-                  <span className="tile-fan" data-count={art.length}>
-                    {art.map(({ game, picture }, index) => (
-                      <img
-                        key={`${game.id}-${picture.id}`}
-                        className={`tile-card tile-card-${index}`}
-                        src={miniUrl(game.id, picture.id, picture.image)}
-                        onError={(event) => {
-                          const image = event.currentTarget
-                          const card = cardUrl(game.id, picture.id, picture.image)
-                          if (image.src !== card) image.src = card
-                        }}
-                        alt=""
-                        width={MINI.width}
-                        height={MINI.height}
-                        loading="lazy"
-                        decoding="async"
-                        draggable={false}
-                      />
-                    ))}
-                  </span>
+                <span className="tile-icon" aria-hidden>
+                  {categoryIcon(category.id)}
                 </span>
                 <span className="tile-body">
                   <b>{t(category.title)}</b>
