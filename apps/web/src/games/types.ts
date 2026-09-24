@@ -5,7 +5,7 @@ export type { GameId, Judgement, Verdict } from '@nanda/game'
 
 export type Icon = { label: string; symbol: string; color: string; dark?: boolean }
 
-export type Entity = { id: number; name: string; nameEn?: string; aliases?: string; thumb: number; answer: boolean }
+export type Entity = { id: number; name: string; nameEn?: string; nameUk?: string; aliases?: string; thumb: number; answer: boolean }
 
 export type Translate = (value: string) => string
 

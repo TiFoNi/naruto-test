@@ -1,7 +1,7 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { createContext, useCallback, useContext, useEffect, useMemo, type ReactNode } from 'react'
 import ui, { LANGS, type L10n, type Lang, type UiKey } from './ui'
-import { VALUES } from './values'
+import { useTerms } from '../terms'
 
 export { LANGS }
 export type { L10n, Lang, UiKey }
@@ -22,7 +22,7 @@ export function ruToUk(text: string) {
     .replace(/ъ/g, '’')
 }
 
-type Named = { name: string; nameEn?: string }
+type Named = { name: string; nameEn?: string; nameUk?: string }
 
 type I18n = {
   lang: Lang
@@ -40,6 +40,7 @@ const I18nContext = createContext<I18n | null>(null)
 export function I18nProvider({ children, lang }: { children: ReactNode; lang: Lang }) {
   const router = useRouter()
   const pathname = usePathname()
+  const dictionary = useTerms()
 
   useEffect(() => {
     try {
@@ -65,6 +66,7 @@ export function I18nProvider({ children, lang }: { children: ReactNode; lang: La
     const name: I18n['name'] = (entity) => {
       if (lang === 'en') return entity.nameEn ?? entity.name
       if (lang === 'ru') return entity.name
+      if (entity.nameUk) return entity.nameUk
       let uk = ukNames.get(entity.name)
       if (!uk) {
         uk = ruToUk(entity.name)
@@ -77,7 +79,7 @@ export function I18nProvider({ children, lang }: { children: ReactNode; lang: La
       setLang,
       t,
       l: (text) => text[lang],
-      tv: (v) => (lang === 'ru' ? v : (VALUES[v]?.[index] ?? v)),
+      tv: (v) => (lang === 'ru' ? v : (dictionary[v]?.[index] || v)),
       name,
       alt: (entity) => {
         const secondary = lang === 'en' ? entity.name : entity.nameEn
@@ -85,7 +87,7 @@ export function I18nProvider({ children, lang }: { children: ReactNode; lang: La
       },
       error: (code) => (`err.${code}` in ui ? t(`err.${code}` as UiKey) : t('err.server')),
     }
-  }, [lang, setLang])
+  }, [lang, setLang, dictionary])
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
 }

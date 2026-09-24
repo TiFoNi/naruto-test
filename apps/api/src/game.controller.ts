@@ -4,6 +4,7 @@ import * as auth from '@nanda/core/endpoints/auth'
 import * as me from '@nanda/core/endpoints/me'
 import * as admin from '@nanda/core/endpoints/admin'
 import * as challenge from '@nanda/core/endpoints/challenge'
+import * as termsEndpoint from '@nanda/core/endpoints/terms'
 import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
 import * as leaderboard from '@nanda/core/endpoints/leaderboard'
@@ -44,6 +45,16 @@ export class GameController {
   @Post('admin/entity')
   adminSave(@Req() req: Request, @Res() res: Response) {
     return bridge(admin.POST, req, res)
+  }
+
+  @Post('admin/term')
+  adminTerm(@Req() req: Request, @Res() res: Response) {
+    return bridge(admin.PUT, req, res)
+  }
+
+  @Get('terms')
+  terms(@Req() req: Request, @Res() res: Response) {
+    return bridge(termsEndpoint.GET, req, res)
   }
 
   @Get('entities')
