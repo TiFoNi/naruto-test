@@ -4454,6 +4454,11 @@ button.ghost.small {
   gap: 12px;
 }
 
+.worlds-card,
+.activity-card {
+  min-height: 0;
+}
+
 .streak-now {
   display: flex;
   align-items: center;
@@ -4543,11 +4548,13 @@ button.ghost.small {
 
 .worlds,
 .activity {
+  flex: 1 1 0;
   min-height: 0;
-  max-height: 520px;
+  padding-right: 8px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--card-2) transparent;
+  scrollbar-gutter: stable;
 }
 
 .worlds::-webkit-scrollbar,
