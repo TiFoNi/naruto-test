@@ -3,9 +3,9 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "dev": "nest start --watch",
+    "dev": "npm run build && npm start",
     "build": "nest build && tsc-alias -p tsconfig.json",
-    "start": "node dist/apps/api/src/main.js",
+    "start": "node --env-file-if-exists=../../.env.local dist/apps/api/src/main.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
