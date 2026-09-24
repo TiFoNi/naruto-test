@@ -1,0 +1,17 @@
+import type { GameId, ModeId } from '@nanda/game'
+import type { L10n } from '../i18n/ui'
+import type { Category } from './types'
+
+export type GameMeta = {
+  id: GameId
+  label: L10n
+  description: L10n
+  category: Category
+  accent: string
+  modes: ModeId[]
+  unit: 'character' | 'hero' | 'manga'
+  count: number
+  featured: number[]
+}
+
+export const metaById = (list: GameMeta[], id: GameId) => list.find((g) => g.id === id) ?? list[0]

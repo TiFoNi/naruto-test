@@ -11,3 +11,4 @@ seeds/manga/*
 apps/web/public/*/card
 .next
 next-env.d.ts
+*.tsbuildinfo

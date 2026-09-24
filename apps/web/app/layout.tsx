@@ -1,6 +1,22 @@
 import type { Metadata, Viewport } from 'next'
+import { Manrope, Unbounded } from 'next/font/google'
 import Providers from './providers'
+import { gameMeta } from '@/src/games/meta.server'
 import '@/src/styles.css'
+
+const manrope = Manrope({
+  subsets: ['latin', 'cyrillic'],
+  weight: ['500', '600', '700', '800'],
+  variable: '--font-body',
+  display: 'swap',
+})
+
+const unbounded = Unbounded({
+  subsets: ['latin', 'cyrillic'],
+  weight: ['600', '700', '800'],
+  variable: '--font-display',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'NandaGuessr',
@@ -15,17 +31,9 @@ export const viewport: Viewport = { themeColor: '#0d0f12' }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Unbounded:wght@600;700;800&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="ru" className={`${manrope.variable} ${unbounded.variable}`}>
       <body>
-        <Providers>{children}</Providers>
+        <Providers games={gameMeta()}>{children}</Providers>
       </body>
     </html>
   )

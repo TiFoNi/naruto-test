@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import AuthScreen from './AuthScreen'
 import { useAuth } from './auth'
 import { BRAND } from './brand'
-import { GAMES, gameById } from './games'
+import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n } from './i18n'
 import { SwordsIcon, TrophyIcon } from './icons'
 import { href } from './router'
@@ -23,12 +23,12 @@ function LangSwitch() {
   )
 }
 
-export default function Shell({ children }: { children: ReactNode }) {
+export default function Shell({ children, games }: { children: ReactNode; games: GameMeta[] }) {
   const { user, loading } = useAuth()
   const { t, l } = useI18n()
   const pathname = usePathname()
   const [, section, gameId, modeId, tail] = pathname.split('/')
-  const game = section === 'play' ? gameById(gameId as never) : null
+  const game = section === 'play' ? metaById(games, gameId as never) : null
   const accent = user && game ? game.accent : BRAND.accent
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export default function Shell({ children }: { children: ReactNode }) {
             </h1>
             <p>{t('brand.tagline')}</p>
             <ul className="landing-games">
-              {GAMES.map((g) => (
+              {games.map((g) => (
                 <li key={g.id} style={{ '--tab-accent': g.accent } as CSSProperties}>
                   <span className="dot" />
                   {l(g.label)}

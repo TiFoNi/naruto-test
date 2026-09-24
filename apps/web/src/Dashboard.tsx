@@ -1,14 +1,16 @@
+'use client'
+
 import type { CSSProperties } from 'react'
 import { statsKey, useAuth } from './auth'
-import { GAMES } from './games'
-import type { Category, Game } from './games/types'
+import type { GameMeta } from './games/meta'
+import type { Category } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
 import { href } from './router'
 import { dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
 import { CalendarIcon, ChartIcon, CheckIcon } from './icons'
-import { cardUrl } from './pics'
+import { CARD, cardUrl } from './pics'
 
 const CATEGORIES: { id: Category; title: UiKey; hint: UiKey }[] = [
   { id: 'anime', title: 'dash.anime', hint: 'dash.animeHint' },
@@ -16,25 +18,24 @@ const CATEGORIES: { id: Category; title: UiKey; hint: UiKey }[] = [
   { id: 'games', title: 'dash.games', hint: 'dash.gamesHint' },
 ]
 
-function FranchiseCard({ game }: { game: Game }) {
+function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
   const { t, l } = useI18n()
   const { stats } = useAuth()
-  const featured = game.featured
-    .map((f) => game.entities.find((e) => e.nameEn === f || e.name === f))
-    .filter((e): e is NonNullable<typeof e> => !!e)
 
   return (
     <article className="franchise" style={{ '--tab-accent': game.accent } as CSSProperties}>
       <a className="franchise-art" href={href.play(game.id, game.modes[0])} aria-label={l(game.label)}>
-        {featured.slice(0, 3).map((e, i) => (
+        {game.featured.map((id, i) => (
           <img
-            key={e.id}
+            key={id}
             className={`fan fan-${i}`}
-            src={cardUrl(game.id, e.id)}
+            src={cardUrl(game.id, id)}
             alt=""
-            loading="lazy"
+            width={CARD.width}
+            height={CARD.height}
+            loading={eager ? 'eager' : 'lazy'}
             decoding="async"
-            fetchPriority="low"
+            fetchPriority={eager ? 'high' : 'low'}
             draggable={false}
           />
         ))}
@@ -43,7 +44,7 @@ function FranchiseCard({ game }: { game: Game }) {
         <div className="franchise-title">
           <h3>{l(game.label)}</h3>
           <span className="count">
-            {t(game.unit === 'manga' ? 'dash.titles' : game.unit === 'hero' ? 'dash.heroes' : 'dash.characters', { count: game.entities.length })}
+            {t(game.unit === 'manga' ? 'dash.titles' : game.unit === 'hero' ? 'dash.heroes' : 'dash.characters', { count: game.count })}
           </span>
         </div>
         <p>{l(game.description)}</p>
@@ -108,7 +109,7 @@ function FranchiseCard({ game }: { game: Game }) {
   )
 }
 
-export default function Dashboard() {
+export default function Dashboard({ games }: { games: GameMeta[] }) {
   const { t } = useI18n()
   const { user, stats } = useAuth()
   const all = Object.values(stats)
@@ -145,9 +146,9 @@ export default function Dashboard() {
         </a>
       </section>
 
-      {CATEGORIES.map((category) => {
-        const games = GAMES.filter((g) => g.category === category.id)
-        if (!games.length) return null
+      {CATEGORIES.map((category, index) => {
+        const list = games.filter((g) => g.category === category.id)
+        if (!list.length) return null
         return (
           <section key={category.id} className="category">
             <header>
@@ -155,8 +156,8 @@ export default function Dashboard() {
               <p className="muted">{t(category.hint)}</p>
             </header>
             <div className="franchise-grid">
-              {games.map((g) => (
-                <FranchiseCard key={g.id} game={g} />
+              {list.map((g, i) => (
+                <FranchiseCard key={g.id} game={g} eager={index === 0 && i < 3} />
               ))}
             </div>
           </section>

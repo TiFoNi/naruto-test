@@ -13,9 +13,9 @@
   --wrong: #6a2c33;
   --wrong-text: #f4d9da;
   --radius: 14px;
-  --display: 'Unbounded', system-ui, sans-serif;
+  --display: var(--font-display), system-ui, sans-serif;
   color-scheme: dark;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   color: var(--text);
 }
 
@@ -56,27 +56,10 @@ body::after {
   inset: -60px;
   z-index: -1;
   pointer-events: none;
-  will-change: transform;
   background-image: radial-gradient(circle, color-mix(in srgb, var(--text) 14%, transparent) 1px, transparent 1.4px);
   background-size: 38px 38px;
   opacity: 0.85;
   mask-image: radial-gradient(70% 60% at 50% 20%, #000, transparent 85%);
-  animation: bg-grid 9s linear infinite;
-}
-
-@keyframes bg-grid {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-38px, -38px, 0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body::after {
-    animation: none;
-  }
 }
 
 button {
@@ -1222,7 +1205,10 @@ footer p {
 }
 
 .features li {
-  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
   border-radius: 999px;
   background: var(--card);
   border: 1px solid var(--line);
@@ -1232,8 +1218,10 @@ footer p {
 }
 
 .features li::before {
-  content: '✦ ';
+  content: '✦';
   color: var(--accent);
+  font-size: 0.9em;
+  line-height: 1;
 }
 
 .hero-stats {
@@ -1352,6 +1340,7 @@ footer p {
   bottom: -18px;
   left: 50%;
   width: 112px;
+  height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
   object-position: center top;
