@@ -4317,8 +4317,17 @@ button.ghost.small {
   border-top: 1px solid var(--line);
 }
 
+.profile-settings form {
+  display: flex;
+  flex-direction: column;
+}
+
 .profile-settings label {
   font-weight: 700;
+}
+
+.profile-settings .notice {
+  margin-top: 10px;
 }
 
 .profile-settings p {
