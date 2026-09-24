@@ -7,7 +7,7 @@ import { currentUser, unauthorized } from '../profile'
 import { shiftDay, today } from '../daily'
 
 const RECENT = 8
-const HISTORY = 400
+const HISTORY = 4000
 
 type Counted = { _id: string; played: number; won: number; guesses: number }
 
