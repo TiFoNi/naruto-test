@@ -3,6 +3,7 @@
 import { useEffect, type CSSProperties, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import Background from './Background'
 import Landing from './Landing'
 import { useAuth } from './auth'
 import { BRAND } from './brand'
@@ -50,6 +51,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
 
   return (
     <div className="app">
+      <Background />
       <header className="topbar">
         <div className="topbar-inner">
           <Link className="brand" href={href.home}>

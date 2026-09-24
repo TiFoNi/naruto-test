@@ -32,23 +32,150 @@ html {
   background: var(--bg);
 }
 
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.backdrop-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  will-change: transform;
+}
+
+.blob-a {
+  width: 760px;
+  height: 760px;
+  left: -8%;
+  top: -22%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 20%, transparent), transparent 65%);
+  animation: drift-a 38s ease-in-out infinite alternate;
+}
+
+.blob-b {
+  width: 620px;
+  height: 620px;
+  right: -6%;
+  top: 28%;
+  background: radial-gradient(circle, color-mix(in srgb, #ff5e3a 12%, transparent), transparent 65%);
+  animation: drift-b 46s ease-in-out infinite alternate;
+}
+
+.blob-c {
+  width: 700px;
+  height: 700px;
+  left: 30%;
+  bottom: -40%;
+  background: radial-gradient(circle, color-mix(in srgb, #8a8cff 9%, transparent), transparent 65%);
+  animation: drift-c 54s ease-in-out infinite alternate;
+}
+
+.backdrop-dots {
+  position: absolute;
+  inset: -40px;
+  background-image: radial-gradient(color-mix(in srgb, var(--text) 7%, transparent) 1px, transparent 1.2px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse at 50% 30%, #000, color-mix(in srgb, #000 35%, transparent) 55%, transparent 85%);
+  animation: dots-pan 90s linear infinite;
+}
+
+.backdrop-glyph {
+  position: absolute;
+  bottom: -160px;
+  font-family: var(--display);
+  font-weight: 700;
+  line-height: 1;
+  color: color-mix(in srgb, var(--text) 3.5%, transparent);
+  animation-name: glyph-rise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.backdrop-glyph.hot {
+  color: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+
+.backdrop-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, transparent 40%, color-mix(in srgb, var(--bg) 85%, transparent) 100%);
+}
+
+@keyframes drift-a {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(160px, 90px) scale(1.12);
+  }
+  100% {
+    transform: translate(60px, 200px) scale(0.95);
+  }
+}
+
+@keyframes drift-b {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-200px, -60px) scale(1.15);
+  }
+  100% {
+    transform: translate(-80px, 140px) scale(1);
+  }
+}
+
+@keyframes drift-c {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(-180px, -160px) scale(1.2);
+  }
+}
+
+@keyframes dots-pan {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(28px, 28px);
+  }
+}
+
+@keyframes glyph-rise {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-140vh) rotate(40deg);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop * {
+    animation: none !important;
+  }
+}
+
 body {
   margin: 0;
   min-height: 100vh;
   overflow-x: clip;
   overscroll-behavior: none;
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  inset: -60px;
-  z-index: -1;
-  pointer-events: none;
-  background-image: radial-gradient(circle, color-mix(in srgb, var(--text) 14%, transparent) 1px, transparent 1.4px);
-  background-size: 38px 38px;
-  opacity: 0.85;
-  mask-image: radial-gradient(70% 60% at 50% 20%, #000, transparent 85%);
 }
 
 button {
