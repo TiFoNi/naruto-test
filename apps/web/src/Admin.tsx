@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api } from './api'
 import { GAMES } from './games'
 import type { Entity, GameId } from './games/types'
@@ -73,6 +73,17 @@ export default function Admin() {
     await save(row, { [field]: Array.isArray(current) ? [...(current as string[]), term.value] : term.value })
   }
 
+  const create = async () => {
+    const name = window.prompt('Имя нового персонажа (по-русски)')?.trim()
+    if (!name) return
+    const { ok, data } = await api<{ entity?: Row }>('admin/create', { game: gameId, name })
+    if (!ok || !data.entity) return setNote('не создалось')
+    setRows((list) => [...(list ?? []), data.entity as Row])
+    setOpenId((data.entity as Row).id)
+    setQuery(name)
+    setNote('создан — заполни и сними «скрыт»')
+  }
+
   const untranslated = terms.filter((t) => !t.uk || !t.en).length
 
   if (denied) return <div className="card center muted">Страница не найдена</div>
@@ -89,14 +100,17 @@ export default function Admin() {
             Словарь{untranslated > 0 && <b> · {untranslated}</b>}
           </button>
         </div>
-        <select value={gameId} onChange={(e) => setGameId(e.target.value as GameId)}>
-          {GAMES.map((g) => (
-            <option key={g.id} value={g.id}>
-              {g.label.ru}
-            </option>
-          ))}
-        </select>
+        <Dropdown
+          value={GAMES.find((g) => g.id === gameId)?.label.ru ?? ''}
+          choices={GAMES.map((g) => g.label.ru)}
+          onPick={(label) => setGameId(GAMES.find((g) => g.label.ru === label)?.id ?? gameId)}
+        />
         <input placeholder="Поиск" value={query} onChange={(e) => setQuery(e.target.value)} />
+        {tab === 'people' && (
+          <button type="button" className="admin-create" onClick={create}>
+            + персонаж
+          </button>
+        )}
         {note && <span className="muted">{note}</span>}
       </header>
 
@@ -206,18 +220,63 @@ function Editor({
         return (
           <label key={key} className="admin-single">
             <span>{key}</span>
-            <select value={String(row[key] ?? '')} onChange={(e) => onSave(row, { [key]: e.target.value })}>
-              {!choices.includes(String(row[key] ?? '')) && <option value={String(row[key] ?? '')}>{String(row[key] ?? '—')}</option>}
-              {choices.map((choice) => (
-                <option key={choice} value={choice}>
-                  {choice}
-                </option>
-              ))}
-            </select>
+            <Dropdown value={String(row[key] ?? '')} choices={choices} onPick={(picked) => onSave(row, { [key]: picked })} />
             <NewValue field={key} row={row} onAdd={onAdd} />
           </label>
         )
       })}
+    </div>
+  )
+}
+
+function Dropdown({ value, choices, onPick }: { value: string; choices: string[]; onPick: (value: string) => void }) {
+  const [open, setOpen] = useState(false)
+  const [filter, setFilter] = useState('')
+  const box = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return
+    const away = (event: MouseEvent) => {
+      if (!box.current?.contains(event.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', away)
+    return () => document.removeEventListener('mousedown', away)
+  }, [open])
+
+  const needle = filter.trim().toLowerCase()
+  const shown = needle ? choices.filter((c) => c.toLowerCase().includes(needle)) : choices
+
+  return (
+    <div className="dropdown" ref={box}>
+      <button type="button" className={`dropdown-head ${open ? 'open' : ''}`} onClick={() => setOpen(!open)}>
+        <span>{value || '—'}</span>
+        <i aria-hidden>▾</i>
+      </button>
+      {open && (
+        <div className="dropdown-menu">
+          {choices.length > 8 && (
+            <input autoFocus placeholder="Фильтр" value={filter} onChange={(e) => setFilter(e.target.value)} />
+          )}
+          <ul>
+            {shown.map((choice) => (
+              <li key={choice}>
+                <button
+                  type="button"
+                  className={choice === value ? 'on' : ''}
+                  onClick={() => {
+                    onPick(choice)
+                    setOpen(false)
+                    setFilter('')
+                  }}
+                >
+                  {choice}
+                </button>
+              </li>
+            ))}
+            {!shown.length && <li className="dropdown-empty">ничего не найдено</li>}
+          </ul>
+        </div>
+      )}
     </div>
   )
 }

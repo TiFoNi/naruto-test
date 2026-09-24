@@ -55,6 +55,32 @@ export const POST = handle(async (request) => {
   return json({ entity: doc })
 })
 
+export const CREATE = handle(async (request) => {
+  if (!(await adminSession(request))) return missing()
+
+  const body = await readJson(request)
+  const { game, name } = body as { game?: unknown; name?: unknown }
+  if (!isGame(game) || typeof name !== 'string' || !name.trim()) return fail(400, 'bad_request')
+
+  const collection = await entities()
+  const last = await collection.find({ game }, { projection: { id: 1 }, sort: { id: -1 }, limit: 1 }).toArray()
+  const id = (last[0]?.id ?? 0) + 1
+
+  const sample = await collection.findOne({ game }, { projection: { _id: 0, game: 0, updatedAt: 0 } })
+  const blanks: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(sample ?? {})) {
+    if (INTERNAL.has(key) || key === 'id' || key === 'thumb') continue
+    blanks[key] = Array.isArray(value) ? [] : typeof value === 'number' ? 0 : ''
+  }
+
+  const doc = { ...blanks, game, id, thumb: 0, name: name.trim(), answer: false, hidden: true, updatedAt: new Date() }
+  await collection.insertOne(doc)
+
+  forget(game)
+  const created = await collection.findOne({ game, id }, { projection: { _id: 0, game: 0, updatedAt: 0 } })
+  return json({ entity: created }, 201)
+})
+
 export const PUT = handle(async (request) => {
   if (!(await adminSession(request))) return missing()
 

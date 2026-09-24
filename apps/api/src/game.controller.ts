@@ -47,6 +47,11 @@ export class GameController {
     return bridge(admin.POST, req, res)
   }
 
+  @Post('admin/create')
+  adminCreate(@Req() req: Request, @Res() res: Response) {
+    return bridge(admin.CREATE, req, res)
+  }
+
   @Post('admin/term')
   adminTerm(@Req() req: Request, @Res() res: Response) {
     return bridge(admin.PUT, req, res)
