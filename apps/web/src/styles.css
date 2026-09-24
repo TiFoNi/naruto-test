@@ -5124,7 +5124,7 @@ button.ghost.small {
 
 .tile-card {
   position: absolute;
-  top: 26px;
+  top: 30px;
   left: 50%;
   width: 66px;
   height: auto;
@@ -5145,12 +5145,12 @@ button.ghost.small {
 
 .tile-card-1 {
   z-index: 2;
-  transform: translateX(calc(-50% - 44px)) rotate(-10deg);
+  transform: translateX(calc(-50% - 52px)) rotate(-9deg);
 }
 
 .tile-card-2 {
   z-index: 2;
-  transform: translateX(calc(-50% + 44px)) rotate(10deg);
+  transform: translateX(calc(-50% + 52px)) rotate(9deg);
 }
 
 .tile-fan[data-count='2'] .tile-card-0 {
@@ -5165,16 +5165,20 @@ button.ghost.small {
 }
 
 @media (hover: hover) {
+  .tile:hover .tile-card {
+    box-shadow: 0 13px 26px rgba(0, 0, 0, 0.65);
+  }
+
   .tile:hover .tile-card-0 {
-    transform: translateX(-50%) translateY(-7px) scale(1.05);
+    transform: translateX(-50%) translateY(-19px) scale(1.08);
   }
 
   .tile:hover .tile-card-1 {
-    transform: translateX(calc(-50% - 50px)) translateY(-2px) rotate(-12deg) scale(1.02);
+    transform: translateX(calc(-50% - 66px)) translateY(-11px) rotate(-13deg) scale(1.04);
   }
 
   .tile:hover .tile-card-2 {
-    transform: translateX(calc(-50% + 50px)) translateY(-2px) rotate(12deg) scale(1.02);
+    transform: translateX(calc(-50% + 66px)) translateY(-11px) rotate(13deg) scale(1.04);
   }
 
   .tile:hover .tile-fan[data-count='2'] .tile-card-0 {
