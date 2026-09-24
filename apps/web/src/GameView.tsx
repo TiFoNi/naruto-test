@@ -12,7 +12,7 @@ import { CalendarIcon, InfinityIcon, TrophyIcon } from './icons'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
 import { MODES, type ModeId } from './modes'
-import { href } from './router'
+import { useHref } from './router'
 import { average, emptyStats, type Stats } from './stats'
 
 function StatsBar({ stats, daily }: { stats: Stats; daily: boolean }) {
@@ -37,6 +37,7 @@ function StatsBar({ stats, daily }: { stats: Stats; daily: boolean }) {
 
 export default function GameView({ game, mode, daily, visible }: { game: Game; mode: ModeId; daily: boolean; visible: boolean }) {
   const { stats, user } = useAuth()
+  const href = useHref()
   const { t, l } = useI18n()
   const statsFor = (m: ModeId, d: boolean) => stats[d ? dailyKey(game.id, m) : statsKey(game.id, m)] ?? emptyStats
 

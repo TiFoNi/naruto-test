@@ -1,11 +1,12 @@
 import { useState, type FormEvent } from 'react'
 import { api } from './api'
 import { useI18n } from './i18n'
-import { href, useNavigate } from './router'
+import { useNavigate, useHref } from './router'
 import { SwordsIcon } from './icons'
 
 export default function DuelLobby() {
   const navigate = useNavigate()
+  const href = useHref()
   const { t, error: errorText } = useI18n()
   const [code, setCode] = useState('')
   const [busy, setBusy] = useState(false)

@@ -1,4 +1,5 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { createContext, useCallback, useContext, useEffect, useMemo, type ReactNode } from 'react'
 import ui, { LANGS, type L10n, type Lang, type UiKey } from './ui'
 import { VALUES } from './values'
 
@@ -6,23 +7,6 @@ export { LANGS }
 export type { L10n, Lang, UiKey }
 
 const STORAGE_KEY = 'lang'
-
-function storedLang() {
-  try {
-    return localStorage.getItem(STORAGE_KEY)
-  } catch {
-    return null
-  }
-}
-
-function initialLang(): Lang {
-  const stored = storedLang()
-  if (stored === 'ru' || stored === 'uk' || stored === 'en') return stored
-  const browser = navigator.language.toLowerCase()
-  if (browser.startsWith('uk')) return 'uk'
-  if (browser.startsWith('ru')) return 'ru'
-  return browser.startsWith('en') ? 'en' : 'ru'
-}
 
 export function ruToUk(text: string) {
   return text
@@ -53,24 +37,25 @@ type I18n = {
 
 const I18nContext = createContext<I18n | null>(null)
 
-export function I18nProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>('ru')
-
-  useEffect(() => setLangState(initialLang()), [])
+export function I18nProvider({ children, lang }: { children: ReactNode; lang: Lang }) {
+  const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
-    document.documentElement.lang = lang
-    document.title = `NandaGuessr — ${ui['brand.title'][lang]}`
-  }, [lang])
-
-  const setLang = useCallback((next: Lang) => {
-    setLangState(next)
     try {
-      localStorage.setItem(STORAGE_KEY, next)
+      localStorage.setItem(STORAGE_KEY, lang)
     } catch {
       return
     }
-  }, [])
+  }, [lang])
+
+  const setLang = useCallback(
+    (next: Lang) => {
+      const rest = pathname.split('/').slice(2).join('/')
+      router.push(`/${next}${rest ? `/${rest}` : ''}`)
+    },
+    [pathname, router],
+  )
 
   const value = useMemo<I18n>(() => {
     const index = lang === 'uk' ? 0 : 1

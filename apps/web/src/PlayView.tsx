@@ -6,10 +6,11 @@ import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
 import type { ModeId } from './modes'
-import { href } from './router'
+import { useHref } from './router'
 
 export default function PlayView({ game: gameId, mode: modeId, daily }: { game: string; mode: string; daily: boolean }) {
   const { t } = useI18n()
+  const href = useHref()
   const { user, loading } = useAuth()
   const game = GAMES.find((g) => g.id === (gameId as GameId))
   if (!game) return <div className="card center muted">{t('err.not_found')}</div>

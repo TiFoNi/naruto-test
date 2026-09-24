@@ -7,7 +7,7 @@ export default function Legal({ title, updated, intro, sections }: { title: stri
         ← NandaGuessr
       </a>
       <h1>{title}</h1>
-      <p className="legal-updated">Обновлено {updated}</p>
+      <p className="legal-updated">{updated}</p>
       <p className="legal-intro">{intro}</p>
       {sections.map((section) => (
         <section key={section.heading}>

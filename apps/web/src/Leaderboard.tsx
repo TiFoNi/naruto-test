@@ -4,7 +4,7 @@ import { GAMES, gameById } from './games'
 import type { GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES, type ModeId } from './modes'
-import { href, useNavigate } from './router'
+import { useNavigate, useHref } from './router'
 import Picker from './Picker'
 import { CalendarIcon, ChevronIcon, InfinityIcon, MedalIcon, SortIcon } from './icons'
 
@@ -63,6 +63,7 @@ const lastSize = new Map<string, number>()
 
 export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; mode: ModeId; daily: boolean }) {
   const { t, l, error: errorText } = useI18n()
+  const href = useHref()
   const game = gameById(gameId)
   const [chosen, setSort] = useState<Sort>('best')
   const [reversed, setReversed] = useState(false)

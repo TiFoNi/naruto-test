@@ -12,7 +12,7 @@ import { gameById } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
 import { MODES, type ModeId } from './modes'
-import { href } from './router'
+import { useHref } from './router'
 import { emptyStats } from './stats'
 
 type Solve = { nickname: string; guesses: number; guessIds: number[]; solved: boolean }
@@ -29,6 +29,7 @@ type Challenge = {
 
 export default function ChallengeRoom({ code }: { code: string }) {
   const { t, l, name, error: errorText } = useI18n()
+  const href = useHref()
   const { user } = useAuth()
   const [challenge, setChallenge] = useState<Challenge | null>(null)
   const [error, setError] = useState<string | null>(null)

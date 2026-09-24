@@ -2,41 +2,81 @@ import type { Metadata } from 'next'
 import { SITE } from './brand'
 import { gameMeta } from './games/meta.server'
 import ui from './i18n/ui'
+import { LANGS, type Lang } from './i18n/ui'
 
-const MODE_LABEL: Record<string, string> = {
-  classic: ui['mode.classic'].ru,
-  image: ui['mode.image'].ru,
-  ability: ui['mode.ability'].ru,
-  page: ui['mode.page'].ru,
+export const HOME: Record<Lang, { title: string; description: string }> = {
+  ru: {
+    title: 'NandaGuessr — угадай персонажа аниме и игр',
+    description:
+      'Угадывай персонажей по признакам и картинкам: Наруто, Ван Пис, Атака титанов, Блич, Тетрадь смерти, Dota 2 и ещё десяток вселенных. Подсказки после каждой попытки, персонаж дня и дуэли с друзьями — без лимитов.',
+  },
+  uk: {
+    title: 'NandaGuessr — вгадай персонажа аніме та ігор',
+    description:
+      'Вгадуй персонажів за ознаками й картинками: Наруто, Ван Піс, Атака титанів, Бліч, Зошит смерті, Dota 2 і ще десяток всесвітів. Підказки після кожної спроби, персонаж дня та дуелі з друзями — без лімітів.',
+  },
+  en: {
+    title: 'NandaGuessr — guess anime and game characters',
+    description:
+      'Guess characters by traits and pictures: Naruto, One Piece, Attack on Titan, Bleach, Death Note, Dota 2 and a dozen more worlds. Hints after every try, a daily character and duels with friends — no limits.',
+  },
 }
 
-const plural = (count: number, one: string, few: string, many: string) => {
+const MODE_LABEL = (lang: Lang, mode: string) => {
+  const key = `mode.${mode}` as keyof typeof ui
+  return ui[key] ? ui[key][lang] : mode
+}
+
+const UNIT = {
+  ru: { manga: ['тайтл', 'тайтла', 'тайтлов'], hero: ['героя', 'героев', 'героев'], character: ['персонаж', 'персонажа', 'персонажей'] },
+  uk: { manga: ['тайтл', 'тайтли', 'тайтлів'], hero: ['героя', 'героїв', 'героїв'], character: ['персонаж', 'персонажі', 'персонажів'] },
+  en: { manga: ['title', 'titles', 'titles'], hero: ['hero', 'heroes', 'heroes'], character: ['character', 'characters', 'characters'] },
+} as const
+
+const ACC = {
+  ru: { manga: 'тайтл', hero: 'героя', character: 'персонажа' },
+  uk: { manga: 'тайтл', hero: 'героя', character: 'персонажа' },
+  en: { manga: 'title', hero: 'hero', character: 'character' },
+} as const
+
+const plural = (lang: Lang, count: number, forms: readonly string[]) => {
+  if (lang === 'en') return count === 1 ? forms[0] : forms[2]
   const mod100 = count % 100
-  if (mod100 >= 11 && mod100 <= 14) return many
+  if (mod100 >= 11 && mod100 <= 14) return forms[2]
   const mod10 = count % 10
-  if (mod10 === 1) return one
-  if (mod10 >= 2 && mod10 <= 4) return few
-  return many
+  if (mod10 === 1) return forms[0]
+  return mod10 >= 2 && mod10 <= 4 ? forms[1] : forms[2]
 }
 
-export function playMetadata(gameId: string, modeId: string, daily: boolean): Metadata {
+export const alternates = (path: string) => ({
+  canonical: path,
+  languages: {
+    ...Object.fromEntries(LANGS.map(({ id }) => [id, `/${id}${path.replace(/^\/[a-z]{2}/, '')}`])),
+    'x-default': `/ru${path.replace(/^\/[a-z]{2}/, '')}`,
+  },
+})
+
+const GUESS = { ru: 'угадай', uk: 'вгадай', en: 'guess' }
+const DAILY = { ru: ', персонаж дня', uk: ', персонаж дня', en: ', daily character' }
+const TAIL = {
+  ru: 'подсказки после каждой попытки, без лимитов на день.',
+  uk: 'підказки після кожної спроби, без лімітів на день.',
+  en: 'hints after every try, no daily limits.',
+}
+
+export function playMetadata(lang: Lang, gameId: string, modeId: string, daily: boolean): Metadata {
   const game = gameMeta().find((g) => g.id === gameId)
   if (!game) return {}
 
-  const mode = MODE_LABEL[modeId] ?? modeId
-  const kind = game.unit === 'manga' ? 'тайтл' : game.unit === 'hero' ? 'героя' : 'персонажа'
-  const title = `${game.label.ru} — угадай ${kind} ${mode.toLowerCase()}${daily ? ', персонаж дня' : ''}`
-  const counted =
-    game.unit === 'manga'
-      ? plural(game.count, 'тайтл', 'тайтла', 'тайтлов')
-      : plural(game.count, 'персонаж', 'персонажа', 'персонажей')
-  const description = `${game.description.ru} ${game.count} ${counted}, подсказки после каждой попытки, без лимитов на день.`
-  const path = `/play/${gameId}/${modeId}${daily ? '/daily' : ''}`
+  const unit = UNIT[lang][game.unit]
+  const title = `${game.label[lang]} — ${GUESS[lang]} ${ACC[lang][game.unit]} ${MODE_LABEL(lang, modeId).toLowerCase()}${daily ? DAILY[lang] : ''}`
+  const description = `${game.description[lang]} ${game.count} ${plural(lang, game.count, unit)}, ${TAIL[lang]}`
+  const path = `/${lang}/play/${gameId}/${modeId}${daily ? '/daily' : ''}`
 
   return {
     title,
     description,
-    alternates: { canonical: path },
+    alternates: alternates(path),
     ...(daily ? { robots: { index: false } } : {}),
     openGraph: { title, description, url: `${SITE}${path}`, type: 'website' },
   }

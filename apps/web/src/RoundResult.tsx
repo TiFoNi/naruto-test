@@ -3,7 +3,7 @@ import Countdown from './Countdown'
 import type { Entity, Game } from './games/types'
 import { useI18n } from './i18n'
 import type { ModeId } from './modes'
-import { href } from './router'
+import { useHref } from './router'
 import type { Stats } from './stats'
 import { TrophyIcon } from './icons'
 import { fullUrl } from './pics'
@@ -23,6 +23,7 @@ type Props = {
 
 export default function RoundResult({ game, mode, answer, guesses, won, skipped, stats, onNext, challenge, nextAt }: Props) {
   const { t, name, alt } = useI18n()
+  const href = useHref()
   const ref = useRef<HTMLDivElement>(null)
   const daily = nextAt !== undefined && !challenge
 

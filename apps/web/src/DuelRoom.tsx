@@ -9,7 +9,7 @@ import { GAMES, gameById } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
 import { MODES, type ModeId } from './modes'
-import { href } from './router'
+import { useHref } from './router'
 import { useDuel } from './useDuel'
 import type { Guess } from './useRound'
 import { SwordsIcon } from './icons'
@@ -25,6 +25,7 @@ const clock = (ms: number) => {
 
 export default function DuelRoom({ code }: { code: string }) {
   const { t, l, name, lang, error: errorText } = useI18n()
+  const href = useHref()
   const { duel, error, busy, pending, serverNow, ready, setup, next, toLobby, giveUp, guess, refresh } = useDuel(code)
   const [copied, setCopied] = useState(false)
   const [, redraw] = useState(0)

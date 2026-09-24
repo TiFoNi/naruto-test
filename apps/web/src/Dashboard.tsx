@@ -6,7 +6,7 @@ import type { GameMeta } from './games/meta'
 import type { Category } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
-import { href } from './router'
+import { useHref } from './router'
 import { dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
 import { CalendarIcon, ChartIcon, CheckIcon } from './icons'
@@ -20,6 +20,7 @@ const CATEGORIES: { id: Category; title: UiKey; hint: UiKey }[] = [
 
 function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
   const { t, l } = useI18n()
+  const href = useHref()
   const { stats, user } = useAuth()
 
   return (
@@ -113,6 +114,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
 
 export default function Dashboard({ games }: { games: GameMeta[] }) {
   const { t } = useI18n()
+  const href = useHref()
   const { user, stats } = useAuth()
   const all = Object.values(stats)
   const totalSolved = all.reduce((sum, s) => sum + s.solved, 0)

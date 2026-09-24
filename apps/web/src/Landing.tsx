@@ -5,10 +5,11 @@ import AuthScreen from './AuthScreen'
 import { BRAND } from './brand'
 import type { GameMeta } from './games/meta'
 import { useI18n } from './i18n'
-import { href } from './router'
+import { useHref } from './router'
 
 export default function Landing({ games }: { games: GameMeta[] }) {
   const { t, l } = useI18n()
+  const href = useHref()
 
   return (
     <main className="landing">

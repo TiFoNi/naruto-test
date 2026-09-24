@@ -8,7 +8,7 @@ import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n } from './i18n'
 import { SwordsIcon, TrophyIcon } from './icons'
-import { href } from './router'
+import { useHref } from './router'
 
 const PUBLIC = new Set(['', 'play', 'privacy', 'terms'])
 
@@ -27,9 +27,10 @@ function LangSwitch() {
 
 export default function Shell({ children, games }: { children: ReactNode; games: GameMeta[] }) {
   const { user, loading } = useAuth()
+  const href = useHref()
   const { t } = useI18n()
   const pathname = usePathname()
-  const [, section, gameId, modeId, tail] = pathname.split('/')
+  const [, , section, gameId, modeId, tail] = pathname.split('/')
   const open = PUBLIC.has(section ?? '')
   const game = section === 'play' ? metaById(games, gameId as never) : null
   const accent = user && game ? game.accent : BRAND.accent
@@ -84,12 +85,12 @@ export default function Shell({ children, games }: { children: ReactNode; games:
         </div>
       </header>
 
-      {user || open ? children : <Landing games={games} />}
+      {user || open ? children : loading ? <div className="card center muted">{t('loading')}</div> : <Landing games={games} />}
 
       <footer>
         <p className="footer-links">
-          <a href="/privacy">{t('footer.privacy')}</a>
-          <a href="/terms">{t('footer.terms')}</a>
+          <a href={href.privacy}>{t('footer.privacy')}</a>
+          <a href={href.terms}>{t('footer.terms')}</a>
         </p>
         <p>{t('footer.disclaimer')}</p>
         <p>
