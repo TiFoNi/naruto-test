@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import { useAuth } from './auth'
 import { api } from './api'
 import { GAMES } from './games'
@@ -99,6 +99,24 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   } | null>(null)
   const [savingNick, setSavingNick] = useState(false)
   const [settings, setSettings] = useState(false)
+  const middle = useRef<HTMLDivElement>(null)
+  const [frame, setFrame] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (settings) return
+    const measure = () => {
+      const wide = window.matchMedia('(min-width: 721px)').matches
+      setFrame(wide && middle.current ? middle.current.offsetHeight : null)
+    }
+    measure()
+    const observer = new ResizeObserver(measure)
+    if (middle.current) observer.observe(middle.current)
+    window.addEventListener('resize', measure)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', measure)
+    }
+  }, [settings, summary, board])
   const [confirmReset, setConfirmReset] = useState(false)
   const [resetting, setResetting] = useState(false)
 
@@ -180,7 +198,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
       </button>
 
       <div className="profile-grid">
-        <div className="profile-column">
+        <div className="profile-column" style={frame ? { maxHeight: frame } : undefined}>
           <section className="card profile-card">
             <div className="profile-id">
               <span className="avatar" aria-hidden>
@@ -325,7 +343,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
 
        </div>
 
-        <div className="profile-middle">
+        <div className="profile-middle" ref={middle}>
           <section className="profile-metrics">
             <div className="card">
               <span>{t('profile.characters')}</span>

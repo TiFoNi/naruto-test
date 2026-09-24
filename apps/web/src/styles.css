@@ -4231,7 +4231,18 @@ button.ghost.small {
 
   .profile-column > :last-child {
     flex: 1 1 auto;
+    min-height: min-content;
+  }
+
+  .profile-card {
     min-height: 0;
+    overflow: hidden;
+  }
+
+  .profile-settings {
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
   }
 }
 
