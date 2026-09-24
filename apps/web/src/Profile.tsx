@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import { useAuth } from './auth'
 import { api } from './api'
 import { GAMES } from './games'
@@ -99,6 +99,18 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   } | null>(null)
   const [savingNick, setSavingNick] = useState(false)
   const [settings, setSettings] = useState(false)
+  const middle = useRef<HTMLDivElement>(null)
+  const side = useRef<HTMLDivElement>(null)
+
+  const toggleSettings = () => {
+    const frozen = [middle.current, side.current]
+    if (settings) {
+      for (const column of frozen) if (column) column.style.height = ''
+      return setSettings(false)
+    }
+    for (const column of frozen) if (column) column.style.height = `${column.offsetHeight}px`
+    setSettings(true)
+  }
   const [confirmReset, setConfirmReset] = useState(false)
   const [resetting, setResetting] = useState(false)
 
@@ -179,10 +191,36 @@ export default function Profile({ onBack }: { onBack: () => void }) {
             <div className="profile-id">
               <span className="avatar" aria-hidden>
                 {user.nickname.charAt(0).toUpperCase()}
+                <b>{summary?.level.level ?? 1}</b>
               </span>
               <div className="profile-names">
                 <h1>{user.nickname}</h1>
                 <span className="muted">{user.username}</span>
+              </div>
+            </div>
+
+            <div className="level-panel">
+              <div className="level-line">
+                <span>
+                  {t('level.rank')} <b>{t(`rank.${summary?.level.rank ?? 'rookie'}` as UiKey)}</b>
+                </span>
+                <small className="muted">
+                  {summary?.level.next ? t('level.next', { rank: t(`rank.${summary.level.next.id}` as UiKey) }) : t('level.top')}
+                </small>
+              </div>
+              <div className="level-bar">
+                <i style={{ width: `${Math.round(((summary?.level.into ?? 0) / (summary?.level.need ?? 1)) * 100)}%` }} />
+              </div>
+              <div className="level-line">
+                <span>
+                  <b>{summary?.level.into ?? 0}</b> / {summary?.level.need ?? 0} XP
+                </span>
+                <small className="muted">
+                  {t('level.toNext', {
+                    level: (summary?.level.level ?? 1) + 1,
+                    xp: (summary?.level.need ?? 0) - (summary?.level.into ?? 0),
+                  })}
+                </small>
               </div>
             </div>
 
@@ -207,7 +245,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
             </div>
 
             <div className="profile-actions">
-              <button type="button" className="ghost" onClick={() => setSettings((open) => !open)}>
+              <button type="button" className="ghost" onClick={toggleSettings}>
                 {t('profile.settings')}
               </button>
               <button type="button" className="ghost" onClick={logout}>
@@ -286,39 +324,9 @@ export default function Profile({ onBack }: { onBack: () => void }) {
             </ul>
           </section>
 
-          <section className="card level-card">
-            <header>
-              <div className="card-title">
-                <h2>{t('level.title', { level: summary?.level.level ?? 1 })}</h2>
-                <p className="muted">{t('level.hint')}</p>
-              </div>
-            </header>
+       </div>
 
-            <div className="level-rank">
-              <span className="level-rank-name">{t(`rank.${summary?.level.rank ?? 'rookie'}` as UiKey)}</span>
-              <small className="muted">
-                {summary?.level.next
-                  ? `${t('level.next', { rank: t(`rank.${summary.level.next.id}` as UiKey) })} · ${t('level.nextAt', { level: summary.level.next.from })}`
-                  : t('level.top')}
-              </small>
-            </div>
-
-            <div className="level-bar">
-              <i style={{ width: `${Math.round(((summary?.level.into ?? 0) / (summary?.level.need ?? 1)) * 100)}%` }} />
-            </div>
-            <div className="level-numbers">
-              <span>{t('level.xp', { into: summary?.level.into ?? 0, need: summary?.level.need ?? 0 })}</span>
-              <span className="muted">
-                {t('level.toNext', {
-                  level: (summary?.level.level ?? 1) + 1,
-                  xp: (summary?.level.need ?? 0) - (summary?.level.into ?? 0),
-                })}
-              </span>
-            </div>
-          </section>
-        </div>
-
-        <div className="profile-middle">
+        <div className="profile-middle" ref={middle}>
           <section className="profile-metrics">
             <div className="card">
               <span>{t('profile.characters')}</span>
@@ -454,7 +462,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
           </div>
         </div>
 
-        <div className="profile-column">
+        <div className="profile-column" ref={side}>
           <section className="card quests-card">
             <header>
               <h2>{t('profile.questsTitle')}</h2>

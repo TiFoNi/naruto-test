@@ -1122,6 +1122,7 @@ footer p {
 }
 
 .avatar {
+  position: relative;
   width: 56px;
   height: 56px;
   flex-shrink: 0;
@@ -4611,27 +4612,53 @@ button.ghost.small {
   font-size: 12px;
 }
 
-.level-card,
 .quests-card {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.level-rank {
+.level-panel {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--card-2);
 }
 
-.level-rank-name {
+.level-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.level-line b {
   font-family: var(--display);
-  font-size: 22px;
+  font-size: 15px;
   color: var(--accent);
 }
 
-.level-rank small {
+.level-line small {
   font-size: 12px;
+}
+
+.avatar b {
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  transform: translateX(-50%);
+  min-width: 26px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 2px solid var(--card);
+  background: var(--accent);
+  color: #10131a;
+  font-family: var(--display);
+  font-size: 11px;
+  text-align: center;
 }
 
 .level-bar {
@@ -4655,14 +4682,6 @@ button.ghost.small {
   border-radius: 999px;
   background: linear-gradient(90deg, #ffb055, var(--accent));
   transition: width 0.3s;
-}
-
-.level-numbers {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 12px;
-  font-weight: 700;
 }
 
 .quests {
