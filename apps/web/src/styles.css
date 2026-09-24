@@ -5144,8 +5144,8 @@ button.ghost.small {
   align-items: center;
   gap: 7px 10px;
   width: 100%;
-  margin-top: 2px;
-  padding: 4px 2px 0;
+  margin-top: 4px;
+  padding: 2px;
   border: none;
   background: none;
   color: inherit;
@@ -5172,6 +5172,8 @@ button.ghost.small {
 }
 
 .bonus-gift {
+  grid-row: 1 / span 2;
+  align-self: center;
   display: grid;
   place-items: center;
   width: 32px;
