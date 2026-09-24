@@ -146,11 +146,11 @@ export default function Admin() {
 
   const remove = async (row: Row) => {
     setRemoving(null)
-    const { ok } = await api('admin/delete', { game: gameId, id: row.id })
+    const { ok, data } = await api<{ pictures?: number | null }>('admin/delete', { game: gameId, id: row.id })
     if (!ok) return setNote('не удалилось')
     setRows((list) => (list ?? []).filter((r) => r.id !== row.id))
     setOpenId(null)
-    setNote(unit.removed)
+    setNote(data.pictures === null ? `${unit.removed}, но картинки остались в хранилище` : unit.removed)
   }
 
   const saveUpdated = async (value: string) => {
@@ -275,7 +275,7 @@ export default function Admin() {
       {removing && (
         <Ask
           title={`Удалить ${String(removing.name ?? removing.id)}?`}
-          hint={`${unit.subject} исчезнет из игры навсегда. Загруженные картинки останутся в хранилище.`}
+          hint={`${unit.subject} исчезнет из игры навсегда — вместе с картинками в хранилище.`}
           action="Удалить"
           danger
           raised

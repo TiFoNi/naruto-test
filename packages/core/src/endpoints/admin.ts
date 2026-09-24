@@ -3,6 +3,7 @@ import { forget, isGame } from '../games'
 import { forgetTerms } from '../terms'
 import { fail, handle, json, readJson } from '../http'
 import { adminSession } from '../admin'
+import { dropPictures } from '../images'
 
 const missing = () => fail(404, 'not_found')
 
@@ -93,7 +94,13 @@ export const DELETE = handle(async (request) => {
   if (!result.deletedCount) return missing()
 
   forget(game)
-  return json({ ok: true })
+
+  const pictures = await dropPictures(game, id).catch((error) => {
+    console.error(error)
+    return null
+  })
+
+  return json({ ok: true, pictures })
 })
 
 export const PUT = handle(async (request) => {

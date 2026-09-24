@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto'
-import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { DeleteObjectCommand, DeleteObjectsCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import sharp from 'sharp'
 import { GAME_SPECS, type GameId } from '@nanda/game'
 
@@ -66,6 +66,22 @@ export async function uploadPages(game: GameId, id: number, sources: Buffer[]) {
   )
 
   return { count: pages.length, version: version(Buffer.concat(pages.map((p) => p.subarray(0, 64)))) }
+}
+
+export async function dropPictures(game: GameId, id: number) {
+  const folder = GAME_SPECS[game].images
+  const client = s3()
+  const Bucket = bucket()
+
+  for (const Key of [`${folder}/full/${id}.webp`, `${folder}/card/${id}.webp`]) {
+    await client.send(new DeleteObjectCommand({ Bucket, Key }))
+  }
+
+  const pages = await client.send(new ListObjectsV2Command({ Bucket, Prefix: `${folder}/pages/${id}/` }))
+  const keys = (pages.Contents ?? []).map(({ Key }) => ({ Key: Key as string }))
+  if (keys.length) await client.send(new DeleteObjectsCommand({ Bucket, Delete: { Objects: keys } }))
+
+  return 2 + keys.length
 }
 
 export async function dropPages(game: GameId, id: number, from: number, to: number) {
