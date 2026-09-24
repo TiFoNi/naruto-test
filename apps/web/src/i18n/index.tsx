@@ -40,7 +40,7 @@ const I18nContext = createContext<I18n | null>(null)
 export function I18nProvider({ children, lang }: { children: ReactNode; lang: Lang }) {
   const router = useRouter()
   const pathname = usePathname()
-  const dictionary = useTerms()
+  const dictionary = useTerms(lang !== 'ru')
 
   useEffect(() => {
     try {

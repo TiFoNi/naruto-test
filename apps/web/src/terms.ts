@@ -18,16 +18,17 @@ function fetchTerms() {
   return pending
 }
 
-export function useTerms() {
+export function useTerms(enabled: boolean) {
   const [dictionary, setDictionary] = useState<Dictionary>(terms)
 
   useEffect(() => {
+    if (!enabled) return
     let alive = true
     void fetchTerms().then(() => alive && setDictionary(terms))
     return () => {
       alive = false
     }
-  }, [])
+  }, [enabled])
 
   return dictionary
 }

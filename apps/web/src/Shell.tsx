@@ -81,7 +81,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
       <Background />
       <header className={`topbar ${scrolled ? 'is-solid' : ''}`}>
         <div className="topbar-inner">
-          <Link className="brand" href={href.home} aria-label={BRAND.name}>
+          <Link className="brand" href={href.home} aria-label={BRAND.name} prefetch={false}>
             <span className="brand-mark" aria-hidden>
               {BRAND.mark}
             </span>
