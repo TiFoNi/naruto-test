@@ -333,7 +333,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
                     {summary.games.map((row) => {
                       const game = GAMES.find((g) => g.id === row.game)
                       return (
-                        <li key={row.game}>
+                        <li key={row.game} className={row.solved ? '' : 'is-empty'}>
                           <span
                             className="world-tag"
                             style={{
@@ -348,12 +348,14 @@ export default function Profile({ onBack }: { onBack: () => void }) {
                             <b>{row.solved}</b> / {row.pool} · {percent(row.solved, row.pool)}%
                           </span>
                           <span className="world-bar">
-                            <i
-                              style={{
-                                width: `${Math.max(percent(row.solved, row.pool), 2)}%`,
-                                background: game?.accent ?? 'var(--accent)',
-                              }}
-                            />
+                            {!!row.solved && (
+                              <i
+                                style={{
+                                  width: `${Math.max(percent(row.solved, row.pool), 2)}%`,
+                                  background: game?.accent ?? 'var(--accent)',
+                                }}
+                              />
+                            )}
                           </span>
                         </li>
                       )

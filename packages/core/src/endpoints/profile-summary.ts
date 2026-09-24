@@ -131,7 +131,7 @@ export const GET = handle(async (request) => {
 
   const games = pools
     .map(({ game, pool }) => ({ game, pool, solved: unique.get(game) ?? 0 }))
-    .filter((row) => row.solved > 0)
+    .filter((row) => row.pool > 0)
     .sort((a, b) => b.solved / b.pool - a.solved / a.pool)
 
   const modes = past.modes
@@ -172,7 +172,7 @@ export const GET = handle(async (request) => {
       draws: doc.duelStats?.draws ?? 0,
     },
     challenges: { solved: doc.challengeStats?.solved ?? 0 },
-    favourite: games[0]?.game ?? null,
+    favourite: games.find((row) => row.solved > 0)?.game ?? null,
     rank: await place(xp),
     streak,
     games,

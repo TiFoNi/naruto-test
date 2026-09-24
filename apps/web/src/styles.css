@@ -4548,6 +4548,11 @@ button.ghost.small {
   gap: 10px;
 }
 
+.worlds li.is-empty .world-tag,
+.worlds li.is-empty .world-name {
+  opacity: 0.5;
+}
+
 .world-tag {
   display: grid;
   place-items: center;
