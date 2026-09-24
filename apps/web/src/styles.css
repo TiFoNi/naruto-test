@@ -29,18 +29,7 @@
 
 html {
   overscroll-behavior: none;
-  background:
-    radial-gradient(
-      900px 420px at 50% -160px,
-      color-mix(in srgb, var(--accent) 22%, transparent),
-      color-mix(in srgb, var(--accent) 16%, transparent) 26%,
-      color-mix(in srgb, var(--accent) 9%, transparent) 46%,
-      color-mix(in srgb, var(--accent) 4%, transparent) 62%,
-      color-mix(in srgb, var(--accent) 1.5%, transparent) 78%,
-      transparent 92%
-    )
-    fixed,
-    var(--bg);
+  background: var(--bg);
 }
 
 body {
@@ -121,8 +110,8 @@ h2 {
   z-index: 40;
   padding-bottom: 28px;
   background: linear-gradient(
-    color-mix(in srgb, var(--bg) 82%, transparent) 30%,
-    color-mix(in srgb, var(--bg) 45%, transparent) 62%,
+    color-mix(in srgb, #0a0b0d 88%, transparent) 30%,
+    color-mix(in srgb, #0a0b0d 50%, transparent) 62%,
     transparent
   );
   backdrop-filter: blur(3px);
@@ -143,7 +132,7 @@ h2 {
 }
 
 .topbar::after {
-  backdrop-filter: blur(26px) saturate(140%);
+  backdrop-filter: blur(26px);
   mask-image: linear-gradient(#000 34%, transparent 70%);
 }
 
