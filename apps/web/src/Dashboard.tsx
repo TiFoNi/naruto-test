@@ -6,6 +6,7 @@ import type { GameMeta } from './games/meta'
 import type { Category } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
+import Quests from './Quests'
 import { useHref } from './router'
 import { dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
@@ -132,10 +133,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
 export default function Dashboard({ games }: { games: GameMeta[] }) {
   const { t, lang } = useI18n()
   const href = useHref()
-  const { user, stats } = useAuth()
-  const all = Object.values(stats)
-  const totalSolved = all.reduce((sum, s) => sum + s.solved, 0)
-  const bestStreak = all.reduce((max, s) => Math.max(max, s.best), 0)
+  const { user } = useAuth()
 
   const shown = CATEGORIES.filter((category) => games.some((g) => g.category === category.id))
   const [active, setActive] = useState<Category>(shown[0]?.id ?? 'anime')
@@ -169,20 +167,7 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
           <h1>{t('dash.title')}</h1>
         </div>
         {user ? (
-          <a className="card hero-stats" href={href.profile}>
-            <span className="hero-stats-title">{t('dash.yourStats')}</span>
-            <div className="hero-stats-grid">
-              <div>
-                <b>{totalSolved}</b>
-                <span>{t('profile.total')}</span>
-              </div>
-              <div>
-                <b>{bestStreak}</b>
-                <span>{t('profile.bestStreak')}</span>
-              </div>
-            </div>
-            <span className="hero-stats-link">{t('dash.openProfile')}</span>
-          </a>
+          <Quests />
         ) : (
           <a className="card hero-stats guest" href={href.login}>
             <span className="hero-stats-title">{t('dash.yourStats')}</span>
