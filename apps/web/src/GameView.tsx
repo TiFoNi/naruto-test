@@ -78,7 +78,7 @@ export default function GameView({ game, mode, daily, visible }: { game: Game; m
           <div className="game-head-side">
             {!daily && user && <ChallengeMaker game={game} mode={mode} />}
             {user && (
-              <Link className="lb-link" href={href.leaderboard(game.id, mode, daily)}>
+              <Link className="lb-link" href={href.leaderboard(game.id, mode)}>
                 <TrophyIcon /> {t('nav.leaderboard')}
               </Link>
             )}

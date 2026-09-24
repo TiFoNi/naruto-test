@@ -65,7 +65,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const { t } = useI18n()
   const pathname = usePathname()
   const scrolled = useScrolled()
-  const [, , section, gameId, modeId, tail] = pathname.split('/')
+  const [, , section, gameId, modeId] = pathname.split('/')
   const open = PUBLIC.has(section ?? '')
   const game = section === 'play' ? metaById(games, gameId as never) : null
   const accent = user && game ? game.accent : BRAND.accent
@@ -74,7 +74,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
     document.documentElement.style.setProperty('--accent', accent)
   }, [accent])
 
-  const boardHref = href.leaderboard(game?.id ?? 'naruto', (section === 'play' ? modeId : 'classic') as never, section === 'play' && tail === 'daily')
+  const boardHref = href.leaderboard(game?.id ?? 'naruto', (section === 'play' ? modeId : 'classic') as never)
 
   return (
     <div className="app">

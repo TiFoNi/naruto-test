@@ -249,3 +249,19 @@ export function ArrowIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function CrownIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M3 7.5 7.5 11.5 12 4.5l4.5 7L21 7.5 19 19H5L3 7.5Z" fill="currentColor" />
+    </svg>
+  )
+}
+
+export function PlayIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M7.5 4.5 19 12 7.5 19.5V4.5Z" fill="currentColor" />
+    </svg>
+  )
+}

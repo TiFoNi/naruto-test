@@ -64,7 +64,7 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
             <Link className="primary" href={href.play(game.id, mode)}>
               {t('daily.playEndless')}
             </Link>
-            <Link className="ghost" href={href.leaderboard(game.id, mode, true)}>
+            <Link className="ghost" href={href.leaderboard(game.id, mode)}>
               <TrophyIcon /> {t('daily.todayBoard')}
             </Link>
           </div>

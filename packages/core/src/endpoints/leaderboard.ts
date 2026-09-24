@@ -1,24 +1,22 @@
 import { STAT_KEYS, statsKey } from '@nanda/game'
-import { dailyBoard } from '../daily-board'
 import { users } from '../db'
 import { fail, handle, json } from '../http'
 import { currentUser, defaultNickname, unauthorized } from '../profile'
+import { levelOf } from '../quests'
 
 const LIMIT = 200
 const SORTS = {
   best: { field: 'best', natural: -1, tie: { solved: -1 } },
   solved: { field: 'solved', natural: -1, tie: { best: -1 } },
-  avg: { field: 'avg', natural: 1, tie: { solved: -1 } },
 } as const
 
 type Sort = keyof typeof SORTS
-type Row = { _id: unknown; username: string; nickname?: string; solved: number; best: number; avg: number }
+type Row = { _id: unknown; username: string; nickname?: string; xp?: number; solved: number; best: number; avg: number }
 
 export const GET = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
   const params = new URL(request.url).searchParams
-  if (params.get('daily') === '1') return dailyBoard(found.doc._id!, params)
   const key = statsKey(params.get('game') ?? '', params.get('mode') ?? '')
   const sort = (params.get('sort') ?? 'best') as Sort
   if (!STAT_KEYS.includes(key) || !(sort in SORTS)) return fail(400, 'bad_request')
@@ -34,6 +32,7 @@ export const GET = handle(async (request) => {
         $project: {
           username: 1,
           nickname: 1,
+          xp: 1,
           solved: `${path}.solved`,
           best: { $ifNull: [`${path}.best`, 0] },
           avg: { $divide: [{ $ifNull: [`${path}.totalGuesses`, 0] }, `${path}.solved`] },
@@ -47,6 +46,7 @@ export const GET = handle(async (request) => {
   const view = (row: Row, index: number) => ({
     rank: index + 1,
     nickname: row.nickname ?? defaultNickname(row.username),
+    level: levelOf(row.xp ?? 0),
     solved: row.solved,
     best: row.best,
     avg: Math.round(row.avg * 10) / 10,
