@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useState, type FormEvent } from 'react'
 import { api } from './api'
 import { useI18n } from './i18n'
@@ -32,9 +33,9 @@ export default function DuelLobby() {
 
   return (
     <div className="duels">
-      <a className="back" href={href.home}>
+      <Link className="back" href={href.home}>
         {t('play.back')}
-      </a>
+      </Link>
       <header className="lb-head">
         <h1>
           <SwordsIcon /> {t('duel.title')}

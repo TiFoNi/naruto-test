@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import AbilityIcon from './AbilityIcon'
 import CharacterSearch from './CharacterSearch'
@@ -51,9 +52,9 @@ export default function DuelRoom({ code }: { code: string }) {
   if (error && !duel) {
     return (
       <div className="duel">
-        <a className="back" href={href.duels}>
+        <Link className="back" href={href.duels}>
           {t('duel.back')}
-        </a>
+        </Link>
         <div className="card round-status error">
           <span>{errorText(error)}</span>
           <button className="ghost" onClick={refresh}>
@@ -91,9 +92,9 @@ export default function DuelRoom({ code }: { code: string }) {
 
   return (
     <div className="duel">
-      <a className="back" href={href.duels}>
+      <Link className="back" href={href.duels}>
         {t('duel.back')}
-      </a>
+      </Link>
 
       <header className="duel-head card" style={{ '--tab-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
         <div>

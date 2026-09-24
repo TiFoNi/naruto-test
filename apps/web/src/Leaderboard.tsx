@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { api } from './api'
 import { GAMES, gameById } from './games'
@@ -121,9 +122,9 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
 
   return (
     <div className="leaderboard">
-      <a className="back" href={href.home}>
+      <Link className="back" href={href.home}>
         {t('play.back')}
-      </a>
+      </Link>
       <header className="lb-head">
         <h1>{t('lb.title')}</h1>
         <p className="muted">{t('lb.hint')}</p>
@@ -131,12 +132,12 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
 
       <div className="lb-pickers card">
         <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
-          <a role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.leaderboard(gameId, mode)}>
+          <Link role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.leaderboard(gameId, mode)}>
             <InfinityIcon /> {t('daily.endless')}
-          </a>
-          <a role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.leaderboard(gameId, mode, true)}>
+          </Link>
+          <Link role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.leaderboard(gameId, mode, true)}>
             <CalendarIcon /> {t('daily.daily')}
-          </a>
+          </Link>
         </div>
 
         <div className="lb-picker-row">
@@ -205,9 +206,9 @@ export default function Leaderboard({ gameId, mode, daily }: { gameId: GameId; m
                     <td colSpan={COLUMNS[sort].length + 2}>
                       <div className="lb-blank-inner">
                         <span>{t(daily && sort === 'today' ? 'daily.empty' : 'lb.empty')}</span>
-                        <a className="primary" href={href.play(gameId, mode, daily)}>
+                        <Link className="primary" href={href.play(gameId, mode, daily)}>
                           {t('lb.play')}
-                        </a>
+                        </Link>
                       </div>
                     </td>
                   </tr>

@@ -4,6 +4,16 @@ export function json(data: unknown, status = 200, cookie?: string | string[]) {
   return new Response(JSON.stringify(data), { status, headers })
 }
 
+export function cached(data: unknown, seconds: number) {
+  return new Response(JSON.stringify(data), {
+    status: 200,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': `private, max-age=${seconds}, stale-while-revalidate=86400`,
+    },
+  })
+}
+
 export const fail = (status: number, error: string) => json({ error }, status)
 
 export async function readJson(request: Request): Promise<Record<string, unknown>> {

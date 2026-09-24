@@ -4,6 +4,8 @@ import type { Entity, Game } from './games/types'
 import { ruToUk, useI18n } from './i18n'
 import { normalize } from './util'
 
+const LIMIT = 40
+
 type Props = {
   game: Game
   exclude: Set<number>
@@ -52,6 +54,7 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
       .map((x) => ({ x, r: rank(x) }))
       .filter(({ r }) => r >= 0)
       .sort((a, b) => a.r - b.r)
+      .slice(0, LIMIT)
       .map(({ x }) => x.e)
   }, [query, exclude, index])
 
@@ -59,21 +62,31 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
 
   useLayoutEffect(() => {
     if (!open) return
+    let frame = 0
+
     const fit = () => {
+      frame = 0
       const rect = box.current?.getBoundingClientRect()
       if (!rect) return
       const gap = 12
       const below = window.innerHeight - rect.bottom - gap
       const above = rect.top - gap
       const up = below < 220 && above > below
-      setPlace({ up, max: Math.max(120, Math.min(400, up ? above : below)) })
+      const max = Math.max(120, Math.min(400, up ? above : below))
+      setPlace((current) => (current.up === up && current.max === max ? current : { up, max }))
     }
+
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(fit)
+    }
+
     fit()
-    window.addEventListener('resize', fit)
-    window.addEventListener('scroll', fit, { passive: true })
+    window.addEventListener('resize', schedule)
+    window.addEventListener('scroll', schedule, { passive: true })
     return () => {
-      window.removeEventListener('resize', fit)
-      window.removeEventListener('scroll', fit)
+      window.removeEventListener('resize', schedule)
+      window.removeEventListener('scroll', schedule)
+      if (frame) cancelAnimationFrame(frame)
     }
   }, [open])
 

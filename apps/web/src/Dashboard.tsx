@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useState, type CSSProperties } from 'react'
 import { statsKey, useAuth } from './auth'
 import type { GameMeta } from './games/meta'
@@ -43,7 +44,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
 
   return (
     <article className="franchise" style={{ '--tab-accent': game.accent } as CSSProperties}>
-      <a className="franchise-art" href={href.play(game.id, game.modes[0])} aria-label={l(game.label)}>
+      <Link className="franchise-art" href={href.play(game.id, game.modes[0])} aria-label={l(game.label)} prefetch={false}>
         {game.featured.map(({ id, image }, i) => (
           <img
             key={id}
@@ -58,7 +59,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
             draggable={false}
           />
         ))}
-      </a>
+      </Link>
       <div className="franchise-body">
         <div className="franchise-title">
           <h3>{l(game.label)}</h3>
@@ -72,7 +73,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
             const own = stats[statsKey(game.id, m.id)] ?? emptyStats
             const played = own.solved > 0 || own.skipped > 0
             return (
-              <a key={m.id} className="mode-link" href={href.play(game.id, m.id)}>
+              <Link key={m.id} className="mode-link" href={href.play(game.id, m.id)} prefetch={false}>
                 <span className="mode-icon" aria-hidden>
                   {m.icon}
                 </span>
@@ -96,7 +97,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
                     </span>
                   </span>
                 )}
-              </a>
+              </Link>
             )
           })}
         </div>
@@ -108,11 +109,12 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
             {MODES.filter((m) => game.modes.includes(m.id)).map((m) => {
               const done = stats[dailyKey(game.id, m.id)]?.lastDay === kyivToday()
               return (
-                <a
+                <Link
                   key={m.id}
                   className={`daily-link ${done ? 'done' : ''}`}
                   href={href.play(game.id, m.id, true)}
                   title={done ? t('daily.done') : undefined}
+                  prefetch={false}
                 >
                   {done && (
                     <span aria-label={t('daily.done')}>
@@ -120,7 +122,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
                     </span>
                   )}
                   {t(m.label)}
-                </a>
+                </Link>
               )
             })}
           </div>
@@ -175,11 +177,11 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         {user ? (
           <Quests />
         ) : (
-          <a className="card hero-stats guest" href={href.login}>
+          <Link className="card hero-stats guest" href={href.login}>
             <span className="hero-stats-title">{t('dash.yourStats')}</span>
             <p>{t('landing.guestHint')}</p>
             <span className="hero-stats-link">{t('nav.signIn')}</span>
-          </a>
+          </Link>
         )}
       </section>
 

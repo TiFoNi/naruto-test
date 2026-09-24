@@ -1,4 +1,4 @@
-import { fail, handle, json } from '../http'
+import { cached, fail, handle } from '../http'
 import { gameData, isGame } from '../games'
 
 export const GET = handle(async (request) => {
@@ -6,5 +6,5 @@ export const GET = handle(async (request) => {
   if (!isGame(game)) return fail(400, 'bad_request')
 
   const { list, updated } = await gameData(game)
-  return json({ entities: list, updated }, 200)
+  return cached({ entities: list, updated }, 300)
 })

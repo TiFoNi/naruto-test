@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { statsKey, useAuth } from './auth'
 import { dailyKey } from '@nanda/game'
 import ClassicMode from './ClassicMode'
@@ -52,17 +53,17 @@ export default function GameView({ game, mode, daily, visible }: { game: Game; m
           <div className="game-switches">
             {user && (
               <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
-                <a role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
+                <Link role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
                   <InfinityIcon /> {t('daily.endless')}
-                </a>
-                <a role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, mode, true)}>
+                </Link>
+                <Link role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, mode, true)}>
                   <CalendarIcon /> {t('daily.daily')}
-                </a>
+                </Link>
               </div>
             )}
             <div className="mode-tabs" role="tablist">
               {MODES.filter((m) => game.modes.includes(m.id)).map((m) => (
-                <a
+                <Link
                   key={m.id}
                   role="tab"
                   aria-selected={mode === m.id}
@@ -70,23 +71,23 @@ export default function GameView({ game, mode, daily, visible }: { game: Game; m
                   href={href.play(game.id, m.id, daily)}
                 >
                   {t(m.label)}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
           <div className="game-head-side">
             {!daily && user && <ChallengeMaker game={game} mode={mode} />}
             {user && (
-              <a className="lb-link" href={href.leaderboard(game.id, mode, daily)}>
+              <Link className="lb-link" href={href.leaderboard(game.id, mode, daily)}>
                 <TrophyIcon /> {t('nav.leaderboard')}
-              </a>
+              </Link>
             )}
           </div>
         </div>
       </section>
       {!user && (
         <p className="guest-note">
-          {t('guest.note')} <a href={href.home}>{t('guest.signIn')}</a>
+          {t('guest.note')} <Link href={href.home}>{t('guest.signIn')}</Link>
         </p>
       )}
       {[false, true].map((d) => (

@@ -108,34 +108,34 @@ html {
 
 @keyframes drift-a {
   0% {
-    transform: translate(0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translate(160px, 90px) scale(1.12);
+    transform: translate3d(160px, 90px, 0);
   }
   100% {
-    transform: translate(60px, 200px) scale(0.95);
+    transform: translate3d(60px, 200px, 0);
   }
 }
 
 @keyframes drift-b {
   0% {
-    transform: translate(0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translate(-200px, -60px) scale(1.15);
+    transform: translate3d(-200px, -60px, 0);
   }
   100% {
-    transform: translate(-80px, 140px) scale(1);
+    transform: translate3d(-80px, 140px, 0);
   }
 }
 
 @keyframes drift-c {
   from {
-    transform: translate(0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translate(-180px, -160px) scale(1.2);
+    transform: translate3d(-180px, -160px, 0);
   }
 }
 

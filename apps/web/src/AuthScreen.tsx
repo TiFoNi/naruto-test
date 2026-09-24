@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useState, type FormEvent } from 'react'
 import { authClient } from './authClient'
 import { ArrowIcon, GoogleIcon, MailIcon } from './icons'
@@ -127,7 +128,7 @@ export default function AuthScreen() {
       </form>
 
       <p className="auth-terms">
-        {t('auth.termsWith')} <a href={href.terms}>{t('auth.termsTerms')}</a> {t('auth.termsAnd')} <a href={href.privacy}>{t('auth.termsPrivacy')}</a>
+        {t('auth.termsWith')} <Link href={href.terms}>{t('auth.termsTerms')}</Link> {t('auth.termsAnd')} <Link href={href.privacy}>{t('auth.termsPrivacy')}</Link>
         .
       </p>
     </section>

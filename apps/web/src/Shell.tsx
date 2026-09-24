@@ -140,8 +140,8 @@ export default function Shell({ children, games }: { children: ReactNode; games:
 
       <footer>
         <p className="footer-links">
-          <a href={href.privacy}>{t('footer.privacy')}</a>
-          <a href={href.terms}>{t('footer.terms')}</a>
+          <Link href={href.privacy}>{t('footer.privacy')}</Link>
+          <Link href={href.terms}>{t('footer.terms')}</Link>
         </p>
         <p>{t('footer.disclaimer')}</p>
         <p>

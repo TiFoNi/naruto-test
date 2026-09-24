@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import Countdown from './Countdown'
 import type { Entity, Game } from './games/types'
@@ -60,20 +61,20 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
             {t('daily.nextIn')} <Countdown until={nextAt} onDone={onNext} />
           </p>
           <div className="result-actions">
-            <a className="primary" href={href.play(game.id, mode)}>
+            <Link className="primary" href={href.play(game.id, mode)}>
               {t('daily.playEndless')}
-            </a>
-            <a className="ghost" href={href.leaderboard(game.id, mode, true)}>
+            </Link>
+            <Link className="ghost" href={href.leaderboard(game.id, mode, true)}>
               <TrophyIcon /> {t('daily.todayBoard')}
-            </a>
+            </Link>
           </div>
         </>
       ) : (
         challenge ? (
           <div className="result-actions">
-            <a className="ghost" href={href.home}>
+            <Link className="ghost" href={href.home}>
               {t('play.back')}
-            </a>
+            </Link>
           </div>
         ) : (
           <button className="primary" onClick={onNext}>

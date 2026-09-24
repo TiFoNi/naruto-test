@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import GameView from './GameView'
 import { useAuth } from './auth'
 import { useEntities } from './entities'
@@ -26,17 +27,17 @@ export default function PlayView({ game: gameId, mode: modeId, daily }: { game: 
   return (
     <div className="play">
       <div className="play-nav">
-        <a className="back" href={href.home}>
+        <Link className="back" href={href.home}>
           {t('play.back')}
-        </a>
+        </Link>
       </div>
       <main>
         {daily && !user && !loading ? (
           <div className="card center muted locked">
             <p>{t('daily.needsAccount')}</p>
-            <a className="primary" href={href.login}>
+            <Link className="primary" href={href.login}>
               {t('nav.signIn')}
-            </a>
+            </Link>
           </div>
         ) : (
           <GameView game={game} mode={mode} daily={daily} visible={ready} />
