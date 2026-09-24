@@ -15,6 +15,17 @@ const SKIP = new Set(['id', 'thumb', 'answer', 'hidden', ...NAMES])
 
 const asList = (value: unknown) => (Array.isArray(value) ? (value as string[]) : [])
 
+const PAGE = 60
+
+const FILTERS = [
+  { id: 'all', label: 'все' },
+  { id: 'pool', label: 'в пуле' },
+  { id: 'hidden', label: 'скрытые' },
+  { id: 'nopic', label: 'без картинки' },
+] as const
+
+type Filter = (typeof FILTERS)[number]['id']
+
 const UNIT = {
   character: { one: 'персонаж', many: 'Персонажи', accusative: 'персонажа', fresh: 'Новый', created: 'создан', removed: 'удалён', subject: 'Персонаж' },
   hero: { one: 'герой', many: 'Герои', accusative: 'героя', fresh: 'Новый', created: 'создан', removed: 'удалён', subject: 'Герой' },
@@ -34,6 +45,8 @@ export default function Admin() {
   const [updated, setUpdated] = useState('')
   const [adding, setAdding] = useState(false)
   const [removing, setRemoving] = useState<Row | null>(null)
+  const [filter, setFilter] = useState<Filter>('all')
+  const [limit, setLimit] = useState(PAGE)
 
   const unit = UNIT[GAMES.find((g) => g.id === gameId)?.unit ?? 'character']
 
@@ -86,11 +99,20 @@ export default function Admin() {
   const shown = useMemo(() => {
     const needle = query.trim().toLowerCase()
     if (!rows) return []
-    if (!needle) return rows
-    return rows.filter((row) =>
-      [row.name, row.nameEn, row.nameUk].some((v) => typeof v === 'string' && v.toLowerCase().includes(needle)),
-    )
-  }, [rows, query])
+    return rows.filter((row) => {
+      if (filter === 'pool' && !row.answer) return false
+      if (filter === 'hidden' && !row.hidden) return false
+      if (filter === 'nopic' && (row.image || (row.thumb ?? 0) >= 0)) return false
+      if (!needle) return true
+      return [row.name, row.nameEn, row.nameUk].some((v) => typeof v === 'string' && v.toLowerCase().includes(needle))
+    })
+  }, [rows, query, filter])
+
+  useEffect(() => {
+    setLimit(PAGE)
+  }, [query, filter, gameId])
+
+  const visible = shown.slice(0, limit)
 
   const save = async (row: Row, changed: Record<string, unknown>) => {
     setNote(null)
@@ -180,6 +202,19 @@ export default function Admin() {
           )}
           <span className={`admin-note ${note ? 'on' : ''}`}>{note}</span>
         </div>
+
+        {tab === 'people' && (
+          <div className="admin-head-row admin-filters">
+            {FILTERS.map(({ id, label }) => (
+              <button key={id} type="button" className={filter === id ? 'on' : ''} onClick={() => setFilter(id)}>
+                {label}
+              </button>
+            ))}
+            <span className="admin-count">
+              {filter === 'all' && !query.trim() ? `всего ${shown.length}` : `${shown.length} из ${rows?.length ?? 0}`}
+            </span>
+          </div>
+        )}
       </header>
 
       {adding && (
@@ -209,7 +244,7 @@ export default function Admin() {
         <Words terms={terms} query={query} onSave={saveTerm} />
       ) : (
         <ul className="admin-list">
-          {shown.map((row) => (
+          {visible.map((row) => (
             <li key={row.id} className={`admin-row ${row.hidden ? 'is-hidden' : ''}`}>
               <button type="button" className="admin-open" onClick={() => setOpenId(row.id)}>
                 {row.image || (row.thumb ?? 0) >= 0 ? (
@@ -239,6 +274,13 @@ export default function Admin() {
             </li>
           ))}
           {!shown.length && <li className="card center muted">ничего не найдено</li>}
+          {shown.length > visible.length && (
+            <li className="admin-more-row">
+              <button type="button" onClick={() => setLimit((value) => value + PAGE * 4)}>
+                Показать ещё · осталось {shown.length - visible.length}
+              </button>
+            </li>
+          )}
         </ul>
       )}
       {open && (

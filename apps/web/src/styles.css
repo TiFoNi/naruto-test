@@ -3398,6 +3398,60 @@ button.ghost.small {
   flex: 1;
 }
 
+.admin-filters {
+  gap: 8px;
+}
+
+.admin-filters button {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: none;
+  color: var(--text-3);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.admin-filters button:hover {
+  color: var(--text-2);
+}
+
+.admin-filters button.on {
+  border-color: transparent;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.admin-count {
+  margin-left: auto;
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+.admin-more-row {
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.admin-more-row button {
+  padding: 10px 22px;
+  border-radius: 12px;
+  border: 1px dashed var(--line);
+  background: none;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.admin-more-row button:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
 .admin-tools {
   padding: 10px 12px;
   border-radius: 14px;
