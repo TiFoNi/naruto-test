@@ -5062,8 +5062,8 @@ button.ghost.small {
 .picker h2 {
   margin: 0;
   font-family: var(--display);
-  font-size: 15px;
-  color: var(--text-3);
+  font-size: 16px;
+  color: var(--text);
   font-weight: 700;
 }
 

@@ -12,10 +12,10 @@ import { average, emptyStats, kyivToday } from './stats'
 import { CalendarIcon, ChartIcon, CheckIcon } from './icons'
 import { CARD, cardUrl } from './pics'
 
-const CATEGORIES: { id: Category; title: UiKey; hint: UiKey }[] = [
-  { id: 'anime', title: 'dash.anime', hint: 'dash.animeHint' },
-  { id: 'manga', title: 'dash.mangaTitle', hint: 'dash.mangaHint' },
-  { id: 'games', title: 'dash.games', hint: 'dash.gamesHint' },
+const CATEGORIES: { id: Category; title: UiKey }[] = [
+  { id: 'anime', title: 'dash.anime' },
+  { id: 'manga', title: 'dash.mangaTitle' },
+  { id: 'games', title: 'dash.games' },
 ]
 
 const WORLDS = {
@@ -167,13 +167,6 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         <div className="hero-copy">
           {user && <span className="eyebrow">{t('dash.hello', { name: user.nickname })}</span>}
           <h1>{t('dash.title')}</h1>
-          <p>{t('dash.lead')}</p>
-          <ul className="features">
-            <li>{t('dash.feature.unlimited')}</li>
-            <li>{t('dash.feature.daily')}</li>
-            <li>{t('dash.feature.modes')}</li>
-            <li>{t('dash.feature.stats')}</li>
-          </ul>
         </div>
         {user ? (
           <a className="card hero-stats" href={href.profile}>
@@ -248,7 +241,6 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         <section className="category">
           <header>
             <h2>{t(current.title)}</h2>
-            <p className="muted">{t(current.hint)}</p>
           </header>
           <div className="franchise-grid">
             {games
