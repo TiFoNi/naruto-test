@@ -42,7 +42,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const boardHref = href.leaderboard(game?.id ?? 'naruto', (section === 'play' ? modeId : 'classic') as never, section === 'play' && tail === 'daily')
 
   return (
-    <div className="app">
+    <div className={`app ${section === 'profile' ? 'wide' : ''}`}>
       <header className="topbar">
         <a className="brand" href={href.home}>
           <span className="brand-mark" aria-hidden>
