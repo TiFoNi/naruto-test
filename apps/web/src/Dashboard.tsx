@@ -205,10 +205,9 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
           {shown.map((category) => {
             const list = games.filter((g) => g.category === category.id)
             const Icon = category.icon
-            const art = list
-              .slice(0, 3)
-              .map((game) => ({ game, picture: game.featured[0] }))
-              .filter((item) => item.picture)
+            const first = list.map((game) => ({ game, picture: game.featured[0] })).filter((item) => item.picture)
+            const rest = list.flatMap((game) => game.featured.slice(1).map((picture) => ({ game, picture })))
+            const art = [...first, ...rest].slice(0, 3)
             return (
               <button
                 key={category.id}
@@ -220,10 +219,10 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
                 <span className="tile-icon" aria-hidden>
                   <Icon />
                 </span>
-                <span className="tile-fan" aria-hidden>
+                <span className="tile-fan" data-count={art.length} aria-hidden>
                   {art.map(({ game, picture }, index) => (
                     <img
-                      key={game.id}
+                      key={`${game.id}-${picture.id}`}
                       className={`tile-card tile-card-${index}`}
                       src={cardUrl(game.id, picture.id, picture.image)}
                       alt=""
