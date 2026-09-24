@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/dota.json'
 import atlas from '@nanda/game/data/dota-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game, type Icon } from './types'
 
@@ -52,7 +51,7 @@ export const dota: Game<Hero> = {
   modes: ['classic', 'image', 'ability'],
   featured: ['Pudge', 'Invoker', 'Crystal Maiden', 'Juggernaut'],
   unit: 'hero',
-  entities: raw as Hero[],
+  entities: [],
   columns,
   atlas,
   wideImages: true,

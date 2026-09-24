@@ -19,6 +19,6 @@ import type { Entity, Game, GameId } from './types'
 
 const ALL = [naruto, onepiece, aot, bleach, kny, tg, berserk, hxh, bc, jojo, se, ff, dn, avatar, dota, mk, manga] as unknown as Game<Entity>[]
 
-export const GAMES = ALL.filter((g) => g.entities.some((e) => e.answer))
+export const GAMES = ALL
 
 export const gameById = (id: GameId) => GAMES.find((g) => g.id === id) ?? GAMES[0]

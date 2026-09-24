@@ -15,6 +15,7 @@ import type { Guess } from './useRound'
 import { SwordsIcon } from './icons'
 import { fullUrl } from './pics'
 import { apiSrc } from './api'
+import { useEntities } from './entities'
 
 const ZOOM_LEVELS = [7, 5.6, 4.5, 3.6, 2.9, 2.35, 1.9, 1.55, 1.25, 1]
 
@@ -36,7 +37,8 @@ export default function DuelRoom({ code }: { code: string }) {
   }, [])
 
   const game = duel?.game ? gameById(duel.game as GameId) : null
-  const byId = useMemo(() => new Map((game?.entities ?? []).map((e) => [e.id, e])), [game])
+  const loaded = useEntities(game)
+  const byId = useMemo(() => new Map((game?.entities ?? []).map((e) => [e.id, e])), [game, game?.entities, loaded])
 
   const guesses: Guess[] = useMemo(() => {
     const done = (duel?.you?.guesses ?? [])

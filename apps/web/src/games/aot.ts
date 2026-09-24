@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/aot.json'
 import atlas from '@nanda/game/data/aot-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
@@ -39,7 +38,7 @@ export const aot: Game<Character> = {
   modes: ['classic', 'image'],
   featured: ['Eren Yeager', 'Mikasa Ackerman', 'Levi Ackerman', 'Armin Arlert'],
   unit: 'character',
-  entities: raw as Character[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,

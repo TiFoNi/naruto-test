@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/bc.json'
 import atlas from '@nanda/game/data/bc-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
@@ -39,7 +38,7 @@ export const bc: Game<Character> = {
   modes: ['classic', 'image'],
   featured: ['Asta', 'Yuno Grinberryall', 'Noelle Silva'],
   unit: 'character',
-  entities: raw as Character[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,

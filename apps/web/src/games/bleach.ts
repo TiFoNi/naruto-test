@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/bleach.json'
 import atlas from '@nanda/game/data/bleach-atlas.json'
 import { cells, l10n, EMPTY, type Column, type Entity, type Game } from './types'
 
@@ -42,7 +41,7 @@ export const bleach: Game<Character> = {
   modes: ['classic', 'image'],
   featured: ['Ichigo Kurosaki', 'Rukia Kuchiki', 'Sousuke Aizen', 'Byakuya Kuchiki'],
   unit: 'character',
-  entities: raw as Character[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,

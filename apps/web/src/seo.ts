@@ -64,8 +64,8 @@ const TAIL = {
   en: 'hints after every try, no daily limits.',
 }
 
-export function playMetadata(lang: Lang, gameId: string, modeId: string, daily: boolean): Metadata {
-  const game = gameMeta().find((g) => g.id === gameId)
+export async function playMetadata(lang: Lang, gameId: string, modeId: string, daily: boolean): Promise<Metadata> {
+  const game = (await gameMeta()).find((g) => g.id === gameId)
   if (!game) return {}
 
   const unit = UNIT[lang][game.unit]

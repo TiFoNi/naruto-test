@@ -4,6 +4,7 @@ import * as auth from '@nanda/core/endpoints/auth'
 import * as me from '@nanda/core/endpoints/me'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as duel from '@nanda/core/endpoints/duel'
+import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
 import * as leaderboard from '@nanda/core/endpoints/leaderboard'
 import * as profile from '@nanda/core/endpoints/profile'
 import * as roundCurrent from '@nanda/core/endpoints/round-current'
@@ -32,6 +33,11 @@ export class GameController {
   @Post('duel')
   duels(@Req() req: Request, @Res() res: Response) {
     return bridge(duel.POST, req, res)
+  }
+
+  @Get('entities')
+  entities(@Req() req: Request, @Res() res: Response) {
+    return bridge(entitiesEndpoint.GET, req, res)
   }
 
   @Get('leaderboard')

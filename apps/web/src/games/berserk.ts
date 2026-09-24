@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/berserk.json'
 import atlas from '@nanda/game/data/berserk-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
@@ -37,7 +36,7 @@ export const berserk: Game<Character> = {
   modes: ['classic', 'image'],
   featured: ['Guts', 'Griffith', 'Casca'],
   unit: 'character',
-  entities: raw as Character[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,

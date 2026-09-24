@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/jojo.json'
 import atlas from '@nanda/game/data/jojo-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
@@ -39,7 +38,7 @@ export const jojo: Game<Character> = {
   modes: ['classic', 'image'],
   featured: ['Jotaro Kujo', 'Dio Brando', 'Joseph Joestar'],
   unit: 'character',
-  entities: raw as Character[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,

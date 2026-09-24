@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/mk.json'
 import atlas from '@nanda/game/data/mk-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
@@ -37,7 +36,7 @@ export const mk: Game<Fighter> = {
   modes: ['classic', 'image'],
   featured: ['Scorpion', 'Sub-Zero', 'Raiden'],
   unit: 'character',
-  entities: raw as Fighter[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,

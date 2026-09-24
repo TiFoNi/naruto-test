@@ -50,7 +50,7 @@ export default async function RootLayout({ children, params }: { children: React
   return (
     <html lang={lang} className={`${manrope.variable} ${unbounded.variable}`}>
       <body>
-        <Providers games={gameMeta()} lang={lang as Lang}>
+        <Providers games={await gameMeta()} lang={lang as Lang}>
           {children}
         </Providers>
       </body>

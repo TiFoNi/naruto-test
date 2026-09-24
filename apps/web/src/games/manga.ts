@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/manga.json'
 import atlas from '@nanda/game/data/manga-atlas.json'
 import { l10n, type Entity, type Game } from './types'
 
@@ -12,9 +11,6 @@ type Manga = Entity & {
   pages: number
 }
 
-const ready = (raw as Manga[]).filter((m) => m.answer).map((m) => m.nameEn)
-const preferred = ['Berserk', 'Vagabond', 'Slam Dunk']
-
 export const manga: Game<Manga> = {
   id: 'manga',
   label: l10n('Манга', 'Манга', 'Manga'),
@@ -26,9 +22,9 @@ export const manga: Game<Manga> = {
   ),
   accent: '#7f8cff',
   modes: ['page'],
-  featured: [...new Set([...preferred.filter((n) => ready.includes(n)), ...ready])].slice(0, 3),
+  featured: ['Berserk', 'Vagabond', 'Slam Dunk'],
   unit: 'manga',
-  entities: raw as Manga[],
+  entities: [],
   columns: [],
   atlas,
   wideImages: false,

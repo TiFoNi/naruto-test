@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/se.json'
 import atlas from '@nanda/game/data/se-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
@@ -39,7 +38,7 @@ export const se: Game<Character> = {
   modes: ['classic', 'image'],
   featured: ['Maka Albarn', 'Soul Evans', 'Death the Kid'],
   unit: 'character',
-  entities: raw as Character[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,

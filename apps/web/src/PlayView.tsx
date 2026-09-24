@@ -2,6 +2,7 @@
 
 import GameView from './GameView'
 import { useAuth } from './auth'
+import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
@@ -13,6 +14,7 @@ export default function PlayView({ game: gameId, mode: modeId, daily }: { game: 
   const href = useHref()
   const { user, loading } = useAuth()
   const game = GAMES.find((g) => g.id === (gameId as GameId))
+  const ready = useEntities(game)
   if (!game) return <div className="card center muted">{t('err.not_found')}</div>
   const mode = (game.modes.includes(modeId as ModeId) ? modeId : game.modes[0]) as ModeId
 
@@ -32,7 +34,7 @@ export default function PlayView({ game: gameId, mode: modeId, daily }: { game: 
             </a>
           </div>
         ) : (
-          <GameView game={game} mode={mode} daily={daily} visible />
+          <GameView game={game} mode={mode} daily={daily} visible={ready} />
         )}
       </main>
     </div>

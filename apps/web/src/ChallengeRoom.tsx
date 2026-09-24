@@ -14,6 +14,7 @@ import { useI18n } from './i18n'
 import { MODES, type ModeId } from './modes'
 import { useHref } from './router'
 import { emptyStats } from './stats'
+import { useEntities } from './entities'
 
 type Solve = { nickname: string; guesses: number; guessIds: number[]; solved: boolean }
 
@@ -34,6 +35,7 @@ export default function ChallengeRoom({ code }: { code: string }) {
   const [challenge, setChallenge] = useState<Challenge | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+  const loaded = useEntities(challenge ? gameById(challenge.game) : null)
 
   useEffect(() => {
     let cancelled = false
@@ -59,7 +61,7 @@ export default function ChallengeRoom({ code }: { code: string }) {
       </div>
     )
   }
-  if (!challenge || !user) return <div className="card center muted">{t('loading')}</div>
+  if (!challenge || !user || !loaded) return <div className="card center muted">{t('loading')}</div>
 
   const game = gameById(challenge.game)
   const mode = challenge.mode

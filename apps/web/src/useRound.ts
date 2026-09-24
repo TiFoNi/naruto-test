@@ -37,7 +37,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
   const coolTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const [error, setError] = useState<string | null>(null)
 
-  const byId = useMemo(() => new Map(game.entities.map((e) => [e.id, e])), [game])
+  const byId = useMemo(() => new Map(game.entities.map((e) => [e.id, e])), [game, game.entities])
 
   const accept = useCallback(
     ({ ok, status, data }: { ok: boolean; status: number; data: RoundResponse & { error?: string } }) => {

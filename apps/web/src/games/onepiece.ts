@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/onepiece.json'
 import atlas from '@nanda/game/data/onepiece-atlas.json'
 import { EMPTY, cells, l10n, type Column, type Entity, type Game } from './types'
 
@@ -55,7 +54,7 @@ export const onepiece: Game<Character> = {
   modes: ['classic', 'image'],
   featured: ['Monkey D. Luffy', 'Roronoa Zoro', 'Sanji'],
   unit: 'character',
-  entities: raw as Character[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,

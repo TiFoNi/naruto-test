@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/tg.json'
 import atlas from '@nanda/game/data/tg-atlas.json'
 import { cells, l10n, EMPTY, type Column, type Entity, type Game } from './types'
 
@@ -48,7 +47,7 @@ export const tg: Game<Character> = {
   modes: ['classic', 'image'],
   featured: ['Ken Kaneki', 'Touka Kirishima', 'Kishou Arima'],
   unit: 'character',
-  entities: raw as Character[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,

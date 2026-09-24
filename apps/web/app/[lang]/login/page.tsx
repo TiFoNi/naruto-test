@@ -8,6 +8,6 @@ export const metadata: Metadata = {
   robots: { index: false },
 }
 
-export default function LoginPage() {
-  return <Landing games={gameMeta()} />
+export default async function LoginPage() {
+  return <Landing games={await gameMeta()} />
 }

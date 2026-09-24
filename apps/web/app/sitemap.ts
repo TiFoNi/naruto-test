@@ -12,11 +12,11 @@ const languages = (path: string) => ({
   },
 })
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date()
   const paths = [
     { path: '', changeFrequency: 'daily' as const, priority: 1 },
-    ...gameMeta().flatMap((game) =>
+    ...(await gameMeta()).flatMap((game) =>
       game.modes.map((mode) => ({ path: `/play/${game.id}/${mode}`, changeFrequency: 'weekly' as const, priority: 0.7 })),
     ),
     { path: '/privacy', changeFrequency: 'yearly' as const, priority: 0.2 },

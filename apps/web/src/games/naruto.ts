@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/characters.json'
 import atlas from '@nanda/game/data/atlas.json'
 import { cells, l10n, EMPTY, type Column, type Entity, type Game, type Icon } from './types'
 
@@ -55,7 +54,7 @@ export const naruto: Game<Character> = {
   modes: ['classic', 'image'],
   featured: ['Naruto Uzumaki', 'Sasuke Uchiha', 'Kakashi Hatake', 'Itachi Uchiha'],
   unit: 'character',
-  entities: raw as Character[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,

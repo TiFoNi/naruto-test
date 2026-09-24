@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/hxh.json'
 import atlas from '@nanda/game/data/hxh-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
@@ -37,7 +36,7 @@ export const hxh: Game<Character> = {
   modes: ['classic', 'image'],
   featured: ['Gon Freecss', 'Killua Zoldyck', 'Kurapika'],
   unit: 'character',
-  entities: raw as Character[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,

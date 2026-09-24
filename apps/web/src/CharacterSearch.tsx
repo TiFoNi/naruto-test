@@ -31,7 +31,7 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
         e,
         terms: [e.name, ruToUk(e.name), e.nameEn, e.aliases].filter((s): s is string => !!s).map(normalize),
       })),
-    [game],
+    [game, game.entities],
   )
 
   const matches = useMemo(() => {

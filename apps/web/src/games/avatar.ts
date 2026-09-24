@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/avatar.json'
 import atlas from '@nanda/game/data/avatar-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
@@ -39,7 +38,7 @@ export const avatar: Game<Character> = {
   modes: ['classic', 'image'],
   featured: ['Aang', 'Zuko', 'Korra'],
   unit: 'character',
-  entities: raw as Character[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,

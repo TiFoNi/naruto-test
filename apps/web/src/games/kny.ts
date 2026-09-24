@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/kny.json'
 import atlas from '@nanda/game/data/kny-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
@@ -39,7 +38,7 @@ export const kny: Game<Character> = {
   modes: ['classic', 'image'],
   featured: ['Tanjiro Kamado', 'Nezuko Kamado', 'Zenitsu Agatsuma'],
   unit: 'character',
-  entities: raw as Character[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,

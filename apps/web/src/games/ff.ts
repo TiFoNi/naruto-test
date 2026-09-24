@@ -1,4 +1,3 @@
-import raw from '@nanda/game/data/ff.json'
 import atlas from '@nanda/game/data/ff-atlas.json'
 import { cells, l10n, type Column, type Entity, type Game } from './types'
 
@@ -39,7 +38,7 @@ export const ff: Game<Character> = {
   modes: ['classic', 'image'],
   featured: ['Shinra Kusakabe', 'Arthur Boyle', 'Benimaru Shinmon'],
   unit: 'character',
-  entities: raw as Character[],
+  entities: [],
   columns,
   atlas,
   wideImages: false,
