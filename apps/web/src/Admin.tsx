@@ -62,8 +62,15 @@ export default function Admin() {
   }
 
   const saveTerm = async (term: Term) => {
-    setTerms((list) => list.map((t) => (t.value === term.value ? term : t)))
+    setTerms((list) => (list.some((t) => t.value === term.value) ? list.map((t) => (t.value === term.value ? term : t)) : [...list, term]))
     await api('admin/term', term)
+  }
+
+  const addValue = async (field: string, term: Term, row: Row) => {
+    await saveTerm(term)
+    setOptions((all) => ({ ...all, [field]: [...(all[field] ?? []), term.value].sort((a, b) => a.localeCompare(b, 'ru')) }))
+    const current = row[field]
+    await save(row, { [field]: Array.isArray(current) ? [...(current as string[]), term.value] : term.value })
   }
 
   const untranslated = terms.filter((t) => !t.uk || !t.en).length
@@ -118,7 +125,7 @@ export default function Admin() {
                 скрыт
               </label>
 
-              {openId === row.id && <Editor row={row} fields={fields} options={options} onSave={save} />}
+              {openId === row.id && <Editor row={row} fields={fields} options={options} onSave={save} onAdd={addValue} />}
             </li>
           ))}
         </ul>
@@ -132,11 +139,13 @@ function Editor({
   fields,
   options,
   onSave,
+  onAdd,
 }: {
   row: Row
   fields: string[]
   options: Record<string, string[]>
   onSave: (row: Row, changed: Record<string, unknown>) => void
+  onAdd: (field: string, term: Term, row: Row) => void
 }) {
   return (
     <div className="admin-edit">
@@ -188,13 +197,14 @@ function Editor({
                     {choice}
                   </button>
                 ))}
+                <NewValue field={key} row={row} onAdd={onAdd} />
               </div>
             </label>
           )
         }
 
         return (
-          <label key={key}>
+          <label key={key} className="admin-single">
             <span>{key}</span>
             <select value={String(row[key] ?? '')} onChange={(e) => onSave(row, { [key]: e.target.value })}>
               {!choices.includes(String(row[key] ?? '')) && <option value={String(row[key] ?? '')}>{String(row[key] ?? '—')}</option>}
@@ -204,9 +214,43 @@ function Editor({
                 </option>
               ))}
             </select>
+            <NewValue field={key} row={row} onAdd={onAdd} />
           </label>
         )
       })}
+    </div>
+  )
+}
+
+function NewValue({ field, row, onAdd }: { field: string; row: Row; onAdd: (field: string, term: Term, row: Row) => void }) {
+  const [open, setOpen] = useState(false)
+  const [term, setTerm] = useState<Term>({ value: '', uk: '', en: '' })
+
+  if (!open)
+    return (
+      <button type="button" className="admin-add" onClick={() => setOpen(true)}>
+        + новое
+      </button>
+    )
+
+  const submit = () => {
+    if (!term.value.trim()) return setOpen(false)
+    onAdd(field, { value: term.value.trim(), uk: term.uk.trim(), en: term.en.trim() }, row)
+    setTerm({ value: '', uk: '', en: '' })
+    setOpen(false)
+  }
+
+  return (
+    <div className="admin-new">
+      <input autoFocus placeholder="по-русски" value={term.value} onChange={(e) => setTerm({ ...term, value: e.target.value })} />
+      <input placeholder="українською" value={term.uk} onChange={(e) => setTerm({ ...term, uk: e.target.value })} />
+      <input placeholder="in English" value={term.en} onChange={(e) => setTerm({ ...term, en: e.target.value })} />
+      <button type="button" className="primary" onClick={submit}>
+        Добавить
+      </button>
+      <button type="button" onClick={() => setOpen(false)}>
+        Отмена
+      </button>
     </div>
   )
 }
