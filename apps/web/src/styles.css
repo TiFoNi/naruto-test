@@ -4284,7 +4284,12 @@ button.ghost.small {
 
 .profile-facts b.small {
   font-size: 15px;
-  overflow-wrap: anywhere;
+  line-height: 1.25;
+}
+
+.profile-facts b.empty {
+  font-size: 22px;
+  color: var(--text-3);
 }
 
 .profile-facts small {
@@ -4609,17 +4614,6 @@ button.ghost.small {
 
 .soon-card {
   opacity: 0.92;
-}
-
-.soon-badge {
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: var(--card-2);
-  color: var(--text-3);
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 
 .soon-card p {

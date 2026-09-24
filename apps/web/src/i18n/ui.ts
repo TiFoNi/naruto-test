@@ -314,7 +314,6 @@ const ui = {
   'profile.lost': { ru: 'Не угадан {name}', uk: 'Не вгадано {name}', en: 'Missed {name}' },
   'profile.gaveUp': { ru: 'Сдался — {name}', uk: 'Здався — {name}', en: 'Gave up — {name}' },
   'profile.tries': { ru: 'попыток: {count}', uk: 'спроб: {count}', en: 'guesses: {count}' },
-  'profile.soon': { ru: 'Скоро', uk: 'Незабаром', en: 'Coming soon' },
   'profile.levelTitle': { ru: 'Уровень аккаунта', uk: 'Рівень акаунта', en: 'Account level' },
   'profile.levelSoon': { ru: 'Опыт за игры, ранги и рамки аватара появятся здесь.', uk: 'Досвід за ігри, ранги та рамки аватара з’являться тут.', en: 'Experience, ranks and avatar frames will live here.' },
   'profile.questsTitle': { ru: 'Ежедневные задания', uk: 'Щоденні завдання', en: 'Daily quests' },
