@@ -54,6 +54,11 @@ export default function Shell({ children, games }: { children: ReactNode; games:
           </span>
         </a>
         <div className="topbar-right">
+          {loading && (
+            <span className="topbar-link topbar-ghost" aria-hidden>
+              <span className="topbar-link-label">{t('nav.signIn')}</span>
+            </span>
+          )}
           {!loading && !user && (
             <a className="topbar-link" href={href.login}>
               <span className="topbar-link-label">{t('nav.signIn')}</span>

@@ -1050,6 +1050,10 @@ footer p {
   min-width: 0;
 }
 
+.topbar-ghost {
+  visibility: hidden;
+}
+
 .lang-switch {
   display: flex;
   flex-shrink: 0;
