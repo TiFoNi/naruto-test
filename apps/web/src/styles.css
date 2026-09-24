@@ -4641,6 +4641,11 @@ button.ghost.small {
   white-space: nowrap;
 }
 
+.level-line small b {
+  color: var(--text-2);
+  font-weight: 800;
+}
+
 .level-rank,
 .level-xp {
   white-space: nowrap;

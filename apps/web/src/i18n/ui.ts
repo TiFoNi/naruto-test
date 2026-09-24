@@ -304,8 +304,7 @@ const ui = {
   'rank.myth': { ru: 'Миф', uk: 'Міф', en: 'Myth' },
 
   'level.title': { ru: 'Уровень {level}', uk: 'Рівень {level}', en: 'Level {level}' },
-  'level.rank': { ru: 'Ранг', uk: 'Ранг', en: 'Rank' },
-  'level.next': { ru: 'дальше — {rank}', uk: 'далі — {rank}', en: 'next — {rank}' },
+  'level.next': { ru: 'дальше —', uk: 'далі —', en: 'next —' },
   'level.nextAt': { ru: 'с {level} уровня', uk: 'з {level} рівня', en: 'at level {level}' },
   'level.top': { ru: 'высший ранг', uk: 'найвищий ранг', en: 'highest rank' },
   'level.xp': { ru: '{into} / {need} XP', uk: '{into} / {need} XP', en: '{into} / {need} XP' },

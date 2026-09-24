@@ -202,10 +202,16 @@ export default function Profile({ onBack }: { onBack: () => void }) {
             <div className="level-panel">
               <div className="level-line">
                 <span className="level-rank">
-                  {t('level.rank')} <b>{t(`rank.${summary?.level.rank ?? 'rookie'}` as UiKey)}</b>
+                  <b>{t(`rank.${summary?.level.rank ?? 'rookie'}` as UiKey)}</b>
                 </span>
-                <small className="muted">
-                  {summary?.level.next ? t('level.next', { rank: t(`rank.${summary.level.next.id}` as UiKey) }) : t('level.top')}
+                <small>
+                  {summary?.level.next ? (
+                    <>
+                      {t('level.next')} <b>{t(`rank.${summary.level.next.id}` as UiKey)}</b>
+                    </>
+                  ) : (
+                    t('level.top')
+                  )}
                 </small>
               </div>
               <div className="level-bar">
