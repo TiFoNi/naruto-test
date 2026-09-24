@@ -1,9 +1,9 @@
 import { GAME_SPECS, MODE_IDS, type GameId, type ModeId } from '@nanda/game'
-import { entities } from './db'
+import { entities, settings } from './db'
 
 export type Entity = Record<string, unknown> & { id: number; answer: boolean }
 
-type GameData = { byId: Map<number, Entity>; pool: Entity[]; list: Entity[] }
+type GameData = { byId: Map<number, Entity>; pool: Entity[]; list: Entity[]; updated?: string }
 
 const TTL = 60_000
 
@@ -20,7 +20,14 @@ async function load(game: GameId): Promise<GameData> {
     .find({ game, hidden: { $ne: true } }, { projection: { _id: 0, game: 0, hidden: 0, updatedAt: 0 }, sort: { id: 1 } })
     .toArray()) as unknown as Entity[]
 
-  const data = { byId: new Map(list.map((e) => [e.id, e])), pool: list.filter((e) => e.answer), list }
+  const config = await (await settings()).findOne({ game }, { projection: { _id: 0, updated: 1 } })
+
+  const data = {
+    byId: new Map(list.map((e) => [e.id, e])),
+    pool: list.filter((e) => e.answer),
+    list,
+    updated: config?.updated,
+  }
   cache.set(game, { at: Date.now(), data })
   return data
 }

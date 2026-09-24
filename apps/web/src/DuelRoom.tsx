@@ -205,7 +205,7 @@ export default function DuelRoom({ code }: { code: string }) {
           {over && answer ? (
             <div className={`card result ${duel.youWon ? 'won' : duel.winner === null ? 'skipped' : 'lost'}`}>
               <h2>{duel.youWon ? t('duel.youWon') : duel.winner ? t('duel.youLost', { name: duel.winner }) : t('duel.draw')}</h2>
-              <img className="result-image" src={fullUrl(game.id, answer.id)} alt={name(answer)} />
+              <img className="result-image" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />
               <div className="result-name">{name(answer)}</div>
               <p className="round">
                 {you?.nickname}: {t('duel.guesses', { count: you?.guesses.length ?? 0 })}

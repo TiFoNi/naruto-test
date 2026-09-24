@@ -24,18 +24,23 @@ export default function Admin() {
   const [query, setQuery] = useState('')
   const [openId, setOpenId] = useState<number | null>(null)
   const [note, setNote] = useState<string | null>(null)
+  const [updated, setUpdated] = useState('')
 
   const load = useCallback(async (game: GameId) => {
     setRows(null)
     setOpenId(null)
-    const { ok, status, data } = await api<{ entities?: Row[]; options?: Record<string, string[]>; terms?: Term[] }>(
-      `admin/entities?game=${game}`,
-    )
+    const { ok, status, data } = await api<{
+      entities?: Row[]
+      options?: Record<string, string[]>
+      terms?: Term[]
+      updated?: string
+    }>(`admin/entities?game=${game}`)
     if (status === 404) return setDenied(true)
     if (!ok) return setRows([])
     setRows(data.entities ?? [])
     setOptions(data.options ?? {})
     setTerms(data.terms ?? [])
+    setUpdated(data.updated ?? '')
   }, [])
 
   useEffect(() => {
@@ -84,6 +89,12 @@ export default function Admin() {
     setNote('создан — заполни и сними «скрыт»')
   }
 
+  const saveUpdated = async (value: string) => {
+    setUpdated(value)
+    const { ok } = await api('admin/settings', { game: gameId, updated: value })
+    setNote(ok ? 'дата сохранена' : 'дата не сохранилась')
+  }
+
   const untranslated = terms.filter((t) => !t.uk || !t.en).length
 
   if (denied) return <div className="card center muted">Страница не найдена</div>
@@ -96,8 +107,13 @@ export default function Admin() {
           <button type="button" className={tab === 'people' ? 'active' : ''} onClick={() => setTab('people')}>
             Персонажи
           </button>
-          <button type="button" className={tab === 'words' ? 'active' : ''} onClick={() => setTab('words')}>
-            Словарь{untranslated > 0 && <b> · {untranslated}</b>}
+          <button
+            type="button"
+            className={tab === 'words' ? 'active' : ''}
+            title={untranslated > 0 ? `Значений без перевода: ${untranslated}` : 'Все значения переведены'}
+            onClick={() => setTab('words')}
+          >
+            Словарь{untranslated > 0 && <b> · {untranslated} без перевода</b>}
           </button>
         </div>
         <Dropdown
@@ -106,6 +122,10 @@ export default function Admin() {
           onPick={(label) => setGameId(GAMES.find((g) => g.label.ru === label)?.id ?? gameId)}
         />
         <input placeholder="Поиск" value={query} onChange={(e) => setQuery(e.target.value)} />
+        <label className="admin-date" title="Дата, на которую актуальны данные — показывается в игре">
+          данные на
+          <input type="date" value={updated} onChange={(e) => void saveUpdated(e.target.value)} />
+        </label>
         {tab === 'people' && (
           <button type="button" className="admin-create" onClick={create}>
             + персонаж
@@ -123,7 +143,7 @@ export default function Admin() {
           {shown.map((row) => (
             <li key={row.id} className={`admin-row ${row.hidden ? 'is-hidden' : ''}`}>
               <button type="button" className="admin-open" onClick={() => setOpenId(openId === row.id ? null : row.id)}>
-                <img src={cardUrl(gameId, row.id)} alt="" width={36} height={48} loading="lazy" />
+                <img src={cardUrl(gameId, row.id, row.image as string | undefined)} alt="" width={36} height={48} loading="lazy" />
                 <span className="admin-name">
                   <b>{String(row.name ?? row.id)}</b>
                   <small>{String(row.nameEn ?? '')}</small>
@@ -139,7 +159,12 @@ export default function Admin() {
                 скрыт
               </label>
 
-              {openId === row.id && <Editor row={row} fields={fields} options={options} onSave={save} onAdd={addValue} />}
+              {openId === row.id && (
+                <>
+                  <Pictures game={gameId} row={row} onDone={(entity) => setRows((list) => (list ?? []).map((r) => (r.id === entity.id ? entity : r)))} />
+                  <Editor row={row} fields={fields} options={options} onSave={save} onAdd={addValue} />
+                </>
+              )}
             </li>
           ))}
         </ul>
@@ -229,9 +254,60 @@ function Editor({
   )
 }
 
+function Pictures({ game, row, onDone }: { game: GameId; row: Row; onDone: (entity: Row) => void }) {
+  const [busy, setBusy] = useState<'portrait' | 'pages' | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const hasPages = typeof row.pages === 'number'
+
+  const send = async (kind: 'portrait' | 'pages', files: FileList | null) => {
+    if (!files?.length) return
+    setBusy(kind)
+    setError(null)
+
+    const form = new FormData()
+    form.append('game', game)
+    form.append('id', String(row.id))
+    form.append('kind', kind)
+    for (const file of Array.from(files)) form.append('file', file)
+
+    const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, '') ?? ''
+    const response = await fetch(`${base}/api/admin/image`, { method: 'POST', body: form, credentials: base ? 'include' : 'same-origin' })
+    const data = (await response.json().catch(() => ({}))) as { entity?: Row; error?: string }
+    setBusy(null)
+    if (!response.ok || !data.entity) return setError(data.error === 'too_large' ? 'файл больше 8 МБ' : 'не загрузилось')
+    onDone(data.entity)
+  }
+
+  return (
+    <div className="admin-pics">
+      <figure>
+        <img src={cardUrl(game, row.id, row.image as string | undefined)} alt="" width={72} height={96} />
+        <figcaption>
+          <label className="admin-upload">
+            {busy === 'portrait' ? 'Загружаю…' : hasPages ? 'Заменить обложку' : 'Заменить картинку'}
+            <input type="file" accept="image/*" hidden disabled={busy !== null} onChange={(e) => send('portrait', e.target.files)} />
+          </label>
+        </figcaption>
+      </figure>
+
+      {hasPages && (
+        <div className="admin-pages">
+          <span className="muted">Страниц: {String(row.pages)}</span>
+          <label className="admin-upload">
+            {busy === 'pages' ? 'Загружаю…' : 'Заменить страницы'}
+            <input type="file" accept="image/*" multiple hidden disabled={busy !== null} onChange={(e) => send('pages', e.target.files)} />
+          </label>
+          <small className="muted">загрузи все сразу — сколько файлов, столько и станет страниц</small>
+        </div>
+      )}
+
+      {error && <span className="admin-error">{error}</span>}
+    </div>
+  )
+}
+
 function Dropdown({ value, choices, onPick }: { value: string; choices: string[]; onPick: (value: string) => void }) {
   const [open, setOpen] = useState(false)
-  const [filter, setFilter] = useState('')
   const box = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -243,9 +319,6 @@ function Dropdown({ value, choices, onPick }: { value: string; choices: string[]
     return () => document.removeEventListener('mousedown', away)
   }, [open])
 
-  const needle = filter.trim().toLowerCase()
-  const shown = needle ? choices.filter((c) => c.toLowerCase().includes(needle)) : choices
-
   return (
     <div className="dropdown" ref={box}>
       <button type="button" className={`dropdown-head ${open ? 'open' : ''}`} onClick={() => setOpen(!open)}>
@@ -254,11 +327,8 @@ function Dropdown({ value, choices, onPick }: { value: string; choices: string[]
       </button>
       {open && (
         <div className="dropdown-menu">
-          {choices.length > 8 && (
-            <input autoFocus placeholder="Фильтр" value={filter} onChange={(e) => setFilter(e.target.value)} />
-          )}
           <ul>
-            {shown.map((choice) => (
+            {choices.map((choice) => (
               <li key={choice}>
                 <button
                   type="button"
@@ -266,14 +336,13 @@ function Dropdown({ value, choices, onPick }: { value: string; choices: string[]
                   onClick={() => {
                     onPick(choice)
                     setOpen(false)
-                    setFilter('')
                   }}
                 >
                   {choice}
                 </button>
               </li>
             ))}
-            {!shown.length && <li className="dropdown-empty">ничего не найдено</li>}
+            {!choices.length && <li className="dropdown-empty">пусто</li>}
           </ul>
         </div>
       )}

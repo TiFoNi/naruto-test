@@ -26,11 +26,11 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
   return (
     <article className="franchise" style={{ '--tab-accent': game.accent } as CSSProperties}>
       <a className="franchise-art" href={href.play(game.id, game.modes[0])} aria-label={l(game.label)}>
-        {game.featured.map((id, i) => (
+        {game.featured.map(({ id, image }, i) => (
           <img
             key={id}
             className={`fan fan-${i}`}
-            src={cardUrl(game.id, id)}
+            src={cardUrl(game.id, id, image)}
             alt=""
             width={CARD.width}
             height={CARD.height}

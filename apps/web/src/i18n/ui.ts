@@ -104,6 +104,7 @@ const ui = {
   'stats.avg': { ru: 'Ср. попыток', uk: 'Сер. спроб', en: 'Avg. guesses' },
 
   'play.back': { ru: '← Все игры', uk: '← Усі ігри', en: '← All games' },
+  'play.updated': { ru: 'Данные на {date}', uk: 'Дані станом на {date}', en: 'Data as of {date}' },
   'play.round': { ru: 'Раунд {round} · попыток: {guesses}', uk: 'Раунд {round} · спроб: {guesses}', en: 'Round {round} · guesses: {guesses}' },
   'play.zoom': { ru: 'зум ×{zoom}', uk: 'зум ×{zoom}', en: 'zoom ×{zoom}' },
   'play.giveUp': { ru: 'Сдаюсь, покажи ответ', uk: 'Здаюсь, покажи відповідь', en: 'I give up, show the answer' },

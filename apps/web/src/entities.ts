@@ -8,9 +8,10 @@ const loaded = new Set<string>()
 const pending = new Map<string, Promise<void>>()
 
 async function fetchInto(game: Game) {
-  const { ok, data } = await api<{ entities?: Entity[] }>(`entities?game=${game.id}`)
+  const { ok, data } = await api<{ entities?: Entity[]; updated?: string }>(`entities?game=${game.id}`)
   if (!ok || !Array.isArray(data.entities)) throw new Error('entities')
   game.entities = data.entities
+  game.updated = data.updated
   loaded.add(game.id)
 }
 

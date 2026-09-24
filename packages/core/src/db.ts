@@ -93,6 +93,8 @@ export type EntityDoc = Record<string, unknown> & {
 
 export type TermDoc = { value: string; uk: string; en: string }
 
+export type SettingsDoc = { game: string; updated?: string }
+
 export type DailyDoc = { _id: string; day: string; game: string; mode: string; answerId: number; extra?: string; createdAt: Date }
 
 const cache = globalThis as typeof globalThis & {
@@ -100,6 +102,7 @@ const cache = globalThis as typeof globalThis & {
   __usersIndexed?: Promise<unknown>
   __entitiesIndexed?: Promise<unknown>
   __termsIndexed?: Promise<unknown>
+  __settingsIndexed?: Promise<unknown>
   __roundsIndexed?: Promise<unknown>
   __duelsIndexed?: Promise<unknown>
   __challengesIndexed?: Promise<unknown>
@@ -193,6 +196,16 @@ export async function terms(): Promise<Collection<TermDoc>> {
     throw error
   })
   await cache.__termsIndexed
+  return collection
+}
+
+export async function settings(): Promise<Collection<SettingsDoc>> {
+  const collection = (await database()).collection<SettingsDoc>('settings')
+  cache.__settingsIndexed ??= collection.createIndex({ game: 1 }, { unique: true }).catch((error) => {
+    cache.__settingsIndexed = undefined
+    throw error
+  })
+  await cache.__settingsIndexed
   return collection
 }
 

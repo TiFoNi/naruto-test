@@ -11,7 +11,7 @@ export type GameMeta = {
   modes: ModeId[]
   unit: 'character' | 'hero' | 'manga'
   count: number
-  featured: number[]
+  featured: { id: number; image?: string }[]
 }
 
 export const metaById = (list: GameMeta[], id: GameId) => list.find((g) => g.id === id) ?? list[0]

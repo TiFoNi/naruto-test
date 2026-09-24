@@ -3403,6 +3403,24 @@ button.ghost.small {
   font-size: 14px;
 }
 
+.admin-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.admin-date input {
+  color-scheme: dark;
+}
+
+.play-updated {
+  margin: 14px 0 0;
+  text-align: center;
+  font-size: 13px;
+}
+
 .admin-list {
   display: flex;
   flex-direction: column;
@@ -3785,5 +3803,61 @@ button.ghost.small {
 .dropdown-empty {
   padding: 8px 10px;
   color: var(--text-3);
+  font-size: 13px;
+}
+
+.admin-pics {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 18px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.admin-pics figure {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+
+.admin-pics img {
+  width: 72px;
+  height: 96px;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: center top;
+  background: var(--card-2);
+}
+
+.admin-pages {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12.5px;
+}
+
+.admin-upload {
+  display: inline-block;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  color: var(--text-2);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-upload:hover {
+  color: var(--text);
+  border-color: var(--text-3);
+}
+
+.admin-error {
+  align-self: center;
+  color: var(--partial);
   font-size: 13px;
 }

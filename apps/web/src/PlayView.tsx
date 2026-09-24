@@ -9,8 +9,13 @@ import { useI18n } from './i18n'
 import type { ModeId } from './modes'
 import { useHref } from './router'
 
+const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
+
+const formatDate = (value: string, lang: keyof typeof LOCALES) =>
+  new Date(`${value}T00:00:00Z`).toLocaleDateString(LOCALES[lang], { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+
 export default function PlayView({ game: gameId, mode: modeId, daily }: { game: string; mode: string; daily: boolean }) {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const href = useHref()
   const { user, loading } = useAuth()
   const game = GAMES.find((g) => g.id === (gameId as GameId))
@@ -35,6 +40,9 @@ export default function PlayView({ game: gameId, mode: modeId, daily }: { game: 
           </div>
         ) : (
           <GameView game={game} mode={mode} daily={daily} visible={ready} />
+        )}
+        {ready && game.updated && (
+          <p className="play-updated muted">{t('play.updated').replace('{date}', formatDate(game.updated, lang))}</p>
         )}
       </main>
     </div>

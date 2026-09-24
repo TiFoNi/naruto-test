@@ -1,4 +1,4 @@
-import { entities, terms } from '../db'
+import { entities, settings, terms } from '../db'
 import { forget, isGame } from '../games'
 import { forgetTerms } from '../terms'
 import { fail, handle, json, readJson } from '../http'
@@ -33,7 +33,8 @@ export const GET = handle(async (request) => {
   for (const key of Object.keys(options)) options[key].sort((a, b) => a.localeCompare(b, 'ru'))
 
   const known = await (await terms()).find({}, { projection: { _id: 0 } }).toArray()
-  return json({ entities: list, options, terms: known })
+  const config = await (await settings()).findOne({ game }, { projection: { _id: 0, game: 0 } })
+  return json({ entities: list, options, terms: known, updated: config?.updated ?? '' })
 })
 
 export const POST = handle(async (request) => {
@@ -91,4 +92,17 @@ export const PUT = handle(async (request) => {
   await (await terms()).updateOne({ value }, { $set: { uk: uk.trim(), en: en.trim() } }, { upsert: true })
   forgetTerms()
   return json({ ok: true })
+})
+
+export const SETTINGS = handle(async (request) => {
+  if (!(await adminSession(request))) return missing()
+
+  const body = await readJson(request)
+  const { game, updated } = body as { game?: unknown; updated?: unknown }
+  if (!isGame(game) || typeof updated !== 'string') return fail(400, 'bad_request')
+  if (updated && !/^\d{4}-\d{2}-\d{2}$/.test(updated)) return fail(400, 'bad_request')
+
+  await (await settings()).updateOne({ game }, { $set: { updated } }, { upsert: true })
+  forget(game)
+  return json({ updated })
 })

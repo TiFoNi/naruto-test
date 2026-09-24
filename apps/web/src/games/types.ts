@@ -5,7 +5,7 @@ export type { GameId, Judgement, Verdict } from '@nanda/game'
 
 export type Icon = { label: string; symbol: string; color: string; dark?: boolean }
 
-export type Entity = { id: number; name: string; nameEn?: string; nameUk?: string; aliases?: string; thumb: number; answer: boolean }
+export type Entity = { id: number; name: string; nameEn?: string; nameUk?: string; aliases?: string; image?: string; thumb: number; answer: boolean }
 
 export type Translate = (value: string) => string
 
@@ -30,6 +30,7 @@ export type Game<T extends Entity = Entity> = {
   featured: string[]
   unit: 'character' | 'hero' | 'manga'
   entities: T[]
+  updated?: string
   columns: Column<T>[]
   atlas: { cols: number; rows: number }
   wideImages: boolean

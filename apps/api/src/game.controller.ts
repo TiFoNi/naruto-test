@@ -3,6 +3,7 @@ import type { Request, Response } from 'express'
 import * as auth from '@nanda/core/endpoints/auth'
 import * as me from '@nanda/core/endpoints/me'
 import * as admin from '@nanda/core/endpoints/admin'
+import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as termsEndpoint from '@nanda/core/endpoints/terms'
 import * as duel from '@nanda/core/endpoints/duel'
@@ -47,9 +48,19 @@ export class GameController {
     return bridge(admin.POST, req, res)
   }
 
+  @Post('admin/image')
+  adminImage(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminImage.POST, req, res)
+  }
+
   @Post('admin/create')
   adminCreate(@Req() req: Request, @Res() res: Response) {
     return bridge(admin.CREATE, req, res)
+  }
+
+  @Post('admin/settings')
+  adminSettings(@Req() req: Request, @Res() res: Response) {
+    return bridge(admin.SETTINGS, req, res)
   }
 
   @Post('admin/term')

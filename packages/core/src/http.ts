@@ -24,12 +24,16 @@ const trusted = new Set(
 
 function crossSite(request: Request) {
   if (request.method === 'GET') return false
-  if (!request.headers.get('content-type')?.includes('application/json')) return true
+
+  const type = request.headers.get('content-type') ?? ''
+  const upload = type.includes('multipart/form-data')
+  if (!upload && !type.includes('application/json')) return true
 
   const origin = request.headers.get('origin')
   const host = request.headers.get('host')
   const sameOrigin = !!origin && !!host && new URL(origin).host === host
-  const allowed = !origin || sameOrigin || trusted.has(origin)
+  const known = sameOrigin || (!!origin && trusted.has(origin))
+  const allowed = upload ? known : !origin || known
   if (!allowed) return true
 
   const site = request.headers.get('sec-fetch-site')

@@ -1,5 +1,6 @@
 import type { ObjectId } from 'mongodb'
 import { GAME_SPECS, type GameId } from '@nanda/game'
+import { gameData } from '../games'
 import { fail, handle } from '../http'
 import { roundOwner } from '../profile'
 import { abilityStageOf, findDuel, sideOf } from '../duels'
@@ -27,12 +28,14 @@ export const GET = handle(async (request) => {
   if (!round) return fail(404, 'not_found')
   const folder = GAME_SPECS[round.game as GameId].images
   const pics = process.env.PICS_URL?.replace(/\/+$/, '') ?? url.origin
+  const entity = (await gameData(round.game as GameId)).byId.get(round.answerId)
+  const tag = typeof entity?.image === 'string' ? `?v=${entity.image}` : ''
   const source =
     round.mode === 'ability' && round.extra
       ? `${url.origin}/${folder}/abilities/${'stage' in round ? round.stage : abilityStage(round)}${round.extra}.webp`
       : round.mode === 'page'
-        ? `${pics}/${folder}/pages/${round.answerId}/${pageOf(round.extra)}.webp`
-        : `${pics}/${folder}/full/${round.answerId}.webp`
+        ? `${pics}/${folder}/pages/${round.answerId}/${pageOf(round.extra)}.webp${tag}`
+        : `${pics}/${folder}/full/${round.answerId}.webp${tag}`
   const image = await fetch(source)
   if (!image.ok) return fail(502, 'server')
   return new Response(await image.arrayBuffer(), {

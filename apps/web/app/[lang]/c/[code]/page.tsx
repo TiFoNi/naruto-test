@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       title,
       description,
       type: 'website',
-      images: game && featured ? [{ url: cardUrl(game.id, featured.id), width: 288, height: 384 }] : undefined,
+      images: game && featured ? [{ url: cardUrl(game.id, featured.id, featured.image as string | undefined), width: 288, height: 384 }] : undefined,
     },
     twitter: { card: 'summary' },
   }

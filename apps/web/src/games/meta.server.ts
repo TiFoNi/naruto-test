@@ -9,7 +9,9 @@ export async function gameMeta(): Promise<GameMeta[]> {
       const wanted = game.featured
         .map((name) => list.find((e) => e.nameEn === name || e.name === name))
         .filter((e): e is NonNullable<typeof e> => !!e)
-      const featured = [...new Set([...wanted, ...pool])].slice(0, 3).map((e) => e.id as number)
+      const featured = [...new Set([...wanted, ...pool])]
+        .slice(0, 3)
+        .map((e) => ({ id: e.id as number, image: e.image as string | undefined }))
 
       return {
         id: game.id,

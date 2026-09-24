@@ -5,6 +5,6 @@ export const GET = handle(async (request) => {
   const game = new URL(request.url).searchParams.get('game')
   if (!isGame(game)) return fail(400, 'bad_request')
 
-  const { list } = await gameData(game)
-  return json({ entities: list }, 200)
+  const { list, updated } = await gameData(game)
+  return json({ entities: list, updated }, 200)
 })
