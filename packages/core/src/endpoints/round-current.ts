@@ -18,7 +18,7 @@ export const POST = handle(async (request) => {
   const { game, mode, daily } = body
   if (daily === true && owner.guest) return unauthorized()
   if (!isGame(game) || !isMode(mode) || !hasMode(game, mode)) return fail(400, 'bad_request')
-  if (!gameData(game).pool.length) return fail(503, 'not_ready')
+  if (!(await gameData(game)).pool.length) return fail(503, 'not_ready')
 
   const round = daily === true ? await dailyRound(owner.id, game, mode, owner.guest) : await activeRound(owner.id, game, mode, owner.guest)
   return json({ round: await roundView(round), guest: owner.guest }, 200, owner.cookie)

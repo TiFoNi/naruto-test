@@ -17,7 +17,7 @@ export const POST = handle(async (request) => {
   if (body.action === 'view') {
     if (!isCode(body.code)) return fail(400, 'bad_request')
     const doc = await findChallenge(body.code)
-    if (!doc || !isGame(doc.game) || !knows(doc.game, doc.answerId)) return fail(404, 'not_found')
+    if (!doc || !isGame(doc.game) || !(await knows(doc.game, doc.answerId))) return fail(404, 'not_found')
     return json({ challenge: challengeView(doc, found.doc._id!) })
   }
 

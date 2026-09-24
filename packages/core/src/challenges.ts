@@ -15,10 +15,10 @@ export const isCode = (value: unknown): value is string => typeof value === 'str
 
 export async function createChallenge(author: UserDoc, game: unknown, mode: unknown, answerId: unknown) {
   if (!isGame(game) || !isMode(mode) || !hasMode(game, mode)) return 'bad_request'
-  const { byId } = gameData(game)
+  const { byId } = await gameData(game)
   if (typeof answerId !== 'number' || !byId.has(answerId)) return 'bad_request'
 
-  const extra = roundExtra(game, mode, answerId)
+  const extra = await roundExtra(game, mode, answerId)
   if (mode === 'page' && !extra) return 'bad_request'
 
   const collection = await challenges()

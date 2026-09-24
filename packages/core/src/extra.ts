@@ -12,8 +12,8 @@ function seeded(roll: number) {
   }
 }
 
-function pageExtra(game: GameId, answerId: number, roll: number) {
-  const { pool, byId } = gameData(game)
+async function pageExtra(game: GameId, answerId: number, roll: number) {
+  const { pool, byId } = await gameData(game)
   const answer = byId.get(answerId) as { pages?: number } | undefined
   const count = answer?.pages ?? 0
   if (!count) return undefined
@@ -34,7 +34,7 @@ function pageExtra(game: GameId, answerId: number, roll: number) {
   return `${page}|${options.join(',')}`
 }
 
-export function roundExtra(game: GameId, mode: ModeId, answerId: number, roll = Math.random()) {
+export async function roundExtra(game: GameId, mode: ModeId, answerId: number, roll = Math.random()) {
   if (mode === 'page') return pageExtra(game, answerId, roll)
   if (mode !== 'ability') return undefined
   const list = abilitiesOf(answerId)

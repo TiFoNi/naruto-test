@@ -14,7 +14,7 @@ export const POST = handle(async (request) => {
   const entityId = Number(body.entityId)
   if (typeof body.roundId !== 'string' || !ObjectId.isValid(body.roundId) || !Number.isInteger(entityId)) return fail(400, 'bad_request')
   const game = typeof body.game === 'string' && isGame(body.game) ? body.game : null
-  if (game && !gameData(game).byId.has(entityId)) return fail(400, 'bad_request')
+  if (game && !(await gameData(game)).byId.has(entityId)) return fail(400, 'bad_request')
 
   const collection = await rounds()
   const _id = new ObjectId(body.roundId)
@@ -36,12 +36,12 @@ export const POST = handle(async (request) => {
     const round = await collection.findOne({ _id, userId })
     if (!round || !isGame(round.game)) return fail(404, 'not_found')
     if (round.status !== 'active') return fail(409, 'round_over')
-    if (!gameData(round.game).byId.has(entityId)) return fail(400, 'bad_request')
+    if (!(await gameData(round.game as never)).byId.has(entityId)) return fail(400, 'bad_request')
     if (round.guesses.includes(entityId)) return fail(409, 'duplicate')
     return fail(429, 'too_fast')
   }
 
-  if (!isGame(updated.game) || !gameData(updated.game).byId.has(entityId)) {
+  if (!isGame(updated.game) || !(await gameData(updated.game)).byId.has(entityId)) {
     await collection.updateOne({ _id }, { $pull: { guesses: entityId } })
     return fail(400, 'bad_request')
   }

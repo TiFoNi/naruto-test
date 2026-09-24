@@ -81,12 +81,12 @@ export async function setupDuel(duel: DuelDoc, userId: ObjectId, game: unknown, 
   return updated ?? duel
 }
 
-function roundStart(duel: DuelDoc) {
+async function roundStart(duel: DuelDoc) {
   const game = duel.game as GameId
-  const { pool } = gameData(game)
+  const { pool } = await gameData(game)
   const fresh = pool.filter((e) => e.id !== duel.answerId)
   const answer = (fresh.length ? fresh : pool)[randomInt(fresh.length || pool.length)]
-  const extra = roundExtra(duel.game as GameId, duel.mode as ModeId, answer.id)
+  const extra = await roundExtra(duel.game as GameId, duel.mode as ModeId, answer.id)
   const startedAt = new Date()
   return {
     status: 'playing' as const,
@@ -110,7 +110,7 @@ function roundStart(duel: DuelDoc) {
 async function beginRound(duel: DuelDoc, from: DuelDoc['status']) {
   const updated = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: from },
-    { $set: roundStart(duel) },
+    { $set: await roundStart(duel) },
     { returnDocument: 'after' },
   )
   return updated ?? duel
@@ -212,7 +212,7 @@ export async function duelGuess(duel: DuelDoc, userId: ObjectId, entityId: numbe
   if (index < 0) return { error: 'not_found' as const }
   const side = duel.players[index]
   if (duel.status !== 'playing' || done(side)) return { error: 'round_over' as const }
-  if (!gameData(duel.game as GameId).byId.has(entityId)) return { error: 'bad_request' as const }
+  if (!(await gameData(duel.game as GameId)).byId.has(entityId)) return { error: 'bad_request' as const }
   if (side.guesses.includes(entityId)) return { error: 'duplicate' as const }
 
   const now = new Date()
@@ -249,13 +249,13 @@ export async function giveUpDuel(duel: DuelDoc, userId: ObjectId) {
   return settle(updated ?? duel)
 }
 
-export function duelView(duel: DuelDoc, userId: ObjectId) {
+export async function duelView(duel: DuelDoc, userId: ObjectId) {
   const you = sideOf(duel, userId)
   const rival = duel.players.find((p) => !p.userId.equals(userId))
   const playing = duel.status === 'playing'
   const finished = duel.status === 'finished'
   const game = duel.game as GameId | undefined
-  const byId = game ? gameData(game).byId : null
+  const byId = game ? (await gameData(game)).byId : null
   const answer = byId && duel.answerId !== undefined ? byId.get(duel.answerId) : undefined
   const ability =
     duel.mode === 'ability' && you && answer && (finished || wrongCount(duel, you) >= ABILITY_HINT_AT)

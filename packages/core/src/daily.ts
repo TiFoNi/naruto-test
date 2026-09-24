@@ -43,10 +43,8 @@ export const dailyNumber = (day: string) => dayNumber(day) - dayNumber(LAUNCH) +
 
 const secret = () => process.env.DAILY_SECRET || process.env.AUTH_SECRET || ''
 
-function pick(game: GameId, mode: ModeId, day: string) {
-  const ids = gameData(game)
-    .pool.map((e) => e.id)
-    .sort((a, b) => a - b)
+async function pick(game: GameId, mode: ModeId, day: string) {
+  const ids = (await gameData(game)).pool.map((e) => e.id).sort((a, b) => a - b)
   const n = dayNumber(day)
   const cycle = Math.floor(n / ids.length)
   const weight = (id: number) => createHmac('sha256', secret()).update(`${game}:${mode}:${cycle}:${id}`).digest('hex')
@@ -59,22 +57,22 @@ export async function dailyAnswer(game: GameId, mode: ModeId, day: string) {
   const _id = `${day}:${game}:${mode}`
   const doc = await collection.findOneAndUpdate(
     { _id },
-    { $setOnInsert: dailySeed(game, mode, day) },
+    { $setOnInsert: await dailySeed(game, mode, day) },
     { upsert: true, returnDocument: 'after' },
   )
-  if (gameData(game).byId.has(doc!.answerId)) return { answerId: doc!.answerId, extra: doc!.extra }
-  const seed = dailySeed(game, mode, day)
+  if ((await gameData(game)).byId.has(doc!.answerId)) return { answerId: doc!.answerId, extra: doc!.extra }
+  const seed = await dailySeed(game, mode, day)
   await collection.updateOne({ _id }, { $set: { answerId: seed.answerId, extra: seed.extra } })
   return { answerId: seed.answerId, extra: seed.extra }
 }
 
-function dailySeed(game: GameId, mode: ModeId, day: string) {
-  const answerId = pick(game, mode, day)
+async function dailySeed(game: GameId, mode: ModeId, day: string) {
+  const answerId = await pick(game, mode, day)
   const roll = parseInt(createHmac('sha256', secret()).update(`${game}:${mode}:${day}:extra`).digest('hex').slice(0, 8), 16) / 0x100000000
-  return { day, game, mode, answerId, extra: roundExtra(game, mode, answerId, roll), createdAt: new Date() }
+  return { day, game, mode, answerId, extra: await roundExtra(game, mode, answerId, roll), createdAt: new Date() }
 }
 
 export async function pastAnswer(game: GameId, mode: ModeId, day: string) {
   const doc = await (await dailies()).findOne({ _id: `${day}:${game}:${mode}` })
-  return doc && gameData(game).byId.has(doc.answerId) ? doc.answerId : null
+  return doc && (await gameData(game)).byId.has(doc.answerId) ? doc.answerId : null
 }

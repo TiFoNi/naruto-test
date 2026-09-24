@@ -14,23 +14,23 @@ import type { Collection } from 'mongodb'
 
 const RECENT = 25
 
-const playable = (round: RoundDoc) => isGame(round.game) && knows(round.game, round.answerId)
+const playable = async (round: RoundDoc) => isGame(round.game) && (await knows(round.game, round.answerId))
 
 export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, guest = false) {
   const collection = await rounds()
   const existing = await collection.findOne({ userId, game, mode, status: 'active', daily: { $exists: false } })
-  if (existing && playable(existing)) return existing
+  if (existing && (await playable(existing))) return existing
   if (existing) await collection.deleteOne({ _id: existing._id })
 
   const recent = await collection
     .find({ userId, game, mode }, { projection: { answerId: 1 }, sort: { createdAt: -1 }, limit: RECENT })
     .toArray()
   const seen = new Set(recent.map((r) => r.answerId))
-  const { pool } = gameData(game)
+  const { pool } = await gameData(game)
   const fresh = pool.filter((e) => !seen.has(e.id))
   const choices = fresh.length ? fresh : pool
   const answer = choices[Math.floor(Math.random() * choices.length)]
-  const extra = roundExtra(game, mode, answer.id)
+  const extra = await roundExtra(game, mode, answer.id)
   const doc: RoundDoc = {
     userId,
     game,
@@ -48,7 +48,7 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, 
 
 export async function challengeRound(userId: ObjectId, code: string) {
   const doc = await findChallenge(code)
-  if (!doc || !isGame(doc.game) || !knows(doc.game, doc.answerId)) return null
+  if (!doc || !isGame(doc.game) || !(await knows(doc.game, doc.answerId))) return null
   const collection = await rounds()
   const existing = await collection.findOne({ userId, challenge: code })
   if (existing) return existing
@@ -76,7 +76,7 @@ export async function dailyRound(userId: ObjectId, game: GameId, mode: ModeId, g
   const collection = await rounds()
   const day = today()
   const existing = await collection.findOne({ userId, game, mode, daily: day })
-  if (existing && playable(existing)) return existing
+  if (existing && (await playable(existing))) return existing
   if (existing) await collection.deleteOne({ _id: existing._id })
   const doc: RoundDoc = {
     userId,
@@ -109,7 +109,7 @@ async function dailyInfo(round: RoundDoc) {
 
 export async function roundView(round: RoundDoc, full = true) {
   const game = round.game as GameId
-  const { byId } = gameData(game)
+  const { byId } = await gameData(game)
   const answer = byId.get(round.answerId)!
   const number = !full
     ? undefined

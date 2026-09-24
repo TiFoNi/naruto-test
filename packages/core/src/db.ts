@@ -83,11 +83,20 @@ export type DuelDoc = {
   winnerId?: ObjectId | null
 }
 
+export type EntityDoc = Record<string, unknown> & {
+  game: string
+  id: number
+  answer: boolean
+  hidden?: boolean
+  updatedAt?: Date
+}
+
 export type DailyDoc = { _id: string; day: string; game: string; mode: string; answerId: number; extra?: string; createdAt: Date }
 
 const cache = globalThis as typeof globalThis & {
   __mongo?: Promise<MongoClient>
   __usersIndexed?: Promise<unknown>
+  __entitiesIndexed?: Promise<unknown>
   __roundsIndexed?: Promise<unknown>
   __duelsIndexed?: Promise<unknown>
   __challengesIndexed?: Promise<unknown>
@@ -159,6 +168,19 @@ export function client() {
     throw error
   })
   return cache.__mongo
+}
+
+export async function entities(): Promise<Collection<EntityDoc>> {
+  const collection = (await database()).collection<EntityDoc>('entities')
+  cache.__entitiesIndexed ??= Promise.all([
+    collection.createIndex({ game: 1, id: 1 }, { unique: true }),
+    collection.createIndex({ game: 1, answer: 1, hidden: 1 }),
+  ]).catch((error) => {
+    cache.__entitiesIndexed = undefined
+    throw error
+  })
+  await cache.__entitiesIndexed
+  return collection
 }
 
 export async function users(): Promise<Collection<UserDoc>> {

@@ -1,59 +1,42 @@
 import { GAME_SPECS, MODE_IDS, type GameId, type ModeId } from '@nanda/game'
-import aot from '@nanda/game/data/aot.json'
-import avatar from '@nanda/game/data/avatar.json'
-import bc from '@nanda/game/data/bc.json'
-import berserk from '@nanda/game/data/berserk.json'
-import bleach from '@nanda/game/data/bleach.json'
-import characters from '@nanda/game/data/characters.json'
-import dn from '@nanda/game/data/dn.json'
-import dota from '@nanda/game/data/dota.json'
-import ff from '@nanda/game/data/ff.json'
-import hxh from '@nanda/game/data/hxh.json'
-import jojo from '@nanda/game/data/jojo.json'
-import kny from '@nanda/game/data/kny.json'
-import manga from '@nanda/game/data/manga.json'
-import mk from '@nanda/game/data/mk.json'
-import onepiece from '@nanda/game/data/onepiece.json'
-import se from '@nanda/game/data/se.json'
-import tg from '@nanda/game/data/tg.json'
+import { entities } from './db'
 
 export type Entity = Record<string, unknown> & { id: number; answer: boolean }
 
-type GameData = { byId: Map<number, Entity>; pool: Entity[] }
+type GameData = { byId: Map<number, Entity>; pool: Entity[]; list: Entity[] }
 
-const FILES: Record<string, Entity[]> = {
-  'aot': aot as Entity[],
-  'avatar': avatar as Entity[],
-  'bc': bc as Entity[],
-  'berserk': berserk as Entity[],
-  'bleach': bleach as Entity[],
-  'characters': characters as Entity[],
-  'dn': dn as Entity[],
-  'dota': dota as Entity[],
-  'ff': ff as Entity[],
-  'hxh': hxh as Entity[],
-  'jojo': jojo as Entity[],
-  'kny': kny as Entity[],
-  'manga': manga as Entity[],
-  'mk': mk as Entity[],
-  'onepiece': onepiece as Entity[],
-  'se': se as Entity[],
-  'tg': tg as Entity[],
-}
+const TTL = 60_000
 
-const cache = new Map<GameId, GameData>()
+const cache = new Map<GameId, { at: number; data: GameData }>()
+const loading = new Map<GameId, Promise<GameData>>()
 
 export const isGame = (value: unknown): value is GameId => typeof value === 'string' && value in GAME_SPECS
-export const knows = (game: GameId, id: number) => gameData(game).byId.has(id)
 
 export const isMode = (value: unknown): value is ModeId => typeof value === 'string' && (MODE_IDS as string[]).includes(value)
 
-export function gameData(game: GameId): GameData {
-  const cached = cache.get(game)
-  if (cached) return cached
+async function load(game: GameId): Promise<GameData> {
+  const collection = await entities()
+  const list = (await collection
+    .find({ game, hidden: { $ne: true } }, { projection: { _id: 0, game: 0, hidden: 0, updatedAt: 0 }, sort: { id: 1 } })
+    .toArray()) as unknown as Entity[]
 
-  const list = FILES[GAME_SPECS[game].data]
-  const data = { byId: new Map(list.map((e) => [e.id, e])), pool: list.filter((e) => e.answer) }
-  cache.set(game, data)
+  const data = { byId: new Map(list.map((e) => [e.id, e])), pool: list.filter((e) => e.answer), list }
+  cache.set(game, { at: Date.now(), data })
   return data
 }
+
+export async function gameData(game: GameId): Promise<GameData> {
+  const hit = cache.get(game)
+  if (hit && Date.now() - hit.at < TTL) return hit.data
+
+  let pending = loading.get(game)
+  if (!pending) {
+    pending = load(game).finally(() => loading.delete(game))
+    loading.set(game, pending)
+  }
+  return pending
+}
+
+export const knows = async (game: GameId, id: number) => (await gameData(game)).byId.has(id)
+
+export const forget = (game?: GameId) => (game ? cache.delete(game) : cache.clear())
