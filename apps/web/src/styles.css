@@ -5085,7 +5085,6 @@ button.ghost.small {
   color: var(--text);
   font: inherit;
   text-align: left;
-  overflow: hidden;
   cursor: pointer;
   transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
 }
