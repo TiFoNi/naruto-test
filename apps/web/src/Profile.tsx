@@ -173,7 +173,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
         {t('profile.back')}
       </button>
 
-      <div className="profile-grid">
+      <div className={`profile-grid ${settings ? 'is-open' : ''}`}>
         <div className="profile-column">
           <section className="card profile-card">
             <div className="profile-id">

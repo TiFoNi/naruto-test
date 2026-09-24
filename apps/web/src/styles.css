@@ -4209,6 +4209,10 @@ button.ghost.small {
   gap: 14px;
 }
 
+.profile-grid.is-open {
+  align-items: start;
+}
+
 .profile-middle {
   display: flex;
   flex-direction: column;
@@ -4306,30 +4310,11 @@ button.ghost.small {
 }
 
 .profile-settings {
-  position: absolute;
-  z-index: 20;
-  top: calc(100% + 8px);
-  left: 0;
-  right: 0;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid var(--line);
-  background: var(--card);
-  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.5);
-}
-
-@media (max-width: 720px) {
-  .profile-settings {
-    position: static;
-    padding: 14px 0 0;
-    border: none;
-    border-top: 1px solid var(--line);
-    border-radius: 0;
-    box-shadow: none;
-  }
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
 }
 
 .profile-settings label {
