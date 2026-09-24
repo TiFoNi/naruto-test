@@ -130,20 +130,28 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
             <li>{t('dash.feature.stats')}</li>
           </ul>
         </div>
-        <a className="card hero-stats" href={href.profile}>
-          <span className="hero-stats-title">{t('dash.yourStats')}</span>
-          <div className="hero-stats-grid">
-            <div>
-              <b>{totalSolved}</b>
-              <span>{t('profile.total')}</span>
+        {user ? (
+          <a className="card hero-stats" href={href.profile}>
+            <span className="hero-stats-title">{t('dash.yourStats')}</span>
+            <div className="hero-stats-grid">
+              <div>
+                <b>{totalSolved}</b>
+                <span>{t('profile.total')}</span>
+              </div>
+              <div>
+                <b>{bestStreak}</b>
+                <span>{t('profile.bestStreak')}</span>
+              </div>
             </div>
-            <div>
-              <b>{bestStreak}</b>
-              <span>{t('profile.bestStreak')}</span>
-            </div>
-          </div>
-          <span className="hero-stats-link">{t('dash.openProfile')}</span>
-        </a>
+            <span className="hero-stats-link">{t('dash.openProfile')}</span>
+          </a>
+        ) : (
+          <a className="card hero-stats guest" href={href.login}>
+            <span className="hero-stats-title">{t('dash.yourStats')}</span>
+            <p>{t('landing.guestHint')}</p>
+            <span className="hero-stats-link">{t('nav.signIn')}</span>
+          </a>
+        )}
       </section>
 
       {CATEGORIES.map((category, index) => {

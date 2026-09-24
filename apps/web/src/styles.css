@@ -3204,3 +3204,24 @@ button.ghost.small {
 .guest-note a:hover {
   text-decoration: underline;
 }
+
+.landing-games li a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.landing-hint {
+  margin: 14px 0 0;
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+.hero-stats.guest p {
+  margin: 10px 0 0;
+  color: var(--text-2);
+  font-size: 13.5px;
+  line-height: 1.5;
+}

@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { usePathname } from 'next/navigation'
-import AuthScreen from './AuthScreen'
+import Landing from './Landing'
 import { useAuth } from './auth'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
@@ -25,10 +25,10 @@ function LangSwitch() {
 
 export default function Shell({ children, games }: { children: ReactNode; games: GameMeta[] }) {
   const { user, loading } = useAuth()
-  const { t, l } = useI18n()
+  const { t } = useI18n()
   const pathname = usePathname()
   const [, section, gameId, modeId, tail] = pathname.split('/')
-  const open = section === 'play'
+  const open = section === 'play' || section === '' || section === undefined
   const game = section === 'play' ? metaById(games, gameId as never) : null
   const accent = user && game ? game.accent : BRAND.accent
 
@@ -51,6 +51,11 @@ export default function Shell({ children, games }: { children: ReactNode; games:
           </span>
         </a>
         <div className="topbar-right">
+          {!loading && !user && (
+            <a className="topbar-link" href={href.login}>
+              <span className="topbar-link-label">{t('nav.signIn')}</span>
+            </a>
+          )}
           {user && (
             <a className={`topbar-link ${section === 'leaderboard' ? 'active' : ''}`} href={boardHref} title={t('nav.leaderboard')}>
               <TrophyIcon />
@@ -77,28 +82,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
         </div>
       </header>
 
-      {user || open ? (
-        children
-      ) : (
-        <main className="landing">
-          <div className="landing-copy">
-            <h1>
-              {BRAND.parts[0]}
-              <em>{BRAND.parts[1]}</em>
-            </h1>
-            <p>{t('brand.tagline')}</p>
-            <ul className="landing-games">
-              {games.map((g) => (
-                <li key={g.id} style={{ '--tab-accent': g.accent } as CSSProperties}>
-                  <span className="dot" />
-                  {l(g.label)}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {loading ? <div className="card center muted">{t('loading')}</div> : <AuthScreen />}
-        </main>
-      )}
+      {user || open ? children : <Landing games={games} />}
 
       <footer>
         <p>{t('footer.disclaimer')}</p>

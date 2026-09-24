@@ -6,6 +6,7 @@ const variant = (daily: boolean) => (daily ? '/daily' : '')
 
 export const href = {
   home: '/',
+  login: '/login',
   profile: '/profile',
   duels: '/duels',
   duel: (code: string) => `/duel/${code}`,

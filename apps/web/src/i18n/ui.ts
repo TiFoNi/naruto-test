@@ -341,6 +341,12 @@ const ui = {
     uk: 'Окремо для кожного всесвіту й режиму. Результати рахує сервер — накрутити не можна.',
     en: 'Separate for every universe and mode. Results are checked by the server.',
   },
+  'nav.signIn': { ru: 'Войти', uk: 'Увійти', en: 'Sign in' },
+  'landing.guestHint': {
+    ru: 'Можно играть без регистрации — аккаунт нужен, чтобы сохранять прогресс и звать друзей.',
+    uk: 'Можна грати без реєстрації — акаунт потрібен, щоб зберігати прогрес і кликати друзів.',
+    en: 'You can play without signing up — an account is for saving progress and challenging friends.',
+  },
   'guest.note': {
     ru: 'Ты играешь без аккаунта — прогресс и серии не сохраняются.',
     uk: 'Ти граєш без акаунта — прогрес і серії не зберігаються.',
