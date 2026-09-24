@@ -5,7 +5,7 @@ import { GAME_SPECS } from '@nanda/game'
 import { api } from './api'
 import { GAMES } from './games'
 import type { Entity, GameId } from './games/types'
-import { cardUrl } from './pics'
+import { miniUrl } from './pics'
 
 type Row = Entity & Record<string, unknown>
 type Term = { value: string; uk: string; en: string }
@@ -237,7 +237,7 @@ export default function Admin() {
             <li key={row.id} className={`admin-row ${row.hidden ? 'is-hidden' : ''}`}>
               <button type="button" className="admin-open" onClick={() => setOpenId(row.id)}>
                 {row.image || (row.thumb ?? 0) >= 0 ? (
-                  <img src={cardUrl(gameId, row.id, row.image as string | undefined)} alt="" width={36} height={48} loading="lazy" />
+                  <img src={miniUrl(gameId, row.id, row.image as string | undefined)} alt="" width={36} height={48} loading="lazy" />
                 ) : (
                   <span className="admin-blank">{String(row.name ?? '?').slice(0, 1)}</span>
                 )}
@@ -516,7 +516,7 @@ function Pictures({ game, row, onDone }: { game: GameId; row: Row; onDone: (enti
   return (
     <div className="admin-pics">
       <figure>
-        <img src={cardUrl(game, row.id, row.image as string | undefined)} alt="" width={72} height={96} />
+        <img src={miniUrl(game, row.id, row.image as string | undefined)} alt="" width={72} height={96} />
         <figcaption>
           <label className="admin-upload">
             {busy === 'portrait' ? 'Загружаю…' : hasPages ? 'Заменить обложку' : 'Заменить картинку'}

@@ -57,6 +57,49 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
       </header>
 
       <ul className="quests">
+        {!board &&
+          [0, 1, 2].map((index) => (
+            <li key={index}>
+              <span className="quest is-skeleton" aria-hidden>
+                <span className="quest-head">
+                  <span className="quest-name">&nbsp;</span>
+                </span>
+                <span className="quest-bar">
+                  <i style={{ width: 0 }} />
+                </span>
+                <span className="quest-foot">
+                  <span className="muted">&nbsp;</span>
+                </span>
+              </span>
+            </li>
+          ))}
+
+        {!board && (
+          <li>
+            <span className="quest is-skeleton short" aria-hidden>
+              <span className="quest-head">
+                <span className="quest-name">&nbsp;</span>
+              </span>
+              <span className="quest-foot">
+                <span className="muted">&nbsp;</span>
+              </span>
+            </span>
+          </li>
+        )}
+
+        {!board && (
+          <li>
+            <span className="bonus is-skeleton" aria-hidden>
+              <span className="bonus-gift" />
+              <span className="bonus-text">
+                <span className="bonus-label">&nbsp;</span>
+              </span>
+              <span className="bonus-count">&nbsp;</span>
+              <span className="bonus-steps" />
+            </span>
+          </li>
+        )}
+
         {(board?.quests ?? []).map((quest) => (
           <li key={quest.id}>
             <button

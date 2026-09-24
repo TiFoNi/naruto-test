@@ -45,6 +45,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 
 export const viewport: Viewport = { themeColor: '#0d0f12' }
 
+const CATEGORY_SCRIPT = `try{var d=document.documentElement,c=localStorage.getItem('nanda.category');if(c==='anime'||c==='manga'||c==='games')d.dataset.cat=c;if(localStorage.getItem('nanda.session'))d.dataset.auth='1'}catch(e){}`
+
 export const generateStaticParams = () => LANGS.map(({ id }) => ({ lang: id }))
 
 export default async function RootLayout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
@@ -52,7 +54,10 @@ export default async function RootLayout({ children, params }: { children: React
   if (!LANGS.some((l) => l.id === lang)) notFound()
 
   return (
-    <html lang={lang} className={`${manrope.variable} ${unbounded.variable}`}>
+    <html lang={lang} className={`${manrope.variable} ${unbounded.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: CATEGORY_SCRIPT }} />
+      </head>
       <body>
         <Providers games={await gameMeta()} lang={lang as Lang}>
           {children}

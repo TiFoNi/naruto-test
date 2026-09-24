@@ -36,6 +36,8 @@ const EMPTY_CHALLENGES: ChallengeRecord = { solved: 0 }
 
 const call = (path: string, body?: unknown) => api<ApiData>(path, body)
 
+const SESSION = 'nanda.session'
+
 export { statsKey }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -54,7 +56,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     call('me')
-      .then(({ ok, data }) => (ok && data.user ? accept(data) : setProfile(null)))
+      .then(({ ok, data }) => {
+        const signed = ok && !!data.user
+        if (signed) accept(data)
+        else setProfile(null)
+        try {
+          if (signed) localStorage.setItem(SESSION, '1')
+          else localStorage.removeItem(SESSION)
+        } catch {
+          /* приватний режим */
+        }
+      })
       .catch(() => setProfile(null))
       .finally(() => setLoading(false))
   }, [])

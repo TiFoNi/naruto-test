@@ -5,7 +5,7 @@
   --line: #2a3039;
   --text: #eef0f3;
   --text-2: #a7afbb;
-  --text-3: #6e7684;
+  --text-3: #818a99;
   --accent: #ff8a1f;
   --accent-soft: color-mix(in srgb, var(--accent) 16%, transparent);
   --correct: #27a765;
@@ -1922,8 +1922,8 @@ footer p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 7px;
   background: rgba(0, 0, 0, 0.32);
   color: var(--text-2);
@@ -5362,6 +5362,36 @@ button.ghost.small {
   opacity: 0.6;
 }
 
+.quest.is-skeleton,
+.bonus.is-skeleton {
+  opacity: 0.35;
+}
+
+.quest.is-skeleton {
+  height: 70px;
+}
+
+html[data-auth] .hero .hero-stats.guest,
+html[data-auth] .hero .quests-card {
+  min-height: 464px;
+}
+
+.quest.is-skeleton.short {
+  height: 58px;
+}
+
+.bonus.is-skeleton {
+  height: 54px;
+}
+
+.bonus.is-skeleton .bonus-steps::before {
+  content: '';
+  flex: 1;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--card-2);
+}
+
 .quest-take {
   color: var(--accent);
   font-weight: 800;
@@ -5652,7 +5682,21 @@ button.ghost.small {
     0 10px 36px color-mix(in srgb, var(--tile) 18%, transparent);
 }
 
-.tile.on {
+.dashboard .category {
+  display: none;
+}
+
+html:not([data-cat]) .dashboard .category[data-first],
+html[data-cat='anime'] .dashboard .category[data-id='anime'],
+html[data-cat='manga'] .dashboard .category[data-id='manga'],
+html[data-cat='games'] .dashboard .category[data-id='games'] {
+  display: block;
+}
+
+html:not([data-cat]) .tile[data-first],
+html[data-cat='anime'] .tile[data-id='anime'],
+html[data-cat='manga'] .tile[data-id='manga'],
+html[data-cat='games'] .tile[data-id='games'] {
   border-color: color-mix(in srgb, var(--tile) 85%, var(--line));
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--tile) 45%, transparent),

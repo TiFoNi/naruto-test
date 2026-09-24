@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState, type CSSProperties } from 'react'
+import type { CSSProperties } from 'react'
 import { statsKey, useAuth } from './auth'
 import type { GameMeta } from './games/meta'
 import type { Category } from './games/types'
@@ -12,7 +12,7 @@ import { useHref } from './router'
 import { dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
 import { CalendarIcon, ChartIcon, CheckIcon, SearchIcon } from './icons'
-import { CARD, cardUrl } from './pics'
+import { CARD, MINI, cardUrl, miniUrl } from './pics'
 
 const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
@@ -138,20 +138,9 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
   const { user } = useAuth()
 
   const shown = CATEGORIES.filter((category) => games.some((g) => g.category === category.id))
-  const [active, setActive] = useState<Category>(shown[0]?.id ?? 'anime')
-  const current = shown.find((category) => category.id === active)
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(REMEMBER) as Category | null
-      if (saved && shown.some((category) => category.id === saved)) setActive(saved)
-    } catch {
-      /* приватний режим — просто лишаємо типову категорію */
-    }
-  }, [])
 
   const pick = (id: Category) => {
-    setActive(id)
+    document.documentElement.dataset.cat = id
     try {
       localStorage.setItem(REMEMBER, id)
     } catch {
@@ -162,10 +151,10 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
   const accentOf = (id: Category) => games.find((g) => g.category === id)?.accent ?? 'var(--accent)'
 
   return (
-    <div className="dashboard">
+    <main className="dashboard">
       <section className="hero">
         <div className="hero-copy">
-          {user && <span className="eyebrow">{t('dash.hello', { name: user.nickname })}</span>}
+          <span className="eyebrow">{user ? t('dash.hello', { name: user.nickname }) : '\u00a0'}</span>
           <h1>{t('dash.title')}</h1>
           <p className="hero-sub">{t('dash.sub')}</p>
           <label className="hero-search" title={t('dash.searchSoon')}>
@@ -197,7 +186,9 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
               <button
                 key={category.id}
                 type="button"
-                className={`tile ${category.id === active ? 'on' : ''}`}
+                className="tile"
+                data-id={category.id}
+                data-first={category.id === shown[0]?.id ? '' : undefined}
                 style={{ '--tile': accentOf(category.id) } as CSSProperties}
                 onClick={() => pick(category.id)}
               >
@@ -207,10 +198,15 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
                       <img
                         key={`${game.id}-${picture.id}`}
                         className={`tile-card tile-card-${index}`}
-                        src={cardUrl(game.id, picture.id, picture.image)}
+                        src={miniUrl(game.id, picture.id, picture.image)}
+                        onError={(event) => {
+                          const image = event.currentTarget
+                          const card = cardUrl(game.id, picture.id, picture.image)
+                          if (image.src !== card) image.src = card
+                        }}
                         alt=""
-                        width={CARD.width}
-                        height={CARD.height}
+                        width={MINI.width}
+                        height={MINI.height}
                         loading="lazy"
                         decoding="async"
                         draggable={false}
@@ -230,21 +226,20 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         </div>
       </section>
 
-      {current && (
-        <section className="category">
+      {shown.map((category, index) => (
+        <section key={category.id} className="category" data-id={category.id} data-first={index === 0 ? '' : undefined}>
           <header>
-            <h2>{t(current.title)}</h2>
+            <h2>{t(category.title)}</h2>
           </header>
           <div className="franchise-grid">
             {games
-              .filter((g) => g.category === active)
+              .filter((g) => g.category === category.id)
               .map((g, i) => (
-                <FranchiseCard key={g.id} game={g} eager={i < 3} />
+                <FranchiseCard key={g.id} game={g} eager={index === 0 && i < 3} />
               ))}
           </div>
         </section>
-      )}
-
-    </div>
+      ))}
+    </main>
   )
 }

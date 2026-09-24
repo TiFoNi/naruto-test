@@ -25,7 +25,7 @@ async function collect() {
   for (const game of games) {
     if (!game.isDirectory() || (only && game.name !== only)) continue
 
-    for (const kind of ['full', 'card']) {
+    for (const kind of ['full', 'card', 'mini']) {
       const dir = path.join(PUBLIC, game.name, kind)
       for (const file of await fs.readdir(dir).catch(() => [])) {
         if (file.endsWith('.webp')) files.push({ key: `${game.name}/${kind}/${file}`, path: path.join(dir, file) })

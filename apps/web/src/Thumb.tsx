@@ -1,5 +1,5 @@
 import type { Entity, Game } from './games/types'
-import { atlasUrl, cardUrl } from './pics'
+import { atlasUrl, miniUrl } from './pics'
 import { useI18n } from './i18n'
 
 type Props = { game: Game; entity: Entity; size?: number; className?: string }
@@ -21,7 +21,7 @@ export default function Thumb({ game, entity, size, className }: Props) {
 
   const own = entity.image
     ? {
-        backgroundImage: `url(${cardUrl(game.id, entity.id, entity.image)})`,
+        backgroundImage: `url(${miniUrl(game.id, entity.id, entity.image)})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center top',
       }

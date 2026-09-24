@@ -9,6 +9,7 @@ seeds/*
 seeds/manga/*
 !seeds/manga/README.md
 apps/web/public/*/card
+apps/web/public/*/mini
 .next
 next-env.d.ts
 *.tsbuildinfo

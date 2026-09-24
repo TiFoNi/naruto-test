@@ -136,12 +136,22 @@ export async function cachedDownload(dir, key, urls) {
 
 export const CARD = { width: 288, height: 384 }
 
+export const MINI = { width: 168, height: 224 }
+
 export async function writeCard(source, cardPath) {
   await fs.mkdir(path.dirname(cardPath), { recursive: true })
   await sharp(source)
     .resize(CARD.width, CARD.height, { fit: 'cover', position: 'top' })
     .webp({ quality: 80 })
     .toFile(cardPath)
+}
+
+export async function writeMini(source, miniPath) {
+  await fs.mkdir(path.dirname(miniPath), { recursive: true })
+  await sharp(source)
+    .resize(MINI.width, MINI.height, { fit: 'cover', position: 'top' })
+    .webp({ quality: 78 })
+    .toFile(miniPath)
 }
 
 export async function writeFullAndThumb(buf, fullPath, thumbPath, cell) {
