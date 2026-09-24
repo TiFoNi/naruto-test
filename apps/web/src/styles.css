@@ -4737,8 +4737,84 @@ button.ghost.small {
   color: #64c98a;
 }
 
-.quest-bonus {
-  border-style: dashed;
+.bonus {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: default;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.bonus.is-ready {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 10%, var(--card-2));
+  cursor: pointer;
+}
+
+.bonus.is-ready:hover {
+  border-color: var(--accent);
+}
+
+.bonus.is-claimed {
+  opacity: 0.6;
+}
+
+.bonus-gift {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent);
+  font-size: 20px;
+}
+
+.bonus-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bonus-text b {
+  color: var(--accent);
+}
+
+.bonus-text small {
+  font-size: 12px;
+}
+
+.bonus-count {
+  font-family: var(--display);
+  font-size: 15px;
+}
+
+.bonus-steps {
+  grid-column: 2 / -1;
+  display: flex;
+  gap: 5px;
+}
+
+.bonus-steps i {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--card);
+}
+
+.bonus-steps i.on {
+  background: var(--accent);
 }
 
 .quests li {

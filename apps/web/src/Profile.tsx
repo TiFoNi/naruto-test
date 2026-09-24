@@ -6,7 +6,7 @@ import type { GameId } from './games/types'
 import { useI18n } from './i18n'
 import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
-import { CalendarIcon, TrophyIcon } from './icons'
+import { CalendarIcon, GiftIcon, TrophyIcon } from './icons'
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -517,30 +517,33 @@ export default function Profile({ onBack }: { onBack: () => void }) {
                 <li>
                   <button
                     type="button"
-                    className={`quest quest-bonus ${board.bonus.claimed ? 'is-claimed' : board.bonus.ready ? 'is-ready' : ''}`}
+                    className={`bonus ${board.bonus.claimed ? 'is-claimed' : board.bonus.ready ? 'is-ready' : ''}`}
                     disabled={!board.bonus.ready || board.bonus.claimed || claiming === 'bonus'}
                     onClick={() => claim('bonus')}
                   >
-                    <span className="quest-head">
-                      <span className="quest-name">{t('quests.bonus')}</span>
-                      <span className="quest-xp">+{board.bonus.xp} XP</span>
+                    <span className="bonus-gift" aria-hidden>
+                      <GiftIcon />
                     </span>
-                    <span className="quest-bar">
-                      <i style={{ width: `${Math.round((board.collected / board.total) * 100)}%` }} />
-                    </span>
-                    <span className="quest-foot">
-                      <span className="muted">
-                        {board.collected} / {board.total}
-                      </span>
+                    <span className="bonus-text">
+                      {t('quests.bonus')}: <b>+{board.bonus.xp} XP</b>
                       {board.bonus.claimed ? (
-                        <span className="quest-done">✓ {t('quests.claimed')}</span>
+                        <small className="quest-done">✓ {t('quests.claimed')}</small>
                       ) : board.bonus.ready ? (
-                        <span className="quest-take">{t('quests.take')}</span>
+                        <small className="quest-take">{t('quests.take')}</small>
                       ) : null}
+                    </span>
+                    <span className="bonus-count">
+                      {board.collected}/{board.total}
+                    </span>
+                    <span className="bonus-steps">
+                      {Array.from({ length: board.total }, (_, index) => (
+                        <i key={index} className={index < board.collected ? 'on' : ''} />
+                      ))}
                     </span>
                   </button>
                 </li>
               )}
+
             </ul>
           </section>
 

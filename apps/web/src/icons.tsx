@@ -25,6 +25,17 @@ export function CalendarIcon({ className }: IconProps) {
   )
 }
 
+export function GiftIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <rect x="3" y="9.5" width="18" height="11" rx="2.5" />
+      <path d="M2.5 9.5h19M12 9.5V20.5" />
+      <path d="M12 9.5S10.4 4.2 8 4.2a2.4 2.4 0 0 0 0 4.8h4" />
+      <path d="M12 9.5s1.6-5.3 4-5.3a2.4 2.4 0 0 1 0 4.8h-4" />
+    </svg>
+  )
+}
+
 export function SwordsIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>
