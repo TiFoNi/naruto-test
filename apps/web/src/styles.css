@@ -4541,6 +4541,31 @@ button.ghost.small {
   list-style: none;
 }
 
+.worlds,
+.activity {
+  min-height: 0;
+  max-height: 520px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--card-2) transparent;
+}
+
+.worlds::-webkit-scrollbar,
+.activity::-webkit-scrollbar {
+  width: 6px;
+}
+
+.worlds::-webkit-scrollbar-thumb,
+.activity::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--card-2);
+}
+
+.modes-list li.is-empty .mode-name,
+.modes-list li.is-empty b {
+  opacity: 0.5;
+}
+
 .worlds li {
   display: grid;
   grid-template-columns: 34px minmax(0, 1fr) auto;

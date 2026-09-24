@@ -373,28 +373,23 @@ export default function Profile({ onBack }: { onBack: () => void }) {
                   <h2>{t('profile.modes')}</h2>
                   <span className="muted">{t('profile.accuracy')}</span>
                 </header>
-                {summary?.modes.length ? (
-                  <ul className="modes-list">
-                    {summary.modes.map((row) => (
-                      <li key={row.mode}>
-                        <span className="mode-name">{t(modeLabel(row.mode))}</span>
+                <ul className="modes-list">
+                  {MODES.map((mode) => {
+                    const row = summary?.modes.find((item) => item.mode === mode.id)
+                    const played = row?.played ?? 0
+                    const share = percent(row?.won ?? 0, played)
+                    return (
+                      <li key={mode.id} className={played ? '' : 'is-empty'}>
+                        <span className="mode-name">{t(mode.label)}</span>
                         <span className="mode-count muted">
-                          {row.played} {pluralOf(row.played, lang)}
+                          {played} {pluralOf(played, lang)}
                         </span>
-                        <b>{percent(row.won, row.played)}%</b>
-                        <span className="mode-bar">
-                          <i
-                            style={{
-                              width: `${Math.max(percent(row.won, row.played), 2)}%`,
-                            }}
-                          />
-                        </span>
+                        <b>{share}%</b>
+                        <span className="mode-bar">{!!played && <i style={{ width: `${Math.max(share, 2)}%` }} />}</span>
                       </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="muted center">{t('profile.activityEmpty')}</p>
-                )}
+                    )
+                  })}
+                </ul>
               </section>
 
               <section className="card activity-card">
