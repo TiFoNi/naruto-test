@@ -4216,7 +4216,7 @@ button.ghost.small {
 
 .profile-grid {
   display: grid;
-  grid-template-columns: minmax(250px, 300px) minmax(0, 1fr) minmax(230px, 280px);
+  grid-template-columns: minmax(230px, 280px) minmax(0, 1fr) minmax(300px, 360px);
   align-items: start;
   gap: 14px;
 }
@@ -4665,26 +4665,44 @@ button.ghost.small {
   list-style: none;
 }
 
-.quests li,
-.quest-bonus {
+.quest {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
   padding: 12px 14px;
   border-radius: 14px;
   border: 1px solid var(--line);
   background: var(--card-2);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: default;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
 }
 
-.quests li.is-ready,
-.quest-bonus.is-ready {
+.quest.is-ready {
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
   background: color-mix(in srgb, var(--accent) 10%, var(--card-2));
+  cursor: pointer;
 }
 
-.quests li.is-claimed,
-.quest-bonus.is-claimed {
+.quest.is-ready:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, var(--card-2));
+}
+
+.quest.is-ready:active {
+  transform: scale(0.99);
+}
+
+.quest.is-claimed {
   opacity: 0.6;
+}
+
+.quest-take {
+  color: var(--accent);
+  font-weight: 800;
 }
 
 .quest-head {
@@ -4715,29 +4733,16 @@ button.ghost.small {
   font-weight: 700;
 }
 
-.quest-claim {
-  padding: 7px 14px;
-  border-radius: 999px;
-  border: none;
-  background: var(--accent);
-  color: #10131a;
-  font: inherit;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
-}
-
-.quest-claim:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-
 .quest-done {
   color: #64c98a;
 }
 
 .quest-bonus {
   border-style: dashed;
+}
+
+.quests li {
+  display: flex;
 }
 
 .soon-card {

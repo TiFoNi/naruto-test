@@ -317,7 +317,7 @@ const ui = {
   },
 
   'quests.reset': { ru: 'обновление через {time}', uk: 'оновлення через {time}', en: 'resets in {time}' },
-  'quests.claim': { ru: 'Забрать +{xp} XP', uk: 'Забрати +{xp} XP', en: 'Claim +{xp} XP' },
+  'quests.take': { ru: 'Нажми, чтобы забрать', uk: 'Натисни, щоб забрати', en: 'Tap to claim' },
   'quests.claimed': { ru: 'Получено', uk: 'Отримано', en: 'Claimed' },
   'quests.free': { ru: 'Заходи каждый день', uk: 'Заходь щодня', en: 'Drop by every day' },
   'quests.freeHint': { ru: 'Просто так, без условий', uk: 'Просто так, без умов', en: 'No strings attached' },

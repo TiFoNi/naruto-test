@@ -463,72 +463,85 @@ export default function Profile({ onBack }: { onBack: () => void }) {
 
             <ul className="quests">
               {(board?.quests ?? []).map((quest) => (
-                <li key={quest.id} className={quest.claimed ? 'is-claimed' : quest.done ? 'is-ready' : ''}>
-                  <div className="quest-head">
-                    <span className="quest-name">{t(`quest.${quest.id}` as UiKey)}</span>
-                    <span className="quest-xp">+{quest.xp} XP</span>
-                  </div>
-                  <div className="quest-bar">
-                    <i style={{ width: `${Math.round((quest.value / quest.goal) * 100)}%` }} />
-                  </div>
-                  <div className="quest-foot">
-                    <span className="muted">
-                      {quest.value} / {quest.goal}
+                <li key={quest.id}>
+                  <button
+                    type="button"
+                    className={`quest ${quest.claimed ? 'is-claimed' : quest.done ? 'is-ready' : ''}`}
+                    disabled={!quest.done || quest.claimed || claiming === quest.id}
+                    onClick={() => claim(quest.id)}
+                  >
+                    <span className="quest-head">
+                      <span className="quest-name">{t(`quest.${quest.id}` as UiKey)}</span>
+                      <span className="quest-xp">+{quest.xp} XP</span>
                     </span>
-                    {quest.claimed ? (
-                      <span className="quest-done">✓ {t('quests.claimed')}</span>
-                    ) : quest.done ? (
-                      <button type="button" className="quest-claim" disabled={claiming === quest.id} onClick={() => claim(quest.id)}>
-                        {t('quests.claim', { xp: quest.xp })}
-                      </button>
-                    ) : null}
-                  </div>
+                    <span className="quest-bar">
+                      <i style={{ width: `${Math.round((quest.value / quest.goal) * 100)}%` }} />
+                    </span>
+                    <span className="quest-foot">
+                      <span className="muted">
+                        {quest.value} / {quest.goal}
+                      </span>
+                      {quest.claimed ? (
+                        <span className="quest-done">✓ {t('quests.claimed')}</span>
+                      ) : quest.done ? (
+                        <span className="quest-take">{t('quests.take')}</span>
+                      ) : null}
+                    </span>
+                  </button>
                 </li>
               ))}
 
               {board && (
-                <li className={`quest-free ${board.free.claimed ? 'is-claimed' : 'is-ready'}`}>
-                  <div className="quest-head">
-                    <span className="quest-name">{t('quests.free')}</span>
-                    <span className="quest-xp">+{board.free.xp} XP</span>
-                  </div>
-                  <div className="quest-foot">
-                    <span className="muted">{t('quests.freeHint')}</span>
-                    {board.free.claimed ? (
-                      <span className="quest-done">✓ {t('quests.claimed')}</span>
-                    ) : (
-                      <button type="button" className="quest-claim" disabled={claiming === 'free'} onClick={() => claim('free')}>
-                        {t('quests.claim', { xp: board.free.xp })}
-                      </button>
-                    )}
-                  </div>
+                <li>
+                  <button
+                    type="button"
+                    className={`quest ${board.free.claimed ? 'is-claimed' : 'is-ready'}`}
+                    disabled={board.free.claimed || claiming === 'free'}
+                    onClick={() => claim('free')}
+                  >
+                    <span className="quest-head">
+                      <span className="quest-name">{t('quests.free')}</span>
+                      <span className="quest-xp">+{board.free.xp} XP</span>
+                    </span>
+                    <span className="quest-foot">
+                      <span className="muted">{t('quests.freeHint')}</span>
+                      <span className={board.free.claimed ? 'quest-done' : 'quest-take'}>
+                        {board.free.claimed ? `✓ ${t('quests.claimed')}` : t('quests.take')}
+                      </span>
+                    </span>
+                  </button>
+                </li>
+              )}
+
+              {board && (
+                <li>
+                  <button
+                    type="button"
+                    className={`quest quest-bonus ${board.bonus.claimed ? 'is-claimed' : board.bonus.ready ? 'is-ready' : ''}`}
+                    disabled={!board.bonus.ready || board.bonus.claimed || claiming === 'bonus'}
+                    onClick={() => claim('bonus')}
+                  >
+                    <span className="quest-head">
+                      <span className="quest-name">{t('quests.bonus')}</span>
+                      <span className="quest-xp">+{board.bonus.xp} XP</span>
+                    </span>
+                    <span className="quest-bar">
+                      <i style={{ width: `${Math.round((board.collected / board.total) * 100)}%` }} />
+                    </span>
+                    <span className="quest-foot">
+                      <span className="muted">
+                        {board.collected} / {board.total}
+                      </span>
+                      {board.bonus.claimed ? (
+                        <span className="quest-done">✓ {t('quests.claimed')}</span>
+                      ) : board.bonus.ready ? (
+                        <span className="quest-take">{t('quests.take')}</span>
+                      ) : null}
+                    </span>
+                  </button>
                 </li>
               )}
             </ul>
-
-            {board && (
-              <div className={`quest-bonus ${board.bonus.claimed ? 'is-claimed' : board.bonus.ready ? 'is-ready' : ''}`}>
-                <div className="quest-head">
-                  <span className="quest-name">{t('quests.bonus')}</span>
-                  <span className="quest-xp">+{board.bonus.xp} XP</span>
-                </div>
-                <div className="quest-bar">
-                  <i style={{ width: `${Math.round((board.collected / board.total) * 100)}%` }} />
-                </div>
-                <div className="quest-foot">
-                  <span className="muted">
-                    {board.collected} / {board.total}
-                  </span>
-                  {board.bonus.claimed ? (
-                    <span className="quest-done">✓ {t('quests.claimed')}</span>
-                  ) : board.bonus.ready ? (
-                    <button type="button" className="quest-claim" disabled={claiming === 'bonus'} onClick={() => claim('bonus')}>
-                      {t('quests.claim', { xp: board.bonus.xp })}
-                    </button>
-                  ) : null}
-                </div>
-              </div>
-            )}
           </section>
 
           <section className="card soon-card">
