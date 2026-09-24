@@ -969,6 +969,7 @@ main {
 }
 
 .auth-error {
+  margin: 4px 0;
   background: color-mix(in srgb, #e5483b 16%, transparent);
   border: 1px solid color-mix(in srgb, #e5483b 45%, transparent);
   color: #ffb4ab;
