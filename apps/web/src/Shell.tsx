@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, type ReactNode } from 'react'
+import { useEffect, type CSSProperties, type ReactNode } from 'react'
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Landing from './Landing'
 import { useAuth } from './auth'
@@ -14,8 +15,14 @@ const PUBLIC = new Set(['', 'play', 'privacy', 'terms'])
 
 function LangSwitch() {
   const { lang, setLang, t } = useI18n()
+  const index = Math.max(
+    LANGS.findIndex((l) => l.id === lang),
+    0,
+  )
+
   return (
-    <div className="lang-switch" role="group" aria-label={t('nav.language')}>
+    <div className="lang-switch" role="group" aria-label={t('nav.language')} style={{ '--slots': LANGS.length } as CSSProperties}>
+      <span className="lang-thumb" style={{ transform: `translateX(${index * 100}%)` }} aria-hidden />
       {LANGS.map((l) => (
         <button key={l.id} className={lang === l.id ? 'active' : ''} aria-pressed={lang === l.id} onClick={() => setLang(l.id)}>
           {l.label}
@@ -44,53 +51,54 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   return (
     <div className="app">
       <header className="topbar">
-        <a className="brand" href={href.home}>
-          <span className="brand-mark" aria-hidden>
-            {BRAND.mark}
-          </span>
-          <span className="brand-name">
-            {BRAND.parts[0]}
-            <em>{BRAND.parts[1]}</em>
-          </span>
-        </a>
-
-        {user && (
-          <nav className="topbar-nav">
-            <a className={section === 'duels' || section === 'duel' ? 'active' : ''} href={href.duels}>
-              {t('nav.duels')}
-            </a>
-            <a className={section === 'leaderboard' ? 'active' : ''} href={boardHref}>
-              {t('nav.leaderboard')}
-            </a>
-          </nav>
-        )}
-
-        <div className="topbar-right">
-          {loading && (
-            <span className="topbar-link topbar-ghost" aria-hidden>
-              <span className="topbar-link-label">{t('nav.signIn')}</span>
+        <div className="topbar-inner">
+          <Link className="brand" href={href.home}>
+            <span className="brand-mark" aria-hidden>
+              {BRAND.mark}
             </span>
-          )}
-          {!loading && !user && (
-            <a className="topbar-link" href={href.login}>
-              <span className="topbar-link-label">{t('nav.signIn')}</span>
-            </a>
-          )}
-          <LangSwitch />
-          {user && (
-            <button type="button" className="bell" aria-label={t('nav.bell')} title={t('nav.bell')}>
-              <BellIcon />
-            </button>
-          )}
-          {user && (
-            <a className={`account-link ${section === 'profile' ? 'active' : ''}`} href={href.profile} title={t('nav.profile')}>
-              <span className="avatar small" aria-hidden>
-                {user.nickname.charAt(0).toUpperCase()}
-              </span>
-              <span className="account-name">{user.nickname}</span>
-              <span className="account-level">{t('nav.level', { level: user.level })}</span>
-            </a>
-          )}
+            <span className="brand-name">
+              {BRAND.parts[0]}
+              <em>{BRAND.parts[1]}</em>
+            </span>
+          </Link>
+
+          <nav className={`topbar-nav ${user ? '' : 'is-empty'}`}>
+            {user && (
+              <>
+                <Link className={section === 'duels' || section === 'duel' ? 'active' : ''} href={href.duels}>
+                  {t('nav.duels')}
+                </Link>
+                <Link className={section === 'leaderboard' ? 'active' : ''} href={boardHref}>
+                  {t('nav.leaderboard')}
+                </Link>
+              </>
+            )}
+          </nav>
+
+          <div className="topbar-right">
+            <LangSwitch />
+            <div className="topbar-slot">
+              {!loading && !user && (
+                <Link className="topbar-link" href={href.login}>
+                  <span className="topbar-link-label">{t('nav.signIn')}</span>
+                </Link>
+              )}
+              {user && (
+                <>
+                  <button type="button" className="bell" aria-label={t('nav.bell')} title={t('nav.bell')}>
+                    <BellIcon />
+                  </button>
+                  <Link className={`account-link ${section === 'profile' ? 'active' : ''}`} href={href.profile} title={t('nav.profile')}>
+                    <span className="avatar small" aria-hidden>
+                      {user.nickname.charAt(0).toUpperCase()}
+                    </span>
+                    <span className="account-name">{user.nickname}</span>
+                    <span className="account-level">{t('nav.level', { level: user.level })}</span>
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </header>
 
