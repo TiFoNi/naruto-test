@@ -12,7 +12,7 @@ export default function AuthScreen() {
   const [email, setEmail] = useState('')
   const [busy, setBusy] = useState<'google' | 'link' | null>(null)
   const [sent, setSent] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<{ where: 'google' | 'link'; text: string } | null>(null)
 
   const callbackURL = typeof window === 'undefined' ? '/' : window.location.origin
 
@@ -21,19 +21,19 @@ export default function AuthScreen() {
     setError(null)
     const { error } = await authClient.signIn.social({ provider: 'google', callbackURL })
     if (error) {
-      setError(t('auth.failed'))
+      setError({ where: 'google', text: t('auth.googleFailed') })
       setBusy(null)
     }
   }
 
   const withLink = async (event: FormEvent) => {
     event.preventDefault()
-    if (!EMAIL.test(email)) return setError(t('auth.badEmail'))
+    if (!EMAIL.test(email)) return setError({ where: 'link', text: t('auth.badEmail') })
     setBusy('link')
     setError(null)
     const { error } = await authClient.signIn.magicLink({ email, callbackURL })
     setBusy(null)
-    if (error) return setError(t('auth.failed'))
+    if (error) return setError({ where: 'link', text: t(error.status === 429 ? 'err.too_many' : 'auth.failed') })
     setSent(true)
   }
 
@@ -54,6 +54,7 @@ export default function AuthScreen() {
         <GoogleIcon />
         {busy === 'google' ? t('auth.busy') : t('auth.google')}
       </button>
+      {error?.where === 'google' && <div className="auth-error">{error.text}</div>}
 
       <div className="auth-or">
         <span>{t('auth.or')}</span>
@@ -77,7 +78,7 @@ export default function AuthScreen() {
             required
           />
         </label>
-        {error && <div className="auth-error">{error}</div>}
+        {error?.where === 'link' && <div className="auth-error">{error.text}</div>}
         <button className="primary" type="submit" disabled={busy !== null}>
           {busy === 'link' ? t('auth.busy') : t('auth.sendLink')}
         </button>

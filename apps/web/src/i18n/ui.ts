@@ -388,6 +388,11 @@ const ui = {
   },
   'auth.otherEmail': { ru: 'Другая почта', uk: 'Інша пошта', en: 'Use another email' },
   'auth.badEmail': { ru: 'Проверь адрес почты', uk: 'Перевір адресу пошти', en: 'Check the email address' },
+  'auth.googleFailed': {
+    ru: 'Вход через Google сейчас не работает',
+    uk: 'Вхід через Google зараз не працює',
+    en: 'Google sign-in is not working right now',
+  },
   'auth.failed': { ru: 'Не вышло. Попробуй ещё раз', uk: 'Не вийшло. Спробуй ще раз', en: 'That did not work. Try again' },
   'auth.note': {
     ru: 'Пароль не нужен: вход по ссылке из письма или через Google.',

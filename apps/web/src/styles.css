@@ -907,6 +907,12 @@ main {
   color: var(--text);
 }
 
+.auth form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .auth label {
   display: flex;
   flex-direction: column;
