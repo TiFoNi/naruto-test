@@ -4,6 +4,7 @@ import { rounds, users } from '../db'
 import { gameData } from '../games'
 import { handle, json } from '../http'
 import { currentUser, unauthorized } from '../profile'
+import { LEVEL_XP, levelOf, nextRank, rankOf } from '../quests'
 import { shiftDay, today } from '../daily'
 
 const RECENT = 8
@@ -99,24 +100,15 @@ function streakOf(days: string[]) {
   return { current, best, week }
 }
 
-const solvedExpr = {
-  $sum: {
-    $map: { input: { $objectToArray: { $ifNull: ['$stats', {}] } }, as: 'entry', in: { $ifNull: ['$$entry.v.solved', 0] } },
-  },
-}
-
-async function place(userId: ObjectId) {
+async function place(xp: number) {
+  if (!xp) return null
   const collection = await users()
-
-  const [mine] = await collection.aggregate([{ $match: { _id: userId } }, { $project: { solved: solvedExpr } }]).toArray()
-  const solved = (mine?.solved as number) ?? 0
-  if (!solved) return null
 
   const [board] = await collection
     .aggregate([
-      { $project: { solved: solvedExpr } },
-      { $match: { solved: { $gt: 0 } } },
-      { $group: { _id: null, players: { $sum: 1 }, ahead: { $sum: { $cond: [{ $gt: ['$solved', solved] }, 1, 0] } } } },
+      { $project: { xp: { $ifNull: ['$xp', 0] } } },
+      { $match: { xp: { $gt: 0 } } },
+      { $group: { _id: null, players: { $sum: 1 }, ahead: { $sum: { $cond: [{ $gt: ['$xp', xp] }, 1, 0] } } } },
     ])
     .toArray()
 
@@ -160,8 +152,12 @@ export const GET = handle(async (request) => {
     }),
   )
 
+  const xp = doc.xp ?? 0
+  const level = levelOf(xp)
+
   return json({
     since: doc.createdAt,
+    level: { xp, level, into: xp % LEVEL_XP, need: LEVEL_XP, rank: rankOf(level).id, next: nextRank(level) },
     totals: {
       solved: totals.won,
       played: totals.played,
@@ -177,7 +173,7 @@ export const GET = handle(async (request) => {
     },
     challenges: { solved: doc.challengeStats?.solved ?? 0 },
     favourite: games[0]?.game ?? null,
-    rank: await place(doc._id!),
+    rank: await place(xp),
     streak,
     games,
     modes,

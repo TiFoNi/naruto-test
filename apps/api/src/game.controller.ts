@@ -4,6 +4,7 @@ import * as auth from '@nanda/core/endpoints/auth'
 import * as me from '@nanda/core/endpoints/me'
 import * as admin from '@nanda/core/endpoints/admin'
 import * as summary from '@nanda/core/endpoints/profile-summary'
+import * as quests from '@nanda/core/endpoints/quests'
 import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as termsEndpoint from '@nanda/core/endpoints/terms'
@@ -62,6 +63,16 @@ export class GameController {
   @Post('admin/delete')
   adminDelete(@Req() req: Request, @Res() res: Response) {
     return bridge(admin.DELETE, req, res)
+  }
+
+  @Get('quests')
+  questBoard(@Req() req: Request, @Res() res: Response) {
+    return bridge(quests.GET, req, res)
+  }
+
+  @Post('quests/claim')
+  questClaim(@Req() req: Request, @Res() res: Response) {
+    return bridge(quests.POST, req, res)
   }
 
   @Get('profile/summary')

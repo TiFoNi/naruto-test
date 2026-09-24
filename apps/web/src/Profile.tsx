@@ -4,13 +4,27 @@ import { api } from './api'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
+import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
 import { CalendarIcon, TrophyIcon } from './icons'
 
 type Named = { ru: string; uk: string; en: string }
 
+type Level = { xp: number; level: number; into: number; need: number; rank: string; next: { from: number; id: string } | null }
+
+type Board = {
+  day: string
+  resetAt: number
+  quests: { id: string; goal: number; xp: number; value: number; done: boolean; claimed: boolean }[]
+  free: { xp: number; claimed: boolean }
+  bonus: { xp: number; claimed: boolean; ready: boolean }
+  collected: number
+  total: number
+} & Level
+
 type Summary = {
   since: string
+  level: Level
   totals: {
     solved: number
     played: number
@@ -76,6 +90,8 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   const { t, l, lang, error: errorText } = useI18n()
 
   const [summary, setSummary] = useState<Summary | null>(null)
+  const [board, setBoard] = useState<Board | null>(null)
+  const [claiming, setClaiming] = useState<string | null>(null)
   const [nickname, setNicknameDraft] = useState(user?.nickname ?? '')
   const [nickMessage, setNickMessage] = useState<{
     ok: boolean
@@ -87,9 +103,19 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   const [resetting, setResetting] = useState(false)
 
   const load = useCallback(async () => {
-    const { ok, data } = await api<Summary>('profile/summary')
-    if (ok) setSummary(data)
+    const [profile, quests] = await Promise.all([api<Summary>('profile/summary'), api<Board>('quests')])
+    if (profile.ok) setSummary(profile.data)
+    if (quests.ok) setBoard(quests.data)
   }, [])
+
+  const claim = async (id: string) => {
+    setClaiming(id)
+    const { ok, data } = await api<Board>('quests/claim', { claim: id })
+    setClaiming(null)
+    if (!ok) return
+    setBoard(data)
+    setSummary((current) => (current ? { ...current, level: data } : current))
+  }
 
   useEffect(() => {
     void load()
@@ -127,6 +153,14 @@ export default function Profile({ onBack }: { onBack: () => void }) {
       ? when.toLocaleTimeString(LOCALES[lang], { hour: '2-digit', minute: '2-digit' })
       : when.toLocaleDateString(LOCALES[lang], { day: 'numeric', month: 'short' })
   }
+
+  const left = (() => {
+    if (!board) return '—'
+    const ms = Math.max(board.resetAt - Date.now(), 0)
+    const hours = Math.floor(ms / 3600000)
+    const minutes = Math.floor((ms % 3600000) / 60000)
+    return `${hours}:${String(minutes).padStart(2, '0')}`
+  })()
 
   const gameLabel = (id: string) => GAMES.find((g) => g.id === id)?.label
   const modeLabel = (id: string) => MODES.find((m) => m.id === id)?.label ?? 'mode.classic'
@@ -252,11 +286,35 @@ export default function Profile({ onBack }: { onBack: () => void }) {
             </ul>
           </section>
 
-          <section className="card soon-card">
+          <section className="card level-card">
             <header>
-              <h2>{t('profile.levelTitle')}</h2>
+              <div className="card-title">
+                <h2>{t('level.title', { level: summary?.level.level ?? 1 })}</h2>
+                <p className="muted">{t('level.hint')}</p>
+              </div>
             </header>
-            <p className="muted">{t('profile.levelSoon')}</p>
+
+            <div className="level-rank">
+              <span className="level-rank-name">{t(`rank.${summary?.level.rank ?? 'rookie'}` as UiKey)}</span>
+              <small className="muted">
+                {summary?.level.next
+                  ? `${t('level.next', { rank: t(`rank.${summary.level.next.id}` as UiKey) })} · ${t('level.nextAt', { level: summary.level.next.from })}`
+                  : t('level.top')}
+              </small>
+            </div>
+
+            <div className="level-bar">
+              <i style={{ width: `${Math.round(((summary?.level.into ?? 0) / (summary?.level.need ?? 1)) * 100)}%` }} />
+            </div>
+            <div className="level-numbers">
+              <span>{t('level.xp', { into: summary?.level.into ?? 0, need: summary?.level.need ?? 0 })}</span>
+              <span className="muted">
+                {t('level.toNext', {
+                  level: (summary?.level.level ?? 1) + 1,
+                  xp: (summary?.level.need ?? 0) - (summary?.level.into ?? 0),
+                })}
+              </span>
+            </div>
           </section>
         </div>
 
@@ -397,16 +455,80 @@ export default function Profile({ onBack }: { onBack: () => void }) {
         </div>
 
         <div className="profile-column">
-          <section className="card soon-card">
+          <section className="card quests-card">
             <header>
               <h2>{t('profile.questsTitle')}</h2>
+              <span className="muted">{t('quests.reset', { time: left })}</span>
             </header>
-            <p className="muted">{t('profile.questsSoon')}</p>
-            <ul className="soon-rows">
-              <li />
-              <li />
-              <li />
+
+            <ul className="quests">
+              {(board?.quests ?? []).map((quest) => (
+                <li key={quest.id} className={quest.claimed ? 'is-claimed' : quest.done ? 'is-ready' : ''}>
+                  <div className="quest-head">
+                    <span className="quest-name">{t(`quest.${quest.id}` as UiKey)}</span>
+                    <span className="quest-xp">+{quest.xp} XP</span>
+                  </div>
+                  <div className="quest-bar">
+                    <i style={{ width: `${Math.round((quest.value / quest.goal) * 100)}%` }} />
+                  </div>
+                  <div className="quest-foot">
+                    <span className="muted">
+                      {quest.value} / {quest.goal}
+                    </span>
+                    {quest.claimed ? (
+                      <span className="quest-done">✓ {t('quests.claimed')}</span>
+                    ) : quest.done ? (
+                      <button type="button" className="quest-claim" disabled={claiming === quest.id} onClick={() => claim(quest.id)}>
+                        {t('quests.claim', { xp: quest.xp })}
+                      </button>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+
+              {board && (
+                <li className={`quest-free ${board.free.claimed ? 'is-claimed' : 'is-ready'}`}>
+                  <div className="quest-head">
+                    <span className="quest-name">{t('quests.free')}</span>
+                    <span className="quest-xp">+{board.free.xp} XP</span>
+                  </div>
+                  <div className="quest-foot">
+                    <span className="muted">{t('quests.freeHint')}</span>
+                    {board.free.claimed ? (
+                      <span className="quest-done">✓ {t('quests.claimed')}</span>
+                    ) : (
+                      <button type="button" className="quest-claim" disabled={claiming === 'free'} onClick={() => claim('free')}>
+                        {t('quests.claim', { xp: board.free.xp })}
+                      </button>
+                    )}
+                  </div>
+                </li>
+              )}
             </ul>
+
+            {board && (
+              <div className={`quest-bonus ${board.bonus.claimed ? 'is-claimed' : board.bonus.ready ? 'is-ready' : ''}`}>
+                <div className="quest-head">
+                  <span className="quest-name">{t('quests.bonus')}</span>
+                  <span className="quest-xp">+{board.bonus.xp} XP</span>
+                </div>
+                <div className="quest-bar">
+                  <i style={{ width: `${Math.round((board.collected / board.total) * 100)}%` }} />
+                </div>
+                <div className="quest-foot">
+                  <span className="muted">
+                    {board.collected} / {board.total}
+                  </span>
+                  {board.bonus.claimed ? (
+                    <span className="quest-done">✓ {t('quests.claimed')}</span>
+                  ) : board.bonus.ready ? (
+                    <button type="button" className="quest-claim" disabled={claiming === 'bonus'} onClick={() => claim('bonus')}>
+                      {t('quests.claim', { xp: board.bonus.xp })}
+                    </button>
+                  ) : null}
+                </div>
+              </div>
+            )}
           </section>
 
           <section className="card soon-card">

@@ -6,6 +6,7 @@ export type UserDoc = {
   usernameLower: string
   passwordHash?: string
   nickname?: string
+  xp?: number
   stats?: Record<string, Partial<Stats>>
   duelStats?: { played?: number; wins?: number; losses?: number; draws?: number }
   challengeStats?: { solved?: number }
@@ -95,6 +96,8 @@ export type TermDoc = { value: string; uk: string; en: string }
 
 export type SettingsDoc = { game: string; updated?: string }
 
+export type QuestDoc = { _id: string; userId: ObjectId; day: string; picks: string[]; claimed: string[]; createdAt: Date }
+
 export type DailyDoc = { _id: string; day: string; game: string; mode: string; answerId: number; extra?: string; createdAt: Date }
 
 const cache = globalThis as typeof globalThis & {
@@ -103,6 +106,7 @@ const cache = globalThis as typeof globalThis & {
   __entitiesIndexed?: Promise<unknown>
   __termsIndexed?: Promise<unknown>
   __settingsIndexed?: Promise<unknown>
+  __questsIndexed?: Promise<unknown>
   __roundsIndexed?: Promise<unknown>
   __duelsIndexed?: Promise<unknown>
   __challengesIndexed?: Promise<unknown>
@@ -206,6 +210,19 @@ export async function settings(): Promise<Collection<SettingsDoc>> {
     throw error
   })
   await cache.__settingsIndexed
+  return collection
+}
+
+export async function quests(): Promise<Collection<QuestDoc>> {
+  const collection = (await database()).collection<QuestDoc>('quests')
+  cache.__questsIndexed ??= Promise.all([
+    collection.createIndex({ userId: 1, day: -1 }),
+    collection.createIndex({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 60 }),
+  ]).catch((error) => {
+    cache.__questsIndexed = undefined
+    throw error
+  })
+  await cache.__questsIndexed
   return collection
 }
 

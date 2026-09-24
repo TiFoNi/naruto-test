@@ -1,4 +1,5 @@
 import { fail, handle, json, readJson } from '../http'
+import { quests } from '../db'
 import { currentUser, parseNickname, toProfile, unauthorized } from '../profile'
 
 export const POST = handle(async (request) => {
@@ -7,7 +8,12 @@ export const POST = handle(async (request) => {
   const body = await readJson(request)
 
   if (body.action === 'reset') {
-    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $unset: { stats: '', duelStats: '', challengeStats: '' } }, { returnDocument: 'after' })
+    await (await quests()).deleteMany({ userId: found.doc._id })
+    const doc = await found.collection.findOneAndUpdate(
+      { _id: found.doc._id },
+      { $unset: { stats: '', duelStats: '', challengeStats: '', xp: '' } },
+      { returnDocument: 'after' },
+    )
     return json(toProfile(doc ?? found.doc))
   }
 
