@@ -31,8 +31,15 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     title: { default: copy.title, template: '%s · NandaGuessr' },
     description: copy.description,
     alternates: alternates(`/${lang}`),
-    openGraph: { type: 'website', siteName: 'NandaGuessr', url: `${SITE}/${lang}`, title: copy.title, description: copy.description },
-    twitter: { card: 'summary_large_image', title: copy.title, description: copy.description },
+    openGraph: {
+      type: 'website',
+      siteName: 'NandaGuessr',
+      url: `${SITE}/${lang}`,
+      title: copy.title,
+      description: copy.description,
+      images: [{ url: '/opengraph-image.png', width: 1200, height: 630, alt: copy.title }],
+    },
+    twitter: { card: 'summary_large_image', title: copy.title, description: copy.description, images: ['/opengraph-image.png'] },
   }
 }
 

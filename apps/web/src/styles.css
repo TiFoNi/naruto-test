@@ -3379,28 +3379,57 @@ button.ghost.small {
 
 .admin-head {
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.admin-head-row {
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 12px;
-  margin-bottom: 18px;
 }
 
 .admin-head h1 {
   margin: 0;
   font-family: var(--display);
-  font-size: 22px;
+  font-size: 24px;
   flex: 1;
 }
 
-.admin-head select,
-.admin-head input {
-  padding: 8px 12px;
-  border-radius: 10px;
+.admin-tools {
+  padding: 10px 12px;
+  border-radius: 14px;
   border: 1px solid var(--line);
   background: var(--card);
+}
+
+.admin-head input {
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
   color: var(--text);
   font: inherit;
   font-size: 14px;
+}
+
+.admin-search {
+  flex: 1;
+  min-width: 160px;
+}
+
+.admin-note {
+  margin-left: auto;
+  color: var(--text-3);
+  font-size: 13px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.admin-note.on {
+  opacity: 1;
 }
 
 .ask {
@@ -3463,9 +3492,7 @@ button.ghost.small {
 }
 
 .admin-delete {
-  flex-basis: 100%;
   align-self: flex-start;
-  margin-top: 4px;
   padding: 8px 14px;
   border-radius: 10px;
   border: 1px solid var(--line);
@@ -3535,10 +3562,42 @@ button.ghost.small {
   border-radius: 12px;
   background: var(--card);
   border: 1px solid var(--line);
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.admin-row:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
 }
 
 .admin-row.is-hidden {
-  opacity: 0.5;
+  border-style: dashed;
+}
+
+.admin-row.is-hidden .admin-open img,
+.admin-row.is-hidden .admin-blank {
+  opacity: 0.55;
+}
+
+.admin-flags {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.admin-more {
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  color: var(--text-2);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.admin-more:hover {
+  border-color: var(--accent);
+  color: var(--text);
 }
 
 .admin-open {
@@ -3585,7 +3644,6 @@ button.ghost.small {
 }
 
 .admin-edit {
-  flex-basis: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 10px;
@@ -3991,4 +4049,82 @@ button.ghost.small {
   align-self: center;
   color: var(--partial);
   font-size: 13px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: min(100%, 840px);
+  max-height: min(88vh, 900px);
+  padding: 0;
+  overflow: hidden;
+}
+
+.details-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 56px 16px 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.details-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.details-title h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 20px;
+}
+
+.details-title small {
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.details-flags {
+  display: flex;
+  gap: 16px;
+}
+
+.details-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px 22px;
+  overflow-y: auto;
+}
+
+.details-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 22px;
+  border-top: 1px solid var(--line);
+  background: var(--card);
+}
+
+.details-done {
+  padding: 9px 20px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: #10131a;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.details .modal-close {
+  font-size: 15px;
+  line-height: 1;
 }

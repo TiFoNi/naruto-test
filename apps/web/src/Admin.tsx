@@ -65,6 +65,18 @@ export default function Admin() {
     return (key: string) => keys.has(key) || !!options[key]
   }, [gameId, options])
 
+  const title = useMemo(() => {
+    const game = GAMES.find((g) => g.id === gameId)
+    const byKey = new Map((game?.columns ?? []).map((column) => [column.key, column.title.ru.replace(/\u00ad/g, '')]))
+    return (key: string) => {
+      const own = byKey.get(key)
+      if (own) return key.endsWith('Index') ? `${own} · порядок` : own
+      const paired = byKey.get(`${key}Index`)
+      if (paired) return paired
+      return key
+    }
+  }, [gameId])
+
   const twin = (field: string, value: string) => {
     const key = `${field}Index`
     const sample = (rows ?? []).find((row) => row[field] === value && typeof row[key] === 'number')
@@ -126,42 +138,48 @@ export default function Admin() {
   }
 
   const untranslated = terms.filter((t) => !t.uk || !t.en).length
+  const open = openId === null ? null : (rows ?? []).find((r) => r.id === openId) ?? null
 
   if (denied) return <div className="card center muted">Страница не найдена</div>
 
   return (
     <main className="admin">
       <header className="admin-head">
-        <h1>{tab === 'people' ? unit.many : 'Словарь'}</h1>
-        <div className="admin-tabs">
-          <button type="button" className={tab === 'people' ? 'active' : ''} onClick={() => setTab('people')}>
-            {unit.many}
-          </button>
-          <button
-            type="button"
-            className={tab === 'words' ? 'active' : ''}
-            title={untranslated > 0 ? `Значений без перевода: ${untranslated}` : 'Все значения переведены'}
-            onClick={() => setTab('words')}
-          >
-            Словарь{untranslated > 0 && <b> · {untranslated} без перевода</b>}
-          </button>
+        <div className="admin-head-row">
+          <h1>{tab === 'people' ? unit.many : 'Словарь'}</h1>
+          <div className="admin-tabs">
+            <button type="button" className={tab === 'people' ? 'active' : ''} onClick={() => setTab('people')}>
+              {unit.many}
+            </button>
+            <button
+              type="button"
+              className={tab === 'words' ? 'active' : ''}
+              title={untranslated > 0 ? `Значений без перевода: ${untranslated}` : 'Все значения переведены'}
+              onClick={() => setTab('words')}
+            >
+              Словарь{untranslated > 0 && <b> · {untranslated}</b>}
+            </button>
+          </div>
         </div>
-        <Dropdown
-          value={GAMES.find((g) => g.id === gameId)?.label.ru ?? ''}
-          choices={GAMES.map((g) => g.label.ru)}
-          onPick={(label) => setGameId(GAMES.find((g) => g.label.ru === label)?.id ?? gameId)}
-        />
-        <input placeholder="Поиск" value={query} onChange={(e) => setQuery(e.target.value)} />
-        <label className="admin-date" title="Дата, на которую актуальны данные — показывается в игре">
-          данные на
-          <input type="date" value={updated} onChange={(e) => void saveUpdated(e.target.value)} />
-        </label>
-        {tab === 'people' && (
-          <button type="button" className="admin-create" onClick={() => setAdding(true)}>
-            + {unit.one}
-          </button>
-        )}
-        {note && <span className="muted">{note}</span>}
+
+        <div className="admin-head-row admin-tools">
+          <Dropdown
+            value={GAMES.find((g) => g.id === gameId)?.label.ru ?? ''}
+            choices={GAMES.map((g) => g.label.ru)}
+            onPick={(label) => setGameId(GAMES.find((g) => g.label.ru === label)?.id ?? gameId)}
+          />
+          <input className="admin-search" placeholder="Поиск" value={query} onChange={(e) => setQuery(e.target.value)} />
+          <label className="admin-date" title="Дата, на которую актуальны данные — показывается в игре">
+            данные на
+            <input type="date" value={updated} onChange={(e) => void saveUpdated(e.target.value)} />
+          </label>
+          {tab === 'people' && (
+            <button type="button" className="admin-create" onClick={() => setAdding(true)}>
+              + {unit.one}
+            </button>
+          )}
+          <span className={`admin-note ${note ? 'on' : ''}`}>{note}</span>
+        </div>
       </header>
 
       {adding && (
@@ -193,7 +211,7 @@ export default function Admin() {
         <ul className="admin-list">
           {shown.map((row) => (
             <li key={row.id} className={`admin-row ${row.hidden ? 'is-hidden' : ''}`}>
-              <button type="button" className="admin-open" onClick={() => setOpenId(openId === row.id ? null : row.id)}>
+              <button type="button" className="admin-open" onClick={() => setOpenId(row.id)}>
                 {row.image || (row.thumb ?? 0) >= 0 ? (
                   <img src={cardUrl(gameId, row.id, row.image as string | undefined)} alt="" width={36} height={48} loading="lazy" />
                 ) : (
@@ -205,37 +223,120 @@ export default function Admin() {
                 </span>
               </button>
 
-              <label className="admin-flag">
-                <input type="checkbox" checked={!!row.answer} onChange={(e) => save(row, { answer: e.target.checked })} />
-                в пуле
-              </label>
-              <label className="admin-flag">
-                <input type="checkbox" checked={!!row.hidden} onChange={(e) => save(row, { hidden: e.target.checked })} />
-                скрыт
-              </label>
-
-              {openId === row.id && (
-                <>
-                  <Pictures game={gameId} row={row} onDone={(entity) => setRows((list) => (list ?? []).map((r) => (r.id === entity.id ? entity : r)))} />
-                  <Editor
-                    row={row}
-                    fields={fields}
-                    options={options}
-                    judged={judged}
-                    twin={twin}
-                    onSave={save}
-                    onAdd={addValue}
-                  />
-                  <button type="button" className="admin-delete" onClick={() => setRemoving(row)}>
-                    Удалить {unit.accusative}
-                  </button>
-                </>
-              )}
+              <div className="admin-flags">
+                <label className="admin-flag">
+                  <input type="checkbox" checked={!!row.answer} onChange={(e) => save(row, { answer: e.target.checked })} />
+                  в пуле
+                </label>
+                <label className="admin-flag">
+                  <input type="checkbox" checked={!!row.hidden} onChange={(e) => save(row, { hidden: e.target.checked })} />
+                  скрыт
+                </label>
+                <button type="button" className="admin-more" onClick={() => setOpenId(row.id)}>
+                  Детали
+                </button>
+              </div>
             </li>
           ))}
+          {!shown.length && <li className="card center muted">ничего не найдено</li>}
         </ul>
       )}
+      {open && (
+        <Details
+          game={gameId}
+          row={open}
+          unit={unit}
+          fields={fields}
+          options={options}
+          judged={judged}
+          twin={twin}
+          title={title}
+          onSave={save}
+          onAdd={addValue}
+          onPicture={(entity) => setRows((list) => (list ?? []).map((r) => (r.id === entity.id ? entity : r)))}
+          onRemove={() => setRemoving(open)}
+          onClose={() => setOpenId(null)}
+        />
+      )}
     </main>
+  )
+}
+
+function Details({
+  game,
+  row,
+  unit,
+  fields,
+  options,
+  judged,
+  twin,
+  title,
+  onSave,
+  onAdd,
+  onPicture,
+  onRemove,
+  onClose,
+}: {
+  game: GameId
+  row: Row
+  unit: (typeof UNIT)[keyof typeof UNIT]
+  fields: string[]
+  options: Record<string, string[]>
+  judged: (field: string) => boolean
+  twin: (field: string, value: string) => Record<string, unknown>
+  title: (field: string) => string
+  onSave: (row: Row, changed: Record<string, unknown>) => void
+  onAdd: (field: string, term: Term, row: Row) => void
+  onPicture: (entity: Row) => void
+  onRemove: () => void
+  onClose: () => void
+}) {
+  useEffect(() => {
+    const key = (event: KeyboardEvent) => event.key === 'Escape' && onClose()
+    document.addEventListener('keydown', key)
+    return () => document.removeEventListener('keydown', key)
+  }, [onClose])
+
+  return (
+    <div className="modal-backdrop" onClick={onClose} role="presentation">
+      <section className="card modal details" role="dialog" aria-modal="true" aria-label={String(row.name ?? row.id)} onClick={(e) => e.stopPropagation()}>
+        <header className="details-head">
+          <div className="details-title">
+            <h2>{String(row.name ?? row.id)}</h2>
+            <small>
+              {String(row.nameEn ?? '')} · id {row.id}
+            </small>
+          </div>
+          <div className="details-flags">
+            <label className="admin-flag">
+              <input type="checkbox" checked={!!row.answer} onChange={(e) => onSave(row, { answer: e.target.checked })} />
+              в пуле
+            </label>
+            <label className="admin-flag">
+              <input type="checkbox" checked={!!row.hidden} onChange={(e) => onSave(row, { hidden: e.target.checked })} />
+              скрыт
+            </label>
+          </div>
+          <button type="button" className="modal-close" onClick={onClose} aria-label="Закрыть">
+            ✕
+          </button>
+        </header>
+
+        <div className="details-body">
+          <Pictures game={game} row={row} onDone={onPicture} />
+          <Editor row={row} fields={fields} options={options} judged={judged} twin={twin} title={title} onSave={onSave} onAdd={onAdd} />
+        </div>
+
+        <footer className="details-foot">
+          <button type="button" className="admin-delete" onClick={onRemove}>
+            Удалить {unit.accusative}
+          </button>
+          <button type="button" className="details-done" onClick={onClose}>
+            Готово
+          </button>
+        </footer>
+      </section>
+    </div>
   )
 }
 
@@ -245,6 +346,7 @@ function Editor({
   options,
   judged,
   twin,
+  title,
   onSave,
   onAdd,
 }: {
@@ -253,6 +355,7 @@ function Editor({
   options: Record<string, string[]>
   judged: (field: string) => boolean
   twin: (field: string, value: string) => Record<string, unknown>
+  title: (field: string) => string
   onSave: (row: Row, changed: Record<string, unknown>) => void
   onAdd: (field: string, term: Term, row: Row) => void
 }) {
@@ -261,7 +364,7 @@ function Editor({
     if (!choices) {
       return (
         <label key={key}>
-          <span>{key}</span>
+          <span>{title(key)}</span>
           <input
             key={String(row[key] ?? '')}
             defaultValue={String(row[key] ?? '')}
@@ -278,7 +381,7 @@ function Editor({
       const picked = asList(row[key])
       return (
         <label key={key} className="admin-multi">
-          <span>{key}</span>
+          <span>{title(key)}</span>
           <div className="admin-chips">
             {choices.map((choice) => (
               <button
@@ -302,7 +405,7 @@ function Editor({
 
     return (
       <label key={key} className="admin-single">
-        <span>{key}</span>
+        <span>{title(key)}</span>
         <Dropdown
           value={String(row[key] ?? '')}
           choices={choices}

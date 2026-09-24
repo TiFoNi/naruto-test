@@ -5,6 +5,7 @@ import sharp from 'sharp'
 import opentype from 'opentype.js'
 
 const app = new URL('../apps/web/app/', import.meta.url).pathname
+const pub = new URL('../apps/web/public/', import.meta.url).pathname
 const cache = join(tmpdir(), 'nanda-fonts')
 mkdirSync(cache, { recursive: true })
 
@@ -101,5 +102,34 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" v
 </svg>`
 
 await sharp(Buffer.from(svg), { density: 144 }).resize(1200, 630).png().toFile(`${app}opengraph-image.png`)
-await sharp(`${app}icon.svg`, { density: 600 }).resize(180, 180).png().toFile(`${app}apple-icon.png`)
-console.log('лого, apple-icon і og-картинка оновлені')
+
+const square = (size) => sharp(`${app}icon.svg`, { density: 900 }).resize(size, size).png().toBuffer()
+
+writeFileSync(`${app}apple-icon.png`, await square(180))
+writeFileSync(`${pub}icon-192.png`, await square(192))
+writeFileSync(`${pub}icon-512.png`, await square(512))
+
+const ico = async (sizes) => {
+  const images = await Promise.all(sizes.map(square))
+  const header = Buffer.alloc(6 + images.length * 16)
+  header.writeUInt16LE(0, 0)
+  header.writeUInt16LE(1, 2)
+  header.writeUInt16LE(images.length, 4)
+
+  let offset = header.length
+  images.forEach((png, index) => {
+    const entry = 6 + index * 16
+    header.writeUInt8(sizes[index] >= 256 ? 0 : sizes[index], entry)
+    header.writeUInt8(sizes[index] >= 256 ? 0 : sizes[index], entry + 1)
+    header.writeUInt16LE(1, entry + 4)
+    header.writeUInt16LE(32, entry + 6)
+    header.writeUInt32LE(png.length, entry + 8)
+    header.writeUInt32LE(offset, entry + 12)
+    offset += png.length
+  })
+
+  return Buffer.concat([header, ...images])
+}
+
+writeFileSync(`${app}favicon.ico`, await ico([16, 32, 48]))
+console.log('іконки, favicon.ico і og-картинка оновлені')
