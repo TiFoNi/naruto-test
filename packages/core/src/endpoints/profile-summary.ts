@@ -7,7 +7,6 @@ import { currentUser, unauthorized } from '../profile'
 import { shiftDay, today } from '../daily'
 
 const RECENT = 8
-const HISTORY = 4000
 
 type Counted = { _id: string; played: number; won: number; guesses: number }
 
@@ -40,7 +39,6 @@ async function history(userId: ObjectId) {
           days: [
             { $group: { _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: ZONE } } } },
             { $sort: { _id: -1 } },
-            { $limit: HISTORY },
           ],
           recent: [
             { $sort: { finishedAt: -1 } },

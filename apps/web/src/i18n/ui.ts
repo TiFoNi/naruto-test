@@ -302,7 +302,6 @@ const ui = {
   'profile.avgGuesses': { ru: 'Попыток на разгадку', uk: 'Спроб на розгадку', en: 'Guesses per win' },
   'profile.streakTitle': { ru: 'Серия дней', uk: 'Серія днів', en: 'Day streak' },
   'profile.streakRecord': { ru: 'Рекорд: {days}', uk: 'Рекорд: {days}', en: 'Record: {days}' },
-  'profile.streakDays': { ru: 'дней подряд', uk: 'днів поспіль', en: 'days in a row' },
   'profile.streakToday': { ru: 'Сегодня уже засчитано', uk: 'Сьогодні вже зараховано', en: 'Today is counted' },
   'profile.streakIdle': { ru: 'Сыграй сегодня, чтобы продолжить', uk: 'Зіграй сьогодні, щоб продовжити', en: 'Play today to keep it going' },
   'profile.worlds': { ru: 'Прогресс по вселенным', uk: 'Прогрес по всесвітах', en: 'Progress by world' },

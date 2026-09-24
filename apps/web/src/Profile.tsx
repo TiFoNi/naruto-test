@@ -48,19 +48,25 @@ const WEEKDAYS = {
   en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
 } as const
 
+const DAYS = {
+  ru: ['день подряд', 'дня подряд', 'дней подряд'],
+  uk: ['день поспіль', 'дні поспіль', 'днів поспіль'],
+  en: ['day in a row', 'days in a row', 'days in a row'],
+} as const
+
 const ROUNDS = {
   ru: ['игра', 'игры', 'игр'],
   uk: ['гра', 'гри', 'ігор'],
   en: ['round', 'rounds', 'rounds'],
 } as const
 
-const pluralOf = (count: number, lang: keyof typeof ROUNDS) => {
-  if (lang === 'en') return ROUNDS.en[count === 1 ? 0 : 1]
+const pluralOf = (count: number, lang: keyof typeof ROUNDS, forms: typeof ROUNDS | typeof DAYS = ROUNDS) => {
+  if (lang === 'en') return forms.en[count === 1 ? 0 : 1]
   const ten = count % 10
   const hundred = count % 100
-  if (ten === 1 && hundred !== 11) return ROUNDS[lang][0]
-  if (ten >= 2 && ten <= 4 && (hundred < 12 || hundred > 14)) return ROUNDS[lang][1]
-  return ROUNDS[lang][2]
+  if (ten === 1 && hundred !== 11) return forms[lang][0]
+  if (ten >= 2 && ten <= 4 && (hundred < 12 || hundred > 14)) return forms[lang][1]
+  return forms[lang][2]
 }
 
 const percent = (part: number, whole: number) => (whole ? Math.round((part / whole) * 100) : 0)
@@ -230,7 +236,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
               </span>
               <b>{summary?.streak.current ?? 0}</b>
               <div>
-                <span>{t('profile.streakDays')}</span>
+                <span>{pluralOf(summary?.streak.current ?? 0, lang, DAYS)}</span>
                 <small className={summary?.streak.week.at(-1)?.played ? 'ok' : 'muted'}>
                   {summary?.streak.week.at(-1)?.played ? t('profile.streakToday') : t('profile.streakIdle')}
                 </small>
