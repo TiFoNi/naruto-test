@@ -201,7 +201,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
 
             <div className="level-panel">
               <div className="level-line">
-                <span>
+                <span className="level-rank">
                   {t('level.rank')} <b>{t(`rank.${summary?.level.rank ?? 'rookie'}` as UiKey)}</b>
                 </span>
                 <small className="muted">
@@ -212,7 +212,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
                 <i style={{ width: `${Math.round(((summary?.level.into ?? 0) / (summary?.level.need ?? 1)) * 100)}%` }} />
               </div>
               <div className="level-line">
-                <span>
+                <span className="level-xp">
                   <b>{summary?.level.into ?? 0}</b> / {summary?.level.need ?? 0} XP
                 </span>
                 <small className="muted">
