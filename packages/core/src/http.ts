@@ -1,6 +1,6 @@
-export function json(data: unknown, status = 200, cookie?: string) {
+export function json(data: unknown, status = 200, cookie?: string | string[]) {
   const headers = new Headers({ 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' })
-  if (cookie) headers.append('set-cookie', cookie)
+  for (const value of cookie === undefined ? [] : [cookie].flat()) headers.append('set-cookie', value)
   return new Response(JSON.stringify(data), { status, headers })
 }
 

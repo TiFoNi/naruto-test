@@ -29,7 +29,13 @@ export async function sessionCookie(request: Request, user: SessionUser) {
   return `${COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${MAX_AGE}${attributes(request)}`
 }
 
-export const clearedCookie = (request: Request) => `${COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${attributes(request)}`
+const expired = (request: Request, domain: string) =>
+  `${COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${domain}${proto(request) === 'https' ? '; Secure' : ''}`
+
+export const clearedCookie = (request: Request) => {
+  const domain = process.env.COOKIE_DOMAIN
+  return domain ? [expired(request, `; Domain=${domain}`), expired(request, '')] : [expired(request, '')]
+}
 
 export async function readSession(request: Request): Promise<SessionUser | null> {
   const token = request.headers
