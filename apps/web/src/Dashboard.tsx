@@ -9,13 +9,13 @@ import { MODES } from './modes'
 import { useHref } from './router'
 import { dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
-import { CalendarIcon, ChartIcon, CheckIcon, GamepadIcon, PageIcon, TvIcon } from './icons'
+import { CalendarIcon, ChartIcon, CheckIcon } from './icons'
 import { CARD, cardUrl } from './pics'
 
-const CATEGORIES: { id: Category; title: UiKey; hint: UiKey; icon: (props: { className?: string }) => React.ReactElement }[] = [
-  { id: 'anime', title: 'dash.anime', hint: 'dash.animeHint', icon: TvIcon },
-  { id: 'manga', title: 'dash.mangaTitle', hint: 'dash.mangaHint', icon: PageIcon },
-  { id: 'games', title: 'dash.games', hint: 'dash.gamesHint', icon: GamepadIcon },
+const CATEGORIES: { id: Category; title: UiKey; hint: UiKey }[] = [
+  { id: 'anime', title: 'dash.anime', hint: 'dash.animeHint' },
+  { id: 'manga', title: 'dash.mangaTitle', hint: 'dash.mangaHint' },
+  { id: 'games', title: 'dash.games', hint: 'dash.gamesHint' },
 ]
 
 const WORLDS = {
@@ -204,7 +204,6 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         <div className="tiles">
           {shown.map((category) => {
             const list = games.filter((g) => g.category === category.id)
-            const Icon = category.icon
             const first = list.map((game) => ({ game, picture: game.featured[0] })).filter((item) => item.picture)
             const rest = list.flatMap((game) => game.featured.slice(1).map((picture) => ({ game, picture })))
             const art = [...first, ...rest].slice(0, 3)
@@ -216,9 +215,6 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
                 style={{ '--tile': accentOf(category.id) } as CSSProperties}
                 onClick={() => pick(category.id)}
               >
-                <span className="tile-icon" aria-hidden>
-                  <Icon />
-                </span>
                 <span className="tile-fan" data-count={art.length} aria-hidden>
                   {art.map(({ game, picture }, index) => (
                     <img
