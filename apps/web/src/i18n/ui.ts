@@ -364,6 +364,8 @@ const ui = {
     uk: 'Пароль не потрібен: вхід за посиланням з листа або через Google.',
     en: 'No password needed — sign in by email link or with Google.',
   },
+  'footer.privacy': { ru: 'Конфиденциальность', uk: 'Конфіденційність', en: 'Privacy' },
+  'footer.terms': { ru: 'Условия', uk: 'Умови', en: 'Terms' },
   'nav.signIn': { ru: 'Войти', uk: 'Увійти', en: 'Sign in' },
   'landing.guestHint': {
     ru: 'Можно играть без регистрации — аккаунт нужен, чтобы сохранять прогресс и звать друзей.',

@@ -10,6 +10,8 @@ import { LANGS, useI18n } from './i18n'
 import { SwordsIcon, TrophyIcon } from './icons'
 import { href } from './router'
 
+const PUBLIC = new Set(['', 'play', 'privacy', 'terms'])
+
 function LangSwitch() {
   const { lang, setLang, t } = useI18n()
   return (
@@ -28,7 +30,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const { t } = useI18n()
   const pathname = usePathname()
   const [, section, gameId, modeId, tail] = pathname.split('/')
-  const open = section === 'play' || section === '' || section === undefined
+  const open = PUBLIC.has(section ?? '')
   const game = section === 'play' ? metaById(games, gameId as never) : null
   const accent = user && game ? game.accent : BRAND.accent
 
@@ -85,6 +87,10 @@ export default function Shell({ children, games }: { children: ReactNode; games:
       {user || open ? children : <Landing games={games} />}
 
       <footer>
+        <p className="footer-links">
+          <a href="/privacy">{t('footer.privacy')}</a>
+          <a href="/terms">{t('footer.terms')}</a>
+        </p>
         <p>{t('footer.disclaimer')}</p>
         <p>
           {t('footer.data')}: Naruto Wiki, Dattebayo API, Valve, OpenDota, Dota 2 Wiki, Attack on Titan Wiki, Bleach Wiki, Tokyo Ghoul Wiki, Berserk Wiki,

@@ -12,5 +12,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })),
   )
-  return [{ url: SITE, lastModified, changeFrequency: 'daily' as const, priority: 1 }, ...games]
+  return [
+    { url: SITE, lastModified, changeFrequency: 'daily' as const, priority: 1 },
+    ...games,
+    { url: `${SITE}/privacy`, lastModified, changeFrequency: 'yearly' as const, priority: 0.2 },
+    { url: `${SITE}/terms`, lastModified, changeFrequency: 'yearly' as const, priority: 0.2 },
+  ]
 }

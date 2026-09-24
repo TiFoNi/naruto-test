@@ -3306,3 +3306,67 @@ button.ghost.small {
   margin: 0;
   font-size: 18px;
 }
+
+.legal {
+  max-width: 68ch;
+  margin: 0 auto;
+  padding: 8px 0 40px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+.legal h1 {
+  margin: 18px 0 6px;
+  font-family: var(--display);
+  font-size: 28px;
+  color: var(--text);
+}
+
+.legal h2 {
+  margin: 28px 0 8px;
+  font-size: 17px;
+  color: var(--text);
+}
+
+.legal p {
+  margin: 0 0 12px;
+  font-size: 14.5px;
+}
+
+.legal ul {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  font-size: 14.5px;
+}
+
+.legal li {
+  margin-bottom: 6px;
+}
+
+.legal-updated {
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+.legal-intro {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+.footer-links a {
+  color: var(--text-2);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
