@@ -6,6 +6,7 @@ import type { Game } from './games/types'
 import { useI18n } from './i18n'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
+import { apiSrc } from './api'
 
 type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
 
@@ -17,7 +18,7 @@ export default function PageMode({ game, active, stats, daily = false, challenge
   const missed = new Set(guesses.filter((g) => !g.pending).map((g) => g.entity.id))
   const waiting = guesses.find((g) => g.pending)?.entity.id
   const options = (round?.options ?? []).map((id) => byId.get(id)).filter((e) => e !== undefined)
-  const src = round?.image
+  const src = apiSrc(round?.image)
   const [loaded, setLoaded] = useState<string | null>(null)
   const ready = Boolean(src) && loaded === src
 

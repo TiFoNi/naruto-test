@@ -8,6 +8,7 @@ import type { Game } from './games/types'
 import { useI18n } from './i18n'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
+import { apiSrc } from './api'
 
 const ZOOM_LEVELS = [7, 5.6, 4.5, 3.6, 2.9, 2.35, 1.9, 1.55, 1.25, 1]
 type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
@@ -27,7 +28,7 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
         <div className="card intro">
           <h2>{t('play.imageTitle')}</h2>
           <p className="muted">{t('play.imagePrompt')}</p>
-          <ZoomImage game={game} src={round?.image} zoom={zoom} resetKey={round?.id} seed={round?.daily ? `${game.id}-${round.daily}` : undefined} />
+          <ZoomImage game={game} src={apiSrc(round?.image)} zoom={zoom} resetKey={round?.id} seed={round?.daily ? `${game.id}-${round.daily}` : undefined} />
           {round && (
             <p className="round">
               {t(round.daily ? 'daily.round' : 'play.round', { round: round.number, guesses: guesses.length })} · {t('play.zoom', { zoom: zoom.toFixed(1) })}

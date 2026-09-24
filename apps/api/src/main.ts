@@ -1,12 +1,14 @@
 import 'reflect-metadata'
 import { NestFactory } from '@nestjs/core'
+import type { NestExpressApplication } from '@nestjs/platform-express'
 import { AppModule } from './app.module'
 
 const origins = (process.env.CORS_ORIGINS ?? 'http://localhost:5173').split(',').map((o) => o.trim())
 
 async function bootstrap() {
   const port = Number(process.env.PORT ?? 4000)
-  const app = await NestFactory.create(AppModule)
+  const app = await NestFactory.create<NestExpressApplication>(AppModule)
+  app.set('trust proxy', 1)
   app.enableCors({ origin: origins, credentials: true })
   await app.listen(port, '0.0.0.0')
   console.log(`[nanda] слухаю порт ${port}, CORS для: ${origins.join(', ')}`)

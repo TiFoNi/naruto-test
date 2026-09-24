@@ -8,6 +8,7 @@ import type { Game } from './games/types'
 import { useI18n } from './i18n'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
+import { apiSrc } from './api'
 
 type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
 
@@ -22,7 +23,7 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
   )
 
   const wrong = guesses.filter((g) => !g.pending).length - (won ? 1 : 0)
-  const src = round?.image ? `${round.image}&v=${over ? 'done' : wrong}` : null
+  const src = round?.image ? `${apiSrc(round.image)}&v=${over ? 'done' : wrong}` : null
   const hintIn = round?.hintAt !== undefined ? round.hintAt - wrong : 0
 
 

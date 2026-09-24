@@ -11,7 +11,13 @@ function secret() {
   return new TextEncoder().encode(value)
 }
 
-const secure = (request: Request) => (new URL(request.url).protocol === 'https:' ? '; Secure' : '')
+const proto = (request: Request) =>
+  request.headers.get('x-forwarded-proto')?.split(',')[0].trim() ?? new URL(request.url).protocol.replace(':', '')
+
+const attributes = (request: Request) => {
+  const domain = process.env.COOKIE_DOMAIN
+  return `${domain ? `; Domain=${domain}` : ''}${proto(request) === 'https' ? '; Secure' : ''}`
+}
 
 export async function sessionCookie(request: Request, user: SessionUser) {
   const token = await new SignJWT({ username: user.username })
@@ -20,10 +26,10 @@ export async function sessionCookie(request: Request, user: SessionUser) {
     .setIssuedAt()
     .setExpirationTime(`${MAX_AGE}s`)
     .sign(secret())
-  return `${COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${MAX_AGE}${secure(request)}`
+  return `${COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${MAX_AGE}${attributes(request)}`
 }
 
-export const clearedCookie = (request: Request) => `${COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secure(request)}`
+export const clearedCookie = (request: Request) => `${COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${attributes(request)}`
 
 export async function readSession(request: Request): Promise<SessionUser | null> {
   const token = request.headers

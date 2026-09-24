@@ -14,6 +14,7 @@ import { useDuel } from './useDuel'
 import type { Guess } from './useRound'
 import { SwordsIcon } from './icons'
 import { fullUrl } from './pics'
+import { apiSrc } from './api'
 
 const ZOOM_LEVELS = [7, 5.6, 4.5, 3.6, 2.9, 2.35, 1.9, 1.55, 1.25, 1]
 
@@ -182,11 +183,11 @@ export default function DuelRoom({ code }: { code: string }) {
           <div className="card intro">
             <h2>{t(duel.mode === 'ability' ? 'play.abilityTitle' : duel.mode === 'image' ? 'play.imageTitle' : 'play.classicTitle')}</h2>
             {duel.mode === 'image' && !over && (
-              <ZoomImage game={game} src={duel.image} zoom={zoom} resetKey={`${duel.code}-${duel.round}`} seed={`${duel.code}-${duel.round}`} />
+              <ZoomImage game={game} src={apiSrc(duel.image)} zoom={zoom} resetKey={`${duel.code}-${duel.round}`} seed={`${duel.code}-${duel.round}`} />
             )}
             {duel.mode === 'ability' && (
               <AbilityIcon
-                src={duel.image ? `${duel.image}&v=${over ? 'done' : wrong}` : undefined}
+                src={duel.image ? `${apiSrc(duel.image)}&v=${over ? 'done' : wrong}` : undefined}
                 resetKey={`${duel.code}-${duel.round}`}
               />
             )}

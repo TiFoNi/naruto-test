@@ -15,14 +15,27 @@ export async function readJson(request: Request): Promise<Record<string, unknown
   }
 }
 
+const trusted = new Set(
+  (process.env.CORS_ORIGINS ?? '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+)
+
 function crossSite(request: Request) {
   if (request.method === 'GET') return false
-  const site = request.headers.get('sec-fetch-site')
-  if (site && site !== 'same-origin' && site !== 'none') return true
+  if (!request.headers.get('content-type')?.includes('application/json')) return true
+
   const origin = request.headers.get('origin')
   const host = request.headers.get('host')
-  if (origin && host && new URL(origin).host !== host) return true
-  return !request.headers.get('content-type')?.includes('application/json')
+  const sameOrigin = !!origin && !!host && new URL(origin).host === host
+  const allowed = !origin || sameOrigin || trusted.has(origin)
+  if (!allowed) return true
+
+  const site = request.headers.get('sec-fetch-site')
+  if (site === 'cross-site') return true
+  if (site === 'same-site' && !sameOrigin && !(origin && trusted.has(origin))) return true
+  return false
 }
 
 export function handle(fn: (request: Request) => Promise<Response>) {
