@@ -4682,7 +4682,7 @@ button.ghost.small {
 .level-bar {
   height: 7px;
   border-radius: 999px;
-  background: var(--card-2);
+  background: color-mix(in srgb, var(--text-3) 30%, transparent);
   overflow: hidden;
 }
 
