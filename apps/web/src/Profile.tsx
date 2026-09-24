@@ -525,7 +525,9 @@ export default function Profile({ onBack }: { onBack: () => void }) {
                       <GiftIcon />
                     </span>
                     <span className="bonus-text">
-                      {t('quests.bonus')}: <b>+{board.bonus.xp} XP</b>
+                      <span className="bonus-label">
+                        {t('quests.bonus')}: <b>+{board.bonus.xp} XP</b>
+                      </span>
                       {board.bonus.claimed ? (
                         <small className="quest-done">✓ {t('quests.claimed')}</small>
                       ) : board.bonus.ready ? (
