@@ -4210,10 +4210,6 @@ button.ghost.small {
   gap: 14px;
 }
 
-.profile-grid.is-open {
-  align-items: start;
-}
-
 .profile-middle {
   display: flex;
   flex-direction: column;
@@ -4234,7 +4230,8 @@ button.ghost.small {
   }
 
   .profile-column > :last-child {
-    flex: 1;
+    flex: 1 1 auto;
+    min-height: 0;
   }
 }
 

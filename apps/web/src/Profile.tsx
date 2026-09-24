@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useState, type FormEvent } from 'react'
 import { useAuth } from './auth'
 import { api } from './api'
 import { GAMES } from './games'
@@ -99,18 +99,6 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   } | null>(null)
   const [savingNick, setSavingNick] = useState(false)
   const [settings, setSettings] = useState(false)
-  const middle = useRef<HTMLDivElement>(null)
-  const side = useRef<HTMLDivElement>(null)
-
-  const toggleSettings = () => {
-    const frozen = [middle.current, side.current]
-    if (settings) {
-      for (const column of frozen) if (column) column.style.height = ''
-      return setSettings(false)
-    }
-    for (const column of frozen) if (column) column.style.height = `${column.offsetHeight}px`
-    setSettings(true)
-  }
   const [confirmReset, setConfirmReset] = useState(false)
   const [resetting, setResetting] = useState(false)
 
@@ -191,7 +179,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
         {t('profile.back')}
       </button>
 
-      <div className={`profile-grid ${settings ? 'is-open' : ''}`}>
+      <div className="profile-grid">
         <div className="profile-column">
           <section className="card profile-card">
             <div className="profile-id">
@@ -256,7 +244,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
             </div>
 
             <div className="profile-actions">
-              <button type="button" className="ghost" onClick={toggleSettings}>
+              <button type="button" className="ghost" onClick={() => setSettings((open) => !open)}>
                 {t('profile.settings')}
               </button>
               <button type="button" className="ghost" onClick={logout}>
@@ -337,7 +325,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
 
        </div>
 
-        <div className="profile-middle" ref={middle}>
+        <div className="profile-middle">
           <section className="profile-metrics">
             <div className="card">
               <span>{t('profile.characters')}</span>
@@ -473,7 +461,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
           </div>
         </div>
 
-        <div className="profile-column" ref={side}>
+        <div className="profile-column">
           <section className="card quests-card">
             <header>
               <h2>{t('profile.questsTitle')}</h2>
