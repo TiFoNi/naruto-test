@@ -227,17 +227,6 @@ export default function Admin() {
         />
       )}
 
-      {removing && (
-        <Ask
-          title={`Удалить ${String(removing.name ?? removing.id)}?`}
-          hint={`${unit.subject} исчезнет из игры навсегда. Загруженные картинки останутся в хранилище.`}
-          action="Удалить"
-          danger
-          onClose={() => setRemoving(null)}
-          onSubmit={() => remove(removing)}
-        />
-      )}
-
       {rows === null ? (
         <div className="card center muted">Загрузка…</div>
       ) : tab === 'words' ? (
@@ -283,6 +272,18 @@ export default function Admin() {
           )}
         </ul>
       )}
+      {removing && (
+        <Ask
+          title={`Удалить ${String(removing.name ?? removing.id)}?`}
+          hint={`${unit.subject} исчезнет из игры навсегда. Загруженные картинки останутся в хранилище.`}
+          action="Удалить"
+          danger
+          raised
+          onClose={() => setRemoving(null)}
+          onSubmit={() => remove(removing)}
+        />
+      )}
+
       {open && (
         <Details
           game={gameId}
@@ -334,7 +335,9 @@ function Details({
   onClose: () => void
 }) {
   useEffect(() => {
-    const key = (event: KeyboardEvent) => event.key === 'Escape' && onClose()
+    const key = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && !document.querySelector('.modal-backdrop.raised')) onClose()
+    }
     document.addEventListener('keydown', key)
     return () => document.removeEventListener('keydown', key)
   }, [onClose])
@@ -543,6 +546,7 @@ function Ask({
   hint,
   action,
   danger,
+  raised,
   onClose,
   onSubmit,
 }: {
@@ -550,6 +554,7 @@ function Ask({
   hint: string
   action: string
   danger?: boolean
+  raised?: boolean
   onClose: () => void
   onSubmit: (value: string) => void
 }) {
@@ -562,7 +567,7 @@ function Ask({
   }, [onClose])
 
   return (
-    <div className="modal-backdrop" onClick={onClose} role="presentation">
+    <div className={`modal-backdrop ${raised ? 'raised' : ''}`} onClick={onClose} role="presentation">
       <form
         className="card modal ask"
         role="dialog"
