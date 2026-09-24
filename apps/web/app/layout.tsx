@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Manrope, Unbounded } from 'next/font/google'
 import Providers from './providers'
+import { SITE } from '@/src/brand'
 import { gameMeta } from '@/src/games/meta.server'
 import '@/src/styles.css'
 
@@ -19,9 +20,22 @@ const unbounded = Unbounded({
 })
 
 export const metadata: Metadata = {
-  title: 'NandaGuessr',
+  metadataBase: new URL(SITE),
+  title: {
+    default: 'NandaGuessr — угадай персонажа аниме и игр',
+    template: '%s · NandaGuessr',
+  },
   description:
-    'NandaGuessr — guess anime and game characters by traits and pictures, no daily limits: Naruto, Attack on Titan, Bleach, Tokyo Ghoul, Berserk, Dota 2.',
+    'Угадывай персонажей по признакам и картинкам: Наруто, Ван Пис, Атака титанов, Блич, Тетрадь смерти, Dota 2 и ещё десяток вселенных. Подсказки после каждой попытки, персонаж дня и дуэли с друзьями — без лимитов.',
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    siteName: 'NandaGuessr',
+    url: SITE,
+    title: 'NandaGuessr — угадай персонажа аниме и игр',
+    description: 'Наруто, Ван Пис, Атака титанов, Блич, Dota 2 и ещё десяток вселенных. Подсказки после каждой попытки, без лимитов на день.',
+  },
+  twitter: { card: 'summary_large_image' },
   icons: {
     icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='6' y='6' width='52' height='52' rx='16' fill='%23ff8a1f' transform='rotate(-6 32 32)'/><text x='32' y='45' font-family='Arial Black,Arial' font-weight='900' font-size='30' text-anchor='middle' fill='%230d0f12'>?!</text></svg>",
   },

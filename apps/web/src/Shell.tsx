@@ -76,9 +76,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
         </div>
       </header>
 
-      {loading ? (
-        <div className="card center muted">{t('loading')}</div>
-      ) : user ? (
+      {user ? (
         children
       ) : (
         <main className="landing">
@@ -97,7 +95,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
               ))}
             </ul>
           </div>
-          <AuthScreen />
+          {loading ? <div className="card center muted">{t('loading')}</div> : <AuthScreen />}
         </main>
       )}
 
