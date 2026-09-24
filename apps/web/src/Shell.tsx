@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Background from './Background'
@@ -33,28 +33,22 @@ function LangSwitch() {
   )
 }
 
-function useHidingHeader() {
-  const [hidden, setHidden] = useState(false)
-  const last = useRef(0)
+function useScrolled() {
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     let frame = 0
 
     const check = () => {
       frame = 0
-      const y = window.scrollY
-      const step = y - last.current
-      if (Math.abs(step) > 4) {
-        setHidden(y > 90 && step > 0)
-        last.current = y
-      }
+      setScrolled(window.scrollY > 6)
     }
 
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(check)
     }
 
-    last.current = window.scrollY
+    check()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => {
       window.removeEventListener('scroll', onScroll)
@@ -62,7 +56,7 @@ function useHidingHeader() {
     }
   }, [])
 
-  return hidden
+  return scrolled
 }
 
 export default function Shell({ children, games }: { children: ReactNode; games: GameMeta[] }) {
@@ -70,7 +64,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const href = useHref()
   const { t } = useI18n()
   const pathname = usePathname()
-  const hidden = useHidingHeader()
+  const scrolled = useScrolled()
   const [, , section, gameId, modeId, tail] = pathname.split('/')
   const open = PUBLIC.has(section ?? '')
   const game = section === 'play' ? metaById(games, gameId as never) : null
@@ -85,7 +79,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   return (
     <div className="app">
       <Background />
-      <header className={`topbar ${hidden ? 'is-hidden' : ''}`}>
+      <header className={`topbar ${scrolled ? 'is-solid' : ''}`}>
         <div className="topbar-inner">
           <Link className="brand" href={href.home}>
             <span className="brand-mark" aria-hidden>

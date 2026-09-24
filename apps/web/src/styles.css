@@ -235,20 +235,20 @@ h2 {
   position: fixed;
   inset: 0 0 auto;
   z-index: 40;
-  background: color-mix(in srgb, #0a0b0d 94%, transparent);
-  border-bottom: 1px solid var(--line);
-  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    backdrop-filter 0.25s ease;
 }
 
-.topbar.is-hidden {
-  transform: translateY(-102%);
+.topbar.is-solid {
+  background: color-mix(in srgb, #0a0b0d 74%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom-color: color-mix(in srgb, #000 55%, transparent);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .topbar {
-    transition: none;
-  }
-}
 
 .topbar-inner {
   position: relative;
