@@ -25,6 +25,7 @@ export default function Admin() {
   const [openId, setOpenId] = useState<number | null>(null)
   const [note, setNote] = useState<string | null>(null)
   const [updated, setUpdated] = useState('')
+  const [adding, setAdding] = useState(false)
 
   const load = useCallback(async (game: GameId) => {
     setRows(null)
@@ -78,9 +79,8 @@ export default function Admin() {
     await save(row, { [field]: Array.isArray(current) ? [...(current as string[]), term.value] : term.value })
   }
 
-  const create = async () => {
-    const name = window.prompt('Имя нового персонажа (по-русски)')?.trim()
-    if (!name) return
+  const create = async (name: string) => {
+    setAdding(false)
     const { ok, data } = await api<{ entity?: Row }>('admin/create', { game: gameId, name })
     if (!ok || !data.entity) return setNote('не создалось')
     setRows((list) => [...(list ?? []), data.entity as Row])
@@ -127,12 +127,22 @@ export default function Admin() {
           <input type="date" value={updated} onChange={(e) => void saveUpdated(e.target.value)} />
         </label>
         {tab === 'people' && (
-          <button type="button" className="admin-create" onClick={create}>
+          <button type="button" className="admin-create" onClick={() => setAdding(true)}>
             + персонаж
           </button>
         )}
         {note && <span className="muted">{note}</span>}
       </header>
+
+      {adding && (
+        <Ask
+          title="Новый персонаж"
+          hint="Имя по-русски — остальное заполнишь в карточке"
+          action="Создать"
+          onClose={() => setAdding(false)}
+          onSubmit={create}
+        />
+      )}
 
       {rows === null ? (
         <div className="card center muted">Загрузка…</div>
@@ -302,6 +312,57 @@ function Pictures({ game, row, onDone }: { game: GameId; row: Row; onDone: (enti
       )}
 
       {error && <span className="admin-error">{error}</span>}
+    </div>
+  )
+}
+
+function Ask({
+  title,
+  hint,
+  action,
+  onClose,
+  onSubmit,
+}: {
+  title: string
+  hint: string
+  action: string
+  onClose: () => void
+  onSubmit: (value: string) => void
+}) {
+  const [value, setValue] = useState('')
+
+  useEffect(() => {
+    const key = (event: KeyboardEvent) => event.key === 'Escape' && onClose()
+    document.addEventListener('keydown', key)
+    return () => document.removeEventListener('keydown', key)
+  }, [onClose])
+
+  return (
+    <div className="modal-backdrop" onClick={onClose} role="presentation">
+      <form
+        className="card modal ask"
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={(e) => {
+          e.preventDefault()
+          const name = value.trim()
+          if (name) onSubmit(name)
+        }}
+      >
+        <h2>{title}</h2>
+        <p className="muted">{hint}</p>
+        <input autoFocus value={value} onChange={(e) => setValue(e.target.value)} />
+        <div className="ask-buttons">
+          <button type="button" onClick={onClose}>
+            Отмена
+          </button>
+          <button type="submit" className="primary" disabled={!value.trim()}>
+            {action}
+          </button>
+        </div>
+      </form>
     </div>
   )
 }
