@@ -5166,15 +5166,15 @@ button.ghost.small {
 
 @media (hover: hover) {
   .tile:hover .tile-card-0 {
-    transform: translateX(-50%) translateY(-9px) scale(1.05);
+    transform: translateX(-50%) translateY(-7px) scale(1.05);
   }
 
   .tile:hover .tile-card-1 {
-    transform: translateX(calc(-50% - 50px)) translateY(-6px) rotate(-12deg) scale(1.04);
+    transform: translateX(calc(-50% - 50px)) translateY(-2px) rotate(-12deg) scale(1.02);
   }
 
   .tile:hover .tile-card-2 {
-    transform: translateX(calc(-50% + 50px)) translateY(-6px) rotate(12deg) scale(1.04);
+    transform: translateX(calc(-50% + 50px)) translateY(-2px) rotate(12deg) scale(1.02);
   }
 
   .tile:hover .tile-fan[data-count='2'] .tile-card-0 {
