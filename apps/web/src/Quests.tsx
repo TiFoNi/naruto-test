@@ -1,10 +1,12 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, type CSSProperties } from 'react'
 import { api } from './api'
 import { useI18n } from './i18n'
 import type { UiKey } from './i18n/ui'
-import { GiftIcon } from './icons'
+import { CheckIcon, GiftIcon } from './icons'
+
+const BONUS = 120
 
 export type Level = { xp: number; level: number; into: number; need: number; rank: string; next: { from: number; id: string } | null }
 
@@ -49,15 +51,28 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
     return `${hours}:${String(minutes).padStart(2, '0')}`
   })()
 
+  const rows = board?.quests ?? []
+  const ring = board ? Math.round((board.collected / board.total) * 100) : 0
+
   return (
     <section className="card quests-card">
-      <header>
-        <h2>{t('profile.questsTitle')}</h2>
-        <span className="muted">{t('quests.reset', { time: left })}</span>
+      <header className="quests-head">
+        <span className="quests-ring" style={{ '--filled': `${ring}%` } as CSSProperties} aria-hidden>
+          <b>
+            {board?.collected ?? 0}/{board?.total ?? 4}
+          </b>
+        </span>
+        <span className="quests-title">
+          <h2>{t('profile.questsTitle')}</h2>
+          <small className="muted">{t('quests.reset', { time: left })}</small>
+        </span>
+        <span className={`quests-gift ${board?.bonus.ready && !board.bonus.claimed ? 'is-ready' : ''}`}>
+          <GiftIcon />+{board?.bonus.xp ?? BONUS}
+        </span>
       </header>
 
       <ul className="quests">
-        {(board?.quests ?? []).map((quest) => (
+        {rows.map((quest) => (
           <li key={quest.id}>
             <button
               type="button"
@@ -65,23 +80,21 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
               disabled={!quest.done || quest.claimed || claiming === quest.id}
               onClick={() => claim(quest.id)}
             >
-              <span className="quest-head">
-                <span className="quest-name">{t(`quest.${quest.id}` as UiKey)}</span>
-                <span className="quest-xp">+{quest.xp} XP</span>
+              <span className={`quest-mark ${quest.claimed ? 'done' : quest.done ? 'ready' : ''}`} aria-hidden>
+                {quest.claimed ? <CheckIcon /> : null}
               </span>
-              <span className="quest-bar">
-                <i style={{ width: `${Math.round((quest.value / quest.goal) * 100)}%` }} />
-              </span>
-              <span className="quest-foot">
-                <span className="muted">
-                  {quest.value} / {quest.goal}
-                </span>
-                {quest.claimed ? (
-                  <span className="quest-done">✓ {t('quests.claimed')}</span>
-                ) : quest.done ? (
-                  <span className="quest-take">{t('quests.take')}</span>
-                ) : null}
-              </span>
+              <span className="quest-name">{t(`quest.${quest.id}` as UiKey)}</span>
+              <span className="quest-xp">+{quest.xp} XP</span>
+              {!quest.claimed && !quest.done && (
+                <>
+                  <span className="quest-bar">
+                    <i style={{ width: `${Math.round((quest.value / quest.goal) * 100)}%` }} />
+                  </span>
+                  <span className="quest-count muted">
+                    {quest.value}/{quest.goal}
+                  </span>
+                </>
+              )}
             </button>
           </li>
         ))}
@@ -94,54 +107,32 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
               disabled={board.free.claimed || claiming === 'free'}
               onClick={() => claim('free')}
             >
-              <span className="quest-head">
-                <span className="quest-name">{t('quests.free')}</span>
-                <span className="quest-xp">+{board.free.xp} XP</span>
+              <span className={`quest-mark ${board.free.claimed ? 'done' : 'ready'}`} aria-hidden>
+                {board.free.claimed ? <CheckIcon /> : null}
               </span>
-              <span className="quest-foot">
-                <span className="muted">{t('quests.freeHint')}</span>
-                <span className={board.free.claimed ? 'quest-done' : 'quest-take'}>
-                  {board.free.claimed ? `✓ ${t('quests.claimed')}` : t('quests.take')}
-                </span>
-              </span>
+              <span className="quest-name">{t('quests.free')}</span>
+              <span className="quest-xp">+{board.free.xp} XP</span>
             </button>
           </li>
         )}
-
-        {board && (
-          <li>
-            <button
-              type="button"
-              className={`bonus ${board.bonus.claimed ? 'is-claimed' : board.bonus.ready ? 'is-ready' : ''}`}
-              disabled={!board.bonus.ready || board.bonus.claimed || claiming === 'bonus'}
-              onClick={() => claim('bonus')}
-            >
-              <span className="bonus-gift" aria-hidden>
-                <GiftIcon />
-              </span>
-              <span className="bonus-text">
-                <span className="bonus-label">
-                  {t('quests.bonus')}: <b>+{board.bonus.xp} XP</b>
-                </span>
-                {board.bonus.claimed ? (
-                  <small className="quest-done">✓ {t('quests.claimed')}</small>
-                ) : board.bonus.ready ? (
-                  <small className="quest-take">{t('quests.take')}</small>
-                ) : null}
-              </span>
-              <span className="bonus-count">
-                {board.collected}/{board.total}
-              </span>
-              <span className="bonus-steps">
-                {Array.from({ length: board.total }, (_, index) => (
-                  <i key={index} className={index < board.collected ? 'on' : ''} />
-                ))}
-              </span>
-            </button>
-          </li>
-        )}
-
       </ul>
+
+      {board && (
+        <button
+          type="button"
+          className={`quests-bonus ${board.bonus.claimed ? 'is-claimed' : board.bonus.ready ? 'is-ready' : ''}`}
+          disabled={!board.bonus.ready || board.bonus.claimed || claiming === 'bonus'}
+          onClick={() => claim('bonus')}
+        >
+          <span className="muted">{t('quests.bonus')}</span>
+          <span className="bonus-steps">
+            {Array.from({ length: board.total }, (_, index) => (
+              <i key={index} className={index < board.collected ? 'on' : ''} />
+            ))}
+          </span>
+          <span className="quests-more">{t('quests.all')}</span>
+        </button>
+      )}
     </section>
   )
 }

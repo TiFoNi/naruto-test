@@ -10,7 +10,7 @@ import Quests from './Quests'
 import { useHref } from './router'
 import { dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
-import { CalendarIcon, ChartIcon, CheckIcon } from './icons'
+import { CalendarIcon, ChartIcon, CheckIcon, SearchIcon } from './icons'
 import { CARD, cardUrl } from './pics'
 
 const CATEGORIES: { id: Category; title: UiKey }[] = [
@@ -165,6 +165,12 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         <div className="hero-copy">
           {user && <span className="eyebrow">{t('dash.hello', { name: user.nickname })}</span>}
           <h1>{t('dash.title')}</h1>
+          <p className="hero-sub">{t('dash.sub')}</p>
+          <label className="hero-search" title={t('dash.searchSoon')}>
+            <SearchIcon />
+            <input type="search" placeholder={t('dash.search')} disabled />
+            <span className="hero-search-all">{t('dash.searchAll')}</span>
+          </label>
         </div>
         {user ? (
           <Quests />

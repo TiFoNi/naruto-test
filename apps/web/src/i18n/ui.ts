@@ -321,7 +321,8 @@ const ui = {
   'quests.claimed': { ru: 'Получено', uk: 'Отримано', en: 'Claimed' },
   'quests.free': { ru: 'Заходи каждый день', uk: 'Заходь щодня', en: 'Drop by every day' },
   'quests.freeHint': { ru: 'Просто так, без условий', uk: 'Просто так, без умов', en: 'No strings attached' },
-  'quests.bonus': { ru: 'Бонус за все задания', uk: 'Бонус за всі завдання', en: 'Bonus for the full set' },
+  'quests.all': { ru: 'Все →', uk: 'Усі →', en: 'All →' },
+  'quests.bonus': { ru: 'Бонус за все', uk: 'Бонус за всі', en: 'Bonus for all' },
 
   'quest.play3': { ru: 'Сыграй 3 раунда', uk: 'Зіграй 3 раунди', en: 'Play 3 rounds' },
   'quest.play5': { ru: 'Сыграй 5 раундов', uk: 'Зіграй 5 раундів', en: 'Play 5 rounds' },
@@ -341,6 +342,18 @@ const ui = {
   'quest.duel1': { ru: 'Выиграй дуэль', uk: 'Виграй дуель', en: 'Win a duel' },
   'quest.duel3': { ru: 'Выиграй 3 дуэли', uk: 'Виграй 3 дуелі', en: 'Win 3 duels' },
 
+  'dash.sub': {
+    ru: 'Выбирай вселенную и режим: бесконечные раунды или один персонаж дня для всех.',
+    uk: 'Обирай всесвіт і режим: нескінченні раунди або один персонаж дня для всіх.',
+    en: 'Pick a world and a mode: endless rounds, or one character a day for everyone.',
+  },
+  'dash.search': {
+    ru: 'Поиск по всем категориям: персонаж, аниме, игра…',
+    uk: 'Пошук по всіх категоріях: персонаж, аніме, гра…',
+    en: 'Search every category: character, anime, game…',
+  },
+  'dash.searchAll': { ru: 'Все категории', uk: 'Усі категорії', en: 'All categories' },
+  'dash.searchSoon': { ru: 'Поиск скоро заработает', uk: 'Пошук скоро запрацює', en: 'Search is coming soon' },
   'dash.pick': { ru: 'Выбери категорию', uk: 'Обери категорію', en: 'Pick a category' },
 
   'profile.rank': { ru: 'Место в рейтинге', uk: 'Місце в рейтингу', en: 'Leaderboard place' },
