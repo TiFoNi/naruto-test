@@ -107,7 +107,12 @@ export default function Shell({ children, games }: { children: ReactNode; games:
           <div className="topbar-right">
             <LangSwitch />
             <div className="topbar-slot">
-              {!loading && !user && (
+              {section === 'login' && (
+                <Link className="topbar-link guest" href={href.home}>
+                  <span className="topbar-link-label">{t('login.guest')}</span>
+                </Link>
+              )}
+              {!loading && !user && section !== 'login' && (
                 <Link className="topbar-link" href={href.login}>
                   <span className="topbar-link-label">{t('nav.signIn')}</span>
                 </Link>

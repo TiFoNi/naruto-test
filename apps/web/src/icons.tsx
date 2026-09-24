@@ -213,3 +213,29 @@ export function GoogleIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function MailIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <rect x="3" y="5" width="18" height="14" rx="2.5" />
+      <path d="M3.5 7.5 12 13.2l8.5-5.7" />
+    </svg>
+  )
+}
+
+export function ShieldIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  )
+}
+
+export function ArrowIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2.4}>
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
+  )
+}
