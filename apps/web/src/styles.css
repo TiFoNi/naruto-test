@@ -119,9 +119,14 @@ h2 {
   position: fixed;
   inset: 0 0 auto;
   z-index: 40;
-  background: color-mix(in srgb, var(--bg) 62%, transparent);
+  padding-bottom: 16px;
+  background: linear-gradient(
+    color-mix(in srgb, var(--bg) 70%, transparent) 60%,
+    color-mix(in srgb, var(--bg) 40%, transparent) 82%,
+    transparent
+  );
   backdrop-filter: blur(18px) saturate(150%);
-  border-bottom: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+  mask-image: linear-gradient(#000 calc(100% - 16px), transparent);
 }
 
 .topbar-inner {
