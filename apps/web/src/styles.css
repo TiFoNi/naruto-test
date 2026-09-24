@@ -235,43 +235,19 @@ h2 {
   position: fixed;
   inset: 0 0 auto;
   z-index: 40;
-  padding-bottom: 28px;
-  background: linear-gradient(
-    color-mix(in srgb, #0a0b0d 88%, transparent) 30%,
-    color-mix(in srgb, #0a0b0d 50%, transparent) 62%,
-    transparent
-  );
-  backdrop-filter: blur(3px);
-  mask-image: linear-gradient(#000 78%, transparent);
-  transition: transform 0.3s cubic-bezier(0.3, 0.9, 0.3, 1);
+  background: color-mix(in srgb, #0a0b0d 94%, transparent);
+  border-bottom: 1px solid var(--line);
+  transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .topbar.is-hidden {
-  transform: translateY(-105%);
+  transform: translateY(-102%);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .topbar {
     transition: none;
   }
-}
-
-.topbar::before,
-.topbar::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.topbar::before {
-  backdrop-filter: blur(10px);
-  mask-image: linear-gradient(#000 52%, transparent 88%);
-}
-
-.topbar::after {
-  backdrop-filter: blur(26px);
-  mask-image: linear-gradient(#000 34%, transparent 70%);
 }
 
 .topbar-inner {
