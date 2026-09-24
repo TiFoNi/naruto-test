@@ -103,9 +103,13 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" v
 
 await sharp(Buffer.from(svg), { density: 144 }).resize(1200, 630).png().toFile(`${app}opengraph-image.png`)
 
-const square = (size) => sharp(`${app}icon.svg`, { density: 900 }).resize(size, size).png().toBuffer()
+const mark = readFileSync(`${app}icon.svg`, 'utf8')
+const filled = mark.replace('rx="17"', 'rx="0"').replace('x="1" y="1" width="62" height="62"', 'x="0" y="0" width="64" height="64"')
 
-writeFileSync(`${app}apple-icon.png`, await square(180))
+const square = (size) => sharp(Buffer.from(mark), { density: 900 }).resize(size, size).png().toBuffer()
+const solid = (size) => sharp(Buffer.from(filled), { density: 900 }).resize(size, size).png().toBuffer()
+
+writeFileSync(`${app}apple-icon.png`, await solid(180))
 writeFileSync(`${pub}icon-192.png`, await square(192))
 writeFileSync(`${pub}icon-512.png`, await square(512))
 
