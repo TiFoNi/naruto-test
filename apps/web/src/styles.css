@@ -119,6 +119,14 @@ h2 {
   max-width: 1400px;
 }
 
+.app.wide > .topbar,
+.app.wide > footer {
+  width: 100%;
+  max-width: 1048px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .topbar {
   display: flex;
   align-items: center;
