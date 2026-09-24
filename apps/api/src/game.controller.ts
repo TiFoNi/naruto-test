@@ -3,6 +3,7 @@ import type { Request, Response } from 'express'
 import * as auth from '@nanda/core/endpoints/auth'
 import * as me from '@nanda/core/endpoints/me'
 import * as admin from '@nanda/core/endpoints/admin'
+import * as summary from '@nanda/core/endpoints/profile-summary'
 import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as termsEndpoint from '@nanda/core/endpoints/terms'
@@ -61,6 +62,11 @@ export class GameController {
   @Post('admin/delete')
   adminDelete(@Req() req: Request, @Res() res: Response) {
     return bridge(admin.DELETE, req, res)
+  }
+
+  @Get('profile/summary')
+  profileSummary(@Req() req: Request, @Res() res: Response) {
+    return bridge(summary.GET, req, res)
   }
 
   @Post('admin/settings')

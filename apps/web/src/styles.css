@@ -4190,3 +4190,480 @@ button.ghost.small {
   font-size: 15px;
   line-height: 1;
 }
+
+.profile {
+  max-width: 1240px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr) minmax(240px, 300px);
+  align-items: start;
+  gap: 14px;
+}
+
+.profile-column {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-id {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.profile-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.profile-facts > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--card-2);
+}
+
+.profile-facts span {
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.profile-facts b {
+  font-family: var(--display);
+  font-size: 22px;
+}
+
+.profile-facts b.small {
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.profile-facts small {
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.profile-actions button {
+  flex: 1;
+}
+
+.profile-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.profile-settings label {
+  font-weight: 700;
+}
+
+.profile-settings p {
+  margin: 4px 0 8px;
+  font-size: 13px;
+}
+
+.profile-reset {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.profile-metrics .card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+}
+
+.profile-metrics span {
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.profile-metrics b {
+  font-family: var(--display);
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.profile-metrics small {
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.profile .card header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.profile .card h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--display);
+  font-size: 18px;
+}
+
+.profile .card h2 svg {
+  width: 18px;
+  height: 18px;
+}
+
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.card-link svg {
+  width: 14px;
+  height: 14px;
+  transform: rotate(-90deg);
+}
+
+.streak-card,
+.worlds-card,
+.modes-card,
+.activity-card,
+.soon-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.streak-now {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.streak-flame {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.streak-flame svg {
+  width: 20px;
+  height: 20px;
+}
+
+.streak-now b {
+  font-family: var(--display);
+  font-size: 34px;
+  line-height: 1;
+}
+
+.streak-now div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.streak-now small.ok {
+  color: #64c98a;
+}
+
+.streak-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.streak-week li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.streak-week span {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 1px dashed var(--line);
+  color: transparent;
+  font-size: 14px;
+}
+
+.streak-week li.on span {
+  border: none;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.streak-week small {
+  color: var(--text-3);
+  font-size: 11px;
+}
+
+.worlds,
+.modes-list,
+.activity {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.worlds li {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.world-tag {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  color: #10131a;
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.world-name {
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.world-count {
+  color: var(--text-3);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.world-count b {
+  color: var(--text);
+}
+
+.world-bar,
+.mode-bar {
+  grid-column: 2 / -1;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--card-2);
+  overflow: hidden;
+}
+
+.world-bar i,
+.mode-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.modes-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.mode-name {
+  font-weight: 700;
+}
+
+.mode-count {
+  font-size: 13px;
+}
+
+.modes-list b {
+  font-family: var(--display);
+  font-size: 18px;
+}
+
+.mode-bar {
+  grid-column: 1 / -1;
+}
+
+.activity li {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 10px;
+}
+
+.activity-dot {
+  width: 10px;
+  height: 10px;
+  margin-top: 5px;
+  border-radius: 50%;
+  background: var(--text-3);
+}
+
+.activity-dot.won {
+  background: #64c98a;
+}
+
+.activity-dot.lost {
+  background: #e0715f;
+}
+
+.activity-dot.skipped {
+  background: var(--accent);
+}
+
+.activity-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+}
+
+.activity-text small,
+.activity-when {
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.soon-card {
+  opacity: 0.92;
+}
+
+.soon-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--card-2);
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.soon-card p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.soon-rows,
+.soon-badges {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.soon-rows li {
+  height: 44px;
+  border-radius: 12px;
+  border: 1px dashed var(--line);
+}
+
+.soon-badges {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.soon-badges li {
+  aspect-ratio: 1;
+  border-radius: 14px;
+  border: 1px dashed var(--line);
+}
+
+@media (max-width: 1080px) {
+  .profile-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .profile-column.wide {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+}
+
+@media (max-width: 720px) {
+  .profile-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .profile-column {
+    display: contents;
+  }
+
+  .profile-card {
+    order: 1;
+  }
+
+  .profile-metrics {
+    order: 2;
+  }
+
+  .streak-card {
+    order: 3;
+  }
+
+  .worlds-card {
+    order: 4;
+  }
+
+  .modes-card {
+    order: 5;
+  }
+
+  .activity-card {
+    order: 6;
+  }
+
+  .soon-card {
+    order: 7;
+  }
+}
