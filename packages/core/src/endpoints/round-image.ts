@@ -1,7 +1,7 @@
 import type { ObjectId } from 'mongodb'
 import { GAME_SPECS, type GameId } from '@nanda/game'
 import { fail, handle } from '../http'
-import { sessionUserId, unauthorized } from '../profile'
+import { roundOwner } from '../profile'
 import { abilityStageOf, findDuel, sideOf } from '../duels'
 import { abilityStage, ownedRound } from '../rounds'
 import { pageOf } from '../extra'
@@ -20,8 +20,7 @@ async function duelSource(code: string, userId: ObjectId) {
 }
 
 export const GET = handle(async (request) => {
-  const userId = await sessionUserId(request)
-  if (!userId) return unauthorized()
+  const userId = (await roundOwner(request)).id
   const url = new URL(request.url)
   const duelCode = url.searchParams.get('duel')
   const round = duelCode ? await duelSource(duelCode, userId) : await ownedRound(userId, url.searchParams.get('id'))

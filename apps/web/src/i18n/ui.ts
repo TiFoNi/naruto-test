@@ -341,6 +341,12 @@ const ui = {
     uk: 'Окремо для кожного всесвіту й режиму. Результати рахує сервер — накрутити не можна.',
     en: 'Separate for every universe and mode. Results are checked by the server.',
   },
+  'guest.note': {
+    ru: 'Ты играешь без аккаунта — прогресс и серии не сохраняются.',
+    uk: 'Ти граєш без акаунта — прогрес і серії не зберігаються.',
+    en: 'You are playing without an account — progress and streaks are not saved.',
+  },
+  'guest.signIn': { ru: 'Войти', uk: 'Увійти', en: 'Sign in' },
   'challenge.button': { ru: 'Загадать другу', uk: 'Загадати другу', en: 'Challenge a friend' },
   'challenge.title': { ru: 'Загадай персонажа другу', uk: 'Загадай персонажа другу', en: 'Set a puzzle for a friend' },
   'challenge.hint': {

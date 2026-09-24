@@ -16,7 +16,7 @@ const RECENT = 25
 
 const playable = (round: RoundDoc) => isGame(round.game) && knows(round.game, round.answerId)
 
-export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId) {
+export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, guest = false) {
   const collection = await rounds()
   const existing = await collection.findOne({ userId, game, mode, status: 'active', daily: { $exists: false } })
   if (existing && playable(existing)) return existing
@@ -31,7 +31,17 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId) 
   const choices = fresh.length ? fresh : pool
   const answer = choices[Math.floor(Math.random() * choices.length)]
   const extra = roundExtra(game, mode, answer.id)
-  const doc: RoundDoc = { userId, game, mode, answerId: answer.id, ...(extra ? { extra } : {}), guesses: [], status: 'active', createdAt: new Date() }
+  const doc: RoundDoc = {
+    userId,
+    game,
+    mode,
+    answerId: answer.id,
+    ...(extra ? { extra } : {}),
+    ...(guest ? { guest: true } : {}),
+    guesses: [],
+    status: 'active',
+    createdAt: new Date(),
+  }
   const { insertedId } = await collection.insertOne(doc)
   return { ...doc, _id: insertedId }
 }
@@ -62,7 +72,7 @@ export async function challengeRound(userId: ObjectId, code: string) {
   }
 }
 
-export async function dailyRound(userId: ObjectId, game: GameId, mode: ModeId) {
+export async function dailyRound(userId: ObjectId, game: GameId, mode: ModeId, guest = false) {
   const collection = await rounds()
   const day = today()
   const existing = await collection.findOne({ userId, game, mode, daily: day })
@@ -73,6 +83,7 @@ export async function dailyRound(userId: ObjectId, game: GameId, mode: ModeId) {
     game,
     mode,
     daily: day,
+    ...(guest ? { guest: true } : {}),
     ...(await dailyAnswer(game, mode, day)),
     guesses: [],
     status: 'active',

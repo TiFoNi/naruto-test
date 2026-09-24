@@ -1,9 +1,17 @@
 import { SignJWT, jwtVerify } from 'jose'
 
 const COOKIE = 'session'
+const GUEST = 'guest'
 const MAX_AGE = 60 * 60 * 24 * 30
 
 export type SessionUser = { id: string; username: string }
+
+const cookieValue = (request: Request, name: string) =>
+  request.headers
+    .get('cookie')
+    ?.split(';')
+    .map((part) => part.trim().split('='))
+    .find(([key]) => key === name)?.[1]
 
 function secret() {
   const value = process.env.AUTH_SECRET
@@ -37,12 +45,29 @@ export const clearedCookie = (request: Request) => {
   return domain ? [expired(request, `; Domain=${domain}`), expired(request, '')] : [expired(request, '')]
 }
 
+export async function guestCookie(request: Request, id: string) {
+  const token = await new SignJWT({ guest: true })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setSubject(id)
+    .setIssuedAt()
+    .setExpirationTime(`${MAX_AGE}s`)
+    .sign(secret())
+  return `${GUEST}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${MAX_AGE}${attributes(request)}`
+}
+
+export async function readGuest(request: Request): Promise<string | null> {
+  const token = cookieValue(request, GUEST)
+  if (!token) return null
+  try {
+    const { payload } = await jwtVerify(token, secret(), { algorithms: ['HS256'] })
+    return payload.guest === true && payload.sub ? payload.sub : null
+  } catch {
+    return null
+  }
+}
+
 export async function readSession(request: Request): Promise<SessionUser | null> {
-  const token = request.headers
-    .get('cookie')
-    ?.split(';')
-    .map((part) => part.trim().split('='))
-    .find(([name]) => name === COOKIE)?.[1]
+  const token = cookieValue(request, COOKIE)
   if (!token) return null
   try {
     const { payload } = await jwtVerify(token, secret(), { algorithms: ['HS256'] })

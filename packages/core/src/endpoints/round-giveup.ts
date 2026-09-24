@@ -1,12 +1,11 @@
 import { dailyKey, statsKey, type GameId, type ModeId } from '@nanda/game'
 import { users } from '../db'
 import { fail, handle, json, readJson } from '../http'
-import { applySkip, sessionUserId, unauthorized } from '../profile'
+import { applySkip, roundOwner } from '../profile'
 import { ownedRound, roundView, skipRound } from '../rounds'
 
 export const POST = handle(async (request) => {
-  const userId = await sessionUserId(request)
-  if (!userId) return unauthorized()
+  const userId = (await roundOwner(request)).id
   const round = await ownedRound(userId, (await readJson(request)).roundId)
   if (!round) return fail(404, 'not_found')
   if (round.status !== 'active') return json({ round: await roundView(round, false) })

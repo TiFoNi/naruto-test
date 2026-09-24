@@ -28,6 +28,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const { t, l } = useI18n()
   const pathname = usePathname()
   const [, section, gameId, modeId, tail] = pathname.split('/')
+  const open = section === 'play'
   const game = section === 'play' ? metaById(games, gameId as never) : null
   const accent = user && game ? game.accent : BRAND.accent
 
@@ -76,7 +77,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
         </div>
       </header>
 
-      {user ? (
+      {user || open ? (
         children
       ) : (
         <main className="landing">

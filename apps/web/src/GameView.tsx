@@ -36,7 +36,7 @@ function StatsBar({ stats, daily }: { stats: Stats; daily: boolean }) {
 }
 
 export default function GameView({ game, mode, daily, visible }: { game: Game; mode: ModeId; daily: boolean; visible: boolean }) {
-  const { stats } = useAuth()
+  const { stats, user } = useAuth()
   const { t, l } = useI18n()
   const statsFor = (m: ModeId, d: boolean) => stats[d ? dailyKey(game.id, m) : statsKey(game.id, m)] ?? emptyStats
 
@@ -72,13 +72,20 @@ export default function GameView({ game, mode, daily, visible }: { game: Game; m
             </div>
           </div>
           <div className="game-head-side">
-            {!daily && <ChallengeMaker game={game} mode={mode} />}
-            <a className="lb-link" href={href.leaderboard(game.id, mode, daily)}>
-              <TrophyIcon /> {t('nav.leaderboard')}
-            </a>
+            {!daily && user && <ChallengeMaker game={game} mode={mode} />}
+            {user && (
+              <a className="lb-link" href={href.leaderboard(game.id, mode, daily)}>
+                <TrophyIcon /> {t('nav.leaderboard')}
+              </a>
+            )}
           </div>
         </div>
       </section>
+      {!user && (
+        <p className="guest-note">
+          {t('guest.note')} <a href={href.home}>{t('guest.signIn')}</a>
+        </p>
+      )}
       {[false, true].map((d) => (
         <div key={String(d)} hidden={daily !== d}>
           {game.modes.includes('classic') && (

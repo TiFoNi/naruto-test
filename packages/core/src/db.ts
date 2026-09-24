@@ -39,6 +39,7 @@ export type RoundDoc = {
   answerId: number
   guesses: number[]
   status: RoundStatus
+  guest?: boolean
   daily?: string
   challenge?: string
   extra?: string
@@ -106,6 +107,10 @@ export async function rounds(): Promise<Collection<RoundDoc>> {
       { unique: true, partialFilterExpression: { daily: { $type: 'string' } } },
     ),
     collection.createIndex({ daily: 1, game: 1, mode: 1, status: 1, guessCount: 1, finishedAt: 1 }),
+    collection.createIndex(
+      { createdAt: 1 },
+      { expireAfterSeconds: 60 * 60 * 24 * 7, partialFilterExpression: { guest: true } },
+    ),
   ]).catch((error) => {
     cache.__roundsIndexed = undefined
     throw error

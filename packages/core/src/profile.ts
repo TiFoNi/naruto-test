@@ -3,7 +3,7 @@ import { DAILY_KEYS, STAT_KEYS } from '@nanda/game'
 import { shiftDay, today } from './daily'
 import { users, type Stats, type UserDoc } from './db'
 import { fail } from './http'
-import { readSession } from './session'
+import { guestCookie, readGuest, readSession } from './session'
 
 export { STAT_KEYS }
 
@@ -80,10 +80,19 @@ export async function currentUser(request: Request) {
 
 export const unauthorized = () => fail(401, 'unauthorized')
 
-export async function sessionUserId(request: Request) {
+export type Owner = { id: ObjectId; guest: boolean; cookie?: string }
+
+export async function roundOwner(request: Request): Promise<Owner> {
   const session = await readSession(request)
-  return session && ObjectId.isValid(session.id) ? new ObjectId(session.id) : null
+  if (session && ObjectId.isValid(session.id)) return { id: new ObjectId(session.id), guest: false }
+
+  const existing = await readGuest(request)
+  if (existing && ObjectId.isValid(existing)) return { id: new ObjectId(existing), guest: true }
+
+  const id = new ObjectId()
+  return { id, guest: true, cookie: await guestCookie(request, id.toHexString()) }
 }
+
 
 const orZero = (path: string) => ({ $ifNull: [`$${path}`, 0] })
 

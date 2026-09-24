@@ -3183,3 +3183,24 @@ button.ghost.small {
     align-self: flex-start;
   }
 }
+
+.guest-note {
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent);
+  color: var(--text-2);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.guest-note a {
+  color: var(--accent);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.guest-note a:hover {
+  text-decoration: underline;
+}
