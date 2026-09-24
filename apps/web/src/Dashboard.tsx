@@ -203,8 +203,12 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         <h2>{t('dash.pick')}</h2>
         <div className="tiles">
           {shown.map((category) => {
-            const count = games.filter((g) => g.category === category.id).length
+            const list = games.filter((g) => g.category === category.id)
             const Icon = category.icon
+            const art = list
+              .slice(0, 3)
+              .map((game) => ({ game, picture: game.featured[0] }))
+              .filter((item) => item.picture)
             return (
               <button
                 key={category.id}
@@ -216,9 +220,24 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
                 <span className="tile-icon" aria-hidden>
                   <Icon />
                 </span>
+                <span className="tile-fan" aria-hidden>
+                  {art.map(({ game, picture }, index) => (
+                    <img
+                      key={game.id}
+                      className={`tile-card tile-card-${index}`}
+                      src={cardUrl(game.id, picture.id, picture.image)}
+                      alt=""
+                      width={CARD.width}
+                      height={CARD.height}
+                      loading="lazy"
+                      decoding="async"
+                      draggable={false}
+                    />
+                  ))}
+                </span>
                 <b>{t(category.title)}</b>
                 <small>
-                  {count} {worldsOf(count, lang)}
+                  {list.length} {worldsOf(list.length, lang)}
                 </small>
               </button>
             )
@@ -242,22 +261,6 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         </section>
       )}
 
-      <section className="category how">
-        <header>
-          <h2>{t('dash.howTitle')}</h2>
-        </header>
-        <div className="how-grid">
-          {MODES.map((m) => (
-            <div key={m.id} className="card how-card">
-              <span className="mode-icon big" aria-hidden>
-                {m.icon}
-              </span>
-              <h3>{t(m.label)}</h3>
-              <p className="muted">{t(m.description)}</p>
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
   )
 }

@@ -5068,8 +5068,8 @@ button.ghost.small {
 }
 
 .tiles {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
@@ -5077,9 +5077,12 @@ button.ghost.small {
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   gap: 2px;
-  min-height: 130px;
+  width: 216px;
+  height: 176px;
   padding: 14px 16px;
+  overflow: hidden;
   border-radius: 18px;
   border: 1px solid var(--line);
   background:
@@ -5106,23 +5109,89 @@ button.ghost.small {
 }
 
 .tile-icon {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  z-index: 3;
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
-  margin-bottom: auto;
-  border-radius: 11px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
   background: color-mix(in srgb, var(--tile) 26%, transparent);
   color: var(--tile);
   font-size: 18px;
 }
 
+.tile-fan {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tile-card {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  width: 66px;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 10px;
+  border: 2px solid var(--card);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.tile-card-0 {
+  z-index: 3;
+  width: 76px;
+  transform: translateX(-50%);
+}
+
+.tile-card-1 {
+  z-index: 2;
+  transform: translateX(calc(-50% - 44px)) rotate(-10deg);
+}
+
+.tile-card-2 {
+  z-index: 2;
+  transform: translateX(calc(-50% + 44px)) rotate(10deg);
+}
+
+.tile:hover .tile-card-1 {
+  transform: translateX(calc(-50% - 52px)) rotate(-13deg);
+}
+
+.tile:hover .tile-card-2 {
+  transform: translateX(calc(-50% + 52px)) rotate(13deg);
+}
+
+.tile b,
+.tile small {
+  position: relative;
+  z-index: 3;
+}
+
 .tile b {
   font-family: var(--display);
   font-size: 19px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 .tile small {
-  color: var(--text-3);
+  color: var(--text-2);
   font-size: 13px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.tile::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  inset: auto 0 0;
+  height: 96px;
+  background: linear-gradient(transparent, color-mix(in srgb, var(--card) 92%, transparent) 55%, var(--card));
 }
