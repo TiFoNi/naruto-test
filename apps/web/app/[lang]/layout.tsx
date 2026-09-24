@@ -20,6 +20,7 @@ const unbounded = Unbounded({
   weight: ['600', '700', '800'],
   variable: '--font-display',
   display: 'swap',
+  preload: false,
 })
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {

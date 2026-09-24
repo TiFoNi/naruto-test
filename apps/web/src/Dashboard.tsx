@@ -50,6 +50,8 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
             key={id}
             className={`fan fan-${i}`}
             src={cardUrl(game.id, id, image)}
+            srcSet={`${miniUrl(game.id, id, image)} ${MINI.width}w, ${cardUrl(game.id, id, image)} ${CARD.width}w`}
+            sizes={i === 0 ? '128px' : '112px'}
             alt=""
             width={CARD.width}
             height={CARD.height}
