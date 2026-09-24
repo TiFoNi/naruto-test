@@ -7,7 +7,7 @@ import { useAuth } from './auth'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n } from './i18n'
-import { SwordsIcon, TrophyIcon } from './icons'
+import { BellIcon } from './icons'
 import { useHref } from './router'
 
 const PUBLIC = new Set(['', 'play', 'privacy', 'terms'])
@@ -53,6 +53,18 @@ export default function Shell({ children, games }: { children: ReactNode; games:
             <em>{BRAND.parts[1]}</em>
           </span>
         </a>
+
+        {user && (
+          <nav className="topbar-nav">
+            <a className={section === 'duels' || section === 'duel' ? 'active' : ''} href={href.duels}>
+              {t('nav.duels')}
+            </a>
+            <a className={section === 'leaderboard' ? 'active' : ''} href={boardHref}>
+              {t('nav.leaderboard')}
+            </a>
+          </nav>
+        )}
+
         <div className="topbar-right">
           {loading && (
             <span className="topbar-link topbar-ghost" aria-hidden>
@@ -64,29 +76,21 @@ export default function Shell({ children, games }: { children: ReactNode; games:
               <span className="topbar-link-label">{t('nav.signIn')}</span>
             </a>
           )}
-          {user && (
-            <a className={`topbar-link ${section === 'leaderboard' ? 'active' : ''}`} href={boardHref} title={t('nav.leaderboard')}>
-              <TrophyIcon />
-              <span className="topbar-link-label">{t('nav.leaderboard')}</span>
-            </a>
-          )}
-          {user && (
-            <a className={`topbar-link ${section === 'duels' || section === 'duel' ? 'active' : ''}`} href={href.duels} title={t('nav.duels')}>
-              <SwordsIcon />
-              <span className="topbar-link-label">{t('nav.duels')}</span>
-            </a>
-          )}
-          {user && (
-            <div className="account">
-              <a className={`account-link ${section === 'profile' ? 'active' : ''}`} href={href.profile} title={t('nav.profile')}>
-                <span className="avatar small" aria-hidden>
-                  {user.nickname.charAt(0).toUpperCase()}
-                </span>
-                <span className="account-name">{user.nickname}</span>
-              </a>
-            </div>
-          )}
           <LangSwitch />
+          {user && (
+            <button type="button" className="bell" aria-label={t('nav.bell')} title={t('nav.bell')}>
+              <BellIcon />
+            </button>
+          )}
+          {user && (
+            <a className={`account-link ${section === 'profile' ? 'active' : ''}`} href={href.profile} title={t('nav.profile')}>
+              <span className="avatar small" aria-hidden>
+                {user.nickname.charAt(0).toUpperCase()}
+              </span>
+              <span className="account-name">{user.nickname}</span>
+              <span className="account-level">{t('nav.level', { level: user.level })}</span>
+            </a>
+          )}
         </div>
       </header>
 

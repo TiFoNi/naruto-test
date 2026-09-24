@@ -118,8 +118,67 @@ h2 {
 .topbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 18px;
+}
+
+.topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.topbar-nav a {
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.topbar-nav a:hover {
+  color: var(--text);
+}
+
+.topbar-nav a.active {
+  color: var(--accent);
+}
+
+.topbar-right {
+  margin-left: auto;
+}
+
+.bell {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text-2);
+  font-size: 17px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.bell:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
+  color: var(--text);
+}
+
+.account-link {
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+
+.account-level {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 11px;
+  white-space: nowrap;
 }
 
 .brand {
@@ -1064,7 +1123,6 @@ footer p {
 .lang-switch {
   display: flex;
   flex-shrink: 0;
-  order: 1;
   gap: 2px;
   padding: 3px;
   border-radius: 10px;

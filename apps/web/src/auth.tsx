@@ -4,7 +4,7 @@ import { api } from './api'
 import { statsKey } from '@nanda/game'
 import type { Stats } from './stats'
 
-export type User = { id: string; username: string; nickname: string }
+export type User = { id: string; username: string; nickname: string; level: number; xp: number }
 
 export type DuelRecord = { played: number; wins: number; losses: number; draws: number }
 

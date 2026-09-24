@@ -2,6 +2,7 @@ import { ObjectId, type Collection } from 'mongodb'
 import { DAILY_KEYS, STAT_KEYS } from '@nanda/game'
 import { shiftDay, today } from './daily'
 import { users, type Stats, type UserDoc } from './db'
+import { levelOf } from './quests'
 import { fail } from './http'
 import { authSession } from './auth'
 import { guestCookie, readGuest } from './session'
@@ -51,11 +52,15 @@ export async function applyDailyResult(collection: Collection<UserDoc>, userId: 
 }
 
 export function toProfile(doc: UserDoc) {
+  const xp = number(doc.xp)
+
   return {
     user: {
       id: doc._id!.toHexString(),
       username: doc.username,
       nickname: doc.nickname ?? defaultNickname(doc.username),
+      level: levelOf(xp),
+      xp,
     },
     stats: Object.fromEntries([
       ...STAT_KEYS.map((key) => [key, normalizeStats(doc.stats?.[key])]),

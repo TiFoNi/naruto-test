@@ -14,6 +14,8 @@ const ui = {
     uk: 'Вгадуй персонажів аніме та ігор за ознаками й картинками — без лімітів на день',
     en: 'Guess anime and game characters by traits and pictures — no daily limits',
   },
+  'nav.bell': { ru: 'Уведомления', uk: 'Сповіщення', en: 'Notifications' },
+  'nav.level': { ru: 'Ур. {level}', uk: 'Рів. {level}', en: 'Lv. {level}' },
   'nav.logout': { ru: 'Выйти', uk: 'Вийти', en: 'Log out' },
   'nav.profile': { ru: 'Профиль', uk: 'Профіль', en: 'Profile' },
   'brand.title': { ru: 'угадай персонажа', uk: 'вгадай персонажа', en: 'guess the character' },
