@@ -29,8 +29,15 @@ function pickFocus(img: HTMLImageElement, seed?: string): Focus {
   const ctx = canvas.getContext('2d', { willReadFrequently: true })
   const fallback = { x: 25 + random() * 50, y: 15 + random() * 45 }
   if (!ctx) return fallback
-  ctx.drawImage(img, 0, 0, SAMPLE, SAMPLE)
-  const { data } = ctx.getImageData(0, 0, SAMPLE, SAMPLE)
+
+  let data: Uint8ClampedArray
+  try {
+    ctx.drawImage(img, 0, 0, SAMPLE, SAMPLE)
+    data = ctx.getImageData(0, 0, SAMPLE, SAMPLE).data
+  } catch {
+    return fallback
+  }
+
   const opaque: Focus[] = []
   for (let y = 0; y < SAMPLE; y++) {
     for (let x = 0; x < SAMPLE; x++) {
@@ -78,6 +85,7 @@ export default function ZoomImage({
             if (el?.complete && el.naturalWidth) setFocus((f) => f ?? pickFocus(el, seed))
           }}
           src={retry ? `${src}&retry=${retry}` : src}
+          crossOrigin="use-credentials"
           alt=""
           draggable={false}
           onLoad={(e) => setFocus(pickFocus(e.currentTarget, seed))}
