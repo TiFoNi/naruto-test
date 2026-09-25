@@ -9,9 +9,10 @@ export let terms: Dictionary = {}
 let pending: Promise<void> | null = null
 
 function loadTerms() {
-  pending ??= import('./i18n/terms.data')
-    .then(({ TERMS }) => {
-      terms = TERMS
+  pending ??= fetch('/terms.json')
+    .then((response) => response.json())
+    .then((data: Dictionary) => {
+      terms = data
     })
     .catch(() => undefined)
   return pending
