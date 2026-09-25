@@ -59,7 +59,7 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
           />
         )}
 
-        <GuessGrid game={game} guesses={guesses} />
+        <GuessGrid game={game} guesses={guesses} answerId={answer?.id} />
       </div>
 
       <PlaySide game={game} mode="classic" daily={daily} stats={stats} playing={playing} legend onGiveUp={giveUp} />

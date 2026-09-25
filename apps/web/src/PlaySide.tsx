@@ -16,16 +16,17 @@ type Props = {
   playing: boolean
   busy?: boolean
   legend?: boolean
-  howto?: 'image' | 'page'
+  howto?: 'image' | 'page' | 'ability'
   onGiveUp: () => void
 }
 
 const STEPS = {
   image: ['howto.step1', 'howto.step2', 'howto.step3'],
   page: ['howtoPage.step1', 'howtoPage.step2', 'howtoPage.step3'],
+  ability: ['howtoAbility.step1', 'howtoAbility.step2', 'howtoAbility.step3'],
 } as const
 
-function HowTo({ kind }: { kind: 'image' | 'page' }) {
+function HowTo({ kind }: { kind: 'image' | 'page' | 'ability' }) {
   const { t } = useI18n()
   return (
     <div className="play-card play-howto">
@@ -85,12 +86,17 @@ export default function PlaySide({ game, mode, daily, stats, playing, busy, lege
   const { t } = useI18n()
   const href = useHref()
   const { user } = useAuth()
-  const cells = [
-    { key: 'solved', label: t('stats.solved'), value: stats.solved },
-    { key: 'streak', label: t(daily ? 'daily.streak' : 'stats.streak'), value: daily ? (user?.streak ?? 0) : stats.streak, hot: true },
-    { key: 'best', label: t(daily ? 'daily.best' : 'stats.best'), value: daily ? (user?.bestStreak ?? 0) : stats.best },
-    { key: 'avg', label: t('stats.avg'), value: average(stats) },
-  ]
+  const cells = daily
+    ? [
+        { key: 'streak', label: t('daily.streak'), value: user?.streak ?? 0, hot: true },
+        { key: 'best', label: t('daily.best'), value: user?.bestStreak ?? 0 },
+      ]
+    : [
+        { key: 'solved', label: t('stats.solved'), value: stats.solved },
+        { key: 'streak', label: t('stats.streak'), value: stats.streak, hot: true },
+        { key: 'best', label: t('stats.best'), value: stats.best },
+        { key: 'avg', label: t('stats.avg'), value: average(stats) },
+      ]
 
   return (
     <aside className="play-side">

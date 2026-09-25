@@ -2,10 +2,12 @@ import CharacterSearch from './CharacterSearch'
 import PlaySide from './PlaySide'
 import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
+import ShareResult, { type Tile } from './ShareResult'
 import ZoomImage from './ZoomImage'
 import Yesterday from './Yesterday'
 import Thumb from './Thumb'
 import type { Game } from './games/types'
+import { useEffect, useRef, useState } from 'react'
 import { useI18n } from './i18n'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
@@ -17,7 +19,7 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 const levelAt = (index: number) => ZOOM_LEVELS[Math.min(index, ZOOM_LEVELS.length - 1)]
 
 export default function ImageMode({ game, active, stats, daily = false, challenge }: Props) {
-  const { t, lang, name } = useI18n()
+  const { t, l, lang, name } = useI18n()
   const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(
     game,
     'image',
@@ -32,42 +34,61 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
   const playing = !!round && !over
   const zoomText = (value: number) => (lang === 'en' ? value.toFixed(1) : value.toFixed(1).replace('.', ','))
   const nextLevel = step < ZOOM_LEVELS.length - 1 ? ZOOM_LEVELS[step + 1] : null
+  const shownStep = over ? ZOOM_LEVELS.length - 1 : step
+  const solvedAt = ZOOM_LEVELS[Math.min(wrong, ZOOM_LEVELS.length - 1)]
+
+  const [number, setNumber] = useState(1)
+  const played = stats.solved + stats.skipped
+  const playedRef = useRef(played)
+  playedRef.current = played
+
+  useEffect(() => {
+    if (round?.id) setNumber(playedRef.current + 1)
+  }, [round?.id])
+
+  const tiles: Tile[] = guesses
+    .filter((g) => !g.pending)
+    .map((g): Tile => (won && g.entity.id === answer?.id ? 'hit' : 'miss'))
+    .reverse()
+  const shareSummary = `${t('play.pillAttempts', { count: guesses.length })} · ${won ? `×${zoomText(solvedAt)}` : t('share.gaveUp')}`
 
   return (
     <section className="play-layout shot-layout">
-      <div className="shot">
-        <ZoomImage
-          game={game}
-          src={apiSrc(round?.image)}
-          zoom={zoom}
-          resetKey={round?.id}
-          seed={round?.daily ? `${game.id}-${round.daily}` : round?.id}
-        />
+      <div className="shot-column">
+        <div className="shot">
+          <ZoomImage
+            game={game}
+            src={apiSrc(round?.image)}
+            zoom={zoom}
+            resetKey={round?.id}
+            seed={round?.daily ? `${game.id}-${round.daily}` : round?.id}
+          />
+        </div>
+
+        <div className="play-card zoom-scale">
+          <div className="zoom-scale-head">
+            <span className="play-card-title">{t('play.zoomTitle')}</span>
+            <span>{playing && nextLevel ? t('play.zoomNext', { zoom: zoomText(nextLevel) }) : t('play.zoomFull')}</span>
+          </div>
+          <div className="zoom-steps">
+            {ZOOM_LEVELS.map((level, i) => (
+              <span key={level} className={i === shownStep ? 'now' : i < shownStep ? 'past' : ''}>
+                <i />
+                <b>×{zoomText(level)}</b>
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="play-main">
-        <div className="play-card shot-copy">
-          <h2>{t('play.imageTitle')}</h2>
-          <p>{t('play.imagePrompt')}</p>
-          <div className="shot-pills">
-            <span>{t('play.pillAttempts', { count: guesses.length })}</span>
-            <span className="hot">{t('play.pillStreak', { count: stats.streak })}</span>
-          </div>
-        </div>
-
-        {playing && (
-          <div className="play-card zoom-scale">
-            <div className="zoom-scale-head">
-              <span className="play-card-title">{t('play.zoomTitle')}</span>
-              {nextLevel && <span>{t('play.zoomNext', { zoom: zoomText(nextLevel) })}</span>}
-            </div>
-            <div className="zoom-steps">
-              {ZOOM_LEVELS.map((level, i) => (
-                <span key={level} className={i === step ? 'now' : i < step ? 'past' : ''}>
-                  <i />
-                  <b>×{zoomText(level)}</b>
-                </span>
-              ))}
+        {!over && (
+          <div className="play-card shot-copy">
+            <h2>{t('play.imageTitle')}</h2>
+            <p>{t('play.imagePrompt')}</p>
+            <div className="shot-pills">
+              <span>{t('play.pillAttempts', { count: guesses.length })}</span>
+              <span className="hot">{t('play.pillStreak', { count: stats.streak })}</span>
             </div>
           </div>
         )}
@@ -92,12 +113,16 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
           />
         )}
 
+        {round && over && answer && !skipped && (
+          <ShareResult caption={t('share.caption', { game: l(game.label), number })} tiles={tiles} summary={shareSummary} won={won} />
+        )}
+
         {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
 
         <div className="tries">
           <span className="play-card-title">{t('play.tries')}</span>
           {guesses.length === 0 ? (
-            <p className="tries-empty">{t('play.noTries')}</p>
+            <p className="tries-empty">{t(over ? 'play.noTriesOver' : 'play.noTries')}</p>
           ) : (
             <div className="tries-list">
               {guesses.map(({ entity: g, pending }, i) => {

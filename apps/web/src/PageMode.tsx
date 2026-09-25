@@ -107,7 +107,7 @@ export default function PageMode({ game, active, stats, daily = false, challenge
               />
             )}
           </div>
-          {!daily && !challenge && round && <span className="manga-round">{t('page.round', { number })}</span>}
+          {!daily && !challenge && round && <span className="manga-round">{t('play.roundNo', { number })}</span>}
           {over && answer && (
             <span className="manga-banner">
               <small>{t(won ? 'page.bannerWon' : 'page.bannerLost')}</small>
@@ -122,10 +122,10 @@ export default function PageMode({ game, active, stats, daily = false, challenge
       </div>
 
       <div className="play-main">
-        <div className={`play-card manga-ask state-${mood}`}>
+        <div className={`play-card mode-ask state-${mood}`}>
           <h2>{t(headline)}</h2>
           <p>{t(subline)}</p>
-          <div className="manga-pills">
+          <div className="mode-pills">
             <span>{t('play.pillAttempts', { count: guesses.length })}</span>
             <span className="hot">{t('play.pillStreak', { count: stats.streak })}</span>
           </div>
@@ -160,7 +160,7 @@ export default function PageMode({ game, active, stats, daily = false, challenge
         </div>
 
         {over && !scored && (
-          <button type="button" className="primary manga-next" onClick={next}>
+          <button type="button" className="primary mode-next" onClick={next}>
             {t('page.next')}
           </button>
         )}

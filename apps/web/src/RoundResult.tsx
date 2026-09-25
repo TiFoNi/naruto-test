@@ -2,12 +2,14 @@ import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import Countdown from './Countdown'
 import type { Entity, Game } from './games/types'
-import { useI18n } from './i18n'
-import type { ModeId } from './modes'
+import { useAuth } from './auth'
+import { useI18n, type UiKey } from './i18n'
 import { useHref } from './router'
 import type { Stats } from './stats'
-import { TrophyIcon } from './icons'
 import { fullUrl } from './pics'
+import { MODES, type ModeId } from './modes'
+
+const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
 
 type Props = {
   game: Game
@@ -24,7 +26,8 @@ type Props = {
 }
 
 export default function RoundResult({ game, mode, answer, guesses, won, skipped, stats, onNext, challenge, nextAt, compact }: Props) {
-  const { t, name, alt } = useI18n()
+  const { t, name, alt, lang } = useI18n()
+  const { user } = useAuth()
   const href = useHref()
   const ref = useRef<HTMLDivElement>(null)
   const daily = nextAt !== undefined && !challenge
@@ -41,34 +44,41 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
     }
   }, [onNext, daily])
 
-  const summary = challenge
-    ? t('challenge.summary', { guesses })
-    : skipped
-    ? t('result.notCounted')
-    : daily
-      ? t('daily.summary', { guesses, streak: stats.streak, best: stats.best })
-      : t('result.summary', { guesses, streak: stats.streak, best: stats.best })
+  const note = challenge ? t('challenge.summary', { guesses }) : skipped ? t('result.notCounted') : ''
+  const verdict: UiKey = won ? 'result.won' : skipped ? 'result.skipped' : 'result.lost'
+  const modeLabel = MODES.find((m) => m.id === mode)?.label
+  const day = daily ? new Date().toLocaleDateString(LOCALES[lang], { day: 'numeric', month: 'long' }) : ''
+  const eyebrow = [t(verdict), modeLabel ? t(modeLabel) : '', day].filter(Boolean).join(' · ')
+
+  const facts = [
+    { key: 'tries', value: guesses, label: t('result.factTries') },
+    { key: 'streak', value: daily ? (user?.streak ?? 0) : stats.streak, label: t(daily ? 'result.factDays' : 'result.factStreak'), hot: true },
+    { key: 'best', value: daily ? (user?.bestStreak ?? 0) : stats.best, label: t(daily ? 'result.factBestDays' : 'result.factBest') },
+  ]
 
   return (
     <div ref={ref} className={`card result ${won ? 'won' : skipped ? 'skipped' : 'lost'}`}>
-      <h2>{t(won ? 'result.won' : skipped ? 'result.skipped' : 'result.lost')}</h2>
+      <span className="result-eyebrow">{eyebrow}</span>
       {!compact && <img className="result-image" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />}
       <div className="result-name">{name(answer)}</div>
       {alt(answer) && <div className="result-name-en">{alt(answer)}</div>}
-      <p className="round">{summary}</p>
+      <div className="result-facts">
+        {facts.map((fact) => (
+          <div key={fact.key} className={fact.hot ? 'hot' : ''}>
+            <b>{fact.value}</b>
+            <span>{fact.label}</span>
+          </div>
+        ))}
+      </div>
+      {note && <p className="round">{note}</p>}
       {daily ? (
         <>
           <p className="daily-next">
             {t('daily.nextIn')} <Countdown until={nextAt} onDone={onNext} />
           </p>
-          <div className="result-actions">
-            <Link className="primary" href={href.play(game.id, mode)}>
-              {t('daily.playEndless')}
-            </Link>
-            <Link className="ghost" href={href.leaderboard(game.id, mode)}>
-              <TrophyIcon /> {t('daily.todayBoard')}
-            </Link>
-          </div>
+          <Link className="primary" href={href.play(game.id, mode)}>
+            {t('daily.playEndless')}
+          </Link>
         </>
       ) : (
         challenge ? (

@@ -343,3 +343,12 @@ export function ZoomOutIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function CopyIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <rect x="9" y="9" width="11.5" height="11.5" rx="2.6" />
+      <path d="M15 5.6a2.6 2.6 0 0 0-2.6-2.6H6A2.6 2.6 0 0 0 3.4 5.6V12a2.6 2.6 0 0 0 2.6 2.6" />
+    </svg>
+  )
+}

@@ -11,7 +11,7 @@ const ROW_STEP = 0.06
 const COL_STEP = 0.05
 const MAX_ROW_DELAY = 0.5
 
-export default function GuessGrid({ game, guesses }: { game: Game; guesses: Guess[] }) {
+export default function GuessGrid({ game, guesses, answerId }: { game: Game; guesses: Guess[]; answerId?: number }) {
   const { t, l, tv, lang, name } = useI18n()
   const legend = game.legend === 'debut' ? (['legend.debutLater', 'legend.debutEarlier'] as const) : (['legend.higher', 'legend.lower'] as const)
   const firstBatch = useRef<number | null>(null)
@@ -32,8 +32,11 @@ export default function GuessGrid({ game, guesses }: { game: Game; guesses: Gues
             <div key={c.key}>{l(c.title)}</div>
           ))}
         </div>
-        {guesses.map(({ entity: g, judgement, pending }, row) => (
-          <div className={`grid-row ${pending ? 'pending' : ''}`} key={g.id}>
+        {guesses.map(({ entity: g, judgement, pending }, row) => {
+          const twin =
+            !pending && game.columns.length > 0 && g.id !== answerId && game.columns.every((c) => judgement?.[c.key]?.verdict === 'correct')
+          const body = (
+            <div className={`grid-row ${pending ? 'pending' : ''}`} key={g.id}>
             <div
               className="cell portrait"
               title={name(g)}
@@ -75,9 +78,21 @@ export default function GuessGrid({ game, guesses }: { game: Game; guesses: Gues
                   )}
                 </div>
               )
-            })}
-          </div>
-        ))}
+              })}
+            </div>
+          )
+          if (!twin) return body
+          return (
+            <div className="twin" key={g.id}>
+              {body}
+              <p className="twin-note">
+                <b>{t('twin.badge')}</b>
+                <span>{t('twin.text', { name: name(g) })}</span>
+                <i>{t('twin.hint')}</i>
+              </p>
+            </div>
+          )
+        })}
       </div>
     </div>
   )

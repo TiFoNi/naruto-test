@@ -136,7 +136,7 @@ const orZero = (path: string) => ({ $ifNull: [`$${path}`, 0] })
 export async function applySkip(collection: Collection<UserDoc>, userId: ObjectId, key: string) {
   const doc = await collection.findOneAndUpdate(
     { _id: userId },
-    { $inc: { [`stats.${key}.skipped`]: 1 } },
+    { $inc: { [`stats.${key}.skipped`]: 1 }, $set: { [`stats.${key}.streak`]: 0 } },
     { returnDocument: 'after', projection: { [`stats.${key}`]: 1 } },
   )
   return normalizeStats(doc?.stats?.[key])
