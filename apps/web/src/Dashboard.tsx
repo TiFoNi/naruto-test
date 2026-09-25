@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { statsKey, useAuth } from './auth'
 import type { GameMeta } from './games/meta'
 import type { Category } from './games/types'
@@ -43,6 +43,19 @@ const PERKS: { key: UiKey; Icon: typeof ChartIcon }[] = [
 ]
 
 const REMEMBER = 'nanda.category'
+
+const CATEGORY_IDS: Category[] = ['anime', 'manga', 'games']
+
+const storedCategory = (): Category | undefined => {
+  try {
+    const value = localStorage.getItem(REMEMBER)
+    return CATEGORY_IDS.find((id) => id === value)
+  } catch {
+    return undefined
+  }
+}
+
+const useBeforePaint = typeof window === 'undefined' ? useEffect : useLayoutEffect
 
 const categoryIcon = (id: Category) => (id === 'anime' ? <TvIcon /> : id === 'manga' ? <BookIcon /> : <GamepadIcon />)
 
@@ -148,17 +161,20 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
   const chosen = useRef<Category | undefined>(undefined)
   const started = useRef(false)
 
-  useEffect(() => {
+  useBeforePaint(() => {
     const root = document.documentElement
     if (!started.current) {
-      chosen.current = root.dataset.cat as Category | undefined
+      chosen.current = (root.dataset.cat as Category | undefined) ?? storedCategory()
       started.current = true
     }
+    if (chosen.current && root.dataset.cat === undefined) root.dataset.cat = chosen.current
 
     if (!results) {
-      delete root.dataset.search
-      if (chosen.current) root.dataset.cat = chosen.current
-      else delete root.dataset.cat
+      if (root.dataset.search !== undefined) {
+        delete root.dataset.search
+        if (chosen.current) root.dataset.cat = chosen.current
+        else delete root.dataset.cat
+      }
       return
     }
 
@@ -170,6 +186,7 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
   useEffect(
     () => () => {
       const root = document.documentElement
+      if (root.dataset.search === undefined) return
       delete root.dataset.search
       if (chosen.current) root.dataset.cat = chosen.current
       else delete root.dataset.cat
