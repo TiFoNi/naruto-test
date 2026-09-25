@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import type { CSSProperties } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { statsKey, useAuth } from './auth'
 import type { GameMeta } from './games/meta'
 import type { Category } from './games/types'
@@ -11,8 +11,9 @@ import Quests from './Quests'
 import { useHref } from './router'
 import { dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
-import { BookIcon, CalendarIcon, ChartIcon, CheckIcon, GamepadIcon, MedalIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
+import { BookIcon, CalendarIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
 import { CARD, MINI, cardUrl, miniUrl } from './pics'
+import { searchGames } from './search'
 
 const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
@@ -140,7 +141,45 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
 
   const shown = CATEGORIES.filter((category) => games.some((g) => g.category === category.id))
 
+  const [query, setQuery] = useState('')
+  const results = useMemo(() => searchGames(games, query), [games, query])
+  const found = results ?? []
+  const groups = shown.filter((category) => found.some((g) => g.category === category.id))
+  const chosen = useRef<Category | undefined>(undefined)
+  const started = useRef(false)
+
+  useEffect(() => {
+    const root = document.documentElement
+    if (!started.current) {
+      chosen.current = root.dataset.cat as Category | undefined
+      started.current = true
+    }
+
+    if (!results) {
+      delete root.dataset.search
+      if (chosen.current) root.dataset.cat = chosen.current
+      else delete root.dataset.cat
+      return
+    }
+
+    root.dataset.search = ''
+    const cats = [...new Set(results.map((g) => g.category))]
+    root.dataset.cat = cats.length === 1 ? cats[0] : 'mixed'
+  }, [results])
+
+  useEffect(
+    () => () => {
+      const root = document.documentElement
+      delete root.dataset.search
+      if (chosen.current) root.dataset.cat = chosen.current
+      else delete root.dataset.cat
+    },
+    [],
+  )
+
   const pick = (id: Category) => {
+    chosen.current = id
+    setQuery('')
     document.documentElement.dataset.cat = id
     try {
       localStorage.setItem(REMEMBER, id)
@@ -158,10 +197,23 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
           <span className="eyebrow">{user ? t('dash.hello', { name: user.nickname }) : '\u00a0'}</span>
           <h1>{t('dash.title')}</h1>
           <p className="hero-sub">{t('dash.sub')}</p>
-          <label className="hero-search" title={t('dash.searchSoon')}>
+          <label className="hero-search">
             <SearchIcon />
-            <input type="search" placeholder={t('dash.search')} disabled />
-            <span className="hero-search-all">{t('dash.searchAll')}</span>
+            <input
+              type="search"
+              placeholder={t('dash.search')}
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onKeyDown={(event) => event.key === 'Escape' && setQuery('')}
+              autoComplete="off"
+            />
+            {query ? (
+              <button type="button" className="hero-search-clear" aria-label={t('dash.searchClear')} onClick={() => setQuery('')}>
+                <CloseIcon />
+              </button>
+            ) : (
+              <span className="hero-search-all">{t('dash.searchAll')}</span>
+            )}
           </label>
         </div>
         {user ? (
@@ -214,6 +266,38 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
           })}
         </div>
       </section>
+
+      {results && (
+        <section className="search-results">
+          <header>
+            <h2>{found.length ? t('dash.searchFound', { count: found.length }) : t('dash.searchNone')}</h2>
+            <button type="button" className="search-reset" onClick={() => setQuery('')}>
+              {t('dash.searchClear')}
+            </button>
+          </header>
+          {found.length ? (
+            groups.map((category) => (
+              <div key={category.id} className="search-group">
+                {groups.length > 1 && (
+                  <h3>
+                    {categoryIcon(category.id)}
+                    {t(category.title)}
+                  </h3>
+                )}
+                <div className="franchise-grid">
+                  {found
+                    .filter((g) => g.category === category.id)
+                    .map((g) => (
+                      <FranchiseCard key={g.id} game={g} eager={false} />
+                    ))}
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="muted">{t('dash.searchEmpty', { query })}</p>
+          )}
+        </section>
+      )}
 
       {shown.map((category, index) => (
         <section key={category.id} className="category" data-id={category.id} data-first={index === 0 ? '' : undefined}>

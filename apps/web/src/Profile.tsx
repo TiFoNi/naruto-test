@@ -17,7 +17,7 @@ type Named = { ru: string; uk: string; en: string }
 
 type Summary = {
   since: string
-  pinned: string[]
+  pinned: { id: string; tier: string; at: string }[]
   level: Level
   totals: {
     solved: number
@@ -119,6 +119,8 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   }, [nickMessage])
 
   if (!user) return null
+
+  const pinned = summary?.pinned ?? []
 
   const saveNickname = async (event: FormEvent) => {
     event.preventDefault()
@@ -403,15 +405,18 @@ export default function Profile({ onBack }: { onBack: () => void }) {
             <header>
               <h2>
                 <TrophyIcon /> {t('profile.awardsTitle')}
+                <span className="soon-count">{pinned.length}/6</span>
               </h2>
             </header>
-            <p className="muted">{t('profile.awardsSoon')}</p>
+            <p className="muted">{pinned.length ? t('profile.awardsSoon') : t('profile.awardsPinHint')}</p>
             <ul className="soon-badges">
               {Array.from({ length: 6 }, (_, index) => {
-                const id = summary?.pinned?.[index]
+                const award = pinned[index]
+                if (!award) return <li key={index} />
                 return (
-                  <li key={index} className={id ? 'on' : ''} title={id ? t(`ach.${id}` as UiKey) : undefined}>
-                    {id && <TrophyIcon />}
+                  <li key={award.id} className={`on ${award.tier}`}>
+                    <TrophyIcon />
+                    <b>{t(`ach.${award.id}` as UiKey)}</b>
                   </li>
                 )
               })}

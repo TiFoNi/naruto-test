@@ -356,12 +356,19 @@ const ui = {
     en: 'Pick a world and a mode: endless rounds, or one puzzle a day for everyone.',
   },
   'dash.search': {
-    ru: 'Поиск по всем категориям: персонаж, тайтл, игра…',
-    uk: 'Пошук по всіх категоріях: персонаж, тайтл, гра…',
-    en: 'Search every category: character, title, game…',
+    ru: 'Поиск по всем категориям: Наруто, Атака титанов, Dota 2…',
+    uk: 'Пошук по всіх категоріях: Наруто, Атака титанів, Dota 2…',
+    en: 'Search every category: Naruto, Attack on Titan, Dota 2…',
   },
   'dash.searchAll': { ru: 'Все категории', uk: 'Усі категорії', en: 'All categories' },
-  'dash.searchSoon': { ru: 'Поиск скоро заработает', uk: 'Пошук скоро запрацює', en: 'Search is coming soon' },
+  'dash.searchClear': { ru: 'Очистить', uk: 'Очистити', en: 'Clear' },
+  'dash.searchFound': { ru: 'Найдено: {count}', uk: 'Знайдено: {count}', en: 'Found: {count}' },
+  'dash.searchNone': { ru: 'Ничего не найдено', uk: 'Нічого не знайдено', en: 'Nothing found' },
+  'dash.searchEmpty': {
+    ru: 'По запросу «{query}» ничего нет. Попробуй название тайтла или игры.',
+    uk: 'За запитом «{query}» нічого немає. Спробуй назву тайтлу або гри.',
+    en: 'Nothing matches “{query}”. Try a title or game name.',
+  },
   'dash.pick': { ru: 'Выбери категорию', uk: 'Обери категорію', en: 'Pick a category' },
 
   'profile.rank': { ru: 'Место в рейтинге', uk: 'Місце в рейтингу', en: 'Leaderboard place' },
@@ -503,6 +510,11 @@ const ui = {
   'ach.rank': { ru: 'Сейчас: #{rank}', uk: 'Зараз: #{rank}', en: 'Now: #{rank}' },
   'profile.awardsTitle': { ru: 'Достижения', uk: 'Досягнення', en: 'Achievements' },
   'profile.awardsSoon': { ru: 'Значки за серии, точность и редкие разгадки.', uk: 'Значки за серії, точність і рідкісні розгадки.', en: 'Badges for streaks, accuracy and rare solves.' },
+  'profile.awardsPinHint': {
+    ru: 'Пока ничего не закреплено — выбери до 6 значков на странице достижений.',
+    uk: 'Поки нічого не закріплено — обери до 6 значків на сторінці досягнень.',
+    en: 'Nothing pinned yet — pick up to 6 badges on the achievements page.',
+  },
   'profile.settings': { ru: 'Настройки', uk: 'Налаштування', en: 'Settings' },
   'profile.resetTitle': { ru: 'Сброс статистики', uk: 'Скидання статистики', en: 'Reset stats' },
   'profile.resetHint': {

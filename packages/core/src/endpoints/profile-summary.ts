@@ -1,5 +1,6 @@
 import type { ObjectId } from 'mongodb'
 import { GAME_IDS, type GameId } from '@nanda/game'
+import { ACHIEVEMENTS } from '../achievements'
 import { rounds, users } from '../db'
 import { gameData } from '../games'
 import { handle, json } from '../http'
@@ -8,6 +9,8 @@ import { LEVEL_XP, levelOf, nextRank, rankOf } from '../quests'
 import { shiftDay, today } from '../daily'
 
 const RECENT = 8
+
+const TIERS = new Map(ACHIEVEMENTS.map((achievement) => [achievement.id, achievement.tier]))
 
 type Counted = { _id: string; played: number; won: number; guesses: number }
 
@@ -159,7 +162,10 @@ export const GET = handle(async (request) => {
 
   return json({
     since: doc.createdAt,
-    pinned: (doc.pinned ?? []).filter((award) => doc.awards?.[award]).slice(0, 6),
+    pinned: (doc.pinned ?? [])
+      .filter((award) => doc.awards?.[award] && TIERS.has(award))
+      .slice(0, 6)
+      .map((id) => ({ id, tier: TIERS.get(id)!, at: doc.awards![id] })),
     awards: Object.keys(doc.awards ?? {}).length,
     level: { xp, level, into: xp % LEVEL_XP, need: LEVEL_XP, rank: rankOf(level).id, next: nextRank(level) },
     totals: {
