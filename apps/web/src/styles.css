@@ -1722,11 +1722,6 @@ main {
   font-weight: 600;
 }
 
-.hero-stats-link {
-  color: var(--accent);
-  font-weight: 800;
-  font-size: 14px;
-}
 
 .category {
   display: flex;
@@ -3665,12 +3660,6 @@ button.ghost.small {
   text-decoration: underline;
 }
 
-.hero-stats.guest p {
-  margin: 10px 0 0;
-  color: var(--text-2);
-  font-size: 13.5px;
-  line-height: 1.5;
-}
 
 .card.locked {
   display: flex;
@@ -5326,7 +5315,6 @@ button.ghost.small {
   height: 70px;
 }
 
-html[data-auth] .hero .hero-stats.guest,
 html[data-auth] .hero .quests-card {
   min-height: 464px;
 }
@@ -7305,4 +7293,65 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
     gap: 26px;
     padding-bottom: 30px;
   }
+}
+
+.hero-guest {
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: auto;
+}
+
+.hero-guest-title {
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hero-guest p {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.hero-guest-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 2px 0 4px;
+  padding: 0;
+  list-style: none;
+}
+
+.hero-guest-perks li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.hero-guest-perks .icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+  font-size: 15px;
+  padding: 7px;
+  box-sizing: border-box;
+}
+
+.hero-guest .primary {
+  margin-top: 2px;
+  text-align: center;
+  text-decoration: none;
 }

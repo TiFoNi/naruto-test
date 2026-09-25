@@ -11,7 +11,7 @@ import Quests from './Quests'
 import { useHref } from './router'
 import { dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
-import { BookIcon, CalendarIcon, ChartIcon, CheckIcon, GamepadIcon, SearchIcon, TvIcon } from './icons'
+import { BookIcon, CalendarIcon, ChartIcon, CheckIcon, GamepadIcon, MedalIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
 import { CARD, MINI, cardUrl, miniUrl } from './pics'
 
 const CATEGORIES: { id: Category; title: UiKey }[] = [
@@ -34,6 +34,12 @@ const worldsOf = (count: number, lang: keyof typeof WORLDS) => {
   if (ten >= 2 && ten <= 4 && (hundred < 12 || hundred > 14)) return WORLDS[lang][1]
   return WORLDS[lang][2]
 }
+
+const PERKS: { key: UiKey; Icon: typeof ChartIcon }[] = [
+  { key: 'login.perk.progress', Icon: ChartIcon },
+  { key: 'login.perk.duels', Icon: SwordsIcon },
+  { key: 'login.perk.levels', Icon: MedalIcon },
+]
 
 const REMEMBER = 'nanda.category'
 
@@ -161,11 +167,21 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         {user ? (
           <Quests />
         ) : (
-          <Link className="card hero-stats guest" href={href.login} prefetch={false}>
-            <span className="hero-stats-title">{t('dash.yourStats')}</span>
+          <div className="card hero-guest">
+            <span className="hero-guest-title">{t('dash.yourStats')}</span>
             <p>{t('landing.guestHint')}</p>
-            <span className="hero-stats-link">{t('nav.signIn')}</span>
-          </Link>
+            <ul className="hero-guest-perks">
+              {PERKS.map(({ key, Icon }) => (
+                <li key={key}>
+                  <Icon />
+                  {t(key)}
+                </li>
+              ))}
+            </ul>
+            <Link className="primary" href={href.login} prefetch={false}>
+              {t('nav.signIn')}
+            </Link>
+          </div>
         )}
       </section>
 
