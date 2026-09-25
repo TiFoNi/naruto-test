@@ -310,8 +310,8 @@ export function LockIcon({ className }: IconProps) {
 export function PinIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>
-      <path d="M9 3.5h6l-.8 5.2 3.3 3.1H6.5l3.3-3.1L9 3.5Z" />
-      <path d="M12 11.8V20.5" />
+      <path d="M12 16.5V22" />
+      <path d="M9 3h6a1.6 1.6 0 0 1 0 3.2h-.4v4.2l2.2 1.6a2 2 0 0 1 .8 1.6v.4a.8.8 0 0 1-.8.8H7.2a.8.8 0 0 1-.8-.8v-.4a2 2 0 0 1 .8-1.6l2.2-1.6V6.2H9A1.6 1.6 0 0 1 9 3Z" />
     </svg>
   )
 }

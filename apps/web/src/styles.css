@@ -7877,37 +7877,15 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
   }
 }
 
-.profile-pins {
+
+
+
+
+.soon-badges li.on {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.profile-pins li {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 10px 6px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--card-2);
-  text-align: center;
-}
-
-.profile-pins .award-mark {
-  width: 34px;
-  height: 34px;
-  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
   color: var(--accent);
-  font-size: 16px;
-}
-
-.profile-pins b {
-  font-size: 11.5px;
-  line-height: 1.2;
+  font-size: 19px;
 }

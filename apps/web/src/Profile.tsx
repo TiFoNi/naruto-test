@@ -405,20 +405,17 @@ export default function Profile({ onBack }: { onBack: () => void }) {
                 <TrophyIcon /> {t('profile.awardsTitle')}
               </h2>
             </header>
-            {summary?.pinned?.length ? (
-              <ul className="profile-pins">
-                {summary.pinned.map((id) => (
-                  <li key={id}>
-                    <span className="award-mark" aria-hidden>
-                      <TrophyIcon />
-                    </span>
-                    <b>{t(`ach.${id}` as UiKey)}</b>
+            <p className="muted">{t('profile.awardsSoon')}</p>
+            <ul className="soon-badges">
+              {Array.from({ length: 6 }, (_, index) => {
+                const id = summary?.pinned?.[index]
+                return (
+                  <li key={index} className={id ? 'on' : ''} title={id ? t(`ach.${id}` as UiKey) : undefined}>
+                    {id && <TrophyIcon />}
                   </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="muted">{t('profile.awardsSoon')}</p>
-            )}
+                )
+              })}
+            </ul>
             <Link className="lb-link awards-open" href={href.achievements}>
               <TrophyIcon /> {t('ach.open')}
             </Link>
