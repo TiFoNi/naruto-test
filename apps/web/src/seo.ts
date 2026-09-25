@@ -48,13 +48,16 @@ const plural = (lang: Lang, count: number, forms: readonly string[]) => {
   return mod10 >= 2 && mod10 <= 4 ? forms[1] : forms[2]
 }
 
-export const alternates = (path: string) => ({
-  canonical: path,
-  languages: {
-    ...Object.fromEntries(LANGS.map(({ id }) => [id, `/${id}${path.replace(/^\/[a-z]{2}/, '')}`])),
-    'x-default': `/ru${path.replace(/^\/[a-z]{2}/, '')}`,
-  },
-})
+export const alternates = (path: string) => {
+  const bare = path.replace(/^\/[a-z]{2}/, '')
+  return {
+    canonical: path,
+    languages: {
+      ...Object.fromEntries(LANGS.map(({ id }) => [id, `/${id}${bare}`])),
+      'x-default': bare || '/',
+    },
+  }
+}
 
 const GUESS = { ru: 'угадай', uk: 'вгадай', en: 'guess' }
 const DAILY = { ru: ', персонаж дня', uk: ', персонаж дня', en: ', daily character' }

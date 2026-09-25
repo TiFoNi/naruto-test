@@ -8,7 +8,7 @@ const CODES = LANGS.map(({ id }) => id)
 const languages = (path: string) => ({
   languages: {
     ...Object.fromEntries(CODES.map((code) => [code, `${SITE}/${code}${path}`])),
-    'x-default': `${SITE}/ru${path}`,
+    'x-default': `${SITE}${path || '/'}`,
   },
 })
 
