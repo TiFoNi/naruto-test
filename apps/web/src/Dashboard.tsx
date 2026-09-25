@@ -90,10 +90,13 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
                       tabIndex={0}
                       role="button"
                       aria-label={t('dash.statsHint')}
-                      onClick={(e) => {
+                      onMouseDown={(e) => {
                         e.preventDefault()
-                        e.currentTarget.focus()
+                        const hint = e.currentTarget
+                        if (document.activeElement === hint) hint.blur()
+                        else hint.focus()
                       }}
+                      onClick={(e) => e.preventDefault()}
                     >
                       <ChartIcon />
                       <span className="mode-tip" role="tooltip">
