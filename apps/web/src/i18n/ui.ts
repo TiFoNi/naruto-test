@@ -484,6 +484,7 @@ const ui = {
   'ach.collection': { ru: 'Коллекция', uk: 'Колекція', en: 'Collection' },
   'ach.xpEarned': { ru: 'Опыт за достижения', uk: 'Досвід за досягнення', en: 'XP from achievements' },
   'ach.xpLeft': { ru: 'ещё {xp} XP ждут тебя', uk: 'ще {xp} XP чекають на тебе', en: '{xp} XP still waiting' },
+  'ach.shareOnly': { ru: 'есть лишь у {share}% игроков', uk: 'є лише у {share}% гравців', en: 'only {share}% of players have it' },
   'ach.rarest': { ru: 'Самое редкое', uk: 'Найрідкісніше', en: 'Rarest earned' },
   'ach.share': { ru: 'есть у {share}% игроков', uk: 'є у {share}% гравців', en: '{share}% of players have it' },
   'ach.all': { ru: 'Все', uk: 'Усі', en: 'All' },

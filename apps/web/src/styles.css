@@ -7373,7 +7373,9 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
 .awards-stat {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 10px;
+  min-height: 132px;
 }
 
 .awards-big {
@@ -7404,30 +7406,9 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
   font-weight: 800;
 }
 
-.awards-rarest {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0;
-}
 
-.awards-rarest > span:last-child {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  min-width: 0;
-}
 
-.awards-rarest b {
-  font-size: 17px;
-}
 
-.awards-rarest i {
-  color: var(--text-3);
-  font-size: 12.5px;
-  font-style: normal;
-  font-weight: 600;
-}
 
 .awards-tiers {
   display: flex;
@@ -7695,11 +7676,6 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
   border-radius: 13px;
 }
 
-.awards-rarest .award-mark {
-  border-color: color-mix(in srgb, var(--tier) 55%, transparent);
-  background: color-mix(in srgb, var(--tier) 16%, transparent);
-  color: var(--tier);
-}
 
 .awards-showcase {
   display: flex;
@@ -7889,4 +7865,49 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
   background: color-mix(in srgb, var(--accent) 14%, transparent);
   color: var(--accent);
   font-size: 19px;
+}
+
+.awards-rare {
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.awards-rare .award-mark {
+  flex: none;
+  width: 54px;
+  height: 54px;
+  border-radius: 15px;
+  border-color: color-mix(in srgb, var(--tier, var(--accent)) 55%, transparent);
+  background: color-mix(in srgb, var(--tier, var(--accent)) 16%, transparent);
+  color: var(--tier, var(--accent));
+  font-size: 24px;
+}
+
+.awards-rare-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.awards-rare-text b {
+  font-family: var(--display);
+  font-size: 22px;
+  line-height: 1.1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.awards-rare-text i {
+  color: var(--text-2);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.awards-tiers {
+  justify-content: center;
+  min-height: 132px;
 }

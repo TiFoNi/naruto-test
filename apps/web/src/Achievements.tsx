@@ -174,20 +174,23 @@ export default function Achievements() {
               <small className="muted">{t('ach.xpLeft', { xp: board?.xpLeft ?? 0 })}</small>
             </div>
 
-            <div className="play-card awards-stat">
-              <span className="play-card-title">{t('ach.rarest')}</span>
+            <div className={`play-card awards-stat awards-rare ${rarest ? rarest.tier : ''}`}>
               {rarest ? (
-                <p className="awards-rarest">
-                  <span className={`award-mark ${rarest.tier}`} aria-hidden>
+                <>
+                  <span className="award-mark" aria-hidden>
                     <TrophyIcon />
                   </span>
-                  <span>
+                  <span className="awards-rare-text">
+                    <span className="play-card-title">{t('ach.rarest')}</span>
                     <b>{t(`ach.${rarest.id}` as UiKey)}</b>
-                    <i>{t('ach.share', { share: rarest.rarity })}</i>
+                    <i>{t('ach.shareOnly', { share: rarest.rarity })}</i>
                   </span>
-                </p>
+                </>
               ) : (
-                <small className="muted">{t('ach.empty')}</small>
+                <span className="awards-rare-text">
+                  <span className="play-card-title">{t('ach.rarest')}</span>
+                  <small className="muted">{t('ach.empty')}</small>
+                </span>
               )}
             </div>
 
