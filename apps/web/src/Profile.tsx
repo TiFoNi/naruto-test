@@ -424,7 +424,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
                 const award = pinned[index]
                 if (!award) return <li key={index} />
                 return (
-                  <li key={award.id} className={`on ${award.tier}`}>
+                  <li key={award.id} className={`on tier-${award.tier}`}>
                     <TrophyIcon />
                     <b>{t(`ach.${award.id}` as UiKey)}</b>
                   </li>
@@ -479,7 +479,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
               <p className="muted">{t('profile.resetHint')}</p>
               {confirmReset ? (
                 <div className="inline-field">
-                  <button type="button" className="danger" onClick={reset} disabled={resetting}>
+                  <button type="button" className="danger-button" onClick={reset} disabled={resetting}>
                     {resetting ? t('profile.resetting') : t('profile.resetYes')}
                   </button>
                   <button type="button" className="ghost" onClick={() => setConfirmReset(false)}>

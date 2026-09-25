@@ -114,6 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { ok, data } = await call('profile', { action: 'reset' })
       if (!ok) return data.error ?? 'server'
+      forgetUser()
       accept(data)
       return null
     } catch {

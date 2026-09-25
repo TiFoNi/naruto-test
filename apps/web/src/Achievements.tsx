@@ -5,7 +5,8 @@ import { api } from './api'
 import BackButton from './BackButton'
 import { useI18n, type UiKey } from './i18n'
 import Link from 'next/link'
-import { CheckIcon, CloseIcon, LockIcon, PinIcon, TrophyIcon } from './icons'
+import { CheckIcon, CloseIcon, GiftIcon, LockIcon, PinIcon, TrophyIcon } from './icons'
+import { useAuth } from './auth'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
 
@@ -19,6 +20,7 @@ type Award = {
   xp: number
   secret: boolean
   done: boolean
+  claimed: boolean
   at: string | null
   progress: number
   rarity: number
@@ -29,6 +31,8 @@ type Board = {
   earned: number
   xp: number
   xpLeft: number
+  ready: number
+  xpReady: number
   rarest: { id: string; rarity: number } | null
   rank: number | null
   pinned: string[]
@@ -36,12 +40,13 @@ type Board = {
 
 const PINNED_MAX = 6
 
-type Filter = 'all' | 'done' | 'doing' | 'locked'
+type Filter = 'all' | 'ready' | 'done' | 'doing' | 'locked'
 
 const CATEGORIES = ['guessing', 'duels', 'streaks', 'modes', 'worlds', 'ranking', 'secret']
 const TIERS: Tier[] = ['bronze', 'silver', 'gold', 'legend']
 const FILTERS: { id: Filter; label: UiKey }[] = [
   { id: 'all', label: 'ach.all' },
+  { id: 'ready', label: 'ach.ready' },
   { id: 'done', label: 'ach.done' },
   { id: 'doing', label: 'ach.doing' },
   { id: 'locked', label: 'ach.locked' },
@@ -49,17 +54,31 @@ const FILTERS: { id: Filter; label: UiKey }[] = [
 
 const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
 
-function Card({ award, pinned, onPin }: { award: Award; pinned: boolean; onPin: () => void }) {
+function Card({ award, pinned, busy, onPin, onClaim }: { award: Award; pinned: boolean; busy: boolean; onPin: () => void; onClaim: () => void }) {
   const { t, lang } = useI18n()
   const hidden = award.secret && !award.done
   const share = award.rarity > 0 ? t('ach.share', { share: award.rarity }) : ''
+  const waiting = award.done && !award.claimed
 
   return (
-    <article className={`award ${award.tier} ${award.done ? 'done' : hidden ? 'hidden' : ''}`}>
-      <span className="award-mark" aria-hidden>
-        {award.done ? <CheckIcon /> : hidden ? <LockIcon /> : <TrophyIcon />}
-      </span>
-      {award.done && (
+    <article className={`award tier-${award.tier} ${award.claimed ? 'done' : waiting ? 'is-ready' : hidden ? 'hidden' : ''}`}>
+      {waiting ? (
+        <button
+          type="button"
+          className="award-mark award-take"
+          title={t('ach.claim', { xp: award.xp })}
+          aria-label={t('ach.claim', { xp: award.xp })}
+          disabled={busy}
+          onClick={onClaim}
+        >
+          <GiftIcon />
+        </button>
+      ) : (
+        <span className="award-mark" aria-hidden>
+          {award.claimed ? <CheckIcon /> : hidden ? <LockIcon /> : <TrophyIcon />}
+        </span>
+      )}
+      {award.claimed && (
         <button type="button" className={`award-pin ${pinned ? 'on' : ''}`} title={t(pinned ? 'ach.unpin' : 'ach.pin')} aria-label={t(pinned ? 'ach.unpin' : 'ach.pin')} aria-pressed={pinned} onClick={onPin}>
           <PinIcon />
         </button>
@@ -69,26 +88,33 @@ function Card({ award, pinned, onPin }: { award: Award; pinned: boolean; onPin: 
           <b>{hidden ? '???' : t(`ach.${award.id}` as UiKey)}</b>
           <span className="award-tier">{hidden ? t('ach.secret') : t(`achTier.${award.tier}` as UiKey)}</span>
         </div>
-        <p>{hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}</p>
-        <div className="award-foot">
-          {award.done ? (
-            <span className="award-date">
-              <CheckIcon /> {award.at ? new Date(award.at).toLocaleDateString(LOCALES[lang], { day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}
-            </span>
-          ) : hidden ? (
-            <span className="award-date muted">{t('ach.hidden')}</span>
-          ) : (
-            <span className="award-bar">
-              <span style={{ width: `${Math.round((award.progress / award.target) * 100)}%` }} />
-            </span>
-          )}
-          {!award.done && !hidden && (
-            <span className="award-count">
-              {award.progress} / {award.target}
-            </span>
-          )}
-          {share && <span className="award-rarity">{share}</span>}
-        </div>
+        <p title={hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}>
+          {hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}
+        </p>
+      </div>
+      <div className="award-foot">
+        {award.claimed ? (
+          <span className="award-date">
+            <CheckIcon /> {award.at ? new Date(award.at).toLocaleDateString(LOCALES[lang], { day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}
+          </span>
+        ) : hidden ? (
+          <span className="award-date muted">{t('ach.hidden')}</span>
+        ) : waiting ? null : (
+          <span className="award-bar">
+            <span style={{ width: `${Math.round((award.progress / award.target) * 100)}%` }} />
+          </span>
+        )}
+        {!award.done && !hidden && (
+          <span className="award-count">
+            {award.progress} / {award.target}
+          </span>
+        )}
+        {share && (
+          <span className="award-rarity" title={share}>
+            {waiting ? `${award.rarity}%` : share}
+          </span>
+        )}
+        {waiting && <span className="award-reward">+{award.xp} XP</span>}
       </div>
     </article>
   )
@@ -103,9 +129,11 @@ keepPerUser(() => {
 export default function Achievements() {
   const { t } = useI18n()
   const href = useHref()
+  const { refresh } = useAuth()
   const [board, setBoard] = useState<Board | null>(known)
   const [error, setError] = useState(false)
   const [filter, setFilter] = useState<Filter>('all')
+  const [claiming, setClaiming] = useState<string | null>(null)
 
   useEffect(() => {
     let alive = true
@@ -127,18 +155,26 @@ export default function Achievements() {
   const shown = useMemo(
     () =>
       list.filter((a) =>
-        filter === 'done' ? a.done : filter === 'doing' ? !a.done && a.progress > 0 : filter === 'locked' ? !a.done && a.progress === 0 : true,
+        filter === 'ready'
+          ? a.done && !a.claimed
+          : filter === 'done'
+            ? a.done
+            : filter === 'doing'
+              ? !a.done && a.progress > 0
+              : filter === 'locked'
+                ? !a.done && a.progress === 0
+                : true,
       ),
     [list, filter],
   )
   const counts: Record<Filter, number> = {
     all: list.length,
+    ready: list.filter((a) => a.done && !a.claimed).length,
     done: list.filter((a) => a.done).length,
     doing: list.filter((a) => !a.done && a.progress > 0).length,
     locked: list.filter((a) => !a.done && a.progress === 0).length,
   }
   const share = list.length ? Math.round((counts.done / list.length) * 100) : 0
-  const rarest = board?.rarest ? list.find((a) => a.id === board.rarest!.id) : null
   const pinned = board?.pinned ?? []
 
   const togglePin = (id: string) => {
@@ -149,6 +185,17 @@ export default function Achievements() {
       return updated
     })
     void api('achievements', { pinned: next })
+  }
+
+  const claim = async (id: string) => {
+    setClaiming(id)
+    const { ok, data } = await api<Board>('achievements', { claim: id })
+    if (ok) {
+      known = data
+      setBoard(data)
+      void refresh()
+    }
+    setClaiming(null)
   }
 
   return (
@@ -187,32 +234,12 @@ export default function Achievements() {
               <small className="muted">{t('ach.xpLeft', { xp: board?.xpLeft ?? 0 })}</small>
             </div>
 
-            <div className={`play-card awards-stat awards-rare ${rarest ? rarest.tier : ''}`}>
-              {rarest ? (
-                <>
-                  <span className="award-mark" aria-hidden>
-                    <TrophyIcon />
-                  </span>
-                  <span className="awards-rare-text">
-                    <span className="play-card-title">{t('ach.rarest')}</span>
-                    <b>{t(`ach.${rarest.id}` as UiKey)}</b>
-                    <i>{t('ach.shareOnly', { share: rarest.rarity })}</i>
-                  </span>
-                </>
-              ) : (
-                <span className="awards-rare-text">
-                  <span className="play-card-title">{t('ach.rarest')}</span>
-                  <small className="muted">{t('ach.empty')}</small>
-                </span>
-              )}
-            </div>
-
             <div className="play-card awards-tiers">
               {TIERS.map((tier) => {
                 const all = list.filter((a) => a.tier === tier)
                 const done = all.filter((a) => a.done).length
                 return (
-                  <span key={tier} className={`awards-tier ${tier}`}>
+                  <span key={tier} className={`awards-tier tier-${tier}`}>
                     <i />
                     {t(`achTier.${tier}` as UiKey)}
                     <span className="lb-bar">
@@ -241,7 +268,7 @@ export default function Achievements() {
               {Array.from({ length: PINNED_MAX }, (_, index) => {
                 const award = pinned[index] ? list.find((a) => a.id === pinned[index]) : undefined
                 return (
-                  <li key={index} className={`awards-slot ${award ? award.tier : 'free'}`}>
+                  <li key={index} className={`awards-slot ${award ? `tier-${award.tier}` : 'free'}`}>
                     <i>{index + 1}</i>
                     {award ? (
                       <>
@@ -287,7 +314,14 @@ export default function Achievements() {
                 </h2>
                 <div className="awards-grid">
                   {group.map((award) => (
-                    <Card key={award.id} award={award} pinned={pinned.includes(award.id)} onPin={() => togglePin(award.id)} />
+                    <Card
+                      key={award.id}
+                      award={award}
+                      pinned={pinned.includes(award.id)}
+                      busy={claiming === award.id}
+                      onPin={() => togglePin(award.id)}
+                      onClaim={() => void claim(award.id)}
+                    />
                   ))}
                 </div>
               </section>

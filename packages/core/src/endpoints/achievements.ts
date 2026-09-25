@@ -1,6 +1,6 @@
 import { STAT_KEYS } from '@nanda/game'
-import { ACHIEVEMENTS, collectFacts, progressOf, rarity, syncAwards } from '../achievements'
-import { users } from '../db'
+import { ACHIEVEMENTS, claimAward, collectFacts, progressOf, rarity, syncAwards } from '../achievements'
+import { users, type UserDoc } from '../db'
 import { fail, handle, json, readJson } from '../http'
 import { currentUser, unauthorized } from '../profile'
 
@@ -20,17 +20,14 @@ async function placeOf(userId: string) {
   return { rank: index < 0 ? null : index + 1, players: rows.length }
 }
 
-export const GET = handle(async (request) => {
-  const found = await currentUser(request)
-  if (!found) return unauthorized()
-
-  const id = found.doc._id!
-  const facts = await collectFacts(id)
+async function board(doc: UserDoc) {
+  const id = doc._id!
+  const facts = await collectFacts(id, 1, doc.resetAt)
   const place = await placeOf(id.toHexString())
   facts.rank = place.rank
   facts.players = place.players
 
-  const { awards, gained, xp } = await syncAwards(id, facts, found.doc.awards ?? {})
+  const { awards, claimed, gained } = await syncAwards(id, facts, doc.awards ?? {}, doc.claimed)
   const { share } = await rarity()
 
   const list = ACHIEVEMENTS.map((achievement) => {
@@ -43,38 +40,56 @@ export const GET = handle(async (request) => {
       xp: achievement.xp,
       secret: achievement.secret ?? false,
       done,
+      claimed: !!claimed[achievement.id],
       at: awards[achievement.id] ?? null,
       progress: Math.min(progressOf(achievement.id, facts), achievement.target),
       rarity: share[achievement.id] ?? 0,
     }
   })
 
-  const total = list.reduce((sum, a) => sum + (a.done ? a.xp : 0), 0)
-  const left = list.reduce((sum, a) => sum + (a.done ? 0 : a.xp), 0)
+  const total = list.reduce((sum, a) => sum + (a.claimed ? a.xp : 0), 0)
+  const left = list.reduce((sum, a) => sum + (a.claimed ? 0 : a.xp), 0)
+  const ready = list.filter((a) => a.done && !a.claimed)
   const rarest = list.filter((a) => a.done).sort((a, b) => a.rarity - b.rarity)[0] ?? null
 
-  return json({
+  return {
     achievements: list,
     earned: list.filter((a) => a.done).length,
     xp: total,
     xpLeft: left,
+    ready: ready.length,
+    xpReady: ready.reduce((sum, a) => sum + a.xp, 0),
     rarest: rarest ? { id: rarest.id, rarity: rarest.rarity } : null,
     players: place.players,
     rank: place.rank,
     gained,
-    gainedXp: xp,
-    pinned: (found.doc.pinned ?? []).filter((award) => awards[award]).slice(0, PINNED_MAX),
-  })
+    pinned: (doc.pinned ?? []).filter((award) => claimed[award]).slice(0, PINNED_MAX),
+  }
+}
+
+export const GET = handle(async (request) => {
+  const found = await currentUser(request)
+  if (!found) return unauthorized()
+
+  return json(await board(found.doc))
 })
 
 export const POST = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
 
-  const body = (await readJson(request)) as { pinned?: unknown }
+  const body = (await readJson(request)) as { pinned?: unknown; claim?: unknown }
+
+  if (typeof body.claim === 'string') {
+    const award = await claimAward(found.doc._id!, body.claim)
+    if (award === null) return fail(409, 'not_ready')
+    const fresh = await (await users()).findOne({ _id: found.doc._id! })
+    return json({ ...(await board(fresh ?? found.doc)), award })
+  }
+
   if (!Array.isArray(body.pinned)) return fail(400, 'bad_request')
 
-  const owned = found.doc.awards ?? {}
+  const owned = found.doc.claimed ?? {}
   const known = new Set(ACHIEVEMENTS.map((a) => a.id))
   const pinned = [...new Set(body.pinned.filter((id): id is string => typeof id === 'string'))]
     .filter((id) => known.has(id) && owned[id])

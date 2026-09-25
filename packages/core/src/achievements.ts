@@ -88,12 +88,18 @@ export type Facts = {
 
 const dayOf = (date: Date) => new Date(date.getTime() + 3 * 3600_000).toISOString().slice(0, 10)
 
-export async function collectFacts(userId: ObjectId, languages = 1): Promise<Facts> {
+export async function collectFacts(userId: ObjectId, languages = 1, since?: Date): Promise<Facts> {
+  const fresh = since ? { createdAt: { $gt: since } } : {}
   const [roundList, duelList, person] = await Promise.all([
     (await rounds())
-      .find({ userId }, { projection: { game: 1, mode: 1, status: 1, answerId: 1, guessCount: 1, guesses: 1, daily: 1, finishedAt: 1, createdAt: 1 }, sort: { createdAt: 1 } })
+      .find(
+        { userId, ...fresh },
+        { projection: { game: 1, mode: 1, status: 1, answerId: 1, guessCount: 1, guesses: 1, daily: 1, finishedAt: 1, createdAt: 1 }, sort: { createdAt: 1 } },
+      )
       .toArray(),
-    (await duels()).find({ 'players.userId': userId, status: 'finished' }).toArray(),
+    (await duels())
+      .find({ 'players.userId': userId, status: 'finished', ...fresh })
+      .toArray(),
     (await users()).findOne({ _id: userId }, { projection: { visit: 1 } }),
   ])
 
@@ -294,23 +300,35 @@ export function earned(id: string, facts: Facts): boolean {
   return value >= achievement.target
 }
 
-export async function syncAwards(userId: ObjectId, facts: Facts, current: Record<string, Date> = {}) {
+export async function syncAwards(userId: ObjectId, facts: Facts, current: Record<string, Date> = {}, taken?: Record<string, Date>) {
   const fresh: Record<string, Date> = {}
   const now = new Date()
-  let xp = 0
 
   for (const achievement of ACHIEVEMENTS) {
     if (current[achievement.id]) continue
     if (!earned(achievement.id, facts)) continue
     fresh[achievement.id] = now
-    xp += achievement.xp
   }
 
-  if (!Object.keys(fresh).length) return { awards: current, gained: [] as string[], xp: 0 }
+  const settled = taken ?? { ...current }
+  const patch: Record<string, unknown> = Object.fromEntries(Object.entries(fresh).map(([id, at]) => [`awards.${id}`, at]))
+  if (!taken) patch.claimed = settled
 
-  const patch = Object.fromEntries(Object.entries(fresh).map(([id, at]) => [`awards.${id}`, at]))
-  await (await users()).updateOne({ _id: userId }, { $set: patch, $inc: { xp } })
-  return { awards: { ...current, ...fresh }, gained: Object.keys(fresh), xp }
+  if (!Object.keys(patch).length) return { awards: current, claimed: settled, gained: [] as string[] }
+
+  await (await users()).updateOne({ _id: userId }, { $set: patch })
+  return { awards: { ...current, ...fresh }, claimed: settled, gained: Object.keys(fresh) }
+}
+
+export async function claimAward(userId: ObjectId, id: string) {
+  const achievement = byId.get(id)
+  if (!achievement) return null
+
+  const marked = await (await users()).updateOne(
+    { _id: userId, [`awards.${id}`]: { $exists: true }, [`claimed.${id}`]: { $exists: false } },
+    { $set: { [`claimed.${id}`]: new Date() }, $inc: { xp: achievement.xp } },
+  )
+  return marked.modifiedCount ? achievement.xp : null
 }
 
 export async function rarity() {

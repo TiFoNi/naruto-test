@@ -1796,7 +1796,12 @@ main {
 }
 
 .hero-search-all {
-  padding: 7px 12px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid transparent;
   border-radius: 11px;
   background: var(--card-2);
   color: var(--text-2);
@@ -2720,6 +2725,7 @@ button.ghost.small {
 
 .danger-button {
   align-self: flex-start;
+  font: inherit;
   padding: 10px 16px;
   border-radius: 10px;
   border: 1px solid #e5483b;
@@ -5716,7 +5722,7 @@ button.ghost.small {
 
 .settings-modal .primary,
 .settings-modal .ghost,
-.settings-modal .danger {
+.settings-modal .danger-button {
   padding: 10px 16px;
   border-radius: 10px;
   font-size: 14px;
@@ -5751,6 +5757,7 @@ button.ghost.small {
 .profile-metrics {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-auto-rows: 1fr;
   gap: 12px;
 }
 
@@ -5916,7 +5923,7 @@ button.ghost.small {
 .worlds,
 .activity {
   flex: 1 1 0;
-  min-height: 0;
+  min-height: 260px;
   padding-right: 14px;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -5953,6 +5960,7 @@ button.ghost.small {
 }
 
 .world-tag {
+  grid-row: 1 / span 2;
   display: grid;
   place-items: center;
   width: 34px;
@@ -6438,6 +6446,13 @@ html[data-auth] .hero .quests-card {
     flex-direction: column;
   }
 
+  .worlds,
+  .activity {
+    flex: none;
+    min-height: 0;
+    max-height: 360px;
+  }
+
   .profile-grid > .profile-column,
   .profile-grid > .profile-column:last-child,
   .profile-grid > .profile-middle,
@@ -6621,7 +6636,7 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
 }
 
 .leaderboard {
-  max-width: 1240px;
+  max-width: none;
   gap: 20px;
 }
 
@@ -7175,7 +7190,6 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
 }
 
 .game-view {
-  max-width: 1240px;
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -8418,15 +8432,27 @@ html[data-auth] .hero-guest {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 1240px;
   width: 100%;
   margin: 0 auto;
+  container-type: inline-size;
 }
 
 .awards-summary {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 14px;
+}
+
+@container (min-width: 748px) {
+  .awards-summary {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.4fr);
+  }
+}
+
+@container (max-width: 747px) {
+  .awards-tiers {
+    grid-column: 1 / -1;
+  }
 }
 
 .awards-stat {
@@ -8470,16 +8496,15 @@ html[data-auth] .hero-guest {
 
 
 .awards-tiers {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
+  display: grid;
+  grid-template-columns: 10px auto minmax(0, 1fr) auto;
+  align-items: center;
+  align-content: center;
+  gap: 9px 10px;
 }
 
 .awards-tier {
-  display: grid;
-  grid-template-columns: 10px 1fr 90px auto;
-  align-items: center;
-  gap: 10px;
+  display: contents;
   font-size: 12.5px;
   font-weight: 700;
   color: var(--text-2);
@@ -8503,21 +8528,22 @@ html[data-auth] .hero-guest {
 .awards-tier b {
   color: var(--text-3);
   font-variant-numeric: tabular-nums;
+  text-align: right;
 }
 
-.bronze {
+.tier-bronze {
   --tier: #d98a4e;
 }
 
-.silver {
+.tier-silver {
   --tier: #c9d1dc;
 }
 
-.gold {
+.tier-gold {
   --tier: #f5c451;
 }
 
-.legend {
+.tier-legend {
   --tier: #a78bfa;
 }
 
@@ -8525,18 +8551,21 @@ html[data-auth] .hero-guest {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
+  align-self: stretch;
   padding: 5px;
   border: 1px solid var(--line);
   border-radius: 15px;
   background: var(--card);
-  align-self: flex-start;
 }
 
 .awards-filters button {
   display: inline-flex;
+  flex: 1 1 auto;
   align-items: center;
+  justify-content: center;
   gap: 7px;
   padding: 8px 14px;
+  white-space: nowrap;
   border: 0;
   border-radius: 11px;
   background: none;
@@ -8588,13 +8617,16 @@ html[data-auth] .hero-guest {
 
 .awards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-auto-rows: 1fr;
   gap: 12px;
 }
 
 .award {
-  display: flex;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  gap: 10px 12px;
   padding: 14px;
   border: 1px solid var(--line);
   border-radius: 16px;
@@ -8606,11 +8638,106 @@ html[data-auth] .hero-guest {
   background: linear-gradient(180deg, color-mix(in srgb, var(--tier) 7%, var(--card)), var(--card) 70%);
 }
 
+.award.is-ready {
+  border-color: color-mix(in srgb, var(--tier) 38%, transparent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tier) 8%, var(--card)), var(--card) 70%);
+}
+
+.award.is-ready .award-mark {
+  border-color: color-mix(in srgb, var(--tier) 62%, transparent);
+  background: color-mix(in srgb, var(--tier) 18%, transparent);
+  color: var(--tier);
+}
+
+.award-take {
+  padding: 0;
+  font: inherit;
+  font-size: 19px;
+  cursor: pointer;
+  transition: background 0.16s, border-color 0.16s, transform 0.12s;
+}
+
+.award-take .icon {
+  transform-origin: 50% 64%;
+  animation: gift-nudge 2.2s ease-in-out infinite;
+}
+
+.awards-grid .award:nth-child(3n + 2) .award-take .icon {
+  animation-delay: 0.3s;
+}
+
+.awards-grid .award:nth-child(3n + 3) .award-take .icon {
+  animation-delay: 0.6s;
+}
+
+@keyframes gift-nudge {
+  0%,
+  58%,
+  100% {
+    transform: none;
+  }
+
+  64% {
+    transform: rotate(-10deg) scale(1.1);
+  }
+
+  71% {
+    transform: rotate(9deg) scale(1.1);
+  }
+
+  78% {
+    transform: rotate(-5deg) scale(1.05);
+  }
+
+  85% {
+    transform: rotate(2deg) scale(1.02);
+  }
+}
+
+.award-take:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--tier) 30%, transparent);
+  border-color: var(--tier);
+  transform: scale(1.05);
+}
+
+.award-take:hover:not(:disabled) .icon,
+.award-take:disabled .icon {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .award-take .icon {
+    animation: none;
+  }
+}
+
+.award-take:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.award-take:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.award-reward {
+  margin-left: auto;
+  color: var(--tier);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.award.is-ready .award-rarity {
+  margin-left: 0;
+  white-space: nowrap;
+}
+
 .award.hidden {
   border-style: dashed;
 }
 
 .award-mark {
+  position: relative;
   display: grid;
   place-items: center;
   flex: none;
@@ -8632,9 +8759,9 @@ html[data-auth] .hero-guest {
 .award-body {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 5px;
   min-width: 0;
-  flex: 1 1 auto;
 }
 
 .award-head {
@@ -8663,6 +8790,10 @@ html[data-auth] .hero-guest {
 }
 
 .award-body p {
+  height: 1.45em;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   margin: 0;
   color: var(--text-2);
   font-size: 13px;
@@ -8671,10 +8802,14 @@ html[data-auth] .hero-guest {
 }
 
 .award-foot {
+  grid-column: 1 / -1;
+  align-self: end;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
-  margin-top: 4px;
+  align-content: flex-end;
+  gap: 8px 10px;
+  height: 30px;
   font-size: 11.5px;
   font-weight: 700;
 }
@@ -8692,7 +8827,8 @@ html[data-auth] .hero-guest {
 }
 
 .award-bar {
-  flex: 1 1 auto;
+  order: 2;
+  flex: 1 0 100%;
   display: block;
   overflow: hidden;
   height: 6px;
@@ -8709,7 +8845,8 @@ html[data-auth] .hero-guest {
 
 .award-count,
 .award-rarity {
-  flex: none;
+  flex: 0 1 auto;
+  min-width: 0;
   color: var(--text-3);
   font-variant-numeric: tabular-nums;
 }
@@ -8721,10 +8858,6 @@ html[data-auth] .hero-guest {
 @media (max-width: 620px) {
   .awards-grid {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .awards-filters {
-    align-self: stretch;
   }
 }
 
@@ -8876,8 +9009,8 @@ html[data-auth] .hero-guest {
 
 .award-pin {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 14px;
+  right: 14px;
   display: grid;
   place-items: center;
   width: 28px;
@@ -8906,7 +9039,7 @@ html[data-auth] .hero-guest {
 }
 
 .award.done .award-head {
-  padding-right: 30px;
+  padding-right: 34px;
 }
 
 @media (max-width: 760px) {
@@ -8953,47 +9086,6 @@ html[data-auth] .hero-guest {
   font-weight: 600;
 }
 
-.awards-rare {
-  flex-direction: row;
-  align-items: center;
-  gap: 16px;
-}
-
-.awards-rare .award-mark {
-  flex: none;
-  width: 54px;
-  height: 54px;
-  border-radius: 15px;
-  border-color: color-mix(in srgb, var(--tier, var(--accent)) 55%, transparent);
-  background: color-mix(in srgb, var(--tier, var(--accent)) 16%, transparent);
-  color: var(--tier, var(--accent));
-  font-size: 24px;
-}
-
-.awards-rare-text {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-
-.awards-rare-text b {
-  font-family: var(--display);
-  font-size: 22px;
-  line-height: 1.1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.awards-rare-text i {
-  color: var(--text-2);
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 600;
-}
-
 .awards-tiers {
-  justify-content: center;
   min-height: 132px;
 }

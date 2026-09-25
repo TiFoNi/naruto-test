@@ -163,7 +163,7 @@ export const GET = handle(async (request) => {
   return json({
     since: doc.createdAt,
     pinned: (doc.pinned ?? [])
-      .filter((award) => doc.awards?.[award] && TIERS.has(award))
+      .filter((award) => doc.claimed?.[award] && TIERS.has(award))
       .slice(0, 6)
       .map((id) => ({ id, tier: TIERS.get(id)!, at: doc.awards![id] })),
     awards: Object.keys(doc.awards ?? {}).length,

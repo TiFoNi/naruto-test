@@ -76,10 +76,11 @@ export function BellIcon({ className }: IconProps) {
 export function GiftIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>
-      <rect x="3" y="9.5" width="18" height="11" rx="2.5" />
-      <path d="M2.5 9.5h19M12 9.5V20.5" />
-      <path d="M12 9.5S10.4 4.2 8 4.2a2.4 2.4 0 0 0 0 4.8h4" />
-      <path d="M12 9.5s1.6-5.3 4-5.3a2.4 2.4 0 0 1 0 4.8h-4" />
+      <rect x="2.7" y="8.4" width="18.6" height="4.4" rx="1.5" />
+      <path d="M4.7 12.8v5.9a2.2 2.2 0 0 0 2.2 2.2h10.2a2.2 2.2 0 0 0 2.2-2.2v-5.9" />
+      <path d="M12 8.4v12.5" />
+      <path d="M12 8.4C11.1 5.5 9.8 3.5 8 3.5a2.45 2.45 0 0 0 0 4.9H12" />
+      <path d="M12 8.4c.9-2.9 2.2-4.9 4-4.9a2.45 2.45 0 0 1 0 4.9H12" />
     </svg>
   )
 }
