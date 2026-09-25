@@ -7,7 +7,6 @@ import * as summary from '@nanda/core/endpoints/profile-summary'
 import * as quests from '@nanda/core/endpoints/quests'
 import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as challenge from '@nanda/core/endpoints/challenge'
-import * as termsEndpoint from '@nanda/core/endpoints/terms'
 import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
 import * as leaderboard from '@nanda/core/endpoints/leaderboard'
@@ -55,16 +54,6 @@ export class GameController {
     return bridge(adminImage.POST, req, res)
   }
 
-  @Post('admin/create')
-  adminCreate(@Req() req: Request, @Res() res: Response) {
-    return bridge(admin.CREATE, req, res)
-  }
-
-  @Post('admin/delete')
-  adminDelete(@Req() req: Request, @Res() res: Response) {
-    return bridge(admin.DELETE, req, res)
-  }
-
   @Get('quests')
   questBoard(@Req() req: Request, @Res() res: Response) {
     return bridge(quests.GET, req, res)
@@ -83,16 +72,6 @@ export class GameController {
   @Post('admin/settings')
   adminSettings(@Req() req: Request, @Res() res: Response) {
     return bridge(admin.SETTINGS, req, res)
-  }
-
-  @Post('admin/term')
-  adminTerm(@Req() req: Request, @Res() res: Response) {
-    return bridge(admin.PUT, req, res)
-  }
-
-  @Get('terms')
-  terms(@Req() req: Request, @Res() res: Response) {
-    return bridge(termsEndpoint.GET, req, res)
   }
 
   @Get('entities')

@@ -1,15 +1,13 @@
-import { entities, settings, terms } from '../db'
+import { entities, settings } from '../db'
 import { forget, isGame } from '../games'
-import { forgetTerms } from '../terms'
 import { fail, handle, json, readJson } from '../http'
 import { adminSession } from '../admin'
-import { dropPictures } from '../images'
 
 const missing = () => fail(404, 'not_found')
 
 const INTERNAL = new Set(['_id', 'game', 'updatedAt'])
 
-const NOT_A_TERM = new Set(['id', 'thumb', 'answer', 'hidden', 'name', 'nameEn', 'nameUk', 'aliases', 'slug'])
+const SKIP_FIELDS = new Set(['id', 'thumb', 'answer', 'hidden', 'name', 'nameEn', 'nameUk', 'aliases', 'slug'])
 
 export const GET = handle(async (request) => {
   if (!(await adminSession(request))) return missing()
@@ -24,7 +22,7 @@ export const GET = handle(async (request) => {
   const options: Record<string, string[]> = {}
   for (const row of list) {
     for (const [key, value] of Object.entries(row)) {
-      if (INTERNAL.has(key) || NOT_A_TERM.has(key)) continue
+      if (INTERNAL.has(key) || SKIP_FIELDS.has(key)) continue
       const values = Array.isArray(value) ? value : typeof value === 'string' ? [value] : []
       if (!values.length) continue
       const seen = (options[key] ??= [])
@@ -33,9 +31,8 @@ export const GET = handle(async (request) => {
   }
   for (const key of Object.keys(options)) options[key].sort((a, b) => a.localeCompare(b, 'ru'))
 
-  const known = await (await terms()).find({}, { projection: { _id: 0 } }).toArray()
   const config = await (await settings()).findOne({ game }, { projection: { _id: 0, game: 0 } })
-  return json({ entities: list, options, terms: known, updated: config?.updated ?? '' })
+  return json({ entities: list, options, updated: config?.updated ?? '' })
 })
 
 export const POST = handle(async (request) => {
@@ -55,64 +52,6 @@ export const POST = handle(async (request) => {
   forget(game)
   const doc = await collection.findOne({ game, id }, { projection: { _id: 0, game: 0, updatedAt: 0 } })
   return json({ entity: doc })
-})
-
-export const CREATE = handle(async (request) => {
-  if (!(await adminSession(request))) return missing()
-
-  const body = await readJson(request)
-  const { game, name } = body as { game?: unknown; name?: unknown }
-  if (!isGame(game) || typeof name !== 'string' || !name.trim()) return fail(400, 'bad_request')
-
-  const collection = await entities()
-  const last = await collection.find({ game }, { projection: { id: 1 }, sort: { id: -1 }, limit: 1 }).toArray()
-  const id = (last[0]?.id ?? 0) + 1
-
-  const sample = await collection.findOne({ game }, { projection: { _id: 0, game: 0, updatedAt: 0 } })
-  const blanks: Record<string, unknown> = {}
-  for (const [key, value] of Object.entries(sample ?? {})) {
-    if (INTERNAL.has(key) || key === 'id' || key === 'thumb') continue
-    blanks[key] = Array.isArray(value) ? [] : typeof value === 'number' ? 0 : ''
-  }
-
-  const doc = { ...blanks, game, id, thumb: -1, name: name.trim(), answer: false, hidden: true, updatedAt: new Date() }
-  await collection.insertOne(doc)
-
-  forget(game)
-  const created = await collection.findOne({ game, id }, { projection: { _id: 0, game: 0, updatedAt: 0 } })
-  return json({ entity: created }, 201)
-})
-
-export const DELETE = handle(async (request) => {
-  if (!(await adminSession(request))) return missing()
-
-  const body = await readJson(request)
-  const { game, id } = body as { game?: unknown; id?: unknown }
-  if (!isGame(game) || typeof id !== 'number') return fail(400, 'bad_request')
-
-  const result = await (await entities()).deleteOne({ game, id })
-  if (!result.deletedCount) return missing()
-
-  forget(game)
-
-  const pictures = await dropPictures(game, id).catch((error) => {
-    console.error(error)
-    return null
-  })
-
-  return json({ ok: true, pictures })
-})
-
-export const PUT = handle(async (request) => {
-  if (!(await adminSession(request))) return missing()
-
-  const body = await readJson(request)
-  const { value, uk, en } = body as { value?: unknown; uk?: unknown; en?: unknown }
-  if (typeof value !== 'string' || !value.trim() || typeof uk !== 'string' || typeof en !== 'string') return fail(400, 'bad_request')
-
-  await (await terms()).updateOne({ value }, { $set: { uk: uk.trim(), en: en.trim() } }, { upsert: true })
-  forgetTerms()
-  return json({ ok: true })
 })
 
 export const SETTINGS = handle(async (request) => {
