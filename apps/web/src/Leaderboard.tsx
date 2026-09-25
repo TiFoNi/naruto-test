@@ -7,6 +7,7 @@ import type { GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES, type ModeId } from './modes'
 import { useNavigate, useHref } from './router'
+import { keepPerUser } from './session-cache'
 import Picker from './Picker'
 import { ChevronIcon, CrownIcon, PlayIcon, ShieldIcon, SortIcon, TrophyIcon } from './icons'
 
@@ -45,9 +46,10 @@ const COLUMNS: Column[] = [
 ]
 
 const PAGE_SIZE = 10
-const SKELETON_ROWS = 5
+const SKELETON_ROWS = PAGE_SIZE
 const TOP = 10
 const lastSize = new Map<string, number>()
+const known = new Map<string, Board>()
 
 function Avatar({ nickname, className }: { nickname: string; className?: string }) {
   return (
@@ -56,6 +58,10 @@ function Avatar({ nickname, className }: { nickname: string; className?: string 
     </span>
   )
 }
+
+keepPerUser(() => {
+  known.clear()
+})
 
 export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: ModeId }) {
   const { t, l, error: errorText } = useI18n()
@@ -71,7 +77,8 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   }
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
-  const [board, setBoard] = useState<Board | null>(null)
+  const cacheKey = `${gameId}:${mode}:${sort}:${reversed ? 'rev' : 'top'}`
+  const [board, setBoard] = useState<Board | null>(known.get(cacheKey) ?? null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -79,11 +86,14 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
     let cancelled = false
     const slow = setTimeout(() => !cancelled && setLoading(true), 300)
     setError(null)
+    setBoard(known.get(cacheKey) ?? null)
     api<Board>(`leaderboard?game=${gameId}&mode=${mode}&sort=${sort}${reversed ? '&dir=rev' : ''}`)
       .then(({ ok, data }) => {
         if (cancelled) return
-        if (ok) setBoard(data)
-        else setError(data.error ?? 'server')
+        if (ok) {
+          known.set(cacheKey, data)
+          setBoard(data)
+        } else setError(data.error ?? 'server')
         clearTimeout(slow)
         setLoading(false)
       })
@@ -109,8 +119,9 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   const columns = COLUMNS
   const active = columns.find((c) => c.sort === sort) ?? columns[0]
   const all = board?.rows ?? []
+  const waiting = !board && !error
   const standing = !reversed && all.length > 0
-  const podium = standing ? [all[0] ?? null, all[1] ?? null, all[2] ?? null] : []
+  const podium = standing ? [all[0] ?? null, all[1] ?? null, all[2] ?? null] : waiting && !reversed ? [null, null, null] : []
   const listed = all.slice(standing ? 3 : 0).filter((row) => !row.me)
   const pages = Math.max(1, Math.ceil(listed.length / PAGE_SIZE))
   const shown = listed.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
@@ -168,7 +179,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
       <div className="lb-layout">
         <section className="lb-main">
           {podium.length > 0 && (
-            <ol className="lb-podium">
+            <ol className={`lb-podium ${waiting ? 'waiting' : ''}`}>
               {stand.map((index) => {
                 const row = podium[index]
                 const rest = columns.filter((c) => c !== active)

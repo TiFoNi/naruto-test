@@ -2,6 +2,7 @@ import { authClient } from './authClient'
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
 import { api } from './api'
 import { statsKey } from '@nanda/game'
+import { forgetUser } from './session-cache'
 import type { Stats } from './stats'
 
 export type User = { id: string; username: string; nickname: string; level: number; xp: number; streak: number; bestStreak: number }
@@ -38,15 +39,23 @@ const call = (path: string, body?: unknown) => api<ApiData>(path, body)
 
 const SESSION = 'nanda.session'
 
+let known: Profile | null = null
+let checked = false
+
 export { statsKey }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [profile, setProfile] = useState<Profile | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [profile, setProfile] = useState<Profile | null>(known)
+  const [loading, setLoading] = useState(!checked)
+
+  const remember = (next: Profile | null) => {
+    known = next
+    setProfile(next)
+  }
 
   const accept = (data: ApiData) => {
     if (data.user)
-      setProfile({
+      remember({
         user: data.user,
         stats: (data.stats as Record<string, Stats>) ?? {},
         duels: data.duels ?? EMPTY_DUELS,
@@ -59,7 +68,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .then(({ ok, data }) => {
         const signed = ok && !!data.user
         if (signed) accept(data)
-        else setProfile(null)
+        else {
+          forgetUser()
+          remember(null)
+        }
+        checked = true
         try {
           if (signed) localStorage.setItem(SESSION, '1')
           else localStorage.removeItem(SESSION)
@@ -67,7 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           /* приватний режим */
         }
       })
-      .catch(() => setProfile(null))
+      .catch(() => remember(null))
       .finally(() => setLoading(false))
   }, [])
 
@@ -78,14 +91,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(async () => {
     await authClient.signOut().catch(() => null)
+    known = null
+    forgetUser()
     setProfile(null)
   }, [])
 
   const setStats = useCallback((key: string, stats: Stats) => {
-    setProfile((p) => p && { ...p, stats: { ...p.stats, [key]: stats } })
+    setProfile((p) => {
+      const next = p && { ...p, stats: { ...p.stats, [key]: stats } }
+      known = next
+      return next
+    })
   }, [])
 
-  const expire = useCallback(() => setProfile(null), [])
+  const expire = useCallback(() => {
+    known = null
+    forgetUser()
+    setProfile(null)
+  }, [])
 
   const resetStats = useCallback(async () => {
     try {

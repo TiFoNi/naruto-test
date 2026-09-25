@@ -138,7 +138,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
         </div>
       </header>
 
-      {user || open ? children : loading ? <div className="card center muted">{t('loading')}</div> : <Landing games={games} />}
+      {user || open ? children : loading ? <div className="card center muted page-loading">{t('loading')}</div> : <Landing games={games} />}
 
       <Footer />
     </div>

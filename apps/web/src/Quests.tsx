@@ -5,6 +5,7 @@ import { api } from './api'
 import { useI18n } from './i18n'
 import type { UiKey } from './i18n/ui'
 import { GiftIcon } from './icons'
+import { keepPerUser } from './session-cache'
 
 export type Level = { xp: number; level: number; into: number; need: number; rank: string; next: { from: number; id: string } | null }
 
@@ -18,14 +19,25 @@ export type Board = {
   total: number
 } & Level
 
+let known: Board | null = null
+
+keepPerUser(() => {
+  known = null
+})
+
 export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }) {
   const { t } = useI18n()
-  const [board, setBoard] = useState<Board | null>(null)
+  const [board, setBoard] = useState<Board | null>(known)
   const [claiming, setClaiming] = useState<string | null>(null)
+
+  const remember = (next: Board) => {
+    known = next
+    setBoard(next)
+  }
 
   const load = useCallback(async () => {
     const { ok, data } = await api<Board>('quests')
-    if (ok) setBoard(data)
+    if (ok) remember(data)
   }, [])
 
   useEffect(() => {
@@ -37,7 +49,7 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
     const { ok, data } = await api<Board>('quests/claim', { claim: id })
     setClaiming(null)
     if (!ok) return
-    setBoard(data)
+    remember(data)
     onLevel?.(data)
   }
 

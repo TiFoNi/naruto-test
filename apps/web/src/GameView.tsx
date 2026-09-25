@@ -8,6 +8,7 @@ import ClassicMode from './ClassicMode'
 import ImageMode from './ImageMode'
 import AbilityMode from './AbilityMode'
 import PageMode from './PageMode'
+import PlaySkeleton from './PlaySkeleton'
 import { CalendarIcon, InfinityIcon } from './icons'
 
 import type { Game } from './games/types'
@@ -23,7 +24,7 @@ export default function GameView({ game, mode, daily, visible }: { game: Game; m
   const statsFor = (m: ModeId, d: boolean) => stats[d ? dailyKey(game.id, m) : statsKey(game.id, m)] ?? emptyStats
 
   return (
-    <div className="game-view" hidden={!visible} style={{ '--game-accent': game.accent } as CSSProperties}>
+    <div className="game-view" style={{ '--game-accent': game.accent } as CSSProperties}>
       <header className="game-head">
         <div className="game-title">
           <div className="game-name">
@@ -66,8 +67,10 @@ export default function GameView({ game, mode, daily, visible }: { game: Game; m
         </p>
       )}
 
+      {!visible && <PlaySkeleton mode={mode} />}
+
       {[false, true].map((d) => (
-        <div key={String(d)} hidden={daily !== d}>
+        <div key={String(d)} hidden={!visible || daily !== d}>
           {game.modes.includes('classic') && (
             <div hidden={mode !== 'classic'}>
               <ClassicMode game={game} active={visible && daily === d && mode === 'classic'} stats={statsFor('classic', d)} daily={d} />

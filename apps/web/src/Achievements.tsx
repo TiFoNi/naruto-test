@@ -7,6 +7,7 @@ import { useI18n, type UiKey } from './i18n'
 import Link from 'next/link'
 import { CheckIcon, CloseIcon, LockIcon, PinIcon, TrophyIcon } from './icons'
 import { useHref } from './router'
+import { keepPerUser } from './session-cache'
 
 type Tier = 'bronze' | 'silver' | 'gold' | 'legend'
 
@@ -93,10 +94,16 @@ function Card({ award, pinned, onPin }: { award: Award; pinned: boolean; onPin: 
   )
 }
 
+let known: Board | null = null
+
+keepPerUser(() => {
+  known = null
+})
+
 export default function Achievements() {
   const { t } = useI18n()
   const href = useHref()
-  const [board, setBoard] = useState<Board | null>(null)
+  const [board, setBoard] = useState<Board | null>(known)
   const [error, setError] = useState(false)
   const [filter, setFilter] = useState<Filter>('all')
 
@@ -105,8 +112,10 @@ export default function Achievements() {
     api<Board>('achievements')
       .then(({ ok, data }) => {
         if (!alive) return
-        if (ok) setBoard(data)
-        else setError(true)
+        if (ok) {
+          known = data
+          setBoard(data)
+        } else setError(true)
       })
       .catch(() => alive && setError(true))
     return () => {
@@ -134,7 +143,11 @@ export default function Achievements() {
 
   const togglePin = (id: string) => {
     const next = pinned.includes(id) ? pinned.filter((p) => p !== id) : [...pinned, id].slice(0, PINNED_MAX)
-    setBoard((current) => (current ? { ...current, pinned: next } : current))
+    setBoard((current) => {
+      const updated = current ? { ...current, pinned: next } : current
+      known = updated
+      return updated
+    })
     void api('achievements', { pinned: next })
   }
 

@@ -12,6 +12,7 @@ import { MODES } from './modes'
 import { CalendarIcon, CheckIcon, TrophyIcon } from './icons'
 import { useHref } from './router'
 import { kyivToday } from './stats'
+import { keepPerUser } from './session-cache'
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -79,13 +80,19 @@ const pluralOf = (count: number, lang: keyof typeof ROUNDS, forms: typeof ROUNDS
 
 const percent = (part: number, whole: number) => (whole ? Math.round((part / whole) * 100) : 0)
 
+let knownSummary: Summary | null = null
+
+keepPerUser(() => {
+  knownSummary = null
+})
+
 export default function Profile({ onBack }: { onBack: () => void }) {
   const { user, setNickname, resetStats, logout } = useAuth()
   const { t, l, lang, error: errorText } = useI18n()
   const href = useHref()
   const today = kyivToday()
 
-  const [summary, setSummary] = useState<Summary | null>(null)
+  const [summary, setSummary] = useState<Summary | null>(knownSummary)
   const [nickname, setNicknameDraft] = useState(user?.nickname ?? '')
   const [nickMessage, setNickMessage] = useState<{
     ok: boolean
@@ -98,7 +105,10 @@ export default function Profile({ onBack }: { onBack: () => void }) {
 
   const load = useCallback(async () => {
     const { ok, data } = await api<Summary>('profile/summary')
-    if (ok) setSummary(data)
+    if (ok) {
+      knownSummary = data
+      setSummary(data)
+    }
   }, [])
 
   useEffect(() => {

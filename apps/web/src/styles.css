@@ -7020,6 +7020,77 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
   gap: 22px;
 }
 
+.play-skeleton .skeleton-side {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lb-podium.waiting .lb-step {
+  animation: skeleton 1.4s ease-in-out infinite;
+}
+
+.lb-podium.waiting .lb-step-name,
+.lb-podium.waiting .lb-step-main,
+.lb-podium.waiting .lb-step-sub {
+  visibility: hidden;
+}
+
+html[data-auth] .hero-guest {
+  min-height: 464px;
+}
+
+.page-loading {
+  display: grid;
+  place-items: center;
+  min-height: 70vh;
+}
+
+.skeleton-block {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--card);
+  animation: skeleton 1.4s ease-in-out infinite;
+}
+
+@keyframes skeleton {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.skeleton-block.media {
+  aspect-ratio: 1;
+}
+
+.skeleton-block.media.page {
+  aspect-ratio: auto;
+  height: 616px;
+}
+
+.skeleton-block.copy {
+  height: 112px;
+}
+
+.skeleton-block.body {
+  height: 332px;
+}
+
+.skeleton-block.stats {
+  height: 158px;
+}
+
+.skeleton-block.actions {
+  height: 170px;
+}
+
+@media (max-width: 760px) {
+  .skeleton-block.media.page {
+    height: min(60vh, 476px);
+  }
+}
+
 .play-main {
   display: flex;
   flex-direction: column;
