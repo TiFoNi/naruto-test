@@ -21,6 +21,7 @@ const ui = {
   'brand.title': { ru: 'угадай аниме, мангу и игры', uk: 'вгадай аніме, манґу та ігри', en: 'guess anime, manga and games' },
   'nav.games': { ru: 'Игры', uk: 'Ігри', en: 'Games' },
   'nav.language': { ru: 'Язык', uk: 'Мова', en: 'Language' },
+  'nav.menu': { ru: 'Разделы', uk: 'Розділи', en: 'Sections' },
   loading: { ru: 'Загрузка…', uk: 'Завантаження…', en: 'Loading…' },
   'footer.disclaimer': {
     ru: 'Неофициальный фанатский проект. Все персонажи и изображения принадлежат их правообладателям.',
@@ -416,11 +417,7 @@ const ui = {
     uk: 'Обирай всесвіт і режим: нескінченні раунди або одна загадка дня для всіх.',
     en: 'Pick a world and a mode: endless rounds, or one puzzle a day for everyone.',
   },
-  'dash.search': {
-    ru: 'Поиск по всем категориям: Наруто, Атака титанов, Dota 2…',
-    uk: 'Пошук по всіх категоріях: Наруто, Атака титанів, Dota 2…',
-    en: 'Search every category: Naruto, Attack on Titan, Dota 2…',
-  },
+  'dash.search': { ru: 'Поиск по всем категориям', uk: 'Пошук по всіх категоріях', en: 'Search every category' },
   'dash.searchAll': { ru: 'Все категории', uk: 'Усі категорії', en: 'All categories' },
   'dash.searchClear': { ru: 'Очистить', uk: 'Очистити', en: 'Clear' },
   'dash.searchFound': { ru: 'Найдено: {count}', uk: 'Знайдено: {count}', en: 'Found: {count}' },

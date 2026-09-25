@@ -13,6 +13,7 @@
   --wrong: #6a2c33;
   --wrong-text: #f4d9da;
   --radius: 14px;
+  --gutter: clamp(20px, 3.4vw, 34px);
   --display: var(--font-display), system-ui, sans-serif;
   color-scheme: dark;
   font-family: var(--font-body), system-ui, sans-serif;
@@ -171,6 +172,10 @@ html {
   }
 }
 
+html {
+  overflow-x: clip;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -225,7 +230,7 @@ h2 {
   max-width: 1400px;
   min-height: 100dvh;
   margin: 0 auto;
-  padding: 74px 16px 24px;
+  padding: calc(var(--topbar-h, 64px) + 10px) var(--gutter) 24px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -257,7 +262,7 @@ h2 {
   gap: 18px;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 10px 16px;
+  padding: 10px var(--gutter);
 }
 
 .topbar-slot {
@@ -266,6 +271,14 @@ h2 {
   justify-content: flex-end;
   gap: 10px;
   width: 212px;
+}
+
+.topbar-menu {
+  display: contents;
+}
+
+.topbar-menu-toggle {
+  display: none;
 }
 
 .topbar-nav {
@@ -392,7 +405,7 @@ a {
   flex-shrink: 0;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 460px) {
   .account-name {
     display: none;
   }
@@ -1572,6 +1585,14 @@ main {
   border: 1px solid var(--line);
 }
 
+.lang-list {
+  display: contents;
+}
+
+.lang-toggle {
+  display: none;
+}
+
 .lang-thumb {
   position: absolute;
   z-index: 0;
@@ -1692,13 +1713,35 @@ main {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 420px;
-  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+  grid-template-areas:
+    'copy card'
+    'search card';
+  gap: 18px 24px;
   align-items: center;
   padding-top: 12px;
 }
 
+.hero-copy {
+  grid-area: copy;
+  align-self: end;
+}
+
+.hero .quests-card,
+.hero .hero-guest {
+  grid-area: card;
+}
+
+.hero-search {
+  grid-area: search;
+  align-self: start;
+}
+
 .hero .quests-card {
+  align-self: stretch;
+}
+
+.hero .hero-guest {
   align-self: stretch;
 }
 
@@ -1731,6 +1774,8 @@ main {
 .hero-search input {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   border: none;
   background: none;
   color: var(--text);
@@ -1794,6 +1839,7 @@ main {
   font-size: clamp(30px, 5.5vw, 50px);
   line-height: 1.05;
   max-width: 640px;
+  overflow-wrap: break-word;
 }
 
 .hero-copy p {
@@ -2716,10 +2762,27 @@ button.ghost.small {
   align-self: auto;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 980px) {
   .hero {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'copy'
+      'card'
+      'search';
   }
+
+  .hero-search {
+    max-width: none;
+  }
+
+  .hero .quests-card,
+  .hero .hero-guest {
+    width: min(100%, 520px);
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 760px) {
 
   .totals b {
     font-size: 20px;
@@ -3097,6 +3160,170 @@ button.ghost.small {
 
 @media (max-width: 560px) {
   .topbar-link-label {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .lang-switch {
+    position: relative;
+    width: 62px;
+    height: 40px;
+    padding: 0;
+  }
+
+  .lang-switch.open {
+    z-index: 60;
+  }
+
+  .lang-thumb {
+    display: none;
+  }
+
+  .lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: inherit;
+    background: none;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .lang-list {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 100%;
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+  }
+
+  .lang-switch.open .lang-list {
+    display: flex;
+  }
+
+  .lang-list button {
+    min-width: 0;
+    justify-content: center;
+  }
+
+  .topbar-slot {
+    width: auto;
+  }
+
+  .account-link {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .account-name,
+  .account-level {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .topbar-menu {
+    position: relative;
+    display: block;
+    flex: none;
+    order: 2;
+    width: 40px;
+    margin-left: auto;
+    margin-right: -8px;
+  }
+
+  .topbar-right {
+    order: 3;
+    margin-left: 0;
+  }
+
+  .topbar-menu.open {
+    z-index: 60;
+  }
+
+  .topbar-menu-toggle {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--text-2);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .topbar-menu-toggle .icon {
+    font-size: 19px;
+  }
+
+  .topbar-menu-toggle:hover {
+    color: var(--text);
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
+  }
+
+  .topbar-menu.open .topbar-menu-toggle {
+    color: var(--text);
+    background: var(--card-2);
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
+  }
+
+  .topbar-menu.is-active .topbar-menu-toggle {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  }
+
+  .topbar-nav {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    min-width: 168px;
+    margin-left: 0;
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+  }
+
+  .topbar-menu.open .topbar-nav {
+    display: flex;
+  }
+
+  .topbar-nav a {
+    padding: 9px 10px;
+    border-radius: 9px;
+    white-space: nowrap;
+  }
+
+  .topbar-nav a:hover {
+    background: var(--card-2);
+  }
+}
+
+@media (max-width: 600px) {
+  .account-level {
     display: none;
   }
 }
@@ -7981,7 +8208,7 @@ html[data-auth] .hero-guest {
 
 .site-footer {
   margin: 60px calc(50% - 50vw) 0;
-  padding: 72px max(16px, calc(50vw - 700px)) 40px;
+  padding: 72px max(var(--gutter), calc(50vw - 700px)) 40px;
   width: 100vw;
   border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
   color: var(--text);
