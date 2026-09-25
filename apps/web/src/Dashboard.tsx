@@ -161,7 +161,7 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         {user ? (
           <Quests />
         ) : (
-          <Link className="card hero-stats guest" href={href.login}>
+          <Link className="card hero-stats guest" href={href.login} prefetch={false}>
             <span className="hero-stats-title">{t('dash.yourStats')}</span>
             <p>{t('landing.guestHint')}</p>
             <span className="hero-stats-link">{t('nav.signIn')}</span>

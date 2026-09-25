@@ -2,14 +2,15 @@ import { ObjectId } from 'mongodb'
 import { rounds, users } from '../db'
 import { gameData, isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
-import { roundOwner } from '../profile'
+import { roundOwner, touchVisit } from '../profile'
 import { finishRound, roundView } from '../rounds'
 
 const MAX_GUESSES = 300
 const MIN_GAP_MS = 800
 
 export const POST = handle(async (request) => {
-  const userId = (await roundOwner(request)).id
+  const owner = await roundOwner(request)
+  const userId = owner.id
   const body = await readJson(request)
   const entityId = Number(body.entityId)
   if (typeof body.roundId !== 'string' || !ObjectId.isValid(body.roundId) || !Number.isInteger(entityId)) return fail(400, 'bad_request')
@@ -46,7 +47,9 @@ export const POST = handle(async (request) => {
     return fail(400, 'bad_request')
   }
 
+  const people = await users()
+  if (!owner.guest) await touchVisit(people, userId)
   if (entityId !== updated.answerId) return json({ round: await roundView(updated, false) })
-  const result = await finishRound(await users(), updated, true)
+  const result = await finishRound(people, updated, true)
   return json({ round: await roundView(result.round, false), stats: result.stats })
 })

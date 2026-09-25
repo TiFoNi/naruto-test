@@ -1,5 +1,6 @@
+import { users } from '../db'
 import { fail, handle, json, readJson } from '../http'
-import { currentUser, unauthorized } from '../profile'
+import { currentUser, touchVisit, unauthorized } from '../profile'
 import { claimQuest, questBoard } from '../quests'
 import { levelOf, nextRank, rankOf, LEVEL_XP } from '../quests'
 import { nextReset } from '../daily'
@@ -33,6 +34,7 @@ export const POST = handle(async (request) => {
 
   const award = await claimQuest(found.doc._id!, claim)
   if (award === null) return fail(409, 'not_ready')
+  await touchVisit(await users(), found.doc._id!)
 
   const xp = (found.doc.xp ?? 0) + award
   const board = await questBoard(found.doc._id!)

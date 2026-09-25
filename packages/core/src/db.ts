@@ -8,6 +8,7 @@ export type UserDoc = {
   nickname?: string
   xp?: number
   stats?: Record<string, Partial<Stats>>
+  visit?: { lastDay: string; streak: number; best: number; days: string[] }
   duelStats?: { played?: number; wins?: number; losses?: number; draws?: number }
   challengeStats?: { solved?: number }
   createdAt: Date

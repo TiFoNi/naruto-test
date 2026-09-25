@@ -139,7 +139,8 @@ export const GET = handle(async (request) => {
     .map((row) => ({ mode: row._id, played: row.played, won: row.won, guesses: row.guesses }))
     .sort((a, b) => b.played - a.played)
 
-  const streak = streakOf(past.days.map((row) => row._id))
+  const active = streakOf([...past.days.map((row) => row._id), ...(doc.visit?.days ?? [])])
+  const streak = { ...active, best: Math.max(active.best, doc.visit?.best ?? 0) }
 
   const named = await Promise.all(
     past.recent.map(async (round) => {

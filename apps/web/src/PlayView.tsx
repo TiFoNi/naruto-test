@@ -29,7 +29,7 @@ export default function PlayView({ game: gameId, mode: modeId, daily }: { game: 
         {daily && !user && !loading ? (
           <div className="card center muted locked">
             <p>{t('daily.needsAccount')}</p>
-            <Link className="primary" href={href.login}>
+            <Link className="primary" href={href.login} prefetch={false}>
               {t('nav.signIn')}
             </Link>
           </div>

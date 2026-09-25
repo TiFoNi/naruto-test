@@ -115,7 +115,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
                 </Link>
               )}
               {!loading && !user && section !== 'login' && (
-                <Link className="topbar-link" href={href.login}>
+                <Link className="topbar-link" href={href.login} prefetch={false}>
                   <span className="topbar-link-label">{t('nav.signIn')}</span>
                 </Link>
               )}

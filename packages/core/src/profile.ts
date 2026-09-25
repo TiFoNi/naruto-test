@@ -51,6 +51,23 @@ export async function applyDailyResult(collection: Collection<UserDoc>, userId: 
   return dailyStats(next)
 }
 
+const VISIT_DAYS = 14
+
+const alive = (visit: UserDoc['visit']) => visit?.lastDay === today() || visit?.lastDay === shiftDay(today(), -1)
+
+export async function touchVisit(collection: Collection<UserDoc>, userId: ObjectId) {
+  const day = today()
+  const doc = await collection.findOne({ _id: userId }, { projection: { visit: 1 } })
+  const prev = doc?.visit
+  if (prev?.lastDay === day) return prev
+
+  const streak = prev?.lastDay === shiftDay(day, -1) ? prev.streak + 1 : 1
+  const days = [...new Set([...(prev?.days ?? []), day])].sort().slice(-VISIT_DAYS)
+  const visit = { lastDay: day, streak, best: Math.max(prev?.best ?? 0, streak), days }
+  await collection.updateOne({ _id: userId }, { $set: { visit } })
+  return visit
+}
+
 export function toProfile(doc: UserDoc) {
   const xp = number(doc.xp)
 
@@ -61,6 +78,8 @@ export function toProfile(doc: UserDoc) {
       nickname: doc.nickname ?? defaultNickname(doc.username),
       level: levelOf(xp),
       xp,
+      streak: alive(doc.visit) ? (doc.visit?.streak ?? 0) : 0,
+      bestStreak: doc.visit?.best ?? 0,
     },
     stats: Object.fromEntries([
       ...STAT_KEYS.map((key) => [key, normalizeStats(doc.stats?.[key])]),

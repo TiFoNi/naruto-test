@@ -82,8 +82,8 @@ export default function PlaySide({ game, mode, daily, stats, playing, busy, lege
   const { user } = useAuth()
   const cells = [
     { key: 'solved', label: t('stats.solved'), value: stats.solved },
-    { key: 'streak', label: t(daily ? 'daily.streak' : 'stats.streak'), value: stats.streak, hot: true },
-    { key: 'best', label: t(daily ? 'daily.best' : 'stats.best'), value: stats.best },
+    { key: 'streak', label: t(daily ? 'daily.streak' : 'stats.streak'), value: daily ? (user?.streak ?? 0) : stats.streak, hot: true },
+    { key: 'best', label: t(daily ? 'daily.best' : 'stats.best'), value: daily ? (user?.bestStreak ?? 0) : stats.best },
     { key: 'avg', label: t('stats.avg'), value: average(stats) },
   ]
 
