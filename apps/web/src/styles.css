@@ -7170,7 +7170,7 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
 
 .footer-top {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1.7fr) repeat(2, minmax(0, 1fr));
   gap: 40px;
   padding-bottom: 48px;
 }

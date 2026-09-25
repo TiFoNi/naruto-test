@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { useAuth } from './auth'
 import { BRAND } from './brand'
 import { CONTACT, SOCIALS, SOURCES } from './contacts'
 import { useI18n } from './i18n'
@@ -11,7 +10,6 @@ import { useHref } from './router'
 export default function Footer() {
   const { t } = useI18n()
   const href = useHref()
-  const { user } = useAuth()
 
   return (
     <footer className="site-footer">
@@ -26,14 +24,6 @@ export default function Footer() {
           </span>
           <p>{t('footer.tagline')}</p>
         </div>
-
-        <nav className="footer-col" aria-label={t('footer.game')}>
-          <h2>{t('footer.game')}</h2>
-          <Link href={href.home}>{t('footer.allGames')}</Link>
-          {user && <Link href={href.duels}>{t('nav.duels')}</Link>}
-          {user && <Link href={href.leaderboard('naruto', 'classic')}>{t('nav.leaderboard')}</Link>}
-          <Link href={user ? href.profile : href.login}>{user ? t('nav.profile') : t('nav.signIn')}</Link>
-        </nav>
 
         <nav className="footer-col" aria-label={t('footer.legal')}>
           <h2>{t('footer.legal')}</h2>

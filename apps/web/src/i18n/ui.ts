@@ -461,8 +461,6 @@ const ui = {
     uk: 'Вгадуй персонажів аніме, манґи та ігор — нескінченно або по одному на день.',
     en: 'Guess anime, manga and game characters — endlessly or one a day.',
   },
-  'footer.game': { ru: 'Игра', uk: 'Гра', en: 'Game' },
-  'footer.allGames': { ru: 'Все игры', uk: 'Усі ігри', en: 'All games' },
   'footer.legal': { ru: 'Правовое', uk: 'Правове', en: 'Legal' },
   'footer.contact': { ru: 'Связь', uk: 'Зв’язок', en: 'Contact' },
   'footer.support': { ru: 'Поддержка', uk: 'Підтримка', en: 'Support' },
