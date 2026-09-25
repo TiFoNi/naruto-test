@@ -15,12 +15,14 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="footer-top">
         <div className="footer-brand">
-          <span className="brand-mark" aria-hidden>
-            {BRAND.mark}
-          </span>
-          <span className="brand-name">
-            {BRAND.parts[0]}
-            <em>{BRAND.parts[1]}</em>
+          <span className="footer-logo">
+            <span className="brand-mark" aria-hidden>
+              {BRAND.mark}
+            </span>
+            <span className="brand-name">
+              {BRAND.parts[0]}
+              <em>{BRAND.parts[1]}</em>
+            </span>
           </span>
           <p>{t('footer.tagline')}</p>
         </div>
