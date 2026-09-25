@@ -4,6 +4,7 @@ import { useEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Background from './Background'
+import Footer from './Footer'
 import Landing from './Landing'
 import { useAuth } from './auth'
 import { BRAND } from './brand'
@@ -139,18 +140,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
 
       {user || open ? children : loading ? <div className="card center muted">{t('loading')}</div> : <Landing games={games} />}
 
-      <footer>
-        <p className="footer-links">
-          <Link href={href.privacy}>{t('footer.privacy')}</Link>
-          <Link href={href.terms}>{t('footer.terms')}</Link>
-        </p>
-        <p>{t('footer.disclaimer')}</p>
-        <p>
-          {t('footer.data')}: Naruto Wiki, Dattebayo API, Valve, OpenDota, Dota 2 Wiki, Attack on Titan Wiki, Bleach Wiki, Tokyo Ghoul Wiki, Berserk Wiki,
-          Kimetsu no Yaiba Wiki, One Piece Wiki, Mortal Kombat Wiki, Hunterpedia, Black Clover Wiki, JoJo&apos;s Bizarre Encyclopedia, Soul Eater Wiki, Fire
-          Force Wiki, Death Note Wiki, MangaDex, MyAnimeList.
-        </p>
-      </footer>
+      <Footer />
     </div>
   )
 }
