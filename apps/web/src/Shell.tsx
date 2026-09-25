@@ -109,12 +109,12 @@ export default function Shell({ children, games }: { children: ReactNode; games:
           <div className="topbar-right">
             <LangSwitch />
             <div className="topbar-slot">
-              {section === 'login' && (
+              {(section === 'login' || (!loading && !user && !open)) && (
                 <Link className="topbar-link guest" href={href.home}>
                   <span className="topbar-link-label">{t('login.guest')}</span>
                 </Link>
               )}
-              {!loading && !user && section !== 'login' && (
+              {!loading && !user && open && section !== 'login' && (
                 <Link className="topbar-link" href={href.login} prefetch={false}>
                   <span className="topbar-link-label">{t('nav.signIn')}</span>
                 </Link>
