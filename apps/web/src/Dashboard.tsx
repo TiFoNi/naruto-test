@@ -76,61 +76,49 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
           {MODES.filter((m) => game.modes.includes(m.id)).map((m) => {
             const own = stats[statsKey(game.id, m.id)] ?? emptyStats
             const played = own.solved > 0 || own.skipped > 0
+            const done = stats[dailyKey(game.id, m.id)]?.lastDay === kyivToday()
             return (
-              <Link key={m.id} className="mode-link" href={href.play(game.id, m.id)} prefetch={false}>
-                <span className="mode-icon" aria-hidden>
-                  {m.icon}
-                </span>
-                <span>{t(m.label)}</span>
-                {played && (
-                  <span
-                    className="mode-stat-hint"
-                    tabIndex={0}
-                    role="button"
-                    aria-label={t('dash.statsHint')}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.currentTarget.focus()
-                    }}
-                  >
-                    <ChartIcon />
-                    <span className="mode-tip" role="tooltip">
-                      <b>{t('dash.tipSolved', { count: own.solved })}</b>
-                      <b>{t('dash.tipSkipped', { count: own.skipped })}</b>
-                      <b>{t('dash.tipAvg', { value: average(own) })}</b>
-                    </span>
+              <div key={m.id} className="mode-row">
+                <Link className="mode-link" href={href.play(game.id, m.id)} prefetch={false}>
+                  <span className="mode-icon" aria-hidden>
+                    {m.icon}
                   </span>
+                  <span className="mode-name">{t(m.label)}</span>
+                  {played && (
+                    <span
+                      className="mode-stat-hint"
+                      tabIndex={0}
+                      role="button"
+                      aria-label={t('dash.statsHint')}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.currentTarget.focus()
+                      }}
+                    >
+                      <ChartIcon />
+                      <span className="mode-tip" role="tooltip">
+                        <b>{t('dash.tipSolved', { count: own.solved })}</b>
+                        <b>{t('dash.tipSkipped', { count: own.skipped })}</b>
+                        <b>{t('dash.tipAvg', { value: average(own) })}</b>
+                      </span>
+                    </span>
+                  )}
+                </Link>
+                {user && (
+                  <Link
+                    className={`mode-daily ${done ? 'done' : ''}`}
+                    href={href.play(game.id, m.id, true)}
+                    title={done ? t('daily.done') : t('daily.dashTitle')}
+                    aria-label={done ? t('daily.done') : t('daily.dashTitle')}
+                    prefetch={false}
+                  >
+                    {done ? <CheckIcon /> : <CalendarIcon />}
+                  </Link>
                 )}
-              </Link>
+              </div>
             )
           })}
         </div>
-        {user && (
-          <div className="daily-links">
-            <span className="daily-links-title">
-              <CalendarIcon /> {t('daily.dashTitle')}
-            </span>
-            {MODES.filter((m) => game.modes.includes(m.id)).map((m) => {
-              const done = stats[dailyKey(game.id, m.id)]?.lastDay === kyivToday()
-              return (
-                <Link
-                  key={m.id}
-                  className={`daily-link ${done ? 'done' : ''}`}
-                  href={href.play(game.id, m.id, true)}
-                  title={done ? t('daily.done') : undefined}
-                  prefetch={false}
-                >
-                  {done && (
-                    <span aria-label={t('daily.done')}>
-                      <CheckIcon />
-                    </span>
-                  )}
-                  {t(m.label)}
-                </Link>
-              )
-            })}
-          </div>
-        )}
       </div>
     </article>
   )
