@@ -3,11 +3,11 @@ import CharacterSearch from './CharacterSearch'
 import PlaySide from './PlaySide'
 import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
+import ShareResult, { type Tile } from './ShareResult'
 import Thumb from './Thumb'
 import Yesterday from './Yesterday'
-import { useAuth } from './auth'
 import type { Game } from './games/types'
-import { useI18n, type UiKey } from './i18n'
+import { useI18n } from './i18n'
 import { LockIcon, SparkIcon } from './icons'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
@@ -20,8 +20,7 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 const clarityAt = (step: number) => Math.round((step / ABILITY_STAGES) * 100)
 
 export default function AbilityMode({ game, active, stats, daily = false, challenge }: Props) {
-  const { t, name, lang } = useI18n()
-  const { user } = useAuth()
+  const { t, l, name, lang } = useI18n()
   const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(
     game,
     'ability',
@@ -32,12 +31,15 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
 
   const wrong = guesses.filter((g) => !g.pending).length - (won ? 1 : 0)
   const src = round?.image ? `${apiSrc(round.image)}&v=${over ? 'done' : wrong}` : null
-  const step = over ? ABILITY_STAGES : Math.min(wrong, ABILITY_STAGES)
+  const solvedStep = Math.min(wrong, ABILITY_STAGES)
+  const step = over ? ABILITY_STAGES : solvedStep
   const playing = !!round && !over
   const scored = daily || !!challenge
   const hintAt = round?.hintAt ?? ABILITY_STAGES
   const hintLeft = Math.max(0, hintAt - wrong)
   const ability = round?.ability?.[lang]
+  const tiles: Tile[] = Array.from({ length: ABILITY_STAGES + 1 }, (_, i): Tile => (i < solvedStep ? 'miss' : i === solvedStep ? 'hit' : 'idle'))
+  const shareSummary = `${t('play.pillAttempts', { count: guesses.length })} · ${clarityAt(solvedStep)}%`
 
   const [number, setNumber] = useState(1)
   const played = stats.solved + stats.skipped
@@ -70,11 +72,8 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
     mood === 'ask'
       ? t('play.abilityPrompt')
       : won
-        ? t('ability.wonHint', { count: guesses.length, clarity: clarityAt(Math.min(wrong, ABILITY_STAGES)) })
+        ? t('ability.wonHint', { count: guesses.length, clarity: clarityAt(solvedStep) })
         : t(daily ? 'ability.lostHintDaily' : 'ability.lostHint')
-
-  const streakLabel: UiKey = daily ? 'play.pillDays' : 'play.pillStreak'
-  const streakValue = daily ? (user?.streak ?? 0) : stats.streak
 
   return (
     <section className="play-layout ability-layout">
@@ -95,10 +94,6 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
         <div className={`play-card mode-ask state-${mood}`}>
           <h2>{headline}</h2>
           <p>{subline}</p>
-          <div className="mode-pills">
-            <span>{t('play.pillAttempts', { count: guesses.length })}</span>
-            <span className="hot">{t(streakLabel, { count: streakValue })}</span>
-          </div>
         </div>
 
         <div className="play-card zoom-scale">
@@ -108,7 +103,7 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
               {playing && step < ABILITY_STAGES ? t('ability.nextClarity', { clarity: clarityAt(step + 1) }) : t('ability.fullClarity')}
             </span>
           </div>
-          <div className="zoom-steps clarity-steps">
+          <div className="zoom-steps clarity-steps" style={{ ['--steps' as string]: ABILITY_STAGES + 1 }}>
             {Array.from({ length: ABILITY_STAGES + 1 }, (_, i) => (
               <span key={i} className={i === step ? 'now' : i < step ? 'past' : ''}>
                 <i />
@@ -118,20 +113,22 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
           </div>
         </div>
 
-        <div className={`ability-reveal ${ability ? 'open' : ''}`}>
-          <span className="ability-reveal-mark" aria-hidden>
-            {ability ? <SparkIcon /> : <LockIcon />}
-          </span>
-          <span className="ability-reveal-text">
-            <span className="play-card-title">{t('ability.revealTitle')}</span>
-            <b>{ability ?? t('ability.revealIn', { count: hintLeft })}</b>
-          </span>
-          <span className="ability-dots" aria-hidden>
-            {Array.from({ length: hintAt }, (_, i) => (
-              <i key={i} className={i < wrong ? 'on' : ''} />
-            ))}
-          </span>
-        </div>
+        {!over && (
+          <div className={`ability-reveal ${ability ? 'open' : ''}`}>
+            <span className="ability-reveal-mark" aria-hidden>
+              {ability ? <SparkIcon /> : <LockIcon />}
+            </span>
+            <span className="ability-reveal-text">
+              <span className="play-card-title">{t('ability.revealTitle')}</span>
+              <b>{ability ?? t('ability.revealIn', { count: hintLeft })}</b>
+            </span>
+            <span className="ability-dots" aria-hidden>
+              {Array.from({ length: hintAt }, (_, i) => (
+                <i key={i} className={i < wrong ? 'on' : ''} />
+              ))}
+            </span>
+          </div>
+        )}
 
         {playing && <CharacterSearch game={game} exclude={exclude} active={active} busy={busy} onPick={guess} compact />}
 
@@ -139,6 +136,10 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
           <button type="button" className="primary mode-next" onClick={next}>
             {t('ability.next')}
           </button>
+        )}
+
+        {round && over && answer && !skipped && (
+          <ShareResult caption={l(game.label)} tiles={tiles} summary={shareSummary} won={won} />
         )}
 
         <RoundStatus loading={!round && !error} error={error} onRetry={retry} />

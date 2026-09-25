@@ -12,11 +12,12 @@ const LANGS = { en: 'english', ru: 'russian', uk: 'ukrainian' }
 const SIZE = 128
 const SKIP = /^generic_|_empty\d*$|^special_bonus/
 const STAGES = [
-  { blur: 9, saturation: 0 },
-  { blur: 6, saturation: 0 },
-  { blur: 4, saturation: 0.25 },
-  { blur: 2.5, saturation: 0.55 },
-  { blur: 1.2, saturation: 0.85 },
+  { blur: 10, saturation: 0 },
+  { blur: 7, saturation: 0 },
+  { blur: 5, saturation: 0.2 },
+  { blur: 3.2, saturation: 0.45 },
+  { blur: 2, saturation: 0.7 },
+  { blur: 1, saturation: 0.9 },
 ]
 
 async function main() {

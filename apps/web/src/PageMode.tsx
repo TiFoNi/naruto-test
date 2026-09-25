@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import PlaySide from './PlaySide'
 import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
+import ShareResult, { type Tile } from './ShareResult'
 import Yesterday from './Yesterday'
 import type { Entity, Game } from './games/types'
 import { useI18n, type UiKey } from './i18n'
@@ -16,7 +17,7 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 type Titled = Entity & { demographic?: string; year?: number }
 
 export default function PageMode({ game, active, stats, daily = false, challenge }: Props) {
-  const { t, name, tv } = useI18n()
+  const { t, l, name, tv } = useI18n()
   const { round, guesses, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(game, 'page', active, daily, challenge)
 
   const byId = new Map(game.entities.map((e) => [e.id, e]))
@@ -31,6 +32,10 @@ export default function PageMode({ game, active, stats, daily = false, challenge
   const ready = Boolean(src) && loaded === src
   const playing = !!round && !over
   const scored = daily || !!challenge
+  const tiles: Tile[] = guesses
+    .filter((g) => !g.pending)
+    .map((g): Tile => (won && g.entity.id === answer?.id ? 'hit' : 'miss'))
+    .reverse()
 
   const played = stats.solved + stats.skipped
   const playedRef = useRef(played)
@@ -125,10 +130,6 @@ export default function PageMode({ game, active, stats, daily = false, challenge
         <div className={`play-card mode-ask state-${mood}`}>
           <h2>{t(headline)}</h2>
           <p>{t(subline)}</p>
-          <div className="mode-pills">
-            <span>{t('play.pillAttempts', { count: guesses.length })}</span>
-            <span className="hot">{t('play.pillStreak', { count: stats.streak })}</span>
-          </div>
         </div>
 
         <div className="manga-options" role="radiogroup" aria-label={t('play.pageTitle')}>
@@ -163,6 +164,10 @@ export default function PageMode({ game, active, stats, daily = false, challenge
           <button type="button" className="primary mode-next" onClick={next}>
             {t('page.next')}
           </button>
+        )}
+
+        {round && over && answer && !skipped && (
+          <ShareResult caption={l(game.label)} tiles={tiles} summary={t('play.pillAttempts', { count: guesses.length })} won={won} />
         )}
 
         <RoundStatus loading={!round && !error} error={error} onRetry={retry} />

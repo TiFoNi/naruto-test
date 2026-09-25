@@ -7,7 +7,7 @@ import { useI18n, type UiKey } from './i18n'
 import { useHref } from './router'
 import type { Stats } from './stats'
 import { fullUrl } from './pics'
-import { MODES, type ModeId } from './modes'
+import type { ModeId } from './modes'
 
 const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
 
@@ -46,9 +46,8 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
 
   const note = challenge ? t('challenge.summary', { guesses }) : skipped ? t('result.notCounted') : ''
   const verdict: UiKey = won ? 'result.won' : skipped ? 'result.skipped' : 'result.lost'
-  const modeLabel = MODES.find((m) => m.id === mode)?.label
   const day = daily ? new Date().toLocaleDateString(LOCALES[lang], { day: 'numeric', month: 'long' }) : ''
-  const eyebrow = [t(verdict), modeLabel ? t(modeLabel) : '', day].filter(Boolean).join(' · ')
+  const eyebrow = [t(verdict).replace(/…$/, ''), day].filter(Boolean).join(' · ')
 
   const facts = [
     { key: 'tries', value: guesses, label: t('result.factTries') },
@@ -88,9 +87,14 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
             </Link>
           </div>
         ) : (
-          <button className="primary" onClick={onNext}>
-            {t('result.next')}
-          </button>
+          <div className="result-actions">
+            <Link className="ghost" href={href.home}>
+              {t('play.back')}
+            </Link>
+            <button className="primary" onClick={onNext}>
+              {t('result.next')}
+            </button>
+          </div>
         )
       )}
     </div>

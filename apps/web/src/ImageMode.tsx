@@ -7,16 +7,14 @@ import ZoomImage from './ZoomImage'
 import Yesterday from './Yesterday'
 import Thumb from './Thumb'
 import type { Game } from './games/types'
-import { useEffect, useRef, useState } from 'react'
 import { useI18n } from './i18n'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
 import { apiSrc } from './api'
+import { ZOOM_LEVELS, levelAt } from './zoom'
 
-const ZOOM_LEVELS = [7, 5.6, 4.5, 3.6, 2.9, 2.35, 1.9, 1.55, 1.25, 1]
 type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
 
-const levelAt = (index: number) => ZOOM_LEVELS[Math.min(index, ZOOM_LEVELS.length - 1)]
 
 export default function ImageMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t, l, lang, name } = useI18n()
@@ -35,21 +33,8 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
   const zoomText = (value: number) => (lang === 'en' ? value.toFixed(1) : value.toFixed(1).replace('.', ','))
   const nextLevel = step < ZOOM_LEVELS.length - 1 ? ZOOM_LEVELS[step + 1] : null
   const shownStep = over ? ZOOM_LEVELS.length - 1 : step
-  const solvedAt = ZOOM_LEVELS[Math.min(wrong, ZOOM_LEVELS.length - 1)]
-
-  const [number, setNumber] = useState(1)
-  const played = stats.solved + stats.skipped
-  const playedRef = useRef(played)
-  playedRef.current = played
-
-  useEffect(() => {
-    if (round?.id) setNumber(playedRef.current + 1)
-  }, [round?.id])
-
-  const tiles: Tile[] = guesses
-    .filter((g) => !g.pending)
-    .map((g): Tile => (won && g.entity.id === answer?.id ? 'hit' : 'miss'))
-    .reverse()
+  const solvedAt = ZOOM_LEVELS[step]
+  const tiles: Tile[] = ZOOM_LEVELS.map((_, i) => (i < step ? 'miss' : i === step ? 'hit' : 'idle'))
   const shareSummary = `${t('play.pillAttempts', { count: guesses.length })} · ${won ? `×${zoomText(solvedAt)}` : t('share.gaveUp')}`
 
   return (
@@ -61,7 +46,6 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
             src={apiSrc(round?.image)}
             zoom={zoom}
             resetKey={round?.id}
-            seed={round?.daily ? `${game.id}-${round.daily}` : round?.id}
           />
         </div>
 
@@ -86,10 +70,6 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
           <div className="play-card shot-copy">
             <h2>{t('play.imageTitle')}</h2>
             <p>{t('play.imagePrompt')}</p>
-            <div className="shot-pills">
-              <span>{t('play.pillAttempts', { count: guesses.length })}</span>
-              <span className="hot">{t('play.pillStreak', { count: stats.streak })}</span>
-            </div>
           </div>
         )}
 
@@ -114,7 +94,7 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
         )}
 
         {round && over && answer && !skipped && (
-          <ShareResult caption={t('share.caption', { game: l(game.label), number })} tiles={tiles} summary={shareSummary} won={won} />
+          <ShareResult caption={l(game.label)} tiles={tiles} summary={shareSummary} won={won} />
         )}
 
         {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}

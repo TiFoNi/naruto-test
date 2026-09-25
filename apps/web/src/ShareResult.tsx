@@ -2,7 +2,7 @@ import { BRAND } from './brand'
 import { useI18n } from './i18n'
 import { CopyIcon } from './icons'
 
-export type Tile = 'hit' | 'miss'
+export type Tile = 'hit' | 'miss' | 'idle'
 
 type Props = { caption: string; tiles: Tile[]; summary: string; won: boolean }
 
@@ -23,7 +23,7 @@ export default function ShareResult({ caption, tiles, summary, won }: Props) {
             </span>
             <span className="share-caption">{caption}</span>
           </div>
-          <div className="share-tiles">
+          <div className="share-tiles" style={{ ['--tiles' as string]: tiles.length }}>
             {tiles.map((tile, index) => (
               <i key={index} className={tile} />
             ))}

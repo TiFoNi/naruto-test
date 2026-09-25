@@ -1,6 +1,7 @@
 import BackButton from './BackButton'
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import AbilityIcon from './AbilityIcon'
+import { ZOOM_LEVELS } from './zoom'
 import CharacterSearch from './CharacterSearch'
 import GuessGrid from './GuessGrid'
 import { Legend } from './PlaySide'
@@ -19,7 +20,6 @@ import { fullUrl } from './pics'
 import { apiSrc } from './api'
 import { useEntities } from './entities'
 
-const ZOOM_LEVELS = [7, 5.6, 4.5, 3.6, 2.9, 2.35, 1.9, 1.55, 1.25, 1]
 
 const clock = (ms: number) => {
   const total = Math.max(0, Math.floor(ms / 1000))
@@ -184,7 +184,7 @@ export default function DuelRoom({ code }: { code: string }) {
           <div className="card intro">
             <h2>{t(duel.mode === 'ability' ? 'play.abilityTitle' : duel.mode === 'image' ? 'play.imageTitle' : 'play.classicTitle')}</h2>
             {duel.mode === 'image' && !over && (
-              <ZoomImage game={game} src={apiSrc(duel.image)} zoom={zoom} resetKey={`${duel.code}-${duel.round}`} seed={`${duel.code}-${duel.round}`} />
+              <ZoomImage game={game} src={apiSrc(duel.image)} zoom={zoom} resetKey={`${duel.code}-${duel.round}`} />
             )}
             {duel.mode === 'ability' && (
               <AbilityIcon
