@@ -7164,8 +7164,7 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
   margin: 60px calc(50% - 50vw) 0;
   padding: 72px max(16px, calc(50vw - 700px)) 40px;
   width: 100vw;
-  background: #07090b;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
   color: var(--text);
 }
 
