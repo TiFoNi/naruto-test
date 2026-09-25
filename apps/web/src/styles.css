@@ -1847,10 +1847,20 @@ main {
 }
 
 .franchise-body {
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 16px 18px 18px;
+}
+
+.franchise-body > p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  min-height: calc(2 * 1.55em);
 }
 
 .franchise-title {
@@ -1858,6 +1868,11 @@ main {
   align-items: baseline;
   justify-content: space-between;
   gap: 10px;
+  min-width: 0;
+}
+
+.franchise-title .count {
+  flex: none;
 }
 
 .franchise h3 {
@@ -1881,10 +1896,11 @@ main {
 }
 
 .franchise-modes {
+  margin-top: auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(184px, 1fr));
   gap: 8px;
-  margin-top: 4px;
+  padding-top: 4px;
 }
 
 .mode-row {
