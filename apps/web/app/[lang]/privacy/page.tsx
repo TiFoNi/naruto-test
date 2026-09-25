@@ -9,7 +9,7 @@ type Params = { params: Promise<{ lang: string }> }
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang } = await params
   const doc = privacy(lang as Lang)
-  return { title: doc.title, description: doc.intro, alternates: alternates(`/${lang}/privacy`) }
+  return { title: doc.title, description: doc.intro, alternates: alternates(`/${lang}/privacy`), robots: { index: false, follow: false } }
 }
 
 export default async function PrivacyPage({ params }: Params) {

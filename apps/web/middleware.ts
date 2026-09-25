@@ -23,7 +23,9 @@ export function middleware(request: NextRequest) {
   if (CODES.some((code) => pathname === `/${code}` || pathname.startsWith(`/${code}/`))) return NextResponse.next()
 
   const lang = preferred(request)
-  return NextResponse.redirect(new URL(`/${lang}${pathname === '/' ? '' : pathname}${search}`, request.url))
+  const response = NextResponse.redirect(new URL(`/${lang}${pathname === '/' ? '' : pathname}${search}`, request.url))
+  response.headers.set('vary', 'Accept-Language, Cookie')
+  return response
 }
 
 export const config = {

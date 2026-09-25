@@ -19,8 +19,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...(await gameMeta()).flatMap((game) =>
       game.modes.map((mode) => ({ path: `/play/${game.id}/${mode}`, changeFrequency: 'weekly' as const, priority: 0.7 })),
     ),
-    { path: '/privacy', changeFrequency: 'yearly' as const, priority: 0.2 },
-    { path: '/terms', changeFrequency: 'yearly' as const, priority: 0.2 },
   ]
 
   return paths.flatMap(({ path, changeFrequency, priority }) =>
