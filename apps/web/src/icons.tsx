@@ -315,3 +315,31 @@ export function PinIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function NextIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2.2}>
+      <path d="m9.5 6 6 6-6 6" />
+    </svg>
+  )
+}
+
+export function ZoomInIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="m16 16 4 4" />
+      <path d="M8.5 11h5M11 8.5v5" />
+    </svg>
+  )
+}
+
+export function ZoomOutIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="m16 16 4 4" />
+      <path d="M8.5 11h5" />
+    </svg>
+  )
+}

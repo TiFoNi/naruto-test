@@ -116,7 +116,7 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
         </div>
       </div>
 
-      <PlaySide game={game} mode="image" daily={daily} stats={stats} playing={playing} howto onGiveUp={giveUp} />
+      <PlaySide game={game} mode="image" daily={daily} stats={stats} playing={playing} howto="image" onGiveUp={giveUp} />
     </section>
   )
 }

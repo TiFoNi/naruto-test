@@ -16,16 +16,21 @@ type Props = {
   playing: boolean
   busy?: boolean
   legend?: boolean
-  howto?: boolean
+  howto?: 'image' | 'page'
   onGiveUp: () => void
 }
 
-function HowTo() {
+const STEPS = {
+  image: ['howto.step1', 'howto.step2', 'howto.step3'],
+  page: ['howtoPage.step1', 'howtoPage.step2', 'howtoPage.step3'],
+} as const
+
+function HowTo({ kind }: { kind: 'image' | 'page' }) {
   const { t } = useI18n()
   return (
     <div className="play-card play-howto">
       <span className="play-card-title">{t('howto.title')}</span>
-      {(['howto.step1', 'howto.step2', 'howto.step3'] as const).map((key, i) => (
+      {STEPS[kind].map((key, i) => (
         <span key={key}>
           <i>{i + 1}</i>
           {t(key)}
@@ -99,7 +104,7 @@ export default function PlaySide({ game, mode, daily, stats, playing, busy, lege
       </div>
 
       {legend && <Legend game={game} />}
-      {howto && <HowTo />}
+      {howto && <HowTo kind={howto} />}
 
       <div className="play-actions">
         {!daily && user && <ChallengeMaker game={game} mode={mode} />}
