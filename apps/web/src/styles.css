@@ -1616,6 +1616,12 @@ main {
   cursor: inherit;
 }
 
+.hero-search input::-webkit-search-cancel-button,
+.hero-search input::-webkit-search-decoration {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
 .hero-search input::placeholder {
   color: var(--text-3);
 }
