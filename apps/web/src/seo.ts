@@ -6,19 +6,19 @@ import { LANGS, type Lang } from './i18n/ui'
 
 export const HOME: Record<Lang, { title: string; description: string }> = {
   ru: {
-    title: 'NandaGuessr — угадай персонажа аниме и игр',
+    title: 'NandaGuessr — угадай аниме, мангу и игры',
     description:
-      'Угадывай персонажей по признакам и картинкам: Наруто, Ван Пис, Атака титанов, Блич, Тетрадь смерти, Dota 2 и ещё десяток вселенных. Подсказки после каждой попытки, персонаж дня и дуэли с друзьями — без лимитов.',
+      'Угадывай персонажей и тайтлы по признакам и картинкам: Наруто, Ван Пис, Атака титанов, Блич, Тетрадь смерти, Dota 2 и ещё десяток вселенных. Подсказки после каждой попытки, загадка дня и дуэли с друзьями — без лимитов.',
   },
   uk: {
-    title: 'NandaGuessr — вгадай персонажа аніме та ігор',
+    title: 'NandaGuessr — вгадай аніме, манґу та ігри',
     description:
-      'Вгадуй персонажів за ознаками й картинками: Наруто, Ван Піс, Атака титанів, Бліч, Зошит смерті, Dota 2 і ще десяток всесвітів. Підказки після кожної спроби, персонаж дня та дуелі з друзями — без лімітів.',
+      'Вгадуй персонажів і тайтли за ознаками й картинками: Наруто, Ван Піс, Атака титанів, Бліч, Зошит смерті, Dota 2 і ще десяток всесвітів. Підказки після кожної спроби, загадка дня та дуелі з друзями — без лімітів.',
   },
   en: {
-    title: 'NandaGuessr — guess anime and game characters',
+    title: 'NandaGuessr — guess anime, manga and games',
     description:
-      'Guess characters by traits and pictures: Naruto, One Piece, Attack on Titan, Bleach, Death Note, Dota 2 and a dozen more worlds. Hints after every try, a daily character and duels with friends — no limits.',
+      'Guess characters and titles by traits and pictures: Naruto, One Piece, Attack on Titan, Bleach, Death Note, Dota 2 and a dozen more worlds. Hints after every try, a daily puzzle and duels with friends — no limits.',
   },
 }
 
