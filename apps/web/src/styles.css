@@ -6228,7 +6228,7 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
     text-align: center;
   }
 
-  .lb-bar {
+  .lb-table .lb-bar {
     display: none;
   }
 }
@@ -7353,4 +7353,349 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
   margin-top: 2px;
   text-align: center;
   text-decoration: none;
+}
+
+.awards-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.awards-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.awards-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.awards-big {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+}
+
+.awards-big b {
+  font-family: var(--display);
+  font-size: 34px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.awards-big span {
+  color: var(--text-3);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.awards-big i {
+  margin-left: auto;
+  color: var(--accent);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.awards-rarest {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+
+.awards-rarest > span:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.awards-rarest b {
+  font-size: 17px;
+}
+
+.awards-rarest i {
+  color: var(--text-3);
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.awards-tiers {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.awards-tier {
+  display: grid;
+  grid-template-columns: 10px 1fr 90px auto;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+.awards-tier i {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--tier);
+}
+
+.awards-tier .lb-bar {
+  width: 100%;
+}
+
+.awards-tier .lb-bar > span {
+  background: var(--tier);
+}
+
+.awards-tier b {
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.bronze {
+  --tier: #d98a4e;
+}
+
+.silver {
+  --tier: #c9d1dc;
+}
+
+.gold {
+  --tier: #f5c451;
+}
+
+.legend {
+  --tier: #a78bfa;
+}
+
+.awards-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: var(--card);
+  align-self: flex-start;
+}
+
+.awards-filters button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 11px;
+  background: none;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.awards-filters button b {
+  color: var(--text-3);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.awards-filters button:hover {
+  color: var(--text);
+}
+
+.awards-filters button.active {
+  background: var(--card-2);
+  color: var(--text);
+}
+
+.awards-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.awards-group h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+  font-size: 19px;
+}
+
+.awards-group h2 span {
+  color: var(--text-3);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.awards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 12px;
+}
+
+.award {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+}
+
+.award.done {
+  border-color: color-mix(in srgb, var(--tier) 42%, transparent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tier) 7%, var(--card)), var(--card) 70%);
+}
+
+.award.hidden {
+  border-style: dashed;
+}
+
+.award-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  color: var(--text-3);
+  font-size: 19px;
+}
+
+.award.done .award-mark {
+  border-color: color-mix(in srgb, var(--tier) 55%, transparent);
+  background: color-mix(in srgb, var(--tier) 16%, transparent);
+  color: var(--tier);
+}
+
+.award-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.award-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.award-head b {
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.award-tier {
+  flex: none;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--tier) 16%, transparent);
+  color: var(--tier);
+  font-size: 10.5px;
+  font-weight: 800;
+}
+
+.award-body p {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.award-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.award-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--correct);
+  font-variant-numeric: tabular-nums;
+}
+
+.award-date.muted {
+  color: var(--text-3);
+}
+
+.award-bar {
+  flex: 1 1 auto;
+  display: block;
+  overflow: hidden;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--card-2);
+}
+
+.award-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--tier);
+}
+
+.award-count,
+.award-rarity {
+  flex: none;
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.award-rarity {
+  margin-left: auto;
+}
+
+@media (max-width: 620px) {
+  .awards-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .awards-filters {
+    align-self: stretch;
+  }
+}
+
+.awards-open {
+  justify-content: center;
+  width: 100%;
+  height: 44px;
+  border-radius: 13px;
+}
+
+.awards-rarest .award-mark {
+  border-color: color-mix(in srgb, var(--tier) 55%, transparent);
+  background: color-mix(in srgb, var(--tier) 16%, transparent);
+  color: var(--tier);
 }

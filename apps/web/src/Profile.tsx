@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import Link from 'next/link'
 import BackButton from './BackButton'
 import { useAuth } from './auth'
 import { api } from './api'
@@ -9,6 +10,7 @@ import Quests, { type Level } from './Quests'
 import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
 import { CalendarIcon, CheckIcon, TrophyIcon } from './icons'
+import { useHref } from './router'
 import { kyivToday } from './stats'
 
 type Named = { ru: string; uk: string; en: string }
@@ -79,6 +81,7 @@ const percent = (part: number, whole: number) => (whole ? Math.round((part / who
 export default function Profile({ onBack }: { onBack: () => void }) {
   const { user, setNickname, resetStats, logout } = useAuth()
   const { t, l, lang, error: errorText } = useI18n()
+  const href = useHref()
   const today = kyivToday()
 
   const [summary, setSummary] = useState<Summary | null>(null)
@@ -402,11 +405,9 @@ export default function Profile({ onBack }: { onBack: () => void }) {
               </h2>
             </header>
             <p className="muted">{t('profile.awardsSoon')}</p>
-            <ul className="soon-badges">
-              {Array.from({ length: 6 }, (_, index) => (
-                <li key={index} />
-              ))}
-            </ul>
+            <Link className="lb-link awards-open" href={href.achievements}>
+              <TrophyIcon /> {t('ach.open')}
+            </Link>
           </section>
         </div>
       </div>

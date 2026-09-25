@@ -9,6 +9,7 @@ import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
+import * as achievements from '@nanda/core/endpoints/achievements'
 import * as leaderboard from '@nanda/core/endpoints/leaderboard'
 import * as profile from '@nanda/core/endpoints/profile'
 import * as roundCurrent from '@nanda/core/endpoints/round-current'
@@ -77,6 +78,11 @@ export class GameController {
   @Get('entities')
   entities(@Req() req: Request, @Res() res: Response) {
     return bridge(entitiesEndpoint.GET, req, res)
+  }
+
+  @Get('achievements')
+  achievements(@Req() req: Request, @Res() res: Response) {
+    return bridge(achievements.GET, req, res)
   }
 
   @Get('leaderboard')
