@@ -1,4 +1,4 @@
-export const CONTACT = { email: '', support: '' }
+export const CONTACT = { email: 'hello@nandaguessr.com', support: '' }
 
 export const SOCIALS: { id: string; label: string; href: string }[] = []
 
