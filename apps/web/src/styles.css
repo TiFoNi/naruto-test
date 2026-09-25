@@ -1884,8 +1884,8 @@ main {
 }
 
 .franchise-modes {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
   gap: 8px;
   margin-top: 4px;
 }
@@ -1894,6 +1894,7 @@ main {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
   padding: 9px 12px;
   border-radius: 12px;
   background: color-mix(in srgb, var(--tab-accent) 16%, var(--card-2));
@@ -1913,11 +1914,12 @@ main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 7px;
-  background: rgba(0, 0, 0, 0.32);
-  color: var(--text-2);
+  margin-left: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background: none;
+  color: color-mix(in srgb, var(--text-3) 70%, transparent);
   font-size: 13px;
   cursor: help;
   transition:
@@ -1927,7 +1929,7 @@ main {
 
 .mode-stat-hint:hover,
 .mode-stat-hint:focus-visible {
-  background: rgba(0, 0, 0, 0.5);
+  background: none;
   color: var(--text);
   outline: none;
 }
@@ -3228,27 +3230,38 @@ button.ghost.small {
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
+  margin-top: 2px;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--line) 45%, transparent);
 }
 
 .daily-links-title {
-  flex-basis: 100%;
-  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-right: 4px;
+  color: var(--text-3);
+  font-size: 12px;
   font-weight: 700;
-  color: var(--text-2);
-  margin-right: 2px;
 }
 
 .daily-link {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 5px 11px;
+  padding: 4px 10px;
   border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--tab-accent) 45%, var(--line));
-  color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  color: var(--text-2);
   text-decoration: none;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
+  transition: border-color 0.16s, color 0.16s;
+}
+
+.daily-link:hover {
+  border-color: color-mix(in srgb, var(--tab-accent) 55%, transparent);
+  color: var(--text);
 }
 
 .daily-link:hover {
