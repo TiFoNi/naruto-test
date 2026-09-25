@@ -465,6 +465,16 @@ const ui = {
   'achTier.silver': { ru: 'Серебро', uk: 'Срібло', en: 'Silver' },
   'achTier.gold': { ru: 'Золото', uk: 'Золото', en: 'Gold' },
   'achTier.legend': { ru: 'Легендарное', uk: 'Легендарне', en: 'Legendary' },
+  'ach.showcase': { ru: 'Витрина профиля', uk: 'Вітрина профілю', en: 'Profile showcase' },
+  'ach.showcaseHint': {
+    ru: 'Эти значки видят другие игроки в твоём профиле. Нажми булавку на любом полученном достижении, чтобы добавить его сюда.',
+    uk: 'Ці значки бачать інші гравці у твоєму профілі. Натисни шпильку на будь-якому отриманому досягненні, щоб додати його сюди.',
+    en: 'Other players see these badges in your profile. Press the pin on any earned achievement to add it here.',
+  },
+  'ach.showcaseEmpty': { ru: 'Свободно', uk: 'Вільно', en: 'Empty' },
+  'ach.pin': { ru: 'Закрепить в профиле', uk: 'Закріпити в профілі', en: 'Pin to profile' },
+  'ach.unpin': { ru: 'Открепить', uk: 'Відкріпити', en: 'Unpin' },
+  'ach.myProfile': { ru: 'Мой профиль', uk: 'Мій профіль', en: 'My profile' },
   'ach.title': { ru: 'Достижения', uk: 'Досягнення', en: 'Achievements' },
   'ach.lead': {
     ru: 'Выполняй условия, чтобы получать значки и опыт.',

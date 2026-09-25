@@ -10,6 +10,7 @@ export type UserDoc = {
   stats?: Record<string, Partial<Stats>>
   visit?: { lastDay: string; streak: number; best: number; days: string[] }
   awards?: Record<string, Date>
+  pinned?: string[]
   duelStats?: { played?: number; wins?: number; losses?: number; draws?: number }
   challengeStats?: { solved?: number }
   createdAt: Date

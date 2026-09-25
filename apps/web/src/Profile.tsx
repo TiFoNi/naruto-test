@@ -17,6 +17,7 @@ type Named = { ru: string; uk: string; en: string }
 
 type Summary = {
   since: string
+  pinned: string[]
   level: Level
   totals: {
     solved: number
@@ -404,7 +405,20 @@ export default function Profile({ onBack }: { onBack: () => void }) {
                 <TrophyIcon /> {t('profile.awardsTitle')}
               </h2>
             </header>
-            <p className="muted">{t('profile.awardsSoon')}</p>
+            {summary?.pinned?.length ? (
+              <ul className="profile-pins">
+                {summary.pinned.map((id) => (
+                  <li key={id}>
+                    <span className="award-mark" aria-hidden>
+                      <TrophyIcon />
+                    </span>
+                    <b>{t(`ach.${id}` as UiKey)}</b>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="muted">{t('profile.awardsSoon')}</p>
+            )}
             <Link className="lb-link awards-open" href={href.achievements}>
               <TrophyIcon /> {t('ach.open')}
             </Link>

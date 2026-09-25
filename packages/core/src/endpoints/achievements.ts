@@ -1,8 +1,10 @@
 import { STAT_KEYS } from '@nanda/game'
 import { ACHIEVEMENTS, collectFacts, progressOf, rarity, syncAwards } from '../achievements'
 import { users } from '../db'
-import { handle, json } from '../http'
+import { fail, handle, json, readJson } from '../http'
 import { currentUser, unauthorized } from '../profile'
+
+export const PINNED_MAX = 6
 
 async function placeOf(userId: string) {
   const collection = await users()
@@ -61,5 +63,23 @@ export const GET = handle(async (request) => {
     rank: place.rank,
     gained,
     gainedXp: xp,
+    pinned: (found.doc.pinned ?? []).filter((award) => awards[award]).slice(0, PINNED_MAX),
   })
+})
+
+export const POST = handle(async (request) => {
+  const found = await currentUser(request)
+  if (!found) return unauthorized()
+
+  const body = (await readJson(request)) as { pinned?: unknown }
+  if (!Array.isArray(body.pinned)) return fail(400, 'bad_request')
+
+  const owned = found.doc.awards ?? {}
+  const known = new Set(ACHIEVEMENTS.map((a) => a.id))
+  const pinned = [...new Set(body.pinned.filter((id): id is string => typeof id === 'string'))]
+    .filter((id) => known.has(id) && owned[id])
+    .slice(0, PINNED_MAX)
+
+  await (await users()).updateOne({ _id: found.doc._id! }, { $set: { pinned } })
+  return json({ pinned })
 })

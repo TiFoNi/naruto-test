@@ -4,7 +4,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { api } from './api'
 import BackButton from './BackButton'
 import { useI18n, type UiKey } from './i18n'
-import { CheckIcon, LockIcon, TrophyIcon } from './icons'
+import Link from 'next/link'
+import { CheckIcon, CloseIcon, LockIcon, PinIcon, TrophyIcon } from './icons'
 import { useHref } from './router'
 
 type Tier = 'bronze' | 'silver' | 'gold' | 'legend'
@@ -29,7 +30,10 @@ type Board = {
   xpLeft: number
   rarest: { id: string; rarity: number } | null
   rank: number | null
+  pinned: string[]
 }
+
+const PINNED_MAX = 6
 
 type Filter = 'all' | 'done' | 'doing' | 'locked'
 
@@ -44,7 +48,7 @@ const FILTERS: { id: Filter; label: UiKey }[] = [
 
 const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
 
-function Card({ award }: { award: Award }) {
+function Card({ award, pinned, onPin }: { award: Award; pinned: boolean; onPin: () => void }) {
   const { t, lang } = useI18n()
   const hidden = award.secret && !award.done
   const share = award.rarity > 0 ? t('ach.share', { share: award.rarity }) : ''
@@ -54,6 +58,11 @@ function Card({ award }: { award: Award }) {
       <span className="award-mark" aria-hidden>
         {award.done ? <CheckIcon /> : hidden ? <LockIcon /> : <TrophyIcon />}
       </span>
+      {award.done && (
+        <button type="button" className={`award-pin ${pinned ? 'on' : ''}`} title={t(pinned ? 'ach.unpin' : 'ach.pin')} aria-label={t(pinned ? 'ach.unpin' : 'ach.pin')} aria-pressed={pinned} onClick={onPin}>
+          <PinIcon />
+        </button>
+      )}
       <div className="award-body">
         <div className="award-head">
           <b>{hidden ? '???' : t(`ach.${award.id}` as UiKey)}</b>
@@ -121,6 +130,13 @@ export default function Achievements() {
   }
   const share = list.length ? Math.round((counts.done / list.length) * 100) : 0
   const rarest = board?.rarest ? list.find((a) => a.id === board.rarest!.id) : null
+  const pinned = board?.pinned ?? []
+
+  const togglePin = (id: string) => {
+    const next = pinned.includes(id) ? pinned.filter((p) => p !== id) : [...pinned, id].slice(0, PINNED_MAX)
+    setBoard((current) => (current ? { ...current, pinned: next } : current))
+    void api('achievements', { pinned: next })
+  }
 
   return (
     <div className="awards-page">
@@ -195,6 +211,44 @@ export default function Achievements() {
             </div>
           </div>
 
+          <section className="play-card awards-showcase">
+            <div className="awards-showcase-copy">
+              <h2>
+                {t('ach.showcase')}
+                <span>
+                  {pinned.length}/{PINNED_MAX}
+                </span>
+              </h2>
+              <p>{t('ach.showcaseHint')}</p>
+            </div>
+            <ol className="awards-slots">
+              {Array.from({ length: PINNED_MAX }, (_, index) => {
+                const award = pinned[index] ? list.find((a) => a.id === pinned[index]) : undefined
+                return (
+                  <li key={index} className={`awards-slot ${award ? award.tier : 'free'}`}>
+                    <i>{index + 1}</i>
+                    {award ? (
+                      <>
+                        <button type="button" className="awards-slot-drop" aria-label={t('ach.unpin')} onClick={() => togglePin(award.id)}>
+                          <CloseIcon />
+                        </button>
+                        <span className="award-mark" aria-hidden>
+                          <TrophyIcon />
+                        </span>
+                        <b>{t(`ach.${award.id}` as UiKey)}</b>
+                      </>
+                    ) : (
+                      <span className="awards-slot-free">{t('ach.showcaseEmpty')}</span>
+                    )}
+                  </li>
+                )
+              })}
+            </ol>
+            <Link className="awards-showcase-link" href={href.profile}>
+              {t('ach.myProfile')} →
+            </Link>
+          </section>
+
           <div className="awards-filters" role="tablist">
             {FILTERS.map(({ id, label }) => (
               <button key={id} type="button" role="tab" aria-selected={filter === id} className={filter === id ? 'active' : ''} onClick={() => setFilter(id)}>
@@ -217,7 +271,7 @@ export default function Achievements() {
                 </h2>
                 <div className="awards-grid">
                   {group.map((award) => (
-                    <Card key={award.id} award={award} />
+                    <Card key={award.id} award={award} pinned={pinned.includes(award.id)} onPin={() => togglePin(award.id)} />
                   ))}
                 </div>
               </section>

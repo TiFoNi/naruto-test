@@ -159,6 +159,8 @@ export const GET = handle(async (request) => {
 
   return json({
     since: doc.createdAt,
+    pinned: (doc.pinned ?? []).filter((award) => doc.awards?.[award]).slice(0, 6),
+    awards: Object.keys(doc.awards ?? {}).length,
     level: { xp, level, into: xp % LEVEL_XP, need: LEVEL_XP, rank: rankOf(level).id, next: nextRank(level) },
     totals: {
       solved: totals.won,

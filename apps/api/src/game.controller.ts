@@ -85,6 +85,11 @@ export class GameController {
     return bridge(achievements.GET, req, res)
   }
 
+  @Post('achievements')
+  pinAchievements(@Req() req: Request, @Res() res: Response) {
+    return bridge(achievements.POST, req, res)
+  }
+
   @Get('leaderboard')
   board(@Req() req: Request, @Res() res: Response) {
     return bridge(leaderboard.GET, req, res)
