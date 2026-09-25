@@ -7250,8 +7250,7 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding-top: 28px;
-  border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  padding-top: 4px;
   color: var(--text-3);
   font-size: 12.5px;
   line-height: 1.6;
