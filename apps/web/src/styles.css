@@ -7847,7 +7847,7 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
   place-items: center;
   width: 26px;
   height: 26px;
-  border: 1px solid transparent;
+  border: 1px solid var(--line);
   border-radius: 8px;
   background: none;
   color: var(--text-3);
@@ -7857,6 +7857,7 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
 }
 
 .award-pin:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
   background: var(--card-2);
   color: var(--text);
 }
