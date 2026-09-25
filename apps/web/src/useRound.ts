@@ -70,13 +70,20 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
     [accept],
   )
 
-  const load = useCallback(
-    () => request('round/current', challenge ? { challenge } : { game: game.id, mode, daily }),
-    [request, game.id, mode, daily, challenge],
-  )
+  const loading = useRef(false)
+
+  const load = useCallback(async () => {
+    if (loading.current) return
+    loading.current = true
+    try {
+      await request('round/current', challenge ? { challenge } : { game: game.id, mode, daily })
+    } finally {
+      loading.current = false
+    }
+  }, [request, game.id, mode, daily, challenge])
 
   useEffect(() => {
-    if (active && !round && !busy && !error) load()
+    if (active && !round && !busy && !error) void load()
   }, [active, round, busy, error, load])
 
   const guesses: Guess[] = useMemo(() => {

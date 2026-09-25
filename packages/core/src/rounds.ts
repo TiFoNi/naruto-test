@@ -16,7 +16,11 @@ const playable = async (round: RoundDoc) => isGame(round.game) && (await knows(r
 
 export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, guest = false) {
   const collection = await rounds()
-  const existing = await collection.findOne({ userId, game, mode, status: 'active', daily: { $exists: false } })
+  const open = await collection
+    .find({ userId, game, mode, status: 'active', daily: { $exists: false } }, { sort: { createdAt: 1 } })
+    .toArray()
+  const [existing, ...duplicates] = open
+  if (duplicates.length) await collection.deleteMany({ _id: { $in: duplicates.map((r) => r._id!) } })
   if (existing && (await playable(existing))) return existing
   if (existing) await collection.deleteOne({ _id: existing._id })
 
