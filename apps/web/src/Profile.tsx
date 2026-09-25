@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import BackButton from './BackButton'
 import { useAuth } from './auth'
 import { api } from './api'
 import { GAMES } from './games'
@@ -153,9 +154,9 @@ export default function Profile({ onBack }: { onBack: () => void }) {
 
   return (
     <div className="profile">
-      <button className="back" onClick={onBack}>
+      <BackButton href="/" onClick={onBack}>
         {t('profile.back')}
-      </button>
+      </BackButton>
 
       <div className="profile-grid">
         <div className="profile-column">

@@ -105,7 +105,8 @@ const ui = {
   'stats.best': { ru: 'Рекорд', uk: 'Рекорд', en: 'Best' },
   'stats.avg': { ru: 'Ср. попыток', uk: 'Сер. спроб', en: 'Avg. guesses' },
 
-  'play.back': { ru: '← Все игры', uk: '← Усі ігри', en: '← All games' },
+  'common.back': { ru: 'Назад', uk: 'Назад', en: 'Back' },
+  'play.back': { ru: 'Все игры', uk: 'Усі ігри', en: 'All games' },
   'play.zoom': { ru: 'зум ×{zoom}', uk: 'зум ×{zoom}', en: 'zoom ×{zoom}' },
   'play.zoomTitle': { ru: 'Приближение', uk: 'Наближення', en: 'Zoom' },
   'play.zoomNext': { ru: 'после ошибки → ×{zoom}', uk: 'після помилки → ×{zoom}', en: 'after a miss → ×{zoom}' },
@@ -220,7 +221,7 @@ const ui = {
   'profile.daily': { ru: 'Ежедневные', uk: 'Щоденні', en: 'Daily' },
 
   'nav.duels': { ru: 'Дуэли', uk: 'Дуелі', en: 'Duels' },
-  'duel.back': { ru: '← К дуэлям', uk: '← До дуелей', en: '← Back to duels' },
+  'duel.back': { ru: 'К дуэлям', uk: 'До дуелей', en: 'Back to duels' },
   'duel.title': { ru: 'Дуэли', uk: 'Дуелі', en: 'Duels' },
   'duel.lead': {
     ru: 'Создай комнату, кинь ссылку другу — и угадывайте одного и того же персонажа наперегонки. Комната остаётся, можно играть раунд за раундом.',
@@ -284,7 +285,7 @@ const ui = {
 
   'profile.challengeSolved': { ru: 'Отгадано загадок', uk: 'Розгадано загадок', en: 'Puzzles solved' },
   'profile.duelWins': { ru: 'Побед в дуэлях', uk: 'Перемог у дуелях', en: 'Duel wins' },
-  'profile.back': { ru: '← Назад', uk: '← Назад', en: '← Back' },
+  'profile.back': { ru: 'Назад', uk: 'Назад', en: 'Back' },
   'profile.nickname': { ru: 'Ник', uk: 'Нік', en: 'Nickname' },
   'profile.nicknameHint': {
     ru: 'Показывается вместо логина или почты.',

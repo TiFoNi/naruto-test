@@ -10,7 +10,7 @@ import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n } from './i18n'
 import { BellIcon } from './icons'
-import { useHref } from './router'
+import { useHref, useVisitTracker } from './router'
 
 const PUBLIC = new Set(['', 'play', 'privacy', 'terms'])
 
@@ -65,6 +65,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const { t } = useI18n()
   const pathname = usePathname()
   const scrolled = useScrolled()
+  useVisitTracker()
   const [, , section, gameId, modeId] = pathname.split('/')
   const open = PUBLIC.has(section ?? '')
   const game = section === 'play' ? metaById(games, gameId as never) : null

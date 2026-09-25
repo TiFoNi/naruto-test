@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import BackButton from './BackButton'
 import { useEffect, useState, type CSSProperties } from 'react'
 import AbilityMode from './AbilityMode'
 import ClassicMode from './ClassicMode'
@@ -55,9 +55,7 @@ export default function ChallengeRoom({ code }: { code: string }) {
   if (error) {
     return (
       <div className="challenge">
-        <Link className="back" href={href.home}>
-          {t('play.back')}
-        </Link>
+        <BackButton href={href.home}>{t('play.back')}</BackButton>
         <div className="card round-status error">{errorText(error)}</div>
       </div>
     )
@@ -83,9 +81,7 @@ export default function ChallengeRoom({ code }: { code: string }) {
 
   return (
     <div className="challenge" style={{ '--tab-accent': game.accent } as CSSProperties}>
-      <Link className="back" href={href.home}>
-        {t('play.back')}
-      </Link>
+      <BackButton href={href.home}>{t('play.back')}</BackButton>
 
       <header className="card challenge-head">
         <h1>{challenge.mine ? t('challenge.yours') : t('challenge.from', { name: challenge.author })}</h1>

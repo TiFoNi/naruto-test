@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import BackButton from './BackButton'
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import AbilityIcon from './AbilityIcon'
 import CharacterSearch from './CharacterSearch'
@@ -53,9 +53,7 @@ export default function DuelRoom({ code }: { code: string }) {
   if (error && !duel) {
     return (
       <div className="duel">
-        <Link className="back" href={href.duels}>
-          {t('duel.back')}
-        </Link>
+        <BackButton href={href.duels}>{t('duel.back')}</BackButton>
         <div className="card round-status error">
           <span>{errorText(error)}</span>
           <button className="ghost" onClick={refresh}>
@@ -93,9 +91,7 @@ export default function DuelRoom({ code }: { code: string }) {
 
   return (
     <div className="duel">
-      <Link className="back" href={href.duels}>
-        {t('duel.back')}
-      </Link>
+      <BackButton href={href.duels}>{t('duel.back')}</BackButton>
 
       <header className="duel-head card" style={{ '--tab-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
         <div>

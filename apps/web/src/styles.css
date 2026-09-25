@@ -1547,6 +1547,9 @@ footer p {
 
 .back {
   align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 6px 0;
   border: none;
   background: none;
@@ -7176,4 +7179,9 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
 .streak-week small {
   font-size: 12px;
   font-weight: 700;
+}
+
+.back .icon {
+  flex: none;
+  font-size: 16px;
 }

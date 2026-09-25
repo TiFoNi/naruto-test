@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import BackButton from './BackButton'
 import { useEffect, useState } from 'react'
 import { api } from './api'
 import { GAMES, gameById } from './games'
@@ -128,9 +129,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
     <div className="leaderboard">
       <div className="lb-top">
         <header className="lb-head">
-          <Link className="back" href={href.home}>
-            {t('play.back')}
-          </Link>
+          <BackButton href={href.home}>{t('play.back')}</BackButton>
           <h1>{t('lb.title')}</h1>
           <p className="muted">{t('lb.hint')}</p>
         </header>

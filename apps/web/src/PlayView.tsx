@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import BackButton from './BackButton'
 import GameView from './GameView'
 import { useAuth } from './auth'
 import { useEntities } from './entities'
@@ -22,9 +23,7 @@ export default function PlayView({ game: gameId, mode: modeId, daily }: { game: 
   return (
     <div className="play">
       <div className="play-nav">
-        <Link className="back" href={href.home}>
-          {t('play.back')}
-        </Link>
+        <BackButton href={href.home}>{t('play.back')}</BackButton>
       </div>
       <main>
         {daily && !user && !loading ? (

@@ -289,3 +289,11 @@ export function DownIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function BackIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2.2}>
+      <path d="M19 12H5M11 6l-6 6 6 6" />
+    </svg>
+  )
+}

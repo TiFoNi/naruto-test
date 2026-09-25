@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import BackButton from './BackButton'
 import { useState, type FormEvent } from 'react'
 import { api } from './api'
 import { useI18n } from './i18n'
@@ -33,9 +33,7 @@ export default function DuelLobby() {
 
   return (
     <div className="duels">
-      <Link className="back" href={href.home}>
-        {t('play.back')}
-      </Link>
+      <BackButton href={href.home}>{t('play.back')}</BackButton>
       <header className="lb-head">
         <h1>
           <SwordsIcon /> {t('duel.title')}
