@@ -31,50 +31,52 @@ export default function PageMode({ game, active, stats, daily = false, challenge
   return (
     <section className="play-layout">
       <div className="play-main">
-        <PlayPanel
-          media={
-            src ? (
-              <div className="manga-frame">
-                {!ready && <div className="zoom-loading">{t('image.loading')}</div>}
-                <img
-                  key={src}
-                  className="manga-page"
-                  src={src}
-                  alt={t('play.pageTitle')}
-                  ref={(el) => {
-                    if (el?.complete && el.naturalWidth) setLoaded(src)
-                  }}
-                  onLoad={() => setLoaded(src)}
-                  style={{ opacity: ready ? 1 : 0 }}
-                />
+        {!over && (
+          <PlayPanel
+            media={
+              src ? (
+                <div className="manga-frame">
+                  {!ready && <div className="zoom-loading">{t('image.loading')}</div>}
+                  <img
+                    key={src}
+                    className="manga-page"
+                    src={src}
+                    alt={t('play.pageTitle')}
+                    ref={(el) => {
+                      if (el?.complete && el.naturalWidth) setLoaded(src)
+                    }}
+                    onLoad={() => setLoaded(src)}
+                    style={{ opacity: ready ? 1 : 0 }}
+                  />
+                </div>
+              ) : (
+                <span className="play-mystery" aria-hidden>
+                  ?
+                </span>
+              )
+            }
+            title={t('play.pageTitle')}
+            hint={t('play.pagePrompt')}
+            attempts={guesses.length}
+            streak={stats.streak}
+          >
+            {playing && (
+              <div className="options">
+                {options.map((option) => (
+                  <button
+                    key={option.id}
+                    className={`option ${waiting === option.id ? 'waiting' : missed.has(option.id) ? 'wrong' : ''}`}
+                    disabled={busy || !ready || missed.has(option.id) || waiting === option.id}
+                    onClick={() => guess(option)}
+                  >
+                    <span className="option-name">{name(option)}</span>
+                    <span className="option-en">{option.nameEn}</span>
+                  </button>
+                ))}
               </div>
-            ) : (
-              <span className="play-mystery" aria-hidden>
-                ?
-              </span>
-            )
-          }
-          title={t('play.pageTitle')}
-          hint={t('play.pagePrompt')}
-          attempts={guesses.length}
-          streak={stats.streak}
-        >
-          {playing && (
-            <div className="options">
-              {options.map((option) => (
-                <button
-                  key={option.id}
-                  className={`option ${waiting === option.id ? 'waiting' : missed.has(option.id) ? 'wrong' : ''}`}
-                  disabled={busy || !ready || missed.has(option.id) || waiting === option.id}
-                  onClick={() => guess(option)}
-                >
-                  <span className="option-name">{name(option)}</span>
-                  <span className="option-en">{option.nameEn}</span>
-                </button>
-              ))}
-            </div>
-          )}
-        </PlayPanel>
+            )}
+          </PlayPanel>
+        )}
 
         {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
 
