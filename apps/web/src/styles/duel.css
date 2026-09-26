@@ -79,14 +79,6 @@
   color: var(--text-3);
 }
 
-.duel-invite,
-.duel-create,
-.duel-join {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 16px 18px;
-}
 
 .duel-picker {
   display: flex;

@@ -4588,6 +4588,15 @@ html[data-auth] .guest-note {
   overflow: hidden;
 }
 
+.level-bar i,
+.quest-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffb055, var(--accent));
+  transition: width 0.3s;
+}
+
 .quests {
   display: flex;
   flex-direction: column;
@@ -6363,4 +6372,17 @@ html[data-cat='sport'] .tile[data-id='sport'] .tile-icon {
 .settings h1 {
   margin: 0;
   font-size: 30px;
+}
+
+.duel-invite,
+.duel-create,
+.duel-join {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px;
+}
+
+.picker-list li .picker-mark .icon {
+  color: inherit;
 }
