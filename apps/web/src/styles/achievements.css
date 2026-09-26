@@ -176,12 +176,6 @@
   gap: 12px;
 }
 
-.award.is-ready .award-mark {
-  border-color: color-mix(in srgb, var(--tier) 62%, transparent);
-  background: color-mix(in srgb, var(--tier) 18%, transparent);
-  color: var(--tier);
-}
-
 .award-take {
   padding: 0;
   font: inherit;

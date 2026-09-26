@@ -5,12 +5,6 @@
   width: min(100%, 560px);
 }
 
-.duel-head h1 .icon,
-.lb-head h1 .icon,
-.duels h1 .icon {
-  color: var(--accent);
-}
-
 .ability-hint {
   margin: 8px 0 0;
   font-size: 14px;
@@ -37,18 +31,6 @@
 .duel-head p {
   margin: 4px 0 0;
   font-size: 13px;
-}
-
-.duel-timer {
-  font-family: var(--display);
-  font-size: 30px;
-  font-variant-numeric: tabular-nums;
-  color: var(--text);
-}
-
-.duel-timer.hot {
-  color: #e2606b;
-  animation: pulse 1s ease-in-out infinite;
 }
 
 .duel-players {
@@ -104,17 +86,6 @@
   flex-direction: column;
   gap: 10px;
   padding: 16px 18px;
-}
-
-.duel-invite h2,
-.duel-create h2,
-.duel-join h2 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.duel-invite .inline-field input {
-  font-size: 13px;
 }
 
 .duel-picker {

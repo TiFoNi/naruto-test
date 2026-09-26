@@ -264,7 +264,7 @@ const ui = {
   'daily.endless': { ru: 'Бесконечный', uk: 'Нескінченний', en: 'Endless' },
   'daily.daily': { ru: 'Ежедневный', uk: 'Щоденний', en: 'Daily' },
   'daily.nextIn': { ru: 'Новая загадка через', uk: 'Нова загадка через', en: 'Next puzzle in' },
-  'daily.playEndless': { ru: 'Играть бесконечный ➜', uk: 'Грати нескінченний ➜', en: 'Play endless ➜' },
+  'daily.playEndless': { ru: 'Бесконечный режим', uk: 'Нескінченний режим', en: 'Endless mode' },
   'daily.yesterday': { ru: 'Вчера был:', uk: 'Учора був:', en: 'Yesterday:' },
   'daily.streak': { ru: 'Дней подряд', uk: 'Днів поспіль', en: 'Day streak' },
   'daily.best': { ru: 'Рекорд дней', uk: 'Рекорд днів', en: 'Best days' },

@@ -402,17 +402,6 @@
   border-top-color: #11151a;
 }
 
-.mode-icon {
-  color: var(--tab-accent, var(--accent));
-  font-size: 15px;
-  line-height: 1;
-}
-
-.mode-icon.big {
-  font-size: 26px;
-  color: var(--accent);
-}
-
 @media (max-width: 980px) {
 
   .hero-search {
@@ -446,35 +435,6 @@ html[data-cat='games'] .dashboard .category[data-id='games'] {
 
 html[data-search] .dashboard .category[data-id] {
   display: none;
-}
-
-.tile-icon {
-  position: relative;
-  z-index: 2;
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 11px;
-  border: 1px solid var(--line);
-  background: var(--card-2);
-  color: var(--text-3);
-  font-size: 20px;
-  transition: background 0.22s, border-color 0.22s, color 0.22s;
-}
-
-.tile:hover .tile-icon {
-  color: var(--text-2);
-}
-
-html:not([data-cat]) .tile[data-first] .tile-icon,
-html[data-cat='anime'] .tile[data-id='anime'] .tile-icon,
-html[data-cat='manga'] .tile[data-id='manga'] .tile-icon,
-html[data-cat='games'] .tile[data-id='games'] .tile-icon {
-  border-color: color-mix(in srgb, var(--tile) 45%, transparent);
-  background: color-mix(in srgb, var(--tile) 20%, transparent);
-  color: color-mix(in srgb, var(--tile) 80%, #fff);
 }
 
 .tile-body {

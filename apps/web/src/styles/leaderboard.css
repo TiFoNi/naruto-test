@@ -70,14 +70,6 @@
   cursor: default;
 }
 
-.lb-pager .left {
-  transform: rotate(90deg);
-}
-
-.lb-pager .right {
-  transform: rotate(-90deg);
-}
-
 .lb-card {
   width: 100%;
 }
@@ -86,81 +78,8 @@
   overflow-x: auto;
 }
 
-.lb-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 5px;
-  font-size: 14px;
-  white-space: nowrap;
-}
-
-.lb-table th,
-.lb-table td {
-  padding: 11px 14px;
-  text-align: right;
-}
-
-.lb-table th:first-child,
-.lb-table td:first-child,
-.lb-table th:nth-child(2),
-.lb-table td:nth-child(2) {
-  text-align: left;
-}
-
-.lb-table thead th {
-  padding-bottom: 9px;
-  color: var(--text-3);
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  border-bottom: 1px solid var(--line);
-}
-
-.lb-table tbody td {
-  color: var(--text-2);
-  font-weight: 700;
-}
-
-.lb-table tbody td:first-child {
-  border-top-left-radius: 11px;
-  border-bottom-left-radius: 11px;
-}
-
-.lb-table tbody td:last-child {
-  border-top-right-radius: 11px;
-  border-bottom-right-radius: 11px;
-}
-
-.lb-table tbody tr:not(.me):hover td {
-  background: color-mix(in srgb, var(--accent) 7%, transparent);
-}
-
-.lb-table td.sorted {
-  color: var(--text);
-}
-
-.lb-table th button {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  cursor: pointer;
-  transition: color 0.15s ease;
-}
-
 .lb-table th.sortable button:hover {
   color: var(--text-2);
-}
-
-.lb-table th .icon {
-  font-size: 13px;
 }
 
 .lb-table th.sorted {
@@ -204,12 +123,6 @@
   background: color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
-.lb-blank td {
-  padding: 26px 0 10px;
-  color: var(--text-3);
-  text-align: center;
-}
-
 .lb-blank-inner {
   display: flex;
   flex-direction: column;
@@ -217,16 +130,8 @@
   gap: 10px;
 }
 
-.lb-blank .primary {
-  text-decoration: none;
-}
-
 .lb-blank:hover td {
   background: none;
-}
-
-.lb-table th .icon {
-  transition: transform 0.2s ease;
 }
 
 .lb-table th .icon.up {
@@ -284,27 +189,6 @@
   flex-direction: column;
   gap: 16px;
   min-width: 0;
-}
-
-.lb-av {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: var(--tone-bg);
-  color: var(--tone-ink);
-  font-family: var(--display);
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.lb-av.big {
-  width: 64px;
-  height: 64px;
-  border-radius: 20px;
-  font-size: 26px;
 }
 
 .lb-av[data-tone='0'] { --tone-bg: #3a2515; --tone-ink: #ffb07a; }
@@ -434,18 +318,6 @@
   border: 1px solid var(--line);
   border-radius: 20px;
   background: var(--card);
-}
-
-.lb-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-.lb-table thead th {
-  height: 52px;
-  padding: 0 18px;
-  border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg) 55%, var(--card));
 }
 
 .lb-table tbody td,
@@ -646,27 +518,6 @@
   white-space: nowrap;
 }
 
-.lb-fair {
-  display: flex;
-  align-items: flex-start;
-  gap: 11px;
-  margin: 0;
-  padding: 17px 19px;
-  border: 1px dashed var(--line);
-  border-radius: 20px;
-  color: var(--text-2);
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.5;
-}
-
-.lb-fair .icon {
-  flex: none;
-  margin-top: 2px;
-  color: var(--correct);
-  font-size: 19px;
-}
-
 @media (max-width: 1080px) {
   .lb-layout {
     grid-template-columns: minmax(0, 1fr);
@@ -697,12 +548,6 @@
 
   .lb-step.gold {
     padding-top: 36px;
-  }
-
-  .lb-av.big {
-    width: 52px;
-    height: 52px;
-    font-size: 21px;
   }
 
   .lb-step-sub {
@@ -1154,28 +999,6 @@
   .season-xp-col {
     display: none;
   }
-}
-
-.picker-mark {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--tab-accent, var(--accent)) 26%, var(--card-2));
-  color: var(--tab-accent, var(--accent));
-  font-family: var(--display);
-  font-size: 15px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.picker.rich .picker-list .picker-mark {
-  width: 28px;
-  height: 28px;
-  border-radius: 9px;
-  font-size: 14px;
 }
 
 .picker-list li .picker-mark .icon {
