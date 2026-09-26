@@ -273,6 +273,15 @@ h2 {
   width: 212px;
 }
 
+html:not([data-auth]) .topbar-slot {
+  width: auto;
+}
+
+html:not([data-auth]) .topbar-nav {
+  min-width: 0;
+  margin-left: 0;
+}
+
 .topbar-menu {
   display: contents;
 }
@@ -479,6 +488,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  container-type: inline-size;
 }
 
 .game-head-top {
@@ -511,7 +521,6 @@ main {
 
 .mode-tabs {
   display: flex;
-  flex-wrap: wrap;
   gap: 4px;
   padding: 4px;
   border-radius: 12px;
@@ -1180,7 +1189,7 @@ main {
 .login {
   flex: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 430px;
+  grid-template-columns: minmax(380px, 1fr) 430px;
   gap: 56px;
   align-content: center;
   align-items: center;
@@ -1209,7 +1218,7 @@ main {
 
 .login-lead h1 {
   margin: 0;
-  font-size: clamp(40px, 5.6vw, 74px);
+  font-size: clamp(34px, 4.4vw, 64px);
   line-height: 1;
   letter-spacing: -2.5px;
   overflow-wrap: anywhere;
@@ -1300,7 +1309,6 @@ main {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  max-width: 640px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1503,13 +1511,15 @@ main {
   font-weight: 800;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 1040px) {
   .login {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     padding: 8px 0 24px;
     gap: 26px;
   }
+}
 
+@media (max-width: 760px) {
   .login-perks {
     grid-template-columns: 1fr;
   }
@@ -1738,10 +1748,6 @@ main {
 }
 
 .hero .quests-card {
-  align-self: stretch;
-}
-
-.hero .hero-guest {
   align-self: stretch;
 }
 
@@ -3164,12 +3170,6 @@ button.ghost.small {
   }
 }
 
-@media (max-width: 560px) {
-  .topbar-link-label {
-    display: none;
-  }
-}
-
 @media (max-width: 720px) {
   .lang-switch {
     position: relative;
@@ -3243,6 +3243,14 @@ button.ghost.small {
 }
 
 @media (max-width: 900px) {
+  html:not([data-auth]) .topbar-menu {
+    display: none;
+  }
+
+  html:not([data-auth]) .topbar-right {
+    margin-left: auto;
+  }
+
   .topbar-menu {
     position: relative;
     display: block;
@@ -3339,6 +3347,42 @@ button.ghost.small {
   flex-wrap: wrap;
   gap: 8px;
   align-items: center;
+}
+
+@container (max-width: 359px) {
+  .game-switches:has(.mode-tabs[data-tabs='2']) {
+    flex: 1 1 100%;
+  }
+
+  .mode-tabs[data-tabs='2'] {
+    flex: 1 1 auto;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@container (max-width: 519px) {
+  .game-switches:has(.mode-tabs[data-tabs='3']) {
+    flex: 1 1 100%;
+  }
+
+  .mode-tabs[data-tabs='3'] {
+    flex: 1 1 auto;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@container (max-width: 679px) {
+  .game-switches:has(.mode-tabs[data-tabs='4']) {
+    flex: 1 1 100%;
+  }
+
+  .mode-tabs[data-tabs='4'] {
+    flex: 1 1 auto;
+    flex-direction: column;
+    width: 100%;
+  }
 }
 
 .variant-tabs {
@@ -3961,18 +4005,20 @@ button.ghost.small {
 }
 
 .play-layout.ability-layout {
-  grid-template-columns: minmax(0, 480px) minmax(360px, 1fr) 300px;
+  grid-template-columns: auto minmax(0, 1fr) 300px;
 }
 
 .ability-stage {
   position: relative;
   display: grid;
   place-items: center;
-  width: 100%;
+  width: calc(var(--shot, 100%) + 22px);
+  max-width: 100%;
   aspect-ratio: 1;
+  padding: 10px;
   border: 1px solid var(--line);
-  border-radius: 24px;
-  background: #101216;
+  border-radius: 22px;
+  background: var(--card);
   overflow: hidden;
   transition: border-color 0.2s ease;
 }
@@ -4003,12 +4049,12 @@ button.ghost.small {
 
 .ability-frame.ability-art {
   z-index: 1;
-  width: 66%;
+  width: 100%;
+  height: 100%;
   margin: 0;
-  border-radius: 9%;
+  border-radius: 14px;
   border: none;
-  box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px color-mix(in srgb, var(--game-accent, var(--accent)) 32%, transparent),
-    0 30px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: none;
 }
 
 .ability-stage.won .ability-frame.ability-art {
@@ -4017,31 +4063,6 @@ button.ghost.small {
 
 .ability-stage.lost .ability-frame.ability-art {
   box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px color-mix(in srgb, #e5483b 60%, transparent), 0 30px 60px rgba(0, 0, 0, 0.5);
-}
-
-.ability-clarity,
-.ability-round {
-  position: absolute;
-  top: 14px;
-  z-index: 2;
-  padding: 7px 11px;
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.ability-clarity {
-  left: 14px;
-  color: color-mix(in srgb, var(--game-accent, var(--accent)) 80%, #fff);
-  font-family: var(--display);
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.ability-round {
-  right: 14px;
-  color: var(--text-2);
 }
 
 .ability-banner {
@@ -4151,24 +4172,9 @@ button.ghost.small {
   background: var(--game-accent, var(--accent));
 }
 
-@media (max-width: 1180px) {
-  .play-layout.ability-layout {
-    grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
-  }
-
-  .ability-layout .play-side {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 760px) {
+@media (max-width: 1160px) {
   .play-layout.ability-layout {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .ability-stage {
-    width: min(100%, 420px);
-    margin: 0 auto;
   }
 }
 
@@ -4537,24 +4543,65 @@ button.ghost.small {
 }
 
 .guest-note {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin: 0 0 14px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent);
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 7%, var(--card));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
   color: var(--text-2);
   font-size: 13.5px;
   font-weight: 600;
 }
 
-.guest-note a {
+.guest-note-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
   color: var(--accent);
-  font-weight: 800;
-  text-decoration: none;
+  font-size: 17px;
 }
 
-.guest-note a:hover {
+.guest-note p {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+}
+
+.guest-note-cta {
+  flex: none;
+  color: var(--accent);
+  font-size: 13.5px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.guest-note-cta:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 520px) {
+  .guest-note {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .guest-note p {
+    flex: 1 1 100%;
+    order: 2;
+  }
+
+  .guest-note-cta {
+    order: 3;
+    margin-left: auto;
+  }
 }
 
 
@@ -7562,6 +7609,7 @@ html[data-auth] .hero-guest {
 
 .search .search-box {
   flex: 1 1 auto;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -7717,6 +7765,17 @@ html[data-auth] .hero-guest {
   }
 }
 
+@media (max-width: 480px) {
+  .search .search-box {
+    gap: 10px;
+    padding: 0 14px;
+  }
+
+  .search-left {
+    display: none;
+  }
+}
+
 .cell-arrow {
   position: absolute;
   top: 6px;
@@ -7782,18 +7841,24 @@ html[data-auth] .hero-guest {
 }
 
 .shot-layout {
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) 300px;
+  grid-template-columns: auto minmax(0, 1fr) 300px;
 }
 
 .shot-column {
+  --shot: 520px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+  width: min(100%, calc(var(--shot) + 22px));
   min-width: 0;
+  margin-inline: auto;
 }
 
 .shot {
   position: relative;
+  width: 100%;
+  margin-inline: auto;
+  padding: 10px;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 22px;
@@ -7941,13 +8006,13 @@ html[data-auth] .hero-guest {
 }
 
 .shot .zoom-frame {
-  width: 100%;
-  max-width: none;
+  width: var(--shot);
+  max-width: 100%;
   aspect-ratio: 1 / 1;
   height: auto;
   margin: 0;
   border: none;
-  border-radius: 0;
+  border-radius: 14px;
 }
 
 .shot-copy {
@@ -8139,19 +8204,25 @@ html[data-auth] .hero-guest {
   font-weight: 700;
 }
 
+.search.compact {
+  width: 100%;
+}
+
 .search.compact .send {
   width: 58px;
   padding: 0;
   justify-content: center;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1280px) {
+  .shot-column {
+    --shot: 420px;
+  }
+}
+
+@media (max-width: 1160px) {
   .shot-layout {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .shot .zoom-frame {
-    aspect-ratio: 4 / 3;
   }
 }
 

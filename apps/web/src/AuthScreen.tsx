@@ -25,6 +25,16 @@ export default function AuthScreen() {
     return () => clearTimeout(timer)
   }, [left])
 
+  useEffect(() => {
+    const revive = () => document.visibilityState === 'visible' && setBusy(null)
+    window.addEventListener('pageshow', revive)
+    document.addEventListener('visibilitychange', revive)
+    return () => {
+      window.removeEventListener('pageshow', revive)
+      document.removeEventListener('visibilitychange', revive)
+    }
+  }, [])
+
   const callbackURL = typeof window === 'undefined' ? '/' : window.location.origin
   const valid = EMAIL.test(email)
 

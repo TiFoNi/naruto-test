@@ -13,7 +13,7 @@ import type { Stats } from './stats'
 import { useRound } from './useRound'
 import { apiSrc } from './api'
 import { ABILITY_STAGES } from '@nanda/game'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
 
@@ -40,15 +40,6 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
   const ability = round?.ability?.[lang]
   const tiles: Tile[] = Array.from({ length: ABILITY_STAGES + 1 }, (_, i): Tile => (i < solvedStep ? 'miss' : i === solvedStep ? 'hit' : 'idle'))
   const shareSummary = `${t('play.pillAttempts', { count: guesses.length })} · ${clarityAt(solvedStep)}%`
-
-  const [number, setNumber] = useState(1)
-  const played = stats.solved + stats.skipped
-  const playedRef = useRef(played)
-  playedRef.current = played
-
-  useEffect(() => {
-    if (round?.id) setNumber(playedRef.current + 1)
-  }, [round?.id])
 
   const shortcut = useRef<() => void>(() => {})
   shortcut.current = () => {
@@ -77,23 +68,16 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
 
   return (
     <section className="play-layout ability-layout">
-      <div className={`ability-stage ${over ? (won ? 'won' : 'lost') : ''}`}>
-        <span className="ability-glow" aria-hidden />
-        <AbilityIcon className="ability-art" src={src ?? undefined} resetKey={round?.id} />
-        <span className="ability-clarity">{t('ability.clarity', { clarity: clarityAt(step) })}</span>
-        {round && <span className="ability-round">{daily ? t('daily.daily') : t('play.roundNo', { number })}</span>}
-        {over && answer && (
-          <span className="ability-banner">
-            <small>{t(won ? 'ability.bannerWon' : 'page.bannerLost')}</small>
-            <b>{ability ? `${heroName} · ${ability}` : heroName}</b>
-          </span>
-        )}
-      </div>
-
-      <div className="play-main">
-        <div className={`play-card mode-ask state-${mood}`}>
-          <h2>{headline}</h2>
-          <p>{subline}</p>
+      <div className="shot-column ability-column">
+        <div className={`ability-stage ${over ? (won ? 'won' : 'lost') : ''}`}>
+          <span className="ability-glow" aria-hidden />
+          <AbilityIcon className="ability-art" src={src ?? undefined} resetKey={round?.id} />
+          {over && answer && (
+            <span className="ability-banner">
+              <small>{t(won ? 'ability.bannerWon' : 'page.bannerLost')}</small>
+              <b>{ability ? `${heroName} · ${ability}` : heroName}</b>
+            </span>
+          )}
         </div>
 
         <div className="play-card zoom-scale">
@@ -111,6 +95,13 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
               </span>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div className="play-main">
+        <div className={`play-card mode-ask state-${mood}`}>
+          <h2>{headline}</h2>
+          <p>{subline}</p>
         </div>
 
         {!over && (

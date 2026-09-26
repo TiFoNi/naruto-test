@@ -9,7 +9,7 @@ import ImageMode from './ImageMode'
 import AbilityMode from './AbilityMode'
 import PageMode from './PageMode'
 import PlaySkeleton from './PlaySkeleton'
-import { CalendarIcon, InfinityIcon } from './icons'
+import { CalendarIcon, InfinityIcon, MedalIcon } from './icons'
 
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
@@ -45,7 +45,7 @@ export default function GameView({ game, mode, daily, visible }: { game: Game; m
               </Link>
             </div>
           )}
-          <div className="mode-tabs" role="tablist">
+          <div className="mode-tabs" role="tablist" data-tabs={game.modes.length}>
             {MODES.filter((m) => game.modes.includes(m.id)).map((m) => (
               <Link
                 key={m.id}
@@ -62,9 +62,15 @@ export default function GameView({ game, mode, daily, visible }: { game: Game; m
       </header>
 
       {!user && (
-        <p className="guest-note">
-          {t('guest.note')} <Link href={href.home}>{t('guest.signIn')}</Link>
-        </p>
+        <div className="guest-note">
+          <span className="guest-note-mark" aria-hidden>
+            <MedalIcon />
+          </span>
+          <p>{t('guest.note')}</p>
+          <Link className="guest-note-cta" href={href.login} prefetch={false}>
+            {t('guest.signIn')}
+          </Link>
+        </div>
       )}
 
       {!visible && <PlaySkeleton mode={mode} />}

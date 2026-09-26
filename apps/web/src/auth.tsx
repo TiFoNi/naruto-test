@@ -39,6 +39,17 @@ const call = (path: string, body?: unknown) => api<ApiData>(path, body)
 
 const SESSION = 'nanda.session'
 
+const markSession = (signed: boolean) => {
+  if (signed) document.documentElement.dataset.auth = '1'
+  else delete document.documentElement.dataset.auth
+  try {
+    if (signed) localStorage.setItem(SESSION, '1')
+    else localStorage.removeItem(SESSION)
+  } catch {
+    /* приватний режим */
+  }
+}
+
 let known: Profile | null = null
 let checked = false
 
@@ -73,12 +84,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           remember(null)
         }
         checked = true
-        try {
-          if (signed) localStorage.setItem(SESSION, '1')
-          else localStorage.removeItem(SESSION)
-        } catch {
-          /* приватний режим */
-        }
+        markSession(signed)
       })
       .catch(() => remember(null))
       .finally(() => setLoading(false))
@@ -93,6 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await authClient.signOut().catch(() => null)
     known = null
     forgetUser()
+    markSession(false)
     setProfile(null)
   }, [])
 
@@ -107,6 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const expire = useCallback(() => {
     known = null
     forgetUser()
+    markSession(false)
     setProfile(null)
   }, [])
 
