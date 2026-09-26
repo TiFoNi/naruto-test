@@ -2,7 +2,7 @@ import { createHmac } from 'node:crypto'
 import type { GameId, ModeId } from '@nanda/game'
 import { dailies } from './db'
 import { gameData } from './games'
-import { roundExtra } from './extra'
+import { modePool, roundExtra } from './extra'
 
 const ZONE = 'Europe/Kyiv'
 const DAY_MS = 86_400_000
@@ -42,7 +42,9 @@ export const shiftDay = (day: string, delta: number) => new Date((dayNumber(day)
 const secret = () => process.env.DAILY_SECRET || process.env.AUTH_SECRET || ''
 
 async function pick(game: GameId, mode: ModeId, day: string) {
-  const ids = (await gameData(game)).pool.map((e) => e.id).sort((a, b) => a - b)
+  const ids = modePool((await gameData(game)).pool, mode)
+    .map((e) => e.id)
+    .sort((a, b) => a - b)
   const n = dayNumber(day)
   const cycle = Math.floor(n / ids.length)
   const weight = (id: number) => createHmac('sha256', secret()).update(`${game}:${mode}:${cycle}:${id}`).digest('hex')

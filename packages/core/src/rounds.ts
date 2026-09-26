@@ -5,7 +5,7 @@ import { rounds, type RoundDoc, type UserDoc } from './db'
 import { gameData, isGame, isMode, knows } from './games'
 import { applyDailyResult, applyResult, defaultNickname } from './profile'
 import { abilityByKey } from './abilities'
-import { optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
+import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { findChallenge, recordSolve } from './challenges'
 import { markSeasonPlay } from './season'
 
@@ -29,7 +29,7 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, 
     .find({ userId, game, mode }, { projection: { answerId: 1 }, sort: { createdAt: -1 }, limit: RECENT })
     .toArray()
   const seen = new Set(recent.map((r) => r.answerId))
-  const { pool } = await gameData(game)
+  const pool = modePool((await gameData(game)).pool, mode)
   const fresh = pool.filter((e) => !seen.has(e.id))
   const choices = fresh.length ? fresh : pool
   const answer = choices[Math.floor(Math.random() * choices.length)]

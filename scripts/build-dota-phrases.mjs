@@ -11,14 +11,36 @@ const MANUAL_RU = path.join(ROOT, 'packages', 'game', 'data', 'dota-phrases-ru.j
 const HEROES = path.join(ROOT, 'packages', 'game', 'data', 'dota.json')
 
 const WANTED = 6
+const REWARDS_PAGE = 'Chat Wheel/Dota Plus'
+const REWARDS_PAGE_RU = 'Колесо чата/Dota Plus'
+const SKIP_SECTIONS = new Set([
+  'Entering battle',
+  'Beginning battle',
+  'Moving',
+  'Attacking',
+  'Abilities',
+  'Leveling up',
+  'Leveling Up',
+  'Ordering a spell cast',
+])
+const MIN_WORDS = 5
+const REWARD_MIN_WORDS = 4
+const REWARD_MIN_LENGTH = 14
 const MIN_LENGTH = 16
 const MAX_LENGTH = 120
+const MIN_SPOKEN = 2
+const MIN_LINES = 3
+const LAUGH = /^[\s!?.,\u2026'\u2019-]*(?:(?:mwa|nya|yeah|huh|hah|heh|hee|ha|he|ho|hmm|hm|ah|uh|oh|mm|ss|m)[\s!?.,\u2026'\u2019-]*)+$/i
 
 const fileKey = (name) => name.replace(/ /g, '_').replace(/^./, (c) => c.toUpperCase())
 
 const clipKey = (file) => file.replace(/\.mp3$/i, '').toLowerCase().replace(/[\s-]+/g, '_')
 
-const cyrillicNames = (hero) => (hero.aliases ?? '').split(/\s+/).filter((word) => word.length >= 4)
+const cyrillicNames = (hero) =>
+  (hero.aliases ?? '')
+    .split(/\s+/)
+    .filter((word) => word.length >= 4)
+    .map((word) => (word.length > 5 ? word.slice(0, 5) : word))
 
 const clean = (line) =>
   line
@@ -42,27 +64,82 @@ const pageText = async (title, api = API) => {
   return found?.revisions?.[0]?.slots?.main?.['*'] ?? ''
 }
 
-function pick(text, hero, rivals) {
+function usable(spoken, hero, rivals, minLength, minWords) {
+  const low = spoken.toLowerCase()
+  if (spoken.length < minLength || spoken.length > MAX_LENGTH) return false
+  if (spoken.includes('==') || !/^[\p{L}"'\u201c\u2018]/u.test(spoken) || !/[.!?\u2026"'\u201d\u2019)]$/.test(spoken)) return false
+  if (spoken.split(/\s+/).length < minWords) return false
+  if (!/[a-z]/i.test(spoken)) return false
+  if (hero.some((part) => low.includes(part))) return false
+  return !rivals.some((part) => new RegExp(`\\b${part}\\b`).test(low))
+}
+
+function rewardLines(page, hero, forbidden, others) {
+  const lines = []
+  for (const row of page.get(hero.nameEn ?? hero.name) ?? []) {
+    if (!usable(row.text, forbidden, others, REWARD_MIN_LENGTH, REWARD_MIN_WORDS)) continue
+    lines.push({ file: row.file, text: row.text, laugh: LAUGH.test(row.text) })
+  }
+  return lines
+}
+
+function responseLines(text, forbidden, others) {
+  const lines = []
+  let section = ''
+  for (const line of text.split('\n')) {
+    const heading = line.match(/^==\s*([^=].*?)\s*==\s*$/)
+    if (heading) {
+      section = heading[1]
+      continue
+    }
+    if (SKIP_SECTIONS.has(section)) continue
+    const match = line.match(/^\*((?:\s*<sm2>[^<]+\.mp3<\/sm2>)+)\s*(.+)$/)
+    if (!match) continue
+    const spoken = clean(match[2].replace(/<sm2>[^<]*<\/sm2>/g, ''))
+    if (!usable(spoken, forbidden, others, MIN_LENGTH, MIN_WORDS)) continue
+    lines.push({ file: match[1].match(/<sm2>([^<]+)<\/sm2>/)[1], text: spoken, laugh: LAUGH.test(spoken) })
+  }
+  return lines
+}
+
+function pick(text, hero, rivals, rewards) {
   const forbidden = nameParts(hero)
   const others = rivals.filter((word) => !forbidden.includes(word))
   const seen = new Set()
   const lines = []
-
-  for (const match of text.matchAll(/\*((?:\s*<sm2>[^<]+\.mp3<\/sm2>)+)\s*([^\n]+)/g)) {
-    const file = match[1].match(/<sm2>([^<]+)<\/sm2>/)[1]
-    const spoken = clean(match[2].replace(/<sm2>[^<]*<\/sm2>/g, ''))
-    const low = spoken.toLowerCase()
-    if (spoken.length < MIN_LENGTH || spoken.length > MAX_LENGTH) continue
-    if (forbidden.some((part) => low.includes(part))) continue
-    if (others.some((part) => new RegExp(`\\b${part}\\b`).test(low))) continue
-    if (spoken.split(/\s+/).length < 5) continue
-    if (!/[a-z]/i.test(spoken)) continue
+  for (const line of [...rewardLines(rewards, hero, forbidden, others), ...responseLines(text, forbidden, others)]) {
+    const low = line.text.toLowerCase()
     if (seen.has(low)) continue
     seen.add(low)
-    lines.push({ file, text: spoken })
+    lines.push(line)
   }
 
-  return lines.slice(0, WANTED)
+  return lines
+}
+
+function choose(lines) {
+  const picked = lines.slice(0, WANTED)
+  if (picked.filter((line) => !line.laugh).length >= MIN_SPOKEN) return picked
+  return [...lines.filter((line) => !line.laugh), ...lines.filter((line) => line.laugh)].slice(0, WANTED)
+}
+
+async function rewardsByHero() {
+  const { text } = await cachedJson(CACHE, 'rewards.json', async () => ({ text: await pageText(REWARDS_PAGE) }))
+  const page = new Map()
+  let hero = null
+  for (const line of text.split('\n')) {
+    const named = line.match(/\{\{H\|([^}|]+)/)
+    if (named) {
+      hero = named[1].trim()
+      continue
+    }
+    const match = line.match(/^\*((?:\s*<sm2>[^<]+\.mp3<\/sm2>)+)\s*(.+)$/)
+    if (!match || !hero) continue
+    const spoken = clean(match[2].replace(/<sm2>[^<]*<\/sm2>/g, ''))
+    if (!page.has(hero)) page.set(hero, [])
+    page.get(hero).push({ file: match[1].match(/<sm2>([^<]+)<\/sm2>/)[1], text: spoken })
+  }
+  return page
 }
 
 function translations(text) {
@@ -74,12 +151,12 @@ function translations(text) {
   return rows.sort((a, b) => b.key.length - a.key.length)
 }
 
-const translationOf = (rows, file, forbidden) => {
+const translationOf = (rows, file) => {
   const key = clipKey(file)
   const hit = rows.find((row) => key === row.key || key.endsWith(`_${row.key}`))
-  if (!hit || !/[А-Яа-яЁё]/.test(hit.text)) return undefined
-  const low = hit.text.toLowerCase()
-  return forbidden.some((word) => low.includes(word)) ? undefined : hit.text
+  if (!hit || !/[\u0410-\u042f\u0430-\u044f\u0401\u0451]/.test(hit.text)) return undefined
+  if (/^(\u0441\u043c\u0435\u0445|\u0445\u043e\u0445\u043e\u0442|\u0441\u043c\u0435\u0451\u0442\u0441\u044f|\u0441\u043c\u0435\u0435\u0442\u0441\u044f|\u0432\u0437\u0434\u043e\u0445|\u0440\u044b\u0447\u0430\u043d\u0438\u0435)\.?$/i.test(hit.text)) return undefined
+  return hit.text
 }
 
 async function clipUrls(files) {
@@ -104,24 +181,29 @@ async function main() {
   const manualRu = JSON.parse(await fs.readFile(MANUAL_RU, 'utf8').catch(() => '{}'))
 
   const rivals = [...new Set(heroes.flatMap((other) => nameParts(other)))].filter((word) => word.length >= 4)
+  const rewards = await rewardsByHero()
+  const rewardsRu = translations((await cachedJson(CACHE, 'rewards-ru.json', async () => ({ text: await pageText(REWARDS_PAGE_RU, RU_API) }))).text)
+  console.log(`фраз за тири героя: ${[...rewards.values()].reduce((sum, list) => sum + list.length, 0)} у ${rewards.size} героїв`)
 
   const picked = new Map()
   let missing = 0
   await pool(heroes, 4, async (hero) => {
     const title = `${hero.nameEn ?? hero.name}/Responses`
     const text = await cachedJson(CACHE, `page-${hero.id}.json`, async () => ({ text: await pageText(title) }))
-    const lines = pick(text.text, hero, rivals)
-    if (lines.length) {
+    const candidates = pick(text.text, hero, rivals, rewards)
+    const forbidden = cyrillicNames(hero)
+    if (candidates.length) {
       const ru = await cachedJson(CACHE, `ru-${hero.id}.json`, async () => ({ text: await pageText(`${hero.nameEn ?? hero.name}/Реплики`, RU_API) }))
       const rows = translations(ru.text)
-      const forbidden = cyrillicNames(hero)
-      for (const line of lines) line.ru = translationOf(rows, line.file, forbidden)
+      for (const line of candidates) line.ru = translationOf(rows, line.file) ?? translationOf(rewardsRu, line.file) ?? manualRu[line.text]
     }
-    if (lines.length < 3) {
+    const lines = choose(candidates.filter((line) => !forbidden.some((word) => (line.ru ?? '').toLowerCase().includes(word))))
+    if (lines.length < MIN_LINES) {
       missing++
-      console.log(`  мало фраз: ${hero.nameEn ?? hero.name} (${lines.length})`)
+      console.log(`  мало фраз, не беремо: ${hero.nameEn ?? hero.name} (${lines.length})`)
+      return
     }
-    if (lines.length) picked.set(hero.id, lines)
+    picked.set(hero.id, lines)
   })
 
   const files = [...new Set([...picked.values()].flat().map((l) => l.file))]
@@ -145,8 +227,7 @@ async function main() {
         if (!res?.ok) continue
         await fs.writeFile(file, Buffer.from(await res.arrayBuffer()))
       }
-      const ru = line.ru ?? manualRu[`${id}:${index}`]
-      kept.push({ text: line.text, ...(ru ? { ru } : {}), clip: index })
+      kept.push({ text: line.text, ...(line.ru ? { ru: line.ru } : {}), ...(line.laugh ? { laugh: true } : {}), clip: index })
     }
     if (kept.length) out[id] = kept
   })

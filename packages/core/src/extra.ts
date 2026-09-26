@@ -55,11 +55,21 @@ export function optionsOf(extra: string | undefined) {
   return raw ? raw.split(',').map(Number) : []
 }
 
-export function phraseAt(answerId: number, extra: string | undefined, step: number) {
+export function phraseOrder(answerId: number, extra: string | undefined) {
   const list = phrasesOf(answerId)
-  if (!list.length) return undefined
+  const spoken = list.filter((line) => !line.laugh)
+  const laughs = list.filter((line) => line.laugh)
+  if (!spoken.length) return list
   const start = Number(extra ?? 0) || 0
-  return list[(start + step) % list.length]
+  return [...spoken.map((_, i) => spoken[(start + i) % spoken.length]), ...laughs]
+}
+
+export function phraseAt(answerId: number, extra: string | undefined, step: number) {
+  const order = phraseOrder(answerId, extra)
+  return order[step]
 }
 
 export const phraseCount = (answerId: number) => phrasesOf(answerId).length
+
+export const modePool = <T extends { id: number }>(pool: T[], mode: ModeId) =>
+  mode === 'phrase' ? pool.filter((entity) => phraseCount(entity.id) > 0) : pool
