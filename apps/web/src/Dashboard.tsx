@@ -59,10 +59,15 @@ const storedCategory = (): Category | undefined => {
 
 const categoryIcon = (id: Category) => (id === 'anime' ? <TvIcon /> : id === 'manga' ? <BookIcon /> : id === 'sport' ? <BallIcon /> : <GamepadIcon />)
 
+const MODE_ROWS = 2
+
 function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
   const { t, l } = useI18n()
   const href = useHref()
   const { stats, user } = useAuth()
+  const modes = MODES.filter((m) => game.modes.includes(m.id))
+  const rows = modes.slice(0, MODE_ROWS)
+  const extra = modes.length - rows.length
 
   return (
     <article className="franchise" style={{ '--tab-accent': game.accent } as CSSProperties}>
@@ -93,7 +98,14 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
         </div>
         <p>{l(game.description)}</p>
         <div className="franchise-modes">
-          {MODES.filter((m) => game.modes.includes(m.id)).map((m) => {
+          {extra > 0 ? (
+            <Link className="modes-more" href={href.play(game.id, modes[MODE_ROWS].id)} prefetch={false}>
+              {t('dash.moreModes', { count: extra })}
+            </Link>
+          ) : (
+            <span className="modes-more" aria-hidden />
+          )}
+          {rows.map((m) => {
             const own = stats[statsKey(game.id, m.id)] ?? emptyStats
             const played = own.solved > 0 || own.skipped > 0
             const done = stats[dailyKey(game.id, m.id)]?.lastDay === kyivToday()
@@ -104,29 +116,28 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
                     {m.icon}
                   </span>
                   <span className="mode-name">{t(m.label)}</span>
-                  {played && (
-                    <span
-                      className="mode-stat-hint"
-                      tabIndex={0}
-                      role="button"
-                      aria-label={t('dash.statsHint')}
-                      onMouseDown={(e) => {
-                        e.preventDefault()
-                        const hint = e.currentTarget
-                        if (document.activeElement === hint) hint.blur()
-                        else hint.focus()
-                      }}
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <ChartIcon />
-                      <span className="mode-tip" role="tooltip">
-                        <b>{t('dash.tipSolved', { count: own.solved })}</b>
-                        <b>{t('dash.tipSkipped', { count: own.skipped })}</b>
-                        <b>{t('dash.tipAvg', { value: average(own) })}</b>
-                      </span>
-                    </span>
-                  )}
                 </Link>
+                {played && (
+                  <span
+                    className="mode-stat-hint"
+                    tabIndex={0}
+                    role="button"
+                    aria-label={t('dash.statsHint')}
+                    onMouseDown={(e) => {
+                      e.preventDefault()
+                      const hint = e.currentTarget
+                      if (document.activeElement === hint) hint.blur()
+                      else hint.focus()
+                    }}
+                  >
+                    <ChartIcon />
+                    <span className="mode-tip" role="tooltip">
+                      <b>{t('dash.tipSolved', { count: own.solved })}</b>
+                      <b>{t('dash.tipSkipped', { count: own.skipped })}</b>
+                      <b>{t('dash.tipAvg', { value: average(own) })}</b>
+                    </span>
+                  </span>
+                )}
                 {user && (
                   <Link
                     className={`mode-daily ${done ? 'done' : ''}`}

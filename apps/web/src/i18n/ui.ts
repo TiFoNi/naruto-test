@@ -258,6 +258,7 @@ const ui = {
     uk: 'Дивись на малюнок, штрихування й побудову кадру — із трьох варіантів правильний один.',
     en: 'Look at the linework, the screentones and the panel layout — one of the three is right.',
   },
+  'dash.moreModes': { ru: 'ещё {count} режима', uk: 'ще {count} режими', en: '{count} more modes' },
   'dash.statsHint': { ru: 'Твоя статистика', uk: 'Твоя статистика', en: 'Your stats' },
   'dash.tipSolved': { ru: 'Угадано: {count}', uk: 'Вгадано: {count}', en: 'Solved: {count}' },
   'dash.tipSkipped': { ru: 'Сдался: {count}', uk: 'Здався: {count}', en: 'Gave up: {count}' },

@@ -257,8 +257,15 @@
 }
 
 .franchise h3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  min-height: calc(2 * 1.25em);
   font-family: var(--display);
   font-size: 20px;
+  line-height: 1.25;
   margin: 0;
 }
 
@@ -273,7 +280,9 @@
   margin-top: auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(184px, 1fr));
+  align-content: end;
   gap: 7px;
+  min-height: calc(2 * 35px + 2 * 7px + 16px + 4px);
   padding-top: 4px;
 }
 
@@ -299,6 +308,21 @@
   font-size: 14px;
   text-decoration: none;
   transition: background 0.2s;
+}
+
+.modes-more {
+  justify-self: start;
+  min-height: 16px;
+  color: color-mix(in srgb, var(--tab-accent) 75%, var(--text-2));
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  text-decoration: none;
+}
+
+.modes-more:hover {
+  color: var(--tab-accent);
+  text-decoration: underline;
 }
 
 .mode-daily {
@@ -332,9 +356,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: auto;
+  flex: none;
+  align-self: center;
   width: 18px;
   height: 18px;
+  margin-right: 2px;
   border-radius: 6px;
   background: none;
   color: color-mix(in srgb, var(--text-3) 70%, transparent);

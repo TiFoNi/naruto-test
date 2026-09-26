@@ -212,24 +212,27 @@ export default function Profile({ onBack }: { onBack: () => void }) {
                 ) : (
                   <b className="empty">—</b>
                 )}
+                {summary?.rank && (
+                  <Link className="fact-more" href={href.board}>
+                    {t('profile.placesMore')}
+                  </Link>
+                )}
               </div>
-              <button
-                type="button"
-                className={`fact fact-rank fact-open ${best ? medal(best.position) : ''} ${places ? 'open' : ''}`}
-                aria-expanded={places}
-                onClick={() => best && setPlaces(!places)}
-                disabled={!best}
-              >
+              <div className={`fact fact-rank ${best ? medal(best.position) : ''} ${places ? 'open' : ''}`}>
                 <span>{t('profile.bestGame')}</span>
                 {best ? (
-                  <p className="fact-place">
-                    <b>#{best.position}</b>
-                    <small>{t('profile.placesMore')}</small>
-                  </p>
+                  <>
+                    <p className="fact-place">
+                      <b>#{best.position}</b>
+                    </p>
+                    <button type="button" className="fact-more" aria-expanded={places} onClick={() => setPlaces(!places)}>
+                      {t('profile.placesMore')}
+                    </button>
+                  </>
                 ) : (
                   <b className="empty">—</b>
                 )}
-              </button>
+              </div>
 
               {places && summary && (
                 <div className="places-pop" role="dialog" aria-label={t('profile.placesTitle')}>

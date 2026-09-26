@@ -98,8 +98,8 @@
 .profile-facts .fact {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 3px;
+  justify-content: flex-start;
+  gap: 6px;
   height: 92px;
   padding: 10px 12px;
   border-radius: 12px;
@@ -113,7 +113,6 @@
   -webkit-line-clamp: 2;
   line-clamp: 2;
   overflow: hidden;
-  min-height: 2.5em;
   color: var(--text-3);
   font-size: 12px;
   font-weight: 600;
@@ -146,20 +145,12 @@
   font-weight: 700;
 }
 
-.profile-facts .fact-place {
-  display: flex;
-  align-items: flex-end;
-  min-height: 26px;
-}
-
 .profile-facts .fact > b {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
   overflow: hidden;
-  min-height: 26px;
-  margin-top: auto;
 }
 
 .profile-facts .fact-rank {
@@ -167,20 +158,23 @@
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 26%, transparent);
 }
 
-.profile-facts .fact-open {
+.fact-more {
+  align-self: flex-start;
+  padding: 0;
   border: none;
+  background: none;
+  color: color-mix(in srgb, var(--place) 55%, var(--text-2));
   font: inherit;
-  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
   cursor: pointer;
-  transition: box-shadow 0.15s;
+  transition: color 0.15s;
 }
 
-.profile-facts .fact-open:hover:not(:disabled) {
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--place) 55%, transparent);
-}
-
-.profile-facts .fact-open:disabled {
-  cursor: default;
+.fact-more:hover,
+.fact-rank.open .fact-more {
+  color: var(--place);
 }
 
 .places-pop {
