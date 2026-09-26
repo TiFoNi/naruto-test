@@ -59,6 +59,42 @@ const PART_OF = new Map(Object.entries(PARTS).flatMap(([part, list]) => list.map
 const RETIRED = 'Завершил карьеру'
 const PLAYING = 'Играет'
 
+const CLUB_NAMES = {
+  'Al-Nassr': ['Аль-Наср', 'Аль-Наср'],
+  'Al Sadd Sports Club': ['Аль-Садд', 'Аль-Садд'],
+  'Al-Duhail SC': ['Аль-Духаиль', 'Аль-Духаїль'],
+  'Al Ahli SC': ['Аль-Ахли', 'Аль-Ахлі'],
+  'Al Qadsiah FC': ['Аль-Кадисия', 'Аль-Кадісія'],
+  'Al-Ittifaq F. C.': ['Аль-Иттифак', 'Аль-Іттіфак'],
+  'Atlético Dallas': ['Атлетико Даллас', 'Атлетіко Даллас'],
+  'FC Dinamo Moscow': ['Динамо Москва', 'Динамо Москва'],
+  'FC Dynamo Kyiv': ['Динамо Киев', 'Динамо Київ'],
+  'GNK Dinamo Zagreb': ['Динамо Загреб', 'Динамо Загреб'],
+  'FC Dinamo Tbilisi': ['Динамо Тбилиси', 'Динамо Тбілісі'],
+  'Sparta Rotterdam': ['Спарта Роттердам', 'Спарта Роттердам'],
+  'AC Sparta Prague': ['Спарта Прага', 'Спарта Прага'],
+  'PFC CSKA Sofia': ['ЦСКА София', 'ЦСКА Софія'],
+  'Olympique de Marseille': ['Олимпик Марсель', 'Олімпік Марсель'],
+  'Inter Milan': ['Интер', 'Інтер'],
+  'Borussia Dortmund': ['Боруссия Дортмунд', 'Боруссія Дортмунд'],
+  'Eintracht Frankfurt': ['Айнтрахт Франкфурт', 'Айнтрахт Франкфурт'],
+  '1. FC Union Berlin': ['Унион Берлин', 'Уніон Берлін'],
+  'PFC CSKA Moscow': ['ЦСКА Москва', 'ЦСКА Москва'],
+  'FC Tokyo': ['Токио', 'Токіо'],
+  'Los Angeles FC': ['Лос-Анджелес ФК', 'Лос-Анджелес ФК'],
+  'LA Galaxy': ['Лос-Анджелес Гэлакси', 'Лос-Анджелес Гелаксі'],
+  'CF Montréal': ['Монреаль', 'Монреаль'],
+  'PSV Eindhoven': ['ПСВ', 'ПСВ'],
+  'Sporting CP': ['Спортинг', 'Спортінг'],
+}
+
+const ARABIC_ARTICLE = /^(Ан|Ас|Ад|Аш|Ат|Аз|Ар|Ац)-/
+
+const tidyClub = (name) => {
+  const plain = name.replace(/\s*\([^)]*\)\s*$/, '').trim()
+  return plain.replace(ARABIC_ARTICLE, 'Аль-')
+}
+
 const sparql = async (query) => {
   const url = `https://query.wikidata.org/sparql?format=json&query=${encodeURIComponent(query)}`
   return getJson(url)
@@ -118,11 +154,13 @@ const shrink = (one) => {
     }
 }
 
+const PATRONYMIC = /(ович|евич|ьевич|івна|овна|евна|ична)$/
+
 const straight = (name) => {
   const [family, given] = name.split(', ')
-  if (!given) return name
-  const plain = given.split(' ').filter((part) => !/(ович|евич|івна|овна|евна)$/.test(part))
-  return `${plain.join(' ')} ${family}`
+  const parts = given ? [...given.split(' '), family] : name.split(' ')
+  const plain = parts.filter((part) => !PATRONYMIC.test(part))
+  return (plain.length ? plain : parts).join(' ')
 }
 
 const id = (claim) => claim?.value?.id ?? null
@@ -144,10 +182,36 @@ async function roleOf(qid, seen = new Set()) {
 const NATIONAL = ['Q6979593', 'Q135408445']
 const CLUB = ['Q476028', 'Q847017', 'Q15944511', 'Q103229495', 'Q20639856']
 
+const YOUTH = /молодёжн|молодежн|юношеск|олимпийск|olympic|under-?\s?\d|u-?\d|b-?team|второй состав/
+const NOT_A_CLUB = /women|жіноч|женск|college|university|універси|универси|academy|академ|pilots|school|шкільн/
+
+const isNational = async (qid) => {
+  const data = await entity(qid)
+  const label = `${data.labels.ru ?? ''} ${data.labels.en ?? ''}`.toLowerCase()
+  const kinds = [...ids(data.claims.P31), ...ids(data.claims.P279)]
+  return kinds.some((k) => NATIONAL.includes(k)) || /сборн|national team/.test(label)
+}
+
+async function nationOf(player) {
+  const caps = []
+  for (const team of (player.claims.P54 ?? []).filter((c) => c.rank !== 'deprecated' && id(c))) {
+    const qid = id(team)
+    if (!(await isNational(qid))) continue
+    const data = await entity(qid)
+    const label = `${data.labels.ru ?? ''} ${data.labels.en ?? ''}`.toLowerCase()
+    if (YOUTH.test(label)) continue
+    caps.push({ country: ids(data.claims.P17)[0] ?? null, started: team.qualifiers?.P580?.[0]?.time ?? '' })
+  }
+  return caps.filter((c) => c.country).sort((a, b) => b.started.localeCompare(a.started))[0]?.country ?? null
+}
+
 const isClub = async (qid) => {
   const data = await entity(qid)
   const label = `${data.labels.ru ?? ''} ${data.labels.en ?? ''}`.toLowerCase()
-  if (/сборн|national team|олимпийск|olympic|молодёжн|молодежн|юношеск|under-?\d/.test(label)) return false
+  if (/сборн|national team/.test(label) || YOUTH.test(label) || NOT_A_CLUB.test(label)) return false
+
+  const sports = ids(data.claims.P641)
+  if (sports.length && !sports.includes('Q2736')) return false
 
   const kinds = [...ids(data.claims.P31), ...ids(data.claims.P279)]
   if (kinds.some((k) => NATIONAL.includes(k))) return false
@@ -169,9 +233,11 @@ async function clubOf(player, birth) {
     if (!(await isClub(qid))) continue
     const started = team.qualifiers?.P580?.[0]?.time ?? ''
     const ended = team.qualifiers?.P582?.[0]?.time ?? null
+    const data = await entity(qid)
     scored.push({
       qid,
       preferred: team.rank === 'preferred',
+      known: !!data.labels.ru,
       started,
       ended,
       years: started && ended ? Number(ended.slice(1, 5)) - Number(started.slice(1, 5)) : 0,
@@ -181,13 +247,15 @@ async function clubOf(player, birth) {
 
   const retired = new Date().getFullYear() - birth > PLAYING_AGE
   if (!retired) {
-    const current = scored
-      .filter((t) => !t.ended && (t.started || t.preferred))
-      .sort((a, b) => Number(b.preferred) - Number(a.preferred) || b.started.localeCompare(a.started))[0]
+    const open = scored.filter((t) => !t.ended && (t.started || t.preferred))
+    const current =
+      open.sort((a, b) => Number(b.preferred) - Number(a.preferred) || b.started.localeCompare(a.started)).find((t) => t.known) ??
+      open[0]
     if (current) return { qid: current.qid, active: true }
   }
 
-  const longest = [...scored].sort((a, b) => b.years - a.years || (b.ended ?? '').localeCompare(a.ended ?? ''))[0]
+  const byYears = [...scored].sort((a, b) => b.years - a.years || (b.ended ?? '').localeCompare(a.ended ?? ''))
+  const longest = byYears.find((t) => t.known) ?? byYears[0]
   return { qid: longest.qid, active: false }
 }
 
@@ -216,8 +284,15 @@ const main = async () => {
   const remember = async (qid, ruFallback) => {
     if (!qid) return ruFallback
     const data = await entity(qid)
-    const ru = data.labels.ru ?? data.labels.en ?? ruFallback
-    if (ru && data.labels.uk && data.labels.en) terms.set(ru, [data.labels.uk, data.labels.en])
+    const raw = data.labels.ru ?? data.labels.en ?? ruFallback
+    if (!raw) return raw
+    const override = data.labels.en ? CLUB_NAMES[data.labels.en] : null
+    if (override) {
+      terms.set(override[0], [override[1], data.labels.en])
+      return override[0]
+    }
+    const ru = tidyClub(raw)
+    if (data.labels.uk && data.labels.en) terms.set(ru, [tidyClub(data.labels.uk), data.labels.en])
     return ru
   }
 
@@ -242,7 +317,7 @@ const main = async () => {
     }
     if (!roles.length) continue
 
-    const nationQid = id((player.claims.P1532 ?? [])[0]) ?? id((player.claims.P27 ?? [])[0])
+    const nationQid = (await nationOf(player)) ?? id((player.claims.P1532 ?? [])[0]) ?? id((player.claims.P27 ?? [])[0])
     const country = await remember(nationQid, null)
     if (!country) continue
 

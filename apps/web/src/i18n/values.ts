@@ -984,4 +984,8 @@ export const VALUES: Record<string, [uk: string, en: string]> = {
   Фалкирк: ['Фолкерк', 'Falkirk'],
   Фрайбург: ['Фрайбург', 'SC Freiburg'],
   Шахтёр: ['Шахтар', 'FC Shakhtar Donetsk'],
+  Австралия: ['Австралія', 'Australia'],
+  Великобритания: ['Сполучене Королівство', 'United Kingdom'],
+  Габон: ['Габон', 'Gabon'],
+  Сербия: ['Сербія', 'Serbia'],
 }
