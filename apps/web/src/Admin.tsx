@@ -29,6 +29,7 @@ const UNIT = {
   character: { one: 'персонаж', many: 'Персонажи', accusative: 'персонажа', fresh: 'Новый', created: 'создан', removed: 'удалён', subject: 'Персонаж' },
   hero: { one: 'герой', many: 'Герои', accusative: 'героя', fresh: 'Новый', created: 'создан', removed: 'удалён', subject: 'Герой' },
   manga: { one: 'манга', many: 'Манга', accusative: 'мангу', fresh: 'Новая', created: 'создана', removed: 'удалена', subject: 'Манга' },
+  player: { one: 'футболист', many: 'Футболисты', accusative: 'футболиста', fresh: 'Новый', created: 'создан', removed: 'удалён', subject: 'Футболист' },
 } as const
 
 export default function Admin() {

@@ -447,7 +447,7 @@ html[data-search] .dashboard .category[data-id] {
 }
 
 html[data-auth] .hero-guest {
-  min-height: 464px;
+  min-height: var(--hero-card-h);
   align-self: stretch;
 }
 

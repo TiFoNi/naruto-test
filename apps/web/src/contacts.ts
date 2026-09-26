@@ -23,4 +23,6 @@ export const SOURCES = [
   'Death Note Wiki',
   'MangaDex',
   'MyAnimeList',
+  'Wikidata',
+  'Wikimedia Commons',
 ]

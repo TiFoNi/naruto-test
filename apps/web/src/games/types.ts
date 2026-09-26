@@ -18,7 +18,7 @@ export type Column<T> = {
   icons?: (guess: T, ctx: RenderContext) => Icon[]
 }
 
-export type Category = 'anime' | 'games' | 'manga'
+export type Category = 'anime' | 'games' | 'manga' | 'sport'
 
 export type Game<T extends Entity = Entity> = {
   id: GameId
@@ -28,7 +28,7 @@ export type Game<T extends Entity = Entity> = {
   accent: string
   modes: ModeId[]
   featured: string[]
-  unit: 'character' | 'hero' | 'manga'
+  unit: 'character' | 'hero' | 'manga' | 'player'
   entities: T[]
   updated?: string
   columns: Column<T>[]

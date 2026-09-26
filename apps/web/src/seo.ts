@@ -28,15 +28,15 @@ const MODE_LABEL = (lang: Lang, mode: string) => {
 }
 
 const UNIT = {
-  ru: { manga: ['тайтл', 'тайтла', 'тайтлов'], hero: ['героя', 'героев', 'героев'], character: ['персонаж', 'персонажа', 'персонажей'] },
-  uk: { manga: ['тайтл', 'тайтли', 'тайтлів'], hero: ['героя', 'героїв', 'героїв'], character: ['персонаж', 'персонажі', 'персонажів'] },
-  en: { manga: ['title', 'titles', 'titles'], hero: ['hero', 'heroes', 'heroes'], character: ['character', 'characters', 'characters'] },
+  ru: { manga: ['тайтл', 'тайтла', 'тайтлов'], hero: ['героя', 'героев', 'героев'], character: ['персонаж', 'персонажа', 'персонажей'], player: ['футболист', 'футболиста', 'футболистов'] },
+  uk: { manga: ['тайтл', 'тайтли', 'тайтлів'], hero: ['героя', 'героїв', 'героїв'], character: ['персонаж', 'персонажі', 'персонажів'], player: ['футболіст', 'футболісти', 'футболістів'] },
+  en: { manga: ['title', 'titles', 'titles'], hero: ['hero', 'heroes', 'heroes'], character: ['character', 'characters', 'characters'], player: ['player', 'players', 'players'] },
 } as const
 
 const ACC = {
-  ru: { manga: 'тайтл', hero: 'героя', character: 'персонажа' },
-  uk: { manga: 'тайтл', hero: 'героя', character: 'персонажа' },
-  en: { manga: 'title', hero: 'hero', character: 'character' },
+  ru: { manga: 'тайтл', hero: 'героя', character: 'персонажа', player: 'футболиста' },
+  uk: { manga: 'тайтл', hero: 'героя', character: 'персонажа', player: 'футболіста' },
+  en: { manga: 'title', hero: 'hero', character: 'character', player: 'player' },
 } as const
 
 const plural = (lang: Lang, count: number, forms: readonly string[]) => {

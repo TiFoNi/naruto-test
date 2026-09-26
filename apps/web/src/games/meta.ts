@@ -9,7 +9,7 @@ export type GameMeta = {
   category: Category
   accent: string
   modes: ModeId[]
-  unit: 'character' | 'hero' | 'manga'
+  unit: 'character' | 'hero' | 'manga' | 'player'
   count: number
   featured: { id: number; image?: string }[]
 }

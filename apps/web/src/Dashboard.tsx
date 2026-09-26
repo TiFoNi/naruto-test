@@ -11,7 +11,7 @@ import Quests from './Quests'
 import { useHref } from './router'
 import { dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
-import { BookIcon, CalendarIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
+import { BallIcon, BookIcon, CalendarIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
 import { CARD, MINI, cardUrl, miniUrl } from './pics'
 import { useBeforePaint } from './paint'
 import { searchGames } from './search'
@@ -20,6 +20,7 @@ const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
   { id: 'manga', title: 'dash.mangaTitle' },
   { id: 'games', title: 'dash.games' },
+  { id: 'sport', title: 'dash.sport' },
 ]
 
 const WORLDS = {
@@ -45,7 +46,7 @@ const PERKS: { key: UiKey; Icon: typeof ChartIcon }[] = [
 
 const REMEMBER = 'nanda.category'
 
-const CATEGORY_IDS: Category[] = ['anime', 'manga', 'games']
+const CATEGORY_IDS: Category[] = ['anime', 'manga', 'games', 'sport']
 
 const storedCategory = (): Category | undefined => {
   try {
@@ -56,7 +57,7 @@ const storedCategory = (): Category | undefined => {
   }
 }
 
-const categoryIcon = (id: Category) => (id === 'anime' ? <TvIcon /> : id === 'manga' ? <BookIcon /> : <GamepadIcon />)
+const categoryIcon = (id: Category) => (id === 'anime' ? <TvIcon /> : id === 'manga' ? <BookIcon /> : id === 'sport' ? <BallIcon /> : <GamepadIcon />)
 
 function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
   const { t, l } = useI18n()
@@ -87,7 +88,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
         <div className="franchise-title">
           <h3>{l(game.label)}</h3>
           <span className="count">
-            {t(game.unit === 'manga' ? 'dash.titles' : game.unit === 'hero' ? 'dash.heroes' : 'dash.characters', { count: game.count })}
+            {t(game.unit === 'manga' ? 'dash.titles' : game.unit === 'hero' ? 'dash.heroes' : game.unit === 'player' ? 'dash.players' : 'dash.characters', { count: game.count })}
           </span>
         </div>
         <p>{l(game.description)}</p>

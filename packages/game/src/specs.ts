@@ -1,4 +1,4 @@
-export type GameId = 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'onepiece' | 'mk' | 'hxh' | 'bc' | 'jojo' | 'se' | 'ff' | 'manga' | 'dn' | 'avatar'
+export type GameId = 'football' | 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'onepiece' | 'mk' | 'hxh' | 'bc' | 'jojo' | 'se' | 'ff' | 'manga' | 'dn' | 'avatar'
 
 export type ModeId = 'classic' | 'image' | 'ability' | 'page'
 
@@ -211,6 +211,20 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('origin', 'exact'),
       col('alignment', 'exact'),
       col('debutIndex', 'order'),
+    ],
+  },
+  football: {
+    data: 'football',
+    images: 'football',
+    modes: ['classic'],
+    columns: [
+      col('country', 'exact'),
+      col('part', 'exact'),
+      col('roles', 'list'),
+      col('club', 'exact'),
+      col('status', 'exact'),
+      col('height', 'order'),
+      col('birth', 'order'),
     ],
   },
   dota: {

@@ -27,7 +27,7 @@ export default function GuessGrid({ game, guesses, answerId }: { game: Game; gue
     <div className="grid-scroll">
       <div className="grid" style={{ ['--cols' as string]: cols }}>
         <div className="grid-row header">
-          <div>{t(game.unit === 'manga' ? 'play.manga' : game.unit === 'hero' ? 'play.hero' : 'play.character')}</div>
+          <div>{t(game.unit === 'manga' ? 'play.manga' : game.unit === 'hero' ? 'play.hero' : game.unit === 'player' ? 'play.player' : 'play.character')}</div>
           {game.columns.map((c) => (
             <div key={c.key}>{l(c.title)}</div>
           ))}

@@ -108,7 +108,7 @@ export default function CharacterSearch({ game, exclude, busy = false, compact =
         <SearchIcon />
         <input
           value={query}
-          placeholder={t(game.unit === 'hero' ? 'play.searchHero' : 'play.searchCharacter')}
+          placeholder={t(game.unit === 'hero' ? 'play.searchHero' : game.unit === 'player' ? 'play.searchPlayer' : 'play.searchCharacter')}
           onChange={(e) => {
             setQuery(e.target.value)
             setActive(0)
@@ -133,7 +133,11 @@ export default function CharacterSearch({ game, exclude, busy = false, compact =
             }
           }}
         />
-        {!compact && <span className="search-left">{t('play.left', { count: game.entities.length - exclude.size })}</span>}
+        {!compact && (
+          <span className="search-left">
+            {t(game.unit === 'player' ? 'play.leftPlayer' : 'play.left', { count: game.entities.length - exclude.size })}
+          </span>
+        )}
       </div>
       <button className="send" aria-label={t('play.guess')} disabled={!matches.length || busy} onClick={() => pick(matches[active])}>
         {compact ? <ArrowIcon /> : <>{t('play.guess')} <ArrowIcon /></>}

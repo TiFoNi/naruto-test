@@ -65,6 +65,15 @@ export function GamepadIcon({ className }: IconProps) {
   )
 }
 
+export function BallIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <circle cx="12" cy="12" r="9.2" />
+      <path d="M12 7.3 16.5 10.5 14.8 15.8H9.2L7.5 10.5Z" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
 export function SearchIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

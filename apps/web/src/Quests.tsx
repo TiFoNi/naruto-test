@@ -182,7 +182,9 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
                   <small className="quest-done">✓ {t('quests.claimed')}</small>
                 ) : board.bonus.ready ? (
                   <small className="quest-take">{t('quests.take')}</small>
-                ) : null}
+                ) : (
+                  <small className="muted">{t('quests.bonusHint')}</small>
+                )}
               </span>
               <span className="bonus-count">
                 {board.collected}/{board.total}
