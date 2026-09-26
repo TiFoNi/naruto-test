@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import BackButton from './BackButton'
+import BoardScope from './BoardScope'
 import { useEffect, useState } from 'react'
 import { api } from './api'
 import { GAMES, gameById } from './games'
@@ -144,6 +145,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
           <h1>{t('lb.title')}</h1>
           <p className="muted">{t('lb.hint')}</p>
         </header>
+        <BoardScope scope="game" game={gameId} mode={mode} />
       </div>
 
       <div className="lb-filters">

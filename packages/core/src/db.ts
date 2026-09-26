@@ -101,6 +101,8 @@ export type SettingsDoc = { game: string; updated?: string }
 
 export type QuestDoc = { _id: string; userId: ObjectId; day: string; picks: string[]; claimed: string[]; createdAt: Date }
 
+export type SeasonDoc = { _id: string; season: string; userId: ObjectId; xp: number; solved: number; days: string[] }
+
 export type DailyDoc = { _id: string; day: string; game: string; mode: string; answerId: number; extra?: string; createdAt: Date }
 
 const cache = globalThis as typeof globalThis & {
@@ -112,6 +114,7 @@ const cache = globalThis as typeof globalThis & {
   __roundsIndexed?: Promise<unknown>
   __duelsIndexed?: Promise<unknown>
   __challengesIndexed?: Promise<unknown>
+  __seasonsIndexed?: Promise<unknown>
 }
 
 export const database = async () => (await client()).db(process.env.MONGODB_DB || 'nandaguessr')
@@ -215,6 +218,16 @@ export async function quests(): Promise<Collection<QuestDoc>> {
     throw error
   })
   await cache.__questsIndexed
+  return collection
+}
+
+export async function seasons(): Promise<Collection<SeasonDoc>> {
+  const collection = (await database()).collection<SeasonDoc>('seasons')
+  cache.__seasonsIndexed ??= collection.createIndex({ season: 1, xp: -1 }).catch((error) => {
+    cache.__seasonsIndexed = undefined
+    throw error
+  })
+  await cache.__seasonsIndexed
   return collection
 }
 

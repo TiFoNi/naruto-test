@@ -7,6 +7,7 @@ import { applyDailyResult, applyResult, defaultNickname } from './profile'
 import { abilityByKey } from './abilities'
 import { optionsOf, roundExtra } from './extra'
 import { findChallenge, recordSolve } from './challenges'
+import { markSeasonPlay } from './season'
 
 import type { Collection } from 'mongodb'
 
@@ -194,6 +195,8 @@ export async function finishRound(users: Collection<UserDoc>, round: RoundDoc, w
     if (won) await users.updateOne({ _id: round.userId }, { $inc: { 'challengeStats.solved': 1 } })
     return { round: updated, stats: null }
   }
+  await markSeasonPlay(round.userId, won, today())
+
   if (round.daily) {
     const key = dailyKey(round.game, round.mode)
     return { round: updated, stats: { key, value: await applyDailyResult(users, round.userId, key, round.daily, guesses) } }

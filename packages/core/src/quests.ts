@@ -1,6 +1,7 @@
 import type { ObjectId } from 'mongodb'
 import { duels, quests, rounds, users } from './db'
 import { today } from './daily'
+import { addSeasonXp } from './season'
 
 export const LEVEL_XP = 500
 
@@ -182,5 +183,6 @@ export async function claimQuest(userId: ObjectId, id: string) {
   if (!marked.modifiedCount) return null
 
   await (await users()).updateOne({ _id: userId }, { $inc: { xp: award } })
+  await addSeasonXp(userId, award)
   return award
 }

@@ -11,6 +11,7 @@ import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
 import * as achievements from '@nanda/core/endpoints/achievements'
 import * as leaderboard from '@nanda/core/endpoints/leaderboard'
+import * as seasonBoard from '@nanda/core/endpoints/season'
 import * as profile from '@nanda/core/endpoints/profile'
 import * as roundCurrent from '@nanda/core/endpoints/round-current'
 import * as roundGuess from '@nanda/core/endpoints/round-guess'
@@ -93,6 +94,11 @@ export class GameController {
   @Get('leaderboard')
   board(@Req() req: Request, @Res() res: Response) {
     return bridge(leaderboard.GET, req, res)
+  }
+
+  @Get('season')
+  season(@Req() req: Request, @Res() res: Response) {
+    return bridge(seasonBoard.GET, req, res)
   }
 
   @Post('profile')

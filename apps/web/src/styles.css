@@ -6920,6 +6920,11 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
   border-bottom: 0;
 }
 
+.lb-card .lb-table tbody td:first-child,
+.lb-card .lb-table tbody td:last-child {
+  border-radius: 0;
+}
+
 .lb-table .lb-rank {
   width: 58px;
   color: var(--text-3);
@@ -9164,4 +9169,385 @@ html[data-auth][data-checking] .hero-guest {
 
 .awards-tiers {
   min-height: 132px;
+}
+
+.board-scope {
+  display: flex;
+  flex: none;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+
+.board-scope a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 11px;
+  color: var(--text-2);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.16s, color 0.16s;
+}
+
+.board-scope a:hover {
+  color: var(--text);
+}
+
+.board-scope a.active {
+  background: var(--accent);
+  color: #10131a;
+}
+
+.season-card {
+  display: grid;
+  grid-template-columns: auto minmax(200px, 1fr) minmax(220px, 1fr) auto;
+  align-items: center;
+  gap: 22px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 10%, var(--card)), var(--card) 60%);
+}
+
+.season-mark {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent);
+  font-size: 22px;
+}
+
+.season-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.season-copy b {
+  font-family: var(--display);
+  font-size: 19px;
+}
+
+.season-copy p {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.season-time {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.season-time-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.season-time-head em {
+  color: var(--text-3);
+  font-style: normal;
+}
+
+.season-time-head b {
+  font-variant-numeric: tabular-nums;
+}
+
+.season-line {
+  display: block;
+  overflow: hidden;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--card-2);
+}
+
+.season-line i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.season-rewards {
+  display: grid;
+  grid-template-columns: repeat(3, 96px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.season-rewards li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 10px;
+  text-align: center;
+}
+
+.season-rewards li + li {
+  border-left: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+
+.season-rewards b {
+  font-size: 13.5px;
+}
+
+.season-rewards small {
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.season-rewards .gold b {
+  color: #f5c451;
+}
+
+.season-rewards .silver b {
+  color: #c9d1dc;
+}
+
+.season-rewards .bronze b {
+  color: #d98a4e;
+}
+
+.season-count {
+  align-self: flex-end;
+}
+
+.season-table td {
+  vertical-align: middle;
+}
+
+.season-rank {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  background: var(--card-2);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.season-rank.gold {
+  background: color-mix(in srgb, #f5c451 22%, var(--card-2));
+  color: #f5c451;
+}
+
+.season-rank.silver {
+  background: color-mix(in srgb, #c9d1dc 18%, var(--card-2));
+  color: #c9d1dc;
+}
+
+.season-rank.bronze {
+  background: color-mix(in srgb, #d98a4e 20%, var(--card-2));
+  color: #d98a4e;
+}
+
+.season-table .season-xp-col {
+  width: 28%;
+}
+
+.season-table .lb-num {
+  width: 120px;
+}
+
+.season-table .lb-num em {
+  color: var(--text-3);
+  font-style: normal;
+}
+
+.season-xp {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.season-xp b {
+  min-width: 68px;
+  font-family: var(--display);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.season-bar {
+  display: block;
+  flex: 1 1 auto;
+  max-width: 180px;
+  overflow: hidden;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--card-2);
+}
+
+.season-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.season-me {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+.season-me .play-card-title {
+  margin-bottom: -4px;
+}
+
+.season-me .season-place {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+}
+
+.season-place b {
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 42px;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.season-place span {
+  color: var(--text-3);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.season-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.season-chip {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--correct) 18%, transparent);
+  color: var(--correct);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.season-goal {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.season-goal > span:first-child {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.season-goal em {
+  color: var(--text-3);
+  font-style: normal;
+}
+
+.season-how {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+.season-how ol {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.season-how li {
+  display: flex;
+  gap: 10px;
+  color: var(--text-2);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.season-how i {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+@media (max-width: 1080px) {
+  .season-card {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .season-time,
+  .season-rewards {
+    grid-column: 1 / -1;
+  }
+
+  .season-rewards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding-top: 4px;
+  }
+}
+
+@media (max-width: 620px) {
+  .season-rewards small {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 620px) {
+  .season-rewards {
+    flex-wrap: wrap;
+  }
+
+  .season-rewards li {
+    flex: 1 1 100px;
+  }
+
+  .season-xp-col {
+    display: none;
+  }
 }

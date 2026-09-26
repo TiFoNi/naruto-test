@@ -3,6 +3,7 @@ import { DAILY_KEYS, STAT_KEYS } from '@nanda/game'
 import { shiftDay, today } from './daily'
 import { users, type Stats, type UserDoc } from './db'
 import { levelOf } from './quests'
+import { touchSeasonDay } from './season'
 import { fail } from './http'
 import { authSession } from './auth'
 import { guestCookie, readGuest } from './session'
@@ -57,6 +58,7 @@ const alive = (visit: UserDoc['visit']) => visit?.lastDay === today() || visit?.
 
 export async function touchVisit(collection: Collection<UserDoc>, userId: ObjectId) {
   const day = today()
+  await touchSeasonDay(userId, day)
   const doc = await collection.findOne({ _id: userId }, { projection: { visit: 1 } })
   const prev = doc?.visit
   if (prev?.lastDay === day) return prev

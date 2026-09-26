@@ -18,6 +18,7 @@ export function hrefs(lang: Lang) {
     duel: (code: string) => at(`/duel/${code}`),
     challenge: (code: string) => at(`/c/${code}`),
     play: (game: GameId, mode: ModeId, daily = false) => at(`/play/${game}/${mode}${variant(daily)}`),
+    board: at('/leaderboard'),
     leaderboard: (game: GameId, mode: ModeId) => at(`/leaderboard/${game}/${mode}`),
   }
 }

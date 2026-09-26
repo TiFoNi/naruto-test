@@ -36,7 +36,7 @@ function useDropdown(open: boolean, setOpen: (open: boolean) => void) {
   return box
 }
 
-function NavMenu({ user, section, boardHref }: { user: boolean; section?: string; boardHref: string }) {
+function NavMenu({ user, section }: { user: boolean; section?: string }) {
   const { t } = useI18n()
   const href = useHref()
   const [open, setOpen] = useState(false)
@@ -64,7 +64,7 @@ function NavMenu({ user, section, boardHref }: { user: boolean; section?: string
             <Link className={onDuels ? 'active' : ''} href={href.duels} onClick={() => setOpen(false)}>
               {t('nav.duels')}
             </Link>
-            <Link className={onBoard ? 'active' : ''} href={boardHref} onClick={() => setOpen(false)}>
+            <Link className={onBoard ? 'active' : ''} href={href.board} onClick={() => setOpen(false)}>
               {t('nav.leaderboard')}
             </Link>
           </>
@@ -148,7 +148,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const pathname = usePathname()
   const scrolled = useScrolled()
   useVisitTracker()
-  const [, , section, gameId, modeId] = pathname.split('/')
+  const [, , section, gameId] = pathname.split('/')
   const open = PUBLIC.has(section ?? '')
   const game = section === 'play' ? metaById(games, gameId as never) : null
   const accent = user && game ? game.accent : BRAND.accent
@@ -175,8 +175,6 @@ export default function Shell({ children, games }: { children: ReactNode; games:
     else if (!loading) delete root.dataset.auth
   }, [loading, user])
 
-  const boardHref = href.leaderboard(game?.id ?? 'naruto', (section === 'play' ? modeId : 'classic') as never)
-
   return (
     <div className="app">
       <Background />
@@ -192,7 +190,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
             </span>
           </Link>
 
-          <NavMenu user={!!user} section={section} boardHref={boardHref} />
+          <NavMenu user={!!user} section={section} />
 
           <div className="topbar-right">
             <LangSwitch />

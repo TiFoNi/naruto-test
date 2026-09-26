@@ -2,6 +2,7 @@ import type { ObjectId } from 'mongodb'
 import { GAME_IDS, type GameId } from '@nanda/game'
 import { rounds, users, duels } from './db'
 import { gameData } from './games'
+import { addSeasonXp } from './season'
 
 export type Tier = 'bronze' | 'silver' | 'gold' | 'legend'
 export type Category = 'guessing' | 'duels' | 'streaks' | 'modes' | 'worlds' | 'ranking' | 'secret'
@@ -328,7 +329,9 @@ export async function claimAward(userId: ObjectId, id: string) {
     { _id: userId, [`awards.${id}`]: { $exists: true }, [`claimed.${id}`]: { $exists: false } },
     { $set: { [`claimed.${id}`]: new Date() }, $inc: { xp: achievement.xp } },
   )
-  return marked.modifiedCount ? achievement.xp : null
+  if (!marked.modifiedCount) return null
+  await addSeasonXp(userId, achievement.xp)
+  return achievement.xp
 }
 
 export async function rarity() {
