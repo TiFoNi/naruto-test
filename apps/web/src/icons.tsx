@@ -74,6 +74,15 @@ export function SearchIcon({ className }: IconProps) {
   )
 }
 
+export function UserIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <circle cx="12" cy="8.5" r="4" />
+      <path d="M4.5 20.5c1.3-3.4 4.1-5.2 7.5-5.2s6.2 1.8 7.5 5.2" />
+    </svg>
+  )
+}
+
 export function BellIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

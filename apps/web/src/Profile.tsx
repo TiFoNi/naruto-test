@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import BackButton from './BackButton'
 import { useAuth } from './auth'
@@ -87,21 +87,12 @@ keepPerUser(() => {
 })
 
 export default function Profile({ onBack }: { onBack: () => void }) {
-  const { user, setNickname, resetStats, logout } = useAuth()
-  const { t, l, lang, error: errorText } = useI18n()
+  const { user } = useAuth()
+  const { t, l, lang } = useI18n()
   const href = useHref()
   const today = kyivToday()
 
   const [summary, setSummary] = useState<Summary | null>(knownSummary)
-  const [nickname, setNicknameDraft] = useState(user?.nickname ?? '')
-  const [nickMessage, setNickMessage] = useState<{
-    ok: boolean
-    text: string
-  } | null>(null)
-  const [savingNick, setSavingNick] = useState(false)
-  const [settings, setSettings] = useState(false)
- const [confirmReset, setConfirmReset] = useState(false)
-  const [resetting, setResetting] = useState(false)
 
   const load = useCallback(async () => {
     const { ok, data } = await api<Summary>('profile/summary')
@@ -115,38 +106,9 @@ export default function Profile({ onBack }: { onBack: () => void }) {
     void load()
   }, [load])
 
-  useEffect(() => {
-    if (!settings) return
-    const key = (event: KeyboardEvent) => event.key === 'Escape' && setSettings(false)
-    document.addEventListener('keydown', key)
-    return () => document.removeEventListener('keydown', key)
-  }, [settings])
-
-  useEffect(() => {
-    if (!nickMessage) return
-    const timer = setTimeout(() => setNickMessage(null), 3500)
-    return () => clearTimeout(timer)
-  }, [nickMessage])
-
   if (!user) return null
 
   const pinned = summary?.pinned ?? []
-
-  const saveNickname = async (event: FormEvent) => {
-    event.preventDefault()
-    setSavingNick(true)
-    const code = await setNickname(nickname)
-    setSavingNick(false)
-    setNickMessage(code ? { ok: false, text: errorText(code) } : { ok: true, text: t('profile.saved') })
-  }
-
-  const reset = async () => {
-    setResetting(true)
-    await resetStats()
-    setResetting(false)
-    setConfirmReset(false)
-    void load()
-  }
 
   const date = (value?: string, long = false) => {
     if (!value) return '—'
@@ -238,14 +200,9 @@ export default function Profile({ onBack }: { onBack: () => void }) {
               </div>
             </div>
 
-            <div className="profile-actions">
-              <button type="button" className="ghost" onClick={() => setSettings((open) => !open)}>
-                {t('profile.settings')}
-              </button>
-              <button type="button" className="ghost" onClick={logout}>
-                {t('nav.logout')}
-              </button>
-            </div>
+            <Link className="ghost profile-settings" href={href.settings}>
+              {t('profile.settings')}
+            </Link>
           </section>
 
           <section className="card streak-card">
@@ -438,63 +395,6 @@ export default function Profile({ onBack }: { onBack: () => void }) {
         </div>
       </div>
 
-      {settings && (
-        <div className="modal-backdrop" onClick={() => setSettings(false)} role="presentation">
-          <section
-            className="card modal settings-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-label={t('profile.settings')}
-            onClick={(event) => event.stopPropagation()}
-          >
-            <header>
-              <h2>{t('profile.settings')}</h2>
-              <button type="button" className="modal-close" onClick={() => setSettings(false)} aria-label={t('profile.cancel')}>
-                ✕
-              </button>
-            </header>
-
-            <form onSubmit={saveNickname}>
-              <label htmlFor="nickname">{t('profile.nickname')}</label>
-              <p className="muted">{t('profile.nicknameHint')}</p>
-              <div className="inline-field">
-                <input
-                  id="nickname"
-                  value={nickname}
-                  maxLength={24}
-                  onChange={(event) => {
-                    setNicknameDraft(event.target.value)
-                    setNickMessage(null)
-                  }}
-                />
-                <button className="primary" type="submit" disabled={savingNick || nickname.trim() === user.nickname}>
-                  {savingNick ? '…' : t('profile.save')}
-                </button>
-              </div>
-              {nickMessage && <div className={nickMessage.ok ? 'notice ok' : 'notice error'}>{nickMessage.text}</div>}
-            </form>
-
-            <div className="profile-reset">
-              <label>{t('profile.resetTitle')}</label>
-              <p className="muted">{t('profile.resetHint')}</p>
-              {confirmReset ? (
-                <div className="inline-field">
-                  <button type="button" className="danger-button" onClick={reset} disabled={resetting}>
-                    {resetting ? t('profile.resetting') : t('profile.resetYes')}
-                  </button>
-                  <button type="button" className="ghost" onClick={() => setConfirmReset(false)}>
-                    {t('profile.cancel')}
-                  </button>
-                </div>
-              ) : (
-                <button type="button" className="ghost" onClick={() => setConfirmReset(true)}>
-                  {t('profile.resetButton')}
-                </button>
-              )}
-            </div>
-          </section>
-        </div>
-      )}
     </div>
   )
 }

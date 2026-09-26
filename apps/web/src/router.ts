@@ -11,6 +11,7 @@ export function hrefs(lang: Lang) {
     home: `/${lang}`,
     login: at('/login'),
     profile: at('/profile'),
+    settings: at('/settings'),
     achievements: at('/achievements'),
     duels: at('/duels'),
     privacy: at('/privacy'),

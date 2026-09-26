@@ -422,12 +422,17 @@ a {
 
 .account .logout,
 .ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   white-space: nowrap;
   padding: 6px 12px;
   border-radius: 10px;
   border: 1px solid var(--line);
   background: var(--card);
   color: var(--text-2);
+  font: inherit;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -5723,6 +5728,13 @@ button.ghost.small {
   gap: 8px;
 }
 
+.profile-settings {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 13px;
+  font-weight: 700;
+}
+
 .profile-actions button {
   flex: 1;
 }
@@ -9636,4 +9648,255 @@ html[data-auth][data-checking] .hero-guest {
 
 .picker.rich .picker-list .picker-value {
   font-size: 15px;
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.settings h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.settings-layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.settings-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-nav button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  border: 0;
+  border-radius: 14px;
+  background: none;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.16s, color 0.16s;
+}
+
+.settings-nav .icon {
+  font-size: 18px;
+  color: var(--text-3);
+}
+
+.settings-nav button:hover {
+  color: var(--text);
+}
+
+.settings-nav button.active {
+  color: var(--text);
+  background: var(--card);
+  box-shadow: -3px 0 0 var(--accent);
+}
+
+.settings-nav button.active .icon {
+  color: var(--text);
+}
+
+.settings-block {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 22px;
+  border-radius: 20px;
+  background: var(--card);
+}
+
+.settings-who {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.settings-who .avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 17px;
+  font-size: 22px;
+}
+
+.settings-who div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.settings-who b {
+  font-family: var(--display);
+  font-size: 19px;
+}
+
+.settings-who .muted {
+  font-size: 13px;
+}
+
+.settings-block form,
+.settings-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-row {
+  gap: 14px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: var(--card-2);
+}
+
+.settings-block label {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.settings-block p.muted {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.settings-block .inline-field {
+  margin-top: 6px;
+}
+
+.settings-block input {
+  border: 0;
+  background: var(--card-2);
+}
+
+.settings-row .inline-field {
+  margin-top: 0;
+}
+
+.settings-eyebrow {
+  color: var(--text-3);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.account-mail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.account-mail b {
+  font-family: var(--display);
+  font-size: 19px;
+}
+
+.account-mail .muted {
+  font-size: 13px;
+}
+
+.account-mail {
+  margin-bottom: 2px;
+}
+
+.settings-actions {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  flex: none;
+  gap: 8px;
+}
+
+.settings-row .settings-actions {
+  width: min(250px, 100%);
+}
+
+.settings-actions .ghost,
+.settings-actions .danger-button {
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 12px;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.danger-row {
+  background: color-mix(in srgb, #e5483b 10%, var(--card-2));
+}
+
+.danger-row label {
+  color: #ff9b91;
+}
+
+.danger-note {
+  display: grid;
+}
+
+.danger-note > span {
+  grid-area: 1 / 1;
+}
+
+.danger-note-hold {
+  visibility: hidden;
+}
+
+.danger-ghost {
+  border-color: color-mix(in srgb, #e5483b 38%, transparent);
+  background: transparent;
+  color: #ff9b91;
+}
+
+.danger-ghost:hover {
+  border-color: color-mix(in srgb, #e5483b 70%, transparent);
+  color: #fff;
+}
+
+@media (min-width: 761px) {
+  .settings-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .settings-row > div:not(.settings-actions) {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .settings-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .settings-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .settings-nav button {
+    white-space: nowrap;
+  }
 }
