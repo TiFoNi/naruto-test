@@ -161,7 +161,7 @@ export default function PageMode({ game, active, stats, daily = false, challenge
           </button>
         )}
 
-        <RoundStatus loading={!round && !error} error={error} onRetry={retry} />
+        <RoundStatus error={error} onRetry={retry} />
 
         {round && over && answer && scored && (
           <RoundResult

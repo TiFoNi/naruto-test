@@ -8,7 +8,6 @@ import ClassicMode from './ClassicMode'
 import ImageMode from './ImageMode'
 import AbilityMode from './AbilityMode'
 import PageMode from './PageMode'
-import PlaySkeleton from './PlaySkeleton'
 import { CalendarIcon, InfinityIcon, MedalIcon } from './icons'
 
 import type { Game } from './games/types'
@@ -17,7 +16,7 @@ import { MODES, type ModeId } from './modes'
 import { useHref } from './router'
 import { emptyStats } from './stats'
 
-export default function GameView({ game, mode, daily, visible }: { game: Game; mode: ModeId; daily: boolean; visible: boolean }) {
+export default function GameView({ game, mode, daily }: { game: Game; mode: ModeId; daily: boolean }) {
   const { stats, user } = useAuth()
   const href = useHref()
   const { t, l } = useI18n()
@@ -35,16 +34,14 @@ export default function GameView({ game, mode, daily, visible }: { game: Game; m
           </div>
         </div>
         <div className="game-switches">
-          {user && (
-            <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
-              <Link role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
-                <InfinityIcon /> {t('daily.endless')}
-              </Link>
-              <Link role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, mode, true)}>
-                <CalendarIcon /> {t('daily.daily')}
-              </Link>
-            </div>
-          )}
+          <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
+            <Link role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
+              <InfinityIcon /> {t('daily.endless')}
+            </Link>
+            <Link role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, mode, true)}>
+              <CalendarIcon /> {t('daily.daily')}
+            </Link>
+          </div>
           <div className="mode-tabs" role="tablist" data-tabs={game.modes.length}>
             {MODES.filter((m) => game.modes.includes(m.id)).map((m) => (
               <Link
@@ -73,28 +70,26 @@ export default function GameView({ game, mode, daily, visible }: { game: Game; m
         </div>
       )}
 
-      {!visible && <PlaySkeleton mode={mode} />}
-
       {[false, true].map((d) => (
-        <div key={String(d)} hidden={!visible || daily !== d}>
+        <div key={String(d)} hidden={daily !== d}>
           {game.modes.includes('classic') && (
             <div hidden={mode !== 'classic'}>
-              <ClassicMode game={game} active={visible && daily === d && mode === 'classic'} stats={statsFor('classic', d)} daily={d} />
+              <ClassicMode game={game} active={daily === d && mode === 'classic'} stats={statsFor('classic', d)} daily={d} />
             </div>
           )}
           {game.modes.includes('image') && (
             <div hidden={mode !== 'image'}>
-              <ImageMode game={game} active={visible && daily === d && mode === 'image'} stats={statsFor('image', d)} daily={d} />
+              <ImageMode game={game} active={daily === d && mode === 'image'} stats={statsFor('image', d)} daily={d} />
             </div>
           )}
           {game.modes.includes('ability') && (
             <div hidden={mode !== 'ability'}>
-              <AbilityMode game={game} active={visible && daily === d && mode === 'ability'} stats={statsFor('ability', d)} daily={d} />
+              <AbilityMode game={game} active={daily === d && mode === 'ability'} stats={statsFor('ability', d)} daily={d} />
             </div>
           )}
           {game.modes.includes('page') && (
             <div hidden={mode !== 'page'}>
-              <PageMode game={game} active={visible && daily === d && mode === 'page'} stats={statsFor('page', d)} daily={d} />
+              <PageMode game={game} active={daily === d && mode === 'page'} stats={statsFor('page', d)} daily={d} />
             </div>
           )}
         </div>

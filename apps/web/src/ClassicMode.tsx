@@ -45,7 +45,7 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
 
         {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
 
-        <RoundStatus loading={!round && !error} error={error} onRetry={retry} />
+        <RoundStatus error={error} onRetry={retry} />
 
         {round && over && answer && (
           <RoundResult
@@ -66,7 +66,7 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
           <ShareResult caption={l(game.label)} tiles={tiles} summary={t('play.pillAttempts', { count: guesses.length })} won={won} />
         )}
 
-        <GuessGrid game={game} guesses={guesses} answerId={answer?.id} />
+        <GuessGrid game={game} guesses={guesses} answerId={answer?.id} loading={!round && !error} />
       </div>
 
       <PlaySide game={game} mode="classic" daily={daily} stats={stats} playing={playing} legend onGiveUp={giveUp} />

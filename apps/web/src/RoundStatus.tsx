@@ -1,8 +1,8 @@
 import { useI18n } from './i18n'
 
-type Props = { loading: boolean; error: string | null; onRetry: () => void }
+type Props = { error: string | null; onRetry: () => void }
 
-export default function RoundStatus({ loading, error, onRetry }: Props) {
+export default function RoundStatus({ error, onRetry }: Props) {
   const { t, error: errorText } = useI18n()
   if (error) {
     return (
@@ -14,5 +14,5 @@ export default function RoundStatus({ loading, error, onRetry }: Props) {
       </div>
     )
   }
-  return loading ? <div className="card round-status muted">{t('loading')}</div> : null
+  return null
 }

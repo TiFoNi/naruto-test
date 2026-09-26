@@ -133,7 +133,7 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
           <ShareResult caption={l(game.label)} tiles={tiles} summary={shareSummary} won={won} />
         )}
 
-        <RoundStatus loading={!round && !error} error={error} onRetry={retry} />
+        <RoundStatus error={error} onRetry={retry} />
 
         {round && over && answer && scored && (
           <RoundResult

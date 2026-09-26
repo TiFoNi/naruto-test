@@ -11,7 +11,7 @@ const ROW_STEP = 0.06
 const COL_STEP = 0.05
 const MAX_ROW_DELAY = 0.5
 
-export default function GuessGrid({ game, guesses, answerId }: { game: Game; guesses: Guess[]; answerId?: number }) {
+export default function GuessGrid({ game, guesses, answerId, loading }: { game: Game; guesses: Guess[]; answerId?: number; loading?: boolean }) {
   const { t, l, tv, lang, name } = useI18n()
   const legend = game.legend === 'debut' ? (['legend.debutLater', 'legend.debutEarlier'] as const) : (['legend.higher', 'legend.lower'] as const)
   const firstBatch = useRef<number | null>(null)
@@ -20,7 +20,7 @@ export default function GuessGrid({ game, guesses, answerId }: { game: Game; gue
 
   if (!guesses.length)
     return (
-      <p className="grid-empty">{t('play.emptyGrid')}</p>
+      <p className="grid-empty">{t(loading ? 'loading' : 'play.emptyGrid')}</p>
     )
 
   return (

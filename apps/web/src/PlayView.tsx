@@ -16,7 +16,7 @@ export default function PlayView({ game: gameId, mode: modeId, daily }: { game: 
   const href = useHref()
   const { user, loading } = useAuth()
   const game = GAMES.find((g) => g.id === (gameId as GameId))
-  const ready = useEntities(game)
+  useEntities(game)
   if (!game) return <div className="card center muted">{t('err.not_found')}</div>
   const mode = (game.modes.includes(modeId as ModeId) ? modeId : game.modes[0]) as ModeId
 
@@ -34,7 +34,7 @@ export default function PlayView({ game: gameId, mode: modeId, daily }: { game: 
             </Link>
           </div>
         ) : (
-          <GameView game={game} mode={mode} daily={daily} visible={ready} />
+          <GameView game={game} mode={mode} daily={daily} />
         )}
       </main>
     </div>

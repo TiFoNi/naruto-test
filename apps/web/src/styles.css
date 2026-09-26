@@ -2756,6 +2756,12 @@ button.ghost.small {
   }
 }
 
+html:not([data-auth]) .variant-tabs,
+html:not([data-auth]) .play-actions .lb-link,
+html:not([data-auth]) .play-actions .challenge-open {
+  display: none;
+}
+
 .variant-tabs {
   display: flex;
   gap: 4px;
@@ -3725,6 +3731,10 @@ button.ghost.small {
   .game-head-bar .lb-link {
     align-self: flex-start;
   }
+}
+
+html[data-auth] .guest-note {
+  display: none;
 }
 
 .guest-note {
@@ -4897,7 +4907,8 @@ html[data-auth] .hero .quests-card {
 html:not([data-cat]) .tile[data-first],
 html[data-cat='anime'] .tile[data-id='anime'],
 html[data-cat='manga'] .tile[data-id='manga'],
-html[data-cat='games'] .tile[data-id='games'] {
+html[data-cat='games'] .tile[data-id='games'],
+html[data-cat='sport'] .tile[data-id='sport'] {
   color: var(--text);
   background: color-mix(in srgb, var(--tile) 15%, var(--card-2));
   border-color: color-mix(in srgb, var(--tile) 42%, transparent);
@@ -4926,7 +4937,8 @@ html[data-cat='games'] .tile[data-id='games'] {
 html:not([data-cat]) .tile[data-first] .tile-icon,
 html[data-cat='anime'] .tile[data-id='anime'] .tile-icon,
 html[data-cat='manga'] .tile[data-id='manga'] .tile-icon,
-html[data-cat='games'] .tile[data-id='games'] .tile-icon {
+html[data-cat='games'] .tile[data-id='games'] .tile-icon,
+html[data-cat='sport'] .tile[data-id='sport'] .tile-icon {
   border-color: color-mix(in srgb, var(--tile) 45%, transparent);
   background: color-mix(in srgb, var(--tile) 20%, transparent);
   color: color-mix(in srgb, var(--tile) 80%, #fff);
@@ -5127,25 +5139,12 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
   gap: 22px;
 }
 
-.play-skeleton .skeleton-side {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
 .page-loading {
   display: grid;
   place-items: center;
   min-height: 70vh;
 }
 
-.skeleton-block {
-  display: block;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: var(--card);
-  animation: skeleton 1.4s ease-in-out infinite;
-}
 
 @keyframes skeleton {
   50% {
@@ -5153,36 +5152,12 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
   }
 }
 
-.skeleton-block.media {
-  aspect-ratio: 1;
-}
 
-.skeleton-block.media.page {
-  aspect-ratio: auto;
-  height: 616px;
-}
 
-.skeleton-block.copy {
-  height: 112px;
-}
 
-.skeleton-block.body {
-  height: 332px;
-}
 
-.skeleton-block.stats {
-  height: 158px;
-}
 
-.skeleton-block.actions {
-  height: 170px;
-}
 
-@media (max-width: 760px) {
-  .skeleton-block.media.page {
-    height: min(60vh, 476px);
-  }
-}
 
 .play-main {
   display: flex;

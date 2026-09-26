@@ -75,7 +75,7 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
 
         {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact />}
 
-        <RoundStatus loading={!round && !error} error={error} onRetry={retry} />
+        <RoundStatus error={error} onRetry={retry} />
 
         {round && over && answer && (
           <RoundResult

@@ -10,6 +10,8 @@ seeds/manga/*
 !seeds/manga/README.md
 apps/web/public/*/card
 apps/web/public/*/mini
+apps/web/public/*/full
+apps/web/public/*/pages
 .next
 next-env.d.ts
 *.tsbuildinfo
