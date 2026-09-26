@@ -1,5 +1,5 @@
 import { fail, handle, json, readJson } from '../http'
-import { quests, rounds } from '../db'
+import { quests, rounds, seasons } from '../db'
 import { currentUser, parseNickname, toProfile, unauthorized } from '../profile'
 
 export const POST = handle(async (request) => {
@@ -9,7 +9,11 @@ export const POST = handle(async (request) => {
 
   if (body.action === 'reset') {
     const userId = found.doc._id!
-    await Promise.all([(await quests()).deleteMany({ userId }), (await rounds()).deleteMany({ userId })])
+    await Promise.all([
+      (await quests()).deleteMany({ userId }),
+      (await rounds()).deleteMany({ userId }),
+      (await seasons()).deleteMany({ userId }),
+    ])
     const doc = await found.collection.findOneAndUpdate(
       { _id: userId },
       {
