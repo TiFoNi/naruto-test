@@ -1,6 +1,6 @@
 import phrases from '@nanda/game/data/dota-phrases.json'
 
-export type Phrase = { text: string; clip: number }
+export type Phrase = { text: string; ru?: string; clip: number }
 
 let cache: Record<string, Phrase[]> | null = null
 

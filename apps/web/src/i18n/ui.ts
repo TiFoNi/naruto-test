@@ -220,6 +220,7 @@ const ui = {
     en: 'Audio unlocks from the third line',
   },
   'phrase.listen': { ru: 'Послушать', uk: 'Послухати', en: 'Listen' },
+  'phrase.volume': { ru: 'Громкость', uk: 'Гучність', en: 'Volume' },
   'phrase.headlineWon': { ru: 'Узнал по голосу!', uk: 'Упізнав за голосом!', en: 'Got it by the voice!' },
   'phrase.headlineLost': { ru: 'Это был не он', uk: 'Це був не він', en: 'Not this one' },
   'phrase.wonHint': { ru: 'Разгадано за {count} попыток', uk: 'Розгадано за {count} спроб', en: 'Solved in {count} tries' },

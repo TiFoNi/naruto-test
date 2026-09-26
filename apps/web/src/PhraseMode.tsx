@@ -6,11 +6,24 @@ import Thumb from './Thumb'
 import Yesterday from './Yesterday'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
-import { SoundIcon } from './icons'
+import { MuteIcon, SoundIcon } from './icons'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
 import { useEffect, useRef, useState } from 'react'
+import { useBeforePaint } from './paint'
 import { apiSrc } from './api'
+
+const VOLUME = 'nanda.voice-volume'
+
+const storedVolume = () => {
+  try {
+    const raw = localStorage.getItem(VOLUME)
+    const value = Number(raw)
+    return raw !== null && Number.isFinite(value) && value >= 0 && value <= 1 ? value : 1
+  } catch {
+    return 1
+  }
+}
 
 type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
 
@@ -33,11 +46,27 @@ export default function PhraseMode({ game, active, stats, daily = false, challen
 
   const player = useRef<HTMLAudioElement>(null)
   const [sounding, setSounding] = useState(-1)
+  const [volume, setVolume] = useState(1)
+
+  useBeforePaint(() => setVolume(storedVolume()), [])
+
+  useEffect(() => {
+    if (player.current) player.current.volume = volume
+  }, [volume])
 
   useEffect(() => {
     player.current?.pause()
     setSounding(-1)
   }, [round?.id])
+
+  const changeVolume = (value: number) => {
+    setVolume(value)
+    try {
+      localStorage.setItem(VOLUME, String(value))
+    } catch {
+      return
+    }
+  }
 
   const listen = (index: number) => {
     const audio = player.current
@@ -50,6 +79,7 @@ export default function PhraseMode({ game, active, stats, daily = false, challen
     const src = apiSrc(`${round.voice}&i=${index}`)
     if (!src) return
     audio.src = src
+    audio.volume = volume
     audio.play().then(() => setSounding(index), () => setSounding(-1))
   }
 
@@ -67,10 +97,13 @@ export default function PhraseMode({ game, active, stats, daily = false, challen
           <ol className="phrase-list">
             {phrases.map((line, index) => (
               <li key={index} className={index === phrases.length - 1 ? 'fresh' : ''}>
-                <span className="phrase-quote">
-                  {open}
-                  {line}
-                  {close}
+                <span className="phrase-text">
+                  <span className="phrase-quote">
+                    {open}
+                    {line.text}
+                    {close}
+                  </span>
+                  {lang !== 'en' && line.ru && <span className="phrase-ru">{line.ru}</span>}
                 </span>
                 {round?.voice && (
                   <button
@@ -86,12 +119,28 @@ export default function PhraseMode({ game, active, stats, daily = false, challen
               </li>
             ))}
           </ol>
-          {!over && (
-            <p className="phrase-left muted">
-              {!!round?.phrasesLeft && t('phrase.more', { count: round.phrasesLeft })}
-              {!!voiceLeft && <span className="phrase-lock">{t('phrase.voiceIn', { count: voiceLeft })}</span>}
-            </p>
-          )}
+          <div className="phrase-foot">
+            {!over && (
+              <p className="phrase-left muted">
+                {!!round?.phrasesLeft && t('phrase.more', { count: round.phrasesLeft })}
+                {!!voiceLeft && <span className="phrase-lock">{t('phrase.voiceIn', { count: voiceLeft })}</span>}
+              </p>
+            )}
+            {round?.voice && (
+              <label className="phrase-volume" title={t('phrase.volume')}>
+                <span aria-hidden>{volume ? <SoundIcon /> : <MuteIcon />}</span>
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.05}
+                  value={volume}
+                  onChange={(event) => changeVolume(Number(event.target.value))}
+                  aria-label={t('phrase.volume')}
+                />
+              </label>
+            )}
+          </div>
           <audio ref={player} preload="none" onEnded={() => setSounding(-1)} onPause={() => setSounding(-1)} hidden />
         </div>
       </div>

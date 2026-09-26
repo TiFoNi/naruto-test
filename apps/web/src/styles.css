@@ -6279,9 +6279,19 @@ html[data-cat='sport'] .tile[data-id='sport'] .tile-icon {
   line-height: 1.45;
 }
 
-.phrase-list li .phrase-quote {
+.phrase-list li .phrase-text {
+  display: flex;
   flex: 1;
+  flex-direction: column;
+  gap: 5px;
   min-width: 0;
+}
+
+.phrase-ru {
+  color: var(--text-3);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 .phrase-list li.fresh {
@@ -6328,6 +6338,32 @@ html[data-cat='sport'] .tile[data-id='sport'] .tile-icon {
 
 .phrase-lock {
   color: var(--text-3);
+}
+
+.phrase-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.phrase-volume {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  color: var(--text-3);
+  cursor: pointer;
+}
+
+.phrase-volume input {
+  width: 92px;
+  height: 4px;
+  padding: 0;
+  border-radius: 999px;
+  accent-color: var(--accent);
+  cursor: pointer;
 }
 
 @media (max-width: 1160px) {

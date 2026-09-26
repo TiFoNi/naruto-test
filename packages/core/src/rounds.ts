@@ -216,10 +216,10 @@ export function phraseStep(round: RoundDoc) {
 function phraseInfo(round: RoundDoc, id: string) {
   const total = phraseCount(round.answerId)
   const step = phraseStep(round)
-  const lines: string[] = []
+  const lines: { text: string; ru?: string }[] = []
   for (let i = 0; i <= step; i++) {
     const line = phraseAt(round.answerId, round.extra, i)
-    if (line) lines.push(line.text)
+    if (line) lines.push(line.ru ? { text: line.text, ru: line.ru } : { text: line.text })
   }
   const left = Math.max(total - lines.length, 0)
   const open = round.status !== 'active' || lines.length >= PHRASE_VOICE_AT
