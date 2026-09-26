@@ -9330,7 +9330,9 @@ html[data-auth][data-checking] .hero-guest {
 }
 
 .season-count {
-  align-self: flex-end;
+  align-self: stretch;
+  justify-content: flex-end;
+  margin-left: 0;
 }
 
 .season-table td {
