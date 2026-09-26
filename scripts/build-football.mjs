@@ -202,7 +202,7 @@ async function nationOf(player) {
     const data = await entity(qid)
     const label = `${data.labels.ru ?? ''} ${data.labels.en ?? ''}`.toLowerCase()
     if (YOUTH.test(label)) continue
-    caps.push({ country: ids(data.claims.P17)[0] ?? null, started: team.qualifiers?.P580?.[0]?.time ?? '' })
+    caps.push({ country: ids(data.claims.P1532)[0] ?? ids(data.claims.P17)[0] ?? null, started: team.qualifiers?.P580?.[0]?.time ?? '' })
   }
   return caps.filter((c) => c.country).sort((a, b) => b.started.localeCompare(a.started))[0]?.country ?? null
 }
