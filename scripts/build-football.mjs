@@ -300,6 +300,7 @@ const main = async () => {
   for (const { qid, player } of rows) {
     const job = ids(player.claims.P106)[0]
     if (job !== 'Q937857') continue
+    if (ids(player.claims.P21)[0] !== 'Q6581097') continue
 
     const birth = year((player.claims.P569 ?? [])[0])
     const image = (player.claims.P18 ?? [])[0]?.value

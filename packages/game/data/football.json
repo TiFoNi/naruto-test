@@ -3530,24 +3530,6 @@
   "thumb": 194
  },
  {
-  "id": 260725,
-  "name": "Меган Рапино",
-  "nameEn": "Megan Rapinoe",
-  "nameUk": "Меган Рапіноу",
-  "aliases": "Рапино, Меган",
-  "country": "США",
-  "part": "Северная Америка",
-  "roles": [
-   "Полузащитник"
-  ],
-  "club": "Чикаго Ред Старз",
-  "status": "Завершил карьеру",
-  "height": 170,
-  "birth": 1985,
-  "answer": true,
-  "thumb": 195
- },
- {
   "id": 386876,
   "name": "Эммануэль Адебайор",
   "nameEn": "Emmanuel Adebayor",
@@ -3562,7 +3544,7 @@
   "height": 191,
   "birth": 1984,
   "answer": true,
-  "thumb": 196
+  "thumb": 195
  },
  {
   "id": 659634,
@@ -3579,7 +3561,7 @@
   "height": 174,
   "birth": 1977,
   "answer": true,
-  "thumb": 197
+  "thumb": 196
  },
  {
   "id": 153786,
@@ -3597,7 +3579,7 @@
   "height": 193,
   "birth": 1986,
   "answer": true,
-  "thumb": 198
+  "thumb": 197
  },
  {
   "id": 154708,
@@ -3615,7 +3597,7 @@
   "height": 175,
   "birth": 1989,
   "answer": true,
-  "thumb": 199
+  "thumb": 198
  },
  {
   "id": 165125,
@@ -3633,7 +3615,7 @@
   "height": 175,
   "birth": 1988,
   "answer": true,
-  "thumb": 200
+  "thumb": 199
  },
  {
   "id": 1894,
@@ -3652,7 +3634,7 @@
   "height": 178,
   "birth": 1994,
   "answer": true,
-  "thumb": 201
+  "thumb": 200
  },
  {
   "id": 1916,
@@ -3670,7 +3652,7 @@
   "height": 173,
   "birth": 1981,
   "answer": true,
-  "thumb": 202
+  "thumb": 201
  },
  {
   "id": 1935,
@@ -3687,7 +3669,7 @@
   "height": 186,
   "birth": 1979,
   "answer": true,
-  "thumb": 203
+  "thumb": 202
  },
  {
   "id": 215890,
@@ -3705,7 +3687,7 @@
   "height": 177,
   "birth": 1963,
   "answer": true,
-  "thumb": 204
+  "thumb": 203
  },
  {
   "id": 192635,
@@ -3723,7 +3705,7 @@
   "height": 182,
   "birth": 1963,
   "answer": true,
-  "thumb": 205
+  "thumb": 204
  },
  {
   "id": 170376,
@@ -3741,7 +3723,7 @@
   "height": 185,
   "birth": 1969,
   "answer": true,
-  "thumb": 206
+  "thumb": 205
  },
  {
   "id": 58377,
@@ -3760,7 +3742,7 @@
   "height": 184,
   "birth": 1990,
   "answer": true,
-  "thumb": 207
+  "thumb": 206
  },
  {
   "id": 294951,
@@ -3778,7 +3760,7 @@
   "height": 182,
   "birth": 1992,
   "answer": true,
-  "thumb": 208
+  "thumb": 207
  },
  {
   "id": 31981,
@@ -3797,7 +3779,7 @@
   "height": 180,
   "birth": 1992,
   "answer": true,
-  "thumb": 209
+  "thumb": 208
  },
  {
   "id": 4979316,
@@ -3815,7 +3797,7 @@
   "height": 179,
   "birth": 1994,
   "answer": true,
-  "thumb": 210
+  "thumb": 209
  },
  {
   "id": 13308,
@@ -3833,7 +3815,7 @@
   "height": 182,
   "birth": 1993,
   "answer": true,
-  "thumb": 211
+  "thumb": 210
  },
  {
   "id": 4599,
@@ -3851,7 +3833,7 @@
   "height": 190,
   "birth": 1985,
   "answer": true,
-  "thumb": 212
+  "thumb": 211
  },
  {
   "id": 29566,
@@ -3869,7 +3851,7 @@
   "height": 188,
   "birth": 1981,
   "answer": true,
-  "thumb": 213
+  "thumb": 212
  },
  {
   "id": 222789,
@@ -3888,7 +3870,7 @@
   "height": 180,
   "birth": 1970,
   "answer": true,
-  "thumb": 214
+  "thumb": 213
  },
  {
   "id": 185572,
@@ -3906,7 +3888,7 @@
   "height": 175,
   "birth": 1982,
   "answer": true,
-  "thumb": 215
+  "thumb": 214
  },
  {
   "id": 180661,
@@ -3924,7 +3906,7 @@
   "height": 182,
   "birth": 1942,
   "answer": true,
-  "thumb": 216
+  "thumb": 215
  },
  {
   "id": 50603,
@@ -3942,7 +3924,7 @@
   "height": 173,
   "birth": 1981,
   "answer": true,
-  "thumb": 217
+  "thumb": 216
  },
  {
   "id": 295307,
@@ -3960,7 +3942,7 @@
   "height": 173,
   "birth": 1964,
   "answer": true,
-  "thumb": 218
+  "thumb": 217
  },
  {
   "id": 310612,
@@ -3978,7 +3960,7 @@
   "height": 174,
   "birth": 1986,
   "answer": true,
-  "thumb": 219
+  "thumb": 218
  },
  {
   "id": 138172,
@@ -3996,7 +3978,7 @@
   "height": 177,
   "birth": 1986,
   "answer": true,
-  "thumb": 220
+  "thumb": 219
  },
  {
   "id": 164676,
@@ -4015,7 +3997,7 @@
   "height": 180,
   "birth": 1984,
   "answer": true,
-  "thumb": 221
+  "thumb": 220
  },
  {
   "id": 62786,
@@ -4034,7 +4016,7 @@
   "height": 180,
   "birth": 1986,
   "answer": true,
-  "thumb": 222
+  "thumb": 221
  },
  {
   "id": 281734,
@@ -4052,7 +4034,7 @@
   "height": 170,
   "birth": 1986,
   "answer": true,
-  "thumb": 223
+  "thumb": 222
  },
  {
   "id": 315697,
@@ -4070,7 +4052,7 @@
   "height": 185,
   "birth": 1993,
   "answer": true,
-  "thumb": 224
+  "thumb": 223
  },
  {
   "id": 349125,
@@ -4088,7 +4070,7 @@
   "height": 188,
   "birth": 1989,
   "answer": true,
-  "thumb": 225
+  "thumb": 224
  },
  {
   "id": 776878,
@@ -4106,7 +4088,7 @@
   "height": 172,
   "birth": 1995,
   "answer": true,
-  "thumb": 226
+  "thumb": 225
  },
  {
   "id": 6147586,
@@ -4124,7 +4106,7 @@
   "height": 179,
   "birth": 1987,
   "answer": true,
-  "thumb": 227
+  "thumb": 226
  },
  {
   "id": 13014035,
@@ -4141,7 +4123,7 @@
   "height": 185,
   "birth": 1994,
   "answer": true,
-  "thumb": 228
+  "thumb": 227
  },
  {
   "id": 29516,
@@ -4159,7 +4141,7 @@
   "height": 176,
   "birth": 1989,
   "answer": true,
-  "thumb": 229
+  "thumb": 228
  },
  {
   "id": 192131,
@@ -4177,7 +4159,7 @@
   "height": 170,
   "birth": 1910,
   "answer": true,
-  "thumb": 230
+  "thumb": 229
  },
  {
   "id": 201381,
@@ -4195,7 +4177,7 @@
   "height": 193,
   "birth": 1986,
   "answer": true,
-  "thumb": 231
+  "thumb": 230
  },
  {
   "id": 126503,
@@ -4213,7 +4195,7 @@
   "height": 182,
   "birth": 1973,
   "answer": true,
-  "thumb": 232
+  "thumb": 231
  },
  {
   "id": 163974,
@@ -4231,7 +4213,7 @@
   "height": 176,
   "birth": 1983,
   "answer": true,
-  "thumb": 233
+  "thumb": 232
  },
  {
   "id": 166984,
@@ -4249,7 +4231,7 @@
   "height": 188,
   "birth": 1987,
   "answer": true,
-  "thumb": 234
+  "thumb": 233
  },
  {
   "id": 57114,
@@ -4267,7 +4249,7 @@
   "height": 191,
   "birth": 1969,
   "answer": true,
-  "thumb": 235
+  "thumb": 234
  },
  {
   "id": 70550,
@@ -4285,7 +4267,7 @@
   "height": 200,
   "birth": 1984,
   "answer": true,
-  "thumb": 236
+  "thumb": 235
  },
  {
   "id": 258115,
@@ -4303,7 +4285,7 @@
   "height": 177,
   "birth": 1970,
   "answer": true,
-  "thumb": 237
+  "thumb": 236
  },
  {
   "id": 203002,
@@ -4321,7 +4303,7 @@
   "height": 186,
   "birth": 1986,
   "answer": true,
-  "thumb": 238
+  "thumb": 237
  },
  {
   "id": 161089,
@@ -4339,7 +4321,7 @@
   "height": 180,
   "birth": 1990,
   "answer": true,
-  "thumb": 239
+  "thumb": 238
  },
  {
   "id": 61886,
@@ -4357,7 +4339,7 @@
   "height": 169,
   "birth": 1988,
   "answer": true,
-  "thumb": 240
+  "thumb": 239
  },
  {
   "id": 80892,
@@ -4375,7 +4357,7 @@
   "height": 176,
   "birth": 1992,
   "answer": true,
-  "thumb": 241
+  "thumb": 240
  },
  {
   "id": 93563,
@@ -4393,7 +4375,7 @@
   "height": 178,
   "birth": 1995,
   "answer": true,
-  "thumb": 242
+  "thumb": 241
  },
  {
   "id": 96755,
@@ -4411,7 +4393,7 @@
   "height": 190,
   "birth": 1993,
   "answer": true,
-  "thumb": 243
+  "thumb": 242
  },
  {
   "id": 10526787,
@@ -4430,7 +4412,7 @@
   "height": 178,
   "birth": 1993,
   "answer": true,
-  "thumb": 244
+  "thumb": 243
  },
  {
   "id": 19509544,
@@ -4448,7 +4430,7 @@
   "height": 183,
   "birth": 1998,
   "answer": true,
-  "thumb": 245
+  "thumb": 244
  },
  {
   "id": 27310755,
@@ -4467,7 +4449,7 @@
   "height": 193,
   "birth": 1999,
   "answer": true,
-  "thumb": 246
+  "thumb": 245
  },
  {
   "id": 44297797,
@@ -4486,7 +4468,7 @@
   "height": 184,
   "birth": 2000,
   "answer": true,
-  "thumb": 247
+  "thumb": 246
  },
  {
   "id": 108111889,
@@ -4504,7 +4486,7 @@
   "height": 173,
   "birth": 2004,
   "answer": true,
-  "thumb": 248
+  "thumb": 247
  },
  {
   "id": 18976,
@@ -4522,7 +4504,7 @@
   "height": 179,
   "birth": 1973,
   "answer": true,
-  "thumb": 249
+  "thumb": 248
  },
  {
   "id": 20469,
@@ -4540,7 +4522,7 @@
   "height": 178,
   "birth": 1990,
   "answer": true,
-  "thumb": 250
+  "thumb": 249
  },
  {
   "id": 186691,
@@ -4558,7 +4540,7 @@
   "height": 180,
   "birth": 1952,
   "answer": true,
-  "thumb": 251
+  "thumb": 250
  },
  {
   "id": 189217,
@@ -4576,7 +4558,7 @@
   "height": 181,
   "birth": 1968,
   "answer": true,
-  "thumb": 252
+  "thumb": 251
  },
  {
   "id": 189892,
@@ -4593,6 +4575,24 @@
   "status": "Завершил карьеру",
   "height": 174,
   "birth": 1965,
+  "answer": true,
+  "thumb": 252
+ },
+ {
+  "id": 294214,
+  "name": "Дирк Кёйт",
+  "nameEn": "Dirk Kuyt",
+  "nameUk": "Дірк Кейт",
+  "aliases": "Кейт, Дирк, Кяут Дирк, Кюйт Дирк, Куйт, Дирк",
+  "country": "Нидерланды",
+  "part": "Европа",
+  "roles": [
+   "Полузащитник"
+  ],
+  "club": "Ливерпуль",
+  "status": "Завершил карьеру",
+  "height": 184,
+  "birth": 1980,
   "answer": true,
   "thumb": 253
  },
