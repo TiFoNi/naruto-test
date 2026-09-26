@@ -170,6 +170,15 @@ export function ChevronIcon({ className }: IconProps) {
   )
 }
 
+export function GearIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M9.64 5.52L10.13 3.2A9.0 9.0 0 0 1 13.87 3.2L14.36 5.52A6.9 6.9 0 0 1 14.92 5.75L16.9 4.45A9.0 9.0 0 0 1 19.55 7.1L18.25 9.08A6.9 6.9 0 0 1 18.48 9.64L20.8 10.13A9.0 9.0 0 0 1 20.8 13.87L18.48 14.36A6.9 6.9 0 0 1 18.25 14.92L19.55 16.9A9.0 9.0 0 0 1 16.9 19.55L14.92 18.25A6.9 6.9 0 0 1 14.36 18.48L13.87 20.8A9.0 9.0 0 0 1 10.13 20.8L9.64 18.48A6.9 6.9 0 0 1 9.08 18.25L7.1 19.55A9.0 9.0 0 0 1 4.45 16.9L5.75 14.92A6.9 6.9 0 0 1 5.52 14.36L3.2 13.87A9.0 9.0 0 0 1 3.2 10.13L5.52 9.64A6.9 6.9 0 0 1 5.75 9.08L4.45 7.1A9.0 9.0 0 0 1 7.1 4.45L9.08 5.75A6.9 6.9 0 0 1 9.64 5.52Z" />
+      <circle cx="12" cy="12" r="3.1" />
+    </svg>
+  )
+}
+
 export function MenuIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2}>

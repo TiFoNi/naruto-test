@@ -9,7 +9,7 @@ import type { Stats } from './stats'
 import { useRound } from './useRound'
 import { apiSrc } from './api'
 import { miniUrl } from './pics'
-import { CheckIcon, CloseIcon, NextIcon, ZoomInIcon, ZoomOutIcon } from './icons'
+import { ArrowIcon, CheckIcon, CloseIcon, NextIcon, ZoomInIcon, ZoomOutIcon } from './icons'
 
 type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
 
@@ -158,6 +158,7 @@ export default function PageMode({ game, active, stats, daily = false, challenge
         {over && !scored && (
           <button type="button" className="primary mode-next" onClick={next}>
             {t('page.next')}
+            <ArrowIcon />
           </button>
         )}
 

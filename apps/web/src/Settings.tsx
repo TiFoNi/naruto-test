@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import BackButton from './BackButton'
 import { useAuth } from './auth'
 import { useI18n, type UiKey } from './i18n'
-import { BellIcon, MailIcon, ShieldIcon, UserIcon } from './icons'
+import { BellIcon, CloseIcon, MailIcon, ShieldIcon, UserIcon } from './icons'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
 
@@ -35,7 +35,8 @@ export default function Settings() {
   const href = useHref()
 
   const [tab, setTab] = useState<Tab>(lastTab)
-  const [nickname, setDraft] = useState(user?.nickname ?? '')
+  const current = user?.nickname ?? ''
+  const [nickname, setDraft] = useState(current)
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null)
   const [saving, setSaving] = useState(false)
   const [confirmReset, setConfirmReset] = useState(false)
@@ -47,8 +48,21 @@ export default function Settings() {
     return () => clearTimeout(timer)
   }, [message])
 
+  const filled = useRef(false)
 
-  if (!user) return null
+  useEffect(() => {
+    if (filled.current || !user) return
+    filled.current = true
+    setDraft(user.nickname)
+  }, [user])
+
+  useEffect(() => {
+    if (!confirmReset) return
+    const escape = (event: KeyboardEvent) => event.key === 'Escape' && setConfirmReset(false)
+    document.addEventListener('keydown', escape)
+    return () => document.removeEventListener('keydown', escape)
+  }, [confirmReset])
+
 
   const save = async (event: FormEvent) => {
     event.preventDefault()
@@ -95,11 +109,11 @@ export default function Settings() {
               <span className="settings-eyebrow">{t('settings.profile')}</span>
               <div className="settings-who">
                 <span className="avatar" aria-hidden>
-                  {user.nickname.charAt(0).toUpperCase()}
+                  {current.charAt(0).toUpperCase()}
                 </span>
                 <div>
-                  <b>{user.nickname}</b>
-                  <span className="muted">{user.username}</span>
+                  <b>{current}</b>
+                  <span className="muted">{user?.username ?? ''}</span>
                 </div>
               </div>
 
@@ -116,7 +130,7 @@ export default function Settings() {
                       setMessage(null)
                     }}
                   />
-                  <button className="primary" type="submit" disabled={saving || nickname.trim() === user.nickname}>
+                  <button className="primary" type="submit" disabled={saving || !user || nickname.trim() === current}>
                     {saving ? '…' : t('profile.save')}
                   </button>
                 </div>
@@ -131,7 +145,7 @@ export default function Settings() {
 
               <div className="account-mail">
                 <span className="muted">{t('settings.signedIn')}</span>
-                <b>{mask(user.username)}</b>
+                <b>{user ? mask(user.username) : ''}</b>
               </div>
 
               <div className="settings-row">
@@ -148,32 +162,42 @@ export default function Settings() {
 
               <div className="settings-row danger-row">
                 <div>
-                  <label>{t(confirmReset ? 'profile.resetSure' : 'profile.resetTitle')}</label>
-                  <p className="muted danger-note">
-                    <span>{t(confirmReset ? 'profile.resetForever' : 'profile.resetHint')}</span>
-                    <span className="danger-note-hold" aria-hidden>
-                      {t('profile.resetHint')}
-                    </span>
-                  </p>
+                  <label>{t('profile.resetTitle')}</label>
+                  <p className="muted">{t('profile.resetHint')}</p>
                 </div>
                 <div className="settings-actions">
-                  {confirmReset ? (
-                    <>
-                      <button type="button" className="ghost" onClick={() => setConfirmReset(false)}>
-                        {t('profile.cancel')}
-                      </button>
-                      <button type="button" className="danger-button" onClick={reset} disabled={resetting}>
-                        {resetting ? t('profile.resetting') : t('profile.resetYes')}
-                      </button>
-                    </>
-                  ) : (
-                    <button type="button" className="ghost danger-ghost" onClick={() => setConfirmReset(true)}>
-                      {t('profile.resetButton')}
-                    </button>
-                  )}
+                  <button type="button" className="ghost danger-ghost" onClick={() => setConfirmReset(true)}>
+                    {t('profile.resetButton')}
+                  </button>
                 </div>
               </div>
             </section>
+          )}
+
+          {confirmReset && (
+            <div className="modal-backdrop" onClick={() => !resetting && setConfirmReset(false)} role="presentation">
+              <section
+                className="card modal danger-modal"
+                role="dialog"
+                aria-modal="true"
+                aria-label={t('profile.resetSure')}
+                onClick={(event) => event.stopPropagation()}
+              >
+                <button type="button" className="modal-close" onClick={() => setConfirmReset(false)} aria-label={t('profile.cancel')}>
+                  <CloseIcon />
+                </button>
+                <h2>{t('profile.resetSure')}</h2>
+                <p className="muted">{t('profile.resetForever')}</p>
+                <div className="modal-actions">
+                  <button type="button" className="ghost" onClick={() => setConfirmReset(false)} disabled={resetting}>
+                    {t('profile.cancel')}
+                  </button>
+                  <button type="button" className="danger-button" onClick={reset} disabled={resetting}>
+                    {resetting ? t('profile.resetting') : t('profile.resetYes')}
+                  </button>
+                </div>
+              </section>
+            </div>
           )}
 
           {(tab === 'notifications' || tab === 'privacy') && (

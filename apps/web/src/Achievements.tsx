@@ -5,7 +5,7 @@ import { api } from './api'
 import BackButton from './BackButton'
 import { useI18n, type UiKey } from './i18n'
 import Link from 'next/link'
-import { CheckIcon, CloseIcon, GiftIcon, LockIcon, PinIcon, TrophyIcon } from './icons'
+import { ArrowIcon, CheckIcon, CloseIcon, GiftIcon, LockIcon, PinIcon, TrophyIcon } from './icons'
 import { useAuth } from './auth'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
@@ -288,7 +288,8 @@ export default function Achievements() {
               })}
             </ol>
             <Link className="awards-showcase-link" href={href.profile}>
-              {t('ach.myProfile')} →
+              {t('ach.myProfile')}
+              <ArrowIcon />
             </Link>
           </section>
 

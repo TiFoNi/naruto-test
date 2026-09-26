@@ -48,6 +48,14 @@ const early = (): Promise<Answer> => {
 
 const SESSION = 'nanda.session'
 
+export const hadSession = () => {
+  try {
+    return localStorage.getItem(SESSION) === '1'
+  } catch {
+    return false
+  }
+}
+
 const markSession = (signed: boolean) => {
   if (signed) document.documentElement.dataset.auth = '1'
   else delete document.documentElement.dataset.auth

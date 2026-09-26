@@ -215,16 +215,24 @@
   color: #ff9b91;
 }
 
-.danger-note {
-  display: grid;
+.danger-modal h2 {
+  margin: 0 0 8px;
+  padding-right: 34px;
+  font-family: var(--display);
+  font-size: 22px;
+  color: #ff9b91;
 }
 
-.danger-note > span {
-  grid-area: 1 / 1;
+.danger-modal p {
+  margin: 0;
 }
 
-.danger-note-hold {
-  visibility: hidden;
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+  flex-wrap: wrap;
 }
 
 .danger-ghost {

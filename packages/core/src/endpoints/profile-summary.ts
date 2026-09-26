@@ -1,7 +1,7 @@
 import type { ObjectId } from 'mongodb'
-import { GAME_IDS, type GameId } from '@nanda/game'
+import { GAME_IDS, STAT_KEYS, type GameId } from '@nanda/game'
 import { ACHIEVEMENTS } from '../achievements'
-import { rounds, users } from '../db'
+import { rounds, users, type UserDoc } from '../db'
 import { gameData } from '../games'
 import { handle, json } from '../http'
 import { currentUser, unauthorized } from '../profile'
@@ -120,6 +120,50 @@ async function place(xp: number) {
   return { position, players: Math.max((board?.players as number) ?? 0, position) }
 }
 
+async function gamePlaces(doc: UserDoc) {
+  const mine = Object.entries(doc.stats ?? {}).filter(([key, value]) => STAT_KEYS.includes(key) && (value?.solved ?? 0) > 0)
+  if (!mine.length) return []
+
+  const counters: Record<string, unknown> = {}
+  for (const [index, [key, value]] of mine.entries()) {
+    const best = value.best ?? 0
+    const solved = value.solved ?? 0
+    const theirBest = { $ifNull: [`$stats.${key}.best`, 0] }
+    const theirSolved = { $ifNull: [`$stats.${key}.solved`, 0] }
+    counters[`k${index}`] = {
+      $sum: {
+        $cond: [
+          {
+            $and: [
+              { $gte: [theirSolved, 1] },
+              {
+                $or: [
+                  { $gt: [theirBest, best] },
+                  { $and: [{ $eq: [theirBest, best] }, { $gt: [theirSolved, solved] }] },
+                  { $and: [{ $eq: [theirBest, best] }, { $eq: [theirSolved, solved] }, { $lt: ['$_id', doc._id] }] },
+                ],
+              },
+            ],
+          },
+          1,
+          0,
+        ],
+      },
+    }
+  }
+
+  const [row] = await (await users()).aggregate([{ $group: { _id: null, ...counters } }]).toArray()
+  if (!row) return []
+
+  return mine
+    .map(([key], index) => {
+      const [game, mode] = key.split('_')
+      const position = ((row[`k${index}`] as number) ?? 0) + 1
+      return { game, mode, position }
+    })
+    .sort((a, b) => a.position - b.position)
+}
+
 export const GET = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
@@ -184,6 +228,7 @@ export const GET = handle(async (request) => {
     challenges: { solved: doc.challengeStats?.solved ?? 0 },
     favourite: games.find((row) => row.solved > 0)?.game ?? null,
     rank: await place(xp),
+    gamePlaces: await gamePlaces(doc),
     streak,
     games,
     modes,

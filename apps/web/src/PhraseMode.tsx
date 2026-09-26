@@ -6,7 +6,7 @@ import Thumb from './Thumb'
 import Yesterday from './Yesterday'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
-import { MuteIcon, SoundIcon } from './icons'
+import { ArrowIcon, MuteIcon, SoundIcon } from './icons'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
 import { useEffect, useRef, useState } from 'react'
@@ -156,6 +156,7 @@ export default function PhraseMode({ game, active, stats, daily = false, challen
         {over && !scored && (
           <button type="button" className="primary mode-next" onClick={next}>
             {t('ability.next')}
+            <ArrowIcon />
           </button>
         )}
 

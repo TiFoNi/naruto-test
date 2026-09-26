@@ -303,9 +303,25 @@ html:not([data-auth]) .topbar-nav {
 }
 
 .topbar-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   color: var(--text-2);
   text-decoration: none;
   transition: color 0.15s;
+}
+
+.topbar-nav-icon {
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  color: var(--text-3);
+  transition: color 0.15s;
+}
+
+.topbar-nav a:hover .topbar-nav-icon,
+.topbar-nav a.active .topbar-nav-icon {
+  color: inherit;
 }
 
 .topbar-nav a:hover {
@@ -1101,6 +1117,10 @@ main {
 }
 
 .primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   margin-top: 6px;
   padding: 12px 22px;
   border-radius: 12px;
@@ -1582,39 +1602,65 @@ main {
 
 .lang-switch {
   position: relative;
-  display: flex;
   flex-shrink: 0;
-  padding: 4px;
   border-radius: 12px;
   background: var(--card);
   border: 1px solid var(--line);
 }
 
-.lang-list {
-  display: contents;
+.lang-switch.open {
+  z-index: 60;
 }
 
 .lang-toggle {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 10px 0 12px;
+  border: none;
+  border-radius: inherit;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
 }
 
-.lang-thumb {
+.lang-caret {
+  display: grid;
+  place-items: center;
+  color: var(--text-3);
+  font-size: 15px;
+  transition: transform 0.2s ease;
+}
+
+.lang-switch.open .lang-caret {
+  transform: rotate(180deg);
+}
+
+.lang-list {
   position: absolute;
-  z-index: 0;
-  top: 4px;
-  bottom: 4px;
-  left: 4px;
-  width: calc((100% - 8px) / var(--slots));
-  border-radius: 9px;
-  background: var(--card-2);
-  transition: transform 0.28s cubic-bezier(0.3, 0.9, 0.3, 1);
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 100%;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
 }
 
-.lang-switch button {
-  position: relative;
-  z-index: 1;
-  min-width: 44px;
-  padding: 6px 10px;
+.lang-switch.open .lang-list {
+  display: flex;
+}
+
+.lang-list button {
+  padding: 7px 12px;
   border: none;
   border-radius: 9px;
   background: transparent;
@@ -1624,17 +1670,18 @@ main {
   font-weight: 800;
   text-align: center;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.15s, background 0.15s;
 }
 
-.lang-switch button:hover:not(.active) {
+.lang-list button:hover:not(.active) {
+  background: var(--card-2);
   color: var(--text-2);
 }
 
-.lang-switch button.active {
+.lang-list button.active {
+  background: var(--card-2);
   color: var(--text);
 }
-
 .account-link {
   display: flex;
   align-items: center;
@@ -2541,58 +2588,10 @@ button.ghost.small {
 }
 
 @media (max-width: 720px) {
-  .lang-switch {
-    position: relative;
-    width: 62px;
-    height: 40px;
-    padding: 0;
-  }
-
-  .lang-switch.open {
-    z-index: 60;
-  }
-
-  .lang-thumb {
-    display: none;
-  }
-
   .lang-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: inherit;
-    background: none;
-    color: var(--text);
+    height: 40px;
+    padding: 0 8px 0 10px;
     font-size: 12px;
-    font-weight: 800;
-    cursor: pointer;
-  }
-
-  .lang-list {
-    position: absolute;
-    top: calc(100% + 6px);
-    right: 0;
-    min-width: 100%;
-    display: none;
-    flex-direction: column;
-    gap: 2px;
-    padding: 4px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--card);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
-  }
-
-  .lang-switch.open .lang-list {
-    display: flex;
-  }
-
-  .lang-list button {
-    min-width: 0;
-    justify-content: center;
   }
 
   .topbar-slot {
@@ -2826,7 +2825,8 @@ html:not([data-auth]) .play-actions .challenge-open {
   animation: fade-in 0.15s ease;
 }
 
-.modal {
+.modal,
+.card.modal {
   position: relative;
   width: min(100%, 560px);
   max-height: calc(100vh - 40px);
@@ -3196,6 +3196,10 @@ html:not([data-auth]) .play-actions .challenge-open {
 .manga-option:disabled {
   cursor: default;
   transform: none;
+}
+
+.primary .icon {
+  font-size: 18px;
 }
 
 .mode-next {

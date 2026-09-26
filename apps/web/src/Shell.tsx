@@ -1,16 +1,16 @@
 'use client'
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Background from './Background'
 import Footer from './Footer'
 import Landing from './Landing'
-import { useAuth } from './auth'
+import { hadSession, useAuth } from './auth'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n } from './i18n'
-import { BellIcon, MenuIcon } from './icons'
+import { BellIcon, ChevronIcon, MedalIcon, MenuIcon, SwordsIcon } from './icons'
 import { useBeforePaint } from './paint'
 import { useHref, useVisitTracker } from './router'
 
@@ -62,9 +62,15 @@ function NavMenu({ user, section }: { user: boolean; section?: string }) {
         {user && (
           <>
             <Link className={onDuels ? 'active' : ''} href={href.duels} onClick={() => setOpen(false)}>
+              <span className="topbar-nav-icon" aria-hidden>
+                <SwordsIcon />
+              </span>
               {t('nav.duels')}
             </Link>
             <Link className={onBoard ? 'active' : ''} href={href.board} onClick={() => setOpen(false)}>
+              <span className="topbar-nav-icon" aria-hidden>
+                <MedalIcon />
+              </span>
               {t('nav.leaderboard')}
             </Link>
           </>
@@ -78,29 +84,24 @@ function LangSwitch() {
   const { lang, setLang, t } = useI18n()
   const [open, setOpen] = useState(false)
   const box = useDropdown(open, setOpen)
-  const index = Math.max(
-    LANGS.findIndex((l) => l.id === lang),
-    0,
-  )
+  const current = LANGS.find((l) => l.id === lang) ?? LANGS[0]
 
   return (
-    <div
-      ref={box}
-      className={`lang-switch ${open ? 'open' : ''}`}
-      role="group"
-      aria-label={t('nav.language')}
-      style={{ '--slots': LANGS.length } as CSSProperties}
-    >
+    <div ref={box} className={`lang-switch ${open ? 'open' : ''}`}>
       <button type="button" className="lang-toggle" aria-expanded={open} aria-label={t('nav.language')} onClick={() => setOpen(!open)}>
-        {LANGS[index].label}
+        {current.label}
+        <span className="lang-caret" aria-hidden>
+          <ChevronIcon />
+        </span>
       </button>
-      <span className="lang-thumb" style={{ transform: `translateX(${index * 100}%)` }} aria-hidden />
-      <div className="lang-list">
+      <div className="lang-list" role="listbox" aria-label={t('nav.language')}>
         {LANGS.map((l) => (
           <button
             key={l.id}
+            type="button"
+            role="option"
             className={lang === l.id ? 'active' : ''}
-            aria-pressed={lang === l.id}
+            aria-selected={lang === l.id}
             onClick={() => {
               setOpen(false)
               setLang(l.id)
@@ -147,6 +148,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const { t } = useI18n()
   const pathname = usePathname()
   const scrolled = useScrolled()
+  const [returning, setReturning] = useState(false)
   useVisitTracker()
   const [, , section, gameId] = pathname.split('/')
   const open = PUBLIC.has(section ?? '')
@@ -165,6 +167,10 @@ export default function Shell({ children, games }: { children: ReactNode; games:
     const watcher = new ResizeObserver(apply)
     watcher.observe(header)
     return () => watcher.disconnect()
+  }, [])
+
+  useBeforePaint(() => {
+    setReturning(hadSession())
   }, [])
 
   useBeforePaint(() => {
@@ -224,7 +230,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
         </div>
       </header>
 
-      {user || open ? children : loading ? <div className="card center muted page-loading">{t('loading')}</div> : <Landing games={games} />}
+      {user || open || (loading && returning) ? children : loading ? <div className="card center muted page-loading">{t('loading')}</div> : <Landing games={games} />}
 
       <Footer />
     </div>

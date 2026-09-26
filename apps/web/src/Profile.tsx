@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import BackButton from './BackButton'
 import { useAuth } from './auth'
@@ -9,7 +9,7 @@ import { useI18n } from './i18n'
 import Quests, { type Level } from './Quests'
 import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
-import { CalendarIcon, CheckIcon, TrophyIcon } from './icons'
+import { CalendarIcon, CheckIcon, GearIcon, TrophyIcon } from './icons'
 import { useHref } from './router'
 import { kyivToday } from './stats'
 import { keepPerUser } from './session-cache'
@@ -31,6 +31,7 @@ type Summary = {
   challenges: { solved: number }
   favourite: GameId | null
   rank: { position: number; players: number } | null
+  gamePlaces: { game: GameId; mode: string; position: number }[]
   streak: {
     current: number
     best: number
@@ -93,6 +94,22 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   const today = kyivToday()
 
   const [summary, setSummary] = useState<Summary | null>(knownSummary)
+  const [places, setPlaces] = useState(false)
+  const factsRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!places) return
+    const away = (event: MouseEvent) => {
+      if (!factsRef.current?.contains(event.target as Node)) setPlaces(false)
+    }
+    const escape = (event: KeyboardEvent) => event.key === 'Escape' && setPlaces(false)
+    document.addEventListener('mousedown', away)
+    document.addEventListener('keydown', escape)
+    return () => {
+      document.removeEventListener('mousedown', away)
+      document.removeEventListener('keydown', escape)
+    }
+  }, [places])
 
   const load = useCallback(async () => {
     const { ok, data } = await api<Summary>('profile/summary')
@@ -106,9 +123,10 @@ export default function Profile({ onBack }: { onBack: () => void }) {
     void load()
   }, [load])
 
-  if (!user) return null
+  const nickname = user?.nickname ?? ''
 
   const pinned = summary?.pinned ?? []
+  const best = summary?.gamePlaces?.[0] ?? null
 
   const date = (value?: string, long = false) => {
     if (!value) return '—'
@@ -124,6 +142,8 @@ export default function Profile({ onBack }: { onBack: () => void }) {
       ? when.toLocaleTimeString(LOCALES[lang], { hour: '2-digit', minute: '2-digit' })
       : when.toLocaleDateString(LOCALES[lang], { day: 'numeric', month: 'short' })
   }
+
+  const medal = (position: number) => (position === 1 ? 'gold' : position === 2 ? 'silver' : position === 3 ? 'bronze' : '')
 
   const gameLabel = (id: string) => GAMES.find((g) => g.id === id)?.label
   const modeLabel = (id: string) => MODES.find((m) => m.id === id)?.label ?? 'mode.classic'
@@ -141,12 +161,12 @@ export default function Profile({ onBack }: { onBack: () => void }) {
           <section className="card profile-card">
             <div className="profile-id">
               <span className="avatar" aria-hidden>
-                {user.nickname.charAt(0).toUpperCase()}
+                {nickname.charAt(0).toUpperCase()}
                 <b>{summary?.level.level ?? 1}</b>
               </span>
               <div className="profile-names">
-                <h1>{user.nickname}</h1>
-                <span className="muted">{user.username}</span>
+                <h1>{nickname}</h1>
+                <span className="muted">{user?.username ?? ''}</span>
               </div>
             </div>
 
@@ -181,26 +201,64 @@ export default function Profile({ onBack }: { onBack: () => void }) {
               </div>
             </div>
 
-            <div className="profile-facts">
-              <div>
+            <div className="profile-facts" ref={factsRef}>
+              <div className={`fact fact-rank ${summary?.rank ? medal(summary.rank.position) : ''}`}>
                 <span>{t('profile.rank')}</span>
-                {summary?.rank ? <b>#{summary.rank.position}</b> : <b className="empty">—</b>}
+                {summary?.rank ? (
+                  <p className="fact-place">
+                    <b>#{summary.rank.position}</b>
+                    <small>{t('lb.outOf', { total: summary.rank.players })}</small>
+                  </p>
+                ) : (
+                  <b className="empty">—</b>
+                )}
               </div>
-              <div>
-                <span>{t('profile.played')}</span>
-                <b>{summary?.totals.played ?? 0}</b>
-              </div>
-              <div>
+              <button
+                type="button"
+                className={`fact fact-rank fact-open ${best ? medal(best.position) : ''} ${places ? 'open' : ''}`}
+                aria-expanded={places}
+                onClick={() => best && setPlaces(!places)}
+                disabled={!best}
+              >
+                <span>{t('profile.bestGame')}</span>
+                {best ? (
+                  <p className="fact-place">
+                    <b>#{best.position}</b>
+                    <small>{t('profile.placesMore')}</small>
+                  </p>
+                ) : (
+                  <b className="empty">—</b>
+                )}
+              </button>
+
+              {places && summary && (
+                <div className="places-pop" role="dialog" aria-label={t('profile.placesTitle')}>
+                  <span className="places-pop-title">{t('profile.placesTitle')}</span>
+                  <ol className="places-list">
+                    {summary.gamePlaces.map((row) => (
+                      <li key={`${row.game}_${row.mode}`} className={medal(row.position)}>
+                        <b>#{row.position}</b>
+                        <span>
+                          {l(gameLabel(row.game)!)}
+                          <small>{t(modeLabel(row.mode))}</small>
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
+              <div className="fact">
                 <span>{t('profile.favourite')}</span>
                 {summary?.favourite ? <b className="small">{l(gameLabel(summary.favourite)!)}</b> : <b className="empty">—</b>}
               </div>
-              <div>
+              <div className="fact">
                 <span>{t('profile.since')}</span>
                 {summary?.since ? <b className="small">{date(summary.since, true)}</b> : <b className="empty">—</b>}
               </div>
             </div>
 
             <Link className="ghost profile-settings" href={href.settings}>
+              <GearIcon />
               {t('profile.settings')}
             </Link>
           </section>

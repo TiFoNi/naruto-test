@@ -121,7 +121,7 @@ const ui = {
   'page.lostHint': { ru: 'Серия обнулена. Следующая страница ждёт.', uk: 'Серію обнулено. Наступна сторінка чекає.', en: 'Streak reset. The next page is waiting.' },
   'page.bannerWon': { ru: 'ЭТО СТРАНИЦА ИЗ', uk: 'ЦЕ СТОРІНКА З', en: 'THIS PAGE IS FROM' },
   'page.bannerLost': { ru: 'ПРАВИЛЬНЫЙ ОТВЕТ', uk: 'ПРАВИЛЬНА ВІДПОВІДЬ', en: 'CORRECT ANSWER' },
-  'page.next': { ru: 'Следующая страница ➜', uk: 'Наступна сторінка ➜', en: 'Next page ➜' },
+  'page.next': { ru: 'Следующая страница', uk: 'Наступна сторінка', en: 'Next page' },
   'howtoPage.step1': { ru: 'Показываем одну страницу из манги', uk: 'Показуємо одну сторінку з манги', en: 'We show one page from a manga' },
   'howtoPage.step2': {
     ru: 'Выбери один из трёх тайтлов — клавиши 1, 2, 3',
@@ -158,7 +158,7 @@ const ui = {
     en: 'Your day streak is reset. A new ability tomorrow.',
   },
   'ability.bannerWon': { ru: 'УГАДАНО', uk: 'ВГАДАНО', en: 'SOLVED' },
-  'ability.next': { ru: 'Следующий раунд ➜', uk: 'Наступний раунд ➜', en: 'Next round ➜' },
+  'ability.next': { ru: 'Следующий раунд', uk: 'Наступний раунд', en: 'Next round' },
   'howtoAbility.step1': {
     ru: 'Иконка способности стартует сильно размытой',
     uk: 'Іконка здібності стартує сильно розмитою',
@@ -288,7 +288,7 @@ const ui = {
   'result.factBest': { ru: 'рекорд', uk: 'рекорд', en: 'best' },
   'result.factDays': { ru: 'дней подряд', uk: 'днів поспіль', en: 'days in a row' },
   'result.factBestDays': { ru: 'рекорд дней', uk: 'рекорд днів', en: 'best streak' },
-  'result.next': { ru: 'Следующий ➜', uk: 'Наступний ➜', en: 'Next ➜' },
+  'result.next': { ru: 'Следующий', uk: 'Наступний', en: 'Next' },
 
   'daily.variant': { ru: 'Вариант игры', uk: 'Варіант гри', en: 'Game type' },
   'daily.endless': { ru: 'Бесконечный', uk: 'Нескінченний', en: 'Endless' },
@@ -416,7 +416,7 @@ const ui = {
   'quests.claimed': { ru: 'Получено', uk: 'Отримано', en: 'Claimed' },
   'quests.free': { ru: 'Заходи каждый день', uk: 'Заходь щодня', en: 'Drop by every day' },
   'quests.freeHint': { ru: 'Просто так, без условий', uk: 'Просто так, без умов', en: 'No strings attached' },
-  'quests.all': { ru: 'Все →', uk: 'Усі →', en: 'All →' },
+  'quests.all': { ru: 'Все', uk: 'Усі', en: 'All' },
   'quests.bonus': { ru: 'Бонус за все', uk: 'Бонус за всі', en: 'Bonus for all' },
   'quests.bonusHint': { ru: 'Ещё не собрано', uk: 'Ще не зібрано', en: 'Not collected yet' },
 
@@ -455,8 +455,11 @@ const ui = {
   },
   'dash.pick': { ru: 'Выбери категорию', uk: 'Обери категорію', en: 'Pick a category' },
 
-  'profile.rank': { ru: 'Место в рейтинге', uk: 'Місце в рейтингу', en: 'Leaderboard place' },
-  'profile.played': { ru: 'Сыграно игр', uk: 'Зіграно ігор', en: 'Rounds played' },
+  'profile.rank': { ru: 'Место по опыту', uk: 'Місце за досвідом', en: 'Place by XP' },
+  'profile.bestGame': { ru: 'Место по игре', uk: 'Місце за грою', en: 'Place in a game' },
+  'profile.placesMore': { ru: 'подробнее', uk: 'детальніше', en: 'details' },
+  'profile.placesTitle': { ru: 'Места по играм', uk: 'Місця за іграми', en: 'Places by game' },
+  'profile.close': { ru: 'Закрыть', uk: 'Закрити', en: 'Close' },
   'profile.favourite': { ru: 'Любимая вселенная', uk: 'Улюблений всесвіт', en: 'Favourite world' },
   'profile.since': { ru: 'С нами с', uk: 'З нами з', en: 'Member since' },
   'profile.characters': { ru: 'Разгадано всего', uk: 'Розгадано всього', en: 'Solved in total' },
@@ -641,7 +644,7 @@ const ui = {
     en: 'Guess characters and titles — as many times as you like',
   },
   'dash.yourStats': { ru: 'Твоя статистика', uk: 'Твоя статистика', en: 'Your stats' },
-  'dash.openProfile': { ru: 'Открыть профиль →', uk: 'Відкрити профіль →', en: 'Open profile →' },
+  'dash.openProfile': { ru: 'Открыть профиль', uk: 'Відкрити профіль', en: 'Open profile' },
   'dash.anime': { ru: 'Аниме', uk: 'Аніме', en: 'Anime' },
   'dash.games': { ru: 'Игры', uk: 'Ігри', en: 'Games' },
   'dash.sport': { ru: 'Спорт', uk: 'Спорт', en: 'Sport' },

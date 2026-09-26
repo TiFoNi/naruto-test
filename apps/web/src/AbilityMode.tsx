@@ -7,7 +7,7 @@ import Thumb from './Thumb'
 import Yesterday from './Yesterday'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
-import { LockIcon, SparkIcon } from './icons'
+import { ArrowIcon, LockIcon, SparkIcon } from './icons'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
 import { apiSrc } from './api'
@@ -123,6 +123,7 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
         {over && !scored && (
           <button type="button" className="primary mode-next" onClick={next}>
             {t('ability.next')}
+            <ArrowIcon />
           </button>
         )}
 

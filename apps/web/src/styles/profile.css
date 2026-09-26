@@ -89,30 +89,193 @@
 }
 
 .profile-facts {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
 
-.profile-facts > div {
+.profile-facts .fact {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 3px;
+  height: 82px;
   padding: 10px 12px;
   border-radius: 12px;
   background: var(--card-2);
 }
 
-.profile-facts span {
+.profile-facts .fact span {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  min-height: 2.5em;
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.profile-facts .fact-rank {
+  --place: var(--text);
+}
+
+.profile-facts .fact-rank.gold {
+  --place: #f0b429;
+}
+
+.profile-facts .fact-rank.silver {
+  --place: #b9c2cf;
+}
+
+.profile-facts .fact-rank.bronze {
+  --place: #c1743a;
+}
+
+.profile-facts .fact-rank span {
+  color: color-mix(in srgb, var(--place) 62%, var(--text-2));
+}
+
+.profile-facts .fact b {
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.profile-facts .fact > b,
+.profile-facts .fact-place {
+  display: flex;
+  align-items: flex-end;
+  min-height: 26px;
+}
+
+.profile-facts .fact-rank {
+  background: color-mix(in srgb, var(--accent) 13%, var(--card-2));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 26%, transparent);
+}
+
+.profile-facts .fact-open {
+  border: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+
+.profile-facts .fact-open:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--place) 55%, transparent);
+}
+
+.profile-facts .fact-open:disabled {
+  cursor: default;
+}
+
+.places-pop {
+  position: absolute;
+  z-index: 30;
+  top: calc(50% + 4px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(300px, 100%);
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+  background: var(--card);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.6);
+  animation: fade-in 0.15s ease;
+}
+
+.places-pop-title {
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.places-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 210px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--card-2) transparent;
+}
+
+.places-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 11px;
+  background: var(--card-2);
+}
+
+.places-list li b {
+  flex: none;
+  min-width: 46px;
+  color: var(--text);
+  font-family: var(--display);
+  font-size: 19px;
+}
+
+.places-list li.gold b {
+  color: #f0b429;
+}
+
+.places-list li.silver b {
+  color: #b9c2cf;
+}
+
+.places-list li.bronze b {
+  color: #c1743a;
+}
+
+.places-list li span {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-weight: 700;
+}
+
+.places-list li small {
   color: var(--text-3);
   font-size: 12px;
   font-weight: 600;
 }
 
-.profile-facts b {
-  font-family: var(--display);
-  font-size: 19px;
-  font-weight: 700;
+.profile-facts .fact-place {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  min-width: 0;
+  margin: 0;
+}
+
+.profile-facts .fact-place b {
+  flex: none;
+  color: var(--place);
+}
+
+.profile-facts .fact-place small {
+  min-width: 0;
+  overflow: hidden;
+  color: color-mix(in srgb, var(--place) 45%, var(--text-2));
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .profile-facts b.small {
@@ -131,10 +294,19 @@
 }
 
 .profile-settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   width: 100%;
   padding: 11px 14px;
   border-radius: 13px;
   font-weight: 700;
+}
+
+.profile-settings .icon {
+  font-size: 17px;
+  color: var(--text-3);
 }
 
 .profile-metrics span {
@@ -494,7 +666,7 @@
   font-weight: 700;
 }
 
-.awards-open {
+.lb-link.awards-open {
   justify-content: center;
   width: 100%;
   height: 44px;

@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react'
 import Countdown from './Countdown'
 import type { Entity, Game } from './games/types'
 import { useAuth } from './auth'
+import { ArrowIcon } from './icons'
 import { useI18n, type UiKey } from './i18n'
 import { useHref } from './router'
 import type { Stats } from './stats'
@@ -95,6 +96,7 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
             </Link>
             <button className="primary" onClick={onNext}>
               {t('result.next')}
+              <ArrowIcon />
             </button>
           </div>
         )
