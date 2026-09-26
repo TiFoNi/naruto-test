@@ -104,6 +104,7 @@
   padding: 10px 12px;
   border-radius: 12px;
   background: var(--card-2);
+  overflow: hidden;
 }
 
 .profile-facts .fact span {

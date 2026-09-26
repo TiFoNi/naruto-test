@@ -4,7 +4,7 @@ import BoardScope from './BoardScope'
 import { useEffect, useState, type CSSProperties } from 'react'
 import { api } from './api'
 import { GAMES, gameById } from './games'
-import type { GameId } from './games/types'
+import type { Category, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES, type ModeId } from './modes'
 import { useNavigate, useHref } from './router'
@@ -33,7 +33,7 @@ type Column = {
   value: (row: Row) => number
 }
 
-const CATEGORY_LABEL: Record<string, UiKey> = { anime: 'dash.anime', manga: 'dash.mangaTitle', games: 'dash.games' }
+const CATEGORY_LABEL: Record<Category, UiKey> = { anime: 'dash.anime', manga: 'dash.mangaTitle', games: 'dash.games', sport: 'dash.sport' }
 
 const TONES = 8
 
