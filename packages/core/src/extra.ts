@@ -1,5 +1,6 @@
 import type { GameId, ModeId } from '@nanda/game'
 import { abilitiesOf } from './abilities'
+import { phrasesOf } from './phrases'
 import { gameData } from './games'
 
 const OPTIONS = 3
@@ -36,6 +37,10 @@ async function pageExtra(game: GameId, answerId: number, roll: number) {
 
 export async function roundExtra(game: GameId, mode: ModeId, answerId: number, roll = Math.random()) {
   if (mode === 'page') return pageExtra(game, answerId, roll)
+  if (mode === 'phrase') {
+    const list = phrasesOf(answerId)
+    return list.length ? String(Math.floor(roll * list.length)) : undefined
+  }
   if (mode !== 'ability') return undefined
   const list = abilitiesOf(answerId)
   return list.length ? list[Math.floor(roll * list.length)].key : undefined
@@ -49,3 +54,12 @@ export function optionsOf(extra: string | undefined) {
   const raw = extra?.split('|')[1]
   return raw ? raw.split(',').map(Number) : []
 }
+
+export function phraseAt(answerId: number, extra: string | undefined, step: number) {
+  const list = phrasesOf(answerId)
+  if (!list.length) return undefined
+  const start = Number(extra ?? 0) || 0
+  return list[(start + step) % list.length]
+}
+
+export const phraseCount = (answerId: number) => phrasesOf(answerId).length

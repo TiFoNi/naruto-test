@@ -32,6 +32,15 @@ async function collect() {
       }
     }
 
+    const voice = path.join(PUBLIC, game.name, 'voice')
+    for (const entry of await fs.readdir(voice, { withFileTypes: true }).catch(() => [])) {
+      if (!entry.isDirectory()) continue
+      const dir = path.join(voice, entry.name)
+      for (const file of await fs.readdir(dir).catch(() => [])) {
+        if (file.endsWith('.mp3')) files.push({ key: `${game.name}/voice/${entry.name}/${file}`, path: path.join(dir, file) })
+      }
+    }
+
     const pages = path.join(PUBLIC, game.name, 'pages')
     for (const entry of await fs.readdir(pages, { withFileTypes: true }).catch(() => [])) {
       if (!entry.isDirectory()) continue
@@ -74,7 +83,7 @@ async function main() {
           Bucket: R2_BUCKET,
           Key: key,
           Body: body,
-          ContentType: 'image/webp',
+          ContentType: key.endsWith('.mp3') ? 'audio/mpeg' : 'image/webp',
           CacheControl: 'public, max-age=31536000, immutable',
         }),
       )

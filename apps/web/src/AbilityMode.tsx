@@ -3,7 +3,6 @@ import CharacterSearch from './CharacterSearch'
 import PlaySide from './PlaySide'
 import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
-import ShareResult, { type Tile } from './ShareResult'
 import Thumb from './Thumb'
 import Yesterday from './Yesterday'
 import type { Game } from './games/types'
@@ -20,7 +19,7 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 const clarityAt = (step: number) => Math.round((step / ABILITY_STAGES) * 100)
 
 export default function AbilityMode({ game, active, stats, daily = false, challenge }: Props) {
-  const { t, l, name, lang } = useI18n()
+  const { t, name, lang } = useI18n()
   const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(
     game,
     'ability',
@@ -38,8 +37,6 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
   const hintAt = round?.hintAt ?? ABILITY_STAGES
   const hintLeft = Math.max(0, hintAt - wrong)
   const ability = round?.ability?.[lang]
-  const tiles: Tile[] = Array.from({ length: ABILITY_STAGES + 1 }, (_, i): Tile => (i < solvedStep ? 'miss' : i === solvedStep ? 'hit' : 'idle'))
-  const shareSummary = `${t('play.pillAttempts', { count: guesses.length })} · ${clarityAt(solvedStep)}%`
 
   const shortcut = useRef<() => void>(() => {})
   shortcut.current = () => {
@@ -127,10 +124,6 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
           <button type="button" className="primary mode-next" onClick={next}>
             {t('ability.next')}
           </button>
-        )}
-
-        {round && over && answer && !skipped && (
-          <ShareResult caption={l(game.label)} tiles={tiles} summary={shareSummary} won={won} />
         )}
 
         <RoundStatus error={error} onRetry={retry} />

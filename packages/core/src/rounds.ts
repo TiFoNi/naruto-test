@@ -1,11 +1,11 @@
 import { ObjectId } from 'mongodb'
-import { ABILITY_HINT_AT, ABILITY_STAGES, dailyKey, judgeAll, statsKey, type GameId, type ModeId } from '@nanda/game'
+import { ABILITY_HINT_AT, ABILITY_STAGES, PHRASE_EVERY, PHRASE_VOICE_AT, dailyKey, judgeAll, statsKey, type GameId, type ModeId } from '@nanda/game'
 import { dailyAnswer, nextReset, pastAnswer, shiftDay, today } from './daily'
 import { rounds, type RoundDoc, type UserDoc } from './db'
 import { gameData, isGame, isMode, knows } from './games'
 import { applyDailyResult, applyResult, defaultNickname } from './profile'
 import { abilityByKey } from './abilities'
-import { optionsOf, roundExtra } from './extra'
+import { optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { findChallenge, recordSolve } from './challenges'
 import { markSeasonPlay } from './season'
 
@@ -132,6 +132,7 @@ export async function roundView(round: RoundDoc, full = true) {
     image: round.mode === 'image' || round.mode === 'ability' || round.mode === 'page' ? `/api/round/image?id=${id}` : undefined,
     ...(round.mode === 'ability' ? abilityInfo(round) : {}),
     ...(round.mode === 'page' ? { options: optionsOf(round.extra) } : {}),
+    ...(round.mode === 'phrase' ? phraseInfo(round, id) : {}),
   }
 }
 
@@ -204,4 +205,28 @@ export async function finishRound(users: Collection<UserDoc>, round: RoundDoc, w
   const key = statsKey(round.game, round.mode)
   const stats = await applyResult(users, round.userId, key, won, guesses)
   return { round: updated, stats: { key, value: stats } }
+}
+
+export function phraseStep(round: RoundDoc) {
+  const total = phraseCount(round.answerId)
+  if (!total) return 0
+  return Math.min(Math.floor(wrongGuesses(round) / PHRASE_EVERY), total - 1)
+}
+
+function phraseInfo(round: RoundDoc, id: string) {
+  const total = phraseCount(round.answerId)
+  const step = phraseStep(round)
+  const lines: string[] = []
+  for (let i = 0; i <= step; i++) {
+    const line = phraseAt(round.answerId, round.extra, i)
+    if (line) lines.push(line.text)
+  }
+  const left = Math.max(total - lines.length, 0)
+  const open = round.status !== 'active' || lines.length >= PHRASE_VOICE_AT
+  return {
+    phrases: lines,
+    phrasesLeft: left,
+    voiceAt: PHRASE_VOICE_AT,
+    voice: open ? `/api/round/voice?id=${id}` : undefined,
+  }
 }

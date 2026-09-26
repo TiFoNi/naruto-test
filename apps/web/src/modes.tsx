@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { GridIcon, PageIcon, PictureIcon, SparkIcon } from './icons'
+import { GridIcon, PageIcon, PictureIcon, SoundIcon, SparkIcon } from './icons'
 import type { UiKey } from './i18n/ui'
 import type { ModeId } from '@nanda/game'
 
@@ -10,4 +10,5 @@ export const MODES: { id: ModeId; label: UiKey; description: UiKey; icon: ReactN
   { id: 'image', label: 'mode.image', description: 'mode.image.desc', icon: <PictureIcon /> },
   { id: 'ability', label: 'mode.ability', description: 'mode.ability.desc', icon: <SparkIcon /> },
   { id: 'page', label: 'mode.page', description: 'mode.page.desc', icon: <PageIcon /> },
+  { id: 'phrase', label: 'mode.phrase', description: 'mode.phrase.desc', icon: <SoundIcon /> },
 ]

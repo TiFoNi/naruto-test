@@ -2,7 +2,6 @@ import CharacterSearch from './CharacterSearch'
 import PlaySide from './PlaySide'
 import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
-import ShareResult, { type Tile } from './ShareResult'
 import ZoomImage from './ZoomImage'
 import Yesterday from './Yesterday'
 import Thumb from './Thumb'
@@ -17,7 +16,7 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 
 
 export default function ImageMode({ game, active, stats, daily = false, challenge }: Props) {
-  const { t, l, lang, name } = useI18n()
+  const { t, lang, name } = useI18n()
   const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(
     game,
     'image',
@@ -33,9 +32,6 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
   const zoomText = (value: number) => (lang === 'en' ? value.toFixed(1) : value.toFixed(1).replace('.', ','))
   const nextLevel = step < ZOOM_LEVELS.length - 1 ? ZOOM_LEVELS[step + 1] : null
   const shownStep = over ? ZOOM_LEVELS.length - 1 : step
-  const solvedAt = ZOOM_LEVELS[step]
-  const tiles: Tile[] = ZOOM_LEVELS.map((_, i) => (i < step ? 'miss' : i === step ? 'hit' : 'idle'))
-  const shareSummary = `${t('play.pillAttempts', { count: guesses.length })} · ${won ? `×${zoomText(solvedAt)}` : t('share.gaveUp')}`
 
   return (
     <section className="play-layout shot-layout">
@@ -91,10 +87,6 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
             nextAt={round.nextAt}
             compact
           />
-        )}
-
-        {round && over && answer && !skipped && (
-          <ShareResult caption={l(game.label)} tiles={tiles} summary={shareSummary} won={won} />
         )}
 
         {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}

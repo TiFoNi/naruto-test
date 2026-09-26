@@ -16,7 +16,7 @@ type Props = {
   playing: boolean
   busy?: boolean
   legend?: boolean
-  howto?: 'image' | 'page' | 'ability'
+  howto?: 'image' | 'page' | 'ability' | 'phrase'
   onGiveUp: () => void
 }
 
@@ -24,9 +24,10 @@ const STEPS = {
   image: ['howto.step1', 'howto.step2', 'howto.step3'],
   page: ['howtoPage.step1', 'howtoPage.step2', 'howtoPage.step3'],
   ability: ['howtoAbility.step1', 'howtoAbility.step2', 'howtoAbility.step3'],
+  phrase: ['howtoPhrase.step1', 'howtoPhrase.step2', 'howtoPhrase.step3'],
 } as const
 
-function HowTo({ kind }: { kind: 'image' | 'page' | 'ability' }) {
+function HowTo({ kind }: { kind: keyof typeof STEPS }) {
   const { t } = useI18n()
   return (
     <div className="play-card play-howto">

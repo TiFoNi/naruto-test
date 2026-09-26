@@ -198,6 +198,15 @@ export function PictureIcon({ className }: IconProps) {
   )
 }
 
+export function SoundIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M11 5.5 6.8 9H4.2A1.2 1.2 0 0 0 3 10.2v3.6A1.2 1.2 0 0 0 4.2 15h2.6L11 18.5Z" />
+      <path d="M15.2 9.4a3.6 3.6 0 0 1 0 5.2M18 6.6a7.5 7.5 0 0 1 0 10.8" />
+    </svg>
+  )
+}
+
 export function SparkIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

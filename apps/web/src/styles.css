@@ -1814,7 +1814,6 @@ main {
   font-weight: 600;
 }
 
-
 .category {
   display: flex;
   flex-direction: column;
@@ -3799,7 +3798,6 @@ html[data-auth] .guest-note {
   }
 }
 
-
 .card.locked {
   display: flex;
   flex-direction: column;
@@ -5154,19 +5152,11 @@ html[data-cat='sport'] .tile[data-id='sport'] .tile-icon {
   min-height: 70vh;
 }
 
-
 @keyframes skeleton {
   50% {
     opacity: 0.55;
   }
 }
-
-
-
-
-
-
-
 
 .play-main {
   display: flex;
@@ -5652,146 +5642,6 @@ html[data-cat='sport'] .tile[data-id='sport'] .tile-icon {
   border: 1px solid var(--line);
   border-radius: 22px;
   background: var(--card);
-}
-
-.share {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  container-type: inline-size;
-}
-
-.share-body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 14px;
-  align-items: start;
-}
-
-@container (min-width: 540px) {
-  .share-body {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 220px);
-  }
-}
-
-.share-preview {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 16px 18px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: color-mix(in srgb, var(--bg) 45%, transparent);
-}
-
-.share-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.share-brand {
-  font-family: var(--display);
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.share-brand em {
-  color: var(--accent);
-  font-style: normal;
-}
-
-.share-caption {
-  color: var(--text-2);
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.share-tiles {
-  display: grid;
-  grid-template-columns: repeat(var(--tiles, 7), minmax(0, 56px));
-  gap: 6px;
-}
-
-.share-tiles i {
-  height: 36px;
-  border-radius: 9px;
-  background: var(--card-2);
-}
-
-.share-tiles i.miss {
-  background: color-mix(in srgb, #e5483b 45%, var(--card-2));
-}
-
-.share-tiles i.hit {
-  background: var(--correct);
-}
-
-.share-summary {
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.share-summary.won {
-  color: color-mix(in srgb, var(--correct) 85%, #fff);
-}
-
-.share-summary.lost {
-  color: var(--text-2);
-}
-
-.share-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.share-actions button {
-  height: 44px;
-  padding: 0 14px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--card-2);
-  color: var(--text);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: background 0.16s, border-color 0.16s, color 0.16s;
-}
-
-.share-actions button:hover {
-  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
-}
-
-.share-actions .share-copy {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  border-color: transparent;
-  background: var(--text);
-  color: var(--bg);
-  font-size: 15px;
-}
-
-.share-actions .share-copy:hover {
-  border-color: transparent;
-  background: #fff;
-}
-
-.share-networks {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-@container (max-width: 380px) {
-  .share-tiles i {
-    height: 30px;
-  }
 }
 
 .shot .zoom-frame {
@@ -6385,4 +6235,103 @@ html[data-cat='sport'] .tile[data-id='sport'] .tile-icon {
 
 .picker-list li .picker-mark .icon {
   color: inherit;
+}
+
+.play-layout.phrase-layout {
+  grid-template-columns: 420px minmax(0, 1fr) 300px;
+}
+
+.phrase-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.phrase-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+
+.phrase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.phrase-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--card-2);
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.phrase-list li .phrase-quote {
+  flex: 1;
+  min-width: 0;
+}
+
+.phrase-list li.fresh {
+  background: color-mix(in srgb, var(--accent) 10%, var(--card-2));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.phrase-play {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background .15s, transform .15s;
+}
+
+.phrase-play:hover {
+  background: color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+.phrase-play.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1a1206;
+  transform: scale(1.06);
+}
+
+.phrase-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.phrase-lock {
+  color: var(--text-3);
+}
+
+@media (max-width: 1160px) {
+  .play-layout.phrase-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

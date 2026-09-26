@@ -1,6 +1,6 @@
 export type GameId = 'football' | 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'onepiece' | 'mk' | 'hxh' | 'bc' | 'jojo' | 'se' | 'ff' | 'manga' | 'dn' | 'avatar'
 
-export type ModeId = 'classic' | 'image' | 'ability' | 'page'
+export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase'
 
 export type Verdict = 'correct' | 'partial' | 'wrong'
 
@@ -230,7 +230,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
   dota: {
     data: 'dota',
     images: 'dota',
-    modes: ['classic', 'image', 'ability'],
+    modes: ['classic', 'image', 'ability', 'phrase'],
     columns: [
       col('gender', 'exact'),
       col('species', 'list'),
@@ -245,10 +245,13 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
-export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page']
+export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase']
 
 export const ABILITY_STAGES = 6
 export const ABILITY_HINT_AT = 5
+
+export const PHRASE_EVERY = 3
+export const PHRASE_VOICE_AT = 3
 
 const DEFAULT_MODES: ModeId[] = ['classic', 'image']
 
