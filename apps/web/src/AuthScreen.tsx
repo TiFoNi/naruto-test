@@ -26,6 +26,10 @@ export default function AuthScreen() {
   }, [left])
 
   useEffect(() => {
+    void authClient()
+  }, [])
+
+  useEffect(() => {
     const revive = () => document.visibilityState === 'visible' && setBusy(null)
     window.addEventListener('pageshow', revive)
     document.addEventListener('visibilitychange', revive)
@@ -41,7 +45,7 @@ export default function AuthScreen() {
   const withGoogle = async () => {
     setBusy('google')
     setError(null)
-    const { error } = await authClient.signIn.social({ provider: 'google', callbackURL })
+    const { error } = await (await authClient()).signIn.social({ provider: 'google', callbackURL })
     if (error) {
       setError({ where: 'google', text: t('auth.googleFailed') })
       setBusy(null)
@@ -51,7 +55,7 @@ export default function AuthScreen() {
   const send = async () => {
     setBusy('link')
     setError(null)
-    const { error } = await authClient.signIn.magicLink({ email, callbackURL })
+    const { error } = await (await authClient()).signIn.magicLink({ email, callbackURL })
     setBusy(null)
     if (error) {
       setError({ where: 'link', text: t(error.status === 429 ? 'err.too_many' : 'auth.failed') })

@@ -1,6 +1,7 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { createContext, useCallback, useContext, useEffect, useMemo, type ReactNode } from 'react'
-import ui, { LANGS, type L10n, type Lang, type UiKey } from './ui'
+import { LANGS, type L10n, type Lang } from './langs'
+import type { Dict, UiKey } from './ui'
 import { useTerms } from '../terms'
 
 export { LANGS }
@@ -37,7 +38,7 @@ type I18n = {
 
 const I18nContext = createContext<I18n | null>(null)
 
-export function I18nProvider({ children, lang }: { children: ReactNode; lang: Lang }) {
+export function I18nProvider({ children, lang, dict }: { children: ReactNode; lang: Lang; dict: Dict }) {
   const router = useRouter()
   const pathname = usePathname()
   const dictionary = useTerms(lang !== 'ru')
@@ -62,7 +63,7 @@ export function I18nProvider({ children, lang }: { children: ReactNode; lang: La
     const index = lang === 'uk' ? 0 : 1
     const ukNames = new Map<string, string>()
     const t: I18n['t'] = (key, vars) =>
-      (ui[key]?.[lang] ?? key).replace(/\{(\w+)\}/g, (_, k: string) => String(vars?.[k] ?? `{${k}}`))
+      (dict[key] ?? key).replace(/\{(\w+)\}/g, (_, k: string) => String(vars?.[k] ?? `{${k}}`))
     const name: I18n['name'] = (entity) => {
       if (lang === 'en') return entity.nameEn ?? entity.name
       if (lang === 'ru') return entity.name
@@ -85,9 +86,9 @@ export function I18nProvider({ children, lang }: { children: ReactNode; lang: La
         const secondary = lang === 'en' ? entity.name : entity.nameEn
         return secondary && secondary !== name(entity) ? secondary : undefined
       },
-      error: (code) => (`err.${code}` in ui ? t(`err.${code}` as UiKey) : t('err.server')),
+      error: (code) => (`err.${code}` in dict ? t(`err.${code}` as UiKey) : t('err.server')),
     }
-  }, [lang, setLang, dictionary])
+  }, [lang, setLang, dict, dictionary])
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
 }

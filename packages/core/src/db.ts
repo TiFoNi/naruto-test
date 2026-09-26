@@ -8,6 +8,7 @@ export type UserDoc = {
   nickname?: string
   xp?: number
   stats?: Record<string, Partial<Stats>>
+  solvedTotal?: number
   visit?: { lastDay: string; streak: number; best: number; days: string[] }
   awards?: Record<string, Date>
   claimed?: Record<string, Date>
@@ -233,7 +234,10 @@ export async function seasons(): Promise<Collection<SeasonDoc>> {
 
 export async function users(): Promise<Collection<UserDoc>> {
   const collection = (await database()).collection<UserDoc>('users')
-  cache.__usersIndexed ??= collection.createIndex({ usernameLower: 1 }, { unique: true }).catch((error) => {
+  cache.__usersIndexed ??= Promise.all([
+    collection.createIndex({ usernameLower: 1 }, { unique: true }),
+    collection.createIndex({ solvedTotal: -1 }),
+  ]).catch((error) => {
     cache.__usersIndexed = undefined
     throw error
   })

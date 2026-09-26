@@ -1,12 +1,7 @@
-export type Lang = 'ru' | 'uk' | 'en'
+import { LANGS, type L10n, type Lang } from './langs'
 
-export type L10n = Record<Lang, string>
-
-export const LANGS: { id: Lang; label: string }[] = [
-  { id: 'ru', label: 'RU' },
-  { id: 'uk', label: 'UK' },
-  { id: 'en', label: 'EN' },
-]
+export { LANGS }
+export type { L10n, Lang }
 
 const ui = {
   'brand.tagline': {
@@ -826,5 +821,18 @@ const ui = {
 } satisfies Record<string, L10n>
 
 export type UiKey = keyof typeof ui
+
+export type Dict = Record<UiKey, string>
+
+const dictionaries = new Map<Lang, Dict>()
+
+export function dictionary(lang: Lang): Dict {
+  const ready = dictionaries.get(lang)
+  if (ready) return ready
+
+  const built = Object.fromEntries(Object.entries(ui).map(([key, text]) => [key, (text as L10n)[lang]])) as Dict
+  dictionaries.set(lang, built)
+  return built
+}
 
 export default ui as Record<UiKey, L10n>

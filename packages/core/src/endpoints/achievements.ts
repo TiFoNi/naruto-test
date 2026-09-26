@@ -6,24 +6,20 @@ import { currentUser, unauthorized } from '../profile'
 
 export const PINNED_MAX = 6
 
-async function placeOf(userId: string) {
+async function placeOf(solved: number) {
   const collection = await users()
-  const rows = await collection
-    .aggregate<{ _id: unknown; solved: number }>([
-      { $project: { solved: { $sum: STAT_KEYS.map((key) => ({ $ifNull: [`$stats.${key}.solved`, 0] })) } } },
-      { $match: { solved: { $gte: 1 } } },
-      { $sort: { solved: -1, _id: 1 } },
-    ])
-    .toArray()
+  const [players, ahead] = await Promise.all([
+    collection.countDocuments({ solvedTotal: { $gte: 1 } }),
+    solved >= 1 ? collection.countDocuments({ solvedTotal: { $gt: solved } }) : Promise.resolve(0),
+  ])
 
-  const index = rows.findIndex((row) => String(row._id) === userId)
-  return { rank: index < 0 ? null : index + 1, players: rows.length }
+  return { rank: solved >= 1 ? ahead + 1 : null, players }
 }
 
 async function board(doc: UserDoc) {
   const id = doc._id!
   const facts = await collectFacts(id, 1, doc.resetAt)
-  const place = await placeOf(id.toHexString())
+  const place = await placeOf(doc.solvedTotal ?? STAT_KEYS.reduce((sum, key) => sum + (doc.stats?.[key]?.solved ?? 0), 0))
   facts.rank = place.rank
   facts.players = place.players
 

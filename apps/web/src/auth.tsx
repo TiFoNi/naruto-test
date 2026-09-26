@@ -35,7 +35,16 @@ const AuthContext = createContext<AuthState | null>(null)
 const EMPTY_DUELS: DuelRecord = { played: 0, wins: 0, losses: 0, draws: 0 }
 const EMPTY_CHALLENGES: ChallengeRecord = { solved: 0 }
 
+type Answer = { ok: boolean; status: number; data: ApiData }
+
 const call = (path: string, body?: unknown) => api<ApiData>(path, body)
+
+const early = (): Promise<Answer> => {
+  const boot = window as Window & { __me?: Promise<Answer | null> }
+  const started = boot.__me
+  delete boot.__me
+  return started ? started.then((answer) => answer ?? call('me')) : call('me')
+}
 
 const SESSION = 'nanda.session'
 
@@ -75,7 +84,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    call('me')
+    early()
       .then(({ ok, data }) => {
         const signed = ok && !!data.user
         if (signed) accept(data)
@@ -96,7 +105,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const logout = useCallback(async () => {
-    await authClient.signOut().catch(() => null)
+    await authClient()
+      .then((client) => client.signOut())
+      .catch(() => null)
     known = null
     forgetUser()
     markSession(false)

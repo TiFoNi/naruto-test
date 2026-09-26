@@ -48,7 +48,7 @@ export async function applyDailyResult(collection: Collection<UserDoc>, userId: 
   if (prev?.lastDay === day) return dailyStats(prev)
   const streak = prev?.lastDay === shiftDay(day, -1) ? base.streak + 1 : 1
   const next = { ...base, solved: base.solved + 1, streak, best: Math.max(base.best, streak), totalGuesses: base.totalGuesses + guesses, lastDay: day }
-  await collection.updateOne({ _id: userId }, { $set: { [`stats.${key}`]: next } })
+  await collection.updateOne({ _id: userId }, { $set: { [`stats.${key}`]: next }, $inc: { solvedTotal: 1 } })
   return dailyStats(next)
 }
 
@@ -157,6 +157,7 @@ export async function applyResult(collection: Collection<UserDoc>, userId: Objec
               totalGuesses: { $add: [orZero(`${path}.totalGuesses`), guesses] },
               skipped: orZero(`${path}.skipped`),
             },
+            solvedTotal: { $add: [orZero('solvedTotal'), 1] },
           },
         },
       ]
