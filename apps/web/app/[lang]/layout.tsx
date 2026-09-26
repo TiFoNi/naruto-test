@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 
 export const viewport: Viewport = { themeColor: '#0d0f12' }
 
-const CATEGORY_SCRIPT = `try{var d=document.documentElement,c=localStorage.getItem('nanda.category');if(c==='anime'||c==='manga'||c==='games')d.dataset.cat=c;if(localStorage.getItem('nanda.session'))d.dataset.auth='1'}catch(e){}`
+const CATEGORY_SCRIPT = `try{var d=document.documentElement,c=localStorage.getItem('nanda.category');if(c==='anime'||c==='manga'||c==='games')d.dataset.cat=c;if(localStorage.getItem('nanda.session')){d.dataset.auth='1';d.dataset.checking='1'}}catch(e){}`
 
 export const generateStaticParams = () => LANGS.map(({ id }) => ({ lang: id }))
 

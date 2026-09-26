@@ -7326,6 +7326,11 @@ html[data-cat='games'] .tile[data-id='games'] .tile-icon {
 
 html[data-auth] .hero-guest {
   min-height: 464px;
+  align-self: stretch;
+}
+
+html[data-auth][data-checking] .hero-guest {
+  visibility: hidden;
 }
 
 .page-loading {

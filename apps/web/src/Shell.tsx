@@ -167,6 +167,14 @@ export default function Shell({ children, games }: { children: ReactNode; games:
     return () => watcher.disconnect()
   }, [])
 
+  useBeforePaint(() => {
+    const root = document.documentElement
+    if (loading) root.dataset.checking = '1'
+    else delete root.dataset.checking
+    if (user) root.dataset.auth = '1'
+    else if (!loading) delete root.dataset.auth
+  }, [loading, user])
+
   const boardHref = href.leaderboard(game?.id ?? 'naruto', (section === 'play' ? modeId : 'classic') as never)
 
   return (
