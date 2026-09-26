@@ -1,5 +1,5 @@
 import { ObjectId, type Collection } from 'mongodb'
-import { DAILY_KEYS, STAT_KEYS } from '@nanda/game'
+import { DAILY_KEYS, DAILY_XP_FACTOR, MODE_XP, STAT_KEYS, XP_CAPS, type ModeId, type XpSource } from '@nanda/game'
 import { shiftDay, today } from './daily'
 import { users, type Stats, type UserDoc } from './db'
 import { levelOf } from './quests'
@@ -52,6 +52,36 @@ export async function applyDailyResult(collection: Collection<UserDoc>, userId: 
   return dailyStats(next)
 }
 
+export async function awardSolveXp(collection: Collection<UserDoc>, userId: ObjectId, mode: ModeId, source: XpSource) {
+  const amount = source === 'daily' ? MODE_XP[mode] * DAILY_XP_FACTOR : MODE_XP[mode]
+  const day = today()
+  const carry = (field: XpSource) => ({ $cond: [{ $eq: ['$xpToday.day', day] }, orZero(`xpToday.${field}`), 0] })
+
+  const doc = await collection.findOneAndUpdate(
+    { _id: userId },
+    [
+      { $set: { xpToday: { day, daily: carry('daily'), endless: carry('endless') } } },
+      { $set: { xpGain: { $max: [0, { $min: [amount, { $subtract: [XP_CAPS[source], `$xpToday.${source}`] }] }] } } },
+      { $set: { [`xpToday.${source}`]: { $add: [`$xpToday.${source}`, '$xpGain'] }, xp: { $add: [orZero('xp'), '$xpGain'] } } },
+      { $unset: 'xpGain' },
+    ],
+    { returnDocument: 'after' },
+  )
+  if (!doc) return null
+  const xp = number(doc.xp)
+  return { xp, level: levelOf(xp), today: todayXp(doc) }
+}
+
+export function todayXp(doc: UserDoc) {
+  const fresh = doc.xpToday?.day === today()
+  const earned = (source: XpSource) => (fresh ? number(doc.xpToday?.[source]) : 0)
+  return {
+    earned: earned('daily') + earned('endless'),
+    cap: XP_CAPS.daily + XP_CAPS.endless,
+    sources: (Object.keys(XP_CAPS) as XpSource[]).map((source) => ({ source, earned: earned(source), cap: XP_CAPS[source] })),
+  }
+}
+
 const VISIT_DAYS = 14
 
 const alive = (visit: UserDoc['visit']) => visit?.lastDay === today() || visit?.lastDay === shiftDay(today(), -1)
@@ -80,6 +110,7 @@ export function toProfile(doc: UserDoc) {
       nickname: doc.nickname ?? defaultNickname(doc.username),
       level: levelOf(xp),
       xp,
+      today: todayXp(doc),
       streak: alive(doc.visit) ? (doc.visit?.streak ?? 0) : 0,
       bestStreak: doc.visit?.best ?? 0,
     },

@@ -293,22 +293,6 @@
   font-size: 12px;
 }
 
-.profile-settings {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 11px 14px;
-  border-radius: 13px;
-  font-weight: 700;
-}
-
-.profile-settings .icon {
-  font-size: 17px;
-  color: var(--text-3);
-}
-
 .profile-metrics span {
   color: var(--text-3);
   font-size: 12px;

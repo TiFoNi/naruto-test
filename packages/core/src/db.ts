@@ -7,6 +7,7 @@ export type UserDoc = {
   passwordHash?: string
   nickname?: string
   xp?: number
+  xpToday?: { day: string; daily: number; endless: number }
   stats?: Record<string, Partial<Stats>>
   solvedTotal?: number
   visit?: { lastDay: string; streak: number; best: number; days: string[] }

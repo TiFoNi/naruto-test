@@ -3,7 +3,7 @@ import { ABILITY_HINT_AT, ABILITY_STAGES, PHRASE_EVERY, PHRASE_VOICE_AT, dailyKe
 import { dailyAnswer, nextReset, pastAnswer, shiftDay, today } from './daily'
 import { rounds, type RoundDoc, type UserDoc } from './db'
 import { gameData, isGame, isMode, knows } from './games'
-import { applyDailyResult, applyResult, defaultNickname } from './profile'
+import { applyDailyResult, applyResult, awardSolveXp, defaultNickname } from './profile'
 import { abilityByKey } from './abilities'
 import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { findChallenge, recordSolve } from './challenges'
@@ -197,14 +197,15 @@ export async function finishRound(users: Collection<UserDoc>, round: RoundDoc, w
     return { round: updated, stats: null }
   }
   await markSeasonPlay(round.userId, won, today())
+  const xp = won ? await awardSolveXp(users, round.userId, round.mode as ModeId, round.daily ? 'daily' : 'endless') : null
 
   if (round.daily) {
     const key = dailyKey(round.game, round.mode)
-    return { round: updated, stats: { key, value: await applyDailyResult(users, round.userId, key, round.daily, guesses) } }
+    return { round: updated, xp, stats: { key, value: await applyDailyResult(users, round.userId, key, round.daily, guesses) } }
   }
   const key = statsKey(round.game, round.mode)
   const stats = await applyResult(users, round.userId, key, won, guesses)
-  return { round: updated, stats: { key, value: stats } }
+  return { round: updated, xp, stats: { key, value: stats } }
 }
 
 export function phraseStep(round: RoundDoc) {

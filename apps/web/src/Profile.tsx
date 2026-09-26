@@ -9,7 +9,7 @@ import { useI18n } from './i18n'
 import Quests, { type Level } from './Quests'
 import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
-import { CalendarIcon, CheckIcon, GearIcon, TrophyIcon } from './icons'
+import { CalendarIcon, CheckIcon, TrophyIcon } from './icons'
 import { useHref } from './router'
 import { kyivToday } from './stats'
 import { keepPerUser } from './session-cache'
@@ -257,10 +257,6 @@ export default function Profile({ onBack }: { onBack: () => void }) {
               </div>
             </div>
 
-            <Link className="ghost profile-settings" href={href.settings}>
-              <GearIcon />
-              {t('profile.settings')}
-            </Link>
           </section>
 
           <section className="card streak-card">

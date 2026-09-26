@@ -9,8 +9,8 @@ import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
-import { LANGS, useI18n } from './i18n'
-import { BellIcon, ChevronIcon, MedalIcon, MenuIcon, SwordsIcon } from './icons'
+import { LANGS, useI18n, type UiKey } from './i18n'
+import { BellIcon, ChevronIcon, ExitIcon, GearIcon, MedalIcon, MenuIcon, SwordsIcon, UserIcon } from './icons'
 import { useBeforePaint } from './paint'
 import { useHref, useVisitTracker } from './router'
 
@@ -76,6 +76,90 @@ function NavMenu({ user, section }: { user: boolean; section?: string }) {
           </>
         )}
       </nav>
+    </div>
+  )
+}
+
+function XpToday() {
+  const { t } = useI18n()
+  const { user } = useAuth()
+  const today = user?.today
+  if (!today) return null
+
+  return (
+    <div className="xp-today">
+      <div className="xp-today-head">
+        <span>{t('xp.todayTitle')}</span>
+        <small>{t('xp.resetAt')}</small>
+      </div>
+      <p className="xp-today-total">
+        <b>{today.earned}</b>
+        <span>{t('xp.fromGames', { cap: today.cap })}</span>
+      </p>
+      <ul className="xp-today-list">
+        {today.sources.map(({ source, earned, cap }) => (
+          <li key={source} className={earned >= cap ? 'full' : ''}>
+            <span>
+              {t(`xp.${source}` as UiKey)}
+              <b>
+                {earned} / {cap}
+              </b>
+            </span>
+            <i>
+              <em style={{ width: `${Math.min(100, Math.round((earned / cap) * 100))}%` }} />
+            </i>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+function AccountMenu({ nickname, level, section }: { nickname: string; level: number; section?: string }) {
+  const { t } = useI18n()
+  const { logout } = useAuth()
+  const href = useHref()
+  const [open, setOpen] = useState(false)
+  const box = useDropdown(open, setOpen)
+  const inside = section === 'profile' || section === 'settings'
+
+  return (
+    <div ref={box} className={`account ${open ? 'open' : ''}`}>
+      <button
+        type="button"
+        className={`account-link ${inside ? 'active' : ''}`}
+        aria-expanded={open}
+        aria-label={t('nav.profile')}
+        onClick={() => setOpen(!open)}
+      >
+        <span className="avatar small" aria-hidden>
+          {nickname.charAt(0).toUpperCase()}
+        </span>
+        <span className="account-name">{nickname}</span>
+        <span className="account-level">{t('nav.level', { level })}</span>
+      </button>
+
+      <div className="account-menu">
+        <XpToday />
+        <Link href={href.profile} onClick={() => setOpen(false)} prefetch={false}>
+          <UserIcon />
+          {t('nav.profile')}
+        </Link>
+        <Link href={href.settings} onClick={() => setOpen(false)} prefetch={false}>
+          <GearIcon />
+          {t('profile.settings')}
+        </Link>
+        <button
+          type="button"
+          onClick={() => {
+            setOpen(false)
+            void logout()
+          }}
+        >
+          <ExitIcon />
+          {t('nav.logout')}
+        </button>
+      </div>
     </div>
   )
 }
@@ -216,13 +300,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
                   <button type="button" className="bell" aria-label={t('nav.bell')} title={t('nav.bell')}>
                     <BellIcon />
                   </button>
-                  <Link className={`account-link ${section === 'profile' ? 'active' : ''}`} href={href.profile} title={t('nav.profile')}>
-                    <span className="avatar small" aria-hidden>
-                      {user.nickname.charAt(0).toUpperCase()}
-                    </span>
-                    <span className="account-name">{user.nickname}</span>
-                    <span className="account-level">{t('nav.level', { level: user.level })}</span>
-                  </Link>
+                  <AccountMenu nickname={user.nickname} level={user.level} section={section} />
                 </>
               )}
             </div>

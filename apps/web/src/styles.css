@@ -271,12 +271,13 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  flex: none;
   gap: 10px;
-  width: 212px;
+  min-width: 212px;
 }
 
 html:not([data-auth]) .topbar-slot {
-  width: auto;
+  min-width: 0;
 }
 
 html:not([data-auth]) .topbar-nav {
@@ -354,6 +355,15 @@ html:not([data-auth]) .topbar-nav {
 .bell:hover {
   border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
   color: var(--text);
+}
+
+a.bell {
+  text-decoration: none;
+}
+
+a.bell.active {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+  color: var(--accent);
 }
 
 .account-link {
@@ -1698,10 +1708,189 @@ main {
 }
 
 .account-link:hover,
-.account-link.active {
+.account-link.active,
+.account.open .account-link {
   color: var(--text);
   background: color-mix(in srgb, var(--accent) 10%, transparent);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.account {
+  position: relative;
+  flex: none;
+}
+
+.account.open {
+  z-index: 60;
+}
+
+.account > .account-link {
+  font: inherit;
+  cursor: pointer;
+}
+
+.account-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  width: 288px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.6);
+  animation: fade-in 0.15s ease;
+}
+
+.account.open .account-menu {
+  display: flex;
+}
+
+.xp-today {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  margin-bottom: 4px;
+  border-radius: 12px;
+  background: var(--card-2);
+}
+
+.xp-today-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.xp-today-head span {
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.xp-today-head small {
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.xp-today-total {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+}
+
+.xp-today-total b {
+  color: #f0b429;
+  font-family: var(--display);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.xp-today-total span {
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.xp-today-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.xp-today-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.xp-today-list li > span {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.xp-today-list li b {
+  color: #f0b429;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.xp-today-list li.full b {
+  color: var(--accent);
+}
+
+.xp-today-list i {
+  display: block;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--card);
+}
+
+.xp-today-list em {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: #f0b429;
+  transition: width 0.3s;
+}
+
+.xp-today-list li.full em {
+  background: var(--accent);
+}
+
+.account-menu a,
+.account-menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.account-menu a:hover,
+.account-menu button:hover {
+  background: var(--card-2);
+  color: var(--text);
+}
+
+.account-menu .icon {
+  font-size: 17px;
+  color: var(--text-3);
+}
+
+.account-menu a:hover .icon,
+.account-menu button:hover .icon {
+  color: inherit;
+}
+
+.account-menu button:last-child:hover {
+  color: #ff9b91;
 }
 
 .avatar {
@@ -2595,7 +2784,7 @@ button.ghost.small {
   }
 
   .topbar-slot {
-    width: auto;
+    min-width: 0;
   }
 
   .account-link {

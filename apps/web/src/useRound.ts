@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api } from './api'
-import { useAuth } from './auth'
+import { useAuth, type XpToday } from './auth'
 import type { Entity, Game, Judgement } from './games/types'
 import type { ModeId } from './modes'
 import type { Stats } from './stats'
@@ -24,14 +24,18 @@ export type RoundView = {
   challenge?: string
 }
 
-type RoundResponse = { round?: RoundView; stats?: { key: string; value: Stats } | null }
+type RoundResponse = {
+  round?: RoundView
+  stats?: { key: string; value: Stats } | null
+  xp?: { xp: number; level: number; today: XpToday }
+}
 
 export type Guess = { entity: Entity; judgement?: Record<string, Judgement>; pending?: boolean }
 
 const GUESS_GAP_MS = 1000
 
 export function useRound(game: Game, mode: ModeId, active: boolean, daily = false, challenge?: string) {
-  const { setStats, expire } = useAuth()
+  const { setStats, setXp, expire } = useAuth()
   const [round, setRound] = useState<RoundView | null>(null)
   const [pending, setPending] = useState<Entity | null>(null)
   const [busy, setBusy] = useState(false)
@@ -55,8 +59,9 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
           : next,
       )
       if (data.stats) setStats(data.stats.key, data.stats.value)
+      if (data.xp) setXp(data.xp)
     },
-    [expire, setStats],
+    [expire, setStats, setXp],
   )
 
   const request = useCallback(

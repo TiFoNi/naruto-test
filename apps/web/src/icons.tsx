@@ -179,6 +179,15 @@ export function GearIcon({ className }: IconProps) {
   )
 }
 
+export function ExitIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M14.5 4.5h3.3A1.7 1.7 0 0 1 19.5 6.2v11.6a1.7 1.7 0 0 1-1.7 1.7h-3.3" />
+      <path d="M10.5 15.5 14 12l-3.5-3.5M14 12H4.5" />
+    </svg>
+  )
+}
+
 export function MenuIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2}>

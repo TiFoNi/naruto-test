@@ -51,5 +51,5 @@ export const POST = handle(async (request) => {
   if (!owner.guest) await touchVisit(people, userId)
   if (entityId !== updated.answerId) return json({ round: await roundView(updated, false) })
   const result = await finishRound(people, updated, true)
-  return json({ round: await roundView(result.round, false), stats: result.stats })
+  return json({ round: await roundView(result.round, false), stats: result.stats, ...(result.xp ? { xp: result.xp } : {}) })
 })

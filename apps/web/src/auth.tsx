@@ -5,7 +5,18 @@ import { statsKey } from '@nanda/game'
 import { forgetUser } from './session-cache'
 import type { Stats } from './stats'
 
-export type User = { id: string; username: string; nickname: string; level: number; xp: number; streak: number; bestStreak: number }
+export type XpToday = { earned: number; cap: number; sources: { source: 'daily' | 'endless'; earned: number; cap: number }[] }
+
+export type User = {
+  id: string
+  username: string
+  nickname: string
+  level: number
+  xp: number
+  today?: XpToday
+  streak: number
+  bestStreak: number
+}
 
 export type DuelRecord = { played: number; wins: number; losses: number; draws: number }
 
@@ -24,6 +35,7 @@ type AuthState = {
   loading: boolean
   logout: () => Promise<void>
   setStats: (key: string, stats: Stats) => void
+  setXp: (xp: { xp: number; level: number; today: XpToday }) => void
   refresh: () => Promise<void>
   expire: () => void
   resetStats: () => Promise<string | null>
@@ -130,6 +142,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
+  const setXp = useCallback((next: { xp: number; level: number; today: XpToday }) => {
+    setProfile((p) => {
+      const updated = p && { ...p, user: { ...p.user, xp: next.xp, level: next.level, today: next.today } }
+      known = updated
+      return updated
+    })
+  }, [])
+
   const expire = useCallback(() => {
     known = null
     forgetUser()
@@ -163,7 +183,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return (
     <AuthContext.Provider
       value={{ user: profile?.user ?? null, stats: profile?.stats ?? {}, duels: profile?.duels ?? EMPTY_DUELS,
-        challenges: profile?.challenges ?? EMPTY_CHALLENGES, loading, logout, setStats, expire, resetStats, setNickname, refresh }}
+        challenges: profile?.challenges ?? EMPTY_CHALLENGES, loading, logout, setStats, setXp, expire, resetStats, setNickname, refresh }}
     >
       {children}
     </AuthContext.Provider>

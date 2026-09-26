@@ -250,6 +250,20 @@ export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phras
 export const ABILITY_STAGES = 6
 export const ABILITY_HINT_AT = 5
 
+export const MODE_XP: Record<ModeId, number> = {
+  classic: 15,
+  image: 20,
+  ability: 25,
+  page: 25,
+  phrase: 25,
+}
+
+export const DAILY_XP_FACTOR = 3
+
+export const XP_CAPS = { daily: 360, endless: 250 } as const
+
+export type XpSource = keyof typeof XP_CAPS
+
 export const PHRASE_EVERY = 3
 export const PHRASE_VOICE_AT = 3
 
