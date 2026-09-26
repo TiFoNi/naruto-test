@@ -223,7 +223,7 @@ export default function DuelRoom({ code }: { code: string }) {
             <div className="card round-status muted">{you?.solved ? t('duel.waitRival') : t('duel.gaveUpWait')}</div>
           ) : (
             <>
-              <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} active busy={busy} onPick={guess} />
+              <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} />
               <button className="link-button" onClick={giveUp} disabled={busy}>
                 {t('play.giveUp')}
               </button>

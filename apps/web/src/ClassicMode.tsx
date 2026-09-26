@@ -40,7 +40,7 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
           title={t('play.classicTitle')}
           hint={t('play.classicPrompt')}
         >
-          {playing && <CharacterSearch game={game} exclude={exclude} active={active} busy={busy} onPick={guess} />}
+          {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} />}
         </PlayPanel>
 
         {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}

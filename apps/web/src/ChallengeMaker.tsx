@@ -92,7 +92,7 @@ export default function ChallengeMaker({ game, mode }: { game: Game; mode: ModeI
                 </button>
               </>
             ) : (
-              <CharacterSearch game={game} exclude={new Set()} active busy={busy} onPick={create} />
+              <CharacterSearch game={game} exclude={new Set()} busy={busy} onPick={create} />
             )}
 
             {error && <div className="notice error">{errorText(error)}</div>}

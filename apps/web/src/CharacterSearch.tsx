@@ -10,24 +10,18 @@ const LIMIT = 8
 type Props = {
   game: Game
   exclude: Set<number>
-  active: boolean
   busy?: boolean
   compact?: boolean
   onPick: (e: Entity) => void
 }
 
-export default function CharacterSearch({ game, exclude, active: visible, busy = false, compact = false, onPick }: Props) {
+export default function CharacterSearch({ game, exclude, busy = false, compact = false, onPick }: Props) {
   const { t, name, alt } = useI18n()
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
-  const input = useRef<HTMLInputElement>(null)
   const list = useRef<HTMLUListElement>(null)
   const box = useRef<HTMLDivElement>(null)
   const [place, setPlace] = useState<{ up: boolean; max: number }>({ up: false, max: 400 })
-
-  useEffect(() => {
-    if (visible) input.current?.focus()
-  }, [visible])
 
   const index = useMemo(
     () =>
@@ -113,7 +107,6 @@ export default function CharacterSearch({ game, exclude, active: visible, busy =
       <div className="search-box" ref={box}>
         <SearchIcon />
         <input
-          ref={input}
           value={query}
           placeholder={t(game.unit === 'hero' ? 'play.searchHero' : 'play.searchCharacter')}
           onChange={(e) => {
