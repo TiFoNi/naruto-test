@@ -9,8 +9,6 @@ import type { Stats } from './stats'
 import { fullUrl } from './pics'
 import type { ModeId } from './modes'
 
-const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
-
 type Props = {
   game: Game
   mode: ModeId
@@ -26,7 +24,7 @@ type Props = {
 }
 
 export default function RoundResult({ game, mode, answer, guesses, won, skipped, stats, onNext, challenge, nextAt, compact }: Props) {
-  const { t, name, alt, lang } = useI18n()
+  const { t, name, alt } = useI18n()
   const { user } = useAuth()
   const href = useHref()
   const ref = useRef<HTMLDivElement>(null)
@@ -46,8 +44,7 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
 
   const note = challenge ? t('challenge.summary', { guesses }) : skipped ? t('result.notCounted') : ''
   const verdict: UiKey = won ? 'result.won' : skipped ? 'result.skipped' : 'result.lost'
-  const day = daily ? new Date().toLocaleDateString(LOCALES[lang], { day: 'numeric', month: 'long' }) : ''
-  const eyebrow = [t(verdict).replace(/…$/, ''), day].filter(Boolean).join(' · ')
+  const eyebrow = t(verdict).replace(/…$/, '')
 
   const facts = [
     { key: 'tries', value: guesses, label: t('result.factTries') },
@@ -75,9 +72,14 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
           <p className="daily-next">
             {t('daily.nextIn')} <Countdown until={nextAt} onDone={onNext} />
           </p>
-          <Link className="primary" href={href.play(game.id, mode)}>
-            {t('daily.playEndless')}
-          </Link>
+          <div className="result-actions">
+            <Link className="ghost" href={href.home}>
+              {t('play.back')}
+            </Link>
+            <Link className="primary" href={href.play(game.id, mode)}>
+              {t('daily.playEndless')}
+            </Link>
+          </div>
         </>
       ) : (
         challenge ? (
