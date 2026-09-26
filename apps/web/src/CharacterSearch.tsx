@@ -5,8 +5,6 @@ import { ruToUk, useI18n } from './i18n'
 import { normalize } from './util'
 import { ArrowIcon, SearchIcon } from './icons'
 
-const LIMIT = 8
-
 type Props = {
   game: Game
   exclude: Set<number>
@@ -38,21 +36,18 @@ export default function CharacterSearch({ game, exclude, busy = false, compact =
     const rank = ({ e, terms }: (typeof index)[number]) => {
       const tier = terms.some((term) => term.startsWith(q))
         ? 0
-        : terms.some((term) => term.split(/[\s-]+/).some((w) => w.startsWith(q)))
+        : terms.some((term) => term.split(/[^\p{L}\p{N}]+/u).some((word) => word.startsWith(q)))
           ? 1
-          : terms.some((term) => term.includes(q))
-            ? 2
-            : -1
+          : -1
       return tier < 0 ? -1 : tier * 2 + (e.answer ? 0 : 1)
     }
     return index
       .filter(({ e }) => !exclude.has(e.id))
       .map((x) => ({ x, r: rank(x) }))
       .filter(({ r }) => r >= 0)
-      .sort((a, b) => a.r - b.r)
-      .slice(0, LIMIT)
+      .sort((a, b) => a.r - b.r || name(a.x.e).localeCompare(name(b.x.e)))
       .map(({ x }) => x.e)
-  }, [query, exclude, index])
+  }, [query, exclude, index, name])
 
   const open = matches.length > 0
 

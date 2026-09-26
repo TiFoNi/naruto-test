@@ -9,8 +9,9 @@ const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'football.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'football-atlas.json')
 const OUT_TERMS = path.join(ROOT, 'scripts', 'data', 'football-terms.json')
 
-const WANTED = 100
-const POOL_SIZE = 140
+const WANTED = 300
+const LEGENDS = 180
+const POOL_SIZE = 650
 
 const GOALKEEPER = 'Вратарь'
 const DEFENDER = 'Защитник'
@@ -42,13 +43,15 @@ const PARTS = {
     'Северная Ирландия', 'Чехия', 'Чехословакия', 'Словакия', 'Венгрия', 'Румыния', 'Болгария', 'Сербия', 'Югославия',
     'Греция', 'Турция', 'Словения', 'Босния и Герцеговина', 'Черногория', 'Северная Македония', 'Албания', 'Финляндия',
     'Исландия', 'Грузия', 'Армения', 'Беларусь', 'Латвия', 'Литва', 'Эстония', 'Люксембург', 'Республика Ирландия',
-    'Королевство Нидерландов', 'СССР', 'Советский Союз', 'ФРГ', 'ГДР', 'Датское королевство', 'Великобритания'],
+    'Королевство Нидерландов', 'СССР', 'Советский Союз', 'ФРГ', 'ГДР', 'Датское королевство', 'Великобритания',
+    'Социалистическая Федеративная Республика Югославия', 'Сербия и Черногория', 'Союзная Республика Югославия',
+    'Королевство Югославия', 'Чешская Республика', 'Ирландия (государство)', 'Молдавия', 'Азербайджан', 'Кипр', 'Мальта'],
   [SOUTH_AMERICA]: ['Аргентина', 'Бразилия', 'Уругвай', 'Колумбия', 'Чили', 'Перу', 'Парагвай', 'Эквадор', 'Боливия', 'Венесуэла'],
   [AFRICA]: ['Египет', 'Камерун', 'Нигерия', 'Сенегал', 'Кот-д’Ивуар', 'Кот-д\'Ивуар', 'Гана', 'Алжир', 'Марокко', 'Тунис',
     'ЮАР', 'Либерия', 'Того', 'Мали', 'Габон', 'ДР Конго', 'Демократическая Республика Конго', 'Гвинея', 'Буркина-Фасо'],
   [NORTH_AMERICA]: ['США', 'Мексика', 'Канада', 'Коста-Рика', 'Ямайка', 'Гондурас', 'Панама', 'Тринидад и Тобаго'],
-  [ASIA]: ['Япония', 'Южная Корея', 'Корея', 'Китай', 'Иран', 'Ирак', 'Саудовская Аравия', 'Катар', 'Австралия', 'Узбекистан',
-    'Израиль', 'ОАЭ', 'Объединённые Арабские Эмираты'],
+  [ASIA]: ['Самоа', 'Новая Зеландия', 'Япония', 'Южная Корея', 'Корея', 'Китай', 'Иран', 'Ирак', 'Саудовская Аравия', 'Катар', 'Австралия', 'Узбекистан',
+    'Израиль', 'ОАЭ', 'Объединённые Арабские Эмираты', 'Республика Корея', 'КНДР', 'Индонезия', 'Таиланд', 'Вьетнам'],
 }
 
 const PART_OF = new Map(Object.entries(PARTS).flatMap(([part, list]) => list.map((country) => [country, part])))
@@ -117,7 +120,9 @@ const shrink = (one) => {
 
 const straight = (name) => {
   const [family, given] = name.split(', ')
-  return given ? `${given} ${family}` : name
+  if (!given) return name
+  const plain = given.split(' ').filter((part) => !/(ович|евич|івна|овна|евна)$/.test(part))
+  return `${plain.join(' ')} ${family}`
 }
 
 const id = (claim) => claim?.value?.id ?? null
@@ -136,11 +141,14 @@ async function roleOf(qid, seen = new Set()) {
   return null
 }
 
-const NATIONAL = ['Q6979593', 'Q135408445', 'Q10651067', 'Q1194951']
+const NATIONAL = ['Q6979593', 'Q135408445']
 const CLUB = ['Q476028', 'Q847017', 'Q15944511', 'Q103229495', 'Q20639856']
 
 const isClub = async (qid) => {
   const data = await entity(qid)
+  const label = `${data.labels.ru ?? ''} ${data.labels.en ?? ''}`.toLowerCase()
+  if (/сборн|national team|олимпийск|olympic|молодёжн|молодежн|юношеск|under-?\d/.test(label)) return false
+
   const kinds = [...ids(data.claims.P31), ...ids(data.claims.P279)]
   if (kinds.some((k) => NATIONAL.includes(k))) return false
   return kinds.some((k) => CLUB.includes(k))
@@ -159,24 +167,28 @@ async function clubOf(player, birth) {
   for (const team of teams) {
     const qid = id(team)
     if (!(await isClub(qid))) continue
+    const started = team.qualifiers?.P580?.[0]?.time ?? ''
+    const ended = team.qualifiers?.P582?.[0]?.time ?? null
     scored.push({
       qid,
       preferred: team.rank === 'preferred',
-      ended: team.qualifiers?.P582?.[0]?.time ?? null,
-      started: team.qualifiers?.P580?.[0]?.time ?? '',
+      started,
+      ended,
+      years: started && ended ? Number(ended.slice(1, 5)) - Number(started.slice(1, 5)) : 0,
     })
   }
   if (!scored.length) return { qid: null, active: false }
-  if (new Date().getFullYear() - birth > PLAYING_AGE) {
-    const last = [...scored].sort((a, b) => (a.ended ?? '9').localeCompare(b.ended ?? '9')).at(-1)
-    return { qid: last.qid, active: false }
+
+  const retired = new Date().getFullYear() - birth > PLAYING_AGE
+  if (!retired) {
+    const current = scored
+      .filter((t) => !t.ended && (t.started || t.preferred))
+      .sort((a, b) => Number(b.preferred) - Number(a.preferred) || b.started.localeCompare(a.started))[0]
+    if (current) return { qid: current.qid, active: true }
   }
-  const preferred = scored.find((t) => t.preferred && !t.ended)
-  if (preferred) return { qid: preferred.qid, active: true }
-  const current = scored.filter((t) => !t.ended).sort((a, b) => b.started.localeCompare(a.started))[0]
-  if (current) return { qid: current.qid, active: true }
-  const last = [...scored].sort((a, b) => (a.ended ?? '').localeCompare(b.ended ?? '')).at(-1)
-  return { qid: last.qid, active: false }
+
+  const longest = [...scored].sort((a, b) => b.years - a.years || (b.ended ?? '').localeCompare(a.ended ?? ''))[0]
+  return { qid: longest.qid, active: false }
 }
 
 const main = async () => {
@@ -186,7 +198,8 @@ const main = async () => {
 
   const query = `SELECT ?p ?links WHERE { ?p wdt:P106 wd:Q937857 ; wikibase:sitelinks ?links . FILTER(?links > 60) } ORDER BY DESC(?links) LIMIT ${POOL_SIZE}`
   const list = await cachedJson(CACHE, 'top.json', () => sparql(query))
-  const qids = list.results.bindings.map((b) => b.p.value.split('/').pop())
+  const fame = new Map(list.results.bindings.map((b) => [b.p.value.split('/').pop(), Number(b.links.value)]))
+  const qids = [...fame.keys()]
   console.log(`кандидатів з Wikidata: ${qids.length}`)
 
   const rows = []
@@ -208,9 +221,8 @@ const main = async () => {
     return ru
   }
 
-  const entities = []
+  const ranked = []
   for (const { qid, player } of rows) {
-    if (entities.length >= WANTED) break
     const job = ids(player.claims.P106)[0]
     if (job !== 'Q937857') continue
 
@@ -240,7 +252,8 @@ const main = async () => {
     const part = PART_OF.get(country)
     if (!part) console.log('невідома частина світу:', country)
 
-    entities.push({
+    ranked.push({
+      fame: fame.get(qid) ?? 0,
       id: Number(qid.slice(1)),
       name: straight(player.labels.ru ?? player.labels.en),
       nameEn: player.labels.en,
@@ -259,7 +272,25 @@ const main = async () => {
     })
   }
 
-  console.log(`зібрано гравців: ${entities.length}`)
+  const picked = ranked.slice(0, LEGENDS)
+  const chosen = new Set(picked.map((e) => e.id))
+  for (const player of ranked.slice(LEGENDS)) {
+    if (picked.length >= WANTED) break
+    if (player.status === PLAYING) {
+      picked.push(player)
+      chosen.add(player.id)
+    }
+  }
+  for (const player of ranked.slice(LEGENDS)) {
+    if (picked.length >= WANTED) break
+    if (!chosen.has(player.id)) picked.push(player)
+  }
+  const entities = picked.sort((a, b) => b.fame - a.fame)
+  for (const player of entities) delete player.fame
+
+  const active = entities.filter((e) => e.status === PLAYING).length
+  console.log(`зібрано гравців: ${entities.length} (грають ${active}, завершили ${entities.length - active})`)
+  console.log(`порог упізнаваності: від ${Math.min(...picked.map((e) => fame.get('Q' + e.id) ?? 0))} мовних версій`)
 
   await pool(entities, 2, async (e) => {
     const url = `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(e.image)}?width=900`

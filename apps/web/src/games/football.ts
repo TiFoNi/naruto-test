@@ -29,9 +29,9 @@ export const football: Game<Player> = {
   label: l10n('Футболисты', 'Футболісти', 'Footballers'),
   category: 'sport',
   description: l10n(
-    'Сто самых узнаваемых футболистов мира — от Пеле и Яшина до Месси, Мбаппе и Ямаля.',
-    'Сто найвпізнаваніших футболістів світу — від Пеле і Яшина до Мессі, Мбаппе та Ямаля.',
-    'The hundred most recognisable footballers — from Pelé and Yashin to Messi, Mbappé and Yamal.',
+    'Самые узнаваемые футболисты мира — от Пеле и Яшина до Месси, Мбаппе и Ямаля.',
+    'Найвпізнаваніші футболісти світу — від Пеле і Яшина до Мессі, Мбаппе та Ямаля.',
+    'The most recognisable footballers in the world — from Pelé and Yashin to Messi, Mbappé and Yamal.',
   ),
   accent: '#3fbf6f',
   modes: ['classic'],
