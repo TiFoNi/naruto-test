@@ -80,17 +80,41 @@ function NavMenu({ user, section }: { user: boolean; section?: string }) {
   )
 }
 
+const pad = (value: number) => String(value).padStart(2, '0')
+
+const untilMidnight = () => {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Kyiv',
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  }).formatToParts(new Date())
+  const at = (type: string) => Number(parts.find((part) => part.type === type)?.value ?? 0)
+  return 86_400 - ((at('hour') % 24) * 3600 + at('minute') * 60 + at('second'))
+}
+
 function XpToday() {
   const { t } = useI18n()
   const { user } = useAuth()
+  const [left, setLeft] = useState(untilMidnight)
+
+  useEffect(() => {
+    const timer = setInterval(() => setLeft(untilMidnight()), 1000)
+    return () => clearInterval(timer)
+  }, [])
+
   const today = user?.today
   if (!today) return null
+
+  const hours = Math.floor(left / 3600)
+  const time = hours ? `${hours}:${pad(Math.floor((left % 3600) / 60))}` : `${Math.floor(left / 60)}:${pad(left % 60)}`
 
   return (
     <div className="xp-today">
       <div className="xp-today-head">
         <span>{t('xp.todayTitle')}</span>
-        <small>{t('xp.resetAt')}</small>
+        <small>{t('xp.resetIn', { time })}</small>
       </div>
       <p className="xp-today-total">
         <b>{today.earned}</b>
@@ -140,7 +164,7 @@ function AccountMenu({ nickname, level, section }: { nickname: string; level: nu
       </button>
 
       <div className="account-menu">
-        <XpToday />
+        {open && <XpToday />}
         <Link href={href.profile} onClick={() => setOpen(false)} prefetch={false}>
           <UserIcon />
           {t('nav.profile')}

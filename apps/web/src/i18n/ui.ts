@@ -13,7 +13,7 @@ const ui = {
   'nav.level': { ru: 'Ур. {level}', uk: 'Рів. {level}', en: 'Lv. {level}' },
   'nav.logout': { ru: 'Выйти', uk: 'Вийти', en: 'Log out' },
   'xp.todayTitle': { ru: 'Опыт сегодня', uk: 'Досвід сьогодні', en: 'XP today' },
-  'xp.resetAt': { ru: 'обновится в 00:00', uk: 'оновиться о 00:00', en: 'resets at 00:00' },
+  'xp.resetIn': { ru: 'обновится через {time}', uk: 'оновиться через {time}', en: 'resets in {time}' },
   'xp.fromGames': { ru: '/ {cap} XP с игры', uk: '/ {cap} XP з гри', en: '/ {cap} XP from play' },
   'xp.daily': { ru: 'Ежедневные загадки', uk: 'Щоденні загадки', en: 'Daily puzzles' },
   'xp.endless': { ru: 'Бесконечный', uk: 'Нескінченний', en: 'Endless' },

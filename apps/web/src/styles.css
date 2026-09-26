@@ -1767,17 +1767,23 @@ main {
 }
 
 .xp-today-head span {
+  min-width: 0;
+  overflow: hidden;
   color: var(--text-3);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .xp-today-head small {
+  flex: none;
   color: var(--text-3);
   font-size: 11px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .xp-today-total {
