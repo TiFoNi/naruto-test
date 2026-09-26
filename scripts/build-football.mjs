@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { PUBLIC, ROOT, cachedJson, getJson, pool, pruneImages, writeAtlas, writeFullAndThumb } from './lib.mjs'
+import { PUBLIC, ROOT, cachedJson, getJson, pool as pool_, pruneImages, writeAtlas, writeFullAndThumb } from './lib.mjs'
 
 const CACHE = path.join(ROOT, '.cache', 'football')
 const THUMBS = path.join(CACHE, 'thumb')
@@ -10,8 +10,10 @@ const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'football-atlas.js
 const OUT_TERMS = path.join(ROOT, 'scripts', 'data', 'football-terms.json')
 
 const WANTED = 300
-const LEGENDS = 180
-const POOL_SIZE = 650
+const MIN_LINKS = 45
+const SHORTLIST = 700
+const VIEWS_FROM = '2025090100'
+const VIEWS_TO = '2026083100'
 
 const GOALKEEPER = 'Вратарь'
 const DEFENDER = 'Защитник'
@@ -259,16 +261,73 @@ async function clubOf(player, birth) {
   return { qid: longest.qid, active: false }
 }
 
+const viewsUrl = (project, title) =>
+  `https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/${project}/all-access/user/${encodeURIComponent(title.replace(/ /g, '_'))}/monthly/${VIEWS_FROM}/${VIEWS_TO}`
+
+const articleViews = async (project, title) => {
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const res = await fetch(viewsUrl(project, title), { headers: { 'User-Agent': 'nandaguessr-build/1.0 (hello@nandaguessr.com)' } }).catch(() => null)
+    if (res?.status === 404) return 0
+    if (res?.ok) {
+      const body = await res.json().catch(() => null)
+      if (body) return (body.items ?? []).reduce((sum, month) => sum + month.views, 0)
+    }
+    await new Promise((r) => setTimeout(r, 2000 * (attempt + 1)))
+  }
+  return null
+}
+
+async function readViews(pool) {
+  const file = path.join(CACHE, 'views.json')
+  const known = await fs.readFile(file, 'utf8').then(JSON.parse).catch(() => ({}))
+  const todo = pool.filter((p) => !known[p.qid])
+  console.log(`переглядів треба порахувати: ${todo.length} (у кеші ${pool.length - todo.length})`)
+
+  let done = 0
+  await pool_(todo, 8, async (player) => {
+    const en = await articleViews('en.wikipedia', player.en)
+    const ru = player.ru ? await articleViews('ru.wikipedia', player.ru) : 0
+    if (en === null || ru === null) return
+    known[player.qid] = en + ru
+    if (++done % 200 === 0) {
+      console.log(`  ${done} з ${todo.length}`)
+      await fs.writeFile(file, JSON.stringify(known))
+    }
+  })
+  await fs.writeFile(file, JSON.stringify(known))
+  return new Map(Object.entries(known).map(([qid, n]) => [qid, Number(n)]))
+}
+
 const main = async () => {
   await fs.mkdir(CACHE, { recursive: true })
   await fs.mkdir(THUMBS, { recursive: true })
   for (const dir of ['full', 'card']) await fs.mkdir(path.join(OUT_IMG, dir), { recursive: true })
 
-  const query = `SELECT ?p ?links WHERE { ?p wdt:P106 wd:Q937857 ; wikibase:sitelinks ?links . FILTER(?links > 60) } ORDER BY DESC(?links) LIMIT ${POOL_SIZE}`
-  const list = await cachedJson(CACHE, 'top.json', () => sparql(query))
-  const fame = new Map(list.results.bindings.map((b) => [b.p.value.split('/').pop(), Number(b.links.value)]))
-  const qids = [...fame.keys()]
-  console.log(`кандидатів з Wikidata: ${qids.length}`)
+  const query = `SELECT ?p ?links ?en ?ru WHERE {
+    ?p wdt:P106 wd:Q937857 ; wikibase:sitelinks ?links . FILTER(?links > ${MIN_LINKS})
+    ?art schema:about ?p ; schema:isPartOf <https://en.wikipedia.org/> ; schema:name ?en .
+    OPTIONAL { ?rart schema:about ?p ; schema:isPartOf <https://ru.wikipedia.org/> ; schema:name ?ru }
+  }`
+  const list = await cachedJson(CACHE, 'pool.json', () => sparql(query))
+  const pool = list.results.bindings
+    .map((b) => ({
+      qid: b.p.value.split('/').pop(),
+      links: Number(b.links.value),
+      en: b.en.value,
+      ru: b.ru?.value ?? null,
+    }))
+    .filter((p) => p.links > MIN_LINKS)
+  console.log(`кандидатів з Wikidata: ${pool.length}`)
+
+  const views = await readViews(pool)
+  const ranked = pool
+    .map((p) => ({ ...p, views: views.get(p.qid) ?? 0 }))
+    .sort((a, b) => b.views - a.views)
+  console.log(`за переглядами: ${ranked[0].en} — ${ranked[0].views.toLocaleString('uk')} за рік`)
+
+  const shortlist = ranked.slice(0, SHORTLIST)
+  const fame = new Map(shortlist.map((p) => [p.qid, p.views]))
+  const qids = shortlist.map((p) => p.qid)
 
   const rows = []
   await Promise.all(qids.map(async (qid) => rows.push({ qid, player: await entity(qid) })))
@@ -296,7 +355,7 @@ const main = async () => {
     return ru
   }
 
-  const ranked = []
+  const collected = []
   for (const { qid, player } of rows) {
     const job = ids(player.claims.P106)[0]
     if (job !== 'Q937857') continue
@@ -328,7 +387,7 @@ const main = async () => {
     const part = PART_OF.get(country)
     if (!part) console.log('невідома частина світу:', country)
 
-    ranked.push({
+    collected.push({
       fame: fame.get(qid) ?? 0,
       id: Number(qid.slice(1)),
       name: straight(player.labels.ru ?? player.labels.en),
@@ -348,27 +407,15 @@ const main = async () => {
     })
   }
 
-  const picked = ranked.slice(0, LEGENDS)
-  const chosen = new Set(picked.map((e) => e.id))
-  for (const player of ranked.slice(LEGENDS)) {
-    if (picked.length >= WANTED) break
-    if (player.status === PLAYING) {
-      picked.push(player)
-      chosen.add(player.id)
-    }
-  }
-  for (const player of ranked.slice(LEGENDS)) {
-    if (picked.length >= WANTED) break
-    if (!chosen.has(player.id)) picked.push(player)
-  }
-  const entities = picked.sort((a, b) => b.fame - a.fame)
+  const entities = collected.slice(0, WANTED).sort((a, b) => b.fame - a.fame)
+  const floor = entities.at(-1)?.fame ?? 0
   for (const player of entities) delete player.fame
 
   const active = entities.filter((e) => e.status === PLAYING).length
   console.log(`зібрано гравців: ${entities.length} (грають ${active}, завершили ${entities.length - active})`)
-  console.log(`порог упізнаваності: від ${Math.min(...picked.map((e) => fame.get('Q' + e.id) ?? 0))} мовних версій`)
+  console.log(`поріг: ${floor.toLocaleString('uk')} переглядів за рік`)
 
-  await pool(entities, 2, async (e) => {
+  await pool_(entities, 2, async (e) => {
     const url = `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(e.image)}?width=900`
     const file = path.join(CACHE, `img-${e.id}`)
     let buf = await fs.readFile(file).catch(() => null)
