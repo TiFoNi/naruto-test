@@ -100,7 +100,7 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 3px;
-  height: 82px;
+  height: 92px;
   padding: 10px 12px;
   border-radius: 12px;
   background: var(--card-2);
@@ -145,11 +145,20 @@
   font-weight: 700;
 }
 
-.profile-facts .fact > b,
 .profile-facts .fact-place {
   display: flex;
   align-items: flex-end;
   min-height: 26px;
+}
+
+.profile-facts .fact > b {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  min-height: 26px;
+  margin-top: auto;
 }
 
 .profile-facts .fact-rank {

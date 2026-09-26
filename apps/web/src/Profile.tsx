@@ -249,7 +249,13 @@ export default function Profile({ onBack }: { onBack: () => void }) {
               )}
               <div className="fact">
                 <span>{t('profile.favourite')}</span>
-                {summary?.favourite ? <b className="small">{l(gameLabel(summary.favourite)!)}</b> : <b className="empty">—</b>}
+                {summary?.favourite ? (
+                  <b className="small" title={l(gameLabel(summary.favourite)!)}>
+                    {l(gameLabel(summary.favourite)!)}
+                  </b>
+                ) : (
+                  <b className="empty">—</b>
+                )}
               </div>
               <div className="fact">
                 <span>{t('profile.since')}</span>
