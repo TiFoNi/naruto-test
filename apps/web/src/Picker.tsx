@@ -1,11 +1,11 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { ChevronIcon } from './icons'
 
-export type Option = { value: string; label: ReactNode; accent?: string }
+export type Option = { value: string; label: ReactNode; accent?: string; media?: ReactNode; hint?: string }
 
-type Props = { label: string; value: string; options: Option[]; onChange: (value: string) => void }
+type Props = { label: string; value: string; options: Option[]; onChange: (value: string) => void; rich?: boolean }
 
-export default function Picker({ label, value, options, onChange }: Props) {
+export default function Picker({ label, value, options, onChange, rich = false }: Props) {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(0)
   const [place, setPlace] = useState({ up: false, max: 320 })
@@ -47,8 +47,8 @@ export default function Picker({ label, value, options, onChange }: Props) {
   }
 
   return (
-    <div className={`picker ${open ? 'open' : ''} ${place.up ? 'up' : ''}`} ref={root}>
-      <span className="picker-label">{label}</span>
+    <div className={`picker ${rich ? 'rich' : ''} ${open ? 'open' : ''} ${place.up ? 'up' : ''}`} ref={root}>
+      {!rich && <span className="picker-label">{label}</span>}
       <button
         type="button"
         className="picker-button"
@@ -71,8 +71,20 @@ export default function Picker({ label, value, options, onChange }: Props) {
           }
         }}
       >
-        {current?.accent && <span className="dot" />}
-        <span className="picker-value">{current?.label}</span>
+        {rich ? (
+          <>
+            {current?.media}
+            <span className="picker-text">
+              <em>{current?.hint ?? label}</em>
+              <span className="picker-value">{current?.label}</span>
+            </span>
+          </>
+        ) : (
+          <>
+            {current?.accent && <span className="dot" />}
+            <span className="picker-value">{current?.label}</span>
+          </>
+        )}
         <ChevronIcon className="picker-caret" />
       </button>
       {open && (
@@ -90,8 +102,20 @@ export default function Picker({ label, value, options, onChange }: Props) {
                 pick(option)
               }}
             >
-              {option.accent && <span className="dot" />}
-              {option.label}
+              {rich ? (
+                <>
+                  {option.media}
+                  <span className="picker-text">
+                    <em>{option.hint}</em>
+                    <span className="picker-value">{option.label}</span>
+                  </span>
+                </>
+              ) : (
+                <>
+                  {option.accent && <span className="dot" />}
+                  {option.label}
+                </>
+              )}
             </li>
           ))}
         </ul>

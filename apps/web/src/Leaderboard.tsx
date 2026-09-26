@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import BackButton from './BackButton'
 import BoardScope from './BoardScope'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import { api } from './api'
 import { GAMES, gameById } from './games'
 import type { GameId } from './games/types'
@@ -32,6 +32,8 @@ type Column = {
   raw: (row: Row) => number
   value: (row: Row) => number
 }
+
+const CATEGORY_LABEL: Record<string, UiKey> = { anime: 'dash.anime', manga: 'dash.mangaTitle', games: 'dash.games' }
 
 const TONES = 8
 
@@ -150,6 +152,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
 
       <div className="lb-filters">
         <Picker
+          rich
           label={t('duel.game')}
           value={gameId}
           onChange={(next) => {
@@ -160,18 +163,27 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
             value: g.id,
             label: l(g.label),
             accent: g.accent,
+            hint: `${t('lb.world').toUpperCase()} · ${t(CATEGORY_LABEL[g.category])}`,
+            media: (
+              <span className="picker-mark" style={{ '--tab-accent': g.accent } as CSSProperties} aria-hidden>
+                {l(g.label).charAt(0)}
+              </span>
+            ),
           }))}
         />
         <Picker
+          rich
           label={t('duel.mode')}
           value={mode}
           onChange={(next) => navigate(href.leaderboard(gameId, next as ModeId))}
           options={MODES.filter((m) => game.modes.includes(m.id)).map((m) => ({
             value: m.id,
-            label: (
-              <>
-                {m.icon} {t(m.label)}
-              </>
+            label: t(m.label),
+            hint: `${t('duel.mode').toUpperCase()} · ${l(game.label)}`,
+            media: (
+              <span className="picker-mark" style={{ '--tab-accent': game.accent } as CSSProperties} aria-hidden>
+                {m.icon}
+              </span>
             ),
           }))}
         />

@@ -9287,7 +9287,7 @@ html[data-auth][data-checking] .hero-guest {
 
 .season-rewards {
   display: grid;
-  grid-template-columns: repeat(3, 96px);
+  grid-template-columns: repeat(3, 100px);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -9342,26 +9342,27 @@ html[data-auth][data-checking] .hero-guest {
   place-items: center;
   width: 28px;
   height: 28px;
-  border-radius: 9px;
+  border-radius: 8px;
   background: var(--card-2);
   color: var(--text-2);
+  font-family: var(--display);
   font-size: 13px;
   font-weight: 800;
 }
 
 .season-rank.gold {
-  background: color-mix(in srgb, #f5c451 22%, var(--card-2));
-  color: #f5c451;
+  background: linear-gradient(160deg, #ffdd7a, #f0b73c);
+  color: #1a1206;
 }
 
 .season-rank.silver {
-  background: color-mix(in srgb, #c9d1dc 18%, var(--card-2));
-  color: #c9d1dc;
+  background: linear-gradient(160deg, #e4e9f1, #c2ccda);
+  color: #171b22;
 }
 
 .season-rank.bronze {
-  background: color-mix(in srgb, #d98a4e 20%, var(--card-2));
-  color: #d98a4e;
+  background: linear-gradient(160deg, #eaa268, #cf7d3e);
+  color: #1d1108;
 }
 
 .season-table .season-xp-col {
@@ -9550,4 +9551,87 @@ html[data-auth][data-checking] .hero-guest {
   .season-xp-col {
     display: none;
   }
+}
+
+.picker.rich {
+  flex: 1 1 220px;
+  max-width: 280px;
+}
+
+.picker.rich .picker-button {
+  gap: 10px;
+  min-height: 52px;
+  padding: 7px 11px;
+  border-radius: 14px;
+  background: var(--card);
+}
+
+.picker.rich .picker-button:hover {
+  border-color: color-mix(in srgb, var(--tab-accent, var(--accent)) 45%, var(--line));
+}
+
+.picker-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--tab-accent, var(--accent)) 26%, var(--card-2));
+  color: var(--tab-accent, var(--accent));
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.picker-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.picker-text em {
+  color: var(--text-3);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.picker.rich .picker-value {
+  overflow: hidden;
+  font-family: var(--display);
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.picker.rich .picker-list {
+  max-width: none;
+  padding: 8px;
+  border-radius: 18px;
+}
+
+.picker.rich .picker-list li {
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 14px;
+}
+
+.picker.rich .picker-list .picker-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
+  font-size: 14px;
+}
+
+.picker-list li .picker-mark .icon {
+  color: inherit;
+}
+
+.picker.rich .picker-list .picker-value {
+  font-size: 15px;
 }

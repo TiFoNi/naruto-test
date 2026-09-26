@@ -730,6 +730,7 @@ const ui = {
   'lb.play': { ru: 'Играть', uk: 'Грати', en: 'Play' },
   'lb.scopeSeason': { ru: 'Общий', uk: 'Загальний', en: 'Overall' },
   'lb.scopeGame': { ru: 'По игре', uk: 'За грою', en: 'By game' },
+  'lb.world': { ru: 'Вселенная', uk: 'Всесвіт', en: 'World' },
   'lb.seasonTitle': { ru: 'Общий рейтинг', uk: 'Загальний рейтинг', en: 'Overall ranking' },
   'lb.seasonHint': {
     ru: 'Кто активнее всех на сайте: опыт из всех вселенных и режимов.',
