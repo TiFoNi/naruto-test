@@ -460,7 +460,7 @@ const ui = {
   },
   'dash.pick': { ru: 'Выбери категорию', uk: 'Обери категорію', en: 'Pick a category' },
 
-  'profile.rank': { ru: 'Место по опыту', uk: 'Місце за досвідом', en: 'Place by XP' },
+  'profile.rank': { ru: 'Место в сезоне', uk: 'Місце в сезоні', en: 'Season place' },
   'profile.bestGame': { ru: 'Место по игре', uk: 'Місце за грою', en: 'Place in a game' },
   'profile.placesMore': { ru: 'подробнее', uk: 'детальніше', en: 'details' },
   'profile.placesTitle': { ru: 'Места по играм', uk: 'Місця за іграми', en: 'Places by game' },

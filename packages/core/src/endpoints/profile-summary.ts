@@ -1,12 +1,13 @@
 import type { ObjectId } from 'mongodb'
 import { GAME_IDS, STAT_KEYS, type GameId } from '@nanda/game'
 import { ACHIEVEMENTS } from '../achievements'
-import { rounds, users, type UserDoc } from '../db'
+import { rounds, seasons, users, type UserDoc } from '../db'
 import { gameData } from '../games'
 import { handle, json } from '../http'
 import { currentUser, unauthorized } from '../profile'
 import { LEVEL_XP, levelOf, nextRank, rankOf } from '../quests'
 import { shiftDay, today } from '../daily'
+import { seasonAt } from '../season'
 
 const RECENT = 8
 
@@ -104,20 +105,24 @@ function streakOf(days: string[]) {
   return { current, best, week }
 }
 
-async function place(xp: number) {
-  if (!xp) return null
-  const collection = await users()
+async function place(userId: ObjectId) {
+  const collection = await seasons()
+  const season = seasonAt()
+  const mine = await collection.findOne({ season: season.id, userId })
+  if (!mine?.xp) return null
 
-  const [board] = await collection
+  const ahead = {
+    $or: [{ $gt: ['$xp', mine.xp] }, { $and: [{ $eq: ['$xp', mine.xp] }, { $lt: ['$_id', mine._id] }] }],
+  }
+  const [row] = await collection
     .aggregate([
-      { $project: { xp: { $ifNull: ['$xp', 0] } } },
-      { $match: { xp: { $gt: 0 } } },
-      { $group: { _id: null, players: { $sum: 1 }, ahead: { $sum: { $cond: [{ $gt: ['$xp', xp] }, 1, 0] } } } },
+      { $match: { season: season.id, xp: { $gte: 1 } } },
+      { $group: { _id: null, players: { $sum: 1 }, ahead: { $sum: { $cond: [ahead, 1, 0] } } } },
     ])
     .toArray()
 
-  const position = ((board?.ahead as number) ?? 0) + 1
-  return { position, players: Math.max((board?.players as number) ?? 0, position) }
+  const position = ((row?.ahead as number) ?? 0) + 1
+  return { position, players: Math.max((row?.players as number) ?? 0, position) }
 }
 
 async function gamePlaces(doc: UserDoc) {
@@ -227,7 +232,7 @@ export const GET = handle(async (request) => {
     },
     challenges: { solved: doc.challengeStats?.solved ?? 0 },
     favourite: games.find((row) => row.solved > 0)?.game ?? null,
-    rank: await place(xp),
+    rank: await place(doc._id!),
     gamePlaces: await gamePlaces(doc),
     streak,
     games,
