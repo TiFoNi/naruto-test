@@ -13,6 +13,7 @@ import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
 import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, MenuIcon, PodiumIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
 import { api } from './api'
+import { openStream } from './stream'
 import { gameById } from './games'
 import type { GameId } from './games/types'
 import { MODES } from './modes'
@@ -195,7 +196,7 @@ function AccountMenu({ nickname, level, section }: { nickname: string; level: nu
 }
 
 const HIDDEN = 'nanda.seen-awards'
-const POLL_MS = 10_000
+const POLL_MS = 60_000
 
 const readHidden = () => {
   try {
@@ -224,10 +225,12 @@ function Bell() {
     const stop = watchFeed(setFeed)
     const tick = () => document.visibilityState === 'visible' && void refreshFeed()
     const timer = setInterval(tick, POLL_MS)
+    const close = openStream('stream/notify', { invite: () => void refreshFeed() })
     document.addEventListener('visibilitychange', tick)
     window.addEventListener('focus', tick)
     return () => {
       stop()
+      close()
       clearInterval(timer)
       document.removeEventListener('visibilitychange', tick)
       window.removeEventListener('focus', tick)

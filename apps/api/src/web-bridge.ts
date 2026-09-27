@@ -2,7 +2,7 @@ import type { Request as ExpressRequest, Response as ExpressResponse } from 'exp
 
 type WebHandler = (request: Request) => Promise<Response>
 
-function toWebRequest(req: ExpressRequest): Request {
+export function toWebRequest(req: ExpressRequest): Request {
   const url = `${req.protocol}://${req.get('host') ?? 'localhost'}${req.originalUrl}`
   const headers = new Headers()
   for (const [key, value] of Object.entries(req.headers)) {

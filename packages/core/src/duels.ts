@@ -263,7 +263,7 @@ export async function wantNext(duel: DuelDoc, userId: ObjectId) {
   return beginRound(marked, 'finished')
 }
 
-export const IDLE_MS = 25_000
+export const IDLE_MS = 60_000
 const EMPTY_MS = 90_000
 const SWEEP_MS = 60_000
 let sweptAt = 0

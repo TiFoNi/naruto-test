@@ -19,7 +19,28 @@ import * as roundGuess from '@nanda/core/endpoints/round-guess'
 import * as roundGiveup from '@nanda/core/endpoints/round-giveup'
 import * as roundImage from '@nanda/core/endpoints/round-image'
 import * as roundVoice from '@nanda/core/endpoints/round-voice'
-import { bridge } from './web-bridge'
+import { bridge, toWebRequest } from './web-bridge'
+import { currentUser } from '@nanda/core/profile'
+import { subscribeBell, subscribeDuel, type Sender } from '@nanda/core/stream'
+
+const KEEP_ALIVE_MS = 25_000
+
+function openStream(req: Request, res: Response): Sender {
+  res.status(200)
+  res.setHeader('content-type', 'text/event-stream; charset=utf-8')
+  res.setHeader('cache-control', 'no-cache, no-transform')
+  res.setHeader('connection', 'keep-alive')
+  res.setHeader('x-accel-buffering', 'no')
+  res.flushHeaders()
+
+  const beat = setInterval(() => res.write(': beat\n\n'), KEEP_ALIVE_MS)
+  req.on('close', () => clearInterval(beat))
+
+  return (event, data) => {
+    if (res.writableEnded) return
+    res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`)
+  }
+}
 
 @Controller('api')
 export class GameController {
@@ -136,5 +157,25 @@ export class GameController {
   @Get('round/image')
   image(@Req() req: Request, @Res() res: Response) {
     return bridge(roundImage.GET, req, res)
+  }
+
+  @Get('stream/duel')
+  async duelStream(@Req() req: Request, @Res() res: Response) {
+    const code = typeof req.query.code === 'string' ? req.query.code.toUpperCase() : ''
+    if (!/^[A-Z0-9]{6}$/.test(code)) return res.status(400).json({ error: 'bad_request' })
+    const found = await currentUser(toWebRequest(req))
+    if (!found) return res.status(401).json({ error: 'unauthorized' })
+    const send = openStream(req, res)
+    const stop = await subscribeDuel(code, found.doc._id!, send)
+    req.on('close', stop)
+  }
+
+  @Get('stream/notify')
+  async notifyStream(@Req() req: Request, @Res() res: Response) {
+    const found = await currentUser(toWebRequest(req))
+    if (!found) return res.status(401).json({ error: 'unauthorized' })
+    const send = openStream(req, res)
+    const stop = subscribeBell(found.doc._id!, send)
+    req.on('close', stop)
   }
 }

@@ -31,8 +31,8 @@ export const ACHIEVEMENTS: Achievement[] = [
 
   { id: 'firstBlood', category: 'duels', tier: 'bronze', target: 1, xp: XP.bronze },
   { id: 'blitz', category: 'duels', tier: 'gold', target: 1, xp: XP.gold },
-  { id: 'duelist', category: 'duels', tier: 'silver', target: 50, xp: XP.silver },
-  { id: 'gladiator', category: 'duels', tier: 'gold', target: 250, xp: XP.gold },
+  { id: 'duelist', category: 'duels', tier: 'silver', target: 15, xp: XP.silver },
+  { id: 'gladiator', category: 'duels', tier: 'gold', target: 50, xp: XP.gold },
 
   { id: 'habit', category: 'streaks', tier: 'bronze', target: 3, xp: XP.bronze },
   { id: 'onFire', category: 'streaks', tier: 'silver', target: 10, xp: XP.silver },
@@ -99,7 +99,7 @@ export async function collectFacts(userId: ObjectId, languages = 1, since?: Date
       )
       .toArray(),
     (await duels())
-      .find({ 'players.userId': userId, log: { $exists: true } })
+      .find({ 'players.userId': userId })
       .toArray(),
     (await users()).findOne({ _id: userId }, { projection: { visit: 1 } }),
   ])
@@ -191,7 +191,9 @@ export async function collectFacts(userId: ObjectId, languages = 1, since?: Date
     const mine = log.filter((entry) => String(entry.winnerId) === String(userId))
     const theirs = log.filter((entry) => entry.winnerId && String(entry.winnerId) !== String(userId))
 
-    duelWins += mine.length
+    duelWins += (duel.matches ?? []).filter(
+      (match) => String(match.winnerId) === String(userId) && (!since || match.at > since),
+    ).length
     for (const entry of mine) {
       if (entry.ms && entry.ms > 0 && (fastestDuelMs === null || entry.ms < fastestDuelMs)) fastestDuelMs = entry.ms
     }
