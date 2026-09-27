@@ -5,15 +5,15 @@ import { ZOOM_LEVELS } from './zoom'
 import CharacterSearch from './CharacterSearch'
 import GuessGrid from './GuessGrid'
 import { Legend } from './PlaySide'
-import Picker from './Picker'
 import Thumb from './Thumb'
 import ZoomImage from './ZoomImage'
-import { GAMES, gameById } from './games'
+import { gameById } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
-import { MODES, type ModeId } from './modes'
+import { MODES } from './modes'
 import { useHref } from './router'
 import { useDuel } from './useDuel'
+import DuelSetup from './DuelSetup'
 import type { Guess } from './useRound'
 import { SwordsIcon } from './icons'
 import { fullUrl } from './pics'
@@ -29,8 +29,7 @@ const clock = (ms: number) => {
 export default function DuelRoom({ code }: { code: string }) {
   const { t, l, name, lang, error: errorText } = useI18n()
   const href = useHref()
-  const { duel, error, busy, pending, serverNow, ready, setup, next, toLobby, giveUp, guess, refresh } = useDuel(code)
-  const [copied, setCopied] = useState(false)
+  const { duel, error, busy, pending, serverNow, ready, setup, invite, next, toLobby, giveUp, guess, refresh } = useDuel(code)
   const [, redraw] = useState(0)
 
   useEffect(() => {
@@ -76,23 +75,14 @@ export default function DuelRoom({ code }: { code: string }) {
   const zoom = over || you?.solved ? 1 : ZOOM_LEVELS[Math.min(wrong, ZOOM_LEVELS.length - 1)]
   const left = duel.endsAt ? duel.endsAt - serverNow() : 0
   const youDone = Boolean(you?.solved || you?.gaveUp)
-  const modes = game ? MODES.filter((m) => game.modes.includes(m.id)) : []
   const modeLabel = duel.mode ? t(MODES.find((m) => m.id === duel.mode)?.label ?? 'mode.classic') : null
 
-  const copy = () => {
-    navigator.clipboard?.writeText(link).then(
-      () => {
-        setCopied(true)
-        setTimeout(() => setCopied(false), 1500)
-      },
-      () => setCopied(false),
-    )
-  }
-
   return (
-    <div className="duel">
+    <div className={`duel ${inLobby ? 'is-setup' : ''}`}>
       <BackButton href={href.duels}>{t('duel.back')}</BackButton>
 
+      {!inLobby && (
+        <>
       <header className="duel-head card" style={{ '--tab-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
         <div>
           <h1>
@@ -135,48 +125,11 @@ export default function DuelRoom({ code }: { code: string }) {
           <div className="duel-player empty">{t('duel.waitingRival')}</div>
         )}
       </section>
+        </>
+      )}
 
       {inLobby && (
-        <section className="card duel-invite">
-          <h2>{t('duel.setupTitle')}</h2>
-          {duel.host ? (
-            <div className="duel-picker">
-              <Picker
-                label={t('duel.game')}
-                value={duel.game ?? GAMES[0].id}
-                onChange={(v) => setup(v, modesFor(v, duel.mode))}
-                options={GAMES.map((g) => ({ value: g.id, label: l(g.label), accent: g.accent }))}
-              />
-              <Picker
-                label={t('duel.mode')}
-                value={duel.mode ?? 'classic'}
-                onChange={(v) => setup(duel.game ?? GAMES[0].id, v)}
-                options={(modes.length ? modes : MODES.slice(0, 2)).map((m) => ({
-                  value: m.id,
-                  label: (
-                    <>
-                      {m.icon} {t(m.label)}
-                    </>
-                  ),
-                }))}
-              />
-            </div>
-          ) : (
-            <p className="muted">{game ? `${l(game.label)} · ${modeLabel}` : t('duel.hostPicks')}</p>
-          )}
-
-          <p className="muted">{t('duel.inviteHint')}</p>
-          <div className="inline-field">
-            <input readOnly value={link} onFocus={(e) => e.currentTarget.select()} />
-            <button className="primary" onClick={copy}>
-              {copied ? t('duel.copied') : t('duel.copy')}
-            </button>
-          </div>
-          <button className="primary big" onClick={ready} disabled={busy || you?.ready || !duel.game || !rival}>
-            {you?.ready ? t('duel.readyWait') : t('duel.ready')}
-          </button>
-          {!duel.game && <p className="muted small">{t('duel.pickFirst')}</p>}
-        </section>
+        <DuelSetup duel={duel} busy={busy} link={link} onSetup={setup} onInvite={invite} onReady={ready} />
       )}
 
       {!inLobby && game && (
@@ -202,7 +155,18 @@ export default function DuelRoom({ code }: { code: string }) {
 
           {over && answer ? (
             <div className={`card result ${duel.youWon ? 'won' : duel.winner === null ? 'skipped' : 'lost'}`}>
-              <h2>{duel.youWon ? t('duel.youWon') : duel.winner ? t('duel.youLost', { name: duel.winner }) : t('duel.draw')}</h2>
+              <h2>
+                {duel.matchDone
+                  ? duel.youWon
+                    ? t('duel.matchWon')
+                    : t('duel.matchLost', { name: duel.winner ?? '' })
+                  : duel.youWon
+                    ? t('duel.youWon')
+                    : duel.winner
+                      ? t('duel.youLost', { name: duel.winner })
+                      : t('duel.draw')}
+              </h2>
+              <p className="duel-score">{t('duel.score', { you: you?.wins ?? 0, rival: rival?.wins ?? 0 })}</p>
               <img className="result-image" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />
               <div className="result-name">{name(answer)}</div>
               <p className="round">
@@ -210,12 +174,20 @@ export default function DuelRoom({ code }: { code: string }) {
                 {rival ? ` · ${rival.nickname}: ${t('duel.guesses', { count: rival.guessCount })}` : ''}
               </p>
               <div className="result-actions">
-                <button className="primary" onClick={next} disabled={busy || you?.wantsNext}>
-                  {you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
-                </button>
-                <button className="ghost" onClick={toLobby} disabled={busy}>
-                  {t('duel.toLobby')}
-                </button>
+                {duel.matchDone ? (
+                  <button className="primary" onClick={toLobby} disabled={busy}>
+                    {t('duel.rematch')}
+                  </button>
+                ) : (
+                  <>
+                    <button className="primary" onClick={next} disabled={busy || you?.wantsNext}>
+                      {you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
+                    </button>
+                    <button className="ghost" onClick={toLobby} disabled={busy}>
+                      {t('duel.toLobby')}
+                    </button>
+                  </>
+                )}
               </div>
               {rival?.wantsNext && !you?.wantsNext && <p className="muted small">{t('duel.rivalWantsNext', { name: rival.nickname })}</p>}
             </div>
@@ -249,9 +221,4 @@ export default function DuelRoom({ code }: { code: string }) {
       )}
     </div>
   )
-}
-
-function modesFor(gameId: string, current: string | null) {
-  const game = gameById(gameId as GameId)
-  return current && game.modes.includes(current as ModeId) ? current : game.modes[0]
 }

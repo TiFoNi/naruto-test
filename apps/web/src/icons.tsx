@@ -141,7 +141,7 @@ export function TrophyIcon({ className }: IconProps) {
 export function InfinityIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>
-      <path d="M12 12c-1.5-3-3-4-4.5-4C5.6 8 4 9.8 4 12s1.6 4 3.5 4c1.5 0 3-1 4.5-4 1.5-3 3-4 4.5-4 1.9 0 3.5 1.8 3.5 4s-1.6 4-3.5 4c-1.5 0-3-1-4.5-4Z" />
+      <path d="M12 12c-1.9-2.5-3.7-3.8-5.6-3.8a3.8 3.8 0 0 0 0 7.6c1.9 0 3.7-1.3 5.6-3.8Zm0 0c1.9 2.5 3.7 3.8 5.6 3.8a3.8 3.8 0 0 0 0-7.6c-1.9 0-3.7 1.3-5.6 3.8Z" />
     </svg>
   )
 }
@@ -422,6 +422,26 @@ export function CopyIcon({ className }: IconProps) {
     <svg {...base} className={`icon ${className ?? ''}`}>
       <rect x="9" y="9" width="11.5" height="11.5" rx="2.6" />
       <path d="M15 5.6a2.6 2.6 0 0 0-2.6-2.6H6A2.6 2.6 0 0 0 3.4 5.6V12a2.6 2.6 0 0 0 2.6 2.6" />
+    </svg>
+  )
+}
+
+export function DiceIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
+      <circle cx="8.6" cy="8.6" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="15.4" cy="15.4" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
+export function LinkIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M10.4 13.6a3.6 3.6 0 0 0 5.1 0l3-3a3.6 3.6 0 0 0-5.1-5.1l-1.3 1.3" />
+      <path d="M13.6 10.4a3.6 3.6 0 0 0-5.1 0l-3 3a3.6 3.6 0 0 0 5.1 5.1l1.3-1.3" />
     </svg>
   )
 }

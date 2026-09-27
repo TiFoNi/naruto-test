@@ -5,45 +5,55 @@ import { keepPerUser } from './session-cache'
 
 export type AwardRow = { id: string; tier: string; done: boolean; claimed: boolean }
 export type FreshAward = { id: string; tier: string }
+export type DuelInvite = { code: string; from: string; game: string | null; mode: string | null; best: number; seconds: number; at: string }
+export type Feed = { awards: FreshAward[]; invites: DuelInvite[] }
 
-const watchers = new Set<(list: FreshAward[]) => void>()
+const EMPTY: Feed = { awards: [], invites: [] }
 
-let cache: FreshAward[] | null = null
-let pending: Promise<FreshAward[]> | null = null
+const watchers = new Set<(feed: Feed) => void>()
+
+let cache: Feed | null = null
+let pending: Promise<Feed> | null = null
 
 keepPerUser(() => {
   cache = null
   pending = null
-  for (const watcher of watchers) watcher([])
+  for (const watcher of watchers) watcher(EMPTY)
 })
 
-
-function publish(list: FreshAward[]) {
-  cache = list
-  for (const watcher of watchers) watcher(list)
-  return list
+function publish(feed: Feed) {
+  cache = feed
+  for (const watcher of watchers) watcher(feed)
+  return feed
 }
 
 export function putAwards(list: AwardRow[]) {
-  return publish(list.filter((a) => a.done && !a.claimed).map(({ id, tier }) => ({ id, tier })))
+  return publish({
+    awards: list.filter((a) => a.done && !a.claimed).map(({ id, tier }) => ({ id, tier })),
+    invites: cache?.invites ?? [],
+  })
 }
 
-export function watchAwards(watcher: (list: FreshAward[]) => void) {
+export function dropInvite(code: string) {
+  return publish({ awards: cache?.awards ?? [], invites: (cache?.invites ?? []).filter((invite) => invite.code !== code) })
+}
+
+export function watchFeed(watcher: (feed: Feed) => void) {
   watchers.add(watcher)
   return () => watchers.delete(watcher)
 }
 
-export function refreshAwards() {
+export function refreshFeed() {
   cache = null
   pending = null
-  return freshAwards()
+  return freshFeed()
 }
 
-export function freshAwards() {
+export function freshFeed() {
   if (cache) return Promise.resolve(cache)
-  pending ??= api<{ awards?: FreshAward[] }>('awards')
-    .then(({ ok, data }) => (ok ? publish(data.awards ?? []) : []))
-    .catch(() => [] as FreshAward[])
+  pending ??= api<Partial<Feed>>('awards')
+    .then(({ ok, data }) => (ok ? publish({ awards: data.awards ?? [], invites: data.invites ?? [] }) : EMPTY))
+    .catch(() => EMPTY)
     .finally(() => {
       pending = null
     })

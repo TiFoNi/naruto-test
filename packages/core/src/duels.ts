@@ -1,13 +1,12 @@
 import { randomInt } from 'node:crypto'
 import { ObjectId } from 'mongodb'
-import { ABILITY_HINT_AT, ABILITY_STAGES, hasMode, judgeAll, type GameId, type ModeId } from '@nanda/game'
+import { ABILITY_HINT_AT, ABILITY_STAGES, DUEL_DEFAULT, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, duelWinsNeeded, hasMode, judgeAll, type GameId, type ModeId } from '@nanda/game'
 import { abilityByKey } from './abilities'
 import { duels, users, type DuelDoc, type DuelPlayer, type UserDoc } from './db'
 import { roundExtra } from './extra'
 import { gameData, isGame, isMode } from './games'
 import { defaultNickname } from './profile'
 
-export const DUEL_MS = 10 * 60 * 1000
 export const MIN_GAP_MS = 800
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
 
@@ -28,7 +27,14 @@ export const sideOf = (duel: DuelDoc, userId: ObjectId) => duel.players.find((p)
 
 export const isHost = (duel: DuelDoc, userId: ObjectId) => duel.hostId.equals(userId)
 
-export async function createDuel(doc: UserDoc) {
+const rounds = (value: unknown) => (DUEL_ROUNDS as readonly number[]).includes(Number(value)) ? Number(value) : null
+const seconds = (value: unknown) => (DUEL_SECONDS as readonly number[]).includes(Number(value)) ? Number(value) : null
+
+export async function openLobby(userId: ObjectId) {
+  return (await duels()).findOne({ hostId: userId, status: 'lobby' }, { sort: { createdAt: -1 } })
+}
+
+export async function createDuel(doc: UserDoc, invited?: UserDoc) {
   const collection = await duels()
   for (let attempt = 0; attempt < 5; attempt++) {
     const duel: DuelDoc = {
@@ -37,6 +43,9 @@ export async function createDuel(doc: UserDoc) {
       game: 'naruto',
       mode: 'classic',
       status: 'lobby',
+      best: DUEL_DEFAULT.best,
+      seconds: DUEL_DEFAULT.seconds,
+      invite: invited ? { toId: invited._id!, nickname: nameOf(invited), at: new Date() } : null,
       round: 0,
       draws: 0,
       players: [player(doc)],
@@ -68,15 +77,81 @@ export async function joinDuel(duel: DuelDoc, doc: UserDoc) {
   )
 }
 
-export async function setupDuel(duel: DuelDoc, userId: ObjectId, game: unknown, mode: unknown) {
+export async function setupDuel(duel: DuelDoc, userId: ObjectId, body: Record<string, unknown>) {
   if (!isHost(duel, userId) || duel.status !== 'lobby') return duel
-  if (!isGame(game) || !isMode(mode) || !hasMode(game, mode)) return null
+  const { game, mode } = body
+  if (!isGame(game) || !isMode(mode) || !hasMode(game, mode) || !DUEL_MODES.includes(mode)) return null
+  const best = rounds(body.best) ?? duel.best ?? DUEL_DEFAULT.best
+  const limit = seconds(body.seconds) ?? duel.seconds ?? DUEL_DEFAULT.seconds
   const updated = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: 'lobby' },
-    { $set: { game, mode, 'players.$[].ready': false } },
+    { $set: { game, mode, best, seconds: limit, 'players.$[].ready': false } },
     { returnDocument: 'after' },
   )
   return updated ?? duel
+}
+
+export async function inviteTo(duel: DuelDoc, userId: ObjectId, targetId: unknown) {
+  if (!isHost(duel, userId) || duel.status !== 'lobby' || duel.players.length > 1) return null
+  if (typeof targetId !== 'string' || !ObjectId.isValid(targetId)) return null
+  const _id = new ObjectId(targetId)
+  if (_id.equals(userId)) return null
+  const target = await (await users()).findOne({ _id })
+  if (!target) return null
+  const updated = await (await duels()).findOneAndUpdate(
+    { _id: duel._id, status: 'lobby' },
+    { $set: { invite: { toId: _id, nickname: nameOf(target), at: new Date() } } },
+    { returnDocument: 'after' },
+  )
+  return updated ?? duel
+}
+
+export const INVITE_MS = 60 * 60 * 1000
+
+export async function duelInvites(userId: ObjectId) {
+  const list = await (await duels())
+    .find({ 'invite.toId': userId, 'invite.declined': { $ne: true }, status: 'lobby', createdAt: { $gt: new Date(Date.now() - INVITE_MS) } })
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .toArray()
+  return list
+    .filter((duel) => !sideOf(duel, userId))
+    .map((duel) => ({
+      code: duel.code,
+      from: duel.players[0]?.nickname ?? '?',
+      game: duel.game ?? null,
+      mode: duel.mode ?? null,
+      best: duel.best ?? DUEL_DEFAULT.best,
+      seconds: duel.seconds ?? DUEL_DEFAULT.seconds,
+      at: duel.createdAt.toISOString(),
+    }))
+}
+
+export async function declineInvite(duel: DuelDoc, userId: ObjectId) {
+  if (!duel.invite?.toId.equals(userId)) return null
+  await (await duels()).updateOne({ _id: duel._id }, { $set: { 'invite.declined': true } })
+  return true
+}
+
+export async function recentRivals(userId: ObjectId, limit = 5) {
+  const list = await (await duels())
+    .find({ 'players.userId': userId, players: { $size: 2 } })
+    .sort({ createdAt: -1 })
+    .limit(40)
+    .toArray()
+  const seen = new Map<string, { id: string; nickname: string; at: string; wins: number; losses: number }>()
+  for (const duel of list) {
+    const rival = duel.players.find((side) => !side.userId.equals(userId))
+    const mine = duel.players.find((side) => side.userId.equals(userId))
+    if (!rival || !mine) continue
+    const key = rival.userId.toHexString()
+    const row = seen.get(key) ?? { id: key, nickname: rival.nickname, at: duel.createdAt.toISOString(), wins: 0, losses: 0 }
+    row.wins += mine.wins ?? 0
+    row.losses += rival.wins ?? 0
+    seen.set(key, row)
+    if (seen.size >= limit) break
+  }
+  return [...seen.values()]
 }
 
 async function roundStart(duel: DuelDoc) {
@@ -86,13 +161,14 @@ async function roundStart(duel: DuelDoc) {
   const answer = (fresh.length ? fresh : pool)[randomInt(fresh.length || pool.length)]
   const extra = await roundExtra(duel.game as GameId, duel.mode as ModeId, answer.id)
   const startedAt = new Date()
+  const limit = duel.seconds ?? DUEL_DEFAULT.seconds
   return {
     status: 'playing' as const,
     round: duel.round + 1,
     answerId: answer.id,
     extra: extra ?? null,
     startedAt,
-    endsAt: new Date(startedAt.getTime() + DUEL_MS),
+    endsAt: limit ? new Date(startedAt.getTime() + limit * 1000) : null,
     firstSolvedAt: null,
     winnerId: null,
     finishedAt: null,
@@ -129,7 +205,7 @@ export async function setReady(duel: DuelDoc, userId: ObjectId) {
 
 export async function wantNext(duel: DuelDoc, userId: ObjectId) {
   const index = duel.players.findIndex((p) => p.userId.equals(userId))
-  if (index < 0 || duel.status !== 'finished') return duel
+  if (index < 0 || duel.status !== 'finished' || duel.matchDone) return duel
   const marked = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: 'finished' },
     { $set: { [`players.${index}.wantsNext`]: true } },
@@ -147,8 +223,12 @@ export async function backToLobby(duel: DuelDoc, userId: ObjectId) {
     {
       $set: {
         status: 'lobby',
+        matchDone: false,
+        round: 0,
+        draws: 0,
         'players.$[].ready': false,
         'players.$[].wantsNext': false,
+        'players.$[].wins': 0,
         'players.$[].guesses': [],
         'players.$[].solvedAt': null,
         'players.$[].gaveUp': false,
@@ -186,16 +266,19 @@ async function applyDuelStats(winnerId: ObjectId | null, players: DuelPlayer[]) 
   )
 }
 
+export const winsNeeded = (duel: DuelDoc) => duelWinsNeeded(duel.best ?? DUEL_DEFAULT.best)
+
 export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   if (duel.status !== 'playing') return duel
-  const over = Date.now() >= (duel.endsAt?.getTime() ?? 0) || duel.players.every(done)
-  if (!over) return duel
+  const timeUp = duel.endsAt ? Date.now() >= duel.endsAt.getTime() : false
+  if (!timeUp && !duel.players.every(done)) return duel
   const winnerId = decide(duel)
   const winnerIndex = winnerId ? duel.players.findIndex((p) => p.userId.equals(winnerId)) : -1
+  const matchDone = winnerIndex >= 0 && (duel.players[winnerIndex].wins ?? 0) + 1 >= winsNeeded(duel)
   const finished = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: 'playing' },
     {
-      $set: { status: 'finished', finishedAt: new Date(), winnerId },
+      $set: { status: 'finished', finishedAt: new Date(), winnerId, matchDone },
       $inc: winnerIndex >= 0 ? { [`players.${winnerIndex}.wins`]: 1 } : { draws: 1 },
     },
     { returnDocument: 'after' },
@@ -264,6 +347,12 @@ export async function duelView(duel: DuelDoc, userId: ObjectId) {
     game: duel.game ?? null,
     mode: duel.mode ?? null,
     status: duel.status,
+    best: duel.best ?? DUEL_DEFAULT.best,
+    seconds: duel.seconds ?? DUEL_DEFAULT.seconds,
+    needed: winsNeeded(duel),
+    matchDone: Boolean(duel.matchDone),
+    invited: duel.invite && !duel.invite.declined && duel.players.length < 2 ? duel.invite.nickname : null,
+    declined: Boolean(duel.invite?.declined) && duel.players.length < 2,
     round: duel.round,
     draws: duel.draws,
     host: isHost(duel, userId),

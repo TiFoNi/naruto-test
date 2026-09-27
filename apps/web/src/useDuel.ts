@@ -11,6 +11,12 @@ export type DuelView = {
   game: string | null
   mode: string | null
   status: 'lobby' | 'playing' | 'finished'
+  best: number
+  seconds: number
+  needed: number
+  matchDone: boolean
+  invited: string | null
+  declined: boolean
   round: number
   draws: number
   host: boolean
@@ -97,7 +103,15 @@ export function useDuel(code: string) {
     pending,
     serverNow: () => Date.now() + offset.current,
     ready: () => send({ action: 'ready' }),
-    setup: (game: string, mode: string) => send({ action: 'setup', game, mode }),
+    setup: (patch: { game?: string; mode?: string; best?: number; seconds?: number }) =>
+      send({
+        action: 'setup',
+        game: patch.game ?? duel?.game ?? 'naruto',
+        mode: patch.mode ?? duel?.mode ?? 'classic',
+        best: patch.best ?? duel?.best,
+        seconds: patch.seconds ?? duel?.seconds,
+      }),
+    invite: (to: string) => send({ action: 'invite', to }),
     next: () => send({ action: 'next' }),
     toLobby: () => send({ action: 'lobby' }),
     giveUp: () => send({ action: 'giveup' }),

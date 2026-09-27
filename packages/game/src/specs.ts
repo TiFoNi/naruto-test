@@ -264,6 +264,13 @@ export const XP_CAPS = { daily: 360, endless: 250 } as const
 
 export type XpSource = keyof typeof XP_CAPS
 
+export const DUEL_MODES: ModeId[] = ['classic', 'image', 'ability']
+export const DUEL_ROUNDS = [3, 5, 7, 10] as const
+export const DUEL_SECONDS = [30, 60, 90, 0] as const
+export const DUEL_DEFAULT = { best: 5, seconds: 60 }
+
+export const duelWinsNeeded = (best: number) => Math.floor(best / 2) + 1
+
 export const PHRASE_EVERY = 3
 export const PHRASE_VOICE_AT = 3
 

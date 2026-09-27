@@ -82,6 +82,10 @@ export type DuelDoc = {
   answerId?: number
   extra?: string | null
   status: 'lobby' | 'playing' | 'finished'
+  best?: number
+  seconds?: number | null
+  invite?: { toId: ObjectId; nickname: string; at: Date; declined?: boolean } | null
+  matchDone?: boolean
   round: number
   draws: number
   players: DuelPlayer[]
@@ -170,6 +174,7 @@ export async function duels(): Promise<Collection<DuelDoc>> {
   cache.__duelsIndexed ??= Promise.all([
     collection.createIndex({ code: 1 }, { unique: true }),
     collection.createIndex({ 'players.userId': 1, createdAt: -1 }),
+    collection.createIndex({ 'invite.toId': 1, status: 1, createdAt: -1 }),
     collection.createIndex({ touchedAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 7 }),
     collection.dropIndex('createdAt_1').catch(() => undefined),
   ]).catch((error) => {

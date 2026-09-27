@@ -4,6 +4,7 @@ import { users, type UserDoc } from '../db'
 import { handle, json } from '../http'
 import { currentUser, unauthorized } from '../profile'
 import { placeOf } from './achievements'
+import { duelInvites } from '../duels'
 
 const FRESH_MS = 600_000
 
@@ -34,5 +35,6 @@ export const GET = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
 
-  return json({ awards: await ready(found.doc) })
+  const [awards, invites] = await Promise.all([ready(found.doc), duelInvites(found.doc._id!)])
+  return json({ awards, invites })
 })

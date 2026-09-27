@@ -9,8 +9,8 @@ import { useI18n } from './i18n'
 import Quests, { type Level } from './Quests'
 import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
-import { CalendarIcon, CheckIcon, TrophyIcon } from './icons'
-import { useHref } from './router'
+import { CalendarIcon, CheckIcon, SwordsIcon, TrophyIcon } from './icons'
+import { useHref, useNavigate } from './router'
 import { kyivToday } from './stats'
 import { keepPerUser } from './session-cache'
 
@@ -148,6 +148,16 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
   const gameLabel = (id: string) => GAMES.find((g) => g.id === id)?.label
   const modeLabel = (id: string) => MODES.find((m) => m.id === id)?.label ?? 'mode.classic'
+  const navigate = useNavigate()
+  const [calling, setCalling] = useState(false)
+
+  const challenge = async (target: string) => {
+    setCalling(true)
+    const { ok, data } = await api<{ duel?: { code: string } }>('duel', { action: 'challenge', to: target })
+    setCalling(false)
+    if (ok && data.duel) navigate(href.duel(data.duel.code))
+  }
+
   const accuracy = summary ? percent(summary.totals.solved, summary.totals.played) : 0
   const average = summary && summary.totals.solved ? (summary.totals.guesses / summary.totals.solved).toFixed(1) : '—'
 
@@ -267,6 +277,12 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
               </div>
             </div>
 
+            {!own && id && (
+              <button type="button" className="primary big duel-call" disabled={calling} onClick={() => void challenge(id)}>
+                <SwordsIcon />
+                {t('duel.challenge')}
+              </button>
+            )}
           </section>
 
           {own && (

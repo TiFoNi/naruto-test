@@ -698,3 +698,17 @@
   font-size: 12px;
   font-weight: 600;
 }
+
+.duel-call {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.duel-call svg {
+  width: 18px;
+  height: 18px;
+}

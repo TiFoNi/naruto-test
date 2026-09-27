@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api } from './api'
 import { useAuth, type XpToday } from './auth'
-import { refreshAwards } from './awards'
+import { refreshFeed } from './awards'
 import type { Entity, Game, Judgement } from './games/types'
 import type { ModeId } from './modes'
 import type { Stats } from './stats'
@@ -62,7 +62,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
       if (data.stats) setStats(data.stats.key, data.stats.value)
       if (data.xp) {
         setXp(data.xp)
-        void refreshAwards()
+        void refreshFeed()
       }
     },
     [expire, setStats, setXp],

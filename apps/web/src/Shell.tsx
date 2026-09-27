@@ -7,13 +7,17 @@ import Background from './Background'
 import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
-import { freshAwards, watchAwards, type FreshAward } from './awards'
+import { dropInvite, freshFeed, refreshFeed, watchFeed, type Feed } from './awards'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
 import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, MedalIcon, MenuIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
+import { api } from './api'
+import { gameById } from './games'
+import type { GameId } from './games/types'
+import { MODES } from './modes'
 import { useBeforePaint } from './paint'
-import { useHref, useVisitTracker } from './router'
+import { useHref, useNavigate, useVisitTracker } from './router'
 
 const PUBLIC = new Set(['', 'play', 'privacy', 'terms'])
 
@@ -190,6 +194,7 @@ function AccountMenu({ nickname, level, section }: { nickname: string; level: nu
 }
 
 const HIDDEN = 'nanda.seen-awards'
+const POLL_MS = 20_000
 
 const readHidden = () => {
   try {
@@ -201,21 +206,26 @@ const readHidden = () => {
 }
 
 function Bell() {
-  const { t } = useI18n()
+  const { t, l } = useI18n()
   const href = useHref()
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const box = useDropdown(open, setOpen)
-  const [list, setList] = useState<FreshAward[]>([])
+  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [] })
   const [hidden, setHidden] = useState<Set<string>>(() => new Set())
+  const [busy, setBusy] = useState(false)
 
   useEffect(() => {
-    let alive = true
     setHidden(readHidden())
-    void freshAwards().then((rows) => alive && setList(rows))
-    const stop = watchAwards(setList)
+    void freshFeed()
+    const stop = watchFeed(setFeed)
+    const tick = () => document.visibilityState === 'visible' && void refreshFeed()
+    const timer = setInterval(tick, POLL_MS)
+    document.addEventListener('visibilitychange', tick)
     return () => {
-      alive = false
       stop()
+      clearInterval(timer)
+      document.removeEventListener('visibilitychange', tick)
     }
   }, [])
 
@@ -229,32 +239,81 @@ function Bell() {
     }
   }
 
-  const shown = list.filter((award) => !hidden.has(award.id))
+  const accept = (code: string) => {
+    setOpen(false)
+    dropInvite(code)
+    navigate(href.duel(code))
+  }
+
+  const decline = async (code: string) => {
+    setBusy(true)
+    dropInvite(code)
+    await api('duel', { action: 'decline', code }).catch(() => null)
+    setBusy(false)
+  }
+
+  const awards = feed.awards.filter((award) => !hidden.has(award.id))
+  const count = awards.length + feed.invites.length
 
   return (
     <div ref={box} className={`bell-box ${open ? 'open' : ''}`}>
       <button
         type="button"
-        className={`bell ${shown.length ? 'has-new' : ''}`}
+        className={`bell ${count ? 'has-new' : ''}`}
         aria-expanded={open}
         aria-label={t('nav.bell')}
         title={t('nav.bell')}
         onClick={() => setOpen(!open)}
       >
         <BellIcon />
-        {shown.length > 0 && <i className="bell-count">{shown.length}</i>}
+        {count > 0 && <i className="bell-count">{count}</i>}
       </button>
 
       <div className="bell-menu">
         <div className="bell-head">
           <span>{t('nav.bell')}</span>
-          {shown.length > 0 && <small>{shown.length}</small>}
+          {count > 0 && <small>{count}</small>}
         </div>
-        {shown.length === 0 ? (
+        {count === 0 ? (
           <p className="bell-empty">{t('nav.bellEmpty')}</p>
         ) : (
           <ul className="bell-list">
-            {shown.map((award) => (
+            {feed.invites.map((invite) => {
+              const game = invite.game ? gameById(invite.game as GameId) : null
+              const mode = MODES.find((m) => m.id === invite.mode)
+              return (
+                <li key={invite.code} className="bell-item is-duel">
+                  <div className="bell-card">
+                    <small>{t('duel.inviteNew')}</small>
+                    <span className="bell-main">
+                      <span className="bell-mark" aria-hidden>
+                        <SwordsIcon />
+                      </span>
+                      <span className="bell-body">
+                        <b>{t('duel.inviteFrom', { name: invite.from })}</b>
+                        <span className="bell-tags">
+                          {game && <em>{l(game.label)}</em>}
+                          {mode && <em>{t(mode.label)}</em>}
+                          <em>{t('duel.roundsShort', { count: invite.best })}</em>
+                        </span>
+                      </span>
+                    </span>
+                    <span className="bell-actions">
+                      <button type="button" className="primary" disabled={busy} onClick={() => accept(invite.code)}>
+                        {t('duel.accept')}
+                      </button>
+                      <button type="button" className="ghost" disabled={busy} onClick={() => void decline(invite.code)}>
+                        {t('duel.declineInvite')}
+                      </button>
+                    </span>
+                  </div>
+                  <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} onClick={() => void decline(invite.code)}>
+                    <CloseIcon />
+                  </button>
+                </li>
+              )
+            })}
+            {awards.map((award) => (
               <li key={award.id} className={`bell-item tier-${award.tier}`}>
                 <Link className="bell-card" href={href.achievements} onClick={() => setOpen(false)} prefetch={false}>
                   <small>{t('ach.fresh')}</small>

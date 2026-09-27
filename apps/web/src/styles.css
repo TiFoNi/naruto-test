@@ -461,6 +461,58 @@ a.bell.active {
   position: relative;
 }
 
+.bell-item.is-duel {
+  --tier: var(--accent);
+}
+
+.bell-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.bell-actions button {
+  padding: 9px 10px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.bell-actions .primary {
+  background: var(--accent);
+  color: #14161c;
+}
+
+.bell-actions .primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.bell-actions .ghost {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--text);
+}
+
+.bell-actions .ghost:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+.bell-actions button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.bell-item.is-duel .bell-card {
+  cursor: default;
+}
+
+.bell-item.is-duel .bell-card:hover {
+  border-color: var(--line);
+  background: var(--card-2);
+}
+
 .bell-card {
   display: flex;
   flex-direction: column;
@@ -3959,6 +4011,10 @@ html:not([data-auth]) .play-actions .challenge-open {
   width: 100%;
   max-width: 820px;
   margin: 0 auto;
+}
+
+.duel.is-setup {
+  max-width: none;
 }
 
 .duel > *,

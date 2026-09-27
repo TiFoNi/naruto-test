@@ -1,19 +1,25 @@
 import { fail, handle, json, readJson } from '../http'
-import { currentUser, unauthorized } from '../profile'
+import { currentUser, defaultNickname, unauthorized } from '../profile'
 import {
   backToLobby,
   createDuel,
+  declineInvite,
   duelGuess,
   duelView,
   findDuel,
   giveUpDuel,
+  inviteTo,
   joinDuel,
+  openLobby,
+  recentRivals,
   setReady,
   settle,
   setupDuel,
   sideOf,
   wantNext,
 } from '../duels'
+import { ObjectId } from 'mongodb'
+import { users } from '../db'
 
 export const POST = handle(async (request) => {
   const found = await currentUser(request)
@@ -23,12 +29,39 @@ export const POST = handle(async (request) => {
   const action = body.action
 
   if (action === 'create') {
-    const duel = await createDuel(found.doc)
+    const reuse = body.fresh ? null : await openLobby(userId)
+    const duel = reuse ?? (await createDuel(found.doc))
     return duel ? json({ duel: await duelView(duel, userId) }) : fail(400, 'bad_request')
+  }
+
+  if (action === 'challenge') {
+    if (typeof body.to !== 'string' || !ObjectId.isValid(body.to)) return fail(400, 'bad_request')
+    const target = await (await users()).findOne({ _id: new ObjectId(body.to) })
+    if (!target || target._id!.equals(userId)) return fail(404, 'not_found')
+    const duel = await createDuel(found.doc, target)
+    return duel ? json({ duel: await duelView(duel, userId) }) : fail(400, 'bad_request')
+  }
+
+  if (action === 'rivals') return json({ rivals: await recentRivals(userId) })
+
+  if (action === 'players') {
+    const query = typeof body.q === 'string' ? body.q.trim().slice(0, 24) : ''
+    if (query.length < 2) return json({ players: [] })
+    const safe = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const list = await (await users())
+      .find({ _id: { $ne: userId }, nickname: { $regex: safe, $options: 'i' } }, { projection: { nickname: 1, username: 1, xp: 1 } })
+      .limit(6)
+      .toArray()
+    return json({ players: list.map((doc) => ({ id: doc._id!.toHexString(), nickname: doc.nickname ?? defaultNickname(doc.username) })) })
   }
 
   const duel = await findDuel(body.code)
   if (!duel) return fail(404, 'not_found')
+
+  if (action === 'decline') {
+    const done = await declineInvite(duel, userId)
+    return done ? json({ ok: true }) : fail(403, 'forbidden')
+  }
 
   if (action === 'join') {
     const joined = await joinDuel(duel, found.doc)
@@ -39,7 +72,11 @@ export const POST = handle(async (request) => {
 
   if (action === 'state') return json({ duel: await duelView(await settle(duel), userId) })
   if (action === 'setup') {
-    const updated = await setupDuel(duel, userId, body.game, body.mode)
+    const updated = await setupDuel(duel, userId, body)
+    return updated ? json({ duel: await duelView(updated, userId) }) : fail(400, 'bad_request')
+  }
+  if (action === 'invite') {
+    const updated = await inviteTo(duel, userId, body.to)
     return updated ? json({ duel: await duelView(updated, userId) }) : fail(400, 'bad_request')
   }
   if (action === 'next') return json({ duel: await duelView(await wantNext(duel, userId), userId) })
