@@ -229,7 +229,11 @@ export default function DuelRoom({ code }: { code: string }) {
           )}
 
           {(over || youDone) && answer && (
-            <div className={`card result ${!over ? 'skipped' : duel.youWon ? 'won' : duel.winner === null ? 'skipped' : 'lost'}`}>
+            <div
+              className={`card result ${
+                !over ? (you?.solved ? 'won' : 'skipped') : duel.youWon ? 'won' : duel.winner === null ? 'skipped' : 'lost'
+              }`}
+            >
               <h2>
                 {!over
                   ? you?.solved

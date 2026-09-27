@@ -4,6 +4,7 @@ import {
   backToLobby,
   createDuel,
   declineInvite,
+  dropIdle,
   leaveDuel,
   duelGuess,
   duelView,
@@ -17,6 +18,7 @@ import {
   settle,
   setupDuel,
   sideOf,
+  touchSide,
   wantNext,
 } from '../duels'
 import { ObjectId } from 'mongodb'
@@ -73,29 +75,31 @@ export const POST = handle(async (request) => {
 
   if (!sideOf(duel, userId)) return fail(403, 'forbidden')
 
+  const live = await dropIdle(await touchSide(duel, userId), userId)
+
   if (action === 'leave') {
-    const done = await leaveDuel(duel, userId)
+    const done = await leaveDuel(live, userId)
     return done ? json({ ok: true }) : fail(403, 'forbidden')
   }
 
-  if (action === 'state') return json({ duel: await duelView(await settle(duel), userId) })
+  if (action === 'state') return json({ duel: await duelView(await settle(live), userId) })
   if (action === 'setup') {
-    const updated = await setupDuel(duel, userId, body)
+    const updated = await setupDuel(live, userId, body)
     return updated ? json({ duel: await duelView(updated, userId) }) : fail(400, 'bad_request')
   }
   if (action === 'invite') {
-    const updated = await inviteTo(duel, userId, body.to)
+    const updated = await inviteTo(live, userId, body.to)
     return updated ? json({ duel: await duelView(updated, userId) }) : fail(400, 'bad_request')
   }
-  if (action === 'next') return json({ duel: await duelView(await wantNext(duel, userId), userId) })
-  if (action === 'lobby') return json({ duel: await duelView(await backToLobby(duel, userId), userId) })
-  if (action === 'ready') return json({ duel: await duelView(await setReady(duel, userId), userId) })
-  if (action === 'giveup') return json({ duel: await duelView(await giveUpDuel(duel, userId), userId) })
+  if (action === 'next') return json({ duel: await duelView(await wantNext(live, userId), userId) })
+  if (action === 'lobby') return json({ duel: await duelView(await backToLobby(live, userId), userId) })
+  if (action === 'ready') return json({ duel: await duelView(await setReady(live, userId), userId) })
+  if (action === 'giveup') return json({ duel: await duelView(await giveUpDuel(live, userId), userId) })
 
   if (action === 'guess') {
     const entityId = Number(body.entityId)
     if (!Number.isInteger(entityId)) return fail(400, 'bad_request')
-    const result = await duelGuess(await settle(duel), userId, entityId)
+    const result = await duelGuess(await settle(live), userId, entityId)
     if (result.error === 'too_fast') return fail(429, 'too_fast')
     if (result.error) return fail(result.error === 'not_found' ? 404 : result.error === 'duplicate' ? 409 : 400, result.error)
     return json({ duel: await duelView(result.duel!, userId) })

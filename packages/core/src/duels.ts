@@ -14,7 +14,7 @@ const code = () => Array.from({ length: 6 }, () => CODE_ALPHABET[randomInt(CODE_
 
 const nameOf = (doc: UserDoc) => doc.nickname ?? defaultNickname(doc.username)
 
-const player = (doc: UserDoc): DuelPlayer => ({ userId: doc._id!, nickname: nameOf(doc), ready: false, wantsNext: false, wins: 0, guesses: [] })
+const player = (doc: UserDoc): DuelPlayer => ({ userId: doc._id!, nickname: nameOf(doc), seenAt: new Date(), ready: false, wantsNext: false, wins: 0, guesses: [] })
 
 export const wrongCount = (duel: DuelDoc, side: DuelPlayer) => side.guesses.filter((g) => g !== duel.answerId).length
 
@@ -114,8 +114,15 @@ export async function duelInvites(userId: ObjectId) {
     .sort({ 'invite.at': -1 })
     .limit(5)
     .toArray()
+  const seen = new Set<string>()
   return list
     .filter((duel) => !sideOf(duel, userId))
+    .filter((duel) => {
+      const host = duel.hostId.toHexString()
+      if (seen.has(host)) return false
+      seen.add(host)
+      return true
+    })
     .map((duel) => ({
       code: duel.code,
       from: duel.players.find((side) => side.userId.equals(duel.hostId))?.nickname ?? duel.players[0]?.nickname ?? '?',
@@ -216,31 +223,61 @@ export async function wantNext(duel: DuelDoc, userId: ObjectId) {
   return beginRound(marked, 'finished')
 }
 
-export async function leaveDuel(duel: DuelDoc, userId: ObjectId) {
-  if (!sideOf(duel, userId)) return null
+export const IDLE_MS = 25_000
+
+async function dropPlayers(duel: DuelDoc, gone: DuelPlayer[]) {
   const collection = await duels()
-  const rest = duel.players.filter((side) => !side.userId.equals(userId))
+  const ids = new Set(gone.map((side) => side.userId.toHexString()))
+  const rest = duel.players.filter((side) => !ids.has(side.userId.toHexString()))
 
   if (!rest.length) {
     await collection.deleteOne({ _id: duel._id })
-    return true
+    return null
   }
 
-  await collection.updateOne(
+  const updated = await collection.findOneAndUpdate(
     { _id: duel._id },
     {
       $set: {
         players: rest.map((side) => ({ ...side, ready: false, wantsNext: false, wins: 0, guesses: [], solvedAt: null, gaveUp: false })),
-        hostId: duel.hostId.equals(userId) ? rest[0].userId : duel.hostId,
+        hostId: ids.has(duel.hostId.toHexString()) ? rest[0].userId : duel.hostId,
         status: 'lobby',
         matchDone: false,
         round: 0,
         draws: 0,
         invite: null,
+        left: { nickname: gone[0].nickname, at: new Date() },
       },
     },
+    { returnDocument: 'after' },
   )
+  return updated
+}
+
+export async function leaveDuel(duel: DuelDoc, userId: ObjectId) {
+  const side = sideOf(duel, userId)
+  if (!side) return null
+  await dropPlayers(duel, [side])
   return true
+}
+
+export async function touchSide(duel: DuelDoc, userId: ObjectId) {
+  const index = duel.players.findIndex((side) => side.userId.equals(userId))
+  if (index < 0) return duel
+  const updated = await (await duels()).findOneAndUpdate(
+    { _id: duel._id },
+    { $set: { [`players.${index}.seenAt`]: new Date() } },
+    { returnDocument: 'after' },
+  )
+  return updated ?? duel
+}
+
+export async function dropIdle(duel: DuelDoc, userId: ObjectId) {
+  if (duel.players.length < 2) return duel
+  const now = Date.now()
+  const gone = duel.players.filter((side) => !side.userId.equals(userId) && side.seenAt && now - side.seenAt.getTime() > IDLE_MS)
+  if (!gone.length) return duel
+  return (await dropPlayers(duel, gone)) ?? duel
 }
 
 export async function backToLobby(duel: DuelDoc, userId: ObjectId) {
@@ -378,6 +415,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId) {
     matchDone: Boolean(duel.matchDone),
     invited: duel.invite && !duel.invite.declined && duel.players.length < 2 ? duel.invite.nickname : null,
     declined: Boolean(duel.invite?.declined) && duel.players.length < 2,
+    left: duel.left && duel.players.length < 2 && Date.now() - duel.left.at.getTime() < 120_000 ? duel.left.nickname : null,
     round: duel.round,
     draws: duel.draws,
     host: isHost(duel, userId),

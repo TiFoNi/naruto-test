@@ -280,6 +280,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                 <i aria-hidden>+</i>
                 <span>{waiting ? t('duel.waitingInvited', { name: waiting }) : t('duel.waitingRival')}</span>
                 {duel.declined && <em className="off">{t('duel.inviteDeclined')}</em>}
+                {duel.left && <em className="off">{t('duel.rivalLeft', { name: duel.left })}</em>}
               </div>
             )}
           </section>

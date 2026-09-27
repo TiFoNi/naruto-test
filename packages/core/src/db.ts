@@ -65,6 +65,7 @@ export type RoundDoc = {
 export type DuelPlayer = {
   userId: ObjectId
   nickname: string
+  seenAt?: Date
   ready: boolean
   wantsNext?: boolean
   wins?: number
@@ -86,6 +87,7 @@ export type DuelDoc = {
   best?: number
   seconds?: number | null
   invite?: { toId: ObjectId; nickname: string; at: Date; declined?: boolean } | null
+  left?: { nickname: string; at: Date } | null
   matchDone?: boolean
   round: number
   draws: number

@@ -17,6 +17,7 @@ export type DuelView = {
   matchDone: boolean
   invited: string | null
   declined: boolean
+  left: string | null
   round: number
   draws: number
   host: boolean
@@ -34,6 +35,7 @@ export type DuelView = {
 }
 
 const POLL_MS = 2000
+const HIDDEN_EVERY = 3
 const GUESS_GAP_MS = 1000
 
 export function useDuel(code: string) {
@@ -76,8 +78,10 @@ export function useDuel(code: string) {
   }, [send])
 
   useEffect(() => {
+    let ticks = 0
     const timer = setInterval(() => {
-      if (document.visibilityState === 'visible') send({ action: 'state' }, true)
+      ticks += 1
+      if (document.visibilityState === 'visible' || ticks % HIDDEN_EVERY === 0) send({ action: 'state' }, true)
     }, POLL_MS)
     return () => clearInterval(timer)
   }, [send])

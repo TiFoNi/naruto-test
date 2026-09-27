@@ -51,6 +51,7 @@ const ui = {
   'duel.score': { ru: 'Счёт {you}:{rival}', uk: 'Рахунок {you}:{rival}', en: 'Score {you}:{rival}' },
   'duel.challenge': { ru: 'Вызвать на дуэль', uk: 'Викликати на дуель', en: 'Challenge to a duel' },
   'duel.waitingInvited': { ru: 'Ждём {name}', uk: 'Чекаємо {name}', en: 'Waiting for {name}' },
+  'duel.rivalLeft': { ru: '{name} вышел', uk: '{name} вийшов', en: '{name} left' },
   'duel.inviteDeclined': { ru: 'Вызов отклонён', uk: 'Виклик відхилено', en: 'Challenge declined' },
   'nav.bellHide': { ru: 'Скрыть', uk: 'Сховати', en: 'Dismiss' },
   'nav.level': { ru: 'Ур. {level}', uk: 'Рів. {level}', en: 'Lv. {level}' },
