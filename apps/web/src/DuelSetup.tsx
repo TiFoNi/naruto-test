@@ -156,7 +156,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                   onClick={() => onSetup({ game: one.id, mode: duelMode(one, duel.mode) })}
                 >
                   <i aria-hidden />
-                  {l(one.label)}
+                  <span>{l(one.label)}</span>
                 </button>
               ))}
             </div>
