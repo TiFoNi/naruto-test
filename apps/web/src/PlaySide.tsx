@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import ChallengeMaker from './ChallengeMaker'
+import GiveUp from './GiveUp'
 import { useAuth } from './auth'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
@@ -119,9 +120,9 @@ export default function PlaySide({ game, mode, daily, stats, playing, busy, lege
           <TrophyIcon /> {t('nav.leaderboard')}
         </Link>
         {playing && (
-          <button type="button" className="give-up" onClick={onGiveUp} disabled={busy}>
+          <GiveUp disabled={busy} onConfirm={onGiveUp}>
             {t('play.giveUp')}
-          </button>
+          </GiveUp>
         )}
       </div>
     </aside>

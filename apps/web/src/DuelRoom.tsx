@@ -4,6 +4,7 @@ import AbilityIcon from './AbilityIcon'
 import { ABILITY_STAGES, PHRASE_VOICE_AT } from '@nanda/game'
 import { ZOOM_LEVELS, levelAt } from './zoom'
 import CharacterSearch from './CharacterSearch'
+import GiveUp from './GiveUp'
 import GuessGrid from './GuessGrid'
 import MangaStage, { MangaOptions } from './MangaStage'
 import PhraseColumn from './PhraseColumn'
@@ -312,9 +313,9 @@ export default function DuelRoom({ code }: { code: string }) {
           )}
 
           {!over && !youDone && (
-            <button className="link-button" onClick={giveUp} disabled={busy}>
+            <GiveUp className="link-button" disabled={busy} onConfirm={giveUp}>
               {t('play.giveUp')}
-            </button>
+            </GiveUp>
           )}
 
           {(over || youDone) && answer && (
