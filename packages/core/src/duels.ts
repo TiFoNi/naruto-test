@@ -110,20 +110,20 @@ export const INVITE_MS = 60 * 60 * 1000
 
 export async function duelInvites(userId: ObjectId) {
   const list = await (await duels())
-    .find({ 'invite.toId': userId, 'invite.declined': { $ne: true }, status: 'lobby', createdAt: { $gt: new Date(Date.now() - INVITE_MS) } })
-    .sort({ createdAt: -1 })
+    .find({ 'invite.toId': userId, 'invite.declined': { $ne: true }, status: 'lobby', 'invite.at': { $gt: new Date(Date.now() - INVITE_MS) } })
+    .sort({ 'invite.at': -1 })
     .limit(5)
     .toArray()
   return list
     .filter((duel) => !sideOf(duel, userId))
     .map((duel) => ({
       code: duel.code,
-      from: duel.players[0]?.nickname ?? '?',
+      from: duel.players.find((side) => side.userId.equals(duel.hostId))?.nickname ?? duel.players[0]?.nickname ?? '?',
       game: duel.game ?? null,
       mode: duel.mode ?? null,
       best: duel.best ?? DUEL_DEFAULT.best,
       seconds: duel.seconds || DUEL_DEFAULT.seconds,
-      at: duel.createdAt.toISOString(),
+      at: (duel.invite?.at ?? duel.createdAt).toISOString(),
     }))
 }
 

@@ -175,7 +175,7 @@ export async function duels(): Promise<Collection<DuelDoc>> {
   cache.__duelsIndexed ??= Promise.all([
     collection.createIndex({ code: 1 }, { unique: true }),
     collection.createIndex({ 'players.userId': 1, createdAt: -1 }),
-    collection.createIndex({ 'invite.toId': 1, status: 1, createdAt: -1 }),
+    collection.createIndex({ 'invite.toId': 1, status: 1, 'invite.at': -1 }),
     collection.createIndex({ touchedAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 7 }),
     collection.dropIndex('createdAt_1').catch(() => undefined),
   ]).catch((error) => {

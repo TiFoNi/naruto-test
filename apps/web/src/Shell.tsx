@@ -195,7 +195,7 @@ function AccountMenu({ nickname, level, section }: { nickname: string; level: nu
 }
 
 const HIDDEN = 'nanda.seen-awards'
-const POLL_MS = 20_000
+const POLL_MS = 10_000
 
 const readHidden = () => {
   try {
@@ -225,10 +225,12 @@ function Bell() {
     const tick = () => document.visibilityState === 'visible' && void refreshFeed()
     const timer = setInterval(tick, POLL_MS)
     document.addEventListener('visibilitychange', tick)
+    window.addEventListener('focus', tick)
     return () => {
       stop()
       clearInterval(timer)
       document.removeEventListener('visibilitychange', tick)
+      window.removeEventListener('focus', tick)
     }
   }, [])
 
