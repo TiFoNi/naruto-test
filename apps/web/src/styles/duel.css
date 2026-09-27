@@ -798,3 +798,152 @@
   border-color: color-mix(in srgb, #ff8085 45%, var(--line));
   color: #ff8085;
 }
+
+@media (max-width: 620px) {
+  .duel-setup {
+    gap: 14px;
+  }
+
+  .duel-setup-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .duel-setup-head h1 {
+    font-size: 26px;
+  }
+
+  .duel-code {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+  }
+
+  .duel-code > .muted {
+    display: none;
+  }
+
+  .duel-code b {
+    padding: 9px 12px;
+    text-align: center;
+  }
+
+  .duel-code .ghost {
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  .duel-code .duel-leave {
+    grid-column: 1 / -1;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  .duel-step-head h2 {
+    font-size: 16px;
+  }
+
+  .duel-cats {
+    width: 100%;
+  }
+
+  .duel-cats button {
+    flex: 1;
+    padding: 7px 4px;
+    font-size: 12.5px;
+  }
+
+  .duel-random {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .duel-worlds {
+    gap: 6px;
+  }
+
+  .duel-world {
+    padding: 8px 12px 8px 8px;
+    font-size: 12.5px;
+  }
+
+  .duel-modes {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .duel-mode {
+    padding: 10px;
+  }
+
+  .duel-mode-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 15px;
+  }
+
+  .duel-rules {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .duel-chips button {
+    padding: 10px 4px;
+    font-size: 13px;
+  }
+
+  .duel-seats {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .duel-seat {
+    min-height: 0;
+    padding: 14px 10px;
+  }
+
+  .duel-seats-vs {
+    text-align: center;
+  }
+
+  .duel-seat.empty i {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  .duel-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .duel-head h1 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 17px;
+  }
+
+  .duel-head-side {
+    justify-content: space-between;
+  }
+
+  .duel-head-side .duel-leave {
+    flex: 1;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  .duel-players {
+    gap: 8px;
+    padding: 12px 14px;
+  }
+
+  .duel-final-score {
+    font-size: 28px;
+  }
+}

@@ -16,7 +16,7 @@
 
 .hero-search {
   grid-area: search;
-  align-self: start;
+  align-self: end;
 }
 
 .hero-sub {
@@ -542,4 +542,41 @@ html[data-auth][data-checking] .hero-guest {
   margin-top: 2px;
   text-align: center;
   text-decoration: none;
+}
+
+@media (max-width: 980px) {
+  .dashboard > * {
+    order: 4;
+  }
+
+  .hero {
+    display: contents;
+  }
+
+  .hero-copy {
+    order: 0;
+    align-self: stretch;
+  }
+
+  .hero .quests-card,
+  .hero .hero-guest {
+    order: 1;
+  }
+
+  .picker {
+    order: 2;
+  }
+
+  .hero-search {
+    order: 3;
+    align-self: stretch;
+    max-width: none;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .dashboard {
+    gap: 24px;
+  }
 }

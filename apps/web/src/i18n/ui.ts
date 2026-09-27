@@ -659,6 +659,7 @@ const ui = {
     uk: 'Поки нічого не закріплено — обери до 6 значків на сторінці досягнень.',
     en: 'Nothing pinned yet — pick up to 6 badges on the achievements page.',
   },
+  'profile.awardsNone': { ru: 'Игрок пока ничего не закрепил.', uk: 'Гравець поки нічого не закріпив.', en: 'This player has not pinned anything yet.' },
   'profile.settings': { ru: 'Настройки', uk: 'Налаштування', en: 'Settings' },
   'settings.title': { ru: 'Настройки', uk: 'Налаштування', en: 'Settings' },
   'settings.profile': { ru: 'Профиль', uk: 'Профіль', en: 'Profile' },

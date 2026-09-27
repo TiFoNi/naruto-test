@@ -128,6 +128,17 @@ export function SwordsIcon({ className }: IconProps) {
   )
 }
 
+export function PodiumIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M3 21h18" />
+      <path d="M9 21V8h6v13" />
+      <path d="M3 21v-7h6" />
+      <path d="M15 17h6v4" />
+    </svg>
+  )
+}
+
 export function TrophyIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

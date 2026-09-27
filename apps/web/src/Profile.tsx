@@ -468,7 +468,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                 <span className="soon-count">{pinned.length}/6</span>
               </h2>
             </header>
-            <p className="muted">{pinned.length ? t('profile.awardsSoon') : t('profile.awardsPinHint')}</p>
+            <p className="muted">{pinned.length ? t('profile.awardsSoon') : own ? t('profile.awardsPinHint') : t('profile.awardsNone')}</p>
             <ul className="soon-badges">
               {Array.from({ length: 6 }, (_, index) => {
                 const award = pinned[index]
@@ -481,9 +481,11 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                 )
               })}
             </ul>
-            <Link className="lb-link awards-open" href={href.achievements}>
-              <TrophyIcon /> {t('ach.open')}
-            </Link>
+            {own && (
+              <Link className="lb-link awards-open" href={href.achievements}>
+                <TrophyIcon /> {t('ach.open')}
+              </Link>
+            )}
           </section>
         </div>
       </div>

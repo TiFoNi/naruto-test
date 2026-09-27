@@ -4,7 +4,7 @@ import GiveUp from './GiveUp'
 import { useAuth } from './auth'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
-import { CheckIcon, CloseIcon, DownIcon, MinusIcon, TrophyIcon, UpIcon } from './icons'
+import { CheckIcon, CloseIcon, DownIcon, MinusIcon, PodiumIcon, UpIcon } from './icons'
 import type { ModeId } from './modes'
 import { useHref } from './router'
 import { average, type Stats } from './stats'
@@ -117,7 +117,7 @@ export default function PlaySide({ game, mode, daily, stats, playing, busy, lege
       <div className="play-actions">
         {!daily && <ChallengeMaker game={game} mode={mode} />}
         <Link className="lb-link" href={href.leaderboard(game.id, mode)}>
-          <TrophyIcon /> {t('nav.leaderboard')}
+          <PodiumIcon /> {t('nav.leaderboard')}
         </Link>
         {playing && (
           <GiveUp disabled={busy} onConfirm={onGiveUp}>

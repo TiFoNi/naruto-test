@@ -11,7 +11,7 @@ import { dropInvite, freshFeed, refreshFeed, watchFeed, type Feed } from './awar
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
-import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, MedalIcon, MenuIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
+import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, MenuIcon, PodiumIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
 import { api } from './api'
 import { gameById } from './games'
 import type { GameId } from './games/types'
@@ -75,7 +75,7 @@ function NavMenu({ user, section }: { user: boolean; section?: string }) {
             </Link>
             <Link className={onBoard ? 'active' : ''} href={href.board} onClick={() => setOpen(false)}>
               <span className="topbar-nav-icon" aria-hidden>
-                <MedalIcon />
+                <PodiumIcon />
               </span>
               {t('nav.leaderboard')}
             </Link>
