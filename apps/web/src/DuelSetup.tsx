@@ -29,6 +29,8 @@ type Props = {
   onReady: () => void
 }
 
+const duelReady = (game: { modes: readonly string[] }) => game.modes.some((mode) => DUEL_MODES.includes(mode as never))
+
 const duelMode = (game: { modes: readonly string[] }, current: string | null) => {
   const usable = DUEL_MODES.filter((mode) => game.modes.includes(mode))
   return current && usable.includes(current as never) ? current : usable[0]
@@ -69,7 +71,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
     }
   }, [query])
 
-  const worlds = useMemo(() => GAMES.filter((one) => one.category === category && one.modes.some((mode) => DUEL_MODES.includes(mode))), [category])
+  const worlds = useMemo(() => GAMES.filter((one) => one.category === category && duelReady(one)), [category])
   const modes = MODES.filter((mode) => DUEL_MODES.includes(mode.id) && game.modes.includes(mode.id))
 
   const copy = () => {
@@ -122,7 +124,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                 {t('duel.stepWorld')}
               </h2>
               <div className="duel-cats">
-                {CATEGORIES.filter((one) => GAMES.some((g) => g.category === one.id)).map((one) => (
+                {CATEGORIES.filter((one) => GAMES.some((g) => g.category === one.id && duelReady(g))).map((one) => (
                   <button
                     key={one.id}
                     type="button"
