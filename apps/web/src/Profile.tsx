@@ -41,18 +41,15 @@ type Summary = {
   games: { game: GameId; pool: number; solved: number }[]
   modes: { mode: string; played: number; won: number; guesses: number }[]
   recent: {
-    kind?: 'duel'
     game: string
     mode: string
     answerId?: number
     status: string
     guessCount?: number
     daily?: string
+    challenge?: string
     finishedAt?: string
     name?: Named | null
-    rival?: string
-    wins?: number
-    losses?: number
   }[]
 }
 
@@ -429,21 +426,16 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                 {summary?.recent.length ? (
                   <ul className="activity">
                     {summary.recent.map((round, index) => (
-                      <li key={`${round.game}-${round.answerId ?? round.rival}-${index}`}>
+                      <li key={`${round.game}-${round.answerId}-${index}`}>
                         <span className={`activity-dot ${round.status}`} aria-hidden />
                         <span className="activity-text">
-                          {round.kind === 'duel'
-                            ? t(round.status === 'won' ? 'profile.duelWon' : 'profile.duelLost', { name: round.rival ?? '' })
-                            : t(round.status === 'won' ? 'profile.won' : round.status === 'skipped' ? 'profile.gaveUp' : 'profile.lost', {
-                                name: round.name ? round.name[lang] : `#${round.answerId}`,
-                              })}
+                          {t(round.status === 'won' ? 'profile.won' : round.status === 'skipped' ? 'profile.gaveUp' : 'profile.lost', {
+                            name: round.name ? round.name[lang] : `#${round.answerId}`,
+                          })}
                           <small>
                             {gameLabel(round.game) ? l(gameLabel(round.game)!) : round.game} · {t(modeLabel(round.mode))}
-                            {round.kind === 'duel'
-                              ? ` · ${round.wins ?? 0}:${round.losses ?? 0}`
-                              : round.guessCount
-                                ? ` · ${t('profile.tries', { count: round.guessCount })}`
-                                : ''}
+                            {round.challenge ? ` · ${t('profile.fromFriend')}` : ''}
+                            {round.guessCount ? ` · ${t('profile.tries', { count: round.guessCount })}` : ''}
                           </small>
                         </span>
                         <span className="activity-when muted">{date(round.finishedAt)}</span>

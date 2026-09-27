@@ -94,7 +94,7 @@ export async function collectFacts(userId: ObjectId, languages = 1, since?: Date
   const [roundList, duelList, person] = await Promise.all([
     (await rounds())
       .find(
-        { userId, ...fresh },
+        { userId, challenge: { $exists: false }, ...fresh },
         { projection: { game: 1, mode: 1, status: 1, answerId: 1, guessCount: 1, guesses: 1, daily: 1, finishedAt: 1, createdAt: 1 }, sort: { createdAt: 1 } },
       )
       .toArray(),

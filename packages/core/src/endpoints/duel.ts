@@ -19,6 +19,7 @@ import {
   settle,
   setupDuel,
   sideOf,
+  sweepDuels,
   touchSide,
   wantNext,
 } from '../duels'
@@ -31,6 +32,7 @@ export const POST = handle(async (request) => {
   const userId = found.doc._id!
   const body = await readJson(request)
   const action = body.action
+  await sweepDuels()
 
   if (action === 'create') {
     const reuse = body.fresh ? null : await openLobby(userId)

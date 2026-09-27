@@ -20,8 +20,20 @@ export type UserDoc = {
   resetAt?: Date
   pinned?: string[]
   duelStats?: { played?: number; wins?: number; losses?: number; draws?: number }
+  duelLog?: DuelLogRow[]
   challengeStats?: { solved?: number }
   createdAt: Date
+}
+
+export type DuelLogRow = {
+  at: Date
+  game?: string
+  mode?: string
+  rivalId?: ObjectId
+  rival: string
+  wins: number
+  losses: number
+  won: boolean
 }
 
 export type Stats = { solved: number; streak: number; best: number; totalGuesses: number; skipped: number; lastDay?: string }

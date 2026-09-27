@@ -7,7 +7,6 @@ import { fail, handle, json } from '../http'
 import { currentUser, defaultNickname, unauthorized } from '../profile'
 import { LEVEL_XP, levelOf, nextRank, rankOf } from '../quests'
 import { shiftDay, today } from '../daily'
-import { duelHistory } from '../duels'
 import { seasonAt } from '../season'
 
 const RECENT = 8
@@ -21,6 +20,7 @@ const ZONE = 'Europe/Kyiv'
 async function history(userId: ObjectId) {
   const collection = await rounds()
   const finished = { userId, guest: { $ne: true }, status: { $ne: 'active' } }
+  const counted = { $match: { challenge: { $exists: false } } }
 
   const [facet] = await collection
     .aggregate([
@@ -28,11 +28,13 @@ async function history(userId: ObjectId) {
       {
         $facet: {
           games: [
+            counted,
             { $match: { status: 'won' } },
             { $group: { _id: { game: '$game', answerId: '$answerId' } } },
             { $group: { _id: '$_id.game', unique: { $sum: 1 } } },
           ],
           modes: [
+            counted,
             {
               $group: {
                 _id: '$mode',
@@ -43,6 +45,7 @@ async function history(userId: ObjectId) {
             },
           ],
           days: [
+            counted,
             { $group: { _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: ZONE } } } },
             { $sort: { _id: -1 } },
           ],
@@ -52,6 +55,7 @@ async function history(userId: ObjectId) {
             { $project: { _id: 0, game: 1, mode: 1, answerId: 1, status: 1, guessCount: 1, daily: 1, challenge: 1, finishedAt: 1 } },
           ],
           totals: [
+            counted,
             {
               $group: {
                 _id: null,
@@ -210,21 +214,6 @@ export const GET = handle(async (request) => {
     }),
   )
 
-  const duels = (await duelHistory(doc._id!, 20)).map((row) => ({
-    kind: 'duel' as const,
-    game: row.game ?? '',
-    mode: row.mode ?? 'classic',
-    status: row.won ? 'won' : 'lost',
-    rival: row.rival,
-    wins: row.wins,
-    losses: row.losses,
-    finishedAt: new Date(row.at),
-  }))
-
-  const feed = [...named, ...duels]
-    .sort((a, b) => (b.finishedAt?.getTime() ?? 0) - (a.finishedAt?.getTime() ?? 0))
-    .slice(0, RECENT)
-
   const xp = doc.xp ?? 0
   const level = levelOf(xp)
 
@@ -258,6 +247,6 @@ export const GET = handle(async (request) => {
     streak,
     games,
     modes,
-    recent: feed,
+    recent: named,
   })
 })

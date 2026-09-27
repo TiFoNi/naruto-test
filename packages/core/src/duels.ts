@@ -18,12 +18,13 @@ import {
   type ModeId,
 } from '@nanda/game'
 import { abilityByKey } from './abilities'
-import { duels, users, type DuelDoc, type DuelPlayer, type UserDoc } from './db'
+import { duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type UserDoc } from './db'
 import { optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { gameData, isGame, isMode } from './games'
 import { addXp, defaultNickname } from './profile'
 
 export const MIN_GAP_MS = 800
+export const DUEL_LOG_MAX = 10
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
 
 const code = () => Array.from({ length: 6 }, () => CODE_ALPHABET[randomInt(CODE_ALPHABET.length)]).join('')
@@ -263,6 +264,16 @@ export async function wantNext(duel: DuelDoc, userId: ObjectId) {
 }
 
 export const IDLE_MS = 25_000
+const EMPTY_MS = 90_000
+const SWEEP_MS = 60_000
+let sweptAt = 0
+
+export async function sweepDuels() {
+  if (Date.now() - sweptAt < SWEEP_MS) return
+  sweptAt = Date.now()
+  const gone = new Date(Date.now() - EMPTY_MS)
+  await (await duels()).deleteMany({ players: { $not: { $elemMatch: { seenAt: { $gt: gone } } } } })
+}
 
 async function dropPlayers(duel: DuelDoc, gone: DuelPlayer[]) {
   const collection = await duels()
@@ -278,27 +289,19 @@ async function dropPlayers(duel: DuelDoc, gone: DuelPlayer[]) {
   const played = duel.players.some((side) => (side.wins ?? 0) > 0) || duel.round > 0
   if (running && played && rest.length === 1) {
     const winner = rest[0].userId
+    const at = new Date()
+    const scores = duel.players.map((side) => ({ userId: side.userId, nickname: side.nickname, wins: side.wins ?? 0 }))
     await applyDuelStats(winner, [...rest, ...gone])
     await collection.updateOne(
       { _id: duel._id },
       {
         $push: {
-          log: { $each: [{ winnerId: winner, at: new Date(), ms: null, mode: duel.mode }], $slice: -200 },
-          matches: {
-            $each: [
-              {
-                winnerId: winner,
-                at: new Date(),
-                game: duel.game,
-                mode: duel.mode,
-                scores: duel.players.map((side) => ({ userId: side.userId, nickname: side.nickname, wins: side.wins ?? 0 })),
-              },
-            ],
-            $slice: -50,
-          },
+          log: { $each: [{ winnerId: winner, at, ms: null, mode: duel.mode }], $slice: -200 },
+          matches: { $each: [{ winnerId: winner, at, game: duel.game, mode: duel.mode, scores }], $slice: -50 },
         },
       },
     )
+    await pushDuelLog(scores, winner, duel.game, duel.mode, at)
     await duelXp(winner, (duel.mode ?? 'classic') as ModeId, true)
   }
 
@@ -385,6 +388,32 @@ function decide(duel: DuelDoc) {
   return null
 }
 
+async function pushDuelLog(
+  scores: { userId: ObjectId; nickname: string; wins: number }[],
+  winnerId: ObjectId | null,
+  game: string | undefined,
+  mode: string | undefined,
+  at: Date,
+) {
+  const collection = await users()
+  await Promise.all(
+    scores.map((side, index) => {
+      const rival = scores[scores.length - 1 - index]
+      const row: DuelLogRow = {
+        at,
+        game,
+        mode,
+        rivalId: rival?.userId,
+        rival: rival?.nickname ?? '',
+        wins: side.wins,
+        losses: rival?.wins ?? 0,
+        won: Boolean(winnerId?.equals(side.userId)),
+      }
+      return collection.updateOne({ _id: side.userId }, { $push: { duelLog: { $each: [row], $slice: -DUEL_LOG_MAX } } })
+    }),
+  )
+}
+
 async function applyDuelStats(winnerId: ObjectId | null, players: DuelPlayer[]) {
   const collection = await users()
   await Promise.all(
@@ -406,39 +435,29 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   const matchDone = winnerIndex >= 0 && (duel.players[winnerIndex].wins ?? 0) + 1 >= winsNeeded(duel)
   const solvedAt = winnerIndex >= 0 ? duel.players[winnerIndex].solvedAt : null
   const ms = solvedAt && duel.startedAt ? solvedAt.getTime() - duel.startedAt.getTime() : null
+  const at = new Date()
+  const scores = duel.players.map((side, index) => ({
+    userId: side.userId,
+    nickname: side.nickname,
+    wins: (side.wins ?? 0) + (index === winnerIndex ? 1 : 0),
+  }))
   const finished = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: 'playing' },
     {
-      $set: { status: 'finished', finishedAt: new Date(), winnerId, matchDone },
+      $set: { status: 'finished', finishedAt: at, winnerId, matchDone },
       $inc: winnerIndex >= 0 ? { [`players.${winnerIndex}.wins`]: 1 } : { draws: 1 },
       $push: {
-        log: { $each: [{ winnerId, at: new Date(), ms, mode: duel.mode }], $slice: -200 },
-        ...(matchDone
-          ? {
-              matches: {
-                $each: [
-                  {
-                    winnerId,
-                    at: new Date(),
-                    game: duel.game,
-                    mode: duel.mode,
-                    scores: duel.players.map((side, index) => ({
-                      userId: side.userId,
-                      nickname: side.nickname,
-                      wins: (side.wins ?? 0) + (index === winnerIndex ? 1 : 0),
-                    })),
-                  },
-                ],
-                $slice: -50,
-              },
-            }
-          : {}),
+        log: { $each: [{ winnerId, at, ms, mode: duel.mode }], $slice: -200 },
+        ...(matchDone ? { matches: { $each: [{ winnerId, at, game: duel.game, mode: duel.mode, scores }], $slice: -50 } } : {}),
       },
     },
     { returnDocument: 'after' },
   )
   if (!finished) return (await duels()).findOne({ _id: duel._id }) as Promise<DuelDoc>
-  await applyDuelStats(winnerId, finished.players)
+  if (matchDone) {
+    await applyDuelStats(winnerId, finished.players)
+    await pushDuelLog(scores, winnerId, duel.game, duel.mode, at)
+  }
   if (winnerId) await duelXp(winnerId, duel.mode as ModeId, matchDone)
   return finished
 }
