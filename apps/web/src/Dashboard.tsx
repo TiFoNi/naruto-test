@@ -23,21 +23,6 @@ const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'sport', title: 'dash.sport' },
 ]
 
-const WORLDS = {
-  ru: ['вселенная', 'вселенные', 'вселенных'],
-  uk: ['всесвіт', 'всесвіти', 'всесвітів'],
-  en: ['world', 'worlds', 'worlds'],
-} as const
-
-const worldsOf = (count: number, lang: keyof typeof WORLDS) => {
-  if (lang === 'en') return WORLDS.en[count === 1 ? 0 : 1]
-  const ten = count % 10
-  const hundred = count % 100
-  if (ten === 1 && hundred !== 11) return WORLDS[lang][0]
-  if (ten >= 2 && ten <= 4 && (hundred < 12 || hundred > 14)) return WORLDS[lang][1]
-  return WORLDS[lang][2]
-}
-
 const PERKS: { key: UiKey; Icon: typeof ChartIcon }[] = [
   { key: 'login.perk.progress', Icon: ChartIcon },
   { key: 'login.perk.duels', Icon: SwordsIcon },
@@ -159,7 +144,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
 }
 
 export default function Dashboard({ games }: { games: GameMeta[] }) {
-  const { t, lang } = useI18n()
+  const { t } = useI18n()
   const href = useHref()
   const { user } = useAuth()
 
@@ -286,7 +271,7 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
                 <span className="tile-body">
                   <b>{t(category.title)}</b>
                   <small>
-                    {list.length} {worldsOf(list.length, lang)}
+                    {t('dash.worlds', { count: list.length })}
                   </small>
                 </span>
               </button>

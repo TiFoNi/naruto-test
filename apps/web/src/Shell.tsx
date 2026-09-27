@@ -17,7 +17,6 @@ import { openStream } from './stream'
 import { gameById } from './games'
 import type { GameId } from './games/types'
 import { MODES } from './modes'
-import { pluralIndex } from './plural'
 import { useBeforePaint } from './paint'
 import { useHref, useNavigate, useVisitTracker } from './router'
 
@@ -207,10 +206,8 @@ const readHidden = () => {
   }
 }
 
-const ROUND_KEYS = ['duel.rounds1', 'duel.rounds2', 'duel.rounds5'] as const
-
 function Bell() {
-  const { t, l, lang } = useI18n()
+  const { t, l } = useI18n()
   const href = useHref()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -302,7 +299,7 @@ function Bell() {
                         <span className="bell-tags">
                           {game && <em>{l(game.label)}</em>}
                           {mode && <em>{t(mode.label)}</em>}
-                          <em>{t(ROUND_KEYS[pluralIndex(invite.best, lang)], { count: invite.best })}</em>
+                          <em>{t('duel.rounds', { count: invite.best })}</em>
                         </span>
                       </span>
                     </span>

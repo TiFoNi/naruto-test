@@ -7041,3 +7041,14 @@ button.award:disabled {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
   color: var(--text);
 }
+
+@media (max-width: 620px) {
+  .bell-menu {
+    position: fixed;
+    top: calc(var(--topbar-h) + 6px);
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-height: min(68vh, 520px);
+  }
+}

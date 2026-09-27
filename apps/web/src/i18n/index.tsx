@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, type ReactN
 import { LANGS, type L10n, type Lang } from './langs'
 import type { Dict, UiKey } from './ui'
 import { useTerms } from '../terms'
+import { pluralIndex } from '../plural'
 
 export { LANGS }
 export type { L10n, Lang, UiKey }
@@ -62,8 +63,13 @@ export function I18nProvider({ children, lang, dict }: { children: ReactNode; la
   const value = useMemo<I18n>(() => {
     const index = lang === 'uk' ? 0 : 1
     const ukNames = new Map<string, string>()
-    const t: I18n['t'] = (key, vars) =>
-      (dict[key] ?? key).replace(/\{(\w+)\}/g, (_, k: string) => String(vars?.[k] ?? `{${k}}`))
+    const t: I18n['t'] = (key, vars) => {
+      const raw = dict[key] ?? key
+      const forms = raw.split('|')
+      const count = vars?.count
+      const text = forms.length > 1 && typeof count === 'number' ? forms[Math.min(pluralIndex(count, lang), forms.length - 1)] : raw
+      return text.replace(/\{(\w+)\}/g, (_, k: string) => String(vars?.[k] ?? `{${k}}`))
+    }
     const name: I18n['name'] = (entity) => {
       if (lang === 'en') return entity.nameEn ?? entity.name
       if (lang === 'ru') return entity.name

@@ -7,7 +7,6 @@ import { GAMES, gameById } from './games'
 import type { Category, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
-import { pluralIndex } from './plural'
 import type { DuelView } from './useDuel'
 import { CopyIcon, DiceIcon, ExitIcon, LinkIcon, SwordsIcon } from './icons'
 
@@ -38,10 +37,8 @@ const duelMode = (game: { modes: readonly string[] }, current: string | null) =>
   return current && usable.includes(current as never) ? current : usable[0]
 }
 
-const ROUND_KEYS = ['duel.rounds1', 'duel.rounds2', 'duel.rounds5'] as const
-
 export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady, onLeave }: Props) {
-  const { t, l, lang } = useI18n()
+  const { t, l } = useI18n()
   const host = duel.host
   const game = gameById((duel.game ?? 'naruto') as GameId)
   const [category, setCategory] = useState<Category>(game.category)
@@ -338,7 +335,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
             <div className="duel-summary">
               <em>{l(game.label)}</em>
               <em>{t(MODES.find((m) => m.id === duel.mode)?.label ?? 'mode.classic')}</em>
-              <em>{t(ROUND_KEYS[pluralIndex(duel.best, lang)], { count: duel.best })}</em>
+              <em>{t('duel.rounds', { count: duel.best })}</em>
               <em>{t('duel.timeShort', { time: timeLabel(duel.seconds) })}</em>
             </div>
             <button type="button" className="primary big" disabled={busy || !rival || duel.you?.ready} onClick={onReady}>
