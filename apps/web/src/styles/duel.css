@@ -585,9 +585,9 @@
 
 .duel-found li .ghost {
   margin-left: auto;
-  padding: 6px 12px;
+  padding: 7px 14px;
   border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line));
-  border-radius: 999px;
+  border-radius: 10px;
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   color: var(--accent);
   font-size: 12px;
