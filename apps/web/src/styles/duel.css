@@ -670,3 +670,13 @@
   height: 20px;
   vertical-align: middle;
 }
+
+.duel-side {
+  min-height: 1px;
+}
+
+@media (max-width: 1040px) {
+  .duel-side {
+    display: none;
+  }
+}

@@ -4022,11 +4022,6 @@ html:not([data-auth]) .play-actions .challenge-open {
   width: 100%;
 }
 
-.duel .mode .card,
-.duel .mode .search {
-  width: min(100%, 560px);
-}
-
 .duel .back,
 .duels .back {
   align-self: flex-start;

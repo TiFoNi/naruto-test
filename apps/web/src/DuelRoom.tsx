@@ -4,7 +4,7 @@ import AbilityIcon from './AbilityIcon'
 import { ZOOM_LEVELS } from './zoom'
 import CharacterSearch from './CharacterSearch'
 import GuessGrid from './GuessGrid'
-import { Legend } from './PlaySide'
+import PlayPanel from './PlayPanel'
 import Thumb from './Thumb'
 import ZoomImage from './ZoomImage'
 import { gameById } from './games'
@@ -133,90 +133,124 @@ export default function DuelRoom({ code }: { code: string }) {
       )}
 
       {!inLobby && game && (
-        <section className="mode">
-          <div className="card intro">
-            <h2>{t(duel.mode === 'ability' ? 'play.abilityTitle' : duel.mode === 'image' ? 'play.imageTitle' : 'play.classicTitle')}</h2>
-            {duel.mode === 'image' && !over && (
-              <ZoomImage game={game} src={apiSrc(duel.image)} zoom={zoom} resetKey={`${duel.code}-${duel.round}`} />
+        <section className={`play-layout ${duel.mode === 'image' ? 'shot-layout' : duel.mode === 'ability' ? 'ability-layout' : ''}`}>
+          {duel.mode === 'image' && (
+            <div className="shot-column">
+              <div className="shot">
+                <ZoomImage game={game} src={apiSrc(duel.image)} zoom={zoom} resetKey={`${duel.code}-${duel.round}`} />
+              </div>
+            </div>
+          )}
+
+          {duel.mode === 'ability' && (
+            <div className="shot-column ability-column">
+              <div className={`ability-stage ${over ? (duel.youWon ? 'won' : 'lost') : ''}`}>
+                <span className="ability-glow" aria-hidden />
+                <AbilityIcon
+                  className="ability-art"
+                  src={duel.image ? `${apiSrc(duel.image)}&v=${over ? 'done' : wrong}` : undefined}
+                  resetKey={`${duel.code}-${duel.round}`}
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="play-main">
+            {duel.mode === 'classic' ? (
+              <PlayPanel
+                media={
+                  <span className="play-mystery" aria-hidden>
+                    ?
+                  </span>
+                }
+                title={t('play.classicTitle')}
+                hint={t('duel.hurry')}
+              >
+                {!over && !youDone && (
+                  <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} />
+                )}
+              </PlayPanel>
+            ) : (
+              <>
+                <div className="play-card shot-copy">
+                  <h2>{t(duel.mode === 'ability' ? 'play.abilityTitle' : 'play.imageTitle')}</h2>
+                  <p>{t('duel.hurry')}</p>
+                </div>
+                {!over && !youDone && (
+                  <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} compact />
+                )}
+              </>
             )}
-            {duel.mode === 'ability' && (
-              <AbilityIcon
-                src={duel.image ? `${apiSrc(duel.image)}&v=${over ? 'done' : wrong}` : undefined}
-                resetKey={`${duel.code}-${duel.round}`}
-              />
-            )}
+
             {duel.ability && (
               <p className="ability-hint">
                 {t(over ? 'ability.was' : 'ability.hint')} <b>{duel.ability[lang]}</b>
               </p>
             )}
-            {duel.status === 'playing' && !youDone && <p className="round">{t('duel.hurry')}</p>}
-          </div>
 
-          {over && answer ? (
-            <div className={`card result ${duel.youWon ? 'won' : duel.winner === null ? 'skipped' : 'lost'}`}>
-              <h2>
-                {duel.matchDone
-                  ? duel.youWon
-                    ? t('duel.matchWon')
-                    : t('duel.matchLost', { name: duel.winner ?? '' })
-                  : duel.youWon
-                    ? t('duel.youWon')
-                    : duel.winner
-                      ? t('duel.youLost', { name: duel.winner })
-                      : t('duel.draw')}
-              </h2>
-              <p className="duel-score">{t('duel.score', { you: you?.wins ?? 0, rival: rival?.wins ?? 0 })}</p>
-              <img className="result-image" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />
-              <div className="result-name">{name(answer)}</div>
-              <p className="round">
-                {you?.nickname}: {t('duel.guesses', { count: you?.guesses.length ?? 0 })}
-                {rival ? ` · ${rival.nickname}: ${t('duel.guesses', { count: rival.guessCount })}` : ''}
-              </p>
-              <div className="result-actions">
-                {duel.matchDone ? (
-                  <button className="primary" onClick={toLobby} disabled={busy}>
-                    {t('duel.rematch')}
-                  </button>
-                ) : (
-                  <>
-                    <button className="primary" onClick={next} disabled={busy || you?.wantsNext}>
-                      {you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
-                    </button>
-                    <button className="ghost" onClick={toLobby} disabled={busy}>
-                      {t('duel.toLobby')}
-                    </button>
-                  </>
-                )}
-              </div>
-              {rival?.wantsNext && !you?.wantsNext && <p className="muted small">{t('duel.rivalWantsNext', { name: rival.nickname })}</p>}
-            </div>
-          ) : youDone ? (
-            <div className="card round-status muted">{you?.solved ? t('duel.waitRival') : t('duel.gaveUpWait')}</div>
-          ) : (
-            <>
-              <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} />
+            {!over && !youDone && (
               <button className="link-button" onClick={giveUp} disabled={busy}>
                 {t('play.giveUp')}
               </button>
-            </>
-          )}
+            )}
 
-          {duel.mode === 'classic' ? (
-            <>
-              <GuessGrid game={game} guesses={guesses} answerId={duel.answerId} />
-              <Legend game={game} />
-            </>
-          ) : (
-            <div className="guess-list">
-              {guesses.map(({ entity: g, pending: p }) => (
-                <div key={g.id} className={`guess-chip ${p ? 'pending' : you?.solved && g.id === answer?.id ? 'correct' : 'wrong'}`}>
-                  <Thumb game={game} entity={g} size={44} />
-                  <span>{name(g)}</span>
+            {!over && youDone && <div className="card round-status muted">{you?.solved ? t('duel.waitRival') : t('duel.gaveUpWait')}</div>}
+
+            {over && answer && (
+              <div className={`card result ${duel.youWon ? 'won' : duel.winner === null ? 'skipped' : 'lost'}`}>
+                <h2>
+                  {duel.matchDone
+                    ? duel.youWon
+                      ? t('duel.matchWon')
+                      : t('duel.matchLost', { name: duel.winner ?? '' })
+                    : duel.youWon
+                      ? t('duel.youWon')
+                      : duel.winner
+                        ? t('duel.youLost', { name: duel.winner })
+                        : t('duel.draw')}
+                </h2>
+                <p className="duel-score">{t('duel.score', { you: you?.wins ?? 0, rival: rival?.wins ?? 0 })}</p>
+                <img className="result-image" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />
+                <div className="result-name">{name(answer)}</div>
+                <p className="round">
+                  {you?.nickname}: {t('duel.guesses', { count: you?.guesses.length ?? 0 })}
+                  {rival ? ` · ${rival.nickname}: ${t('duel.guesses', { count: rival.guessCount })}` : ''}
+                </p>
+                <div className="result-actions">
+                  {duel.matchDone ? (
+                    <button className="primary" onClick={toLobby} disabled={busy}>
+                      {t('duel.rematch')}
+                    </button>
+                  ) : (
+                    <>
+                      <button className="primary" onClick={next} disabled={busy || you?.wantsNext}>
+                        {you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
+                      </button>
+                      <button className="ghost" onClick={toLobby} disabled={busy}>
+                        {t('duel.toLobby')}
+                      </button>
+                    </>
+                  )}
                 </div>
-              ))}
-            </div>
-          )}
+                {rival?.wantsNext && !you?.wantsNext && <p className="muted small">{t('duel.rivalWantsNext', { name: rival.nickname })}</p>}
+              </div>
+            )}
+
+            {duel.mode === 'classic' ? (
+              <GuessGrid game={game} guesses={guesses} answerId={duel.answerId} />
+            ) : (
+              <div className="guess-list">
+                {guesses.map(({ entity: g, pending: p }) => (
+                  <div key={g.id} className={`guess-chip ${p ? 'pending' : you?.solved && g.id === answer?.id ? 'correct' : 'wrong'}`}>
+                    <Thumb game={game} entity={g} size={44} />
+                    <span>{name(g)}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <aside className="play-side duel-side" />
         </section>
       )}
     </div>
