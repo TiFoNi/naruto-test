@@ -4,6 +4,7 @@ import {
   backToLobby,
   createDuel,
   declineInvite,
+  leaveDuel,
   duelGuess,
   duelView,
   findDuel,
@@ -69,6 +70,11 @@ export const POST = handle(async (request) => {
   }
 
   if (!sideOf(duel, userId)) return fail(403, 'forbidden')
+
+  if (action === 'leave') {
+    const done = await leaveDuel(duel, userId)
+    return done ? json({ ok: true }) : fail(403, 'forbidden')
+  }
 
   if (action === 'state') return json({ duel: await duelView(await settle(duel), userId) })
   if (action === 'setup') {

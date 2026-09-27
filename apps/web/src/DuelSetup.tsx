@@ -7,6 +7,7 @@ import { GAMES, gameById } from './games'
 import type { Category, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
+import { pluralIndex } from './plural'
 import type { DuelView } from './useDuel'
 import { CopyIcon, DiceIcon, LinkIcon, SwordsIcon } from './icons'
 
@@ -27,6 +28,7 @@ type Props = {
   onSetup: (patch: { game?: string; mode?: string; best?: number; seconds?: number }) => void
   onInvite: (to: string) => void
   onReady: () => void
+  onLeave: () => void
 }
 
 const duelReady = (game: { modes: readonly string[] }) => game.modes.some((mode) => DUEL_MODES.includes(mode as never))
@@ -36,8 +38,10 @@ const duelMode = (game: { modes: readonly string[] }, current: string | null) =>
   return current && usable.includes(current as never) ? current : usable[0]
 }
 
-export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady }: Props) {
-  const { t, l } = useI18n()
+const ROUND_KEYS = ['duel.rounds1', 'duel.rounds2', 'duel.rounds5'] as const
+
+export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady, onLeave }: Props) {
+  const { t, l, lang } = useI18n()
   const host = duel.host
   const game = gameById((duel.game ?? 'naruto') as GameId)
   const [category, setCategory] = useState<Category>(game.category)
@@ -329,7 +333,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
             <div className="duel-summary">
               <em>{l(game.label)}</em>
               <em>{t(MODES.find((m) => m.id === duel.mode)?.label ?? 'mode.classic')}</em>
-              <em>{t('duel.roundsShort', { count: duel.best })}</em>
+              <em>{t(ROUND_KEYS[pluralIndex(duel.best, lang)], { count: duel.best })}</em>
               <em>{t('duel.timeShort', { time: timeLabel(duel.seconds) })}</em>
             </div>
             <button type="button" className="primary big" disabled={busy || !rival || duel.you?.ready} onClick={onReady}>
@@ -337,6 +341,9 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
               {duel.you?.ready ? t('duel.readyWait') : t('duel.ready')}
             </button>
             <p className="muted small">{rival ? t('duel.readyHint') : t('duel.readyLocked')}</p>
+            <button type="button" className="duel-leave" onClick={onLeave} disabled={busy}>
+              {t('duel.leave')}
+            </button>
           </section>
         </aside>
       </div>

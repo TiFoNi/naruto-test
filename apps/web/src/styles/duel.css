@@ -680,3 +680,25 @@
     display: none;
   }
 }
+
+.duel-leave {
+  align-self: center;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.duel-leave:hover:not(:disabled) {
+  color: #ff8085;
+}
+
+.duel-leave:disabled {
+  cursor: default;
+  opacity: 0.6;
+}

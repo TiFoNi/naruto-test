@@ -216,6 +216,33 @@ export async function wantNext(duel: DuelDoc, userId: ObjectId) {
   return beginRound(marked, 'finished')
 }
 
+export async function leaveDuel(duel: DuelDoc, userId: ObjectId) {
+  if (!sideOf(duel, userId)) return null
+  const collection = await duels()
+  const rest = duel.players.filter((side) => !side.userId.equals(userId))
+
+  if (!rest.length) {
+    await collection.deleteOne({ _id: duel._id })
+    return true
+  }
+
+  await collection.updateOne(
+    { _id: duel._id },
+    {
+      $set: {
+        players: rest.map((side) => ({ ...side, ready: false, wantsNext: false, wins: 0, guesses: [], solvedAt: null, gaveUp: false })),
+        hostId: duel.hostId.equals(userId) ? rest[0].userId : duel.hostId,
+        status: 'lobby',
+        matchDone: false,
+        round: 0,
+        draws: 0,
+        invite: null,
+      },
+    },
+  )
+  return true
+}
+
 export async function backToLobby(duel: DuelDoc, userId: ObjectId) {
   if (!sideOf(duel, userId) || duel.status === 'playing') return duel
   const reset = duel.matchDone ? { matchDone: false, round: 0, draws: 0, 'players.$[].wins': 0 } : {}
