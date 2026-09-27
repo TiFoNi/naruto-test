@@ -3,7 +3,7 @@ import { DAILY_KEYS, DAILY_XP_FACTOR, MODE_XP, STAT_KEYS, XP_CAPS, type ModeId, 
 import { shiftDay, today } from './daily'
 import { users, type Stats, type UserDoc } from './db'
 import { levelOf } from './quests'
-import { touchSeasonDay } from './season'
+import { addSeasonXp, touchSeasonDay } from './season'
 import { fail } from './http'
 import { authSession } from './auth'
 import { guestCookie, readGuest } from './session'
@@ -63,11 +63,11 @@ export async function awardSolveXp(collection: Collection<UserDoc>, userId: Obje
       { $set: { xpToday: { day, daily: carry('daily'), endless: carry('endless') } } },
       { $set: { xpGain: { $max: [0, { $min: [amount, { $subtract: [XP_CAPS[source], `$xpToday.${source}`] }] }] } } },
       { $set: { [`xpToday.${source}`]: { $add: [`$xpToday.${source}`, '$xpGain'] }, xp: { $add: [orZero('xp'), '$xpGain'] } } },
-      { $unset: 'xpGain' },
     ],
     { returnDocument: 'after' },
   )
   if (!doc) return null
+  await addSeasonXp(userId, number(doc.xpGain))
   const xp = number(doc.xp)
   return { xp, level: levelOf(xp), today: todayXp(doc) }
 }

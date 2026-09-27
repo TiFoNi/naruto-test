@@ -5,13 +5,17 @@ import { handle, json } from '../http'
 import { currentUser, unauthorized } from '../profile'
 import { placeOf } from './achievements'
 
+const FRESH_MS = 600_000
+
 async function ready(doc: UserDoc) {
   const id = doc._id!
   const solved = doc.solvedTotal ?? STAT_KEYS.reduce((sum, key) => sum + (doc.stats?.[key]?.solved ?? 0), 0)
   let awards = doc.awards ?? {}
   let claimed = doc.claimed ?? {}
 
-  if (doc.awardsSolved !== solved) {
+  const stale = doc.awardsSolved !== solved || !doc.awardsAt || Date.now() - doc.awardsAt.getTime() > FRESH_MS
+
+  if (stale) {
     const facts = await collectFacts(id, 1, doc.resetAt)
     const place = await placeOf(solved)
     facts.rank = place.rank
@@ -20,7 +24,7 @@ async function ready(doc: UserDoc) {
     const synced = await syncAwards(id, facts, awards, doc.claimed)
     awards = synced.awards
     claimed = synced.claimed
-    await (await users()).updateOne({ _id: id }, { $set: { awardsSolved: solved } })
+    await (await users()).updateOne({ _id: id }, { $set: { awardsSolved: solved, awardsAt: new Date() } })
   }
 
   return ACHIEVEMENTS.filter((achievement) => awards[achievement.id] && !claimed[achievement.id]).map(({ id: award, tier }) => ({ id: award, tier }))
