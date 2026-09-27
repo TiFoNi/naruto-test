@@ -7,10 +7,11 @@ import Background from './Background'
 import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
+import { freshAwards, watchAwards, type FreshAward } from './awards'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
-import { BellIcon, ChevronIcon, ExitIcon, GearIcon, MedalIcon, MenuIcon, SwordsIcon, UserIcon } from './icons'
+import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, MedalIcon, MenuIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
 import { useBeforePaint } from './paint'
 import { useHref, useVisitTracker } from './router'
 
@@ -188,6 +189,100 @@ function AccountMenu({ nickname, level, section }: { nickname: string; level: nu
   )
 }
 
+const HIDDEN = 'nanda.seen-awards'
+
+const readHidden = () => {
+  try {
+    const raw = localStorage.getItem(HIDDEN)
+    return new Set(raw ? (JSON.parse(raw) as string[]) : [])
+  } catch {
+    return new Set<string>()
+  }
+}
+
+function Bell() {
+  const { t } = useI18n()
+  const href = useHref()
+  const [open, setOpen] = useState(false)
+  const box = useDropdown(open, setOpen)
+  const [list, setList] = useState<FreshAward[]>([])
+  const [hidden, setHidden] = useState<Set<string>>(() => new Set())
+
+  useEffect(() => {
+    let alive = true
+    setHidden(readHidden())
+    void freshAwards().then((rows) => alive && setList(rows))
+    const stop = watchAwards(setList)
+    return () => {
+      alive = false
+      stop()
+    }
+  }, [])
+
+  const hide = (id: string) => {
+    const next = new Set(hidden).add(id)
+    setHidden(next)
+    try {
+      localStorage.setItem(HIDDEN, JSON.stringify([...next]))
+    } catch {
+      /* приватний режим */
+    }
+  }
+
+  const shown = list.filter((award) => !hidden.has(award.id))
+
+  return (
+    <div ref={box} className={`bell-box ${open ? 'open' : ''}`}>
+      <button
+        type="button"
+        className={`bell ${shown.length ? 'has-new' : ''}`}
+        aria-expanded={open}
+        aria-label={t('nav.bell')}
+        title={t('nav.bell')}
+        onClick={() => setOpen(!open)}
+      >
+        <BellIcon />
+        {shown.length > 0 && <i className="bell-count">{shown.length}</i>}
+      </button>
+
+      <div className="bell-menu">
+        <div className="bell-head">
+          <span>{t('nav.bell')}</span>
+          {shown.length > 0 && <small>{shown.length}</small>}
+        </div>
+        {shown.length === 0 ? (
+          <p className="bell-empty">{t('nav.bellEmpty')}</p>
+        ) : (
+          <ul className="bell-list">
+            {shown.map((award) => (
+              <li key={award.id} className={`bell-item tier-${award.tier}`}>
+                <Link className="bell-card" href={href.achievements} onClick={() => setOpen(false)} prefetch={false}>
+                  <small>{t('ach.fresh')}</small>
+                  <span className="bell-main">
+                    <span className="bell-mark" aria-hidden>
+                      <TrophyIcon />
+                    </span>
+                    <span className="bell-body">
+                      <b>{t(`ach.${award.id}` as UiKey)}</b>
+                      <span className="bell-hint">{t(`ach.${award.id}.hint` as UiKey)}</span>
+                      <span className="bell-tags">
+                        <em>{t(`achTier.${award.tier}` as UiKey)}</em>
+                      </span>
+                    </span>
+                  </span>
+                </Link>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={() => hide(award.id)}>
+                  <CloseIcon />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  )
+}
+
 function LangSwitch() {
   const { lang, setLang, t } = useI18n()
   const [open, setOpen] = useState(false)
@@ -321,9 +416,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
               )}
               {user && (
                 <>
-                  <button type="button" className="bell" aria-label={t('nav.bell')} title={t('nav.bell')}>
-                    <BellIcon />
-                  </button>
+                  <Bell />
                   <AccountMenu nickname={user.nickname} level={user.level} section={section} />
                 </>
               )}

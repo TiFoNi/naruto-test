@@ -6,7 +6,7 @@ import { currentUser, unauthorized } from '../profile'
 
 export const PINNED_MAX = 6
 
-async function placeOf(solved: number) {
+export async function placeOf(solved: number) {
   const collection = await users()
   const [players, ahead] = await Promise.all([
     collection.countDocuments({ solvedTotal: { $gte: 1 } }),

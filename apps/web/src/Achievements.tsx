@@ -7,6 +7,7 @@ import { useI18n, type UiKey } from './i18n'
 import Link from 'next/link'
 import { ArrowIcon, CheckIcon, CloseIcon, GiftIcon, LockIcon, PinIcon, TrophyIcon } from './icons'
 import { useAuth } from './auth'
+import { putAwards } from './awards'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
 
@@ -60,29 +61,11 @@ function Card({ award, pinned, busy, onPin, onClaim }: { award: Award; pinned: b
   const share = award.rarity > 0 ? t('ach.share', { share: award.rarity }) : ''
   const waiting = award.done && !award.claimed
 
-  return (
-    <article className={`award tier-${award.tier} ${award.claimed ? 'done' : waiting ? 'is-ready' : hidden ? 'hidden' : ''}`}>
-      {waiting ? (
-        <button
-          type="button"
-          className="award-mark award-take"
-          title={t('ach.claim', { xp: award.xp })}
-          aria-label={t('ach.claim', { xp: award.xp })}
-          disabled={busy}
-          onClick={onClaim}
-        >
-          <GiftIcon />
-        </button>
-      ) : (
-        <span className="award-mark" aria-hidden>
-          {award.claimed ? <CheckIcon /> : hidden ? <LockIcon /> : <TrophyIcon />}
-        </span>
-      )}
-      {award.claimed && (
-        <button type="button" className={`award-pin ${pinned ? 'on' : ''}`} title={t(pinned ? 'ach.unpin' : 'ach.pin')} aria-label={t(pinned ? 'ach.unpin' : 'ach.pin')} aria-pressed={pinned} onClick={onPin}>
-          <PinIcon />
-        </button>
-      )}
+  const content = (
+    <>
+      <span className="award-mark" aria-hidden>
+        {waiting ? <GiftIcon /> : hidden ? <LockIcon /> : <TrophyIcon />}
+      </span>
       <div className="award-body">
         <div className="award-head">
           <b>{hidden ? '???' : t(`ach.${award.id}` as UiKey)}</b>
@@ -116,6 +99,34 @@ function Card({ award, pinned, busy, onPin, onClaim }: { award: Award; pinned: b
         )}
         {waiting && <span className="award-reward">+{award.xp} XP</span>}
       </div>
+    </>
+  )
+
+  const classes = `award tier-${award.tier} ${award.claimed ? 'done' : waiting ? 'is-ready' : hidden ? 'hidden' : ''}`
+
+  if (waiting) {
+    return (
+      <button type="button" className={classes} title={t('ach.claim', { xp: award.xp })} disabled={busy} onClick={onClaim}>
+        {content}
+      </button>
+    )
+  }
+
+  return (
+    <article className={classes}>
+      {content}
+      {award.claimed && (
+        <button
+          type="button"
+          className={`award-pin ${pinned ? 'on' : ''}`}
+          title={t(pinned ? 'ach.unpin' : 'ach.pin')}
+          aria-label={t(pinned ? 'ach.unpin' : 'ach.pin')}
+          aria-pressed={pinned}
+          onClick={onPin}
+        >
+          <PinIcon />
+        </button>
+      )}
     </article>
   )
 }
@@ -143,6 +154,7 @@ export default function Achievements() {
         if (ok) {
           known = data
           setBoard(data)
+          putAwards(data.achievements)
         } else setError(true)
       })
       .catch(() => alive && setError(true))
@@ -193,6 +205,7 @@ export default function Achievements() {
     if (ok) {
       known = data
       setBoard(data)
+      putAwards(data.achievements)
       void refresh()
     }
     setClaiming(null)

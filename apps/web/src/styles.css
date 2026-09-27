@@ -366,6 +366,206 @@ a.bell.active {
   color: var(--accent);
 }
 
+.bell-box {
+  position: relative;
+  flex: none;
+}
+
+.bell.has-new {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  color: var(--text);
+}
+
+.bell-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--accent);
+  color: #0b0d12;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.bell-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  display: none;
+  flex-direction: column;
+  width: min(360px, calc(100vw - 24px));
+  max-height: min(70vh, 560px);
+  padding: 6px;
+  overflow: hidden auto;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.6);
+  animation: fade-in 0.15s ease;
+}
+
+.bell-box.open .bell-menu {
+  display: flex;
+}
+
+.bell-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px 6px;
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bell-head small {
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 0;
+}
+
+.bell-empty {
+  padding: 14px 10px 18px;
+  color: var(--text-3);
+  font-size: 13px;
+  text-align: center;
+}
+
+.bell-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bell-item {
+  position: relative;
+}
+
+.bell-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card-2);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.bell-card:hover {
+  border-color: color-mix(in srgb, var(--tier) 55%, transparent);
+  background: color-mix(in srgb, var(--tier) 8%, var(--card-2));
+}
+
+.bell-card > small {
+  color: var(--tier);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bell-hide {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--text-3);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.bell-hide:hover {
+  background: var(--card);
+  color: var(--text);
+}
+
+.bell-main {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.bell-mark {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  border: 2px solid color-mix(in srgb, var(--tier) 70%, transparent);
+  background: color-mix(in srgb, var(--tier) 14%, transparent);
+  color: var(--tier);
+  font-size: 24px;
+}
+
+.bell-body {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bell-body b {
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.bell-hint {
+  color: var(--text-3);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.bell-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.bell-tags em {
+  padding: 3px 9px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--tier) 16%, transparent);
+  color: var(--tier);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+
+
 .account-link {
   border: 1px solid var(--line);
   background: var(--card);
@@ -6290,6 +6490,29 @@ html[data-cat='sport'] .tile[data-id='sport'] .tile-icon {
 .award.is-ready {
   border-color: color-mix(in srgb, var(--tier) 38%, transparent);
   background: linear-gradient(180deg, color-mix(in srgb, var(--tier) 8%, var(--card)), var(--card) 70%);
+}
+
+button.award {
+  width: 100%;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+button.award:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--tier) 70%, transparent);
+  transform: translateY(-1px);
+}
+
+button.award:active:not(:disabled) {
+  transform: none;
+}
+
+button.award:disabled {
+  cursor: default;
+  opacity: 0.7;
 }
 
 .award.is-ready .award-mark {

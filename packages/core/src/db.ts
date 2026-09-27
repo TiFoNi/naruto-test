@@ -12,6 +12,7 @@ export type UserDoc = {
   solvedTotal?: number
   visit?: { lastDay: string; streak: number; best: number; days: string[] }
   awards?: Record<string, Date>
+  awardsSolved?: number
   claimed?: Record<string, Date>
   resetAt?: Date
   pinned?: string[]
