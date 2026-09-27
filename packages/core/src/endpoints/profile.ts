@@ -1,6 +1,6 @@
 import { fail, handle, json, readJson } from '../http'
 import { quests, rounds, seasons } from '../db'
-import { currentUser, parseNickname, toProfile, unauthorized } from '../profile'
+import { currentUser, lowerNickname, parseNickname, toProfile, unauthorized } from '../profile'
 
 export const POST = handle(async (request) => {
   const found = await currentUser(request)
@@ -28,7 +28,7 @@ export const POST = handle(async (request) => {
   if (body.action === 'nickname') {
     const nickname = parseNickname(body.nickname)
     if (!nickname) return fail(400, 'invalid_nickname')
-    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $set: { nickname } }, { returnDocument: 'after' })
+    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $set: { nickname, nicknameLower: lowerNickname(nickname) } }, { returnDocument: 'after' })
     return json(toProfile(doc ?? found.doc))
   }
 

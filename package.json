@@ -28,6 +28,7 @@
     "data:football": "node scripts/build-football.mjs",
     "cards": "node scripts/build-cards.mjs",
     "check:data": "node scripts/check-data.mjs",
+    "nicknames": "node --env-file-if-exists=.env.local scripts/backfill-nickname-lower.mjs",
     "entities": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/import-entities.mjs",
     "mini": "node scripts/build-mini.mjs",
     "pics": "node --env-file-if-exists=.env.local scripts/upload-pics.mjs",

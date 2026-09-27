@@ -46,11 +46,13 @@ export const POST = handle(async (request) => {
   if (action === 'rivals') return json({ rivals: await recentRivals(userId) })
 
   if (action === 'players') {
-    const query = typeof body.q === 'string' ? body.q.trim().slice(0, 24) : ''
+    const query = typeof body.q === 'string' ? body.q.trim().slice(0, 24).toLowerCase() : ''
     if (query.length < 2) return json({ players: [] })
-    const safe = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     const list = await (await users())
-      .find({ _id: { $ne: userId }, nickname: { $regex: safe, $options: 'i' } }, { projection: { nickname: 1, username: 1, xp: 1 } })
+      .find(
+        { _id: { $ne: userId }, nicknameLower: { $gte: query, $lt: `${query}\uffff` } },
+        { projection: { nickname: 1, username: 1 }, sort: { nicknameLower: 1 } },
+      )
       .limit(6)
       .toArray()
     return json({ players: list.map((doc) => ({ id: doc._id!.toHexString(), nickname: doc.nickname ?? defaultNickname(doc.username) })) })

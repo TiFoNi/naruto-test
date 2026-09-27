@@ -20,7 +20,7 @@ export const wrongCount = (duel: DuelDoc, side: DuelPlayer) => side.guesses.filt
 
 export const abilityStageOf = (duel: DuelDoc, side: DuelPlayer) => {
   const wrong = wrongCount(duel, side)
-  return duel.status !== 'playing' || side.solvedAt ? '' : wrong >= ABILITY_STAGES ? '' : `s${wrong}/`
+  return duel.status !== 'playing' || side.solvedAt || side.gaveUp ? '' : wrong >= ABILITY_STAGES ? '' : `s${wrong}/`
 }
 
 export const sideOf = (duel: DuelDoc, userId: ObjectId) => duel.players.find((p) => p.userId.equals(userId))
@@ -364,7 +364,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId) {
   const byId = game ? (await gameData(game)).byId : null
   const answer = byId && duel.answerId !== undefined ? byId.get(duel.answerId) : undefined
   const ability =
-    duel.mode === 'ability' && you && answer && (finished || wrongCount(duel, you) >= ABILITY_HINT_AT)
+    duel.mode === 'ability' && you && answer && (finished || you.solvedAt || you.gaveUp || wrongCount(duel, you) >= ABILITY_HINT_AT)
       ? abilityByKey(duel.answerId!, duel.extra ?? undefined)?.name
       : undefined
   return {
@@ -387,7 +387,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId) {
     hintAt: duel.mode === 'ability' ? ABILITY_HINT_AT : undefined,
     ability,
     image: playing || finished ? (duel.mode === 'image' || duel.mode === 'ability' ? `/api/round/image?duel=${duel.code}&r=${duel.round}` : undefined) : undefined,
-    answerId: finished || you?.solvedAt ? duel.answerId : undefined,
+    answerId: finished || you?.solvedAt || you?.gaveUp ? duel.answerId : undefined,
     winner: finished ? (duel.winnerId ? duel.players.find((p) => p.userId.equals(duel.winnerId!))?.nickname ?? null : null) : undefined,
     youWon: finished ? Boolean(duel.winnerId && duel.winnerId.equals(userId)) : undefined,
     you: you && {

@@ -9,7 +9,7 @@ import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
 import { pluralIndex } from './plural'
 import type { DuelView } from './useDuel'
-import { CopyIcon, DiceIcon, LinkIcon, SwordsIcon } from './icons'
+import { CopyIcon, DiceIcon, ExitIcon, LinkIcon, SwordsIcon } from './icons'
 
 const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
@@ -115,6 +115,10 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
           <button type="button" className="ghost" onClick={copy}>
             <CopyIcon />
             {copied ? t('duel.copied') : t('duel.copyLink')}
+          </button>
+          <button type="button" className="duel-leave" onClick={onLeave} disabled={busy}>
+            <ExitIcon />
+            {t('duel.leave')}
           </button>
         </div>
       </header>
@@ -341,9 +345,6 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
               {duel.you?.ready ? t('duel.readyWait') : t('duel.ready')}
             </button>
             <p className="muted small">{rival ? t('duel.readyHint') : t('duel.readyLocked')}</p>
-            <button type="button" className="duel-leave" onClick={onLeave} disabled={busy}>
-              {t('duel.leave')}
-            </button>
           </section>
         </aside>
       </div>

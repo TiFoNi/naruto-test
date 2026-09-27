@@ -682,20 +682,34 @@
 }
 
 .duel-leave {
-  align-self: center;
-  padding: 6px 12px;
-  border: 0;
-  border-radius: 999px;
-  background: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
   color: var(--text-3);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  transition: color 0.15s;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.duel-leave svg {
+  width: 15px;
+  height: 15px;
 }
 
 .duel-leave:hover:not(:disabled) {
+  border-color: color-mix(in srgb, #ff8085 45%, var(--line));
   color: #ff8085;
+}
+
+.duel-head-side {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .duel-leave:disabled {

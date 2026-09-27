@@ -16,7 +16,7 @@ import { useHref, useNavigate } from './router'
 import { useDuel } from './useDuel'
 import DuelSetup from './DuelSetup'
 import type { Guess } from './useRound'
-import { SwordsIcon } from './icons'
+import { ExitIcon, SwordsIcon } from './icons'
 import { fullUrl } from './pics'
 import { api, apiSrc } from './api'
 import { useEntities } from './entities'
@@ -80,15 +80,16 @@ export default function DuelRoom({ code }: { code: string }) {
   const over = duel.status === 'finished'
   const link = `${window.location.origin}/${href.duel(duel.code)}`
   const answer = duel.answerId !== undefined ? byId.get(duel.answerId) : undefined
+  const youDone = Boolean(you?.solved || you?.gaveUp)
   const wrong = guesses.filter((g) => !g.pending).length - (you?.solved ? 1 : 0)
   const zoomStep = Math.min(wrong, ZOOM_LEVELS.length - 1)
-  const zoom = over || you?.solved ? 1 : ZOOM_LEVELS[zoomStep]
-  const shownStep = over || you?.solved ? ZOOM_LEVELS.length - 1 : zoomStep
+  const revealed = over || youDone
+  const zoom = revealed ? 1 : ZOOM_LEVELS[zoomStep]
+  const shownStep = revealed ? ZOOM_LEVELS.length - 1 : zoomStep
   const nextZoom = shownStep < ZOOM_LEVELS.length - 1 ? ZOOM_LEVELS[shownStep + 1] : null
   const zoomText = (value: number) => (lang === 'en' ? value.toFixed(1) : value.toFixed(1).replace('.', ','))
-  const clarityStep = over || you?.solved ? ABILITY_STAGES : Math.min(wrong, ABILITY_STAGES)
+  const clarityStep = revealed ? ABILITY_STAGES : Math.min(wrong, ABILITY_STAGES)
   const left = duel.endsAt ? duel.endsAt - serverNow() : 0
-  const youDone = Boolean(you?.solved || you?.gaveUp)
   const modeLabel = duel.mode ? t(MODES.find((m) => m.id === duel.mode)?.label ?? 'mode.classic') : null
 
   return (
@@ -107,7 +108,13 @@ export default function DuelRoom({ code }: { code: string }) {
             {duel.round > 0 ? ` · ${t('duel.roundNo', { round: duel.round })}` : ''}
           </p>
         </div>
-        {duel.status === 'playing' && duel.seconds > 0 && <div className={`duel-timer ${left < 60000 ? 'hot' : ''}`}>{clock(left)}</div>}
+        <div className="duel-head-side">
+          {duel.status === 'playing' && duel.seconds > 0 && <div className={`duel-timer ${left < 60000 ? 'hot' : ''}`}>{clock(left)}</div>}
+          <button type="button" className="duel-leave" onClick={() => void leave()} disabled={busy}>
+            <ExitIcon />
+            {t('duel.leave')}
+          </button>
+        </div>
       </header>
 
       <section className="duel-players card">
@@ -177,7 +184,7 @@ export default function DuelRoom({ code }: { code: string }) {
                 <span className="ability-glow" aria-hidden />
                 <AbilityIcon
                   className="ability-art"
-                  src={duel.image ? `${apiSrc(duel.image)}&v=${over ? 'done' : wrong}` : undefined}
+                  src={duel.image ? `${apiSrc(duel.image)}&v=${revealed ? 'done' : wrong}` : undefined}
                   resetKey={`${duel.code}-${duel.round}`}
                 />
               </div>
@@ -230,7 +237,7 @@ export default function DuelRoom({ code }: { code: string }) {
 
             {duel.ability && (
               <p className="ability-hint">
-                {t(over ? 'ability.was' : 'ability.hint')} <b>{duel.ability[lang]}</b>
+                {t(revealed ? 'ability.was' : 'ability.hint')} <b>{duel.ability[lang]}</b>
               </p>
             )}
 
@@ -240,20 +247,22 @@ export default function DuelRoom({ code }: { code: string }) {
               </button>
             )}
 
-            {!over && youDone && <div className="card round-status muted">{you?.solved ? t('duel.waitRival') : t('duel.gaveUpWait')}</div>}
-
-            {over && answer && (
-              <div className={`card result ${duel.youWon ? 'won' : duel.winner === null ? 'skipped' : 'lost'}`}>
+            {(over || youDone) && answer && (
+              <div className={`card result ${!over ? 'skipped' : duel.youWon ? 'won' : duel.winner === null ? 'skipped' : 'lost'}`}>
                 <h2>
-                  {duel.matchDone
-                    ? duel.youWon
-                      ? t('duel.matchWon')
-                      : t('duel.matchLost', { name: duel.winner ?? '' })
-                    : duel.youWon
-                      ? t('duel.youWon')
-                      : duel.winner
-                        ? t('duel.youLost', { name: duel.winner })
-                        : t('duel.draw')}
+                  {!over
+                    ? you?.solved
+                      ? t('duel.waitRival')
+                      : t('duel.gaveUpWait')
+                    : duel.matchDone
+                      ? duel.youWon
+                        ? t('duel.matchWon')
+                        : t('duel.matchLost', { name: duel.winner ?? '' })
+                      : duel.youWon
+                        ? t('duel.youWon')
+                        : duel.winner
+                          ? t('duel.youLost', { name: duel.winner })
+                          : t('duel.draw')}
                 </h2>
                 <p className="duel-score">
                   {t('duel.score', { you: you?.wins ?? 0, rival: rival?.wins ?? 0 })}
@@ -265,7 +274,7 @@ export default function DuelRoom({ code }: { code: string }) {
                   {you?.nickname}: {t('duel.guesses', { count: you?.guesses.length ?? 0 })}
                   {rival ? ` · ${rival.nickname}: ${t('duel.guesses', { count: rival.guessCount })}` : ''}
                 </p>
-                <div className="result-actions">
+                {over && <div className="result-actions">
                   {duel.matchDone ? (
                     <button className="primary" onClick={toLobby} disabled={busy}>
                       {t('duel.toLobby')}
@@ -275,10 +284,7 @@ export default function DuelRoom({ code }: { code: string }) {
                       {you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
                     </button>
                   )}
-                  <button className="ghost" onClick={() => void leave()} disabled={busy}>
-                    {t('duel.leave')}
-                  </button>
-                </div>
+                </div>}
                 {rival?.wantsNext && !you?.wantsNext && <p className="muted small">{t('duel.rivalWantsNext', { name: rival.nickname })}</p>}
               </div>
             )}

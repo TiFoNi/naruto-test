@@ -17,6 +17,8 @@ export function defaultNickname(username: string) {
   return base.length >= 2 ? base : 'Player'
 }
 
+export const lowerNickname = (nickname: string) => nickname.toLowerCase()
+
 export function parseNickname(value: unknown): string | null {
   const nickname = typeof value === 'string' ? value.trim().replace(/\s+/g, ' ') : ''
   return NICKNAME.test(nickname) ? nickname : null
@@ -137,11 +139,13 @@ export async function currentUser(request: Request) {
   const existing = await collection.findOne({ _id })
   if (existing) return { doc: existing, collection }
 
+  const name = defaultNickname(session.name || session.email)
   const doc: UserDoc = {
     _id,
     username: session.email,
     usernameLower: session.email.toLowerCase(),
-    nickname: defaultNickname(session.name || session.email),
+    nickname: name,
+    nicknameLower: lowerNickname(name),
     createdAt: new Date(),
   }
   await collection.insertOne(doc)
