@@ -52,7 +52,7 @@ export default function DuelRoom({ code }: { code: string }) {
   if (error && !duel) {
     return (
       <div className="duel">
-        <BackButton href={href.duels}>{t('duel.back')}</BackButton>
+        <BackButton href={href.home}>{t('play.back')}</BackButton>
         <div className="card round-status error">
           <span>{errorText(error)}</span>
           <button className="ghost" onClick={refresh}>
@@ -78,8 +78,8 @@ export default function DuelRoom({ code }: { code: string }) {
   const modeLabel = duel.mode ? t(MODES.find((m) => m.id === duel.mode)?.label ?? 'mode.classic') : null
 
   return (
-    <div className={`duel ${inLobby ? 'is-setup' : ''}`}>
-      <BackButton href={href.duels}>{t('duel.back')}</BackButton>
+    <div className="duel">
+      <BackButton href={href.home}>{t('play.back')}</BackButton>
 
       {!inLobby && (
         <>
@@ -93,7 +93,7 @@ export default function DuelRoom({ code }: { code: string }) {
             {duel.round > 0 ? ` · ${t('duel.roundNo', { round: duel.round })}` : ''}
           </p>
         </div>
-        {duel.status === 'playing' && <div className={`duel-timer ${left < 60000 ? 'hot' : ''}`}>{clock(left)}</div>}
+        {duel.status === 'playing' && duel.seconds > 0 && <div className={`duel-timer ${left < 60000 ? 'hot' : ''}`}>{clock(left)}</div>}
       </header>
 
       <section className="duel-players card">
@@ -204,7 +204,7 @@ export default function DuelRoom({ code }: { code: string }) {
 
           {duel.mode === 'classic' ? (
             <>
-              <GuessGrid game={game} guesses={guesses} />
+              <GuessGrid game={game} guesses={guesses} answerId={duel.answerId} />
               <Legend game={game} />
             </>
           ) : (

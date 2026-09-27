@@ -122,7 +122,7 @@ export async function duelInvites(userId: ObjectId) {
       game: duel.game ?? null,
       mode: duel.mode ?? null,
       best: duel.best ?? DUEL_DEFAULT.best,
-      seconds: duel.seconds ?? DUEL_DEFAULT.seconds,
+      seconds: duel.seconds || DUEL_DEFAULT.seconds,
       at: duel.createdAt.toISOString(),
     }))
 }
@@ -161,14 +161,14 @@ async function roundStart(duel: DuelDoc) {
   const answer = (fresh.length ? fresh : pool)[randomInt(fresh.length || pool.length)]
   const extra = await roundExtra(duel.game as GameId, duel.mode as ModeId, answer.id)
   const startedAt = new Date()
-  const limit = duel.seconds ?? DUEL_DEFAULT.seconds
+  const limit = duel.seconds || DUEL_DEFAULT.seconds
   return {
     status: 'playing' as const,
     round: duel.round + 1,
     answerId: answer.id,
     extra: extra ?? null,
     startedAt,
-    endsAt: limit ? new Date(startedAt.getTime() + limit * 1000) : null,
+    endsAt: new Date(startedAt.getTime() + limit * 1000),
     firstSolvedAt: null,
     winnerId: null,
     finishedAt: null,
@@ -218,17 +218,15 @@ export async function wantNext(duel: DuelDoc, userId: ObjectId) {
 
 export async function backToLobby(duel: DuelDoc, userId: ObjectId) {
   if (!sideOf(duel, userId) || duel.status === 'playing') return duel
+  const reset = duel.matchDone ? { matchDone: false, round: 0, draws: 0, 'players.$[].wins': 0 } : {}
   const updated = await (await duels()).findOneAndUpdate(
     { _id: duel._id },
     {
       $set: {
         status: 'lobby',
-        matchDone: false,
-        round: 0,
-        draws: 0,
+        ...reset,
         'players.$[].ready': false,
         'players.$[].wantsNext': false,
-        'players.$[].wins': 0,
         'players.$[].guesses': [],
         'players.$[].solvedAt': null,
         'players.$[].gaveUp': false,
@@ -348,7 +346,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId) {
     mode: duel.mode ?? null,
     status: duel.status,
     best: duel.best ?? DUEL_DEFAULT.best,
-    seconds: duel.seconds ?? DUEL_DEFAULT.seconds,
+    seconds: duel.seconds || DUEL_DEFAULT.seconds,
     needed: winsNeeded(duel),
     matchDone: Boolean(duel.matchDone),
     invited: duel.invite && !duel.invite.declined && duel.players.length < 2 ? duel.invite.nickname : null,

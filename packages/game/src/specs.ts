@@ -266,7 +266,7 @@ export type XpSource = keyof typeof XP_CAPS
 
 export const DUEL_MODES: ModeId[] = ['classic', 'image', 'ability']
 export const DUEL_ROUNDS = [3, 5, 7, 10] as const
-export const DUEL_SECONDS = [30, 60, 90, 0] as const
+export const DUEL_SECONDS = [30, 60, 90, 600] as const
 export const DUEL_DEFAULT = { best: 5, seconds: 60 }
 
 export const duelWinsNeeded = (best: number) => Math.floor(best / 2) + 1

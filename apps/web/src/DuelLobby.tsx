@@ -16,7 +16,7 @@ export default function DuelLobby() {
     api<{ duel?: { code: string }; error?: string }>('duel', { action: 'create' })
       .then(({ ok, data }) => {
         if (!alive) return
-        if (ok && data.duel) navigate(href.duel(data.duel.code))
+        if (ok && data.duel) navigate.replace(href.duel(data.duel.code))
         else setError(data.error ?? 'server')
       })
       .catch(() => alive && setError('network'))

@@ -8,7 +8,7 @@ import type { Category, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
 import type { DuelView } from './useDuel'
-import { CopyIcon, DiceIcon, InfinityIcon, LinkIcon, SwordsIcon } from './icons'
+import { CopyIcon, DiceIcon, LinkIcon, SwordsIcon } from './icons'
 
 const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
@@ -87,6 +87,9 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
     setQuery('')
     setFound([])
   }
+
+  const timeLabel = (value: number) =>
+    value >= 120 && value % 60 === 0 ? t('duel.minutesShort', { count: value / 60 }) : t('duel.secondsShort', { count: value })
 
   const rival = duel.rival
   const waiting = duel.invited
@@ -226,15 +229,13 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                       disabled={!host || busy}
                       onClick={() => onSetup({ seconds: value })}
                     >
-                      {value ? t('duel.secondsShort', { count: value }) : <InfinityIcon />}
+                      {timeLabel(value)}
                     </button>
                   ))}
                 </div>
               </div>
             </div>
-            <p className="duel-note">
-              {t('duel.rulesNote', { needed: duel.needed, best: duel.best, time: duel.seconds ? t('duel.secondsShort', { count: duel.seconds }) : t('duel.noLimit') })}
-            </p>
+            <p className="duel-note">{t('duel.rulesNote', { needed: duel.needed, best: duel.best, time: timeLabel(duel.seconds) })}</p>
           </section>
         </div>
 
@@ -327,7 +328,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
               <em>{l(game.label)}</em>
               <em>{t(MODES.find((m) => m.id === duel.mode)?.label ?? 'mode.classic')}</em>
               <em>{t('duel.roundsShort', { count: duel.best })}</em>
-              <em>{duel.seconds ? t('duel.timeShort', { count: duel.seconds }) : t('duel.noTimer')}</em>
+              <em>{t('duel.timeShort', { time: timeLabel(duel.seconds) })}</em>
             </div>
             <button type="button" className="primary big" disabled={busy || !rival || duel.you?.ready} onClick={onReady}>
               <SwordsIcon />

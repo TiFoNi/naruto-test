@@ -4009,12 +4009,7 @@ html:not([data-auth]) .play-actions .challenge-open {
   align-items: center;
   gap: 16px;
   width: 100%;
-  max-width: 820px;
   margin: 0 auto;
-}
-
-.duel.is-setup {
-  max-width: none;
 }
 
 .duel > *,

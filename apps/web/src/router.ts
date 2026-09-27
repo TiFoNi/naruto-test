@@ -44,5 +44,9 @@ export function useNavigate() {
   const router = useRouter()
   const go = (to: string) => router.push(to)
   go.back = () => router.back()
+  go.replace = (to: string) => {
+    visited = Math.max(0, visited - 1)
+    router.replace(to)
+  }
   return go
 }
