@@ -675,8 +675,8 @@
   min-height: 1px;
 }
 
-@media (max-width: 1040px) {
-  .duel-side {
+@media (max-width: 1080px) {
+  .play-side.duel-side {
     display: none;
   }
 }
