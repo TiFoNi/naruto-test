@@ -1,9 +1,11 @@
 import AbilityIcon from './AbilityIcon'
 import CharacterSearch from './CharacterSearch'
+import PlayBoard, { AskCard } from './PlayBoard'
 import PlaySide from './PlaySide'
+import TriesList from './TriesList'
+import ZoomScale from './ZoomScale'
 import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
-import Thumb from './Thumb'
 import Yesterday from './Yesterday'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
@@ -64,8 +66,11 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
         : t(daily ? 'ability.lostHintDaily' : 'ability.lostHint')
 
   return (
-    <section className="play-layout ability-layout">
-      <div className="shot-column ability-column">
+    <PlayBoard
+      variant="ability"
+      side={<PlaySide game={game} mode="ability" daily={daily} stats={stats} playing={playing} howto="ability" onGiveUp={giveUp} />}
+      media={
+        <div className="shot-column ability-column">
         <div className={`ability-stage ${over ? (won ? 'won' : 'lost') : ''}`}>
           <span className="ability-glow" aria-hidden />
           <AbilityIcon className="ability-art" src={src ?? undefined} resetKey={round?.id} />
@@ -77,100 +82,71 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
           )}
         </div>
 
-        <div className="play-card zoom-scale">
-          <div className="zoom-scale-head">
-            <span className="play-card-title">{t('ability.scaleTitle')}</span>
-            <span>
-              {playing && step < ABILITY_STAGES ? t('ability.nextClarity', { clarity: clarityAt(step + 1) }) : t('ability.fullClarity')}
-            </span>
-          </div>
-          <div className="zoom-steps clarity-steps" style={{ ['--steps' as string]: ABILITY_STAGES + 1 }}>
-            {Array.from({ length: ABILITY_STAGES + 1 }, (_, i) => (
-              <span key={i} className={i === step ? 'now' : i < step ? 'past' : ''}>
-                <i />
-                <b>{clarityAt(i)}%</b>
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="play-main">
-        <div className={`play-card mode-ask state-${mood}`}>
-          <h2>{headline}</h2>
-          <p>{subline}</p>
-        </div>
-
-        {!over && (
-          <div className={`ability-reveal ${ability ? 'open' : ''}`}>
-            <span className="ability-reveal-mark" aria-hidden>
-              {ability ? <SparkIcon /> : <LockIcon />}
-            </span>
-            <span className="ability-reveal-text">
-              <span className="play-card-title">{t('ability.revealTitle')}</span>
-              <b>{ability ?? t('ability.revealIn', { count: hintLeft })}</b>
-            </span>
-            <span className="ability-dots" aria-hidden>
-              {Array.from({ length: hintAt }, (_, i) => (
-                <i key={i} className={i < wrong ? 'on' : ''} />
-              ))}
-            </span>
-          </div>
-        )}
-
-        {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact />}
-
-        {over && !scored && (
-          <button type="button" className="primary mode-next" onClick={next}>
-            {t('ability.next')}
-            <ArrowIcon />
-          </button>
-        )}
-
-        <RoundStatus error={error} onRetry={retry} />
-
-        {round && over && answer && scored && (
-          <RoundResult
-            game={game}
-            answer={answer}
-            guesses={guesses.length}
-            won={won}
-            skipped={skipped}
-            stats={stats}
-            onNext={next}
-            challenge={challenge}
-            mode="ability"
-            nextAt={round.nextAt}
-            compact
+          <ZoomScale
+            clarity
+            title={t('ability.scaleTitle')}
+            note={playing && step < ABILITY_STAGES ? t('ability.nextClarity', { clarity: clarityAt(step + 1) }) : t('ability.fullClarity')}
+            labels={Array.from({ length: ABILITY_STAGES + 1 }, (_, i) => `${clarityAt(i)}%`)}
+            current={step}
           />
-        )}
-
-        {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
-
-        <div className="tries">
-          <span className="play-card-title">{t('play.tries')}</span>
-          {guesses.length === 0 ? (
-            <p className="tries-empty">{t(over ? 'play.noTriesOver' : 'play.noTries')}</p>
-          ) : (
-            <div className="tries-list">
-              {guesses.map(({ entity: g, pending }, i) => {
-                const hit = won && g.id === answer?.id
-                const before = guesses.slice(i + 1).filter((x) => !x.pending && x.entity.id !== answer?.id).length
-                return (
-                  <div key={g.id} className={`try ${pending ? 'pending' : hit ? 'hit' : 'miss'}`}>
-                    <Thumb game={game} entity={g} size={36} />
-                    <span className="try-name">{name(g)}</span>
-                    <span className="try-zoom">{clarityAt(Math.min(before, ABILITY_STAGES))}%</span>
-                    {!pending && <span className="try-verdict">{t(hit ? 'play.hit' : 'play.miss')}</span>}
-                  </div>
-                )
-              })}
-            </div>
-          )}
         </div>
-      </div>
+      }
+    >
+      <AskCard title={headline} hint={subline} state={mood} />
 
-      <PlaySide game={game} mode="ability" daily={daily} stats={stats} playing={playing} howto="ability" onGiveUp={giveUp} />
-    </section>
+      {!over && (
+        <div className={`ability-reveal ${ability ? 'open' : ''}`}>
+          <span className="ability-reveal-mark" aria-hidden>
+            {ability ? <SparkIcon /> : <LockIcon />}
+          </span>
+          <span className="ability-reveal-text">
+            <span className="play-card-title">{t('ability.revealTitle')}</span>
+            <b>{ability ?? t('ability.revealIn', { count: hintLeft })}</b>
+          </span>
+          <span className="ability-dots" aria-hidden>
+            {Array.from({ length: hintAt }, (_, i) => (
+              <i key={i} className={i < wrong ? 'on' : ''} />
+            ))}
+          </span>
+        </div>
+      )}
+
+      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact />}
+
+      {over && !scored && (
+        <button type="button" className="primary mode-next" onClick={next}>
+          {t('ability.next')}
+          <ArrowIcon />
+        </button>
+      )}
+
+      <RoundStatus error={error} onRetry={retry} />
+
+      {round && over && answer && scored && (
+        <RoundResult
+          game={game}
+          answer={answer}
+          guesses={guesses.length}
+          won={won}
+          skipped={skipped}
+          stats={stats}
+          onNext={next}
+          challenge={challenge}
+          mode="ability"
+          nextAt={round.nextAt}
+          compact
+        />
+      )}
+
+      {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
+
+      <TriesList
+        game={game}
+        guesses={guesses}
+        answerId={answer?.id}
+        over={over}
+        meta={(i, list) => `${clarityAt(Math.min(list.slice(i + 1).filter((x) => !x.pending && x.entity.id !== answer?.id).length, ABILITY_STAGES))}%`}
+      />
+    </PlayBoard>
   )
 }

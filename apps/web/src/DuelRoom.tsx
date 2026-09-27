@@ -5,8 +5,10 @@ import { ABILITY_STAGES } from '@nanda/game'
 import { ZOOM_LEVELS, levelAt } from './zoom'
 import CharacterSearch from './CharacterSearch'
 import GuessGrid from './GuessGrid'
+import PlayBoard, { AskCard } from './PlayBoard'
 import PlayPanel from './PlayPanel'
-import Thumb from './Thumb'
+import TriesList from './TriesList'
+import ZoomScale from './ZoomScale'
 import ZoomImage from './ZoomImage'
 import { gameById } from './games'
 import type { GameId } from './games/types'
@@ -154,174 +156,136 @@ export default function DuelRoom({ code }: { code: string }) {
       )}
 
       {!inLobby && game && (
-        <section className={`play-layout ${duel.mode === 'image' ? 'shot-layout' : duel.mode === 'ability' ? 'ability-layout' : ''}`}>
-          {duel.mode === 'image' && (
-            <div className="shot-column">
-              <div className="shot">
-                <ZoomImage game={game} src={apiSrc(duel.image)} zoom={zoom} resetKey={`${duel.code}-${duel.round}`} />
-              </div>
-
-              <div className="play-card zoom-scale">
-                <div className="zoom-scale-head">
-                  <span className="play-card-title">{t('play.zoomTitle')}</span>
-                  <span>{nextZoom ? t('play.zoomNext', { zoom: zoomText(nextZoom) }) : t('play.zoomFull')}</span>
+        <PlayBoard
+          variant={duel.mode === 'image' ? 'shot' : duel.mode === 'ability' ? 'ability' : 'classic'}
+          side={<aside className="play-side duel-side" />}
+          media={
+            duel.mode === 'image' ? (
+              <div className="shot-column">
+                <div className="shot">
+                  <ZoomImage game={game} src={apiSrc(duel.image)} zoom={zoom} resetKey={`${duel.code}-${duel.round}`} />
                 </div>
-                <div className="zoom-steps">
-                  {ZOOM_LEVELS.map((level, i) => (
-                    <span key={level} className={i === shownStep ? 'now' : i < shownStep ? 'past' : ''}>
-                      <i />
-                      <b>×{zoomText(level)}</b>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
 
-          {duel.mode === 'ability' && (
-            <div className="shot-column ability-column">
-              <div className={`ability-stage ${over ? (duel.youWon ? 'won' : 'lost') : ''}`}>
-                <span className="ability-glow" aria-hidden />
-                <AbilityIcon
-                  className="ability-art"
-                  src={duel.image ? `${apiSrc(duel.image)}&v=${revealed ? 'done' : wrong}` : undefined}
-                  resetKey={`${duel.code}-${duel.round}`}
+                <ZoomScale
+                  title={t('play.zoomTitle')}
+                  note={nextZoom ? t('play.zoomNext', { zoom: zoomText(nextZoom) }) : t('play.zoomFull')}
+                  labels={ZOOM_LEVELS.map((level) => `×${zoomText(level)}`)}
+                  current={shownStep}
                 />
               </div>
+            ) : duel.mode === 'ability' ? (
+              <div className="shot-column ability-column">
+                <div className={`ability-stage ${over ? (duel.youWon ? 'won' : 'lost') : ''}`}>
+                  <span className="ability-glow" aria-hidden />
+                  <AbilityIcon
+                    className="ability-art"
+                    src={duel.image ? `${apiSrc(duel.image)}&v=${revealed ? 'done' : wrong}` : undefined}
+                    resetKey={`${duel.code}-${duel.round}`}
+                  />
+                </div>
 
-              <div className="play-card zoom-scale">
-                <div className="zoom-scale-head">
-                  <span className="play-card-title">{t('ability.scaleTitle')}</span>
-                  <span>
-                    {clarityStep < ABILITY_STAGES
-                      ? t('ability.nextClarity', { clarity: clarity(clarityStep + 1) })
-                      : t('ability.fullClarity')}
-                  </span>
-                </div>
-                <div className="zoom-steps clarity-steps" style={{ ['--steps' as string]: ABILITY_STAGES + 1 }}>
-                  {Array.from({ length: ABILITY_STAGES + 1 }, (_, i) => (
-                    <span key={i} className={i === clarityStep ? 'now' : i < clarityStep ? 'past' : ''}>
-                      <i />
-                      <b>{clarity(i)}%</b>
-                    </span>
-                  ))}
-                </div>
+                <ZoomScale
+                  clarity
+                  title={t('ability.scaleTitle')}
+                  note={clarityStep < ABILITY_STAGES ? t('ability.nextClarity', { clarity: clarity(clarityStep + 1) }) : t('ability.fullClarity')}
+                  labels={Array.from({ length: ABILITY_STAGES + 1 }, (_, i) => `${clarity(i)}%`)}
+                  current={clarityStep}
+                />
               </div>
+            ) : null
+          }
+        >
+          {!over &&
+            !youDone &&
+            (duel.mode === 'classic' ? (
+              <PlayPanel
+                media={
+                  <span className="play-mystery" aria-hidden>
+                    ?
+                  </span>
+                }
+                title={t('play.classicTitle')}
+                hint={t('duel.hurry')}
+              >
+                <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} />
+              </PlayPanel>
+            ) : (
+              <>
+                <AskCard title={t(duel.mode === 'ability' ? 'play.abilityTitle' : 'play.imageTitle')} hint={t('duel.hurry')} />
+                <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} compact />
+              </>
+            ))}
+
+          {duel.ability && (
+            <p className="ability-hint">
+              {t(revealed ? 'ability.was' : 'ability.hint')} <b>{duel.ability[lang]}</b>
+            </p>
+          )}
+
+          {!over && !youDone && (
+            <button className="link-button" onClick={giveUp} disabled={busy}>
+              {t('play.giveUp')}
+            </button>
+          )}
+
+          {(over || youDone) && answer && (
+            <div className={`card result ${!over ? 'skipped' : duel.youWon ? 'won' : duel.winner === null ? 'skipped' : 'lost'}`}>
+              <h2>
+                {!over
+                  ? you?.solved
+                    ? t('duel.waitRival')
+                    : t('duel.gaveUpWait')
+                  : duel.matchDone
+                    ? duel.youWon
+                      ? t('duel.matchWon')
+                      : t('duel.matchLost', { name: duel.winner ?? '' })
+                    : duel.youWon
+                      ? t('duel.youWon')
+                      : duel.winner
+                        ? t('duel.youLost', { name: duel.winner })
+                        : t('duel.draw')}
+              </h2>
+              <p className="duel-score">
+                {t('duel.score', { you: you?.wins ?? 0, rival: rival?.wins ?? 0 })}
+                {!duel.matchDone && <span> · {t('duel.roundOf', { round: duel.round, best: duel.best })}</span>}
+              </p>
+              <img className="result-image" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />
+              <div className="result-name">{name(answer)}</div>
+              <p className="round">
+                {you?.nickname}: {t('duel.guesses', { count: you?.guesses.length ?? 0 })}
+                {rival ? ` · ${rival.nickname}: ${t('duel.guesses', { count: rival.guessCount })}` : ''}
+              </p>
+              {over && <div className="result-actions">
+                {duel.matchDone ? (
+                  <button className="primary" onClick={toLobby} disabled={busy}>
+                    {t('duel.toLobby')}
+                  </button>
+                ) : (
+                  <button className="primary" onClick={next} disabled={busy || you?.wantsNext}>
+                    {you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
+                  </button>
+                )}
+              </div>}
+              {rival?.wantsNext && !you?.wantsNext && <p className="muted small">{t('duel.rivalWantsNext', { name: rival.nickname })}</p>}
             </div>
           )}
 
-          <div className="play-main">
-            {!over &&
-              !youDone &&
-              (duel.mode === 'classic' ? (
-                <PlayPanel
-                  media={
-                    <span className="play-mystery" aria-hidden>
-                      ?
-                    </span>
-                  }
-                  title={t('play.classicTitle')}
-                  hint={t('duel.hurry')}
-                >
-                  <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} />
-                </PlayPanel>
-              ) : (
-                <>
-                  <div className="play-card shot-copy">
-                    <h2>{t(duel.mode === 'ability' ? 'play.abilityTitle' : 'play.imageTitle')}</h2>
-                    <p>{t('duel.hurry')}</p>
-                  </div>
-                  <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} compact />
-                </>
-              ))}
-
-            {duel.ability && (
-              <p className="ability-hint">
-                {t(revealed ? 'ability.was' : 'ability.hint')} <b>{duel.ability[lang]}</b>
-              </p>
-            )}
-
-            {!over && !youDone && (
-              <button className="link-button" onClick={giveUp} disabled={busy}>
-                {t('play.giveUp')}
-              </button>
-            )}
-
-            {(over || youDone) && answer && (
-              <div className={`card result ${!over ? 'skipped' : duel.youWon ? 'won' : duel.winner === null ? 'skipped' : 'lost'}`}>
-                <h2>
-                  {!over
-                    ? you?.solved
-                      ? t('duel.waitRival')
-                      : t('duel.gaveUpWait')
-                    : duel.matchDone
-                      ? duel.youWon
-                        ? t('duel.matchWon')
-                        : t('duel.matchLost', { name: duel.winner ?? '' })
-                      : duel.youWon
-                        ? t('duel.youWon')
-                        : duel.winner
-                          ? t('duel.youLost', { name: duel.winner })
-                          : t('duel.draw')}
-                </h2>
-                <p className="duel-score">
-                  {t('duel.score', { you: you?.wins ?? 0, rival: rival?.wins ?? 0 })}
-                  {!duel.matchDone && <span> · {t('duel.roundOf', { round: duel.round, best: duel.best })}</span>}
-                </p>
-                <img className="result-image" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />
-                <div className="result-name">{name(answer)}</div>
-                <p className="round">
-                  {you?.nickname}: {t('duel.guesses', { count: you?.guesses.length ?? 0 })}
-                  {rival ? ` · ${rival.nickname}: ${t('duel.guesses', { count: rival.guessCount })}` : ''}
-                </p>
-                {over && <div className="result-actions">
-                  {duel.matchDone ? (
-                    <button className="primary" onClick={toLobby} disabled={busy}>
-                      {t('duel.toLobby')}
-                    </button>
-                  ) : (
-                    <button className="primary" onClick={next} disabled={busy || you?.wantsNext}>
-                      {you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
-                    </button>
-                  )}
-                </div>}
-                {rival?.wantsNext && !you?.wantsNext && <p className="muted small">{t('duel.rivalWantsNext', { name: rival.nickname })}</p>}
-              </div>
-            )}
-
-            {duel.mode === 'classic' ? (
-              <GuessGrid game={game} guesses={guesses} answerId={duel.answerId} />
-            ) : (
-              <div className="tries">
-                <span className="play-card-title">{t('play.tries')}</span>
-                {guesses.length === 0 ? (
-                  <p className="tries-empty">{t(over ? 'play.noTriesOver' : 'play.noTries')}</p>
-                ) : (
-                  <div className="tries-list">
-                    {guesses.map(({ entity: g, pending: p }, i) => {
-                      const hit = g.id === duel.answerId
-                      const before = guesses.slice(i + 1).filter((x) => !x.pending && x.entity.id !== duel.answerId).length
-                      return (
-                        <div key={g.id} className={`try ${p ? 'pending' : hit ? 'hit' : 'miss'}`}>
-                          <Thumb game={game} entity={g} size={36} />
-                          <span className="try-name">{name(g)}</span>
-                          <span className="try-zoom">
-                            {duel.mode === 'ability'
-                              ? `${clarity(Math.min(before, ABILITY_STAGES))}%`
-                              : `×${zoomText(levelAt(guesses.length - 1 - i))}`}
-                          </span>
-                          {!p && <span className="try-verdict">{t(hit ? 'play.hit' : 'play.miss')}</span>}
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          <aside className="play-side duel-side" />
-        </section>
+          {duel.mode === 'classic' ? (
+            <GuessGrid game={game} guesses={guesses} answerId={duel.answerId} />
+          ) : (
+            <TriesList
+              game={game}
+              guesses={guesses}
+              answerId={duel.answerId}
+              over={over}
+              meta={(i, list) =>
+                duel.mode === 'ability'
+                  ? `${clarity(Math.min(list.slice(i + 1).filter((x) => !x.pending && x.entity.id !== duel.answerId).length, ABILITY_STAGES))}%`
+                  : `×${zoomText(levelAt(list.length - 1 - i))}`
+              }
+            />
+          )}
+        </PlayBoard>
       )}
     </div>
   )

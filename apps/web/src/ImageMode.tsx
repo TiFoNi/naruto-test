@@ -1,10 +1,12 @@
 import CharacterSearch from './CharacterSearch'
+import PlayBoard, { AskCard } from './PlayBoard'
 import PlaySide from './PlaySide'
+import TriesList from './TriesList'
+import ZoomScale from './ZoomScale'
 import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
 import ZoomImage from './ZoomImage'
 import Yesterday from './Yesterday'
-import Thumb from './Thumb'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
 import type { Stats } from './stats'
@@ -16,7 +18,7 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 
 
 export default function ImageMode({ game, active, stats, daily = false, challenge }: Props) {
-  const { t, lang, name } = useI18n()
+  const { t, lang } = useI18n()
   const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(
     game,
     'image',
@@ -34,86 +36,55 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
   const shownStep = over ? ZOOM_LEVELS.length - 1 : step
 
   return (
-    <section className="play-layout shot-layout">
-      <div className="shot-column">
-        <div className="shot">
-          <ZoomImage
-            game={game}
-            src={apiSrc(round?.image)}
-            zoom={zoom}
-            resetKey={round?.id}
+    <PlayBoard
+      variant="shot"
+      media={
+        <div className="shot-column">
+          <div className="shot">
+            <ZoomImage game={game} src={apiSrc(round?.image)} zoom={zoom} resetKey={round?.id} />
+          </div>
+
+          <ZoomScale
+            title={t('play.zoomTitle')}
+            note={playing && nextLevel ? t('play.zoomNext', { zoom: zoomText(nextLevel) }) : t('play.zoomFull')}
+            labels={ZOOM_LEVELS.map((level) => `×${zoomText(level)}`)}
+            current={shownStep}
           />
         </div>
+      }
+      side={<PlaySide game={game} mode="image" daily={daily} stats={stats} playing={playing} howto="image" onGiveUp={giveUp} />}
+    >
+      {!over && <AskCard title={t('play.imageTitle')} hint={t('play.imagePrompt')} />}
 
-        <div className="play-card zoom-scale">
-          <div className="zoom-scale-head">
-            <span className="play-card-title">{t('play.zoomTitle')}</span>
-            <span>{playing && nextLevel ? t('play.zoomNext', { zoom: zoomText(nextLevel) }) : t('play.zoomFull')}</span>
-          </div>
-          <div className="zoom-steps">
-            {ZOOM_LEVELS.map((level, i) => (
-              <span key={level} className={i === shownStep ? 'now' : i < shownStep ? 'past' : ''}>
-                <i />
-                <b>×{zoomText(level)}</b>
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
+      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact />}
 
-      <div className="play-main">
-        {!over && (
-          <div className="play-card shot-copy">
-            <h2>{t('play.imageTitle')}</h2>
-            <p>{t('play.imagePrompt')}</p>
-          </div>
-        )}
+      <RoundStatus error={error} onRetry={retry} />
 
-        {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact />}
+      {round && over && answer && (
+        <RoundResult
+          game={game}
+          answer={answer}
+          guesses={guesses.length}
+          won={won}
+          skipped={skipped}
+          stats={stats}
+          onNext={next}
+          challenge={challenge}
+          mode="image"
+          nextAt={round.nextAt}
+          compact
+        />
+      )}
 
-        <RoundStatus error={error} onRetry={retry} />
+      {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
 
-        {round && over && answer && (
-          <RoundResult
-            game={game}
-            answer={answer}
-            guesses={guesses.length}
-            won={won}
-            skipped={skipped}
-            stats={stats}
-            onNext={next}
-            challenge={challenge}
-            mode="image"
-            nextAt={round.nextAt}
-            compact
-          />
-        )}
-
-        {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
-
-        <div className="tries">
-          <span className="play-card-title">{t('play.tries')}</span>
-          {guesses.length === 0 ? (
-            <p className="tries-empty">{t(over ? 'play.noTriesOver' : 'play.noTries')}</p>
-          ) : (
-            <div className="tries-list">
-              {guesses.map(({ entity: g, pending }, i) => {
-                const hit = won && g.id === answer?.id
-                return (
-                  <div key={g.id} className={`try ${pending ? 'pending' : hit ? 'hit' : 'miss'}`}>
-                    <Thumb game={game} entity={g} size={36} />
-                    <span className="try-name">{name(g)}</span>
-                    <span className="try-zoom">×{zoomText(levelAt(guesses.length - 1 - i))}</span>
-                    {!pending && <span className="try-verdict">{t(hit ? 'play.hit' : 'play.miss')}</span>}
-                  </div>
-                )
-              })}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <PlaySide game={game} mode="image" daily={daily} stats={stats} playing={playing} howto="image" onGiveUp={giveUp} />
-    </section>
+      <TriesList
+        game={game}
+        guesses={guesses}
+        answerId={answer?.id}
+        over={over}
+        meta={(i, list) => `×${zoomText(levelAt(list.length - 1 - i))}`}
+      />
+    </PlayBoard>
   )
 }

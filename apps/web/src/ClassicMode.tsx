@@ -1,5 +1,6 @@
 import CharacterSearch from './CharacterSearch'
 import GuessGrid from './GuessGrid'
+import PlayBoard from './PlayBoard'
 import PlayPanel from './PlayPanel'
 import PlaySide from './PlaySide'
 import RoundResult from './RoundResult'
@@ -23,45 +24,41 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
   )
   const playing = !!round && !over
   return (
-    <section className="play-layout">
-      <div className="play-main">
-        {!over && (
-          <PlayPanel
-            media={
-              <span className="play-mystery" aria-hidden>
-                ?
-              </span>
-            }
-            title={t('play.classicTitle')}
-            hint={t('play.classicPrompt')}
-          >
-            {!error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} />}
-          </PlayPanel>
-        )}
+    <PlayBoard side={<PlaySide game={game} mode="classic" daily={daily} stats={stats} playing={playing} legend onGiveUp={giveUp} />}>
+      {!over && (
+        <PlayPanel
+          media={
+            <span className="play-mystery" aria-hidden>
+              ?
+            </span>
+          }
+          title={t('play.classicTitle')}
+          hint={t('play.classicPrompt')}
+        >
+          {!error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} />}
+        </PlayPanel>
+      )}
 
-        {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
+      {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
 
-        <RoundStatus error={error} onRetry={retry} />
+      <RoundStatus error={error} onRetry={retry} />
 
-        {round && over && answer && (
-          <RoundResult
-            game={game}
-            answer={answer}
-            guesses={guesses.length}
-            won={won}
-            skipped={skipped}
-            stats={stats}
-            onNext={next}
-            challenge={challenge}
-            mode="classic"
-            nextAt={round.nextAt}
-          />
-        )}
+      {round && over && answer && (
+        <RoundResult
+          game={game}
+          answer={answer}
+          guesses={guesses.length}
+          won={won}
+          skipped={skipped}
+          stats={stats}
+          onNext={next}
+          challenge={challenge}
+          mode="classic"
+          nextAt={round.nextAt}
+        />
+      )}
 
-        <GuessGrid game={game} guesses={guesses} answerId={answer?.id} loading={!round && !error} />
-      </div>
-
-      <PlaySide game={game} mode="classic" daily={daily} stats={stats} playing={playing} legend onGiveUp={giveUp} />
-    </section>
+      <GuessGrid game={game} guesses={guesses} answerId={answer?.id} loading={!round && !error} />
+    </PlayBoard>
   )
 }
