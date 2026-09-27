@@ -156,31 +156,29 @@ export default function DuelRoom({ code }: { code: string }) {
           )}
 
           <div className="play-main">
-            {duel.mode === 'classic' ? (
-              <PlayPanel
-                media={
-                  <span className="play-mystery" aria-hidden>
-                    ?
-                  </span>
-                }
-                title={t('play.classicTitle')}
-                hint={t('duel.hurry')}
-              >
-                {!over && !youDone && (
+            {!over &&
+              !youDone &&
+              (duel.mode === 'classic' ? (
+                <PlayPanel
+                  media={
+                    <span className="play-mystery" aria-hidden>
+                      ?
+                    </span>
+                  }
+                  title={t('play.classicTitle')}
+                  hint={t('duel.hurry')}
+                >
                   <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} />
-                )}
-              </PlayPanel>
-            ) : (
-              <>
-                <div className="play-card shot-copy">
-                  <h2>{t(duel.mode === 'ability' ? 'play.abilityTitle' : 'play.imageTitle')}</h2>
-                  <p>{t('duel.hurry')}</p>
-                </div>
-                {!over && !youDone && (
+                </PlayPanel>
+              ) : (
+                <>
+                  <div className="play-card shot-copy">
+                    <h2>{t(duel.mode === 'ability' ? 'play.abilityTitle' : 'play.imageTitle')}</h2>
+                    <p>{t('duel.hurry')}</p>
+                  </div>
                   <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} compact />
-                )}
-              </>
-            )}
+                </>
+              ))}
 
             {duel.ability && (
               <p className="ability-hint">

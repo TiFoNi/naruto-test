@@ -25,17 +25,19 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
   return (
     <section className="play-layout">
       <div className="play-main">
-        <PlayPanel
-          media={
-            <span className="play-mystery" aria-hidden>
-              ?
-            </span>
-          }
-          title={t('play.classicTitle')}
-          hint={t('play.classicPrompt')}
-        >
-          {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} />}
-        </PlayPanel>
+        {!over && (
+          <PlayPanel
+            media={
+              <span className="play-mystery" aria-hidden>
+                ?
+              </span>
+            }
+            title={t('play.classicTitle')}
+            hint={t('play.classicPrompt')}
+          >
+            {!error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} />}
+          </PlayPanel>
+        )}
 
         {round?.daily && yesterday && <Yesterday game={game} entity={yesterday} />}
 
