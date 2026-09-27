@@ -15,6 +15,14 @@ const ui = {
   'duel.inviteFrom': { ru: '{name} зовёт тебя на дуэль', uk: '{name} кличе тебе на дуель', en: '{name} challenges you to a duel' },
   'duel.accept': { ru: 'Принять', uk: 'Прийняти', en: 'Accept' },
   'duel.declineInvite': { ru: 'Отклонить', uk: 'Відхилити', en: 'Decline' },
+  'duel.rivalBoard': { ru: 'Доска соперника', uk: 'Дошка суперника', en: 'Rival board' },
+  'duel.live': { ru: 'вживую', uk: 'наживо', en: 'live' },
+  'duel.rivalBoardHint': {
+    ru: 'Обновляется одновременно с твоей игрой. Видишь цвета его клеток, но не имена.',
+    uk: 'Оновлюється одночасно з твоєю грою. Бачиш кольори його клітинок, але не імена.',
+    en: 'Updates while you play. You see the colours of their cells, not the names.',
+  },
+  'duel.rivalBoardEmpty': { ru: 'Соперник ещё не делал попыток', uk: 'Суперник ще не робив спроб', en: 'No guesses from the rival yet' },
   'duel.rounds': {
     ru: '{count} раунд|{count} раунда|{count} раундов',
     uk: '{count} раунд|{count} раунди|{count} раундів',

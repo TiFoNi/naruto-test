@@ -36,7 +36,7 @@ export type DuelView = {
   winner?: string | null
   youWon?: boolean
   you?: DuelSide & { guesses: { id: number; judgement?: Record<string, Judgement> }[] }
-  rival?: DuelSide & { guessCount: number }
+  rival?: DuelSide & { guessCount: number; board?: Record<string, string>[] }
 }
 
 const FALLBACK_MS = 3000

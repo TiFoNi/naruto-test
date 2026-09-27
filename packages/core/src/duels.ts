@@ -25,6 +25,7 @@ import { addXp, defaultNickname } from './profile'
 
 export const MIN_GAP_MS = 800
 export const DUEL_LOG_MAX = 10
+const BOARD_ROWS = 10
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
 
 const code = () => Array.from({ length: 6 }, () => CODE_ALPHABET[randomInt(CODE_ALPHABET.length)]).join('')
@@ -590,6 +591,14 @@ export async function duelView(duel: DuelDoc, userId: ObjectId) {
       solved: Boolean(rival.solvedAt),
       gaveUp: Boolean(rival.gaveUp),
       guessCount: rival.guesses.length,
+      board:
+        duel.mode === 'classic' && byId && answer
+          ? rival.guesses
+              .slice(-BOARD_ROWS)
+              .map((id) => byId.get(id))
+              .filter((entity) => entity !== undefined)
+              .map((entity) => Object.fromEntries(Object.entries(judgeAll(game!, entity, answer)).map(([key, value]) => [key, value.verdict])))
+          : undefined,
     },
   }
 }

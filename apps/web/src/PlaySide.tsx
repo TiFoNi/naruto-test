@@ -116,9 +116,11 @@ export default function PlaySide({ game, mode, daily, stats, playing, busy, lege
 
       <div className="play-actions">
         {!daily && <ChallengeMaker game={game} mode={mode} />}
-        <Link className="lb-link" href={href.leaderboard(game.id, mode)}>
-          <PodiumIcon /> {t('nav.leaderboard')}
-        </Link>
+        {user && (
+          <Link className="lb-link" href={href.leaderboard(game.id, mode)}>
+            <PodiumIcon /> {t('nav.leaderboard')}
+          </Link>
+        )}
         {playing && (
           <GiveUp disabled={busy} onConfirm={onGiveUp}>
             {t('play.giveUp')}

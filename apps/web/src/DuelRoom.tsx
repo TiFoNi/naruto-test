@@ -8,6 +8,7 @@ import GiveUp from './GiveUp'
 import GuessGrid from './GuessGrid'
 import MangaStage, { MangaOptions } from './MangaStage'
 import PhraseColumn from './PhraseColumn'
+import RivalBoard from './RivalBoard'
 import PlayBoard, { AskCard } from './PlayBoard'
 import PlayPanel from './PlayPanel'
 import TriesList from './TriesList'
@@ -207,7 +208,11 @@ export default function DuelRoom({ code }: { code: string }) {
       {!inLobby && game && (
         <PlayBoard
           variant={duel.mode === 'image' ? 'shot' : duel.mode === 'ability' ? 'ability' : 'classic'}
-          side={<aside className="play-side duel-side" />}
+          side={
+            <aside className="play-side duel-side">
+              {duel.mode === 'classic' && duel.rival && <RivalBoard game={game} rows={duel.rival.board ?? []} total={duel.rival.guessCount} />}
+            </aside>
+          }
           media={
             duel.mode === 'image' ? (
               <div className="shot-column">

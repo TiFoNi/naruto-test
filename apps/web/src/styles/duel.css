@@ -947,3 +947,97 @@
     font-size: 28px;
   }
 }
+
+.rival-board {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rival-board-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.rival-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #45d483;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.rival-live::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: rival-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes rival-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.rival-board p {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.rival-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rival-rows li {
+  display: grid;
+  grid-template-columns: 16px repeat(var(--rival-cols), minmax(0, 1fr));
+  align-items: center;
+  gap: 5px;
+}
+
+.rival-rows li i {
+  color: var(--text-3);
+  font-family: var(--display);
+  font-size: 12px;
+  font-style: normal;
+}
+
+.rival-cell {
+  aspect-ratio: 1;
+  border-radius: 7px;
+  background: var(--wrong);
+}
+
+.rival-cell.correct {
+  background: var(--correct);
+}
+
+.rival-cell.partial {
+  background: var(--partial);
+}
+
+.rival-cell.mystery {
+  display: grid;
+  place-items: center;
+  background: var(--card-2);
+  color: var(--text-3);
+  font-family: var(--display);
+  font-size: 12px;
+}
+
+.rival-empty {
+  font-size: 12.5px;
+}
