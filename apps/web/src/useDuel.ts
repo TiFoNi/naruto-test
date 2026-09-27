@@ -27,6 +27,10 @@ export type DuelView = {
   hintAt?: number
   ability?: { ru: string; uk: string; en: string }
   image?: string
+  options?: number[]
+  lines?: { text: string; ru?: string }[]
+  linesLeft?: number
+  voice?: string
   answerId?: number
   winner?: string | null
   youWon?: boolean

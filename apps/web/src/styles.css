@@ -1046,6 +1046,8 @@ main {
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+  width: 0;
+  min-width: 100%;
   margin: 0;
   padding: 0 4px 2px;
   font-size: 13px;
@@ -1107,6 +1109,7 @@ main {
   overflow-wrap: anywhere;
   animation: reveal 0.28s both;
 }
+
 
 .cell.pending {
   background: var(--card-2);
@@ -1194,11 +1197,43 @@ main {
   }
 }
 
+.cell-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cell.size-s .cell-text {
+  -webkit-line-clamp: 5;
+}
+
+.cell.size-xs .cell-text {
+  -webkit-line-clamp: 6;
+}
+
 .icons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-content: center;
   gap: 3px;
+  max-width: 100%;
+}
+
+.icons-more {
+  font-style: normal;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--text) 16%, transparent);
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 800;
 }
 
 .icons i {
@@ -1825,13 +1860,7 @@ main {
 }
 
 @media (max-width: 600px) {
-  .grid-row {
-    grid-template-columns: repeat(var(--cols, 8), 78px);
-    gap: 5px;
-  }
-
   .cell {
-    height: 78px;
     font-size: 10.5px;
   }
 
@@ -6838,4 +6867,119 @@ button.award:disabled {
   .play-layout.phrase-layout {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+.grid-scroll.is-wrapped {
+  overflow-x: visible;
+}
+
+.is-wrapped .grid {
+  width: 100%;
+  gap: 10px;
+  padding-inline: 0;
+}
+
+.is-wrapped .grid-row {
+  grid-template-columns: repeat(var(--wrap-cols, 4), minmax(0, 1fr));
+  gap: 6px;
+  padding: 10px;
+  border-radius: 18px;
+  background: var(--card-2);
+}
+
+.is-wrapped .grid-row.header {
+  display: none;
+}
+
+.is-wrapped .grid-row .cell {
+  aspect-ratio: 1 / 1;
+  height: auto;
+  min-height: 0;
+  justify-content: center;
+  gap: 2px;
+  padding: 9px 6px;
+  border-radius: 14px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.is-wrapped .cell.has-tip {
+  overflow: visible;
+  z-index: 4;
+}
+
+.cell-tip {
+  position: fixed;
+  z-index: 60;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.45;
+  text-align: center;
+  white-space: normal;
+  transform: translate(-50%, -100%);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
+  animation: fade-in 0.14s ease;
+}
+
+.cell-tip.below {
+  transform: translate(-50%, 0);
+}
+
+.is-wrapped .grid-row .cell.portrait {
+  grid-column: 1 / -1;
+  aspect-ratio: auto;
+  height: auto;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  overflow: visible;
+}
+
+.is-wrapped .grid-row .cell.portrait .portrait-thumb {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+}
+
+.is-wrapped .grid-row .cell.portrait .portrait-name {
+  position: static;
+  padding: 0;
+  background: none;
+  font-size: 15px;
+  font-weight: 800;
+  text-align: left;
+  white-space: normal;
+  opacity: 1;
+  overflow: visible;
+}
+
+.is-wrapped .cell-arrow {
+  position: static;
+  order: 2;
+  width: auto;
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.is-wrapped .twin {
+  margin-inline: 0;
+  padding: 0;
+  border-radius: 20px;
+}
+
+.is-wrapped .twin-note {
+  padding: 0 12px 10px;
 }

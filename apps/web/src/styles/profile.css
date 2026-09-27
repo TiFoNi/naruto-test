@@ -712,3 +712,61 @@
   width: 18px;
   height: 18px;
 }
+
+.duel-log {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.duel-log li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: var(--card-2);
+}
+
+.duel-log-score {
+  display: grid;
+  place-items: center;
+  min-width: 52px;
+  padding: 4px 8px;
+  border-radius: 9px;
+  background: var(--card);
+  font-family: var(--display);
+  font-size: 14px;
+}
+
+.duel-log li.won .duel-log-score {
+  background: color-mix(in srgb, #45d483 18%, transparent);
+  color: #45d483;
+}
+
+.duel-log li.lost .duel-log-score {
+  background: color-mix(in srgb, #e5484d 18%, transparent);
+  color: #ff8085;
+}
+
+.duel-log-name {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.duel-log-name b {
+  overflow: hidden;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.duel-log-name small {
+  color: var(--text-3);
+  font-size: 11px;
+}

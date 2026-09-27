@@ -716,3 +716,85 @@
   cursor: default;
   opacity: 0.6;
 }
+
+.duel-final {
+  --tone: var(--accent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-width: 380px;
+  padding: 26px 22px 22px;
+  text-align: center;
+}
+
+.duel-final.won {
+  --tone: #45d483;
+}
+
+.duel-final.lost {
+  --tone: #ff8085;
+}
+
+.duel-final-mark {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 20px;
+  border: 2px solid color-mix(in srgb, var(--tone) 60%, transparent);
+  background: color-mix(in srgb, var(--tone) 14%, transparent);
+  color: var(--tone);
+  font-size: 26px;
+}
+
+.duel-final h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.duel-final-score {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--display);
+  font-size: 34px;
+}
+
+.duel-final-score span {
+  color: var(--text-3);
+}
+
+.duel-final-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.duel-final-actions button {
+  padding: 11px 12px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.duel-final-actions .primary {
+  background: var(--accent);
+  color: #14161c;
+}
+
+.duel-final-actions .ghost {
+  border-color: var(--line);
+  background: transparent;
+  color: var(--text-2);
+}
+
+.duel-final-actions .ghost:hover:not(:disabled) {
+  border-color: color-mix(in srgb, #ff8085 45%, var(--line));
+  color: #ff8085;
+}

@@ -5,6 +5,7 @@ import {
   createDuel,
   declineInvite,
   dropIdle,
+  duelHistory,
   leaveDuel,
   duelGuess,
   duelView,
@@ -46,6 +47,8 @@ export const POST = handle(async (request) => {
   }
 
   if (action === 'rivals') return json({ rivals: await recentRivals(userId) })
+
+  if (action === 'history') return json({ duels: (await duelHistory(userId)).slice(0, 10) })
 
   if (action === 'players') {
     const query = typeof body.q === 'string' ? body.q.trim().slice(0, 24).toLowerCase() : ''

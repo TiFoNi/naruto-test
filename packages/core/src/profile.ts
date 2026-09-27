@@ -55,14 +55,18 @@ export async function applyDailyResult(collection: Collection<UserDoc>, userId: 
 }
 
 export async function awardSolveXp(collection: Collection<UserDoc>, userId: ObjectId, mode: ModeId, source: XpSource) {
-  const amount = source === 'daily' ? MODE_XP[mode] * DAILY_XP_FACTOR : MODE_XP[mode]
+  return addXp(collection, userId, source === 'daily' ? MODE_XP[mode] * DAILY_XP_FACTOR : MODE_XP[mode], source)
+}
+
+export async function addXp(collection: Collection<UserDoc>, userId: ObjectId, amount: number, source: XpSource) {
+  if (amount <= 0) return null
   const day = today()
   const carry = (field: XpSource) => ({ $cond: [{ $eq: ['$xpToday.day', day] }, orZero(`xpToday.${field}`), 0] })
 
   const doc = await collection.findOneAndUpdate(
     { _id: userId },
     [
-      { $set: { xpToday: { day, daily: carry('daily'), endless: carry('endless') } } },
+      { $set: { xpToday: { day, daily: carry('daily'), endless: carry('endless'), duel: carry('duel') } } },
       { $set: { xpGain: { $max: [0, { $min: [amount, { $subtract: [XP_CAPS[source], `$xpToday.${source}`] }] }] } } },
       { $set: { [`xpToday.${source}`]: { $add: [`$xpToday.${source}`, '$xpGain'] }, xp: { $add: [orZero('xp'), '$xpGain'] } } },
     ],

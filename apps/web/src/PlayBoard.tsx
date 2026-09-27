@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 
-type Props = { variant?: 'classic' | 'shot' | 'ability'; media?: ReactNode; side?: ReactNode; children: ReactNode }
+type Props = { variant?: 'classic' | 'shot' | 'ability' | 'page' | 'phrase'; media?: ReactNode; side?: ReactNode; children: ReactNode }
 
-const LAYOUT = { classic: '', shot: 'shot-layout', ability: 'ability-layout' } as const
+const LAYOUT = { classic: '', shot: 'shot-layout', ability: 'ability-layout', page: 'page-layout', phrase: 'phrase-layout' } as const
 
 export default function PlayBoard({ variant = 'classic', media, side, children }: Props) {
   return (

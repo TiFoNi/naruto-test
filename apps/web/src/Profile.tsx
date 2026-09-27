@@ -88,6 +88,8 @@ keepPerUser(() => {
   knownSummary = null
 })
 
+type DuelRow = { code: string; rival: string; game: string | null; mode: string | null; wins: number; losses: number; won: boolean; at: string }
+
 export default function Profile({ onBack, id }: { onBack: () => void; id?: string }) {
   const { user } = useAuth()
   const own = !id
@@ -150,6 +152,17 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const modeLabel = (id: string) => MODES.find((m) => m.id === id)?.label ?? 'mode.classic'
   const navigate = useNavigate()
   const [calling, setCalling] = useState(false)
+  const [duels, setDuels] = useState<DuelRow[]>([])
+
+  useEffect(() => {
+    if (!own) return
+    let alive = true
+    void api<{ duels?: DuelRow[] }>('duel', { action: 'history' }).then(({ ok, data }) => alive && ok && setDuels(data.duels ?? []))
+    return () => {
+      alive = false
+    }
+  }, [own])
+
 
   const challenge = async (target: string) => {
     setCalling(true)
@@ -343,6 +356,38 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
               <b>{average}</b>
             </div>
           </section>
+
+          {duels.length > 0 && (
+            <section className="card duels-card">
+              <header>
+                <div className="card-title">
+                  <h2>{t('profile.duelHistory')}</h2>
+                  <p className="muted">{t('profile.duelHistoryHint')}</p>
+                </div>
+              </header>
+              <ul className="duel-log">
+                {duels.map((row) => {
+                  const game = GAMES.find((one) => one.id === row.game)
+                  const result = row.won ? 'won' : 'lost'
+                  return (
+                    <li key={`${row.code}-${row.at}`} className={result}>
+                      <span className="duel-log-score">
+                        {row.wins}:{row.losses}
+                      </span>
+                      <span className="duel-log-name">
+                        <b>{row.rival}</b>
+                        <small>
+                          {game ? l(game.label) : ''}
+                          {row.mode ? ` · ${t(modeLabel(row.mode))}` : ''}
+                        </small>
+                      </span>
+                      <small className="muted">{date(row.at)}</small>
+                    </li>
+                  )
+                })}
+              </ul>
+            </section>
+          )}
 
           <div className="profile-middle-cols">
             <div className="profile-column">

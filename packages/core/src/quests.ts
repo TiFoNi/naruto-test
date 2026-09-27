@@ -100,10 +100,20 @@ async function progress(userId: ObjectId, day: string) {
     ])
     .toArray()
 
-  const wonDuels = await (await duels()).countDocuments({
-    winnerId: userId,
-    $expr: { $eq: [{ $dateToString: { format: '%Y-%m-%d', date: '$finishedAt', timezone: 'Europe/Kyiv' } }, day] },
-  })
+  const [duelRow] = await (await duels())
+    .aggregate<{ wins: number }>([
+      { $match: { 'players.userId': userId, log: { $exists: true } } },
+      { $unwind: '$log' },
+      {
+        $match: {
+          'log.winnerId': userId,
+          $expr: { $eq: [{ $dateToString: { format: '%Y-%m-%d', date: '$log.at', timezone: 'Europe/Kyiv' } }, day] },
+        },
+      },
+      { $count: 'wins' },
+    ])
+    .toArray()
+  const wonDuels = duelRow?.wins ?? 0
 
   const modes = ((counts?.modes as string[]) ?? []).reduce<Record<string, number>>((all, mode) => {
     all[mode] = (all[mode] ?? 0) + 1

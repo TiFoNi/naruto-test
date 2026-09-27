@@ -10,7 +10,8 @@ const FRESH_MS = 600_000
 
 async function ready(doc: UserDoc) {
   const id = doc._id!
-  const solved = doc.solvedTotal ?? STAT_KEYS.reduce((sum, key) => sum + (doc.stats?.[key]?.solved ?? 0), 0)
+  const solved =
+    (doc.solvedTotal ?? STAT_KEYS.reduce((sum, key) => sum + (doc.stats?.[key]?.solved ?? 0), 0)) + (doc.duelStats?.played ?? 0)
   let awards = doc.awards ?? {}
   let claimed = doc.claimed ?? {}
 

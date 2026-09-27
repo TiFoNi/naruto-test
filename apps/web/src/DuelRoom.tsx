@@ -1,10 +1,12 @@
 import BackButton from './BackButton'
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import AbilityIcon from './AbilityIcon'
-import { ABILITY_STAGES } from '@nanda/game'
+import { ABILITY_STAGES, PHRASE_VOICE_AT } from '@nanda/game'
 import { ZOOM_LEVELS, levelAt } from './zoom'
 import CharacterSearch from './CharacterSearch'
 import GuessGrid from './GuessGrid'
+import MangaStage, { MangaOptions } from './MangaStage'
+import PhraseColumn from './PhraseColumn'
 import PlayBoard, { AskCard } from './PlayBoard'
 import PlayPanel from './PlayPanel'
 import TriesList from './TriesList'
@@ -18,7 +20,7 @@ import { useHref, useNavigate } from './router'
 import { useDuel } from './useDuel'
 import DuelSetup from './DuelSetup'
 import type { Guess } from './useRound'
-import { ExitIcon, SwordsIcon } from './icons'
+import { ExitIcon, SwordsIcon, TrophyIcon } from './icons'
 import { fullUrl } from './pics'
 import { api, apiSrc } from './api'
 import { useEntities } from './entities'
@@ -37,11 +39,17 @@ export default function DuelRoom({ code }: { code: string }) {
   const navigate = useNavigate()
   const { duel, error, busy, pending, serverNow, ready, setup, invite, next, toLobby, giveUp, guess, refresh } = useDuel(code)
   const [, redraw] = useState(0)
+  const [pageReady, setPageReady] = useState(false)
+  const [showResult, setShowResult] = useState(true)
 
   useEffect(() => {
     const timer = setInterval(() => redraw((n) => n + 1), 500)
     return () => clearInterval(timer)
   }, [])
+
+  useEffect(() => {
+    if (duel?.matchDone) setShowResult(true)
+  }, [duel?.matchDone, duel?.round])
 
   const leave = async () => {
     await api('duel', { code, action: 'leave' }).catch(() => null)
@@ -155,6 +163,46 @@ export default function DuelRoom({ code }: { code: string }) {
         <DuelSetup duel={duel} busy={busy} link={link} onSetup={setup} onInvite={invite} onReady={ready} onLeave={() => void leave()} />
       )}
 
+      {duel.matchDone && over && showResult && (
+        <div className="modal-backdrop" onClick={() => setShowResult(false)} role="presentation">
+          <section
+            className={`card modal duel-final ${duel.youWon ? 'won' : 'lost'}`}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('duel.matchOver')}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <span className="duel-final-mark" aria-hidden>
+              {duel.youWon ? <TrophyIcon /> : <SwordsIcon />}
+            </span>
+            <h2>{duel.youWon ? t('duel.matchWon') : t('duel.matchLost', { name: duel.winner ?? '' })}</h2>
+            <p className="duel-final-score">
+              <b>{you?.wins ?? 0}</b>
+              <span>:</span>
+              <b>{rival?.wins ?? 0}</b>
+            </p>
+            <p className="muted">
+              {you?.nickname} · {rival?.nickname ?? '?'}
+            </p>
+            <div className="duel-final-actions">
+              <button
+                className="primary"
+                onClick={() => {
+                  setShowResult(false)
+                  toLobby()
+                }}
+                disabled={busy}
+              >
+                {t('duel.toLobby')}
+              </button>
+              <button className="ghost" onClick={() => void leave()} disabled={busy}>
+                {t('duel.leave')}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
+
       {!inLobby && game && (
         <PlayBoard
           variant={duel.mode === 'image' ? 'shot' : duel.mode === 'ability' ? 'ability' : 'classic'}
@@ -173,6 +221,30 @@ export default function DuelRoom({ code }: { code: string }) {
                   current={shownStep}
                 />
               </div>
+            ) : duel.mode === 'page' ? (
+              <MangaStage
+                src={apiSrc(duel.image)}
+                resetKey={`${duel.code}-${duel.round}`}
+                state={over ? (duel.youWon ? 'won' : 'lost') : ''}
+                banner={
+                  revealed && answer ? (
+                    <span className="manga-banner">
+                      <small>{t(you?.solved ? 'page.bannerWon' : 'page.bannerLost')}</small>
+                      <b>{name(answer)}</b>
+                    </span>
+                  ) : null
+                }
+                onReady={setPageReady}
+              />
+            ) : duel.mode === 'phrase' ? (
+              <PhraseColumn
+                lines={duel.lines ?? []}
+                left={duel.linesLeft ?? 0}
+                voiceLeft={Math.max(PHRASE_VOICE_AT - (duel.lines?.length ?? 0), 0)}
+                voice={duel.voice}
+                resetKey={`${duel.code}-${duel.round}`}
+                over={revealed}
+              />
             ) : duel.mode === 'ability' ? (
               <div className="shot-column ability-column">
                 <div className={`ability-stage ${over ? (duel.youWon ? 'won' : 'lost') : ''}`}>
@@ -209,9 +281,26 @@ export default function DuelRoom({ code }: { code: string }) {
               >
                 <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} />
               </PlayPanel>
+            ) : duel.mode === 'page' ? (
+              <>
+                <AskCard title={t('play.pageTitle')} hint={t('duel.hurry')} />
+                <MangaOptions
+                  game={game}
+                  options={(duel.options ?? []).map((id) => byId.get(id)).filter((one) => one !== undefined)}
+                  missed={new Set(guesses.filter((g) => !g.pending).map((g) => g.entity.id))}
+                  waiting={guesses.find((g) => g.pending)?.entity.id}
+                  answerId={revealed ? duel.answerId : undefined}
+                  over={revealed}
+                  disabled={busy || !pageReady}
+                  onPick={guess}
+                />
+              </>
             ) : (
               <>
-                <AskCard title={t(duel.mode === 'ability' ? 'play.abilityTitle' : 'play.imageTitle')} hint={t('duel.hurry')} />
+                <AskCard
+                  title={t(duel.mode === 'ability' ? 'play.abilityTitle' : duel.mode === 'phrase' ? 'play.phraseTitle' : 'play.imageTitle')}
+                  hint={t('duel.hurry')}
+                />
                 <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} compact />
               </>
             ))}
@@ -259,17 +348,20 @@ export default function DuelRoom({ code }: { code: string }) {
                 {you?.nickname}: {t('duel.guesses', { count: you?.guesses.length ?? 0 })}
                 {rival ? ` · ${rival.nickname}: ${t('duel.guesses', { count: rival.guessCount })}` : ''}
               </p>
-              {over && <div className="result-actions">
-                {duel.matchDone ? (
-                  <button className="primary" onClick={toLobby} disabled={busy}>
-                    {t('duel.toLobby')}
-                  </button>
-                ) : (
+              {over && !duel.matchDone && (
+                <div className="result-actions">
                   <button className="primary" onClick={next} disabled={busy || you?.wantsNext}>
                     {you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
                   </button>
-                )}
-              </div>}
+                </div>
+              )}
+              {over && duel.matchDone && !showResult && (
+                <div className="result-actions">
+                  <button className="primary" onClick={() => setShowResult(true)} disabled={busy}>
+                    {t('duel.matchOver')}
+                  </button>
+                </div>
+              )}
               {rival?.wantsNext && !you?.wantsNext && <p className="muted small">{t('duel.rivalWantsNext', { name: rival.nickname })}</p>}
             </div>
           )}
@@ -285,7 +377,9 @@ export default function DuelRoom({ code }: { code: string }) {
               meta={(i, list) =>
                 duel.mode === 'ability'
                   ? `${clarity(Math.min(list.slice(i + 1).filter((x) => !x.pending && x.entity.id !== duel.answerId).length, ABILITY_STAGES))}%`
-                  : `×${zoomText(levelAt(list.length - 1 - i))}`
+                  : duel.mode === 'image'
+                    ? `×${zoomText(levelAt(list.length - 1 - i))}`
+                    : ''
               }
             />
           )}

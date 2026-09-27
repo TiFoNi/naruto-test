@@ -99,7 +99,7 @@ export async function collectFacts(userId: ObjectId, languages = 1, since?: Date
       )
       .toArray(),
     (await duels())
-      .find({ 'players.userId': userId, status: 'finished', ...fresh })
+      .find({ 'players.userId': userId, log: { $exists: true } })
       .toArray(),
     (await users()).findOne({ _id: userId }, { projection: { visit: 1 } }),
   ])
@@ -186,15 +186,16 @@ export async function collectFacts(userId: ObjectId, languages = 1, since?: Date
   let fastestDuelMs: number | null = null
   let comeback = false
   for (const duel of duelList) {
-    const me = duel.players.find((p) => String(p.userId) === String(userId))
-    const rival = duel.players.find((p) => String(p.userId) !== String(userId))
-    if (!me) continue
-    duelWins += me.wins ?? 0
-    if (me.solvedAt && duel.startedAt) {
-      const ms = me.solvedAt.getTime() - duel.startedAt.getTime()
-      if (ms > 0 && (fastestDuelMs === null || ms < fastestDuelMs)) fastestDuelMs = ms
+    if (!duel.players.some((p) => String(p.userId) === String(userId))) continue
+    const log = (duel.log ?? []).filter((entry) => !since || entry.at > since)
+    const mine = log.filter((entry) => String(entry.winnerId) === String(userId))
+    const theirs = log.filter((entry) => entry.winnerId && String(entry.winnerId) !== String(userId))
+
+    duelWins += mine.length
+    for (const entry of mine) {
+      if (entry.ms && entry.ms > 0 && (fastestDuelMs === null || entry.ms < fastestDuelMs)) fastestDuelMs = entry.ms
     }
-    if ((me.wins ?? 0) > (rival?.wins ?? 0) && (rival?.wins ?? 0) >= 2) comeback = true
+    if (mine.length > theirs.length && theirs.length >= 2) comeback = true
   }
 
   return {
