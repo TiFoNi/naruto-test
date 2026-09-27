@@ -238,7 +238,34 @@
 }
 
 .duel-random {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   margin-left: auto;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card-2);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.duel-random:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  color: var(--text);
+}
+
+.duel-random:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.duel-random svg {
+  width: 16px;
+  height: 16px;
 }
 
 .duel-worlds {
@@ -249,6 +276,8 @@
 
 .duel-world {
   display: inline-flex;
+  flex: 1 1 auto;
+  min-width: 150px;
   align-items: center;
   gap: 9px;
   padding: 9px 14px 9px 10px;
