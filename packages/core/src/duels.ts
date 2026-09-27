@@ -164,14 +164,16 @@ export async function duelHistory(userId: ObjectId, limit = 40) {
     .toArray()
 
   const rows = list.flatMap((duel) => {
-    const rival = duel.players.find((side) => !side.userId.equals(userId))
+    const stillHere = duel.players.find((side) => !side.userId.equals(userId))
     return (duel.matches ?? []).map((match) => {
-      const mine = match.scores.find((score) => userId.equals(score.userId))?.wins ?? 0
-      const theirs = match.scores.find((score) => !userId.equals(score.userId))?.wins ?? 0
+      const me = match.scores.find((score) => userId.equals(score.userId))
+      const them = match.scores.find((score) => !userId.equals(score.userId))
+      const mine = me?.wins ?? 0
+      const theirs = them?.wins ?? 0
       return {
         code: duel.code,
-        rivalId: rival ? rival.userId.toHexString() : null,
-        rival: rival?.nickname ?? '?',
+        rivalId: (them?.userId ?? stillHere?.userId)?.toHexString() ?? null,
+        rival: them?.nickname ?? stillHere?.nickname ?? '?',
         game: match.game ?? duel.game ?? null,
         mode: match.mode ?? duel.mode ?? null,
         wins: mine,
@@ -289,7 +291,7 @@ async function dropPlayers(duel: DuelDoc, gone: DuelPlayer[]) {
                 at: new Date(),
                 game: duel.game,
                 mode: duel.mode,
-                scores: duel.players.map((side) => ({ userId: side.userId, wins: side.wins ?? 0 })),
+                scores: duel.players.map((side) => ({ userId: side.userId, nickname: side.nickname, wins: side.wins ?? 0 })),
               },
             ],
             $slice: -50,
@@ -422,6 +424,7 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
                     mode: duel.mode,
                     scores: duel.players.map((side, index) => ({
                       userId: side.userId,
+                      nickname: side.nickname,
                       wins: (side.wins ?? 0) + (index === winnerIndex ? 1 : 0),
                     })),
                   },

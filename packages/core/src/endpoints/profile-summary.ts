@@ -7,6 +7,7 @@ import { fail, handle, json } from '../http'
 import { currentUser, defaultNickname, unauthorized } from '../profile'
 import { LEVEL_XP, levelOf, nextRank, rankOf } from '../quests'
 import { shiftDay, today } from '../daily'
+import { duelHistory } from '../duels'
 import { seasonAt } from '../season'
 
 const RECENT = 8
@@ -209,6 +210,21 @@ export const GET = handle(async (request) => {
     }),
   )
 
+  const duels = (await duelHistory(doc._id!, 20)).map((row) => ({
+    kind: 'duel' as const,
+    game: row.game ?? '',
+    mode: row.mode ?? 'classic',
+    status: row.won ? 'won' : 'lost',
+    rival: row.rival,
+    wins: row.wins,
+    losses: row.losses,
+    finishedAt: new Date(row.at),
+  }))
+
+  const feed = [...named, ...duels]
+    .sort((a, b) => (b.finishedAt?.getTime() ?? 0) - (a.finishedAt?.getTime() ?? 0))
+    .slice(0, RECENT)
+
   const xp = doc.xp ?? 0
   const level = levelOf(xp)
 
@@ -242,6 +258,6 @@ export const GET = handle(async (request) => {
     streak,
     games,
     modes,
-    recent: named,
+    recent: feed,
   })
 })

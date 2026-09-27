@@ -426,8 +426,6 @@ const ui = {
   'duel.full': { ru: 'В комнате уже двое', uk: 'У кімнаті вже двоє', en: 'This room is full' },
 
   'profile.challengeSolved': { ru: 'Отгадано загадок', uk: 'Розгадано загадок', en: 'Puzzles solved' },
-  'profile.duelHistory': { ru: 'Последние дуэли', uk: 'Останні дуелі', en: 'Recent duels' },
-  'profile.duelHistoryHint': { ru: 'Завершённые матчи и счёт по раундам', uk: 'Завершені матчі й рахунок по раундах', en: 'Finished matches and their round score' },
   'profile.duelWins': { ru: 'Побед в дуэлях', uk: 'Перемог у дуелях', en: 'Duel wins' },
   'profile.back': { ru: 'Назад', uk: 'Назад', en: 'Back' },
   'profile.nickname': { ru: 'Ник', uk: 'Нік', en: 'Nickname' },
@@ -529,6 +527,8 @@ const ui = {
   'profile.worlds': { ru: 'Прогресс по вселенным', uk: 'Прогрес по всесвітах', en: 'Progress by world' },
   'profile.worldsHint': { ru: 'Уникальные разгадки в каждой вселенной', uk: 'Унікальні розгадки в кожному всесвіті', en: 'Unique solves in every world' },
   'profile.modes': { ru: 'Режимы игры', uk: 'Режими гри', en: 'Game modes' },
+  'profile.duelWon': { ru: 'Дуэль против {name} — победа', uk: 'Дуель проти {name} — перемога', en: 'Duel against {name} — win' },
+  'profile.duelLost': { ru: 'Дуэль против {name} — поражение', uk: 'Дуель проти {name} — поразка', en: 'Duel against {name} — loss' },
   'profile.activity': { ru: 'Последняя активность', uk: 'Остання активність', en: 'Recent activity' },
   'profile.activityEmpty': { ru: 'Пока пусто — сыграй первый раунд', uk: 'Поки порожньо — зіграй перший раунд', en: 'Nothing yet — play your first round' },
   'profile.won': { ru: 'Угадан {name}', uk: 'Вгадано {name}', en: 'Guessed {name}' },

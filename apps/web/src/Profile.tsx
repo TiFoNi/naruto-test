@@ -41,14 +41,18 @@ type Summary = {
   games: { game: GameId; pool: number; solved: number }[]
   modes: { mode: string; played: number; won: number; guesses: number }[]
   recent: {
+    kind?: 'duel'
     game: string
     mode: string
-    answerId: number
+    answerId?: number
     status: string
     guessCount?: number
     daily?: string
     finishedAt?: string
-    name: Named | null
+    name?: Named | null
+    rival?: string
+    wins?: number
+    losses?: number
   }[]
 }
 
@@ -87,8 +91,6 @@ let knownSummary: Summary | null = null
 keepPerUser(() => {
   knownSummary = null
 })
-
-type DuelRow = { code: string; rival: string; game: string | null; mode: string | null; wins: number; losses: number; won: boolean; at: string }
 
 export default function Profile({ onBack, id }: { onBack: () => void; id?: string }) {
   const { user } = useAuth()
@@ -152,16 +154,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const modeLabel = (id: string) => MODES.find((m) => m.id === id)?.label ?? 'mode.classic'
   const navigate = useNavigate()
   const [calling, setCalling] = useState(false)
-  const [duels, setDuels] = useState<DuelRow[]>([])
-
-  useEffect(() => {
-    if (!own) return
-    let alive = true
-    void api<{ duels?: DuelRow[] }>('duel', { action: 'history' }).then(({ ok, data }) => alive && ok && setDuels(data.duels ?? []))
-    return () => {
-      alive = false
-    }
-  }, [own])
 
 
   const challenge = async (target: string) => {
@@ -357,38 +349,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
             </div>
           </section>
 
-          {duels.length > 0 && (
-            <section className="card duels-card">
-              <header>
-                <div className="card-title">
-                  <h2>{t('profile.duelHistory')}</h2>
-                  <p className="muted">{t('profile.duelHistoryHint')}</p>
-                </div>
-              </header>
-              <ul className="duel-log">
-                {duels.map((row) => {
-                  const game = GAMES.find((one) => one.id === row.game)
-                  const result = row.won ? 'won' : 'lost'
-                  return (
-                    <li key={`${row.code}-${row.at}`} className={result}>
-                      <span className="duel-log-score">
-                        {row.wins}:{row.losses}
-                      </span>
-                      <span className="duel-log-name">
-                        <b>{row.rival}</b>
-                        <small>
-                          {game ? l(game.label) : ''}
-                          {row.mode ? ` · ${t(modeLabel(row.mode))}` : ''}
-                        </small>
-                      </span>
-                      <small className="muted">{date(row.at)}</small>
-                    </li>
-                  )
-                })}
-              </ul>
-            </section>
-          )}
-
           <div className="profile-middle-cols">
             <div className="profile-column">
               <section className="card worlds-card">
@@ -469,15 +429,21 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                 {summary?.recent.length ? (
                   <ul className="activity">
                     {summary.recent.map((round, index) => (
-                      <li key={`${round.game}-${round.answerId}-${index}`}>
+                      <li key={`${round.game}-${round.answerId ?? round.rival}-${index}`}>
                         <span className={`activity-dot ${round.status}`} aria-hidden />
                         <span className="activity-text">
-                          {t(round.status === 'won' ? 'profile.won' : round.status === 'skipped' ? 'profile.gaveUp' : 'profile.lost', {
-                            name: round.name ? round.name[lang] : `#${round.answerId}`,
-                          })}
+                          {round.kind === 'duel'
+                            ? t(round.status === 'won' ? 'profile.duelWon' : 'profile.duelLost', { name: round.rival ?? '' })
+                            : t(round.status === 'won' ? 'profile.won' : round.status === 'skipped' ? 'profile.gaveUp' : 'profile.lost', {
+                                name: round.name ? round.name[lang] : `#${round.answerId}`,
+                              })}
                           <small>
                             {gameLabel(round.game) ? l(gameLabel(round.game)!) : round.game} · {t(modeLabel(round.mode))}
-                            {round.guessCount ? ` · ${t('profile.tries', { count: round.guessCount })}` : ''}
+                            {round.kind === 'duel'
+                              ? ` · ${round.wins ?? 0}:${round.losses ?? 0}`
+                              : round.guessCount
+                                ? ` · ${t('profile.tries', { count: round.guessCount })}`
+                                : ''}
                           </small>
                         </span>
                         <span className="activity-when muted">{date(round.finishedAt)}</span>
