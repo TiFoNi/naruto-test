@@ -36,6 +36,7 @@ export const GET = handle(async (request) => {
 
   const mine = found.doc._id!.toHexString()
   const view = (entry: Entry, index: number) => ({
+    id: String(entry.userId),
     rank: index + 1,
     nickname: entry.nickname ?? defaultNickname(entry.username),
     level: levelOf(entry.total),

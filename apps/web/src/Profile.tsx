@@ -31,6 +31,7 @@ type Summary = {
   challenges: { solved: number }
   favourite: GameId | null
   rank: { position: number; players: number } | null
+  nickname?: string
   gamePlaces: { game: GameId; mode: string; position: number }[]
   streak: {
     current: number
@@ -87,13 +88,14 @@ keepPerUser(() => {
   knownSummary = null
 })
 
-export default function Profile({ onBack }: { onBack: () => void }) {
+export default function Profile({ onBack, id }: { onBack: () => void; id?: string }) {
   const { user } = useAuth()
+  const own = !id
   const { t, l, lang } = useI18n()
   const href = useHref()
   const today = kyivToday()
 
-  const [summary, setSummary] = useState<Summary | null>(knownSummary)
+  const [summary, setSummary] = useState<Summary | null>(own ? knownSummary : null)
   const [places, setPlaces] = useState(false)
   const factsRef = useRef<HTMLDivElement>(null)
 
@@ -112,18 +114,17 @@ export default function Profile({ onBack }: { onBack: () => void }) {
   }, [places])
 
   const load = useCallback(async () => {
-    const { ok, data } = await api<Summary>('profile/summary')
-    if (ok) {
-      knownSummary = data
-      setSummary(data)
-    }
-  }, [])
+    const { ok, data } = await api<Summary>(own ? 'profile/summary' : `profile/summary?id=${id}`)
+    if (!ok) return
+    if (own) knownSummary = data
+    setSummary(data)
+  }, [id, own])
 
   useEffect(() => {
     void load()
   }, [load])
 
-  const nickname = user?.nickname ?? ''
+  const nickname = (own ? user?.nickname : summary?.nickname) ?? ''
 
   const pinned = summary?.pinned ?? []
   const best = summary?.gamePlaces?.[0] ?? null
@@ -166,7 +167,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
               </span>
               <div className="profile-names">
                 <h1>{nickname}</h1>
-                <span className="muted">{user?.username ?? ''}</span>
+                {own && <span className="muted">{user?.username ?? ''}</span>}
               </div>
             </div>
 
@@ -268,30 +269,32 @@ export default function Profile({ onBack }: { onBack: () => void }) {
 
           </section>
 
-          <section className="card streak-card">
-            <header>
-              <h2>{t('profile.streakTitle')}</h2>
-              <span className="muted">{t('profile.streakRecord', { days: summary?.streak.best ?? 0 })}</span>
-            </header>
-            <div className="streak-now">
-              <span className="streak-flame" aria-hidden>
-                <CalendarIcon />
-              </span>
-              <b>{summary?.streak.current ?? 0}</b>
-              <div>
-                <span>{pluralOf(summary?.streak.current ?? 0, lang, DAYS)}</span>
-                <small className={summary?.streak.week.find((d) => d.day === today)?.played ? 'ok' : 'muted'}>{summary?.streak.week.find((d) => d.day === today)?.played ? t('profile.streakToday') : t('profile.streakIdle')}</small>
+          {own && (
+            <section className="card streak-card">
+              <header>
+                <h2>{t('profile.streakTitle')}</h2>
+                <span className="muted">{t('profile.streakRecord', { days: summary?.streak.best ?? 0 })}</span>
+              </header>
+              <div className="streak-now">
+                <span className="streak-flame" aria-hidden>
+                  <CalendarIcon />
+                </span>
+                <b>{summary?.streak.current ?? 0}</b>
+                <div>
+                  <span>{pluralOf(summary?.streak.current ?? 0, lang, DAYS)}</span>
+                  <small className={summary?.streak.week.find((d) => d.day === today)?.played ? 'ok' : 'muted'}>{summary?.streak.week.find((d) => d.day === today)?.played ? t('profile.streakToday') : t('profile.streakIdle')}</small>
+                </div>
               </div>
-            </div>
-            <ul className="streak-week">
-              {(summary?.streak.week ?? []).map((day) => (
-                <li key={day.day} className={`${day.played ? 'on' : ''} ${day.day === today ? 'now' : day.day > today ? 'future' : ''}`}>
-                  <span aria-hidden>{day.played ? <CheckIcon /> : null}</span>
-                  <small>{WEEKDAYS[lang][(new Date(`${day.day}T00:00:00Z`).getUTCDay() + 6) % 7]}</small>
-                </li>
-              ))}
-            </ul>
-          </section>
+              <ul className="streak-week">
+                {(summary?.streak.week ?? []).map((day) => (
+                  <li key={day.day} className={`${day.played ? 'on' : ''} ${day.day === today ? 'now' : day.day > today ? 'future' : ''}`}>
+                    <span aria-hidden>{day.played ? <CheckIcon /> : null}</span>
+                    <small>{WEEKDAYS[lang][(new Date(`${day.day}T00:00:00Z`).getUTCDay() + 6) % 7]}</small>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
        </div>
 
@@ -429,7 +432,7 @@ export default function Profile({ onBack }: { onBack: () => void }) {
         </div>
 
         <div className="profile-column">
-          <Quests onLevel={(level) => setSummary((current) => (current ? { ...current, level } : current))} />
+          {own && <Quests onLevel={(level) => setSummary((current) => (current ? { ...current, level } : current))} />}
 
           <section className="card soon-card">
             <header>

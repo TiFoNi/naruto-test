@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { api } from './api'
 import BackButton from './BackButton'
 import BoardScope from './BoardScope'
@@ -9,7 +10,7 @@ import { useHref } from './router'
 import { keepPerUser } from './session-cache'
 import { TrophyIcon } from './icons'
 
-type Row = { rank: number; nickname: string; level: number; xp: number; solved: number; days: number; me: boolean }
+type Row = { id: string; rank: number; nickname: string; level: number; xp: number; solved: number; days: number; me: boolean }
 
 type Board = {
   season: { number: number; from: string; to: string }
@@ -159,10 +160,12 @@ export default function SeasonBoard() {
                           <span className={`season-rank ${row.rank <= 3 ? ['gold', 'silver', 'bronze'][row.rank - 1] : ''}`}>{row.rank}</span>
                         </td>
                         <td className="lb-name">
-                          <span className="lb-av" data-tone={toneOf(row.nickname)} aria-hidden>
-                            {row.nickname.charAt(0).toUpperCase()}
-                          </span>
-                          <span className="lb-nick">{row.nickname}</span>
+                          <Link className="lb-player" href={row.me ? href.profile : href.player(row.id)} prefetch={false}>
+                            <span className="lb-av" data-tone={toneOf(row.nickname)} aria-hidden>
+                              {row.nickname.charAt(0).toUpperCase()}
+                            </span>
+                            <span className="lb-nick">{row.nickname}</span>
+                          </Link>
                           {row.me && <span className="lb-you">{t('lb.you')}</span>}
                         </td>
                         <td className="season-xp-col">

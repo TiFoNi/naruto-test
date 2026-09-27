@@ -77,6 +77,7 @@ export const GET = handle(async (request) => {
 
   const me = found.doc._id!.toHexString()
   const view = (row: Row, index: number) => ({
+    id: String(row._id),
     rank: index + 1,
     nickname: row.nickname ?? defaultNickname(row.username),
     level: levelOf(row.xp ?? 0),

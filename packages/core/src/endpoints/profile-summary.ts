@@ -1,10 +1,10 @@
-import type { ObjectId } from 'mongodb'
+import { ObjectId } from 'mongodb'
 import { GAME_IDS, STAT_KEYS, type GameId } from '@nanda/game'
 import { ACHIEVEMENTS } from '../achievements'
 import { rounds, seasons, users, type UserDoc } from '../db'
 import { gameData } from '../games'
-import { handle, json } from '../http'
-import { currentUser, unauthorized } from '../profile'
+import { fail, handle, json } from '../http'
+import { currentUser, defaultNickname, unauthorized } from '../profile'
 import { LEVEL_XP, levelOf, nextRank, rankOf } from '../quests'
 import { shiftDay, today } from '../daily'
 import { seasonAt } from '../season'
@@ -173,7 +173,10 @@ export const GET = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
 
-  const doc = found.doc
+  const wanted = new URL(request.url).searchParams.get('id')
+  const other = wanted && ObjectId.isValid(wanted) && wanted !== found.doc._id!.toHexString()
+  const doc = other ? await (await users()).findOne({ _id: new ObjectId(wanted) }) : found.doc
+  if (!doc) return fail(404, 'not_found')
   const past = await history(doc._id!)
   const totals = past.totals[0] ?? { played: 0, won: 0, gaveUp: 0, guesses: 0 }
 
@@ -210,6 +213,8 @@ export const GET = handle(async (request) => {
   const level = levelOf(xp)
 
   return json({
+    id: doc._id!.toHexString(),
+    nickname: doc.nickname ?? defaultNickname(doc.username),
     since: doc.createdAt,
     pinned: (doc.pinned ?? [])
       .filter((award) => doc.claimed?.[award] && TIERS.has(award))

@@ -15,6 +15,7 @@ import { ChevronIcon, CrownIcon, PlayIcon, ShieldIcon, SortIcon, TrophyIcon } fr
 type Sort = 'best' | 'solved'
 
 type Row = {
+  id?: string
   rank: number
   nickname: string
   me: boolean
@@ -285,8 +286,10 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                         <tr key={`${row.rank}-${row.nickname}`} className={row.me ? 'me' : ''}>
                           <td className="lb-rank">{row.rank}</td>
                           <td className="lb-name">
-                            <Avatar nickname={row.nickname} />
-                            <span className="lb-nick">{row.nickname}</span>
+                            <Link className="lb-player" href={row.me || !row.id ? href.profile : href.player(row.id)} prefetch={false}>
+                              <Avatar nickname={row.nickname} />
+                              <span className="lb-nick">{row.nickname}</span>
+                            </Link>
                             {row.level ? <span className="lb-level">{t('nav.level', { level: row.level })}</span> : null}
                             {row.me && <span className="lb-you">{t('lb.you')}</span>}
                           </td>
