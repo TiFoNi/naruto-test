@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { activeDuel, setActiveDuel } from './activeDuel'
 import { api } from './api'
 import { useI18n } from './i18n'
 import { useHref, useNavigate } from './router'
@@ -13,13 +14,23 @@ export default function DuelLobby() {
 
   useEffect(() => {
     let alive = true
-    api<{ duel?: { code: string }; error?: string }>('duel', { action: 'create' })
-      .then(({ ok, data }) => {
+
+    const open = async () => {
+      const held = activeDuel()
+      if (held) {
+        const seat = await api<{ duel?: { you?: unknown } }>('duel', { code: held, action: 'state' }).catch(() => null)
         if (!alive) return
-        if (ok && data.duel) navigate.replace(href.duel(data.duel.code))
-        else setError(data.error ?? 'server')
-      })
-      .catch(() => alive && setError('network'))
+        if (seat?.ok && seat.data.duel?.you) return navigate.replace(href.duel(held))
+        setActiveDuel(null)
+      }
+
+      const { ok, data } = await api<{ duel?: { code: string }; error?: string }>('duel', { action: 'create' })
+      if (!alive) return
+      if (ok && data.duel) navigate.replace(href.duel(data.duel.code))
+      else setError(data.error ?? 'server')
+    }
+
+    open().catch(() => alive && setError('network'))
     return () => {
       alive = false
     }

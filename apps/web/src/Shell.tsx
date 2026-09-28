@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Background from './Background'
+import DuelDock from './DuelDock'
 import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
@@ -493,6 +494,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
       {user || open || (loading && returning) ? children : loading ? <div className="card center muted page-loading">{t('loading')}</div> : <Landing games={games} />}
 
       <Footer />
+      {user && <DuelDock />}
     </div>
   )
 }

@@ -1914,9 +1914,9 @@ main {
 .lang-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   height: 38px;
-  padding: 0 10px 0 12px;
+  padding: 0 7px 0 11px;
   border: none;
   border-radius: inherit;
   background: none;

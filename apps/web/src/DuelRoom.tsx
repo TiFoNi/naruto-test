@@ -19,6 +19,7 @@ import { gameById } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
 import { MODES } from './modes'
+import { setActiveDuel } from './activeDuel'
 import { useHref, useNavigate } from './router'
 import { useDuel } from './useDuel'
 import DuelSetup from './DuelSetup'
@@ -54,7 +55,12 @@ export default function DuelRoom({ code }: { code: string }) {
     if (duel?.matchDone) setShowResult(true)
   }, [duel?.matchDone, duel?.round])
 
+  useEffect(() => {
+    if (duel?.you) setActiveDuel(code)
+  }, [code, duel?.you])
+
   const leave = async () => {
+    setActiveDuel(null)
     await api('duel', { code, action: 'leave' }).catch(() => null)
     navigate(href.home)
   }

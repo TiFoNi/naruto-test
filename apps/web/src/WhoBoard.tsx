@@ -108,13 +108,16 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext, onF
     <section className="who">
       <div className="who-top card">
         {mine && (
-          <div className="who-mine-card">
+          <button type="button" className="who-mine-card" onClick={() => setInfo(mine.id)}>
             <img className="who-mine-thumb" src={fullUrl(game.id, mine.id, mine.image)} alt="" loading="lazy" draggable={false} />
             <span className="who-mine-text">
               <small>{t('who.yours')}</small>
               <b>{name(mine)}</b>
             </span>
-          </div>
+            <span className="who-mine-info" aria-hidden>
+              <InfoIcon />
+            </span>
+          </button>
         )}
         <div className="who-copy">
           <p className="who-first">{duel.youFirst ? t('who.youFirst') : duel.first ? t('who.first', { name: duel.first }) : ''}</p>

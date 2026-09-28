@@ -35,7 +35,18 @@ const mark = (duel: DuelDoc) =>
     duel.invite,
     duel.left,
     duel.hostId,
-    duel.players.map((side) => [side.userId, side.nickname, side.ready, side.wantsNext, side.wins, side.guesses, side.solvedAt, side.gaveUp]),
+    duel.players.map((side) => [
+      side.userId,
+      side.nickname,
+      side.ready,
+      side.wantsNext,
+      side.wins,
+      side.guesses,
+      side.solvedAt,
+      side.gaveUp,
+      side.struck,
+      side.answer,
+    ]),
   ])
 
 const hasClient = (code: string, userId: ObjectId) => [...(rooms.get(code) ?? [])].some((client) => client.userId.equals(userId))
