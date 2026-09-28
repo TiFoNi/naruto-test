@@ -7192,3 +7192,32 @@ button.award:disabled {
   padding: 13px 26px;
   text-decoration: none;
 }
+
+.cell-label {
+  display: none;
+}
+
+.is-wrapped .grid-row .cell {
+  justify-content: flex-start;
+  padding-top: 7px;
+}
+
+.is-wrapped .grid-row .cell .cell-label {
+  display: -webkit-box;
+  width: 100%;
+  overflow: hidden;
+  color: inherit;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  opacity: 0.62;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.is-wrapped .grid-row .cell .cell-text,
+.is-wrapped .grid-row .cell .icons {
+  margin: auto 0;
+}

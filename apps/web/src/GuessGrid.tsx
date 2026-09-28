@@ -129,7 +129,7 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
               const verdict = judgement?.[col.key]
               const kind = verdict?.verdict ?? 'wrong'
               const key = `${g.id}:${col.key}`
-              const full = icons.length ? icons.map((icon) => icon.label).join(', ') : text
+              const full = `${l(col.title)}: ${icons.length ? icons.map((icon) => icon.label).join(', ') : text}`
               const shown = icons.length > iconLimit ? iconLimit - 1 : icons.length
               return (
                 <div
@@ -139,6 +139,9 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
                   onMouseDown={(event) => event.stopPropagation()}
                   onClick={(event) => showTip(key, full, event.currentTarget)}
                 >
+                  <span className="cell-label" aria-hidden>
+                    {l(col.title)}
+                  </span>
                   {verdict?.arrow && (
                     <b className="cell-arrow" aria-label={t(verdict.arrow === 'up' ? legend[0] : legend[1])}>
                       {verdict.arrow === 'up' ? <UpIcon /> : <DownIcon />}
