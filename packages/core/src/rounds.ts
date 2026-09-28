@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { ABILITY_HINT_AT, ABILITY_STAGES, PHRASE_EVERY, PHRASE_VOICE_AT, dailyKey, judgeAll, statsKey, type GameId, type ModeId } from '@nanda/game'
+import { ABILITY_HINT_AT, ABILITY_STAGES, PHRASE_EVERY, PHRASE_VOICE_AT, ZOOM_LEVELS, dailyKey, judgeAll, statsKey, type GameId, type ModeId } from '@nanda/game'
 import { dailyAnswer, nextReset, pastAnswer, shiftDay, today } from './daily'
 import { rounds, type RoundDoc, type UserDoc } from './db'
 import { gameData, isGame, isMode, knows } from './games'
@@ -137,6 +137,10 @@ export async function roundView(round: RoundDoc, full = true) {
 }
 
 const wrongGuesses = (round: RoundDoc) => round.guesses.filter((g) => g !== round.answerId).length
+
+export function zoomStep(round: RoundDoc) {
+  return round.status !== 'active' ? ZOOM_LEVELS.length - 1 : Math.min(wrongGuesses(round), ZOOM_LEVELS.length - 1)
+}
 
 export function abilityStage(round: RoundDoc) {
   const wrong = wrongGuesses(round)

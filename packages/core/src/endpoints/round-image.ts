@@ -1,22 +1,34 @@
 import type { ObjectId } from 'mongodb'
-import { GAME_SPECS, type GameId } from '@nanda/game'
+import type { RoundDoc } from '../db'
+import { GAME_SPECS, ZOOM_LEVELS, type GameId } from '@nanda/game'
 import { gameData } from '../games'
 import { fail, handle } from '../http'
 import { roundOwner } from '../profile'
-import { abilityStageOf, findDuel, sideOf } from '../duels'
-import { abilityStage, ownedRound } from '../rounds'
+import { abilityStageOf, findDuel, sideOf, wrongCount } from '../duels'
+import { abilityStage, ownedRound, zoomStep } from '../rounds'
+import { cropStage } from '../crop'
 import { pageOf } from '../extra'
+
+const roundSeed = (round: RoundDoc) =>
+  round.daily
+    ? `daily:${round.daily}:${round.game}:${round.mode}:${round.answerId}`
+    : round.challenge
+      ? `challenge:${round.challenge}:${round.answerId}`
+      : `round:${String(round._id)}`
 
 async function duelSource(code: string, userId: ObjectId) {
   const duel = await findDuel(code)
   const side = duel && sideOf(duel, userId)
   if (!duel || !side || duel.status === 'lobby' || duel.answerId === undefined) return null
+  const revealed = duel.status === 'finished' || Boolean(side.solvedAt) || Boolean(side.gaveUp)
   return {
     game: duel.game,
     mode: duel.mode,
     answerId: duel.answerId,
     extra: duel.extra ?? undefined,
     stage: abilityStageOf(duel, side),
+    step: revealed ? ZOOM_LEVELS.length - 1 : Math.min(wrongCount(duel, side), ZOOM_LEVELS.length - 1),
+    seed: `duel:${duel.code}:${duel.round}:${duel.answerId}`,
   }
 }
 
@@ -39,7 +51,17 @@ export const GET = handle(async (request) => {
         : `${pics}/${folder}/full/${round.answerId}.webp${tag}`
   const image = await fetch(source)
   if (!image.ok) return fail(502, 'server')
-  return new Response(await image.arrayBuffer(), {
-    headers: { 'content-type': 'image/webp', 'cache-control': round.mode === 'ability' || duelCode ? 'private, no-store' : 'private, max-age=86400' },
+  const full = Buffer.from(await image.arrayBuffer())
+
+  if (round.mode !== 'image') {
+    return new Response(full, {
+      headers: { 'content-type': 'image/webp', 'cache-control': round.mode === 'ability' || duelCode ? 'private, no-store' : 'private, max-age=86400' },
+    })
+  }
+
+  const step = 'step' in round ? round.step : zoomStep(round)
+  const seed = 'seed' in round ? round.seed : roundSeed(round)
+  return new Response(await cropStage(full, seed, step), {
+    headers: { 'content-type': 'image/webp', 'cache-control': 'private, no-store' },
   })
 })

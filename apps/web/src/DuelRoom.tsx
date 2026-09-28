@@ -96,7 +96,6 @@ export default function DuelRoom({ code }: { code: string }) {
   const wrong = guesses.filter((g) => !g.pending).length - (you?.solved ? 1 : 0)
   const zoomStep = Math.min(wrong, ZOOM_LEVELS.length - 1)
   const revealed = over || youDone
-  const zoom = revealed ? 1 : ZOOM_LEVELS[zoomStep]
   const shownStep = revealed ? ZOOM_LEVELS.length - 1 : zoomStep
   const nextZoom = shownStep < ZOOM_LEVELS.length - 1 ? ZOOM_LEVELS[shownStep + 1] : null
   const zoomText = (value: number) => (lang === 'en' ? value.toFixed(1) : value.toFixed(1).replace('.', ','))
@@ -217,7 +216,7 @@ export default function DuelRoom({ code }: { code: string }) {
             duel.mode === 'image' ? (
               <div className="shot-column">
                 <div className="shot">
-                  <ZoomImage game={game} src={apiSrc(duel.image)} zoom={zoom} resetKey={`${duel.code}-${duel.round}`} />
+                  <ZoomImage game={game} src={apiSrc(duel.image)} step={shownStep} resetKey={`${duel.code}-${duel.round}`} />
                 </div>
 
                 <ZoomScale

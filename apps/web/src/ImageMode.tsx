@@ -29,7 +29,6 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
 
   const wrong = guesses.length - (won ? 1 : 0)
   const step = Math.min(wrong, ZOOM_LEVELS.length - 1)
-  const zoom = over ? 1 : ZOOM_LEVELS[step]
   const playing = !!round && !over
   const zoomText = (value: number) => (lang === 'en' ? value.toFixed(1) : value.toFixed(1).replace('.', ','))
   const nextLevel = step < ZOOM_LEVELS.length - 1 ? ZOOM_LEVELS[step + 1] : null
@@ -41,7 +40,7 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
       media={
         <div className="shot-column">
           <div className="shot">
-            <ZoomImage game={game} src={apiSrc(round?.image)} zoom={zoom} resetKey={round?.id} />
+            <ZoomImage game={game} src={apiSrc(round?.image)} step={over ? ZOOM_LEVELS.length - 1 : step} resetKey={round?.id} />
           </div>
 
           <ZoomScale

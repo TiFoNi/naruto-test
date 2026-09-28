@@ -260,6 +260,8 @@ export const MODE_XP: Record<ModeId, number> = {
 
 export const DAILY_XP_FACTOR = 3
 
+export const ZOOM_LEVELS = [7, 5.1, 3.7, 2.6, 1.9, 1.4, 1] as const
+
 export const XP_CAPS = { daily: 360, endless: 250, duel: 200 } as const
 
 export type XpSource = keyof typeof XP_CAPS

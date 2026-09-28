@@ -4,15 +4,16 @@ import { useI18n } from './i18n'
 
 const MAX_RETRIES = 3
 
-export default function ZoomImage({ game, src, zoom, resetKey }: { game: Game; src?: string; zoom: number; resetKey?: string }) {
+export default function ZoomImage({ game, src, step, resetKey }: { game: Game; src?: string; step: number; resetKey?: string }) {
   const { t } = useI18n()
-  const [loaded, setLoaded] = useState(false)
+  const [ready, setReady] = useState(false)
   const [retry, setRetry] = useState(0)
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const url = src ? `${src}${src.includes('?') ? '&' : '?'}s=${step}${retry ? `&retry=${retry}` : ''}` : undefined
 
   useEffect(() => {
     clearTimeout(timer.current)
-    setLoaded(false)
+    setReady(false)
     setRetry(0)
   }, [resetKey])
 
@@ -20,23 +21,23 @@ export default function ZoomImage({ game, src, zoom, resetKey }: { game: Game; s
 
   return (
     <div className={`zoom-frame ${game.wideImages ? 'wide' : ''}`}>
-      {src && !loaded && <div className="zoom-loading">{t(retry > MAX_RETRIES ? 'image.failed' : 'image.loading')}</div>}
-      {src && (
+      {url && !ready && <div className="zoom-loading">{t(retry > MAX_RETRIES ? 'image.failed' : 'image.loading')}</div>}
+      {url && (
         <img
-          key={`${src}-${retry}`}
+          key={retry}
           ref={(el) => {
-            if (el?.complete && el.naturalWidth) setLoaded(true)
+            if (el?.complete && el.naturalWidth) setReady(true)
           }}
-          src={retry ? `${src}&retry=${retry}` : src}
+          src={url}
           crossOrigin="use-credentials"
           alt=""
           draggable={false}
-          onLoad={() => setLoaded(true)}
+          onLoad={() => setReady(true)}
           onError={() => {
             clearTimeout(timer.current)
             timer.current = setTimeout(() => setRetry((r) => (r <= MAX_RETRIES ? r + 1 : r)), 800)
           }}
-          style={{ opacity: loaded ? 1 : 0, transform: `scale(${zoom})` }}
+          style={{ opacity: ready ? 1 : 0 }}
         />
       )}
     </div>
