@@ -129,8 +129,10 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
               const verdict = judgement?.[col.key]
               const kind = verdict?.verdict ?? 'wrong'
               const key = `${g.id}:${col.key}`
+              const parts = text.split(', ')
+              const shown = wrapped && text.length > 26 && parts.length > 1 ? `${parts[0]} +${parts.length - 1}` : text
               const full = `${l(col.title)}: ${icons.length ? icons.map((icon) => icon.label).join(', ') : text}`
-              const shown = icons.length > iconLimit ? iconLimit - 1 : icons.length
+              const iconsShown = icons.length > iconLimit ? iconLimit - 1 : icons.length
               return (
                 <div
                   key={col.key}
@@ -149,16 +151,16 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
                   )}
                   {icons.length ? (
                     <div className="icons">
-                      {icons.slice(0, shown).map((icon) => (
+                      {icons.slice(0, iconsShown).map((icon) => (
                         <i key={icon.label} style={{ background: icon.color }} className={icon.dark ? 'dark' : ''}>
                           {icon.symbol}
                         </i>
                       ))}
-                      {icons.length > shown && <i className="icons-more">+{icons.length - shown}</i>}
+                      {icons.length > iconsShown && <i className="icons-more">+{icons.length - iconsShown}</i>}
                       {icons.length === 1 && <span className="icon-label">{icons[0].label}</span>}
                     </div>
                   ) : (
-                    <span className="cell-text">{text}</span>
+                    <span className="cell-text">{shown}</span>
                   )}
                 </div>
               )
