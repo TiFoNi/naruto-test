@@ -140,7 +140,11 @@ export default function DuelRoom({ code }: { code: string }) {
               : duel.mode === 'who'
                 ? t('who.cardsLeft', { count: (duel.cards?.length ?? 0) - (duel.struck?.length ?? 0) })
                 : t('duel.guesses', { count: guesses.filter((g) => !g.pending).length })}
-            {!inLobby && you?.solved ? ` · ${t('duel.solved')}` : !inLobby && you?.gaveUp ? ` · ${t('duel.gaveUp')}` : ''}
+            {!inLobby && you?.solved
+              ? ` · ${t('duel.solved')}`
+              : !inLobby && you?.gaveUp
+                ? ` · ${t(duel.mode === 'who' ? 'who.missed' : 'duel.gaveUp')}`
+                : ''}
           </span>
         </div>
         <span className="duel-vs">{duel.round > 0 ? `${you?.wins ?? 0} : ${rival?.wins ?? 0}` : 'VS'}</span>
@@ -155,7 +159,11 @@ export default function DuelRoom({ code }: { code: string }) {
                 : duel.mode === 'who'
                   ? t('who.cardsLeft', { count: duel.rivalLeft ?? 0 })
                   : t('duel.guesses', { count: rival.guessCount })}
-              {!inLobby && rival.solved ? ` · ${t('duel.solved')}` : !inLobby && rival.gaveUp ? ` · ${t('duel.gaveUp')}` : ''}
+              {!inLobby && rival.solved
+                ? ` · ${t('duel.solved')}`
+                : !inLobby && rival.gaveUp
+                  ? ` · ${t(duel.mode === 'who' ? 'who.missed' : 'duel.gaveUp')}`
+                  : ''}
             </span>
           </div>
         ) : (
@@ -211,7 +219,15 @@ export default function DuelRoom({ code }: { code: string }) {
         </div>
       )}
 
-      {!inLobby && game && duel.mode === 'who' && <WhoBoard game={game} byId={byId} duel={duel} busy={busy} onStrike={strike} />}
+      {!inLobby && game && duel.mode === 'who' && <WhoBoard
+          game={game}
+          byId={byId}
+          duel={duel}
+          busy={busy}
+          onStrike={strike}
+          onNext={next}
+          onFinal={() => setShowResult(true)}
+        />}
 
       {!inLobby && game && duel.mode !== 'who' && (
         <PlayBoard

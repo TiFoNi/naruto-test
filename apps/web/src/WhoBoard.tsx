@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { fullUrl } from './pics'
 import type { Entity, Game } from './games/types'
 import { useI18n } from './i18n'
@@ -13,14 +13,16 @@ type Props = {
   duel: DuelView
   busy: boolean
   onStrike: (entityId: number) => void
+  onNext: () => void
+  onFinal: () => void
 }
 
-export default function WhoBoard({ game, byId, duel, busy, onStrike }: Props) {
+export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext, onFinal }: Props) {
   const { t, l, tv, lang, name } = useI18n()
   const [info, setInfo] = useState<number | null>(null)
   const [ask, setAsk] = useState<number | null>(null)
 
-  const struck = useMemo(() => new Set(duel.struck ?? []), [duel.struck])
+  const struck = new Set(duel.struck ?? [])
   const cards = duel.cards ?? []
   const standing = cards.filter((id) => !struck.has(id))
   const mine = duel.secret !== undefined ? byId.get(duel.secret) : undefined
@@ -28,24 +30,36 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike }: Props) {
   const over = duel.status !== 'playing'
   const answer = ask !== null ? byId.get(standing.find((id) => id !== ask) ?? -1) : undefined
 
-  const traits = (entity: NonNullable<typeof shown>) =>
-    game.columns.map((column) => ({ title: l(column.title), value: column.text(entity, { tv, lang }) }))
+  const rivalSecret = duel.rivalSecret !== undefined ? byId.get(duel.rivalSecret) : undefined
+  const yourAnswer = duel.yourAnswer !== undefined ? byId.get(duel.yourAnswer) : undefined
+  const rivalAnswer = duel.rivalAnswer !== undefined ? byId.get(duel.rivalAnswer) : undefined
+  const outcome = over ? (duel.youWon ? 'won' : duel.winner ? 'lost' : 'skipped') : ''
+
+  const traits = (entity: Entity) => game.columns.map((column) => ({ title: l(column.title), value: column.text(entity, { tv, lang }) }))
 
   const pick = (id: number) => {
     if (struck.has(id) || standing.length > 2) return onStrike(id)
     setAsk(id)
   }
 
+  const reason = () => {
+    if (duel.youWon && rivalAnswer) return t('who.rivalMissed', { name: name(rivalAnswer) })
+    if (duel.youWon) return t('who.rivalTime')
+    if (duel.winner && yourAnswer && !duel.you?.solved) return t('who.youMissed', { name: name(yourAnswer) })
+    if (duel.winner) return t('who.youTime')
+    return t('who.noAnswer')
+  }
+
   return (
     <section className="who">
       <div className="who-top card">
         {mine && (
-          <div className="who-mine">
-            <span className="play-card-title">{t('who.yours')}</span>
-            <div className="who-mine-card">
-              <img className="who-mine-thumb" src={fullUrl(game.id, mine.id, mine.image)} alt="" loading="lazy" />
+          <div className="who-mine-card">
+            <img className="who-mine-thumb" src={fullUrl(game.id, mine.id, mine.image)} alt="" loading="lazy" />
+            <span className="who-mine-text">
+              <small>{t('who.yours')}</small>
               <b>{name(mine)}</b>
-            </div>
+            </span>
           </div>
         )}
         <div className="who-copy">
@@ -53,6 +67,59 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike }: Props) {
           <p className="muted">{t('who.hint')}</p>
         </div>
       </div>
+
+      {over && (
+        <div className={`card result who-result ${outcome}`}>
+          <h2>
+            {duel.matchDone
+              ? duel.youWon
+                ? t('duel.matchWon')
+                : t('duel.matchLost', { name: duel.winner ?? '' })
+              : duel.youWon
+                ? t('duel.youWon')
+                : duel.winner
+                  ? t('duel.youLost', { name: duel.winner })
+                  : t('duel.draw')}
+          </h2>
+          <p className="who-reason">{reason()}</p>
+          <div className="who-reveal">
+            {mine && (
+              <figure>
+                <img src={fullUrl(game.id, mine.id, mine.image)} alt="" />
+                <figcaption>
+                  <small>{t('who.yourHero')}</small>
+                  <b>{name(mine)}</b>
+                </figcaption>
+              </figure>
+            )}
+            {rivalSecret && (
+              <figure>
+                <img src={fullUrl(game.id, rivalSecret.id, rivalSecret.image)} alt="" />
+                <figcaption>
+                  <small>{t('who.rivalHero')}</small>
+                  <b>{name(rivalSecret)}</b>
+                </figcaption>
+              </figure>
+            )}
+          </div>
+          <p className="duel-score">
+            {t('duel.score', { you: duel.you?.wins ?? 0, rival: duel.rival?.wins ?? 0 })}
+            {!duel.matchDone && <span> · {t('duel.roundOf', { round: duel.round, best: duel.best })}</span>}
+          </p>
+          <div className="result-actions">
+            {duel.matchDone ? (
+              <button className="primary" onClick={onFinal} disabled={busy}>
+                {t('duel.matchOver')}
+              </button>
+            ) : (
+              <button className="primary" onClick={onNext} disabled={busy || duel.you?.wantsNext}>
+                {duel.you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
+              </button>
+            )}
+          </div>
+          {duel.rival?.wantsNext && !duel.you?.wantsNext && <p className="muted small">{t('duel.rivalWantsNext', { name: duel.rival.nickname })}</p>}
+        </div>
+      )}
 
       <ol className="who-grid" style={{ ['--board' as string]: duel.size ?? 5 }}>
         {cards.map((id) => {
@@ -68,22 +135,25 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike }: Props) {
                 disabled={over || busy}
                 onClick={() => pick(id)}
               >
-                {off ? (
-                  <span className="who-back" aria-hidden>
-                    ?
-                  </span>
-                ) : (
-                  <>
+                <span className="who-flip">
+                  <span className="who-face who-front">
                     <img className="who-thumb" src={fullUrl(game.id, entity.id, entity.image)} alt="" loading="lazy" />
                     <span className="who-name">{name(entity)}</span>
-                  </>
-                )}
+                  </span>
+                  <span className="who-face who-back" aria-hidden>
+                    ?
+                  </span>
+                </span>
               </button>
-              {!off && (
-                <button type="button" className="who-info" aria-label={t('who.info')} onClick={() => setInfo(id)}>
-                  i
-                </button>
-              )}
+              <button
+                type="button"
+                className="who-info"
+                aria-label={t('who.info')}
+                tabIndex={off ? -1 : 0}
+                onClick={() => setInfo(id)}
+              >
+                i
+              </button>
             </li>
           )
         })}

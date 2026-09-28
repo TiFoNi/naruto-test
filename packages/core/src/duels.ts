@@ -235,6 +235,7 @@ async function boardStart(duel: DuelDoc) {
         [`players.${index}.gaveUp`, false],
         [`players.${index}.lastGuessAt`, null],
         [`players.${index}.struck`, []],
+        [`players.${index}.answer`, null],
         [`players.${index}.cards`, shuffled(cards)],
         [`players.${index}.secret`, secrets[index] ?? secrets[0]],
       ]),
@@ -551,8 +552,9 @@ export async function strikeCard(duel: DuelDoc, userId: ObjectId, entityId: numb
   if (!standing.length) return { error: 'bad_request' as const }
 
   const rival = duel.players.find((one) => !one.userId.equals(userId))
-  const set: Record<string, unknown> = { [`players.${index}.struck`]: next }
+  const set: Record<string, unknown> = { [`players.${index}.struck`]: next, [`players.${index}.answer`]: null }
   if (standing.length === 1) {
+    set[`players.${index}.answer`] = standing[0]
     if (standing[0] === rival?.secret) set[`players.${index}.solvedAt`] = new Date()
     else set[`players.${index}.gaveUp`] = true
   }
@@ -667,6 +669,8 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
           struck: you?.struck ?? [],
           rivalLeft: rival ? (rival.cards?.length ?? 0) - (rival.struck?.length ?? 0) : 0,
           rivalSecret: finished ? rival?.secret : undefined,
+          yourAnswer: you?.answer ?? undefined,
+          rivalAnswer: finished ? rival?.answer ?? undefined : undefined,
         }
       : {}),
     you: you && {

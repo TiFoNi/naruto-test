@@ -39,6 +39,8 @@ export type DuelView = {
   struck?: number[]
   rivalLeft?: number
   rivalSecret?: number
+  yourAnswer?: number
+  rivalAnswer?: number
   options?: number[]
   lines?: { text: string; ru?: string }[]
   linesLeft?: number

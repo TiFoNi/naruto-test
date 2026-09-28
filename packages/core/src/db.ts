@@ -82,6 +82,7 @@ export type DuelPlayer = {
   secret?: number
   cards?: number[]
   struck?: number[]
+  answer?: number | null
   seenAt?: Date
   ready: boolean
   wantsNext?: boolean
