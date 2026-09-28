@@ -21,6 +21,7 @@ import { useBeforePaint } from './paint'
 import { useHref, useNavigate, useVisitTracker } from './router'
 
 const PUBLIC = new Set(['', 'play', 'privacy', 'terms'])
+const SECTIONS = new Set(['', 'achievements', 'admin', 'c', 'duel', 'duels', 'leaderboard', 'login', 'play', 'privacy', 'profile', 'settings', 'terms', 'u'])
 
 function useDropdown(open: boolean, setOpen: (open: boolean) => void) {
   const box = useRef<HTMLDivElement>(null)
@@ -418,7 +419,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const [returning, setReturning] = useState(false)
   useVisitTracker()
   const [, , section, gameId] = pathname.split('/')
-  const open = PUBLIC.has(section ?? '')
+  const open = PUBLIC.has(section ?? '') || !SECTIONS.has(section ?? '')
   const game = section === 'play' ? metaById(games, gameId as never) : null
   const accent = user && game ? game.accent : BRAND.accent
 

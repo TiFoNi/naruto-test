@@ -7052,3 +7052,143 @@ button.award:disabled {
     max-height: min(68vh, 520px);
   }
 }
+
+.oops {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: clamp(40px, 9vh, 96px) 0 64px;
+  text-align: center;
+}
+
+.oops-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(88px, 15vw, 152px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.oops-hole {
+  display: grid;
+  place-items: center;
+  width: 0.86em;
+  height: 1.06em;
+  border: 0.024em dashed color-mix(in srgb, var(--accent) 80%, transparent);
+  border-radius: 0.19em;
+  transform: rotate(-4deg);
+  background: color-mix(in srgb, var(--accent) 13%, #120f0d);
+  color: color-mix(in srgb, var(--accent) 92%, #fff);
+  line-height: 1;
+}
+
+.oops-hole i {
+  font-size: 0.78em;
+  font-style: normal;
+  line-height: 1;
+}
+
+.oops-lead {
+  max-width: 54ch;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.oops-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(100%, 520px);
+  margin-top: 6px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+  color: var(--text-3);
+  font-size: 17px;
+  cursor: text;
+}
+
+.oops-search:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+.oops-search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  outline: none;
+  cursor: inherit;
+}
+
+.oops-search input::placeholder {
+  color: var(--text-3);
+}
+
+.oops-search input::-webkit-search-cancel-button,
+.oops-search input::-webkit-search-decoration {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.oops-results {
+  width: min(100%, 520px);
+}
+
+.oops-results ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.oops-results a {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 14px 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card-2);
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.oops-results a:hover {
+  border-color: color-mix(in srgb, var(--game) 70%, transparent);
+  color: var(--text);
+}
+
+.oops-results a i {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--game) 55%, transparent);
+}
+
+.oops-results p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.oops-home {
+  margin-top: 6px;
+  padding: 13px 26px;
+  text-decoration: none;
+}
