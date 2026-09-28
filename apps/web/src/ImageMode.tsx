@@ -40,7 +40,14 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
       media={
         <div className="shot-column">
           <div className="shot">
-            <ZoomImage game={game} src={apiSrc(round?.image)} step={over ? ZOOM_LEVELS.length - 1 : step} resetKey={round?.id} />
+            <ZoomImage
+              game={game}
+              src={apiSrc(round?.image)}
+              step={shownStep}
+              zoom={over ? 1 : ZOOM_LEVELS[step]}
+              focus={round?.focus}
+              resetKey={round?.id}
+            />
           </div>
 
           <ZoomScale

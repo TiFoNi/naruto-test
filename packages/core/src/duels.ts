@@ -22,6 +22,7 @@ import { duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type User
 import { optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { gameData, isGame, isMode } from './games'
 import { addXp, defaultNickname } from './profile'
+import { duelSeed, focusFor } from './crop'
 
 export const MIN_GAP_MS = 800
 export const DUEL_LOG_MAX = 10
@@ -565,6 +566,9 @@ export async function duelView(duel: DuelDoc, userId: ObjectId) {
           ? `/api/round/image?duel=${duel.code}&r=${duel.round}`
           : undefined
         : undefined,
+    ...(duel.mode === 'image' && (playing || finished) && duel.answerId !== undefined
+      ? { focus: await focusFor(game!, duel.answerId, duelSeed(duel)) }
+      : {}),
     ...(duel.mode === 'page' ? { options: optionsOf(duel.extra ?? undefined) } : {}),
     ...(duel.mode === 'phrase' && you ? phraseLines(duel, you) : {}),
     answerId: finished || you?.solvedAt || you?.gaveUp ? duel.answerId : undefined,

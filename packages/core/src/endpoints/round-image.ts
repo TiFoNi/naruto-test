@@ -1,20 +1,12 @@
 import type { ObjectId } from 'mongodb'
-import type { RoundDoc } from '../db'
 import { GAME_SPECS, ZOOM_LEVELS, type GameId } from '@nanda/game'
 import { gameData } from '../games'
 import { fail, handle } from '../http'
 import { roundOwner } from '../profile'
 import { abilityStageOf, findDuel, sideOf, wrongCount } from '../duels'
 import { abilityStage, ownedRound, zoomStep } from '../rounds'
-import { cropStage } from '../crop'
+import { duelSeed, maskStage, roundSeed } from '../crop'
 import { pageOf } from '../extra'
-
-const roundSeed = (round: RoundDoc) =>
-  round.daily
-    ? `daily:${round.daily}:${round.game}:${round.mode}:${round.answerId}`
-    : round.challenge
-      ? `challenge:${round.challenge}:${round.answerId}`
-      : `round:${String(round._id)}`
 
 async function duelSource(code: string, userId: ObjectId) {
   const duel = await findDuel(code)
@@ -28,7 +20,7 @@ async function duelSource(code: string, userId: ObjectId) {
     extra: duel.extra ?? undefined,
     stage: abilityStageOf(duel, side),
     step: revealed ? ZOOM_LEVELS.length - 1 : Math.min(wrongCount(duel, side), ZOOM_LEVELS.length - 1),
-    seed: `duel:${duel.code}:${duel.round}:${duel.answerId}`,
+    seed: duelSeed(duel),
   }
 }
 
@@ -61,7 +53,7 @@ export const GET = handle(async (request) => {
 
   const step = 'step' in round ? round.step : zoomStep(round)
   const seed = 'seed' in round ? round.seed : roundSeed(round)
-  return new Response(await cropStage(full, seed, step), {
+  return new Response(await maskStage(full, seed, step), {
     headers: { 'content-type': 'image/webp', 'cache-control': 'private, no-store' },
   })
 })

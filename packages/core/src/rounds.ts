@@ -8,6 +8,7 @@ import { abilityByKey } from './abilities'
 import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { findChallenge, recordSolve } from './challenges'
 import { markSeasonPlay } from './season'
+import { focusFor, roundSeed } from './crop'
 
 import type { Collection } from 'mongodb'
 
@@ -130,6 +131,7 @@ export async function roundView(round: RoundDoc, full = true) {
       })),
     answerId: round.status === 'active' ? undefined : round.answerId,
     image: round.mode === 'image' || round.mode === 'ability' || round.mode === 'page' ? `/api/round/image?id=${id}` : undefined,
+    ...(round.mode === 'image' ? { focus: await focusFor(game, round.answerId, roundSeed(round)) } : {}),
     ...(round.mode === 'ability' ? abilityInfo(round) : {}),
     ...(round.mode === 'page' ? { options: optionsOf(round.extra) } : {}),
     ...(round.mode === 'phrase' ? phraseInfo(round, id) : {}),

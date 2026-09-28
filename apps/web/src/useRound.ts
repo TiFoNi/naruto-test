@@ -12,6 +12,7 @@ export type RoundView = {
   guesses: { id: number; judgement?: Record<string, Judgement> }[]
   answerId?: number
   image?: string
+  focus?: { x: number; y: number }
   daily?: string
   hintAt?: number
   ability?: { ru: string; uk: string; en: string }
