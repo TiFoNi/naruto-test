@@ -3077,8 +3077,8 @@ button.ghost.small {
 
 @media (max-width: 720px) {
   .lang-toggle {
-    height: 40px;
-    padding: 0 8px 0 10px;
+    height: 38px;
+    padding: 0 7px 0 10px;
     font-size: 12px;
   }
 
