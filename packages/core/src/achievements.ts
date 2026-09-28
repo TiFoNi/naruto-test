@@ -357,7 +357,7 @@ export async function syncAwards(userId: ObjectId, facts: Facts, current: Record
   return { awards: { ...current, ...fresh }, claimed: settled, gained: Object.keys(fresh) }
 }
 
-export async function syncSeasonAwards(userId: ObjectId, facts: Facts, now = new Date()) {
+export async function syncSeasonAwards(userId: ObjectId, facts: Facts, kept: { awards?: Record<string, Date> } = {}, now = new Date()) {
   const season = seasonAt(now)
   const id = `${season.id}:${userId.toHexString()}`
   const collection = await seasons()
@@ -382,7 +382,16 @@ export async function syncSeasonAwards(userId: ObjectId, facts: Facts, now = new
     )
   }
 
-  return { awards: { ...current, ...fresh }, claimed: doc?.claimed ?? {}, gained: Object.keys(fresh) }
+  const claimed = doc?.claimed ?? {}
+  const mirror = Object.entries(claimed).filter(([key]) => !kept.awards?.[key])
+  if (mirror.length) {
+    await (await users()).updateOne(
+      { _id: userId },
+      { $set: Object.fromEntries(mirror.flatMap(([key, when]) => [[`awards.${key}`, when], [`claimed.${key}`, when]])) },
+    )
+  }
+
+  return { awards: { ...current, ...fresh }, claimed, gained: Object.keys(fresh) }
 }
 
 export async function claimAward(userId: ObjectId, id: string, now = new Date()) {
@@ -397,7 +406,11 @@ export async function claimAward(userId: ObjectId, id: string, now = new Date())
       { $set: { [`claimed.${id}`]: new Date() } },
     )
     if (!marked.modifiedCount) return null
-    await (await users()).updateOne({ _id: userId }, { $inc: { xp: achievement.xp } })
+    const at = new Date()
+    await (await users()).updateOne(
+      { _id: userId },
+      { $inc: { xp: achievement.xp }, $set: { [`awards.${id}`]: at, [`claimed.${id}`]: at } },
+    )
     await addSeasonXp(userId, achievement.xp, now)
     return achievement.xp
   }

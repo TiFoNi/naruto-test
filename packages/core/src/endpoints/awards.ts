@@ -1,6 +1,7 @@
 import { STAT_KEYS } from '@nanda/game'
-import { ACHIEVEMENTS, collectFacts, syncAwards } from '../achievements'
-import { users, type UserDoc } from '../db'
+import { LIFE, SEASON, collectFacts, seasonFacts, syncAwards, syncSeasonAwards } from '../achievements'
+import { seasons, users, type UserDoc } from '../db'
+import { seasonAt } from '../season'
 import { handle, json } from '../http'
 import { currentUser, unauthorized } from '../profile'
 import { placeOf } from './achievements'
@@ -16,6 +17,10 @@ async function ready(doc: UserDoc) {
   let claimed = doc.claimed ?? {}
 
   const stale = doc.awardsSolved !== solved || !doc.awardsAt || Date.now() - doc.awardsAt.getTime() > FRESH_MS
+  const key = `${seasonAt().id}:${id.toHexString()}`
+  const running = await (await seasons()).findOne({ _id: key })
+  let seasonAwards = running?.awards ?? {}
+  let seasonClaimed = running?.claimed ?? {}
 
   if (stale) {
     const facts = await collectFacts(id, 1, doc.resetAt)
@@ -26,10 +31,15 @@ async function ready(doc: UserDoc) {
     const synced = await syncAwards(id, facts, awards, doc.claimed)
     awards = synced.awards
     claimed = synced.claimed
+    const fresh = await syncSeasonAwards(id, await seasonFacts(id), { awards })
+    seasonAwards = fresh.awards
+    seasonClaimed = fresh.claimed
     await (await users()).updateOne({ _id: id }, { $set: { awardsSolved: solved, awardsAt: new Date() } })
   }
 
-  return ACHIEVEMENTS.filter((achievement) => awards[achievement.id] && !claimed[achievement.id]).map(({ id: award, tier }) => ({ id: award, tier }))
+  const own = LIFE.filter((achievement) => awards[achievement.id] && !claimed[achievement.id])
+  const run = SEASON.filter((achievement) => seasonAwards[achievement.id] && !seasonClaimed[achievement.id])
+  return [...run, ...own].map(({ id: award, tier }) => ({ id: award, tier }))
 }
 
 export const GET = handle(async (request) => {

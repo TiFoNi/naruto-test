@@ -12,6 +12,7 @@ import { seasonAt } from '../season'
 const RECENT = 8
 
 const TIERS = new Map(ACHIEVEMENTS.map((achievement) => [achievement.id, achievement.tier]))
+const SECRETS = new Set(ACHIEVEMENTS.filter((achievement) => achievement.secret).map((achievement) => achievement.id))
 
 type Counted = { _id: string; played: number; won: number; guesses: number }
 
@@ -224,7 +225,10 @@ export const GET = handle(async (request) => {
     pinned: (doc.pinned ?? [])
       .filter((award) => doc.claimed?.[award] && TIERS.has(award))
       .slice(0, 6)
-      .map((id) => ({ id, tier: TIERS.get(id)!, at: doc.awards![id] })),
+      .map((id) => {
+        const veiled = other && SECRETS.has(id) && !found.doc.awards?.[id]
+        return { id: veiled ? null : id, tier: TIERS.get(id)!, at: veiled ? null : doc.awards![id], hidden: veiled }
+      }),
     awards: Object.keys(doc.awards ?? {}).length,
     level: { xp, level, into: xp % LEVEL_XP, need: LEVEL_XP, rank: rankOf(level).id, next: nextRank(level) },
     totals: {

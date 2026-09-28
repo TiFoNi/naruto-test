@@ -67,10 +67,22 @@
 
 .awards-tiers {
   display: grid;
+  max-height: 132px;
   grid-template-columns: 10px auto minmax(0, 1fr) auto;
   align-items: center;
-  align-content: center;
+  align-content: start;
   gap: 9px 10px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.awards-tiers::-webkit-scrollbar {
+  width: 6px;
+}
+
+.awards-tiers::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text-3) 40%, transparent);
 }
 
 .awards-tier {

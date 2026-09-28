@@ -18,7 +18,7 @@ type Named = { ru: string; uk: string; en: string }
 
 type Summary = {
   since: string
-  pinned: { id: string; tier: string; at: string }[]
+  pinned: { id: string | null; tier: string; at: string | null; hidden?: boolean }[]
   level: Level
   totals: {
     solved: number
@@ -466,9 +466,9 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                 const award = pinned[index]
                 if (!award) return <li key={index} />
                 return (
-                  <li key={award.id} className={`on tier-${award.tier}`}>
+                  <li key={award.id ?? `secret-${index}`} className={`on tier-${award.tier}`}>
                     <TrophyIcon />
-                    <b>{t(`ach.${award.id}` as UiKey)}</b>
+                    <b>{award.hidden || !award.id ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
                   </li>
                 )
               })}
