@@ -70,7 +70,8 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext }: P
       el.style.setProperty('--cols', String(columns))
       if (!wide) return el.style.removeProperty('--cell')
       const rows = Math.ceil((board * board) / columns)
-      const room = window.innerHeight - el.getBoundingClientRect().top - 24
+      const top = el.getBoundingClientRect().top + window.scrollY
+      const room = window.innerHeight - top - 24
       el.style.setProperty('--cell', `${Math.max(76, Math.min(152, Math.floor(room / rows) - 10))}px`)
     }
     fit()
