@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb'
 import { rounds, users } from '../db'
 import { gameData, isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
-import { roundOwner, touchVisit } from '../profile'
+import { rememberLang, roundOwner, touchVisit } from '../profile'
 import { finishRound, roundView } from '../rounds'
 
 const MAX_GUESSES = 300
@@ -48,7 +48,10 @@ export const POST = handle(async (request) => {
   }
 
   const people = await users()
-  if (!owner.guest) await touchVisit(people, userId)
+  if (!owner.guest) {
+    await touchVisit(people, userId)
+    await rememberLang(people, userId, request)
+  }
   if (entityId !== updated.answerId) return json({ round: await roundView(updated, false) })
   const result = await finishRound(people, updated, true)
   return json({ round: await roundView(result.round, false), stats: result.stats, ...(result.xp ? { xp: result.xp } : {}) })

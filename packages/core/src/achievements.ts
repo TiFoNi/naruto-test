@@ -194,7 +194,7 @@ export async function collectFacts(userId: ObjectId, languages = 1, since?: Date
         { projection: { game: 1, mode: 1, status: 1, answerId: 1, guessCount: 1, guesses: 1, daily: 1, finishedAt: 1, createdAt: 1 }, sort: { createdAt: 1 } },
       )
       .toArray(),
-    (await users()).findOne({ _id: userId }, { projection: { visit: 1, duelStats: 1, duelBestMs: 1, duelComeback: 1 } }),
+    (await users()).findOne({ _id: userId }, { projection: { visit: 1, duelStats: 1, duelBestMs: 1, duelComeback: 1, langs: 1 } }),
   ])
 
   const modes: Facts['modes'] = {}
@@ -312,7 +312,7 @@ export async function collectFacts(userId: ObjectId, languages = 1, since?: Date
     days: 0,
     rank: null,
     players: 0,
-    languages,
+    languages: Math.max(languages, person?.langs?.length ?? 0),
   }
 }
 

@@ -22,6 +22,7 @@ export type UserDoc = {
   duelStats?: { played?: number; wins?: number; losses?: number; draws?: number; modes?: Record<string, { played?: number; wins?: number }> }
   duelLog?: DuelLogRow[]
   duelBestMs?: number
+  langs?: string[]
   duelComeback?: boolean
   challengeStats?: { solved?: number }
   createdAt: Date

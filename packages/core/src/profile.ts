@@ -92,6 +92,14 @@ const VISIT_DAYS = 14
 
 const alive = (visit: UserDoc['visit']) => visit?.lastDay === today() || visit?.lastDay === shiftDay(today(), -1)
 
+const LANGS = new Set(['ru', 'uk', 'en'])
+
+export async function rememberLang(collection: Collection<UserDoc>, userId: ObjectId, request: Request) {
+  const lang = request.headers.get('x-nanda-lang')
+  if (!lang || !LANGS.has(lang)) return
+  await collection.updateOne({ _id: userId }, { $addToSet: { langs: lang } })
+}
+
 export async function touchVisit(collection: Collection<UserDoc>, userId: ObjectId) {
   const day = today()
   await touchSeasonDay(userId, day)
