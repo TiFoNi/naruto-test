@@ -165,6 +165,16 @@ export function CheckIcon({ className }: IconProps) {
   )
 }
 
+export function InfoIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5.5" />
+      <path d="M12 7.6v.2" strokeWidth={2.6} />
+    </svg>
+  )
+}
+
 export function CloseIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2.2}>
