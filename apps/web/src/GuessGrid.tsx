@@ -8,6 +8,7 @@ import type { Guess } from './useRound'
 const sizeClass = (text: string) => (text.length > 44 ? 'size-xs' : text.length > 26 ? 'size-s' : '')
 
 const CELL_WIDTH = 96
+const CELL_HEIGHT = 96
 const CELL_GAP = 6
 const MIN_CELL = 74
 const CARD_PADDING = 10
@@ -71,10 +72,14 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
       const inRow = Math.ceil(items / lines)
       setPerRow(inRow)
 
-      const side = width < need ? Math.floor((room - inRow * CELL_GAP) / inRow) : CELL_WIDTH
-      const inner = Math.max(0, side - CELL_PADDING * 2) + ICON_GAP
-      const step = ICON_SIZE + ICON_GAP
-      setIconLimit(Math.max(2, Math.floor(inner / step) * Math.floor(inner / step)))
+      const cards = width < need
+      const side = cards ? Math.floor((room - inRow * CELL_GAP) / inRow) : CELL_WIDTH
+      const icon = el.querySelector<HTMLElement>('.icons i')?.offsetWidth || ICON_SIZE
+      const label = cards ? (el.querySelector<HTMLElement>('.cell-label')?.offsetHeight ?? 0) + CELL_GAP : 0
+      const step = icon + ICON_GAP
+      const across = Math.max(1, Math.floor((Math.max(0, side - CELL_PADDING * 2) + ICON_GAP) / step))
+      const down = Math.max(1, Math.floor((Math.max(0, (cards ? side : CELL_HEIGHT) - label - CELL_PADDING * 2) + ICON_GAP) / step))
+      setIconLimit(Math.max(2, across * down))
     }
 
     check()
