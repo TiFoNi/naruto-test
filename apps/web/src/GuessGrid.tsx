@@ -9,6 +9,8 @@ const sizeClass = (text: string) => (text.length > 44 ? 'size-xs' : text.length 
 
 const CELL_WIDTH = 96
 const CELL_HEIGHT = 96
+const CHAR_WIDTH = 5.6
+const LINE_HEIGHT = 12.2
 const CELL_GAP = 6
 const MIN_CELL = 74
 const CARD_PADDING = 10
@@ -33,6 +35,7 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
   const [wrapped, setWrapped] = useState(false)
   const [perRow, setPerRow] = useState(cols - 1)
   const [iconLimit, setIconLimit] = useState(9)
+  const [textRoom, setTextRoom] = useState(0)
   const [tip, setTip] = useState<{ key: string; text: string; x: number; y: number; below: boolean } | null>(null)
 
   useEffect(() => {
@@ -77,9 +80,12 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
       const icon = el.querySelector<HTMLElement>('.icons i')?.offsetWidth || ICON_SIZE
       const label = cards ? (el.querySelector<HTMLElement>('.cell-label')?.offsetHeight ?? 0) + CELL_GAP : 0
       const step = icon + ICON_GAP
-      const across = Math.max(1, Math.floor((Math.max(0, side - CELL_PADDING * 2) + ICON_GAP) / step))
-      const down = Math.max(1, Math.floor((Math.max(0, (cards ? side : CELL_HEIGHT) - label - CELL_PADDING * 2) + ICON_GAP) / step))
+      const wide = Math.max(0, side - CELL_PADDING * 2)
+      const tall = Math.max(0, (cards ? side : CELL_HEIGHT) - label - CELL_PADDING * 2)
+      const across = Math.max(1, Math.floor((wide + ICON_GAP) / step))
+      const down = Math.max(1, Math.floor((tall + ICON_GAP) / step))
       setIconLimit(Math.max(2, across * down))
+      setTextRoom(Math.floor((wide / CHAR_WIDTH) * Math.max(1, Math.floor(tall / LINE_HEIGHT)) * 0.86))
     }
 
     check()
@@ -135,7 +141,12 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
               const kind = verdict?.verdict ?? 'wrong'
               const key = `${g.id}:${col.key}`
               const parts = text.split(', ')
-              const shown = wrapped && text.length > 26 && parts.length > 1 ? `${parts[0]} +${parts.length - 1}` : text
+              let shown = text
+              if (wrapped && parts.length > 1 && text.length > textRoom) {
+                let take = parts.length - 1
+                while (take > 1 && parts.slice(0, take).join(', ').length + 4 > textRoom) take -= 1
+                shown = `${parts.slice(0, take).join(', ')} +${parts.length - take}`
+              }
               const full = `${l(col.title)}: ${icons.length ? icons.map((icon) => icon.label).join(', ') : text}`
               const iconsShown = icons.length > iconLimit ? iconLimit - 1 : icons.length
               return (
