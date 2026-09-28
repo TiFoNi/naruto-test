@@ -42,6 +42,13 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
 
   useEffect(() => {
     void load()
+    const refresh = () => document.visibilityState === 'visible' && void load()
+    window.addEventListener('focus', refresh)
+    document.addEventListener('visibilitychange', refresh)
+    return () => {
+      window.removeEventListener('focus', refresh)
+      document.removeEventListener('visibilitychange', refresh)
+    }
   }, [load])
 
   const claim = async (id: string) => {
