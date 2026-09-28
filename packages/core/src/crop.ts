@@ -6,7 +6,7 @@ import { gameData } from './games'
 
 const GRID = 32
 const JITTER = 0.07
-const DIM = 0.22
+const DIM = 0.16
 const CACHE_MAX = 300
 const SOURCE_MAX = 60
 
@@ -111,20 +111,22 @@ export function windowAt(width: number, height: number, focus: { x: number; y: n
   }
 }
 
-export async function shotFor(game: GameId, answerId: number, seed: string, step: number) {
+export async function shotFor(game: GameId, answerId: number, seed: string, step: number, ahead = true): Promise<string | null> {
   const key = `${seed}:${step}`
   const known = shots.get(key)
-  if (known) return known
+  if (!known) {
+    const pending = (async () => {
+      const source = await imageBuffer(game, answerId)
+      if (!source) return null
+      const masked = await maskStage(source, seed, step)
+      return `data:image/webp;base64,${masked.toString('base64')}`
+    })()
+    keep(shots, key, pending, CACHE_MAX)
+  }
 
-  const pending = (async () => {
-    const source = await imageBuffer(game, answerId)
-    if (!source) return null
-    const masked = await maskStage(source, seed, step)
-    return `data:image/webp;base64,${masked.toString('base64')}`
-  })()
+  if (ahead && step + 1 < ZOOM_LEVELS.length) void shotFor(game, answerId, seed, step + 1, false).catch(() => undefined)
 
-  keep(shots, key, pending, CACHE_MAX)
-  const shot = await pending
+  const shot = await (shots.get(key) as Promise<string | null>)
   if (!shot) shots.delete(key)
   return shot
 }
@@ -138,15 +140,17 @@ export async function maskStage(source: Buffer, seed: string, step: number) {
 
   const focus = await focusOf(source, seed)
   const box = windowAt(width, height, focus, zoom)
-  const sigma = Math.max(16, Math.round(Math.min(width, height) / 9))
 
   const [hidden, shown] = await Promise.all([
-    sharp(source).blur(sigma).modulate({ brightness: DIM }).toBuffer(),
+    sharp(source)
+      .blur(Math.max(20, Math.round(Math.min(width, height) / 4)))
+      .modulate({ brightness: DIM })
+      .toBuffer(),
     sharp(source).extract(box).toBuffer(),
   ])
 
   return sharp(hidden)
     .composite([{ input: shown, left: box.left, top: box.top }])
-    .webp({ quality: 82 })
+    .webp({ quality: 82, effort: 0 })
     .toBuffer()
 }
