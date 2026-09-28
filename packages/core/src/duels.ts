@@ -285,15 +285,6 @@ async function dropPlayers(duel: DuelDoc, gone: DuelPlayer[]) {
     const at = new Date()
     const scores = duel.players.map((side) => ({ userId: side.userId, nickname: side.nickname, wins: side.wins ?? 0 }))
     await applyDuelStats(winner, [...rest, ...gone])
-    await collection.updateOne(
-      { _id: duel._id },
-      {
-        $push: {
-          log: { $each: [{ winnerId: winner, at, ms: null, mode: duel.mode }], $slice: -200 },
-          matches: { $each: [{ winnerId: winner, at, game: duel.game, mode: duel.mode, scores }], $slice: -50 },
-        },
-      },
-    )
     await pushDuelLog(scores, winner, duel.game, duel.mode, at)
     await duelXp(winner, (duel.mode ?? 'classic') as ModeId, true)
   }
@@ -439,10 +430,6 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
     {
       $set: { status: 'finished', finishedAt: at, winnerId, matchDone },
       $inc: winnerIndex >= 0 ? { [`players.${winnerIndex}.wins`]: 1 } : { draws: 1 },
-      $push: {
-        log: { $each: [{ winnerId, at, ms, mode: duel.mode }], $slice: -200 },
-        ...(matchDone ? { matches: { $each: [{ winnerId, at, game: duel.game, mode: duel.mode, scores }], $slice: -50 } } : {}),
-      },
     },
     { returnDocument: 'after' },
   )
@@ -524,16 +511,29 @@ function phraseLines(duel: DuelDoc, side: DuelPlayer) {
   }
 }
 
-async function duelShot(duel: DuelDoc, side: DuelPlayer) {
-  const game = duel.game as GameId
-  const seed = duelSeed(duel)
+function duelStep(duel: DuelDoc, side: DuelPlayer) {
   const revealed = duel.status === 'finished' || Boolean(side.solvedAt) || Boolean(side.gaveUp)
-  const step = revealed ? ZOOM_LEVELS.length - 1 : Math.min(wrongCount(duel, side), ZOOM_LEVELS.length - 1)
-  const [focus, shot] = await Promise.all([focusFor(game, duel.answerId!, seed), shotFor(game, duel.answerId!, seed, step)])
-  return { focus, shot, zoom: ZOOM_LEVELS[step] }
+  return revealed ? ZOOM_LEVELS.length - 1 : Math.min(wrongCount(duel, side), ZOOM_LEVELS.length - 1)
 }
 
-export async function duelView(duel: DuelDoc, userId: ObjectId) {
+export function duelShotKey(duel: DuelDoc, userId: ObjectId) {
+  const side = sideOf(duel, userId)
+  if (duel.mode !== 'image' || duel.status === 'lobby' || duel.answerId === undefined || !side) return null
+  return `${duel.code}:${duel.round}:${duelStep(duel, side)}`
+}
+
+async function duelShot(duel: DuelDoc, side: DuelPlayer, known: boolean) {
+  const game = duel.game as GameId
+  const seed = duelSeed(duel)
+  const step = duelStep(duel, side)
+  const [focus, shot] = await Promise.all([
+    focusFor(game, duel.answerId!, seed),
+    known ? Promise.resolve(undefined) : shotFor(game, duel.answerId!, seed, step),
+  ])
+  return { focus, zoom: ZOOM_LEVELS[step], ...(shot ? { shot } : {}) }
+}
+
+export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
   const you = sideOf(duel, userId)
   const rival = duel.players.find((p) => !p.userId.equals(userId))
   const playing = duel.status === 'playing'
@@ -572,7 +572,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId) {
           : undefined
         : undefined,
     ...(duel.mode === 'image' && (playing || finished) && duel.answerId !== undefined && you
-      ? await duelShot(duel, you)
+      ? await duelShot(duel, you, known)
       : {}),
     ...(duel.mode === 'page' ? { options: optionsOf(duel.extra ?? undefined) } : {}),
     ...(duel.mode === 'phrase' && you ? phraseLines(duel, you) : {}),

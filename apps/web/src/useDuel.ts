@@ -64,7 +64,7 @@ export function useDuel(code: string) {
       setError(null)
       if (view.status === 'finished' && lastStatus.current !== 'finished') refresh()
       lastStatus.current = view.status
-      setDuel(view)
+      setDuel((old) => (view.shot || !old?.shot ? view : { ...view, shot: old.shot }))
       setPending(null)
     },
     [refresh],

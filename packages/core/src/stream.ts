@@ -1,10 +1,10 @@
 import type { ObjectId } from 'mongodb'
 import { duels, type DuelDoc } from './db'
-import { duelView, leaveDuel, settle, sideOf } from './duels'
+import { duelShotKey, duelView, leaveDuel, settle, sideOf } from './duels'
 
 export type Sender = (event: string, data: unknown) => void
 
-type RoomClient = { userId: ObjectId; send: Sender }
+type RoomClient = { userId: ObjectId; send: Sender; shot?: string | null }
 
 const HEARTBEAT_MS = 20_000
 const GRACE_MS = 12_000
@@ -59,8 +59,10 @@ function scheduleEnd(code: string, duel: DuelDoc) {
 }
 
 async function sendState(duel: DuelDoc, client: RoomClient) {
-  if (!sideOf(duel, client.userId)) client.send('gone', { code: duel.code })
-  else client.send('state', await duelView(duel, client.userId))
+  if (!sideOf(duel, client.userId)) return client.send('gone', { code: duel.code })
+  const key = duelShotKey(duel, client.userId)
+  client.send('state', await duelView(duel, client.userId, Boolean(key) && client.shot === key))
+  client.shot = key
 }
 
 export async function pushRoom(code: string, known?: DuelDoc | null, only?: RoomClient) {

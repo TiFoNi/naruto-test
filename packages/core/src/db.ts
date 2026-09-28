@@ -102,8 +102,6 @@ export type DuelDoc = {
   seconds?: number | null
   invite?: { toId: ObjectId; nickname: string; at: Date; declined?: boolean } | null
   left?: { nickname: string; at: Date } | null
-  log?: { winnerId: ObjectId | null; at: Date; ms: number | null; mode?: string }[]
-  matches?: { winnerId: ObjectId | null; at: Date; scores: { userId: ObjectId; nickname?: string; wins: number }[]; game?: string; mode?: string }[]
   matchDone?: boolean
   round: number
   draws: number
