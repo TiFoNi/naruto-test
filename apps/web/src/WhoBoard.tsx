@@ -65,10 +65,13 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext, onF
     const el = grid.current
     if (!el) return
     const fit = () => {
-      if (window.innerWidth < 760) return el.style.removeProperty('--cell')
+      const wide = window.innerWidth >= 760
+      const columns = wide ? board : Math.min(board, window.innerWidth < 360 ? 4 : 5)
+      el.style.setProperty('--cols', String(columns))
+      if (!wide) return el.style.removeProperty('--cell')
+      const rows = Math.ceil((board * board) / columns)
       const room = window.innerHeight - el.getBoundingClientRect().top - 24
-      const caption = 10
-      el.style.setProperty('--cell', `${Math.max(76, Math.min(152, Math.floor(room / board) - caption))}px`)
+      el.style.setProperty('--cell', `${Math.max(76, Math.min(152, Math.floor(room / rows) - 10))}px`)
     }
     fit()
     const watch = new ResizeObserver(fit)

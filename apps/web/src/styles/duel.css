@@ -1110,7 +1110,7 @@
 
 .who-grid {
   display: grid;
-  grid-template-columns: repeat(var(--board, 5), minmax(0, 1fr));
+  grid-template-columns: repeat(var(--cols, var(--board, 5)), minmax(0, 1fr));
   grid-auto-rows: auto;
   gap: 8px;
   margin: 0;
@@ -1121,7 +1121,7 @@
 @media (min-width: 760px) {
   .who-grid {
     width: 100%;
-    max-width: calc(var(--board, 5) * (var(--cell, 132px) + 8px));
+    max-width: calc(var(--cols, var(--board, 5)) * (var(--cell, 132px) + 8px));
     margin-inline: auto;
   }
 }
