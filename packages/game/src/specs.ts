@@ -1,6 +1,6 @@
 export type GameId = 'football' | 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'onepiece' | 'mk' | 'hxh' | 'bc' | 'jojo' | 'se' | 'ff' | 'manga' | 'dn' | 'avatar'
 
-export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase'
+export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase' | 'who'
 
 export type Verdict = 'correct' | 'partial' | 'wrong'
 
@@ -245,7 +245,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
-export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase']
+export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'who']
 
 export const ABILITY_STAGES = 6
 export const ABILITY_HINT_AT = 5
@@ -256,6 +256,7 @@ export const MODE_XP: Record<ModeId, number> = {
   ability: 25,
   page: 25,
   phrase: 25,
+  who: 30,
 }
 
 export const DAILY_XP_FACTOR = 3
@@ -266,7 +267,10 @@ export const XP_CAPS = { daily: 360, endless: 250, duel: 200 } as const
 
 export type XpSource = keyof typeof XP_CAPS
 
-export const DUEL_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase']
+export const DUEL_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'who']
+
+export const BOARD_SIZES = [4, 5, 6, 7] as const
+export const BOARD_DEFAULT = 5
 export const DUEL_ROUNDS = [3, 5, 7, 10] as const
 export const DUEL_SECONDS = [30, 60, 90, 600] as const
 export const DUEL_DEFAULT = { best: 5, seconds: 60 }

@@ -8,6 +8,8 @@ import {
   DUEL_MODES,
   DUEL_ROUNDS,
   DUEL_SECONDS,
+  BOARD_DEFAULT,
+  BOARD_SIZES,
   duelWinsNeeded,
   hasMode,
   judgeAll,
@@ -100,12 +102,14 @@ export async function joinDuel(duel: DuelDoc, doc: UserDoc) {
 export async function setupDuel(duel: DuelDoc, userId: ObjectId, body: Record<string, unknown>) {
   if (!isHost(duel, userId) || duel.status !== 'lobby') return duel
   const { game, mode } = body
-  if (!isGame(game) || !isMode(mode) || !hasMode(game, mode) || !DUEL_MODES.includes(mode)) return null
+  if (!isGame(game) || !isMode(mode) || !DUEL_MODES.includes(mode)) return null
+  if (mode !== 'who' && !hasMode(game, mode)) return null
   const best = rounds(body.best) ?? duel.best ?? DUEL_DEFAULT.best
   const limit = seconds(body.seconds) ?? duel.seconds ?? DUEL_DEFAULT.seconds
+  const size = (BOARD_SIZES as readonly number[]).includes(Number(body.size)) ? Number(body.size) : duel.size ?? BOARD_DEFAULT
   const updated = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: 'lobby' },
-    { $set: { game, mode, best, seconds: limit, 'players.$[].ready': false } },
+    { $set: { game, mode, best, seconds: limit, size, 'players.$[].ready': false } },
     { returnDocument: 'after' },
   )
   return updated ?? duel
@@ -194,7 +198,52 @@ export async function recentRivals(userId: ObjectId, limit = 5) {
   return [...seen.values()]
 }
 
+const shuffled = <T>(list: T[]) => {
+  const copy = [...list]
+  for (let index = copy.length - 1; index > 0; index--) {
+    const swap = randomInt(index + 1)
+    ;[copy[index], copy[swap]] = [copy[swap], copy[index]]
+  }
+  return copy
+}
+
+async function boardStart(duel: DuelDoc) {
+  const { pool } = await gameData(duel.game as GameId)
+  const size = duel.size ?? BOARD_DEFAULT
+  const cards = shuffled(pool.map((entity) => entity.id)).slice(0, Math.min(size * size, pool.length))
+  const secrets = shuffled(cards).slice(0, 2)
+  const startedAt = new Date()
+  const limit = duel.seconds || DUEL_DEFAULT.seconds
+
+  return {
+    status: 'playing' as const,
+    round: duel.round + 1,
+    answerId: 0,
+    extra: null,
+    startedAt,
+    endsAt: new Date(startedAt.getTime() + limit * 1000),
+    firstId: duel.players[randomInt(duel.players.length)]?.userId ?? null,
+    firstSolvedAt: null,
+    winnerId: null,
+    finishedAt: null,
+    ...Object.fromEntries(
+      duel.players.flatMap((_, index) => [
+        [`players.${index}.ready`, false],
+        [`players.${index}.wantsNext`, false],
+        [`players.${index}.guesses`, []],
+        [`players.${index}.solvedAt`, null],
+        [`players.${index}.gaveUp`, false],
+        [`players.${index}.lastGuessAt`, null],
+        [`players.${index}.struck`, []],
+        [`players.${index}.cards`, shuffled(cards)],
+        [`players.${index}.secret`, secrets[index] ?? secrets[0]],
+      ]),
+    ),
+  }
+}
+
 async function roundStart(duel: DuelDoc) {
+  if (duel.mode === 'who') return boardStart(duel)
   const game = duel.game as GameId
   const { pool } = await gameData(game)
   const fresh = pool.filter((e) => e.id !== duel.answerId)
@@ -359,6 +408,12 @@ const done = (side: DuelPlayer) => Boolean(side.solvedAt || side.gaveUp)
 
 function decide(duel: DuelDoc) {
   const [a, b] = duel.players
+  if (duel.mode === 'who') {
+    const solver = duel.players.find((side) => side.solvedAt)
+    if (solver) return solver.userId
+    const missed = duel.players.find((side) => side.gaveUp)
+    return missed ? duel.players.find((side) => !side.userId.equals(missed.userId))?.userId ?? null : null
+  }
   const score = (side: DuelPlayer) => ({
     solved: side.solvedAt ? 1 : 0,
     guesses: side.guesses.length,
@@ -413,7 +468,8 @@ export const winsNeeded = (duel: DuelDoc) => duelWinsNeeded(duel.best ?? DUEL_DE
 export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   if (duel.status !== 'playing') return duel
   const timeUp = duel.endsAt ? Date.now() >= duel.endsAt.getTime() : false
-  if (!timeUp && !duel.players.every(done)) return duel
+  const over = duel.mode === 'who' ? duel.players.some(done) : duel.players.every(done)
+  if (!timeUp && !over) return duel
   const winnerId = decide(duel)
   const winnerIndex = winnerId ? duel.players.findIndex((p) => p.userId.equals(winnerId)) : -1
   const matchDone = winnerIndex >= 0 && (duel.players[winnerIndex].wins ?? 0) + 1 >= winsNeeded(duel)
@@ -481,6 +537,28 @@ export async function duelGuess(duel: DuelDoc, userId: ObjectId, entityId: numbe
   )
   if (!updated) return { error: 'too_fast' as const }
   return { duel: await settle(updated) }
+}
+
+export async function strikeCard(duel: DuelDoc, userId: ObjectId, entityId: number) {
+  if (duel.mode !== 'who' || duel.status !== 'playing') return { error: 'round_over' as const }
+  const index = duel.players.findIndex((side) => side.userId.equals(userId))
+  const side = duel.players[index]
+  if (!side?.cards?.includes(entityId)) return { error: 'bad_request' as const }
+
+  const struck = side.struck ?? []
+  const next = struck.includes(entityId) ? struck.filter((id) => id !== entityId) : [...struck, entityId]
+  const standing = side.cards.filter((id) => !next.includes(id))
+  if (!standing.length) return { error: 'bad_request' as const }
+
+  const rival = duel.players.find((one) => !one.userId.equals(userId))
+  const set: Record<string, unknown> = { [`players.${index}.struck`]: next }
+  if (standing.length === 1) {
+    if (standing[0] === rival?.secret) set[`players.${index}.solvedAt`] = new Date()
+    else set[`players.${index}.gaveUp`] = true
+  }
+
+  const updated = await (await duels()).findOneAndUpdate({ _id: duel._id, status: 'playing' }, { $set: set }, { returnDocument: 'after' })
+  return { duel: await settle(updated ?? duel) }
 }
 
 export async function giveUpDuel(duel: DuelDoc, userId: ObjectId) {
@@ -576,9 +654,21 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
       : {}),
     ...(duel.mode === 'page' ? { options: optionsOf(duel.extra ?? undefined) } : {}),
     ...(duel.mode === 'phrase' && you ? phraseLines(duel, you) : {}),
-    answerId: finished || you?.solvedAt || you?.gaveUp ? duel.answerId : undefined,
+    answerId: duel.mode === 'who' ? undefined : finished || you?.solvedAt || you?.gaveUp ? duel.answerId : undefined,
     winner: finished ? (duel.winnerId ? duel.players.find((p) => p.userId.equals(duel.winnerId!))?.nickname ?? null : null) : undefined,
     youWon: finished ? Boolean(duel.winnerId && duel.winnerId.equals(userId)) : undefined,
+    ...(duel.mode === 'who' ? { size: duel.size ?? BOARD_DEFAULT } : {}),
+    ...(duel.mode === 'who' && (playing || finished)
+      ? {
+          first: duel.firstId ? duel.players.find((side) => side.userId.equals(duel.firstId!))?.nickname ?? null : null,
+          youFirst: Boolean(duel.firstId && duel.firstId.equals(userId)),
+          secret: you?.secret,
+          cards: you?.cards ?? [],
+          struck: you?.struck ?? [],
+          rivalLeft: rival ? (rival.cards?.length ?? 0) - (rival.struck?.length ?? 0) : 0,
+          rivalSecret: finished ? rival?.secret : undefined,
+        }
+      : {}),
     you: you && {
       nickname: you.nickname,
       ready: you.ready,

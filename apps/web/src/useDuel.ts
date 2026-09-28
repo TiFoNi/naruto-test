@@ -31,6 +31,14 @@ export type DuelView = {
   focus?: { x: number; y: number }
   shot?: string
   zoom?: number
+  size?: number
+  first?: string | null
+  youFirst?: boolean
+  secret?: number
+  cards?: number[]
+  struck?: number[]
+  rivalLeft?: number
+  rivalSecret?: number
   options?: number[]
   lines?: { text: string; ru?: string }[]
   linesLeft?: number
@@ -137,18 +145,20 @@ export function useDuel(code: string) {
     pending,
     serverNow: () => Date.now() + offset.current,
     ready: () => send({ action: 'ready' }),
-    setup: (patch: { game?: string; mode?: string; best?: number; seconds?: number }) =>
+    setup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number }) =>
       send({
         action: 'setup',
         game: patch.game ?? duel?.game ?? 'naruto',
         mode: patch.mode ?? duel?.mode ?? 'classic',
         best: patch.best ?? duel?.best,
         seconds: patch.seconds ?? duel?.seconds,
+        size: patch.size ?? duel?.size,
       }),
     invite: (to: string) => send({ action: 'invite', to }),
     next: () => send({ action: 'next' }),
     toLobby: () => send({ action: 'lobby' }),
     giveUp: () => send({ action: 'giveup' }),
+    strike: (entityId: number) => send({ action: 'strike', entityId }),
     refresh: () => send({ action: 'state' }),
     guess,
   }

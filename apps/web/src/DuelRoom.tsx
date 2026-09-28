@@ -14,6 +14,7 @@ import PlayPanel from './PlayPanel'
 import TriesList from './TriesList'
 import ZoomScale from './ZoomScale'
 import ZoomImage from './ZoomImage'
+import WhoBoard from './WhoBoard'
 import { gameById } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
@@ -39,7 +40,7 @@ export default function DuelRoom({ code }: { code: string }) {
   const { t, l, name, lang, error: errorText } = useI18n()
   const href = useHref()
   const navigate = useNavigate()
-  const { duel, error, busy, pending, serverNow, ready, setup, invite, next, toLobby, giveUp, guess, refresh } = useDuel(code)
+  const { duel, error, busy, pending, serverNow, ready, setup, invite, next, toLobby, giveUp, guess, strike, refresh } = useDuel(code)
   const [, redraw] = useState(0)
   const [pageReady, setPageReady] = useState(false)
   const [showResult, setShowResult] = useState(true)
@@ -136,7 +137,9 @@ export default function DuelRoom({ code }: { code: string }) {
               ? you?.ready
                 ? t('duel.isReady')
                 : t('duel.notReady')
-              : t('duel.guesses', { count: guesses.filter((g) => !g.pending).length })}
+              : duel.mode === 'who'
+                ? t('who.cardsLeft', { count: (duel.cards?.length ?? 0) - (duel.struck?.length ?? 0) })
+                : t('duel.guesses', { count: guesses.filter((g) => !g.pending).length })}
             {!inLobby && you?.solved ? ` · ${t('duel.solved')}` : !inLobby && you?.gaveUp ? ` · ${t('duel.gaveUp')}` : ''}
           </span>
         </div>
@@ -149,7 +152,9 @@ export default function DuelRoom({ code }: { code: string }) {
                 ? rival.ready
                   ? t('duel.isReady')
                   : t('duel.notReady')
-                : t('duel.guesses', { count: rival.guessCount })}
+                : duel.mode === 'who'
+                  ? t('who.cardsLeft', { count: duel.rivalLeft ?? 0 })
+                  : t('duel.guesses', { count: rival.guessCount })}
               {!inLobby && rival.solved ? ` · ${t('duel.solved')}` : !inLobby && rival.gaveUp ? ` · ${t('duel.gaveUp')}` : ''}
             </span>
           </div>
@@ -183,7 +188,9 @@ export default function DuelRoom({ code }: { code: string }) {
               <b>{rival?.wins ?? 0}</b>
             </p>
             <p className="muted">
-              {you?.nickname} · {rival?.nickname ?? '?'}
+              {duel.mode === 'who' && duel.rivalSecret !== undefined
+                ? t('who.was', { name: name(byId.get(duel.rivalSecret) ?? { name: '?' }) })
+                : `${you?.nickname} · ${rival?.nickname ?? '?'}`}
             </p>
             <div className="duel-final-actions">
               <button
@@ -204,7 +211,9 @@ export default function DuelRoom({ code }: { code: string }) {
         </div>
       )}
 
-      {!inLobby && game && (
+      {!inLobby && game && duel.mode === 'who' && <WhoBoard game={game} duel={duel} busy={busy} onStrike={strike} />}
+
+      {!inLobby && game && duel.mode !== 'who' && (
         <PlayBoard
           variant={duel.mode === 'image' ? 'shot' : duel.mode === 'ability' ? 'ability' : 'classic'}
           side={

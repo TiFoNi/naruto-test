@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS } from '@nanda/game'
+import { BOARD_DEFAULT, BOARD_SIZES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS } from '@nanda/game'
 import { api } from './api'
 import { GAMES, gameById } from './games'
 import type { Category, GameId } from './games/types'
@@ -24,7 +24,7 @@ type Props = {
   duel: DuelView
   busy: boolean
   link: string
-  onSetup: (patch: { game?: string; mode?: string; best?: number; seconds?: number }) => void
+  onSetup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number }) => void
   onInvite: (to: string) => void
   onReady: () => void
   onLeave: () => void
@@ -33,7 +33,7 @@ type Props = {
 const duelReady = (game: { modes: readonly string[] }) => game.modes.some((mode) => DUEL_MODES.includes(mode as never))
 
 const duelMode = (game: { modes: readonly string[] }, current: string | null) => {
-  const usable = DUEL_MODES.filter((mode) => game.modes.includes(mode))
+  const usable = DUEL_MODES.filter((mode) => mode === 'who' || game.modes.includes(mode))
   return current && usable.includes(current as never) ? current : usable[0]
 }
 
@@ -73,7 +73,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
   }, [query])
 
   const worlds = useMemo(() => GAMES.filter((one) => one.category === category && duelReady(one)), [category])
-  const modes = MODES.filter((mode) => DUEL_MODES.includes(mode.id) && game.modes.includes(mode.id))
+  const modes = MODES.filter((mode) => DUEL_MODES.includes(mode.id) && (mode.id === 'who' || game.modes.includes(mode.id)))
 
   const copy = () => {
     navigator.clipboard?.writeText(link).then(
@@ -225,6 +225,24 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                   ))}
                 </div>
               </div>
+              {duel.mode === 'who' && (
+                <div>
+                  <span className="duel-rules-title">{t('who.size')}</span>
+                  <div className="duel-chips">
+                    {BOARD_SIZES.map((value) => (
+                      <button
+                        key={value}
+                        type="button"
+                        className={(duel.size ?? BOARD_DEFAULT) === value ? 'active' : ''}
+                        disabled={!host || busy}
+                        onClick={() => onSetup({ size: value })}
+                      >
+                        {value}×{value}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
               <div>
                 <span className="duel-rules-title">{t('duel.timeTitle')}</span>
                 <div className="duel-chips">
