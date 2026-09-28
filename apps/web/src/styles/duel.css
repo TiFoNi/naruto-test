@@ -401,7 +401,7 @@
 
 .duel-chips button {
   flex: 1 1 0;
-  min-width: 0;
+  min-width: fit-content;
   max-width: 120px;
   padding: 11px 6px;
   white-space: nowrap;
@@ -1087,6 +1087,7 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
+  justify-content: center;
   gap: 4px;
 }
 
@@ -1110,7 +1111,7 @@
   list-style: none;
 }
 
-.who-grid button {
+.who-grid .who-card {
   display: flex;
   width: 100%;
   height: 100%;
@@ -1131,11 +1132,11 @@
   transition: border-color 0.15s, opacity 0.2s, filter 0.2s;
 }
 
-.who-grid button:hover:not(:disabled) {
+.who-grid .who-card:hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
 }
 
-.who-grid li.off button {
+.who-grid li.off .who-card {
   justify-content: center;
   border-style: dashed;
   border-color: color-mix(in srgb, var(--line) 80%, transparent);
@@ -1163,6 +1164,40 @@
   aspect-ratio: 1;
   border-radius: 10px;
   object-fit: cover;
+  object-position: center top;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
+.who-info {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card) 85%, transparent);
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.who-info:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, var(--card));
+}
+
+.who-ask {
+  display: flex;
+  gap: 10px;
+}
+
+.who-ask button {
+  flex: 1 1 0;
 }
 
 .who-name {

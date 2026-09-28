@@ -211,7 +211,7 @@ export default function DuelRoom({ code }: { code: string }) {
         </div>
       )}
 
-      {!inLobby && game && duel.mode === 'who' && <WhoBoard game={game} duel={duel} busy={busy} onStrike={strike} />}
+      {!inLobby && game && duel.mode === 'who' && <WhoBoard game={game} byId={byId} duel={duel} busy={busy} onStrike={strike} />}
 
       {!inLobby && game && duel.mode !== 'who' && (
         <PlayBoard

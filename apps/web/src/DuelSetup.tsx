@@ -260,7 +260,13 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                 </div>
               </div>
             </div>
-            <p className="duel-note">{t('duel.rulesNote', { needed: duel.needed, best: duel.best, time: timeLabel(duel.seconds) })}</p>
+            <p className="duel-note">
+              {t(duel.mode === 'who' ? 'duel.rulesWho' : 'duel.rulesNote', {
+                needed: duel.needed,
+                best: duel.best,
+                time: timeLabel(duel.seconds),
+              })}
+            </p>
           </section>
         </div>
 

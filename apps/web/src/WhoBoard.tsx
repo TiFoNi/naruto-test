@@ -1,35 +1,40 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import Thumb from './Thumb'
-import type { Game } from './games/types'
+import { fullUrl } from './pics'
+import type { Entity, Game } from './games/types'
 import { useI18n } from './i18n'
 import { CloseIcon } from './icons'
 import type { DuelView } from './useDuel'
 
 type Props = {
   game: Game
+  byId: Map<number, Entity>
   duel: DuelView
   busy: boolean
   onStrike: (entityId: number) => void
 }
 
-export default function WhoBoard({ game, duel, busy, onStrike }: Props) {
+export default function WhoBoard({ game, byId, duel, busy, onStrike }: Props) {
   const { t, l, tv, lang, name } = useI18n()
-  const [open, setOpen] = useState<number | null>(null)
+  const [info, setInfo] = useState<number | null>(null)
+  const [ask, setAsk] = useState<number | null>(null)
 
-  const byId = useMemo(() => new Map((game.entities ?? []).map((entity) => [entity.id, entity])), [game.entities])
   const struck = useMemo(() => new Set(duel.struck ?? []), [duel.struck])
   const cards = duel.cards ?? []
   const standing = cards.filter((id) => !struck.has(id))
   const mine = duel.secret !== undefined ? byId.get(duel.secret) : undefined
-  const shown = open !== null ? byId.get(open) : undefined
-  const closed = open !== null && struck.has(open)
-  const last = !closed && standing.length === 2
+  const shown = info !== null ? byId.get(info) : undefined
   const over = duel.status !== 'playing'
+  const answer = ask !== null ? byId.get(standing.find((id) => id !== ask) ?? -1) : undefined
 
   const traits = (entity: NonNullable<typeof shown>) =>
     game.columns.map((column) => ({ title: l(column.title), value: column.text(entity, { tv, lang }) }))
+
+  const pick = (id: number) => {
+    if (struck.has(id) || standing.length > 2) return onStrike(id)
+    setAsk(id)
+  }
 
   return (
     <section className="who">
@@ -38,7 +43,7 @@ export default function WhoBoard({ game, duel, busy, onStrike }: Props) {
           <div className="who-mine">
             <span className="play-card-title">{t('who.yours')}</span>
             <div className="who-mine-card">
-              <Thumb game={game} entity={mine} className="who-mine-thumb" />
+              <img className="who-mine-thumb" src={fullUrl(game.id, mine.id, mine.image)} alt="" loading="lazy" />
               <b>{name(mine)}</b>
             </div>
           </div>
@@ -53,33 +58,45 @@ export default function WhoBoard({ game, duel, busy, onStrike }: Props) {
         {cards.map((id) => {
           const entity = byId.get(id)
           if (!entity) return null
+          const off = struck.has(id)
           return (
-            <li key={id} className={struck.has(id) ? 'off' : ''}>
-              <button type="button" onClick={() => setOpen(id)} disabled={busy && !over}>
-                {struck.has(id) ? (
+            <li key={id} className={off ? 'off' : ''}>
+              <button
+                type="button"
+                className="who-card"
+                aria-label={`${name(entity)} — ${off ? t('who.open') : t('who.close')}`}
+                disabled={over || busy}
+                onClick={() => pick(id)}
+              >
+                {off ? (
                   <span className="who-back" aria-hidden>
                     ?
                   </span>
                 ) : (
                   <>
-                    <Thumb game={game} entity={entity} className="who-thumb" />
+                    <img className="who-thumb" src={fullUrl(game.id, entity.id, entity.image)} alt="" loading="lazy" />
                     <span className="who-name">{name(entity)}</span>
                   </>
                 )}
               </button>
+              {!off && (
+                <button type="button" className="who-info" aria-label={t('who.info')} onClick={() => setInfo(id)}>
+                  i
+                </button>
+              )}
             </li>
           )
         })}
       </ol>
 
       {shown && (
-        <div className="modal-backdrop" onClick={() => setOpen(null)} role="presentation">
+        <div className="modal-backdrop" onClick={() => setInfo(null)} role="presentation">
           <section className="card modal who-modal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
-            <button type="button" className="modal-close" aria-label={t('profile.close')} onClick={() => setOpen(null)}>
+            <button type="button" className="modal-close" aria-label={t('profile.close')} onClick={() => setInfo(null)}>
               <CloseIcon />
             </button>
             <header className="who-modal-head">
-              <Thumb game={game} entity={shown} className="who-modal-thumb" />
+              <img className="who-modal-thumb" src={fullUrl(game.id, shown.id, shown.image)} alt="" />
               <b>{name(shown)}</b>
             </header>
             <dl className="who-traits">
@@ -90,22 +107,37 @@ export default function WhoBoard({ game, duel, busy, onStrike }: Props) {
                 </div>
               ))}
             </dl>
-            {!over && (
-              <>
-                {last && <p className="who-warn">{t('who.lastWarn')}</p>}
-                <button
-                  type="button"
-                  className={closed ? 'ghost' : 'primary'}
-                  disabled={busy}
-                  onClick={() => {
-                    onStrike(shown.id)
-                    setOpen(null)
-                  }}
-                >
-                  {closed ? t('who.open') : last ? t('who.answer') : t('who.close')}
-                </button>
-              </>
-            )}
+          </section>
+        </div>
+      )}
+
+      {ask !== null && answer && (
+        <div className="modal-backdrop" onClick={() => setAsk(null)} role="presentation">
+          <section className="card modal who-modal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="modal-close" aria-label={t('profile.close')} onClick={() => setAsk(null)}>
+              <CloseIcon />
+            </button>
+            <header className="who-modal-head">
+              <img className="who-modal-thumb" src={fullUrl(game.id, answer.id, answer.image)} alt="" />
+              <b>{name(answer)}</b>
+            </header>
+            <p className="who-warn">{t('who.lastWarn')}</p>
+            <div className="who-ask">
+              <button
+                type="button"
+                className="primary"
+                disabled={busy}
+                onClick={() => {
+                  onStrike(ask)
+                  setAsk(null)
+                }}
+              >
+                {t('who.answer')}
+              </button>
+              <button type="button" className="ghost" onClick={() => setAsk(null)}>
+                {t('profile.cancel')}
+              </button>
+            </div>
           </section>
         </div>
       )}
