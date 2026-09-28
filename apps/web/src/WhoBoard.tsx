@@ -114,9 +114,6 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext }: P
               <small>{t('who.yours')}</small>
               <b>{name(mine)}</b>
             </span>
-            <span className="who-mine-info" aria-hidden>
-              <InfoIcon />
-            </span>
           </button>
         )}
         <div className="who-copy">

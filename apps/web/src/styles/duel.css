@@ -868,7 +868,7 @@
   }
 
   .duel-world {
-    padding: 8px 12px 8px 8px;
+    padding: 8px 14px 8px 8px;
     font-size: 12.5px;
   }
 
@@ -1081,14 +1081,6 @@
 
 .who-mine-card:hover {
   border-color: var(--accent);
-}
-
-.who-mine-info {
-  display: grid;
-  place-items: center;
-  margin-left: 2px;
-  color: color-mix(in srgb, var(--accent) 80%, var(--text-3));
-  font-size: 15px;
 }
 
 .who-mine-text small {

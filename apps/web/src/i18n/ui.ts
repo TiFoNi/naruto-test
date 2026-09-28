@@ -59,6 +59,7 @@ const ui = {
   'who.lost': { ru: 'Мимо. Загадан был {name}', uk: 'Мимо. Загаданий був {name}', en: 'Missed. It was {name}' },
   'who.cardsLeft': { ru: 'карточек: {count}', uk: 'карток: {count}', en: 'cards: {count}' },
   'who.was': { ru: 'Соперник прятал {name}', uk: 'Суперник ховав {name}', en: 'The rival hid {name}' },
+  'who.sizeShort': { ru: 'В этом мире меньше {count} героев', uk: 'У цьому всесвіті менше ніж {count} героїв', en: 'This world has fewer than {count} heroes' },
   'who.size': { ru: 'Размер поля', uk: 'Розмір поля', en: 'Board size' },
   'duel.rivalBoard': { ru: 'Доска соперника', uk: 'Дошка суперника', en: 'Rival board' },
   'duel.live': { ru: 'вживую', uk: 'наживо', en: 'live' },

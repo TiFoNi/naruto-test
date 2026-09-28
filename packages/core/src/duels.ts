@@ -99,6 +99,11 @@ export async function joinDuel(duel: DuelDoc, doc: UserDoc) {
   )
 }
 
+export const boardSizes = (pool: number) => {
+  const fits = (BOARD_SIZES as readonly number[]).filter((side) => side * side <= pool)
+  return fits.length ? fits : [BOARD_SIZES[0]]
+}
+
 export async function setupDuel(duel: DuelDoc, userId: ObjectId, body: Record<string, unknown>) {
   if (!isHost(duel, userId) || duel.status !== 'lobby') return duel
   const { game, mode } = body
@@ -106,7 +111,9 @@ export async function setupDuel(duel: DuelDoc, userId: ObjectId, body: Record<st
   if (mode !== 'who' && !hasMode(game, mode)) return null
   const best = rounds(body.best) ?? duel.best ?? DUEL_DEFAULT.best
   const limit = seconds(body.seconds) ?? duel.seconds ?? DUEL_DEFAULT.seconds
-  const size = (BOARD_SIZES as readonly number[]).includes(Number(body.size)) ? Number(body.size) : duel.size ?? BOARD_DEFAULT
+  const allowed = boardSizes((await gameData(game)).pool.length)
+  const asked = Number(body.size) || duel.size || BOARD_DEFAULT
+  const size = allowed.includes(asked) ? asked : Math.max(...allowed.filter((side) => side <= asked), allowed[0])
   const updated = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: 'lobby' },
     { $set: { game, mode, best, seconds: limit, size, 'players.$[].ready': false } },
@@ -209,7 +216,8 @@ const shuffled = <T>(list: T[]) => {
 
 async function boardStart(duel: DuelDoc) {
   const { pool } = await gameData(duel.game as GameId)
-  const size = duel.size ?? BOARD_DEFAULT
+  const allowed = boardSizes(pool.length)
+  const size = allowed.includes(duel.size ?? BOARD_DEFAULT) ? (duel.size ?? BOARD_DEFAULT) : allowed[allowed.length - 1]
   const cards = shuffled(pool.map((entity) => entity.id)).slice(0, Math.min(size * size, pool.length))
   const secrets = shuffled(cards).slice(0, 2)
   const startedAt = new Date()
@@ -619,7 +627,8 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
   const playing = duel.status === 'playing'
   const finished = duel.status === 'finished'
   const game = duel.game as GameId | undefined
-  const byId = game ? (await gameData(game)).byId : null
+  const data = game ? await gameData(game) : null
+  const byId = data?.byId ?? null
   const answer = byId && duel.answerId !== undefined ? byId.get(duel.answerId) : undefined
   const ability =
     duel.mode === 'ability' && you && answer && (finished || you.solvedAt || you.gaveUp || wrongCount(duel, you) >= ABILITY_HINT_AT)
@@ -659,7 +668,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
     answerId: duel.mode === 'who' ? undefined : finished || you?.solvedAt || you?.gaveUp ? duel.answerId : undefined,
     winner: finished ? (duel.winnerId ? duel.players.find((p) => p.userId.equals(duel.winnerId!))?.nickname ?? null : null) : undefined,
     youWon: finished ? Boolean(duel.winnerId && duel.winnerId.equals(userId)) : undefined,
-    ...(duel.mode === 'who' ? { size: duel.size ?? BOARD_DEFAULT } : {}),
+    ...(duel.mode === 'who' ? { size: duel.size ?? BOARD_DEFAULT, sizes: boardSizes(data?.pool.length ?? 0) } : {}),
     ...(duel.mode === 'who' && (playing || finished)
       ? {
           first: duel.firstId ? duel.players.find((side) => side.userId.equals(duel.firstId!))?.nickname ?? null : null,

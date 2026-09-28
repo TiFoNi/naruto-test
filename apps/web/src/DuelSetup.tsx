@@ -234,7 +234,8 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                         key={value}
                         type="button"
                         className={(duel.size ?? BOARD_DEFAULT) === value ? 'active' : ''}
-                        disabled={!host || busy}
+                        disabled={!host || busy || !(duel.sizes ?? BOARD_SIZES).includes(value)}
+                        title={(duel.sizes ?? BOARD_SIZES).includes(value) ? undefined : t('who.sizeShort', { count: value * value })}
                         onClick={() => onSetup({ size: value })}
                       >
                         {value}×{value}

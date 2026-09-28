@@ -32,6 +32,7 @@ export type DuelView = {
   shot?: string
   zoom?: number
   size?: number
+  sizes?: number[]
   first?: string | null
   youFirst?: boolean
   secret?: number

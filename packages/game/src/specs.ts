@@ -272,7 +272,7 @@ export const DUEL_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phr
 export const BOARD_SIZES = [4, 5, 6, 7] as const
 export const BOARD_DEFAULT = 5
 export const DUEL_ROUNDS = [3, 5, 7, 10] as const
-export const DUEL_SECONDS = [30, 60, 90, 600] as const
+export const DUEL_SECONDS = [30, 60, 90, 600, 1800] as const
 export const DUEL_DEFAULT = { best: 5, seconds: 60 }
 export const DUEL_MATCH_XP = 50
 
