@@ -1,6 +1,6 @@
 import type { ObjectId } from 'mongodb'
-import { duels, quests, rounds, users } from './db'
-import { today } from './daily'
+import { quests, rounds, users } from './db'
+import { dayOf, today } from './daily'
 import { addSeasonXp } from './season'
 
 export const LEVEL_XP = 500
@@ -100,20 +100,8 @@ async function progress(userId: ObjectId, day: string) {
     ])
     .toArray()
 
-  const [duelRow] = await (await duels())
-    .aggregate<{ wins: number }>([
-      { $match: { 'players.userId': userId, log: { $exists: true } } },
-      { $unwind: '$log' },
-      {
-        $match: {
-          'log.winnerId': userId,
-          $expr: { $eq: [{ $dateToString: { format: '%Y-%m-%d', date: '$log.at', timezone: 'Europe/Kyiv' } }, day] },
-        },
-      },
-      { $count: 'wins' },
-    ])
-    .toArray()
-  const wonDuels = duelRow?.wins ?? 0
+  const person = await (await users()).findOne({ _id: userId }, { projection: { duelLog: 1 } })
+  const wonDuels = (person?.duelLog ?? []).filter((row) => row.won && dayOf(row.at) === day).length
 
   const modes = ((counts?.modes as string[]) ?? []).reduce<Record<string, number>>((all, mode) => {
     all[mode] = (all[mode] ?? 0) + 1

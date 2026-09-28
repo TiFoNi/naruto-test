@@ -21,6 +21,8 @@ export type UserDoc = {
   pinned?: string[]
   duelStats?: { played?: number; wins?: number; losses?: number; draws?: number }
   duelLog?: DuelLogRow[]
+  duelBestMs?: number
+  duelComeback?: boolean
   challengeStats?: { solved?: number }
   createdAt: Date
 }

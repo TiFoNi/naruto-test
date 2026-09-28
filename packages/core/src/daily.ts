@@ -28,6 +28,8 @@ export function today(now = new Date()) {
   return `${p.year}-${p.month}-${p.day}`
 }
 
+export const dayOf = (date: Date) => today(date)
+
 export function nextReset(now = new Date()) {
   const p = parts(now)
   const elapsed = (Number(p.hour) * 3600 + Number(p.minute) * 60 + Number(p.second)) * 1000 + now.getMilliseconds()

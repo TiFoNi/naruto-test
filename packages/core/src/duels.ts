@@ -160,47 +160,37 @@ export async function declineInvite(duel: DuelDoc, userId: ObjectId) {
   return true
 }
 
-export async function duelHistory(userId: ObjectId, limit = 40) {
-  const list = await (await duels())
-    .find({ 'players.userId': userId, matches: { $exists: true, $ne: [] } })
-    .sort({ touchedAt: -1 })
-    .limit(limit)
-    .toArray()
-
-  const rows = list.flatMap((duel) => {
-    const stillHere = duel.players.find((side) => !side.userId.equals(userId))
-    return (duel.matches ?? []).map((match) => {
-      const me = match.scores.find((score) => userId.equals(score.userId))
-      const them = match.scores.find((score) => !userId.equals(score.userId))
-      const mine = me?.wins ?? 0
-      const theirs = them?.wins ?? 0
-      return {
-        code: duel.code,
-        rivalId: (them?.userId ?? stillHere?.userId)?.toHexString() ?? null,
-        rival: them?.nickname ?? stillHere?.nickname ?? '?',
-        game: match.game ?? duel.game ?? null,
-        mode: match.mode ?? duel.mode ?? null,
-        wins: mine,
-        losses: theirs,
-        won: Boolean(match.winnerId && userId.equals(match.winnerId)),
-        at: match.at.toISOString(),
-      }
-    })
-  })
-
-  return rows.sort((a, b) => (a.at < b.at ? 1 : -1))
+export async function duelHistory(userId: ObjectId, limit = DUEL_LOG_MAX) {
+  const person = await (await users()).findOne({ _id: userId }, { projection: { duelLog: 1 } })
+  return [...(person?.duelLog ?? [])]
+    .reverse()
+    .slice(0, limit)
+    .map((row) => ({
+      rivalId: row.rivalId?.toHexString() ?? null,
+      rival: row.rival || '?',
+      game: row.game ?? null,
+      mode: row.mode ?? null,
+      wins: row.wins,
+      losses: row.losses,
+      won: row.won,
+      at: row.at.toISOString(),
+    }))
 }
 
 export async function recentRivals(userId: ObjectId, limit = 5) {
+  const person = await (await users()).findOne({ _id: userId }, { projection: { duelLog: 1 } })
   const seen = new Map<string, { id: string; nickname: string; at: string; wins: number; losses: number }>()
-  for (const row of await duelHistory(userId)) {
+
+  for (const row of [...(person?.duelLog ?? [])].reverse()) {
     if (!row.rivalId) continue
-    const found = seen.get(row.rivalId) ?? { id: row.rivalId, nickname: row.rival, at: row.at, wins: 0, losses: 0 }
+    const id = row.rivalId.toHexString()
+    const found = seen.get(id) ?? { id, nickname: row.rival, at: row.at.toISOString(), wins: 0, losses: 0 }
     if (row.won) found.wins += 1
     else found.losses += 1
-    seen.set(row.rivalId, found)
+    seen.set(id, found)
     if (seen.size >= limit) break
   }
+
   return [...seen.values()]
 }
 
@@ -460,8 +450,13 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   if (matchDone) {
     await applyDuelStats(winnerId, finished.players)
     await pushDuelLog(scores, winnerId, duel.game, duel.mode, at)
+    const beaten = scores.find((side) => !side.userId.equals(winnerId!))
+    if (winnerId && (beaten?.wins ?? 0) >= 2) await (await users()).updateOne({ _id: winnerId }, { $set: { duelComeback: true } })
   }
-  if (winnerId) await duelXp(winnerId, duel.mode as ModeId, matchDone)
+  if (winnerId) {
+    if (ms && ms > 0) await (await users()).updateOne({ _id: winnerId }, { $min: { duelBestMs: ms } })
+    await duelXp(winnerId, duel.mode as ModeId, matchDone)
+  }
   return finished
 }
 

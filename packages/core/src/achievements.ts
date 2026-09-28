@@ -1,6 +1,6 @@
 import type { ObjectId } from 'mongodb'
 import { GAME_IDS, type GameId } from '@nanda/game'
-import { rounds, users, duels } from './db'
+import { rounds, users } from './db'
 import { gameData } from './games'
 import { addSeasonXp } from './season'
 
@@ -91,17 +91,14 @@ const dayOf = (date: Date) => new Date(date.getTime() + 3 * 3600_000).toISOStrin
 
 export async function collectFacts(userId: ObjectId, languages = 1, since?: Date): Promise<Facts> {
   const fresh = since ? { createdAt: { $gt: since } } : {}
-  const [roundList, duelList, person] = await Promise.all([
+  const [roundList, person] = await Promise.all([
     (await rounds())
       .find(
         { userId, challenge: { $exists: false }, ...fresh },
         { projection: { game: 1, mode: 1, status: 1, answerId: 1, guessCount: 1, guesses: 1, daily: 1, finishedAt: 1, createdAt: 1 }, sort: { createdAt: 1 } },
       )
       .toArray(),
-    (await duels())
-      .find({ 'players.userId': userId })
-      .toArray(),
-    (await users()).findOne({ _id: userId }, { projection: { visit: 1 } }),
+    (await users()).findOne({ _id: userId }, { projection: { visit: 1, duelStats: 1, duelBestMs: 1, duelComeback: 1 } }),
   ])
 
   const modes: Facts['modes'] = {}
@@ -182,23 +179,9 @@ export async function collectFacts(userId: ObjectId, languages = 1, since?: Date
     previous = day
   }
 
-  let duelWins = 0
-  let fastestDuelMs: number | null = null
-  let comeback = false
-  for (const duel of duelList) {
-    if (!duel.players.some((p) => String(p.userId) === String(userId))) continue
-    const log = (duel.log ?? []).filter((entry) => !since || entry.at > since)
-    const mine = log.filter((entry) => String(entry.winnerId) === String(userId))
-    const theirs = log.filter((entry) => entry.winnerId && String(entry.winnerId) !== String(userId))
-
-    duelWins += (duel.matches ?? []).filter(
-      (match) => String(match.winnerId) === String(userId) && (!since || match.at > since),
-    ).length
-    for (const entry of mine) {
-      if (entry.ms && entry.ms > 0 && (fastestDuelMs === null || entry.ms < fastestDuelMs)) fastestDuelMs = entry.ms
-    }
-    if (mine.length > theirs.length && theirs.length >= 2) comeback = true
-  }
+  const duelWins = person?.duelStats?.wins ?? 0
+  const fastestDuelMs = person?.duelBestMs ?? null
+  const comeback = Boolean(person?.duelComeback)
 
   return {
     solved,
