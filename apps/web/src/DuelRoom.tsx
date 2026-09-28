@@ -216,14 +216,7 @@ export default function DuelRoom({ code }: { code: string }) {
             duel.mode === 'image' ? (
               <div className="shot-column">
                 <div className="shot">
-                  <ZoomImage
-                    game={game}
-                    src={apiSrc(duel.image)}
-                    step={shownStep}
-                    zoom={revealed ? 1 : ZOOM_LEVELS[zoomStep]}
-                    focus={duel.focus}
-                    resetKey={`${duel.code}-${duel.round}`}
-                  />
+                  <ZoomImage game={game} shot={duel.shot} zoom={duel.zoom ?? ZOOM_LEVELS[0]} focus={duel.focus} />
                 </div>
 
                 <ZoomScale

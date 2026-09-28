@@ -11,7 +11,6 @@ import type { Game } from './games/types'
 import { useI18n } from './i18n'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
-import { apiSrc } from './api'
 import { ZOOM_LEVELS, levelAt } from './zoom'
 
 type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
@@ -40,14 +39,7 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
       media={
         <div className="shot-column">
           <div className="shot">
-            <ZoomImage
-              game={game}
-              src={apiSrc(round?.image)}
-              step={shownStep}
-              zoom={over ? 1 : ZOOM_LEVELS[step]}
-              focus={round?.focus}
-              resetKey={round?.id}
-            />
+            <ZoomImage game={game} shot={round?.shot} zoom={round?.zoom ?? ZOOM_LEVELS[0]} focus={round?.focus} />
           </div>
 
           <ZoomScale

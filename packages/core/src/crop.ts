@@ -11,6 +11,7 @@ const CACHE_MAX = 300
 const SOURCE_MAX = 60
 
 const points = new Map<string, { x: number; y: number }>()
+const shots = new Map<string, Promise<string | null>>()
 const sources = new Map<string, Promise<Buffer | null>>()
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max)
@@ -108,6 +109,24 @@ export function windowAt(width: number, height: number, focus: { x: number; y: n
     left: clamp(Math.round(middle.x * width - box.width / 2), 0, Math.max(0, width - box.width)),
     top: clamp(Math.round(middle.y * height - box.height / 2), 0, Math.max(0, height - box.height)),
   }
+}
+
+export async function shotFor(game: GameId, answerId: number, seed: string, step: number) {
+  const key = `${seed}:${step}`
+  const known = shots.get(key)
+  if (known) return known
+
+  const pending = (async () => {
+    const source = await imageBuffer(game, answerId)
+    if (!source) return null
+    const masked = await maskStage(source, seed, step)
+    return `data:image/webp;base64,${masked.toString('base64')}`
+  })()
+
+  keep(shots, key, pending, CACHE_MAX)
+  const shot = await pending
+  if (!shot) shots.delete(key)
+  return shot
 }
 
 export async function maskStage(source: Buffer, seed: string, step: number) {

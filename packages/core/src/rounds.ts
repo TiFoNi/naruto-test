@@ -8,7 +8,7 @@ import { abilityByKey } from './abilities'
 import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { findChallenge, recordSolve } from './challenges'
 import { markSeasonPlay } from './season'
-import { focusFor, roundSeed } from './crop'
+import { focusFor, roundSeed, shotFor } from './crop'
 
 import type { Collection } from 'mongodb'
 
@@ -111,6 +111,13 @@ async function dailyInfo(round: RoundDoc) {
   }
 }
 
+async function shotOf(round: RoundDoc, game: GameId) {
+  const seed = roundSeed(round)
+  const step = zoomStep(round)
+  const [focus, shot] = await Promise.all([focusFor(game, round.answerId, seed), shotFor(game, round.answerId, seed, step)])
+  return { focus, shot, zoom: ZOOM_LEVELS[step] }
+}
+
 export async function roundView(round: RoundDoc, full = true) {
   const game = round.game as GameId
   const { byId } = await gameData(game)
@@ -131,7 +138,7 @@ export async function roundView(round: RoundDoc, full = true) {
       })),
     answerId: round.status === 'active' ? undefined : round.answerId,
     image: round.mode === 'image' || round.mode === 'ability' || round.mode === 'page' ? `/api/round/image?id=${id}` : undefined,
-    ...(round.mode === 'image' ? { focus: await focusFor(game, round.answerId, roundSeed(round)) } : {}),
+    ...(round.mode === 'image' ? await shotOf(round, game) : {}),
     ...(round.mode === 'ability' ? abilityInfo(round) : {}),
     ...(round.mode === 'page' ? { options: optionsOf(round.extra) } : {}),
     ...(round.mode === 'phrase' ? phraseInfo(round, id) : {}),

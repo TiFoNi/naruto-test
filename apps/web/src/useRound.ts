@@ -13,6 +13,8 @@ export type RoundView = {
   answerId?: number
   image?: string
   focus?: { x: number; y: number }
+  shot?: string
+  zoom?: number
   daily?: string
   hintAt?: number
   ability?: { ru: string; uk: string; en: string }

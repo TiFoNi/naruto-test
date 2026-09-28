@@ -14,6 +14,7 @@ import {
   MODE_XP,
   PHRASE_EVERY,
   PHRASE_VOICE_AT,
+  ZOOM_LEVELS,
   type GameId,
   type ModeId,
 } from '@nanda/game'
@@ -22,7 +23,7 @@ import { duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type User
 import { optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { gameData, isGame, isMode } from './games'
 import { addXp, defaultNickname } from './profile'
-import { duelSeed, focusFor } from './crop'
+import { duelSeed, focusFor, shotFor } from './crop'
 
 export const MIN_GAP_MS = 800
 export const DUEL_LOG_MAX = 10
@@ -528,6 +529,15 @@ function phraseLines(duel: DuelDoc, side: DuelPlayer) {
   }
 }
 
+async function duelShot(duel: DuelDoc, side: DuelPlayer) {
+  const game = duel.game as GameId
+  const seed = duelSeed(duel)
+  const revealed = duel.status === 'finished' || Boolean(side.solvedAt) || Boolean(side.gaveUp)
+  const step = revealed ? ZOOM_LEVELS.length - 1 : Math.min(wrongCount(duel, side), ZOOM_LEVELS.length - 1)
+  const [focus, shot] = await Promise.all([focusFor(game, duel.answerId!, seed), shotFor(game, duel.answerId!, seed, step)])
+  return { focus, shot, zoom: ZOOM_LEVELS[step] }
+}
+
 export async function duelView(duel: DuelDoc, userId: ObjectId) {
   const you = sideOf(duel, userId)
   const rival = duel.players.find((p) => !p.userId.equals(userId))
@@ -566,8 +576,8 @@ export async function duelView(duel: DuelDoc, userId: ObjectId) {
           ? `/api/round/image?duel=${duel.code}&r=${duel.round}`
           : undefined
         : undefined,
-    ...(duel.mode === 'image' && (playing || finished) && duel.answerId !== undefined
-      ? { focus: await focusFor(game!, duel.answerId, duelSeed(duel)) }
+    ...(duel.mode === 'image' && (playing || finished) && duel.answerId !== undefined && you
+      ? await duelShot(duel, you)
       : {}),
     ...(duel.mode === 'page' ? { options: optionsOf(duel.extra ?? undefined) } : {}),
     ...(duel.mode === 'phrase' && you ? phraseLines(duel, you) : {}),

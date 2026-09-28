@@ -29,6 +29,8 @@ export type DuelView = {
   ability?: { ru: string; uk: string; en: string }
   image?: string
   focus?: { x: number; y: number }
+  shot?: string
+  zoom?: number
   options?: number[]
   lines?: { text: string; ru?: string }[]
   linesLeft?: number
