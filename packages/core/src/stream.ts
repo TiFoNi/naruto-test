@@ -7,7 +7,7 @@ export type Sender = (event: string, data: unknown) => void
 type RoomClient = { userId: ObjectId; send: Sender; shot?: string | null }
 
 const HEARTBEAT_MS = 20_000
-const GRACE_MS = 12_000
+const GRACE_MS = 60_000
 const SAFETY_MS = 4_000
 
 const rooms = new Map<string, Set<RoomClient>>()
