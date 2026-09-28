@@ -46,14 +46,6 @@ export default function WhoBoard({ game, duel, busy, onStrike }: Props) {
         <div className="who-copy">
           <p className="who-first">{duel.youFirst ? t('who.youFirst') : duel.first ? t('who.first', { name: duel.first }) : ''}</p>
           <p className="muted">{t('who.hint')}</p>
-          <p className="who-counts">
-            <em>
-              {t('who.left')} <b>{standing.length}</b>
-            </em>
-            <em>
-              {t('who.rivalLeft')} <b>{duel.rivalLeft ?? 0}</b>
-            </em>
-          </p>
         </div>
       </div>
 
@@ -64,8 +56,16 @@ export default function WhoBoard({ game, duel, busy, onStrike }: Props) {
           return (
             <li key={id} className={struck.has(id) ? 'off' : ''}>
               <button type="button" onClick={() => setOpen(id)} disabled={busy && !over}>
-                <Thumb game={game} entity={entity} className="who-thumb" />
-                <span>{name(entity)}</span>
+                {struck.has(id) ? (
+                  <span className="who-back" aria-hidden>
+                    ?
+                  </span>
+                ) : (
+                  <>
+                    <Thumb game={game} entity={entity} className="who-thumb" />
+                    <span className="who-name">{name(entity)}</span>
+                  </>
+                )}
               </button>
             </li>
           )

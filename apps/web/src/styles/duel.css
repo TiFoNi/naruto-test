@@ -400,8 +400,11 @@
 }
 
 .duel-chips button {
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 120px;
   padding: 11px 6px;
+  white-space: nowrap;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--card-2);
@@ -1097,28 +1100,10 @@
   font-weight: 800;
 }
 
-.who-counts {
-  display: flex;
-  gap: 14px;
-  margin-top: 4px !important;
-}
-
-.who-counts em {
-  color: var(--text-3);
-  font-size: 12px;
-  font-style: normal;
-}
-
-.who-counts b {
-  margin-left: 4px;
-  color: var(--text);
-  font-family: var(--display);
-  font-size: 14px;
-}
-
 .who-grid {
   display: grid;
   grid-template-columns: repeat(var(--board, 5), minmax(0, 1fr));
+  grid-auto-rows: 1fr;
   gap: 8px;
   margin: 0;
   padding: 0;
@@ -1128,6 +1113,7 @@
 .who-grid button {
   display: flex;
   width: 100%;
+  height: 100%;
   flex-direction: column;
   align-items: center;
   gap: 6px;
@@ -1150,14 +1136,22 @@
 }
 
 .who-grid li.off button {
-  opacity: 0.32;
-  filter: grayscale(1);
+  justify-content: center;
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--line) 80%, transparent);
+  background: var(--card-2);
 }
 
-.who-grid li.off button::after {
-  content: '';
-  position: absolute;
-  inset: 0;
+.who-back {
+  display: grid;
+  width: 100%;
+  flex: 1;
+  place-items: center;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  color: color-mix(in srgb, var(--accent) 55%, var(--text-3));
+  font-family: var(--display);
+  font-size: 20px;
 }
 
 .who-grid li {
@@ -1171,8 +1165,9 @@
   object-fit: cover;
 }
 
-.who-grid button span {
+.who-name {
   display: -webkit-box;
+  min-height: 2.4em;
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
