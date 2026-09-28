@@ -26,6 +26,7 @@ import { optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { gameData, isGame, isMode } from './games'
 import { addXp, defaultNickname } from './profile'
 import { duelSeed, focusFor, shotFor } from './crop'
+import { markSeasonDuel } from './season'
 
 export const MIN_GAP_MS = 800
 export const DUEL_LOG_MAX = 10
@@ -342,8 +343,9 @@ async function dropPlayers(duel: DuelDoc, gone: DuelPlayer[]) {
     const winner = rest[0].userId
     const at = new Date()
     const scores = duel.players.map((side) => ({ userId: side.userId, nickname: side.nickname, wins: side.wins ?? 0 }))
-    await applyDuelStats(winner, [...rest, ...gone])
+    await applyDuelStats(winner, [...rest, ...gone], duel.mode)
     await pushDuelLog(scores, winner, duel.game, duel.mode, at)
+    await markSeasonDuel(winner, true, at)
     await duelXp(winner, (duel.mode ?? 'classic') as ModeId, true)
   }
 
@@ -462,12 +464,14 @@ async function pushDuelLog(
   )
 }
 
-async function applyDuelStats(winnerId: ObjectId | null, players: DuelPlayer[]) {
+async function applyDuelStats(winnerId: ObjectId | null, players: DuelPlayer[], mode?: string) {
   const collection = await users()
+  const byMode = mode ? { [`duelStats.modes.${mode}.played`]: 1 } : {}
   await Promise.all(
     players.map((side) => {
       const field = !winnerId ? 'draws' : winnerId.equals(side.userId) ? 'wins' : 'losses'
-      return collection.updateOne({ _id: side.userId }, { $inc: { 'duelStats.played': 1, [`duelStats.${field}`]: 1 } })
+      const won = mode && field === 'wins' ? { [`duelStats.modes.${mode}.wins`]: 1 } : {}
+      return collection.updateOne({ _id: side.userId }, { $inc: { 'duelStats.played': 1, [`duelStats.${field}`]: 1, ...byMode, ...won } })
     }),
   )
 }
@@ -500,8 +504,9 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   )
   if (!finished) return (await duels()).findOne({ _id: duel._id }) as Promise<DuelDoc>
   if (matchDone) {
-    await applyDuelStats(winnerId, finished.players)
+    await applyDuelStats(winnerId, finished.players, duel.mode)
     await pushDuelLog(scores, winnerId, duel.game, duel.mode, at)
+    if (winnerId) await markSeasonDuel(winnerId, true, at)
     const beaten = scores.find((side) => !side.userId.equals(winnerId!))
     if (winnerId && (beaten?.wins ?? 0) >= 2) await (await users()).updateOne({ _id: winnerId }, { $set: { duelComeback: true } })
   }

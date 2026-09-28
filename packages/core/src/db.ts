@@ -19,7 +19,7 @@ export type UserDoc = {
   claimed?: Record<string, Date>
   resetAt?: Date
   pinned?: string[]
-  duelStats?: { played?: number; wins?: number; losses?: number; draws?: number }
+  duelStats?: { played?: number; wins?: number; losses?: number; draws?: number; modes?: Record<string, { played?: number; wins?: number }> }
   duelLog?: DuelLogRow[]
   duelBestMs?: number
   duelComeback?: boolean
@@ -133,7 +133,19 @@ export type SettingsDoc = { game: string; updated?: string }
 
 export type QuestDoc = { _id: string; userId: ObjectId; day: string; picks: string[]; claimed: string[]; createdAt: Date }
 
-export type SeasonDoc = { _id: string; season: string; userId: ObjectId; xp: number; solved: number; days: string[] }
+export type SeasonDoc = {
+  _id: string
+  season: string
+  userId: ObjectId
+  xp: number
+  solved: number
+  days: string[]
+  duelWins?: number
+  awards?: Record<string, Date>
+  claimed?: Record<string, Date>
+}
+
+export type SeasonCloseDoc = { _id: string; season: string; closedAt: Date; players: number }
 
 export type DailyDoc = { _id: string; day: string; game: string; mode: string; answerId: number; extra?: string; createdAt: Date }
 
@@ -252,6 +264,10 @@ export async function quests(): Promise<Collection<QuestDoc>> {
   })
   await cache.__questsIndexed
   return collection
+}
+
+export async function seasonCloses(): Promise<Collection<SeasonCloseDoc>> {
+  return (await database()).collection<SeasonCloseDoc>('seasonCloses')
 }
 
 export async function seasons(): Promise<Collection<SeasonDoc>> {

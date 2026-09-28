@@ -6560,6 +6560,18 @@ html[data-cat='sport'] .tile[data-id='sport'] .tile-icon {
   --tier: #a78bfa;
 }
 
+.tier-secret {
+  --tier: #4ad6c4;
+}
+
+.award-kind {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--tier) 75%, var(--text-3));
+}
+
 .award {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);

@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { seasons } from './db'
+import { seasonCloses, seasons } from './db'
 
 const ZONE = 'Europe/Kyiv'
 const FIRST = { year: 2026, month: 9 }
@@ -64,6 +64,34 @@ export async function touchSeasonDay(userId: ObjectId, day: string, now = new Da
     { $addToSet: { days: day }, $setOnInsert: { season: season.id, userId, xp: 0, solved: 0 } },
     { upsert: true },
   )
+}
+
+export async function markSeasonDuel(userId: ObjectId, won: boolean, now = new Date()) {
+  if (!won) return
+  const season = seasonAt(now)
+  await (await seasons()).updateOne(
+    { _id: key(season.id, userId) },
+    { $inc: { duelWins: 1 }, $setOnInsert: { season: season.id, userId, xp: 0, solved: 0, days: [] } },
+    { upsert: true },
+  )
+}
+
+export const previousSeason = (now = new Date()): Season => seasonAt(new Date(seasonAt(now).from.getTime() - 86_400_000))
+
+export async function seasonStanding(seasonId: string, limit = 100) {
+  return (await seasons())
+    .find({ season: seasonId, xp: { $gt: 0 } }, { projection: { userId: 1, xp: 1 }, sort: { xp: -1 }, limit })
+    .toArray()
+}
+
+export async function takeSeasonClose(season: Season) {
+  const collection = await seasonCloses()
+  const already = await collection.findOne({ _id: season.id })
+  if (already) return null
+  const started = await collection
+    .updateOne({ _id: season.id }, { $setOnInsert: { season: season.id, closedAt: new Date(), players: 0 } }, { upsert: true })
+    .catch(() => null)
+  return started?.upsertedCount ? season : null
 }
 
 export async function markSeasonPlay(userId: ObjectId, won: boolean, day: string, now = new Date()) {

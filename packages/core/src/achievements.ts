@@ -1,65 +1,155 @@
 import type { ObjectId } from 'mongodb'
-import { GAME_IDS, type GameId } from '@nanda/game'
-import { rounds, users } from './db'
+import { GAME_IDS, MODE_IDS, type GameId } from '@nanda/game'
+import { rounds, seasons, users } from './db'
 import { gameData } from './games'
-import { addSeasonXp } from './season'
+import { addSeasonXp, previousSeason, seasonAt, seasonStanding, takeSeasonClose } from './season'
 
-export type Tier = 'bronze' | 'silver' | 'gold' | 'legend'
-export type Category = 'guessing' | 'duels' | 'streaks' | 'modes' | 'worlds' | 'ranking' | 'secret'
+export type Tier = 'bronze' | 'silver' | 'gold' | 'legend' | 'secret'
+export type Kind = 'life' | 'season'
+export type Category = 'guessing' | 'duels' | 'streaks' | 'modes' | 'worlds' | 'season' | 'ranking' | 'secret'
 
 export type Achievement = {
   id: string
   category: Category
   tier: Tier
+  kind: Kind
   target: number
   xp: number
   secret?: boolean
+  awarded?: boolean
+  value?: (facts: Facts) => number
 }
 
-export const XP = { bronze: 50, silver: 120, gold: 300, legend: 800 } as const
+export const XP = { bronze: 50, silver: 120, gold: 300, legend: 800, secret: 250 } as const
 
-export const ACHIEVEMENTS: Achievement[] = [
-  { id: 'first', category: 'guessing', tier: 'bronze', target: 1, xp: XP.bronze },
-  { id: 'hundred', category: 'guessing', tier: 'bronze', target: 100, xp: XP.bronze },
-  { id: 'thousand', category: 'guessing', tier: 'silver', target: 1000, xp: XP.silver },
-  { id: 'encyclopedia', category: 'guessing', tier: 'gold', target: 5000, xp: XP.gold },
-  { id: 'sniper', category: 'guessing', tier: 'gold', target: 15, xp: XP.gold },
-  { id: 'firstTry', category: 'guessing', tier: 'silver', target: 50, xp: XP.silver },
-  { id: 'sharpEye', category: 'guessing', tier: 'bronze', target: 1, xp: XP.bronze },
-  { id: 'perfectWeek', category: 'guessing', tier: 'gold', target: 7, xp: XP.gold },
-  { id: 'marathon', category: 'guessing', tier: 'silver', target: 100, xp: XP.silver },
+const life = (id: string, category: Category, tier: Tier, target: number, value: (facts: Facts) => number): Achievement => ({
+  id,
+  category,
+  tier,
+  kind: 'life',
+  target,
+  xp: XP[tier],
+  value,
+})
 
-  { id: 'firstBlood', category: 'duels', tier: 'bronze', target: 1, xp: XP.bronze },
-  { id: 'blitz', category: 'duels', tier: 'gold', target: 1, xp: XP.gold },
-  { id: 'duelist', category: 'duels', tier: 'silver', target: 15, xp: XP.silver },
-  { id: 'gladiator', category: 'duels', tier: 'gold', target: 50, xp: XP.gold },
+const run = (id: string, category: Category, tier: Tier, target: number, value: (facts: Facts) => number): Achievement => ({
+  ...life(id, category, tier, target, value),
+  kind: 'season',
+})
 
-  { id: 'habit', category: 'streaks', tier: 'bronze', target: 3, xp: XP.bronze },
-  { id: 'onFire', category: 'streaks', tier: 'silver', target: 10, xp: XP.silver },
-  { id: 'ironWill', category: 'streaks', tier: 'gold', target: 30, xp: XP.gold },
-  { id: 'yearTogether', category: 'streaks', tier: 'legend', target: 365, xp: XP.legend },
-  { id: 'nightOwl', category: 'streaks', tier: 'bronze', target: 10, xp: XP.bronze },
+const hidden = (id: string, target: number, value: (facts: Facts) => number): Achievement => ({
+  ...life(id, 'secret', 'secret', target, value),
+  secret: true,
+})
 
-  { id: 'detective', category: 'modes', tier: 'bronze', target: 100, xp: XP.bronze },
-  { id: 'artist', category: 'modes', tier: 'bronze', target: 100, xp: XP.bronze },
-  { id: 'technician', category: 'modes', tier: 'bronze', target: 100, xp: XP.bronze },
-  { id: 'librarian', category: 'modes', tier: 'silver', target: 100, xp: XP.silver },
-  { id: 'allRounder', category: 'modes', tier: 'gold', target: 4, xp: XP.gold },
+const trophy = (id: string, tier: Tier, target: number): Achievement => ({
+  id,
+  category: 'ranking',
+  tier,
+  kind: 'life',
+  target,
+  xp: XP[tier],
+  awarded: true,
+})
 
-  { id: 'traveller', category: 'worlds', tier: 'bronze', target: 10, xp: XP.bronze },
-  { id: 'multiverse', category: 'worlds', tier: 'silver', target: GAME_IDS.length, xp: XP.silver },
-  { id: 'fan', category: 'worlds', tier: 'bronze', target: 50, xp: XP.bronze },
-  { id: 'loremaster', category: 'worlds', tier: 'gold', target: 100, xp: XP.gold },
-  { id: 'gamer', category: 'worlds', tier: 'silver', target: 100, xp: XP.silver },
+const modePlayed = (name: string) => (facts: Facts) => facts.modes[name]?.played ?? 0
 
-  { id: 'top1000', category: 'ranking', tier: 'silver', target: 1000, xp: XP.silver },
-  { id: 'legendRank', category: 'ranking', tier: 'gold', target: 100, xp: XP.gold },
+export const LIFE: Achievement[] = [
+  life('first', 'guessing', 'bronze', 1, (f) => f.solved),
+  life('ten', 'guessing', 'bronze', 10, (f) => f.solved),
+  life('fifty', 'guessing', 'bronze', 50, (f) => f.solved),
+  life('hundred', 'guessing', 'bronze', 100, (f) => f.solved),
+  life('fiveHundred', 'guessing', 'silver', 500, (f) => f.solved),
+  life('thousand', 'guessing', 'silver', 1000, (f) => f.solved),
+  life('encyclopedia', 'guessing', 'gold', 5000, (f) => f.solved),
+  life('immortal', 'guessing', 'legend', 10000, (f) => f.solved),
+  life('luckyTen', 'guessing', 'bronze', 10, (f) => f.firstTry),
+  life('firstTry', 'guessing', 'silver', 50, (f) => f.firstTry),
+  life('firstTry200', 'guessing', 'gold', 200, (f) => f.firstTry),
+  life('sniper5', 'guessing', 'bronze', 5, (f) => f.sniper),
+  life('sniper', 'guessing', 'gold', 15, (f) => f.sniper),
+  life('sharpEye', 'guessing', 'bronze', 1, (f) => f.imageFirstTry),
+  life('marathon25', 'guessing', 'bronze', 25, (f) => f.bestPerDay),
+  life('marathon', 'guessing', 'silver', 100, (f) => f.bestPerDay),
+  life('daily10', 'guessing', 'bronze', 10, (f) => f.dailySolved),
+  life('daily50', 'guessing', 'silver', 50, (f) => f.dailySolved),
+  life('daily200', 'guessing', 'gold', 200, (f) => f.dailySolved),
+  life('perfectWeek', 'guessing', 'gold', 7, (f) => f.perfectDailyWeek),
 
-  { id: 'comeback', category: 'secret', tier: 'silver', target: 1, xp: XP.silver, secret: true },
-  { id: 'gaveUpNever', category: 'secret', tier: 'gold', target: 200, xp: XP.gold, secret: true },
-  { id: 'lucky', category: 'secret', tier: 'bronze', target: 1, xp: XP.bronze, secret: true },
-  { id: 'polyglot', category: 'secret', tier: 'silver', target: 3, xp: XP.silver, secret: true },
+  life('modeTour', 'modes', 'bronze', MODE_IDS.length, (f) => Object.values(f.modes).filter((m) => m.played > 0).length),
+  life('detective', 'modes', 'bronze', 50, modePlayed('classic')),
+  life('detective250', 'modes', 'silver', 250, modePlayed('classic')),
+  life('artist', 'modes', 'bronze', 50, modePlayed('image')),
+  life('artist250', 'modes', 'silver', 250, modePlayed('image')),
+  life('technician', 'modes', 'bronze', 25, modePlayed('ability')),
+  life('technician150', 'modes', 'silver', 150, modePlayed('ability')),
+  life('librarian', 'modes', 'bronze', 25, modePlayed('page')),
+  life('librarian150', 'modes', 'silver', 150, modePlayed('page')),
+  life('listener', 'modes', 'bronze', 25, modePlayed('phrase')),
+  life('listener150', 'modes', 'silver', 150, modePlayed('phrase')),
+  life('allRounder', 'modes', 'gold', 4, (f) => Object.values(f.modes).filter((m) => m.played >= 20 && m.won / m.played >= 0.9).length),
+
+  life('traveller5', 'worlds', 'bronze', 5, (f) => f.worlds),
+  life('traveller', 'worlds', 'bronze', 10, (f) => f.worlds),
+  life('multiverse', 'worlds', 'silver', GAME_IDS.length, (f) => f.worlds),
+  life('local50', 'worlds', 'bronze', 50, (f) => f.bestWorldDone),
+  life('local200', 'worlds', 'silver', 200, (f) => f.bestWorldDone),
+  life('fan', 'worlds', 'bronze', 25, (f) => f.bestWorldShare),
+  life('fan50', 'worlds', 'silver', 50, (f) => f.bestWorldShare),
+  life('loremaster', 'worlds', 'gold', 100, (f) => f.bestWorldShare),
+  life('gamer', 'worlds', 'silver', 100, (f) => f.gamesSolved),
+
+  life('firstBlood', 'duels', 'bronze', 1, (f) => f.duelWins),
+  life('duel5', 'duels', 'bronze', 5, (f) => f.duelWins),
+  life('duelist', 'duels', 'silver', 15, (f) => f.duelWins),
+  life('gladiator', 'duels', 'gold', 50, (f) => f.duelWins),
+  life('warlord', 'duels', 'legend', 150, (f) => f.duelWins),
+  life('duelFan', 'duels', 'bronze', 10, (f) => f.duelPlayed),
+  life('duelFan100', 'duels', 'silver', 100, (f) => f.duelPlayed),
+  life('blitz', 'duels', 'gold', 1, (f) => (f.fastestDuelMs !== null && f.fastestDuelMs <= 10_000 ? 1 : 0)),
+  life('boardWin', 'duels', 'bronze', 1, (f) => f.whoWins),
+  life('boardWin10', 'duels', 'silver', 10, (f) => f.whoWins),
+
+  life('habit', 'streaks', 'bronze', 3, (f) => Math.max(f.streak, f.bestStreak)),
+  life('week', 'streaks', 'bronze', 7, (f) => Math.max(f.streak, f.bestStreak)),
+  life('onFire', 'streaks', 'silver', 10, (f) => Math.max(f.streak, f.bestStreak)),
+  life('ironWill', 'streaks', 'gold', 30, (f) => Math.max(f.streak, f.bestStreak)),
+  life('hundredDays', 'streaks', 'legend', 100, (f) => Math.max(f.streak, f.bestStreak)),
+  life('yearTogether', 'streaks', 'legend', 365, (f) => Math.max(f.streak, f.bestStreak)),
+  life('nightOwl', 'streaks', 'bronze', 10, (f) => f.night),
+  life('earlyBird', 'streaks', 'bronze', 10, (f) => f.morning),
+
+  trophy('seasonTop100', 'silver', 100),
+  trophy('seasonTop10', 'gold', 10),
+  trophy('seasonChampion', 'legend', 1),
+
+  hidden('lucky', 1, (f) => (f.firstTry > 0 ? 1 : 0)),
+  hidden('comeback', 1, (f) => (f.comeback ? 1 : 0)),
+  hidden('polyglot', 3, (f) => f.languages),
+  hidden('gaveUpNever', 200, (f) => f.noGiveUpRun),
+  hidden('sniperDay', 10, (f) => f.bestFirstTryDay),
+  hidden('owlMarathon', 50, (f) => f.night),
 ]
+
+export const SEASON: Achievement[] = [
+  run('seasonStart', 'season', 'bronze', 1, (f) => f.solved),
+  run('seasonSolve25', 'season', 'bronze', 25, (f) => f.solved),
+  run('seasonSolve100', 'season', 'silver', 100, (f) => f.solved),
+  run('seasonSolve300', 'season', 'gold', 300, (f) => f.solved),
+  run('seasonDays7', 'season', 'bronze', 7, (f) => f.days),
+  run('seasonDays20', 'season', 'silver', 20, (f) => f.days),
+  run('seasonDaily10', 'season', 'bronze', 10, (f) => f.dailySolved),
+  run('seasonDaily25', 'season', 'silver', 25, (f) => f.dailySolved),
+  run('seasonFirstTry25', 'season', 'bronze', 25, (f) => f.firstTry),
+  run('seasonFirstTry100', 'season', 'silver', 100, (f) => f.firstTry),
+  run('seasonDuel5', 'season', 'bronze', 5, (f) => f.duelWins),
+  run('seasonDuel20', 'season', 'silver', 20, (f) => f.duelWins),
+  run('seasonWorlds5', 'season', 'bronze', 5, (f) => f.worlds),
+  run('seasonModes4', 'season', 'bronze', 4, (f) => Object.values(f.modes).filter((m) => m.played > 0).length),
+  run('seasonMarathon30', 'season', 'bronze', 30, (f) => f.bestPerDay),
+]
+
+export const ACHIEVEMENTS: Achievement[] = [...LIFE, ...SEASON]
 
 const byId = new Map(ACHIEVEMENTS.map((a) => [a.id, a]))
 
@@ -68,20 +158,26 @@ export type Facts = {
   firstTry: number
   imageFirstTry: number
   sniper: number
+  dailySolved: number
   perfectDailyWeek: number
   bestPerDay: number
+  bestFirstTryDay: number
   streak: number
   bestStreak: number
   night: number
+  morning: number
   modes: Record<string, { played: number; won: number }>
   worlds: number
   bestWorldShare: number
   bestWorldDone: number
   gamesSolved: number
   duelWins: number
+  duelPlayed: number
+  whoWins: number
   fastestDuelMs: number | null
   comeback: boolean
   noGiveUpRun: number
+  days: number
   rank: number | null
   players: number
   languages: number
@@ -103,12 +199,14 @@ export async function collectFacts(userId: ObjectId, languages = 1, since?: Date
 
   const modes: Facts['modes'] = {}
   const perDay = new Map<string, number>()
+  const firstTryDay = new Map<string, number>()
   const uniquePerGame = new Map<string, Set<number>>()
   const played = new Set<string>()
   let solved = 0
   let firstTry = 0
   let imageFirstTry = 0
   let night = 0
+  let morning = 0
   let gamesSolved = 0
   let sniper = 0
   let sniperRun = 0
@@ -140,22 +238,26 @@ export async function collectFacts(userId: ObjectId, languages = 1, since?: Date
     set.add(round.answerId)
     uniquePerGame.set(round.game, set)
 
+    if (round.daily) dailyWins.push(round.daily)
+
+    const when = round.finishedAt ?? round.createdAt
+    const key = when ? dayOf(when) : null
+
     if (tries === 1) {
       firstTry += 1
       sniperRun += 1
       sniper = Math.max(sniper, sniperRun)
       if (round.mode === 'image') imageFirstTry += 1
-      if (round.daily) dailyWins.push(round.daily)
+      if (key) firstTryDay.set(key, (firstTryDay.get(key) ?? 0) + 1)
     } else {
       sniperRun = 0
     }
 
-    const when = round.finishedAt ?? round.createdAt
-    if (when) {
-      const key = dayOf(when)
+    if (when && key) {
       perDay.set(key, (perDay.get(key) ?? 0) + 1)
       const hour = new Date(when.getTime() + 3 * 3600_000).getUTCHours()
       if (hour < 5) night += 1
+      if (hour >= 5 && hour < 9) morning += 1
     }
   }
 
@@ -188,110 +290,58 @@ export async function collectFacts(userId: ObjectId, languages = 1, since?: Date
     firstTry,
     imageFirstTry,
     sniper,
+    dailySolved: new Set(dailyWins).size,
     perfectDailyWeek: perfectRun,
     bestPerDay: Math.max(0, ...perDay.values()),
+    bestFirstTryDay: Math.max(0, ...firstTryDay.values()),
     streak: person?.visit?.streak ?? 0,
     bestStreak: person?.visit?.best ?? 0,
     night,
+    morning,
     modes,
     worlds: played.size,
     bestWorldShare,
     bestWorldDone,
     gamesSolved,
     duelWins,
+    duelPlayed: person?.duelStats?.played ?? 0,
+    whoWins: person?.duelStats?.modes?.who?.wins ?? 0,
     fastestDuelMs,
     comeback,
     noGiveUpRun: noGiveUpBest,
+    days: 0,
     rank: null,
     players: 0,
     languages,
   }
 }
 
-const accurateModes = (facts: Facts) =>
-  Object.values(facts.modes).filter((m) => m.played >= 20 && m.won / m.played >= 0.9).length
-
-export function progressOf(id: string, facts: Facts): number {
-  const mode = (name: string) => facts.modes[name]?.played ?? 0
-  switch (id) {
-    case 'first':
-    case 'hundred':
-    case 'thousand':
-    case 'encyclopedia':
-      return facts.solved
-    case 'sniper':
-      return facts.sniper
-    case 'firstTry':
-      return facts.firstTry
-    case 'sharpEye':
-      return facts.imageFirstTry
-    case 'perfectWeek':
-      return facts.perfectDailyWeek
-    case 'marathon':
-      return facts.bestPerDay
-    case 'firstBlood':
-    case 'duelist':
-    case 'gladiator':
-      return facts.duelWins
-    case 'blitz':
-      return facts.fastestDuelMs !== null && facts.fastestDuelMs <= 10_000 ? 1 : 0
-    case 'habit':
-    case 'onFire':
-    case 'ironWill':
-    case 'yearTogether':
-      return Math.max(facts.streak, facts.bestStreak)
-    case 'nightOwl':
-      return facts.night
-    case 'detective':
-      return mode('classic')
-    case 'artist':
-      return mode('image')
-    case 'technician':
-      return mode('ability')
-    case 'librarian':
-      return mode('page')
-    case 'allRounder':
-      return accurateModes(facts)
-    case 'traveller':
-    case 'multiverse':
-      return facts.worlds
-    case 'fan':
-      return facts.bestWorldShare
-    case 'loremaster':
-      return facts.bestWorldShare
-    case 'gamer':
-      return facts.gamesSolved
-    case 'top1000':
-    case 'legendRank':
-      return facts.rank === null ? 0 : facts.rank
-    case 'comeback':
-      return facts.comeback ? 1 : 0
-    case 'gaveUpNever':
-      return facts.noGiveUpRun
-    case 'lucky':
-      return facts.firstTry > 0 ? 1 : 0
-    case 'polyglot':
-      return facts.languages
-    default:
-      return 0
-  }
+export async function seasonFacts(userId: ObjectId, languages = 1, now = new Date()): Promise<Facts> {
+  const season = seasonAt(now)
+  const facts = await collectFacts(userId, languages, season.from)
+  const doc = await (await seasons()).findOne({ _id: `${season.id}:${userId.toHexString()}` })
+  facts.days = doc?.days?.length ?? 0
+  facts.duelWins = doc?.duelWins ?? 0
+  facts.duelPlayed = 0
+  facts.whoWins = 0
+  return facts
 }
 
-const RANKED = new Set(['top1000', 'legendRank'])
+export function progressOf(id: string, facts: Facts): number {
+  return byId.get(id)?.value?.(facts) ?? 0
+}
 
 export function earned(id: string, facts: Facts): boolean {
   const achievement = byId.get(id)
-  if (!achievement) return false
-  const value = progressOf(id, facts)
-  if (RANKED.has(id)) return facts.rank !== null && facts.rank > 0 && facts.rank <= achievement.target
-  return value >= achievement.target
+  if (!achievement || achievement.awarded) return false
+  return progressOf(id, facts) >= achievement.target
 }
 
 export async function syncAwards(userId: ObjectId, facts: Facts, current: Record<string, Date> = {}, taken?: Record<string, Date>) {
   const fresh: Record<string, Date> = {}
   const now = new Date()
 
-  for (const achievement of ACHIEVEMENTS) {
+  for (const achievement of LIFE) {
     if (current[achievement.id]) continue
     if (!earned(achievement.id, facts)) continue
     fresh[achievement.id] = now
@@ -307,17 +357,88 @@ export async function syncAwards(userId: ObjectId, facts: Facts, current: Record
   return { awards: { ...current, ...fresh }, claimed: settled, gained: Object.keys(fresh) }
 }
 
-export async function claimAward(userId: ObjectId, id: string) {
+export async function syncSeasonAwards(userId: ObjectId, facts: Facts, now = new Date()) {
+  const season = seasonAt(now)
+  const id = `${season.id}:${userId.toHexString()}`
+  const collection = await seasons()
+  const doc = await collection.findOne({ _id: id })
+  const current = doc?.awards ?? {}
+  const fresh: Record<string, Date> = {}
+  const at = new Date()
+
+  for (const achievement of SEASON) {
+    if (current[achievement.id]) continue
+    if (progressOf(achievement.id, facts) >= achievement.target) fresh[achievement.id] = at
+  }
+
+  if (Object.keys(fresh).length) {
+    await collection.updateOne(
+      { _id: id },
+      {
+        $set: Object.fromEntries(Object.entries(fresh).map(([key, when]) => [`awards.${key}`, when])),
+        $setOnInsert: { season: season.id, userId, xp: 0, solved: 0, days: [] },
+      },
+      { upsert: true },
+    )
+  }
+
+  return { awards: { ...current, ...fresh }, claimed: doc?.claimed ?? {}, gained: Object.keys(fresh) }
+}
+
+export async function claimAward(userId: ObjectId, id: string, now = new Date()) {
   const achievement = byId.get(id)
   if (!achievement) return null
+
+  if (achievement.kind === 'season') {
+    const season = seasonAt(now)
+    const key = `${season.id}:${userId.toHexString()}`
+    const marked = await (await seasons()).updateOne(
+      { _id: key, [`awards.${id}`]: { $exists: true }, [`claimed.${id}`]: { $exists: false } },
+      { $set: { [`claimed.${id}`]: new Date() } },
+    )
+    if (!marked.modifiedCount) return null
+    await (await users()).updateOne({ _id: userId }, { $inc: { xp: achievement.xp } })
+    await addSeasonXp(userId, achievement.xp, now)
+    return achievement.xp
+  }
 
   const marked = await (await users()).updateOne(
     { _id: userId, [`awards.${id}`]: { $exists: true }, [`claimed.${id}`]: { $exists: false } },
     { $set: { [`claimed.${id}`]: new Date() }, $inc: { xp: achievement.xp } },
   )
   if (!marked.modifiedCount) return null
-  await addSeasonXp(userId, achievement.xp)
   return achievement.xp
+}
+
+export async function closeFinishedSeason(now = new Date()) {
+  const past = previousSeason(now)
+  if (past.to.getTime() > now.getTime()) return null
+  const taken = await takeSeasonClose(past)
+  if (!taken) return null
+  const standing = await seasonStanding(past.id, 100)
+  await grantSeasonTrophies(standing)
+  return { season: past.id, players: standing.length }
+}
+
+const TROPHIES: { id: string; places: number }[] = [
+  { id: 'seasonChampion', places: 1 },
+  { id: 'seasonTop10', places: 10 },
+  { id: 'seasonTop100', places: 100 },
+]
+
+export async function grantSeasonTrophies(standing: { userId: ObjectId }[]) {
+  const collection = await users()
+  const now = new Date()
+  for (const [index, row] of standing.entries()) {
+    const place = index + 1
+    const won = TROPHIES.filter((trophy) => place <= trophy.places)
+    if (!won.length) continue
+    await collection.updateOne(
+      { _id: row.userId },
+      { $set: Object.fromEntries(won.map((trophy) => [`awards.${trophy.id}`, now])) },
+    )
+  }
+  return standing.length
 }
 
 export async function rarity() {

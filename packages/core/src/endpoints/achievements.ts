@@ -1,6 +1,20 @@
 import { STAT_KEYS } from '@nanda/game'
-import { ACHIEVEMENTS, claimAward, collectFacts, progressOf, rarity, syncAwards } from '../achievements'
+import {
+  ACHIEVEMENTS,
+  LIFE,
+  SEASON,
+  claimAward,
+  closeFinishedSeason,
+  collectFacts,
+  progressOf,
+  rarity,
+  seasonFacts,
+  syncAwards,
+  syncSeasonAwards,
+} from '../achievements'
+import { seasonAt } from '../season'
 import { users, type UserDoc } from '../db'
+import type { Facts } from '../achievements'
 import { fail, handle, json, readJson } from '../http'
 import { currentUser, unauthorized } from '../profile'
 
@@ -18,30 +32,40 @@ export async function placeOf(solved: number) {
 
 async function board(doc: UserDoc) {
   const id = doc._id!
+  await closeFinishedSeason().catch(() => null)
+
   const facts = await collectFacts(id, 1, doc.resetAt)
   const place = await placeOf(doc.solvedTotal ?? STAT_KEYS.reduce((sum, key) => sum + (doc.stats?.[key]?.solved ?? 0), 0))
   facts.rank = place.rank
   facts.players = place.players
 
   const { awards, claimed, gained } = await syncAwards(id, facts, doc.awards ?? {}, doc.claimed)
+  const running = await seasonFacts(id)
+  const season = await syncSeasonAwards(id, running)
   const { share } = await rarity()
 
-  const list = ACHIEVEMENTS.map((achievement) => {
-    const done = !!awards[achievement.id]
+  const shape = (achievement: (typeof ACHIEVEMENTS)[number], holder: Record<string, Date>, taken: Record<string, Date>, source: Facts) => {
+    const done = !!holder[achievement.id]
     return {
       id: achievement.id,
       category: achievement.category,
       tier: achievement.tier,
+      kind: achievement.kind,
       target: achievement.target,
       xp: achievement.xp,
       secret: achievement.secret ?? false,
       done,
-      claimed: !!claimed[achievement.id],
-      at: awards[achievement.id] ?? null,
-      progress: Math.min(progressOf(achievement.id, facts), achievement.target),
+      claimed: !!taken[achievement.id],
+      at: holder[achievement.id] ?? null,
+      progress: Math.min(achievement.awarded ? (done ? achievement.target : 0) : progressOf(achievement.id, source), achievement.target),
       rarity: share[achievement.id] ?? 0,
     }
-  })
+  }
+
+  const list = [
+    ...LIFE.map((achievement) => shape(achievement, awards, claimed, facts)),
+    ...SEASON.map((achievement) => shape(achievement, season.awards, season.claimed, running)),
+  ]
 
   const total = list.reduce((sum, a) => sum + (a.claimed ? a.xp : 0), 0)
   const left = list.reduce((sum, a) => sum + (a.claimed ? 0 : a.xp), 0)
@@ -58,7 +82,8 @@ async function board(doc: UserDoc) {
     rarest: rarest ? { id: rarest.id, rarity: rarest.rarity } : null,
     players: place.players,
     rank: place.rank,
-    gained,
+    season: { id: seasonAt().id, number: seasonAt().number, endsAt: seasonAt().to.getTime() },
+    gained: [...gained, ...season.gained],
     pinned: (doc.pinned ?? []).filter((award) => claimed[award]).slice(0, PINNED_MAX),
   }
 }

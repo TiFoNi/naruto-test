@@ -11,12 +11,13 @@ import { putAwards } from './awards'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
 
-type Tier = 'bronze' | 'silver' | 'gold' | 'legend'
+type Tier = 'bronze' | 'silver' | 'gold' | 'legend' | 'secret'
 
 type Award = {
   id: string
   category: string
   tier: Tier
+  kind: 'life' | 'season'
   target: number
   xp: number
   secret: boolean
@@ -43,8 +44,8 @@ const PINNED_MAX = 6
 
 type Filter = 'all' | 'ready' | 'done' | 'doing' | 'locked'
 
-const CATEGORIES = ['guessing', 'duels', 'streaks', 'modes', 'worlds', 'ranking', 'secret']
-const TIERS: Tier[] = ['bronze', 'silver', 'gold', 'legend']
+const CATEGORIES = ['season', 'guessing', 'duels', 'streaks', 'modes', 'worlds', 'ranking', 'secret']
+const TIERS: Tier[] = ['bronze', 'silver', 'gold', 'legend', 'secret']
 const FILTERS: { id: Filter; label: UiKey }[] = [
   { id: 'all', label: 'ach.all' },
   { id: 'ready', label: 'ach.ready' },
@@ -74,6 +75,7 @@ function Card({ award, pinned, busy, onPin, onClaim }: { award: Award; pinned: b
         <p title={hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}>
           {hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}
         </p>
+        <span className="award-kind">{t(award.kind === 'season' ? 'ach.kindSeason' : 'ach.kindLife')}</span>
       </div>
       <div className="award-foot">
         {award.claimed ? (
