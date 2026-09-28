@@ -53,6 +53,8 @@ const ui = {
   'who.showResult': { ru: 'Итоги раунда', uk: 'Підсумки раунду', en: 'Round result' },
   'who.yourHero': { ru: 'Твой герой', uk: 'Твій герой', en: 'Your hero' },
   'who.rivalHero': { ru: 'Герой соперника', uk: 'Герой суперника', en: 'Rival hero' },
+  'who.markAnswer': { ru: 'Это мой ответ', uk: 'Це моя відповідь', en: 'This is my answer' },
+  'who.answerWarn': { ru: 'Остальные карточки закроются, ответ будет засчитан сразу', uk: 'Решта карток закриється, відповідь зарахується одразу', en: 'The rest will be closed and the answer counts at once' },
   'who.lastWarn': { ru: 'Останется одна — это твой ответ', uk: 'Лишиться одна — це твоя відповідь', en: 'One left — that is your answer' },
   'who.answer': { ru: 'Это мой ответ', uk: 'Це моя відповідь', en: 'This is my answer' },
   'who.won': { ru: 'Верно! Это был {name}', uk: 'Влучно! Це був {name}', en: 'Correct! It was {name}' },

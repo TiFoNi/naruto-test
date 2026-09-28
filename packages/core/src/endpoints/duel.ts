@@ -19,6 +19,7 @@ import {
   settle,
   setupDuel,
   sideOf,
+  answerCard,
   strikeCard,
   sweepDuels,
   touchSide,
@@ -102,10 +103,10 @@ export const POST = handle(async (request) => {
   if (action === 'ready') return json({ duel: await duelView(await setReady(live, userId), userId) })
   if (action === 'giveup') return json({ duel: await duelView(await giveUpDuel(live, userId), userId) })
 
-  if (action === 'strike') {
+  if (action === 'strike' || action === 'answer') {
     const entityId = Number(body.entityId)
     if (!Number.isInteger(entityId)) return fail(400, 'bad_request')
-    const result = await strikeCard(live, userId, entityId)
+    const result = action === 'answer' ? await answerCard(live, userId, entityId) : await strikeCard(live, userId, entityId)
     if (result.error) return fail(result.error === 'round_over' ? 409 : 400, result.error)
     return json({ duel: await duelView(result.duel!, userId) })
   }

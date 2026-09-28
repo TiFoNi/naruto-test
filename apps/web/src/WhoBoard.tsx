@@ -13,10 +13,11 @@ type Props = {
   duel: DuelView
   busy: boolean
   onStrike: (entityId: number) => void
+  onAnswer: (entityId: number) => void
   onNext: () => void
 }
 
-export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext }: Props) {
+export default function WhoBoard({ game, byId, duel, busy, onStrike, onAnswer, onNext }: Props) {
   const { t, l, tv, lang, name } = useI18n()
   const [info, setInfo] = useState<number | null>(null)
   const [ask, setAsk] = useState<number | null>(null)
@@ -30,7 +31,7 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext }: P
   const shown = info !== null ? byId.get(info) : undefined
   const over = duel.status !== 'playing'
   const ended = over && !duel.matchDone
-  const answer = ask !== null ? byId.get(standing.find((id) => id !== ask) ?? -1) : undefined
+  const answer = ask !== null ? byId.get(ask) : undefined
 
   const rivalSecret = duel.rivalSecret !== undefined ? byId.get(duel.rivalSecret) : undefined
   const yourAnswer = duel.yourAnswer !== undefined ? byId.get(duel.yourAnswer) : undefined
@@ -92,7 +93,7 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext }: P
 
   const pick = (id: number) => {
     if (struck.has(id) || standing.length > 2) return onStrike(id)
-    setAsk(id)
+    setAsk(standing.find((other) => other !== id) ?? id)
   }
 
   const reason = () => {
@@ -208,7 +209,9 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext }: P
                 <span className="who-flip">
                   <span className="who-face who-front">
                     <img className="who-thumb" src={fullUrl(game.id, entity.id, entity.image)} alt="" loading="lazy" draggable={false} />
-                    <span className="who-name">{name(entity)}</span>
+                    <span className="who-name">
+                      <span>{name(entity)}</span>
+                    </span>
                   </span>
                   <span className="who-face who-back" aria-hidden>
                     ?
@@ -241,6 +244,21 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext }: P
                 </div>
               ))}
             </dl>
+            {!over && !struck.has(shown.id) && standing.length > 1 && (
+              <div className="who-ask">
+                <button
+                  type="button"
+                  className="primary"
+                  disabled={busy}
+                  onClick={() => {
+                    setInfo(null)
+                    setAsk(shown.id)
+                  }}
+                >
+                  {t('who.markAnswer')}
+                </button>
+              </div>
+            )}
           </section>
         </div>
       )}
@@ -255,14 +273,14 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext }: P
               <img className="who-modal-pic" src={fullUrl(game.id, answer.id, answer.image)} alt="" draggable={false} />
               <b>{name(answer)}</b>
             </header>
-            <p className="who-warn">{t('who.lastWarn')}</p>
+            <p className="who-warn">{t('who.answerWarn')}</p>
             <div className="who-ask">
               <button
                 type="button"
                 className="primary"
                 disabled={busy}
                 onClick={() => {
-                  onStrike(ask)
+                  onAnswer(ask)
                   setAsk(null)
                 }}
               >

@@ -162,6 +162,7 @@ export function useDuel(code: string) {
     toLobby: () => send({ action: 'lobby' }),
     giveUp: () => send({ action: 'giveup' }),
     strike: (entityId: number) => send({ action: 'strike', entityId }),
+    answer: (entityId: number) => send({ action: 'answer', entityId }),
     refresh: () => send({ action: 'state' }),
     guess,
   }

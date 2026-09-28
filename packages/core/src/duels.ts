@@ -571,6 +571,24 @@ export async function strikeCard(duel: DuelDoc, userId: ObjectId, entityId: numb
   return { duel: await settle(updated ?? duel) }
 }
 
+export async function answerCard(duel: DuelDoc, userId: ObjectId, entityId: number) {
+  if (duel.mode !== 'who' || duel.status !== 'playing') return { error: 'round_over' as const }
+  const index = duel.players.findIndex((side) => side.userId.equals(userId))
+  const side = duel.players[index]
+  if (!side?.cards?.includes(entityId) || side.struck?.includes(entityId)) return { error: 'bad_request' as const }
+
+  const rival = duel.players.find((one) => !one.userId.equals(userId))
+  const set: Record<string, unknown> = {
+    [`players.${index}.struck`]: side.cards.filter((id) => id !== entityId),
+    [`players.${index}.answer`]: entityId,
+  }
+  if (entityId === rival?.secret) set[`players.${index}.solvedAt`] = new Date()
+  else set[`players.${index}.gaveUp`] = true
+
+  const updated = await (await duels()).findOneAndUpdate({ _id: duel._id, status: 'playing' }, { $set: set }, { returnDocument: 'after' })
+  return { duel: await settle(updated ?? duel) }
+}
+
 export async function giveUpDuel(duel: DuelDoc, userId: ObjectId) {
   const index = duel.players.findIndex((p) => p.userId.equals(userId))
   if (index < 0 || duel.status !== 'playing') return duel
