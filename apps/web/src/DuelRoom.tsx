@@ -232,7 +232,6 @@ export default function DuelRoom({ code }: { code: string }) {
           busy={busy}
           onStrike={strike}
           onNext={next}
-          onFinal={() => setShowResult(true)}
         />}
 
       {!inLobby && game && duel.mode !== 'who' && (

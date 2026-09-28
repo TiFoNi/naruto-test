@@ -14,10 +14,9 @@ type Props = {
   busy: boolean
   onStrike: (entityId: number) => void
   onNext: () => void
-  onFinal: () => void
 }
 
-export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext, onFinal }: Props) {
+export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext }: Props) {
   const { t, l, tv, lang, name } = useI18n()
   const [info, setInfo] = useState<number | null>(null)
   const [ask, setAsk] = useState<number | null>(null)
@@ -30,6 +29,7 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext, onF
   const mine = duel.secret !== undefined ? byId.get(duel.secret) : undefined
   const shown = info !== null ? byId.get(info) : undefined
   const over = duel.status !== 'playing'
+  const ended = over && !duel.matchDone
   const answer = ask !== null ? byId.get(standing.find((id) => id !== ask) ?? -1) : undefined
 
   const rivalSecret = duel.rivalSecret !== undefined ? byId.get(duel.rivalSecret) : undefined
@@ -46,7 +46,7 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext, onF
   }, [over, duel.round])
 
   const board = duel.size ?? 5
-  const modal = info !== null || ask !== null || (over && endOpen)
+  const modal = info !== null || ask !== null || (ended && endOpen)
 
   useEffect(() => {
     if (!modal) return
@@ -125,23 +125,21 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext, onF
         </div>
       </div>
 
-      {over && !endOpen && (
+      {ended && !endOpen && (
         <div className={`card who-endbar ${outcome}`}>
           <b>{duel.youWon ? t('duel.youWon') : duel.winner ? t('duel.youLost', { name: duel.winner }) : t('duel.draw')}</b>
           <div className="who-endbar-actions">
             <button type="button" className="ghost" onClick={() => setEndOpen(true)}>
               {t('who.showResult')}
             </button>
-            {!duel.matchDone && (
-              <button type="button" className="primary" onClick={onNext} disabled={busy || duel.you?.wantsNext}>
-                {duel.you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
-              </button>
-            )}
+            <button type="button" className="primary" onClick={onNext} disabled={busy || duel.you?.wantsNext}>
+              {duel.you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
+            </button>
           </div>
         </div>
       )}
 
-      {over && endOpen && (
+      {ended && endOpen && (
         <div className="modal-backdrop" onClick={() => setEndOpen(false)} role="presentation">
           <section
             className={`card modal who-result ${outcome}`}
@@ -155,17 +153,7 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext, onF
             <span className="who-result-mark" aria-hidden>
               {duel.youWon ? <TrophyIcon /> : <SwordsIcon />}
             </span>
-            <h2>
-              {duel.matchDone
-                ? duel.youWon
-                  ? t('duel.matchWon')
-                  : t('duel.matchLost', { name: duel.winner ?? '' })
-                : duel.youWon
-                  ? t('duel.youWon')
-                  : duel.winner
-                    ? t('duel.youLost', { name: duel.winner })
-                    : t('duel.draw')}
-            </h2>
+            <h2>{duel.youWon ? t('duel.youWon') : duel.winner ? t('duel.youLost', { name: duel.winner }) : t('duel.draw')}</h2>
             <p className="who-reason">{reason()}</p>
             <div className="who-reveal">
               {mine && (
@@ -192,17 +180,11 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onNext, onF
               <span>:</span>
               <b>{duel.rival?.wins ?? 0}</b>
             </p>
-            {!duel.matchDone && <p className="muted small">{t('duel.roundOf', { round: duel.round, best: duel.best })}</p>}
+            <p className="muted small">{t('duel.roundOf', { round: duel.round, best: duel.best })}</p>
             <div className="result-actions">
-              {duel.matchDone ? (
-                <button className="primary" onClick={onFinal} disabled={busy}>
-                  {t('duel.matchOver')}
-                </button>
-              ) : (
-                <button className="primary" onClick={onNext} disabled={busy || duel.you?.wantsNext}>
-                  {duel.you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
-                </button>
-              )}
+              <button className="primary" onClick={onNext} disabled={busy || duel.you?.wantsNext}>
+                {duel.you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
+              </button>
             </div>
             {duel.rival?.wantsNext && !duel.you?.wantsNext && (
               <p className="muted small">{t('duel.rivalWantsNext', { name: duel.rival.nickname })}</p>
