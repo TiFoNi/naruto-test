@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { ImageResponse } from 'next/og'
+import sharp from 'sharp'
 import { BRAND } from './brand'
 
 export const OG_SIZE = { width: 1200, height: 630 }
@@ -14,15 +15,27 @@ const font = () => {
   return cached
 }
 
+export async function asPng(url: string) {
+  try {
+    const res = await fetch(url)
+    if (!res.ok) return null
+    const body = await sharp(Buffer.from(await res.arrayBuffer())).resize(232, 310, { fit: 'cover' }).png().toBuffer()
+    return `data:image/png;base64,${body.toString('base64')}`
+  } catch {
+    return null
+  }
+}
+
 type Card = {
-  eyebrow: string
+  eyebrow?: string
   title: string
   note?: string
   tags?: string[]
   accent?: string
+  faces?: string[]
 }
 
-export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.accent }: Card) {
+export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.accent, faces = [] }: Card) {
   const data = await font().catch(() => null)
 
   return new ImageResponse(
@@ -35,6 +48,7 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: '72px 80px',
+          position: 'relative',
           background: '#0d0f12',
           backgroundImage: `radial-gradient(900px 500px at 82% -10%, ${accent}44, transparent 70%)`,
           color: '#eef0f3',
@@ -64,10 +78,31 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-          <div style={{ fontSize: 26, letterSpacing: 3, textTransform: 'uppercase', color: accent }}>{eyebrow}</div>
+          {eyebrow && <div style={{ fontSize: 26, letterSpacing: 3, textTransform: 'uppercase', color: accent }}>{eyebrow}</div>}
           <div style={{ fontSize: title.length > 34 ? 68 : 84, lineHeight: 1.05, letterSpacing: -2 }}>{title}</div>
           {note && <div style={{ fontSize: 30, color: '#a7afbb' }}>{note}</div>}
         </div>
+
+        {faces.length > 0 && (
+          <div style={{ position: 'absolute', top: 96, right: 70, display: 'flex' }}>
+            {faces.slice(0, 3).map((src, i) => (
+              <img
+                key={src}
+                src={src}
+                width={232}
+                height={310}
+                style={{
+                  marginLeft: i === 0 ? 0 : -58,
+                  borderRadius: 22,
+                  border: '3px solid #1d2229',
+                  objectFit: 'cover',
+                  transform: `rotate(${(i - 1) * 7}deg) translateY(${i === 1 ? -14 : 10}px)`,
+                  boxShadow: '0 24px 50px rgba(0,0,0,0.6)',
+                }}
+              />
+            ))}
+          </div>
+        )}
 
         <div style={{ display: 'flex', gap: 14 }}>
           {tags.map((tag) => (

@@ -76,7 +76,7 @@ export async function playMetadata(lang: Lang, gameId: string, modeId: string, d
   const description = `${game.description[lang]} ${game.count} ${plural(lang, game.count, unit)}, ${TAIL[lang]}`
   const path = `/${lang}/play/${gameId}/${modeId}${daily ? '/daily' : ''}`
 
-  const short = `${game.count} ${plural(lang, game.count, unit)} · ${MODE_LABEL(lang, modeId)}${daily ? DAILY[lang] : ''}`
+  const short = ui[daily ? 'seo.ogDaily' : 'seo.ogPlay'][lang]
 
   return {
     title,
