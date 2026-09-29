@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { PUBLIC, ROOT, cachedDownload, cachedJson, pool, pruneImages, wikiPages, wikiQuery, writeAtlas, writeFullAndThumb } from './lib.mjs'
+import { PUBLIC, ROOT, cachedDownload, cachedJson, pool, pruneImages, wikiImageUrls, wikiPages, wikiQuery, writeAtlas, writeFullAndThumb } from './lib.mjs'
 import { dropDeleted, onlyAnswers } from './dropped.mjs'
 
 const API = 'https://marvel.fandom.com/api.php'
@@ -9,6 +9,18 @@ const THUMBS = path.join(CACHE, 'thumb')
 const OUT_IMG = path.join(PUBLIC, 'marvel')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'marvel.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'marvel-atlas.json')
+
+const PICK = {
+  'Green Goblin': 'Norman Osborn (Earth-616) from Bring on the Bad Guys Green Goblin Vol 1 1 001.jpg',
+  Lizard: 'Curtis Connors (Earth-616) from Amazing Spider-Man Vol 1 44 0002.jpg',
+  'Doctor Strange': 'Stephen Strange (Earth-616) from Doctor Strange Vol 5 5 001.png',
+  'Doctor Doom': 'Victor von Doom (Earth-616) from Books of Doom Vol 1 5 0002.jpg',
+  'Professor X': 'Charles Xavier (Earth-616) from Astonishing X-Men Vol 3 10 001.jpg',
+  'Winter Soldier': 'James Buchanan Barnes (Earth-616) from Official Handbook of the Marvel Universe Vol 2 16 0001.jpg',
+  Mantis: 'Mantis (Brandt) (Earth-616) from Silver Surfer Vol 3 3 0001.jpg',
+  Sentry: 'Robert Reynolds (Earth-616) from New Avengers Vol 1 10 001.jpg',
+  Polaris: 'Lorna Dane (Earth-616) from X-Men Legends Vol 1 5 001.jpg',
+}
 
 const M = 'Мужской'
 const F = 'Женский'
@@ -182,25 +194,31 @@ async function main() {
     return Object.fromEntries(Object.entries(res).map(([t, p]) => [t, p.original?.source ?? null]))
   })
 
+  const chosen = await cachedJson(CACHE, 'chosen.json', () => wikiImageUrls(API, [...new Set(Object.values(PICK))]))
+
   const result = []
   const missing = []
-  let counter = 0
-  await pool(ROSTER, 6, async (row) => {
+  await pool(
+    ROSTER.map((row, index) => ({ row, index })),
+    6,
+    async ({ row, index }) => {
     const [title, nameEn, nameRu, nameUk, gender, side, teams, powers, species, year] = row
     const base = title.split('#')[0]
     const page = pages[base]
-    if (!page?.id || !images[base]) return missing.push(nameEn)
+    const sources = [PICK[nameEn] ? chosen[PICK[nameEn]] : null, images[base]].filter(Boolean)
+    if (!page?.id || !sources.length) return missing.push(nameEn)
     const key = `${page.id}-${nameEn.replace(/\W+/g, '')}`
-    const buf = await cachedDownload(path.join(CACHE, 'img'), key, [images[base]])
+    const buf = await cachedDownload(path.join(CACHE, 'img'), key, sources)
     if (!buf) return missing.push(nameEn)
-    const id = ++counter
+    const id = index + 1
     try {
       await writeFullAndThumb(buf, path.join(OUT_IMG, 'full', `${id}.webp`), path.join(THUMBS, `${id}.webp`), 96)
     } catch (error) {
       return missing.push(`${nameEn} (${error.message})`)
     }
     result.push({ id, name: nameRu, nameEn, nameUk, gender, side, teams, powers, species, debut: String(year), debutIndex: year, answer: true })
-  })
+    },
+  )
 
   dropDeleted(result, 'marvel')
   onlyAnswers(result)

@@ -39,7 +39,7 @@
   "thumb": 1
  },
  {
-  "id": 145,
+  "id": 140,
   "name": "Адам Уорлок",
   "nameEn": "Adam Warlock",
   "nameUk": "Адам Ворлок",
@@ -239,7 +239,7 @@
   "thumb": 11
  },
  {
-  "id": 132,
+  "id": 130,
   "name": "Бишоп",
   "nameEn": "Bishop",
   "nameUk": "Бішоп",
@@ -381,7 +381,7 @@
   "thumb": 18
  },
  {
-  "id": 139,
+  "id": 141,
   "name": "Высший Эволюционер",
   "nameEn": "High Evolutionary",
   "nameUk": "Вищий Еволюціонер",
@@ -441,7 +441,7 @@
   "thumb": 21
  },
  {
-  "id": 21,
+  "id": 20,
   "name": "Гамора",
   "nameEn": "Gamora",
   "nameUk": "Гамора",
@@ -541,7 +541,7 @@
   "thumb": 26
  },
  {
-  "id": 50,
+  "id": 51,
   "name": "Джессика Джонс",
   "nameEn": "Jessica Jones",
   "nameUk": "Джессіка Джонс",
@@ -581,7 +581,7 @@
   "thumb": 28
  },
  {
-  "id": 131,
+  "id": 132,
   "name": "Джубили",
   "nameEn": "Jubilee",
   "nameUk": "Джубілі",
@@ -639,7 +639,7 @@
   "thumb": 31
  },
  {
-  "id": 9,
+  "id": 8,
   "name": "Доктор Стрэндж",
   "nameEn": "Doctor Strange",
   "nameUk": "Доктор Стрендж",
@@ -659,7 +659,7 @@
   "thumb": 32
  },
  {
-  "id": 150,
+  "id": 147,
   "name": "Дормамму",
   "nameEn": "Dormammu",
   "nameUk": "Дормамму",
@@ -679,7 +679,7 @@
   "thumb": 33
  },
  {
-  "id": 20,
+  "id": 21,
   "name": "Дракс Разрушитель",
   "nameEn": "Drax the Destroyer",
   "nameUk": "Дракс Руйнівник",
@@ -797,7 +797,7 @@
   "thumb": 39
  },
  {
-  "id": 4,
+  "id": 1,
   "name": "Железный человек",
   "nameEn": "Iron Man",
   "nameUk": "Залізна людина",
@@ -939,7 +939,7 @@
   "thumb": 46
  },
  {
-  "id": 149,
+  "id": 150,
   "name": "Икарис",
   "nameEn": "Ikaris",
   "nameUk": "Ікаріс",
@@ -998,7 +998,7 @@
   "thumb": 49
  },
  {
-  "id": 141,
+  "id": 142,
   "name": "Канг Завоеватель",
   "nameEn": "Kang the Conqueror",
   "nameUk": "Канґ Завойовник",
@@ -1018,7 +1018,7 @@
   "thumb": 50
  },
  {
-  "id": 1,
+  "id": 2,
   "name": "Капитан Америка",
   "nameEn": "Captain America",
   "nameUk": "Капітан Америка",
@@ -1059,7 +1059,7 @@
   "thumb": 52
  },
  {
-  "id": 51,
+  "id": 50,
   "name": "Каратель",
   "nameEn": "Punisher",
   "nameUk": "Каратель",
@@ -1099,7 +1099,7 @@
   "thumb": 54
  },
  {
-  "id": 127,
+  "id": 128,
   "name": "Кейбл",
   "nameEn": "Cable",
   "nameUk": "Кейбл",
@@ -1158,7 +1158,7 @@
   "thumb": 57
  },
  {
-  "id": 71,
+  "id": 72,
   "name": "Кингпин",
   "nameEn": "Kingpin",
   "nameUk": "Кінґпін",
@@ -1236,7 +1236,7 @@
   "thumb": 61
  },
  {
-  "id": 142,
+  "id": 145,
   "name": "Кроссбоунс",
   "nameEn": "Crossbones",
   "nameUk": "Кросбоунз",
@@ -1416,7 +1416,7 @@
   "thumb": 70
  },
  {
-  "id": 113,
+  "id": 114,
   "name": "Мар-Велл",
   "nameEn": "Mar-Vell",
   "nameUk": "Мар-Велл",
@@ -1476,7 +1476,7 @@
   "thumb": 73
  },
  {
-  "id": 114,
+  "id": 113,
   "name": "Мерзость",
   "nameEn": "Abomination",
   "nameUk": "Мерзота",
@@ -1496,7 +1496,7 @@
   "thumb": 74
  },
  {
-  "id": 146,
+  "id": 148,
   "name": "Мефисто",
   "nameEn": "Mephisto",
   "nameUk": "Мефісто",
@@ -1516,7 +1516,7 @@
   "thumb": 75
  },
  {
-  "id": 136,
+  "id": 137,
   "name": "Меченый",
   "nameEn": "Bullseye",
   "nameUk": "Мічений",
@@ -1596,7 +1596,7 @@
   "thumb": 79
  },
  {
-  "id": 135,
+  "id": 134,
   "name": "Мистерио",
   "nameEn": "Mysterio",
   "nameUk": "Містеріо",
@@ -1656,7 +1656,7 @@
   "thumb": 82
  },
  {
-  "id": 130,
+  "id": 133,
   "name": "Морбиус",
   "nameEn": "Morbius",
   "nameUk": "Морбіус",
@@ -1756,7 +1756,7 @@
   "thumb": 87
  },
  {
-  "id": 140,
+  "id": 136,
   "name": "Носорог",
   "nameEn": "Rhino",
   "nameUk": "Носоріг",
@@ -1817,7 +1817,7 @@
   "thumb": 90
  },
  {
-  "id": 72,
+  "id": 71,
   "name": "Один",
   "nameEn": "Odin",
   "nameUk": "Одін",
@@ -1877,7 +1877,7 @@
   "thumb": 93
  },
  {
-  "id": 134,
+  "id": 127,
   "name": "Пеппер Поттс",
   "nameEn": "Pepper Potts",
   "nameUk": "Пеппер Поттс",
@@ -1975,7 +1975,7 @@
   "thumb": 98
  },
  {
-  "id": 128,
+  "id": 129,
   "name": "Псайлок",
   "nameEn": "Psylocke",
   "nameUk": "Псайлок",
@@ -2136,7 +2136,7 @@
   "thumb": 106
  },
  {
-  "id": 129,
+  "id": 131,
   "name": "Саблезубый",
   "nameEn": "Sabretooth",
   "nameUk": "Шаблезубий",
@@ -2176,7 +2176,7 @@
   "thumb": 108
  },
  {
-  "id": 148,
+  "id": 149,
   "name": "Серси",
   "nameEn": "Sersi",
   "nameUk": "Серсі",
@@ -2395,7 +2395,7 @@
   "thumb": 119
  },
  {
-  "id": 147,
+  "id": 146,
   "name": "Таскмастер",
   "nameEn": "Taskmaster",
   "nameUk": "Таскмайстер",
@@ -2415,7 +2415,7 @@
   "thumb": 120
  },
  {
-  "id": 2,
+  "id": 3,
   "name": "Тор",
   "nameEn": "Thor",
   "nameUk": "Тор",
@@ -2475,7 +2475,7 @@
   "thumb": 123
  },
  {
-  "id": 3,
+  "id": 4,
   "name": "Халк",
   "nameEn": "Hulk",
   "nameUk": "Халк",
@@ -2735,7 +2735,7 @@
   "thumb": 136
  },
  {
-  "id": 137,
+  "id": 139,
   "name": "Чёрная кошка",
   "nameEn": "Black Cat",
   "nameUk": "Чорна кішка",
@@ -2755,7 +2755,7 @@
   "thumb": 137
  },
  {
-  "id": 8,
+  "id": 9,
   "name": "Чёрная пантера",
   "nameEn": "Black Panther",
   "nameUk": "Чорна пантера",
@@ -2974,7 +2974,7 @@
   "thumb": 148
  },
  {
-  "id": 133,
+  "id": 135,
   "name": "Ящер",
   "nameEn": "Lizard",
   "nameUk": "Ящір",
