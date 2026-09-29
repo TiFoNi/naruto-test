@@ -28,7 +28,7 @@ const columns: Column<Character>[] = [
 export const avatar: Game<Character> = {
   id: 'avatar',
   label: l10n('Аватар', 'Аватар', 'Avatar'),
-  category: 'anime',
+  category: 'cartoon',
   description: l10n(
     'Маги четырёх стихий: от Аанга и команды Аватара до Корры, Амона и Красного Лотоса.',
     'Маги чотирьох стихій: від Аанга й команди Аватара до Корри, Амона й Червоного Лотоса.',

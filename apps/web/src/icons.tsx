@@ -352,6 +352,17 @@ export function CrownIcon({ className }: IconProps) {
   )
 }
 
+export function PaletteIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M12 3.2a8.8 8.8 0 1 0 0 17.6c1.1 0 1.9-.8 1.9-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.8 1.9-1.8h1.4a4.6 4.6 0 0 0 4.6-4.6c0-4-3.9-7-8.8-7Z" />
+      <circle cx="7.6" cy="12.6" r="1.1" />
+      <circle cx="9.5" cy="8.4" r="1.1" />
+      <circle cx="14.2" cy="7.9" r="1.1" />
+    </svg>
+  )
+}
+
 export function PlayIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

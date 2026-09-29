@@ -11,7 +11,7 @@ import Quests from './Quests'
 import { useHref } from './router'
 import { dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
-import { BallIcon, BookIcon, CalendarIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, PlayIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
+import { BallIcon, BookIcon, CalendarIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, PaletteIcon, PlayIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
 import { CARD, MINI, cardUrl, miniUrl } from './pics'
 import { useBeforePaint } from './paint'
 import { searchGames } from './search'
@@ -19,6 +19,7 @@ import { searchGames } from './search'
 const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
   { id: 'manga', title: 'dash.mangaTitle' },
+  { id: 'cartoon', title: 'dash.cartoon' },
   { id: 'games', title: 'dash.games' },
   { id: 'sport', title: 'dash.sport' },
   { id: 'screen', title: 'dash.screen' },
@@ -32,7 +33,7 @@ const PERKS: { key: UiKey; Icon: typeof ChartIcon }[] = [
 
 const REMEMBER = 'nanda.category'
 
-const CATEGORY_IDS: Category[] = ['anime', 'manga', 'games', 'sport', 'screen']
+const CATEGORY_IDS: Category[] = ['anime', 'manga', 'cartoon', 'games', 'sport', 'screen']
 
 const storedCategory = (): Category | undefined => {
   try {
@@ -44,7 +45,19 @@ const storedCategory = (): Category | undefined => {
 }
 
 const categoryIcon = (id: Category) =>
-  id === 'anime' ? <TvIcon /> : id === 'manga' ? <BookIcon /> : id === 'sport' ? <BallIcon /> : id === 'screen' ? <PlayIcon /> : <GamepadIcon />
+  id === 'anime' ? (
+    <TvIcon />
+  ) : id === 'manga' ? (
+    <BookIcon />
+  ) : id === 'cartoon' ? (
+    <PaletteIcon />
+  ) : id === 'sport' ? (
+    <BallIcon />
+  ) : id === 'screen' ? (
+    <PlayIcon />
+  ) : (
+    <GamepadIcon />
+  )
 
 const MODE_ROWS = 2
 
@@ -262,6 +275,7 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
                 key={category.id}
                 type="button"
                 className="tile"
+                title={t(category.title)}
                 data-id={category.id}
                 data-first={category.id === shown[0]?.id ? '' : undefined}
                 style={{ '--tile': accentOf(category.id) } as CSSProperties}

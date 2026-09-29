@@ -13,6 +13,7 @@ import { CopyIcon, DiceIcon, ExitIcon, LinkIcon, SwordsIcon } from './icons'
 const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
   { id: 'manga', title: 'dash.mangaTitle' },
+  { id: 'cartoon', title: 'dash.cartoon' },
   { id: 'games', title: 'dash.games' },
   { id: 'sport', title: 'dash.sport' },
   { id: 'screen', title: 'dash.screen' },

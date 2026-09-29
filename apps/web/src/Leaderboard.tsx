@@ -37,6 +37,7 @@ type Column = {
 const CATEGORY_LABEL: Record<Category, UiKey> = {
   anime: 'dash.anime',
   manga: 'dash.mangaTitle',
+  cartoon: 'dash.cartoon',
   games: 'dash.games',
   screen: 'dash.screen',
   sport: 'dash.sport',

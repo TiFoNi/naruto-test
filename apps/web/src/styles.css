@@ -5418,6 +5418,7 @@ html[data-auth] .hero .quests-card {
 html:not([data-cat]) .tile[data-first],
 html[data-cat='anime'] .tile[data-id='anime'],
 html[data-cat='manga'] .tile[data-id='manga'],
+html[data-cat='cartoon'] .tile[data-id='cartoon'],
 html[data-cat='games'] .tile[data-id='games'],
 html[data-cat='sport'] .tile[data-id='sport'],
 html[data-cat='screen'] .tile[data-id='screen'] {
@@ -5449,6 +5450,7 @@ html[data-cat='screen'] .tile[data-id='screen'] {
 html:not([data-cat]) .tile[data-first] .tile-icon,
 html[data-cat='anime'] .tile[data-id='anime'] .tile-icon,
 html[data-cat='manga'] .tile[data-id='manga'] .tile-icon,
+html[data-cat='cartoon'] .tile[data-id='cartoon'] .tile-icon,
 html[data-cat='games'] .tile[data-id='games'] .tile-icon,
 html[data-cat='sport'] .tile[data-id='sport'] .tile-icon,
 html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
@@ -5476,10 +5478,61 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   text-overflow: ellipsis;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1200px) {
+  .tiles {
+    gap: 3px;
+    padding: 4px;
+  }
+
   .tile {
-    gap: 8px;
-    padding-right: 12px;
+    gap: 7px;
+    padding: 6px 11px 6px 6px;
+  }
+
+  .tile-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    font-size: 16px;
+  }
+
+  .tile b {
+    font-size: 13.5px;
+  }
+
+  .tile small {
+    display: none;
+  }
+}
+
+@media (max-width: 1060px) {
+  .tile {
+    gap: 6px;
+    padding: 6px 9px 6px 5px;
+  }
+
+  .tile-icon {
+    width: 27px;
+    height: 27px;
+    border-radius: 8px;
+    font-size: 15px;
+  }
+
+  .tile b {
+    font-size: 12.5px;
+  }
+}
+
+@media (max-width: 860px) {
+  .tiles {
+    gap: 3px;
+    padding: 5px;
+  }
+
+  .tile {
+    gap: 0;
+    padding: 6px;
+    min-width: 0;
   }
 
   .tile-icon {
@@ -5489,35 +5542,36 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
     font-size: 17px;
   }
 
-  .tile b {
-    font-size: 14px;
+  .tile-body {
+    max-width: 0;
+    margin: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-width 0.26s ease, margin 0.26s ease, opacity 0.18s ease;
   }
 
-  .tile small {
-    display: none;
+  html:not([data-cat]) .tile[data-first] .tile-body,
+  html[data-cat='anime'] .tile[data-id='anime'] .tile-body,
+  html[data-cat='manga'] .tile[data-id='manga'] .tile-body,
+  html[data-cat='cartoon'] .tile[data-id='cartoon'] .tile-body,
+  html[data-cat='games'] .tile[data-id='games'] .tile-body,
+  html[data-cat='sport'] .tile[data-id='sport'] .tile-body,
+  html[data-cat='screen'] .tile[data-id='screen'] .tile-body {
+    max-width: 170px;
+    margin-left: 9px;
+    margin-right: 3px;
+    opacity: 1;
+  }
+
+  .tile b {
+    font-size: 13px;
+    white-space: nowrap;
   }
 }
 
-@media (max-width: 780px) {
-  .tiles {
-    gap: 3px;
-    padding: 4px;
-  }
-
-  .tile {
-    gap: 6px;
-    padding: 6px 8px 6px 5px;
-  }
-
-  .tile-icon {
-    width: 24px;
-    height: 24px;
-    border-radius: 7px;
-    font-size: 14px;
-  }
-
-  .tile b {
-    font-size: 12.5px;
+@media (max-width: 860px) and (prefers-reduced-motion: reduce) {
+  .tile-body {
+    transition: none;
   }
 }
 
@@ -5533,7 +5587,14 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
     padding: 7px 18px 7px 7px;
   }
 
+  .tile-body {
+    max-width: none;
+    margin: 0;
+    opacity: 1;
+  }
+
   .tile-icon {
+    display: grid;
     width: 38px;
     height: 38px;
     border-radius: 11px;
