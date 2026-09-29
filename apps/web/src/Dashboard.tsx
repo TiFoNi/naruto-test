@@ -20,9 +20,9 @@ const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
   { id: 'manga', title: 'dash.mangaTitle' },
   { id: 'cartoon', title: 'dash.cartoon' },
+  { id: 'screen', title: 'dash.screen' },
   { id: 'games', title: 'dash.games' },
   { id: 'sport', title: 'dash.sport' },
-  { id: 'screen', title: 'dash.screen' },
 ]
 
 const PERKS: { key: UiKey; Icon: typeof ChartIcon }[] = [
@@ -33,7 +33,7 @@ const PERKS: { key: UiKey; Icon: typeof ChartIcon }[] = [
 
 const REMEMBER = 'nanda.category'
 
-const CATEGORY_IDS: Category[] = ['anime', 'manga', 'cartoon', 'games', 'sport', 'screen']
+const CATEGORY_IDS: Category[] = ['anime', 'manga', 'cartoon', 'screen', 'games', 'sport']
 
 const storedCategory = (): Category | undefined => {
   try {
