@@ -402,7 +402,7 @@ a.bell.active {
   width: min(360px, calc(100vw - 24px));
   max-height: min(70vh, 560px);
   padding: 6px;
-  overflow: hidden auto;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--card);
@@ -415,6 +415,7 @@ a.bell.active {
 }
 
 .bell-head {
+  flex: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -451,9 +452,24 @@ a.bell.active {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin: 0;
-  padding: 0;
+  min-height: 0;
+  margin: 0 -2px 0 0;
+  padding: 0 4px 0 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--card-2) transparent;
+  scrollbar-gutter: stable;
   list-style: none;
+}
+
+.bell-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.bell-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--card-2);
 }
 
 .bell-item {
@@ -6575,14 +6591,26 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 }
 
 .award {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+}
+
+.award-open {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   grid-template-rows: auto 1fr;
   gap: 10px 12px;
+  width: 100%;
+  height: 100%;
   padding: 14px;
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: 16px;
-  background: var(--card);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .award.done {
@@ -6595,27 +6623,17 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   background: linear-gradient(180deg, color-mix(in srgb, var(--tier) 8%, var(--card)), var(--card) 70%);
 }
 
-button.award {
-  width: 100%;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
+.award {
   transition: border-color 0.15s, transform 0.15s;
 }
 
-button.award:hover:not(:disabled) {
+.award:has(.award-open:hover) {
   border-color: color-mix(in srgb, var(--tier) 70%, transparent);
   transform: translateY(-1px);
 }
 
-button.award:active:not(:disabled) {
+.award:has(.award-open:active) {
   transform: none;
-}
-
-button.award:disabled {
-  cursor: default;
-  opacity: 0.7;
 }
 
 .award.is-ready .award-mark {

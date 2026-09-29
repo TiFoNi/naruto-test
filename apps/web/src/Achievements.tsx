@@ -56,10 +56,8 @@ const FILTERS: { id: Filter; label: UiKey }[] = [
 
 const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
 
-function Card({ award, pinned, busy, onPin, onClaim }: { award: Award; pinned: boolean; busy: boolean; onPin: () => void; onClaim: () => void }) {
+function Card({ award, pinned, onPin, onOpen }: { award: Award; pinned: boolean; onPin: () => void; onOpen: () => void }) {
   const { t, lang } = useI18n()
-  const [open, setOpen] = useState(false)
-  const [cut, setCut] = useState(false)
   const hidden = award.secret && !award.done
   const share = award.rarity > 0 ? t('ach.share', { share: award.rarity }) : ''
   const waiting = award.done && !award.claimed
@@ -74,19 +72,7 @@ function Card({ award, pinned, busy, onPin, onClaim }: { award: Award; pinned: b
           <b>{hidden ? '???' : t(`ach.${award.id}` as UiKey)}</b>
           <span className="award-tier">{hidden ? t('ach.secret') : t(`achTier.${award.tier}` as UiKey)}</span>
         </div>
-        <p
-          className={`${cut ? 'is-cut' : ''} ${open ? 'is-open' : ''}`}
-          title={hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}
-          ref={(node) => {
-            if (node && !open) setCut(node.scrollWidth > node.clientWidth + 1)
-          }}
-          onClick={(event) => {
-            if (!cut && !open) return
-            event.preventDefault()
-            event.stopPropagation()
-            setOpen((was) => !was)
-          }}
-        >
+        <p title={hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}>
           {hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}
         </p>
         <span className="award-kind">{t(award.kind === 'season' ? 'ach.kindSeason' : 'ach.kindLife')}</span>
@@ -120,17 +106,11 @@ function Card({ award, pinned, busy, onPin, onClaim }: { award: Award; pinned: b
 
   const classes = `award tier-${award.tier} ${award.claimed ? 'done' : waiting ? 'is-ready' : hidden ? 'hidden' : ''}`
 
-  if (waiting) {
-    return (
-      <button type="button" className={classes} title={t('ach.claim', { xp: award.xp })} disabled={busy} onClick={onClaim}>
-        {content}
-      </button>
-    )
-  }
-
   return (
     <article className={classes}>
-      {content}
+      <button type="button" className="award-open" aria-label={hidden ? t('ach.secret') : t(`ach.${award.id}` as UiKey)} onClick={onOpen}>
+        {content}
+      </button>
       {award.claimed && (
         <button
           type="button"
@@ -144,6 +124,94 @@ function Card({ award, pinned, busy, onPin, onClaim }: { award: Award; pinned: b
         </button>
       )}
     </article>
+  )
+}
+
+function AwardModal({
+  award,
+  pinned,
+  busy,
+  onPin,
+  onClaim,
+  onClose,
+}: {
+  award: Award
+  pinned: boolean
+  busy: boolean
+  onPin: () => void
+  onClaim: () => void
+  onClose: () => void
+}) {
+  const { t, lang } = useI18n()
+  const hidden = award.secret && !award.done
+  const waiting = award.done && !award.claimed
+  const percent = Math.min(Math.round((award.progress / award.target) * 100), 100)
+
+  return (
+    <div className="modal-backdrop" onClick={onClose} role="presentation">
+      <section
+        className={`card modal award-modal tier-${award.tier}`}
+        role="dialog"
+        aria-modal="true"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button type="button" className="modal-close" aria-label={t('profile.close')} onClick={onClose}>
+          <CloseIcon />
+        </button>
+        <span className="award-modal-mark" aria-hidden>
+          {waiting ? <GiftIcon /> : hidden ? <LockIcon /> : <TrophyIcon />}
+        </span>
+        <h2>{hidden ? '???' : t(`ach.${award.id}` as UiKey)}</h2>
+        <p className="award-modal-hint">{hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}</p>
+        <div className="award-modal-tags">
+          <em>{hidden ? t('ach.secret') : t(`achTier.${award.tier}` as UiKey)}</em>
+        </div>
+        <span className="award-modal-kind">{t(award.kind === 'season' ? 'ach.kindSeason' : 'ach.kindLife')}</span>
+
+        {!hidden && (
+          <div className="award-modal-progress">
+            <span className="award-bar">
+              <span style={{ width: `${percent}%` }} />
+            </span>
+            <b>
+              {Math.min(award.progress, award.target)} / {award.target}
+            </b>
+          </div>
+        )}
+
+        <dl className="award-modal-facts">
+          <div>
+            <dt>{t('ach.rewardTitle')}</dt>
+            <dd>+{award.xp} XP</dd>
+          </div>
+          {award.rarity > 0 && (
+            <div>
+              <dt>{t('ach.rarityTitle')}</dt>
+              <dd>{award.rarity}%</dd>
+            </div>
+          )}
+          {award.claimed && award.at && (
+            <div>
+              <dt>{t('ach.gotTitle')}</dt>
+              <dd>{new Date(award.at).toLocaleDateString(LOCALES[lang], { day: '2-digit', month: '2-digit', year: 'numeric' })}</dd>
+            </div>
+          )}
+        </dl>
+
+        <div className="award-modal-actions">
+          {waiting && (
+            <button type="button" className="primary" disabled={busy} onClick={onClaim}>
+              {t('ach.claim', { xp: award.xp })}
+            </button>
+          )}
+          {award.claimed && (
+            <button type="button" className="ghost" disabled={busy} onClick={onPin}>
+              <PinIcon /> {t(pinned ? 'ach.unpin' : 'ach.pin')}
+            </button>
+          )}
+        </div>
+      </section>
+    </div>
   )
 }
 
@@ -161,6 +229,7 @@ export default function Achievements() {
   const [error, setError] = useState(false)
   const [filter, setFilter] = useState<Filter>('all')
   const [claiming, setClaiming] = useState<string | null>(null)
+  const [opened, setOpened] = useState<string | null>(null)
 
   useEffect(() => {
     let alive = true
@@ -214,6 +283,24 @@ export default function Achievements() {
     })
     void api('achievements', { pinned: next })
   }
+
+  const active = opened ? (list.find((a) => a.id === opened) ?? null) : null
+
+  useEffect(() => {
+    if (!active) return
+    const root = document.documentElement
+    const held = { overflow: root.style.overflow, pad: document.body.style.paddingRight }
+    const bar = window.innerWidth - root.clientWidth
+    root.style.overflow = 'hidden'
+    if (bar > 0) document.body.style.paddingRight = `${bar}px`
+    const key = (event: KeyboardEvent) => event.key === 'Escape' && setOpened(null)
+    window.addEventListener('keydown', key)
+    return () => {
+      root.style.overflow = held.overflow
+      document.body.style.paddingRight = held.pad
+      window.removeEventListener('keydown', key)
+    }
+  }, [active])
 
   const claim = async (id: string) => {
     setClaiming(id)
@@ -348,9 +435,8 @@ export default function Achievements() {
                       key={award.id}
                       award={award}
                       pinned={pinned.includes(award.id)}
-                      busy={claiming === award.id}
                       onPin={() => togglePin(award.id)}
-                      onClaim={() => void claim(award.id)}
+                      onOpen={() => setOpened(award.id)}
                     />
                   ))}
                 </div>
@@ -358,6 +444,17 @@ export default function Achievements() {
             )
           })}
         </>
+      )}
+
+      {active && (
+        <AwardModal
+          award={active}
+          pinned={pinned.includes(active.id)}
+          busy={claiming === active.id}
+          onPin={() => togglePin(active.id)}
+          onClaim={() => void claim(active.id)}
+          onClose={() => setOpened(null)}
+        />
       )}
     </div>
   )

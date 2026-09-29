@@ -207,8 +207,7 @@
   animation-delay: 0.6s;
 }
 
-button.award:hover:not(:disabled) .award-mark .icon,
-button.award:disabled .award-mark .icon {
+.award:has(.award-open:hover) .award-mark .icon {
   animation: none;
 }
 
@@ -258,14 +257,6 @@ button.award:disabled .award-mark .icon {
   min-width: 0;
 }
 
-.award-body p.is-cut {
-  cursor: pointer;
-}
-
-.award-body p.is-open {
-  height: auto;
-  white-space: normal;
-}
 
 .award-head {
   display: flex;
@@ -550,4 +541,136 @@ button.award:disabled .award-mark .icon {
 
 .awards-tiers {
   min-height: 132px;
+}
+
+.award-modal {
+  width: min(100%, 420px);
+  padding: 26px 22px 22px;
+  text-align: center;
+  overflow-y: auto;
+}
+
+.award-modal-mark {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 14px;
+  border: 1px solid color-mix(in srgb, var(--tier) 50%, var(--line));
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--tier) 14%, var(--card-2));
+  color: var(--tier);
+  font-size: 30px;
+}
+
+.award-modal h2 {
+  margin: 0;
+  font-size: 21px;
+  line-height: 1.25;
+}
+
+.award-modal-hint {
+  margin: 8px 0 0;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.award-modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.award-modal-tags em {
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 800;
+  font-style: normal;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.award-modal-tags em {
+  border: 1px solid color-mix(in srgb, var(--tier) 45%, transparent);
+  background: color-mix(in srgb, var(--tier) 16%, transparent);
+  color: var(--tier);
+}
+
+.award-modal-kind {
+  display: block;
+  margin-top: 10px;
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.award-modal-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.award-modal-progress .award-bar {
+  order: 0;
+  flex: 1 1 auto;
+  height: 8px;
+}
+
+.award-modal-progress b {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.award-modal-facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px 0 0;
+}
+
+.award-modal-facts > div {
+  flex: 1 1 96px;
+  padding: 10px 8px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card-2);
+}
+
+.award-modal-facts dt {
+  color: var(--text-3);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.award-modal-facts dd {
+  margin: 4px 0 0;
+  font-size: 15px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.award-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.award-modal-actions button {
+  flex: 1 1 160px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
 }
