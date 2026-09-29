@@ -258,6 +258,15 @@ button.award:disabled .award-mark .icon {
   min-width: 0;
 }
 
+.award-body p.is-cut {
+  cursor: pointer;
+}
+
+.award-body p.is-open {
+  height: auto;
+  white-space: normal;
+}
+
 .award-head {
   display: flex;
   align-items: baseline;
@@ -288,6 +297,7 @@ button.award:disabled .award-mark .icon {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  cursor: default;
   margin: 0;
   color: var(--text-2);
   font-size: 13px;

@@ -58,6 +58,8 @@ const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
 
 function Card({ award, pinned, busy, onPin, onClaim }: { award: Award; pinned: boolean; busy: boolean; onPin: () => void; onClaim: () => void }) {
   const { t, lang } = useI18n()
+  const [open, setOpen] = useState(false)
+  const [cut, setCut] = useState(false)
   const hidden = award.secret && !award.done
   const share = award.rarity > 0 ? t('ach.share', { share: award.rarity }) : ''
   const waiting = award.done && !award.claimed
@@ -72,7 +74,19 @@ function Card({ award, pinned, busy, onPin, onClaim }: { award: Award; pinned: b
           <b>{hidden ? '???' : t(`ach.${award.id}` as UiKey)}</b>
           <span className="award-tier">{hidden ? t('ach.secret') : t(`achTier.${award.tier}` as UiKey)}</span>
         </div>
-        <p title={hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}>
+        <p
+          className={`${cut ? 'is-cut' : ''} ${open ? 'is-open' : ''}`}
+          title={hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}
+          ref={(node) => {
+            if (node && !open) setCut(node.scrollWidth > node.clientWidth + 1)
+          }}
+          onClick={(event) => {
+            if (!cut && !open) return
+            event.preventDefault()
+            event.stopPropagation()
+            setOpen((was) => !was)
+          }}
+        >
           {hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}
         </p>
         <span className="award-kind">{t(award.kind === 'season' ? 'ach.kindSeason' : 'ach.kindLife')}</span>
