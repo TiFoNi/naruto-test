@@ -19,9 +19,11 @@ await entities.createIndex({ game: 1, id: 1 }, { unique: true })
 await entities.createIndex({ game: 1, answer: 1, hidden: 1 })
 
 const updatedAt = new Date()
+const only = process.argv[2]
 let total = 0
 
 for (const [game, spec] of Object.entries(GAME_SPECS)) {
+  if (only && game !== only) continue
   const file = path.join(DATA, `${spec.data}.json`)
   if (!fs.existsSync(file)) {
     console.log(`  ${game}: немає ${spec.data}.json, пропускаю`)

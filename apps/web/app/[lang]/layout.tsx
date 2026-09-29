@@ -23,6 +23,9 @@ const unbounded = Unbounded({
   preload: false,
 })
 
+
+export const revalidate = 600
+
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
   const copy = HOME[(LANGS.some((l) => l.id === lang) ? lang : 'ru') as Lang]

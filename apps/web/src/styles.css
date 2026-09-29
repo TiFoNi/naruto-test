@@ -5403,7 +5403,8 @@ html:not([data-cat]) .tile[data-first],
 html[data-cat='anime'] .tile[data-id='anime'],
 html[data-cat='manga'] .tile[data-id='manga'],
 html[data-cat='games'] .tile[data-id='games'],
-html[data-cat='sport'] .tile[data-id='sport'] {
+html[data-cat='sport'] .tile[data-id='sport'],
+html[data-cat='screen'] .tile[data-id='screen'] {
   color: var(--text);
   background: color-mix(in srgb, var(--tile) 15%, var(--card-2));
   border-color: color-mix(in srgb, var(--tile) 42%, transparent);
@@ -5433,7 +5434,8 @@ html:not([data-cat]) .tile[data-first] .tile-icon,
 html[data-cat='anime'] .tile[data-id='anime'] .tile-icon,
 html[data-cat='manga'] .tile[data-id='manga'] .tile-icon,
 html[data-cat='games'] .tile[data-id='games'] .tile-icon,
-html[data-cat='sport'] .tile[data-id='sport'] .tile-icon {
+html[data-cat='sport'] .tile[data-id='sport'] .tile-icon,
+html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   border-color: color-mix(in srgb, var(--tile) 45%, transparent);
   background: color-mix(in srgb, var(--tile) 20%, transparent);
   color: color-mix(in srgb, var(--tile) 80%, #fff);
