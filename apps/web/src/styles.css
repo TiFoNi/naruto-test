@@ -7506,9 +7506,20 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 }
 
 .has-logo {
+  position: relative;
   padding: 0;
   overflow: hidden;
   background: var(--card-2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.has-logo::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+  content: '';
+  pointer-events: none;
 }
 
 .has-logo img {
