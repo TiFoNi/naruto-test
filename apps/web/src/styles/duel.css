@@ -667,12 +667,6 @@
   padding: 13px 18px;
 }
 
-.duel-go .duel-unready {
-  align-self: stretch;
-  width: 100%;
-  padding: 11px 18px;
-}
-
 .duel-go .primary svg {
   width: 17px;
   height: 17px;

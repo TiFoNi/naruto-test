@@ -371,16 +371,11 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
               <em>{t('duel.rounds', { count: duel.best })}</em>
               <em>{t('duel.timeShort', { time: timeLabel(duel.seconds) })}</em>
             </div>
-            <button type="button" className="primary big" disabled={busy || !rival || duel.you?.ready} onClick={() => onReady(true)}>
+            <button type="button" className="primary big" disabled={busy || !rival} onClick={() => onReady(!duel.you?.ready)}>
               <SwordsIcon />
-              {duel.you?.ready ? t('duel.readyWait') : t('duel.ready')}
+              {duel.you?.ready ? t('duel.readyCancel') : t('duel.ready')}
             </button>
-            {duel.you?.ready && (
-              <button type="button" className="ghost duel-unready" disabled={busy} onClick={() => onReady(false)}>
-                {t('duel.readyCancel')}
-              </button>
-            )}
-            <p className="muted small">{rival ? t('duel.readyHint') : t('duel.readyLocked')}</p>
+            <p className="muted small">{!rival ? t('duel.readyLocked') : duel.you?.ready ? t('duel.readyWait') : t('duel.readyHint')}</p>
           </section>
         </aside>
       </div>
