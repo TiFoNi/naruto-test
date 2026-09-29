@@ -55,8 +55,8 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: '72px 80px',
+          justifyContent: 'center',
+          padding: '0 80px',
           position: 'relative',
           background: '#0d0f12',
           backgroundImage: `radial-gradient(900px 500px at 82% -10%, ${accent}44, transparent 70%)`,
@@ -64,7 +64,7 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
           fontFamily: 'Manrope',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+        <div style={{ position: 'absolute', top: 64, left: 80, display: 'flex', alignItems: 'center', gap: 18 }}>
           <div
             style={{
               display: 'flex',
@@ -86,7 +86,7 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 18, width: room }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 18, width: room, marginTop: tags.length ? -20 : 0 }}>
           {eyebrow && (
             <div style={{ width: room, fontSize: 26, letterSpacing: 3, textTransform: 'uppercase', color: accent }}>{eyebrow}</div>
           )}
@@ -95,7 +95,7 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
         </div>
 
         {faces.length > 0 && (
-          <div style={{ position: 'absolute', top: 96, right: 70, display: 'flex' }}>
+          <div style={{ position: 'absolute', top: 148, right: 74, display: 'flex' }}>
             {faces.slice(0, 3).map((src, i) => (
               <img
                 key={src}
@@ -115,7 +115,7 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
           </div>
         )}
 
-        <div style={{ display: 'flex', gap: 14 }}>
+        <div style={{ position: 'absolute', bottom: 72, left: 80, display: 'flex', gap: 14, height: tags.length ? 'auto' : 0 }}>
           {tags.map((tag) => (
             <div
               key={tag}
