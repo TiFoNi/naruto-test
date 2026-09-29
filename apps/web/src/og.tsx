@@ -76,6 +76,8 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
               background: accent,
               color: '#0d0f12',
               fontSize: 34,
+              letterSpacing: -1.5,
+              transform: 'rotate(-6deg)',
             }}
           >
             {BRAND.mark}
