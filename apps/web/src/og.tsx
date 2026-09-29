@@ -26,6 +26,14 @@ export async function asPng(url: string) {
   }
 }
 
+const headline = (title: string, narrow: boolean) => {
+  const longest = Math.max(...title.split(/\s+/).map((word) => word.length))
+  const limit = narrow ? 9 : 14
+  if (title.length > 34 || longest > limit + 3) return 48
+  if (title.length > 20 || longest > limit) return 60
+  return 84
+}
+
 type Card = {
   eyebrow?: string
   title: string
@@ -37,6 +45,7 @@ type Card = {
 
 export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.accent, faces = [] }: Card) {
   const data = await font().catch(() => null)
+  const room = faces.length ? 540 : 1040
 
   return new ImageResponse(
     (
@@ -77,10 +86,12 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-          {eyebrow && <div style={{ fontSize: 26, letterSpacing: 3, textTransform: 'uppercase', color: accent }}>{eyebrow}</div>}
-          <div style={{ fontSize: title.length > 34 ? 68 : 84, lineHeight: 1.05, letterSpacing: -2 }}>{title}</div>
-          {note && <div style={{ fontSize: 30, color: '#a7afbb' }}>{note}</div>}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 18, width: room }}>
+          {eyebrow && (
+            <div style={{ width: room, fontSize: 26, letterSpacing: 3, textTransform: 'uppercase', color: accent }}>{eyebrow}</div>
+          )}
+          <div style={{ width: room, fontSize: headline(title, faces.length > 0), lineHeight: 1.05, letterSpacing: -2 }}>{title}</div>
+          {note && <div style={{ width: room, fontSize: 30, color: '#a7afbb' }}>{note}</div>}
         </div>
 
         {faces.length > 0 && (
