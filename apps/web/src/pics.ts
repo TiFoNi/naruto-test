@@ -9,7 +9,7 @@ export const CARD = { width: 288, height: 384 }
 
 export const MINI = { width: 168, height: 224 }
 
-export const atlasUrl = (game: GameId) => `${local}${GAME_SPECS[game].images}/thumbs.webp`
+export const atlasUrl = (game: GameId) => `${fullBase}${GAME_SPECS[game].images}/thumbs.webp`
 const tag = (version?: string) => (version ? `?v=${version}` : '')
 
 export const fullUrl = (game: GameId, id: number, version?: string) =>

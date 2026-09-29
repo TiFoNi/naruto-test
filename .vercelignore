@@ -1,5 +1,7 @@
 apps/web/public/*/full
 apps/web/public/*/pages
 apps/web/public/*/card
+apps/web/public/*/mini
+apps/web/public/*/thumbs.webp
 .cache
 seeds

@@ -32,6 +32,9 @@ async function collect() {
       }
     }
 
+    const atlas = path.join(PUBLIC, game.name, 'thumbs.webp')
+    if (await fs.stat(atlas).catch(() => null)) files.push({ key: `${game.name}/thumbs.webp`, path: atlas })
+
     const voice = path.join(PUBLIC, game.name, 'voice')
     for (const entry of await fs.readdir(voice, { withFileTypes: true }).catch(() => [])) {
       if (!entry.isDirectory()) continue
