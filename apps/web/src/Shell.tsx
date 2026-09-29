@@ -130,7 +130,7 @@ function XpToday() {
       </p>
       <ul className="xp-today-list">
         {today.sources.map(({ source, earned, cap }) => (
-          <li key={source} className={earned >= cap ? 'full' : ''}>
+          <li key={source}>
             <span>
               {t(`xp.${source}` as UiKey)}
               <b>

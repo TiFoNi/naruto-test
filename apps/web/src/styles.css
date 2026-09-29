@@ -2141,10 +2141,6 @@ main {
   font-weight: 800;
 }
 
-.xp-today-list li.full b {
-  color: var(--accent);
-}
-
 .xp-today-list i {
   display: block;
   height: 6px;
@@ -2158,10 +2154,6 @@ main {
   border-radius: 999px;
   background: #f0b429;
   transition: width 0.3s;
-}
-
-.xp-today-list li.full em {
-  background: var(--accent);
 }
 
 .account-menu a,
