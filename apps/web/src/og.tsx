@@ -93,7 +93,7 @@ type Card = {
 
 export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.accent, faces = [], background }: Card) {
   const data = await font().catch(() => null)
-  const room = background ? 600 : faces.length ? 540 : 1040
+  const room = background ? 460 : faces.length ? 540 : 1040
 
   return new ImageResponse(
     (
