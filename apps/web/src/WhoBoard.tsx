@@ -223,7 +223,14 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onStrike, onA
           if (!entity) return null
           const off = struck.has(id)
           return (
-            <li key={id} className={off ? 'off' : ''}>
+            <li
+              key={id}
+              className={off ? 'off' : ''}
+              onContextMenu={(event) => {
+                event.preventDefault()
+                setInfo(id)
+              }}
+            >
               <button
                 type="button"
                 className="who-card"
