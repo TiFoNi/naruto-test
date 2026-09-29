@@ -207,7 +207,7 @@
   animation-delay: 0.6s;
 }
 
-.award:has(.award-open:hover) .award-mark .icon {
+.award:has(.award-open:hover:not(:disabled)) .award-mark .icon {
   animation: none;
 }
 

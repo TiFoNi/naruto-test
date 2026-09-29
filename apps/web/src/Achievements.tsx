@@ -56,7 +56,7 @@ const FILTERS: { id: Filter; label: UiKey }[] = [
 
 const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
 
-function Card({ award, pinned, onPin, onOpen }: { award: Award; pinned: boolean; onPin: () => void; onOpen: () => void }) {
+function Card({ award, pinned, busy, take, onPin, onOpen }: { award: Award; pinned: boolean; busy: boolean; take: boolean; onPin: () => void; onOpen: () => void }) {
   const { t, lang } = useI18n()
   const hidden = award.secret && !award.done
   const share = award.rarity > 0 ? t('ach.share', { share: award.rarity }) : ''
@@ -108,7 +108,13 @@ function Card({ award, pinned, onPin, onOpen }: { award: Award; pinned: boolean;
 
   return (
     <article className={classes}>
-      <button type="button" className="award-open" aria-label={hidden ? t('ach.secret') : t(`ach.${award.id}` as UiKey)} onClick={onOpen}>
+      <button
+        type="button"
+        className="award-open"
+        aria-label={take ? t('ach.claim', { xp: award.xp }) : hidden ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}
+        disabled={busy}
+        onClick={onOpen}
+      >
         {content}
       </button>
       {award.claimed && (
@@ -435,8 +441,12 @@ export default function Achievements() {
                       key={award.id}
                       award={award}
                       pinned={pinned.includes(award.id)}
+                      busy={claiming === award.id}
+                      take={filter === 'ready' && award.done && !award.claimed}
                       onPin={() => togglePin(award.id)}
-                      onOpen={() => setOpened(award.id)}
+                      onOpen={() =>
+                        filter === 'ready' && award.done && !award.claimed ? void claim(award.id) : setOpened(award.id)
+                      }
                     />
                   ))}
                 </div>
