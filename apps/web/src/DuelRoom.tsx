@@ -43,7 +43,7 @@ export default function DuelRoom({ code }: { code: string }) {
   const { t, l, name, lang, error: errorText } = useI18n()
   const href = useHref()
   const navigate = useNavigate()
-  const { duel, error, busy, pending, serverNow, ready, setup, invite, next, toLobby, giveUp, guess, strike, answer: markAnswer, refresh } = useDuel(code)
+  const { duel, error, busy, pending, serverNow, ready, setup, invite, next, toLobby, giveUp, guess, pick, strike, answer: markAnswer, refresh } = useDuel(code)
   const [, redraw] = useState(0)
   const [pageReady, setPageReady] = useState(false)
   const [showResult, setShowResult] = useState(true)
@@ -129,7 +129,7 @@ export default function DuelRoom({ code }: { code: string }) {
           </p>
         </div>
         <div className="duel-head-side">
-          {duel.status === 'playing' && duel.seconds > 0 && <div className={`duel-timer ${left < 60000 ? 'hot' : ''}`}>{clock(left)}</div>}
+          {duel.status === 'playing' && duel.seconds > 0 && duel.endsAt && <div className={`duel-timer ${left < 60000 ? 'hot' : ''}`}>{clock(left)}</div>}
           <button type="button" className="duel-leave" onClick={() => void leave()} disabled={busy}>
             <ExitIcon />
             {t('duel.leave')}
@@ -232,6 +232,7 @@ export default function DuelRoom({ code }: { code: string }) {
           byId={byId}
           duel={duel}
           busy={busy}
+          onPick={pick}
           onStrike={strike}
           onAnswer={markAnswer}
           onNext={next}

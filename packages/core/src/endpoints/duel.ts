@@ -1,25 +1,26 @@
 import { fail, handle, json, readJson } from '../http'
 import { currentUser, defaultNickname, unauthorized } from '../profile'
 import {
+  answerCard,
   backToLobby,
   createDuel,
   declineInvite,
   dropIdle,
-  duelHistory,
-  leaveDuel,
   duelGuess,
+  duelHistory,
   duelView,
   findDuel,
   giveUpDuel,
   inviteTo,
   joinDuel,
+  leaveDuel,
   openLobby,
+  pickSecret,
   recentRivals,
   setReady,
   settle,
   setupDuel,
   sideOf,
-  answerCard,
   strikeCard,
   sweepDuels,
   touchSide,
@@ -102,6 +103,14 @@ export const POST = handle(async (request) => {
   if (action === 'lobby') return json({ duel: await duelView(await backToLobby(live, userId), userId) })
   if (action === 'ready') return json({ duel: await duelView(await setReady(live, userId), userId) })
   if (action === 'giveup') return json({ duel: await duelView(await giveUpDuel(live, userId), userId) })
+
+  if (action === 'pick') {
+    const entityId = Number(body.entityId)
+    if (!Number.isInteger(entityId)) return fail(400, 'bad_request')
+    const result = await pickSecret(live, userId, entityId)
+    if (result.error) return fail(result.error === 'round_over' ? 409 : 400, result.error)
+    return json({ duel: await duelView(result.duel!, userId) })
+  }
 
   if (action === 'strike' || action === 'answer') {
     const entityId = Number(body.entityId)

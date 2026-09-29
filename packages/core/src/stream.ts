@@ -44,6 +44,7 @@ const mark = (duel: DuelDoc) =>
       side.guesses,
       side.solvedAt,
       side.gaveUp,
+      side.secret,
       side.struck,
       side.answer,
     ]),

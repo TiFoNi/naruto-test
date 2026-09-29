@@ -220,17 +220,14 @@ async function boardStart(duel: DuelDoc) {
   const allowed = boardSizes(pool.length)
   const size = allowed.includes(duel.size ?? BOARD_DEFAULT) ? (duel.size ?? BOARD_DEFAULT) : allowed[allowed.length - 1]
   const cards = shuffled(pool.map((entity) => entity.id)).slice(0, Math.min(size * size, pool.length))
-  const secrets = shuffled(cards).slice(0, 2)
-  const startedAt = new Date()
-  const limit = duel.seconds || DUEL_DEFAULT.seconds
 
   return {
     status: 'playing' as const,
     round: duel.round + 1,
     answerId: 0,
     extra: null,
-    startedAt,
-    endsAt: new Date(startedAt.getTime() + limit * 1000),
+    startedAt: null,
+    endsAt: null,
     firstId: duel.players[randomInt(duel.players.length)]?.userId ?? null,
     firstSolvedAt: null,
     winnerId: null,
@@ -246,7 +243,7 @@ async function boardStart(duel: DuelDoc) {
         [`players.${index}.struck`, []],
         [`players.${index}.answer`, null],
         [`players.${index}.cards`, shuffled(cards)],
-        [`players.${index}.secret`, secrets[index] ?? secrets[0]],
+        [`players.${index}.secret`, null],
       ]),
     ),
   }
@@ -553,8 +550,28 @@ export async function duelGuess(duel: DuelDoc, userId: ObjectId, entityId: numbe
   return { duel: await settle(updated) }
 }
 
-export async function strikeCard(duel: DuelDoc, userId: ObjectId, entityId: number) {
+export const picking = (duel: DuelDoc) => duel.mode === 'who' && duel.players.some((side) => !side.secret)
+
+export async function pickSecret(duel: DuelDoc, userId: ObjectId, entityId: number) {
   if (duel.mode !== 'who' || duel.status !== 'playing') return { error: 'round_over' as const }
+  const index = duel.players.findIndex((side) => side.userId.equals(userId))
+  const side = duel.players[index]
+  if (!side?.cards?.includes(entityId) || side.secret) return { error: 'bad_request' as const }
+
+  const set: Record<string, unknown> = { [`players.${index}.secret`]: entityId }
+  const others = duel.players.filter((_, at) => at !== index)
+  if (others.every((one) => one.secret)) {
+    const startedAt = new Date()
+    set.startedAt = startedAt
+    set.endsAt = new Date(startedAt.getTime() + (duel.seconds || DUEL_DEFAULT.seconds) * 1000)
+  }
+
+  const updated = await (await duels()).findOneAndUpdate({ _id: duel._id, status: 'playing' }, { $set: set }, { returnDocument: 'after' })
+  return { duel: updated ?? duel }
+}
+
+export async function strikeCard(duel: DuelDoc, userId: ObjectId, entityId: number) {
+  if (duel.mode !== 'who' || duel.status !== 'playing' || picking(duel)) return { error: 'round_over' as const }
   const index = duel.players.findIndex((side) => side.userId.equals(userId))
   const side = duel.players[index]
   if (!side?.cards?.includes(entityId)) return { error: 'bad_request' as const }
@@ -577,7 +594,7 @@ export async function strikeCard(duel: DuelDoc, userId: ObjectId, entityId: numb
 }
 
 export async function answerCard(duel: DuelDoc, userId: ObjectId, entityId: number) {
-  if (duel.mode !== 'who' || duel.status !== 'playing') return { error: 'round_over' as const }
+  if (duel.mode !== 'who' || duel.status !== 'playing' || picking(duel)) return { error: 'round_over' as const }
   const index = duel.players.findIndex((side) => side.userId.equals(userId))
   const side = duel.players[index]
   if (!side?.cards?.includes(entityId) || side.struck?.includes(entityId)) return { error: 'bad_request' as const }
@@ -696,7 +713,9 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
       ? {
           first: duel.firstId ? duel.players.find((side) => side.userId.equals(duel.firstId!))?.nickname ?? null : null,
           youFirst: Boolean(duel.firstId && duel.firstId.equals(userId)),
-          secret: you?.secret,
+          secret: you?.secret ?? null,
+          picking: picking(duel),
+          rivalPicked: Boolean(rival?.secret),
           cards: you?.cards ?? [],
           struck: you?.struck ?? [],
           rivalLeft: rival ? (rival.cards?.length ?? 0) - (rival.struck?.length ?? 0) : 0,

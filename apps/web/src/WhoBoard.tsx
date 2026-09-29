@@ -12,26 +12,31 @@ type Props = {
   byId: Map<number, Entity>
   duel: DuelView
   busy: boolean
+  onPick: (entityId: number) => void
   onStrike: (entityId: number) => void
   onAnswer: (entityId: number) => void
   onNext: () => void
 }
 
-export default function WhoBoard({ game, byId, duel, busy, onStrike, onAnswer, onNext }: Props) {
+export default function WhoBoard({ game, byId, duel, busy, onPick, onStrike, onAnswer, onNext }: Props) {
   const { t, l, tv, lang, name } = useI18n()
   const [info, setInfo] = useState<number | null>(null)
   const [ask, setAsk] = useState<number | null>(null)
+  const [choose, setChoose] = useState<number | null>(null)
   const [endOpen, setEndOpen] = useState(true)
   const grid = useRef<HTMLOListElement>(null)
 
   const struck = new Set(duel.struck ?? [])
   const cards = duel.cards ?? []
   const standing = cards.filter((id) => !struck.has(id))
-  const mine = duel.secret !== undefined ? byId.get(duel.secret) : undefined
+  const choosing = Boolean(duel.picking)
+  const youPicked = duel.secret !== undefined && duel.secret !== null
+  const mine = duel.secret !== undefined && duel.secret !== null ? byId.get(duel.secret) : undefined
   const shown = info !== null ? byId.get(info) : undefined
   const over = duel.status !== 'playing'
   const ended = over && !duel.matchDone
   const answer = ask !== null ? byId.get(ask) : undefined
+  const picked = choose !== null ? byId.get(choose) : undefined
 
   const rivalSecret = duel.rivalSecret !== undefined ? byId.get(duel.rivalSecret) : undefined
   const yourAnswer = duel.yourAnswer !== undefined ? byId.get(duel.yourAnswer) : undefined
@@ -42,12 +47,13 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onAnswer, o
     if (over) {
       setAsk(null)
       setInfo(null)
+      setChoose(null)
     }
     setEndOpen(true)
   }, [over, duel.round])
 
   const board = duel.size ?? 5
-  const modal = info !== null || ask !== null || (ended && endOpen)
+  const modal = info !== null || ask !== null || choose !== null || (ended && endOpen)
 
   useEffect(() => {
     if (!modal) return
@@ -91,7 +97,8 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onAnswer, o
       value: column.text(entity, { tv, lang }),
     }))
 
-  const pick = (id: number) => {
+  const tap = (id: number) => {
+    if (choosing) return youPicked ? undefined : setChoose(id)
     if (struck.has(id) || standing.length > 2) return onStrike(id)
     setAsk(standing.find((other) => other !== id) ?? id)
   }
@@ -119,8 +126,26 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onAnswer, o
           </button>
         )}
         <div className="who-copy">
-          <p className="who-first">{duel.youFirst ? t('who.youFirst') : duel.first ? t('who.first', { name: duel.first }) : ''}</p>
-          <p className="muted">{t('who.hint')}</p>
+          <p className="who-first">
+            {choosing
+              ? youPicked
+                ? t('who.pickWait')
+                : t('who.pickTitle')
+              : duel.youFirst
+                ? t('who.youFirst')
+                : duel.first
+                  ? t('who.first', { name: duel.first })
+                  : ''}
+          </p>
+          <p className="muted">
+            {choosing
+              ? youPicked
+                ? t('who.pickWaitHint')
+                : duel.rivalPicked
+                  ? t('who.rivalPicked')
+                  : t('who.pickHint')
+              : t('who.hint')}
+          </p>
         </div>
       </div>
 
@@ -192,7 +217,7 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onAnswer, o
         </div>
       )}
 
-      <ol className="who-grid" ref={grid} style={{ ['--board' as string]: board }}>
+      <ol className={`who-grid ${choosing ? (youPicked ? 'who-waiting' : 'who-choosing') : ''}`} ref={grid} style={{ ['--board' as string]: board }}>
         {cards.map((id) => {
           const entity = byId.get(id)
           if (!entity) return null
@@ -202,9 +227,9 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onAnswer, o
               <button
                 type="button"
                 className="who-card"
-                aria-label={`${name(entity)} — ${off ? t('who.open') : t('who.close')}`}
-                disabled={over || busy}
-                onClick={() => pick(id)}
+                aria-label={choosing ? `${name(entity)} — ${t('who.pickDo')}` : `${name(entity)} — ${off ? t('who.open') : t('who.close')}`}
+                disabled={over || busy || (choosing && youPicked)}
+                onClick={() => tap(id)}
               >
                 <span className="who-flip">
                   <span className="who-face who-front">
@@ -244,7 +269,22 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onAnswer, o
                 </div>
               ))}
             </dl>
-            {!over && !struck.has(shown.id) && standing.length > 1 && (
+            {choosing && !youPicked && (
+              <div className="who-ask">
+                <button
+                  type="button"
+                  className="primary"
+                  disabled={busy}
+                  onClick={() => {
+                    setInfo(null)
+                    setChoose(shown.id)
+                  }}
+                >
+                  {t('who.pickDo')}
+                </button>
+              </div>
+            )}
+            {!choosing && !over && !struck.has(shown.id) && standing.length > 1 && (
               <div className="who-ask">
                 <button
                   type="button"
@@ -259,6 +299,38 @@ export default function WhoBoard({ game, byId, duel, busy, onStrike, onAnswer, o
                 </button>
               </div>
             )}
+          </section>
+        </div>
+      )}
+
+      {choose !== null && picked && (
+        <div className="modal-backdrop" onClick={() => setChoose(null)} role="presentation">
+          <section className="card modal who-modal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="modal-close" aria-label={t('profile.close')} onClick={() => setChoose(null)}>
+              <CloseIcon />
+            </button>
+            <header className="who-modal-head">
+              <img className="who-modal-pic" src={fullUrl(game.id, picked.id, picked.image)} alt="" draggable={false} />
+              <b>{name(picked)}</b>
+            </header>
+            <p className="who-warn">{t('who.pickAsk')}</p>
+            <p className="muted small">{t('who.pickWarn')}</p>
+            <div className="who-ask">
+              <button
+                type="button"
+                className="primary"
+                disabled={busy}
+                onClick={() => {
+                  onPick(choose)
+                  setChoose(null)
+                }}
+              >
+                {t('who.pickDo')}
+              </button>
+              <button type="button" className="ghost" onClick={() => setChoose(null)}>
+                {t('profile.cancel')}
+              </button>
+            </div>
           </section>
         </div>
       )}
