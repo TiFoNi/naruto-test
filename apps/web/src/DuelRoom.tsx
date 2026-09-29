@@ -1,3 +1,5 @@
+'use client'
+
 import BackButton from './BackButton'
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import AbilityIcon from './AbilityIcon'
@@ -97,7 +99,7 @@ export default function DuelRoom({ code }: { code: string }) {
   const rival = duel.rival
   const inLobby = duel.status === 'lobby'
   const over = duel.status === 'finished'
-  const link = `${window.location.origin}/${href.duel(duel.code)}`
+  const link = `${window.location.origin}${href.duel(duel.code)}`
   const answer = duel.answerId !== undefined ? byId.get(duel.answerId) : undefined
   const youDone = Boolean(you?.solved || you?.gaveUp)
   const wrong = guesses.filter((g) => !g.pending).length - (you?.solved ? 1 : 0)

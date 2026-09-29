@@ -5,9 +5,12 @@ import type { Entity, Game } from './games/types'
 import { useAuth } from './auth'
 import { ArrowIcon } from './icons'
 import { useI18n, type UiKey } from './i18n'
+import { MODES } from './modes'
 import { useHref } from './router'
 import type { Stats } from './stats'
 import { fullUrl } from './pics'
+import Share from './Share'
+import { SITE } from './brand'
 import type { ModeId } from './modes'
 
 type Props = {
@@ -25,7 +28,7 @@ type Props = {
 }
 
 export default function RoundResult({ game, mode, answer, guesses, won, skipped, stats, onNext, challenge, nextAt, compact }: Props) {
-  const { t, name, alt } = useI18n()
+  const { t, name, alt, l } = useI18n()
   const { user } = useAuth()
   const href = useHref()
   const ref = useRef<HTMLDivElement>(null)
@@ -46,6 +49,14 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
   const note = challenge ? t('challenge.summary', { guesses }) : skipped ? t('result.notCounted') : ''
   const verdict: UiKey = won ? 'result.won' : skipped ? 'result.skipped' : 'result.lost'
   const eyebrow = t(verdict).replace(/…$/, '')
+
+  const shareText = t(won ? 'share.resultWon' : 'share.resultLost', {
+    name: name(answer),
+    tries: t('share.tries', { count: guesses }),
+    game: l(game.label),
+    mode: t(MODES.find((one) => one.id === mode)?.label ?? 'mode.classic'),
+  })
+  const shareUrl = `${SITE}${href.play(game.id, mode, daily)}`
 
   const facts = [
     { key: 'tries', value: guesses, label: t('result.factTries') },
@@ -68,6 +79,7 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
         ))}
       </div>
       {note && <p className="round">{note}</p>}
+      {!skipped && <Share text={shareText} url={shareUrl} />}
       {daily ? (
         <>
           <p className="daily-next">

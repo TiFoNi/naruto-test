@@ -7,6 +7,7 @@ import { GAMES, gameById } from './games'
 import type { Category, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
+import Share from './Share'
 import type { DuelView } from './useDuel'
 import { CopyIcon, DiceIcon, ExitIcon, LinkIcon, SwordsIcon } from './icons'
 
@@ -115,6 +116,10 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
             <CopyIcon />
             {copied ? t('duel.copied') : t('duel.copyLink')}
           </button>
+          <Share
+            text={t('share.duel', { game: l(game.label), mode: t(MODES.find((one) => one.id === duel.mode)?.label ?? 'mode.classic') })}
+            url={link}
+          />
           <button type="button" className="duel-leave" onClick={onLeave} disabled={busy}>
             <ExitIcon />
             {t('duel.leave')}

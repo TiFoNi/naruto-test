@@ -67,7 +67,7 @@ export default function ChallengeRoom({ code }: { code: string }) {
   const modeLabel = t(MODES.find((m) => m.id === mode)?.label ?? 'mode.classic')
   const props = { game, active: true, stats: emptyStats, challenge: code }
   const answer = challenge.answerId !== undefined ? game.entities.find((e) => e.id === challenge.answerId) : undefined
-  const link = `${window.location.origin}/${href.challenge(code)}`
+  const link = `${window.location.origin}${href.challenge(code)}`
 
   const copy = () => {
     navigator.clipboard?.writeText(link).then(

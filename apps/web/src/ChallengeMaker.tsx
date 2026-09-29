@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import CharacterSearch from './CharacterSearch'
+import Share from './Share'
 import { api } from './api'
 import type { Entity, Game } from './games/types'
 import { useI18n } from './i18n'
@@ -8,7 +9,7 @@ import { useHref } from './router'
 import { CloseIcon, SwordsIcon } from './icons'
 
 export default function ChallengeMaker({ game, mode }: { game: Game; mode: ModeId }) {
-  const { t, name, error: errorText } = useI18n()
+  const { t, name, error: errorText, l } = useI18n()
   const href = useHref()
   const [open, setOpen] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -35,7 +36,7 @@ export default function ChallengeMaker({ game, mode }: { game: Game; mode: ModeI
       answerId: entity.id,
     })
     setBusy(false)
-    if (ok && data.challenge) setLink(`${window.location.origin}/${href.challenge(data.challenge.code)}`)
+    if (ok && data.challenge) setLink(`${window.location.origin}${href.challenge(data.challenge.code)}`)
     else setError(data.error ?? 'server')
   }
 
@@ -87,6 +88,7 @@ export default function ChallengeMaker({ game, mode }: { game: Game; mode: ModeI
                     {copied ? t('duel.copied') : t('duel.copy')}
                   </button>
                 </div>
+                <Share text={t('share.challenge', { game: l(game.label) })} url={link} />
                 <button className="link-button" onClick={reset}>
                   {t('challenge.again')}
                 </button>
