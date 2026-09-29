@@ -216,7 +216,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
   marvel: {
     data: 'marvel',
     images: 'marvel',
-    modes: ['classic', 'image', 'who'],
+    modes: ['classic', 'image'],
     columns: [
       col('gender', 'exact'),
       col('species', 'exact'),

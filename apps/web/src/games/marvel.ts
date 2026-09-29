@@ -33,7 +33,7 @@ export const marvel: Game<Hero> = {
     'Avengers, X-Men, Guardians of the Galaxy and villains — heroes of Marvel comics and films.',
   ),
   accent: '#e23636',
-  modes: ['classic', 'image', 'who'],
+  modes: ['classic', 'image'],
   featured: ['Iron Man', 'Spider-Man', 'Thor'],
   unit: 'hero',
   entities: [],
