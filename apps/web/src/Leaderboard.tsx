@@ -34,7 +34,13 @@ type Column = {
   value: (row: Row) => number
 }
 
-const CATEGORY_LABEL: Record<Category, UiKey> = { anime: 'dash.anime', manga: 'dash.mangaTitle', games: 'dash.games', sport: 'dash.sport' }
+const CATEGORY_LABEL: Record<Category, UiKey> = {
+  anime: 'dash.anime',
+  manga: 'dash.mangaTitle',
+  games: 'dash.games',
+  screen: 'dash.screen',
+  sport: 'dash.sport',
+}
 
 const TONES = 8
 

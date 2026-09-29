@@ -11,7 +11,7 @@ import Quests from './Quests'
 import { useHref } from './router'
 import { dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
-import { BallIcon, BookIcon, CalendarIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
+import { BallIcon, BookIcon, CalendarIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, PlayIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
 import { CARD, MINI, cardUrl, miniUrl } from './pics'
 import { useBeforePaint } from './paint'
 import { searchGames } from './search'
@@ -20,6 +20,7 @@ const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
   { id: 'manga', title: 'dash.mangaTitle' },
   { id: 'games', title: 'dash.games' },
+  { id: 'screen', title: 'dash.screen' },
   { id: 'sport', title: 'dash.sport' },
 ]
 
@@ -31,7 +32,7 @@ const PERKS: { key: UiKey; Icon: typeof ChartIcon }[] = [
 
 const REMEMBER = 'nanda.category'
 
-const CATEGORY_IDS: Category[] = ['anime', 'manga', 'games', 'sport']
+const CATEGORY_IDS: Category[] = ['anime', 'manga', 'games', 'screen', 'sport']
 
 const storedCategory = (): Category | undefined => {
   try {
@@ -42,7 +43,8 @@ const storedCategory = (): Category | undefined => {
   }
 }
 
-const categoryIcon = (id: Category) => (id === 'anime' ? <TvIcon /> : id === 'manga' ? <BookIcon /> : id === 'sport' ? <BallIcon /> : <GamepadIcon />)
+const categoryIcon = (id: Category) =>
+  id === 'anime' ? <TvIcon /> : id === 'manga' ? <BookIcon /> : id === 'sport' ? <BallIcon /> : id === 'screen' ? <PlayIcon /> : <GamepadIcon />
 
 const MODE_ROWS = 2
 

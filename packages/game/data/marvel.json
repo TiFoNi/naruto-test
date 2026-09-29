@@ -1,0 +1,2996 @@
+[
+ {
+  "id": 143,
+  "name": "Агата Харкнесс",
+  "nameEn": "Agatha Harkness",
+  "nameUk": "Аґата Гаркнесс",
+  "gender": "Женский",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Магия"
+  ],
+  "species": "Человек",
+  "debut": "1970",
+  "debutIndex": 1970,
+  "answer": true,
+  "thumb": 0
+ },
+ {
+  "id": 122,
+  "name": "Агент Веном",
+  "nameEn": "Agent Venom",
+  "nameUk": "Агент Веном",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Тандерболты"
+  ],
+  "powers": [
+   "Сила",
+   "Стрельба"
+  ],
+  "species": "Симбиот",
+  "debut": "1962",
+  "debutIndex": 1962,
+  "answer": true,
+  "thumb": 1
+ },
+ {
+  "id": 145,
+  "name": "Адам Уорлок",
+  "nameEn": "Adam Warlock",
+  "nameUk": "Адам Ворлок",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Стражи Галактики"
+  ],
+  "powers": [
+   "Энергия",
+   "Полёт"
+  ],
+  "species": "Инопланетянин",
+  "debut": "1967",
+  "debutIndex": 1967,
+  "answer": true,
+  "thumb": 2
+ },
+ {
+  "id": 13,
+  "name": "Алая ведьма",
+  "nameEn": "Scarlet Witch",
+  "nameUk": "Багряна відьма",
+  "gender": "Женский",
+  "side": "Антигерой",
+  "teams": [
+   "Мстители",
+   "Братство мутантов"
+  ],
+  "powers": [
+   "Магия",
+   "Телекинез"
+  ],
+  "species": "Мутант",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 3
+ },
+ {
+  "id": 116,
+  "name": "Алый паук",
+  "nameEn": "Scarlet Spider",
+  "nameUk": "Багряний павук",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Ловкость"
+  ],
+  "species": "Человек",
+  "debut": "1975",
+  "debutIndex": 1975,
+  "answer": true,
+  "thumb": 4
+ },
+ {
+  "id": 66,
+  "name": "Альтрон",
+  "nameEn": "Ultron",
+  "nameUk": "Альтрон",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Технологии",
+   "Полёт",
+   "Энергия"
+  ],
+  "species": "Андроид",
+  "debut": "1968",
+  "debutIndex": 1968,
+  "answer": true,
+  "thumb": 5
+ },
+ {
+  "id": 124,
+  "name": "Америка Чавес",
+  "nameEn": "America Chavez",
+  "nameUk": "Америка Чавес",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Полёт"
+  ],
+  "species": "Инопланетянин",
+  "debut": "2011",
+  "debutIndex": 2011,
+  "answer": true,
+  "thumb": 6
+ },
+ {
+  "id": 104,
+  "name": "Ангел",
+  "nameEn": "Angel",
+  "nameUk": "Янгол",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Полёт"
+  ],
+  "species": "Мутант",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 7
+ },
+ {
+  "id": 99,
+  "name": "Апокалипсис",
+  "nameEn": "Apocalypse",
+  "nameUk": "Апокаліпсис",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Перевоплощение"
+  ],
+  "species": "Мутант",
+  "debut": "1986",
+  "debutIndex": 1986,
+  "answer": true,
+  "thumb": 8
+ },
+ {
+  "id": 144,
+  "name": "Арним Зола",
+  "nameEn": "Arnim Zola",
+  "nameUk": "Арнім Зола",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Гидра"
+  ],
+  "powers": [
+   "Технологии"
+  ],
+  "species": "Андроид",
+  "debut": "1977",
+  "debutIndex": 1977,
+  "answer": true,
+  "thumb": 9
+ },
+ {
+  "id": 92,
+  "name": "Барон Земо",
+  "nameEn": "Baron Zemo",
+  "nameUk": "Барон Земо",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Тандерболты"
+  ],
+  "powers": [
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1973",
+  "debutIndex": 1973,
+  "answer": true,
+  "thumb": 10
+ },
+ {
+  "id": 110,
+  "name": "Бета Рэй Билл",
+  "nameEn": "Beta Ray Bill",
+  "nameUk": "Бета Рей Білл",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Полёт",
+   "Магия"
+  ],
+  "species": "Инопланетянин",
+  "debut": "1983",
+  "debutIndex": 1983,
+  "answer": true,
+  "thumb": 11
+ },
+ {
+  "id": 132,
+  "name": "Бишоп",
+  "nameEn": "Bishop",
+  "nameUk": "Бішоп",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Поглощение",
+   "Стрельба"
+  ],
+  "species": "Мутант",
+  "debut": "1991",
+  "debutIndex": 1991,
+  "answer": true,
+  "thumb": 12
+ },
+ {
+  "id": 87,
+  "name": "Блэйд",
+  "nameEn": "Blade",
+  "nameUk": "Блейд",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Боевые навыки",
+   "Регенерация"
+  ],
+  "species": "Существо",
+  "debut": "1973",
+  "debutIndex": 1973,
+  "answer": true,
+  "thumb": 13
+ },
+ {
+  "id": 70,
+  "name": "Валькирия",
+  "nameEn": "Valkyrie",
+  "nameUk": "Валькірія",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Полёт"
+  ],
+  "species": "Асгардиец",
+  "debut": "1970",
+  "debutIndex": 1970,
+  "answer": true,
+  "thumb": 14
+ },
+ {
+  "id": 55,
+  "name": "Веном",
+  "nameEn": "Venom",
+  "nameUk": "Веном",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Регенерация"
+  ],
+  "species": "Симбиот",
+  "debut": "1988",
+  "debutIndex": 1988,
+  "answer": true,
+  "thumb": 15
+ },
+ {
+  "id": 15,
+  "name": "Вижн",
+  "nameEn": "Vision",
+  "nameUk": "Віжн",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Полёт",
+   "Энергия",
+   "Технологии"
+  ],
+  "species": "Андроид",
+  "debut": "1968",
+  "debutIndex": 1968,
+  "answer": true,
+  "thumb": 16
+ },
+ {
+  "id": 106,
+  "name": "Воитель",
+  "nameEn": "War Machine",
+  "nameUk": "Воїн",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Технологии",
+   "Полёт",
+   "Стрельба"
+  ],
+  "species": "Человек",
+  "debut": "1979",
+  "debutIndex": 1979,
+  "answer": true,
+  "thumb": 17
+ },
+ {
+  "id": 126,
+  "name": "Вонг",
+  "nameEn": "Wong",
+  "nameUk": "Вонг",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Защитники"
+  ],
+  "powers": [
+   "Магия",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 18
+ },
+ {
+  "id": 139,
+  "name": "Высший Эволюционер",
+  "nameEn": "High Evolutionary",
+  "nameUk": "Вищий Еволюціонер",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Технологии",
+   "Энергия"
+  ],
+  "species": "Человек",
+  "debut": "1966",
+  "debutIndex": 1966,
+  "answer": true,
+  "thumb": 19
+ },
+ {
+  "id": 97,
+  "name": "Галактус",
+  "nameEn": "Galactus",
+  "nameUk": "Ґалактус",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Энергия",
+   "Сила"
+  ],
+  "species": "Существо",
+  "debut": "1966",
+  "debutIndex": 1966,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 40,
+  "name": "Гамбит",
+  "nameEn": "Gambit",
+  "nameUk": "Гамбіт",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Энергия",
+   "Боевые навыки"
+  ],
+  "species": "Мутант",
+  "debut": "1990",
+  "debutIndex": 1990,
+  "answer": true,
+  "thumb": 21
+ },
+ {
+  "id": 21,
+  "name": "Гамора",
+  "nameEn": "Gamora",
+  "nameUk": "Гамора",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Стражи Галактики"
+  ],
+  "powers": [
+   "Боевые навыки",
+   "Сила"
+  ],
+  "species": "Инопланетянин",
+  "debut": "1975",
+  "debutIndex": 1975,
+  "answer": true,
+  "thumb": 22
+ },
+ {
+  "id": 64,
+  "name": "Гвен-паук",
+  "nameEn": "Spider-Gwen",
+  "nameUk": "Гвен-павук",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Ловкость"
+  ],
+  "species": "Человек",
+  "debut": "2014",
+  "debutIndex": 2014,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 23,
+  "name": "Грут",
+  "nameEn": "Groot",
+  "nameUk": "Грут",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Стражи Галактики"
+  ],
+  "powers": [
+   "Сила",
+   "Регенерация"
+  ],
+  "species": "Инопланетянин",
+  "debut": "1960",
+  "debutIndex": 1960,
+  "answer": true,
+  "thumb": 24
+ },
+ {
+  "id": 125,
+  "name": "Девушка-белка",
+  "nameEn": "Squirrel Girl",
+  "nameUk": "Дівчина-білка",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Ловкость"
+  ],
+  "species": "Мутант",
+  "debut": "1992",
+  "debutIndex": 1992,
+  "answer": true,
+  "thumb": 25
+ },
+ {
+  "id": 105,
+  "name": "Джаггернаут",
+  "nameEn": "Juggernaut",
+  "nameUk": "Джаґернаут",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Братство мутантов"
+  ],
+  "powers": [
+   "Сила",
+   "Неуязвимость"
+  ],
+  "species": "Человек",
+  "debut": "1965",
+  "debutIndex": 1965,
+  "answer": true,
+  "thumb": 26
+ },
+ {
+  "id": 50,
+  "name": "Джессика Джонс",
+  "nameEn": "Jessica Jones",
+  "nameUk": "Джессіка Джонс",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Защитники"
+  ],
+  "powers": [
+   "Сила",
+   "Полёт"
+  ],
+  "species": "Человек",
+  "debut": "2001",
+  "debutIndex": 2001,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 34,
+  "name": "Джина Грей",
+  "nameEn": "Jean Grey",
+  "nameUk": "Джина Ґрей",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Телепатия",
+   "Телекинез"
+  ],
+  "species": "Мутант",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 131,
+  "name": "Джубили",
+  "nameEn": "Jubilee",
+  "nameUk": "Джубілі",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Энергия"
+  ],
+  "species": "Мутант",
+  "debut": "1989",
+  "debutIndex": 1989,
+  "answer": true,
+  "thumb": 29
+ },
+ {
+  "id": 29,
+  "name": "Доктор Дум",
+  "nameEn": "Doctor Doom",
+  "nameUk": "Доктор Дум",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Магия",
+   "Технологии"
+  ],
+  "species": "Человек",
+  "debut": "1962",
+  "debutIndex": 1962,
+  "answer": true,
+  "thumb": 30
+ },
+ {
+  "id": 58,
+  "name": "Доктор Осьминог",
+  "nameEn": "Doctor Octopus",
+  "nameUk": "Доктор Восьминіг",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Зловещая шестёрка"
+  ],
+  "powers": [
+   "Технологии"
+  ],
+  "species": "Человек",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 31
+ },
+ {
+  "id": 9,
+  "name": "Доктор Стрэндж",
+  "nameEn": "Doctor Strange",
+  "nameUk": "Доктор Стрендж",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Защитники"
+  ],
+  "powers": [
+   "Магия",
+   "Полёт"
+  ],
+  "species": "Человек",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 150,
+  "name": "Дормамму",
+  "nameEn": "Dormammu",
+  "nameUk": "Дормамму",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Магия",
+   "Энергия"
+  ],
+  "species": "Существо",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 20,
+  "name": "Дракс Разрушитель",
+  "nameEn": "Drax the Destroyer",
+  "nameUk": "Дракс Руйнівник",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Стражи Галактики"
+  ],
+  "powers": [
+   "Сила"
+  ],
+  "species": "Инопланетянин",
+  "debut": "1973",
+  "debutIndex": 1973,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 44,
+  "name": "Дэдпул",
+  "nameEn": "Deadpool",
+  "nameUk": "Дедпул",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Регенерация",
+   "Боевые навыки"
+  ],
+  "species": "Мутант",
+  "debut": "1991",
+  "debutIndex": 1991,
+  "answer": true,
+  "thumb": 35
+ },
+ {
+  "id": 82,
+  "name": "Елена Белова",
+  "nameEn": "Yelena Belova",
+  "nameUk": "Олена Бєлова",
+  "gender": "Женский",
+  "side": "Антигерой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1999",
+  "debutIndex": 1999,
+  "answer": true,
+  "thumb": 36
+ },
+ {
+  "id": 80,
+  "name": "Железное сердце",
+  "nameEn": "Ironheart",
+  "nameUk": "Залізне серце",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Технологии",
+   "Полёт"
+  ],
+  "species": "Человек",
+  "debut": "2016",
+  "debutIndex": 2016,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 53,
+  "name": "Железный кулак",
+  "nameEn": "Iron Fist",
+  "nameUk": "Залізний кулак",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Защитники"
+  ],
+  "powers": [
+   "Боевые навыки",
+   "Энергия"
+  ],
+  "species": "Человек",
+  "debut": "1974",
+  "debutIndex": 1974,
+  "answer": true,
+  "thumb": 38
+ },
+ {
+  "id": 94,
+  "name": "Железный торговец",
+  "nameEn": "Iron Monger",
+  "nameUk": "Залізний торговець",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Технологии",
+   "Сила"
+  ],
+  "species": "Человек",
+  "debut": "1982",
+  "debutIndex": 1982,
+  "answer": true,
+  "thumb": 39
+ },
+ {
+  "id": 4,
+  "name": "Железный человек",
+  "nameEn": "Iron Man",
+  "nameUk": "Залізна людина",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Технологии",
+   "Полёт"
+  ],
+  "species": "Человек",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 40
+ },
+ {
+  "id": 118,
+  "name": "Женщина-паук",
+  "nameEn": "Spider-Woman",
+  "nameUk": "Жінка-павук",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Полёт",
+   "Энергия"
+  ],
+  "species": "Человек",
+  "debut": "1977",
+  "debutIndex": 1977,
+  "answer": true,
+  "thumb": 41
+ },
+ {
+  "id": 77,
+  "name": "Женщина-Халк",
+  "nameEn": "She-Hulk",
+  "nameUk": "Жінка-Галк",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Регенерация"
+  ],
+  "species": "Мутант",
+  "debut": "1980",
+  "debutIndex": 1980,
+  "answer": true,
+  "thumb": 42
+ },
+ {
+  "id": 19,
+  "name": "Звёздный лорд",
+  "nameEn": "Star-Lord",
+  "nameUk": "Зоряний лорд",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Стражи Галактики"
+  ],
+  "powers": [
+   "Стрельба",
+   "Полёт"
+  ],
+  "species": "Человек",
+  "debut": "1976",
+  "debutIndex": 1976,
+  "answer": true,
+  "thumb": 43
+ },
+ {
+  "id": 36,
+  "name": "Зверь",
+  "nameEn": "Beast",
+  "nameUk": "Звір",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс",
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Ловкость"
+  ],
+  "species": "Мутант",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 44
+ },
+ {
+  "id": 57,
+  "name": "Зелёный гоблин",
+  "nameEn": "Green Goblin",
+  "nameUk": "Зелений гоблін",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Полёт",
+   "Технологии"
+  ],
+  "species": "Человек",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 17,
+  "name": "Зимний солдат",
+  "nameEn": "Winter Soldier",
+  "nameUk": "Зимовий солдат",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1941",
+  "debutIndex": 1941,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 149,
+  "name": "Икарис",
+  "nameEn": "Ikaris",
+  "nameUk": "Ікаріс",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Полёт",
+   "Энергия"
+  ],
+  "species": "Инопланетянин",
+  "debut": "1976",
+  "debutIndex": 1976,
+  "answer": true,
+  "thumb": 47
+ },
+ {
+  "id": 102,
+  "name": "Икс-23",
+  "nameEn": "X-23",
+  "nameUk": "Ікс-23",
+  "gender": "Женский",
+  "side": "Антигерой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Регенерация",
+   "Боевые навыки"
+  ],
+  "species": "Мутант",
+  "debut": "2004",
+  "debutIndex": 2004,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 26,
+  "name": "Йонду",
+  "nameEn": "Yondu",
+  "nameUk": "Йонду",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Стражи Галактики"
+  ],
+  "powers": [
+   "Боевые навыки"
+  ],
+  "species": "Инопланетянин",
+  "debut": "1969",
+  "debutIndex": 1969,
+  "answer": true,
+  "thumb": 49
+ },
+ {
+  "id": 141,
+  "name": "Канг Завоеватель",
+  "nameEn": "Kang the Conqueror",
+  "nameUk": "Канґ Завойовник",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Технологии",
+   "Энергия"
+  ],
+  "species": "Человек",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 50
+ },
+ {
+  "id": 1,
+  "name": "Капитан Америка",
+  "nameEn": "Captain America",
+  "nameUk": "Капітан Америка",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1941",
+  "debutIndex": 1941,
+  "answer": true,
+  "thumb": 51
+ },
+ {
+  "id": 12,
+  "name": "Капитан Марвел",
+  "nameEn": "Captain Marvel",
+  "nameUk": "Капітан Марвел",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Полёт",
+   "Энергия"
+  ],
+  "species": "Человек",
+  "debut": "1968",
+  "debutIndex": 1968,
+  "answer": true,
+  "thumb": 52
+ },
+ {
+  "id": 51,
+  "name": "Каратель",
+  "nameEn": "Punisher",
+  "nameUk": "Каратель",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Стрельба",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1974",
+  "debutIndex": 1974,
+  "answer": true,
+  "thumb": 53
+ },
+ {
+  "id": 56,
+  "name": "Карнаж",
+  "nameEn": "Carnage",
+  "nameUk": "Карнаж",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Регенерация"
+  ],
+  "species": "Симбиот",
+  "debut": "1991",
+  "debutIndex": 1991,
+  "answer": true,
+  "thumb": 54
+ },
+ {
+  "id": 127,
+  "name": "Кейбл",
+  "nameEn": "Cable",
+  "nameUk": "Кейбл",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Телекинез",
+   "Стрельба"
+  ],
+  "species": "Мутант",
+  "debut": "1986",
+  "debutIndex": 1986,
+  "answer": true,
+  "thumb": 55
+ },
+ {
+  "id": 81,
+  "name": "Кейт Бишоп",
+  "nameEn": "Kate Bishop",
+  "nameUk": "Кейт Бішоп",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Стрельба",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "2005",
+  "debutIndex": 2005,
+  "answer": true,
+  "thumb": 56
+ },
+ {
+  "id": 67,
+  "name": "Киллмонгер",
+  "nameEn": "Killmonger",
+  "nameUk": "Кіллмонґер",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1973",
+  "debutIndex": 1973,
+  "answer": true,
+  "thumb": 57
+ },
+ {
+  "id": 71,
+  "name": "Кингпин",
+  "nameEn": "Kingpin",
+  "nameUk": "Кінґпін",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1967",
+  "debutIndex": 1967,
+  "answer": true,
+  "thumb": 58
+ },
+ {
+  "id": 43,
+  "name": "Китти Прайд",
+  "nameEn": "Kitty Pryde",
+  "nameUk": "Кітті Прайд",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Проницаемость"
+  ],
+  "species": "Мутант",
+  "debut": "1980",
+  "debutIndex": 1980,
+  "answer": true,
+  "thumb": 59
+ },
+ {
+  "id": 42,
+  "name": "Колосс",
+  "nameEn": "Colossus",
+  "nameUk": "Колос",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Сила",
+   "Неуязвимость"
+  ],
+  "species": "Мутант",
+  "debut": "1975",
+  "debutIndex": 1975,
+  "answer": true,
+  "thumb": 60
+ },
+ {
+  "id": 93,
+  "name": "Красный череп",
+  "nameEn": "Red Skull",
+  "nameUk": "Червоний череп",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Гидра"
+  ],
+  "powers": [
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1941",
+  "debutIndex": 1941,
+  "answer": true,
+  "thumb": 61
+ },
+ {
+  "id": 142,
+  "name": "Кроссбоунс",
+  "nameEn": "Crossbones",
+  "nameUk": "Кросбоунз",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Гидра"
+  ],
+  "powers": [
+   "Боевые навыки",
+   "Стрельба"
+  ],
+  "species": "Человек",
+  "debut": "1989",
+  "debutIndex": 1989,
+  "answer": true,
+  "thumb": 62
+ },
+ {
+  "id": 61,
+  "name": "Крэйвен-охотник",
+  "nameEn": "Kraven the Hunter",
+  "nameUk": "Крейвен-мисливець",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Зловещая шестёрка"
+  ],
+  "powers": [
+   "Боевые навыки",
+   "Чутьё"
+  ],
+  "species": "Человек",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 63
+ },
+ {
+  "id": 37,
+  "name": "Ледяной человек",
+  "nameEn": "Iceman",
+  "nameUk": "Крижана людина",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Лёд"
+  ],
+  "species": "Мутант",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 64
+ },
+ {
+  "id": 28,
+  "name": "Локи",
+  "nameEn": "Loki",
+  "nameUk": "Локі",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Магия",
+   "Иллюзии"
+  ],
+  "species": "Асгардиец",
+  "debut": "1949",
+  "debutIndex": 1949,
+  "answer": true,
+  "thumb": 65
+ },
+ {
+  "id": 54,
+  "name": "Лунный рыцарь",
+  "nameEn": "Moon Knight",
+  "nameUk": "Місячний лицар",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Боевые навыки",
+   "Магия"
+  ],
+  "species": "Человек",
+  "debut": "1975",
+  "debutIndex": 1975,
+  "answer": true,
+  "thumb": 66
+ },
+ {
+  "id": 52,
+  "name": "Люк Кейдж",
+  "nameEn": "Luke Cage",
+  "nameUk": "Люк Кейдж",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Защитники"
+  ],
+  "powers": [
+   "Сила",
+   "Неуязвимость"
+  ],
+  "species": "Человек",
+  "debut": "1972",
+  "debutIndex": 1972,
+  "answer": true,
+  "thumb": 67
+ },
+ {
+  "id": 30,
+  "name": "Магнето",
+  "nameEn": "Magneto",
+  "nameUk": "Магнето",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Братство мутантов",
+   "Люди Икс"
+  ],
+  "powers": [
+   "Магнетизм",
+   "Полёт"
+  ],
+  "species": "Мутант",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 68
+ },
+ {
+  "id": 65,
+  "name": "Майлз Моралес",
+  "nameEn": "Miles Morales",
+  "nameUk": "Майлз Моралес",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Невидимость"
+  ],
+  "species": "Человек",
+  "debut": "2011",
+  "debutIndex": 2011,
+  "answer": true,
+  "thumb": 69
+ },
+ {
+  "id": 25,
+  "name": "Мантис",
+  "nameEn": "Mantis",
+  "nameUk": "Мантіс",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Стражи Галактики"
+  ],
+  "powers": [
+   "Телепатия",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1973",
+  "debutIndex": 1973,
+  "answer": true,
+  "thumb": 70
+ },
+ {
+  "id": 113,
+  "name": "Мар-Велл",
+  "nameEn": "Mar-Vell",
+  "nameUk": "Мар-Велл",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Полёт",
+   "Энергия"
+  ],
+  "species": "Инопланетянин",
+  "debut": "1967",
+  "debutIndex": 1967,
+  "answer": true,
+  "thumb": 71
+ },
+ {
+  "id": 89,
+  "name": "Мария Хилл",
+  "nameEn": "Maria Hill",
+  "nameUk": "Марія Гілл",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Щ.И.Т."
+  ],
+  "powers": [
+   "Стрельба",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "2004",
+  "debutIndex": 2004,
+  "answer": true,
+  "thumb": 72
+ },
+ {
+  "id": 85,
+  "name": "Медуза",
+  "nameEn": "Medusa",
+  "nameUk": "Медуза",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Нелюди"
+  ],
+  "powers": [
+   "Волосы",
+   "Боевые навыки"
+  ],
+  "species": "Нелюдь",
+  "debut": "1965",
+  "debutIndex": 1965,
+  "answer": true,
+  "thumb": 73
+ },
+ {
+  "id": 114,
+  "name": "Мерзость",
+  "nameEn": "Abomination",
+  "nameUk": "Мерзота",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Регенерация"
+  ],
+  "species": "Мутант",
+  "debut": "1967",
+  "debutIndex": 1967,
+  "answer": true,
+  "thumb": 74
+ },
+ {
+  "id": 146,
+  "name": "Мефисто",
+  "nameEn": "Mephisto",
+  "nameUk": "Мефісто",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Магия",
+   "Иллюзии"
+  ],
+  "species": "Существо",
+  "debut": "1968",
+  "debutIndex": 1968,
+  "answer": true,
+  "thumb": 75
+ },
+ {
+  "id": 136,
+  "name": "Меченый",
+  "nameEn": "Bullseye",
+  "nameUk": "Мічений",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Стрельба",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1976",
+  "debutIndex": 1976,
+  "answer": true,
+  "thumb": 76
+ },
+ {
+  "id": 74,
+  "name": "Мисс Марвел",
+  "nameEn": "Ms. Marvel",
+  "nameUk": "Міс Марвел",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Растяжение",
+   "Изменение размера"
+  ],
+  "species": "Нелюдь",
+  "debut": "2013",
+  "debutIndex": 2013,
+  "answer": true,
+  "thumb": 77
+ },
+ {
+  "id": 100,
+  "name": "Мистер Зловещий",
+  "nameEn": "Mister Sinister",
+  "nameUk": "Містер Зловісний",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Перевоплощение",
+   "Технологии"
+  ],
+  "species": "Мутант",
+  "debut": "1987",
+  "debutIndex": 1987,
+  "answer": true,
+  "thumb": 78
+ },
+ {
+  "id": 45,
+  "name": "Мистер Фантастик",
+  "nameEn": "Mister Fantastic",
+  "nameUk": "Містер Фантастик",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Фантастическая четвёрка"
+  ],
+  "powers": [
+   "Растяжение",
+   "Технологии"
+  ],
+  "species": "Человек",
+  "debut": "1961",
+  "debutIndex": 1961,
+  "answer": true,
+  "thumb": 79
+ },
+ {
+  "id": 135,
+  "name": "Мистерио",
+  "nameEn": "Mysterio",
+  "nameUk": "Містеріо",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Зловещая шестёрка"
+  ],
+  "powers": [
+   "Иллюзии",
+   "Технологии"
+  ],
+  "species": "Человек",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 80
+ },
+ {
+  "id": 38,
+  "name": "Мистик",
+  "nameEn": "Mystique",
+  "nameUk": "Містик",
+  "gender": "Женский",
+  "side": "Злодей",
+  "teams": [
+   "Братство мутантов"
+  ],
+  "powers": [
+   "Перевоплощение"
+  ],
+  "species": "Мутант",
+  "debut": "1978",
+  "debutIndex": 1978,
+  "answer": true,
+  "thumb": 81
+ },
+ {
+  "id": 109,
+  "name": "Могучая Тор",
+  "nameEn": "Mighty Thor",
+  "nameUk": "Могутня Тор",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Полёт",
+   "Магия"
+  ],
+  "species": "Человек",
+  "debut": "1962",
+  "debutIndex": 1962,
+  "answer": true,
+  "thumb": 82
+ },
+ {
+  "id": 130,
+  "name": "Морбиус",
+  "nameEn": "Morbius",
+  "nameUk": "Морбіус",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Регенерация",
+   "Полёт"
+  ],
+  "species": "Существо",
+  "debut": "1971",
+  "debutIndex": 1971,
+  "answer": true,
+  "thumb": 83
+ },
+ {
+  "id": 24,
+  "name": "Небула",
+  "nameEn": "Nebula",
+  "nameUk": "Небула",
+  "gender": "Женский",
+  "side": "Антигерой",
+  "teams": [
+   "Стражи Галактики"
+  ],
+  "powers": [
+   "Боевые навыки",
+   "Технологии"
+  ],
+  "species": "Инопланетянин",
+  "debut": "1985",
+  "debutIndex": 1985,
+  "answer": true,
+  "thumb": 84
+ },
+ {
+  "id": 46,
+  "name": "Невидимая леди",
+  "nameEn": "Invisible Woman",
+  "nameUk": "Невидима леді",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Фантастическая четвёрка"
+  ],
+  "powers": [
+   "Невидимость",
+   "Силовые поля"
+  ],
+  "species": "Человек",
+  "debut": "1961",
+  "debutIndex": 1961,
+  "answer": true,
+  "thumb": 85
+ },
+ {
+  "id": 18,
+  "name": "Ник Фьюри",
+  "nameEn": "Nick Fury",
+  "nameUk": "Нік Ф’юрі",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Щ.И.Т."
+  ],
+  "powers": [
+   "Боевые навыки",
+   "Стрельба"
+  ],
+  "species": "Человек",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 86
+ },
+ {
+  "id": 73,
+  "name": "Нова",
+  "nameEn": "Nova",
+  "nameUk": "Нова",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Полёт",
+   "Энергия"
+  ],
+  "species": "Человек",
+  "debut": "2011",
+  "debutIndex": 2011,
+  "answer": true,
+  "thumb": 87
+ },
+ {
+  "id": 140,
+  "name": "Носорог",
+  "nameEn": "Rhino",
+  "nameUk": "Носоріг",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Зловещая шестёрка"
+  ],
+  "powers": [
+   "Сила",
+   "Неуязвимость"
+  ],
+  "species": "Человек",
+  "debut": "1966",
+  "debutIndex": 1966,
+  "answer": true,
+  "thumb": 88
+ },
+ {
+  "id": 39,
+  "name": "Ночной змей",
+  "nameEn": "Nightcrawler",
+  "nameUk": "Нічний змій",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Телепортация",
+   "Ловкость"
+  ],
+  "species": "Мутант",
+  "debut": "1975",
+  "debutIndex": 1975,
+  "answer": true,
+  "thumb": 89
+ },
+ {
+  "id": 83,
+  "name": "Нэмор",
+  "nameEn": "Namor",
+  "nameUk": "Немор",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Защитники"
+  ],
+  "powers": [
+   "Сила",
+   "Полёт",
+   "Вода"
+  ],
+  "species": "Нелюдь",
+  "debut": "1939",
+  "debutIndex": 1939,
+  "answer": true,
+  "thumb": 90
+ },
+ {
+  "id": 72,
+  "name": "Один",
+  "nameEn": "Odin",
+  "nameUk": "Одін",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Магия",
+   "Сила"
+  ],
+  "species": "Асгардиец",
+  "debut": "1962",
+  "debutIndex": 1962,
+  "answer": true,
+  "thumb": 91
+ },
+ {
+  "id": 11,
+  "name": "Оса",
+  "nameEn": "Wasp",
+  "nameUk": "Оса",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Изменение размера",
+   "Полёт"
+  ],
+  "species": "Человек",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 92
+ },
+ {
+  "id": 91,
+  "name": "Пегги Картер",
+  "nameEn": "Peggy Carter",
+  "nameUk": "Пеґґі Картер",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Щ.И.Т."
+  ],
+  "powers": [
+   "Боевые навыки",
+   "Стрельба"
+  ],
+  "species": "Человек",
+  "debut": "1966",
+  "debutIndex": 1966,
+  "answer": true,
+  "thumb": 93
+ },
+ {
+  "id": 134,
+  "name": "Пеппер Поттс",
+  "nameEn": "Pepper Potts",
+  "nameUk": "Пеппер Поттс",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Технологии",
+   "Полёт"
+  ],
+  "species": "Человек",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 94
+ },
+ {
+  "id": 60,
+  "name": "Песочный человек",
+  "nameEn": "Sandman",
+  "nameUk": "Піщана людина",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Зловещая шестёрка"
+  ],
+  "powers": [
+   "Перевоплощение",
+   "Сила"
+  ],
+  "species": "Человек",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 95
+ },
+ {
+  "id": 103,
+  "name": "Полярис",
+  "nameEn": "Polaris",
+  "nameUk": "Полярис",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Магнетизм"
+  ],
+  "species": "Мутант",
+  "debut": "1968",
+  "debutIndex": 1968,
+  "answer": true,
+  "thumb": 96
+ },
+ {
+  "id": 86,
+  "name": "Призрачный гонщик",
+  "nameEn": "Ghost Rider",
+  "nameUk": "Примарний гонщик",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Огонь",
+   "Магия"
+  ],
+  "species": "Существо",
+  "debut": "1972",
+  "debutIndex": 1972,
+  "answer": true,
+  "thumb": 97
+ },
+ {
+  "id": 31,
+  "name": "Профессор Икс",
+  "nameEn": "Professor X",
+  "nameUk": "Професор Ікс",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Телепатия"
+  ],
+  "species": "Мутант",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 98
+ },
+ {
+  "id": 128,
+  "name": "Псайлок",
+  "nameEn": "Psylocke",
+  "nameUk": "Псайлок",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Телепатия",
+   "Боевые навыки"
+  ],
+  "species": "Мутант",
+  "debut": "1976",
+  "debutIndex": 1976,
+  "answer": true,
+  "thumb": 99
+ },
+ {
+  "id": 138,
+  "name": "Пурпурный человек",
+  "nameEn": "Purple Man",
+  "nameUk": "Пурпурова людина",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Телепатия"
+  ],
+  "species": "Человек",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 100
+ },
+ {
+  "id": 22,
+  "name": "Ракета",
+  "nameEn": "Rocket",
+  "nameUk": "Ракета",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Стражи Галактики"
+  ],
+  "powers": [
+   "Технологии",
+   "Стрельба"
+  ],
+  "species": "Существо",
+  "debut": "1976",
+  "debutIndex": 1976,
+  "answer": true,
+  "thumb": 101
+ },
+ {
+  "id": 112,
+  "name": "Робби Рейес",
+  "nameEn": "Robbie Reyes",
+  "nameUk": "Роббі Реєс",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Огонь",
+   "Магия"
+  ],
+  "species": "Существо",
+  "debut": "2014",
+  "debutIndex": 2014,
+  "answer": true,
+  "thumb": 102
+ },
+ {
+  "id": 96,
+  "name": "Ронан Обвинитель",
+  "nameEn": "Ronan the Accuser",
+  "nameUk": "Ронан Обвинувач",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Энергия"
+  ],
+  "species": "Инопланетянин",
+  "debut": "1967",
+  "debutIndex": 1967,
+  "answer": true,
+  "thumb": 103
+ },
+ {
+  "id": 32,
+  "name": "Росомаха",
+  "nameEn": "Wolverine",
+  "nameUk": "Росомаха",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Люди Икс",
+   "Мстители"
+  ],
+  "powers": [
+   "Регенерация",
+   "Боевые навыки"
+  ],
+  "species": "Мутант",
+  "debut": "1974",
+  "debutIndex": 1974,
+  "answer": true,
+  "thumb": 104
+ },
+ {
+  "id": 41,
+  "name": "Роуг",
+  "nameEn": "Rogue",
+  "nameUk": "Роуг",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Сила",
+   "Полёт",
+   "Поглощение"
+  ],
+  "species": "Мутант",
+  "debut": "1981",
+  "debutIndex": 1981,
+  "answer": true,
+  "thumb": 105
+ },
+ {
+  "id": 14,
+  "name": "Ртуть",
+  "nameEn": "Quicksilver",
+  "nameUk": "Ртуть",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Мстители",
+   "Братство мутантов"
+  ],
+  "powers": [
+   "Скорость"
+  ],
+  "species": "Мутант",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 106
+ },
+ {
+  "id": 129,
+  "name": "Саблезубый",
+  "nameEn": "Sabretooth",
+  "nameUk": "Шаблезубий",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Братство мутантов"
+  ],
+  "powers": [
+   "Регенерация",
+   "Чутьё"
+  ],
+  "species": "Мутант",
+  "debut": "1977",
+  "debutIndex": 1977,
+  "answer": true,
+  "thumb": 107
+ },
+ {
+  "id": 98,
+  "name": "Серебряный сёрфер",
+  "nameEn": "Silver Surfer",
+  "nameUk": "Срібний серфер",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Полёт",
+   "Энергия"
+  ],
+  "species": "Инопланетянин",
+  "debut": "1966",
+  "debutIndex": 1966,
+  "answer": true,
+  "thumb": 108
+ },
+ {
+  "id": 148,
+  "name": "Серси",
+  "nameEn": "Sersi",
+  "nameUk": "Серсі",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Магия",
+   "Перевоплощение"
+  ],
+  "species": "Инопланетянин",
+  "debut": "1976",
+  "debutIndex": 1976,
+  "answer": true,
+  "thumb": 109
+ },
+ {
+  "id": 123,
+  "name": "Симбиот Веном",
+  "nameEn": "Venom Symbiote",
+  "nameUk": "Симбіот Веном",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Перевоплощение",
+   "Регенерация"
+  ],
+  "species": "Симбиот",
+  "debut": "1984",
+  "debutIndex": 1984,
+  "answer": true,
+  "thumb": 110
+ },
+ {
+  "id": 62,
+  "name": "Скорпион",
+  "nameEn": "Scorpion",
+  "nameUk": "Скорпіон",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Зловещая шестёрка"
+  ],
+  "powers": [
+   "Сила",
+   "Технологии"
+  ],
+  "species": "Человек",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 111
+ },
+ {
+  "id": 16,
+  "name": "Сокол",
+  "nameEn": "Falcon",
+  "nameUk": "Сокіл",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Полёт",
+   "Технологии"
+  ],
+  "species": "Человек",
+  "debut": "1969",
+  "debutIndex": 1969,
+  "answer": true,
+  "thumb": 112
+ },
+ {
+  "id": 6,
+  "name": "Соколиный глаз",
+  "nameEn": "Hawkeye",
+  "nameUk": "Соколине око",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Стрельба",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 113
+ },
+ {
+  "id": 49,
+  "name": "Сорвиголова",
+  "nameEn": "Daredevil",
+  "nameUk": "Шибайголова",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Защитники"
+  ],
+  "powers": [
+   "Чутьё",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 114
+ },
+ {
+  "id": 119,
+  "name": "Спайдер-Хэм",
+  "nameEn": "Spider-Ham",
+  "nameUk": "Спайдер-Хем",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Ловкость"
+  ],
+  "species": "Существо",
+  "debut": "1983",
+  "debutIndex": 1983,
+  "answer": true,
+  "thumb": 115
+ },
+ {
+  "id": 63,
+  "name": "Стервятник",
+  "nameEn": "Vulture",
+  "nameUk": "Стерв’ятник",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Зловещая шестёрка"
+  ],
+  "powers": [
+   "Полёт",
+   "Технологии"
+  ],
+  "species": "Человек",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 116
+ },
+ {
+  "id": 48,
+  "name": "Существо",
+  "nameEn": "Thing",
+  "nameUk": "Істота",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Фантастическая четвёрка"
+  ],
+  "powers": [
+   "Сила",
+   "Неуязвимость"
+  ],
+  "species": "Существо",
+  "debut": "1961",
+  "debutIndex": 1961,
+  "answer": true,
+  "thumb": 117
+ },
+ {
+  "id": 88,
+  "name": "Таддеус Росс",
+  "nameEn": "Thunderbolt Ross",
+  "nameUk": "Тадеус Росс",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Щ.И.Т."
+  ],
+  "powers": [
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1962",
+  "debutIndex": 1962,
+  "answer": true,
+  "thumb": 118
+ },
+ {
+  "id": 27,
+  "name": "Танос",
+  "nameEn": "Thanos",
+  "nameUk": "Танос",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Чёрный орден"
+  ],
+  "powers": [
+   "Сила",
+   "Энергия"
+  ],
+  "species": "Инопланетянин",
+  "debut": "1973",
+  "debutIndex": 1973,
+  "answer": true,
+  "thumb": 119
+ },
+ {
+  "id": 147,
+  "name": "Таскмастер",
+  "nameEn": "Taskmaster",
+  "nameUk": "Таскмайстер",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Тандерболты"
+  ],
+  "powers": [
+   "Боевые навыки",
+   "Стрельба"
+  ],
+  "species": "Человек",
+  "debut": "1980",
+  "debutIndex": 1980,
+  "answer": true,
+  "thumb": 120
+ },
+ {
+  "id": 2,
+  "name": "Тор",
+  "nameEn": "Thor",
+  "nameUk": "Тор",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Полёт",
+   "Магия"
+  ],
+  "species": "Асгардиец",
+  "debut": "1962",
+  "debutIndex": 1962,
+  "answer": true,
+  "thumb": 121
+ },
+ {
+  "id": 90,
+  "name": "Фил Колсон",
+  "nameEn": "Phil Coulson",
+  "nameUk": "Філ Колсон",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Щ.И.Т."
+  ],
+  "powers": [
+   "Стрельба"
+  ],
+  "species": "Человек",
+  "debut": "2011",
+  "debutIndex": 2011,
+  "answer": true,
+  "thumb": 122
+ },
+ {
+  "id": 79,
+  "name": "Фотон",
+  "nameEn": "Photon",
+  "nameUk": "Фотон",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Энергия",
+   "Полёт"
+  ],
+  "species": "Человек",
+  "debut": "1982",
+  "debutIndex": 1982,
+  "answer": true,
+  "thumb": 123
+ },
+ {
+  "id": 3,
+  "name": "Халк",
+  "nameEn": "Hulk",
+  "nameUk": "Халк",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Регенерация"
+  ],
+  "species": "Мутант",
+  "debut": "1962",
+  "debutIndex": 1962,
+  "answer": true,
+  "thumb": 124
+ },
+ {
+  "id": 69,
+  "name": "Хеймдалль",
+  "nameEn": "Heimdall",
+  "nameUk": "Хеймдалль",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Чутьё",
+   "Сила"
+  ],
+  "species": "Асгардиец",
+  "debut": "1962",
+  "debutIndex": 1962,
+  "answer": true,
+  "thumb": 125
+ },
+ {
+  "id": 68,
+  "name": "Хела",
+  "nameEn": "Hela",
+  "nameUk": "Хела",
+  "gender": "Женский",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Магия",
+   "Сила"
+  ],
+  "species": "Асгардиец",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 126
+ },
+ {
+  "id": 107,
+  "name": "Хэнк Пим",
+  "nameEn": "Hank Pym",
+  "nameUk": "Генк Пім",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Изменение размера",
+   "Технологии"
+  ],
+  "species": "Человек",
+  "debut": "1962",
+  "debutIndex": 1962,
+  "answer": true,
+  "thumb": 127
+ },
+ {
+  "id": 33,
+  "name": "Циклоп",
+  "nameEn": "Cyclops",
+  "nameUk": "Циклоп",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Энергия"
+  ],
+  "species": "Мутант",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 128
+ },
+ {
+  "id": 78,
+  "name": "Часовой",
+  "nameEn": "Sentry",
+  "nameUk": "Вартовий",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Полёт",
+   "Энергия"
+  ],
+  "species": "Человек",
+  "debut": "2000",
+  "debutIndex": 2000,
+  "answer": true,
+  "thumb": 129
+ },
+ {
+  "id": 10,
+  "name": "Человек-муравей",
+  "nameEn": "Ant-Man",
+  "nameUk": "Людина-мураха",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Изменение размера",
+   "Технологии"
+  ],
+  "species": "Человек",
+  "debut": "1979",
+  "debutIndex": 1979,
+  "answer": true,
+  "thumb": 130
+ },
+ {
+  "id": 7,
+  "name": "Человек-паук",
+  "nameEn": "Spider-Man",
+  "nameUk": "Людина-павук",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Ловкость"
+  ],
+  "species": "Человек",
+  "debut": "1962",
+  "debutIndex": 1962,
+  "answer": true,
+  "thumb": 131
+ },
+ {
+  "id": 115,
+  "name": "Человек-паук 2099",
+  "nameEn": "Spider-Man 2099",
+  "nameUk": "Людина-павук 2099",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Ловкость"
+  ],
+  "species": "Мутант",
+  "debut": "1992",
+  "debutIndex": 1992,
+  "answer": true,
+  "thumb": 132
+ },
+ {
+  "id": 120,
+  "name": "Человек-паук Индия",
+  "nameEn": "Spider-Man India",
+  "nameUk": "Людина-павук Індія",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Ловкость"
+  ],
+  "species": "Человек",
+  "debut": "2004",
+  "debutIndex": 2004,
+  "answer": true,
+  "thumb": 133
+ },
+ {
+  "id": 121,
+  "name": "Человек-паук Нуар",
+  "nameEn": "Spider-Man Noir",
+  "nameUk": "Людина-павук Нуар",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Ловкость",
+   "Стрельба"
+  ],
+  "species": "Человек",
+  "debut": "2009",
+  "debutIndex": 2009,
+  "answer": true,
+  "thumb": 134
+ },
+ {
+  "id": 47,
+  "name": "Человек-факел",
+  "nameEn": "Human Torch",
+  "nameUk": "Людина-смолоскип",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Фантастическая четвёрка"
+  ],
+  "powers": [
+   "Огонь",
+   "Полёт"
+  ],
+  "species": "Человек",
+  "debut": "1961",
+  "debutIndex": 1961,
+  "answer": true,
+  "thumb": 135
+ },
+ {
+  "id": 5,
+  "name": "Чёрная вдова",
+  "nameEn": "Black Widow",
+  "nameUk": "Чорна вдова",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители",
+   "Щ.И.Т."
+  ],
+  "powers": [
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 136
+ },
+ {
+  "id": 137,
+  "name": "Чёрная кошка",
+  "nameEn": "Black Cat",
+  "nameUk": "Чорна кішка",
+  "gender": "Женский",
+  "side": "Антигерой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Ловкость",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1979",
+  "debutIndex": 1979,
+  "answer": true,
+  "thumb": 137
+ },
+ {
+  "id": 8,
+  "name": "Чёрная пантера",
+  "nameEn": "Black Panther",
+  "nameUk": "Чорна пантера",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Сила",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1966",
+  "debutIndex": 1966,
+  "answer": true,
+  "thumb": 138
+ },
+ {
+  "id": 84,
+  "name": "Чёрный Гром",
+  "nameEn": "Black Bolt",
+  "nameUk": "Чорний Грім",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Нелюди"
+  ],
+  "powers": [
+   "Энергия",
+   "Полёт"
+  ],
+  "species": "Нелюдь",
+  "debut": "1965",
+  "debutIndex": 1965,
+  "answer": true,
+  "thumb": 139
+ },
+ {
+  "id": 75,
+  "name": "Шан-Чи",
+  "nameEn": "Shang-Chi",
+  "nameUk": "Шан-Чі",
+  "gender": "Мужской",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1973",
+  "debutIndex": 1973,
+  "answer": true,
+  "thumb": 140
+ },
+ {
+  "id": 117,
+  "name": "Шёлк",
+  "nameEn": "Silk",
+  "nameUk": "Шовк",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Ловкость"
+  ],
+  "species": "Человек",
+  "debut": "2014",
+  "debutIndex": 2014,
+  "answer": true,
+  "thumb": 141
+ },
+ {
+  "id": 35,
+  "name": "Шторм",
+  "nameEn": "Storm",
+  "nameUk": "Шторм",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Люди Икс"
+  ],
+  "powers": [
+   "Погода",
+   "Полёт"
+  ],
+  "species": "Мутант",
+  "debut": "1975",
+  "debutIndex": 1975,
+  "answer": true,
+  "thumb": 142
+ },
+ {
+  "id": 108,
+  "name": "Шури",
+  "nameEn": "Shuri",
+  "nameUk": "Шурі",
+  "gender": "Женский",
+  "side": "Герой",
+  "teams": [
+   "Мстители"
+  ],
+  "powers": [
+   "Технологии",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "2005",
+  "debutIndex": 2005,
+  "answer": true,
+  "thumb": 143
+ },
+ {
+  "id": 95,
+  "name": "Эбони Мо",
+  "nameEn": "Ebony Maw",
+  "nameUk": "Ебоні Мо",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Чёрный орден"
+  ],
+  "powers": [
+   "Телекинез",
+   "Телепатия"
+  ],
+  "species": "Инопланетянин",
+  "debut": "2013",
+  "debutIndex": 2013,
+  "answer": true,
+  "thumb": 144
+ },
+ {
+  "id": 111,
+  "name": "Эй-Джент",
+  "nameEn": "U.S. Agent",
+  "nameUk": "Ю. Ес. Ейджент",
+  "gender": "Мужской",
+  "side": "Антигерой",
+  "teams": [
+   "Тандерболты"
+  ],
+  "powers": [
+   "Сила",
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1986",
+  "debutIndex": 1986,
+  "answer": true,
+  "thumb": 145
+ },
+ {
+  "id": 76,
+  "name": "Электра",
+  "nameEn": "Elektra",
+  "nameUk": "Електра",
+  "gender": "Женский",
+  "side": "Антигерой",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Боевые навыки"
+  ],
+  "species": "Человек",
+  "debut": "1981",
+  "debutIndex": 1981,
+  "answer": true,
+  "thumb": 146
+ },
+ {
+  "id": 59,
+  "name": "Электро",
+  "nameEn": "Electro",
+  "nameUk": "Електро",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Зловещая шестёрка"
+  ],
+  "powers": [
+   "Энергия",
+   "Полёт"
+  ],
+  "species": "Человек",
+  "debut": "1964",
+  "debutIndex": 1964,
+  "answer": true,
+  "thumb": 147
+ },
+ {
+  "id": 101,
+  "name": "Эмма Фрост",
+  "nameEn": "Emma Frost",
+  "nameUk": "Емма Фрост",
+  "gender": "Женский",
+  "side": "Антигерой",
+  "teams": [
+   "Люди Икс",
+   "Клуб Адского пламени"
+  ],
+  "powers": [
+   "Телепатия",
+   "Неуязвимость"
+  ],
+  "species": "Мутант",
+  "debut": "1980",
+  "debutIndex": 1980,
+  "answer": true,
+  "thumb": 148
+ },
+ {
+  "id": 133,
+  "name": "Ящер",
+  "nameEn": "Lizard",
+  "nameUk": "Ящір",
+  "gender": "Мужской",
+  "side": "Злодей",
+  "teams": [
+   "Одиночка"
+  ],
+  "powers": [
+   "Сила",
+   "Регенерация"
+  ],
+  "species": "Существо",
+  "debut": "1963",
+  "debutIndex": 1963,
+  "answer": true,
+  "thumb": 149
+ }
+]

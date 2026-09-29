@@ -882,6 +882,7 @@ const ui = {
   'dash.openProfile': { ru: 'Открыть профиль', uk: 'Відкрити профіль', en: 'Open profile' },
   'dash.anime': { ru: 'Аниме', uk: 'Аніме', en: 'Anime' },
   'dash.games': { ru: 'Игры', uk: 'Ігри', en: 'Games' },
+  'dash.screen': { ru: 'Кино и сериалы', uk: 'Кіно та серіали', en: 'Movies and series' },
   'dash.sport': { ru: 'Спорт', uk: 'Спорт', en: 'Sport' },
   'dash.characters': { ru: 'Персонажей: {count}', uk: 'Персонажів: {count}', en: 'Characters: {count}' },
   'dash.heroes': { ru: 'Героев: {count}', uk: 'Героїв: {count}', en: 'Heroes: {count}' },

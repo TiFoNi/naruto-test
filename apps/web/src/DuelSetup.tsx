@@ -14,6 +14,7 @@ const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
   { id: 'manga', title: 'dash.mangaTitle' },
   { id: 'games', title: 'dash.games' },
+  { id: 'screen', title: 'dash.screen' },
   { id: 'sport', title: 'dash.sport' },
 ]
 
