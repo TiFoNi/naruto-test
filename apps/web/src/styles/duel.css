@@ -1596,6 +1596,18 @@
   font-weight: 700;
 }
 
+.who-pick-warn {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-bottom: 16px;
+}
+
+.who-pick-warn span {
+  color: var(--text-3);
+  font-weight: 500;
+}
+
 .who-modal button.primary,
 .who-modal button.ghost {
   width: 100%;

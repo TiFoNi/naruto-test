@@ -313,8 +313,10 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onStrike, onA
               <img className="who-modal-pic" src={fullUrl(game.id, picked.id, picked.image)} alt="" draggable={false} />
               <b>{name(picked)}</b>
             </header>
-            <p className="who-warn">{t('who.pickAsk')}</p>
-            <p className="muted small">{t('who.pickWarn')}</p>
+            <div className="who-warn who-pick-warn">
+              <b>{t('who.pickAsk')}</b>
+              <span>{t('who.pickWarn')}</span>
+            </div>
             <div className="who-ask">
               <button
                 type="button"
