@@ -24,15 +24,15 @@ const font = () => {
 
 const HAZE = Buffer.from(
   `<svg width="${OG_SIZE.width}" height="${OG_SIZE.height}"><defs><linearGradient id="m" x1="0" y1="0" x2="1" y2="0">` +
-    '<stop offset="0%" stop-color="#fff" stop-opacity="1"/><stop offset="42%" stop-color="#fff" stop-opacity="1"/>' +
-    '<stop offset="72%" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>' +
+    '<stop offset="0%" stop-color="#fff" stop-opacity="1"/><stop offset="28%" stop-color="#fff" stop-opacity="1"/>' +
+    '<stop offset="56%" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>' +
     `<rect width="${OG_SIZE.width}" height="${OG_SIZE.height}" fill="url(#m)"/></svg>`,
 )
 
 const SHADE = Buffer.from(
   `<svg width="${OG_SIZE.width}" height="${OG_SIZE.height}"><defs><linearGradient id="s" x1="0" y1="0" x2="1" y2="0">` +
-    '<stop offset="0%" stop-color="#05070a" stop-opacity="0.93"/><stop offset="38%" stop-color="#05070a" stop-opacity="0.82"/>' +
-    '<stop offset="66%" stop-color="#05070a" stop-opacity="0.18"/><stop offset="100%" stop-color="#05070a" stop-opacity="0.05"/>' +
+    '<stop offset="0%" stop-color="#05070a" stop-opacity="0.92"/><stop offset="30%" stop-color="#05070a" stop-opacity="0.8"/>' +
+    '<stop offset="55%" stop-color="#05070a" stop-opacity="0.16"/><stop offset="100%" stop-color="#05070a" stop-opacity="0.04"/>' +
     `</linearGradient></defs><rect width="${OG_SIZE.width}" height="${OG_SIZE.height}" fill="url(#s)"/></svg>`,
 )
 
