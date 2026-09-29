@@ -2,7 +2,7 @@ import { gameMeta } from '@/src/games/meta.server'
 import { SITE } from '@/src/brand'
 import { cardUrl } from '@/src/pics'
 import ui, { type Lang } from '@/src/i18n/ui'
-import { OG_SIZE, asPng, ogCard } from '@/src/og'
+import { OG_SIZE, asPng, ogBackground, ogCard } from '@/src/og'
 
 export const size = OG_SIZE
 export const contentType = 'image/png'
@@ -14,6 +14,11 @@ export default async function Image({ params }: Params) {
   const { lang, game: id } = await params
   const at = (['ru', 'uk', 'en'] as const).includes(lang as Lang) ? (lang as Lang) : 'en'
   const game = (await gameMeta()).find((one) => one.id === id)
+  const background = game ? await ogBackground(game.id) : null
+  if (background && game) {
+    return ogCard({ eyebrow: ui['daily.dashTitle'][at], title: game.label[at], accent: game.accent, background })
+  }
+
   const sources = (game?.featured ?? []).slice(0, 3).map(({ id: face, image }) => {
     const url = cardUrl(game!.id, face, image)
     return url.startsWith('http') ? url : `${SITE}${url}`

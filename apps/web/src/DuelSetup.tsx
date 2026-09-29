@@ -8,6 +8,7 @@ import type { Category, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
 import Share from './Share'
+import WorldMark from './WorldMark'
 import type { DuelView } from './useDuel'
 import { CopyIcon, DiceIcon, ExitIcon, LinkIcon, SwordsIcon } from './icons'
 
@@ -172,7 +173,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                   disabled={!host || busy}
                   onClick={() => onSetup({ game: one.id, mode: duelMode(one, duel.mode) })}
                 >
-                  <i aria-hidden />
+                  <WorldMark game={one.id} className="duel-world-mark" />
                   <span>{l(one.label)}</span>
                 </button>
               ))}

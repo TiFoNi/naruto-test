@@ -7512,3 +7512,19 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   transform: translateX(-50%);
   animation: fade-in 0.14s ease;
 }
+
+.has-logo {
+  padding: 0;
+  overflow: hidden;
+  background: var(--card-2);
+}
+
+.has-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.world-tag.has-logo {
+  background: var(--card-2) !important;
+}

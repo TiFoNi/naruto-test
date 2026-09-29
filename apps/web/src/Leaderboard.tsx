@@ -5,6 +5,7 @@ import { useEffect, useState, type CSSProperties } from 'react'
 import { api } from './api'
 import { GAMES, gameById } from './games'
 import type { Category, GameId } from './games/types'
+import WorldMark from './WorldMark'
 import { useI18n, type UiKey } from './i18n'
 import { MODES, type ModeId } from './modes'
 import { useNavigate, useHref } from './router'
@@ -172,11 +173,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
             label: l(g.label),
             accent: g.accent,
             hint: `${t('lb.world').toUpperCase()} · ${t(CATEGORY_LABEL[g.category])}`,
-            media: (
-              <span className="picker-mark" style={{ '--tab-accent': g.accent } as CSSProperties} aria-hidden>
-                {l(g.label).charAt(0)}
-              </span>
-            ),
+            media: <WorldMark game={g.id} className="picker-mark" style={{ '--tab-accent': g.accent } as CSSProperties} />,
           }))}
         />
         <Picker

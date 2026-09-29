@@ -12,6 +12,7 @@ import PhraseMode from './PhraseMode'
 import { CalendarIcon, InfinityIcon, MedalIcon } from './icons'
 
 import type { Game } from './games/types'
+import WorldMark from './WorldMark'
 import { useI18n } from './i18n'
 import { MODES, type ModeId } from './modes'
 import { useHref } from './router'
@@ -28,9 +29,7 @@ export default function GameView({ game, mode, daily }: { game: Game; mode: Mode
       <header className="game-head">
         <div className="game-title">
           <div className="game-name">
-            <span className="game-mark" aria-hidden>
-              {l(game.label).charAt(0)}
-            </span>
+            <WorldMark game={game.id} className="game-mark" />
             <h1>{l(game.label)}</h1>
           </div>
         </div>

@@ -15,6 +15,19 @@ const font = () => {
   return cached
 }
 
+export async function ogBackground(game: string) {
+  for (const ext of ['jpg', 'jpeg', 'png', 'webp']) {
+    try {
+      const body = await readFile(path.join(process.cwd(), 'src', 'og-bg', `${game}.${ext}`))
+      const png = await sharp(body).resize(OG_SIZE.width, OG_SIZE.height, { fit: 'cover' }).png().toBuffer()
+      return `data:image/png;base64,${png.toString('base64')}`
+    } catch {
+      /* немає такого файлу — пробуємо наступне розширення */
+    }
+  }
+  return null
+}
+
 export async function asPng(url: string) {
   try {
     const res = await fetch(url)
@@ -41,11 +54,12 @@ type Card = {
   tags?: string[]
   accent?: string
   faces?: string[]
+  background?: string | null
 }
 
-export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.accent, faces = [] }: Card) {
+export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.accent, faces = [], background }: Card) {
   const data = await font().catch(() => null)
-  const room = faces.length ? 540 : 1040
+  const room = background ? 600 : faces.length ? 540 : 1040
 
   return new ImageResponse(
     (
@@ -59,11 +73,25 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
           padding: '0 80px',
           position: 'relative',
           background: '#0d0f12',
-          backgroundImage: `radial-gradient(900px 500px at 82% -10%, ${accent}44, transparent 70%)`,
+          backgroundImage: background
+            ? `url(${background})`
+            : `radial-gradient(900px 500px at 82% -10%, ${accent}44, transparent 70%)`,
+          backgroundSize: '1200px 630px',
           color: '#eef0f3',
           fontFamily: 'Manrope',
         }}
       >
+        {background && (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              backgroundImage: 'linear-gradient(100deg, rgba(8,10,13,0.94) 0%, rgba(8,10,13,0.86) 34%, rgba(8,10,13,0.1) 62%, rgba(8,10,13,0) 100%)',
+            }}
+          />
+        )}
+
         <div style={{ position: 'absolute', top: 64, left: 80, display: 'flex', alignItems: 'center', gap: 18 }}>
           <div
             style={{

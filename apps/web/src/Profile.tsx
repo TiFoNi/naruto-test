@@ -5,6 +5,7 @@ import { useAuth } from './auth'
 import { api } from './api'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
+import WorldMark from './WorldMark'
 import { useI18n } from './i18n'
 import Quests, { type Level } from './Quests'
 import type { UiKey } from './i18n/ui'
@@ -361,15 +362,11 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                       const game = GAMES.find((g) => g.id === row.game)
                       return (
                         <li key={row.game} className={row.solved ? '' : 'is-empty'}>
-                          <span
+                          <WorldMark
+                            game={row.game as GameId}
                             className="world-tag"
-                            style={{
-                              background: game?.accent ?? 'var(--accent)',
-                            }}
-                            aria-hidden
-                          >
-                            {l(game?.label ?? { ru: '', uk: '', en: '' }).slice(0, 2)}
-                          </span>
+                            style={{ background: game?.accent ?? 'var(--accent)' }}
+                          />
                           <span className="world-name">{game ? l(game.label) : row.game}</span>
                           <span className="world-count">
                             <b>{row.solved}</b> / {row.pool} · {percent(row.solved, row.pool)}%
