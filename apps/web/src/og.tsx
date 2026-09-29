@@ -15,11 +15,38 @@ const font = () => {
   return cached
 }
 
+const HAZE = Buffer.from(
+  `<svg width="${OG_SIZE.width}" height="${OG_SIZE.height}"><defs><linearGradient id="m" x1="0" y1="0" x2="1" y2="0">` +
+    '<stop offset="0%" stop-color="#fff" stop-opacity="1"/><stop offset="42%" stop-color="#fff" stop-opacity="1"/>' +
+    '<stop offset="72%" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>' +
+    `<rect width="${OG_SIZE.width}" height="${OG_SIZE.height}" fill="url(#m)"/></svg>`,
+)
+
+const SHADE = Buffer.from(
+  `<svg width="${OG_SIZE.width}" height="${OG_SIZE.height}"><defs><linearGradient id="s" x1="0" y1="0" x2="1" y2="0">` +
+    '<stop offset="0%" stop-color="#05070a" stop-opacity="0.93"/><stop offset="38%" stop-color="#05070a" stop-opacity="0.82"/>' +
+    '<stop offset="66%" stop-color="#05070a" stop-opacity="0.18"/><stop offset="100%" stop-color="#05070a" stop-opacity="0.05"/>' +
+    `</linearGradient></defs><rect width="${OG_SIZE.width}" height="${OG_SIZE.height}" fill="url(#s)"/></svg>`,
+)
+
 export async function ogBackground(game: string) {
   for (const ext of ['jpg', 'jpeg', 'png', 'webp']) {
     try {
       const body = await readFile(path.join(process.cwd(), 'src', 'og-bg', `${game}.${ext}`))
-      const png = await sharp(body).resize(OG_SIZE.width, OG_SIZE.height, { fit: 'cover' }).png().toBuffer()
+      const sharp_ = sharp(body).resize(OG_SIZE.width, OG_SIZE.height, { fit: 'cover' })
+      const base = await sharp_.png().toBuffer()
+      const soft = await sharp(base)
+        .blur(22)
+        .composite([{ input: HAZE, blend: 'dest-in' }])
+        .png()
+        .toBuffer()
+      const png = await sharp(base)
+        .composite([
+          { input: soft, blend: 'over' },
+          { input: SHADE, blend: 'over' },
+        ])
+        .png()
+        .toBuffer()
       return `data:image/png;base64,${png.toString('base64')}`
     } catch {
       /* немає такого файлу — пробуємо наступне розширення */
@@ -81,17 +108,6 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
           fontFamily: 'Manrope',
         }}
       >
-        {background && (
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              display: 'flex',
-              backgroundImage: 'linear-gradient(100deg, rgba(8,10,13,0.94) 0%, rgba(8,10,13,0.86) 34%, rgba(8,10,13,0.1) 62%, rgba(8,10,13,0) 100%)',
-            }}
-          />
-        )}
-
         <div style={{ position: 'absolute', top: 64, left: 80, display: 'flex', alignItems: 'center', gap: 18 }}>
           <div
             style={{
