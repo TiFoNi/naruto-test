@@ -5,12 +5,15 @@ const remote = process.env.NEXT_PUBLIC_PICS_URL
 
 const fullBase = remote ? `${remote.replace(/\/+$/, '')}/` : local
 
+const build = process.env.NEXT_PUBLIC_PICS_VER
+
 export const CARD = { width: 288, height: 384 }
 
 export const MINI = { width: 168, height: 224 }
 
-export const atlasUrl = (game: GameId) => `${fullBase}${GAME_SPECS[game].images}/thumbs.webp`
-const tag = (version?: string) => (version ? `?v=${version}` : '')
+const tag = (version?: string) => (version ? `?v=${version}` : build ? `?v=${build}` : '')
+
+export const atlasUrl = (game: GameId) => `${fullBase}${GAME_SPECS[game].images}/thumbs.webp${tag()}`
 
 export const fullUrl = (game: GameId, id: number, version?: string) =>
   `${fullBase}${GAME_SPECS[game].images}/full/${id}.webp${tag(version)}`
