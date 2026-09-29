@@ -149,7 +149,7 @@ export function useDuel(code: string) {
     busy: busy || cooling,
     pending,
     serverNow: () => Date.now() + offset.current,
-    ready: () => send({ action: 'ready' }),
+    ready: (want = true) => send({ action: 'ready', ready: want }),
     setup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number }) =>
       send({
         action: 'setup',

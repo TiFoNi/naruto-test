@@ -286,16 +286,16 @@ async function beginRound(duel: DuelDoc, from: DuelDoc['status']) {
   return updated ?? duel
 }
 
-export async function setReady(duel: DuelDoc, userId: ObjectId) {
+export async function setReady(duel: DuelDoc, userId: ObjectId, ready = true) {
   const index = duel.players.findIndex((p) => p.userId.equals(userId))
   if (index < 0 || duel.status !== 'lobby' || !duel.game || !duel.mode) return duel
   const withReady = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: 'lobby' },
-    { $set: { [`players.${index}.ready`]: true } },
+    { $set: { [`players.${index}.ready`]: ready } },
     { returnDocument: 'after' },
   )
   if (!withReady) return duel
-  if (withReady.players.length < 2 || !withReady.players.every((p) => p.ready)) return withReady
+  if (!ready || withReady.players.length < 2 || !withReady.players.every((p) => p.ready)) return withReady
   return beginRound(withReady, 'lobby')
 }
 

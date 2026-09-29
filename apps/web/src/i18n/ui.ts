@@ -551,6 +551,7 @@ const ui = {
   'duel.copy': { ru: 'Копировать', uk: 'Копіювати', en: 'Copy' },
   'duel.copied': { ru: 'Скопировано', uk: 'Скопійовано', en: 'Copied' },
   'duel.ready': { ru: 'Готов', uk: 'Готовий', en: "I'm ready" },
+  'duel.readyCancel': { ru: 'Отменить готовность', uk: 'Скасувати готовність', en: 'Cancel ready' },
   'duel.readyWait': { ru: 'Ждём соперника…', uk: 'Чекаємо суперника…', en: 'Waiting for the rival…' },
   'duel.isReady': { ru: 'готов', uk: 'готовий', en: 'ready' },
   'duel.waitingRival': { ru: 'Соперник ещё не зашёл', uk: 'Суперник ще не зайшов', en: 'No rival yet' },

@@ -30,7 +30,7 @@ type Props = {
   link: string
   onSetup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number }) => void
   onInvite: (to: string) => void
-  onReady: () => void
+  onReady: (want?: boolean) => void
   onLeave: () => void
 }
 
@@ -371,10 +371,15 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
               <em>{t('duel.rounds', { count: duel.best })}</em>
               <em>{t('duel.timeShort', { time: timeLabel(duel.seconds) })}</em>
             </div>
-            <button type="button" className="primary big" disabled={busy || !rival || duel.you?.ready} onClick={onReady}>
+            <button type="button" className="primary big" disabled={busy || !rival || duel.you?.ready} onClick={() => onReady(true)}>
               <SwordsIcon />
               {duel.you?.ready ? t('duel.readyWait') : t('duel.ready')}
             </button>
+            {duel.you?.ready && (
+              <button type="button" className="ghost duel-unready" disabled={busy} onClick={() => onReady(false)}>
+                {t('duel.readyCancel')}
+              </button>
+            )}
             <p className="muted small">{rival ? t('duel.readyHint') : t('duel.readyLocked')}</p>
           </section>
         </aside>
