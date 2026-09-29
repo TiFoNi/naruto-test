@@ -50,7 +50,8 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
   const verdict: UiKey = won ? 'result.won' : skipped ? 'result.skipped' : 'result.lost'
   const eyebrow = t(verdict).replace(/…$/, '')
 
-  const shareText = t(won ? 'share.resultWon' : 'share.resultLost', {
+  const shareKey = daily ? (won ? 'share.dailyWon' : 'share.dailyLost') : won ? 'share.resultWon' : 'share.resultLost'
+  const shareText = t(shareKey, {
     name: name(answer),
     tries: t('share.tries', { count: guesses }),
     game: l(game.label),

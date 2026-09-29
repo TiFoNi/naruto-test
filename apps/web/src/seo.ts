@@ -76,11 +76,14 @@ export async function playMetadata(lang: Lang, gameId: string, modeId: string, d
   const description = `${game.description[lang]} ${game.count} ${plural(lang, game.count, unit)}, ${TAIL[lang]}`
   const path = `/${lang}/play/${gameId}/${modeId}${daily ? '/daily' : ''}`
 
+  const short = `${game.count} ${plural(lang, game.count, unit)} · ${MODE_LABEL(lang, modeId)}${daily ? DAILY[lang] : ''}`
+
   return {
     title,
     description,
     alternates: alternates(path),
     ...(daily ? { robots: { index: false } } : {}),
-    openGraph: { title, description, url: `${SITE}${path}`, type: 'website' },
+    openGraph: { title, description: short, url: `${SITE}${path}`, type: 'website' },
+    twitter: { card: 'summary_large_image' },
   }
 }

@@ -67,7 +67,8 @@ export default function Share({ text, url, label, compact }: Props) {
   }
 
   const start = async () => {
-    if (navigator.share) {
+    const phone = window.matchMedia('(pointer: coarse)').matches
+    if (phone && navigator.share) {
       try {
         await navigator.share({ text, url })
         return

@@ -424,6 +424,7 @@ const ui = {
   'daily.variant': { ru: 'Вариант игры', uk: 'Варіант гри', en: 'Game type' },
   'daily.endless': { ru: 'Бесконечный', uk: 'Нескінченний', en: 'Endless' },
   'daily.daily': { ru: 'Ежедневный', uk: 'Щоденний', en: 'Daily' },
+  'daily.ogNote': { ru: 'Одна загадка в день — успей разгадать', uk: 'Одна загадка на день — встигни розгадати', en: 'One puzzle a day — solve it before midnight' },
   'daily.nextIn': { ru: 'Новая загадка через', uk: 'Нова загадка через', en: 'Next puzzle in' },
   'daily.playEndless': { ru: 'Бесконечный режим', uk: 'Нескінченний режим', en: 'Endless mode' },
   'daily.yesterday': { ru: 'Вчера был:', uk: 'Учора був:', en: 'Yesterday:' },
@@ -503,6 +504,16 @@ const ui = {
     ru: 'Не угадал {name} в NandaGuessr — {game}, {mode}. Попробуй ты!',
     uk: 'Не вгадав {name} у NandaGuessr — {game}, {mode}. Спробуй ти!',
     en: 'Missed {name} on NandaGuessr — {game}, {mode}. Your turn!',
+  },
+  'share.dailyWon': {
+    ru: 'Разгадал загадку дня в NandaGuessr за {tries} — {game}, {mode}. А ты?',
+    uk: 'Розгадав загадку дня в NandaGuessr за {tries} — {game}, {mode}. А ти?',
+    en: 'Solved today\u2019s NandaGuessr puzzle in {tries} — {game}, {mode}. Your turn?',
+  },
+  'share.dailyLost': {
+    ru: 'Не разгадал загадку дня в NandaGuessr — {game}, {mode}. Попробуй ты!',
+    uk: 'Не розгадав загадку дня в NandaGuessr — {game}, {mode}. Спробуй ти!',
+    en: 'Missed today\u2019s NandaGuessr puzzle — {game}, {mode}. Your turn!',
   },
   'share.tries': { ru: '{count} попыток', uk: '{count} спроб', en: '{count} tries' },
   'share.duel': {
