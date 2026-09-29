@@ -95,7 +95,7 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
   const data = await font().catch(() => null)
   const room = background ? 460 : faces.length ? 450 : 1040
 
-  return new ImageResponse(
+  const card = new ImageResponse(
     (
       <div
         style={{
@@ -197,4 +197,13 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
         : undefined,
     },
   )
+
+  const small = await sharp(Buffer.from(await card.arrayBuffer())).jpeg({ quality: 82, mozjpeg: true }).toBuffer()
+
+  return new Response(new Uint8Array(small), {
+    headers: {
+      'content-type': 'image/jpeg',
+      'cache-control': 'public, max-age=86400, s-maxage=604800, stale-while-revalidate=604800',
+    },
+  })
 }

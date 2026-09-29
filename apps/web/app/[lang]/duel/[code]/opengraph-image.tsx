@@ -5,7 +5,7 @@ import ui, { type Lang } from '@/src/i18n/ui'
 import { OG_SIZE, ogCard } from '@/src/og'
 
 export const size = OG_SIZE
-export const contentType = 'image/png'
+export const contentType = 'image/jpeg'
 export const alt = 'NandaGuessr'
 
 type Params = { params: Promise<{ lang: string; code: string }> }
