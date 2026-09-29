@@ -6,11 +6,18 @@ import { BRAND } from './brand'
 
 export const OG_SIZE = { width: 1200, height: 630 }
 
-let cached: Promise<Buffer[]> | null = null
+const FILES = [
+  { name: 'Manrope', file: 'manrope-latin.ttf' },
+  { name: 'ManropeCyr', file: 'manrope-cyrillic.ttf' },
+  { name: 'Unbounded', file: 'unbounded-latin.ttf' },
+  { name: 'UnboundedCyr', file: 'unbounded-cyrillic.ttf' },
+] as const
+
+let cached: Promise<{ name: string; data: Buffer }[]> | null = null
 
 const font = () => {
   cached ??= Promise.all(
-    ['manrope-latin.ttf', 'manrope-cyrillic.ttf'].map((file) => readFile(path.join(process.cwd(), 'src', 'fonts', file))),
+    FILES.map(async ({ name, file }) => ({ name, data: await readFile(path.join(process.cwd(), 'src', 'fonts', file)) })),
   )
   return cached
 }
@@ -68,10 +75,10 @@ export async function asPng(url: string) {
 
 const headline = (title: string, narrow: boolean) => {
   const longest = Math.max(...title.split(/\s+/).map((word) => word.length))
-  const limit = narrow ? 9 : 14
-  if (title.length > 34 || longest > limit + 3) return 48
-  if (title.length > 20 || longest > limit) return 60
-  return 84
+  const limit = narrow ? 8 : 12
+  if (title.length > 30 || longest > limit + 3) return 40
+  if (title.length > 18 || longest > limit) return 50
+  return 64
 }
 
 type Card = {
@@ -105,7 +112,7 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
             : `radial-gradient(900px 500px at 82% -10%, ${accent}44, transparent 70%)`,
           backgroundSize: '1200px 630px',
           color: '#eef0f3',
-          fontFamily: 'Manrope',
+          fontFamily: 'Manrope, ManropeCyr',
         }}
       >
         <div style={{ position: 'absolute', top: 64, left: 80, display: 'flex', alignItems: 'center', gap: 18 }}>
@@ -126,7 +133,7 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
           >
             {BRAND.mark}
           </div>
-          <div style={{ display: 'flex', fontSize: 34, letterSpacing: -0.5 }}>
+          <div style={{ display: 'flex', fontFamily: 'Unbounded, UnboundedCyr', fontSize: 30, letterSpacing: -0.5 }}>
             <span>Nanda</span>
             <span style={{ color: accent }}>Guessr</span>
           </div>
@@ -136,7 +143,9 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
           {eyebrow && (
             <div style={{ width: room, fontSize: 26, letterSpacing: 3, textTransform: 'uppercase', color: accent }}>{eyebrow}</div>
           )}
-          <div style={{ width: room, fontSize: headline(title, faces.length > 0), lineHeight: 1.05, letterSpacing: -2 }}>{title}</div>
+          <div style={{ width: room, fontFamily: 'Unbounded, UnboundedCyr', fontSize: headline(title, faces.length > 0), lineHeight: 1.16, letterSpacing: -1.5 }}>
+            {title}
+          </div>
           {note && <div style={{ width: room, fontSize: 30, color: '#a7afbb' }}>{note}</div>}
         </div>
 
@@ -183,7 +192,9 @@ export async function ogCard({ eyebrow, title, note, tags = [], accent = BRAND.a
     ),
     {
       ...OG_SIZE,
-      fonts: data ? data.map((body) => ({ name: 'Manrope', data: body, style: 'normal' as const, weight: 800 as const })) : undefined,
+      fonts: data
+        ? data.map(({ name, data: body }) => ({ name, data: body, style: 'normal' as const, weight: 700 as const }))
+        : undefined,
     },
   )
 }
