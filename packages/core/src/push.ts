@@ -1,5 +1,5 @@
 import type { Collection, ObjectId } from 'mongodb'
-import { database } from './db'
+import { database, users } from './db'
 
 export type PushSubDoc = {
   _id?: ObjectId
@@ -10,6 +10,10 @@ export type PushSubDoc = {
 }
 
 export type PushPayload = { title: string; body: string; url: string; tag?: string }
+
+export type PushLang = 'ru' | 'uk' | 'en'
+
+const LANGS: PushLang[] = ['ru', 'uk', 'en']
 
 type WebPush = typeof import('web-push')
 
@@ -65,12 +69,16 @@ async function sender() {
   return cache.__webPush
 }
 
-export async function sendPush(userId: ObjectId, payload: PushPayload) {
+export async function sendPush(userId: ObjectId, make: (lang: PushLang) => PushPayload) {
   const lib = await sender()
   if (!lib) return
   const collection = await pushSubs()
   const subs = await collection.find({ userId }).toArray()
-  const body = JSON.stringify(payload)
+  if (!subs.length) return
+
+  const doc = await (await users()).findOne({ _id: userId }, { projection: { lang: 1 } })
+  const lang = LANGS.includes(doc?.lang as PushLang) ? (doc?.lang as PushLang) : 'ru'
+  const body = JSON.stringify(make(lang))
   const gone: string[] = []
 
   await Promise.all(

@@ -28,7 +28,7 @@ import { optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { gameData, isGame, isMode } from './games'
 import { matchesFacet, planGrid } from './grid'
 import { addXp, defaultNickname } from './profile'
-import { sendPush } from './push'
+import { sendPush, type PushLang } from './push'
 import { duelSeed, focusFor, shotFor } from './crop'
 import { markSeasonDuel } from './season'
 
@@ -127,6 +127,12 @@ export async function setupDuel(duel: DuelDoc, userId: ObjectId, body: Record<st
   return updated ?? duel
 }
 
+const INVITE_PUSH: Record<PushLang, (name: string) => string> = {
+  ru: (name) => `${name} зовёт на дуэль`,
+  uk: (name) => `${name} кличе на дуель`,
+  en: (name) => `${name} invites you to a duel`,
+}
+
 export async function inviteTo(duel: DuelDoc, userId: ObjectId, targetId: unknown) {
   if (!isHost(duel, userId) || duel.status !== 'lobby' || duel.players.length > 1) return null
   if (typeof targetId !== 'string' || !ObjectId.isValid(targetId)) return null
@@ -140,12 +146,13 @@ export async function inviteTo(duel: DuelDoc, userId: ObjectId, targetId: unknow
     { returnDocument: 'after' },
   )
   const host = duel.players.find((side) => side.userId.equals(userId))
-  void sendPush(_id, {
+  const caller = host?.nickname ?? nameOf(target)
+  void sendPush(_id, (lang) => ({
     title: 'NandaGuessr',
-    body: `${host?.nickname ?? 'Суперник'} кличе на дуель`,
+    body: INVITE_PUSH[lang](caller),
     url: `/duel/${duel.code}`,
     tag: `duel-${duel.code}-${Date.now()}`,
-  }).catch(() => undefined)
+  })).catch(() => undefined)
   return updated ?? duel
 }
 
@@ -664,7 +671,17 @@ export async function markCell(duel: DuelDoc, userId: ObjectId, cell: number, en
 
   const row = duel.grid.rows[Math.floor(cell / GRID_SIDE)]
   const col = duel.grid.cols[cell % GRID_SIDE]
-  if (!matchesFacet(entity, row, game) || !matchesFacet(entity, col, game)) return { error: 'no_match' as const }
+
+  if (!matchesFacet(entity, row, game) || !matchesFacet(entity, col, game)) {
+    const rival = 1 - index
+    const miss: Record<string, unknown> = {
+      grid: { ...duel.grid, miss: { by: index, entityId } },
+      [`players.${index}.gaveUp`]: true,
+      [`players.${rival}.solvedAt`]: new Date(),
+    }
+    const lost = await (await duels()).findOneAndUpdate({ _id: duel._id, status: 'playing' }, { $set: miss }, { returnDocument: 'after' })
+    return { duel: await settle(lost ?? duel) }
+  }
 
   const marks = [...duel.grid.marks]
   marks[cell] = index
@@ -844,6 +861,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
             cols: duel.grid.cols,
             marks: duel.grid.marks.map((one) => (one === null ? null : one === mine ? 'you' : 'rival')),
             picks: duel.grid.picks ?? [],
+            miss: duel.grid.miss ? { you: duel.grid.miss.by === mine, entityId: duel.grid.miss.entityId } : null,
           },
           turn: duel.turnId ? duel.players.find((side) => side.userId.equals(duel.turnId!))?.nickname ?? null : null,
           yourTurn: yourTurn(duel, userId),

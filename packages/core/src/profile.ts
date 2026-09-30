@@ -97,7 +97,7 @@ const LANGS = new Set(['ru', 'uk', 'en'])
 export async function rememberLang(collection: Collection<UserDoc>, userId: ObjectId, request: Request) {
   const lang = request.headers.get('x-nanda-lang')
   if (!lang || !LANGS.has(lang)) return
-  await collection.updateOne({ _id: userId }, { $addToSet: { langs: lang } })
+  await collection.updateOne({ _id: userId }, { $addToSet: { langs: lang }, $set: { lang } })
 }
 
 export async function touchVisit(collection: Collection<UserDoc>, userId: ObjectId) {

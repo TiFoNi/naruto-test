@@ -74,6 +74,21 @@ const ui = {
   },
   'grid.done': { ru: 'Раунд окончен', uk: 'Раунд завершено', en: 'Round over' },
   'grid.doneHint': { ru: 'Смотри итоги и запускай следующий', uk: 'Дивись підсумки й запускай наступний', en: 'Check the result and start the next one' },
+  'grid.missYou': {
+    ru: '{name} не подходит под обе подписи — раунд уходит сопернику.',
+    uk: '{name} не підходить під обидва підписи — раунд іде суперникові.',
+    en: '{name} does not fit both captions — the round goes to your rival.',
+  },
+  'grid.missRival': {
+    ru: 'Соперник назвал {name} — персонаж не подошёл, раунд твой.',
+    uk: 'Суперник назвав {name} — персонаж не підійшов, раунд твій.',
+    en: 'Your rival named {name} — no match, so the round is yours.',
+  },
+  'grid.missHint': {
+    ru: 'Ошибся — раунд проигран, так что называй наверняка.',
+    uk: 'Помилився — раунд програно, тож називай напевно.',
+    en: 'A wrong name loses the round, so be sure before you answer.',
+  },
   'grid.askTitle': { ru: 'Кто подходит?', uk: 'Хто підходить?', en: 'Who fits?' },
   'mode.grid': { ru: 'Крестики-нолики', uk: 'Хрестики-нулики', en: 'Tic-tac-toe' },
   'mode.grid.desc': {

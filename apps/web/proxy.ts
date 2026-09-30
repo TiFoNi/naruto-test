@@ -18,7 +18,7 @@ function preferred(request: NextRequest): Lang {
   return DEFAULT
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl
   if (CODES.some((code) => pathname === `/${code}` || pathname.startsWith(`/${code}/`))) return NextResponse.next()
 

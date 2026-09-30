@@ -24,6 +24,7 @@ export type UserDoc = {
   duelLog?: DuelLogRow[]
   duelBestMs?: number
   langs?: string[]
+  lang?: string
   duelComeback?: boolean
   challengeStats?: { solved?: number }
   createdAt: Date
@@ -115,6 +116,7 @@ export type DuelDoc = {
     marks: (number | null)[]
     picks?: (number | undefined)[]
     used: number[]
+    miss?: { by: number; entityId: number } | null
   } | null
   invite?: { toId: ObjectId; nickname: string; at: Date; declined?: boolean } | null
   left?: { nickname: string; at: Date } | null
