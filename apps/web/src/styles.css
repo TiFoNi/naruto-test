@@ -1,7 +1,7 @@
 :root {
   --bg: #0d0f12;
   --card-solid: #161a1f;
-  --overlay: rgba(19, 22, 28, 0.93);
+  --overlay: rgba(30, 34, 42, 0.84);
   --card-2-solid: #1d2229;
   --card: rgba(255, 255, 255, 0.035);
   --card-2: rgba(255, 255, 255, 0.05);
@@ -406,12 +406,12 @@ a.bell.active {
   max-height: min(70vh, 560px);
   padding: 6px;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
   border-radius: 14px;
   background: var(--overlay);
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.6);
   animation: fade-in 0.15s ease;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(22px);
 }
 
 .bell-box.open .bell-menu {
@@ -973,7 +973,7 @@ main {
   padding: 6px;
   list-style: none;
   background: var(--overlay);
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
   border-radius: 14px;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
   overflow-y: auto;
@@ -981,7 +981,7 @@ main {
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
   z-index: 20;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(22px);
 }
 
 .suggestions li {
@@ -1987,11 +1987,11 @@ main {
   flex-direction: column;
   gap: 2px;
   padding: 4px;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
   border-radius: 12px;
   background: var(--overlay);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(22px);
 }
 
 .lang-switch.open .lang-list {
@@ -2067,12 +2067,12 @@ main {
   gap: 2px;
   width: 288px;
   padding: 6px;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
   border-radius: 14px;
   background: var(--overlay);
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.6);
   animation: fade-in 0.15s ease;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(22px);
 }
 
 .account.open .account-menu {
@@ -2415,7 +2415,7 @@ main {
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   user-select: none;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(22px);
 }
 
 .fan-0 {
@@ -3258,11 +3258,11 @@ button.ghost.small {
     min-width: 168px;
     margin-left: 0;
     padding: 6px;
-    border: 1px solid var(--line);
+    border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
     border-radius: 12px;
     background: var(--overlay);
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(14px);
+    backdrop-filter: blur(22px);
   }
 
   .topbar-menu.open .topbar-nav {
@@ -3407,7 +3407,7 @@ html:not([data-auth]) .play-actions .challenge-open {
   overflow: visible;
   background: var(--overlay);
   animation: modal-in 0.18s ease;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(22px);
 }
 
 .modal-close {
@@ -4288,11 +4288,11 @@ html:not([data-auth]) .play-actions .challenge-open {
   overflow-y: auto;
   overscroll-behavior: contain;
   border-radius: 14px;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
   background: var(--overlay);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
   animation: reveal 0.16s ease-out;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(22px);
 }
 
 .picker-list li .icon {
@@ -4896,9 +4896,9 @@ html[data-auth] .guest-note {
   padding: 6px;
   border-radius: 12px;
   background: var(--overlay);
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(22px);
 }
 
 .dropdown-menu input {
@@ -7200,7 +7200,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   position: fixed;
   z-index: 60;
   padding: 10px 12px;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
   border-radius: 12px;
   background: var(--overlay);
   color: var(--text);
@@ -7212,7 +7212,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   transform: translate(-50%, -100%);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
   animation: fade-in 0.14s ease;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(22px);
 }
 
 .cell-tip.below {
@@ -7572,13 +7572,13 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   gap: 2px;
   min-width: 190px;
   padding: 6px;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
   border-radius: 14px;
   background: var(--overlay);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
   transform: translateX(-50%);
   animation: fade-in 0.14s ease;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(22px);
 }
 
 .share-menu.up {
@@ -7624,7 +7624,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   white-space: nowrap;
   transform: translateX(-50%);
   animation: fade-in 0.14s ease;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(22px);
 }
 
 .has-logo {

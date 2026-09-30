@@ -192,7 +192,7 @@
   background: var(--overlay);
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.6);
   animation: fade-in 0.15s ease;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(22px);
 }
 
 .places-pop-title {
