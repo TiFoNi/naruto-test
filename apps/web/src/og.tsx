@@ -36,30 +36,39 @@ const SHADE = Buffer.from(
     `</linearGradient></defs><rect width="${OG_SIZE.width}" height="${OG_SIZE.height}" fill="url(#s)"/></svg>`,
 )
 
-export async function ogBackground(game: string) {
+const backgrounds = new Map<string, Promise<string | null>>()
+
+async function bakeBackground(game: string) {
   for (const ext of ['jpg', 'jpeg', 'png', 'webp']) {
     try {
       const body = await readFile(path.join(process.cwd(), 'src', 'og-bg', `${game}.${ext}`))
-      const sharp_ = sharp(body).resize(OG_SIZE.width, OG_SIZE.height, { fit: 'cover' })
-      const base = await sharp_.png().toBuffer()
+      const base = await sharp(body).resize(OG_SIZE.width, OG_SIZE.height, { fit: 'cover' }).png().toBuffer()
       const soft = await sharp(base)
         .blur(22)
         .composite([{ input: HAZE, blend: 'dest-in' }])
         .png()
         .toBuffer()
-      const png = await sharp(base)
+      const baked = await sharp(base)
         .composite([
           { input: soft, blend: 'over' },
           { input: SHADE, blend: 'over' },
         ])
-        .png()
+        .jpeg({ quality: 82, mozjpeg: true })
         .toBuffer()
-      return `data:image/png;base64,${png.toString('base64')}`
+      return `data:image/jpeg;base64,${baked.toString('base64')}`
     } catch {
       /* немає такого файлу — пробуємо наступне розширення */
     }
   }
   return null
+}
+
+export function ogBackground(game: string) {
+  const held = backgrounds.get(game)
+  if (held) return held
+  const baking = bakeBackground(game).catch(() => null)
+  backgrounds.set(game, baking)
+  return baking
 }
 
 export async function asPng(url: string) {
