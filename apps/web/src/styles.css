@@ -5756,7 +5756,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   height: 52px;
   padding: 0 18px;
   border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--bg) 55%, var(--card-solid));
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .lb-bar {
