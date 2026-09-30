@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { findChallenge } from '@nanda/core/challenges'
 import { defaultNickname } from '@nanda/core/profile'
+import { SITE } from '@/src/brand'
 import ChallengeRoom from '@/src/ChallengeRoom'
 import { GAMES } from '@/src/games'
 import { MODES } from '@/src/modes'
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return {
     title,
     description,
-    openGraph: { title, description, type: 'website' },
+    openGraph: { title, description, url: `${SITE}/${at}/c/${code.toUpperCase()}`, type: 'website' },
     twitter: { card: 'summary_large_image' },
   }
 }

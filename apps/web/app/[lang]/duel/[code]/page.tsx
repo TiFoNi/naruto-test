@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { findDuel } from '@nanda/core/duels'
 import DuelRoom from '@/src/DuelRoom'
+import { SITE } from '@/src/brand'
 import { GAMES } from '@/src/games'
 import { MODES } from '@/src/modes'
 import ui, { type Lang } from '@/src/i18n/ui'
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return {
     title,
     description,
-    openGraph: { title, description, type: 'website' },
+    openGraph: { title, description, url: `${SITE}/${at}/duel/${code.toUpperCase()}`, type: 'website' },
     twitter: { card: 'summary_large_image' },
   }
 }
