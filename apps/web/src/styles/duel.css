@@ -1641,3 +1641,42 @@
     font-size: 9px;
   }
 }
+
+.duel-ghosts .ghost {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--card) 0%, color-mix(in srgb, var(--card) 55%, var(--line)) 50%, var(--card) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+.duel-ghosts .ghost.head {
+  height: 86px;
+}
+
+.duel-ghosts .ghost.tall {
+  height: 340px;
+}
+
+.duel-ghosts .ghost.mid {
+  height: 180px;
+}
+
+.duel-ghosts .ghost.short {
+  height: 120px;
+}
+
+.duel-ghosts .ghost-play {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+html[data-duel='play'] .duel-ghosts .ghost-lobby {
+  display: none;
+}
+
+html[data-duel='play'] .duel-ghosts .ghost-play {
+  display: flex;
+}

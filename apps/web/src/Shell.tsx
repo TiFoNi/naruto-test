@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Background from './Background'
 import DuelDock from './DuelDock'
+import DuelSkeleton from './DuelSkeleton'
 import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
@@ -491,7 +492,17 @@ export default function Shell({ children, games }: { children: ReactNode; games:
         </div>
       </header>
 
-      {user || open || (loading && returning) ? children : loading ? <div className="card center muted page-loading">{t('loading')}</div> : <Landing games={games} />}
+      {user || open || (loading && returning) ? (
+        children
+      ) : loading ? (
+        section === 'duel' && gameId ? (
+          <DuelSkeleton code={gameId.toUpperCase()} />
+        ) : (
+          <div className="card center muted page-loading">{t('loading')}</div>
+        )
+      ) : (
+        <Landing games={games} />
+      )}
 
       <Footer />
       {user && <DuelDock />}

@@ -80,7 +80,6 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
         ))}
       </div>
       {note && <p className="round">{note}</p>}
-      {!skipped && <Share text={shareText} url={shareUrl} />}
       {daily ? (
         <>
           <p className="daily-next">
@@ -90,6 +89,7 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
             <Link className="ghost" href={href.home}>
               {t('play.back')}
             </Link>
+            {!skipped && <Share text={shareText} url={shareUrl} />}
             <Link className="primary" href={href.play(game.id, mode)}>
               {t('daily.playEndless')}
             </Link>
@@ -101,12 +101,14 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
             <Link className="ghost" href={href.home}>
               {t('play.back')}
             </Link>
+            {!skipped && <Share text={shareText} url={shareUrl} />}
           </div>
         ) : (
           <div className="result-actions">
             <Link className="ghost" href={href.home}>
               {t('play.back')}
             </Link>
+            {!skipped && <Share text={shareText} url={shareUrl} />}
             <button className="primary" onClick={onNext}>
               {t('result.next')}
               <ArrowIcon />

@@ -7,7 +7,6 @@ import { GAMES, gameById } from './games'
 import type { Category, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
-import Share from './Share'
 import WorldMark from './WorldMark'
 import type { DuelView } from './useDuel'
 import { CopyIcon, DiceIcon, ExitIcon, LinkIcon, SwordsIcon } from './icons'
@@ -80,7 +79,11 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
   const modes = MODES.filter((mode) => DUEL_MODES.includes(mode.id) && (mode.id === 'who' || game.modes.includes(mode.id)))
 
   const copy = () => {
-    navigator.clipboard?.writeText(link).then(
+    const invitation = `${t('share.duel', {
+      game: l(game.label),
+      mode: t(MODES.find((one) => one.id === duel.mode)?.label ?? 'mode.classic'),
+    }).replace(/([?!])\./g, '$1')}\n${link}`
+    navigator.clipboard?.writeText(invitation).then(
       () => {
         setCopied(true)
         setTimeout(() => setCopied(false), 1500)
@@ -117,10 +120,6 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
             <CopyIcon />
             {copied ? t('duel.copied') : t('duel.copyLink')}
           </button>
-          <Share
-            text={t('share.duel', { game: l(game.label), mode: t(MODES.find((one) => one.id === duel.mode)?.label ?? 'mode.classic') })}
-            url={link}
-          />
           <button type="button" className="duel-leave" onClick={onLeave} disabled={busy}>
             <ExitIcon />
             {t('duel.leave')}

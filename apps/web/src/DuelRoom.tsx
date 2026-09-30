@@ -25,6 +25,7 @@ import { setActiveDuel } from './activeDuel'
 import { useHref, useNavigate } from './router'
 import { useDuel } from './useDuel'
 import DuelSetup from './DuelSetup'
+import DuelSkeleton from './DuelSkeleton'
 import type { Guess } from './useRound'
 import { ExitIcon, SwordsIcon, TrophyIcon } from './icons'
 import { fullUrl } from './pics'
@@ -61,6 +62,24 @@ export default function DuelRoom({ code }: { code: string }) {
     if (duel?.you) setActiveDuel(code)
   }, [code, duel?.you])
 
+  useEffect(() => {
+    if (!duel) return
+    const shape = duel.status === 'lobby' ? 'lobby' : 'play'
+    document.documentElement.dataset.duel = shape
+    try {
+      sessionStorage.setItem(`nanda.duel.${code}`, shape)
+    } catch {
+      /* приватний режим — обійдемося без підказки при перезавантаженні */
+    }
+  }, [code, duel?.status])
+
+  useEffect(
+    () => () => {
+      delete document.documentElement.dataset.duel
+    },
+    [],
+  )
+
   const leave = async () => {
     setActiveDuel(null)
     await api('duel', { code, action: 'leave' }).catch(() => null)
@@ -93,7 +112,7 @@ export default function DuelRoom({ code }: { code: string }) {
     )
   }
 
-  if (!duel) return <div className="card center muted">{t('loading')}</div>
+  if (!duel) return <DuelSkeleton code={code} />
 
   const you = duel.you
   const rival = duel.rival
