@@ -119,9 +119,10 @@ export async function setupDuel(duel: DuelDoc, userId: ObjectId, body: Record<st
   const allowed = boardSizes((await gameData(game)).pool.length)
   const asked = Number(body.size) || duel.size || BOARD_DEFAULT
   const size = allowed.includes(asked) ? asked : Math.max(...allowed.filter((side) => side <= asked), allowed[0])
+  const strict = typeof body.strict === 'boolean' ? body.strict : duel.strict ?? false
   const updated = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: 'lobby' },
-    { $set: { game, mode, best, seconds: limit, size, 'players.$[].ready': false } },
+    { $set: { game, mode, best, seconds: limit, size, strict, 'players.$[].ready': false } },
     { returnDocument: 'after' },
   )
   return updated ?? duel
@@ -470,6 +471,7 @@ function decide(duel: DuelDoc) {
   if (turnMode(duel)) {
     const solver = duel.players.find((side) => side.solvedAt)
     if (solver) return solver.userId
+    if (duel.players.length > 1 && duel.players.every((side) => side.gaveUp)) return null
     const missed = duel.players.find((side) => side.gaveUp)
     return missed ? duel.players.find((side) => !side.userId.equals(missed.userId))?.userId ?? null : null
   }
@@ -672,7 +674,32 @@ export async function markCell(duel: DuelDoc, userId: ObjectId, cell: number, en
   const row = duel.grid.rows[Math.floor(cell / GRID_SIDE)]
   const col = duel.grid.cols[cell % GRID_SIDE]
 
-  if (!matchesFacet(entity, row, game) || !matchesFacet(entity, col, game)) return { error: 'no_match' as const }
+  if (!matchesFacet(entity, row, game) || !matchesFacet(entity, col, game)) {
+    const rival = 1 - index
+
+    if (!duel.strict) {
+      const next = duel.players[rival]?.userId ?? userId
+      const skipped = await (await duels()).findOneAndUpdate(
+        { _id: duel._id, status: 'playing', turnId: userId },
+        { $set: { grid: { ...duel.grid, miss: { by: index, entityId } }, turnId: next } },
+        { returnDocument: 'after' },
+      )
+      return { duel: await settle(skipped ?? duel) }
+    }
+
+    const lost = await (await duels()).findOneAndUpdate(
+      { _id: duel._id, status: 'playing' },
+      {
+        $set: {
+          grid: { ...duel.grid, miss: { by: index, entityId } },
+          [`players.${index}.gaveUp`]: true,
+          [`players.${rival}.solvedAt`]: new Date(),
+        },
+      },
+      { returnDocument: 'after' },
+    )
+    return { duel: await settle(lost ?? duel) }
+  }
 
   const marks = [...duel.grid.marks]
   marks[cell] = index
@@ -684,19 +711,15 @@ export async function markCell(duel: DuelDoc, userId: ObjectId, cell: number, en
   const full = marks.every((one) => one !== null)
   const next = duel.players.find((side) => !side.userId.equals(userId))?.userId ?? userId
 
-  const set: Record<string, unknown> = { grid: { ...duel.grid, marks, used, picks }, turnId: winner === null && !full ? next : duel.turnId }
+  const set: Record<string, unknown> = {
+    grid: { ...duel.grid, marks, used, picks, miss: null },
+    turnId: winner === null && !full ? next : duel.turnId,
+  }
   if (winner !== null) {
     set[`players.${winner}.solvedAt`] = new Date()
     duel.players.forEach((_, at) => at !== winner && (set[`players.${at}.gaveUp`] = true))
   } else if (full) {
-    const mine = marks.filter((one) => one === index).length
-    const theirs = marks.length - mine
-    if (mine === theirs) duel.players.forEach((_, at) => (set[`players.${at}.gaveUp`] = true))
-    else {
-      const lead = mine > theirs ? index : 1 - index
-      set[`players.${lead}.solvedAt`] = new Date()
-      duel.players.forEach((_, at) => at !== lead && (set[`players.${at}.gaveUp`] = true))
-    }
+    duel.players.forEach((_, at) => (set[`players.${at}.gaveUp`] = true))
   }
 
   const updated = await (await duels()).findOneAndUpdate({ _id: duel._id, status: 'playing' }, { $set: set }, { returnDocument: 'after' })
@@ -817,6 +840,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
     status: duel.status,
     best: duel.best ?? DUEL_DEFAULT.best,
     seconds: duel.seconds || DUEL_DEFAULT.seconds,
+    strict: duel.strict ?? false,
     needed: winsNeeded(duel),
     matchDone: Boolean(duel.matchDone),
     invited: duel.invite && !duel.invite.declined && duel.players.length < 2 ? duel.invite.nickname : null,
@@ -852,6 +876,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
             cols: duel.grid.cols,
             marks: duel.grid.marks.map((one) => (one === null ? null : one === mine ? 'you' : 'rival')),
             picks: duel.grid.picks ?? [],
+            miss: duel.grid.miss ? { you: duel.grid.miss.by === mine, entityId: duel.grid.miss.entityId } : null,
           },
           turn: duel.turnId ? duel.players.find((side) => side.userId.equals(duel.turnId!))?.nickname ?? null : null,
           yourTurn: yourTurn(duel, userId),

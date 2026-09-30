@@ -74,6 +74,34 @@ const ui = {
   },
   'grid.done': { ru: 'Раунд окончен', uk: 'Раунд завершено', en: 'Round over' },
   'grid.doneHint': { ru: 'Смотри итоги и запускай следующий', uk: 'Дивись підсумки й запускай наступний', en: 'Check the result and start the next one' },
+  'grid.skipYou': {
+    ru: '{name} не подошёл — ход уходит сопернику.',
+    uk: '{name} не підійшов — хід іде суперникові.',
+    en: '{name} did not fit — your turn goes to the rival.',
+  },
+  'grid.skipRival': {
+    ru: 'Соперник назвал {name} — мимо, теперь твой ход.',
+    uk: 'Суперник назвав {name} — мимо, тепер твій хід.',
+    en: 'Your rival named {name} — a miss, now it is your turn.',
+  },
+  'grid.strictTitle': { ru: 'Ошибка', uk: 'Помилка', en: 'A wrong name' },
+  'grid.strictOff': { ru: 'переход хода', uk: 'перехід ходу', en: 'passes the turn' },
+  'grid.strictOn': { ru: 'проигрыш', uk: 'програш', en: 'loses the round' },
+  'grid.missYou': {
+    ru: '{name} не подходит под обе подписи — раунд уходит сопернику.',
+    uk: '{name} не підходить під обидва підписи — раунд іде суперникові.',
+    en: '{name} does not fit both captions — the round goes to your rival.',
+  },
+  'grid.missRival': {
+    ru: 'Соперник назвал {name} — персонаж не подошёл, раунд твой.',
+    uk: 'Суперник назвав {name} — персонаж не підійшов, раунд твій.',
+    en: 'Your rival named {name} — no match, so the round is yours.',
+  },
+  'grid.missHint': {
+    ru: 'Ошибка стоит раунда — называй наверняка.',
+    uk: 'Помилка коштує раунду — називай напевно.',
+    en: 'A wrong name loses the round, so be sure.',
+  },
   'grid.askTitle': { ru: 'Кто подходит?', uk: 'Хто підходить?', en: 'Who fits?' },
   'mode.grid': { ru: 'Крестики-нолики', uk: 'Хрестики-нулики', en: 'Tic-tac-toe' },
   'mode.grid.desc': {

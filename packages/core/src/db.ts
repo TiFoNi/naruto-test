@@ -108,6 +108,7 @@ export type DuelDoc = {
   best?: number
   seconds?: number | null
   size?: number
+  strict?: boolean
   firstId?: ObjectId | null
   turnId?: ObjectId | null
   grid?: {
@@ -116,6 +117,7 @@ export type DuelDoc = {
     marks: (number | null)[]
     picks?: (number | undefined)[]
     used: number[]
+    miss?: { by: number; entityId: number } | null
   } | null
   invite?: { toId: ObjectId; nickname: string; at: Date; declined?: boolean } | null
   left?: { nickname: string; at: Date } | null

@@ -33,6 +33,7 @@ const mark = (duel: DuelDoc) =>
     duel.endsAt,
     duel.turnId,
     duel.winnerId,
+    duel.grid ? [duel.grid.marks, duel.grid.miss ?? null] : null,
     duel.invite,
     duel.left,
     duel.hostId,

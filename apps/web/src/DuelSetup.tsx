@@ -27,7 +27,7 @@ type Props = {
   duel: DuelView
   busy: boolean
   link: string
-  onSetup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number }) => void
+  onSetup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; strict?: boolean }) => void
   onInvite: (to: string) => void
   onReady: (want?: boolean) => void
   onLeave: () => void
@@ -240,6 +240,29 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                         {value}×{value}
                       </button>
                     ))}
+                  </div>
+                </div>
+              )}
+              {duel.mode === 'grid' && (
+                <div>
+                  <span className="duel-rules-title">{t('grid.strictTitle')}</span>
+                  <div className="duel-chips">
+                    <button
+                      type="button"
+                      className={duel.strict ? '' : 'active'}
+                      disabled={!host || busy}
+                      onClick={() => onSetup({ strict: false })}
+                    >
+                      {t('grid.strictOff')}
+                    </button>
+                    <button
+                      type="button"
+                      className={duel.strict ? 'active' : ''}
+                      disabled={!host || busy}
+                      onClick={() => onSetup({ strict: true })}
+                    >
+                      {t('grid.strictOn')}
+                    </button>
                   </div>
                 </div>
               )}

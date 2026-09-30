@@ -33,6 +33,7 @@ export type DuelView = {
   zoom?: number
   size?: number
   sizes?: number[]
+  strict?: boolean
   first?: string | null
   youFirst?: boolean
   turn?: string | null
@@ -42,6 +43,7 @@ export type DuelView = {
     cols: { key: string; value: string }[]
     marks: ('you' | 'rival' | null)[]
     picks?: (number | undefined)[]
+    miss?: { you: boolean; entityId: number } | null
   }
   secret?: number | null
   picking?: boolean
@@ -158,7 +160,7 @@ export function useDuel(code: string) {
     pending,
     serverNow: () => Date.now() + offset.current,
     ready: (want = true) => send({ action: 'ready', ready: want }),
-    setup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number }) =>
+    setup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; strict?: boolean }) =>
       send({
         action: 'setup',
         game: patch.game ?? duel?.game ?? 'naruto',
@@ -166,6 +168,7 @@ export function useDuel(code: string) {
         best: patch.best ?? duel?.best,
         seconds: patch.seconds ?? duel?.seconds,
         size: patch.size ?? duel?.size,
+        strict: patch.strict ?? duel?.strict,
       }),
     invite: (to: string) => send({ action: 'invite', to }),
     next: () => send({ action: 'next' }),

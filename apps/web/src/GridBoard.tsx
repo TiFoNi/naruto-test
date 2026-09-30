@@ -29,8 +29,8 @@ export default function GridBoard({ game, byId, duel, busy, error, onMark, onNex
   const myTurn = Boolean(duel.yourTurn)
 
   useEffect(() => {
-    if (cell !== null && (duel.grid?.marks[cell] || duel.status !== 'playing')) setCell(null)
-  }, [cell, duel.grid?.marks, duel.status])
+    if (cell !== null && (duel.grid?.marks[cell] || duel.status !== 'playing' || !duel.yourTurn)) setCell(null)
+  }, [cell, duel.grid?.marks, duel.status, duel.yourTurn])
 
   if (!grid) return <div className="card center muted">{t('loading')}</div>
 
@@ -40,6 +40,9 @@ export default function GridBoard({ game, byId, duel, busy, error, onMark, onNex
   }
 
   const used = new Set<number>((grid.picks ?? []).filter((one) => typeof one === 'number') as number[])
+  const miss = grid.miss ?? null
+  const missHero = miss ? byId.get(miss.entityId) : undefined
+  const missName = missHero ? name(missHero) : ''
   const outcome = over ? (duel.youWon ? 'won' : duel.winner ? 'lost' : 'skipped') : ''
 
   const place = (entity: Entity) => {
@@ -52,7 +55,17 @@ export default function GridBoard({ game, byId, duel, busy, error, onMark, onNex
       <div className={`who-top card ${myTurn && !over ? 'on-turn' : ''}`}>
         <div className="who-copy">
           <p className="who-first">{over ? t('grid.done') : myTurn ? t('who.yourTurn') : duel.turn ? t('who.rivalTurn', { name: duel.turn }) : ''}</p>
-          <p className="muted">{over ? t('grid.doneHint') : myTurn ? t('grid.hint') : t('grid.waitHint')}</p>
+          <p className="muted">
+            {over
+              ? t('grid.doneHint')
+              : miss && !duel.strict
+                ? miss.you
+                  ? t('grid.skipYou', { name: missName })
+                  : t('grid.skipRival', { name: missName })
+                : myTurn
+                  ? t('grid.hint')
+                  : t('grid.waitHint')}
+          </p>
         </div>
       </div>
 
@@ -122,6 +135,7 @@ export default function GridBoard({ game, byId, duel, busy, error, onMark, onNex
               <span>{label(grid.cols[cell % 3]).value}</span>
             </p>
             <CharacterSearch game={game} exclude={used} busy={busy} onPick={place} />
+            {duel.strict && <p className="muted small grid-ask-warn">{t('grid.missHint')}</p>}
             {error && <p className="notice error grid-ask-error">{errorText(error)}</p>}
           </section>
         </div>
@@ -137,6 +151,7 @@ export default function GridBoard({ game, byId, duel, busy, error, onMark, onNex
               {duel.youWon ? <TrophyIcon /> : <SwordsIcon />}
             </span>
             <h2>{duel.youWon ? t('duel.youWon') : duel.winner ? t('duel.youLost', { name: duel.winner }) : t('duel.draw')}</h2>
+            {miss && <p className="grid-miss">{miss.you ? t('grid.missYou', { name: missName }) : t('grid.missRival', { name: missName })}</p>}
             <p className="who-result-score">
               <b>{duel.you?.wins ?? 0}</b>
               <span>:</span>
