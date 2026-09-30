@@ -112,7 +112,7 @@ export default function DuelRoom({ code }: { code: string }) {
     )
   }
 
-  if (!duel) return <DuelSkeleton code={code} />
+  if (!duel) return <DuelSkeleton />
 
   const you = duel.you
   const rival = duel.rival

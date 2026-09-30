@@ -1651,14 +1651,10 @@
   animation: shimmer 1.4s linear infinite;
 }
 
-.duel-ghosts .ghost.pill {
-  width: 154px;
+.duel-ghosts .ghost.bar {
+  width: min(100%, 560px);
   height: 38px;
   border-radius: 12px;
-}
-
-.duel-ghosts .ghost.pill.wide {
-  width: 194px;
 }
 
 .duel-ghosts .ghost.head {

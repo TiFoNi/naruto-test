@@ -496,7 +496,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
         children
       ) : loading ? (
         section === 'duel' || section === 'duels' ? (
-          <DuelSkeleton code={section === 'duel' && gameId ? gameId.toUpperCase() : undefined} />
+          <DuelSkeleton />
         ) : (
           <div className="card center muted page-loading">{t('loading')}</div>
         )
