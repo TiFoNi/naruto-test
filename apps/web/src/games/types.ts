@@ -18,7 +18,9 @@ export type Column<T> = {
   icons?: (guess: T, ctx: RenderContext) => Icon[]
 }
 
-export type Category = 'anime' | 'cartoon' | 'games' | 'manga' | 'screen' | 'sport'
+export const CATEGORIES = ['anime', 'cartoon', 'games', 'manga', 'screen', 'sport'] as const
+
+export type Category = (typeof CATEGORIES)[number]
 
 export type Game<T extends Entity = Entity> = {
   id: GameId

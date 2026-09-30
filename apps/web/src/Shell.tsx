@@ -422,11 +422,11 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const [, , section, gameId] = pathname.split('/')
   const open = PUBLIC.has(section ?? '') || !SECTIONS.has(section ?? '')
   const game = section === 'play' ? metaById(games, gameId as never) : null
-  const accent = user && game ? game.accent : BRAND.accent
-
   useBeforePaint(() => {
-    document.documentElement.style.setProperty('--accent', accent)
-  }, [accent])
+    const root = document.documentElement
+    const signed = user ? true : loading && root.dataset.auth === '1'
+    root.style.setProperty('--accent', signed && game ? game.accent : BRAND.accent)
+  }, [user, loading, game?.accent])
 
   useBeforePaint(() => {
     const header = bar.current

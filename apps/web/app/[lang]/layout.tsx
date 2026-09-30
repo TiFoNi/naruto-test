@@ -6,6 +6,7 @@ import { SITE } from '@/src/brand'
 import { LANGS, dictionary, type Lang } from '@/src/i18n/ui'
 import { HOME, alternates } from '@/src/seo'
 import { gameMeta } from '@/src/games/meta.server'
+import { CATEGORIES } from '@/src/games/types'
 import '@/src/styles.css'
 
 const manrope = Manrope({
@@ -51,7 +52,7 @@ export const viewport: Viewport = { themeColor: '#0d0f12' }
 
 const API = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, '') ?? ''
 
-const BOOT_SCRIPT = `try{var d=document.documentElement,c=localStorage.getItem('nanda.category');if(c==='anime'||c==='manga'||c==='games'||c==='sport')d.dataset.cat=c;if(localStorage.getItem('nanda.session')){d.dataset.auth='1';d.dataset.checking='1'}}catch(e){}
+const BOOT_SCRIPT = `try{var d=document.documentElement,c=localStorage.getItem('nanda.category');if(${JSON.stringify(CATEGORIES)}.indexOf(c)>=0)d.dataset.cat=c;if(localStorage.getItem('nanda.session')){d.dataset.auth='1';d.dataset.checking='1'}}catch(e){}
 try{window.__me=fetch('${API}/api/me',{credentials:'${API ? 'include' : 'same-origin'}'}).then(function(r){return r.json().catch(function(){return{}}).then(function(data){return{ok:r.ok,status:r.status,data:data}})}).catch(function(){return null})}catch(e){}`
 
 export const generateStaticParams = () => LANGS.map(({ id }) => ({ lang: id }))
