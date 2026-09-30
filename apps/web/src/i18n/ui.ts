@@ -62,6 +62,7 @@ const ui = {
   'who.cardsLeft': { ru: 'карточек: {count}', uk: 'карток: {count}', en: 'cards: {count}' },
   'who.was': { ru: 'Соперник прятал {name}', uk: 'Суперник ховав {name}', en: 'The rival hid {name}' },
   'who.sizeShort': { ru: 'В этом мире меньше {count} героев', uk: 'У цьому всесвіті менше ніж {count} героїв', en: 'This world has fewer than {count} heroes' },
+  'who.notPicked': { ru: 'Ещё не выбран', uk: 'Ще не обраний', en: 'Not picked yet' },
   'who.yourTurn': { ru: 'Твой ход', uk: 'Твій хід', en: 'Your turn' },
   'who.rivalTurn': { ru: 'Ходит {name}', uk: 'Ходить {name}', en: '{name} is playing' },
   'who.pass': { ru: 'Передать ход', uk: 'Передати хід', en: 'Pass the turn' },

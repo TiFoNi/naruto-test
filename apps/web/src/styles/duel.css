@@ -33,12 +33,17 @@
   font-size: 13px;
 }
 
+.duel-head + .duel-players,
+.duel-players + .who-top {
+  margin-top: -6px;
+}
+
 .duel-players {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 12px;
-  padding: 14px 18px;
+  padding: 12px 18px;
 }
 
 .duel-player {
@@ -59,6 +64,10 @@
   font-size: 12.5px;
 }
 
+.duel-players .duel-player b {
+  font-size: 15px;
+}
+
 .duel-player.solved b {
   color: var(--correct);
 }
@@ -74,9 +83,14 @@
 }
 
 .duel-vs {
+  padding: 5px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card-2);
+  color: var(--text-2);
   font-family: var(--display);
   font-size: 15px;
-  color: var(--text-3);
+  white-space: nowrap;
 }
 
 
@@ -1074,9 +1088,20 @@
 
 .who-top {
   display: flex;
-  align-items: flex-start;
-  gap: 18px;
-  padding: 13px 16px;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 14px;
+  border-color: color-mix(in srgb, var(--tab-accent, var(--accent)) 22%, var(--line));
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.who-top.on-turn {
+  border-color: color-mix(in srgb, var(--tab-accent, var(--accent)) 50%, var(--line));
+  background: linear-gradient(
+    100deg,
+    color-mix(in srgb, var(--tab-accent, var(--accent)) 9%, var(--card)),
+    var(--card) 62%
+  );
 }
 
 .who-mine-card {
@@ -1084,7 +1109,9 @@
   flex: none;
   align-items: center;
   gap: 10px;
-  padding: 8px 12px 8px 8px;
+  width: clamp(150px, 22vw, 190px);
+  height: 62px;
+  padding: 7px 12px 7px 7px;
   font: inherit;
   text-align: left;
   cursor: pointer;
@@ -1094,10 +1121,43 @@
   font-size: 14px;
 }
 
+.who-mine-card.empty {
+  border-style: dashed;
+  border-color: var(--line);
+  background: var(--card-2);
+  cursor: default;
+}
+
+.who-mine-card.empty .who-mine-thumb {
+  display: grid;
+  place-items: center;
+  border: 1px dashed var(--line);
+  background: var(--card);
+  color: var(--text-3);
+  font-family: var(--display);
+  font-size: 18px;
+}
+
+.who-mine-card.empty .who-mine-text b {
+  color: var(--text-3);
+  font-weight: 700;
+}
+
 .who-mine-text {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 2px;
+}
+
+.who-mine-text b {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .who-mine-card:hover {

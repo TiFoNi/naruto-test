@@ -133,8 +133,8 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
 
   return (
     <section className="who">
-      <div className="who-top card">
-        {mine && (
+      <div className={`who-top card ${myTurn && !choosing && !over ? 'on-turn' : ''}`}>
+        {mine ? (
           <button type="button" className="who-mine-card" onClick={() => setInfo(mine.id)}>
             <img className="who-mine-thumb" src={fullUrl(game.id, mine.id, mine.image)} alt="" loading="lazy" draggable={false} />
             <span className="who-mine-text">
@@ -142,6 +142,16 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
               <b>{name(mine)}</b>
             </span>
           </button>
+        ) : (
+          <span className="who-mine-card empty">
+            <span className="who-mine-thumb" aria-hidden>
+              ?
+            </span>
+            <span className="who-mine-text">
+              <small>{t('who.yours')}</small>
+              <b>{t('who.notPicked')}</b>
+            </span>
+          </span>
         )}
         <div className="who-copy">
           <p className="who-first">
