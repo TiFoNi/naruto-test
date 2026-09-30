@@ -15,6 +15,7 @@ export type UserDoc = {
   awards?: Record<string, Date>
   awardsSolved?: number
   awardsAt?: Date
+  lastChallengeAt?: Date | null
   xpGain?: number
   claimed?: Record<string, Date>
   resetAt?: Date

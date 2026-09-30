@@ -185,6 +185,7 @@ const ui = {
     en: 'Nickname: 2–24 characters — letters, digits, space, _ . -',
   },
   'err.bad_result': { ru: 'Некорректный результат', uk: 'Некоректний результат', en: 'Invalid result' },
+  'err.too_fast': { ru: 'Слишком часто — подожди пару секунд', uk: 'Надто часто — зачекай пару секунд', en: 'Too fast — wait a couple of seconds' },
   'err.server': { ru: 'Ошибка сервера, попробуй позже', uk: 'Помилка сервера, спробуй пізніше', en: 'Server error, try again later' },
   'err.too_many': {
     ru: 'Слишком много попыток, подожди 15 минут',

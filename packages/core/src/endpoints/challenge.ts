@@ -10,7 +10,7 @@ export const POST = handle(async (request) => {
 
   if (body.action === 'create') {
     const made = await createChallenge(found.doc, body.game, body.mode, body.answerId)
-    if (typeof made === 'string') return fail(made === 'server' ? 500 : 400, made)
+    if (typeof made === 'string') return fail(made === 'server' ? 500 : made === 'too_fast' ? 429 : 400, made)
     return json({ challenge: challengeView(made, found.doc._id!) })
   }
 
