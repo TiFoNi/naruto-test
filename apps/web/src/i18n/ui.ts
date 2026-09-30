@@ -74,6 +74,22 @@ const ui = {
   },
   'grid.done': { ru: 'Раунд окончен', uk: 'Раунд завершено', en: 'Round over' },
   'grid.doneHint': { ru: 'Смотри итоги и запускай следующий', uk: 'Дивись підсумки й запускай наступний', en: 'Check the result and start the next one' },
+  'grid.softHint': {
+    ru: 'Ошибка передаёт ход сопернику, три ошибки — раунд проигран.',
+    uk: 'Помилка передає хід суперникові, три помилки — раунд програно.',
+    en: 'A miss passes the turn; three misses lose the round.',
+  },
+  'grid.misses': { ru: 'ошибок: {count}/{max}', uk: 'помилок: {count}/{max}', en: 'misses: {count}/{max}' },
+  'grid.outYou': {
+    ru: 'Три ошибки — раунд уходит сопернику.',
+    uk: 'Три помилки — раунд іде суперникові.',
+    en: 'Three misses — the round goes to your rival.',
+  },
+  'grid.outRival': {
+    ru: 'Соперник ошибся три раза — раунд твой.',
+    uk: 'Суперник помилився тричі — раунд твій.',
+    en: 'Your rival missed three times — the round is yours.',
+  },
   'grid.skipYou': {
     ru: '{name} не подошёл — ход уходит сопернику.',
     uk: '{name} не підійшов — хід іде суперникові.',

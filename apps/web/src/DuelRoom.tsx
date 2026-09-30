@@ -3,7 +3,7 @@
 import BackButton from './BackButton'
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import AbilityIcon from './AbilityIcon'
-import { ABILITY_STAGES, PHRASE_VOICE_AT } from '@nanda/game'
+import { ABILITY_STAGES, GRID_MISSES, PHRASE_VOICE_AT } from '@nanda/game'
 import { ZOOM_LEVELS, levelAt } from './zoom'
 import CharacterSearch from './CharacterSearch'
 import GiveUp from './GiveUp'
@@ -167,7 +167,9 @@ export default function DuelRoom({ code }: { code: string }) {
                 : t('duel.notReady')
               : duel.mode === 'who'
                 ? t('who.cardsLeft', { count: (duel.cards?.length ?? 0) - (duel.struck?.length ?? 0) })
-                : t('duel.guesses', { count: guesses.filter((g) => !g.pending).length })}
+                : duel.mode === 'grid'
+                  ? t('grid.misses', { count: duel.you?.guesses.length ?? 0, max: GRID_MISSES })
+                  : t('duel.guesses', { count: guesses.filter((g) => !g.pending).length })}
             {!inLobby && you?.solved
               ? ` · ${t('duel.solved')}`
               : !inLobby && you?.gaveUp
@@ -186,7 +188,9 @@ export default function DuelRoom({ code }: { code: string }) {
                   : t('duel.notReady')
                 : duel.mode === 'who'
                   ? t('who.cardsLeft', { count: duel.rivalLeft ?? 0 })
-                  : t('duel.guesses', { count: rival.guessCount })}
+                  : duel.mode === 'grid'
+                    ? t('grid.misses', { count: rival.guessCount, max: GRID_MISSES })
+                    : t('duel.guesses', { count: rival.guessCount })}
               {!inLobby && rival.solved
                 ? ` · ${t('duel.solved')}`
                 : !inLobby && rival.gaveUp

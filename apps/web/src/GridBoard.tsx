@@ -134,8 +134,8 @@ export default function GridBoard({ game, byId, duel, busy, error, onMark, onNex
               <i>+</i>
               <span>{label(grid.cols[cell % 3]).value}</span>
             </p>
-            <CharacterSearch game={game} exclude={used} busy={busy} onPick={place} />
-            {duel.strict && <p className="muted small grid-ask-warn">{t('grid.missHint')}</p>}
+            <CharacterSearch game={game} exclude={used} busy={busy} pickOnly onPick={place} />
+            <p className="muted small grid-ask-warn">{duel.strict ? t('grid.missHint') : t('grid.softHint')}</p>
             {error && <p className="notice error grid-ask-error">{errorText(error)}</p>}
           </section>
         </div>
@@ -151,7 +151,17 @@ export default function GridBoard({ game, byId, duel, busy, error, onMark, onNex
               {duel.youWon ? <TrophyIcon /> : <SwordsIcon />}
             </span>
             <h2>{duel.youWon ? t('duel.youWon') : duel.winner ? t('duel.youLost', { name: duel.winner }) : t('duel.draw')}</h2>
-            {miss && <p className="grid-miss">{miss.you ? t('grid.missYou', { name: missName }) : t('grid.missRival', { name: missName })}</p>}
+            {miss && (
+              <p className="grid-miss">
+                {duel.strict
+                  ? miss.you
+                    ? t('grid.missYou', { name: missName })
+                    : t('grid.missRival', { name: missName })
+                  : miss.you
+                    ? t('grid.outYou')
+                    : t('grid.outRival')}
+              </p>
+            )}
             <p className="who-result-score">
               <b>{duel.you?.wins ?? 0}</b>
               <span>:</span>

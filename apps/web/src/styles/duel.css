@@ -377,7 +377,8 @@
     grid-template-columns: 1fr 1.6fr;
   }
 
-  .duel-rules.with-board {
+  .duel-rules.with-board,
+  .duel-rules.with-strict {
     grid-template-columns: 1fr 1fr 1.7fr;
   }
 }

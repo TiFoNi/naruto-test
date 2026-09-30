@@ -10,10 +10,11 @@ type Props = {
   exclude: Set<number>
   busy?: boolean
   compact?: boolean
+  pickOnly?: boolean
   onPick: (e: Entity) => void
 }
 
-export default function CharacterSearch({ game, exclude, busy = false, compact = false, onPick }: Props) {
+export default function CharacterSearch({ game, exclude, busy = false, compact = false, pickOnly = false, onPick }: Props) {
   const { t, name, alt } = useI18n()
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
@@ -134,7 +135,13 @@ export default function CharacterSearch({ game, exclude, busy = false, compact =
           </span>
         )}
       </div>
-      <button className="send" aria-label={t('play.guess')} disabled={!matches.length || busy} onClick={() => pick(matches[active])}>
+      <button
+        className="send"
+        aria-label={t('play.guess')}
+        hidden={pickOnly}
+        disabled={!matches.length || busy}
+        onClick={() => pick(matches[active])}
+      >
         {compact ? <ArrowIcon /> : <>{t('play.guess')} <ArrowIcon /></>}
       </button>
       </div>

@@ -11,6 +11,7 @@ import {
   DUEL_ROUNDS,
   DUEL_SECONDS,
   GRID_MIN,
+  GRID_MISSES,
   GRID_SIDE,
   MODE_XP,
   PHRASE_EVERY,
@@ -677,28 +678,26 @@ export async function markCell(duel: DuelDoc, userId: ObjectId, cell: number, en
   if (!matchesFacet(entity, row, game) || !matchesFacet(entity, col, game)) {
     const rival = 1 - index
 
-    if (!duel.strict) {
-      const next = duel.players[rival]?.userId ?? userId
-      const skipped = await (await duels()).findOneAndUpdate(
-        { _id: duel._id, status: 'playing', turnId: userId },
-        { $set: { grid: { ...duel.grid, miss: { by: index, entityId } }, turnId: next } },
-        { returnDocument: 'after' },
-      )
-      return { duel: await settle(skipped ?? duel) }
+    const tries = [...(duel.players[index].guesses ?? []), entityId]
+    const out = duel.strict || tries.length >= GRID_MISSES
+    const set: Record<string, unknown> = {
+      grid: { ...duel.grid, miss: { by: index, entityId } },
+      [`players.${index}.guesses`]: tries,
     }
 
-    const lost = await (await duels()).findOneAndUpdate(
-      { _id: duel._id, status: 'playing' },
-      {
-        $set: {
-          grid: { ...duel.grid, miss: { by: index, entityId } },
-          [`players.${index}.gaveUp`]: true,
-          [`players.${rival}.solvedAt`]: new Date(),
-        },
-      },
+    if (out) {
+      set[`players.${index}.gaveUp`] = true
+      set[`players.${rival}.solvedAt`] = new Date()
+    } else {
+      set.turnId = duel.players[rival]?.userId ?? userId
+    }
+
+    const missed = await (await duels()).findOneAndUpdate(
+      { _id: duel._id, status: 'playing', turnId: userId },
+      { $set: set },
       { returnDocument: 'after' },
     )
-    return { duel: await settle(lost ?? duel) }
+    return { duel: await settle(missed ?? duel) }
   }
 
   const marks = [...duel.grid.marks]

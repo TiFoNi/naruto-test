@@ -304,6 +304,7 @@ export const GRID_GAMES: GameId[] = [
 
 export const GRID_SIDE = 3
 export const GRID_MIN = 5
+export const GRID_MISSES = 3
 
 export const BOARD_SIZES = [4, 5, 6, 7] as const
 export const BOARD_DEFAULT = 5
