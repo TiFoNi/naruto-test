@@ -247,6 +247,14 @@ export default function DuelRoom({ code }: { code: string }) {
         </div>
       )}
 
+      {duel.matchDone && over && !showResult && (
+        <div className="card duel-final-again">
+          <button className="primary" onClick={() => setShowResult(true)} disabled={busy}>
+            {t('duel.matchOver')}
+          </button>
+        </div>
+      )}
+
       {!inLobby && game && duel.mode === 'who' && <WhoBoard
           game={game}
           byId={byId}
@@ -416,13 +424,6 @@ export default function DuelRoom({ code }: { code: string }) {
                 <div className="result-actions">
                   <button className="primary" onClick={next} disabled={busy || you?.wantsNext}>
                     {you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
-                  </button>
-                </div>
-              )}
-              {over && duel.matchDone && !showResult && (
-                <div className="result-actions">
-                  <button className="primary" onClick={() => setShowResult(true)} disabled={busy}>
-                    {t('duel.matchOver')}
                   </button>
                 </div>
               )}

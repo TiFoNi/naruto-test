@@ -42,7 +42,6 @@ export type DuelView = {
     cols: { key: string; value: string }[]
     marks: ('you' | 'rival' | null)[]
     picks?: (number | undefined)[]
-    miss?: { you: boolean; entityId: number } | null
   }
   secret?: number | null
   picking?: boolean

@@ -672,16 +672,7 @@ export async function markCell(duel: DuelDoc, userId: ObjectId, cell: number, en
   const row = duel.grid.rows[Math.floor(cell / GRID_SIDE)]
   const col = duel.grid.cols[cell % GRID_SIDE]
 
-  if (!matchesFacet(entity, row, game) || !matchesFacet(entity, col, game)) {
-    const rival = 1 - index
-    const miss: Record<string, unknown> = {
-      grid: { ...duel.grid, miss: { by: index, entityId } },
-      [`players.${index}.gaveUp`]: true,
-      [`players.${rival}.solvedAt`]: new Date(),
-    }
-    const lost = await (await duels()).findOneAndUpdate({ _id: duel._id, status: 'playing' }, { $set: miss }, { returnDocument: 'after' })
-    return { duel: await settle(lost ?? duel) }
-  }
+  if (!matchesFacet(entity, row, game) || !matchesFacet(entity, col, game)) return { error: 'no_match' as const }
 
   const marks = [...duel.grid.marks]
   marks[cell] = index
@@ -861,7 +852,6 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
             cols: duel.grid.cols,
             marks: duel.grid.marks.map((one) => (one === null ? null : one === mine ? 'you' : 'rival')),
             picks: duel.grid.picks ?? [],
-            miss: duel.grid.miss ? { you: duel.grid.miss.by === mine, entityId: duel.grid.miss.entityId } : null,
           },
           turn: duel.turnId ? duel.players.find((side) => side.userId.equals(duel.turnId!))?.nickname ?? null : null,
           yourTurn: yourTurn(duel, userId),

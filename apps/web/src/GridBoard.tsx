@@ -40,9 +40,6 @@ export default function GridBoard({ game, byId, duel, busy, error, onMark, onNex
   }
 
   const used = new Set<number>((grid.picks ?? []).filter((one) => typeof one === 'number') as number[])
-  const miss = grid.miss ?? null
-  const missHero = miss ? byId.get(miss.entityId) : undefined
-  const missName = missHero ? name(missHero) : ''
   const outcome = over ? (duel.youWon ? 'won' : duel.winner ? 'lost' : 'skipped') : ''
 
   const place = (entity: Entity) => {
@@ -125,7 +122,6 @@ export default function GridBoard({ game, byId, duel, busy, error, onMark, onNex
               <span>{label(grid.cols[cell % 3]).value}</span>
             </p>
             <CharacterSearch game={game} exclude={used} busy={busy} onPick={place} />
-            <p className="muted small grid-ask-warn">{t('grid.missHint')}</p>
             {error && <p className="notice error grid-ask-error">{errorText(error)}</p>}
           </section>
         </div>
@@ -141,13 +137,6 @@ export default function GridBoard({ game, byId, duel, busy, error, onMark, onNex
               {duel.youWon ? <TrophyIcon /> : <SwordsIcon />}
             </span>
             <h2>{duel.youWon ? t('duel.youWon') : duel.winner ? t('duel.youLost', { name: duel.winner }) : t('duel.draw')}</h2>
-            {miss && (
-              <p className="grid-miss">
-                {miss.you
-                  ? t('grid.missYou', { name: missName })
-                  : t('grid.missRival', { name: missName })}
-              </p>
-            )}
             <p className="who-result-score">
               <b>{duel.you?.wins ?? 0}</b>
               <span>:</span>

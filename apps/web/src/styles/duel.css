@@ -767,12 +767,15 @@
 .duel-final-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  align-items: stretch;
   gap: 10px;
   width: 100%;
   margin-top: 8px;
 }
 
 .duel-final-actions button {
+  margin: 0;
+  min-height: 46px;
   padding: 11px 12px;
   border-radius: 12px;
   border: 1px solid transparent;
@@ -795,6 +798,16 @@
 .duel-final-actions .ghost:hover:not(:disabled) {
   border-color: color-mix(in srgb, #ff8085 45%, var(--line));
   color: #ff8085;
+}
+
+.duel-final-again {
+  display: flex;
+  justify-content: center;
+  padding: 14px 16px;
+}
+
+.duel-final-again button {
+  margin: 0;
 }
 
 @media (max-width: 620px) {
@@ -1867,20 +1880,6 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 .grid-ask h2 {
   margin: 0;
   font-size: 18px;
-}
-
-.grid-ask-warn {
-  margin: 0;
-  font-size: 12.5px;
-}
-
-.grid-miss {
-  margin: 0;
-  max-width: 320px;
-  color: var(--text-2);
-  font-size: 13.5px;
-  line-height: 1.4;
-  text-align: center;
 }
 
 .grid-ask-facets {

@@ -116,7 +116,6 @@ export type DuelDoc = {
     marks: (number | null)[]
     picks?: (number | undefined)[]
     used: number[]
-    miss?: { by: number; entityId: number } | null
   } | null
   invite?: { toId: ObjectId; nickname: string; at: Date; declined?: boolean } | null
   left?: { nickname: string; at: Date } | null
