@@ -5,6 +5,7 @@ import * as me from '@nanda/core/endpoints/me'
 import * as admin from '@nanda/core/endpoints/admin'
 import * as summary from '@nanda/core/endpoints/profile-summary'
 import * as quests from '@nanda/core/endpoints/quests'
+import * as push from '@nanda/core/endpoints/push'
 import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as duel from '@nanda/core/endpoints/duel'
@@ -52,6 +53,16 @@ export class GameController {
   @All('auth/*path')
   authRoutes(@Req() req: Request, @Res() res: Response) {
     return bridge(req.method === 'GET' ? auth.GET : auth.POST, req, res)
+  }
+
+  @Get('push')
+  pushState(@Req() req: Request, @Res() res: Response) {
+    return bridge(push.GET, req, res)
+  }
+
+  @Post('push')
+  pushSave(@Req() req: Request, @Res() res: Response) {
+    return bridge(push.POST, req, res)
   }
 
   @Post('challenge')

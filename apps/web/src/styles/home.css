@@ -69,21 +69,6 @@
   color: var(--text-3);
 }
 
-.hero-search-all {
-  flex: none;
-  display: grid;
-  place-items: center;
-  height: 32px;
-  padding: 0 12px;
-  border: 1px solid transparent;
-  border-radius: 11px;
-  background: var(--card-2);
-  color: var(--text-2);
-  font-size: 12px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
 .hero-search-clear {
   flex: none;
   display: grid;

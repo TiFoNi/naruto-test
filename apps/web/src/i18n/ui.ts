@@ -682,7 +682,6 @@ const ui = {
     en: 'Pick a world and a mode: endless rounds, or one puzzle a day for everyone.',
   },
   'dash.search': { ru: 'Поиск по всем категориям', uk: 'Пошук по всіх категоріях', en: 'Search every category' },
-  'dash.searchAll': { ru: 'Все категории', uk: 'Усі категорії', en: 'All categories' },
   'dash.searchClear': { ru: 'Очистить', uk: 'Очистити', en: 'Clear' },
   'dash.searchFound': { ru: 'Найдено: {count}', uk: 'Знайдено: {count}', en: 'Found: {count}' },
   'dash.searchNone': { ru: 'Ничего не найдено', uk: 'Нічого не знайдено', en: 'Nothing found' },
@@ -954,6 +953,32 @@ const ui = {
   'settings.account': { ru: 'Аккаунт и вход', uk: 'Акаунт і вхід', en: 'Account & sign-in' },
   'settings.notifications': { ru: 'Уведомления', uk: 'Сповіщення', en: 'Notifications' },
   'settings.privacy': { ru: 'Приватность', uk: 'Приватність', en: 'Privacy' },
+  'push.duelTitle': { ru: 'Вызов на дуэль', uk: 'Виклик на дуель', en: 'Duel invites' },
+  'push.duelHint': {
+    ru: 'Пуш на телефон, когда друг зовёт тебя в дуэль.',
+    uk: 'Пуш на телефон, коли друг кличе тебе в дуель.',
+    en: 'A push on your phone when a friend invites you to a duel.',
+  },
+  'push.unsupported': {
+    ru: 'Браузер не поддерживает пуши — открой сайт в Chrome или Safari.',
+    uk: 'Браузер не підтримує пуші — відкрий сайт у Chrome або Safari.',
+    en: 'This browser has no push support — open the site in Chrome or Safari.',
+  },
+  'push.blocked': {
+    ru: 'Уведомления запрещены в настройках браузера — разреши их для сайта.',
+    uk: 'Сповіщення заборонені в налаштуваннях браузера — дозволь їх для сайту.',
+    en: 'Notifications are blocked in your browser — allow them for this site.',
+  },
+  'push.iosHint': {
+    ru: 'На iPhone сначала добавь сайт на экран «Домой» — иначе пуши не придут.',
+    uk: 'На iPhone спочатку додай сайт на екран «Додому» — інакше пуші не прийдуть.',
+    en: 'On iPhone add the site to your Home Screen first, otherwise pushes will not arrive.',
+  },
+  'push.offline': {
+    ru: 'Пуши пока не настроены на сервере.',
+    uk: 'Пуші поки не налаштовані на сервері.',
+    en: 'Push is not configured on the server yet.',
+  },
   'settings.soon': {
     ru: 'Здесь пока пусто — настройки появятся позже.',
     uk: 'Тут поки порожньо — налаштування з\'являться згодом.',

@@ -7,6 +7,7 @@ import { useI18n, type UiKey } from './i18n'
 import { BellIcon, CloseIcon, MailIcon, ShieldIcon, UserIcon } from './icons'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
+import { disablePush, enablePush, pushState, pushSupported, type PushState } from './push'
 
 type Tab = 'profile' | 'account' | 'notifications' | 'privacy'
 
@@ -200,14 +201,69 @@ export default function Settings() {
             </div>
           )}
 
-          {(tab === 'notifications' || tab === 'privacy') && (
+          {tab === 'notifications' && <PushBlock />}
+
+          {tab === 'privacy' && (
             <section className="settings-block">
-              <span className="settings-eyebrow">{t(tab === 'notifications' ? 'settings.notifications' : 'settings.privacy')}</span>
+              <span className="settings-eyebrow">{t('settings.privacy')}</span>
               <p className="muted">{t('settings.soon')}</p>
             </section>
           )}
         </div>
       </div>
     </div>
+  )
+}
+
+function PushBlock() {
+  const { t } = useI18n()
+  const [state, setState] = useState<PushState | null>(null)
+  const [busy, setBusy] = useState(false)
+
+  useEffect(() => {
+    let alive = true
+    void pushState().then((next) => alive && setState(next))
+    return () => {
+      alive = false
+    }
+  }, [])
+
+  const toggle = async () => {
+    if (!state || busy) return
+    setBusy(true)
+    if (state.on) await disablePush()
+    else if (state.key) await enablePush(state.key)
+    setState(await pushState())
+    setBusy(false)
+  }
+
+  const blocked = state?.permission === 'denied'
+  const ready = Boolean(state?.supported && state?.key)
+
+  return (
+    <section className="settings-block">
+      <span className="settings-eyebrow">{t('settings.notifications')}</span>
+      <div className="push-row">
+        <div>
+          <b>{t('push.duelTitle')}</b>
+          <p className="muted">{t('push.duelHint')}</p>
+        </div>
+        <button
+          type="button"
+          className={`push-switch ${state?.on ? 'on' : ''}`}
+          role="switch"
+          aria-checked={Boolean(state?.on)}
+          aria-label={t('push.duelTitle')}
+          disabled={!ready || blocked || busy || !state}
+          onClick={() => void toggle()}
+        >
+          <i />
+        </button>
+      </div>
+      {!pushSupported() && <p className="muted small">{t('push.unsupported')}</p>}
+      {blocked && <p className="muted small">{t('push.blocked')}</p>}
+      {pushSupported() && !blocked && <p className="muted small">{t('push.iosHint')}</p>}
+      {state?.supported && !state.key && <p className="muted small">{t('push.offline')}</p>}
+    </section>
   )
 }

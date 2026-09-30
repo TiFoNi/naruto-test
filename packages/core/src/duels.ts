@@ -28,6 +28,7 @@ import { optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { gameData, isGame, isMode } from './games'
 import { matchesFacet, planGrid } from './grid'
 import { addXp, defaultNickname } from './profile'
+import { sendPush } from './push'
 import { duelSeed, focusFor, shotFor } from './crop'
 import { markSeasonDuel } from './season'
 
@@ -138,6 +139,13 @@ export async function inviteTo(duel: DuelDoc, userId: ObjectId, targetId: unknow
     { $set: { invite: { toId: _id, nickname: nameOf(target), at: new Date() } } },
     { returnDocument: 'after' },
   )
+  const host = duel.players.find((side) => side.userId.equals(userId))
+  void sendPush(_id, {
+    title: 'NandaGuessr',
+    body: `${host?.nickname ?? 'Суперник'} кличе на дуель`,
+    url: `/duel/${duel.code}`,
+    tag: `duel-${duel.code}`,
+  }).catch(() => undefined)
   return updated ?? duel
 }
 

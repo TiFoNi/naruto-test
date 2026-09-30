@@ -236,12 +236,10 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
             onKeyDown={(event) => event.key === 'Escape' && setQuery('')}
             autoComplete="off"
           />
-          {query ? (
+          {!!query && (
             <button type="button" className="hero-search-clear" aria-label={t('dash.searchClear')} onClick={() => setQuery('')}>
               <CloseIcon />
             </button>
-          ) : (
-            <span className="hero-search-all">{t('dash.searchAll')}</span>
           )}
         </label>
         {user ? (
