@@ -38,7 +38,7 @@
 
 .profile-grid {
   display: grid;
-  grid-template-columns: minmax(230px, 300px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, calc((100% - 28px) / 3)) minmax(0, 1fr);
   align-items: stretch;
   gap: 14px;
 }
@@ -581,12 +581,6 @@
   border: 1px dashed var(--line);
 }
 
-@media (max-width: 1180px) {
-  .profile-grid {
-    grid-template-columns: minmax(240px, 1fr) minmax(0, 2fr);
-  }
-}
-
 @media (max-width: 900px) {
   .profile-middle-cols {
     grid-template-columns: minmax(0, 1fr);
@@ -618,7 +612,7 @@
     order: 4;
   }
 
-  .soon-card {
+  .activity-card {
     order: 5;
   }
 
@@ -626,7 +620,7 @@
     order: 6;
   }
 
-  .activity-card {
+  .soon-card {
     order: 7;
   }
 }

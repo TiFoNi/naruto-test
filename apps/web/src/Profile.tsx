@@ -390,30 +390,31 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                 )}
               </section>
 
-              <section className="card soon-card">
+              <section className="card activity-card">
                 <header>
-                  <h2>
-                    <TrophyIcon /> {t('profile.awardsTitle')}
-                    <span className="soon-count">{pinned.length}/6</span>
-                  </h2>
+                  <h2>{t('profile.activity')}</h2>
                 </header>
-                <p className="muted">{pinned.length ? t('profile.awardsSoon') : own ? t('profile.awardsPinHint') : t('profile.awardsNone')}</p>
-                <ul className="soon-badges">
-                  {Array.from({ length: 6 }, (_, index) => {
-                    const award = pinned[index]
-                    if (!award) return <li key={index} />
-                    return (
-                      <li key={award.id ?? `secret-${index}`} className={`on tier-${award.tier}`}>
-                        <TrophyIcon />
-                        <b>{award.hidden || !award.id ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
+                {summary?.recent.length ? (
+                  <ul className="activity">
+                    {summary.recent.map((round, index) => (
+                      <li key={`${round.game}-${round.answerId}-${index}`}>
+                        <span className={`activity-dot ${round.status}`} aria-hidden />
+                        <span className="activity-text">
+                          {t(round.status === 'won' ? 'profile.won' : round.status === 'skipped' ? 'profile.gaveUp' : 'profile.lost', {
+                            name: round.name ? round.name[lang] : `#${round.answerId}`,
+                          })}
+                          <small>
+                            {gameLabel(round.game) ? l(gameLabel(round.game)!) : round.game} · {t(modeLabel(round.mode))}
+                            {round.challenge ? ` · ${t('profile.fromFriend')}` : ''}
+                            {round.guessCount ? ` · ${t('profile.tries', { count: round.guessCount })}` : ''}
+                          </small>
+                        </span>
+                        <span className="activity-when muted">{date(round.finishedAt)}</span>
                       </li>
-                    )
-                  })}
-                </ul>
-                {own && (
-                  <Link className="lb-link awards-open" href={href.achievements}>
-                    <TrophyIcon /> {t('ach.open')}
-                  </Link>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="muted center">{t('profile.activityEmpty')}</p>
                 )}
               </section>
             </div>
@@ -443,31 +444,30 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                 </ul>
               </section>
 
-              <section className="card activity-card">
+              <section className="card soon-card">
                 <header>
-                  <h2>{t('profile.activity')}</h2>
+                  <h2>
+                    <TrophyIcon /> {t('profile.awardsTitle')}
+                    <span className="soon-count">{pinned.length}/6</span>
+                  </h2>
                 </header>
-                {summary?.recent.length ? (
-                  <ul className="activity">
-                    {summary.recent.map((round, index) => (
-                      <li key={`${round.game}-${round.answerId}-${index}`}>
-                        <span className={`activity-dot ${round.status}`} aria-hidden />
-                        <span className="activity-text">
-                          {t(round.status === 'won' ? 'profile.won' : round.status === 'skipped' ? 'profile.gaveUp' : 'profile.lost', {
-                            name: round.name ? round.name[lang] : `#${round.answerId}`,
-                          })}
-                          <small>
-                            {gameLabel(round.game) ? l(gameLabel(round.game)!) : round.game} · {t(modeLabel(round.mode))}
-                            {round.challenge ? ` · ${t('profile.fromFriend')}` : ''}
-                            {round.guessCount ? ` · ${t('profile.tries', { count: round.guessCount })}` : ''}
-                          </small>
-                        </span>
-                        <span className="activity-when muted">{date(round.finishedAt)}</span>
+                <p className="muted">{pinned.length ? t('profile.awardsSoon') : own ? t('profile.awardsPinHint') : t('profile.awardsNone')}</p>
+                <ul className="soon-badges">
+                  {Array.from({ length: 6 }, (_, index) => {
+                    const award = pinned[index]
+                    if (!award) return <li key={index} />
+                    return (
+                      <li key={award.id ?? `secret-${index}`} className={`on tier-${award.tier}`}>
+                        <TrophyIcon />
+                        <b>{award.hidden || !award.id ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
                       </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="muted center">{t('profile.activityEmpty')}</p>
+                    )
+                  })}
+                </ul>
+                {own && (
+                  <Link className="lb-link awards-open" href={href.achievements}>
+                    <TrophyIcon /> {t('ach.open')}
+                  </Link>
                 )}
               </section>
             </div>
