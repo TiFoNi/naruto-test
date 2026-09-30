@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import CharacterSearch from './CharacterSearch'
 import Thumb from './Thumb'
 import type { Entity, Game } from './games/types'
@@ -57,8 +57,8 @@ export default function GridBoard({ game, byId, duel, busy, error, onMark, onNex
       </div>
 
       <div className="grid-board card">
-        <div className="grid-head">
-          <span className="grid-corner" />
+        <div className="grid-table">
+          <span className="grid-corner" aria-hidden />
           {grid.cols.map((facet, at) => {
             const { head, value } = label(facet)
             return (
@@ -68,45 +68,45 @@ export default function GridBoard({ game, byId, duel, busy, error, onMark, onNex
               </div>
             )
           })}
-        </div>
 
-        {grid.rows.map((row, y) => {
-          const { head, value } = label(row)
-          return (
-            <div key={`row-${y}`} className="grid-line">
-              <div className="grid-axis side">
-                <small>{head}</small>
-                <b>{value}</b>
-              </div>
-              {grid.cols.map((_, x) => {
-                const at = y * 3 + x
-                const mark = grid.marks[at]
-                const picked = grid.picks?.[at]
-                const hero = typeof picked === 'number' ? byId.get(picked) : undefined
-                return (
-                  <button
-                    key={at}
-                    type="button"
-                    className={`grid-cell ${mark ?? 'free'}`}
-                    disabled={Boolean(mark) || over || busy || !myTurn}
-                    onClick={() => setCell(at)}
-                  >
-                    {hero ? (
-                      <>
-                        <Thumb game={game} entity={hero} size={44} />
-                        <span className="grid-name">{name(hero)}</span>
-                      </>
-                    ) : (
-                      <span className="grid-plus" aria-hidden>
-                        +
-                      </span>
-                    )}
-                  </button>
-                )
-              })}
-            </div>
-          )
-        })}
+          {grid.rows.map((row, y) => {
+            const { head, value } = label(row)
+            return (
+              <Fragment key={`row-${y}`}>
+                <div className="grid-axis">
+                  <small>{head}</small>
+                  <b>{value}</b>
+                </div>
+                {grid.cols.map((_, x) => {
+                  const at = y * 3 + x
+                  const mark = grid.marks[at]
+                  const picked = grid.picks?.[at]
+                  const hero = typeof picked === 'number' ? byId.get(picked) : undefined
+                  return (
+                    <button
+                      key={at}
+                      type="button"
+                      className={`grid-cell ${mark ?? 'free'}`}
+                      disabled={Boolean(mark) || over || busy || !myTurn}
+                      onClick={() => setCell(at)}
+                    >
+                      {hero ? (
+                        <>
+                          <Thumb game={game} entity={hero} className="grid-face" />
+                          <span className="grid-name">{name(hero)}</span>
+                        </>
+                      ) : (
+                        <span className="grid-plus" aria-hidden>
+                          +
+                        </span>
+                      )}
+                    </button>
+                  )
+                })}
+              </Fragment>
+            )
+          })}
+        </div>
       </div>
 
       {cell !== null && (

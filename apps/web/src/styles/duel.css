@@ -33,11 +33,6 @@
   font-size: 13px;
 }
 
-.duel-head + .duel-players,
-.duel-players + .who-top {
-  margin-top: -6px;
-}
-
 .duel-players {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -1754,74 +1749,94 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .grid-board {
-  display: flex;
-  max-width: 640px;
-  flex-direction: column;
-  gap: 8px;
+  width: min(100%, 620px);
+  max-width: 620px;
   margin: 0 auto;
-  padding: 12px;
+  padding: 14px;
   container-type: inline-size;
 }
 
-.grid-head,
-.grid-line {
+.grid-table {
   display: grid;
-  grid-template-columns: minmax(78px, 0.72fr) repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 0.78fr) repeat(3, minmax(0, 1fr));
   gap: 8px;
+}
+
+.grid-corner {
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--card-2) 45%, transparent);
 }
 
 .grid-axis {
   display: flex;
+  min-width: 0;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 2px;
-  padding: 8px 10px;
+  gap: 3px;
+  overflow: hidden;
+  padding: 9px 7px;
+  border: 1px solid color-mix(in srgb, var(--tab-accent, var(--accent)) 16%, transparent);
   border-radius: 12px;
   background: var(--card-2);
   text-align: center;
 }
 
-.grid-axis.side {
-  text-align: left;
-}
-
 .grid-axis small {
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   color: var(--text-3);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
   text-transform: uppercase;
+  text-wrap: balance;
 }
 
 .grid-axis b {
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
   font-size: 13px;
-  line-height: 1.2;
-  overflow-wrap: anywhere;
+  hyphens: auto;
+  line-height: 1.22;
+  overflow-wrap: break-word;
+  text-wrap: balance;
 }
 
 .grid-cell {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 6px;
+  overflow: hidden;
   aspect-ratio: 1;
-  padding: 6px;
+  padding: 8px 6px;
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--card);
   color: var(--text-2);
   font: inherit;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
 }
 
 .grid-cell.free:hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--tab-accent, var(--accent)) 55%, var(--line));
+  background: color-mix(in srgb, var(--tab-accent, var(--accent)) 8%, var(--card));
+  transform: translateY(-1px);
 }
 
 .grid-cell:disabled {
@@ -1842,9 +1857,21 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   color: var(--text-3);
   font-family: var(--display);
   font-size: 22px;
+  line-height: 1;
+}
+
+.grid-face {
+  width: min(46%, 62px);
+  height: auto;
+  aspect-ratio: 1;
 }
 
 .grid-name {
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   color: var(--text);
   font-size: 11.5px;
   font-weight: 700;
@@ -1853,12 +1880,19 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   overflow-wrap: anywhere;
 }
 
-.grid-ask {
+.card.modal.grid-ask {
   display: flex;
+  width: min(100%, 460px);
+  max-width: 460px;
   flex-direction: column;
   gap: 12px;
+  margin: 0 auto;
   padding: 22px 20px;
   text-align: center;
+}
+
+.grid-ask .search {
+  width: 100%;
 }
 
 .grid-ask h2 {
@@ -1868,9 +1902,10 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .grid-ask-facets {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   margin: 0;
   font-size: 14px;
 }
@@ -1888,22 +1923,35 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   font-style: normal;
 }
 
-@container (max-width: 560px) {
-  .grid-head,
-  .grid-line {
-    grid-template-columns: minmax(64px, 0.8fr) repeat(3, minmax(0, 1fr));
+@container (max-width: 470px) {
+  .grid-table {
+    grid-template-columns: minmax(0, 0.96fr) repeat(3, minmax(0, 1fr));
     gap: 6px;
   }
 
   .grid-axis {
-    padding: 6px 8px;
+    gap: 2px;
+    padding: 6px 5px;
+    border-radius: 10px;
+  }
+
+  .grid-axis small {
+    font-size: 8.5px;
+    letter-spacing: 0.02em;
   }
 
   .grid-axis b {
-    font-size: 11.5px;
+    -webkit-line-clamp: 4;
+    font-size: 10.5px;
+  }
+
+  .grid-cell {
+    gap: 4px;
+    padding: 5px 3px;
+    border-radius: 11px;
   }
 
   .grid-name {
-    font-size: 10px;
+    font-size: 9.5px;
   }
 }
