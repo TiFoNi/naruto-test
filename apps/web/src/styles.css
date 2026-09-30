@@ -2402,7 +2402,7 @@ main {
 
 .fan {
   position: absolute;
-  bottom: -18px;
+  bottom: 0;
   left: 50%;
   width: 112px;
   height: auto;
@@ -2410,28 +2410,29 @@ main {
   object-fit: cover;
   object-position: center top;
   border-radius: 14px;
-  border: 3px solid var(--overlay);
-  background: var(--overlay);
+  border: 3px solid var(--card-solid);
+  background: var(--card-2-solid);
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   user-select: none;
-  backdrop-filter: blur(22px);
 }
 
 .fan-0 {
   z-index: 3;
   width: 128px;
-  bottom: -10px;
+  bottom: 0;
   transform: translateX(-50%);
 }
 
 .fan-1 {
   z-index: 2;
+  bottom: 11px;
   transform: translateX(calc(-50% - 88px)) rotate(-9deg);
 }
 
 .fan-2 {
   z-index: 2;
+  bottom: 11px;
   transform: translateX(calc(-50% + 88px)) rotate(9deg);
 }
 
