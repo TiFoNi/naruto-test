@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import DuelSkeleton from './DuelSkeleton'
 import { activeDuel, setActiveDuel } from './activeDuel'
 import { api } from './api'
 import { useI18n } from './i18n'
@@ -9,7 +10,7 @@ import { useHref, useNavigate } from './router'
 export default function DuelLobby() {
   const navigate = useNavigate()
   const href = useHref()
-  const { t, error: errorText } = useI18n()
+  const { error: errorText } = useI18n()
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -36,5 +37,7 @@ export default function DuelLobby() {
     }
   }, [href, navigate])
 
-  return <div className="card center muted page-loading">{error ? errorText(error) : t('loading')}</div>
+  if (error) return <div className="card center muted page-loading">{errorText(error)}</div>
+
+  return <DuelSkeleton />
 }

@@ -4,7 +4,7 @@ import BackButton from './BackButton'
 import { useI18n } from './i18n'
 import { useHref } from './router'
 
-export default function DuelSkeleton({ code }: { code: string }) {
+export default function DuelSkeleton({ code }: { code?: string }) {
   const { t } = useI18n()
   const href = useHref()
 
@@ -12,15 +12,21 @@ export default function DuelSkeleton({ code }: { code: string }) {
     <div className="duel duel-ghosts">
       <BackButton href={href.home}>{t('play.back')}</BackButton>
 
-      <div className="ghost-lobby">
+      <div className="duel-setup ghost-lobby">
         <header className="duel-setup-head">
           <div>
             <h1>{t('duel.newTitle')}</h1>
             <p className="muted">{t('duel.newLead')}</p>
           </div>
           <div className="duel-code">
-            <span className="muted">{t('duel.codeLabel')}</span>
-            <b>{code}</b>
+            {code && (
+              <>
+                <span className="muted">{t('duel.codeLabel')}</span>
+                <b>{code}</b>
+              </>
+            )}
+            <span className="ghost pill wide" />
+            <span className="ghost pill" />
           </div>
         </header>
         <div className="duel-setup-grid">
