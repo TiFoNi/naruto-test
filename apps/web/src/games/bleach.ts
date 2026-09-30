@@ -37,7 +37,7 @@ export const bleach: Game<Character> = {
     'Шінігамі Ґотею 13, арранкари Айзена та квінсі Ванденрайху — від агента шінігамі до Тисячолітньої війни.',
     'Gotei 13 Shinigami, Aizen’s Arrancar and the Wandenreich Quincy — from Substitute Shinigami to the Thousand-Year Blood War.',
   ),
-  accent: '#5aa9ff',
+  accent: '#d8c49a',
   modes: ['classic', 'image'],
   featured: ['Ichigo Kurosaki', 'Rukia Kuchiki', 'Sousuke Aizen', 'Byakuya Kuchiki'],
   unit: 'character',

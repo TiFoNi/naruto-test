@@ -43,7 +43,7 @@ export const tg: Game<Character> = {
     'Гулі, слідчі CCG, Аоґірі та квінкси — від «Антейку» до фіналу :re.',
     'Ghouls, CCG investigators, Aogiri and the Quinx — from Anteiku to the end of :re.',
   ),
-  accent: '#e0457b',
+  accent: '#d6435a',
   modes: ['classic', 'image'],
   featured: ['Ken Kaneki', 'Touka Kirishima', 'Kishou Arima'],
   unit: 'character',

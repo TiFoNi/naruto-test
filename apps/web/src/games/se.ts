@@ -34,7 +34,7 @@ export const se: Game<Character> = {
     'Шібусен, майстри та демонічна зброя — полювання на душі кішінів від прологу до Місяця.',
     'The DWMA, meisters and demon weapons — hunting kishin souls from the prologue to the moon.',
   ),
-  accent: '#cf4b52',
+  accent: '#f2c53d',
   modes: ['classic', 'image'],
   featured: ['Maka Albarn', 'Soul Evans', 'Death the Kid'],
   unit: 'character',

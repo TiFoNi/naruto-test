@@ -32,7 +32,7 @@ export const hxh: Game<Character> = {
     'Мисливці, Трупа Привидів і мурахи-химери — від іспиту на мисливця до Темного континенту.',
     'Hunters, the Phantom Troupe and Chimera Ants — from the Hunter Exam to the Dark Continent.',
   ),
-  accent: '#3fbf8f',
+  accent: '#a678e8',
   modes: ['classic', 'image'],
   featured: ['Gon Freecss', 'Killua Zoldyck', 'Kurapika'],
   unit: 'character',

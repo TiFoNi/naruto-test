@@ -1,6 +1,7 @@
 :root {
   --bg: #0d0f12;
   --card-solid: #161a1f;
+  --overlay: rgba(19, 22, 28, 0.93);
   --card-2-solid: #1d2229;
   --card: rgba(255, 255, 255, 0.035);
   --card-2: rgba(255, 255, 255, 0.05);
@@ -407,9 +408,10 @@ a.bell.active {
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: var(--card-solid);
+  background: var(--overlay);
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.6);
   animation: fade-in 0.15s ease;
+  backdrop-filter: blur(14px);
 }
 
 .bell-box.open .bell-menu {
@@ -970,7 +972,7 @@ main {
   margin: 0;
   padding: 6px;
   list-style: none;
-  background: var(--card-2-solid);
+  background: var(--overlay);
   border: 1px solid var(--line);
   border-radius: 14px;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
@@ -979,6 +981,7 @@ main {
   scrollbar-width: thin;
   scrollbar-color: var(--line) transparent;
   z-index: 20;
+  backdrop-filter: blur(14px);
 }
 
 .suggestions li {
@@ -1986,8 +1989,9 @@ main {
   padding: 4px;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: var(--card-solid);
+  background: var(--overlay);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(14px);
 }
 
 .lang-switch.open .lang-list {
@@ -2065,9 +2069,10 @@ main {
   padding: 6px;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: var(--card-solid);
+  background: var(--overlay);
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.6);
   animation: fade-in 0.15s ease;
+  backdrop-filter: blur(14px);
 }
 
 .account.open .account-menu {
@@ -2405,11 +2410,12 @@ main {
   object-fit: cover;
   object-position: center top;
   border-radius: 14px;
-  border: 3px solid var(--card-solid);
-  background: var(--card-2-solid);
+  border: 3px solid var(--overlay);
+  background: var(--overlay);
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   user-select: none;
+  backdrop-filter: blur(14px);
 }
 
 .fan-0 {
@@ -3254,8 +3260,9 @@ button.ghost.small {
     padding: 6px;
     border: 1px solid var(--line);
     border-radius: 12px;
-    background: var(--card-solid);
+    background: var(--overlay);
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(14px);
   }
 
   .topbar-menu.open .topbar-nav {
@@ -3398,8 +3405,9 @@ html:not([data-auth]) .play-actions .challenge-open {
   width: min(100%, 560px);
   max-height: calc(100dvh - 24px);
   overflow: visible;
-  background: var(--card-solid);
+  background: var(--overlay);
   animation: modal-in 0.18s ease;
+  backdrop-filter: blur(14px);
 }
 
 .modal-close {
@@ -4106,7 +4114,7 @@ html:not([data-auth]) .play-actions .challenge-open {
   padding: 0 0 3px;
   border-radius: 50%;
   border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--card-2-solid) 92%, transparent);
+  background: color-mix(in srgb, var(--overlay) 92%, transparent);
   color: var(--text);
   font-size: 22px;
   font-weight: 800;
@@ -4117,6 +4125,7 @@ html:not([data-auth]) .play-actions .challenge-open {
   pointer-events: none;
   transform: translateY(-50%) scale(0.85);
   transition: opacity 0.2s, transform 0.2s, border-color 0.2s;
+  backdrop-filter: blur(14px);
 }
 
 .scroll-arrow:hover {
@@ -4280,9 +4289,10 @@ html:not([data-auth]) .play-actions .challenge-open {
   overscroll-behavior: contain;
   border-radius: 14px;
   border: 1px solid var(--line);
-  background: var(--card-2-solid);
+  background: var(--overlay);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
   animation: reveal 0.16s ease-out;
+  backdrop-filter: blur(14px);
 }
 
 .picker-list li .icon {
@@ -4885,9 +4895,10 @@ html[data-auth] .guest-note {
   min-width: 200px;
   padding: 6px;
   border-radius: 12px;
-  background: var(--card-2-solid);
+  background: var(--overlay);
   border: 1px solid var(--line);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(14px);
 }
 
 .dropdown-menu input {
@@ -6121,7 +6132,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   gap: 12px;
   height: 58px;
   padding: 0 18px;
-  border: 2px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ffffff 9%, transparent);
   border-radius: 16px;
   background: var(--card);
   color: var(--text-3);
@@ -7191,7 +7202,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   padding: 10px 12px;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: var(--card-solid);
+  background: var(--overlay);
   color: var(--text);
   font-size: 12.5px;
   font-weight: 700;
@@ -7201,6 +7212,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   transform: translate(-50%, -100%);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
   animation: fade-in 0.14s ease;
+  backdrop-filter: blur(14px);
 }
 
 .cell-tip.below {
@@ -7562,10 +7574,11 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   padding: 6px;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: var(--card-solid);
+  background: var(--overlay);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
   transform: translateX(-50%);
   animation: fade-in 0.14s ease;
+  backdrop-filter: blur(14px);
 }
 
 .share-menu.up {
@@ -7604,13 +7617,14 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   left: 50%;
   padding: 5px 12px;
   border-radius: 999px;
-  background: var(--card-2-solid);
+  background: var(--overlay);
   color: var(--correct);
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
   transform: translateX(-50%);
   animation: fade-in 0.14s ease;
+  backdrop-filter: blur(14px);
 }
 
 .has-logo {
