@@ -1643,9 +1643,10 @@
 }
 
 .who-pass {
-  align-self: flex-start;
-  margin-top: 10px;
-  padding: 9px 18px;
+  align-self: center;
+  flex: none;
+  margin: 0 0 0 auto;
+  padding: 10px 20px;
   font-size: 14px;
 }
 

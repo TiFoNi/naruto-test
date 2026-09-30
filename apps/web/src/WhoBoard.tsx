@@ -24,10 +24,14 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
   const [info, setInfo] = useState<number | null>(null)
   const [ask, setAsk] = useState<number | null>(null)
   const [choose, setChoose] = useState<number | null>(null)
+  const [passing, setPassing] = useState(false)
+  const [local, setLocal] = useState<number[] | null>(null)
   const [endOpen, setEndOpen] = useState(true)
   const grid = useRef<HTMLOListElement>(null)
 
-  const struck = new Set(duel.struck ?? [])
+  const server = duel.struck ?? []
+  const serverKey = server.join(',')
+  const struck = new Set(local ?? server)
   const cards = duel.cards ?? []
   const standing = cards.filter((id) => !struck.has(id))
   const choosing = Boolean(duel.picking)
@@ -44,6 +48,14 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
   const yourAnswer = duel.yourAnswer !== undefined ? byId.get(duel.yourAnswer) : undefined
   const rivalAnswer = duel.rivalAnswer !== undefined ? byId.get(duel.rivalAnswer) : undefined
   const outcome = over ? (duel.youWon ? 'won' : duel.winner ? 'lost' : 'skipped') : ''
+
+  useEffect(() => {
+    setPassing(false)
+  }, [myTurn, duel.round])
+
+  useEffect(() => {
+    setLocal(null)
+  }, [serverKey, duel.round])
 
   useEffect(() => {
     if (over) {
@@ -101,7 +113,10 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
 
   const tap = (id: number) => {
     if (choosing) return youPicked ? undefined : setChoose(id)
-    if (struck.has(id) || standing.length > 2) return onStrike(id)
+    if (struck.has(id) || standing.length > 2) {
+      setLocal(struck.has(id) ? [...struck].filter((one) => one !== id) : [...struck, id])
+      return onStrike(id)
+    }
     if (!myTurn) return
     setAsk(standing.find((other) => other !== id) ?? id)
   }
@@ -151,12 +166,21 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
                 ? t('who.turnHint')
                 : t('who.waitTurn')}
           </p>
-          {!choosing && !over && myTurn && (
-            <button type="button" className="primary who-pass" disabled={busy} onClick={onPass}>
-              {t('who.pass')}
-            </button>
-          )}
         </div>
+
+        {!choosing && !over && myTurn && (
+          <button
+            type="button"
+            className="primary who-pass"
+            disabled={passing}
+            onClick={() => {
+              setPassing(true)
+              onPass()
+            }}
+          >
+            {t('who.pass')}
+          </button>
+        )}
       </div>
 
       {ended && !endOpen && (
@@ -245,7 +269,7 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
                 type="button"
                 className="who-card"
                 aria-label={choosing ? `${name(entity)} — ${t('who.pickDo')}` : `${name(entity)} — ${off ? t('who.open') : t('who.close')}`}
-                disabled={over || busy || (choosing && youPicked)}
+                disabled={over || (choosing && (busy || youPicked))}
                 onClick={() => tap(id)}
               >
                 <span className="who-flip">
