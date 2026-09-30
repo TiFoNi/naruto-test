@@ -1,12 +1,13 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type CSSProperties } from 'react'
 import { useI18n } from './i18n'
 
 type Props = { first: string; second: string; youFirst: boolean; onDone: () => void }
 
 const SPIN_MS = 2400
 const HOLD_MS = 1100
+const EDGES = 64
 
 export default function CoinFlip({ first, second, youFirst, onDone }: Props) {
   const { t } = useI18n()
@@ -26,6 +27,9 @@ export default function CoinFlip({ first, second, youFirst, onDone }: Props) {
         <div className="coin-stage">
           <div className="coin-tilt">
             <div className="coin">
+              {Array.from({ length: EDGES }, (_, at) => (
+                <span key={at} className="coin-edge" style={{ '--a': `${(360 / EDGES) * at}deg` } as CSSProperties} />
+              ))}
               <span className="coin-face coin-front">{first}</span>
               <span className="coin-face coin-back">{second}</span>
             </div>
