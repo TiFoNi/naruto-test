@@ -1346,6 +1346,10 @@
 
 .card.modal.who-result {
   --tone: var(--accent);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--card-2) transparent;
   display: flex;
   width: min(520px, 100%);
   max-width: 520px;
@@ -1744,4 +1748,162 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   display: none;
   flex-direction: column;
   gap: 16px;
+}
+
+.grid-mode {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.grid-board {
+  display: flex;
+  max-width: 640px;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 auto;
+  padding: 12px;
+  container-type: inline-size;
+}
+
+.grid-head,
+.grid-line {
+  display: grid;
+  grid-template-columns: minmax(78px, 0.72fr) repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.grid-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--card-2);
+  text-align: center;
+}
+
+.grid-axis.side {
+  text-align: left;
+}
+
+.grid-axis small {
+  color: var(--text-3);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.grid-axis b {
+  font-size: 13px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.grid-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  aspect-ratio: 1;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--text-2);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.grid-cell.free:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--tab-accent, var(--accent)) 55%, var(--line));
+}
+
+.grid-cell:disabled {
+  cursor: default;
+}
+
+.grid-cell.you {
+  border-color: color-mix(in srgb, var(--correct) 55%, var(--line));
+  background: color-mix(in srgb, var(--correct) 12%, var(--card));
+}
+
+.grid-cell.rival {
+  border-color: color-mix(in srgb, #ff8085 55%, var(--line));
+  background: color-mix(in srgb, #ff8085 12%, var(--card));
+}
+
+.grid-plus {
+  color: var(--text-3);
+  font-family: var(--display);
+  font-size: 22px;
+}
+
+.grid-name {
+  color: var(--text);
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.grid-ask {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px 20px;
+  text-align: center;
+}
+
+.grid-ask h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.grid-ask-facets {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.grid-ask-facets span {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card-2);
+  color: var(--text);
+}
+
+.grid-ask-facets i {
+  color: var(--text-3);
+  font-style: normal;
+}
+
+@container (max-width: 560px) {
+  .grid-head,
+  .grid-line {
+    grid-template-columns: minmax(64px, 0.8fr) repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .grid-axis {
+    padding: 6px 8px;
+  }
+
+  .grid-axis b {
+    font-size: 11.5px;
+  }
+
+  .grid-name {
+    font-size: 10px;
+  }
 }

@@ -3388,10 +3388,7 @@ html:not([data-auth]) .play-actions .challenge-open {
   position: relative;
   width: min(100%, 560px);
   max-height: calc(100dvh - 24px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--card-2) transparent;
+  overflow: visible;
   animation: modal-in 0.18s ease;
 }
 

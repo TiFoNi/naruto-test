@@ -1,6 +1,6 @@
 export type GameId = 'marvel' | 'football' | 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'onepiece' | 'mk' | 'hxh' | 'bc' | 'jojo' | 'se' | 'ff' | 'manga' | 'dn' | 'avatar'
 
-export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase' | 'who'
+export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase' | 'who' | 'grid'
 
 export type Verdict = 'correct' | 'partial' | 'wrong'
 
@@ -258,7 +258,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
-export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'who']
+export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'who', 'grid']
 
 export const ABILITY_STAGES = 6
 export const ABILITY_HINT_AT = 5
@@ -270,6 +270,7 @@ export const MODE_XP: Record<ModeId, number> = {
   page: 25,
   phrase: 25,
   who: 30,
+  grid: 30,
 }
 
 export const DAILY_XP_FACTOR = 3
@@ -280,7 +281,29 @@ export const XP_CAPS = { daily: 360, endless: 250, duel: 200 } as const
 
 export type XpSource = keyof typeof XP_CAPS
 
-export const DUEL_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'who']
+export const DUEL_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'who', 'grid']
+
+// світи, де даних вистачає на сітку з мінімум 5 персонажами в кожній клітинці
+export const GRID_GAMES: GameId[] = [
+  'naruto',
+  'aot',
+  'bleach',
+  'tg',
+  'onepiece',
+  'jojo',
+  'se',
+  'ff',
+  'hxh',
+  'bc',
+  'avatar',
+  'kny',
+  'marvel',
+  'football',
+  'dota',
+]
+
+export const GRID_SIDE = 3
+export const GRID_MIN = 5
 
 export const BOARD_SIZES = [4, 5, 6, 7] as const
 export const BOARD_DEFAULT = 5
@@ -298,7 +321,8 @@ const DEFAULT_MODES: ModeId[] = ['classic', 'image']
 
 export const modesOf = (game: GameId) => GAME_SPECS[game].modes ?? DEFAULT_MODES
 
-export const hasMode = (game: GameId, mode: ModeId) => modesOf(game).includes(mode)
+export const hasMode = (game: GameId, mode: ModeId) =>
+  mode === 'grid' ? GRID_GAMES.includes(game) : modesOf(game).includes(mode)
 
 export const statsKey = (game: string, mode: string) => `${game}_${mode}`
 

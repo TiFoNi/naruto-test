@@ -226,6 +226,14 @@ export function GridIcon({ className }: IconProps) {
   )
 }
 
+export function HashIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M9 3.5 7.2 20.5M16.8 3.5 15 20.5M3.5 8.8h17M3.2 15.2h17" />
+    </svg>
+  )
+}
+
 export function PictureIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

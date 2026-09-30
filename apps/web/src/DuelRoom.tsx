@@ -26,6 +26,7 @@ import { useHref, useNavigate } from './router'
 import { useDuel } from './useDuel'
 import DuelSetup from './DuelSetup'
 import DuelSkeleton from './DuelSkeleton'
+import GridBoard from './GridBoard'
 import type { Guess } from './useRound'
 import { ExitIcon, SwordsIcon, TrophyIcon } from './icons'
 import { fullUrl } from './pics'
@@ -44,7 +45,7 @@ export default function DuelRoom({ code }: { code: string }) {
   const { t, l, name, lang, error: errorText } = useI18n()
   const href = useHref()
   const navigate = useNavigate()
-  const { duel, error, busy, pending, serverNow, ready, setup, invite, next, toLobby, giveUp, guess, pick, pass, strike, answer: markAnswer, refresh } = useDuel(code)
+  const { duel, error, busy, pending, serverNow, ready, setup, invite, next, toLobby, giveUp, guess, pick, pass, mark, strike, answer: markAnswer, refresh } = useDuel(code)
   const [, redraw] = useState(0)
   const [pageReady, setPageReady] = useState(false)
   const [showResult, setShowResult] = useState(true)
@@ -258,7 +259,11 @@ export default function DuelRoom({ code }: { code: string }) {
           onNext={next}
         />}
 
-      {!inLobby && game && duel.mode !== 'who' && (
+      {!inLobby && game && duel.mode === 'grid' && (
+        <GridBoard game={game} byId={byId} duel={duel} busy={busy} error={error} onMark={mark} onNext={next} />
+      )}
+
+      {!inLobby && game && duel.mode !== 'who' && duel.mode !== 'grid' && (
         <PlayBoard
           variant={duel.mode === 'image' ? 'shot' : duel.mode === 'ability' ? 'ability' : 'classic'}
           side={

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import { BOARD_DEFAULT, BOARD_SIZES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS } from '@nanda/game'
+import { BOARD_DEFAULT, BOARD_SIZES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, GRID_GAMES } from '@nanda/game'
 import { api } from './api'
 import { GAMES, gameById } from './games'
 import type { Category, GameId } from './games/types'
@@ -76,7 +76,11 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
   }, [query])
 
   const worlds = useMemo(() => GAMES.filter((one) => one.category === category && duelReady(one)), [category])
-  const modes = MODES.filter((mode) => DUEL_MODES.includes(mode.id) && (mode.id === 'who' || game.modes.includes(mode.id)))
+  const modes = MODES.filter(
+    (mode) =>
+      DUEL_MODES.includes(mode.id) &&
+      (mode.id === 'who' || (mode.id === 'grid' ? GRID_GAMES.includes(game.id) : game.modes.includes(mode.id))),
+  )
 
   const copy = () => {
     const invitation = `${t('share.duel', {

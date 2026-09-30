@@ -3,20 +3,22 @@ import { ObjectId } from 'mongodb'
 import {
   ABILITY_HINT_AT,
   ABILITY_STAGES,
+  BOARD_DEFAULT,
+  BOARD_SIZES,
   DUEL_DEFAULT,
   DUEL_MATCH_XP,
   DUEL_MODES,
   DUEL_ROUNDS,
   DUEL_SECONDS,
-  BOARD_DEFAULT,
-  BOARD_SIZES,
-  duelWinsNeeded,
-  hasMode,
-  judgeAll,
+  GRID_MIN,
+  GRID_SIDE,
   MODE_XP,
   PHRASE_EVERY,
   PHRASE_VOICE_AT,
   ZOOM_LEVELS,
+  duelWinsNeeded,
+  hasMode,
+  judgeAll,
   type GameId,
   type ModeId,
 } from '@nanda/game'
@@ -24,6 +26,7 @@ import { abilityByKey } from './abilities'
 import { duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type UserDoc } from './db'
 import { optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { gameData, isGame, isMode } from './games'
+import { matchesFacet, planGrid } from './grid'
 import { addXp, defaultNickname } from './profile'
 import { duelSeed, focusFor, shotFor } from './crop'
 import { markSeasonDuel } from './season'
@@ -250,8 +253,38 @@ async function boardStart(duel: DuelDoc) {
   }
 }
 
+async function gridStart(duel: DuelDoc) {
+  const plan = await planGrid(duel.game as GameId, GRID_MIN)
+  const startedAt = new Date()
+  const limit = duel.seconds || DUEL_DEFAULT.seconds
+  const first = duel.players[randomInt(duel.players.length)]?.userId ?? null
+  return {
+    status: 'playing' as const,
+    round: duel.round + 1,
+    answerId: 0,
+    extra: null,
+    startedAt,
+    endsAt: new Date(startedAt.getTime() + limit * 1000),
+    firstId: first,
+    turnId: first,
+    grid: plan
+      ? { rows: plan.rows, cols: plan.cols, marks: Array.from({ length: GRID_SIDE * GRID_SIDE }, () => null), used: [] }
+      : null,
+    firstSolvedAt: null,
+    winnerId: null,
+    finishedAt: null,
+    'players.$[].ready': false,
+    'players.$[].wantsNext': false,
+    'players.$[].guesses': [],
+    'players.$[].solvedAt': null,
+    'players.$[].gaveUp': false,
+    'players.$[].lastGuessAt': null,
+  }
+}
+
 async function roundStart(duel: DuelDoc) {
   if (duel.mode === 'who') return boardStart(duel)
+  if (duel.mode === 'grid') return gridStart(duel)
   const game = duel.game as GameId
   const { pool } = await gameData(game)
   const fresh = pool.filter((e) => e.id !== duel.answerId)
@@ -415,9 +448,11 @@ export async function backToLobby(duel: DuelDoc, userId: ObjectId) {
 
 const done = (side: DuelPlayer) => Boolean(side.solvedAt || side.gaveUp)
 
+const turnMode = (duel: DuelDoc) => duel.mode === 'who' || duel.mode === 'grid'
+
 function decide(duel: DuelDoc) {
   const [a, b] = duel.players
-  if (duel.mode === 'who') {
+  if (turnMode(duel)) {
     const solver = duel.players.find((side) => side.solvedAt)
     if (solver) return solver.userId
     const missed = duel.players.find((side) => side.gaveUp)
@@ -479,7 +514,7 @@ export const winsNeeded = (duel: DuelDoc) => duelWinsNeeded(duel.best ?? DUEL_DE
 export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   if (duel.status !== 'playing') return duel
   const timeUp = duel.endsAt ? Date.now() >= duel.endsAt.getTime() : false
-  const over = duel.mode === 'who' ? duel.players.some(done) : duel.players.every(done)
+  const over = turnMode(duel) ? duel.players.some(done) : duel.players.every(done)
   if (!timeUp && !over) return duel
   const winnerId = decide(duel)
   const winnerIndex = winnerId ? duel.players.findIndex((p) => p.userId.equals(winnerId)) : -1
@@ -586,6 +621,72 @@ export async function passTurn(duel: DuelDoc, userId: ObjectId) {
   return { duel: updated ?? duel }
 }
 
+const LINES = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+]
+
+export const gridWinner = (marks: (number | null)[]) => {
+  for (const line of LINES) {
+    const [a, b, c] = line
+    if (marks[a] !== null && marks[a] === marks[b] && marks[b] === marks[c]) return marks[a]
+  }
+  return null
+}
+
+export async function markCell(duel: DuelDoc, userId: ObjectId, cell: number, entityId: number) {
+  if (duel.mode !== 'grid' || duel.status !== 'playing' || !duel.grid) return { error: 'round_over' as const }
+  if (!yourTurn(duel, userId)) return { error: 'not_your_turn' as const }
+
+  const index = duel.players.findIndex((side) => side.userId.equals(userId))
+  if (index < 0) return { error: 'forbidden' as const }
+  if (!Number.isInteger(cell) || cell < 0 || cell >= GRID_SIDE * GRID_SIDE) return { error: 'bad_request' as const }
+  if (duel.grid.marks[cell] !== null) return { error: 'cell_taken' as const }
+  if (duel.grid.used.includes(entityId)) return { error: 'already_used' as const }
+
+  const game = duel.game as GameId
+  const entity = (await gameData(game)).byId.get(entityId)
+  if (!entity || !entity.answer) return { error: 'not_found' as const }
+
+  const row = duel.grid.rows[Math.floor(cell / GRID_SIDE)]
+  const col = duel.grid.cols[cell % GRID_SIDE]
+  if (!matchesFacet(entity, row, game) || !matchesFacet(entity, col, game)) return { error: 'no_match' as const }
+
+  const marks = [...duel.grid.marks]
+  marks[cell] = index
+  const used = [...duel.grid.used, entityId]
+  const picks = [...(duel.grid.picks ?? [])]
+  picks[cell] = entityId
+
+  const winner = gridWinner(marks)
+  const full = marks.every((one) => one !== null)
+  const next = duel.players.find((side) => !side.userId.equals(userId))?.userId ?? userId
+
+  const set: Record<string, unknown> = { grid: { ...duel.grid, marks, used, picks }, turnId: winner === null && !full ? next : duel.turnId }
+  if (winner !== null) {
+    set[`players.${winner}.solvedAt`] = new Date()
+    duel.players.forEach((_, at) => at !== winner && (set[`players.${at}.gaveUp`] = true))
+  } else if (full) {
+    const mine = marks.filter((one) => one === index).length
+    const theirs = marks.length - mine
+    if (mine === theirs) duel.players.forEach((_, at) => (set[`players.${at}.gaveUp`] = true))
+    else {
+      const lead = mine > theirs ? index : 1 - index
+      set[`players.${lead}.solvedAt`] = new Date()
+      duel.players.forEach((_, at) => at !== lead && (set[`players.${at}.gaveUp`] = true))
+    }
+  }
+
+  const updated = await (await duels()).findOneAndUpdate({ _id: duel._id, status: 'playing' }, { $set: set }, { returnDocument: 'after' })
+  return { duel: await settle(updated ?? duel) }
+}
+
 export async function strikeCard(duel: DuelDoc, userId: ObjectId, entityId: number) {
   if (duel.mode !== 'who' || duel.status !== 'playing' || picking(duel)) return { error: 'round_over' as const }
   const index = duel.players.findIndex((side) => side.userId.equals(userId))
@@ -681,6 +782,7 @@ async function duelShot(duel: DuelDoc, side: DuelPlayer, known: boolean) {
 
 export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
   const you = sideOf(duel, userId)
+  const mine = duel.players.findIndex((p) => p.userId.equals(userId))
   const rival = duel.players.find((p) => !p.userId.equals(userId))
   const playing = duel.status === 'playing'
   const finished = duel.status === 'finished'
@@ -727,6 +829,18 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
     winner: finished ? (duel.winnerId ? duel.players.find((p) => p.userId.equals(duel.winnerId!))?.nickname ?? null : null) : undefined,
     youWon: finished ? Boolean(duel.winnerId && duel.winnerId.equals(userId)) : undefined,
     ...(duel.mode === 'who' ? { size: duel.size ?? BOARD_DEFAULT, sizes: boardSizes(data?.pool.length ?? 0) } : {}),
+    ...(duel.mode === 'grid' && duel.grid && (playing || finished)
+      ? {
+          grid: {
+            rows: duel.grid.rows,
+            cols: duel.grid.cols,
+            marks: duel.grid.marks.map((one) => (one === null ? null : one === mine ? 'you' : 'rival')),
+            picks: duel.grid.picks ?? [],
+          },
+          turn: duel.turnId ? duel.players.find((side) => side.userId.equals(duel.turnId!))?.nickname ?? null : null,
+          yourTurn: yourTurn(duel, userId),
+        }
+      : {}),
     ...(duel.mode === 'who' && (playing || finished)
       ? {
           first: duel.firstId ? duel.players.find((side) => side.userId.equals(duel.firstId!))?.nickname ?? null : null,

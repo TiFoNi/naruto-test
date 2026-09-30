@@ -109,6 +109,13 @@ export type DuelDoc = {
   size?: number
   firstId?: ObjectId | null
   turnId?: ObjectId | null
+  grid?: {
+    rows: { key: string; value: string }[]
+    cols: { key: string; value: string }[]
+    marks: (number | null)[]
+    picks?: (number | undefined)[]
+    used: number[]
+  } | null
   invite?: { toId: ObjectId; nickname: string; at: Date; declined?: boolean } | null
   left?: { nickname: string; at: Date } | null
   matchDone?: boolean

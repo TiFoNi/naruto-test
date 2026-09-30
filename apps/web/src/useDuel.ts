@@ -37,6 +37,12 @@ export type DuelView = {
   youFirst?: boolean
   turn?: string | null
   yourTurn?: boolean
+  grid?: {
+    rows: { key: string; value: string }[]
+    cols: { key: string; value: string }[]
+    marks: ('you' | 'rival' | null)[]
+    picks?: (number | undefined)[]
+  }
   secret?: number | null
   picking?: boolean
   rivalPicked?: boolean
@@ -166,6 +172,7 @@ export function useDuel(code: string) {
     toLobby: () => send({ action: 'lobby' }),
     giveUp: () => send({ action: 'giveup' }),
     pass: () => send({ action: 'pass' }),
+    mark: (cell: number, entityId: number) => send({ action: 'mark', cell, entityId }),
     pick: (entityId: number) => send({ action: 'pick', entityId }),
     strike: (entityId: number) => send({ action: 'strike', entityId }),
     answer: (entityId: number) => send({ action: 'answer', entityId }),

@@ -14,6 +14,7 @@ import {
   inviteTo,
   joinDuel,
   leaveDuel,
+  markCell,
   openLobby,
   passTurn,
   pickSecret,
@@ -104,6 +105,19 @@ export const POST = handle(async (request) => {
   if (action === 'lobby') return json({ duel: await duelView(await backToLobby(live, userId), userId) })
   if (action === 'ready') return json({ duel: await duelView(await setReady(live, userId, body.ready !== false), userId) })
   if (action === 'giveup') return json({ duel: await duelView(await giveUpDuel(live, userId), userId) })
+
+  if (action === 'mark') {
+    const cell = Number(body.cell)
+    const entityId = Number(body.entityId)
+    if (!Number.isInteger(cell) || !Number.isInteger(entityId)) return fail(400, 'bad_request')
+    const result = await markCell(live, userId, cell, entityId)
+    if (result.error)
+      return fail(
+        result.error === 'round_over' ? 409 : result.error === 'not_your_turn' || result.error === 'forbidden' ? 403 : 400,
+        result.error,
+      )
+    return json({ duel: await duelView(result.duel!, userId) })
+  }
 
   if (action === 'pass') {
     const result = await passTurn(live, userId)
