@@ -1352,8 +1352,22 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding: 26px 24px 22px;
+  padding: 26px 20px calc(16px + env(safe-area-inset-bottom, 0px));
   text-align: center;
+}
+
+.who-result .result-actions {
+  position: sticky;
+  bottom: calc(env(safe-area-inset-bottom, 0px) * -1 - 16px);
+  z-index: 1;
+  width: 100%;
+  margin-top: 4px;
+  padding: 12px 0 calc(16px + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, var(--card) 62%, transparent);
+}
+
+.who-result .result-actions > * {
+  min-width: min(100%, 240px);
 }
 
 .who-result.won {
@@ -1493,14 +1507,17 @@
 
 .who-reveal {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
+  width: 100%;
   gap: 12px;
 }
 
 .who-reveal figure {
   display: flex;
-  width: 140px;
+  min-width: 0;
+  flex: 1 1 0;
+  max-width: 160px;
   flex-direction: column;
   gap: 6px;
   margin: 0;
@@ -1517,9 +1534,14 @@
 
 .who-reveal figcaption {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 2px;
   font-size: 13px;
+}
+
+.who-reveal figcaption b {
+  overflow-wrap: anywhere;
 }
 
 .who-reveal small {
