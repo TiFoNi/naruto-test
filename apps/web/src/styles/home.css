@@ -195,14 +195,28 @@
   transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
 }
 
+.franchise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px transparent;
+  pointer-events: none;
+  transition: box-shadow 0.25s;
+}
+
 .franchise:hover {
   z-index: 5;
   border-color: color-mix(in srgb, var(--tab-accent) 75%, var(--line));
   transform: translateY(-2px);
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--tab-accent) 35%, transparent),
     0 0 18px color-mix(in srgb, var(--tab-accent) 32%, transparent),
     0 10px 36px color-mix(in srgb, var(--tab-accent) 18%, transparent);
+}
+
+.franchise:hover::after {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tab-accent) 35%, transparent);
 }
 
 .franchise-art {
