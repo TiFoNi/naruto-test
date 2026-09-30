@@ -112,3 +112,54 @@
 .challenge-answer b {
   font-size: 17px;
 }
+
+.challenge-ghosts .sk-result {
+  display: none;
+}
+
+html[data-ch='result'] .challenge-ghosts .sk-board {
+  display: none;
+}
+
+html[data-ch='result'] .challenge-ghosts .sk-result {
+  display: grid;
+}
+
+.challenge-ghosts .sk.panel {
+  height: 224px;
+}
+
+.challenge-ghosts .sk.tries {
+  height: 126px;
+}
+
+.challenge-ghosts .sk.stats {
+  height: 194px;
+}
+
+.challenge-ghosts .sk.legend {
+  height: 217px;
+}
+
+.challenge-ghosts .sk.actions {
+  height: 156px;
+}
+
+.challenge-ghosts .sk.answer {
+  height: 139px;
+}
+
+.challenge-ghosts .sk.linkcard {
+  height: 213px;
+}
+
+.challenge-ghosts .game-name .sk.line {
+  width: 220px;
+  height: 34px;
+  flex: none;
+}
+
+.challenge-ghosts .sk.line.sub {
+  width: min(100%, 320px);
+  height: 19px;
+}

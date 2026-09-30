@@ -55,6 +55,24 @@ export default function ChallengeRoom({ code }: { code: string }) {
     }
   }, [code])
 
+  useEffect(() => {
+    if (!challenge) return
+    const shape = challenge.answerId !== undefined ? 'result' : 'board'
+    document.documentElement.dataset.ch = shape
+    try {
+      sessionStorage.setItem(`nanda.ch.${code}`, shape)
+    } catch {
+      /* приватний режим — обійдемося без підказки при перезавантаженні */
+    }
+  }, [code, challenge])
+
+  useEffect(
+    () => () => {
+      delete document.documentElement.dataset.ch
+    },
+    [],
+  )
+
   if (error) {
     return (
       <div className="challenge">

@@ -9,7 +9,7 @@ export default function ChallengeSkeleton() {
   const href = useHref()
 
   return (
-    <div className="game-view challenge">
+    <div className="game-view challenge challenge-ghosts">
       <BackButton href={href.home}>{t('play.back')}</BackButton>
 
       <header className="game-head challenge-head">
@@ -22,13 +22,24 @@ export default function ChallengeSkeleton() {
         <span className="sk line sub" />
       </header>
 
-      <section className="play-layout">
+      <section className="play-layout sk-board">
         <div className="play-main">
-          <span className="sk tall" />
+          <span className="sk panel" />
+          <span className="sk tries" />
         </div>
         <aside className="play-side">
-          <span className="sk mid" />
-          <span className="sk short" />
+          <span className="sk stats" />
+          <span className="sk legend" />
+          <span className="sk actions" />
+        </aside>
+      </section>
+
+      <section className="play-layout sk-result">
+        <div className="play-main">
+          <span className="sk answer" />
+        </div>
+        <aside className="play-side">
+          <span className="sk linkcard" />
         </aside>
       </section>
     </div>
