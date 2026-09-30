@@ -1,6 +1,7 @@
 :root {
   --bg: #0d0f12;
   --card-solid: #161a1f;
+  --chip: linear-gradient(0deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), rgba(13, 15, 18, 0.55);
   --overlay: linear-gradient(0deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), rgba(13, 15, 18, 0.88);
   --card-2-solid: #1d2229;
   --card: rgba(255, 255, 255, 0.035);
@@ -346,8 +347,8 @@ html:not([data-auth]) .topbar-nav {
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  border: 1px solid var(--line);
-  background: var(--card);
+  border: 1px solid color-mix(in srgb, #ffffff 12%, transparent);
+  background: var(--chip);
   color: var(--text-2);
   font-size: 17px;
   cursor: pointer;
@@ -638,8 +639,8 @@ a.bell.active {
 
 
 .account-link {
-  border: 1px solid var(--line);
-  background: var(--card);
+  border: 1px solid color-mix(in srgb, #ffffff 12%, transparent);
+  background: var(--chip);
 }
 
 .account-level {
@@ -1942,8 +1943,8 @@ main {
   position: relative;
   flex-shrink: 0;
   border-radius: 12px;
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: var(--chip);
+  border: 1px solid color-mix(in srgb, #ffffff 12%, transparent);
 }
 
 .lang-switch.open {
@@ -2909,8 +2910,9 @@ button.ghost.small {
   height: 40px;
   padding: 0 16px;
   border-radius: 11px;
+  background: var(--chip);
   color: var(--text-2);
-  box-shadow: inset 0 0 0 1px var(--line);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #ffffff 12%, transparent);
 }
 
 .topbar-link.guest:hover {
