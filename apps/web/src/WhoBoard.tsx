@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import CoinFlip from './CoinFlip'
 import { fullUrl } from './pics'
 import type { Entity, Game } from './games/types'
 import { useI18n } from './i18n'
@@ -26,6 +27,7 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
   const [choose, setChoose] = useState<number | null>(null)
   const [passing, setPassing] = useState(false)
   const [local, setLocal] = useState<number[] | null>(null)
+  const [coin, setCoin] = useState(false)
   const [endOpen, setEndOpen] = useState(true)
   const grid = useRef<HTMLOListElement>(null)
 
@@ -56,6 +58,18 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
   useEffect(() => {
     setLocal(null)
   }, [serverKey, duel.round])
+
+  useEffect(() => {
+    if (choosing || over || !duel.first || !duel.rival) return
+    const key = `nanda.coin.${duel.code}.${duel.round}`
+    try {
+      if (sessionStorage.getItem(key)) return
+      sessionStorage.setItem(key, '1')
+    } catch {
+      /* приватний режим — покажемо монетку й без позначки */
+    }
+    setCoin(true)
+  }, [choosing, over, duel.code, duel.round, duel.first, duel.rival])
 
   useEffect(() => {
     if (over) {
@@ -131,8 +145,15 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
     return t('who.noAnswer')
   }
 
+  const players = duel.youFirst
+    ? [duel.you?.nickname ?? '', duel.rival?.nickname ?? '']
+    : [duel.first ?? '', duel.you?.nickname ?? '']
+
   return (
     <section className="who">
+      {coin && (
+        <CoinFlip first={players[0]} second={players[1]} youFirst={Boolean(duel.youFirst)} onDone={() => setCoin(false)} />
+      )}
       <div className="who-top card">
         {mine && (
           <button type="button" className="who-mine-card" onClick={() => setInfo(mine.id)}>
