@@ -1414,12 +1414,21 @@ main {
 }
 
 .result .result-actions .share-open {
+  position: relative;
+  justify-content: center;
   width: 100%;
   height: 100%;
   padding: 0 14px;
   border-radius: 14px;
   font-size: 15px;
   font-weight: 800;
+}
+
+.result .result-actions .share-open svg {
+  position: absolute;
+  top: 50%;
+  left: 18px;
+  translate: 0 -50%;
 }
 
 .result-image {
