@@ -119,9 +119,10 @@
   flex-wrap: wrap;
   align-self: stretch;
   padding: 5px;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ffffff 8%, transparent);
   border-radius: 15px;
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 18px 38px rgba(0, 0, 0, 0.22);
 }
 
 .awards-filters button {
@@ -154,7 +155,7 @@
 }
 
 .awards-filters button.active {
-  background: var(--card-2);
+  background: var(--card-2-solid);
   color: var(--text);
 }
 
@@ -558,7 +559,7 @@
   margin: 0 auto 14px;
   border: 1px solid color-mix(in srgb, var(--tier) 50%, var(--line));
   border-radius: 20px;
-  background: color-mix(in srgb, var(--tier) 14%, var(--card-2));
+  background: color-mix(in srgb, var(--tier) 14%, var(--card-2-solid));
   color: var(--tier);
   font-size: 30px;
 }

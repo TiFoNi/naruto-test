@@ -18,7 +18,7 @@
   display: block;
   height: 12px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--card-2) 0%, color-mix(in srgb, var(--card-2) 55%, var(--line)) 50%, var(--card-2) 100%);
+  background: linear-gradient(90deg, var(--card-2-solid) 0%, color-mix(in srgb, var(--card-2-solid) 55%, var(--line)) 50%, var(--card-2-solid) 100%);
   background-size: 200% 100%;
   animation: shimmer 1.4s linear infinite;
 }
@@ -238,7 +238,7 @@
   --medal: #f5c451;
   padding-top: 42px;
   border-color: color-mix(in srgb, #f5c451 42%, var(--line));
-  background: linear-gradient(180deg, color-mix(in srgb, #f5c451 10%, var(--card)), var(--card) 60%);
+  background: linear-gradient(180deg, color-mix(in srgb, #f5c451 10%, var(--card-solid)), var(--card-solid) 60%);
 }
 
 .lb-crown {
@@ -271,7 +271,7 @@
   font-family: var(--display);
   font-size: 12px;
   font-weight: 700;
-  box-shadow: 0 0 0 3px var(--card);
+  box-shadow: 0 0 0 3px var(--card-solid);
 }
 
 .lb-step-name {
@@ -317,9 +317,10 @@
 
 .lb-card {
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ffffff 8%, transparent);
   border-radius: 20px;
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 18px 38px rgba(0, 0, 0, 0.22);
 }
 
 .lb-table tbody td,
@@ -406,7 +407,7 @@
 .lb-table tfoot td {
   border-top: 1px solid color-mix(in srgb, var(--accent) 38%, transparent);
   border-bottom: 0;
-  background: color-mix(in srgb, var(--accent) 12%, var(--card));
+  background: color-mix(in srgb, var(--accent) 12%, var(--card-solid));
 }
 
 .lb-table tfoot .lb-rank {
@@ -426,9 +427,10 @@
   flex-direction: column;
   gap: 15px;
   padding: 20px;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ffffff 8%, transparent);
   border-radius: 20px;
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 18px 38px rgba(0, 0, 0, 0.22);
 }
 
 .lb-side-title {
@@ -595,7 +597,7 @@
 
 .lb-step.vacant {
   border-style: dashed;
-  background: color-mix(in srgb, var(--card) 55%, transparent);
+  background: color-mix(in srgb, var(--card-solid) 55%, transparent);
   --medal: var(--line);
 }
 
@@ -621,7 +623,7 @@
 
 .lb-step.vacant.gold {
   padding-top: 42px;
-  background: color-mix(in srgb, var(--card) 55%, transparent);
+  background: color-mix(in srgb, var(--card-solid) 55%, transparent);
 }
 
 .lb-podium.waiting .lb-step {
@@ -675,7 +677,7 @@
   padding: 18px 20px;
   border-radius: 20px;
   border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
-  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 10%, var(--card)), var(--card) 60%);
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 10%, var(--card-solid)), var(--card-solid) 60%);
 }
 
 .season-mark {

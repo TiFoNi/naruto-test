@@ -327,7 +327,7 @@
 
 .duel-world.active {
   border-color: color-mix(in srgb, var(--game) 70%, transparent);
-  background: color-mix(in srgb, var(--game) 14%, var(--card-2));
+  background: color-mix(in srgb, var(--game) 14%, var(--card-2-solid));
   color: var(--text);
 }
 
@@ -383,7 +383,7 @@
 
 .duel-mode.active {
   border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 10%, var(--card-2));
+  background: color-mix(in srgb, var(--accent) 10%, var(--card-2-solid));
 }
 
 .duel-mode.active .duel-mode-icon {
@@ -1094,7 +1094,7 @@
   border-color: color-mix(in srgb, var(--tab-accent, var(--accent)) 50%, var(--line));
   background: linear-gradient(
     100deg,
-    color-mix(in srgb, var(--tab-accent, var(--accent)) 9%, var(--card)),
+    color-mix(in srgb, var(--tab-accent, var(--accent)) 9%, var(--card-solid)),
     var(--card) 62%
   );
 }
@@ -1112,7 +1112,7 @@
   cursor: pointer;
   border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line));
   border-radius: 14px;
-  background: color-mix(in srgb, var(--accent) 10%, var(--card-2));
+  background: color-mix(in srgb, var(--accent) 10%, var(--card-2-solid));
   font-size: 14px;
 }
 
@@ -1255,7 +1255,7 @@
   justify-content: center;
   border-style: dashed;
   border-color: color-mix(in srgb, var(--line) 80%, transparent);
-  background: var(--card-2);
+  background: var(--card-2-solid);
   color: color-mix(in srgb, var(--accent) 55%, var(--text-3));
   font-family: var(--display);
   font-size: 20px;
@@ -1362,7 +1362,7 @@
   width: 100%;
   margin-top: 4px;
   padding: 12px 0 calc(16px + env(safe-area-inset-bottom, 0px));
-  background: linear-gradient(to top, var(--card) 62%, transparent);
+  background: linear-gradient(to top, var(--card-solid) 62%, transparent);
 }
 
 .who-result .result-actions > * {
@@ -1768,7 +1768,7 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .grid-corner {
   border-radius: 12px;
-  background: color-mix(in srgb, var(--card-2) 45%, transparent);
+  background: color-mix(in srgb, var(--card-2-solid) 45%, transparent);
 }
 
 .grid-axis {
@@ -1835,7 +1835,7 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .grid-cell.free:hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--tab-accent, var(--accent)) 55%, var(--line));
-  background: color-mix(in srgb, var(--tab-accent, var(--accent)) 8%, var(--card));
+  background: color-mix(in srgb, var(--tab-accent, var(--accent)) 8%, var(--card-solid));
   transform: translateY(-1px);
 }
 
@@ -1845,12 +1845,12 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .grid-cell.you {
   border-color: color-mix(in srgb, var(--correct) 55%, var(--line));
-  background: color-mix(in srgb, var(--correct) 12%, var(--card));
+  background: color-mix(in srgb, var(--correct) 12%, var(--card-solid));
 }
 
 .grid-cell.rival {
   border-color: color-mix(in srgb, #ff8085 55%, var(--line));
-  background: color-mix(in srgb, #ff8085 12%, var(--card));
+  background: color-mix(in srgb, #ff8085 12%, var(--card-solid));
 }
 
 .grid-plus {
