@@ -3301,8 +3301,7 @@ html:not([data-auth]) .play-actions .challenge-open {
 .challenge {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
 .modal-backdrop {

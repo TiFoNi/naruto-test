@@ -6,7 +6,9 @@ import AbilityMode from './AbilityMode'
 import ClassicMode from './ClassicMode'
 import ImageMode from './ImageMode'
 import PageMode from './PageMode'
+import Share from './Share'
 import Thumb from './Thumb'
+import WorldMark from './WorldMark'
 import { api } from './api'
 import { useAuth } from './auth'
 import { gameById } from './games'
@@ -80,61 +82,76 @@ export default function ChallengeRoom({ code }: { code: string }) {
   }
 
   return (
-    <div className="challenge" style={{ '--tab-accent': game.accent } as CSSProperties}>
+    <div className="game-view challenge" style={{ '--game-accent': game.accent, '--tab-accent': game.accent } as CSSProperties}>
       <BackButton href={href.home}>{t('play.back')}</BackButton>
 
-      <header className="card challenge-head">
-        <h1>{challenge.mine ? t('challenge.yours') : t('challenge.from', { name: challenge.author })}</h1>
+      <header className="game-head challenge-head">
+        <div className="game-title">
+          <div className="game-name">
+            <WorldMark game={game.id} className="game-mark" />
+            <h1>{l(game.label)}</h1>
+          </div>
+        </div>
         <p className="muted">
-          {l(game.label)} · {modeLabel}
+          {challenge.mine ? t('challenge.yours') : t('challenge.from', { name: challenge.author })} · {modeLabel}
         </p>
       </header>
 
       {answer ? (
-        <section className="card challenge-mine">
-          <div className="challenge-answer">
-            <Thumb game={game} entity={answer} size={64} />
-            <div>
-              <span className="muted">{challenge.mine ? t('challenge.hiddenIs') : t('challenge.answerWas')}</span>
-              <b>{name(answer)}</b>
-            </div>
+        <section className="play-layout challenge-board">
+          <div className="play-main">
+            <section className="card challenge-mine">
+              <div className="challenge-answer">
+                <Thumb game={game} entity={answer} size={64} />
+                <div>
+                  <span className="muted">{challenge.mine ? t('challenge.hiddenIs') : t('challenge.answerWas')}</span>
+                  <b>{name(answer)}</b>
+                </div>
+              </div>
+
+              {challenge.solves.length > 0 ? (
+                <ul className="challenge-solves">
+                  {challenge.solves.map((s, i) => (
+                    <li key={`${s.nickname}-${i}`}>
+                      <div className="challenge-solve-head">
+                        <b>{s.nickname}</b>
+                        <span>{s.solved ? t('challenge.solvedIn', { guesses: s.guesses }) : t('challenge.gaveUp')}</span>
+                      </div>
+                      {s.guessIds.length > 0 && (
+                        <div className="challenge-tries">
+                          {s.guessIds.map((id) => {
+                            const entity = game.entities.find((e) => e.id === id)
+                            return entity ? (
+                              <div key={id} className={`guess-chip ${id === challenge.answerId ? 'correct' : 'wrong'}`}>
+                                <Thumb game={game} entity={entity} size={32} />
+                                <span>{name(entity)}</span>
+                              </div>
+                            ) : null
+                          })}
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="muted challenge-empty">{t('challenge.noSolves')}</p>
+              )}
+            </section>
           </div>
 
-          {challenge.solves.length > 0 ? (
-            <ul className="challenge-solves">
-              {challenge.solves.map((s, i) => (
-                <li key={`${s.nickname}-${i}`}>
-                  <div className="challenge-solve-head">
-                    <b>{s.nickname}</b>
-                    <span>{s.solved ? t('challenge.solvedIn', { guesses: s.guesses }) : t('challenge.gaveUp')}</span>
-                  </div>
-                  {s.guessIds.length > 0 && (
-                    <div className="challenge-tries">
-                      {s.guessIds.map((id) => {
-                        const entity = game.entities.find((e) => e.id === id)
-                        return entity ? (
-                          <div key={id} className={`guess-chip ${id === challenge.answerId ? 'correct' : 'wrong'}`}>
-                            <Thumb game={game} entity={entity} size={32} />
-                            <span>{name(entity)}</span>
-                          </div>
-                        ) : null
-                      })}
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="muted challenge-empty">{t('challenge.noSolves')}</p>
-          )}
-
-          <p className="muted">{challenge.mine ? t('challenge.mineHint') : t('challenge.doneHint')}</p>
-          <div className="inline-field">
-            <input readOnly value={link} onFocus={(e) => e.currentTarget.select()} />
-            <button className="primary" onClick={copy}>
-              {copied ? t('duel.copied') : t('duel.copy')}
-            </button>
-          </div>
+          <aside className="play-side challenge-side">
+            <section className="card challenge-link">
+              <h2>{t('challenge.shareTitle')}</h2>
+              <p className="muted">{challenge.mine ? t('challenge.mineHint') : t('challenge.doneHint')}</p>
+              <div className="inline-field">
+                <input readOnly value={link} onFocus={(e) => e.currentTarget.select()} />
+                <button className="primary" onClick={copy}>
+                  {copied ? t('duel.copied') : t('duel.copy')}
+                </button>
+              </div>
+              <Share text={t('share.challenge', { game: l(game.label) })} url={link} />
+            </section>
+          </aside>
         </section>
       ) : mode === 'classic' ? (
         <ClassicMode {...props} />

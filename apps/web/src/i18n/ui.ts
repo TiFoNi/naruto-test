@@ -1041,6 +1041,7 @@ const ui = {
   'challenge.ready': { ru: 'Ссылка готова — отправляй', uk: 'Посилання готове — надсилай', en: 'Link is ready — send it' },
   'challenge.again': { ru: 'Загадать ещё', uk: 'Загадати ще', en: 'Set another' },
   'challenge.from': { ru: '{name} загадал тебе персонажа', uk: '{name} загадав тобі персонажа', en: '{name} set you a puzzle' },
+  'challenge.shareTitle': { ru: 'Ссылка на загадку', uk: 'Посилання на загадку', en: 'Puzzle link' },
   'challenge.yours': { ru: 'Твоя загадка', uk: 'Твоя загадка', en: 'Your puzzle' },
   'challenge.mineHint': {
     ru: 'Это твоя загадка — отправь ссылку другу и следи за результатами здесь.',

@@ -54,10 +54,63 @@
 }
 
 .challenge-mine {
-  width: min(100%, 560px);
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.challenge-board {
+  width: 100%;
+}
+
+.challenge-head {
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.challenge-head .muted {
+  margin: 0;
+  font-size: 14px;
+}
+
+.challenge-link {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.challenge-link h2 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.challenge-link .muted {
+  margin: 0;
+  font-size: 13px;
+}
+
+.challenge-link .inline-field {
+  flex-wrap: wrap;
+}
+
+.challenge-link .inline-field input {
+  flex: 1 1 100%;
+  font-size: 13px;
+}
+
+.challenge-link .inline-field button {
+  flex: 1 1 auto;
+}
+
+.challenge-link .share {
+  justify-content: stretch;
+}
+
+.challenge-link .share-open {
+  flex: 1;
+  justify-content: center;
 }
 
 .challenge-answer {
