@@ -7,7 +7,7 @@ import { GAMES } from './games'
 import type { GameId } from './games/types'
 import WorldMark from './WorldMark'
 import { useI18n } from './i18n'
-import Quests, { type Level } from './Quests'
+import { type Level } from './Quests'
 import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
 import { CalendarIcon, CheckIcon, SwordsIcon, TrophyIcon } from './icons'
@@ -389,6 +389,33 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                   <p className="muted center">{t('profile.activityEmpty')}</p>
                 )}
               </section>
+
+              <section className="card soon-card">
+                <header>
+                  <h2>
+                    <TrophyIcon /> {t('profile.awardsTitle')}
+                    <span className="soon-count">{pinned.length}/6</span>
+                  </h2>
+                </header>
+                <p className="muted">{pinned.length ? t('profile.awardsSoon') : own ? t('profile.awardsPinHint') : t('profile.awardsNone')}</p>
+                <ul className="soon-badges">
+                  {Array.from({ length: 6 }, (_, index) => {
+                    const award = pinned[index]
+                    if (!award) return <li key={index} />
+                    return (
+                      <li key={award.id ?? `secret-${index}`} className={`on tier-${award.tier}`}>
+                        <TrophyIcon />
+                        <b>{award.hidden || !award.id ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
+                      </li>
+                    )
+                  })}
+                </ul>
+                {own && (
+                  <Link className="lb-link awards-open" href={href.achievements}>
+                    <TrophyIcon /> {t('ach.open')}
+                  </Link>
+                )}
+              </section>
             </div>
 
             <div className="profile-column">
@@ -446,39 +473,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
             </div>
           </div>
         </div>
-
-        <div className="profile-column">
-          {own && <Quests onLevel={(level) => setSummary((current) => (current ? { ...current, level } : current))} />}
-
-          <section className="card soon-card">
-            <header>
-              <h2>
-                <TrophyIcon /> {t('profile.awardsTitle')}
-                <span className="soon-count">{pinned.length}/6</span>
-              </h2>
-            </header>
-            <p className="muted">{pinned.length ? t('profile.awardsSoon') : own ? t('profile.awardsPinHint') : t('profile.awardsNone')}</p>
-            <ul className="soon-badges">
-              {Array.from({ length: 6 }, (_, index) => {
-                const award = pinned[index]
-                if (!award) return <li key={index} />
-                return (
-                  <li key={award.id ?? `secret-${index}`} className={`on tier-${award.tier}`}>
-                    <TrophyIcon />
-                    <b>{award.hidden || !award.id ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
-                  </li>
-                )
-              })}
-            </ul>
-            {own && (
-              <Link className="lb-link awards-open" href={href.achievements}>
-                <TrophyIcon /> {t('ach.open')}
-              </Link>
-            )}
-          </section>
-        </div>
       </div>
-
     </div>
   )
 }

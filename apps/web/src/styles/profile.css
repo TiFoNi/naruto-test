@@ -38,7 +38,7 @@
 
 .profile-grid {
   display: grid;
-  grid-template-columns: minmax(230px, 280px) minmax(0, 1fr) minmax(300px, 360px);
+  grid-template-columns: minmax(230px, 300px) minmax(0, 1fr);
   align-items: stretch;
   gap: 14px;
 }
@@ -585,14 +585,6 @@
   .profile-grid {
     grid-template-columns: minmax(240px, 1fr) minmax(0, 2fr);
   }
-
-  .profile-grid > .profile-column:last-child {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-    align-items: start;
-  }
 }
 
 @media (max-width: 900px) {
@@ -608,7 +600,6 @@
   }
 
   .profile-grid > .profile-column,
-  .profile-grid > .profile-column:last-child,
   .profile-grid > .profile-middle,
   .profile-middle > .profile-middle-cols,
   .profile-middle-cols > .profile-column {
@@ -627,16 +618,16 @@
     order: 4;
   }
 
-  .modes-card {
+  .soon-card {
     order: 5;
+  }
+
+  .modes-card {
+    order: 6;
   }
 
   .activity-card {
     order: 7;
-  }
-
-  .soon-card {
-    order: 8;
   }
 }
 
