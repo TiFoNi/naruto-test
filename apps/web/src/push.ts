@@ -30,6 +30,14 @@ export async function pushState(): Promise<PushState> {
   }
 }
 
+const sameKey = (subscription: PushSubscription, key: string) => {
+  const current = subscription.options.applicationServerKey
+  if (!current) return false
+  const bytes = new Uint8Array(current)
+  const wanted = decodeKey(key)
+  return bytes.length === wanted.length && bytes.every((byte, at) => byte === wanted[at])
+}
+
 export async function enablePush(key: string) {
   if (!pushSupported()) return false
   const permission = Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission()
@@ -37,14 +45,38 @@ export async function enablePush(key: string) {
 
   const registration = await worker()
   await navigator.serviceWorker.ready
-  const existing = await registration.pushManager.getSubscription()
-  const subscription =
-    existing ?? (await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: decodeKey(key) }))
+  let subscription = await registration.pushManager.getSubscription()
+  if (subscription && !sameKey(subscription, key)) {
+    await subscription.unsubscribe().catch(() => undefined)
+    subscription = null
+  }
+  subscription ??= await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: decodeKey(key) })
   const raw = subscription.toJSON() as { endpoint?: string; keys?: { p256dh?: string; auth?: string } }
   if (!raw.endpoint || !raw.keys?.p256dh || !raw.keys.auth) return false
 
   const { ok } = await api('push', { endpoint: raw.endpoint, keys: raw.keys })
   return ok
+}
+
+export function watchPushRenew() {
+  if (!pushSupported()) return () => undefined
+  const onMessage = (event: MessageEvent) => {
+    const data = event.data as { type?: string; endpoint?: string; keys?: { p256dh?: string; auth?: string } } | null
+    if (data?.type !== 'push-renewed' || !data.endpoint || !data.keys?.p256dh || !data.keys.auth) return
+    void api('push', { endpoint: data.endpoint, keys: data.keys })
+  }
+  navigator.serviceWorker.addEventListener('message', onMessage)
+  return () => navigator.serviceWorker.removeEventListener('message', onMessage)
+}
+
+export async function repairPush() {
+  if (!pushSupported() || Notification.permission !== 'granted') return
+  const { ok, data } = await api<{ key: string | null; on: boolean }>('push')
+  if (!ok || !data.key) return
+  const registration = await navigator.serviceWorker.getRegistration('/sw.js')
+  const subscription = await registration?.pushManager.getSubscription()
+  if (data.on && subscription && sameKey(subscription, data.key)) return
+  await enablePush(data.key)
 }
 
 export async function disablePush() {

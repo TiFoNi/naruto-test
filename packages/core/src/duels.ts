@@ -144,7 +144,7 @@ export async function inviteTo(duel: DuelDoc, userId: ObjectId, targetId: unknow
     title: 'NandaGuessr',
     body: `${host?.nickname ?? 'Суперник'} кличе на дуель`,
     url: `/duel/${duel.code}`,
-    tag: `duel-${duel.code}`,
+    tag: `duel-${duel.code}-${Date.now()}`,
   }).catch(() => undefined)
   return updated ?? duel
 }

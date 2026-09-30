@@ -79,7 +79,7 @@ export async function sendPush(userId: ObjectId, payload: PushPayload) {
         await lib.sendNotification({ endpoint: sub.endpoint, keys: sub.keys }, body, { TTL: 600 })
       } catch (error) {
         const status = (error as { statusCode?: number }).statusCode
-        if (status === 404 || status === 410) gone.push(sub.endpoint)
+        if (status === 400 || status === 403 || status === 404 || status === 410) gone.push(sub.endpoint)
       }
     }),
   )

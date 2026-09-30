@@ -7,6 +7,7 @@ import Background from './Background'
 import DuelDock from './DuelDock'
 import DuelSkeleton from './DuelSkeleton'
 import PageSkeleton from './PageSkeleton'
+import { repairPush, watchPushRenew } from './push'
 import ChallengeSkeleton from './ChallengeSkeleton'
 import Footer from './Footer'
 import Landing from './Landing'
@@ -430,6 +431,12 @@ export default function Shell({ children, games }: { children: ReactNode; games:
     const signed = user ? true : loading && root.dataset.auth === '1'
     root.style.setProperty('--accent', signed && game ? game.accent : BRAND.accent)
   }, [user, loading, game?.accent])
+
+  useEffect(() => {
+    if (!user) return
+    void repairPush().catch(() => undefined)
+    return watchPushRenew()
+  }, [user])
 
   useBeforePaint(() => {
     const header = bar.current
