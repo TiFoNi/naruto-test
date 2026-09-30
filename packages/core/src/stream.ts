@@ -31,6 +31,7 @@ const mark = (duel: DuelDoc) =>
     duel.best,
     duel.seconds,
     duel.endsAt,
+    duel.turnId,
     duel.winnerId,
     duel.invite,
     duel.left,
