@@ -136,7 +136,6 @@ const ui = {
   'duel.stepWorld': { ru: 'Мир', uk: 'Світ', en: 'World' },
   'duel.stepMode': { ru: 'Режим', uk: 'Режим', en: 'Mode' },
   'duel.stepRules': { ru: 'Правила', uk: 'Правила', en: 'Rules' },
-  'duel.random': { ru: 'Случайный', uk: 'Випадковий', en: 'Random' },
   'duel.modesFor': { ru: 'доступные для «{game}»', uk: 'доступні для «{game}»', en: 'available for {game}' },
   'duel.modeOff': { ru: 'недоступно здесь', uk: 'недоступно тут', en: 'not available here' },
   'duel.roundsTitle': { ru: 'Количество раундов', uk: 'Кількість раундів', en: 'Rounds' },

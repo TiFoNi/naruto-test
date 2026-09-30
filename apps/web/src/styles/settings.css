@@ -74,7 +74,7 @@
 
 .settings-nav button.active {
   color: var(--text);
-  background: var(--card-2-solid);
+  background: var(--card-2);
   box-shadow: -3px 0 0 var(--accent);
 }
 
@@ -209,7 +209,7 @@
 }
 
 .danger-row {
-  background: color-mix(in srgb, #e5483b 10%, var(--card-2-solid));
+  background: color-mix(in srgb, #e5483b 10%, var(--card-2));
 }
 
 .danger-row label {

@@ -155,7 +155,7 @@
 }
 
 .awards-filters button.active {
-  background: var(--card-2-solid);
+  background: var(--card-2);
   color: var(--text);
 }
 

@@ -9,7 +9,7 @@ import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
 import WorldMark from './WorldMark'
 import type { DuelView } from './useDuel'
-import { CopyIcon, DiceIcon, ExitIcon, LinkIcon, SwordsIcon } from './icons'
+import { CopyIcon, ExitIcon, LinkIcon, SwordsIcon } from './icons'
 
 const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
@@ -152,18 +152,6 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                   </button>
                 ))}
               </div>
-              <button
-                type="button"
-                className="ghost duel-random"
-                disabled={!host || busy}
-                onClick={() => {
-                  const pick = worlds[Math.floor(Math.random() * worlds.length)]
-                  onSetup({ game: pick.id, mode: duelMode(pick, duel.mode) })
-                }}
-              >
-                <DiceIcon />
-                {t('duel.random')}
-              </button>
             </div>
 
             <div className="duel-worlds">

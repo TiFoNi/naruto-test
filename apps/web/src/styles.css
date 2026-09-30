@@ -766,7 +766,7 @@ a {
 .game-tabs a.active {
   color: var(--text);
   border-color: var(--tab-accent);
-  background: color-mix(in srgb, var(--tab-accent) 14%, var(--card-solid));
+  background: color-mix(in srgb, var(--tab-accent) 14%, var(--card));
 }
 
 .dot {
@@ -933,7 +933,7 @@ main {
   padding: 13px 16px;
   border-radius: 12px;
   border: 1px solid var(--line);
-  background: var(--card-solid);
+  background: var(--card);
   color: var(--text);
   outline: none;
 }
@@ -1331,14 +1331,14 @@ main {
 
 .result.won {
   border-color: color-mix(in srgb, var(--correct) 60%, transparent);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--correct) 12%, var(--card-solid)), var(--card-solid) 70%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--correct) 12%, var(--card)), var(--card) 70%);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--correct) 18%, transparent);
 }
 
 .result.lost,
 .result.skipped {
   border-color: color-mix(in srgb, #e5483b 45%, transparent);
-  background: linear-gradient(180deg, color-mix(in srgb, #e5483b 10%, var(--card-solid)), var(--card-solid) 70%);
+  background: linear-gradient(180deg, color-mix(in srgb, #e5483b 10%, var(--card)), var(--card) 70%);
 }
 
 .result-eyebrow {
@@ -1433,7 +1433,7 @@ main {
   max-height: 210px;
   object-fit: contain;
   border-radius: 12px;
-  background: #090a0c;
+  background: var(--card);
 }
 
 .result-name {
@@ -1479,7 +1479,7 @@ main {
   overflow: hidden;
   border-radius: 12px;
   border: 1px solid var(--line);
-  background: #090a0c;
+  background: var(--card);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1625,7 +1625,7 @@ main {
   padding: 0 14px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--card-solid) 85%, transparent);
+  background: color-mix(in srgb, var(--card) 85%, transparent);
   font-size: 14px;
   font-weight: 700;
   white-space: nowrap;
@@ -1677,7 +1677,7 @@ main {
   padding: 14px;
   border-radius: 16px;
   border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--card-solid) 70%, transparent);
+  background: color-mix(in srgb, var(--card) 70%, transparent);
 }
 
 .login-perk-icon {
@@ -1739,7 +1739,7 @@ main {
   gap: 4px;
   padding: 4px;
   border-radius: 12px;
-  background: var(--bg);
+  background: var(--card);
   border: 1px solid var(--line);
 }
 
@@ -1755,7 +1755,7 @@ main {
 }
 
 .auth-tabs button.active {
-  background: var(--card-2-solid);
+  background: var(--card-2);
   color: var(--text);
 }
 
@@ -1782,7 +1782,7 @@ main {
   padding: 0 16px;
   border-radius: 13px;
   border: 2px solid var(--line);
-  background: var(--bg);
+  background: var(--card);
   color: var(--text-3);
   font-size: 18px;
   transition: border-color 0.18s ease;
@@ -2547,7 +2547,7 @@ main {
   padding: 11px 14px;
   border-radius: 10px;
   border: 1px solid var(--line);
-  background: var(--bg);
+  background: var(--card);
   color: var(--text);
   outline: none;
 }
@@ -3360,7 +3360,7 @@ html:not([data-auth]) .play-actions .challenge-open {
 
 .variant-tabs a.active,
 .variant-tabs button.active {
-  background: color-mix(in srgb, var(--accent) 22%, var(--card-2-solid));
+  background: color-mix(in srgb, var(--accent) 22%, var(--card-2));
   color: var(--text);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 55%, transparent);
 }
@@ -3517,7 +3517,7 @@ html:not([data-auth]) .play-actions .challenge-open {
   padding: 14px;
   border: 1px solid var(--line);
   border-radius: 20px;
-  background: var(--card-solid);
+  background: var(--card);
   overflow: hidden;
   transition: border-color 0.2s ease;
 }
@@ -3605,7 +3605,7 @@ html:not([data-auth]) .play-actions .challenge-open {
   padding: 0;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: var(--card-solid);
+  background: var(--card);
   color: var(--text-2);
   font: inherit;
   font-size: 14px;
@@ -3622,7 +3622,7 @@ html:not([data-auth]) .play-actions .challenge-open {
 
 .manga-zoom.on {
   border-color: color-mix(in srgb, var(--game-accent, var(--accent)) 55%, transparent);
-  background: color-mix(in srgb, var(--game-accent, var(--accent)) 16%, var(--card-solid));
+  background: color-mix(in srgb, var(--game-accent, var(--accent)) 16%, var(--card));
   color: var(--text);
 }
 
@@ -3657,12 +3657,12 @@ html:not([data-auth]) .play-actions .challenge-open {
 .mode-ask.state-wrong,
 .mode-ask.state-lost {
   border-color: color-mix(in srgb, #e5483b 40%, var(--line));
-  background: color-mix(in srgb, #e5483b 8%, var(--card-solid));
+  background: color-mix(in srgb, #e5483b 8%, var(--card));
 }
 
 .mode-ask.state-won {
   border-color: color-mix(in srgb, var(--correct) 45%, var(--line));
-  background: color-mix(in srgb, var(--correct) 10%, var(--card-solid));
+  background: color-mix(in srgb, var(--correct) 10%, var(--card));
 }
 
 .manga-options {
@@ -3679,7 +3679,7 @@ html:not([data-auth]) .play-actions .challenge-open {
   padding: 12px 16px 12px 12px;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: var(--card-solid);
+  background: var(--card);
   color: var(--text);
   font: inherit;
   text-align: left;
@@ -3689,7 +3689,7 @@ html:not([data-auth]) .play-actions .challenge-open {
 
 .manga-option:hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--game-accent, var(--accent)) 55%, var(--line));
-  background: color-mix(in srgb, var(--game-accent, var(--accent)) 9%, var(--card-solid));
+  background: color-mix(in srgb, var(--game-accent, var(--accent)) 9%, var(--card));
   transform: translateY(-2px);
 }
 
@@ -3752,7 +3752,7 @@ html:not([data-auth]) .play-actions .challenge-open {
 .manga-option.right {
   border-color: color-mix(in srgb, var(--correct) 65%, transparent);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--correct) 65%, transparent);
-  background: color-mix(in srgb, var(--correct) 12%, var(--card-solid));
+  background: color-mix(in srgb, var(--correct) 12%, var(--card));
 }
 
 .manga-option.right .manga-key,
@@ -3764,7 +3764,7 @@ html:not([data-auth]) .play-actions .challenge-open {
 .manga-option.wrong {
   border-color: color-mix(in srgb, #e5483b 50%, transparent);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, #e5483b 50%, transparent);
-  background: color-mix(in srgb, #e5483b 10%, var(--card-solid));
+  background: color-mix(in srgb, #e5483b 10%, var(--card));
   color: var(--wrong-text);
 }
 
@@ -3887,7 +3887,7 @@ html:not([data-auth]) .play-actions .challenge-open {
   border-radius: 18px;
   overflow: hidden;
   border: 1px solid var(--line);
-  background: #090a0c;
+  background: var(--card);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent), 0 14px 36px rgba(0, 0, 0, 0.5);
 }
 
@@ -3905,7 +3905,7 @@ html:not([data-auth]) .play-actions .challenge-open {
   padding: 10px;
   border: 1px solid var(--line);
   border-radius: 22px;
-  background: var(--card-solid);
+  background: var(--card);
   overflow: hidden;
   transition: border-color 0.2s ease;
 }
@@ -4003,13 +4003,13 @@ html:not([data-auth]) .play-actions .challenge-open {
   padding: 12px 16px;
   border: 1px solid var(--line);
   border-radius: 16px;
-  background: var(--card-solid);
+  background: var(--card);
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .ability-reveal.open {
   border-color: color-mix(in srgb, var(--game-accent, var(--accent)) 50%, transparent);
-  background: color-mix(in srgb, var(--game-accent, var(--accent)) 10%, var(--card-solid));
+  background: color-mix(in srgb, var(--game-accent, var(--accent)) 10%, var(--card));
 }
 
 .ability-reveal-mark {
@@ -4336,7 +4336,7 @@ html[data-auth] .guest-note {
   margin: 0 0 14px;
   padding: 10px 12px;
   border-radius: 14px;
-  background: color-mix(in srgb, var(--accent) 7%, var(--card-solid));
+  background: color-mix(in srgb, var(--accent) 7%, var(--card));
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 20%, transparent);
   color: var(--text-2);
   font-size: 13.5px;
@@ -4758,7 +4758,7 @@ html[data-auth] .guest-note {
 }
 
 .admin-tabs button.active {
-  background: color-mix(in srgb, var(--accent) 18%, var(--card-2-solid));
+  background: color-mix(in srgb, var(--accent) 18%, var(--card-2));
   color: var(--text);
 }
 
@@ -5171,7 +5171,7 @@ html[data-auth] .guest-note {
   min-width: 26px;
   padding: 1px 7px;
   border-radius: 999px;
-  border: 2px solid var(--card-solid);
+  border: 2px solid var(--card);
   background: var(--accent);
   color: #10131a;
   font-family: var(--display);
@@ -5222,13 +5222,13 @@ html[data-auth] .guest-note {
 
 .quest.is-ready {
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  background: color-mix(in srgb, var(--accent) 10%, var(--card-2-solid));
+  background: color-mix(in srgb, var(--accent) 10%, var(--card-2));
   cursor: pointer;
 }
 
 .quest.is-ready:hover {
   border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 16%, var(--card-2-solid));
+  background: color-mix(in srgb, var(--accent) 16%, var(--card-2));
 }
 
 .quest.is-ready:active {
@@ -5341,7 +5341,7 @@ html[data-auth] .hero .quests-card {
 
 .bonus.is-ready {
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  background: color-mix(in srgb, var(--accent) 10%, var(--card-2-solid));
+  background: color-mix(in srgb, var(--accent) 10%, var(--card-2));
   cursor: pointer;
 }
 
@@ -5352,7 +5352,7 @@ html[data-auth] .hero .quests-card {
 
 .bonus.is-ready:hover {
   border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 16%, var(--card-2-solid));
+  background: color-mix(in srgb, var(--accent) 16%, var(--card-2));
 }
 
 .bonus.is-ready:active {
@@ -5519,7 +5519,7 @@ html[data-cat='games'] .tile[data-id='games'],
 html[data-cat='sport'] .tile[data-id='sport'],
 html[data-cat='screen'] .tile[data-id='screen'] {
   color: var(--text);
-  background: color-mix(in srgb, var(--tile) 15%, var(--card-2-solid));
+  background: color-mix(in srgb, var(--tile) 15%, var(--card-2));
   border-color: color-mix(in srgb, var(--tile) 42%, transparent);
 }
 
@@ -6123,7 +6123,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   padding: 0 18px;
   border: 2px solid var(--line);
   border-radius: 16px;
-  background: var(--bg);
+  background: var(--card);
   color: var(--text-3);
   transition: border-color 0.18s;
 }
@@ -6320,7 +6320,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 
 .mode-tabs a.active,
 .mode-tabs button.active {
-  background: color-mix(in srgb, var(--accent) 22%, var(--card-2-solid));
+  background: color-mix(in srgb, var(--accent) 22%, var(--card-2));
   color: var(--text);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 55%, transparent);
 }
@@ -6368,7 +6368,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 22px;
-  background: var(--card-solid);
+  background: var(--card);
 }
 
 .shot .zoom-frame {
@@ -6485,7 +6485,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   padding: 8px 12px 8px 8px;
   border: 1px solid var(--line);
   border-radius: 14px;
-  background: var(--card-solid);
+  background: var(--card);
 }
 
 .try .thumb {
@@ -6837,12 +6837,12 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 
 .award.done {
   border-color: color-mix(in srgb, var(--tier) 42%, transparent);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--tier) 7%, var(--card-solid)), var(--card-solid) 70%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tier) 7%, var(--card)), var(--card) 70%);
 }
 
 .award.is-ready {
   border-color: color-mix(in srgb, var(--tier) 38%, transparent);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--tier) 8%, var(--card-solid)), var(--card-solid) 70%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tier) 8%, var(--card)), var(--card) 70%);
 }
 
 .award {
@@ -7025,7 +7025,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   padding: 18px 20px;
   border-radius: var(--radius);
   border: 1px solid var(--line);
-  background: var(--card-solid);
+  background: var(--card);
 }
 
 .phrase-list {
@@ -7065,7 +7065,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 }
 
 .phrase-list li.fresh {
-  background: color-mix(in srgb, var(--accent) 10%, var(--card-2-solid));
+  background: color-mix(in srgb, var(--accent) 10%, var(--card-2));
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
   color: var(--text);
   font-size: 17px;
@@ -7387,7 +7387,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   padding: 12px 16px;
   border: 1px solid var(--line);
   border-radius: 16px;
-  background: var(--card-solid);
+  background: var(--card);
   color: var(--text-3);
   font-size: 17px;
   cursor: text;
