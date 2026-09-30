@@ -38,7 +38,7 @@
 
 .profile-grid {
   display: grid;
-  grid-template-columns: minmax(0, calc((100% - 28px) / 3)) minmax(0, 1fr);
+  grid-template-columns: minmax(min(100%, 268px), calc((100% - 28px) / 3)) minmax(0, 1fr);
   align-items: stretch;
   gap: 14px;
 }
@@ -100,7 +100,7 @@
   flex-direction: column;
   justify-content: flex-start;
   gap: 6px;
-  height: 92px;
+  min-height: 92px;
   padding: 10px 12px;
   border-radius: 12px;
   background: var(--card-2);
@@ -608,11 +608,11 @@
     order: 3;
   }
 
-  .worlds-card {
+  .activity-card {
     order: 4;
   }
 
-  .activity-card {
+  .worlds-card {
     order: 5;
   }
 

@@ -315,7 +315,34 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
             </section>
           )}
 
-       </div>
+          <section className="card activity-card">
+            <header>
+              <h2>{t('profile.activity')}</h2>
+            </header>
+            {summary?.recent.length ? (
+              <ul className="activity">
+                {summary.recent.map((round, index) => (
+                  <li key={`${round.game}-${round.answerId}-${index}`}>
+                    <span className={`activity-dot ${round.status}`} aria-hidden />
+                    <span className="activity-text">
+                      {t(round.status === 'won' ? 'profile.won' : round.status === 'skipped' ? 'profile.gaveUp' : 'profile.lost', {
+                        name: round.name ? round.name[lang] : `#${round.answerId}`,
+                      })}
+                      <small>
+                        {gameLabel(round.game) ? l(gameLabel(round.game)!) : round.game} · {t(modeLabel(round.mode))}
+                        {round.challenge ? ` · ${t('profile.fromFriend')}` : ''}
+                        {round.guessCount ? ` · ${t('profile.tries', { count: round.guessCount })}` : ''}
+                      </small>
+                    </span>
+                    <span className="activity-when muted">{date(round.finishedAt)}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="muted center">{t('profile.activityEmpty')}</p>
+            )}
+          </section>
+        </div>
 
         <div className="profile-middle">
           <section className="profile-metrics">
@@ -384,34 +411,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                         </li>
                       )
                     })}
-                  </ul>
-                ) : (
-                  <p className="muted center">{t('profile.activityEmpty')}</p>
-                )}
-              </section>
-
-              <section className="card activity-card">
-                <header>
-                  <h2>{t('profile.activity')}</h2>
-                </header>
-                {summary?.recent.length ? (
-                  <ul className="activity">
-                    {summary.recent.map((round, index) => (
-                      <li key={`${round.game}-${round.answerId}-${index}`}>
-                        <span className={`activity-dot ${round.status}`} aria-hidden />
-                        <span className="activity-text">
-                          {t(round.status === 'won' ? 'profile.won' : round.status === 'skipped' ? 'profile.gaveUp' : 'profile.lost', {
-                            name: round.name ? round.name[lang] : `#${round.answerId}`,
-                          })}
-                          <small>
-                            {gameLabel(round.game) ? l(gameLabel(round.game)!) : round.game} · {t(modeLabel(round.mode))}
-                            {round.challenge ? ` · ${t('profile.fromFriend')}` : ''}
-                            {round.guessCount ? ` · ${t('profile.tries', { count: round.guessCount })}` : ''}
-                          </small>
-                        </span>
-                        <span className="activity-when muted">{date(round.finishedAt)}</span>
-                      </li>
-                    ))}
                   </ul>
                 ) : (
                   <p className="muted center">{t('profile.activityEmpty')}</p>
