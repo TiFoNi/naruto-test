@@ -1,6 +1,7 @@
 'use client'
 
 import BackButton from './BackButton'
+import ChallengeSkeleton from './ChallengeSkeleton'
 import { useEffect, useState, type CSSProperties } from 'react'
 import AbilityMode from './AbilityMode'
 import ClassicMode from './ClassicMode'
@@ -62,7 +63,7 @@ export default function ChallengeRoom({ code }: { code: string }) {
       </div>
     )
   }
-  if (!challenge || !user || !loaded) return <div className="card center muted">{t('loading')}</div>
+  if (!challenge || !user || !loaded) return <ChallengeSkeleton />
 
   const game = gameById(challenge.game)
   const mode = challenge.mode
@@ -72,7 +73,7 @@ export default function ChallengeRoom({ code }: { code: string }) {
   const link = `${window.location.origin}${href.challenge(code)}`
 
   const copy = () => {
-    navigator.clipboard?.writeText(link).then(
+    navigator.clipboard?.writeText(`${t('share.challenge', { game: l(game.label) })}\n${link}`).then(
       () => {
         setCopied(true)
         setTimeout(() => setCopied(false), 1500)
@@ -143,13 +144,17 @@ export default function ChallengeRoom({ code }: { code: string }) {
             <section className="card challenge-link">
               <h2>{t('challenge.shareTitle')}</h2>
               <p className="muted">{challenge.mine ? t('challenge.mineHint') : t('challenge.doneHint')}</p>
-              <div className="inline-field">
-                <input readOnly value={link} onFocus={(e) => e.currentTarget.select()} />
-                <button className="primary" onClick={copy}>
-                  {copied ? t('duel.copied') : t('duel.copy')}
-                </button>
+              <div className="challenge-share">
+                <div className="inline-field">
+                  <input readOnly value={link} onFocus={(e) => e.currentTarget.select()} />
+                </div>
+                <div className="challenge-share-actions">
+                  <button className="primary" onClick={copy}>
+                    {copied ? t('duel.copied') : t('duel.copy')}
+                  </button>
+                  <Share text={t('share.challenge', { game: l(game.label) })} url={link} />
+                </div>
               </div>
-              <Share text={t('share.challenge', { game: l(game.label) })} url={link} />
             </section>
           </aside>
         </section>

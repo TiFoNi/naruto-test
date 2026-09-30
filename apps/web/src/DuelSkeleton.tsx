@@ -12,30 +12,30 @@ export default function DuelSkeleton() {
     <div className="duel duel-ghosts">
       <BackButton href={href.home}>{t('play.back')}</BackButton>
 
-      <div className="duel-setup ghost-lobby">
+      <div className="duel-setup sk-lobby">
         <header className="duel-setup-head">
           <div>
             <h1>{t('duel.newTitle')}</h1>
             <p className="muted">{t('duel.newLead')}</p>
           </div>
-          <span className="ghost bar" />
+          <span className="sk bar" />
         </header>
         <div className="duel-setup-grid">
           <div className="duel-setup-main">
-            <span className="ghost tall" />
-            <span className="ghost mid" />
-            <span className="ghost mid" />
+            <span className="sk tall" />
+            <span className="sk mid" />
+            <span className="sk mid" />
           </div>
           <aside className="duel-setup-side">
-            <span className="ghost mid" />
-            <span className="ghost short" />
+            <span className="sk mid" />
+            <span className="sk short" />
           </aside>
         </div>
       </div>
 
-      <div className="ghost-play">
-        <span className="ghost head" />
-        <span className="ghost tall" />
+      <div className="sk-play">
+        <span className="sk head" />
+        <span className="sk tall" />
       </div>
     </div>
   )

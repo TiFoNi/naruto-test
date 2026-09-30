@@ -91,28 +91,6 @@
   font-size: 13px;
 }
 
-.challenge-link .inline-field {
-  flex-wrap: wrap;
-}
-
-.challenge-link .inline-field input {
-  flex: 1 1 100%;
-  font-size: 13px;
-}
-
-.challenge-link .inline-field button {
-  flex: 1 1 auto;
-}
-
-.challenge-link .share {
-  justify-content: stretch;
-}
-
-.challenge-link .share-open {
-  flex: 1;
-  justify-content: center;
-}
-
 .challenge-answer {
   display: flex;
   align-items: center;

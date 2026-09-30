@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import Background from './Background'
 import DuelDock from './DuelDock'
 import DuelSkeleton from './DuelSkeleton'
+import ChallengeSkeleton from './ChallengeSkeleton'
 import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
@@ -497,6 +498,8 @@ export default function Shell({ children, games }: { children: ReactNode; games:
       ) : loading ? (
         section === 'duel' || section === 'duels' ? (
           <DuelSkeleton />
+        ) : section === 'c' ? (
+          <ChallengeSkeleton />
         ) : (
           <div className="card center muted page-loading">{t('loading')}</div>
         )

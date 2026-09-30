@@ -995,12 +995,14 @@ main {
 .suggestion-name {
   display: flex;
   flex-direction: column;
-  line-height: 1.25;
+  gap: 1px;
+  line-height: 1.15;
 }
 
 .suggestion-name small {
   font-size: 12px;
   font-weight: 600;
+  line-height: 1.1;
   color: var(--text-3);
 }
 
@@ -2955,6 +2957,54 @@ button.ghost.small {
   margin: 8px 0 0;
 }
 
+.sk {
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--card) 0%, color-mix(in srgb, var(--card) 55%, var(--line)) 50%, var(--card) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+.sk.bar {
+  width: min(100%, 560px);
+  height: 38px;
+  border-radius: 12px;
+}
+
+.sk.mark {
+  width: 52px;
+  height: 52px;
+  border-radius: 11px;
+}
+
+.sk.line {
+  width: min(100%, 220px);
+  height: 26px;
+  border-radius: 8px;
+}
+
+.sk.line.sub {
+  width: min(100%, 320px);
+  height: 16px;
+}
+
+.sk.head {
+  height: 86px;
+}
+
+.sk.tall {
+  height: 340px;
+}
+
+.sk.mid {
+  height: 180px;
+}
+
+.sk.short {
+  height: 120px;
+}
+
 @keyframes shimmer {
   from {
     background-position: 100% 0;
@@ -3385,6 +3435,33 @@ html:not([data-auth]) .play-actions .challenge-open {
 
 .challenge-maker .search {
   width: 100%;
+}
+
+.challenge-share {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.challenge-share input {
+  font-size: 13.5px;
+}
+
+.challenge-share-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 8px;
+}
+
+.challenge-share-actions > * {
+  margin: 0;
+  min-width: 0;
+}
+
+.challenge-share-actions .share-open {
+  width: 100%;
+  justify-content: center;
 }
 
 .challenge-picked {

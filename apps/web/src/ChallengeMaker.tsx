@@ -41,7 +41,8 @@ export default function ChallengeMaker({ game, mode }: { game: Game; mode: ModeI
   }
 
   const copy = () => {
-    navigator.clipboard?.writeText(link ?? '').then(
+    const invitation = link ? `${t('share.challenge', { game: l(game.label) })}\n${link}` : ''
+    navigator.clipboard?.writeText(invitation).then(
       () => {
         setCopied(true)
         setTimeout(() => setCopied(false), 1500)
@@ -82,13 +83,17 @@ export default function ChallengeMaker({ game, mode }: { game: Game; mode: ModeI
                 <p className="challenge-picked">
                   {t('challenge.pick')}: <b>{picked ? name(picked) : ''}</b>
                 </p>
-                <div className="inline-field">
-                  <input readOnly value={link} onFocus={(e) => e.currentTarget.select()} />
-                  <button className="primary" onClick={copy}>
-                    {copied ? t('duel.copied') : t('duel.copy')}
-                  </button>
+                <div className="challenge-share">
+                  <div className="inline-field">
+                    <input readOnly value={link} onFocus={(e) => e.currentTarget.select()} />
+                  </div>
+                  <div className="challenge-share-actions">
+                    <button className="primary" onClick={copy}>
+                      {copied ? t('duel.copied') : t('duel.copy')}
+                    </button>
+                    <Share text={t('share.challenge', { game: l(game.label) })} url={link} />
+                  </div>
                 </div>
-                <Share text={t('share.challenge', { game: l(game.label) })} url={link} />
                 <button className="link-button" onClick={reset}>
                   {t('challenge.again')}
                 </button>
