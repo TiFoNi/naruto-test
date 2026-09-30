@@ -705,3 +705,13 @@
   width: 18px;
   height: 18px;
 }
+
+.profile .card {
+  background: color-mix(in srgb, var(--card) 72%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.profile .card .fact,
+.profile .card .places-list li {
+  background: color-mix(in srgb, var(--card-2) 78%, transparent);
+}
