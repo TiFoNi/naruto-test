@@ -82,7 +82,6 @@ export async function playMetadata(lang: Lang, gameId: string, modeId: string, d
     title,
     description,
     alternates: alternates(path),
-    ...(daily ? { robots: { index: false } } : {}),
     openGraph: { title, description: short, url: `${SITE}${path}`, type: 'website' },
     twitter: { card: 'summary_large_image' },
   }
