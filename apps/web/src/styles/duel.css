@@ -1882,8 +1882,8 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .card.modal.grid-ask {
   display: flex;
-  width: min(100%, 460px);
-  max-width: 460px;
+  width: min(100%, 520px);
+  max-width: 520px;
   flex-direction: column;
   gap: 12px;
   margin: 0 auto;
@@ -1893,6 +1893,15 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .grid-ask .search {
   width: 100%;
+}
+
+.grid-ask .search-row {
+  flex-wrap: wrap;
+}
+
+.grid-ask .send {
+  width: 100%;
+  justify-content: center;
 }
 
 .grid-ask h2 {

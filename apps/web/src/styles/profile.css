@@ -707,11 +707,12 @@
 }
 
 .profile .card {
-  background: color-mix(in srgb, var(--card) 72%, transparent);
-  backdrop-filter: blur(10px);
+  border-color: color-mix(in srgb, #ffffff 9%, transparent);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025));
+  backdrop-filter: blur(16px);
 }
 
 .profile .card .fact,
 .profile .card .places-list li {
-  background: color-mix(in srgb, var(--card-2) 78%, transparent);
+  background: rgba(255, 255, 255, 0.045);
 }
