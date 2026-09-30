@@ -229,6 +229,7 @@ async function boardStart(duel: DuelDoc) {
     startedAt: null,
     endsAt: null,
     firstId: duel.players[randomInt(duel.players.length)]?.userId ?? null,
+    turnId: null,
     firstSolvedAt: null,
     winnerId: null,
     finishedAt: null,
@@ -564,9 +565,24 @@ export async function pickSecret(duel: DuelDoc, userId: ObjectId, entityId: numb
     const startedAt = new Date()
     set.startedAt = startedAt
     set.endsAt = new Date(startedAt.getTime() + (duel.seconds || DUEL_DEFAULT.seconds) * 1000)
+    set.turnId = duel.firstId ?? duel.players[0]?.userId ?? null
   }
 
   const updated = await (await duels()).findOneAndUpdate({ _id: duel._id, status: 'playing' }, { $set: set }, { returnDocument: 'after' })
+  return { duel: updated ?? duel }
+}
+
+export const yourTurn = (duel: DuelDoc, userId: ObjectId) => Boolean(duel.turnId && duel.turnId.equals(userId))
+
+export async function passTurn(duel: DuelDoc, userId: ObjectId) {
+  if (duel.mode !== 'who' || duel.status !== 'playing' || picking(duel)) return { error: 'round_over' as const }
+  if (!yourTurn(duel, userId)) return { error: 'not_your_turn' as const }
+  const next = duel.players.find((side) => !side.userId.equals(userId))?.userId ?? userId
+  const updated = await (await duels()).findOneAndUpdate(
+    { _id: duel._id, status: 'playing', turnId: userId },
+    { $set: { turnId: next } },
+    { returnDocument: 'after' },
+  )
   return { duel: updated ?? duel }
 }
 
@@ -584,6 +600,7 @@ export async function strikeCard(duel: DuelDoc, userId: ObjectId, entityId: numb
   const rival = duel.players.find((one) => !one.userId.equals(userId))
   const set: Record<string, unknown> = { [`players.${index}.struck`]: next, [`players.${index}.answer`]: null }
   if (standing.length === 1) {
+    if (!yourTurn(duel, userId)) return { error: 'not_your_turn' as const }
     set[`players.${index}.answer`] = standing[0]
     if (standing[0] === rival?.secret) set[`players.${index}.solvedAt`] = new Date()
     else set[`players.${index}.gaveUp`] = true
@@ -595,6 +612,7 @@ export async function strikeCard(duel: DuelDoc, userId: ObjectId, entityId: numb
 
 export async function answerCard(duel: DuelDoc, userId: ObjectId, entityId: number) {
   if (duel.mode !== 'who' || duel.status !== 'playing' || picking(duel)) return { error: 'round_over' as const }
+  if (!yourTurn(duel, userId)) return { error: 'not_your_turn' as const }
   const index = duel.players.findIndex((side) => side.userId.equals(userId))
   const side = duel.players[index]
   if (!side?.cards?.includes(entityId) || side.struck?.includes(entityId)) return { error: 'bad_request' as const }
@@ -713,6 +731,8 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
       ? {
           first: duel.firstId ? duel.players.find((side) => side.userId.equals(duel.firstId!))?.nickname ?? null : null,
           youFirst: Boolean(duel.firstId && duel.firstId.equals(userId)),
+          turn: duel.turnId ? duel.players.find((side) => side.userId.equals(duel.turnId!))?.nickname ?? null : null,
+          yourTurn: yourTurn(duel, userId),
           secret: you?.secret ?? null,
           picking: picking(duel),
           rivalPicked: Boolean(rival?.secret),

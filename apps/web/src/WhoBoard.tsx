@@ -13,12 +13,13 @@ type Props = {
   duel: DuelView
   busy: boolean
   onPick: (entityId: number) => void
+  onPass: () => void
   onStrike: (entityId: number) => void
   onAnswer: (entityId: number) => void
   onNext: () => void
 }
 
-export default function WhoBoard({ game, byId, duel, busy, onPick, onStrike, onAnswer, onNext }: Props) {
+export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStrike, onAnswer, onNext }: Props) {
   const { t, l, tv, lang, name } = useI18n()
   const [info, setInfo] = useState<number | null>(null)
   const [ask, setAsk] = useState<number | null>(null)
@@ -30,6 +31,7 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onStrike, onA
   const cards = duel.cards ?? []
   const standing = cards.filter((id) => !struck.has(id))
   const choosing = Boolean(duel.picking)
+  const myTurn = Boolean(duel.yourTurn)
   const youPicked = duel.secret !== undefined && duel.secret !== null
   const mine = duel.secret !== undefined && duel.secret !== null ? byId.get(duel.secret) : undefined
   const shown = info !== null ? byId.get(info) : undefined
@@ -100,6 +102,7 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onStrike, onA
   const tap = (id: number) => {
     if (choosing) return youPicked ? undefined : setChoose(id)
     if (struck.has(id) || standing.length > 2) return onStrike(id)
+    if (!myTurn) return
     setAsk(standing.find((other) => other !== id) ?? id)
   }
 
@@ -131,10 +134,10 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onStrike, onA
               ? youPicked
                 ? t('who.pickWait')
                 : t('who.pickTitle')
-              : duel.youFirst
-                ? t('who.youFirst')
-                : duel.first
-                  ? t('who.first', { name: duel.first })
+              : myTurn
+                ? t('who.yourTurn')
+                : duel.turn
+                  ? t('who.rivalTurn', { name: duel.turn })
                   : ''}
           </p>
           <p className="muted">
@@ -144,8 +147,15 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onStrike, onA
                 : duel.rivalPicked
                   ? t('who.rivalPicked')
                   : t('who.pickHint')
-              : t('who.hint')}
+              : myTurn
+                ? t('who.turnHint')
+                : t('who.waitTurn')}
           </p>
+          {!choosing && !over && myTurn && (
+            <button type="button" className="primary who-pass" disabled={busy} onClick={onPass}>
+              {t('who.pass')}
+            </button>
+          )}
         </div>
       </div>
 
@@ -291,7 +301,7 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onStrike, onA
                 </button>
               </div>
             )}
-            {!choosing && !over && !struck.has(shown.id) && standing.length > 1 && (
+            {!choosing && !over && myTurn && !struck.has(shown.id) && standing.length > 1 && (
               <div className="who-ask">
                 <button
                   type="button"

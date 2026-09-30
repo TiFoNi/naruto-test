@@ -1642,6 +1642,13 @@
   }
 }
 
+.who-pass {
+  align-self: flex-start;
+  margin-top: 10px;
+  padding: 9px 18px;
+  font-size: 14px;
+}
+
 html[data-duel='play'] .duel-ghosts .sk-lobby {
   display: none;
 }

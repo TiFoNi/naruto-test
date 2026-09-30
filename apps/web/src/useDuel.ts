@@ -35,6 +35,8 @@ export type DuelView = {
   sizes?: number[]
   first?: string | null
   youFirst?: boolean
+  turn?: string | null
+  yourTurn?: boolean
   secret?: number | null
   picking?: boolean
   rivalPicked?: boolean
@@ -163,6 +165,7 @@ export function useDuel(code: string) {
     next: () => send({ action: 'next' }),
     toLobby: () => send({ action: 'lobby' }),
     giveUp: () => send({ action: 'giveup' }),
+    pass: () => send({ action: 'pass' }),
     pick: (entityId: number) => send({ action: 'pick', entityId }),
     strike: (entityId: number) => send({ action: 'strike', entityId }),
     answer: (entityId: number) => send({ action: 'answer', entityId }),

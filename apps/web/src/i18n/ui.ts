@@ -62,6 +62,19 @@ const ui = {
   'who.cardsLeft': { ru: 'карточек: {count}', uk: 'карток: {count}', en: 'cards: {count}' },
   'who.was': { ru: 'Соперник прятал {name}', uk: 'Суперник ховав {name}', en: 'The rival hid {name}' },
   'who.sizeShort': { ru: 'В этом мире меньше {count} героев', uk: 'У цьому всесвіті менше ніж {count} героїв', en: 'This world has fewer than {count} heroes' },
+  'who.yourTurn': { ru: 'Твой ход', uk: 'Твій хід', en: 'Your turn' },
+  'who.rivalTurn': { ru: 'Ходит {name}', uk: 'Ходить {name}', en: '{name} is playing' },
+  'who.pass': { ru: 'Передать ход', uk: 'Передати хід', en: 'Pass the turn' },
+  'who.turnHint': {
+    ru: 'Закрывай сколько нужно карточек, потом передай ход',
+    uk: 'Закривай скільки треба карток, потім передай хід',
+    en: 'Close as many cards as you need, then pass the turn',
+  },
+  'who.waitTurn': {
+    ru: 'Назвать героя можно только в свой ход',
+    uk: 'Назвати героя можна лише у свій хід',
+    en: 'You can name the hero only on your turn',
+  },
   'who.pickTitle': { ru: 'Выбери своего героя', uk: 'Обери свого героя', en: 'Pick your hero' },
   'who.pickHint': {
     ru: 'Ткни карточку на поле — её и будет отгадывать соперник',
@@ -186,6 +199,7 @@ const ui = {
   },
   'err.bad_result': { ru: 'Некорректный результат', uk: 'Некоректний результат', en: 'Invalid result' },
   'err.too_fast': { ru: 'Слишком часто — подожди пару секунд', uk: 'Надто часто — зачекай пару секунд', en: 'Too fast — wait a couple of seconds' },
+  'err.not_your_turn': { ru: 'Сейчас ход соперника', uk: 'Зараз хід суперника', en: 'It is the rival turn' },
   'err.server': { ru: 'Ошибка сервера, попробуй позже', uk: 'Помилка сервера, спробуй пізніше', en: 'Server error, try again later' },
   'err.too_many': {
     ru: 'Слишком много попыток, подожди 15 минут',

@@ -15,6 +15,7 @@ import {
   joinDuel,
   leaveDuel,
   openLobby,
+  passTurn,
   pickSecret,
   recentRivals,
   setReady,
@@ -104,6 +105,12 @@ export const POST = handle(async (request) => {
   if (action === 'ready') return json({ duel: await duelView(await setReady(live, userId, body.ready !== false), userId) })
   if (action === 'giveup') return json({ duel: await duelView(await giveUpDuel(live, userId), userId) })
 
+  if (action === 'pass') {
+    const result = await passTurn(live, userId)
+    if (result.error) return fail(result.error === 'round_over' ? 409 : 403, result.error)
+    return json({ duel: await duelView(result.duel!, userId) })
+  }
+
   if (action === 'pick') {
     const entityId = Number(body.entityId)
     if (!Number.isInteger(entityId)) return fail(400, 'bad_request')
@@ -116,7 +123,7 @@ export const POST = handle(async (request) => {
     const entityId = Number(body.entityId)
     if (!Number.isInteger(entityId)) return fail(400, 'bad_request')
     const result = action === 'answer' ? await answerCard(live, userId, entityId) : await strikeCard(live, userId, entityId)
-    if (result.error) return fail(result.error === 'round_over' ? 409 : 400, result.error)
+    if (result.error) return fail(result.error === 'round_over' ? 409 : result.error === 'not_your_turn' ? 403 : 400, result.error)
     return json({ duel: await duelView(result.duel!, userId) })
   }
 
