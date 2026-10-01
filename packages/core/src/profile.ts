@@ -1,5 +1,5 @@
 import { randomInt } from 'node:crypto'
-import { ObjectId, type Collection } from 'mongodb'
+import { ObjectId, type Collection, type Filter } from 'mongodb'
 import { DAILY_KEYS, DAILY_XP_FACTOR, MODE_XP, STAT_KEYS, XP_CAPS, type ModeId, type XpSource } from '@nanda/game'
 import { shiftDay, today } from './daily'
 import { users, type Stats, type UserDoc } from './db'
@@ -48,6 +48,34 @@ export async function ensureTag(collection: Collection<UserDoc>, doc: UserDoc) {
   const lower = doc.nicknameLower ?? lowerNickname(doc.nickname ?? defaultNickname(doc.username))
   doc.tag = (await claimTag(collection, doc._id!, lower)) ?? undefined
   return doc.tag ?? null
+}
+
+export async function searchPlayers(userId: ObjectId, asked: unknown, limit = 6) {
+  const raw = String(asked ?? '').trim().slice(0, 32)
+  const [namePart, tagPart] = raw.split('#')
+  const name = namePart.trim().toLowerCase()
+  const tag = tagPart === undefined ? null : parseTag(tagPart)
+  const idTag = tagPart === undefined ? parseTag(namePart) : null
+
+  const or: Filter<UserDoc>[] = []
+  if (name.length >= 2) or.push({ nicknameLower: { $gte: name, $lt: `${name}\uffff` }, ...(tag ? { tag } : {}) })
+  else if (tag) or.push({ tag })
+  if (idTag) or.push({ tag: idTag })
+  if (!or.length) return []
+
+  const list = await (await users())
+    .find(
+      { _id: { $ne: userId }, ...(or.length === 1 ? or[0] : { $or: or }) },
+      { projection: { nickname: 1, username: 1, tag: 1 }, sort: { nicknameLower: 1 } },
+    )
+    .limit(limit)
+    .toArray()
+
+  return list.map((doc) => ({
+    id: doc._id!.toHexString(),
+    nickname: doc.nickname ?? defaultNickname(doc.username),
+    tag: doc.tag ?? null,
+  }))
 }
 
 export function parseNickname(value: unknown): string | null {

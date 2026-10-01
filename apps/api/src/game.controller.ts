@@ -12,6 +12,7 @@ import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
 import * as achievements from '@nanda/core/endpoints/achievements'
 import * as awards from '@nanda/core/endpoints/awards'
+import * as friends from '@nanda/core/endpoints/friends'
 import * as leaderboard from '@nanda/core/endpoints/leaderboard'
 import * as seasonBoard from '@nanda/core/endpoints/season'
 import * as profile from '@nanda/core/endpoints/profile'
@@ -118,6 +119,16 @@ export class GameController {
   @Get('achievements')
   achievements(@Req() req: Request, @Res() res: Response) {
     return bridge(achievements.GET, req, res)
+  }
+
+  @Get('friends')
+  friendsList(@Req() req: Request, @Res() res: Response) {
+    return bridge(friends.GET, req, res)
+  }
+
+  @Post('friends')
+  friendsAct(@Req() req: Request, @Res() res: Response) {
+    return bridge(friends.POST, req, res)
   }
 
   @Get('awards')

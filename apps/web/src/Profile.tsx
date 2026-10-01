@@ -10,10 +10,11 @@ import { useI18n } from './i18n'
 import { type Level } from './Quests'
 import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
-import { CalendarIcon, CheckIcon, SwordsIcon, TrophyIcon } from './icons'
+import { CalendarIcon, CheckIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
 import { useHref, useNavigate } from './router'
 import { kyivToday } from './stats'
 import { keepPerUser } from './session-cache'
+import { refreshFeed } from './awards'
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -34,6 +35,7 @@ type Summary = {
   rank: { position: number; players: number } | null
   nickname?: string
   tag?: string | null
+  friend?: FriendState
   gamePlaces: { game: GameId; mode: string; position: number }[]
   streak: {
     current: number
@@ -54,6 +56,8 @@ type Summary = {
     name?: Named | null
   }[]
 }
+
+type FriendState = 'none' | 'out' | 'in' | 'friends'
 
 const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
 const WEEKDAYS = {
@@ -116,6 +120,8 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     }
   }, [places])
 
+  const [friend, setFriend] = useState<FriendState>('none')
+
   const load = useCallback(async () => {
     const { ok, data } = await api<Summary>(own ? 'profile/summary' : `profile/summary?id=${id}`)
     if (!ok) return
@@ -126,6 +132,26 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   useEffect(() => {
     void load()
   }, [load])
+
+  useEffect(() => {
+    setFriend(summary?.friend ?? 'none')
+  }, [summary?.friend])
+
+  const askFriend = async (target: string) => {
+    const { ok, data } = await api<{ state?: FriendState }>('friends', { action: 'ask', id: target })
+    if (ok) setFriend(data.state ?? 'out')
+  }
+
+  const answerFriend = async (target: string, accept: boolean) => {
+    const { ok, data } = await api<{ state?: FriendState }>('friends', { action: accept ? 'accept' : 'decline', id: target })
+    if (ok) setFriend(data.state ?? 'none')
+    void refreshFeed()
+  }
+
+  const removeFriend = async (target: string) => {
+    const { ok } = await api('friends', { action: 'remove', id: target })
+    if (ok) setFriend('none')
+  }
 
   const nickname = (own ? user?.nickname : summary?.nickname) ?? ''
   const tag = (own ? user?.tag : summary?.tag) ?? null
@@ -286,10 +312,31 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
             </div>
 
             {!own && id && (
-              <button type="button" className="primary big duel-call" disabled={calling} onClick={() => void challenge(id)}>
-                <SwordsIcon />
-                {t('duel.challenge')}
-              </button>
+              <div className="profile-acts">
+                <button type="button" className="primary big duel-call" disabled={calling} onClick={() => void challenge(id)}>
+                  <SwordsIcon />
+                  {t('duel.challenge')}
+                </button>
+                {friend === 'in' ? (
+                  <div className="profile-friend-ask">
+                    <button type="button" className="ghost" onClick={() => void answerFriend(id, true)}>
+                      {t('friends.accept')}
+                    </button>
+                    <button type="button" className="ghost" onClick={() => void answerFriend(id, false)}>
+                      {t('friends.decline')}
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="ghost profile-friend"
+                    onClick={() => void (friend === 'none' ? askFriend(id) : removeFriend(id))}
+                  >
+                    <UserIcon />
+                    {t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}
+                  </button>
+                )}
+              </div>
             )}
           </section>
 

@@ -712,3 +712,36 @@
 .profile .card .places-list li {
   background: rgba(255, 255, 255, 0.045);
 }
+
+.profile-acts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.profile-acts .duel-call {
+  margin-top: 0;
+}
+
+.profile-friend,
+.profile-friend-ask button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 42px;
+}
+
+.profile-friend svg {
+  width: 17px;
+  height: 17px;
+}
+
+.profile-friend-ask {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+

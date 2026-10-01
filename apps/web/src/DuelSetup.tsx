@@ -22,6 +22,7 @@ const CATEGORIES: { id: Category; title: UiKey }[] = [
 
 type Rival = { id: string; nickname: string; wins: number; losses: number }
 type Found = { id: string; nickname: string; tag?: string | null }
+type Mate = { id: string; nickname: string; tag: string | null }
 
 type Props = {
   duel: DuelView
@@ -48,6 +49,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
   const [query, setQuery] = useState('')
   const [found, setFound] = useState<Found[]>([])
   const [rivals, setRivals] = useState<Rival[]>([])
+  const [mates, setMates] = useState<Mate[]>([])
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
@@ -56,7 +58,11 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
 
   useEffect(() => {
     let alive = true
-    void api<{ rivals?: Rival[] }>('duel', { action: 'rivals' }).then(({ ok, data }) => alive && ok && setRivals(data.rivals ?? []))
+    void api<{ rivals?: Rival[]; friends?: Mate[] }>('duel', { action: 'rivals' }).then(({ ok, data }) => {
+      if (!alive || !ok) return
+      setRivals(data.rivals ?? [])
+      setMates(data.friends ?? [])
+    })
     return () => {
       alive = false
     }
@@ -350,6 +356,28 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                     </li>
                   ))}
                 </ul>
+              )}
+
+              {mates.length > 0 && (
+                <>
+                  <span className="duel-rules-title">{t('friends.title')}</span>
+                  <ul className="duel-found">
+                    {mates.map((one) => (
+                      <li key={one.id}>
+                        <span className="avatar small" aria-hidden>
+                          {one.nickname.charAt(0).toUpperCase()}
+                        </span>
+                        <b>
+                          {one.nickname}
+                          {one.tag && <i className="player-tag">#{one.tag}</i>}
+                        </b>
+                        <button type="button" className="ghost" disabled={busy} onClick={() => invite(one.id)}>
+                          {t('duel.invite')}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </>
               )}
 
               {rivals.length > 0 && (

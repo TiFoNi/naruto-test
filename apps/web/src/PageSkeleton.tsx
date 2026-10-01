@@ -152,11 +152,26 @@ function PlainGhost() {
   )
 }
 
+function MatesGhost() {
+  const { t } = useI18n()
+  const href = useHref()
+
+  return (
+    <div className="mates sk-page">
+      <BackButton href={href.profile}>{t('nav.profile')}</BackButton>
+      <Head />
+      <span className="sk block short" />
+      <span className="sk block" />
+    </div>
+  )
+}
+
 export default function PageSkeleton({ section }: { section?: string }) {
   if (section === 'play') return <PlayGhost />
   if (section === 'profile' || section === 'u') return <ProfileGhost />
   if (section === 'leaderboard') return <BoardGhost />
   if (section === 'achievements') return <AwardsGhost />
   if (section === 'settings') return <SettingsGhost />
+  if (section === 'friends') return <MatesGhost />
   return <PlainGhost />
 }

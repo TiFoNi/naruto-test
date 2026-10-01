@@ -12,11 +12,11 @@ import ChallengeSkeleton from './ChallengeSkeleton'
 import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
-import { dropInvite, freshFeed, refreshFeed, watchFeed, type Feed } from './awards'
+import { dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type Feed } from './awards'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
-import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, MenuIcon, PodiumIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
+import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, MenuIcon, PodiumIcon, SwordsIcon, TrophyIcon, UserIcon, UsersIcon } from './icons'
 import { api } from './api'
 import { openStream } from './stream'
 import { gameById } from './games'
@@ -26,7 +26,7 @@ import { useBeforePaint } from './paint'
 import { useHref, useNavigate, useVisitTracker } from './router'
 
 const PUBLIC = new Set(['', 'play', 'privacy', 'terms'])
-const SECTIONS = new Set(['', 'achievements', 'admin', 'c', 'duel', 'duels', 'leaderboard', 'login', 'play', 'privacy', 'profile', 'settings', 'terms', 'u'])
+const SECTIONS = new Set(['', 'achievements', 'admin', 'c', 'duel', 'duels', 'friends', 'leaderboard', 'login', 'play', 'privacy', 'profile', 'settings', 'terms', 'u'])
 
 function useDropdown(open: boolean, setOpen: (open: boolean) => void) {
   const box = useRef<HTMLDivElement>(null)
@@ -157,7 +157,15 @@ function AccountMenu({ nickname, level, section }: { nickname: string; level: nu
   const href = useHref()
   const [open, setOpen] = useState(false)
   const box = useDropdown(open, setOpen)
-  const inside = section === 'profile' || section === 'settings'
+  const inside = section === 'profile' || section === 'settings' || section === 'friends'
+  const [asks, setAsks] = useState(0)
+
+  useEffect(() => {
+    const stop = watchFeed((feed) => setAsks(feed.requests.length))
+    return () => {
+      stop()
+    }
+  }, [])
 
   return (
     <div ref={box} className={`account ${open ? 'open' : ''}`}>
@@ -180,6 +188,11 @@ function AccountMenu({ nickname, level, section }: { nickname: string; level: nu
         <Link href={href.profile} onClick={() => setOpen(false)} prefetch={false}>
           <UserIcon />
           {t('nav.profile')}
+        </Link>
+        <Link href={href.friends} onClick={() => setOpen(false)} prefetch={false}>
+          <UsersIcon />
+          {t('friends.title')}
+          {asks > 0 && <i className="account-badge">{asks}</i>}
         </Link>
         <Link href={href.settings} onClick={() => setOpen(false)} prefetch={false}>
           <GearIcon />
@@ -218,7 +231,7 @@ function Bell() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const box = useDropdown(open, setOpen)
-  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [] })
+  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [] })
   const [hidden, setHidden] = useState<Set<string>>(() => new Set())
   const [busy, setBusy] = useState(false)
 
@@ -263,8 +276,16 @@ function Bell() {
     setBusy(false)
   }
 
+  const answer = async (id: string, accept: boolean) => {
+    setBusy(true)
+    dropRequest(id)
+    await api('friends', { action: accept ? 'accept' : 'decline', id }).catch(() => null)
+    setBusy(false)
+    void refreshFeed()
+  }
+
   const awards = feed.awards.filter((award) => !hidden.has(award.id))
-  const count = awards.length + feed.invites.length
+  const count = awards.length + feed.invites.length + feed.requests.length
 
   return (
     <div ref={box} className={`bell-box ${open ? 'open' : ''}`}>
@@ -324,6 +345,36 @@ function Bell() {
                 </li>
               )
             })}
+            {feed.requests.map((one) => (
+              <li key={one.id} className="bell-item is-friend">
+                <div className="bell-card">
+                  <small>{t('friends.askNew')}</small>
+                  <span className="bell-main">
+                    <span className="bell-mark" aria-hidden>
+                      <UserIcon />
+                    </span>
+                    <span className="bell-body">
+                      <b>
+                        {one.nickname}
+                        {one.tag && <i className="player-tag">#{one.tag}</i>}
+                      </b>
+                      <span className="bell-hint">{t('friends.wants')}</span>
+                    </span>
+                  </span>
+                  <span className="bell-actions">
+                    <button type="button" className="primary" disabled={busy} onClick={() => void answer(one.id, true)}>
+                      {t('friends.accept')}
+                    </button>
+                    <button type="button" className="ghost" disabled={busy} onClick={() => void answer(one.id, false)}>
+                      {t('friends.decline')}
+                    </button>
+                  </span>
+                </div>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} onClick={() => void answer(one.id, false)}>
+                  <CloseIcon />
+                </button>
+              </li>
+            ))}
             {awards.map((award) => (
               <li key={award.id} className={`bell-item tier-${award.tier}`}>
                 <Link className="bell-card" href={href.achievements} onClick={() => setOpen(false)} prefetch={false}>

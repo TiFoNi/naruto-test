@@ -5,6 +5,7 @@ import { rounds, seasons, users, type UserDoc } from '../db'
 import { gameData } from '../games'
 import { fail, handle, json } from '../http'
 import { currentUser, defaultNickname, ensureTag, unauthorized } from '../profile'
+import { friendState } from '../friends'
 import { LEVEL_XP, levelOf, nextRank, rankOf } from '../quests'
 import { shiftDay, today } from '../daily'
 import { seasonAt } from '../season'
@@ -185,6 +186,7 @@ export const GET = handle(async (request) => {
   const doc = other ? await people.findOne({ _id: new ObjectId(wanted) }) : found.doc
   if (!doc) return fail(404, 'not_found')
   if (other) await ensureTag(people, doc)
+  const friend = other ? await friendState(found.doc._id!, doc._id!) : 'none'
   const past = await history(doc._id!)
   const totals = past.totals[0] ?? { played: 0, won: 0, gaveUp: 0, guesses: 0 }
 
@@ -224,6 +226,7 @@ export const GET = handle(async (request) => {
     id: doc._id!.toHexString(),
     nickname: doc.nickname ?? defaultNickname(doc.username),
     tag: doc.tag ?? null,
+    friend,
     since: doc.createdAt,
     pinned: (doc.pinned ?? [])
       .filter((award) => doc.claimed?.[award] && TIERS.has(award))

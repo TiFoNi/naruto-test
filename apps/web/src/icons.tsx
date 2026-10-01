@@ -495,3 +495,14 @@ export function KeyIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function UsersIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <circle cx="9.5" cy="8.5" r="3.4" />
+      <path d="M3.4 19.2c.5-3.1 3.1-5.1 6.1-5.1s5.6 2 6.1 5.1" />
+      <path d="M16.2 5.6a3.4 3.4 0 0 1 0 6.5" />
+      <path d="M18 14.6c1.5.7 2.5 2.1 2.8 3.9" />
+    </svg>
+  )
+}

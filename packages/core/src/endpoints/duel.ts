@@ -1,5 +1,5 @@
 import { fail, handle, json, readJson } from '../http'
-import { currentUser, defaultNickname, parseTag, unauthorized } from '../profile'
+import { currentUser, searchPlayers, unauthorized } from '../profile'
 import {
   answerCard,
   backToLobby,
@@ -29,6 +29,7 @@ import {
   wantNext,
 } from '../duels'
 import { ObjectId } from 'mongodb'
+import { friendList } from '../friends'
 import { users } from '../db'
 
 export const POST = handle(async (request) => {
@@ -53,37 +54,15 @@ export const POST = handle(async (request) => {
     return duel ? json({ duel: await duelView(duel, userId) }) : fail(400, 'bad_request')
   }
 
-  if (action === 'rivals') return json({ rivals: await recentRivals(userId) })
+  if (action === 'rivals') {
+    const [mates, rivals] = await Promise.all([friendList(userId), recentRivals(userId, 12)])
+    const known = new Set(mates.map((mate) => mate.id))
+    return json({ friends: mates, rivals: rivals.filter((rival) => !known.has(rival.id)).slice(0, 5) })
+  }
 
   if (action === 'history') return json({ duels: (await duelHistory(userId)).slice(0, 10) })
 
-  if (action === 'players') {
-    const asked = typeof body.q === 'string' ? body.q.trim().slice(0, 32) : ''
-    const [namePart, tagPart] = asked.split('#')
-    const query = namePart.trim().toLowerCase()
-    const tag = tagPart ? parseTag(tagPart) : null
-    if (query.length < 2) return json({ players: [] })
-
-    const list = await (await users())
-      .find(
-        {
-          _id: { $ne: userId },
-          nicknameLower: { $gte: query, $lt: `${query}\uffff` },
-          ...(tag ? { tag } : {}),
-        },
-        { projection: { nickname: 1, username: 1, tag: 1 }, sort: { nicknameLower: 1 } },
-      )
-      .limit(6)
-      .toArray()
-
-    return json({
-      players: list.map((doc) => ({
-        id: doc._id!.toHexString(),
-        nickname: doc.nickname ?? defaultNickname(doc.username),
-        tag: doc.tag ?? null,
-      })),
-    })
-  }
+  if (action === 'players') return json({ players: await searchPlayers(userId, body.q) })
 
   const duel = await findDuel(body.code)
   if (!duel) return fail(404, 'not_found')

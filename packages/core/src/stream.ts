@@ -1,6 +1,7 @@
 import type { ObjectId } from 'mongodb'
 import { duels, type DuelDoc } from './db'
 import { duelShotKey, duelView, leaveDuel, settle, sideOf } from './duels'
+import { friends, type FriendDoc } from './friends'
 
 export type Sender = (event: string, data: unknown) => void
 
@@ -19,6 +20,7 @@ const drops = new Map<string, ReturnType<typeof setTimeout>>()
 const codes = new Map<string, string>()
 
 let watcher: Promise<void> | null = null
+let mates: Promise<void> | null = null
 
 const mark = (duel: DuelDoc) =>
   JSON.stringify([
@@ -126,6 +128,25 @@ async function startWatcher() {
   return watcher
 }
 
+async function startMates() {
+  mates ??= (async () => {
+    const stream = (await friends()).watch([], { fullDocument: 'updateLookup' })
+    stream.on('change', (change) => {
+      const doc = (change as { fullDocument?: FriendDoc }).fullDocument
+      if (!doc) return
+      if (doc.status === 'pending') notifyBell(doc.toId)
+      else notifyBell(doc.fromId)
+    })
+    stream.on('error', () => {
+      mates = null
+      void stream.close().catch(() => undefined)
+    })
+  })().catch(() => {
+    mates = null
+  })
+  return mates
+}
+
 function scheduleDrop(code: string, userId: ObjectId) {
   const key = `${code}:${userId.toHexString()}`
   const at = new Date()
@@ -180,6 +201,7 @@ export function subscribeBell(userId: ObjectId, send: Sender) {
   set.add(send)
   bells.set(key, set)
   void startWatcher()
+  void startMates()
   return () => {
     set.delete(send)
     if (!set.size) bells.delete(key)

@@ -13,6 +13,7 @@ export function hrefs(lang: Lang) {
     profile: at('/profile'),
     player: (id: string) => at(`/u/${id}`),
     settings: at('/settings'),
+    friends: at('/friends'),
     achievements: at('/achievements'),
     duels: at('/duels'),
     privacy: at('/privacy'),

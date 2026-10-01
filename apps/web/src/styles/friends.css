@@ -1,0 +1,324 @@
+.mates {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(100%, 720px);
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+.mates .card {
+  width: 100%;
+}
+
+.mates-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mates-head h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.mates-head p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mates-search {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+}
+
+.mates-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card-2);
+  transition: border-color 0.16s, background 0.16s;
+}
+
+.mates-field:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  background: color-mix(in srgb, var(--accent) 7%, var(--card-2));
+}
+
+.mates-field > svg {
+  flex: none;
+  width: 19px;
+  height: 19px;
+  color: var(--text-3);
+}
+
+.mates-field:focus-within > svg {
+  color: var(--accent);
+}
+
+.mates-field input {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.mates-field input:focus {
+  outline: none;
+}
+
+.mates-clear {
+  display: flex;
+  flex: none;
+  padding: 5px;
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  color: var(--text-3);
+  cursor: pointer;
+}
+
+.mates-clear:hover {
+  color: var(--text);
+}
+
+.mates-tip {
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.mates-none {
+  margin: 2px 0 0;
+}
+
+.mates-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+}
+
+.mates-box > header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mates-box h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.mates-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--card-2);
+  color: var(--text-2);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.mates-box.is-asks {
+  border-color: color-mix(in srgb, var(--accent) 32%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.mates-box.is-asks .mates-count {
+  background: var(--accent);
+  color: #14161c;
+}
+
+.mates-rows,
+.mates-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+.mates-rows li,
+.mates-grid li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--card-2);
+}
+
+.mates-who {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.mates-who .avatar {
+  flex: none;
+}
+
+.mates-name {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.mates-who b,
+.mates-name b {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mates-name small {
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.mates-name small.player-tag {
+  margin-left: 0;
+  font-size: 12px;
+}
+
+.mates-who:hover b {
+  color: var(--accent);
+}
+
+.mates-acts {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.mates-rows button,
+.mates-grid button {
+  flex: none;
+  padding: 9px 14px;
+  border-radius: 11px;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.mates-duel {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.mates-duel svg {
+  width: 15px;
+  height: 15px;
+}
+
+.mates-drop {
+  display: inline-flex;
+  padding: 9px;
+  color: var(--text-3);
+}
+
+.mates-drop:hover:not(:disabled) {
+  border-color: color-mix(in srgb, #e5483b 45%, transparent);
+  color: #ff9b91;
+}
+
+.mates-drop svg {
+  width: 15px;
+  height: 15px;
+}
+
+.mates-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 26px 16px 30px;
+  text-align: center;
+}
+
+.mates-empty b {
+  font-family: var(--display);
+  font-size: 17px;
+}
+
+.mates-empty p {
+  margin: 0;
+  max-width: 340px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.mates-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 4px;
+  border-radius: 17px;
+  background: color-mix(in srgb, var(--accent) 16%, var(--card-2));
+  color: var(--accent);
+}
+
+.mates-mark svg {
+  width: 24px;
+  height: 24px;
+}
+
+
+@media (max-width: 560px) {
+  .mates-head h1 {
+    font-size: 25px;
+  }
+
+  .mates-rows li,
+  .mates-grid li {
+    flex-wrap: wrap;
+  }
+
+  .mates-acts {
+    width: 100%;
+  }
+
+  .mates-acts .primary,
+  .mates-acts .mates-duel {
+    flex: 1;
+    justify-content: center;
+  }
+}
