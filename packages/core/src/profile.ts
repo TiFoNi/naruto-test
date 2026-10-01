@@ -43,6 +43,13 @@ export async function claimTag(collection: Collection<UserDoc>, userId: ObjectId
   return keep ?? null
 }
 
+export async function ensureTag(collection: Collection<UserDoc>, doc: UserDoc) {
+  if (doc.tag) return doc.tag
+  const lower = doc.nicknameLower ?? lowerNickname(doc.nickname ?? defaultNickname(doc.username))
+  doc.tag = (await claimTag(collection, doc._id!, lower)) ?? undefined
+  return doc.tag ?? null
+}
+
 export function parseNickname(value: unknown): string | null {
   const nickname = typeof value === 'string' ? value.trim().replace(/\s+/g, ' ') : ''
   return NICKNAME.test(nickname) ? nickname : null
@@ -175,10 +182,7 @@ export async function currentUser(request: Request) {
   const _id = new ObjectId(session.id)
   const existing = await collection.findOne({ _id })
   if (existing) {
-    if (!existing.tag) {
-      const lower = existing.nicknameLower ?? lowerNickname(existing.nickname ?? defaultNickname(existing.username))
-      existing.tag = (await claimTag(collection, _id, lower)) ?? undefined
-    }
+    await ensureTag(collection, existing)
     return { doc: existing, collection }
   }
 

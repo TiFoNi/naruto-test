@@ -7867,9 +7867,9 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 }
 
 .player-tag {
-  margin-left: 6px;
-  color: var(--text-3);
-  font-size: 0.72em;
+  margin-left: 5px;
+  color: var(--text-2);
+  font-size: 0.6em;
   font-style: normal;
   font-weight: 700;
   letter-spacing: 0.04em;
