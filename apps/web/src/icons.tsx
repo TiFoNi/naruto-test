@@ -485,3 +485,13 @@ export function LinkIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function KeyIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <circle cx="8" cy="12" r="4.2" />
+      <path d="M12.2 12H21" />
+      <path d="M17.6 12v3.3M20.4 12v2.2" />
+    </svg>
+  )
+}

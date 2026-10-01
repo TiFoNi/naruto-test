@@ -1,3 +1,4 @@
+import { passkey } from '@better-auth/passkey'
 import { betterAuth } from 'better-auth'
 import { mongodbAdapter } from 'better-auth/adapters/mongodb'
 import { magicLink } from 'better-auth/plugins'
@@ -7,6 +8,16 @@ import { magicLinkMail, sendMail } from './mail'
 const MAGIC_LINK_TTL = 60 * 15
 
 const origins = (process.env.CORS_ORIGINS ?? 'http://localhost:5173').split(',').map((origin) => origin.trim())
+
+const hostOf = (origin: string) => {
+  try {
+    return new URL(origin).hostname
+  } catch {
+    return ''
+  }
+}
+
+const passkeyHost = process.env.PASSKEY_RP_ID ?? hostOf(process.env.SITE_URL ?? origins[0]) ?? 'localhost'
 
 const build = async () => {
   const db = await database()
@@ -33,6 +44,11 @@ const build = async () => {
           const { subject, html, text } = magicLinkMail(url)
           await sendMail(email, subject, html, text)
         },
+      }),
+      passkey({
+        rpID: passkeyHost || 'localhost',
+        rpName: 'NandaGuessr',
+        origin: origins,
       }),
     ],
     session: { expiresIn: 60 * 60 * 24 * 30, updateAge: 60 * 60 * 24 },

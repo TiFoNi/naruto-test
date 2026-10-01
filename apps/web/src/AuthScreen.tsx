@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState, type FormEvent } from 'react'
 import { authClient } from './authClient'
-import { ArrowIcon, GoogleIcon, MailIcon } from './icons'
+import { ArrowIcon, GoogleIcon, KeyIcon, MailIcon } from './icons'
 import { useI18n } from './i18n'
 import { useHref } from './router'
 
@@ -13,11 +13,13 @@ const WAIT = 45
 export default function AuthScreen() {
   const { t } = useI18n()
   const href = useHref()
+  const callbackURL = typeof window === 'undefined' ? '/' : window.location.origin
   const [email, setEmail] = useState('')
-  const [busy, setBusy] = useState<'google' | 'link' | null>(null)
+  const [busy, setBusy] = useState<'google' | 'link' | 'passkey' | null>(null)
+  const [hasPasskeys, setHasPasskeys] = useState(false)
   const [sent, setSent] = useState(false)
   const [left, setLeft] = useState(0)
-  const [error, setError] = useState<{ where: 'google' | 'link'; text: string } | null>(null)
+  const [error, setError] = useState<{ where: 'google' | 'link' | 'passkey'; text: string } | null>(null)
 
   useEffect(() => {
     if (left <= 0) return
@@ -30,6 +32,25 @@ export default function AuthScreen() {
   }, [])
 
   useEffect(() => {
+    let alive = true
+    const credentials = typeof window === 'undefined' ? null : window.PublicKeyCredential
+    if (!credentials) return
+    setHasPasskeys(true)
+    void credentials
+      .isConditionalMediationAvailable?.()
+      .then(async (ready) => {
+        if (!ready || !alive) return
+        const client = await authClient()
+        const { error } = await client.signIn.passkey({ autoFill: true })
+        if (!error && alive) window.location.assign(callbackURL)
+      })
+      .catch(() => undefined)
+    return () => {
+      alive = false
+    }
+  }, [callbackURL])
+
+  useEffect(() => {
     const revive = () => document.visibilityState === 'visible' && setBusy(null)
     window.addEventListener('pageshow', revive)
     document.addEventListener('visibilitychange', revive)
@@ -39,8 +60,19 @@ export default function AuthScreen() {
     }
   }, [])
 
-  const callbackURL = typeof window === 'undefined' ? '/' : window.location.origin
   const valid = EMAIL.test(email)
+
+  const withPasskey = async () => {
+    setBusy('passkey')
+    setError(null)
+    const { error } = await (await authClient()).signIn.passkey()
+    if (error) {
+      setBusy(null)
+      if (error.status !== 0) setError({ where: 'passkey', text: t('auth.passkeyFailed') })
+      return
+    }
+    window.location.assign(callbackURL)
+  }
 
   const withGoogle = async () => {
     setBusy('google')
@@ -111,6 +143,14 @@ export default function AuthScreen() {
       </button>
       {error?.where === 'google' && <div className="auth-error">{error.text}</div>}
 
+      {hasPasskeys && (
+        <button className="ghost auth-passkey" type="button" onClick={withPasskey} disabled={busy !== null}>
+          <KeyIcon />
+          {busy === 'passkey' ? t('auth.busy') : t('auth.passkey')}
+        </button>
+      )}
+      {error?.where === 'passkey' && <div className="auth-error">{error.text}</div>}
+
       <div className="auth-or">
         <span>{t('auth.orMail')}</span>
       </div>
@@ -122,7 +162,7 @@ export default function AuthScreen() {
           <input
             id="auth-email"
             type="email"
-            autoComplete="email"
+            autoComplete="email webauthn"
             autoCapitalize="none"
             spellCheck={false}
             placeholder="you@example.com"

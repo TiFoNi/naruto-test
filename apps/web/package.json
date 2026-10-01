@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@better-auth/passkey": "^1.7.7",
     "@nanda/core": "*",
     "@nanda/game": "*",
     "better-auth": "^1.7.5",

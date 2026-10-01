@@ -4568,6 +4568,23 @@ html[data-auth] .guest-note {
   cursor: default;
 }
 
+.auth .auth-passkey {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 50px;
+  padding: 0 16px;
+  border-radius: 13px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.auth .auth-passkey svg {
+  font-size: 19px;
+}
+
 .auth-or {
   display: flex;
   align-items: center;

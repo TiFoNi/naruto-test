@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import BackButton from './BackButton'
 import { useAuth } from './auth'
+import { authClient } from './authClient'
 import { useI18n, type UiKey } from './i18n'
-import { BellIcon, CloseIcon, MailIcon, ShieldIcon, UserIcon } from './icons'
+import { BellIcon, CloseIcon, KeyIcon, MailIcon, ShieldIcon, UserIcon } from './icons'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
 import { disablePush, enablePush, pushState, pushSupported, type PushState } from './push'
@@ -152,6 +153,8 @@ export default function Settings() {
                 <b>{user ? mask(user.username) : ''}</b>
               </div>
 
+              <PasskeyRows />
+
               <div className="settings-row">
                 <div>
                   <label>{t('nav.logout')}</label>
@@ -215,6 +218,93 @@ export default function Settings() {
         </div>
       </div>
     </div>
+  )
+}
+
+const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
+
+type PasskeyRow = { id: string; name?: string | null; createdAt: string }
+
+const deviceName = () => {
+  const ua = navigator.userAgent
+  if (/iPhone|iPad|iPod/.test(ua)) return 'iPhone'
+  if (/Android/.test(ua)) return 'Android'
+  if (/Macintosh/.test(ua)) return 'Mac'
+  if (/Windows/.test(ua)) return 'Windows'
+  return 'Passkey'
+}
+
+function PasskeyRows() {
+  const { t, lang } = useI18n()
+  const [keys, setKeys] = useState<PasskeyRow[]>([])
+  const [busy, setBusy] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const supported = typeof window !== 'undefined' && Boolean(window.PublicKeyCredential)
+
+  const load = useCallback(async () => {
+    const client = await authClient()
+    const { data } = await client.passkey.listUserPasskeys()
+    setKeys((data as PasskeyRow[] | null) ?? [])
+  }, [])
+
+  useEffect(() => {
+    if (!supported) return
+    void load()
+  }, [load, supported])
+
+  const add = async () => {
+    setBusy(true)
+    setFailed(false)
+    const client = await authClient()
+    const { error } = await client.passkey.addPasskey({ name: deviceName() })
+    if (error) setFailed(true)
+    else await load()
+    setBusy(false)
+  }
+
+  const drop = async (id: string) => {
+    setBusy(true)
+    const client = await authClient()
+    await client.passkey.deletePasskey({ id })
+    await load()
+    setBusy(false)
+  }
+
+  const date = (value: string) => new Date(value).toLocaleDateString(LOCALES[lang], { day: '2-digit', month: '2-digit', year: 'numeric' })
+
+  return (
+    <>
+      <div className="settings-row">
+        <div>
+          <label>{t('settings.passkeys')}</label>
+          <p className="muted">{supported ? t('passkey.hint') : t('passkey.unsupported')}</p>
+          {failed && <p className="muted small">{t('passkey.failed')}</p>}
+        </div>
+        <div className="settings-actions">
+          <button type="button" className="ghost" disabled={!supported || busy} onClick={() => void add()}>
+            {busy ? t('passkey.adding') : t('passkey.add')}
+          </button>
+        </div>
+      </div>
+
+      {supported && !keys.length && <p className="muted small passkey-empty">{t('passkey.none')}</p>}
+
+      {keys.map((key) => (
+        <div className="settings-row passkey-row" key={key.id}>
+          <div>
+            <label>
+              <KeyIcon /> {key.name || t('passkey.unnamed')}
+            </label>
+            <p className="muted">{t('passkey.since', { date: date(key.createdAt) })}</p>
+          </div>
+          <div className="settings-actions">
+            <button type="button" className="ghost danger-ghost" disabled={busy} onClick={() => void drop(key.id)}>
+              {t('passkey.delete')}
+            </button>
+          </div>
+        </div>
+      ))}
+    </>
   )
 }
 
