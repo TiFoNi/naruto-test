@@ -716,6 +716,11 @@
   gap: 12px;
 }
 
+.duel-head-side .duel-leave.duel-solo-leave {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
 .duel-leave:disabled {
   cursor: default;
   opacity: 0.6;

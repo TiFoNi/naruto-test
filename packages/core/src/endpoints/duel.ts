@@ -22,6 +22,7 @@ import {
   setReady,
   settle,
   setupDuel,
+  soloGrid,
   sideOf,
   strikeCard,
   sweepDuels,
@@ -58,6 +59,12 @@ export const POST = handle(async (request) => {
     const [mates, rivals] = await Promise.all([friendList(userId), recentRivals(userId, 12)])
     const known = new Set(mates.map((mate) => mate.id))
     return json({ friends: mates, rivals: rivals.filter((rival) => !known.has(rival.id)).slice(0, 5) })
+  }
+
+  if (action === 'solo') {
+    const solo = await soloGrid(found.doc, body.game)
+    if (!solo) return fail(400, 'bad_request')
+    return json({ duel: await duelView(await settle(solo), userId) })
   }
 
   if (action === 'history') return json({ duels: (await duelHistory(userId)).slice(0, 10) })

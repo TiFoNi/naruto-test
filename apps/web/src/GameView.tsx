@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import type { CSSProperties } from 'react'
 import { statsKey, useAuth } from './auth'
-import { dailyKey } from '@nanda/game'
+import { GRID_GAMES, dailyKey } from '@nanda/game'
 import ClassicMode from './ClassicMode'
 import ImageMode from './ImageMode'
 import AbilityMode from './AbilityMode'
@@ -23,6 +23,7 @@ export default function GameView({ game, mode, daily }: { game: Game; mode: Mode
   const href = useHref()
   const { t, l } = useI18n()
   const statsFor = (m: ModeId, d: boolean) => stats[d ? dailyKey(game.id, m) : statsKey(game.id, m)] ?? emptyStats
+  const tabs = MODES.filter((m) => game.modes.includes(m.id) || (m.id === 'grid' && GRID_GAMES.includes(game.id) && !daily))
 
   return (
     <div className="game-view" style={{ '--game-accent': game.accent } as CSSProperties}>
@@ -42,8 +43,8 @@ export default function GameView({ game, mode, daily }: { game: Game; mode: Mode
               <CalendarIcon /> {t('daily.daily')}
             </Link>
           </div>
-          <div className="mode-tabs" role="tablist" data-tabs={game.modes.length}>
-            {MODES.filter((m) => game.modes.includes(m.id)).map((m) => (
+          <div className="mode-tabs" role="tablist" data-tabs={tabs.length}>
+            {tabs.map((m) => (
               <Link
                 key={m.id}
                 role="tab"

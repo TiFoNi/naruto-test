@@ -120,6 +120,25 @@ const ui = {
   },
   'grid.askTitle': { ru: 'Кто подходит?', uk: 'Хто підходить?', en: 'Who fits?' },
   'mode.grid': { ru: 'Крестики-нолики', uk: 'Хрестики-нулики', en: 'Tic-tac-toe' },
+  'grid.vsBot': { ru: 'Игра против бота', uk: 'Гра проти бота', en: 'Playing against the bot' },
+  'grid.again': { ru: 'Ещё раз', uk: 'Ще раз', en: 'Play again' },
+  'grid.quit': { ru: 'Выйти', uk: 'Вийти', en: 'Quit' },
+  'grid.giveUp': { ru: 'Сдаться', uk: 'Здатися', en: 'Give up' },
+  'grid.giveUpHint': {
+    ru: 'Партия уйдёт боту. Новую можно начать сразу же.',
+    uk: 'Партія піде боту. Нову можна почати одразу ж.',
+    en: 'The bot takes this game. You can start a new one right away.',
+  },
+  'grid.needsAccount': {
+    ru: 'Крестики-нолики доступны с аккаунтом — вход за пару секунд.',
+    uk: 'Хрестики-нулики доступні з акаунтом — вхід за пару секунд.',
+    en: 'Tic-tac-toe needs an account — signing in takes seconds.',
+  },
+  'grid.soloHint': {
+    ru: 'Против бота: он думает пару секунд и ставит своего персонажа.',
+    uk: 'Проти бота: він думає кілька секунд і ставить свого персонажа.',
+    en: 'Against the bot: it thinks for a couple of seconds, then places its character.',
+  },
   'mode.grid.desc': {
     ru: 'Поле 3×3: назови персонажа, который подходит под условия строки и столбца.',
     uk: 'Поле 3×3: назви персонажа, який підходить під умови рядка й стовпця.',

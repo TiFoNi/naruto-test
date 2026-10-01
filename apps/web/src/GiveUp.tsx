@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, type ReactNode } from 'react'
-import { useI18n } from './i18n'
+import { useI18n, type UiKey } from './i18n'
 import { CloseIcon } from './icons'
 
-type Props = { className?: string; disabled?: boolean; children: ReactNode; onConfirm: () => void }
+type Props = { className?: string; disabled?: boolean; hint?: UiKey; children: ReactNode; onConfirm: () => void }
 
-export default function GiveUp({ className = 'give-up', disabled, children, onConfirm }: Props) {
+export default function GiveUp({ className = 'give-up', disabled, hint, children, onConfirm }: Props) {
   const { t } = useI18n()
   const [asking, setAsking] = useState(false)
 
@@ -29,7 +29,7 @@ export default function GiveUp({ className = 'give-up', disabled, children, onCo
               <CloseIcon />
             </button>
             <h2>{t('giveUp.title')}</h2>
-            <p className="muted">{t('giveUp.hint')}</p>
+            <p className="muted">{t(hint ?? 'giveUp.hint')}</p>
             <div className="give-up-actions">
               <button type="button" className="ghost" onClick={() => setAsking(false)}>
                 {t('giveUp.stay')}

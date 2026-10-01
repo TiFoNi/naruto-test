@@ -9,7 +9,7 @@ import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
 import Quests from './Quests'
 import { useHref } from './router'
-import { dailyKey } from '@nanda/game'
+import { GRID_GAMES, dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
 import { BallIcon, BookIcon, CalendarIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, PaletteIcon, PlayIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
 import { CARD, MINI, cardUrl, miniUrl } from './pics'
@@ -65,7 +65,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
   const { t, l } = useI18n()
   const href = useHref()
   const { stats, user } = useAuth()
-  const modes = MODES.filter((m) => game.modes.includes(m.id))
+  const modes = MODES.filter((m) => game.modes.includes(m.id) || (m.id === 'grid' && GRID_GAMES.includes(game.id)))
   const rows = modes.slice(0, MODE_ROWS)
   const extra = modes.length - rows.length
 
@@ -138,7 +138,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
                     </span>
                   </span>
                 )}
-                {user && (
+                {user && m.id !== 'grid' && (
                   <Link
                     className={`mode-daily ${done ? 'done' : ''}`}
                     href={href.play(game.id, m.id, true)}

@@ -10,6 +10,7 @@ import {
   DUEL_MODES,
   DUEL_ROUNDS,
   DUEL_SECONDS,
+  GRID_GAMES,
   GRID_MIN,
   GRID_MISSES,
   GRID_SIDE,
@@ -274,14 +275,16 @@ async function gridStart(duel: DuelDoc) {
   const plan = await planGrid(duel.game as GameId, GRID_MIN)
   const startedAt = new Date()
   const limit = duel.seconds || DUEL_DEFAULT.seconds
-  const first = duel.players[randomInt(duel.players.length)]?.userId ?? null
+  const first = duel.bot
+    ? duel.players.find((side) => !side.userId.equals(BOT_ID))?.userId ?? null
+    : duel.players[randomInt(duel.players.length)]?.userId ?? null
   return {
     status: 'playing' as const,
     round: duel.round + 1,
     answerId: 0,
     extra: null,
     startedAt,
-    endsAt: new Date(startedAt.getTime() + limit * 1000),
+    endsAt: duel.bot ? null : new Date(startedAt.getTime() + limit * 1000),
     firstId: first,
     turnId: first,
     grid: plan
@@ -419,6 +422,10 @@ async function dropPlayers(duel: DuelDoc, gone: DuelPlayer[]) {
 export async function leaveDuel(duel: DuelDoc, userId: ObjectId) {
   const side = sideOf(duel, userId)
   if (!side) return null
+  if (duel.bot) {
+    await (await duels()).deleteOne({ _id: duel._id })
+    return true
+  }
   await dropPlayers(duel, [side])
   return true
 }
@@ -435,7 +442,7 @@ export async function touchSide(duel: DuelDoc, userId: ObjectId) {
 }
 
 export async function dropIdle(duel: DuelDoc, userId: ObjectId) {
-  if (duel.players.length < 2) return duel
+  if (duel.bot || duel.players.length < 2) return duel
   const now = Date.now()
   const gone = duel.players.filter((side) => !side.userId.equals(userId) && side.seenAt && now - side.seenAt.getTime() > IDLE_MS)
   if (!gone.length) return duel
@@ -554,6 +561,7 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
     { returnDocument: 'after' },
   )
   if (!finished) return (await duels()).findOne({ _id: duel._id }) as Promise<DuelDoc>
+  if (duel.bot) return finished
   if (matchDone) {
     await applyDuelStats(winnerId, finished.players, duel.mode)
     await pushDuelLog(scores, winnerId, duel.game, duel.mode, at)
@@ -697,7 +705,9 @@ export async function markCell(duel: DuelDoc, userId: ObjectId, cell: number, en
       { $set: set },
       { returnDocument: 'after' },
     )
-    return { duel: await settle(missed ?? duel) }
+    const after = await settle(missed ?? duel)
+    scheduleBot(after)
+    return { duel: after }
   }
 
   const marks = [...duel.grid.marks]
@@ -722,7 +732,135 @@ export async function markCell(duel: DuelDoc, userId: ObjectId, cell: number, en
   }
 
   const updated = await (await duels()).findOneAndUpdate({ _id: duel._id, status: 'playing' }, { $set: set }, { returnDocument: 'after' })
-  return { duel: await settle(updated ?? duel) }
+  const after = await settle(updated ?? duel)
+  scheduleBot(after)
+  return { duel: after }
+}
+
+export const BOT_ID = new ObjectId('00000000000000000000b07b')
+export const BOT_NAME = 'NandaBot'
+
+const BOT_THINK_MIN = 900
+const BOT_THINK_SPAN = 1500
+const BOT_SLIP = 25
+
+const botPlayer = (): DuelPlayer => ({
+  userId: BOT_ID,
+  nickname: BOT_NAME,
+  seenAt: new Date(),
+  ready: true,
+  wantsNext: true,
+  wins: 0,
+  guesses: [],
+})
+
+const botTimers = new Map<string, ReturnType<typeof setTimeout>>()
+
+export function scheduleBot(duel: DuelDoc) {
+  if (!duel.bot || duel.status !== 'playing' || !duel.turnId?.equals(BOT_ID)) return
+  if (botTimers.has(duel.code)) return
+  const timer = setTimeout(() => {
+    botTimers.delete(duel.code)
+    void botMove(duel.code).catch(() => undefined)
+  }, BOT_THINK_MIN + randomInt(BOT_THINK_SPAN))
+  botTimers.set(duel.code, timer)
+}
+
+async function botChoice(duel: DuelDoc) {
+  if (!duel.grid) return null
+  const game = duel.game as GameId
+  const { pool } = await gameData(game)
+  const used = new Set(duel.grid.used)
+  const marks = duel.grid.marks
+  const me = duel.players.findIndex((side) => side.userId.equals(BOT_ID))
+  const rival = 1 - me
+
+  const options = new Map<number, number[]>()
+  for (let cell = 0; cell < GRID_SIDE * GRID_SIDE; cell++) {
+    if (marks[cell] !== null) continue
+    const row = duel.grid.rows[Math.floor(cell / GRID_SIDE)]
+    const col = duel.grid.cols[cell % GRID_SIDE]
+    const fits = pool.filter((one) => !used.has(one.id) && matchesFacet(one, row, game) && matchesFacet(one, col, game))
+    if (fits.length) options.set(cell, fits.map((one) => one.id))
+  }
+  if (!options.size) return null
+
+  const free = [...options.keys()]
+  const lineCell = (owner: number) => {
+    for (const line of LINES) {
+      const mine = line.filter((cell) => marks[cell] === owner).length
+      const open = line.filter((cell) => marks[cell] === null)
+      if (mine === 2 && open.length === 1 && options.has(open[0])) return open[0]
+    }
+    return null
+  }
+
+  const slip = randomInt(100) < BOT_SLIP
+  const cell = slip
+    ? free[randomInt(free.length)]
+    : lineCell(me) ??
+      lineCell(rival) ??
+      (options.has(4) ? 4 : null) ??
+      [0, 2, 6, 8].find((corner) => options.has(corner)) ??
+      free[randomInt(free.length)]
+
+  const ids = options.get(cell)!
+  return { cell, entityId: ids[randomInt(ids.length)] }
+}
+
+async function botMove(code: string) {
+  const duel = await (await duels()).findOne({ code })
+  if (!duel || !duel.bot || duel.status !== 'playing' || !duel.grid) return
+  if (!duel.turnId?.equals(BOT_ID)) return
+  const choice = await botChoice(duel)
+  if (!choice) return
+  await (await duels()).updateOne({ _id: duel._id, 'players.userId': BOT_ID }, { $set: { 'players.$.seenAt': new Date() } })
+  await markCell(duel, BOT_ID, choice.cell, choice.entityId)
+}
+
+export async function soloGrid(doc: UserDoc, game: unknown) {
+  if (!isGame(game) || !GRID_GAMES.includes(game)) return null
+  const collection = await duels()
+
+  const live = await collection.findOne({ hostId: doc._id!, bot: true, game, status: 'playing' }, { sort: { createdAt: -1 } })
+  if (live) {
+    scheduleBot(live)
+    return live
+  }
+
+  await collection.deleteMany({ hostId: doc._id!, bot: true, status: { $ne: 'playing' } })
+
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const duel: DuelDoc = {
+      code: code(),
+      hostId: doc._id!,
+      game,
+      mode: 'grid',
+      status: 'lobby',
+      best: 1,
+      seconds: 0,
+      bot: true,
+      invite: null,
+      round: 0,
+      draws: 0,
+      players: [{ ...player(doc), ready: true }, botPlayer()],
+      createdAt: new Date(),
+      touchedAt: new Date(),
+    }
+    try {
+      const { insertedId } = await collection.insertOne(duel)
+      const started = await beginRound({ ...duel, _id: insertedId }, 'lobby')
+      if (!started.grid) {
+        await collection.deleteOne({ _id: insertedId })
+        return null
+      }
+      scheduleBot(started)
+      return started
+    } catch (error) {
+      if ((error as { code?: number }).code !== 11000) throw error
+    }
+  }
+  return null
 }
 
 export async function strikeCard(duel: DuelDoc, userId: ObjectId, entityId: number) {
@@ -834,6 +972,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
       : undefined
   return {
     code: duel.code,
+    bot: Boolean(duel.bot),
     game: duel.game ?? null,
     mode: duel.mode ?? null,
     status: duel.status,
@@ -905,10 +1044,10 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
       wins: you.wins ?? 0,
       solved: Boolean(you.solvedAt),
       gaveUp: Boolean(you.gaveUp),
-      guesses: (playing || finished) && byId && answer
+      guesses: (playing || finished) && byId
         ? you.guesses
             .filter((id) => byId.has(id))
-            .map((id) => ({ id, judgement: duel.mode === 'classic' ? judgeAll(game!, byId.get(id)!, answer) : undefined }))
+            .map((id) => ({ id, judgement: duel.mode === 'classic' && answer ? judgeAll(game!, byId.get(id)!, answer) : undefined }))
         : [],
     },
     rival: rival && {

@@ -9,6 +9,7 @@ export type DuelSide = { nickname: string; ready: boolean; wantsNext: boolean; w
 
 export type DuelView = {
   code: string
+  bot?: boolean
   game: string | null
   mode: string | null
   status: 'lobby' | 'playing' | 'finished'

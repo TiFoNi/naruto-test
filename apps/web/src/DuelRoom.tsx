@@ -41,7 +41,7 @@ const clock = (ms: number) => {
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`
 }
 
-export default function DuelRoom({ code }: { code: string }) {
+export default function DuelRoom({ code, onRestart }: { code: string; onRestart?: () => void }) {
   const { t, l, name, lang, error: errorText } = useI18n()
   const href = useHref()
   const navigate = useNavigate()
@@ -60,8 +60,10 @@ export default function DuelRoom({ code }: { code: string }) {
   }, [duel?.matchDone, duel?.round])
 
   useEffect(() => {
-    if (duel?.you) setActiveDuel(code)
-  }, [code, duel?.you])
+    if (!duel?.you) return
+    if (duel.bot) setActiveDuel(null)
+    else setActiveDuel(code)
+  }, [code, duel?.bot, duel?.you])
 
   useEffect(() => {
     if (!duel) return
@@ -86,6 +88,8 @@ export default function DuelRoom({ code }: { code: string }) {
     await api('duel', { code, action: 'leave' }).catch(() => null)
     navigate(href.home)
   }
+
+  const solo = Boolean(duel?.bot)
 
   const game = duel?.game ? gameById(duel.game as GameId) : null
   const loaded = useEntities(game)
@@ -134,7 +138,7 @@ export default function DuelRoom({ code }: { code: string }) {
 
   return (
     <div className="duel">
-      <BackButton href={href.home}>{t('play.back')}</BackButton>
+      {!solo && <BackButton href={href.home}>{t('play.back')}</BackButton>}
 
       {!inLobby && (
         <>
@@ -144,16 +148,25 @@ export default function DuelRoom({ code }: { code: string }) {
             <SwordsIcon /> {game ? `${l(game.label)} · ${modeLabel}` : t('duel.room')}
           </h1>
           <p className="muted">
-            {t('duel.code', { code: duel.code })}
-            {duel.round > 0 ? ` · ${t('duel.roundNo', { round: duel.round })}` : ''}
+            {solo ? t('grid.vsBot') : t('duel.code', { code: duel.code })}
+            {!solo && duel.round > 0 ? ` · ${t('duel.roundNo', { round: duel.round })}` : ''}
           </p>
         </div>
         <div className="duel-head-side">
           {duel.status === 'playing' && duel.seconds > 0 && duel.endsAt && <div className={`duel-timer ${left < 60000 ? 'hot' : ''}`}>{clock(left)}</div>}
-          <button type="button" className="duel-leave" onClick={() => void leave()} disabled={busy}>
-            <ExitIcon />
-            {t('duel.leave')}
-          </button>
+          {solo ? (
+            duel.status === 'playing' && (
+              <GiveUp className="duel-leave duel-solo-leave" hint="grid.giveUpHint" disabled={busy} onConfirm={giveUp}>
+                <ExitIcon />
+                {t('grid.giveUp')}
+              </GiveUp>
+            )
+          ) : (
+            <button type="button" className="duel-leave" onClick={() => void leave()} disabled={busy}>
+              <ExitIcon />
+              {t('duel.leave')}
+            </button>
+          )}
         </div>
       </header>
 
@@ -237,14 +250,15 @@ export default function DuelRoom({ code }: { code: string }) {
                 className="primary"
                 onClick={() => {
                   setShowResult(false)
-                  toLobby()
+                  if (solo) onRestart?.()
+                  else toLobby()
                 }}
                 disabled={busy}
               >
-                {t('duel.toLobby')}
+                {solo ? t('grid.again') : t('duel.toLobby')}
               </button>
               <button className="ghost" onClick={() => void leave()} disabled={busy}>
-                {t('duel.leave')}
+                {solo ? t('grid.quit') : t('duel.leave')}
               </button>
             </div>
           </section>

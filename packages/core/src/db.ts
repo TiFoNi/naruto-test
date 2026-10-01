@@ -110,6 +110,7 @@ export type DuelDoc = {
   seconds?: number | null
   size?: number
   strict?: boolean
+  bot?: boolean
   firstId?: ObjectId | null
   turnId?: ObjectId | null
   grid?: {
