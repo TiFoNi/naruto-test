@@ -207,7 +207,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                 {t('duel.stepRules')}
               </h2>
             </div>
-            <div className={`duel-rules ${duel.mode === 'who' ? 'with-board' : ''} ${duel.mode === 'grid' ? 'with-strict' : ''}`}>
+            <div className="duel-rules">
               <div>
                 <span className="duel-rules-title">{t('duel.roundsTitle')}</span>
                 <div className="duel-chips">

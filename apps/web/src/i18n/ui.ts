@@ -101,8 +101,8 @@ const ui = {
     en: 'Your rival named {name} — a miss, now it is your turn.',
   },
   'grid.strictTitle': { ru: 'Ошибка', uk: 'Помилка', en: 'A wrong name' },
-  'grid.strictOff': { ru: 'переход хода', uk: 'перехід ходу', en: 'passes the turn' },
-  'grid.strictOn': { ru: 'проигрыш', uk: 'програш', en: 'loses the round' },
+  'grid.strictOff': { ru: 'Переход', uk: 'Перехід', en: 'Pass turn' },
+  'grid.strictOn': { ru: 'Проигрыш', uk: 'Програш', en: 'Lose round' },
   'grid.missYou': {
     ru: '{name} не подходит под обе подписи — раунд уходит сопернику.',
     uk: '{name} не підходить під обидва підписи — раунд іде суперникові.',
