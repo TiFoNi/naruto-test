@@ -9,7 +9,7 @@ export function cached(data: unknown, seconds: number) {
     status: 200,
     headers: {
       'content-type': 'application/json; charset=utf-8',
-      'cache-control': `private, max-age=${seconds}, stale-while-revalidate=86400`,
+      'cache-control': `private, max-age=${seconds}, stale-while-revalidate=${seconds * 2}`,
     },
   })
 }
