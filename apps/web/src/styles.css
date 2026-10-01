@@ -7865,3 +7865,13 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
     flex: 1;
   }
 }
+
+.player-tag {
+  margin-left: 6px;
+  color: var(--text-3);
+  font-size: 0.72em;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}

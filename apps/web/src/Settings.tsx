@@ -113,7 +113,10 @@ export default function Settings() {
                   {current.charAt(0).toUpperCase()}
                 </span>
                 <div>
-                  <b>{current}</b>
+                  <b>
+                    {current}
+                    {user?.tag && <i className="player-tag">#{user.tag}</i>}
+                  </b>
                   <span className="muted">{user?.username ?? ''}</span>
                 </div>
               </div>

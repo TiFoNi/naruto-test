@@ -11,6 +11,7 @@ export type User = {
   id: string
   username: string
   nickname: string
+  tag: string | null
   level: number
   xp: number
   today?: XpToday

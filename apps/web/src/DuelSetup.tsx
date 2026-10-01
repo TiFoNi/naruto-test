@@ -21,7 +21,7 @@ const CATEGORIES: { id: Category; title: UiKey }[] = [
 ]
 
 type Rival = { id: string; nickname: string; wins: number; losses: number }
-type Found = { id: string; nickname: string }
+type Found = { id: string; nickname: string; tag?: string | null }
 
 type Props = {
   duel: DuelView
@@ -340,7 +340,10 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                       <span className="avatar small" aria-hidden>
                         {one.nickname.charAt(0).toUpperCase()}
                       </span>
-                      <b>{one.nickname}</b>
+                      <b>
+                        {one.nickname}
+                        {one.tag && <i className="player-tag">#{one.tag}</i>}
+                      </b>
                       <button type="button" className="ghost" disabled={busy} onClick={() => invite(one.id)}>
                         {t('duel.invite')}
                       </button>

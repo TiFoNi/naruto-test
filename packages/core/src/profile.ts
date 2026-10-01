@@ -1,3 +1,4 @@
+import { randomInt } from 'node:crypto'
 import { ObjectId, type Collection } from 'mongodb'
 import { DAILY_KEYS, DAILY_XP_FACTOR, MODE_XP, STAT_KEYS, XP_CAPS, type ModeId, type XpSource } from '@nanda/game'
 import { shiftDay, today } from './daily'
@@ -18,6 +19,29 @@ export function defaultNickname(username: string) {
 }
 
 export const lowerNickname = (nickname: string) => nickname.toLowerCase()
+
+const TAG_CHARS = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'
+export const TAG_LENGTH = 5
+
+export const makeTag = () => Array.from({ length: TAG_LENGTH }, () => TAG_CHARS[randomInt(TAG_CHARS.length)]).join('')
+
+export const parseTag = (value: unknown) => {
+  const tag = String(value ?? '').trim().toUpperCase()
+  return tag.length === TAG_LENGTH && [...tag].every((char) => TAG_CHARS.includes(char)) ? tag : null
+}
+
+export async function claimTag(collection: Collection<UserDoc>, userId: ObjectId, nicknameLower: string, keep?: string) {
+  const free = async (tag: string) => !(await collection.findOne({ _id: { $ne: userId }, nicknameLower, tag }, { projection: { _id: 1 } }))
+  if (keep && (await free(keep))) return keep
+
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const tag = makeTag()
+    if (!(await free(tag))) continue
+    await collection.updateOne({ _id: userId }, { $set: { tag } })
+    return tag
+  }
+  return keep ?? null
+}
 
 export function parseNickname(value: unknown): string | null {
   const nickname = typeof value === 'string' ? value.trim().replace(/\s+/g, ' ') : ''
@@ -122,6 +146,7 @@ export function toProfile(doc: UserDoc) {
       id: doc._id!.toHexString(),
       username: doc.username,
       nickname: doc.nickname ?? defaultNickname(doc.username),
+      tag: doc.tag ?? null,
       level: levelOf(xp),
       xp,
       today: todayXp(doc),
@@ -149,7 +174,13 @@ export async function currentUser(request: Request) {
   const collection = await users()
   const _id = new ObjectId(session.id)
   const existing = await collection.findOne({ _id })
-  if (existing) return { doc: existing, collection }
+  if (existing) {
+    if (!existing.tag) {
+      const lower = existing.nicknameLower ?? lowerNickname(existing.nickname ?? defaultNickname(existing.username))
+      existing.tag = (await claimTag(collection, _id, lower)) ?? undefined
+    }
+    return { doc: existing, collection }
+  }
 
   const name = defaultNickname(session.name || session.email)
   const doc: UserDoc = {
@@ -158,6 +189,7 @@ export async function currentUser(request: Request) {
     usernameLower: session.email.toLowerCase(),
     nickname: name,
     nicknameLower: lowerNickname(name),
+    tag: makeTag(),
     createdAt: new Date(),
   }
   await collection.insertOne(doc)

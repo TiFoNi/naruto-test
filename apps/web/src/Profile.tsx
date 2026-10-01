@@ -33,6 +33,7 @@ type Summary = {
   favourite: GameId | null
   rank: { position: number; players: number } | null
   nickname?: string
+  tag?: string | null
   gamePlaces: { game: GameId; mode: string; position: number }[]
   streak: {
     current: number
@@ -127,6 +128,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   }, [load])
 
   const nickname = (own ? user?.nickname : summary?.nickname) ?? ''
+  const tag = (own ? user?.tag : summary?.tag) ?? null
 
   const pinned = summary?.pinned ?? []
   const best = summary?.gamePlaces?.[0] ?? null
@@ -179,7 +181,10 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                 <b>{summary?.level.level ?? 1}</b>
               </span>
               <div className="profile-names">
-                <h1>{nickname}</h1>
+                <h1>
+                  {nickname}
+                  {tag && <i className="player-tag">#{tag}</i>}
+                </h1>
                 {own && <span className="muted">{user?.username ?? ''}</span>}
               </div>
             </div>

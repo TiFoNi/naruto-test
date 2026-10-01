@@ -7,6 +7,7 @@ export type UserDoc = {
   passwordHash?: string
   nickname?: string
   nicknameLower?: string
+  tag?: string
   xp?: number
   xpToday?: { day: string; daily: number; endless: number; duel?: number }
   stats?: Record<string, Partial<Stats>>
@@ -298,6 +299,7 @@ export async function users(): Promise<Collection<UserDoc>> {
   cache.__usersIndexed ??= Promise.all([
     collection.createIndex({ usernameLower: 1 }, { unique: true }),
     collection.createIndex({ nicknameLower: 1 }),
+    collection.createIndex({ nicknameLower: 1, tag: 1 }, { unique: true, partialFilterExpression: { tag: { $type: 'string' } } }),
     collection.createIndex({ solvedTotal: -1 }),
   ]).catch((error) => {
     cache.__usersIndexed = undefined

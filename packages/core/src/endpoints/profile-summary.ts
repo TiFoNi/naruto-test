@@ -221,6 +221,7 @@ export const GET = handle(async (request) => {
   return json({
     id: doc._id!.toHexString(),
     nickname: doc.nickname ?? defaultNickname(doc.username),
+    tag: doc.tag ?? null,
     since: doc.createdAt,
     pinned: (doc.pinned ?? [])
       .filter((award) => doc.claimed?.[award] && TIERS.has(award))

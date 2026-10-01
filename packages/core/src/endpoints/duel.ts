@@ -1,5 +1,5 @@
 import { fail, handle, json, readJson } from '../http'
-import { currentUser, defaultNickname, unauthorized } from '../profile'
+import { currentUser, defaultNickname, parseTag, unauthorized } from '../profile'
 import {
   answerCard,
   backToLobby,
@@ -58,16 +58,31 @@ export const POST = handle(async (request) => {
   if (action === 'history') return json({ duels: (await duelHistory(userId)).slice(0, 10) })
 
   if (action === 'players') {
-    const query = typeof body.q === 'string' ? body.q.trim().slice(0, 24).toLowerCase() : ''
+    const asked = typeof body.q === 'string' ? body.q.trim().slice(0, 32) : ''
+    const [namePart, tagPart] = asked.split('#')
+    const query = namePart.trim().toLowerCase()
+    const tag = tagPart ? parseTag(tagPart) : null
     if (query.length < 2) return json({ players: [] })
+
     const list = await (await users())
       .find(
-        { _id: { $ne: userId }, nicknameLower: { $gte: query, $lt: `${query}\uffff` } },
-        { projection: { nickname: 1, username: 1 }, sort: { nicknameLower: 1 } },
+        {
+          _id: { $ne: userId },
+          nicknameLower: { $gte: query, $lt: `${query}\uffff` },
+          ...(tag ? { tag } : {}),
+        },
+        { projection: { nickname: 1, username: 1, tag: 1 }, sort: { nicknameLower: 1 } },
       )
       .limit(6)
       .toArray()
-    return json({ players: list.map((doc) => ({ id: doc._id!.toHexString(), nickname: doc.nickname ?? defaultNickname(doc.username) })) })
+
+    return json({
+      players: list.map((doc) => ({
+        id: doc._id!.toHexString(),
+        nickname: doc.nickname ?? defaultNickname(doc.username),
+        tag: doc.tag ?? null,
+      })),
+    })
   }
 
   const duel = await findDuel(body.code)

@@ -194,7 +194,7 @@ const ui = {
   'duel.rulesNote': { ru: 'Оба угадывают одного персонажа. Балл за раунд получает тот, кто угадал первым; никто не успел за {time} — раунд ничейный. Победа — {needed} из {best}.', uk: 'Обоє вгадують того самого персонажа. Бал за раунд отримує той, хто вгадав першим; ніхто не встиг за {time} — раунд нічийний. Перемога — {needed} з {best}.', en: 'Both guess the same character. The first to solve takes the round; if nobody makes it in {time}, the round is a draw. First to {needed} of {best} wins.' },
   'duel.host': { ru: 'хост', uk: 'хост', en: 'host' },
   'duel.inviteTitle': { ru: 'Пригласить игрока', uk: 'Запросити гравця', en: 'Invite a player' },
-  'duel.invitePlaceholder': { ru: 'Ник игрока на сайте…', uk: 'Нік гравця на сайті…', en: 'Player nickname…' },
+  'duel.invitePlaceholder': { ru: 'Ник или ник#КОД…', uk: 'Нік або нік#КОД…', en: 'Nickname or nick#TAG…' },
   'duel.invite': { ru: 'Пригласить', uk: 'Запросити', en: 'Invite' },
   'duel.recent': { ru: 'Недавние соперники', uk: 'Нещодавні суперники', en: 'Recent rivals' },
   'duel.recentScore': { ru: '{wins}:{losses} по матчам', uk: '{wins}:{losses} за матчами', en: '{wins}:{losses} in matches' },

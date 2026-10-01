@@ -1,6 +1,6 @@
 import { fail, handle, json, readJson } from '../http'
 import { quests, rounds, seasons } from '../db'
-import { currentUser, lowerNickname, parseNickname, toProfile, unauthorized } from '../profile'
+import { claimTag, currentUser, lowerNickname, parseNickname, toProfile, unauthorized } from '../profile'
 
 export const POST = handle(async (request) => {
   const found = await currentUser(request)
@@ -28,8 +28,10 @@ export const POST = handle(async (request) => {
   if (body.action === 'nickname') {
     const nickname = parseNickname(body.nickname)
     if (!nickname) return fail(400, 'invalid_nickname')
-    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $set: { nickname, nicknameLower: lowerNickname(nickname) } }, { returnDocument: 'after' })
-    return json(toProfile(doc ?? found.doc))
+    const lower = lowerNickname(nickname)
+    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $set: { nickname, nicknameLower: lower } }, { returnDocument: 'after' })
+    const tag = await claimTag(found.collection, found.doc._id!, lower, doc?.tag ?? found.doc.tag)
+    return json(toProfile({ ...(doc ?? found.doc), tag: tag ?? undefined }))
   }
 
   return fail(400, 'bad_request')
