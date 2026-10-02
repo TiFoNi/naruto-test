@@ -12,6 +12,7 @@ export type User = {
   username: string
   nickname: string
   tag: string | null
+  avatar: string | null
   level: number
   xp: number
   today?: XpToday

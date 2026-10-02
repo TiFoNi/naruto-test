@@ -226,6 +226,7 @@ export const GET = handle(async (request) => {
     id: doc._id!.toHexString(),
     nickname: doc.nickname ?? defaultNickname(doc.username),
     tag: doc.tag ?? null,
+    avatar: doc.avatar ?? null,
     friend,
     since: doc.createdAt,
     pinned: (doc.pinned ?? [])

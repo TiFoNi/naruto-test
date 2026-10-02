@@ -15,7 +15,7 @@ export type FriendDoc = {
 
 export type FriendState = 'none' | 'out' | 'in' | 'friends'
 
-export type FriendPerson = { id: string; nickname: string; tag: string | null; at: string }
+export type FriendPerson = { id: string; nickname: string; tag: string | null; avatar: string | null; at: string }
 
 const cache = globalThis as typeof globalThis & { __friendsIndexed?: Promise<unknown> }
 
@@ -49,7 +49,7 @@ const nameOf = async (userId: ObjectId) => {
 async function cards(ids: ObjectId[], when: Map<string, Date>): Promise<FriendPerson[]> {
   if (!ids.length) return []
   const list = await (await users())
-    .find({ _id: { $in: ids } }, { projection: { nickname: 1, username: 1, tag: 1 } })
+    .find({ _id: { $in: ids } }, { projection: { nickname: 1, username: 1, tag: 1, avatar: 1 } })
     .toArray()
 
   return list
@@ -59,6 +59,7 @@ async function cards(ids: ObjectId[], when: Map<string, Date>): Promise<FriendPe
         id,
         nickname: doc.nickname ?? defaultNickname(doc.username),
         tag: doc.tag ?? null,
+        avatar: doc.avatar ?? null,
         at: (when.get(id) ?? new Date()).toISOString(),
       }
     })

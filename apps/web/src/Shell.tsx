@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import Avatar from './Avatar'
 import Background from './Background'
 import DuelDock from './DuelDock'
 import DuelSkeleton from './DuelSkeleton'
@@ -157,7 +158,7 @@ function XpToday() {
   )
 }
 
-function AccountMenu({ nickname, level, section }: { nickname: string; level: number; section?: string }) {
+function AccountMenu({ nickname, level, section, id, avatar }: { nickname: string; level: number; section?: string; id?: string; avatar?: string | null }) {
   const { t } = useI18n()
   const { logout } = useAuth()
   const href = useHref()
@@ -182,9 +183,7 @@ function AccountMenu({ nickname, level, section }: { nickname: string; level: nu
         aria-label={t('nav.profile')}
         onClick={() => setOpen(!open)}
       >
-        <span className="avatar small" aria-hidden>
-          {nickname.charAt(0).toUpperCase()}
-        </span>
+        <Avatar className="small" id={id} name={nickname} avatar={avatar} />
         <span className="account-name">{nickname}</span>
         <span className="account-level">{t('nav.level', { level })}</span>
       </button>
@@ -550,7 +549,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
               {user && (
                 <>
                   <Bell />
-                  <AccountMenu nickname={user.nickname} level={user.level} section={section} />
+                  <AccountMenu nickname={user.nickname} level={user.level} section={section} id={user.id} avatar={user.avatar} />
                 </>
               )}
             </div>

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import Avatar from './Avatar'
 import BackButton from './BackButton'
 import { useAuth } from './auth'
 import { api } from './api'
@@ -35,6 +36,7 @@ type Summary = {
   rank: { position: number; players: number } | null
   nickname?: string
   tag?: string | null
+  avatar?: string | null
   friend?: FriendState
   gamePlaces: { game: GameId; mode: string; position: number }[]
   streak: {
@@ -202,10 +204,9 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
         <div className="profile-column">
           <section className="card profile-card">
             <div className="profile-id">
-              <span className="avatar" aria-hidden>
-                {nickname.charAt(0).toUpperCase()}
+              <Avatar id={id ?? user?.id} name={nickname} avatar={own ? user?.avatar : summary?.avatar}>
                 <b>{summary?.level.level ?? 1}</b>
-              </span>
+              </Avatar>
               <div className="profile-names">
                 <h1>
                   {nickname}

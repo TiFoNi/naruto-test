@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { BOARD_DEFAULT, BOARD_SIZES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, GRID_GAMES } from '@nanda/game'
+import Avatar from './Avatar'
 import { api } from './api'
 import { GAMES, gameById } from './games'
 import type { Category, GameId } from './games/types'
@@ -20,9 +21,9 @@ const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'sport', title: 'dash.sport' },
 ]
 
-type Rival = { id: string; nickname: string; wins: number; losses: number }
-type Found = { id: string; nickname: string; tag?: string | null }
-type Mate = { id: string; nickname: string; tag: string | null }
+type Rival = { id: string; nickname: string; wins: number; losses: number; avatar?: string | null }
+type Found = { id: string; nickname: string; tag?: string | null; avatar?: string | null }
+type Mate = { id: string; nickname: string; tag: string | null; avatar?: string | null }
 
 type Props = {
   duel: DuelView
@@ -304,9 +305,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
             {hostSide ? (
               <div className="duel-seat">
                 <span className="duel-seat-tag">{t('duel.host')}</span>
-                <span className="avatar" aria-hidden>
-                  {hostSide.nickname.charAt(0).toUpperCase()}
-                </span>
+                <Avatar id={hostSide.id} name={hostSide.nickname} avatar={hostSide.avatar} />
                 <b>{hostSide.nickname}</b>
                 <em className={hostSide.ready ? 'on' : ''}>{hostSide.ready ? t('duel.isReady') : t('duel.notReady')}</em>
               </div>
@@ -319,9 +318,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
             <span className="duel-seats-vs">VS</span>
             {guestSide ? (
               <div className="duel-seat">
-                <span className="avatar" aria-hidden>
-                  {guestSide.nickname.charAt(0).toUpperCase()}
-                </span>
+                <Avatar id={guestSide.id} name={guestSide.nickname} avatar={guestSide.avatar} />
                 <b>{guestSide.nickname}</b>
                 <em className={guestSide.ready ? 'on' : ''}>{guestSide.ready ? t('duel.isReady') : t('duel.notReady')}</em>
               </div>
@@ -343,9 +340,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                 <ul className="duel-found">
                   {found.map((one) => (
                     <li key={one.id}>
-                      <span className="avatar small" aria-hidden>
-                        {one.nickname.charAt(0).toUpperCase()}
-                      </span>
+                      <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
                       <b>
                         {one.nickname}
                         {one.tag && <i className="player-tag">#{one.tag}</i>}
@@ -364,9 +359,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                   <ul className="duel-found">
                     {mates.map((one) => (
                       <li key={one.id}>
-                        <span className="avatar small" aria-hidden>
-                          {one.nickname.charAt(0).toUpperCase()}
-                        </span>
+                        <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
                         <b>
                           {one.nickname}
                           {one.tag && <i className="player-tag">#{one.tag}</i>}
@@ -386,9 +379,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                   <ul className="duel-found">
                     {rivals.map((one) => (
                       <li key={one.id}>
-                        <span className="avatar small" aria-hidden>
-                          {one.nickname.charAt(0).toUpperCase()}
-                        </span>
+                        <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
                         <span className="duel-found-name">
                           <b>{one.nickname}</b>
                           <small>{t('duel.recentScore', { wins: one.wins, losses: one.losses })}</small>

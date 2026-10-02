@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
+import AvatarPicker from './AvatarPicker'
 import BackButton from './BackButton'
 import { useAuth } from './auth'
 import { authClient } from './authClient'
@@ -110,9 +111,7 @@ export default function Settings() {
             <section className="settings-block">
               <span className="settings-eyebrow">{t('settings.profile')}</span>
               <div className="settings-who">
-                <span className="avatar" aria-hidden>
-                  {current.charAt(0).toUpperCase()}
-                </span>
+                <AvatarPicker />
                 <div>
                   <b>
                     {current}

@@ -25,3 +25,7 @@ export async function api<T = Record<string, unknown>>(path: string, body?: unkn
 }
 
 export const apiSrc = (path?: string) => (path && base ? `${base}${path}` : path)
+
+export const apiUrl = (path: string) => `${base}/api/${path}`
+
+export const apiMode = () => (base ? ('include' as const) : ('same-origin' as const))

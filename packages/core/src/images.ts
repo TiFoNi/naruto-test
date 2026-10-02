@@ -36,6 +36,25 @@ async function put(key: string, body: Buffer) {
 
 export const version = (buffer: Buffer) => createHash('sha1').update(buffer).digest('hex').slice(0, 8)
 
+const AVATAR = 256
+
+export const avatarKey = (userId: string) => `avatars/${userId}.webp`
+
+export async function uploadAvatar(userId: string, source: Buffer) {
+  const image = await sharp(source)
+    .rotate()
+    .resize(AVATAR, AVATAR, { fit: 'cover', position: 'centre' })
+    .webp({ quality: 84 })
+    .toBuffer()
+
+  await put(avatarKey(userId), image)
+  return version(image)
+}
+
+export async function dropAvatar(userId: string) {
+  await s3().send(new DeleteObjectCommand({ Bucket: bucket(), Key: avatarKey(userId) }))
+}
+
 export async function uploadPortrait(game: GameId, id: number, source: Buffer) {
   const folder = GAME_SPECS[game].images
   const trimmed = await sharp(source).trim().png().toBuffer()

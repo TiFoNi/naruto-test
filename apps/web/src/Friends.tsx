@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
+import Avatar from './Avatar'
 import BackButton from './BackButton'
 import { api } from './api'
 import { useAuth } from './auth'
@@ -10,19 +11,11 @@ import { useI18n } from './i18n'
 import { CloseIcon, SearchIcon, SwordsIcon, UserIcon } from './icons'
 import { useHref, useNavigate } from './router'
 
-type Mate = { id: string; nickname: string; tag: string | null; at?: string }
+type Mate = { id: string; nickname: string; tag: string | null; avatar?: string | null; at?: string }
 
 type Lists = { friends: Mate[]; requests: Mate[]; sent: Mate[] }
 
 const EMPTY: Lists = { friends: [], requests: [], sent: [] }
-
-function Avatar({ name }: { name: string }) {
-  return (
-    <span className="avatar small" aria-hidden>
-      {name.charAt(0).toUpperCase()}
-    </span>
-  )
-}
 
 export default function Friends() {
   const { t } = useI18n()
@@ -128,7 +121,7 @@ export default function Friends() {
               {found.map((one) => (
                 <li key={one.id}>
                   <Link href={href.player(one.id)} className="mates-who">
-                    <Avatar name={one.nickname} />
+                    <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
                     <b>
                       {one.nickname}
                       {one.tag && <i className="player-tag">#{one.tag}</i>}
@@ -160,7 +153,7 @@ export default function Friends() {
             {lists.requests.map((one) => (
               <li key={one.id}>
                 <Link href={href.player(one.id)} className="mates-who">
-                  <Avatar name={one.nickname} />
+                  <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
                   <span className="mates-name">
                     <b>
                       {one.nickname}
@@ -194,7 +187,7 @@ export default function Friends() {
             {lists.friends.map((one) => (
               <li key={one.id}>
                 <Link href={href.player(one.id)} className="mates-who">
-                  <Avatar name={one.nickname} />
+                  <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
                   <span className="mates-name">
                     <b>{one.nickname}</b>
                     {one.tag && <small className="player-tag">#{one.tag}</small>}
@@ -275,7 +268,7 @@ export default function Friends() {
             {lists.sent.map((one) => (
               <li key={one.id}>
                 <Link href={href.player(one.id)} className="mates-who">
-                  <Avatar name={one.nickname} />
+                  <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
                   <span className="mates-name">
                     <b>
                       {one.nickname}

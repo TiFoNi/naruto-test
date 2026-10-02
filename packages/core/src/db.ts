@@ -8,6 +8,7 @@ export type UserDoc = {
   nickname?: string
   nicknameLower?: string
   tag?: string
+  avatar?: string | null
   xp?: number
   xpToday?: { day: string; daily: number; endless: number; duel?: number }
   stats?: Record<string, Partial<Stats>>
@@ -83,6 +84,7 @@ export type RoundDoc = {
 export type DuelPlayer = {
   userId: ObjectId
   nickname: string
+  avatar?: string | null
   secret?: number
   cards?: number[]
   struck?: number[]

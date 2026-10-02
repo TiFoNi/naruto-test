@@ -66,7 +66,7 @@ export async function searchPlayers(userId: ObjectId, asked: unknown, limit = 6)
   const list = await (await users())
     .find(
       { _id: { $ne: userId }, ...(or.length === 1 ? or[0] : { $or: or }) },
-      { projection: { nickname: 1, username: 1, tag: 1 }, sort: { nicknameLower: 1 } },
+      { projection: { nickname: 1, username: 1, tag: 1, avatar: 1 }, sort: { nicknameLower: 1 } },
     )
     .limit(limit)
     .toArray()
@@ -75,6 +75,7 @@ export async function searchPlayers(userId: ObjectId, asked: unknown, limit = 6)
     id: doc._id!.toHexString(),
     nickname: doc.nickname ?? defaultNickname(doc.username),
     tag: doc.tag ?? null,
+    avatar: doc.avatar ?? null,
   }))
 }
 
@@ -191,6 +192,7 @@ export function toProfile(doc: UserDoc) {
       username: doc.username,
       nickname: doc.nickname ?? defaultNickname(doc.username),
       tag: doc.tag ?? null,
+      avatar: doc.avatar ?? null,
       level: levelOf(xp),
       xp,
       today: todayXp(doc),

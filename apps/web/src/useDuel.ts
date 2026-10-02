@@ -5,7 +5,7 @@ import { useAuth } from './auth'
 import type { Entity } from './games/types'
 import type { Judgement } from '@nanda/game'
 
-export type DuelSide = { nickname: string; ready: boolean; wantsNext: boolean; wins: number; solved: boolean; gaveUp: boolean }
+export type DuelSide = { id: string; nickname: string; avatar?: string | null; ready: boolean; wantsNext: boolean; wins: number; solved: boolean; gaveUp: boolean }
 
 export type DuelView = {
   code: string

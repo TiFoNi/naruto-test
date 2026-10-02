@@ -13,6 +13,7 @@ import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
 import * as achievements from '@nanda/core/endpoints/achievements'
 import * as awards from '@nanda/core/endpoints/awards'
 import * as friends from '@nanda/core/endpoints/friends'
+import * as avatar from '@nanda/core/endpoints/avatar'
 import * as leaderboard from '@nanda/core/endpoints/leaderboard'
 import * as seasonBoard from '@nanda/core/endpoints/season'
 import * as profile from '@nanda/core/endpoints/profile'
@@ -119,6 +120,11 @@ export class GameController {
   @Get('achievements')
   achievements(@Req() req: Request, @Res() res: Response) {
     return bridge(achievements.GET, req, res)
+  }
+
+  @Post('profile/avatar')
+  avatarSave(@Req() req: Request, @Res() res: Response) {
+    return bridge(avatar.POST, req, res)
   }
 
   @Get('friends')

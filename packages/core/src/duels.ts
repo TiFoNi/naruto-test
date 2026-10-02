@@ -43,7 +43,16 @@ const code = () => Array.from({ length: 6 }, () => CODE_ALPHABET[randomInt(CODE_
 
 const nameOf = (doc: UserDoc) => doc.nickname ?? defaultNickname(doc.username)
 
-const player = (doc: UserDoc): DuelPlayer => ({ userId: doc._id!, nickname: nameOf(doc), seenAt: new Date(), ready: false, wantsNext: false, wins: 0, guesses: [] })
+const player = (doc: UserDoc): DuelPlayer => ({
+  userId: doc._id!,
+  nickname: nameOf(doc),
+  avatar: doc.avatar ?? null,
+  seenAt: new Date(),
+  ready: false,
+  wantsNext: false,
+  wins: 0,
+  guesses: [],
+})
 
 export const wrongCount = (duel: DuelDoc, side: DuelPlayer) => side.guesses.filter((g) => g !== duel.answerId).length
 
@@ -212,7 +221,7 @@ export async function duelHistory(userId: ObjectId, limit = DUEL_LOG_MAX) {
 
 export async function recentRivals(userId: ObjectId, limit = 5) {
   const person = await (await users()).findOne({ _id: userId }, { projection: { duelLog: 1 } })
-  const seen = new Map<string, { id: string; nickname: string; at: string; wins: number; losses: number }>()
+  const seen = new Map<string, { id: string; nickname: string; avatar?: string | null; at: string; wins: number; losses: number }>()
 
   for (const row of [...(person?.duelLog ?? [])].reverse()) {
     if (!row.rivalId) continue
@@ -224,7 +233,12 @@ export async function recentRivals(userId: ObjectId, limit = 5) {
     if (seen.size >= limit) break
   }
 
-  return [...seen.values()]
+  const faces = await (await users())
+    .find({ _id: { $in: [...seen.keys()].map((id) => new ObjectId(id)) } }, { projection: { avatar: 1 } })
+    .toArray()
+  const byId = new Map(faces.map((doc) => [doc._id!.toHexString(), doc.avatar ?? null]))
+
+  return [...seen.values()].map((rival) => ({ ...rival, avatar: byId.get(rival.id) ?? null }))
 }
 
 const shuffled = <T>(list: T[]) => {
@@ -1050,7 +1064,9 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
         }
       : {}),
     you: you && {
+      id: you.userId.toHexString(),
       nickname: you.nickname,
+      avatar: you.avatar ?? null,
       ready: you.ready,
       wantsNext: Boolean(you.wantsNext),
       wins: you.wins ?? 0,
@@ -1063,7 +1079,9 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
         : [],
     },
     rival: rival && {
+      id: rival.userId.toHexString(),
       nickname: rival.nickname,
+      avatar: rival.avatar ?? null,
       ready: rival.ready,
       wantsNext: Boolean(rival.wantsNext),
       wins: rival.wins ?? 0,
