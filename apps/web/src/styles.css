@@ -2282,6 +2282,15 @@ main {
   color: var(--text-3);
 }
 
+.avatar.has-pic::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+  content: '';
+  pointer-events: none;
+}
+
 .avatar img {
   position: absolute;
   inset: 0;
