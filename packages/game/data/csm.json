@@ -106,7 +106,8 @@
   "arc": "Дьявол контроля",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 6
+  "thumb": 6,
+  "nameUk": "Гібрид батога"
  },
  {
   "id": 2696,
@@ -122,7 +123,8 @@
   "arc": "Дьявол контроля",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 7
+  "thumb": 7,
+  "nameUk": "Гібрид списа"
  },
  {
   "id": 682,
@@ -137,7 +139,8 @@
   "arc": "Человек с катаной",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 8
+  "thumb": 8,
+  "nameUk": "Диявол майбутнього"
  },
  {
   "id": 244,
@@ -152,7 +155,8 @@
   "arc": "Дьявол вечности",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 9
+  "thumb": 9,
+  "nameUk": "Диявол вічності"
  },
  {
   "id": 192,
@@ -167,7 +171,8 @@
   "arc": "Дьявол-летучая мышь",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 10
+  "thumb": 10,
+  "nameUk": "Диявол кажана"
  },
  {
   "id": 349,
@@ -182,7 +187,8 @@
   "arc": "Дьявол-летучая мышь",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 11
+  "thumb": 11,
+  "nameUk": "Диявол лисиці"
  },
  {
   "id": 4144,
@@ -198,7 +204,8 @@
   "arc": "Школа",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 12
+  "thumb": 12,
+  "nameUk": "Диявол вогню"
  },
  {
   "id": 859,
@@ -213,7 +220,8 @@
   "arc": "Международные убийцы",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 13
+  "thumb": 13,
+  "nameUk": "Диявол восьминога"
  },
  {
   "id": 3209,
@@ -228,7 +236,8 @@
   "arc": "Дьявол падения",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 14
+  "thumb": 14,
+  "nameUk": "Диявол падіння"
  },
  {
   "id": 383,
@@ -243,7 +252,8 @@
   "arc": "Дьявол вечности",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 15
+  "thumb": 15,
+  "nameUk": "Диявол привида"
  },
  {
   "id": 6016,
@@ -258,7 +268,8 @@
   "arc": "Дьявол справедливости",
   "arcIndex": 12,
   "answer": true,
-  "thumb": 16
+  "thumb": 16,
+  "nameUk": "Диявол сарани"
  },
  {
   "id": 2872,
@@ -275,7 +286,8 @@
   "arc": "Дьявол контроля",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 17
+  "thumb": 17,
+  "nameUk": "Диявол смерті"
  },
  {
   "id": 4950,
@@ -290,7 +302,8 @@
   "arc": "Дьявол старения",
   "arcIndex": 11,
   "answer": true,
-  "thumb": 18
+  "thumb": 18,
+  "nameUk": "Диявол старіння"
  },
  {
   "id": 917,
@@ -305,7 +318,8 @@
   "arc": "Международные убийцы",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 19
+  "thumb": 19,
+  "nameUk": "Диявол темряви"
  },
  {
   "id": 495,
@@ -321,7 +335,8 @@
   "arc": "Человек с катаной",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 20
+  "thumb": 20,
+  "nameUk": "Диявол-янгол"
  },
  {
   "id": 223,
@@ -336,7 +351,8 @@
   "arc": "Пёс и бензопила",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 21
+  "thumb": 21,
+  "nameUk": "Диявол-рушниця"
  },
  {
   "id": 95,
@@ -383,7 +399,8 @@
   "arc": "Церковь Бензопилы",
   "arcIndex": 10,
   "answer": true,
-  "thumb": 24
+  "thumb": 24,
+  "nameUk": "Поріддя цвяха"
  },
  {
   "id": 487,
@@ -556,7 +573,8 @@
   "arc": "Пёс и бензопила",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 35
+  "thumb": 35,
+  "nameUk": "Почіта"
  },
  {
   "id": 493,
@@ -602,7 +620,8 @@
   "arc": "Международные убийцы",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 38
+  "thumb": 38,
+  "nameUk": "Санта-Клаус"
  },
  {
   "id": 2284,
@@ -632,7 +651,8 @@
   "arc": "Школа",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 40
+  "thumb": 40,
+  "nameUk": "Фальшива Людина-бензопила"
  },
  {
   "id": 2573,
@@ -745,7 +765,8 @@
   "arc": "Человек с катаной",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 47
+  "thumb": 47,
+  "nameUk": "Людина з катаною"
  },
  {
   "id": 2029,

@@ -26,7 +26,7 @@ export default function CharacterSearch({ game, exclude, busy = false, compact =
     () =>
       game.entities.map((e) => ({
         e,
-        terms: [e.name, ruToUk(e.name), e.nameEn, e.aliases].filter((s): s is string => !!s).map(normalize),
+        terms: [e.name, e.nameUk ?? ruToUk(e.name), e.nameEn, e.aliases].filter((s): s is string => !!s).map(normalize),
       })),
     [game, game.entities],
   )

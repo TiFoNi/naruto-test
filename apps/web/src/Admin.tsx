@@ -163,7 +163,10 @@ export default function Admin() {
             }}
           />
           <label className="admin-search">
-            <i aria-hidden>⌕</i>
+            <svg viewBox="0 0 24 24" aria-hidden>
+              <circle cx="11" cy="11" r="6.5" />
+              <path d="M16 16l4.5 4.5" />
+            </svg>
             <input placeholder="Поиск по имени" value={query} onChange={(e) => setQuery(e.target.value)} />
           </label>
           <label className="admin-date" title="Дата, на которую актуальны данные — показывается в игре">
@@ -551,7 +554,9 @@ function Dropdown({ value, choices, onPick }: { value: string; choices: string[]
     <div className="dropdown" ref={box}>
       <button type="button" className={`dropdown-head ${open ? 'open' : ''}`} onClick={() => setOpen(!open)}>
         <span>{value || '—'}</span>
-        <i aria-hidden>▾</i>
+        <svg viewBox="0 0 24 24" aria-hidden>
+          <path d="M7 10l5 5 5-5" />
+        </svg>
       </button>
       {open && (
         <div className="dropdown-menu">

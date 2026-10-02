@@ -662,7 +662,8 @@
   "arc": "Сокол тысячелетия",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 32
+  "thumb": 32,
+  "nameUk": "Місячний хлопчик"
  },
  {
   "id": 2151,
@@ -696,7 +697,8 @@
   "arc": "Фантазия",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 34
+  "thumb": 34,
+  "nameUk": "Морський Бог"
  },
  {
   "id": 1993,
@@ -853,7 +855,8 @@
   "arc": "Золотой век",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 42
+  "thumb": 42,
+  "nameUk": "Лицар-Череп"
  },
  {
   "id": 2059,

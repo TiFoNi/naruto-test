@@ -33,7 +33,8 @@
   "arc": "Первые задания",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 1
+  "thumb": 1,
+  "nameUk": "Болотяний демон"
  },
  {
   "id": 804,
@@ -164,7 +165,8 @@
   "arc": "Гора Натагумо",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 8
+  "thumb": 8,
+  "nameUk": "Демон-павук (донька)"
  },
  {
   "id": 698,

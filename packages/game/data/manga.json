@@ -62,7 +62,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 4
+  "thumb": 4,
+  "nameUk": "Зошит смерті"
  },
  {
   "id": 6,
@@ -75,7 +76,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 5
+  "thumb": 5,
+  "nameUk": "Атака титанів"
  },
  {
   "id": 7,
@@ -88,7 +90,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 6
+  "thumb": 6,
+  "nameUk": "Сталевий алхімік"
  },
  {
   "id": 8,
@@ -140,7 +143,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 10
+  "thumb": 10,
+  "nameUk": "Діти 20-го століття"
  },
  {
   "id": 12,
@@ -153,7 +157,8 @@
   "status": "Выходит",
   "pages": 3,
   "answer": true,
-  "thumb": 11
+  "thumb": 11,
+  "nameUk": "Сага про Вінланд"
  },
  {
   "id": 13,
@@ -179,7 +184,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 13
+  "thumb": 13,
+  "nameUk": "Клинок, що розтинає демонів"
  },
  {
   "id": 15,
@@ -192,7 +198,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 14
+  "thumb": 14,
+  "nameUk": "Магічна битва"
  },
  {
   "id": 16,
@@ -205,7 +212,8 @@
   "status": "Выходит",
   "pages": 3,
   "answer": true,
-  "thumb": 15
+  "thumb": 15,
+  "nameUk": "Людина-бензопила"
  },
  {
   "id": 17,
@@ -218,7 +226,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 16
+  "thumb": 16,
+  "nameUk": "Моя геройська академія"
  },
  {
   "id": 18,
@@ -296,7 +305,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 22
+  "thumb": 22,
+  "nameUk": "Надобраніч, Пунпуне"
  },
  {
   "id": 24,
@@ -374,7 +384,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 28
+  "thumb": 28,
+  "nameUk": "Завтрашній Джо"
  },
  {
   "id": 30,
@@ -400,7 +411,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 30
+  "thumb": 30,
+  "nameUk": "Гра брехунів"
  },
  {
   "id": 32,
@@ -413,7 +425,8 @@
   "status": "Выходит",
   "pages": 3,
   "answer": true,
-  "thumb": 31
+  "thumb": 31,
+  "nameUk": "Ательє чаклунських капелюхів"
  },
  {
   "id": 33,
@@ -426,7 +439,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 32
+  "thumb": 32,
+  "nameUk": "Країна самоцвітів"
  },
  {
   "id": 34,
@@ -478,7 +492,8 @@
   "status": "Выходит",
   "pages": 3,
   "answer": true,
-  "thumb": 36
+  "thumb": 36,
+  "nameUk": "Реальність"
  },
  {
   "id": 39,
@@ -491,7 +506,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 37
+  "thumb": 37,
+  "nameUk": "Підземелля смаколиків"
  },
  {
   "id": 40,
@@ -517,7 +533,8 @@
   "status": "Выходит",
   "pages": 3,
   "answer": true,
-  "thumb": 39
+  "thumb": 39,
+  "nameUk": "Чорна конюшина"
  },
  {
   "id": 45,
@@ -530,7 +547,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 40
+  "thumb": 40,
+  "nameUk": "Скелелаз"
  },
  {
   "id": 47,
@@ -556,7 +574,8 @@
   "status": "Завершена",
   "pages": 3,
   "answer": true,
-  "thumb": 42
+  "thumb": 42,
+  "nameUk": "Вогняний удар"
  },
  {
   "id": 49,
@@ -569,7 +588,8 @@
   "status": "Выходит",
   "pages": 3,
   "answer": true,
-  "thumb": 43
+  "thumb": 43,
+  "nameUk": "Байка"
  },
  {
   "id": 50,
@@ -582,6 +602,7 @@
   "status": "Выходит",
   "pages": 3,
   "answer": true,
-  "thumb": 44
+  "thumb": 44,
+  "nameUk": "Царство"
  }
 ]

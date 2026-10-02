@@ -10,18 +10,31 @@ export type { L10n, Lang, UiKey }
 
 const STORAGE_KEY = 'lang'
 
+const HOLD = '\u0001'
+
 export function ruToUk(text: string) {
   return text
+    .replace(/([жчшщЖЧШЩ])ё/g, '$1о')
+    .replace(/([жчшщЖЧШЩ])Ё/g, '$1О')
     .replace(/ьё/g, 'ьо')
     .replace(/(^|[\s\-аеёиоуыэюяАЕЁИОУЫЭЮЯ])Ё/g, '$1Йо')
     .replace(/(^|[\s\-аеёиоуыэюяАЕЁИОУЫЭЮЯ])ё/g, '$1йо')
     .replace(/ё/g, 'ьо')
+    .replace(/ск(ий|ое|ие)(?!\p{L})/gu, 'ськ$1')
+    .replace(/ская(?!\p{L})/gu, 'ська')
+    .replace(/цк(ий|ое|ие)(?!\p{L})/gu, 'цьк$1')
+    .replace(/цкая(?!\p{L})/gu, 'цька')
+    .replace(/ый(?!\p{L})/gu, `${HOLD}й`)
+    .replace(/ий(?!\p{L})/gu, `${HOLD}й`)
+    .replace(/ик(?!\p{L})/gu, `${HOLD}к`)
+    .replace(/([жчшщцЖЧШЩЦ])и/g, `$1${HOLD}`)
     .replace(/и/g, 'і')
     .replace(/И/g, 'І')
     .replace(/ы/g, 'и')
     .replace(/э/g, 'е')
     .replace(/Э/g, 'Е')
     .replace(/ъ/g, '’')
+    .replace(new RegExp(HOLD, 'g'), 'и')
 }
 
 type Named = { name: string; nameEn?: string; nameUk?: string }
