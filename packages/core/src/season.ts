@@ -2,7 +2,8 @@ import type { ObjectId } from 'mongodb'
 import { seasonCloses, seasons } from './db'
 
 const ZONE = 'Europe/Kyiv'
-const FIRST = { year: 2026, month: 9 }
+const FIRST = { year: 2026, month: 9, day: 28 }
+const WEEK = 7
 
 export type Season = { id: string; number: number; from: Date; to: Date }
 
@@ -27,21 +28,37 @@ const shift = (at: Date) => {
   return Date.UTC(Number(p.year), Number(p.month) - 1, Number(p.day), Number(p.hour), Number(p.minute), Number(p.second)) - at.getTime()
 }
 
-const monthStart = (year: number, month: number) => {
-  const naive = new Date(Date.UTC(year, month - 1, 1))
+type Day = { year: number; month: number; day: number }
+
+const pad = (value: number) => String(value).padStart(2, '0')
+
+const noon = (day: Day) => Date.UTC(day.year, day.month - 1, day.day, 12)
+
+const dayOf = (at: number): Day => {
+  const stamp = new Date(at)
+  return { year: stamp.getUTCFullYear(), month: stamp.getUTCMonth() + 1, day: stamp.getUTCDate() }
+}
+
+const plusDays = (day: Day, count: number) => dayOf(noon(day) + count * 86_400_000)
+
+const dayStart = (day: Day) => {
+  const naive = new Date(Date.UTC(day.year, day.month - 1, day.day))
   return new Date(naive.getTime() - shift(naive))
 }
 
+const mondayOf = (day: Day) => plusDays(day, -((new Date(noon(day)).getUTCDay() + 6) % 7))
+
 export function seasonAt(now = new Date()): Season {
   const p = clock(now)
-  const year = Number(p.year)
-  const month = Number(p.month)
-  const next = month === 12 ? { year: year + 1, month: 1 } : { year, month: month + 1 }
+  const monday = mondayOf({ year: Number(p.year), month: Number(p.month), day: Number(p.day) })
+  const first = mondayOf(FIRST)
+  const weeks = Math.round((noon(monday) - noon(first)) / (WEEK * 86_400_000))
+
   return {
-    id: `${p.year}-${p.month}`,
-    number: (year - FIRST.year) * 12 + (month - FIRST.month) + 1,
-    from: monthStart(year, month),
-    to: monthStart(next.year, next.month),
+    id: `${monday.year}-${pad(monday.month)}-${pad(monday.day)}`,
+    number: weeks + 1,
+    from: dayStart(monday),
+    to: dayStart(plusDays(monday, WEEK)),
   }
 }
 
