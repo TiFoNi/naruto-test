@@ -23,6 +23,7 @@ import {
   cachedDownload,
   pickPicture,
   cachedJson,
+  firstChapter,
   categoryMembers,
   infobox,
   galleryImage,
@@ -62,6 +63,7 @@ const ARCS = [
   [79, 'Инцидент в Сибуе'],
   [138, 'Игра на выбывание'],
   [222, 'Битва в Синдзюку'],
+  [271, 'Эпилог'],
 ]
 
 const SEX = { Male: 'Мужской', Female: 'Женский' }
@@ -164,11 +166,10 @@ const lines = (raw) =>
     .filter(Boolean)
 
 function debutChapter(text) {
-  const raw = infobox(text, 'debut') ?? ''
-  const zero = raw.match(/Chapter 0/i)
-  const found = raw.match(/Chapter (\d+)/i)
-  if (found) return Number(found[1])
-  return zero ? 0 : null
+  const raw = (infobox(text, 'debut') ?? '').replace(/Modulo Chapter \d+/gi, '')
+  const chapter = firstChapter(raw)
+  if (chapter !== null) return chapter
+  return /Epilogue/i.test(raw) ? 271 : null
 }
 
 const arcIndexOf = (chapter) => ARCS.reduce((index, [start], at) => (chapter >= start ? at : index), 0)

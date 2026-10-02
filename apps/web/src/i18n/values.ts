@@ -33,6 +33,7 @@ export const VALUES: Record<string, [uk: string, en: string]> = {
   'Прошлое Годжо': ['Минуле Ґодзьо', "Gojo's Past"],
   'Инцидент в Сибуе': ['Інцидент у Сібуї', 'Shibuya Incident'],
   'Игра на выбывание': ['Гра на вибування', 'Culling Game'],
+  Эпилог: ['Епілог', 'Epilogue'],
   'Битва в Синдзюку': ['Битва в Сіндзюку', 'Shinjuku Showdown'],
 
   Нет: ['Немає', 'None'],
@@ -377,7 +378,6 @@ export const VALUES: Record<string, [uk: string, en: string]> = {
   'Тренировка столпов': ['Тренування стовпів', 'Hashira Training'],
   'Бесконечная крепость': ['Нескінченна фортеця', 'Infinity Castle'],
   Рассвет: ['Світанок', 'Sunrise Countdown'],
-  Эпилог: ['Епілог', 'Epilogue'],
 
   Япония: ['Японія', 'Japan'],
   Германия: ['Німеччина', 'Germany'],

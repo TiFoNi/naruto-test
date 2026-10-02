@@ -6,6 +6,7 @@ import {
   cachedDownload,
   pickPicture,
   cachedJson,
+  firstChapter,
   categoryMembers,
   infobox,
   galleryImage,
@@ -212,8 +213,7 @@ const lines = (raw) =>
 const current = (raw) => lines(raw).filter((line) => !/formerly|briefly|coerced/i.test(line))
 
 function debutChapter(text) {
-  const found = (infobox(text, 'manga_debut') ?? '').match(/Chapter (\d+)/i)
-  return found ? Number(found[1]) : null
+  return firstChapter(infobox(text, 'manga_debut'))
 }
 
 const arcIndexOf = (chapter) => ARCS.reduce((index, [start], at) => (chapter >= start ? at : index), 0)

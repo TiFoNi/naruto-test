@@ -75,6 +75,18 @@ export async function categoryMembers(api, category) {
   return titles
 }
 
+export const CAMEO = /fantasy|flashback|mention|cameo|silhouette|vision|illusion|photo|dream|statue|voice/i
+
+export function firstChapter(raw) {
+  const entries = (raw ?? '')
+    .split(/<br\s*\/?>|\n/)
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+  const real = entries.filter((entry) => !CAMEO.test(entry))
+  const found = (real.length ? real : entries).join(' ').match(/Chapter (\d+)/i)
+  return found ? Number(found[1]) : null
+}
+
 export function galleryImage(text, prefer = /anime/i) {
   const block = text?.match(/\|\s*image\s*=\s*<gallery>([\s\S]*?)<\/gallery>/i)?.[1]
   if (!block) return null
