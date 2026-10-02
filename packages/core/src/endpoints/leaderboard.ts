@@ -11,7 +11,7 @@ const SORTS = {
 } as const
 
 type Sort = keyof typeof SORTS
-type Row = { _id: unknown; username: string; nickname?: string; xp?: number; solved: number; best: number; avg: number }
+type Row = { _id: unknown; username: string; nickname?: string; avatar?: string | null; xp?: number; solved: number; best: number; avg: number }
 
 type Page = { top: Row[]; size: { value: number }[]; ahead?: { value: number }[] }
 
@@ -44,6 +44,7 @@ export const GET = handle(async (request) => {
         _id: found.doc._id!,
         username: found.doc.username,
         nickname: found.doc.nickname,
+        avatar: found.doc.avatar ?? null,
         xp: found.doc.xp,
         solved: stats.solved,
         best: stats.best ?? 0,
@@ -59,6 +60,7 @@ export const GET = handle(async (request) => {
         $project: {
           username: 1,
           nickname: 1,
+          avatar: 1,
           xp: 1,
           solved: `${path}.solved`,
           best: { $ifNull: [`${path}.best`, 0] },
@@ -80,6 +82,7 @@ export const GET = handle(async (request) => {
     id: String(row._id),
     rank: index + 1,
     nickname: row.nickname ?? defaultNickname(row.username),
+    avatar: row.avatar ?? null,
     level: levelOf(row.xp ?? 0),
     solved: row.solved,
     best: row.best,

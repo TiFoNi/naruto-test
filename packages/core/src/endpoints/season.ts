@@ -7,7 +7,7 @@ import { seasonAt } from '../season'
 const LIMIT = 200
 const TOP = 100
 
-type Entry = { userId: unknown; xp: number; solved: number; days: number; nickname?: string; username: string; total: number }
+type Entry = { userId: unknown; xp: number; solved: number; days: number; nickname?: string; avatar?: string | null; username: string; total: number }
 
 export const GET = handle(async (request) => {
   const found = await currentUser(request)
@@ -27,6 +27,7 @@ export const GET = handle(async (request) => {
           solved: { $ifNull: ['$solved', 0] },
           days: { $size: { $ifNull: ['$days', []] } },
           nickname: '$player.nickname',
+          avatar: '$player.avatar',
           username: '$player.username',
           total: { $ifNull: ['$player.xp', 0] },
         },
@@ -39,6 +40,7 @@ export const GET = handle(async (request) => {
     id: String(entry.userId),
     rank: index + 1,
     nickname: entry.nickname ?? defaultNickname(entry.username),
+    avatar: entry.avatar ?? null,
     level: levelOf(entry.total),
     xp: entry.xp,
     solved: entry.solved,

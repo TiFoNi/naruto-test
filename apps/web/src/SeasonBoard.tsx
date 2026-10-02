@@ -6,11 +6,12 @@ import { api } from './api'
 import BackButton from './BackButton'
 import BoardScope from './BoardScope'
 import { useI18n } from './i18n'
+import { avatarUrl } from './pics'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
 import { TrophyIcon } from './icons'
 
-type Row = { id: string; rank: number; nickname: string; level: number; xp: number; solved: number; days: number; me: boolean }
+type Row = { id: string; rank: number; nickname: string; avatar?: string | null; level: number; xp: number; solved: number; days: number; me: boolean }
 
 type Board = {
   season: { number: number; from: string; to: string }
@@ -161,8 +162,19 @@ export default function SeasonBoard() {
                         </td>
                         <td className="lb-name">
                           <Link className="lb-player" href={row.me ? href.profile : href.player(row.id)} prefetch={false}>
-                            <span className="lb-av" data-tone={toneOf(row.nickname)} aria-hidden>
+                            <span className={`lb-av ${row.avatar ? 'has-pic' : ''}`} data-tone={toneOf(row.nickname)} aria-hidden>
                               {row.nickname.charAt(0).toUpperCase()}
+                              {row.avatar && (
+                                <img
+                                  src={avatarUrl(row.id, row.avatar)}
+                                  alt=""
+                                  loading="lazy"
+                                  decoding="async"
+                                  onError={(event) => {
+                                    event.currentTarget.hidden = true
+                                  }}
+                                />
+                              )}
                             </span>
                             <span className="lb-nick">{row.nickname}</span>
                           </Link>

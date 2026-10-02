@@ -2275,6 +2275,8 @@ main {
 
 .avatar.has-pic {
   overflow: hidden;
+  background: var(--card-2-solid);
+  color: var(--text-3);
 }
 
 .avatar img {
@@ -2285,7 +2287,7 @@ main {
   object-fit: cover;
   display: block;
   border-radius: inherit;
-  background: var(--card-2);
+  background: var(--card-2-solid);
 }
 
 .avatar.small {

@@ -8,6 +8,7 @@ import type { Category, GameId } from './games/types'
 import WorldMark from './WorldMark'
 import { useI18n, type UiKey } from './i18n'
 import { MODES, type ModeId } from './modes'
+import { avatarUrl } from './pics'
 import { useNavigate, useHref } from './router'
 import { keepPerUser } from './session-cache'
 import Picker from './Picker'
@@ -19,6 +20,7 @@ type Row = {
   id?: string
   rank: number
   nickname: string
+  avatar?: string | null
   me: boolean
   level?: number
   solved?: number
@@ -63,10 +65,23 @@ const TOP = 10
 const lastSize = new Map<string, number>()
 const known = new Map<string, Board>()
 
-function Avatar({ nickname, className }: { nickname: string; className?: string }) {
+function Avatar({ id, nickname, avatar, className }: { id?: string; nickname: string; avatar?: string | null; className?: string }) {
+  const src = id && avatar ? avatarUrl(id, avatar) : null
+
   return (
-    <span className={`lb-av ${className ?? ''}`} data-tone={toneOf(nickname)} aria-hidden>
+    <span className={`lb-av ${src ? 'has-pic' : ''} ${className ?? ''}`} data-tone={toneOf(nickname)} aria-hidden>
       {nickname.charAt(0).toUpperCase()}
+      {src && (
+        <img
+          src={src}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          onError={(event) => {
+            event.currentTarget.hidden = true
+          }}
+        />
+      )}
     </span>
   )
 }
@@ -221,7 +236,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                   <li key={row.rank} className={`lb-step ${medals[index]}`}>
                     {index === 0 && <CrownIcon className="lb-crown" />}
                     <span className="lb-step-face">
-                      <Avatar nickname={row.nickname} className="big" />
+                      <Avatar id={row.id} nickname={row.nickname} avatar={row.avatar} className="big" />
                       <span className="lb-step-rank">{row.rank}</span>
                     </span>
                     <b className="lb-step-name">{row.nickname}</b>
@@ -291,7 +306,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                           <td className="lb-rank">{row.rank}</td>
                           <td className="lb-name">
                             <Link className="lb-player" href={row.me || !row.id ? href.profile : href.player(row.id)} prefetch={false}>
-                              <Avatar nickname={row.nickname} />
+                              <Avatar id={row.id} nickname={row.nickname} avatar={row.avatar} />
                               <span className="lb-nick">{row.nickname}</span>
                             </Link>
                             {row.level ? <span className="lb-level">{t('nav.level', { level: row.level })}</span> : null}
@@ -323,7 +338,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                         <tr className="me">
                           <td className="lb-rank">{me.rank}</td>
                           <td className="lb-name">
-                            <Avatar nickname={me.nickname} />
+                            <Avatar id={me.id} nickname={me.nickname} avatar={me.avatar} />
                             <span className="lb-nick">{me.nickname}</span>
                             <span className="lb-you">{t('lb.you')}</span>
                           </td>
