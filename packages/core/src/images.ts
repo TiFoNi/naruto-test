@@ -1,10 +1,11 @@
 import { createHash } from 'node:crypto'
 import { DeleteObjectCommand, DeleteObjectsCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import sharp from 'sharp'
-import { GAME_SPECS, type GameId } from '@nanda/game'
+import { GAME_SPECS, shapeOf, type GameId } from '@nanda/game'
 
 const CARD = { width: 288, height: 384 }
 const MINI = { width: 168, height: 224 }
+const SQUARE = 800
 const FULL = { width: 800, height: 900 }
 const CACHE = 'public, max-age=31536000, immutable'
 
@@ -59,14 +60,20 @@ export async function dropAvatar(userId: string) {
 export async function uploadPortrait(game: GameId, id: number, source: Buffer) {
   const folder = GAME_SPECS[game].images
   const trimmed = await sharp(source).trim().png().toBuffer()
+  const square = shapeOf(game) === 'square'
 
-  const full = await sharp(trimmed)
-    .resize({ ...FULL, fit: 'inside', withoutEnlargement: true })
-    .webp({ quality: 88 })
-    .toBuffer()
+  const { width = SQUARE, height = SQUARE } = await sharp(trimmed).metadata()
+  const side = Math.min(SQUARE, width, height)
+
+  const full = square
+    ? await sharp(trimmed).resize(side, side, { fit: 'cover', position: 'top' }).webp({ quality: 88 }).toBuffer()
+    : await sharp(trimmed).resize({ ...FULL, fit: 'inside', withoutEnlargement: true }).webp({ quality: 88 }).toBuffer()
 
   const card = await sharp(trimmed).resize(CARD.width, CARD.height, { fit: 'cover', position: 'top' }).webp({ quality: 80 }).toBuffer()
-  const mini = await sharp(card).resize(MINI.width, MINI.height, { fit: 'cover', position: 'top' }).webp({ quality: 78 }).toBuffer()
+
+  const mini = square
+    ? await sharp(full).resize(MINI.width, MINI.width, { fit: 'cover' }).webp({ quality: 78 }).toBuffer()
+    : await sharp(card).resize(MINI.width, MINI.height, { fit: 'cover', position: 'top' }).webp({ quality: 78 }).toBuffer()
 
   await Promise.all([
     put(`${folder}/full/${id}.webp`, full),

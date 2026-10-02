@@ -47,11 +47,14 @@ export default function Admin() {
   const [updated, setUpdated] = useState('')
   const [filter, setFilter] = useState<Filter>('all')
   const [limit, setLimit] = useState(PAGE)
+  const [ready, setReady] = useState(false)
+  const request = useRef(0)
 
   const game = (GAMES.find((g) => g.id === gameId) ?? GAMES[0]) as Game
   const unit = UNIT[game.unit ?? 'character']
 
   const load = useCallback(async (game: GameId) => {
+    const mine = ++request.current
     setRows(null)
     setOpenId(null)
     const { ok, status, data } = await api<{
@@ -59,6 +62,7 @@ export default function Admin() {
       options?: Record<string, string[]>
       updated?: string
     }>(`admin/entities?game=${game}`)
+    if (mine !== request.current) return
     if (status === 404) return setDenied(true)
     if (!ok) return setRows([])
     setRows(data.entities ?? [])
@@ -69,11 +73,12 @@ export default function Admin() {
   useEffect(() => {
     const last = localStorage.getItem(LAST_GAME)
     if (last && GAMES.some((g) => g.id === last)) setGameId(last as GameId)
+    setReady(true)
   }, [])
 
   useEffect(() => {
-    void load(gameId)
-  }, [gameId, load])
+    if (ready) void load(gameId)
+  }, [ready, gameId, load])
 
   const fields = useMemo(() => (rows?.[0] ? Object.keys(rows[0]).filter((key) => !SKIP.has(key)) : []), [rows])
 

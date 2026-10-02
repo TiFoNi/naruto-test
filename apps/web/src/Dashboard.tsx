@@ -12,7 +12,7 @@ import { useHref } from './router'
 import { GRID_GAMES, dailyKey } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
 import { BallIcon, BookIcon, CalendarIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, PaletteIcon, PlayIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
-import { CARD, MINI, cardUrl, miniUrl } from './pics'
+import { CARD, cardUrl } from './pics'
 import { useBeforePaint } from './paint'
 import { searchGames } from './search'
 
@@ -77,7 +77,6 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
             key={id}
             className={`fan fan-${i}`}
             src={cardUrl(game.id, id, image)}
-            srcSet={`${miniUrl(game.id, id, image)} ${MINI.width}w, ${cardUrl(game.id, id, image)} ${CARD.width}w`}
             sizes={i === 0 ? '128px' : '112px'}
             alt=""
             width={CARD.width}

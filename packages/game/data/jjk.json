@@ -11,7 +11,7 @@
    "Без фракции"
   ],
   "arc": "Игра на выбывание",
-  "arcIndex": 8,
+  "arcIndex": 7,
   "answer": true,
   "thumb": 0
  },
@@ -26,8 +26,8 @@
   "affiliations": [
    "Киотский колледж"
   ],
-  "arc": "Против Махито",
-  "arcIndex": 2,
+  "arc": "Проклятая утроба",
+  "arcIndex": 1,
   "answer": true,
   "thumb": 1
  },
@@ -58,8 +58,8 @@
   "affiliations": [
    "Проклятые духи"
   ],
-  "arc": "Против Махито",
-  "arcIndex": 2,
+  "arc": "Проклятая утроба",
+  "arcIndex": 1,
   "answer": true,
   "thumb": 3
  },
@@ -74,8 +74,8 @@
   "affiliations": [
    "Проклятые духи"
   ],
-  "arc": "Против Махито",
-  "arcIndex": 2,
+  "arc": "Проклятая утроба",
+  "arcIndex": 1,
   "answer": true,
   "thumb": 4
  },
@@ -91,7 +91,7 @@
    "Без фракции"
   ],
   "arc": "Игра на выбывание",
-  "arcIndex": 8,
+  "arcIndex": 7,
   "answer": true,
   "thumb": 5
  },
@@ -107,7 +107,7 @@
    "Без фракции"
   ],
   "arc": "Игра на выбывание",
-  "arcIndex": 8,
+  "arcIndex": 7,
   "answer": true,
   "thumb": 6
  },
@@ -122,8 +122,8 @@
   "affiliations": [
    "Киотский колледж"
   ],
-  "arc": "Против Махито",
-  "arcIndex": 2,
+  "arc": "Проклятая утроба",
+  "arcIndex": 1,
   "answer": true,
   "thumb": 7
  },
@@ -139,8 +139,8 @@
    "Клан Камо",
    "Проклятые духи"
   ],
-  "arc": "Против Махито",
-  "arcIndex": 2,
+  "arc": "Проклятая утроба",
+  "arcIndex": 1,
   "answer": true,
   "thumb": 8
  },
@@ -155,8 +155,8 @@
   "affiliations": [
    "Токийский колледж"
   ],
-  "arc": "Против Махито",
-  "arcIndex": 2,
+  "arc": "Проклятая утроба",
+  "arcIndex": 1,
   "answer": true,
   "thumb": 9
  },
@@ -171,7 +171,7 @@
   "affiliations": [
    "Токийский колледж"
   ],
-  "arc": "Пролог",
+  "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
   "thumb": 10
@@ -187,8 +187,8 @@
   "affiliations": [
    "Токийский колледж"
   ],
-  "arc": "Против Махито",
-  "arcIndex": 2,
+  "arc": "Проклятая утроба",
+  "arcIndex": 1,
   "answer": true,
   "thumb": 11
  },
@@ -204,7 +204,7 @@
    "Токийский колледж"
   ],
   "arc": "Игра на выбывание",
-  "arcIndex": 8,
+  "arcIndex": 7,
   "answer": true,
   "thumb": 12
  },
@@ -253,7 +253,7 @@
    "Проклятые духи"
   ],
   "arc": "Игра на выбывание",
-  "arcIndex": 8,
+  "arcIndex": 7,
   "answer": true,
   "thumb": 15
  },
@@ -269,8 +269,8 @@
    "Киотский колледж",
    "Клан Дзенин"
   ],
-  "arc": "Против Махито",
-  "arcIndex": 2,
+  "arc": "Проклятая утроба",
+  "arcIndex": 1,
   "answer": true,
   "thumb": 16
  },
@@ -287,7 +287,7 @@
    "Клан Годжо",
    "Клан Дзенин"
   ],
-  "arc": "Пролог",
+  "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
   "thumb": 17
@@ -335,8 +335,8 @@
   "affiliations": [
    "Проклятые духи"
   ],
-  "arc": "Против Махито",
-  "arcIndex": 2,
+  "arc": "Проклятая утроба",
+  "arcIndex": 1,
   "answer": true,
   "thumb": 20
  },
@@ -367,7 +367,7 @@
   "affiliations": [
    "Без фракции"
   ],
-  "arc": "Пролог",
+  "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
   "thumb": 22
@@ -400,7 +400,7 @@
    "Проклятые духи",
    "Клан Дзенин"
   ],
-  "arc": "Истребление",
+  "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
   "thumb": 24
@@ -465,7 +465,7 @@
   "affiliations": [
    "Токийский колледж"
   ],
-  "arc": "Пролог",
+  "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
   "thumb": 28
@@ -482,7 +482,7 @@
    "Без фракции"
   ],
   "arc": "Игра на выбывание",
-  "arcIndex": 8,
+  "arcIndex": 7,
   "answer": true,
   "thumb": 29
  },
@@ -513,7 +513,7 @@
   "affiliations": [
    "Проклятые духи"
   ],
-  "arc": "Пролог",
+  "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
   "thumb": 31
@@ -530,7 +530,7 @@
    "Без фракции"
   ],
   "arc": "Игра на выбывание",
-  "arcIndex": 8,
+  "arcIndex": 7,
   "answer": true,
   "thumb": 32
  },
@@ -546,7 +546,7 @@
    "Без фракции"
   ],
   "arc": "Игра на выбывание",
-  "arcIndex": 8,
+  "arcIndex": 7,
   "answer": true,
   "thumb": 33
  },
@@ -562,7 +562,7 @@
    "Токийский колледж",
    "Клан Годжо"
   ],
-  "arc": "Пролог",
+  "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
   "thumb": 34
@@ -595,7 +595,7 @@
    "Токийский колледж",
    "Проклятые духи"
   ],
-  "arc": "Пролог",
+  "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
   "thumb": 36
@@ -612,7 +612,7 @@
    "Без фракции"
   ],
   "arc": "Игра на выбывание",
-  "arcIndex": 8,
+  "arcIndex": 7,
   "answer": true,
   "thumb": 37
  },
@@ -627,7 +627,7 @@
   "affiliations": [
    "Токийский колледж"
   ],
-  "arc": "Пролог",
+  "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
   "thumb": 38
@@ -676,7 +676,7 @@
   "affiliations": [
    "Токийский колледж"
   ],
-  "arc": "Пролог",
+  "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
   "thumb": 41
@@ -741,7 +741,7 @@
    "Без фракции"
   ],
   "arc": "Игра на выбывание",
-  "arcIndex": 8,
+  "arcIndex": 7,
   "answer": true,
   "thumb": 45
  },
@@ -757,7 +757,7 @@
    "Без фракции"
   ],
   "arc": "Игра на выбывание",
-  "arcIndex": 8,
+  "arcIndex": 7,
   "answer": true,
   "thumb": 46
  },
@@ -773,7 +773,7 @@
    "Без фракции"
   ],
   "arc": "Игра на выбывание",
-  "arcIndex": 8,
+  "arcIndex": 7,
   "answer": true,
   "thumb": 47
  },
@@ -788,8 +788,8 @@
   "affiliations": [
    "Проклятые духи"
   ],
-  "arc": "Против Махито",
-  "arcIndex": 2,
+  "arc": "Проклятая утроба",
+  "arcIndex": 1,
   "answer": true,
   "thumb": 48
  },
@@ -804,7 +804,7 @@
   "affiliations": [
    "Без фракции"
   ],
-  "arc": "Истребление",
+  "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
   "thumb": 49
@@ -887,7 +887,7 @@
    "Токийский колледж",
    "Клан Годжо"
   ],
-  "arc": "Пролог",
+  "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
   "thumb": 54

@@ -31,7 +31,9 @@ export type JudgeKind = 'exact' | 'list' | 'order' | 'optionalOrder'
 
 export type JudgeSpec = { key: string; kind: JudgeKind }
 
-export type GameSpec = { data: string; images: string; columns: JudgeSpec[]; modes?: ModeId[] }
+export type PicShape = 'square' | 'poster' | 'wide'
+
+export type GameSpec = { data: string; images: string; columns: JudgeSpec[]; modes?: ModeId[]; shape?: PicShape }
 
 const col = (key: string, kind: JudgeKind): JudgeSpec => ({ key, kind })
 
@@ -140,6 +142,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   manga: {
+    shape: 'poster',
     data: 'manga',
     images: 'manga',
     modes: ['page'],
@@ -285,6 +288,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   dota: {
+    shape: 'wide',
     data: 'dota',
     images: 'dota',
     modes: ['classic', 'image', 'ability', 'phrase'],
@@ -383,6 +387,8 @@ export const modesOf = (game: GameId) => GAME_SPECS[game].modes ?? DEFAULT_MODES
 
 export const hasMode = (game: GameId, mode: ModeId) =>
   mode === 'grid' ? GRID_GAMES.includes(game) : modesOf(game).includes(mode)
+
+export const shapeOf = (game: GameId): PicShape => GAME_SPECS[game].shape ?? 'square'
 
 export const statsKey = (game: string, mode: string) => `${game}_${mode}`
 

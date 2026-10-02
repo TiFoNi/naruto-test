@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import sharp from 'sharp'
@@ -159,6 +160,10 @@ export async function pickPicture(dir, key, urls) {
   return null
 }
 
+export const SQUARE = 800
+
+export const squareSide = ({ width, height }) => Math.min(SQUARE, width, height)
+
 export const CARD = { width: 288, height: 384 }
 
 export const MINI = { width: 168, height: 224 }
@@ -181,26 +186,37 @@ export async function writeCard(source, cardPath, frame) {
     .toFile(cardPath)
 }
 
-export async function writeMini(source, miniPath) {
+export async function writeMini(source, miniPath, shape = 'square') {
   await fs.mkdir(path.dirname(miniPath), { recursive: true })
+  const box = shape === 'square' ? { width: MINI.width, height: MINI.width } : MINI
   await sharp(source)
-    .resize(MINI.width, MINI.height, { fit: 'cover', position: 'top' })
+    .resize(box.width, box.height, { fit: 'cover', position: 'top' })
     .webp({ quality: 78 })
     .toFile(miniPath)
 }
 
-export async function writeFullAndThumb(buf, fullPath, thumbPath, cell, { big, frame } = {}) {
+export async function writeFullAndThumb(buf, fullPath, thumbPath, cell, { big, frame, shape = 'square' } = {}) {
   const letterbox = frame ?? null
   const trimmed = await sharp(buf).trim().png().toBuffer({ resolveWithObject: true })
   const { width, height } = trimmed.info
   const detailed = big ? await sharp(big).trim().png().toBuffer({ resolveWithObject: true }) : null
   const source = detailed && detailed.info.width > width ? detailed.data : trimmed.data
+  const cardPath = fullPath.replace(`${path.sep}full${path.sep}`, `${path.sep}card${path.sep}`)
+  const tight = letterbox ?? width < 420
+
+  if (shape === 'square') {
+    const full = await sharp(source).resize(squareSide(trimmed.info), squareSide(trimmed.info), { fit: 'cover', position: 'top' }).webp({ quality: 88 }).toBuffer()
+    await fs.writeFile(fullPath, full)
+    await writeCard(trimmed.data, cardPath, tight)
+    await sharp(full).resize(cell, cell, { fit: 'cover' }).webp({ quality: 88 }).toFile(thumbPath)
+    return
+  }
+
   await sharp(source)
     .resize({ width: 800, height: 900, fit: 'inside', withoutEnlargement: true })
     .webp({ quality: 88 })
     .toFile(fullPath)
-  const tight = letterbox ?? width < 420
-  await writeCard(trimmed.data, fullPath.replace(`${path.sep}full${path.sep}`, `${path.sep}card${path.sep}`), tight)
+  await writeCard(trimmed.data, cardPath, tight)
   if (tight) {
     await fs.writeFile(thumbPath, await framed(trimmed.data, cell, cell, 88))
     return
@@ -226,7 +242,34 @@ export async function writeAtlas(entities, thumbDir, outFile, metaFile, cols, ce
     .webp({ quality: 84 })
     .toFile(outFile)
   entities.forEach((e, i) => (e.thumb = i))
-  await fs.writeFile(metaFile, JSON.stringify({ cols, rows, cell }))
+
+  const version = await picsVersion(path.dirname(outFile))
+  await fs.writeFile(metaFile, JSON.stringify({ cols, rows, cell, version }))
+  await saveVersion(path.basename(path.dirname(outFile)), version)
+}
+
+async function picsVersion(folder) {
+  const parts = []
+  for (const kind of ['full', 'card', 'thumbs.webp']) {
+    const target = path.join(folder, kind)
+    if (kind.endsWith('.webp')) {
+      const info = await fs.stat(target).catch(() => null)
+      if (info) parts.push(`${kind}:${info.size}`)
+      continue
+    }
+    for (const file of (await fs.readdir(target).catch(() => [])).sort()) {
+      const info = await fs.stat(path.join(target, file))
+      parts.push(`${kind}/${file}:${info.size}`)
+    }
+  }
+  return createHash('sha1').update(parts.join('|')).digest('hex').slice(0, 8)
+}
+
+async function saveVersion(game, version) {
+  const file = path.join(ROOT, 'packages', 'game', 'data', 'versions.json')
+  const all = JSON.parse(await fs.readFile(file, 'utf8').catch(() => '{}'))
+  all[game] = version
+  await fs.writeFile(file, `${JSON.stringify(all, null, 1)}\n`)
 }
 
 export async function pool(items, size, fn) {

@@ -32,7 +32,7 @@
     "nicknames": "node --env-file-if-exists=.env.local scripts/backfill-nickname-lower.mjs",
     "names:uk": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/uk-names.mjs",
     "entities": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/import-entities.mjs",
-    "mini": "node scripts/build-mini.mjs",
+    "mini": "node --experimental-strip-types scripts/build-mini.mjs",
     "pics": "node --env-file-if-exists=.env.local scripts/upload-pics.mjs",
     "dev:api": "npm run dev --workspace @nanda/api",
     "build:api": "npm run build --workspace @nanda/api",
