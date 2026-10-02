@@ -47,11 +47,11 @@ export function cells<T>() {
   return {
     list: (key: KeysOf<T, string[]>) => ({
       key,
-      text: (g: T, { tv }: RenderContext) => (g[key] as string[]).map(tv).join(', ') || tv(EMPTY),
+      text: (g: T, { tv }: RenderContext) => ((g[key] as string[] | undefined) ?? []).map(tv).join(', ') || tv(EMPTY),
     }),
     exact: (key: KeysOf<T, string>) => ({
       key,
-      text: (g: T, { tv }: RenderContext) => tv(g[key] as string),
+      text: (g: T, { tv }: RenderContext) => tv((g[key] as string | undefined) ?? EMPTY),
     }),
   }
 }
