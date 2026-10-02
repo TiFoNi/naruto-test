@@ -20,9 +20,8 @@
   padding: 14px 16px;
   border-radius: 16px;
   border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--card) 97%, transparent);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 10px 30px color-mix(in srgb, #06070a 55%, transparent);
+  background: var(--card-solid);
+  box-shadow: 0 12px 28px color-mix(in srgb, #06070a 70%, transparent);
 }
 
 .admin-bar-main {
