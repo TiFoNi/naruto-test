@@ -60,10 +60,9 @@ const GRADES = [
 const SPECIES_OVERRIDES = { Sukuna: 'Проклятый дух', 'Ryomen Sukuna': 'Проклятый дух' }
 
 const SPECIES = [
-  ['Гибрид', /hybrid|incarnat|reincarnat/i],
-  ['Проклятый дух', /curse\b|cursed spirit|disaster curse/i],
-  ['Проклятое тело', /cursed corpse|cursed object|shikigami/i],
-  ['Человек', /human|sorcerer/i],
+  ['Проклятое тело', /death painting|cursed corpse|shikigami/i],
+  ['Проклятый дух', /cursed spirit|curse\b/i],
+  ['Человек', /human/i],
 ]
 
 const AFFILIATIONS = [
@@ -80,10 +79,10 @@ const AFFILIATIONS = [
 
 const ROLES = [
   ['Ученик', /student/i],
-  ['Учитель', /teacher|instructor/i],
-  ['Маг', /jujutsu sorcerer|sorcerer/i],
+  ['Преподаватель', /teacher|principal|instructor|headmaster/i],
   ['Проклятый пользователь', /curse user/i],
-  ['Исполнитель', /executioner|assistant|window|auxiliary manager/i],
+  ['Помощник', /assistant|window|auxiliary manager|driver/i],
+  ['Маг', /jujutsu sorcerer|sorcerer/i],
 ]
 
 const NAMES = {
@@ -159,10 +158,20 @@ const arcIndexOf = (chapter) => ARCS.reduce((index, [start], at) => (chapter >= 
 
 function species(name, text) {
   if (SPECIES_OVERRIDES[name]) return SPECIES_OVERRIDES[name]
-  const race = plain(infobox(text, 'race') ?? '')
-  const found = firstMatch(SPECIES, race)
+  const raw = infobox(text, 'race') ?? ''
+  if (/death painting|cursed corpse|shikigami/i.test(raw)) return 'Проклятое тело'
+  if (/incarnat/i.test(raw)) return 'Воплощение'
+  const current = lines(raw).filter((line) => !/former/i.test(line))
+  const found = firstMatch(SPECIES, plain(current[0] ?? raw))
   if (found) return found
   return /sorcerer|student|teacher/i.test(plain(infobox(text, 'occupation') ?? '')) ? 'Человек' : 'Неизвестно'
+}
+
+function role(kind, occupation) {
+  if (kind === 'Проклятый дух') return 'Проклятый дух'
+  const found = firstMatch(ROLES, occupation)
+  if (found === 'Маг' && kind === 'Воплощение') return 'Древний маг'
+  return found ?? 'Нет'
 }
 
 async function main() {
@@ -219,7 +228,7 @@ async function main() {
       gender: SEX[plain(infobox(text, 'gender') ?? '').trim()] ?? 'Другое',
       species: kind,
       grade: firstMatch(GRADES, plain(infobox(text, 'class') ?? '')) ?? 'Нет',
-      role: firstMatch(ROLES, occupation) ?? (kind === 'Проклятый дух' ? 'Проклятый дух' : 'Нет'),
+      role: role(kind, occupation),
       affiliations: affiliations.length ? affiliations : ['Без фракции'],
       arc: ARCS[arcIndex][1],
       arcIndex,
