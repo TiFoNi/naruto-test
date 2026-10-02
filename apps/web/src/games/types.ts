@@ -47,7 +47,11 @@ export function cells<T>() {
   return {
     list: (key: KeysOf<T, string[]>) => ({
       key,
-      text: (g: T, { tv }: RenderContext) => ((g[key] as string[] | undefined) ?? []).map(tv).join(', ') || tv(EMPTY),
+      text: (g: T, { tv }: RenderContext) => {
+        const value = g[key] as string[] | string | undefined
+        const list = Array.isArray(value) ? value : value ? [value] : []
+        return list.map(tv).join(', ') || tv(EMPTY)
+      },
     }),
     exact: (key: KeysOf<T, string>) => ({
       key,

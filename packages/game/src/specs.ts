@@ -190,7 +190,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     images: 'jjk',
     columns: [
       col('gender', 'exact'),
-      col('species', 'exact'),
+      col('species', 'list'),
       col('grade', 'exact'),
       col('roles', 'list'),
       col('affiliations', 'list'),
@@ -400,6 +400,8 @@ export const DAILY_KEYS = GAME_IDS.flatMap((g) => modesOf(g).map((m) => dailyKey
 
 const present = (value: unknown) => typeof value === 'number' && value >= 0
 
+const asList = (value: unknown): string[] => (Array.isArray(value) ? value : value == null ? [] : [String(value)])
+
 export function judge(spec: JudgeSpec, guess: Record<string, unknown>, answer: Record<string, unknown>): Judgement {
   const g = guess[spec.key]
   const a = answer[spec.key]
@@ -407,8 +409,8 @@ export function judge(spec: JudgeSpec, guess: Record<string, unknown>, answer: R
     case 'exact':
       return { verdict: g === a ? 'correct' : 'wrong' }
     case 'list': {
-      const guessList = (g as string[]) ?? []
-      const answerSet = new Set((a as string[]) ?? [])
+      const guessList = asList(g)
+      const answerSet = new Set(asList(a))
       if (guessList.length === answerSet.size && guessList.every((x) => answerSet.has(x))) return { verdict: 'correct' }
       return { verdict: guessList.some((x) => answerSet.has(x)) ? 'partial' : 'wrong' }
     }

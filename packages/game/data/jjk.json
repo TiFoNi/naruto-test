@@ -4,7 +4,10 @@
   "name": "Ангел",
   "nameEn": "Angel",
   "gender": "Женский",
-  "species": "Воплощение",
+  "species": [
+   "Человек",
+   "Воплощение"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -23,7 +26,9 @@
   "name": "Аой Тодо",
   "nameEn": "Aoi Todo",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "1-й ранг",
   "roles": [
    "Маг",
@@ -42,7 +47,9 @@
   "name": "Ацуя Кусакабэ",
   "nameEn": "Atsuya Kusakabe",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "1-й ранг",
   "roles": [
    "Маг",
@@ -61,10 +68,12 @@
   "name": "Дагон",
   "nameEn": "Dagon",
   "gender": "Мужской",
-  "species": "Проклятый дух",
+  "species": [
+   "Проклятый дух"
+  ],
   "grade": "Особый ранг",
   "roles": [
-   "Проклятый дух"
+   "Нет"
   ],
   "affiliations": [
    "Проклятые духи"
@@ -79,7 +88,9 @@
   "name": "Джузо Кумия",
   "nameEn": "Juzo Kumiya",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Проклятый пользователь"
@@ -97,10 +108,12 @@
   "name": "Дзёго",
   "nameEn": "Jogo",
   "gender": "Мужской",
-  "species": "Проклятый дух",
+  "species": [
+   "Проклятый дух"
+  ],
   "grade": "Особый ранг",
   "roles": [
-   "Проклятый дух"
+   "Нет"
   ],
   "affiliations": [
    "Проклятые духи"
@@ -115,7 +128,10 @@
   "name": "Ёродзу",
   "nameEn": "Yorozu",
   "gender": "Женский",
-  "species": "Воплощение",
+  "species": [
+   "Человек",
+   "Воплощение"
+  ],
   "grade": "Нет",
   "roles": [
    "Проклятый пользователь",
@@ -134,7 +150,10 @@
   "name": "Иори Хазеноки",
   "nameEn": "Iori Hazenoki",
   "gender": "Мужской",
-  "species": "Воплощение",
+  "species": [
+   "Человек",
+   "Воплощение"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -153,7 +172,9 @@
   "name": "Касуми Мива",
   "nameEn": "Kasumi Miwa",
   "gender": "Женский",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -172,7 +193,9 @@
   "name": "Кендзяку",
   "nameEn": "Kenjaku",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Проклятый пользователь"
@@ -191,7 +214,9 @@
   "name": "Кенто Нанами",
   "nameEn": "Kento Nanami",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "1-й ранг",
   "roles": [
    "Маг"
@@ -209,7 +234,9 @@
   "name": "Киётака Идзити",
   "nameEn": "Kiyotaka Ijichi",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Помощник"
@@ -227,7 +254,9 @@
   "name": "Киндзи Хакари",
   "nameEn": "Kinji Hakari",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -246,7 +275,9 @@
   "name": "Кирара Хоси",
   "nameEn": "Kirara Hoshi",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -265,7 +296,9 @@
   "name": "Кокити Мута",
   "nameEn": "Kokichi Muta",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "1-й ранг",
   "roles": [
    "Маг",
@@ -285,10 +318,11 @@
   "name": "Куроуруси",
   "nameEn": "Kurourushi",
   "gender": "Другое",
-  "species": "Проклятый дух",
+  "species": [
+   "Проклятый дух"
+  ],
   "grade": "Особый ранг",
   "roles": [
-   "Проклятый дух",
    "Игрок Игры на выбывание"
   ],
   "affiliations": [
@@ -304,7 +338,9 @@
   "name": "Май Дзенин",
   "nameEn": "Mai Zenin",
   "gender": "Женский",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "3-й ранг",
   "roles": [
    "Маг",
@@ -324,7 +360,9 @@
   "name": "Маки Дзенин",
   "nameEn": "Maki Zenin",
   "gender": "Женский",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "4-й ранг",
   "roles": [
    "Маг",
@@ -345,7 +383,9 @@
   "name": "Масамити Яга",
   "nameEn": "Masamichi Yaga",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "1-й ранг",
   "roles": [
    "Маг",
@@ -364,10 +404,12 @@
   "name": "Махито",
   "nameEn": "Mahito",
   "gender": "Мужской",
-  "species": "Проклятый дух",
+  "species": [
+   "Проклятый дух"
+  ],
   "grade": "Особый ранг",
   "roles": [
-   "Проклятый дух"
+   "Нет"
   ],
   "affiliations": [
    "Проклятые духи"
@@ -382,7 +424,9 @@
   "name": "Мегуми Фусигуро",
   "nameEn": "Megumi Fushiguro",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "2-й ранг",
   "roles": [
    "Маг",
@@ -401,7 +445,9 @@
   "name": "Момо Нисимия",
   "nameEn": "Momo Nishimiya",
   "gender": "Женский",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -420,7 +466,9 @@
   "name": "Мэй Мэй",
   "nameEn": "Mei Mei",
   "gender": "Женский",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "1-й ранг",
   "roles": [
    "Маг"
@@ -438,7 +486,9 @@
   "name": "Наобито Дзенин",
   "nameEn": "Naobito Zenin",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Особый ранг",
   "roles": [
    "Маг"
@@ -456,10 +506,12 @@
   "name": "Наоя Дзенин",
   "nameEn": "Naoya Zenin",
   "gender": "Мужской",
-  "species": "Проклятый дух",
+  "species": [
+   "Человек",
+   "Проклятый дух"
+  ],
   "grade": "Особый ранг",
   "roles": [
-   "Проклятый дух",
    "Маг"
   ],
   "affiliations": [
@@ -476,7 +528,9 @@
   "name": "Нобара Кугисаки",
   "nameEn": "Nobara Kugisaki",
   "gender": "Женский",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "3-й ранг",
   "roles": [
    "Маг",
@@ -495,7 +549,9 @@
   "name": "Норитоси Камо",
   "nameEn": "Noritoshi Kamo",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "1-й ранг",
   "roles": [
    "Маг",
@@ -515,7 +571,9 @@
   "name": "Оги Зенин",
   "nameEn": "Ogi Zenin",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Особый ранг",
   "roles": [
    "Маг"
@@ -533,7 +591,9 @@
   "name": "Панда",
   "nameEn": "Panda",
   "gender": "Мужской",
-  "species": "Проклятое тело",
+  "species": [
+   "Проклятое тело"
+  ],
   "grade": "2-й ранг",
   "roles": [
    "Маг",
@@ -552,7 +612,10 @@
   "name": "Реджи Стар",
   "nameEn": "Reggie Star",
   "gender": "Мужской",
-  "species": "Воплощение",
+  "species": [
+   "Человек",
+   "Воплощение"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -571,10 +634,11 @@
   "name": "Рёмен Сукуна",
   "nameEn": "Sukuna",
   "gender": "Мужской",
-  "species": "Проклятый дух",
+  "species": [
+   "Проклятый дух"
+  ],
   "grade": "Особый ранг",
   "roles": [
-   "Проклятый дух",
    "Проклятый пользователь"
   ],
   "affiliations": [
@@ -590,10 +654,12 @@
   "name": "Рика Оримото",
   "nameEn": "Rika Orimoto",
   "gender": "Женский",
-  "species": "Проклятый дух",
+  "species": [
+   "Человек",
+   "Проклятый дух"
+  ],
   "grade": "Особый ранг",
   "roles": [
-   "Проклятый дух",
    "Ученик"
   ],
   "affiliations": [
@@ -609,7 +675,9 @@
   "name": "Рин Амай",
   "nameEn": "Rin Amai",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -629,7 +697,10 @@
   "name": "Рю Исигори",
   "nameEn": "Ryu Ishigori",
   "gender": "Мужской",
-  "species": "Воплощение",
+  "species": [
+   "Человек",
+   "Воплощение"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -648,7 +719,9 @@
   "name": "Сатору Годжо",
   "nameEn": "Satoru Gojo",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Особый ранг",
   "roles": [
    "Маг",
@@ -668,7 +741,9 @@
   "name": "Сёко Иэйри",
   "nameEn": "Shoko Ieiri",
   "gender": "Женский",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -687,7 +762,9 @@
   "name": "Сугуру Гето",
   "nameEn": "Suguru Geto",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Особый ранг",
   "roles": [
    "Маг",
@@ -707,7 +784,10 @@
   "name": "Такако Уро",
   "nameEn": "Takako Uro",
   "gender": "Женский",
-  "species": "Воплощение",
+  "species": [
+   "Человек",
+   "Воплощение"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -727,7 +807,9 @@
   "name": "Такума Ино",
   "nameEn": "Takuma Ino",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "2-й ранг",
   "roles": [
    "Маг"
@@ -745,10 +827,11 @@
   "name": "Тенген",
   "nameEn": "Tengen",
   "gender": "Другое",
-  "species": "Проклятый дух",
+  "species": [
+   "Проклятый дух"
+  ],
   "grade": "Нет",
   "roles": [
-   "Проклятый дух",
    "Маг"
   ],
   "affiliations": [
@@ -765,7 +848,10 @@
   "name": "Тёсо",
   "nameEn": "Choso",
   "gender": "Мужской",
-  "species": "Проклятое тело",
+  "species": [
+   "Проклятое тело",
+   "Воплощение"
+  ],
   "grade": "Особый ранг",
   "roles": [
    "Маг"
@@ -783,7 +869,9 @@
   "name": "Тоге Инумаки",
   "nameEn": "Toge Inumaki",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "1-й ранг",
   "roles": [
    "Маг",
@@ -802,7 +890,9 @@
   "name": "Тодзи Фусигуро",
   "nameEn": "Toji Fushiguro",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Проклятый пользователь"
@@ -820,7 +910,9 @@
   "name": "Уи Уи",
   "nameEn": "Ui Ui",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг"
@@ -838,7 +930,10 @@
   "name": "Ураумэ",
   "nameEn": "Uraume",
   "gender": "Другое",
-  "species": "Воплощение",
+  "species": [
+   "Человек",
+   "Воплощение"
+  ],
   "grade": "Нет",
   "roles": [
    "Проклятый пользователь"
@@ -856,7 +951,9 @@
   "name": "Фумихико Такаба",
   "nameEn": "Fumihiko Takaba",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -875,7 +972,10 @@
   "name": "Хадзимэ Касимо",
   "nameEn": "Hajime Kashimo",
   "gender": "Мужской",
-  "species": "Воплощение",
+  "species": [
+   "Человек",
+   "Воплощение"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -894,7 +994,9 @@
   "name": "Хана Курусу",
   "nameEn": "Hana Kurusu",
   "gender": "Женский",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -913,10 +1015,12 @@
   "name": "Ханами",
   "nameEn": "Hanami",
   "gender": "Другое",
-  "species": "Проклятый дух",
+  "species": [
+   "Проклятый дух"
+  ],
   "grade": "Особый ранг",
   "roles": [
-   "Проклятый дух"
+   "Нет"
   ],
   "affiliations": [
    "Проклятые духи"
@@ -931,7 +1035,9 @@
   "name": "Хироми Хигурума",
   "nameEn": "Hiromi Higuruma",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -950,7 +1056,9 @@
   "name": "Цуруги Оккоцу",
   "nameEn": "Tsurugi Okkotsu",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -970,7 +1078,9 @@
   "name": "Юдзи Итадори",
   "nameEn": "Yuji Itadori",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Особый ранг",
   "roles": [
    "Маг",
@@ -989,7 +1099,9 @@
   "name": "Юка Оккоцу",
   "nameEn": "Yuka Okkotsu",
   "gender": "Женский",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Нет",
   "roles": [
    "Маг",
@@ -1009,7 +1121,9 @@
   "name": "Юки Цукумо",
   "nameEn": "Yuki Tsukumo",
   "gender": "Женский",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Особый ранг",
   "roles": [
    "Маг"
@@ -1027,7 +1141,9 @@
   "name": "Юта Оккоцу",
   "nameEn": "Yuta Okkotsu",
   "gender": "Мужской",
-  "species": "Человек",
+  "species": [
+   "Человек"
+  ],
   "grade": "Особый ранг",
   "roles": [
    "Маг",

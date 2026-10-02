@@ -1,20 +1,3 @@
-function roles(kind, occupation, tags) {
-  const list = []
-  const has = (name) => tags.includes(name)
-
-  if (kind === 'Проклятый дух') list.push('Проклятый дух')
-  if (has('Jujutsu Sorcerers') || /sorcerer/i.test(occupation)) list.push('Маг')
-  if (has('Students') || /student/i.test(occupation)) list.push('Ученик')
-  if (/teacher|principal|instructor|headmaster/i.test(occupation)) list.push('Преподаватель')
-  if (has('Curse Users') || /curse user/i.test(occupation)) list.push('Проклятый пользователь')
-  if (has('Culling Game Players')) list.push('Игрок Игры на выбывание')
-  if (/assistant|window|auxiliary manager|driver/i.test(occupation)) list.push('Помощник')
-  if (/doctor|medic/i.test(occupation)) list.push('Врач')
-  if (/assassin|hitman/i.test(occupation)) list.push('Убийца')
-
-  return list.length ? list : ['Нет']
-}
-
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import {
@@ -80,6 +63,7 @@ const SPECIES_OVERRIDES = { Sukuna: 'Проклятый дух', 'Ryomen Sukuna'
 
 const SPECIES = [
   ['Проклятое тело', /death painting|cursed corpse|shikigami/i],
+  ['Воплощение', /incarnat/i],
   ['Проклятый дух', /cursed spirit|curse\b/i],
   ['Человек', /human/i],
 ]
@@ -177,25 +161,34 @@ const arcIndexOf = (chapter) => ARCS.reduce((index, [start], at) => (chapter >= 
 const categories = (text) => (text.match(/\[\[Category:([^\]]+)\]\]/g) ?? []).map((tag) => tag.slice(11, -2))
 
 function species(name, text) {
-  if (SPECIES_OVERRIDES[name]) return SPECIES_OVERRIDES[name]
+  if (SPECIES_OVERRIDES[name]) return [SPECIES_OVERRIDES[name]]
+
   const raw = infobox(text, 'race') ?? ''
-  const tags = categories(text)
-  if (/death painting|cursed corpse|shikigami/i.test(raw)) return 'Проклятое тело'
-  if (tags.includes('Incarnations') || /incarnat/i.test(raw)) return 'Воплощение'
-  const current = lines(raw).filter((line) => !/former/i.test(line))
-  const found = firstMatch(SPECIES, plain(current[0] ?? raw))
-  if (found) return found
-  return /sorcerer|student|teacher/i.test(plain(infobox(text, 'occupation') ?? '')) ? 'Человек' : 'Неизвестно'
+  const found = new Set()
+  for (const line of lines(raw)) {
+    const label = firstMatch(SPECIES, plain(line))
+    if (label) found.add(label)
+  }
+  if (/incarnat/i.test(raw) || categories(text).includes('Incarnations')) found.add('Воплощение')
+  if (found.size) return [...found]
+
+  return /sorcerer|student|teacher/i.test(plain(infobox(text, 'occupation') ?? '')) ? ['Человек'] : ['Неизвестно']
 }
 
-function role(kind, occupation, tags) {
-  if (kind === 'Проклятый дух') return 'Проклятый дух'
-  if (/teacher|principal|instructor|headmaster/i.test(occupation)) return 'Преподаватель'
-  if (tags.includes('Students') || /student/i.test(occupation)) return 'Ученик'
-  if (tags.includes('Curse Users') || /curse user/i.test(occupation)) return 'Проклятый пользователь'
-  if (/assistant|window|auxiliary manager|driver/i.test(occupation)) return 'Помощник'
-  if (kind === 'Воплощение') return 'Древний маг'
-  return /sorcerer/i.test(occupation) ? 'Маг' : 'Нет'
+function roles(occupation, tags) {
+  const list = []
+  const has = (name) => tags.includes(name)
+
+  if (has('Jujutsu Sorcerers') || /sorcerer/i.test(occupation)) list.push('Маг')
+  if (has('Students') || /student/i.test(occupation)) list.push('Ученик')
+  if (/teacher|principal|instructor|headmaster/i.test(occupation)) list.push('Преподаватель')
+  if (has('Curse Users') || /curse user/i.test(occupation)) list.push('Проклятый пользователь')
+  if (has('Culling Game Players')) list.push('Игрок Игры на выбывание')
+  if (/assistant|window|auxiliary manager|driver/i.test(occupation)) list.push('Помощник')
+  if (/doctor|medic/i.test(occupation)) list.push('Врач')
+  if (/assassin|hitman/i.test(occupation)) list.push('Убийца')
+
+  return list.length ? list : ['Нет']
 }
 
 async function main() {
@@ -240,7 +233,7 @@ async function main() {
     const occupation = plain(infobox(text, 'occupation') ?? '')
     const affiliationText = plain(lines(infobox(text, 'affiliation')).join('\n'))
     const affiliations = matchRules(AFFILIATIONS, affiliationText)
-    if (kind === 'Проклятый дух' && !affiliations.includes('Проклятые духи')) affiliations.unshift('Проклятые духи')
+    if (kind.includes('Проклятый дух') && !affiliations.includes('Проклятые духи')) affiliations.unshift('Проклятые духи')
 
     const chapter = debutChapter(text)
     const arcIndex = arcIndexOf(chapter)
@@ -252,7 +245,7 @@ async function main() {
       gender: SEX[plain(infobox(text, 'gender') ?? '').trim()] ?? 'Другое',
       species: kind,
       grade: firstMatch(GRADES, plain(infobox(text, 'class') ?? '')) ?? 'Нет',
-      roles: roles(kind, occupation, categories(text)),
+      roles: roles(occupation, categories(text)),
       affiliations: affiliations.length ? affiliations : ['Без фракции'],
       arc: ARCS[arcIndex][1],
       arcIndex,
@@ -263,7 +256,7 @@ async function main() {
   result.sort((a, b) => b.length - a.length)
   let picked = 0
   for (const one of result) {
-    one.answer = picked < ANSWER_POOL_SIZE && one.species !== 'Неизвестно'
+    one.answer = picked < ANSWER_POOL_SIZE && !one.species.includes('Неизвестно')
     if (one.answer) picked++
     delete one.length
   }

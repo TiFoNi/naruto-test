@@ -4,7 +4,7 @@ import { cells, l10n, type Column, type Entity, type Game } from './types'
 type Character = Entity & {
   nameEn: string
   gender: string
-  species: string
+  species: string[]
   grade: string
   roles: string[]
   affiliations: string[]
@@ -16,7 +16,7 @@ const { list, exact } = cells<Character>()
 
 const columns: Column<Character>[] = [
   { title: l10n('Пол', 'Стать', 'Gender'), ...exact('gender') },
-  { title: l10n('Природа', 'Природа', 'Nature'), ...exact('species') },
+  { title: l10n('Природа', 'Природа', 'Nature'), ...list('species') },
   { title: l10n('Ранг', 'Ранг', 'Grade'), ...exact('grade') },
   { title: l10n('Роль', 'Роль', 'Role'), ...list('roles') },
   { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), ...list('affiliations') },
