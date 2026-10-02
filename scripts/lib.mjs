@@ -248,7 +248,7 @@ export async function writeAtlas(entities, thumbDir, outFile, metaFile, cols, ce
   await saveVersion(path.basename(path.dirname(outFile)), version)
 }
 
-async function picsVersion(folder) {
+export async function picsVersion(folder) {
   const parts = []
   for (const kind of ['full', 'card', 'thumbs.webp']) {
     const target = path.join(folder, kind)
@@ -265,7 +265,7 @@ async function picsVersion(folder) {
   return createHash('sha1').update(parts.join('|')).digest('hex').slice(0, 8)
 }
 
-async function saveVersion(game, version) {
+export async function saveVersion(game, version) {
   const file = path.join(ROOT, 'packages', 'game', 'data', 'versions.json')
   const all = JSON.parse(await fs.readFile(file, 'utf8').catch(() => '{}'))
   all[game] = version
@@ -298,5 +298,11 @@ export function keepNotable(ranked, keep) {
 
 export async function pruneImages(dir, entities) {
   const keep = new Set(entities.map((e) => `${e.id}.webp`))
-  for (const file of await fs.readdir(dir)) if (!keep.has(file)) await fs.unlink(path.join(dir, file))
+  const folders = path.basename(dir) === 'full' ? ['full', 'card', 'mini'] : [path.basename(dir)]
+  for (const folder of folders) {
+    const target = path.join(path.dirname(dir), folder)
+    for (const file of await fs.readdir(target).catch(() => [])) {
+      if (!keep.has(file)) await fs.unlink(path.join(target, file))
+    }
+  }
 }

@@ -13,12 +13,13 @@ for (const [game, spec] of Object.entries(GAME_SPECS)) {
   if (only.length && !only.includes(game)) continue
 
   const file = path.join(DATA, `${spec.data}.json`)
-  const atlasFile = path.join(DATA, `${spec.data}-atlas.json`)
+  const named = path.join(DATA, `${spec.data}-atlas.json`)
+  const atlasFile = (await fs.stat(named).catch(() => null)) ? named : path.join(DATA, 'atlas.json')
   const folder = path.join(PUBLIC, spec.images)
   if (!(await fs.stat(file).catch(() => null))) continue
 
   const list = JSON.parse(await fs.readFile(file, 'utf8'))
-  const cols = JSON.parse(await fs.readFile(atlasFile, 'utf8').catch(() => '{"cols":12}')).cols ?? 12
+  const cols = JSON.parse(await fs.readFile(atlasFile, 'utf8')).cols
   const thumbs = path.join(ROOT, '.cache', 'reshape', spec.images)
   await fs.mkdir(thumbs, { recursive: true })
 
