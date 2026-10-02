@@ -32,7 +32,7 @@ export const jjk: Game<Character> = {
     'Маги, прокляття й ранги — від проклятої утроби до битви в Сіндзюку.',
     'Sorcerers, curses and grades — from the cursed womb to the Shinjuku showdown.',
   ),
-  accent: '#7a5cff',
+  accent: '#4a66e0',
   modes: ['classic', 'image'],
   featured: ['Yuji Itadori', 'Satoru Gojo', 'Megumi Fushiguro'],
   unit: 'character',

@@ -30,7 +30,7 @@ export const csm: Game<Character> = {
     'Дияволи, поріддя й охотники — від Почіти до Чотирьох вершників.',
     'Devils, fiends and hunters — from Pochita to the Four Horsemen.',
   ),
-  accent: '#e0453a',
+  accent: '#ef7623',
   modes: ['classic', 'image'],
   featured: ['Denji', 'Power', 'Makima'],
   unit: 'character',
