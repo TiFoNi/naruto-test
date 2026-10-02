@@ -162,6 +162,17 @@
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
 }
 
+.mates-rows li,
+.mates-grid li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: var(--card-2);
+}
+
 .mates-grid li {
   flex-direction: column;
   align-items: stretch;
@@ -175,17 +186,6 @@
 .mates-grid .mates-duel {
   flex: 1;
   min-width: 0;
-}
-
-.mates-rows li,
-.mates-grid li {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: var(--card-2);
 }
 
 .mates-who {
@@ -380,4 +380,23 @@
   padding: 0 16px;
   border-radius: 11px;
   font-size: 14px;
+}
+
+.mates-ask .danger-button {
+  border: 1px solid #e5483b;
+  background: #e5483b;
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.mates-ask .danger-button:hover:not(:disabled) {
+  border-color: #f2594c;
+  background: #f2594c;
+}
+
+.mates-ask .danger-button:disabled {
+  cursor: default;
+  opacity: 0.6;
 }
