@@ -14,10 +14,24 @@ import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
 import { dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type Feed } from './awards'
+import { MODE_XP, MODE_XP_AFTER } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
-import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, MenuIcon, PodiumIcon, SwordsIcon, TrophyIcon, UserIcon, UsersIcon } from './icons'
+import {
+  BellIcon,
+  ChevronIcon,
+  CloseIcon,
+  ExitIcon,
+  GearIcon,
+  InfoIcon,
+  MenuIcon,
+  PodiumIcon,
+  SwordsIcon,
+  TrophyIcon,
+  UserIcon,
+  UsersIcon,
+} from './icons'
 import { api } from './api'
 import { openStream } from './stream'
 import { gameById } from './games'
@@ -128,6 +142,41 @@ function XpToday() {
       <div className="xp-today-head">
         <span>{t('xp.todayTitle')}</span>
         <small>{t('xp.resetIn', { time })}</small>
+        <span
+          className="xp-hint"
+          tabIndex={0}
+          role="button"
+          aria-label={t('xp.rules')}
+          onMouseDown={(event) => {
+            event.preventDefault()
+            const hint = event.currentTarget
+            if (document.activeElement === hint) hint.blur()
+            else hint.focus()
+          }}
+        >
+          <InfoIcon />
+          <span className="xp-tip" role="tooltip">
+            <b>{t('xp.rules')}</b>
+            <table>
+              <thead>
+                <tr>
+                  <th>{t('xp.colMode')}</th>
+                  <th>{t('xp.colGame')}</th>
+                  <th>{t('xp.colAfter')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {MODES.map((mode) => (
+                  <tr key={mode.id}>
+                    <td>{t(mode.label)}</td>
+                    <td>{MODE_XP[mode.id]}</td>
+                    <td>{MODE_XP_AFTER[mode.id]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </span>
+        </span>
       </div>
       <p className="xp-today-total">
         <b>{today.earned}</b>
@@ -152,7 +201,6 @@ function XpToday() {
           )
         })}
       </ul>
-      <p className="xp-today-note">{t('xp.softCap')}</p>
     </div>
   )
 }
