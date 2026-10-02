@@ -5,7 +5,7 @@ import { GAME_SPECS } from '@nanda/game'
 import { api } from './api'
 import { GAMES } from './games'
 import type { Entity, GameId } from './games/types'
-import { miniUrl } from './pics'
+import { cardUrl, miniUrl } from './pics'
 
 type Row = Entity & Record<string, unknown>
 
@@ -31,6 +31,10 @@ const UNIT = {
   manga: { one: 'манга', many: 'Манга', accusative: 'мангу', fresh: 'Новая', created: 'создана', removed: 'удалена', subject: 'Манга' },
   player: { one: 'футболист', many: 'Футболисты', accusative: 'футболиста', fresh: 'Новый', created: 'создан', removed: 'удалён', subject: 'Футболист' },
 } as const
+
+const hasPicture = (row: Row) => !!row.image || (row.thumb ?? -1) >= 0
+
+const LAST_GAME = 'admin-game'
 
 export default function Admin() {
   const [gameId, setGameId] = useState<GameId>(GAMES[0].id)
@@ -62,6 +66,11 @@ export default function Admin() {
   }, [])
 
   useEffect(() => {
+    const last = localStorage.getItem(LAST_GAME)
+    if (last && GAMES.some((g) => g.id === last)) setGameId(last as GameId)
+  }, [])
+
+  useEffect(() => {
     void load(gameId)
   }, [gameId, load])
 
@@ -74,7 +83,7 @@ export default function Admin() {
 
   const title = useMemo(() => {
     const game = GAMES.find((g) => g.id === gameId)
-    const byKey = new Map((game?.columns ?? []).map((column) => [column.key, column.title.ru.replace(/\u00ad/g, '')]))
+    const byKey = new Map((game?.columns ?? []).map((column) => [column.key, column.title.ru.replace(/­/g, '')]))
     return (key: string) => {
       const own = byKey.get(key)
       if (own) return key.endsWith('Index') ? `${own} · порядок` : own
@@ -96,7 +105,7 @@ export default function Admin() {
     return rows.filter((row) => {
       if (filter === 'pool' && !row.answer) return false
       if (filter === 'hidden' && !row.hidden) return false
-      if (filter === 'nopic' && (row.image || (row.thumb ?? 0) >= 0)) return false
+      if (filter === 'nopic' && hasPicture(row)) return false
       if (!needle) return true
       return [row.name, row.nameEn, row.nameUk].some((v) => typeof v === 'string' && v.toLowerCase().includes(needle))
     })
@@ -108,11 +117,13 @@ export default function Admin() {
 
   const visible = shown.slice(0, limit)
 
+  const replace = (entity: Row) => setRows((list) => (list ?? []).map((r) => (r.id === entity.id ? entity : r)))
+
   const save = async (row: Row, changed: Record<string, unknown>) => {
     setNote(null)
     const { ok, data } = await api<{ entity?: Row }>('admin/entity', { game: gameId, id: row.id, fields: changed })
     if (!ok || !data.entity) return setNote('не сохранилось')
-    setRows((list) => (list ?? []).map((r) => (r.id === row.id ? (data.entity as Row) : r)))
+    replace(data.entity as Row)
     setNote('сохранено')
   }
 
@@ -124,84 +135,102 @@ export default function Admin() {
 
   const open = openId === null ? null : (rows ?? []).find((r) => r.id === openId) ?? null
 
+  const counts = useMemo(() => {
+    const list = rows ?? []
+    return {
+      all: list.length,
+      pool: list.filter((row) => row.answer).length,
+      hidden: list.filter((row) => row.hidden).length,
+      nopic: list.filter((row) => !hasPicture(row)).length,
+    }
+  }, [rows])
+
   if (denied) return <div className="card center muted">Страница не найдена</div>
 
   return (
     <main className="admin">
-      <header className="admin-head">
-        <div className="admin-head-row">
+      <header className="admin-bar">
+        <div className="admin-bar-main">
           <h1>{unit.many}</h1>
-        </div>
-
-        <div className="admin-head-row admin-tools">
           <Dropdown
             value={GAMES.find((g) => g.id === gameId)?.label.ru ?? ''}
             choices={GAMES.map((g) => g.label.ru)}
-            onPick={(label) => setGameId(GAMES.find((g) => g.label.ru === label)?.id ?? gameId)}
+            onPick={(label) => {
+              const picked = GAMES.find((g) => g.label.ru === label)?.id ?? gameId
+              localStorage.setItem(LAST_GAME, picked)
+              setGameId(picked)
+            }}
           />
-          <input className="admin-search" placeholder="Поиск" value={query} onChange={(e) => setQuery(e.target.value)} />
+          <label className="admin-search">
+            <i aria-hidden>⌕</i>
+            <input placeholder="Поиск по имени" value={query} onChange={(e) => setQuery(e.target.value)} />
+          </label>
           <label className="admin-date" title="Дата, на которую актуальны данные — показывается в игре">
             данные на
             <input type="date" value={updated} onChange={(e) => void saveUpdated(e.target.value)} />
           </label>
-          <span className={`admin-note ${note ? 'on' : ''}`}>{note}</span>
         </div>
 
-        <div className="admin-head-row admin-filters">
+        <div className="admin-bar-filters">
           {FILTERS.map(({ id, label }) => (
             <button key={id} type="button" className={filter === id ? 'on' : ''} onClick={() => setFilter(id)}>
               {label}
+              <em>{counts[id]}</em>
             </button>
           ))}
-          <span className="admin-count">
-            {filter === 'all' && !query.trim() ? `всего ${shown.length}` : `${shown.length} из ${rows?.length ?? 0}`}
-          </span>
+          <span className="admin-found">{query.trim() ? `найдено ${shown.length}` : ''}</span>
+          <span className={`admin-note ${note ? 'on' : ''}`}>{note}</span>
         </div>
       </header>
 
       {rows === null ? (
         <div className="card center muted">Загрузка…</div>
       ) : (
-        <ul className="admin-list">
-          {visible.map((row) => (
-            <li key={row.id} className={`admin-row ${row.hidden ? 'is-hidden' : ''}`}>
-              <button type="button" className="admin-open" onClick={() => setOpenId(row.id)}>
-                {row.image || (row.thumb ?? 0) >= 0 ? (
-                  <img src={miniUrl(gameId, row.id, row.image as string | undefined)} alt="" width={36} height={48} loading="lazy" />
-                ) : (
-                  <span className="admin-blank">{String(row.name ?? '?').slice(0, 1)}</span>
-                )}
-                <span className="admin-name">
+        <>
+          <ul className="admin-grid">
+            {visible.map((row) => (
+              <li key={row.id} className={`admin-card ${row.hidden ? 'is-hidden' : ''} ${row.answer ? '' : 'out-of-pool'}`}>
+                <PictureDrop game={gameId} row={row} onDone={replace}>
+                  {hasPicture(row) ? (
+                    <img src={cardUrl(gameId, row.id, row.image as string | undefined)} alt="" loading="lazy" />
+                  ) : (
+                    <span className="admin-blank">{String(row.name ?? '?').slice(0, 1)}</span>
+                  )}
+                </PictureDrop>
+
+                <button type="button" className="admin-card-name" onClick={() => setOpenId(row.id)}>
                   <b>{String(row.name ?? row.id)}</b>
                   <small>{String(row.nameEn ?? '')}</small>
-                </span>
-              </button>
-
-              <div className="admin-flags">
-                <label className="admin-flag">
-                  <input type="checkbox" checked={!!row.answer} onChange={(e) => save(row, { answer: e.target.checked })} />
-                  в пуле
-                </label>
-                <label className="admin-flag">
-                  <input type="checkbox" checked={!!row.hidden} onChange={(e) => save(row, { hidden: e.target.checked })} />
-                  скрыт
-                </label>
-                <button type="button" className="admin-more" onClick={() => setOpenId(row.id)}>
-                  Детали
                 </button>
-              </div>
-            </li>
-          ))}
-          {!shown.length && <li className="card center muted">ничего не найдено</li>}
+
+                <div className="admin-card-flags">
+                  <label className="admin-flag">
+                    <input type="checkbox" checked={!!row.answer} onChange={(e) => save(row, { answer: e.target.checked })} />
+                    в пуле
+                  </label>
+                  <label className="admin-flag">
+                    <input type="checkbox" checked={!!row.hidden} onChange={(e) => save(row, { hidden: e.target.checked })} />
+                    скрыт
+                  </label>
+                  <button type="button" className="admin-more" onClick={() => setOpenId(row.id)}>
+                    Детали
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          {!shown.length && <div className="card center muted">ничего не найдено</div>}
           {shown.length > visible.length && (
-            <li className="admin-more-row">
+            <div className="admin-more-row">
               <button type="button" onClick={() => setLimit((value) => value + PAGE * 4)}>
                 Показать ещё · осталось {shown.length - visible.length}
               </button>
-            </li>
+            </div>
           )}
-        </ul>
+        </>
       )}
+
       {open && (
         <Details
           game={gameId}
@@ -212,7 +241,7 @@ export default function Admin() {
           twin={twin}
           title={title}
           onSave={save}
-          onPicture={(entity) => setRows((list) => (list ?? []).map((r) => (r.id === entity.id ? entity : r)))}
+          onPicture={replace}
           onClose={() => setOpenId(null)}
         />
       )}
@@ -391,54 +420,107 @@ function Editor({
   )
 }
 
+async function upload(game: GameId, id: number, kind: 'portrait' | 'pages', files: File[]) {
+  const form = new FormData()
+  form.append('game', game)
+  form.append('id', String(id))
+  form.append('kind', kind)
+  for (const file of files) form.append('file', file)
+
+  const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, '') ?? ''
+  const response = await fetch(`${base}/api/admin/image`, { method: 'POST', body: form, credentials: base ? 'include' : 'same-origin' })
+  const data = (await response.json().catch(() => ({}))) as { entity?: Row; error?: string }
+  if (!response.ok || !data.entity) throw new Error(data.error === 'too_large' ? 'файл больше 8 МБ' : 'не загрузилось')
+  return data.entity
+}
+
+function PictureDrop({
+  game,
+  row,
+  onDone,
+  children,
+}: {
+  game: GameId
+  row: Row
+  onDone: (entity: Row) => void
+  children: React.ReactNode
+}) {
+  const [busy, setBusy] = useState(false)
+  const [over, setOver] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const send = async (files: FileList | null) => {
+    const picked = Array.from(files ?? []).filter((file) => file.type.startsWith('image/'))
+    if (!picked.length) return
+    setBusy(true)
+    setError(null)
+    try {
+      onDone(await upload(game, row.id, 'portrait', picked.slice(0, 1)))
+    } catch (problem) {
+      setError((problem as Error).message)
+    }
+    setBusy(false)
+  }
+
+  return (
+    <label
+      className={`admin-pic ${over ? 'over' : ''} ${busy ? 'busy' : ''}`}
+      onDragOver={(e) => {
+        e.preventDefault()
+        setOver(true)
+      }}
+      onDragLeave={() => setOver(false)}
+      onDrop={(e) => {
+        e.preventDefault()
+        setOver(false)
+        void send(e.dataTransfer.files)
+      }}
+    >
+      <input type="file" accept="image/*" hidden disabled={busy} onChange={(e) => void send(e.target.files)} />
+      {children}
+      <span className="admin-pic-hint">{busy ? 'Загружаю…' : error ?? 'Заменить картинку'}</span>
+    </label>
+  )
+}
+
 function Pictures({ game, row, onDone }: { game: GameId; row: Row; onDone: (entity: Row) => void }) {
-  const [busy, setBusy] = useState<'portrait' | 'pages' | null>(null)
+  const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const hasPages = typeof row.pages === 'number'
 
-  const send = async (kind: 'portrait' | 'pages', files: FileList | null) => {
-    if (!files?.length) return
-    setBusy(kind)
+  const sendPages = async (files: FileList | null) => {
+    const picked = Array.from(files ?? [])
+    if (!picked.length) return
+    setBusy(true)
     setError(null)
-
-    const form = new FormData()
-    form.append('game', game)
-    form.append('id', String(row.id))
-    form.append('kind', kind)
-    for (const file of Array.from(files)) form.append('file', file)
-
-    const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, '') ?? ''
-    const response = await fetch(`${base}/api/admin/image`, { method: 'POST', body: form, credentials: base ? 'include' : 'same-origin' })
-    const data = (await response.json().catch(() => ({}))) as { entity?: Row; error?: string }
-    setBusy(null)
-    if (!response.ok || !data.entity) return setError(data.error === 'too_large' ? 'файл больше 8 МБ' : 'не загрузилось')
-    onDone(data.entity)
+    try {
+      onDone(await upload(game, row.id, 'pages', picked))
+    } catch (problem) {
+      setError((problem as Error).message)
+    }
+    setBusy(false)
   }
 
   return (
     <div className="admin-pics">
-      <figure>
-        <img src={miniUrl(game, row.id, row.image as string | undefined)} alt="" width={72} height={96} />
-        <figcaption>
-          <label className="admin-upload">
-            {busy === 'portrait' ? 'Загружаю…' : hasPages ? 'Заменить обложку' : 'Заменить картинку'}
-            <input type="file" accept="image/*" hidden disabled={busy !== null} onChange={(e) => send('portrait', e.target.files)} />
-          </label>
-        </figcaption>
-      </figure>
+      <PictureDrop game={game} row={row} onDone={onDone}>
+        <img src={miniUrl(game, row.id, row.image as string | undefined)} alt="" width={120} height={160} />
+      </PictureDrop>
 
-      {hasPages && (
-        <div className="admin-pages">
-          <span className="muted">Страниц: {String(row.pages)}</span>
-          <label className="admin-upload">
-            {busy === 'pages' ? 'Загружаю…' : 'Заменить страницы'}
-            <input type="file" accept="image/*" multiple hidden disabled={busy !== null} onChange={(e) => send('pages', e.target.files)} />
-          </label>
-          <small className="muted">загрузи все сразу — сколько файлов, столько и станет страниц</small>
-        </div>
-      )}
-
-      {error && <span className="admin-error">{error}</span>}
+      <div className="admin-pics-side">
+        <span className="muted">Перетащи картинку на неё или кликни — заменится везде: карточка, кружок и режим «по картинке».</span>
+        {hasPages && (
+          <div className="admin-pages">
+            <span className="muted">Страниц: {String(row.pages)}</span>
+            <label className="admin-upload">
+              {busy ? 'Загружаю…' : 'Заменить страницы'}
+              <input type="file" accept="image/*" multiple hidden disabled={busy} onChange={(e) => void sendPages(e.target.files)} />
+            </label>
+            <small className="muted">загрузи все сразу — сколько файлов, столько и станет страниц</small>
+          </div>
+        )}
+        {error && <span className="admin-error">{error}</span>}
+      </div>
     </div>
   )
 }
@@ -486,4 +568,3 @@ function Dropdown({ value, choices, onPick }: { value: string; choices: string[]
     </div>
   )
 }
-

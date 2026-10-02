@@ -4,6 +4,7 @@ import sharp from 'sharp'
 import { GAME_SPECS, type GameId } from '@nanda/game'
 
 const CARD = { width: 288, height: 384 }
+const MINI = { width: 168, height: 224 }
 const FULL = { width: 800, height: 900 }
 const CACHE = 'public, max-age=31536000, immutable'
 
@@ -65,8 +66,13 @@ export async function uploadPortrait(game: GameId, id: number, source: Buffer) {
     .toBuffer()
 
   const card = await sharp(trimmed).resize(CARD.width, CARD.height, { fit: 'cover', position: 'top' }).webp({ quality: 80 }).toBuffer()
+  const mini = await sharp(card).resize(MINI.width, MINI.height, { fit: 'cover', position: 'top' }).webp({ quality: 78 }).toBuffer()
 
-  await Promise.all([put(`${folder}/full/${id}.webp`, full), put(`${folder}/card/${id}.webp`, card)])
+  await Promise.all([
+    put(`${folder}/full/${id}.webp`, full),
+    put(`${folder}/card/${id}.webp`, card),
+    put(`${folder}/mini/${id}.webp`, mini),
+  ])
   return version(full)
 }
 
