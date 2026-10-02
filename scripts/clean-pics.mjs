@@ -1,8 +1,5 @@
-import fs from 'node:fs'
-import path from 'node:path'
 import { DeleteObjectsCommand, ListObjectsV2Command, S3Client } from '@aws-sdk/client-s3'
-import { GAME_SPECS } from '../packages/game/src/specs.ts'
-import { ROOT } from './lib.mjs'
+import { knownIds } from './pics-keys.mjs'
 
 const { R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET } = process.env
 const missing = ['R2_ACCOUNT_ID', 'R2_ACCESS_KEY_ID', 'R2_SECRET_ACCESS_KEY', 'R2_BUCKET'].filter((key) => !process.env[key])
@@ -20,12 +17,7 @@ const client = new S3Client({
   credentials: { accessKeyId: R2_ACCESS_KEY_ID, secretAccessKey: R2_SECRET_ACCESS_KEY },
 })
 
-const known = new Map()
-for (const spec of Object.values(GAME_SPECS)) {
-  const file = path.join(ROOT, 'packages', 'game', 'data', `${spec.data}.json`)
-  if (!fs.existsSync(file)) continue
-  known.set(spec.images, new Set(JSON.parse(fs.readFileSync(file, 'utf8')).map((entity) => String(entity.id))))
-}
+const known = await knownIds()
 
 async function remote() {
   const keys = []
