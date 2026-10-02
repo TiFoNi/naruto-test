@@ -74,6 +74,20 @@ export async function categoryMembers(api, category) {
   return titles
 }
 
+export function galleryImage(text, prefer = /anime/i) {
+  const block = text?.match(/\|\s*image\s*=\s*<gallery>([\s\S]*?)<\/gallery>/i)?.[1]
+  if (!block) return null
+  const rows = block
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => /\.(png|jpe?g|webp)/i.test(line))
+    .map((line) => {
+      const [file, label = ''] = line.split('|')
+      return { file: file.trim(), label: label.trim() }
+    })
+  return rows.find((row) => prefer.test(row.label))?.file ?? null
+}
+
 export function infobox(text, fieldName) {
   if (!text) return null
   const name = fieldName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -118,14 +132,17 @@ async function download(url) {
   return null
 }
 
+const PLACEHOLDER = /no[_ -]?(image|pic|photo)|not[_ -]?available|placeholder/i
+
 export async function cachedDownload(dir, key, urls) {
   const file = path.join(dir, key)
   try {
     return await fs.readFile(file)
   } catch {
-    for (const url of (urls ?? []).filter(Boolean)) {
+    for (const url of (urls ?? []).filter(Boolean).filter((url) => !PLACEHOLDER.test(url))) {
       const buf = await download(url)
       if (buf) {
+        await fs.mkdir(dir, { recursive: true })
         await fs.writeFile(file, buf)
         return buf
       }
@@ -134,12 +151,30 @@ export async function cachedDownload(dir, key, urls) {
   }
 }
 
+export async function pickPicture(dir, key, urls) {
+  for (const [index, url] of (urls ?? []).filter(Boolean).entries()) {
+    const buf = await cachedDownload(path.join(dir, `source-${index}`), key, [url])
+    if (buf?.length) return buf
+  }
+  return null
+}
+
 export const CARD = { width: 288, height: 384 }
 
 export const MINI = { width: 168, height: 224 }
 
-export async function writeCard(source, cardPath) {
+export async function framed(source, width, height, quality) {
+  const back = await sharp(source).resize(width, height, { fit: 'cover' }).blur(18).modulate({ brightness: 0.75 }).toBuffer()
+  const front = await sharp(source).resize(width, height, { fit: 'inside' }).toBuffer()
+  return sharp(back).composite([{ input: front, gravity: 'center' }]).webp({ quality }).toBuffer()
+}
+
+export async function writeCard(source, cardPath, frame) {
   await fs.mkdir(path.dirname(cardPath), { recursive: true })
+  if (frame) {
+    await fs.writeFile(cardPath, await framed(source, CARD.width, CARD.height, 82))
+    return
+  }
   await sharp(source)
     .resize(CARD.width, CARD.height, { fit: 'cover', position: 'top' })
     .webp({ quality: 80 })
@@ -154,14 +189,22 @@ export async function writeMini(source, miniPath) {
     .toFile(miniPath)
 }
 
-export async function writeFullAndThumb(buf, fullPath, thumbPath, cell) {
+export async function writeFullAndThumb(buf, fullPath, thumbPath, cell, { big, frame } = {}) {
+  const letterbox = frame ?? null
   const trimmed = await sharp(buf).trim().png().toBuffer({ resolveWithObject: true })
   const { width, height } = trimmed.info
-  await sharp(trimmed.data)
+  const detailed = big ? await sharp(big).trim().png().toBuffer({ resolveWithObject: true }) : null
+  const source = detailed && detailed.info.width > width ? detailed.data : trimmed.data
+  await sharp(source)
     .resize({ width: 800, height: 900, fit: 'inside', withoutEnlargement: true })
     .webp({ quality: 88 })
     .toFile(fullPath)
-  await writeCard(trimmed.data, fullPath.replace(`${path.sep}full${path.sep}`, `${path.sep}card${path.sep}`))
+  const tight = letterbox ?? width < 420
+  await writeCard(trimmed.data, fullPath.replace(`${path.sep}full${path.sep}`, `${path.sep}card${path.sep}`), tight)
+  if (tight) {
+    await fs.writeFile(thumbPath, await framed(trimmed.data, cell, cell, 88))
+    return
+  }
   const side = Math.min(width, height)
   await sharp(trimmed.data)
     .extract({ left: Math.floor((width - side) / 2), top: 0, width: side, height: side })

@@ -1,0 +1,780 @@
+[
+ {
+  "id": 379,
+  "name": "Акане Саватари",
+  "nameEn": "Akane Sawatari",
+  "gender": "Женский",
+  "species": "Человек",
+  "role": "Частный охотник",
+  "affiliations": [
+   "Дьяволы"
+  ],
+  "arc": "Человек с катаной",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 0
+ },
+ {
+  "id": 156,
+  "name": "Аки Хаякава",
+  "nameEn": "Aki Hayakawa",
+  "gender": "Мужской",
+  "species": "Человек",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность"
+  ],
+  "arc": "Пёс и бензопила",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 1
+ },
+ {
+  "id": 1988,
+  "name": "Аса Митака",
+  "nameEn": "Asa Mitaka",
+  "gender": "Женский",
+  "species": "Человек",
+  "role": "Частный охотник",
+  "affiliations": [
+   "Школа"
+  ],
+  "arc": "Школа",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 2
+ },
+ {
+  "id": 2530,
+  "name": "Барем Бридж",
+  "nameEn": "Barem Bridge",
+  "gender": "Мужской",
+  "species": "Гибрид",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Церковь Бензопилы"
+  ],
+  "arc": "Дьявол контроля",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 3
+ },
+ {
+  "id": 489,
+  "name": "Бим",
+  "nameEn": "Beam",
+  "gender": "Мужской",
+  "species": "Исчадие",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Отряд Кишибэ"
+  ],
+  "arc": "Человек с катаной",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 4
+ },
+ {
+  "id": 491,
+  "name": "Галгали",
+  "nameEn": "Galgali",
+  "gender": "Мужской",
+  "species": "Исчадие",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Отряд Кишибэ"
+  ],
+  "arc": "Человек с катаной",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 5
+ },
+ {
+  "id": 2737,
+  "name": "Гибрид кнута",
+  "nameEn": "Whip Hybrid",
+  "gender": "Женский",
+  "species": "Гибрид",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Церковь Бензопилы"
+  ],
+  "arc": "Дьявол контроля",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 6
+ },
+ {
+  "id": 2696,
+  "name": "Гибрид копья",
+  "nameEn": "Spear Hybrid",
+  "gender": "Мужской",
+  "species": "Гибрид",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Церковь Бензопилы"
+  ],
+  "arc": "Дьявол контроля",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 7
+ },
+ {
+  "id": 682,
+  "name": "Дьявол будущего",
+  "nameEn": "Future Devil",
+  "gender": "Другое",
+  "species": "Дьявол",
+  "role": "Дьявол",
+  "affiliations": [
+   "Общественная безопасность"
+  ],
+  "arc": "Человек с катаной",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 8
+ },
+ {
+  "id": 244,
+  "name": "Дьявол вечности",
+  "nameEn": "Eternity Devil",
+  "gender": "Другое",
+  "species": "Дьявол",
+  "role": "Дьявол",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "arc": "Дьявол вечности",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 9
+ },
+ {
+  "id": 192,
+  "name": "Дьявол летучей мыши",
+  "nameEn": "Bat Devil",
+  "gender": "Мужской",
+  "species": "Дьявол",
+  "role": "Дьявол",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "arc": "Дьявол-летучая мышь",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 10
+ },
+ {
+  "id": 349,
+  "name": "Дьявол лисы",
+  "nameEn": "Fox Devil",
+  "gender": "Другое",
+  "species": "Дьявол",
+  "role": "Дьявол",
+  "affiliations": [
+   "Общественная безопасность"
+  ],
+  "arc": "Дьявол-летучая мышь",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 11
+ },
+ {
+  "id": 4144,
+  "name": "Дьявол огня",
+  "nameEn": "Fire Devil",
+  "gender": "Другое",
+  "species": "Дьявол",
+  "role": "Школьник",
+  "affiliations": [
+   "Церковь Бензопилы",
+   "Школа"
+  ],
+  "arc": "Школа",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 12
+ },
+ {
+  "id": 859,
+  "name": "Дьявол осьминога",
+  "nameEn": "Octopus Devil",
+  "gender": "Другое",
+  "species": "Дьявол",
+  "role": "Дьявол",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "arc": "Международные убийцы",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 13
+ },
+ {
+  "id": 3209,
+  "name": "Дьявол падения",
+  "nameEn": "Falling Devil",
+  "gender": "Женский",
+  "species": "Дьявол",
+  "role": "Дьявол",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "arc": "Дьявол падения",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 14
+ },
+ {
+  "id": 383,
+  "name": "Дьявол призрака",
+  "nameEn": "Ghost Devil",
+  "gender": "Другое",
+  "species": "Дьявол",
+  "role": "Дьявол",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "arc": "Дьявол вечности",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 15
+ },
+ {
+  "id": 6016,
+  "name": "Дьявол саранчи",
+  "nameEn": "Locust Devil",
+  "gender": "Другое",
+  "species": "Дьявол",
+  "role": "Дьявол",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "arc": "Дьявол справедливости",
+  "arcIndex": 12,
+  "answer": true,
+  "thumb": 16
+ },
+ {
+  "id": 2872,
+  "name": "Дьявол смерти",
+  "nameEn": "Death Devil",
+  "gender": "Женский",
+  "species": "Дьявол",
+  "role": "Церковь",
+  "affiliations": [
+   "Четыре всадника",
+   "Церковь Бензопилы",
+   "Школа"
+  ],
+  "arc": "Дьявол контроля",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 17
+ },
+ {
+  "id": 4950,
+  "name": "Дьявол старения",
+  "nameEn": "Aging Devil",
+  "gender": "Другое",
+  "species": "Дьявол",
+  "role": "Дьявол",
+  "affiliations": [
+   "Общественная безопасность"
+  ],
+  "arc": "Дьявол старения",
+  "arcIndex": 11,
+  "answer": true,
+  "thumb": 18
+ },
+ {
+  "id": 917,
+  "name": "Дьявол тьмы",
+  "nameEn": "Darkness Devil",
+  "gender": "Другое",
+  "species": "Дьявол",
+  "role": "Дьявол",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "arc": "Международные убийцы",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 19
+ },
+ {
+  "id": 495,
+  "name": "Дьявол-ангел",
+  "nameEn": "Angel Devil",
+  "gender": "Мужской",
+  "species": "Дьявол",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Отряд Кишибэ"
+  ],
+  "arc": "Человек с катаной",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 223,
+  "name": "Дьявол-ружьё",
+  "nameEn": "Gun Devil",
+  "gender": "Другое",
+  "species": "Дьявол",
+  "role": "Дьявол",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "arc": "Пёс и бензопила",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 21
+ },
+ {
+  "id": 95,
+  "name": "Дэндзи",
+  "nameEn": "Denji",
+  "gender": "Мужской",
+  "species": "Человек",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Школа"
+  ],
+  "arc": "Пёс и бензопила",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 22
+ },
+ {
+  "id": 1994,
+  "name": "Ёру",
+  "nameEn": "Yoru",
+  "gender": "Женский",
+  "species": "Исчадие",
+  "role": "Частный охотник",
+  "affiliations": [
+   "Четыре всадника",
+   "Школа"
+  ],
+  "arc": "Дьявол контроля",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 4698,
+  "name": "Исчадие гвоздя",
+  "nameEn": "Nail Fiend",
+  "gender": "Другое",
+  "species": "Исчадие",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность"
+  ],
+  "arc": "Церковь Бензопилы",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 24
+ },
+ {
+  "id": 487,
+  "name": "Кисибэ",
+  "nameEn": "Kishibe",
+  "gender": "Мужской",
+  "species": "Человек",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Отряд Кишибэ"
+  ],
+  "arc": "Дьявол вечности",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 25
+ },
+ {
+  "id": 235,
+  "name": "Кобени Хигасияма",
+  "nameEn": "Kobeni Higashiyama",
+  "gender": "Женский",
+  "species": "Человек",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность"
+  ],
+  "arc": "Дьявол-летучая мышь",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 26
+ },
+ {
+  "id": 1245,
+  "name": "Космо",
+  "nameEn": "Cosmo",
+  "gender": "Женский",
+  "species": "Исчадие",
+  "role": "Частный охотник",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "arc": "Международные убийцы",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 759,
+  "name": "Куанси",
+  "nameEn": "Quanxi",
+  "gender": "Женский",
+  "species": "Гибрид",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность"
+  ],
+  "arc": "Международные убийцы",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 140,
+  "name": "Макима",
+  "nameEn": "Makima",
+  "gender": "Женский",
+  "species": "Дьявол",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Четыре всадника",
+   "Отряд Кишибэ"
+  ],
+  "arc": "Пёс и бензопила",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 29
+ },
+ {
+  "id": 2697,
+  "name": "Мири Суго",
+  "nameEn": "Miri Sugo",
+  "gender": "Мужской",
+  "species": "Гибрид",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Церковь Бензопилы",
+   "Школа"
+  ],
+  "arc": "Дьявол контроля",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 30
+ },
+ {
+  "id": 1740,
+  "name": "Наюта",
+  "nameEn": "Nayuta",
+  "gender": "Женский",
+  "species": "Дьявол",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Четыре всадника",
+   "Школа"
+  ],
+  "arc": "Дьявол контроля",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 31
+ },
+ {
+  "id": 4008,
+  "name": "Нобана Хигасияма",
+  "nameEn": "Nobana Higashiyama",
+  "gender": "Мужской",
+  "species": "Человек",
+  "role": "Школьник",
+  "affiliations": [
+   "Школа"
+  ],
+  "arc": "Школа",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 168,
+  "name": "Пауэр",
+  "nameEn": "Power",
+  "gender": "Женский",
+  "species": "Исчадие",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Отряд Кишибэ"
+  ],
+  "arc": "Пёс и бензопила",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 968,
+  "name": "Пингци",
+  "nameEn": "Pingtsi",
+  "gender": "Женский",
+  "species": "Исчадие",
+  "role": "Частный охотник",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "arc": "Международные убийцы",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 193,
+  "name": "Почита",
+  "nameEn": "Pochita",
+  "gender": "Мужской",
+  "species": "Дьявол",
+  "role": "Дьявол",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "arc": "Пёс и бензопила",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 35
+ },
+ {
+  "id": 493,
+  "name": "Принци",
+  "nameEn": "Princi",
+  "gender": "Женский",
+  "species": "Дьявол",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Отряд Кишибэ"
+  ],
+  "arc": "Человек с катаной",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 36
+ },
+ {
+  "id": 615,
+  "name": "Резе",
+  "nameEn": "Reze",
+  "gender": "Женский",
+  "species": "Гибрид",
+  "role": "Наёмный убийца",
+  "affiliations": [
+   "Дьяволы"
+  ],
+  "arc": "Бомба",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 762,
+  "name": "Санта-Клаус",
+  "nameEn": "Santa Claus",
+  "gender": "Другое",
+  "species": "Дьявол",
+  "role": "Частный охотник",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "arc": "Международные убийцы",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 38
+ },
+ {
+  "id": 2284,
+  "name": "Сэйги Акоку",
+  "nameEn": "Seigi Akoku",
+  "gender": "Мужской",
+  "species": "Человек",
+  "role": "Школьник",
+  "affiliations": [
+   "Школа"
+  ],
+  "arc": "Школа",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 39
+ },
+ {
+  "id": 3658,
+  "name": "Фальшивый Человек-бензопила",
+  "nameEn": "Fake Chainsaw Man",
+  "gender": "Мужской",
+  "species": "Дьявол",
+  "role": "Дьявол",
+  "affiliations": [
+   "Церковь Бензопилы"
+  ],
+  "arc": "Школа",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 40
+ },
+ {
+  "id": 2573,
+  "name": "Фами",
+  "nameEn": "Fami",
+  "gender": "Женский",
+  "species": "Дьявол",
+  "role": "Школьник",
+  "affiliations": [
+   "Четыре всадника",
+   "Церковь Бензопилы",
+   "Школа"
+  ],
+  "arc": "Дьявол контроля",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 41
+ },
+ {
+  "id": 3960,
+  "name": "Фумико Мифунэ",
+  "nameEn": "Fumiko Mifune",
+  "gender": "Женский",
+  "species": "Человек",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Школа"
+  ],
+  "arc": "Дьявол падения",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 42
+ },
+ {
+  "id": 2615,
+  "name": "Харука Исэуми",
+  "nameEn": "Haruka Iseumi",
+  "gender": "Мужской",
+  "species": "Человек",
+  "role": "Школьник",
+  "affiliations": [
+   "Школа"
+  ],
+  "arc": "Школа",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 43
+ },
+ {
+  "id": 233,
+  "name": "Химено",
+  "nameEn": "Himeno",
+  "gender": "Женский",
+  "species": "Человек",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Отряд Кишибэ"
+  ],
+  "arc": "Дьявол-летучая мышь",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 44
+ },
+ {
+  "id": 237,
+  "name": "Хироказу Араи",
+  "nameEn": "Hirokazu Arai",
+  "gender": "Мужской",
+  "species": "Человек",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Отряд Кишибэ"
+  ],
+  "arc": "Дьявол-летучая мышь",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 778,
+  "name": "Хирофуми Йосида",
+  "nameEn": "Hirofumi Yoshida",
+  "gender": "Мужской",
+  "species": "Человек",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Школа"
+  ],
+  "arc": "Международные убийцы",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 532,
+  "name": "Человек с катаной",
+  "nameEn": "Katana Man",
+  "gender": "Мужской",
+  "species": "Гибрид",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность",
+   "Якудза",
+   "Дьяволы"
+  ],
+  "arc": "Человек с катаной",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 47
+ },
+ {
+  "id": 2029,
+  "name": "Юко",
+  "nameEn": "Yuko",
+  "gender": "Женский",
+  "species": "Дьявол",
+  "role": "Школьник",
+  "affiliations": [
+   "Школа"
+  ],
+  "arc": "Школа",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 386,
+  "name": "Ютаро Куросэ",
+  "nameEn": "Yutaro Kurose",
+  "gender": "Мужской",
+  "species": "Человек",
+  "role": "Общественная безопасность",
+  "affiliations": [
+   "Общественная безопасность"
+  ],
+  "arc": "Человек с катаной",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 49
+ }
+]

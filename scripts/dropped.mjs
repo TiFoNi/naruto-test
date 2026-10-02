@@ -15,6 +15,8 @@ export const DROPPED = {
   dn: [],
   avatar: [],
   manga: [],
+  jjk: [],
+  csm: [],
 }
 
 export function onlyAnswers(list) {

@@ -1,4 +1,25 @@
-export type GameId = 'marvel' | 'football' | 'naruto' | 'dota' | 'aot' | 'bleach' | 'tg' | 'berserk' | 'kny' | 'onepiece' | 'mk' | 'hxh' | 'bc' | 'jojo' | 'se' | 'ff' | 'manga' | 'dn' | 'avatar'
+export type GameId =
+  | 'marvel'
+  | 'football'
+  | 'naruto'
+  | 'dota'
+  | 'aot'
+  | 'bleach'
+  | 'tg'
+  | 'berserk'
+  | 'kny'
+  | 'onepiece'
+  | 'mk'
+  | 'hxh'
+  | 'bc'
+  | 'jojo'
+  | 'se'
+  | 'ff'
+  | 'manga'
+  | 'dn'
+  | 'avatar'
+  | 'jjk'
+  | 'csm'
 
 export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase' | 'who' | 'grid'
 
@@ -147,6 +168,29 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('rank', 'exact'),
       col('side', 'exact'),
       col('status', 'exact'),
+      col('arcIndex', 'order'),
+    ],
+  },
+  csm: {
+    data: 'csm',
+    images: 'csm',
+    columns: [
+      col('gender', 'exact'),
+      col('species', 'exact'),
+      col('role', 'exact'),
+      col('affiliations', 'list'),
+      col('arcIndex', 'order'),
+    ],
+  },
+  jjk: {
+    data: 'jjk',
+    images: 'jjk',
+    columns: [
+      col('gender', 'exact'),
+      col('species', 'exact'),
+      col('grade', 'exact'),
+      col('role', 'exact'),
+      col('affiliations', 'list'),
       col('arcIndex', 'order'),
     ],
   },
@@ -299,6 +343,8 @@ export const DUEL_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phr
 // світи, де даних вистачає на сітку з мінімум 5 персонажами в кожній клітинці
 export const GRID_GAMES: GameId[] = [
   'naruto',
+  'jjk',
+  'csm',
   'aot',
   'bleach',
   'tg',
