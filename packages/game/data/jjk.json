@@ -84,26 +84,6 @@
   "thumb": 3
  },
  {
-  "id": 728,
-  "name": "Джузо Кумия",
-  "nameEn": "Juzo Kumiya",
-  "gender": "Мужской",
-  "species": [
-   "Человек"
-  ],
-  "grade": "Нет",
-  "roles": [
-   "Проклятый пользователь"
-  ],
-  "affiliations": [
-   "Без фракции"
-  ],
-  "arc": "Обмен с Киото",
-  "arcIndex": 3,
-  "answer": true,
-  "thumb": 4
- },
- {
   "id": 218,
   "name": "Дзёго",
   "nameEn": "Jogo",
@@ -120,6 +100,26 @@
   ],
   "arc": "Проклятая утроба",
   "arcIndex": 1,
+  "answer": true,
+  "thumb": 4
+ },
+ {
+  "id": 728,
+  "name": "Дзюдзо Кумия",
+  "nameEn": "Juzo Kumiya",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "grade": "Нет",
+  "roles": [
+   "Проклятый пользователь"
+  ],
+  "affiliations": [
+   "Без фракции"
+  ],
+  "arc": "Обмен с Киото",
+  "arcIndex": 3,
   "answer": true,
   "thumb": 5
  },
@@ -147,7 +147,7 @@
  },
  {
   "id": 5792,
-  "name": "Иори Хазеноки",
+  "name": "Иори Хадзеноки",
   "nameEn": "Iori Hazenoki",
   "gender": "Мужской",
   "species": [
@@ -568,7 +568,7 @@
  },
  {
   "id": 3810,
-  "name": "Оги Зенин",
+  "name": "Оги Дзенин",
   "nameEn": "Ogi Zenin",
   "gender": "Мужской",
   "species": [
