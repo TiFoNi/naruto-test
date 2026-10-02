@@ -4,8 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { GAME_SPECS } from '@nanda/game'
 import { api } from './api'
 import { GAMES } from './games'
-import type { Entity, GameId } from './games/types'
-import { cardUrl, miniUrl } from './pics'
+import type { Entity, Game, GameId } from './games/types'
+import Thumb from './Thumb'
 
 type Row = Entity & Record<string, unknown>
 
@@ -48,7 +48,8 @@ export default function Admin() {
   const [filter, setFilter] = useState<Filter>('all')
   const [limit, setLimit] = useState(PAGE)
 
-  const unit = UNIT[GAMES.find((g) => g.id === gameId)?.unit ?? 'character']
+  const game = (GAMES.find((g) => g.id === gameId) ?? GAMES[0]) as Game
+  const unit = UNIT[game.unit ?? 'character']
 
   const load = useCallback(async (game: GameId) => {
     setRows(null)
@@ -191,11 +192,7 @@ export default function Admin() {
             {visible.map((row) => (
               <li key={row.id} className={`admin-card ${row.hidden ? 'is-hidden' : ''} ${row.answer ? '' : 'out-of-pool'}`}>
                 <PictureDrop game={gameId} row={row} onDone={replace}>
-                  {hasPicture(row) ? (
-                    <img src={cardUrl(gameId, row.id, row.image as string | undefined)} alt="" loading="lazy" />
-                  ) : (
-                    <span className="admin-blank">{String(row.name ?? '?').slice(0, 1)}</span>
-                  )}
+                  <Thumb game={game} entity={row} className="admin-thumb" />
                 </PictureDrop>
 
                 <button type="button" className="admin-card-name" onClick={() => setOpenId(row.id)}>
@@ -233,6 +230,7 @@ export default function Admin() {
 
       {open && (
         <Details
+          key={open.id}
           game={gameId}
           row={open}
           fields={fields}
@@ -337,7 +335,7 @@ function Editor({
   title: (field: string) => string
   onSave: (row: Row, changed: Record<string, unknown>) => void
 }) {
-  const field = (key: string) => {
+  const single = (key: string) => {
     const choices = options[key]
     if (!choices) {
       return (
@@ -355,31 +353,6 @@ function Editor({
       )
     }
 
-    if (Array.isArray(row[key])) {
-      const picked = asList(row[key])
-      return (
-        <label key={key} className="admin-multi">
-          <span>{title(key)}</span>
-          <div className="admin-chips">
-            {choices.map((choice) => (
-              <button
-                key={choice}
-                type="button"
-                className={picked.includes(choice) ? 'on' : ''}
-                onClick={() =>
-                  onSave(row, {
-                    [key]: picked.includes(choice) ? picked.filter((v) => v !== choice) : [...picked, choice],
-                  })
-                }
-              >
-                {choice}
-              </button>
-            ))}
-          </div>
-        </label>
-      )
-    }
-
     return (
       <label key={key} className="admin-single">
         <span>{title(key)}</span>
@@ -392,30 +365,65 @@ function Editor({
     )
   }
 
+  const many = (key: string) => {
+    const choices = options[key] ?? []
+    const picked = asList(row[key])
+    return (
+      <section key={key} className="admin-multi">
+        <header>
+          <span>{title(key)}</span>
+          <em>{picked.length ? picked.join(', ') : 'не выбрано'}</em>
+        </header>
+        <div className="admin-chips">
+          {choices.map((choice) => (
+            <button
+              key={choice}
+              type="button"
+              className={picked.includes(choice) ? 'on' : ''}
+              onClick={() =>
+                onSave(row, {
+                  [key]: picked.includes(choice) ? picked.filter((v) => v !== choice) : [...picked, choice],
+                })
+              }
+            >
+              {choice}
+            </button>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
   const used = fields.filter(judged)
-  const rest = fields.filter((key) => !judged(key))
+  const lists = used.filter((key) => Array.isArray(row[key]))
+  const singles = used.filter((key) => !Array.isArray(row[key]))
 
   return (
     <div className="admin-edit">
-      {NAMES.map((key) => (
-        <label key={key}>
-          <span>{key === 'name' ? 'Имя (ru)' : key === 'nameUk' ? 'Имя (uk)' : key === 'nameEn' ? 'Имя (en)' : 'Псевдонимы'}</span>
-          <input
-            defaultValue={String(row[key] ?? '')}
-            placeholder={key === 'nameUk' ? 'по умолчанию — транслитерация' : ''}
-            onBlur={(e) => e.target.value !== String(row[key] ?? '') && onSave(row, { [key]: e.target.value })}
-          />
-        </label>
-      ))}
-
-      {used.map(field)}
-
-      {rest.length > 0 && (
-        <div className="admin-rest">
-          <span className="admin-rest-title">в игре не участвует</span>
-          <div className="admin-rest-fields">{rest.map(field)}</div>
+      <section className="admin-group">
+        <h3>Имена</h3>
+        <div className="admin-pairs">
+          {NAMES.map((key) => (
+            <label key={key}>
+              <span>{key === 'name' ? 'Имя (ru)' : key === 'nameUk' ? 'Имя (uk)' : key === 'nameEn' ? 'Имя (en)' : 'Псевдонимы'}</span>
+              <input
+                defaultValue={String(row[key] ?? '')}
+                placeholder={key === 'nameUk' ? 'по умолчанию — транслитерация' : ''}
+                onBlur={(e) => e.target.value !== String(row[key] ?? '') && onSave(row, { [key]: e.target.value })}
+              />
+            </label>
+          ))}
         </div>
+      </section>
+
+      {singles.length > 0 && (
+        <section className="admin-group">
+          <h3>Признаки</h3>
+          <div className="admin-pairs">{singles.map(single)}</div>
+        </section>
       )}
+
+      {lists.map(many)}
     </div>
   )
 }
@@ -484,6 +492,7 @@ function PictureDrop({
 }
 
 function Pictures({ game, row, onDone }: { game: GameId; row: Row; onDone: (entity: Row) => void }) {
+  const meta = (GAMES.find((g) => g.id === game) ?? GAMES[0]) as Game
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const hasPages = typeof row.pages === 'number'
@@ -504,7 +513,7 @@ function Pictures({ game, row, onDone }: { game: GameId; row: Row; onDone: (enti
   return (
     <div className="admin-pics">
       <PictureDrop game={game} row={row} onDone={onDone}>
-        <img src={miniUrl(game, row.id, row.image as string | undefined)} alt="" width={120} height={160} />
+        <Thumb game={meta} entity={row} className="admin-thumb" />
       </PictureDrop>
 
       <div className="admin-pics-side">
