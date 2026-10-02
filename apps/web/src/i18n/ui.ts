@@ -240,6 +240,7 @@ const ui = {
   'xp.todayTitle': { ru: 'Опыт сегодня', uk: 'Досвід сьогодні', en: 'XP today' },
   'xp.resetIn': { ru: 'обновится через {time}', uk: 'оновиться через {time}', en: 'resets in {time}' },
   'xp.fromGames': { ru: '/ {cap} XP с игры', uk: '/ {cap} XP з гри', en: '/ {cap} XP from play' },
+  'xp.fromGamesOver': { ru: 'XP с игры', uk: 'XP з гри', en: 'XP from play' },
   'xp.rules': { ru: 'Сколько дают за игру', uk: 'Скільки дають за гру', en: 'XP per game' },
   'xp.colMode': { ru: 'Режим', uk: 'Режим', en: 'Mode' },
   'xp.colGame': { ru: 'За игру', uk: 'За гру', en: 'Per game' },

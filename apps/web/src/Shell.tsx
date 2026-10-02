@@ -142,6 +142,10 @@ function XpToday() {
       <div className="xp-today-head">
         <span>{t('xp.todayTitle')}</span>
         <small>{t('xp.resetIn', { time })}</small>
+      </div>
+      <div className="xp-today-total">
+        <b>{today.earned}</b>
+        <span>{today.earned > today.cap ? t('xp.fromGamesOver') : t('xp.fromGames', { cap: today.cap })}</span>
         <span
           className="xp-hint"
           tabIndex={0}
@@ -178,10 +182,6 @@ function XpToday() {
           </span>
         </span>
       </div>
-      <p className="xp-today-total">
-        <b>{today.earned}</b>
-        <span>{t('xp.fromGames', { cap: today.cap })}</span>
-      </p>
       <ul className="xp-today-list">
         {today.sources.map(({ source, earned, cap }) => {
           const over = Math.max(0, earned - cap)

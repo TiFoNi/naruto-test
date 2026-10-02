@@ -2097,12 +2097,6 @@ main {
   gap: 10px;
 }
 
-.xp-today-head small {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .xp-today-head > span:first-child {
   flex: none;
   min-width: 0;
@@ -2117,10 +2111,13 @@ main {
 }
 
 .xp-today-head small {
-  flex: none;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
   color: var(--text-3);
   font-size: 11px;
   font-weight: 600;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -7958,6 +7955,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   display: inline-flex;
   flex: none;
   align-self: center;
+  margin-left: auto;
   color: var(--text-3);
   cursor: help;
 }
@@ -7979,8 +7977,8 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 
 .xp-tip {
   position: absolute;
-  top: calc(100% + 8px);
-  right: -8px;
+  top: calc(100% + 10px);
+  right: -4px;
   z-index: 30;
   display: none;
   flex-direction: column;
@@ -8030,6 +8028,15 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 .xp-tip th:first-child,
 .xp-tip td:first-child {
   text-align: left;
+}
+
+.xp-tip th + th,
+.xp-tip td + td {
+  padding-left: 12px;
+}
+
+.xp-tip th:first-child {
+  width: 100%;
 }
 
 .xp-tip td {
