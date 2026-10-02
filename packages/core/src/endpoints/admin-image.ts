@@ -1,8 +1,8 @@
-import { entities } from '../db'
+import { entities, settings } from '../db'
 import { forget, isGame } from '../games'
 import { fail, handle, json } from '../http'
 import { adminSession } from '../admin'
-import { dropPages, uploadPages, uploadPortrait } from '../images'
+import { dropPages, patchAtlas, uploadPages, uploadPortrait } from '../images'
 
 const LIMIT = 8 * 1024 * 1024
 const MAX_PAGES = 12
@@ -35,7 +35,12 @@ export const POST = handle(async (request) => {
 
   const patch: Record<string, unknown> =
     kind === 'portrait'
-      ? { image: await uploadPortrait(game, id, buffers[0]) }
+      ? await (async () => {
+          const { version, thumb } = await uploadPortrait(game, id, buffers[0])
+          const sheet = await patchAtlas(game, found.thumb as number, thumb)
+          if (sheet) await (await settings()).updateOne({ game }, { $set: { atlas: sheet } }, { upsert: true })
+          return { image: version }
+        })()
       : await (async () => {
           const { count, version } = await uploadPages(game, id, buffers)
           const had = typeof found.pages === 'number' ? found.pages : 0

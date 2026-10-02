@@ -160,73 +160,37 @@ export async function pickPicture(dir, key, urls) {
   return null
 }
 
-export const SQUARE = 800
+import { CARD, CELL, MINI, derive, framed } from '../packages/core/src/pictures.ts'
 
-export const squareSide = ({ width, height }) => Math.min(SQUARE, width, height)
-
-export const CARD = { width: 288, height: 384 }
-
-export const MINI = { width: 168, height: 224 }
-
-export async function framed(source, width, height, quality) {
-  const back = await sharp(source).resize(width, height, { fit: 'cover' }).blur(18).modulate({ brightness: 0.75 }).toBuffer()
-  const front = await sharp(source).resize(width, height, { fit: 'inside' }).toBuffer()
-  return sharp(back).composite([{ input: front, gravity: 'center' }]).webp({ quality }).toBuffer()
-}
+export { CARD, CELL, MINI, SQUARE, derive, framed } from '../packages/core/src/pictures.ts'
 
 export async function writeCard(source, cardPath, frame) {
   await fs.mkdir(path.dirname(cardPath), { recursive: true })
   if (frame) {
-    await fs.writeFile(cardPath, await framed(source, CARD.width, CARD.height, 82))
+    await fs.writeFile(cardPath, await framed(await sharp(source).png().toBuffer(), CARD.width, CARD.height, 82))
     return
   }
-  await sharp(source)
-    .resize(CARD.width, CARD.height, { fit: 'cover', position: 'top' })
-    .webp({ quality: 80 })
-    .toFile(cardPath)
+  await sharp(source).resize(CARD.width, CARD.height, { fit: 'cover', position: 'top' }).webp({ quality: 80 }).toFile(cardPath)
 }
 
 export async function writeMini(source, miniPath, shape = 'square') {
   await fs.mkdir(path.dirname(miniPath), { recursive: true })
   const box = shape === 'square' ? { width: MINI.width, height: MINI.width } : MINI
-  await sharp(source)
-    .resize(box.width, box.height, { fit: 'cover', position: 'top' })
-    .webp({ quality: 78 })
-    .toFile(miniPath)
+  await sharp(source).resize(box.width, box.height, { fit: 'cover', position: 'top' }).webp({ quality: 78 }).toFile(miniPath)
 }
 
-export async function writeFullAndThumb(buf, fullPath, thumbPath, cell, { big, frame, shape = 'square' } = {}) {
-  const letterbox = frame ?? null
-  const trimmed = await sharp(buf).trim().png().toBuffer({ resolveWithObject: true })
-  const { width, height } = trimmed.info
-  const detailed = big ? await sharp(big).trim().png().toBuffer({ resolveWithObject: true }) : null
-  const source = detailed && detailed.info.width > width ? detailed.data : trimmed.data
-  const cardPath = fullPath.replace(`${path.sep}full${path.sep}`, `${path.sep}card${path.sep}`)
-  const tight = letterbox ?? width < 420
+export async function writeFullAndThumb(buf, fullPath, thumbPath, cell, { big, shape = 'square' } = {}) {
+  const { full, card, mini, thumb } = await derive(buf, shape, big)
+  const swap = (kind) => fullPath.replace(`${path.sep}full${path.sep}`, `${path.sep}${kind}${path.sep}`)
 
-  if (shape === 'square') {
-    const full = await sharp(source).resize(squareSide(trimmed.info), squareSide(trimmed.info), { fit: 'cover', position: 'top' }).webp({ quality: 88 }).toBuffer()
-    await fs.writeFile(fullPath, full)
-    await writeCard(trimmed.data, cardPath, tight)
-    await sharp(full).resize(cell, cell, { fit: 'cover' }).webp({ quality: 88 }).toFile(thumbPath)
-    return
+  for (const target of [fullPath, swap('card'), swap('mini'), thumbPath]) {
+    await fs.mkdir(path.dirname(target), { recursive: true })
   }
 
-  await sharp(source)
-    .resize({ width: 800, height: 900, fit: 'inside', withoutEnlargement: true })
-    .webp({ quality: 88 })
-    .toFile(fullPath)
-  await writeCard(trimmed.data, cardPath, tight)
-  if (tight) {
-    await fs.writeFile(thumbPath, await framed(trimmed.data, cell, cell, 88))
-    return
-  }
-  const side = Math.min(width, height)
-  await sharp(trimmed.data)
-    .extract({ left: Math.floor((width - side) / 2), top: 0, width: side, height: side })
-    .resize(cell, cell, { fit: 'cover', position: sharp.strategy.attention })
-    .webp({ quality: 88 })
-    .toFile(thumbPath)
+  await fs.writeFile(fullPath, full)
+  await fs.writeFile(swap('card'), card)
+  await fs.writeFile(swap('mini'), mini)
+  await fs.writeFile(thumbPath, cell === CELL ? thumb : await sharp(thumb).resize(cell, cell).webp({ quality: 88 }).toBuffer())
 }
 
 export async function writeAtlas(entities, thumbDir, outFile, metaFile, cols, cell) {

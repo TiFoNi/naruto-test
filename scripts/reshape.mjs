@@ -1,11 +1,9 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import sharp from 'sharp'
 import { GAME_SPECS } from '../packages/game/src/specs.ts'
-import { PUBLIC, ROOT, pool, squareSide, writeAtlas, writeMini } from './lib.mjs'
+import { CELL, PUBLIC, ROOT, derive, pool, writeAtlas } from './lib.mjs'
 
 const DATA = path.join(ROOT, 'packages', 'game', 'data')
-const CELL = 96
 const only = process.argv.slice(2).filter((arg) => !arg.startsWith('-'))
 
 for (const [game, spec] of Object.entries(GAME_SPECS)) {
@@ -25,16 +23,15 @@ for (const [game, spec] of Object.entries(GAME_SPECS)) {
 
   let done = 0
   await pool(list, 8, async (entity) => {
-    const full = path.join(folder, 'full', `${entity.id}.webp`)
-    const source = await fs.readFile(full).catch(() => null)
+    const fullPath = path.join(folder, 'full', `${entity.id}.webp`)
+    const source = await fs.readFile(fullPath).catch(() => null)
     if (!source) return
 
-    const side = squareSide(await sharp(source).metadata())
-    const square = await sharp(source).resize(side, side, { fit: 'cover', position: 'top' }).webp({ quality: 88 }).toBuffer()
-
-    await fs.writeFile(full, square)
-    await writeMini(square, path.join(folder, 'mini', `${entity.id}.webp`), 'square')
-    await sharp(square).resize(CELL, CELL, { fit: 'cover' }).webp({ quality: 88 }).toFile(path.join(thumbs, `${entity.id}.webp`))
+    const { full, mini, thumb } = await derive(source, 'square')
+    await fs.writeFile(fullPath, full)
+    await fs.mkdir(path.join(folder, 'mini'), { recursive: true })
+    await fs.writeFile(path.join(folder, 'mini', `${entity.id}.webp`), mini)
+    await fs.writeFile(path.join(thumbs, `${entity.id}.webp`), thumb)
     done++
   })
 

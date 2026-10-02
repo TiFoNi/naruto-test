@@ -1,12 +1,9 @@
 import { createHash } from 'node:crypto'
-import { DeleteObjectCommand, DeleteObjectsCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { DeleteObjectCommand, DeleteObjectsCommand, GetObjectCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import sharp from 'sharp'
 import { GAME_SPECS, shapeOf, type GameId } from '@nanda/game'
+import { CELL, derive } from './pictures'
 
-const CARD = { width: 288, height: 384 }
-const MINI = { width: 168, height: 224 }
-const SQUARE = 800
-const FULL = { width: 800, height: 900 }
 const CACHE = 'public, max-age=31536000, immutable'
 
 let client: S3Client | null = null
@@ -59,28 +56,40 @@ export async function dropAvatar(userId: string) {
 
 export async function uploadPortrait(game: GameId, id: number, source: Buffer) {
   const folder = GAME_SPECS[game].images
-  const trimmed = await sharp(source).trim().png().toBuffer()
-  const square = shapeOf(game) === 'square'
-
-  const { width = SQUARE, height = SQUARE } = await sharp(trimmed).metadata()
-  const side = Math.min(SQUARE, width, height)
-
-  const full = square
-    ? await sharp(trimmed).resize(side, side, { fit: 'cover', position: 'top' }).webp({ quality: 88 }).toBuffer()
-    : await sharp(trimmed).resize({ ...FULL, fit: 'inside', withoutEnlargement: true }).webp({ quality: 88 }).toBuffer()
-
-  const card = await sharp(trimmed).resize(CARD.width, CARD.height, { fit: 'cover', position: 'top' }).webp({ quality: 80 }).toBuffer()
-
-  const mini = square
-    ? await sharp(full).resize(MINI.width, MINI.width, { fit: 'cover' }).webp({ quality: 78 }).toBuffer()
-    : await sharp(card).resize(MINI.width, MINI.height, { fit: 'cover', position: 'top' }).webp({ quality: 78 }).toBuffer()
+  const { full, card, mini, thumb } = await derive(source, shapeOf(game))
 
   await Promise.all([
     put(`${folder}/full/${id}.webp`, full),
     put(`${folder}/card/${id}.webp`, card),
     put(`${folder}/mini/${id}.webp`, mini),
   ])
-  return version(full)
+
+  return { version: version(full), thumb }
+}
+
+async function get(key: string) {
+  const answer = await s3().send(new GetObjectCommand({ Bucket: bucket(), Key: key }))
+  return Buffer.from(await answer.Body!.transformToByteArray())
+}
+
+export async function patchAtlas(game: GameId, index: number, cell: Buffer) {
+  if (!Number.isInteger(index) || index < 0) return null
+
+  const folder = GAME_SPECS[game].images
+  const sheet = await get(`${folder}/thumbs.webp`).catch(() => null)
+  if (!sheet) return null
+
+  const { width = 0, height = 0 } = await sharp(sheet).metadata()
+  const cols = Math.round(width / CELL)
+  if (cols < 1 || index >= cols * Math.round(height / CELL)) return null
+
+  const updated = await sharp(sheet)
+    .composite([{ input: cell, left: (index % cols) * CELL, top: Math.floor(index / cols) * CELL }])
+    .webp({ quality: 84 })
+    .toBuffer()
+
+  await put(`${folder}/thumbs.webp`, updated)
+  return version(updated)
 }
 
 export async function uploadPages(game: GameId, id: number, sources: Buffer[]) {

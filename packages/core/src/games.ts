@@ -3,7 +3,7 @@ import { entities, settings } from './db'
 
 export type Entity = Record<string, unknown> & { id: number; answer: boolean }
 
-type GameData = { byId: Map<number, Entity>; pool: Entity[]; list: Entity[]; updated?: string }
+type GameData = { byId: Map<number, Entity>; pool: Entity[]; list: Entity[]; updated?: string; atlas?: string }
 
 const TTL = 60_000
 
@@ -20,13 +20,14 @@ async function load(game: GameId): Promise<GameData> {
     .find({ game, hidden: { $ne: true } }, { projection: { _id: 0, game: 0, hidden: 0, updatedAt: 0 }, sort: { id: 1 } })
     .toArray()) as unknown as Entity[]
 
-  const config = await (await settings()).findOne({ game }, { projection: { _id: 0, updated: 1 } })
+  const config = await (await settings()).findOne({ game }, { projection: { _id: 0, updated: 1, atlas: 1 } })
 
   const data = {
     byId: new Map(list.map((e) => [e.id, e])),
     pool: list.filter((e) => e.answer),
     list,
     updated: config?.updated,
+    atlas: config?.atlas,
   }
   cache.set(game, { at: Date.now(), data })
   return data

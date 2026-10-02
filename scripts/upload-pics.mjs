@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
-import path from 'node:path'
 import { HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import { PUBLIC, ROOT, pool } from './lib.mjs'
+import { pool } from './lib.mjs'
+import { collectPics } from './pics-keys.mjs'
 
 const { R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET } = process.env
 const missing = ['R2_ACCOUNT_ID', 'R2_ACCESS_KEY_ID', 'R2_SECRET_ACCESS_KEY', 'R2_BUCKET'].filter((k) => !process.env[k])
@@ -19,43 +19,6 @@ const client = new S3Client({
   credentials: { accessKeyId: R2_ACCESS_KEY_ID, secretAccessKey: R2_SECRET_ACCESS_KEY },
 })
 
-async function collect() {
-  const games = await fs.readdir(path.join(PUBLIC), { withFileTypes: true })
-  const files = []
-  for (const game of games) {
-    if (!game.isDirectory() || (only && game.name !== only)) continue
-
-    for (const kind of ['full', 'card', 'mini']) {
-      const dir = path.join(PUBLIC, game.name, kind)
-      for (const file of await fs.readdir(dir).catch(() => [])) {
-        if (file.endsWith('.webp')) files.push({ key: `${game.name}/${kind}/${file}`, path: path.join(dir, file) })
-      }
-    }
-
-    const atlas = path.join(PUBLIC, game.name, 'thumbs.webp')
-    if (await fs.stat(atlas).catch(() => null)) files.push({ key: `${game.name}/thumbs.webp`, path: atlas })
-
-    const voice = path.join(PUBLIC, game.name, 'voice')
-    for (const entry of await fs.readdir(voice, { withFileTypes: true }).catch(() => [])) {
-      if (!entry.isDirectory()) continue
-      const dir = path.join(voice, entry.name)
-      for (const file of await fs.readdir(dir).catch(() => [])) {
-        if (file.endsWith('.mp3')) files.push({ key: `${game.name}/voice/${entry.name}/${file}`, path: path.join(dir, file) })
-      }
-    }
-
-    const pages = path.join(PUBLIC, game.name, 'pages')
-    for (const entry of await fs.readdir(pages, { withFileTypes: true }).catch(() => [])) {
-      if (!entry.isDirectory()) continue
-      const dir = path.join(pages, entry.name)
-      for (const file of await fs.readdir(dir).catch(() => [])) {
-        if (file.endsWith('.webp')) files.push({ key: `${game.name}/pages/${entry.name}/${file}`, path: path.join(dir, file) })
-      }
-    }
-  }
-  return files
-}
-
 async function exists(key, size) {
   if (force) return false
   try {
@@ -67,7 +30,7 @@ async function exists(key, size) {
 }
 
 async function main() {
-  const files = await collect()
+  const files = await collectPics(only)
   if (!files.length) return console.log(only ? `у public/${only} нічого не знайшов` : 'картинок не знайшов')
   console.log(`знайшов ${files.length} картинок${only ? ` (гра ${only})` : ''}`)
 

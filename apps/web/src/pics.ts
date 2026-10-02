@@ -19,7 +19,7 @@ const tag = (game: GameId, version?: string) => {
   return stamp ? `?v=${stamp}` : ''
 }
 
-export const atlasUrl = (game: GameId) => `${fullBase}${GAME_SPECS[game].images}/thumbs.webp${tag(game)}`
+export const atlasUrl = (game: GameId, version?: string) => `${fullBase}${GAME_SPECS[game].images}/thumbs.webp${tag(game, version)}`
 
 export const fullUrl = (game: GameId, id: number, version?: string) =>
   `${fullBase}${GAME_SPECS[game].images}/full/${id}.webp${tag(game, version)}`

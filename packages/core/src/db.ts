@@ -146,7 +146,7 @@ export type EntityDoc = Record<string, unknown> & {
   updatedAt?: Date
 }
 
-export type SettingsDoc = { game: string; updated?: string }
+export type SettingsDoc = { game: string; updated?: string; atlas?: string }
 
 export type QuestDoc = { _id: string; userId: ObjectId; day: string; picks: string[]; claimed: string[]; createdAt: Date }
 
