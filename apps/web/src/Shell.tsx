@@ -14,7 +14,6 @@ import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
 import { dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type Feed } from './awards'
-import { XP_SOFT_RATE } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
@@ -153,7 +152,7 @@ function XpToday() {
           )
         })}
       </ul>
-      <p className="xp-today-note">{t('xp.softCap', { rate: Math.round(XP_SOFT_RATE * 100) })}</p>
+      <p className="xp-today-note">{t('xp.softCap')}</p>
     </div>
   )
 }

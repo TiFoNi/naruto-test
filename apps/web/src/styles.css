@@ -2274,7 +2274,6 @@ main {
 }
 
 .avatar.has-pic {
-  overflow: hidden;
   background: var(--card-2-solid);
   color: var(--text-3);
 }
@@ -5365,11 +5364,12 @@ html[data-auth] .guest-note {
   position: absolute;
   left: 50%;
   bottom: -9px;
+  z-index: 1;
   transform: translateX(-50%);
   min-width: 26px;
   padding: 1px 7px;
   border-radius: 999px;
-  border: 2px solid var(--card);
+  border: 2px solid var(--card-solid);
   background: var(--accent);
   color: #10131a;
   font-family: var(--display);

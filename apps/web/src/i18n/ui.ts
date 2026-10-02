@@ -241,9 +241,9 @@ const ui = {
   'xp.resetIn': { ru: 'обновится через {time}', uk: 'оновиться через {time}', en: 'resets in {time}' },
   'xp.fromGames': { ru: '/ {cap} XP с игры', uk: '/ {cap} XP з гри', en: '/ {cap} XP from play' },
   'xp.softCap': {
-    ru: 'После лимита опыт капает дальше — по {rate}% за игру.',
-    uk: 'Після ліміту досвід капає далі — по {rate}% за гру.',
-    en: 'Past the limit XP keeps coming — at {rate}% per game.',
+    ru: 'После лимита опыт не пропадает: за игру дают фиксированно — 12 за признаки, 5 за «Кто это?» и крестики-нолики, 4 за фразу, 1 за остальные.',
+    uk: 'Після ліміту досвід не зникає: за гру дають фіксовано — 12 за ознаки, 5 за «Хто це?» і хрестики-нулики, 4 за фразу, 1 за решту.',
+    en: 'Past the limit XP keeps coming at a flat rate: 12 for features, 5 for Guess Who and tic-tac-toe, 4 for quotes, 1 for the rest.',
   },
   'xp.daily': { ru: 'Ежедневные загадки', uk: 'Щоденні загадки', en: 'Daily puzzles' },
   'xp.endless': { ru: 'Бесконечный', uk: 'Нескінченний', en: 'Endless' },

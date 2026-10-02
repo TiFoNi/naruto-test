@@ -577,7 +577,8 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   )
   if (!finished) return (await duels()).findOne({ _id: duel._id }) as Promise<DuelDoc>
   if (duel.bot) {
-    if (winnerId && !winnerId.equals(BOT_ID)) await addXp(await users(), winnerId, MODE_XP[duel.mode as ModeId], 'endless')
+    if (winnerId && !winnerId.equals(BOT_ID))
+      await addXp(await users(), winnerId, MODE_XP[duel.mode as ModeId], 'endless', duel.mode as ModeId)
     return finished
   }
   if (matchDone) {
@@ -596,7 +597,7 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
 
 async function duelXp(userId: ObjectId, mode: ModeId, matchDone: boolean) {
   const collection = await users()
-  await addXp(collection, userId, MODE_XP[mode] + (matchDone ? DUEL_MATCH_XP : 0), 'duel')
+  await addXp(collection, userId, MODE_XP[mode] + (matchDone ? DUEL_MATCH_XP : 0), 'duel', mode)
 }
 
 export async function duelGuess(duel: DuelDoc, userId: ObjectId, entityId: number) {

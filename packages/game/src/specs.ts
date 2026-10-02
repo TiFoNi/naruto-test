@@ -264,22 +264,33 @@ export const ABILITY_STAGES = 6
 export const ABILITY_HINT_AT = 5
 
 export const MODE_XP: Record<ModeId, number> = {
-  classic: 15,
-  image: 20,
-  ability: 25,
-  page: 25,
-  phrase: 25,
-  who: 30,
-  grid: 30,
+  classic: 30,
+  phrase: 10,
+  image: 5,
+  ability: 5,
+  page: 5,
+  who: 25,
+  grid: 25,
+}
+
+export const MODE_XP_AFTER: Record<ModeId, number> = {
+  classic: 12,
+  phrase: 4,
+  image: 1,
+  ability: 1,
+  page: 1,
+  who: 5,
+  grid: 5,
 }
 
 export const DAILY_XP_FACTOR = 3
 
+export const DAILY_XP_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase']
+
 export const ZOOM_LEVELS = [7, 5.1, 3.7, 2.6, 1.9, 1.4, 1] as const
 
-export const XP_CAPS = { daily: 360, endless: 250, duel: 200 } as const
+export const XP_CAPS = { daily: 400, endless: 300, duel: 200 } as const
 
-export const XP_SOFT_RATE = 0.25
 
 export type XpSource = keyof typeof XP_CAPS
 

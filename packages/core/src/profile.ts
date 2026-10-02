@@ -1,6 +1,16 @@
 import { randomInt } from 'node:crypto'
 import { ObjectId, type Collection, type Filter } from 'mongodb'
-import { DAILY_KEYS, DAILY_XP_FACTOR, MODE_XP, STAT_KEYS, XP_CAPS, XP_SOFT_RATE, type ModeId, type XpSource } from '@nanda/game'
+import {
+  DAILY_KEYS,
+  DAILY_XP_FACTOR,
+  DAILY_XP_MODES,
+  MODE_XP,
+  MODE_XP_AFTER,
+  STAT_KEYS,
+  XP_CAPS,
+  type ModeId,
+  type XpSource,
+} from '@nanda/game'
 import { shiftDay, today } from './daily'
 import { users, type Stats, type UserDoc } from './db'
 import { levelOf } from './quests'
@@ -115,13 +125,21 @@ export async function applyDailyResult(collection: Collection<UserDoc>, userId: 
 }
 
 export async function awardSolveXp(collection: Collection<UserDoc>, userId: ObjectId, mode: ModeId, source: XpSource) {
-  return addXp(collection, userId, source === 'daily' ? MODE_XP[mode] * DAILY_XP_FACTOR : MODE_XP[mode], source)
+  const extra = source === 'daily' && DAILY_XP_MODES.includes(mode) ? DAILY_XP_FACTOR : 1
+  return addXp(collection, userId, MODE_XP[mode] * extra, source, mode)
 }
 
-export async function addXp(collection: Collection<UserDoc>, userId: ObjectId, amount: number, source: XpSource) {
+export async function addXp(
+  collection: Collection<UserDoc>,
+  userId: ObjectId,
+  amount: number,
+  source: XpSource,
+  mode?: ModeId,
+) {
   if (amount <= 0) return null
   const day = today()
   const carry = (field: XpSource) => ({ $cond: [{ $eq: ['$xpToday.day', day] }, orZero(`xpToday.${field}`), 0] })
+  const after = mode ? MODE_XP_AFTER[mode] : 1
 
   const doc = await collection.findOneAndUpdate(
     { _id: userId },
@@ -129,12 +147,7 @@ export async function addXp(collection: Collection<UserDoc>, userId: ObjectId, a
       { $set: { xpToday: { day, daily: carry('daily'), endless: carry('endless'), duel: carry('duel') } } },
       {
         $set: {
-          xpGain: {
-            $let: {
-              vars: { full: { $min: [amount, { $max: [0, { $subtract: [XP_CAPS[source], `$xpToday.${source}`] }] }] } },
-              in: { $add: ['$$full', { $round: [{ $multiply: [{ $subtract: [amount, '$$full'] }, XP_SOFT_RATE] }, 0] }] },
-            },
-          },
+          xpGain: { $cond: [{ $lt: [`$xpToday.${source}`, XP_CAPS[source]] }, amount, after] },
         },
       },
       { $set: { [`xpToday.${source}`]: { $add: [`$xpToday.${source}`, '$xpGain'] }, xp: { $add: [orZero('xp'), '$xpGain'] } } },
