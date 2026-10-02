@@ -13,6 +13,7 @@ import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
 import { dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type Feed } from './awards'
+import { XP_SOFT_RATE } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
@@ -133,20 +134,25 @@ function XpToday() {
         <span>{t('xp.fromGames', { cap: today.cap })}</span>
       </p>
       <ul className="xp-today-list">
-        {today.sources.map(({ source, earned, cap }) => (
-          <li key={source}>
-            <span>
-              {t(`xp.${source}` as UiKey)}
-              <b>
-                {earned} / {cap}
-              </b>
-            </span>
-            <i>
-              <em style={{ width: `${Math.min(100, Math.round((earned / cap) * 100))}%` }} />
-            </i>
-          </li>
-        ))}
+        {today.sources.map(({ source, earned, cap }) => {
+          const over = Math.max(0, earned - cap)
+          return (
+            <li key={source} className={over > 0 ? 'over' : ''}>
+              <span>
+                {t(`xp.${source}` as UiKey)}
+                <b>
+                  {Math.min(earned, cap)} / {cap}
+                  {over > 0 && <em className="xp-over">+{over}</em>}
+                </b>
+              </span>
+              <i>
+                <em style={{ width: `${Math.min(100, Math.round((earned / cap) * 100))}%` }} />
+              </i>
+            </li>
+          )
+        })}
       </ul>
+      <p className="xp-today-note">{t('xp.softCap', { rate: Math.round(XP_SOFT_RATE * 100) })}</p>
     </div>
   )
 }

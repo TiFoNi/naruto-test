@@ -2175,12 +2175,32 @@ main {
   background: var(--card);
 }
 
-.xp-today-list em {
+.xp-today-list i em {
   display: block;
   height: 100%;
   border-radius: 999px;
   background: #f0b429;
   transition: width 0.3s;
+}
+
+.xp-today-list li.over i em {
+  background: linear-gradient(90deg, #f0b429 60%, #46d6a0);
+}
+
+.xp-over {
+  margin-left: 5px;
+  color: #46d6a0;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.xp-today-note {
+  margin: 0;
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.45;
 }
 
 .account-badge {

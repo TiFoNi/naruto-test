@@ -562,7 +562,10 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
     { returnDocument: 'after' },
   )
   if (!finished) return (await duels()).findOne({ _id: duel._id }) as Promise<DuelDoc>
-  if (duel.bot) return finished
+  if (duel.bot) {
+    if (winnerId && !winnerId.equals(BOT_ID)) await addXp(await users(), winnerId, MODE_XP[duel.mode as ModeId], 'endless')
+    return finished
+  }
   if (matchDone) {
     await applyDuelStats(winnerId, finished.players, duel.mode)
     await pushDuelLog(scores, winnerId, duel.game, duel.mode, at)

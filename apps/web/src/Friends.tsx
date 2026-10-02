@@ -35,6 +35,7 @@ export default function Friends() {
   const [found, setFound] = useState<Mate[] | null>(null)
   const [busy, setBusy] = useState(false)
   const [calling, setCalling] = useState(false)
+  const [asking, setAsking] = useState<Mate | null>(null)
 
   const load = useCallback(async () => {
     const { ok, data } = await api<Partial<Lists>>('friends')
@@ -210,7 +211,7 @@ export default function Friends() {
                     aria-label={t('friends.remove')}
                     title={t('friends.remove')}
                     disabled={busy}
-                    onClick={() => void act('remove', one.id)}
+                    onClick={() => setAsking(one)}
                   >
                     <CloseIcon />
                   </button>
@@ -228,6 +229,41 @@ export default function Friends() {
           </div>
         )}
       </section>
+
+      {asking && (
+        <div className="modal-backdrop" onClick={() => !busy && setAsking(null)} role="presentation">
+          <section
+            className="card modal mates-ask"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('friends.removeSure', { name: asking.nickname })}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button type="button" className="modal-close" aria-label={t('profile.cancel')} onClick={() => setAsking(null)}>
+              <CloseIcon />
+            </button>
+            <h2>{t('friends.removeSure', { name: asking.nickname })}</h2>
+            <p className="muted">{t('friends.removeHint')}</p>
+            <div className="modal-actions">
+              <button type="button" className="ghost" disabled={busy} onClick={() => setAsking(null)}>
+                {t('profile.cancel')}
+              </button>
+              <button
+                type="button"
+                className="danger-button"
+                disabled={busy}
+                onClick={() => {
+                  const target = asking
+                  setAsking(null)
+                  void act('remove', target.id)
+                }}
+              >
+                {t('friends.remove')}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
 
       {lists.sent.length > 0 && (
         <section className="card mates-box is-sent">

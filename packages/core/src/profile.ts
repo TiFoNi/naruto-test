@@ -1,6 +1,6 @@
 import { randomInt } from 'node:crypto'
 import { ObjectId, type Collection, type Filter } from 'mongodb'
-import { DAILY_KEYS, DAILY_XP_FACTOR, MODE_XP, STAT_KEYS, XP_CAPS, type ModeId, type XpSource } from '@nanda/game'
+import { DAILY_KEYS, DAILY_XP_FACTOR, MODE_XP, STAT_KEYS, XP_CAPS, XP_SOFT_RATE, type ModeId, type XpSource } from '@nanda/game'
 import { shiftDay, today } from './daily'
 import { users, type Stats, type UserDoc } from './db'
 import { levelOf } from './quests'
@@ -126,7 +126,16 @@ export async function addXp(collection: Collection<UserDoc>, userId: ObjectId, a
     { _id: userId },
     [
       { $set: { xpToday: { day, daily: carry('daily'), endless: carry('endless'), duel: carry('duel') } } },
-      { $set: { xpGain: { $max: [0, { $min: [amount, { $subtract: [XP_CAPS[source], `$xpToday.${source}`] }] }] } } },
+      {
+        $set: {
+          xpGain: {
+            $let: {
+              vars: { full: { $min: [amount, { $max: [0, { $subtract: [XP_CAPS[source], `$xpToday.${source}`] }] }] } },
+              in: { $add: ['$$full', { $round: [{ $multiply: [{ $subtract: [amount, '$$full'] }, XP_SOFT_RATE] }, 0] }] },
+            },
+          },
+        },
+      },
       { $set: { [`xpToday.${source}`]: { $add: [`$xpToday.${source}`, '$xpGain'] }, xp: { $add: [orZero('xp'), '$xpGain'] } } },
     ],
     { returnDocument: 'after' },

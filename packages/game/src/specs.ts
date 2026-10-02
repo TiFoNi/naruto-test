@@ -279,6 +279,8 @@ export const ZOOM_LEVELS = [7, 5.1, 3.7, 2.6, 1.9, 1.4, 1] as const
 
 export const XP_CAPS = { daily: 360, endless: 250, duel: 200 } as const
 
+export const XP_SOFT_RATE = 0.25
+
 export type XpSource = keyof typeof XP_CAPS
 
 export const DUEL_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'who', 'grid']
