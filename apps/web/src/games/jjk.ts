@@ -6,7 +6,7 @@ type Character = Entity & {
   gender: string
   species: string
   grade: string
-  role: string
+  roles: string[]
   affiliations: string[]
   arc: string
   arcIndex: number
@@ -18,7 +18,7 @@ const columns: Column<Character>[] = [
   { title: l10n('Пол', 'Стать', 'Gender'), ...exact('gender') },
   { title: l10n('Природа', 'Природа', 'Nature'), ...exact('species') },
   { title: l10n('Ранг', 'Ранг', 'Grade'), ...exact('grade') },
-  { title: l10n('Должность', 'Посада', 'Position'), ...exact('role') },
+  { title: l10n('Роль', 'Роль', 'Role'), ...list('roles') },
   { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), ...list('affiliations') },
   { title: l10n('Дебют', 'Дебют', 'Debut'), key: 'arcIndex', text: (g, { tv }) => tv(g.arc) },
 ]
