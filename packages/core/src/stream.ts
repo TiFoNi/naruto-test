@@ -1,6 +1,6 @@
 import type { ObjectId } from 'mongodb'
 import { duels, type DuelDoc } from './db'
-import { duelShotKey, duelView, leaveDuel, settle, sideOf } from './duels'
+import { duelShotKey, duelView, leaveDuel, scheduleBot, settle, sideOf } from './duels'
 import { friends, type FriendDoc } from './friends'
 
 export type Sender = (event: string, data: unknown) => void
@@ -91,6 +91,7 @@ export async function pushRoom(code: string, known?: DuelDoc | null, only?: Room
     return
   }
   const duel = await settle(found)
+  scheduleBot(duel)
   const next = mark(duel)
   codes.set(String(duel._id), code)
   scheduleEnd(code, duel)

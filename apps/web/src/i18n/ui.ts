@@ -74,6 +74,7 @@ const ui = {
   },
   'grid.done': { ru: 'Раунд окончен', uk: 'Раунд завершено', en: 'Round over' },
   'grid.doneHint': { ru: 'Смотри итоги и запускай следующий', uk: 'Дивись підсумки й запускай наступний', en: 'Check the result and start the next one' },
+  'grid.doneSolo': { ru: 'Жми «Ещё раз», чтобы начать новую партию', uk: 'Тисни «Ще раз», щоб почати нову партію', en: 'Hit “Play again” to start a new game' },
   'grid.softHint': {
     ru: 'Ошибка передаёт ход сопернику, три ошибки — раунд проигран.',
     uk: 'Помилка передає хід суперникові, три помилки — раунд програно.',
@@ -223,6 +224,8 @@ const ui = {
   'duel.matchOver': { ru: 'Матч окончен', uk: 'Матч завершено', en: 'Match over' },
   'duel.matchWon': { ru: 'Матч твой!', uk: 'Матч твій!', en: 'You win the match!' },
   'duel.matchLost': { ru: 'Матч за {name}', uk: 'Матч за {name}', en: '{name} wins the match' },
+  'duel.matchDraw': { ru: 'Ничья', uk: 'Нічия', en: 'A draw' },
+  'duel.showResult': { ru: 'Показать результат', uk: 'Показати результат', en: 'Show the result' },
   'duel.leave': { ru: 'Выйти из комнаты', uk: 'Вийти з кімнати', en: 'Leave the room' },
 
   'duel.roundOf': { ru: 'Раунд {round} из {best}', uk: 'Раунд {round} з {best}', en: 'Round {round} of {best}' },

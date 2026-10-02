@@ -57,7 +57,9 @@ export default function GridBoard({ game, byId, duel, busy, error, onMark, onNex
           <p className="who-first">{over ? t('grid.done') : myTurn ? t('who.yourTurn') : duel.turn ? t('who.rivalTurn', { name: duel.turn }) : ''}</p>
           <p className="muted">
             {over
-              ? t('grid.doneHint')
+              ? duel.bot
+                ? t('grid.doneSolo')
+                : t('grid.doneHint')
               : miss && !duel.strict
                 ? miss.you
                   ? t('grid.skipYou', { name: missName })

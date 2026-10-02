@@ -272,7 +272,8 @@ async function boardStart(duel: DuelDoc) {
 }
 
 async function gridStart(duel: DuelDoc) {
-  const plan = await planGrid(duel.game as GameId, GRID_MIN)
+  let plan = await planGrid(duel.game as GameId, GRID_MIN)
+  for (let retry = 0; !plan && retry < 2; retry++) plan = await planGrid(duel.game as GameId, GRID_MIN)
   const startedAt = new Date()
   const limit = duel.seconds || DUEL_DEFAULT.seconds
   const first = duel.bot
@@ -543,7 +544,7 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   if (!timeUp && !over) return duel
   const winnerId = decide(duel)
   const winnerIndex = winnerId ? duel.players.findIndex((p) => p.userId.equals(winnerId)) : -1
-  const matchDone = winnerIndex >= 0 && (duel.players[winnerIndex].wins ?? 0) + 1 >= winsNeeded(duel)
+  const matchDone = duel.bot ? true : winnerIndex >= 0 && (duel.players[winnerIndex].wins ?? 0) + 1 >= winsNeeded(duel)
   const solvedAt = winnerIndex >= 0 ? duel.players[winnerIndex].solvedAt : null
   const ms = solvedAt && duel.startedAt ? solvedAt.getTime() - duel.startedAt.getTime() : null
   const at = new Date()
@@ -813,7 +814,15 @@ async function botMove(code: string) {
   if (!duel || !duel.bot || duel.status !== 'playing' || !duel.grid) return
   if (!duel.turnId?.equals(BOT_ID)) return
   const choice = await botChoice(duel)
-  if (!choice) return
+  if (!choice) {
+    const stuck = await (await duels()).findOneAndUpdate(
+      { _id: duel._id, status: 'playing' },
+      { $set: Object.fromEntries(duel.players.map((_, at) => [`players.${at}.gaveUp`, true])) },
+      { returnDocument: 'after' },
+    )
+    await settle(stuck ?? duel)
+    return
+  }
   await (await duels()).updateOne({ _id: duel._id, 'players.userId': BOT_ID }, { $set: { 'players.$.seenAt': new Date() } })
   await markCell(duel, BOT_ID, choice.cell, choice.entityId)
 }

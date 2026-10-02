@@ -20,6 +20,7 @@ import {
   pickSecret,
   recentRivals,
   setReady,
+  scheduleBot,
   settle,
   setupDuel,
   soloGrid,
@@ -73,6 +74,7 @@ export const POST = handle(async (request) => {
 
   const duel = await findDuel(body.code)
   if (!duel) return fail(404, 'not_found')
+  scheduleBot(duel)
 
   if (action === 'decline') {
     const done = await declineInvite(duel, userId)

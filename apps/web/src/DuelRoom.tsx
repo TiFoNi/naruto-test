@@ -225,7 +225,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
       {duel.matchDone && over && showResult && (
         <div className="modal-backdrop" onClick={() => setShowResult(false)} role="presentation">
           <section
-            className={`card modal duel-final ${duel.youWon ? 'won' : 'lost'}`}
+            className={`card modal duel-final ${duel.winner ? (duel.youWon ? 'won' : 'lost') : 'drawn'}`}
             role="dialog"
             aria-modal="true"
             aria-label={t('duel.matchOver')}
@@ -234,7 +234,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
             <span className="duel-final-mark" aria-hidden>
               {duel.youWon ? <TrophyIcon /> : <SwordsIcon />}
             </span>
-            <h2>{duel.youWon ? t('duel.matchWon') : t('duel.matchLost', { name: duel.winner ?? '' })}</h2>
+            <h2>{duel.winner ? (duel.youWon ? t('duel.matchWon') : t('duel.matchLost', { name: duel.winner })) : t('duel.matchDraw')}</h2>
             <p className="duel-final-score">
               <b>{you?.wins ?? 0}</b>
               <span>:</span>
@@ -268,7 +268,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
       {duel.matchDone && over && !showResult && (
         <div className="card duel-final-again">
           <button className="primary" onClick={() => setShowResult(true)} disabled={busy}>
-            {t('duel.matchOver')}
+            {t('duel.showResult')}
           </button>
         </div>
       )}
