@@ -19,7 +19,7 @@ export const VALUES: Record<string, [uk: string, en: string]> = {
   'Ассоциация магов': ['Асоціація магів', 'Jujutsu society'],
   'Без фракции': ['Без фракції', 'No affiliation'],
   'Проклятое дитя': ['Прокляте дитя', 'Cursed Child'],
-  'Проклятая утроба': ['Прокляте лоно', 'Fearsome Womb'],
+  'Проклятая утроба': ['Проклята утроба', 'Fearsome Womb'],
   'Против Махито': ['Проти Махіто', 'Vs. Mahito'],
   'Обмен с Киото': ['Обмін із Кіото', 'Kyoto Exchange'],
   'Проклятые картины': ['Прокляті картини', 'Death Painting'],
