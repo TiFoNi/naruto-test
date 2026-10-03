@@ -8064,3 +8064,119 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 .xp-tip td:nth-child(2) {
   color: var(--text);
 }
+
+.avatar-frame {
+  position: absolute;
+  inset: -14%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.avatar.has-frame::after {
+  display: none;
+}
+
+.avatar.has-frame b {
+  z-index: 3;
+}
+
+.frame-open {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px 10px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.frame-open:hover {
+  border-color: var(--accent);
+}
+
+.frame-open-preview {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text-3);
+}
+
+.frame-open-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.frame-open-preview i {
+  font-style: normal;
+}
+
+.frame-open-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.frame-open-text b {
+  font-size: 14px;
+}
+
+.frame-open-text small {
+  color: var(--text-3);
+  font-size: 12.5px;
+}
+
+.frame-modal {
+  padding: 22px;
+}
+
+.frame-modal h2 {
+  margin: 0 0 16px;
+  font-family: var(--display);
+  font-size: 20px;
+}
+
+.frame-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 12px;
+}
+
+.frame-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  color: var(--text-2);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.frame-card:hover {
+  border-color: var(--text-3);
+  color: var(--text);
+}
+
+.frame-card.on {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--text);
+}

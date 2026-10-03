@@ -16,7 +16,6 @@ import { useHref, useNavigate } from './router'
 import { kyivToday } from './stats'
 import { keepPerUser } from './session-cache'
 import { refreshFeed } from './awards'
-import { FRAMES, frameUrl } from './frames'
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -100,7 +99,7 @@ keepPerUser(() => {
 })
 
 export default function Profile({ onBack, id }: { onBack: () => void; id?: string }) {
-  const { user, refresh } = useAuth()
+  const { user } = useAuth()
   const own = !id
   const { t, l, lang } = useI18n()
   const href = useHref()
@@ -194,14 +193,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   }
 
   const accuracy = summary ? percent(summary.totals.solved, summary.totals.played) : 0
-  const pickFrame = useCallback(
-    async (frame: string | null) => {
-      const { ok } = await api('profile', { action: 'frame', frame })
-      if (ok) await refresh()
-    },
-    [refresh],
-  )
-
   const average = summary && summary.totals.solved ? (summary.totals.guesses / summary.totals.solved).toFixed(1) : '—'
 
   return (
@@ -225,33 +216,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                 {own && <span className="muted">{user?.username ?? ''}</span>}
               </div>
             </div>
-
-            {own && !!user?.frames.length && (
-              <div className="frame-picker">
-                <span>{l({ ru: 'Рамка', uk: 'Рамка', en: 'Frame' })}</span>
-                <div className="frame-row">
-                  <button
-                    type="button"
-                    className={`frame-option ${user.frame ? '' : 'on'}`}
-                    onClick={() => void pickFrame(null)}
-                    title={l({ ru: 'Без рамки', uk: 'Без рамки', en: 'No frame' })}
-                  >
-                    <i aria-hidden>—</i>
-                  </button>
-                  {FRAMES.filter((one) => user.frames.includes(one.id)).map((one) => (
-                    <button
-                      key={one.id}
-                      type="button"
-                      className={`frame-option ${user.frame === one.id ? 'on' : ''}`}
-                      onClick={() => void pickFrame(one.id)}
-                      title={l(one.label)}
-                    >
-                      <img src={frameUrl(one.id)} alt="" />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
 
             <div className="level-panel">
               <div className="level-line">
