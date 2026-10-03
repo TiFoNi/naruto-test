@@ -8218,3 +8218,58 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
     font-size: 12.5px;
   }
 }
+
+.ask-modal {
+  width: min(100%, 420px);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ask-modal h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 20px;
+}
+
+.ask-modal p {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ask-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.ask-actions button {
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  color: var(--text-2);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.ask-actions .ask-cancel:hover {
+  color: var(--text);
+  border-color: var(--text-3);
+}
+
+.ask-actions .ask-danger {
+  border-color: color-mix(in srgb, var(--wrong) 55%, transparent);
+  background: color-mix(in srgb, var(--wrong) 18%, transparent);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.ask-actions .ask-danger:hover {
+  background: color-mix(in srgb, var(--wrong) 28%, transparent);
+}

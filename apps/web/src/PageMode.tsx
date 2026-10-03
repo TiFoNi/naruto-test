@@ -102,7 +102,7 @@ export default function PageMode({ game, active, stats, daily = false, challenge
       <div className={`play-card mode-ask state-${mood}`}>
         <div className="play-card-head">
           <h2>{t(headline)}</h2>
-          <AnimeFilter game={game} daily={daily} />
+          <AnimeFilter game={game} daily={daily} playing={!!round && !over} roundAnime={round?.anime === true} onSurrender={giveUp} />
         </div>
         <p>{t(subline)}</p>
       </div>

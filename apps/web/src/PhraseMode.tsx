@@ -49,12 +49,12 @@ export default function PhraseMode({ game, active, stats, daily = false, challen
       <div className={`play-card mode-ask state-${mood}`}>
         <div className="play-card-head">
           <h2>{headline}</h2>
-          <AnimeFilter game={game} daily={daily} />
+          <AnimeFilter game={game} daily={daily} playing={!!round && !over} roundAnime={round?.anime === true} onSurrender={giveUp} />
         </div>
         <p>{subline}</p>
       </div>
 
-      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact limited={!daily} />}
+      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact limited={round?.anime === true} />}
 
       {over && !scored && (
         <button type="button" className="primary mode-next" onClick={next}>

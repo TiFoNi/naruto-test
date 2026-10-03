@@ -93,7 +93,7 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
         </div>
       }
     >
-      <AskCard title={headline} hint={subline} state={mood} aside={<AnimeFilter game={game} daily={daily} />} />
+      <AskCard title={headline} hint={subline} state={mood} aside={<AnimeFilter game={game} daily={daily} playing={!!round && !over} roundAnime={round?.anime === true} onSurrender={giveUp} />} />
 
       {!over && (
         <div className={`ability-reveal ${ability ? 'open' : ''}`}>
@@ -112,7 +112,7 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
         </div>
       )}
 
-      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact limited={!daily} />}
+      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact limited={round?.anime === true} />}
 
       {over && !scored && (
         <button type="button" className="primary mode-next" onClick={next}>

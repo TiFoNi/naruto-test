@@ -44,6 +44,7 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, 
     answerId: answer.id,
     ...(extra ? { extra } : {}),
     ...(guest ? { guest: true } : {}),
+    ...(animeOnly && shown.length ? { anime: true } : {}),
     guesses: [],
     status: 'active',
     createdAt: new Date(),
@@ -132,6 +133,7 @@ export async function roundView(round: RoundDoc, full = true) {
     ...(round.daily && full ? await dailyInfo(round) : {}),
     ...(round.challenge ? { challenge: round.challenge } : {}),
     status: round.status,
+    ...(round.anime ? { anime: true } : {}),
     guesses: round.guesses
       .filter((guessId) => byId.has(guessId))
       .map((guessId) => ({

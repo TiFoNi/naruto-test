@@ -34,10 +34,10 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
             </span>
           }
           title={t('play.classicTitle')}
-          aside={<AnimeFilter game={game} daily={daily} />}
+          aside={<AnimeFilter game={game} daily={daily} playing={!!round && !over} roundAnime={round?.anime === true} onSurrender={giveUp} />}
           hint={t('play.classicPrompt')}
         >
-          {!error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} limited={!daily} />}
+          {!error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} limited={round?.anime === true} />}
         </PlayPanel>
       )}
 

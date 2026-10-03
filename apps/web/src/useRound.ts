@@ -17,6 +17,7 @@ export type RoundView = {
   shot?: string
   zoom?: number
   daily?: string
+  anime?: boolean
   hintAt?: number
   ability?: { ru: string; uk: string; en: string }
   nextAt?: number

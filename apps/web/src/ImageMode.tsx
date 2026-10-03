@@ -53,9 +53,9 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
       }
       side={<PlaySide game={game} mode="image" daily={daily} stats={stats} playing={playing} howto="image" onGiveUp={giveUp} />}
     >
-      {!over && <AskCard title={t('play.imageTitle')} hint={t('play.imagePrompt')} aside={<AnimeFilter game={game} daily={daily} />} />}
+      {!over && <AskCard title={t('play.imageTitle')} hint={t('play.imagePrompt')} aside={<AnimeFilter game={game} daily={daily} playing={!!round && !over} roundAnime={round?.anime === true} onSurrender={giveUp} />} />}
 
-      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact limited={!daily} />}
+      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact limited={round?.anime === true} />}
 
       <RoundStatus error={error} onRetry={retry} />
 

@@ -73,6 +73,7 @@ export type RoundDoc = {
   guesses: number[]
   status: RoundStatus
   guest?: boolean
+  anime?: boolean
   daily?: string
   challenge?: string
   extra?: string
