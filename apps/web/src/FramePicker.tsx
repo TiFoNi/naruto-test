@@ -41,7 +41,6 @@ export default function FramePicker() {
   return (
     <>
       <button type="button" className="frame-open" onClick={() => setOpen(true)}>
-        <Avatar id={user.id} name={user.nickname} avatar={user.avatar} frame={user.frame} className="frame-open-avatar" />
         <span className="frame-open-text">
           <b>{title}</b>
           <small>

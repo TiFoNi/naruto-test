@@ -304,6 +304,7 @@ export default function AvatarPicker() {
           id={user?.id}
           name={user?.nickname ?? "?"}
           avatar={user?.avatar}
+          frame={user?.frame}
         />
         <span className="ava-hover" aria-hidden>
           <PictureIcon />

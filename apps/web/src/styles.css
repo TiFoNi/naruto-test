@@ -8088,8 +8088,8 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   align-items: center;
   gap: 16px;
   width: 100%;
-  padding: 14px 18px;
-  border-radius: 16px;
+  padding: 12px 16px;
+  border-radius: 14px;
   border: 1px solid transparent;
   background: var(--card-2);
   color: inherit;
@@ -8101,11 +8101,6 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 
 .frame-open:hover {
   border-color: color-mix(in srgb, var(--accent) 50%, transparent);
-}
-
-.frame-open-avatar {
-  flex: none;
-  margin: 0 6px;
 }
 
 .frame-open-text {
