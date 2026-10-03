@@ -111,7 +111,7 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
         </div>
       )}
 
-      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact />}
+      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact limited={!daily} />}
 
       {over && !scored && (
         <button type="button" className="primary mode-next" onClick={next}>

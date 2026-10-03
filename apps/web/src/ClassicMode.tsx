@@ -35,7 +35,7 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
           title={t('play.classicTitle')}
           hint={t('play.classicPrompt')}
         >
-          {!error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} />}
+          {!error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} limited={!daily} />}
         </PlayPanel>
       )}
 

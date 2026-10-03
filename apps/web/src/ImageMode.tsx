@@ -54,7 +54,7 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
     >
       {!over && <AskCard title={t('play.imageTitle')} hint={t('play.imagePrompt')} />}
 
-      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact />}
+      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact limited={!daily} />}
 
       <RoundStatus error={error} onRetry={retry} />
 

@@ -18,6 +18,7 @@ const FIELDS = {
 const SHOWN = /episode|movie|ova|ona|film/i
 
 const ALSO = {
+  csm: ['Hirokazu Arai'],
   dn: ['L'],
   tg: ['Karren von Rosewald'],
   jojo: ['Narciso Anasui'],

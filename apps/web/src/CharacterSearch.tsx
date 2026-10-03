@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import Thumb from './Thumb'
 import type { Entity, Game } from './games/types'
 import { ruToUk, useI18n } from './i18n'
+import { useAnimeOnly } from './anime'
 import { normalize } from './util'
 import { ArrowIcon, SearchIcon } from './icons'
 
@@ -11,10 +12,13 @@ type Props = {
   busy?: boolean
   compact?: boolean
   pickOnly?: boolean
+  limited?: boolean
   onPick: (e: Entity) => void
 }
 
-export default function CharacterSearch({ game, exclude, busy = false, compact = false, pickOnly = false, onPick }: Props) {
+export default function CharacterSearch({ game, exclude, busy = false, compact = false, pickOnly = false, limited = false, onPick }: Props) {
+  const [animeOnly] = useAnimeOnly(game.id)
+  const pool = limited && animeOnly ? game.entities.filter((one) => one.anime !== false) : game.entities
   const { t, name, alt } = useI18n()
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
@@ -24,11 +28,11 @@ export default function CharacterSearch({ game, exclude, busy = false, compact =
 
   const index = useMemo(
     () =>
-      game.entities.map((e) => ({
+      pool.map((e) => ({
         e,
         terms: [e.name, e.nameUk ?? ruToUk(e.name), e.nameEn, e.aliases].filter((s): s is string => !!s).map(normalize),
       })),
-    [game, game.entities],
+    [game, pool],
   )
 
   const matches = useMemo(() => {
@@ -131,7 +135,7 @@ export default function CharacterSearch({ game, exclude, busy = false, compact =
         />
         {!compact && (
           <span className="search-left">
-            {t(game.unit === 'player' ? 'play.leftPlayer' : 'play.left', { count: game.entities.length - exclude.size })}
+            {t(game.unit === 'player' ? 'play.leftPlayer' : 'play.left', { count: pool.length - exclude.size })}
           </span>
         )}
       </div>

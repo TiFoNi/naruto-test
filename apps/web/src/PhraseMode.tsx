@@ -50,7 +50,7 @@ export default function PhraseMode({ game, active, stats, daily = false, challen
         <p>{subline}</p>
       </div>
 
-      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact />}
+      {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact limited={!daily} />}
 
       {over && !scored && (
         <button type="button" className="primary mode-next" onClick={next}>
