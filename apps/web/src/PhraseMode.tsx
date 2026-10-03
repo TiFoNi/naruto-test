@@ -1,3 +1,4 @@
+import AnimeFilter from './AnimeFilter'
 import CharacterSearch from './CharacterSearch'
 import PhraseColumn from './PhraseColumn'
 import TriesList from './TriesList'
@@ -46,7 +47,10 @@ export default function PhraseMode({ game, active, stats, daily = false, challen
       }
     >
       <div className={`play-card mode-ask state-${mood}`}>
-        <h2>{headline}</h2>
+        <div className="play-card-head">
+          <h2>{headline}</h2>
+          <AnimeFilter game={game} daily={daily} />
+        </div>
         <p>{subline}</p>
       </div>
 

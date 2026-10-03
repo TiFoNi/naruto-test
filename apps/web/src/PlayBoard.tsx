@@ -14,10 +14,13 @@ export default function PlayBoard({ variant = 'classic', media, side, children }
   )
 }
 
-export function AskCard({ title, hint, state }: { title: string; hint: string; state?: string }) {
+export function AskCard({ title, hint, state, aside }: { title: string; hint: string; state?: string; aside?: ReactNode }) {
   return (
     <div className={`play-card ${state ? `mode-ask state-${state}` : 'shot-copy'}`}>
-      <h2>{title}</h2>
+      <div className="play-card-head">
+        <h2>{title}</h2>
+        {aside}
+      </div>
       <p>{hint}</p>
     </div>
   )

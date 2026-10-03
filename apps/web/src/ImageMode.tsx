@@ -1,3 +1,4 @@
+import AnimeFilter from './AnimeFilter'
 import CharacterSearch from './CharacterSearch'
 import PlayBoard, { AskCard } from './PlayBoard'
 import PlaySide from './PlaySide'
@@ -52,7 +53,7 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
       }
       side={<PlaySide game={game} mode="image" daily={daily} stats={stats} playing={playing} howto="image" onGiveUp={giveUp} />}
     >
-      {!over && <AskCard title={t('play.imageTitle')} hint={t('play.imagePrompt')} />}
+      {!over && <AskCard title={t('play.imageTitle')} hint={t('play.imagePrompt')} aside={<AnimeFilter game={game} daily={daily} />} />}
 
       {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact limited={!daily} />}
 

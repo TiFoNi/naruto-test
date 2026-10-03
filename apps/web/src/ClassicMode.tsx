@@ -1,3 +1,4 @@
+import AnimeFilter from './AnimeFilter'
 import CharacterSearch from './CharacterSearch'
 import GuessGrid from './GuessGrid'
 import PlayBoard from './PlayBoard'
@@ -33,6 +34,7 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
             </span>
           }
           title={t('play.classicTitle')}
+          aside={<AnimeFilter game={game} daily={daily} />}
           hint={t('play.classicPrompt')}
         >
           {!error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} limited={!daily} />}

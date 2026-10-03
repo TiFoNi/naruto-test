@@ -15,7 +15,7 @@ export function animeOnly(game: string) {
 }
 
 export function useAnimeOnly(game: string) {
-  const [on, setOn] = useState(false)
+  const [on, setOn] = useState(() => (typeof window === 'undefined' ? false : animeOnly(game)))
 
   useEffect(() => {
     const sync = () => setOn(animeOnly(game))

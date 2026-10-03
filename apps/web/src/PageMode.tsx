@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import AnimeFilter from './AnimeFilter'
 import MangaStage, { MangaOptions } from './MangaStage'
 import PlayBoard from './PlayBoard'
 import PlaySide from './PlaySide'
@@ -99,7 +100,10 @@ export default function PageMode({ game, active, stats, daily = false, challenge
       }
     >
       <div className={`play-card mode-ask state-${mood}`}>
-        <h2>{t(headline)}</h2>
+        <div className="play-card-head">
+          <h2>{t(headline)}</h2>
+          <AnimeFilter game={game} daily={daily} />
+        </div>
         <p>{t(subline)}</p>
       </div>
 

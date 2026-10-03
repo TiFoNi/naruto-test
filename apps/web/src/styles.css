@@ -8172,11 +8172,28 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   color: var(--text);
 }
 
+.play-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 12px;
+}
+
+.play-card-head h2 {
+  margin: 0;
+}
+
+.play-panel-top .anime-filter {
+  margin-left: auto;
+  align-self: flex-start;
+}
+
 .anime-filter {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  align-self: flex-start;
+  flex: none;
   padding: 7px 14px 7px 12px;
   border-radius: 999px;
   border: 1px solid var(--line);
@@ -8193,4 +8210,11 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 
 .anime-filter input {
   accent-color: var(--accent);
+}
+
+@media (max-width: 560px) {
+  .anime-filter {
+    padding: 6px 12px 6px 10px;
+    font-size: 12.5px;
+  }
 }

@@ -1,4 +1,5 @@
 import AbilityIcon from './AbilityIcon'
+import AnimeFilter from './AnimeFilter'
 import CharacterSearch from './CharacterSearch'
 import PlayBoard, { AskCard } from './PlayBoard'
 import PlaySide from './PlaySide'
@@ -92,7 +93,7 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
         </div>
       }
     >
-      <AskCard title={headline} hint={subline} state={mood} />
+      <AskCard title={headline} hint={subline} state={mood} aside={<AnimeFilter game={game} daily={daily} />} />
 
       {!over && (
         <div className={`ability-reveal ${ability ? 'open' : ''}`}>
