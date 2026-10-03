@@ -3,15 +3,16 @@ import path from 'node:path'
 import {
   PUBLIC,
   ROOT,
-  cachedDownload,
   cachedJson,
   categoryMembers,
   infobox,
   keepNotable,
   plain,
+  pickPicture,
   pool,
   pruneImages,
   ruName,
+  wikiImageUrls,
   wikiPages,
   wikiQuery,
   writeAtlas,
@@ -19,6 +20,7 @@ import {
 } from './lib.mjs'
 import { transliterate } from './ru.mjs'
 import { dropDeleted, onlyAnswers } from './dropped.mjs'
+import { anilistPictures, bare, nameKey } from './anilist.mjs'
 
 const API = 'https://souleater.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'se')
@@ -28,6 +30,27 @@ const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'se.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'se-atlas.json')
 const ANSWER_POOL_SIZE = 50
 const KEEP = 65
+const ANIME_MEDIA = 3588
+const MANGA_MEDIA = 30908
+
+const GENDER_OVERRIDES = { Crona: 'Другое' }
+
+const ANIME_ART = {
+  'Kimial Diehl': 'Kim Diehl (Pre-Timeskip) Profile.png',
+  'Harvar D. Éclair': 'Harvar D. Eclair Profile.png',
+  "Jacqueline O'Lantern Dupre": 'Jacqueline (Pre-Timeskip) Profile.png',
+}
+
+const ANIME_ART_SKIP = new Set(['Ragnarok'])
+
+const ANILIST_NAMES = {
+  'Soul Evans': 'Soul Eater Evans',
+  'Kirikou Rung': 'Kilik Rung',
+  'Kimial Diehl': 'Kim Diehl',
+  'Mira Naigus': 'Mira Nygus',
+  Ragnarok: 'Ragnarök',
+  Death: 'Shinigami',
+}
 
 const ARCS = [
   [0, 'Пролог'],
@@ -224,6 +247,16 @@ const NAMES = {
   'Rachel Boyd': 'Рэйчел Бойд',
 }
 
+const animeFile = (text) => {
+  if (!text) return null
+  const found =
+    text.match(/\|\s*(?:display\s*)?image\s*\d?\s*=\s*(?:\[\[File:)?\s*([^\]|\n]+\.(?:png|jpe?g|webp))/i) ??
+    text.match(/\[\[File:\s*([^\]|\n]+\.(?:png|jpe?g|webp))/i)
+  return found ? found[1].trim().replace(/_/g, ' ') : null
+}
+
+const anilistKey = (name) => nameKey(bare(ANILIST_NAMES[name] ?? name))
+
 const keepTemplates = (value) => value.replace(/\{\{c\|[^{}]*\}\}/gi, '').replace(/\{\{([^|{}]+)\}\}/g, '$1')
 
 function genderOf(cats, text) {
@@ -320,6 +353,21 @@ async function main() {
     return Object.fromEntries(Object.entries(res).map(([t, p]) => [t, p.original?.source ?? null]))
   })
 
+  const bones = await cachedJson(CACHE, 'bones.json', () => wikiPages(API, candidates.map((name) => `${name}/Bones`)))
+  const bonesFiles = Object.fromEntries(
+    candidates
+      .map((name) => [name, ANIME_ART[name] ?? (ANIME_ART_SKIP.has(name) ? null : animeFile(bones[`${name}/Bones`]?.text))])
+      .filter(([, file]) => file),
+  )
+  const guessFiles = Object.fromEntries(candidates.filter((name) => !bonesFiles[name]).map((name) => [name, `${name} Profile.png`]))
+  const animeUrls = await cachedJson(CACHE, 'anime-art.json', () =>
+    wikiImageUrls(API, [...new Set([...Object.values(bonesFiles), ...Object.values(guessFiles)])]),
+  )
+  const portraits = await cachedJson(CACHE, 'anilist.json', async () => Object.fromEntries(await anilistPictures([ANIME_MEDIA])))
+  const mangaPortraits = await cachedJson(CACHE, 'anilist-manga.json', async () =>
+    Object.fromEntries(await anilistPictures([MANGA_MEDIA])),
+  )
+
   const result = []
   await pool(candidates, 8, async (name) => {
     const { id, text, ru, length } = pages[name]
@@ -327,7 +375,9 @@ async function main() {
     if (cats.some((c) => SKIP_CATEGORIES.test(c))) return
     if (!cats.some((c) => /^Category:(Character|Human|Witch|Sorcerer|Demon Weapon|Meister|Death God|Great Old One|Kishin Egg)$/.test(c))) return
     if (cats.includes('Category:Creatures in the Book of Eibon')) return
-    const buf = await cachedDownload(path.join(CACHE, 'img'), String(id), [images[name]])
+    const key = anilistKey(name)
+    const art = animeUrls[bonesFiles[name] ?? guessFiles[name]]
+    const buf = await pickPicture(path.join(CACHE, 'img'), String(id), [art, portraits[key], mangaPortraits[key], images[name]])
     if (!buf) return console.warn('no image', name)
     try {
       await writeFullAndThumb(buf, path.join(OUT_IMG, 'full', `${id}.webp`), path.join(THUMBS, `${id}.webp`), 96)
@@ -341,12 +391,13 @@ async function main() {
       id,
       name: NAMES[name] ?? ruName(name, ru, transliterate),
       nameEn: name.replace(/\s*\([^)]*\)$/, ''),
-      gender: genderOf(cats, text),
+      gender: GENDER_OVERRIDES[name] ?? genderOf(cats, text),
       species: species.length ? species : ['Человек'],
       role: matchRules(ROLE_RULES, cats)[0] ?? 'Нет',
       affiliations,
       side: sideOf(cats, affiliations),
       status: cats.includes('Category:Deceased') || DEAD.has(name) ? 'Мёртв' : 'Жив',
+      anime: !!bonesFiles[name] || portraits[key] !== undefined,
       arc: ARCS[arcIndex][1],
       arcIndex,
       length,
