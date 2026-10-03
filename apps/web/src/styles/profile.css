@@ -88,6 +88,17 @@
   gap: 14px;
 }
 
+.profile-id .avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  font-size: 30px;
+}
+
+.profile-id .avatar.has-frame {
+  margin: 10px 14px 10px 10px;
+}
+
 .profile-facts {
   position: relative;
   display: grid;

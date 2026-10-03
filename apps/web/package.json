@@ -3,9 +3,9 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "dev": "node --env-file-if-exists=../../.env.local ../../node_modules/.bin/next dev --port 5173",
+    "dev": "node ../../scripts/web.mjs dev --port 5173",
     "build": "next build",
-    "start": "node --env-file-if-exists=../../.env.local ../../node_modules/.bin/next start --port 5173",
+    "start": "node ../../scripts/web.mjs start --port 5173",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
