@@ -28,7 +28,7 @@
     "data:football": "node scripts/build-football.mjs",
     "cards": "node scripts/build-cards.mjs",
     "check:data": "node scripts/check-data.mjs",
-    "xp": "node --env-file-if-exists=.env.local scripts/give-xp.mjs",
+    "frames": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/give-frames.mjs",
     "nicknames": "node --env-file-if-exists=.env.local scripts/backfill-nickname-lower.mjs",
     "names:uk": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/uk-names.mjs",
     "entities": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/import-entities.mjs",

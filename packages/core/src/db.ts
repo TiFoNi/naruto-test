@@ -9,6 +9,8 @@ export type UserDoc = {
   nicknameLower?: string
   tag?: string
   avatar?: string | null
+  frame?: string | null
+  frames?: string[]
   xp?: number
   xpToday?: { day: string; daily: number; endless: number; duel?: number }
   stats?: Record<string, Partial<Stats>>

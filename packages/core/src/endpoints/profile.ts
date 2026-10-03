@@ -1,6 +1,7 @@
 import { fail, handle, json, readJson } from '../http'
 import { quests, rounds, seasons } from '../db'
 import { claimTag, currentUser, lowerNickname, parseNickname, toProfile, unauthorized } from '../profile'
+import { isFrame } from '../frames'
 
 export const POST = handle(async (request) => {
   const found = await currentUser(request)
@@ -32,6 +33,19 @@ export const POST = handle(async (request) => {
     const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $set: { nickname, nicknameLower: lower } }, { returnDocument: 'after' })
     const tag = await claimTag(found.collection, found.doc._id!, lower, doc?.tag ?? found.doc.tag)
     return json(toProfile({ ...(doc ?? found.doc), tag: tag ?? undefined }))
+  }
+
+  if (body.action === 'frame') {
+    const frame = body.frame ?? null
+    if (frame !== null && !isFrame(frame)) return fail(400, 'bad_request')
+    if (frame !== null && !(found.doc.frames ?? []).includes(frame)) return fail(403, 'locked')
+
+    const doc = await found.collection.findOneAndUpdate(
+      { _id: found.doc._id },
+      frame === null ? { $unset: { frame: '' } } : { $set: { frame } },
+      { returnDocument: 'after' },
+    )
+    return json(toProfile(doc ?? found.doc))
   }
 
   return fail(400, 'bad_request')

@@ -13,6 +13,8 @@ export type User = {
   nickname: string
   tag: string | null
   avatar: string | null
+  frame: string | null
+  frames: string[]
   level: number
   xp: number
   today?: XpToday

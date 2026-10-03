@@ -206,6 +206,8 @@ export function toProfile(doc: UserDoc) {
       nickname: doc.nickname ?? defaultNickname(doc.username),
       tag: doc.tag ?? null,
       avatar: doc.avatar ?? null,
+      frame: doc.frame ?? null,
+      frames: doc.frames ?? [],
       level: levelOf(xp),
       xp,
       today: todayXp(doc),
