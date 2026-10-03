@@ -8,8 +8,6 @@ export const FULL = { width: 800, height: 900 }
 export const SQUARE = 800
 export const CELL = 96
 
-const TIGHT = 420
-
 export async function framed(source: Buffer, width: number, height: number, quality: number) {
   const back = await sharp(source).resize(width, height, { fit: 'cover' }).blur(18).modulate({ brightness: 0.75 }).toBuffer()
   const front = await sharp(source).resize(width, height, { fit: 'inside' }).toBuffer()
@@ -21,7 +19,7 @@ export async function derive(source: Buffer, shape: Shape = 'square', detailed?:
   const { width, height } = trimmed.info
   const extra = detailed ? await sharp(detailed).trim().png().toBuffer({ resolveWithObject: true }) : null
   const base = extra && extra.info.width > width ? extra : trimmed
-  const tight = width < TIGHT
+  const tight = Math.max(CARD.width / width, CARD.height / height) > 1.2
   const square = shape === 'square'
 
   const side = Math.min(SQUARE, base.info.width, base.info.height)
