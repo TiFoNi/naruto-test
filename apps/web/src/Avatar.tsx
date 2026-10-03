@@ -2,15 +2,16 @@
 
 import type { ReactNode } from 'react'
 import { avatarUrl } from './pics'
-import { frameUrl } from './frames'
+import { FRAMES, frameUrl } from './frames'
 
 type Props = { id?: string | null; name: string; avatar?: string | null; frame?: string | null; className?: string; children?: ReactNode }
 
 export default function Avatar({ id, name, avatar, frame, className, children }: Props) {
   const src = id && avatar ? avatarUrl(id, avatar) : null
+  const worn = frame && FRAMES.some((one) => one.id === frame) ? frame : null
 
   return (
-    <span className={`avatar ${src ? 'has-pic' : ''} ${frame ? 'has-frame' : ''} ${className ?? ''}`} aria-hidden>
+    <span className={`avatar ${src ? 'has-pic' : ''} ${worn ? 'has-frame' : ''} ${className ?? ''}`} aria-hidden>
       {name.charAt(0).toUpperCase()}
       {src && (
         <img
@@ -23,7 +24,7 @@ export default function Avatar({ id, name, avatar, frame, className, children }:
           }}
         />
       )}
-      {frame && <i className="avatar-frame" style={{ backgroundImage: `url(${frameUrl(frame)})` }} />}
+      {worn && <i className="avatar-frame" style={{ backgroundImage: `url(${frameUrl(worn)})` }} />}
       {children}
     </span>
   )

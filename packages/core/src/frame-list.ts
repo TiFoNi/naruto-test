@@ -1,6 +1,6 @@
 export const TIER_FRAMES = ['bronze', 'silver', 'gold', 'diamond'] as const
 
-export const WORLD_FRAMES = ['naruto', 'onepiece', 'aot', 'bleach', 'kny', 'jjk', 'csm', 'bc', 'dn'] as const
+export const WORLD_FRAMES = ['berserk', 'ff'] as const
 
 export const FRAMES = [...TIER_FRAMES, ...WORLD_FRAMES] as const
 

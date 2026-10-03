@@ -11,7 +11,7 @@ if (!who) {
   process.exit(1)
 }
 
-const wrong = frames.filter((frame) => !FRAMES.includes(frame))
+const wrong = take ? [] : frames.filter((frame) => !FRAMES.includes(frame))
 if (wrong.length) {
   console.error(`невідомі рамки: ${wrong.join(', ')} (є: ${FRAMES.join(', ')})`)
   process.exit(1)

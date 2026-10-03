@@ -13,7 +13,7 @@ const TIERS: Frame[] = [
   { id: 'diamond', kind: 'tier', label: l10n('Алмаз', 'Алмаз', 'Diamond') },
 ]
 
-const WORLDS = ['naruto', 'onepiece', 'aot', 'bleach', 'kny', 'jjk', 'csm', 'bc', 'dn']
+const WORLDS = ['berserk', 'ff']
 
 export const FRAMES: Frame[] = [
   ...TIERS,
