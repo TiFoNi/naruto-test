@@ -68,25 +68,37 @@ export default function FramePicker() {
               </button>
               <h2>{title}</h2>
 
-              <div className="frame-grid">
-                <button type="button" className={`frame-card ${user.frame ? '' : 'on'}`} disabled={busy} onClick={() => void pick(null)}>
-                  <Avatar id={user.id} name={user.nickname} avatar={user.avatar} />
-                  <span>{l({ ru: 'Без рамки', uk: 'Без рамки', en: 'No frame' })}</span>
-                </button>
+              {(['tier', 'world'] as const).map((kind) => {
+                const list = owned.filter((one) => one.kind === kind)
+                if (!list.length) return null
 
-                {owned.map((one) => (
-                  <button
-                    key={one.id}
-                    type="button"
-                    className={`frame-card ${user.frame === one.id ? 'on' : ''}`}
-                    disabled={busy}
-                    onClick={() => void pick(one.id)}
-                  >
-                    <Avatar id={user.id} name={user.nickname} avatar={user.avatar} frame={one.id} />
-                    <span>{l(one.label)}</span>
-                  </button>
-                ))}
-              </div>
+                return (
+                  <section key={kind} className="frame-group">
+                    <h3>{kind === 'tier' ? l({ ru: 'Ранги', uk: 'Ранги', en: 'Ranks' }) : l({ ru: 'Вселенные', uk: 'Всесвіти', en: 'Worlds' })}</h3>
+                    <div className="frame-grid">
+                      {kind === 'tier' && (
+                        <button type="button" className={`frame-card ${user.frame ? '' : 'on'}`} disabled={busy} onClick={() => void pick(null)}>
+                          <Avatar id={user.id} name={user.nickname} avatar={user.avatar} />
+                          <span>{l({ ru: 'Без рамки', uk: 'Без рамки', en: 'No frame' })}</span>
+                        </button>
+                      )}
+                      {list.map((one) => (
+                        <button
+                          key={one.id}
+                          type="button"
+                          className={`frame-card ${user.frame === one.id ? 'on' : ''}`}
+                          disabled={busy}
+                          onClick={() => void pick(one.id)}
+                        >
+                          <Avatar id={user.id} name={user.nickname} avatar={user.avatar} frame={one.id} />
+                          <span>{l(one.label)}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                )
+              })}
+
             </section>
           </div>,
           document.body,

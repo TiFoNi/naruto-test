@@ -1,5 +1,5 @@
 import { MongoClient, ObjectId } from 'mongodb'
-import { FRAMES } from '../packages/core/src/frames.ts'
+import { FRAMES } from '../packages/core/src/frame-list.ts'
 
 const who = process.argv[2]
 const picked = process.argv.slice(3).filter((arg) => !arg.startsWith('-'))

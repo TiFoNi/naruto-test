@@ -7,23 +7,30 @@ const FOLDER = path.join(PUBLIC, 'frames')
 const SIZE = 512
 const HOLE = 0.78
 
-function hole(data, info) {
-  const { width, height, channels } = info
-  const clearAt = (at) => data[at * channels + 3] < 60
+async function cutout(file) {
+  const meta = await sharp(file).metadata()
+  const flat = await sharp(file).ensureAlpha().png().toBuffer()
+  if (meta.hasAlpha) return flat
 
-  const outside = new Uint8Array(width * height)
+  const { data, info } = await sharp(flat).raw().toBuffer({ resolveWithObject: true })
+  const { width, height, channels } = info
+  const pale = (at) => {
+    const r = data[at * channels]
+    const g = data[at * channels + 1]
+    const b = data[at * channels + 2]
+    return Math.min(r, g, b) > 232 && Math.max(r, g, b) - Math.min(r, g, b) < 14
+  }
+
+  const seen = new Uint8Array(width * height)
   const stack = []
-  for (let x = 0; x < width; x++) {
-    stack.push(x, (height - 1) * width + x)
-  }
-  for (let y = 0; y < height; y++) {
-    stack.push(y * width, y * width + width - 1)
-  }
+  for (let x = 0; x < width; x++) stack.push(x, (height - 1) * width + x)
+  for (let y = 0; y < height; y++) stack.push(y * width, y * width + width - 1)
+  stack.push(Math.floor(height / 2) * width + Math.floor(width / 2))
 
   while (stack.length) {
     const at = stack.pop()
-    if (outside[at] || !clearAt(at)) continue
-    outside[at] = 1
+    if (seen[at] || !pale(at)) continue
+    seen[at] = 1
     const x = at % width
     const y = (at - x) / width
     if (x > 0) stack.push(at - 1)
@@ -32,21 +39,51 @@ function hole(data, info) {
     if (y < height - 1) stack.push(at + width)
   }
 
-  let left = width
-  let right = 0
-  let top = height
-  let bottom = 0
-  for (let at = 0; at < width * height; at++) {
-    if (outside[at] || !clearAt(at)) continue
-    const x = at % width
-    const y = (at - x) / width
-    if (x < left) left = x
-    if (x > right) right = x
-    if (y < top) top = y
-    if (y > bottom) bottom = y
+  for (let at = 0; at < width * height; at++) if (seen[at]) data[at * channels + 3] = 0
+
+  return sharp(data, { raw: { width, height, channels } }).png().toBuffer()
+}
+
+function hole(data, info) {
+  const { width, height, channels } = info
+  const clear = (x, y) => data[(y * width + x) * channels + 3] < 60
+  const middle = (list) => list.sort((a, b) => a - b)[Math.floor(list.length / 2)]
+
+  const centerX = Math.floor(width / 2)
+  const centerY = Math.floor(height / 2)
+
+  const lefts = []
+  const rights = []
+  for (let step = -6; step <= 6; step++) {
+    const y = centerY + Math.round((step * height) / 40)
+    if (y < 0 || y >= height || !clear(centerX, y)) continue
+    let left = centerX
+    while (left > 0 && clear(left - 1, y)) left--
+    let right = centerX
+    while (right < width - 1 && clear(right + 1, y)) right++
+    lefts.push(left)
+    rights.push(right)
   }
 
-  return { left, right, top, bottom }
+  const tops = []
+  const bottoms = []
+  for (let step = -6; step <= 6; step++) {
+    const x = centerX + Math.round((step * width) / 40)
+    if (x < 0 || x >= width || !clear(x, centerY)) continue
+    let top = centerY
+    while (top > 0 && clear(x, top - 1)) top--
+    let bottom = centerY
+    while (bottom < height - 1 && clear(x, bottom + 1)) bottom++
+    tops.push(top)
+    bottoms.push(bottom)
+  }
+
+  return {
+    left: lefts.length ? middle(lefts) : 0,
+    right: rights.length ? middle(rights) : width - 1,
+    top: tops.length ? middle(tops) : 0,
+    bottom: bottoms.length ? middle(bottoms) : height - 1,
+  }
 }
 
 const clear = { r: 0, g: 0, b: 0, alpha: 0 }
@@ -59,7 +96,7 @@ const files = sources.length
   : (await fs.readdir(FOLDER)).filter((name) => name.endsWith('.webp')).map((name) => ({ from: path.join(FOLDER, name), name }))
 
 for (const { from, name } of files) {
-  const flat = await sharp(from).ensureAlpha().png().toBuffer()
+  const flat = await cutout(from)
   const { data, info } = await sharp(flat).raw().toBuffer({ resolveWithObject: true })
   const box = hole(data, info)
 
