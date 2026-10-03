@@ -5,9 +5,9 @@ import { createPortal } from 'react-dom'
 import Avatar from './Avatar'
 import { api } from './api'
 import { useAuth } from './auth'
-import { FRAMES, frameUrl } from './frames'
+import { FRAMES } from './frames'
 import { useI18n } from './i18n'
-import { CloseIcon } from './icons'
+import { ChevronIcon, CloseIcon } from './icons'
 
 export default function FramePicker() {
   const { user, refresh } = useAuth()
@@ -41,13 +41,16 @@ export default function FramePicker() {
   return (
     <>
       <button type="button" className="frame-open" onClick={() => setOpen(true)}>
-        <span className="frame-open-preview">
-          {user.frame ? <img src={frameUrl(user.frame)} alt="" /> : <i aria-hidden>—</i>}
-        </span>
+        <Avatar id={user.id} name={user.nickname} avatar={user.avatar} frame={user.frame} className="frame-open-avatar" />
         <span className="frame-open-text">
           <b>{title}</b>
-          <small>{user.frame ? l(owned.find((one) => one.id === user.frame)?.label ?? { ru: '', uk: '', en: '' }) : l({ ru: 'не выбрана', uk: 'не вибрана', en: 'none' })}</small>
+          <small>
+            {user.frame
+              ? l(owned.find((one) => one.id === user.frame)?.label ?? { ru: '', uk: '', en: '' })
+              : l({ ru: 'не выбрана', uk: 'не вибрана', en: 'none' })}
+          </small>
         </span>
+        <ChevronIcon className="frame-open-arrow" />
       </button>
 
       {open &&

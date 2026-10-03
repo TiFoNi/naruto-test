@@ -8067,7 +8067,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 
 .avatar-frame {
   position: absolute;
-  inset: -14%;
+  inset: calc(-16% - 2px);
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -8086,10 +8086,11 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 .frame-open {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px 10px 10px;
-  border-radius: 14px;
-  border: 1px solid var(--line);
+  gap: 16px;
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: 1px solid transparent;
   background: var(--card-2);
   color: inherit;
   font: inherit;
@@ -8099,43 +8100,38 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 }
 
 .frame-open:hover {
-  border-color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
 }
 
-.frame-open-preview {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
+.frame-open-avatar {
   flex: none;
-  border-radius: 12px;
-  background: var(--bg);
-  color: var(--text-3);
-}
-
-.frame-open-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.frame-open-preview i {
-  font-style: normal;
+  margin: 0 6px;
 }
 
 .frame-open-text {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex: 1;
+  min-width: 0;
 }
 
 .frame-open-text b {
   font-size: 14px;
+  font-weight: 800;
 }
 
 .frame-open-text small {
   color: var(--text-3);
-  font-size: 12.5px;
+  font-size: 13px;
+}
+
+.frame-open-arrow {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--text-3);
+  transform: rotate(-90deg);
 }
 
 .frame-modal {
