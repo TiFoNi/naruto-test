@@ -14,7 +14,8 @@
   "arc": "Ёцуба",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 0
+  "thumb": 0,
+  "anime": true
  },
  {
   "id": 1828,
@@ -32,7 +33,8 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 1
+  "thumb": 1,
+  "anime": true
  },
  {
   "id": 1960,
@@ -49,7 +51,8 @@
   "arc": "Второй Кира",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 2
+  "thumb": 2,
+  "anime": true
  },
  {
   "id": 1832,
@@ -66,7 +69,8 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 3
+  "thumb": 3,
+  "anime": true
  },
  {
   "id": 2001,
@@ -83,7 +87,8 @@
   "arc": "Ёцуба",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 4
+  "thumb": 4,
+  "anime": true
  },
  {
   "id": 1798,
@@ -100,7 +105,8 @@
   "arc": "Второй Кира",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 5
+  "thumb": 5,
+  "anime": true
  },
  {
   "id": 1780,
@@ -118,7 +124,8 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 6
+  "thumb": 6,
+  "anime": true
  },
  {
   "id": 1788,
@@ -136,7 +143,8 @@
   "arc": "Наследники L",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 7
+  "thumb": 7,
+  "anime": true
  },
  {
   "id": 1790,
@@ -153,7 +161,8 @@
   "arc": "Второй Кира",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 8
+  "thumb": 8,
+  "anime": true
  },
  {
   "id": 1797,
@@ -170,7 +179,8 @@
   "arc": "Наследники L",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 9
+  "thumb": 9,
+  "anime": true
  },
  {
   "id": 1871,
@@ -187,7 +197,8 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 10
+  "thumb": 10,
+  "anime": true
  },
  {
   "id": 1787,
@@ -205,7 +216,8 @@
   "arc": "Наследники L",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 11
+  "thumb": 11,
+  "anime": true
  },
  {
   "id": 1795,
@@ -222,7 +234,8 @@
   "arc": "Второй Кира",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 12
+  "thumb": 12,
+  "anime": true
  },
  {
   "id": 1873,
@@ -239,7 +252,8 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 13
+  "thumb": 13,
+  "anime": true
  },
  {
   "id": 1996,
@@ -256,7 +270,8 @@
   "arc": "Ёцуба",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 14
+  "thumb": 14,
+  "anime": true
  },
  {
   "id": 1792,
@@ -273,7 +288,8 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 15
+  "thumb": 15,
+  "anime": true
  },
  {
   "id": 1869,
@@ -290,7 +306,8 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 16
+  "thumb": 16,
+  "anime": true
  },
  {
   "id": 1803,
@@ -307,7 +324,8 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 17
+  "thumb": 17,
+  "anime": true
  },
  {
   "id": 1950,
@@ -324,7 +342,8 @@
   "arc": "Наследники L",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 18
+  "thumb": 18,
+  "anime": true
  },
  {
   "id": 1825,
@@ -341,7 +360,8 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 19
+  "thumb": 19,
+  "anime": true
  },
  {
   "id": 1831,
@@ -358,7 +378,8 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 20
+  "thumb": 20,
+  "anime": true
  },
  {
   "id": 1791,
@@ -375,7 +396,8 @@
   "arc": "Наследники L",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 21
+  "thumb": 21,
+  "anime": true
  },
  {
   "id": 1826,
@@ -392,7 +414,8 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 22
+  "thumb": 22,
+  "anime": true
  },
  {
   "id": 2175,
@@ -409,7 +432,8 @@
   "arc": "Наследники L",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 23
+  "thumb": 23,
+  "anime": true
  },
  {
   "id": 1875,
@@ -426,7 +450,8 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 24
+  "thumb": 24,
+  "anime": true
  },
  {
   "id": 1784,
@@ -444,6 +469,7 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 25
+  "thumb": 25,
+  "anime": true
  }
 ]

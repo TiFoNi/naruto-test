@@ -552,6 +552,8 @@ const ui = {
   'daily.variant': { ru: 'Вариант игры', uk: 'Варіант гри', en: 'Game type' },
   'daily.endless': { ru: 'Бесконечный', uk: 'Нескінченний', en: 'Endless' },
   'daily.daily': { ru: 'Ежедневный', uk: 'Щоденний', en: 'Daily' },
+  'anime.only': { ru: 'Только из аниме', uk: 'Тільки з аніме', en: 'Anime only' },
+  'anime.hint': { ru: 'Без персонажей, которых ещё не было в аниме. Сработает со следующей загадки.', uk: 'Без персонажів, яких ще не було в аніме. Спрацює з наступної загадки.', en: 'Hides characters not yet in the anime. Applies from the next puzzle.' },
   'seo.ogPlay': { ru: 'Подсказки после каждой попытки', uk: 'Підказки після кожної спроби', en: 'Hints after every try' },
   'seo.ogDaily': { ru: 'Одна загадка в день', uk: 'Одна загадка на день', en: 'One puzzle a day' },
   'daily.ogNote': { ru: 'Одна загадка в день — успей разгадать', uk: 'Одна загадка на день — встигни розгадати', en: 'One puzzle a day — solve it before midnight' },

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api } from './api'
+import { animeOnly } from './anime'
 import { useAuth, type XpToday } from './auth'
 import { refreshFeed } from './awards'
 import type { Entity, Game, Judgement } from './games/types'
@@ -92,7 +93,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
     if (loading.current) return
     loading.current = true
     try {
-      await request('round/current', challenge ? { challenge } : { game: game.id, mode, daily })
+      await request('round/current', challenge ? { challenge } : { game: game.id, mode, daily, anime: !daily && animeOnly(game.id) })
     } finally {
       loading.current = false
     }

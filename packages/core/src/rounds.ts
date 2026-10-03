@@ -16,7 +16,7 @@ const RECENT = 25
 
 const playable = async (round: RoundDoc) => isGame(round.game) && (await knows(round.game, round.answerId))
 
-export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, guest = false) {
+export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, guest = false, animeOnly = false) {
   const collection = await rounds()
   const open = await collection
     .find({ userId, game, mode, status: 'active', daily: { $exists: false } }, { sort: { createdAt: 1 } })
@@ -30,7 +30,9 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, 
     .find({ userId, game, mode }, { projection: { answerId: 1 }, sort: { createdAt: -1 }, limit: RECENT })
     .toArray()
   const seen = new Set(recent.map((r) => r.answerId))
-  const pool = modePool((await gameData(game)).pool, mode)
+  const whole = modePool((await gameData(game)).pool, mode)
+  const shown = animeOnly ? whole.filter((one) => one.anime !== false) : whole
+  const pool = shown.length ? shown : whole
   const fresh = pool.filter((e) => !seen.has(e.id))
   const choices = fresh.length ? fresh : pool
   const answer = choices[Math.floor(Math.random() * choices.length)]

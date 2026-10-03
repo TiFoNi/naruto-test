@@ -15,7 +15,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 0
+  "thumb": 0,
+  "anime": true
  },
  {
   "id": 65658,
@@ -33,7 +34,8 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 1
+  "thumb": 1,
+  "anime": false
  },
  {
   "id": 2417,
@@ -51,7 +53,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 2
+  "thumb": 2,
+  "anime": true
  },
  {
   "id": 29453,
@@ -69,7 +72,8 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 3
+  "thumb": 3,
+  "anime": false
  },
  {
   "id": 2267,
@@ -88,7 +92,8 @@
   "arc": "Небесная арена",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 4
+  "thumb": 4,
+  "anime": true
  },
  {
   "id": 2170,
@@ -106,7 +111,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 5
+  "thumb": 5,
+  "anime": true
  },
  {
   "id": 96718,
@@ -124,7 +130,8 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 6
+  "thumb": 6,
+  "anime": false
  },
  {
   "id": 2337,
@@ -142,7 +149,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 7
+  "thumb": 7,
+  "anime": true
  },
  {
   "id": 2291,
@@ -158,7 +166,8 @@
   "arc": "Жадный остров",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 8
+  "thumb": 8,
+  "anime": true
  },
  {
   "id": 87205,
@@ -176,7 +185,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 9
+  "thumb": 9,
+  "anime": true
  },
  {
   "id": 1959,
@@ -195,7 +205,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 10
+  "thumb": 10,
+  "anime": true
  },
  {
   "id": 1968,
@@ -213,7 +224,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 11
+  "thumb": 11,
+  "anime": true
  },
  {
   "id": 3302,
@@ -231,7 +243,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 12
+  "thumb": 12,
+  "anime": true
  },
  {
   "id": 2032,
@@ -251,7 +264,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 13
+  "thumb": 13,
+  "anime": true
  },
  {
   "id": 98235,
@@ -269,7 +283,8 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 14
+  "thumb": 14,
+  "anime": false
  },
  {
   "id": 1990,
@@ -289,7 +304,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 15
+  "thumb": 15,
+  "anime": true
  },
  {
   "id": 2034,
@@ -308,7 +324,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 16
+  "thumb": 16,
+  "anime": true
  },
  {
   "id": 30450,
@@ -326,7 +343,8 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 17
+  "thumb": 17,
+  "anime": false
  },
  {
   "id": 30293,
@@ -344,7 +362,8 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 18
+  "thumb": 18,
+  "anime": false
  },
  {
   "id": 1940,
@@ -363,7 +382,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 19
+  "thumb": 19,
+  "anime": true
  },
  {
   "id": 2048,
@@ -381,7 +401,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 20
+  "thumb": 20,
+  "anime": true
  },
  {
   "id": 2247,
@@ -399,7 +420,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 21
+  "thumb": 21,
+  "anime": true
  },
  {
   "id": 87212,
@@ -418,7 +440,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 22
+  "thumb": 22,
+  "anime": true
  },
  {
   "id": 2077,
@@ -437,7 +460,8 @@
   "arc": "Небесная арена",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 23
+  "thumb": 23,
+  "anime": true
  },
  {
   "id": 2338,
@@ -455,7 +479,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 24
+  "thumb": 24,
+  "anime": true
  },
  {
   "id": 1961,
@@ -473,7 +498,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 25
+  "thumb": 25,
+  "anime": true
  },
  {
   "id": 2016,
@@ -491,7 +517,8 @@
   "arc": "Небесная арена",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 26
+  "thumb": 26,
+  "anime": true
  },
  {
   "id": 2339,
@@ -509,7 +536,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 27
+  "thumb": 27,
+  "anime": true
  },
  {
   "id": 2344,
@@ -528,7 +556,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 28
+  "thumb": 28,
+  "anime": true
  },
  {
   "id": 2223,
@@ -546,7 +575,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 29
+  "thumb": 29,
+  "anime": true
  },
  {
   "id": 3289,
@@ -564,7 +594,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 30
+  "thumb": 30,
+  "anime": true
  },
  {
   "id": 2046,
@@ -582,7 +613,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 31
+  "thumb": 31,
+  "anime": true
  },
  {
   "id": 72296,
@@ -598,7 +630,8 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 32
+  "thumb": 32,
+  "anime": false
  },
  {
   "id": 2004,
@@ -616,7 +649,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 33
+  "thumb": 33,
+  "anime": true
  },
  {
   "id": 2141,
@@ -634,7 +668,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 34
+  "thumb": 34,
+  "anime": true
  },
  {
   "id": 2201,
@@ -652,7 +687,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 35
+  "thumb": 35,
+  "anime": true
  },
  {
   "id": 2026,
@@ -670,7 +706,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 36
+  "thumb": 36,
+  "anime": true
  },
  {
   "id": 3212,
@@ -688,7 +725,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 37
+  "thumb": 37,
+  "anime": true
  },
  {
   "id": 2136,
@@ -706,7 +744,8 @@
   "arc": "Жадный остров",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 38
+  "thumb": 38,
+  "anime": true
  },
  {
   "id": 2313,
@@ -724,7 +763,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 39
+  "thumb": 39,
+  "anime": true
  },
  {
   "id": 2092,
@@ -742,7 +782,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 40
+  "thumb": 40,
+  "anime": true
  },
  {
   "id": 2089,
@@ -760,7 +801,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 41
+  "thumb": 41,
+  "anime": true
  },
  {
   "id": 2099,
@@ -778,7 +820,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 42
+  "thumb": 42,
+  "anime": true
  },
  {
   "id": 2103,
@@ -796,7 +839,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 43
+  "thumb": 43,
+  "anime": true
  },
  {
   "id": 30295,
@@ -814,7 +858,8 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 44
+  "thumb": 44,
+  "anime": false
  },
  {
   "id": 30291,
@@ -832,7 +877,8 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 45
+  "thumb": 45,
+  "anime": false
  },
  {
   "id": 72360,
@@ -848,7 +894,8 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 46
+  "thumb": 46,
+  "anime": false
  },
  {
   "id": 2042,
@@ -868,7 +915,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 47
+  "thumb": 47,
+  "anime": true
  },
  {
   "id": 1974,
@@ -886,7 +934,8 @@
   "arc": "Жадный остров",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 48
+  "thumb": 48,
+  "anime": true
  },
  {
   "id": 28024,
@@ -904,7 +953,8 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 49
+  "thumb": 49,
+  "anime": false
  },
  {
   "id": 30452,
@@ -922,7 +972,8 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 50
+  "thumb": 50,
+  "anime": false
  },
  {
   "id": 2249,
@@ -941,7 +992,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 51
+  "thumb": 51,
+  "anime": true
  },
  {
   "id": 2240,
@@ -960,7 +1012,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 52
+  "thumb": 52,
+  "anime": true
  },
  {
   "id": 2125,
@@ -978,7 +1031,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 53
+  "thumb": 53,
+  "anime": true
  },
  {
   "id": 2050,
@@ -996,6 +1050,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 54
+  "thumb": 54,
+  "anime": true
  }
 ]

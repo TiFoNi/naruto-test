@@ -16,7 +16,8 @@
   "arc": "Бесконечный поезд",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 0
+  "thumb": 0,
+  "anime": true
  },
  {
   "id": 271,
@@ -34,7 +35,8 @@
   "arcIndex": 1,
   "answer": true,
   "thumb": 1,
-  "nameUk": "Болотяний демон"
+  "nameUk": "Болотяний демон",
+  "anime": true
  },
  {
   "id": 804,
@@ -53,7 +55,8 @@
   "arc": "Деревня кузнецов",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 2
+  "thumb": 2,
+  "anime": true
  },
  {
   "id": 368,
@@ -72,7 +75,8 @@
   "arc": "Гора Натагумо",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 3
+  "thumb": 3,
+  "anime": true
  },
  {
   "id": 837,
@@ -89,7 +93,8 @@
   "arc": "Финальный отбор",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 4
+  "thumb": 4,
+  "anime": true
  },
  {
   "id": 135,
@@ -108,7 +113,8 @@
   "arc": "Финальный отбор",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 5
+  "thumb": 5,
+  "anime": true
  },
  {
   "id": 725,
@@ -127,7 +133,8 @@
   "arc": "Квартал удовольствий",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 6
+  "thumb": 6,
+  "anime": true
  },
  {
   "id": 670,
@@ -146,7 +153,8 @@
   "arc": "Бесконечный поезд",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 7
+  "thumb": 7,
+  "anime": true
  },
  {
   "id": 695,
@@ -166,7 +174,8 @@
   "arcIndex": 2,
   "answer": true,
   "thumb": 8,
-  "nameUk": "Демон-павук (донька)"
+  "nameUk": "Демон-павук (донька)",
+  "anime": true
  },
  {
   "id": 698,
@@ -185,7 +194,8 @@
   "arc": "Гора Натагумо",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 9
+  "thumb": 9,
+  "anime": true
  },
  {
   "id": 800,
@@ -204,7 +214,8 @@
   "arc": "Квартал удовольствий",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 10
+  "thumb": 10,
+  "anime": true
  },
  {
   "id": 6240,
@@ -223,7 +234,8 @@
   "arc": "Первые задания",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 11
+  "thumb": 11,
+  "anime": true
  },
  {
   "id": 259,
@@ -242,7 +254,8 @@
   "arc": "Финальный отбор",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 12
+  "thumb": 12,
+  "anime": true
  },
  {
   "id": 261,
@@ -261,7 +274,8 @@
   "arc": "Первые задания",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 13
+  "thumb": 13,
+  "anime": true
  },
  {
   "id": 376,
@@ -278,7 +292,8 @@
   "arc": "Финальный отбор",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 14
+  "thumb": 14,
+  "anime": true
  },
  {
   "id": 1465,
@@ -299,7 +314,8 @@
   "arc": "Гора Натагумо",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 15
+  "thumb": 15,
+  "anime": true
  },
  {
   "id": 394,
@@ -318,7 +334,8 @@
   "arc": "Финальный отбор",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 16
+  "thumb": 16,
+  "anime": true
  },
  {
   "id": 545,
@@ -337,7 +354,8 @@
   "arc": "Первые задания",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 17
+  "thumb": 17,
+  "anime": true
  },
  {
   "id": 362,
@@ -356,7 +374,8 @@
   "arc": "Гора Натагумо",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 18
+  "thumb": 18,
+  "anime": true
  },
  {
   "id": 798,
@@ -376,7 +395,8 @@
   "arc": "Деревня кузнецов",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 19
+  "thumb": 19,
+  "anime": true
  },
  {
   "id": 1050,
@@ -393,7 +413,8 @@
   "arc": "Деревня кузнецов",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 20
+  "thumb": 20,
+  "anime": true
  },
  {
   "id": 366,
@@ -412,7 +433,8 @@
   "arc": "Гора Натагумо",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 21
+  "thumb": 21,
+  "anime": true
  },
  {
   "id": 138,
@@ -431,7 +453,8 @@
   "arc": "Первые задания",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 22
+  "thumb": 22,
+  "anime": true
  },
  {
   "id": 370,
@@ -450,7 +473,8 @@
   "arc": "Гора Натагумо",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 23
+  "thumb": 23,
+  "anime": true
  },
  {
   "id": 1056,
@@ -469,7 +493,8 @@
   "arc": "Поместье бабочек",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 24
+  "thumb": 24,
+  "anime": true
  },
  {
   "id": 151,
@@ -488,7 +513,8 @@
   "arc": "Финальный отбор",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 25
+  "thumb": 25,
+  "anime": true
  },
  {
   "id": 372,
@@ -507,7 +533,8 @@
   "arc": "Финальный отбор",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 26
+  "thumb": 26,
+  "anime": true
  },
  {
   "id": 27807,
@@ -527,7 +554,8 @@
   "arc": "Гора Натагумо",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 27
+  "thumb": 27,
+  "anime": true
  },
  {
   "id": 144,
@@ -546,7 +574,8 @@
   "arc": "Финальный отбор",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 28
+  "thumb": 28,
+  "anime": true
  },
  {
   "id": 137,
@@ -565,7 +594,8 @@
   "arc": "Финальный отбор",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 29
+  "thumb": 29,
+  "anime": true
  },
  {
   "id": 374,
@@ -584,7 +614,8 @@
   "arc": "Поместье бабочек",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 30
+  "thumb": 30,
+  "anime": true
  },
  {
   "id": 603,
@@ -599,7 +630,8 @@
   "arc": "Бесконечный поезд",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 31
+  "thumb": 31,
+  "anime": true
  },
  {
   "id": 664,
@@ -617,7 +649,8 @@
   "arc": "Квартал удовольствий",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 32
+  "thumb": 32,
+  "anime": true
  },
  {
   "id": 275,
@@ -634,7 +667,8 @@
   "arc": "Первые задания",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 33
+  "thumb": 33,
+  "anime": true
  },
  {
   "id": 263,
@@ -654,7 +688,8 @@
   "arc": "Первые задания",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 34
+  "thumb": 34,
+  "anime": true
  },
  {
   "id": 132,
@@ -674,7 +709,8 @@
   "arc": "Финальный отбор",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 35
+  "thumb": 35,
+  "anime": true
  },
  {
   "id": 364,
@@ -693,7 +729,8 @@
   "arc": "Гора Натагумо",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 36
+  "thumb": 36,
+  "anime": true
  },
  {
   "id": 802,
@@ -712,7 +749,8 @@
   "arc": "Деревня кузнецов",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 37
+  "thumb": 37,
+  "anime": true
  },
  {
   "id": 662,
@@ -730,7 +768,8 @@
   "arc": "Квартал удовольствий",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 38
+  "thumb": 38,
+  "anime": true
  },
  {
   "id": 140,
@@ -747,7 +786,8 @@
   "arc": "Первые задания",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 39
+  "thumb": 39,
+  "anime": true
  },
  {
   "id": 606,
@@ -766,7 +806,8 @@
   "arc": "Бесконечный поезд",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 40
+  "thumb": 40,
+  "anime": true
  },
  {
   "id": 360,
@@ -785,7 +826,8 @@
   "arc": "Финальный отбор",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 41
+  "thumb": 41,
+  "anime": true
  },
  {
   "id": 542,
@@ -804,7 +846,8 @@
   "arc": "Поместье бабочек",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 42
+  "thumb": 42,
+  "anime": true
  },
  {
   "id": 2215,
@@ -819,7 +862,8 @@
   "arc": "Деревня кузнецов",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 43
+  "thumb": 43,
+  "anime": true
  },
  {
   "id": 265,
@@ -839,6 +883,7 @@
   "arc": "Первые задания",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 44
+  "thumb": 44,
+  "anime": true
  }
 ]

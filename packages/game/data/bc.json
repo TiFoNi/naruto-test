@@ -14,7 +14,8 @@
   "arc": "Штурм столицы",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 0
+  "thumb": 0,
+  "anime": true
  },
  {
   "id": 2194,
@@ -32,7 +33,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 1
+  "thumb": 1,
+  "anime": true
  },
  {
   "id": 2274,
@@ -49,7 +51,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 2
+  "thumb": 2,
+  "anime": true
  },
  {
   "id": 9870,
@@ -67,7 +70,8 @@
   "arc": "Королевство Сердца",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 3
+  "thumb": 3,
+  "anime": true
  },
  {
   "id": 3530,
@@ -84,7 +88,8 @@
   "arc": "Око полуночного солнца",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 4
+  "thumb": 4,
+  "anime": true
  },
  {
   "id": 2207,
@@ -101,7 +106,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 5
+  "thumb": 5,
+  "anime": true
  },
  {
   "id": 9645,
@@ -119,7 +125,8 @@
   "arc": "Перерождение эльфов",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 6
+  "thumb": 6,
+  "anime": true
  },
  {
   "id": 5707,
@@ -136,7 +143,8 @@
   "arc": "Лес ведьм",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 7
+  "thumb": 7,
+  "anime": true
  },
  {
   "id": 4288,
@@ -153,7 +161,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 8
+  "thumb": 8,
+  "anime": true
  },
  {
   "id": 3440,
@@ -171,7 +180,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 9
+  "thumb": 9,
+  "anime": true
  },
  {
   "id": 3757,
@@ -188,7 +198,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 10
+  "thumb": 10,
+  "anime": true
  },
  {
   "id": 9869,
@@ -205,7 +216,8 @@
   "arc": "Королевство Сердца",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 11
+  "thumb": 11,
+  "anime": true
  },
  {
   "id": 3590,
@@ -224,7 +236,8 @@
   "arcIndex": 0,
   "answer": true,
   "thumb": 12,
-  "nameUk": "Джек Різник"
+  "nameUk": "Джек Різник",
+  "anime": true
  },
  {
   "id": 4262,
@@ -241,7 +254,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 13
+  "thumb": 13,
+  "anime": true
  },
  {
   "id": 9151,
@@ -258,7 +272,8 @@
   "arc": "Перерождение эльфов",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 14
+  "thumb": 14,
+  "anime": true
  },
  {
   "id": 9867,
@@ -276,7 +291,8 @@
   "arc": "Перерождение эльфов",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 15
+  "thumb": 15,
+  "anime": true
  },
  {
   "id": 4877,
@@ -294,7 +310,8 @@
   "arc": "Королевские рыцари",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 16
+  "thumb": 16,
+  "anime": true
  },
  {
   "id": 3687,
@@ -311,7 +328,8 @@
   "arc": "Подводный храм",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 17
+  "thumb": 17,
+  "anime": true
  },
  {
   "id": 4870,
@@ -328,7 +346,8 @@
   "arc": "Королевские рыцари",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 18
+  "thumb": 18,
+  "anime": true
  },
  {
   "id": 2726,
@@ -345,7 +364,8 @@
   "arc": "Подземелье",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 19
+  "thumb": 19,
+  "anime": true
  },
  {
   "id": 2488,
@@ -363,7 +383,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 20
+  "thumb": 20,
+  "anime": true
  },
  {
   "id": 4013,
@@ -380,7 +401,8 @@
   "arc": "Подводный храм",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 21
+  "thumb": 21,
+  "anime": true
  },
  {
   "id": 8287,
@@ -397,7 +419,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 22
+  "thumb": 22,
+  "anime": true
  },
  {
   "id": 3165,
@@ -414,7 +437,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 23
+  "thumb": 23,
+  "anime": true
  },
  {
   "id": 9164,
@@ -432,7 +456,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 24
+  "thumb": 24,
+  "anime": true
  },
  {
   "id": 4337,
@@ -450,7 +475,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 25
+  "thumb": 25,
+  "anime": true
  },
  {
   "id": 3457,
@@ -467,7 +493,8 @@
   "arc": "Подводный храм",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 26
+  "thumb": 26,
+  "anime": true
  },
  {
   "id": 9729,
@@ -484,7 +511,8 @@
   "arc": "Перерождение эльфов",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 27
+  "thumb": 27,
+  "anime": true
  },
  {
   "id": 13218,
@@ -503,7 +531,8 @@
   "arc": "Королевство Пик",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 28
+  "thumb": 28,
+  "anime": false
  },
  {
   "id": 10562,
@@ -520,7 +549,8 @@
   "arc": "Королевство Сердца",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 29
+  "thumb": 29,
+  "anime": true
  },
  {
   "id": 2277,
@@ -537,7 +567,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 30
+  "thumb": 30,
+  "anime": true
  },
  {
   "id": 2664,
@@ -554,7 +585,8 @@
   "arc": "Подземелье",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 31
+  "thumb": 31,
+  "anime": true
  },
  {
   "id": 4701,
@@ -571,7 +603,8 @@
   "arc": "Королевские рыцари",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 32
+  "thumb": 32,
+  "anime": true
  },
  {
   "id": 2767,
@@ -589,7 +622,8 @@
   "arc": "Подземелье",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 33
+  "thumb": 33,
+  "anime": true
  },
  {
   "id": 4960,
@@ -607,7 +641,8 @@
   "arc": "Лес ведьм",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 34
+  "thumb": 34,
+  "anime": true
  },
  {
   "id": 11543,
@@ -624,7 +659,8 @@
   "arc": "Королевство Сердца",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 35
+  "thumb": 35,
+  "anime": true
  },
  {
   "id": 3429,
@@ -641,7 +677,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 36
+  "thumb": 36,
+  "anime": true
  },
  {
   "id": 2251,
@@ -658,7 +695,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 37
+  "thumb": 37,
+  "anime": true
  },
  {
   "id": 5988,
@@ -675,7 +713,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 38
+  "thumb": 38,
+  "anime": true
  },
  {
   "id": 3246,
@@ -692,7 +731,8 @@
   "arc": "Штурм столицы",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 39
+  "thumb": 39,
+  "anime": true
  },
  {
   "id": 4263,
@@ -709,7 +749,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 40
+  "thumb": 40,
+  "anime": true
  },
  {
   "id": 3537,
@@ -726,7 +767,8 @@
   "arc": "Око полуночного солнца",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 41
+  "thumb": 41,
+  "anime": true
  },
  {
   "id": 13347,
@@ -743,7 +785,8 @@
   "arc": "Финал",
   "arcIndex": 10,
   "answer": true,
-  "thumb": 42
+  "thumb": 42,
+  "anime": false
  },
  {
   "id": 3416,
@@ -760,7 +803,8 @@
   "arc": "Штурм столицы",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 43
+  "thumb": 43,
+  "anime": true
  },
  {
   "id": 2364,
@@ -777,7 +821,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 44
+  "thumb": 44,
+  "anime": true
  },
  {
   "id": 2805,
@@ -794,7 +839,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 45
+  "thumb": 45,
+  "anime": true
  },
  {
   "id": 3535,
@@ -811,7 +857,8 @@
   "arc": "Подземелье",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 46
+  "thumb": 46,
+  "anime": true
  },
  {
   "id": 4312,
@@ -828,7 +875,8 @@
   "arc": "Штурм столицы",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 47
+  "thumb": 47,
+  "anime": true
  },
  {
   "id": 3011,
@@ -845,7 +893,8 @@
   "arc": "Штурм столицы",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 48
+  "thumb": 48,
+  "anime": true
  },
  {
   "id": 4411,
@@ -862,7 +911,8 @@
   "arc": "Лес ведьм",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 49
+  "thumb": 49,
+  "anime": true
  },
  {
   "id": 6039,
@@ -879,7 +929,8 @@
   "arc": "Око полуночного солнца",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 50
+  "thumb": 50,
+  "anime": true
  },
  {
   "id": 4222,
@@ -896,7 +947,8 @@
   "arc": "Лес ведьм",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 51
+  "thumb": 51,
+  "anime": true
  },
  {
   "id": 3625,
@@ -913,7 +965,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 52
+  "thumb": 52,
+  "anime": true
  },
  {
   "id": 3036,
@@ -930,7 +983,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 53
+  "thumb": 53,
+  "anime": true
  },
  {
   "id": 3132,
@@ -947,7 +1001,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 54
+  "thumb": 54,
+  "anime": true
  },
  {
   "id": 3621,
@@ -964,7 +1019,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 55
+  "thumb": 55,
+  "anime": true
  },
  {
   "id": 3077,
@@ -981,7 +1037,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 56
+  "thumb": 56,
+  "anime": true
  },
  {
   "id": 2198,
@@ -998,7 +1055,8 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 57
+  "thumb": 57,
+  "anime": true
  },
  {
   "id": 13362,
@@ -1015,7 +1073,8 @@
   "arc": "Финал",
   "arcIndex": 10,
   "answer": true,
-  "thumb": 58
+  "thumb": 58,
+  "anime": false
  },
  {
   "id": 2204,
@@ -1033,6 +1092,7 @@
   "arc": "Вступление в Рыцари",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 59
+  "thumb": 59,
+  "anime": true
  }
 ]

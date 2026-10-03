@@ -4,6 +4,7 @@ import Link from 'next/link'
 import type { CSSProperties } from 'react'
 import { statsKey, useAuth } from './auth'
 import { GRID_GAMES, dailyKey } from '@nanda/game'
+import { useAnimeOnly } from './anime'
 import ClassicMode from './ClassicMode'
 import ImageMode from './ImageMode'
 import AbilityMode from './AbilityMode'
@@ -22,6 +23,9 @@ export default function GameView({ game, mode, daily }: { game: Game; mode: Mode
   const { stats, user } = useAuth()
   const href = useHref()
   const { t, l } = useI18n()
+  const [animeOnly, setAnimeOnly] = useAnimeOnly(game.id)
+  const manga = game.entities.some((one) => one.anime === false)
+
   const statsFor = (m: ModeId, d: boolean) => stats[d ? dailyKey(game.id, m) : statsKey(game.id, m)] ?? emptyStats
   const tabs = MODES.filter((m) => game.modes.includes(m.id) || (m.id === 'grid' && GRID_GAMES.includes(game.id) && !daily))
 
@@ -57,6 +61,13 @@ export default function GameView({ game, mode, daily }: { game: Game; mode: Mode
             ))}
           </div>
         </div>
+
+        {manga && !daily && mode !== 'grid' && (
+          <label className="anime-filter" title={t('anime.hint')}>
+            <input type="checkbox" checked={animeOnly} onChange={(event) => setAnimeOnly(event.target.checked)} />
+            <span>{t('anime.only')}</span>
+          </label>
+        )}
       </header>
 
       {!user && (

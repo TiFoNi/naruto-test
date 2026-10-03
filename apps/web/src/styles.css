@@ -8171,3 +8171,26 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   background: color-mix(in srgb, var(--accent) 16%, transparent);
   color: var(--text);
 }
+
+.anime-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 7px 14px 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text-2);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.anime-filter:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  color: var(--text);
+}
+
+.anime-filter input {
+  accent-color: var(--accent);
+}

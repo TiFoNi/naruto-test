@@ -19,7 +19,8 @@
   "volume": 9,
   "debutIndex": 9,
   "answer": true,
-  "thumb": 0
+  "thumb": 0,
+  "anime": true
  },
  {
   "id": 2212,
@@ -44,7 +45,8 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 1
+  "thumb": 1,
+  "anime": true
  },
  {
   "id": 3099,
@@ -65,7 +67,8 @@
   "volume": 8,
   "debutIndex": 8,
   "answer": true,
-  "thumb": 2
+  "thumb": 2,
+  "anime": true
  },
  {
   "id": 2441,
@@ -92,7 +95,8 @@
   "volume": 6,
   "debutIndex": 6,
   "answer": true,
-  "thumb": 3
+  "thumb": 3,
+  "anime": true
  },
  {
   "id": 13521,
@@ -115,7 +119,8 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 4
+  "thumb": 4,
+  "anime": true
  },
  {
   "id": 2375,
@@ -137,7 +142,8 @@
   "volume": 5,
   "debutIndex": 5,
   "answer": true,
-  "thumb": 5
+  "thumb": 5,
+  "anime": true
  },
  {
   "id": 3762,
@@ -161,7 +167,8 @@
   "volume": 9,
   "debutIndex": 9,
   "answer": true,
-  "thumb": 6
+  "thumb": 6,
+  "anime": true
  },
  {
   "id": 2845,
@@ -182,7 +189,8 @@
   "volume": 7,
   "debutIndex": 7,
   "answer": true,
-  "thumb": 7
+  "thumb": 7,
+  "anime": true
  },
  {
   "id": 2266,
@@ -203,7 +211,8 @@
   "volume": 3,
   "debutIndex": 3,
   "answer": true,
-  "thumb": 8
+  "thumb": 8,
+  "anime": true
  },
  {
   "id": 2162,
@@ -227,7 +236,8 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 9
+  "thumb": 9,
+  "anime": true
  },
  {
   "id": 2673,
@@ -255,7 +265,8 @@
   "volume": 5,
   "debutIndex": 5,
   "answer": true,
-  "thumb": 10
+  "thumb": 10,
+  "anime": true
  },
  {
   "id": 14076,
@@ -278,7 +289,8 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 11
+  "thumb": 11,
+  "anime": true
  },
  {
   "id": 2272,
@@ -304,7 +316,8 @@
   "volume": 2,
   "debutIndex": 2,
   "answer": true,
-  "thumb": 12
+  "thumb": 12,
+  "anime": true
  },
  {
   "id": 2153,
@@ -333,7 +346,8 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 13
+  "thumb": 13,
+  "anime": true
  },
  {
   "id": 33454,
@@ -354,7 +368,8 @@
   "volume": 12,
   "debutIndex": 12,
   "answer": true,
-  "thumb": 14
+  "thumb": 14,
+  "anime": true
  },
  {
   "id": 2248,
@@ -377,7 +392,8 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 15
+  "thumb": 15,
+  "anime": true
  },
  {
   "id": 2267,
@@ -401,7 +417,8 @@
   "volume": 3,
   "debutIndex": 3,
   "answer": true,
-  "thumb": 16
+  "thumb": 16,
+  "anime": true
  },
  {
   "id": 6954,
@@ -422,7 +439,8 @@
   "volume": 12,
   "debutIndex": 12,
   "answer": true,
-  "thumb": 17
+  "thumb": 17,
+  "anime": true
  },
  {
   "id": 2269,
@@ -443,7 +461,8 @@
   "volume": 3,
   "debutIndex": 3,
   "answer": true,
-  "thumb": 18
+  "thumb": 18,
+  "anime": true
  },
  {
   "id": 69781,
@@ -467,7 +486,8 @@
   "volume": 2,
   "debutIndex": 2,
   "answer": true,
-  "thumb": 19
+  "thumb": 19,
+  "anime": true
  },
  {
   "id": 13164,
@@ -490,7 +510,8 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 20
+  "thumb": 20,
+  "anime": true
  },
  {
   "id": 2221,
@@ -511,7 +532,8 @@
   "volume": 2,
   "debutIndex": 2,
   "answer": true,
-  "thumb": 21
+  "thumb": 21,
+  "anime": true
  },
  {
   "id": 3684,
@@ -537,7 +559,8 @@
   "volume": 9,
   "debutIndex": 9,
   "answer": true,
-  "thumb": 22
+  "thumb": 22,
+  "anime": true
  },
  {
   "id": 3765,
@@ -560,7 +583,8 @@
   "volume": 10,
   "debutIndex": 10,
   "answer": true,
-  "thumb": 23
+  "thumb": 23,
+  "anime": true
  },
  {
   "id": 41320,
@@ -583,7 +607,8 @@
   "volume": 2,
   "debutIndex": 102,
   "answer": true,
-  "thumb": 24
+  "thumb": 24,
+  "anime": true
  },
  {
   "id": 38847,
@@ -606,7 +631,8 @@
   "volume": 2,
   "debutIndex": 102,
   "answer": true,
-  "thumb": 25
+  "thumb": 25,
+  "anime": true
  },
  {
   "id": 26824,
@@ -630,7 +656,8 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 26
+  "thumb": 26,
+  "anime": true
  },
  {
   "id": 41933,
@@ -656,7 +683,8 @@
   "volume": 2,
   "debutIndex": 102,
   "answer": true,
-  "thumb": 27
+  "thumb": 27,
+  "anime": true
  },
  {
   "id": 3638,
@@ -683,7 +711,8 @@
   "volume": 10,
   "debutIndex": 10,
   "answer": true,
-  "thumb": 28
+  "thumb": 28,
+  "anime": true
  },
  {
   "id": 3682,
@@ -708,7 +737,8 @@
   "volume": 9,
   "debutIndex": 9,
   "answer": true,
-  "thumb": 29
+  "thumb": 29,
+  "anime": true
  },
  {
   "id": 2665,
@@ -732,7 +762,8 @@
   "volume": 6,
   "debutIndex": 6,
   "answer": true,
-  "thumb": 30
+  "thumb": 30,
+  "anime": true
  },
  {
   "id": 2240,
@@ -758,7 +789,8 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 31
+  "thumb": 31,
+  "anime": true
  },
  {
   "id": 2807,
@@ -781,7 +813,8 @@
   "volume": 6,
   "debutIndex": 6,
   "answer": true,
-  "thumb": 32
+  "thumb": 32,
+  "anime": true
  },
  {
   "id": 2237,
@@ -806,7 +839,8 @@
   "volume": 2,
   "debutIndex": 2,
   "answer": true,
-  "thumb": 33
+  "thumb": 33,
+  "anime": true
  },
  {
   "id": 2160,
@@ -831,7 +865,8 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 34
+  "thumb": 34,
+  "anime": true
  },
  {
   "id": 3716,
@@ -855,7 +890,8 @@
   "volume": 9,
   "debutIndex": 9,
   "answer": true,
-  "thumb": 35
+  "thumb": 35,
+  "anime": true
  },
  {
   "id": 13522,
@@ -878,7 +914,8 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 36
+  "thumb": 36,
+  "anime": true
  },
  {
   "id": 2552,
@@ -903,7 +940,8 @@
   "volume": 5,
   "debutIndex": 5,
   "answer": true,
-  "thumb": 37
+  "thumb": 37,
+  "anime": true
  },
  {
   "id": 2245,
@@ -931,7 +969,8 @@
   "volume": 4,
   "debutIndex": 4,
   "answer": true,
-  "thumb": 38
+  "thumb": 38,
+  "anime": true
  },
  {
   "id": 2268,
@@ -952,7 +991,8 @@
   "volume": 3,
   "debutIndex": 3,
   "answer": true,
-  "thumb": 39
+  "thumb": 39,
+  "anime": true
  },
  {
   "id": 2918,
@@ -975,7 +1015,8 @@
   "volume": 7,
   "debutIndex": 7,
   "answer": true,
-  "thumb": 40
+  "thumb": 40,
+  "anime": true
  },
  {
   "id": 26410,
@@ -996,7 +1037,8 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 41
+  "thumb": 41,
+  "anime": true
  },
  {
   "id": 2805,
@@ -1019,7 +1061,8 @@
   "volume": 6,
   "debutIndex": 6,
   "answer": true,
-  "thumb": 42
+  "thumb": 42,
+  "anime": true
  },
  {
   "id": 13252,
@@ -1042,7 +1085,8 @@
   "volume": 1,
   "debutIndex": 101,
   "answer": true,
-  "thumb": 43
+  "thumb": 43,
+  "anime": true
  },
  {
   "id": 2156,
@@ -1068,7 +1112,8 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 44
+  "thumb": 44,
+  "anime": true
  },
  {
   "id": 2253,
@@ -1092,7 +1137,8 @@
   "volume": 2,
   "debutIndex": 2,
   "answer": true,
-  "thumb": 45
+  "thumb": 45,
+  "anime": true
  },
  {
   "id": 92509,
@@ -1114,7 +1160,8 @@
   "volume": 14,
   "debutIndex": 14,
   "answer": true,
-  "thumb": 46
+  "thumb": 46,
+  "anime": true
  },
  {
   "id": 27593,
@@ -1135,7 +1182,8 @@
   "volume": 3,
   "debutIndex": 3,
   "answer": true,
-  "thumb": 47
+  "thumb": 47,
+  "anime": true
  },
  {
   "id": 48857,
@@ -1156,7 +1204,8 @@
   "volume": 1,
   "debutIndex": 1,
   "answer": true,
-  "thumb": 48
+  "thumb": 48,
+  "anime": true
  },
  {
   "id": 2235,
@@ -1185,7 +1234,8 @@
   "volume": 2,
   "debutIndex": 2,
   "answer": true,
-  "thumb": 49
+  "thumb": 49,
+  "anime": true
  },
  {
   "id": 14079,
@@ -1208,7 +1258,8 @@
   "volume": 9,
   "debutIndex": 9,
   "answer": true,
-  "thumb": 50
+  "thumb": 50,
+  "anime": true
  },
  {
   "id": 102131,
@@ -1235,7 +1286,8 @@
   "volume": 4,
   "debutIndex": 104,
   "answer": true,
-  "thumb": 51
+  "thumb": 51,
+  "anime": true
  },
  {
   "id": 2258,
@@ -1264,7 +1316,8 @@
   "volume": 4,
   "debutIndex": 4,
   "answer": true,
-  "thumb": 52
+  "thumb": 52,
+  "anime": true
  },
  {
   "id": 2210,
@@ -1289,7 +1342,8 @@
   "volume": 2,
   "debutIndex": 2,
   "answer": true,
-  "thumb": 53
+  "thumb": 53,
+  "anime": true
  },
  {
   "id": 2809,
@@ -1312,7 +1366,8 @@
   "volume": 6,
   "debutIndex": 6,
   "answer": true,
-  "thumb": 54
+  "thumb": 54,
+  "anime": true
  },
  {
   "id": 2214,
@@ -1333,7 +1388,8 @@
   "volume": 3,
   "debutIndex": 3,
   "answer": true,
-  "thumb": 55
+  "thumb": 55,
+  "anime": true
  },
  {
   "id": 2657,
@@ -1357,6 +1413,7 @@
   "volume": 6,
   "debutIndex": 6,
   "answer": true,
-  "thumb": 56
+  "thumb": 56,
+  "anime": true
  }
 ]

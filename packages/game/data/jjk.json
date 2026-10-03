@@ -19,7 +19,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 0
+  "thumb": 0,
+  "anime": false
  },
  {
   "id": 279,
@@ -40,7 +41,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 1
+  "thumb": 1,
+  "anime": true
  },
  {
   "id": 934,
@@ -61,7 +63,8 @@
   "arc": "Инцидент в Сибуе",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 2
+  "thumb": 2,
+  "anime": true
  },
  {
   "id": 1714,
@@ -81,7 +84,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 3
+  "thumb": 3,
+  "anime": true
  },
  {
   "id": 218,
@@ -101,7 +105,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 4
+  "thumb": 4,
+  "anime": true
  },
  {
   "id": 728,
@@ -121,7 +126,8 @@
   "arc": "Обмен с Киото",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 5
+  "thumb": 5,
+  "anime": true
  },
  {
   "id": 7084,
@@ -143,7 +149,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 6
+  "thumb": 6,
+  "anime": false
  },
  {
   "id": 5792,
@@ -165,7 +172,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 7
+  "thumb": 7,
+  "anime": true
  },
  {
   "id": 281,
@@ -186,7 +194,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 8
+  "thumb": 8,
+  "anime": true
  },
  {
   "id": 4771,
@@ -207,7 +216,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 9
+  "thumb": 9,
+  "anime": true
  },
  {
   "id": 216,
@@ -227,7 +237,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 10
+  "thumb": 10,
+  "anime": true
  },
  {
   "id": 211,
@@ -247,7 +258,8 @@
   "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 11
+  "thumb": 11,
+  "anime": true
  },
  {
   "id": 405,
@@ -268,7 +280,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 12
+  "thumb": 12,
+  "anime": true
  },
  {
   "id": 5410,
@@ -289,7 +302,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 13
+  "thumb": 13,
+  "anime": true
  },
  {
   "id": 484,
@@ -311,7 +325,8 @@
   "arc": "Обмен с Киото",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 14
+  "thumb": 14,
+  "anime": true
  },
  {
   "id": 5863,
@@ -331,7 +346,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 15
+  "thumb": 15,
+  "anime": true
  },
  {
   "id": 277,
@@ -353,7 +369,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 16
+  "thumb": 16,
+  "anime": true
  },
  {
   "id": 188,
@@ -376,7 +393,8 @@
   "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 17
+  "thumb": 17,
+  "anime": true
  },
  {
   "id": 220,
@@ -397,7 +415,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 18
+  "thumb": 18,
+  "anime": true
  },
  {
   "id": 246,
@@ -417,7 +436,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 19
+  "thumb": 19,
+  "anime": true
  },
  {
   "id": 130,
@@ -438,7 +458,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 20
+  "thumb": 20,
+  "anime": true
  },
  {
   "id": 480,
@@ -459,7 +480,8 @@
   "arc": "Обмен с Киото",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 21
+  "thumb": 21,
+  "anime": true
  },
  {
   "id": 486,
@@ -479,7 +501,8 @@
   "arc": "Обмен с Киото",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 22
+  "thumb": 22,
+  "anime": true
  },
  {
   "id": 529,
@@ -499,7 +522,8 @@
   "arc": "Инцидент в Сибуе",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 23
+  "thumb": 23,
+  "anime": true
  },
  {
   "id": 3796,
@@ -521,7 +545,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 24
+  "thumb": 24,
+  "anime": true
  },
  {
   "id": 186,
@@ -542,7 +567,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 25
+  "thumb": 25,
+  "anime": true
  },
  {
   "id": 478,
@@ -564,7 +590,8 @@
   "arc": "Обмен с Киото",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 26
+  "thumb": 26,
+  "anime": true
  },
  {
   "id": 3810,
@@ -584,7 +611,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 27
+  "thumb": 27,
+  "anime": true
  },
  {
   "id": 200,
@@ -605,7 +633,8 @@
   "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 28
+  "thumb": 28,
+  "anime": true
  },
  {
   "id": 5675,
@@ -627,7 +656,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 29
+  "thumb": 29,
+  "anime": true
  },
  {
   "id": 198,
@@ -647,7 +677,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 30
+  "thumb": 30,
+  "anime": true
  },
  {
   "id": 974,
@@ -668,7 +699,8 @@
   "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 31
+  "thumb": 31,
+  "anime": true
  },
  {
   "id": 5544,
@@ -690,7 +722,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 32
+  "thumb": 32,
+  "anime": true
  },
  {
   "id": 5937,
@@ -712,7 +745,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 33
+  "thumb": 33,
+  "anime": true
  },
  {
   "id": 162,
@@ -734,7 +768,8 @@
   "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 34
+  "thumb": 34,
+  "anime": true
  },
  {
   "id": 209,
@@ -755,7 +790,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 35
+  "thumb": 35,
+  "anime": true
  },
  {
   "id": 274,
@@ -777,7 +813,8 @@
   "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 36
+  "thumb": 36,
+  "anime": true
  },
  {
   "id": 5907,
@@ -800,7 +837,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 37
+  "thumb": 37,
+  "anime": true
  },
  {
   "id": 531,
@@ -820,7 +858,8 @@
   "arc": "Против Махито",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 38
+  "thumb": 38,
+  "anime": true
  },
  {
   "id": 834,
@@ -841,7 +880,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 39
+  "thumb": 39,
+  "anime": true
  },
  {
   "id": 724,
@@ -862,7 +902,8 @@
   "arc": "Проклятые картины",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 40
+  "thumb": 40,
+  "anime": true
  },
  {
   "id": 190,
@@ -883,7 +924,8 @@
   "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 41
+  "thumb": 41,
+  "anime": true
  },
  {
   "id": 859,
@@ -903,7 +945,8 @@
   "arc": "Прошлое Годжо",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 42
+  "thumb": 42,
+  "anime": true
  },
  {
   "id": 937,
@@ -923,7 +966,8 @@
   "arc": "Инцидент в Сибуе",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 43
+  "thumb": 43,
+  "anime": true
  },
  {
   "id": 2361,
@@ -944,7 +988,8 @@
   "arc": "Обмен с Киото",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 44
+  "thumb": 44,
+  "anime": true
  },
  {
   "id": 4920,
@@ -965,7 +1010,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 45
+  "thumb": 45,
+  "anime": true
  },
  {
   "id": 5538,
@@ -987,7 +1033,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 46
+  "thumb": 46,
+  "anime": true
  },
  {
   "id": 4775,
@@ -1008,7 +1055,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 47
+  "thumb": 47,
+  "anime": true
  },
  {
   "id": 285,
@@ -1028,7 +1076,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 48
+  "thumb": 48,
+  "anime": true
  },
  {
   "id": 5541,
@@ -1049,7 +1098,8 @@
   "arc": "Игра на выбывание",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 49
+  "thumb": 49,
+  "anime": true
  },
  {
   "id": 10728,
@@ -1071,7 +1121,8 @@
   "arc": "Эпилог",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 50
+  "thumb": 50,
+  "anime": false
  },
  {
   "id": 84,
@@ -1092,7 +1143,8 @@
   "arc": "Проклятая утроба",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 51
+  "thumb": 51,
+  "anime": true
  },
  {
   "id": 10729,
@@ -1114,7 +1166,8 @@
   "arc": "Эпилог",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 52
+  "thumb": 52,
+  "anime": false
  },
  {
   "id": 1003,
@@ -1134,7 +1187,8 @@
   "arc": "Прошлое Годжо",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 53
+  "thumb": 53,
+  "anime": true
  },
  {
   "id": 346,
@@ -1156,6 +1210,7 @@
   "arc": "Проклятое дитя",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 54
+  "thumb": 54,
+  "anime": true
  }
 ]

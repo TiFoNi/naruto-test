@@ -20,6 +20,9 @@ export const POST = handle(async (request) => {
   if (!isGame(game) || !isMode(mode) || !hasMode(game, mode)) return fail(400, 'bad_request')
   if (!(await gameData(game)).pool.length) return fail(503, 'not_ready')
 
-  const round = daily === true ? await dailyRound(owner.id, game, mode, owner.guest) : await activeRound(owner.id, game, mode, owner.guest)
+  const round =
+    daily === true
+      ? await dailyRound(owner.id, game, mode, owner.guest)
+      : await activeRound(owner.id, game, mode, owner.guest, body.anime === true)
   return json({ round: await roundView(round), guest: owner.guest }, 200, owner.cookie)
 })
