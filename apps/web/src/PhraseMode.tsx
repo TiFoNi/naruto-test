@@ -17,7 +17,7 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 
 export default function PhraseMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t } = useI18n()
-  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(
+  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, refilter, next, retry } = useRound(
     game,
     'phrase',
     active,
@@ -49,7 +49,7 @@ export default function PhraseMode({ game, active, stats, daily = false, challen
       <div className={`play-card mode-ask state-${mood}`}>
         <div className="play-card-head">
           <h2>{headline}</h2>
-          <AnimeFilter game={game} daily={daily} playing={!!round && !over} roundAnime={round?.anime === true} onSurrender={giveUp} />
+          <AnimeFilter game={game} daily={daily} playing={!!round && !over} fresh={guesses.length === 0} roundAnime={round?.anime === true} onSurrender={giveUp} onRefilter={refilter} />
         </div>
         <p>{subline}</p>
       </div>

@@ -10,8 +10,10 @@ type Props = {
   game: Game
   daily?: boolean
   playing?: boolean
+  fresh?: boolean
   roundAnime?: boolean
   onSurrender?: () => void
+  onRefilter?: (anime: boolean) => void
 }
 
 const memory = (game: string) => `anime-world:${game}`
@@ -24,7 +26,7 @@ const remembered = (game: string) => {
   }
 }
 
-export default function AnimeFilter({ game, daily, playing = false, roundAnime = false, onSurrender }: Props) {
+export default function AnimeFilter({ game, daily, playing = false, fresh = false, roundAnime = false, onSurrender, onRefilter }: Props) {
   const { t } = useI18n()
   const [on, set] = useAnimeOnly(game.id)
   const [known, setKnown] = useState(() => (typeof window === 'undefined' ? false : remembered(game.id)))
@@ -56,8 +58,9 @@ export default function AnimeFilter({ game, daily, playing = false, roundAnime =
   if (daily || !mixed) return null
 
   const pick = (next: boolean) => {
-    if (playing && roundAnime !== next) return setAsking(next)
+    if (playing && roundAnime !== next && !fresh) return setAsking(next)
     set(next)
+    if (playing && roundAnime !== next) onRefilter?.(next)
   }
 
   const confirm = () => {

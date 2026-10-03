@@ -19,7 +19,7 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 
 export default function ImageMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t, lang } = useI18n()
-  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(
+  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, refilter, next, retry } = useRound(
     game,
     'image',
     active,
@@ -53,7 +53,7 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
       }
       side={<PlaySide game={game} mode="image" daily={daily} stats={stats} playing={playing} howto="image" onGiveUp={giveUp} />}
     >
-      {!over && <AskCard title={t('play.imageTitle')} hint={t('play.imagePrompt')} aside={<AnimeFilter game={game} daily={daily} playing={!!round && !over} roundAnime={round?.anime === true} onSurrender={giveUp} />} />}
+      {!over && <AskCard title={t('play.imageTitle')} hint={t('play.imagePrompt')} aside={<AnimeFilter game={game} daily={daily} playing={!!round && !over} fresh={guesses.length === 0} roundAnime={round?.anime === true} onSurrender={giveUp} onRefilter={refilter} />} />}
 
       {!over && !error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} compact limited={round?.anime === true} />}
 

@@ -17,7 +17,7 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 
 export default function PageMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t, name } = useI18n()
-  const { round, guesses, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(game, 'page', active, daily, challenge)
+  const { round, guesses, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, refilter, next, retry } = useRound(game, 'page', active, daily, challenge)
 
   const byId = new Map(game.entities.map((e) => [e.id, e]))
   const missed = new Set(guesses.filter((g) => !g.pending).map((g) => g.entity.id))
@@ -102,7 +102,7 @@ export default function PageMode({ game, active, stats, daily = false, challenge
       <div className={`play-card mode-ask state-${mood}`}>
         <div className="play-card-head">
           <h2>{t(headline)}</h2>
-          <AnimeFilter game={game} daily={daily} playing={!!round && !over} roundAnime={round?.anime === true} onSurrender={giveUp} />
+          <AnimeFilter game={game} daily={daily} playing={!!round && !over} fresh={guesses.length === 0} roundAnime={round?.anime === true} onSurrender={giveUp} onRefilter={refilter} />
         </div>
         <p>{t(subline)}</p>
       </div>

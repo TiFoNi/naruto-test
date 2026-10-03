@@ -136,6 +136,11 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
     if (round && !over && !busy) request('round/giveup', { roundId: round.id })
   }
 
+  const refilter = (anime: boolean) => {
+    if (daily || challenge || !round || over || busy) return
+    void request('round/current', { game: game.id, mode, daily: false, anime, swap: true })
+  }
+
   const next = () => {
     setRound(null)
     setError(null)
@@ -143,5 +148,5 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
 
   const retry = () => setError(null)
 
-  return { round, guesses, exclude, over, won, skipped, answer, yesterday, busy: busy || cooling, error, guess, giveUp, next, retry }
+  return { round, guesses, exclude, over, won, skipped, answer, yesterday, busy: busy || cooling, error, guess, giveUp, refilter, next, retry }
 }

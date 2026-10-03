@@ -54,6 +54,25 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, 
   return { ...doc, _id: insertedId }
 }
 
+export async function refilterRound(userId: ObjectId, game: GameId, mode: ModeId, guest = false, animeOnly = false) {
+  const collection = await rounds()
+  const open = await collection.findOne(
+    { userId, game, mode, status: 'active', daily: { $exists: false } },
+    { sort: { createdAt: 1 } },
+  )
+
+  if (open && !open.guesses.length) {
+    const fits = !animeOnly || (await gameData(game)).byId.get(open.answerId)?.anime !== false
+    if (fits) {
+      await collection.updateOne({ _id: open._id }, animeOnly ? { $set: { anime: true } } : { $unset: { anime: '' } })
+      return (await collection.findOne({ _id: open._id }))!
+    }
+    await collection.deleteOne({ _id: open._id })
+  }
+
+  return activeRound(userId, game, mode, guest, animeOnly)
+}
+
 export async function challengeRound(userId: ObjectId, code: string) {
   const doc = await findChallenge(code)
   if (!doc || !isGame(doc.game) || !(await knows(doc.game, doc.answerId))) return null

@@ -16,7 +16,7 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 
 export default function ClassicMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t } = useI18n()
-  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(
+  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, refilter, next, retry } = useRound(
     game,
     'classic',
     active,
@@ -34,7 +34,7 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
             </span>
           }
           title={t('play.classicTitle')}
-          aside={<AnimeFilter game={game} daily={daily} playing={!!round && !over} roundAnime={round?.anime === true} onSurrender={giveUp} />}
+          aside={<AnimeFilter game={game} daily={daily} playing={!!round && !over} fresh={guesses.length === 0} roundAnime={round?.anime === true} onSurrender={giveUp} onRefilter={refilter} />}
           hint={t('play.classicPrompt')}
         >
           {!error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} limited={round?.anime === true} />}

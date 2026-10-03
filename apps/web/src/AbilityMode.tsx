@@ -23,7 +23,7 @@ const clarityAt = (step: number) => Math.round((step / ABILITY_STAGES) * 100)
 
 export default function AbilityMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t, name, lang } = useI18n()
-  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, next, retry } = useRound(
+  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, refilter, next, retry } = useRound(
     game,
     'ability',
     active,
@@ -93,7 +93,7 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
         </div>
       }
     >
-      <AskCard title={headline} hint={subline} state={mood} aside={<AnimeFilter game={game} daily={daily} playing={!!round && !over} roundAnime={round?.anime === true} onSurrender={giveUp} />} />
+      <AskCard title={headline} hint={subline} state={mood} aside={<AnimeFilter game={game} daily={daily} playing={!!round && !over} fresh={guesses.length === 0} roundAnime={round?.anime === true} onSurrender={giveUp} onRefilter={refilter} />} />
 
       {!over && (
         <div className={`ability-reveal ${ability ? 'open' : ''}`}>
