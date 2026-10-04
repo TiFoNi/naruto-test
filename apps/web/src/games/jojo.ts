@@ -35,7 +35,7 @@ export const jojo: Game<Character> = {
     'The Joestars, Stands and Hamon — parts 1 to 7, from Phantom Blood to Steel Ball Run.',
   ),
   accent: '#d367b8',
-  modes: ['classic', 'image'],
+  modes: ['classic', 'image', 'odd'],
   featured: ['Jotaro Kujo', 'Dio Brando', 'Joseph Joestar'],
   unit: 'character',
   entities: [],

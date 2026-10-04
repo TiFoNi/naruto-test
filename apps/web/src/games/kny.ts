@@ -35,7 +35,7 @@ export const kny: Game<Character> = {
     'Demon Slayers, Hashira and the Twelve Kizuki — from Final Selection to the last sunrise.',
   ),
   accent: '#e0556b',
-  modes: ['classic', 'image'],
+  modes: ['classic', 'image', 'odd'],
   featured: ['Tanjiro Kamado', 'Nezuko Kamado', 'Zenitsu Agatsuma'],
   unit: 'character',
   entities: [],

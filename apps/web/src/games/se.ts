@@ -35,7 +35,7 @@ export const se: Game<Character> = {
     'The DWMA, meisters and demon weapons — hunting kishin souls from the prologue to the moon.',
   ),
   accent: '#f2c53d',
-  modes: ['classic', 'image'],
+  modes: ['classic', 'image', 'odd'],
   featured: ['Maka Albarn', 'Soul Evans', 'Death the Kid'],
   unit: 'character',
   entities: [],

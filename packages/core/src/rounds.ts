@@ -5,7 +5,7 @@ import { rounds, type RoundDoc, type UserDoc } from './db'
 import { gameData, isGame, isMode, knows } from './games'
 import { applyDailyResult, applyResult, awardSolveXp, defaultNickname } from './profile'
 import { abilityByKey } from './abilities'
-import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
+import { modePool, oddOptions, oddTrait, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { findChallenge, recordSolve } from './challenges'
 import { markSeasonPlay } from './season'
 import { grantWorldFrame } from './frames'
@@ -165,6 +165,7 @@ export async function roundView(round: RoundDoc, full = true) {
     ...(round.mode === 'image' ? await shotOf(round, game) : {}),
     ...(round.mode === 'ability' ? abilityInfo(round) : {}),
     ...(round.mode === 'page' ? { options: optionsOf(round.extra) } : {}),
+    ...(round.mode === 'odd' ? { options: oddOptions(round.extra), ...(round.status === 'active' ? {} : { trait: oddTrait(round.extra) }) } : {}),
     ...(round.mode === 'phrase' ? phraseInfo(round, id) : {}),
   }
 }

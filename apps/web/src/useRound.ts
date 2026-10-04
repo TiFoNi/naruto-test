@@ -23,6 +23,7 @@ export type RoundView = {
   nextAt?: number
   yesterdayId?: number | null
   options?: number[]
+  trait?: { key: string; value: string }
   phrases?: { text: string; ru?: string }[]
   phrasesLeft?: number
   voice?: string

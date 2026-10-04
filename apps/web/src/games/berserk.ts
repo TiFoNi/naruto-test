@@ -33,7 +33,7 @@ export const berserk: Game<Character> = {
     'The Band of the Falcon, Apostles and the God Hand — from the Black Swordsman to Fantasia.',
   ),
   accent: '#a9b4c2',
-  modes: ['classic', 'image'],
+  modes: ['classic', 'image', 'odd'],
   featured: ['Guts', 'Griffith', 'Casca'],
   unit: 'character',
   entities: [],

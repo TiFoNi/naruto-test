@@ -31,7 +31,7 @@ export const csm: Game<Character> = {
     'Devils, fiends and hunters — from Pochita to the Four Horsemen.',
   ),
   accent: '#ef7623',
-  modes: ['classic', 'image'],
+  modes: ['classic', 'image', 'odd'],
   featured: ['Denji', 'Power', 'Makima'],
   unit: 'character',
   entities: [],

@@ -35,7 +35,7 @@ export const ff: Game<Character> = {
     'Special Fire Force companies, pyrokinetic generations and Adolla — from the start to the Great Cataclysm.',
   ),
   accent: '#ff6a2a',
-  modes: ['classic', 'image'],
+  modes: ['classic', 'image', 'odd'],
   featured: ['Shinra Kusakabe', 'Arthur Boyle', 'Benimaru Shinmon'],
   unit: 'character',
   entities: [],

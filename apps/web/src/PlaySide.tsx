@@ -17,7 +17,7 @@ type Props = {
   playing: boolean
   busy?: boolean
   legend?: boolean
-  howto?: 'image' | 'page' | 'ability' | 'phrase'
+  howto?: 'image' | 'page' | 'ability' | 'phrase' | 'odd'
   onGiveUp: () => void
 }
 
@@ -26,6 +26,7 @@ const STEPS = {
   page: ['howtoPage.step1', 'howtoPage.step2', 'howtoPage.step3'],
   ability: ['howtoAbility.step1', 'howtoAbility.step2', 'howtoAbility.step3'],
   phrase: ['howtoPhrase.step1', 'howtoPhrase.step2', 'howtoPhrase.step3'],
+  odd: ['howtoOdd.step1', 'howtoOdd.step2', 'howtoOdd.step3'],
 } as const
 
 function HowTo({ kind }: { kind: keyof typeof STEPS }) {

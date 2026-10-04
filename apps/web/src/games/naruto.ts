@@ -51,7 +51,7 @@ export const naruto: Game<Character> = {
     'Konoha shinobi, Akatsuki, Kage and tailed beasts — from the Prologue to the end of the Fourth War.',
   ),
   accent: '#ff8a1f',
-  modes: ['classic', 'image'],
+  modes: ['classic', 'image', 'odd'],
   featured: ['Naruto Uzumaki', 'Sasuke Uchiha', 'Kakashi Hatake', 'Itachi Uchiha'],
   unit: 'character',
   entities: [],

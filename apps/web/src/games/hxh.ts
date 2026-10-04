@@ -33,7 +33,7 @@ export const hxh: Game<Character> = {
     'Hunters, the Phantom Troupe and Chimera Ants — from the Hunter Exam to the Dark Continent.',
   ),
   accent: '#a678e8',
-  modes: ['classic', 'image'],
+  modes: ['classic', 'image', 'odd'],
   featured: ['Gon Freecss', 'Killua Zoldyck', 'Kurapika'],
   unit: 'character',
   entities: [],

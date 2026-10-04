@@ -35,7 +35,7 @@ export const aot: Game<Character> = {
     'The Survey Corps, Marley’s warriors and the Nine Titans — from the fall of Shiganshina to the Rumbling.',
   ),
   accent: '#b89b62',
-  modes: ['classic', 'image'],
+  modes: ['classic', 'image', 'odd'],
   featured: ['Eren Yeager', 'Mikasa Ackerman', 'Levi Ackerman', 'Armin Arlert'],
   unit: 'character',
   entities: [],

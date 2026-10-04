@@ -51,7 +51,7 @@ export const onepiece: Game<Character> = {
     'The Straw Hats, the Emperors, the Admirals and the World Government — from Romance Dawn to Elbaph.',
   ),
   accent: '#f0a830',
-  modes: ['classic', 'image'],
+  modes: ['classic', 'image', 'odd'],
   featured: ['Monkey D. Luffy', 'Roronoa Zoro', 'Sanji'],
   unit: 'character',
   entities: [],

@@ -282,6 +282,17 @@ export function PageIcon({ className }: IconProps) {
   )
 }
 
+export function PuzzleIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.8" />
+      <rect x="13" y="3.5" width="7.5" height="7.5" rx="1.8" />
+      <rect x="3.5" y="13" width="7.5" height="7.5" rx="1.8" />
+      <path d="M13.8 17.2h6M16.8 14.2v6" />
+    </svg>
+  )
+}
+
 export function ChartIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2}>

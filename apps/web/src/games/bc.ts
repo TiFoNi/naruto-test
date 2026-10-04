@@ -35,7 +35,7 @@ export const bc: Game<Character> = {
     'The Clover Kingdom Magic Knights, elves and devils — from squad tryouts to the Spade Kingdom.',
   ),
   accent: '#6ec06e',
-  modes: ['classic', 'image'],
+  modes: ['classic', 'image', 'odd'],
   featured: ['Asta', 'Yuno Grinberryall', 'Noelle Silva'],
   unit: 'character',
   entities: [],

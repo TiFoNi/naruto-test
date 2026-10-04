@@ -44,7 +44,7 @@ export const tg: Game<Character> = {
     'Ghouls, CCG investigators, Aogiri and the Quinx — from Anteiku to the end of :re.',
   ),
   accent: '#d6435a',
-  modes: ['classic', 'image'],
+  modes: ['classic', 'image', 'odd'],
   featured: ['Ken Kaneki', 'Touka Kirishima', 'Kishou Arima'],
   unit: 'character',
   entities: [],

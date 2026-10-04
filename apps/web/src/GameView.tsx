@@ -7,6 +7,7 @@ import { GRID_GAMES, dailyKey } from '@nanda/game'
 import ClassicMode from './ClassicMode'
 import ImageMode from './ImageMode'
 import AbilityMode from './AbilityMode'
+import OddMode from './OddMode'
 import PageMode from './PageMode'
 import PhraseMode from './PhraseMode'
 import { CalendarIcon, InfinityIcon, MedalIcon } from './icons'
@@ -97,6 +98,11 @@ export default function GameView({ game, mode, daily }: { game: Game; mode: Mode
           {game.modes.includes('page') && (
             <div hidden={mode !== 'page'}>
               <PageMode game={game} active={daily === d && mode === 'page'} stats={statsFor('page', d)} daily={d} />
+            </div>
+          )}
+          {game.modes.includes('odd') && (
+            <div hidden={mode !== 'odd'}>
+              <OddMode game={game} active={daily === d && mode === 'odd'} stats={statsFor('odd', d)} daily={d} />
             </div>
           )}
         </div>

@@ -8295,3 +8295,127 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 .ask-actions .ask-danger:hover {
   background: color-mix(in srgb, var(--wrong) 28%, transparent);
 }
+
+.odd-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.odd-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+
+.odd-card:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--game-accent, var(--accent)) 55%, var(--line));
+  background: color-mix(in srgb, var(--game-accent, var(--accent)) 9%, var(--card));
+  transform: translateY(-2px);
+}
+
+.odd-card img {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  background: var(--card-2);
+  object-fit: cover;
+}
+
+.odd-card b {
+  font-family: var(--display);
+  font-size: 14px;
+  line-height: 1.25;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.odd-key {
+  position: absolute;
+  top: 18px;
+  left: 16px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--card-solid) 80%, transparent);
+  color: var(--text-2);
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+}
+
+.odd-mark {
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--card-2);
+  color: var(--text-3);
+}
+
+.odd-card.right {
+  border-color: color-mix(in srgb, var(--correct) 65%, transparent);
+  background: color-mix(in srgb, var(--correct) 12%, var(--card));
+}
+
+.odd-card.right .odd-mark {
+  background: var(--correct);
+  color: #fff;
+}
+
+.odd-card.wrong {
+  border-color: color-mix(in srgb, #e5483b 50%, transparent);
+  background: color-mix(in srgb, #e5483b 10%, var(--card));
+}
+
+.odd-card.wrong .odd-mark {
+  background: var(--wrong);
+  color: var(--wrong-text);
+}
+
+.odd-card.dim {
+  opacity: 0.45;
+}
+
+.odd-card.waiting {
+  animation: option-wait 0.9s ease-in-out infinite;
+}
+
+.play-aside {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.play-round {
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--card-2);
+  color: var(--text-3);
+  font-family: var(--display);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .odd-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
