@@ -63,7 +63,8 @@ export default function OddMode({ game, active, stats, daily = false, challenge 
   }, [])
 
   const column = game.columns.find((one) => one.key === round?.trait?.key)
-  const trait = round?.trait ? `${column ? l(column.title) : round.trait.key} — ${tv(round.trait.value)}` : ''
+  const field = column ? l(column.title) : (round?.trait?.key ?? '')
+  const trait = round?.trait?.value ? `${field} — ${tv(round.trait.value)}` : field
 
   const mood = !over ? (missed.size ? 'wrong' : 'ask') : won ? 'won' : 'lost'
   const headline: UiKey =
@@ -83,7 +84,9 @@ export default function OddMode({ game, active, stats, daily = false, challenge 
       ? t(guesses.length === 1 ? 'odd.firstHint' : 'odd.gotHint', { trait })
       : mood === 'lost'
         ? t('odd.lostHint', { trait })
-        : t('play.oddPrompt')
+        : field
+          ? t('play.oddPrompt', { field })
+          : t('play.oddPromptPlain')
 
   return (
     <PlayBoard side={<PlaySide game={game} mode="odd" daily={daily} stats={stats} playing={playing} howto="odd" onGiveUp={giveUp} />}>

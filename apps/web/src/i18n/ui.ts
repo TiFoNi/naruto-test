@@ -334,6 +334,11 @@ const ui = {
   },
   'play.oddTitle': { ru: 'Кто здесь лишний?', uk: 'Хто тут зайвий?', en: 'Who does not belong?' },
   'play.oddPrompt': {
+    ru: 'Троих объединяет одна общая черта — ищи её в графе «{field}».',
+    uk: 'Трьох об’єднує одна спільна риса — шукай її в графі «{field}».',
+    en: 'Three of them share one trait — look for it under “{field}”.',
+  },
+  'play.oddPromptPlain': {
     ru: 'Троих что-то объединяет — клан, отряд, сила. Выбери того, кто выбивается.',
     uk: 'Трьох щось об’єднує — клан, загін, сила. Обери того, хто випадає.',
     en: 'Three of them share something — a clan, a squad, a power. Pick the one who does not.',
@@ -359,6 +364,11 @@ const ui = {
     ru: 'Жми на того, кто выбивается — клавиши 1–4',
     uk: 'Тисни на того, хто випадає — клавіші 1–4',
     en: 'Click the one who does not fit — keys 1–4',
+  },
+  'howtoOdd.step4': {
+    ru: 'Не считаются: {fields}, а ещё пустые значения вроде «нет отряда»',
+    uk: 'Не рахуються: {fields}, а ще порожні значення на кшталт «немає загону»',
+    en: 'Never counts: {fields}, plus empty values like “no squad”',
   },
   'mode.classic.desc': {
     ru: 'Вводишь любого персонажа — клетки показывают, что совпало: пол, принадлежность, способности, арку дебюта.',

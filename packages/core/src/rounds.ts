@@ -165,7 +165,12 @@ export async function roundView(round: RoundDoc, full = true) {
     ...(round.mode === 'image' ? await shotOf(round, game) : {}),
     ...(round.mode === 'ability' ? abilityInfo(round) : {}),
     ...(round.mode === 'page' ? { options: optionsOf(round.extra) } : {}),
-    ...(round.mode === 'odd' ? { options: oddOptions(round.extra), ...(round.status === 'active' ? {} : { trait: oddTrait(round.extra) }) } : {}),
+    ...(round.mode === 'odd'
+      ? {
+          options: oddOptions(round.extra),
+          trait: round.status === 'active' ? { key: oddTrait(round.extra)?.key } : oddTrait(round.extra),
+        }
+      : {}),
     ...(round.mode === 'phrase' ? phraseInfo(round, id) : {}),
   }
 }

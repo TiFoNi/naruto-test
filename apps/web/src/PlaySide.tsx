@@ -1,3 +1,4 @@
+import { GAME_SPECS } from '@nanda/game'
 import Link from 'next/link'
 import ChallengeMaker from './ChallengeMaker'
 import GiveUp from './GiveUp'
@@ -26,18 +27,26 @@ const STEPS = {
   page: ['howtoPage.step1', 'howtoPage.step2', 'howtoPage.step3'],
   ability: ['howtoAbility.step1', 'howtoAbility.step2', 'howtoAbility.step3'],
   phrase: ['howtoPhrase.step1', 'howtoPhrase.step2', 'howtoPhrase.step3'],
-  odd: ['howtoOdd.step1', 'howtoOdd.step2', 'howtoOdd.step3'],
+  odd: ['howtoOdd.step1', 'howtoOdd.step2', 'howtoOdd.step3', 'howtoOdd.step4'],
 } as const
 
-function HowTo({ kind }: { kind: keyof typeof STEPS }) {
-  const { t } = useI18n()
+const skipped = (game: Game) => {
+  const keys = GAME_SPECS[game.id].columns
+    .filter((column) => column.kind === 'order' || column.kind === 'optionalOrder' || column.key === 'gender')
+    .map((column) => column.key)
+  return game.columns.filter((column) => keys.includes(column.key))
+}
+
+function HowTo({ kind, game }: { kind: keyof typeof STEPS; game: Game }) {
+  const { t, l } = useI18n()
+  const fields = kind === 'odd' ? skipped(game).map((column) => l(column.title).toLowerCase()).join(', ') : ''
   return (
     <div className="play-card play-howto">
       <span className="play-card-title">{t('howto.title')}</span>
       {STEPS[kind].map((key, i) => (
         <span key={key}>
           <i>{i + 1}</i>
-          {t(key)}
+          {t(key, { fields })}
         </span>
       ))}
     </div>
@@ -113,7 +122,7 @@ export default function PlaySide({ game, mode, daily, stats, playing, busy, lege
       </div>
 
       {legend && <Legend game={game} />}
-      {howto && <HowTo kind={howto} />}
+      {howto && <HowTo kind={howto} game={game} />}
 
       <div className="play-actions">
         {!daily && <ChallengeMaker game={game} mode={mode} />}
