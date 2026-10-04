@@ -113,7 +113,8 @@
   "arcIndex": 7,
   "answer": true,
   "thumb": 6,
-  "anime": false
+  "anime": false,
+  "nameUk": "Гібрид батога"
  },
  {
   "id": 2696,
@@ -130,7 +131,8 @@
   "arcIndex": 7,
   "answer": true,
   "thumb": 7,
-  "anime": false
+  "anime": false,
+  "nameUk": "Гібрид списа"
  },
  {
   "id": 682,
@@ -146,7 +148,8 @@
   "arcIndex": 3,
   "answer": true,
   "thumb": 8,
-  "anime": true
+  "anime": true,
+  "nameUk": "Диявол майбутнього"
  },
  {
   "id": 244,
@@ -162,7 +165,8 @@
   "arcIndex": 2,
   "answer": true,
   "thumb": 9,
-  "anime": true
+  "anime": true,
+  "nameUk": "Диявол вічності"
  },
  {
   "id": 192,
@@ -178,7 +182,8 @@
   "arcIndex": 1,
   "answer": true,
   "thumb": 10,
-  "anime": true
+  "anime": true,
+  "nameUk": "Диявол кажана"
  },
  {
   "id": 349,
@@ -194,7 +199,8 @@
   "arcIndex": 1,
   "answer": true,
   "thumb": 11,
-  "anime": true
+  "anime": true,
+  "nameUk": "Диявол лисиці"
  },
  {
   "id": 4144,
@@ -211,7 +217,8 @@
   "arcIndex": 13,
   "answer": true,
   "thumb": 12,
-  "anime": false
+  "anime": false,
+  "nameUk": "Диявол вогню"
  },
  {
   "id": 859,
@@ -227,7 +234,8 @@
   "arcIndex": 5,
   "answer": true,
   "thumb": 13,
-  "anime": false
+  "anime": false,
+  "nameUk": "Диявол восьминога"
  },
  {
   "id": 3209,
@@ -243,7 +251,8 @@
   "arcIndex": 10,
   "answer": true,
   "thumb": 14,
-  "anime": false
+  "anime": false,
+  "nameUk": "Диявол падіння"
  },
  {
   "id": 383,
@@ -259,7 +268,8 @@
   "arcIndex": 2,
   "answer": true,
   "thumb": 15,
-  "anime": true
+  "anime": true,
+  "nameUk": "Диявол привида"
  },
  {
   "id": 6016,
@@ -275,7 +285,8 @@
   "arcIndex": 13,
   "answer": true,
   "thumb": 16,
-  "anime": false
+  "anime": false,
+  "nameUk": "Диявол сарани"
  },
  {
   "id": 2872,
@@ -293,7 +304,8 @@
   "arcIndex": 8,
   "answer": true,
   "thumb": 17,
-  "anime": false
+  "anime": false,
+  "nameUk": "Диявол смерті"
  },
  {
   "id": 4950,
@@ -309,7 +321,8 @@
   "arcIndex": 12,
   "answer": true,
   "thumb": 18,
-  "anime": false
+  "anime": false,
+  "nameUk": "Диявол старіння"
  },
  {
   "id": 917,
@@ -325,7 +338,8 @@
   "arcIndex": 5,
   "answer": true,
   "thumb": 19,
-  "anime": false
+  "anime": false,
+  "nameUk": "Диявол темряви"
  },
  {
   "id": 495,
@@ -342,7 +356,8 @@
   "arcIndex": 3,
   "answer": true,
   "thumb": 20,
-  "anime": true
+  "anime": true,
+  "nameUk": "Диявол-янгол"
  },
  {
   "id": 223,
@@ -358,7 +373,8 @@
   "arcIndex": 6,
   "answer": true,
   "thumb": 21,
-  "anime": true
+  "anime": true,
+  "nameUk": "Диявол-рушниця"
  },
  {
   "id": 95,
@@ -408,7 +424,8 @@
   "arcIndex": 11,
   "answer": true,
   "thumb": 24,
-  "anime": false
+  "anime": false,
+  "nameUk": "Поріддя цвяха"
  },
  {
   "id": 487,
@@ -592,7 +609,8 @@
   "arcIndex": 0,
   "answer": true,
   "thumb": 35,
-  "anime": true
+  "anime": true,
+  "nameUk": "Почіта"
  },
  {
   "id": 493,
@@ -641,7 +659,8 @@
   "arcIndex": 5,
   "answer": true,
   "thumb": 38,
-  "anime": false
+  "anime": false,
+  "nameUk": "Санта-Клаус"
  },
  {
   "id": 2284,
@@ -673,7 +692,8 @@
   "arcIndex": 10,
   "answer": true,
   "thumb": 40,
-  "anime": false
+  "anime": false,
+  "nameUk": "Фальшива Людина-бензопила"
  },
  {
   "id": 2573,
@@ -793,7 +813,8 @@
   "arcIndex": 3,
   "answer": true,
   "thumb": 47,
-  "anime": true
+  "anime": true,
+  "nameUk": "Людина з катаною"
  },
  {
   "id": 2029,

@@ -3,11 +3,11 @@ import path from 'node:path'
 import {
   PUBLIC,
   ROOT,
-  cachedDownload,
   cachedJson,
   categoryMembers,
   infobox,
   keepNotable,
+  pickPicture,
   plain,
   pool,
   pruneImages,
@@ -20,6 +20,7 @@ import {
 } from './lib.mjs'
 import { transliterate } from './ru.mjs'
 import { dropDeleted, onlyAnswers } from './dropped.mjs'
+import { anilistPictures, bare, nameKey } from './anilist.mjs'
 
 const API = 'https://blackclover.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'bc')
@@ -28,6 +29,10 @@ const OUT_IMG = path.join(PUBLIC, 'bc')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'bc.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'bc-atlas.json')
 const ANSWER_POOL_SIZE = 60
+const ANIME_MEDIA = 97940
+const MANGA_MEDIA = 86123
+
+const ANIME_ART = { 'Ursula Bloodlord': 'Witch Queen anime profile.png' }
 const KEEP = 80
 
 const ARCS = [
@@ -217,11 +222,23 @@ async function main() {
   const candidates = names.filter((n) => pages[n]?.text && /\{\{Infobox\/Character/i.test(pages[n].text) && debutChapter(pages[n].text) !== null)
   const animeFiles = Object.fromEntries(
     candidates.flatMap((n) => [
-      [n, `${n} anime profile.png`],
+      [n, ANIME_ART[n] ?? `${n} anime profile.png`],
       [`${n}#short`, `${n.split(' ')[0]} anime profile.png`],
     ]),
   )
-  const animeUrls = await cachedJson(CACHE, 'anime-images.json', () => wikiImageUrls(API, [...new Set(Object.values(animeFiles))]))
+  const profileFiles = Object.fromEntries(
+    candidates.flatMap((n) => [
+      [n, `${n} profile.png`],
+      [`${n}#short`, `${n.split(' ')[0]} profile.png`],
+    ]),
+  )
+  const animeUrls = await cachedJson(CACHE, 'anime-images.json', () =>
+    wikiImageUrls(API, [...new Set([...Object.values(animeFiles), ...Object.values(profileFiles)])]),
+  )
+  const portraits = await cachedJson(CACHE, 'anilist.json', async () => Object.fromEntries(await anilistPictures([ANIME_MEDIA])))
+  const mangaPortraits = await cachedJson(CACHE, 'anilist-manga.json', async () =>
+    Object.fromEntries(await anilistPictures([MANGA_MEDIA])),
+  )
   const images = await cachedJson(CACHE, 'images.json', async () => {
     const res = await wikiQuery(API, candidates, 'prop=pageimages&piprop=original')
     return Object.fromEntries(Object.entries(res).map(([t, p]) => [t, p.original?.source ?? null]))
@@ -230,8 +247,16 @@ async function main() {
   const result = []
   await pool(candidates, 8, async (name) => {
     const { id, text, ru, length } = pages[name]
+    const key = nameKey(bare(name))
     const anime = animeUrls[animeFiles[name]] ?? animeUrls[animeFiles[`${name}#short`]]
-    const buf = await cachedDownload(path.join(CACHE, 'img'), anime ? `${id}-anime` : String(id), [anime, images[name]].filter(Boolean))
+    const drawn = animeUrls[profileFiles[name]] ?? animeUrls[profileFiles[`${name}#short`]]
+    const buf = await pickPicture(path.join(CACHE, 'img'), String(id), [
+      anime,
+      portraits[key],
+      mangaPortraits[key],
+      drawn,
+      images[name],
+    ])
     if (!buf) return console.warn('no image', name)
     try {
       await writeFullAndThumb(buf, path.join(OUT_IMG, 'full', `${id}.webp`), path.join(THUMBS, `${id}.webp`), 96)
