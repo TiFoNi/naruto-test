@@ -1,8 +1,12 @@
-export const TIER_FRAMES = ['bronze', 'silver', 'gold', 'diamond'] as const
+export const TOP_FRAME = 'top10'
 
-export const WORLD_FRAMES = ['berserk', 'ff'] as const
+export const TOP_PLACES = 10
 
-export const FRAMES = [...TIER_FRAMES, ...WORLD_FRAMES] as const
+export const AWARD_FRAMES = [TOP_FRAME] as const
+
+export const WORLD_FRAMES = ['berserk', 'ff', 'naruto', 'onepiece', 'bleach', 'kny'] as const
+
+export const FRAMES = [...AWARD_FRAMES, ...WORLD_FRAMES] as const
 
 export type Frame = (typeof FRAMES)[number]
 

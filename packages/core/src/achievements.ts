@@ -3,6 +3,7 @@ import { GAME_IDS, MODE_IDS, type GameId } from '@nanda/game'
 import { rounds, seasons, users } from './db'
 import { gameData } from './games'
 import { addSeasonXp, previousSeason, seasonAt, seasonStanding, takeSeasonClose } from './season'
+import { TOP_FRAME, TOP_PLACES } from './frame-list'
 
 export type Tier = 'bronze' | 'silver' | 'gold' | 'legend' | 'secret'
 export type Kind = 'life' | 'season'
@@ -448,7 +449,10 @@ export async function grantSeasonTrophies(standing: { userId: ObjectId }[]) {
     if (!won.length) continue
     await collection.updateOne(
       { _id: row.userId },
-      { $set: Object.fromEntries(won.map((trophy) => [`awards.${trophy.id}`, now])) },
+      {
+        $set: Object.fromEntries(won.map((trophy) => [`awards.${trophy.id}`, now])),
+        ...(place <= TOP_PLACES ? { $addToSet: { frames: TOP_FRAME } } : {}),
+      },
     )
   }
   return standing.length
