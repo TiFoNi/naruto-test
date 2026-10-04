@@ -239,6 +239,7 @@ async function fetchCover(slug, nameEn, year) {
 
 const LANGS = ['en', 'ru', 'uk', 'es-la', 'pt-br']
 const SPOTS = [0.15, 0.5, 0.85]
+const CANDIDATES = 4
 const REFRESH = process.argv.includes('--pages')
 const FORCE = process.argv.includes('--force')
 const DONE = path.join(CACHE, 'pages.json')
@@ -268,6 +269,46 @@ async function chapterList(id) {
   return []
 }
 
+async function detail(buffer) {
+  const { data, info } = await sharp(buffer).resize(256, 256, { fit: 'inside' }).greyscale().raw().toBuffer({ resolveWithObject: true })
+  let edges = 0
+  let flat = 0
+  for (let y = 1; y < info.height - 1; y++) {
+    for (let x = 1; x < info.width - 1; x++) {
+      const at = y * info.width + x
+      const step = Math.abs(data[at + 1] - data[at - 1]) + Math.abs(data[at + info.width] - data[at - info.width])
+      if (step > 24) edges++
+      else flat++
+    }
+  }
+  return edges / (edges + flat)
+}
+
+async function bestPage(home) {
+  const files = home?.chapter?.data ?? []
+  const small = home?.chapter?.dataSaver ?? []
+  const inner = files.map((file, at) => at).slice(2, -2)
+  if (!inner.length) return null
+
+  const spots = Math.min(CANDIDATES, inner.length)
+  const tried = []
+  for (let pick = 0; pick < spots; pick++) {
+    const at = inner[Math.floor(((pick + 0.5) / spots) * inner.length)]
+    const name = small[at] ?? files[at]
+    const folder = small[at] ? 'data-saver' : 'data'
+    const res = await fetch(`${home.baseUrl}/${folder}/${home.chapter.hash}/${name}`, { headers: UA }).catch(() => null)
+    if (!res?.ok) continue
+    tried.push({ at, score: await detail(Buffer.from(await res.arrayBuffer())) })
+    await sleep(150)
+  }
+  if (!tried.length) return null
+
+  tried.sort((one, two) => two.score - one.score)
+  const winner = tried[0].at
+  const res = await fetch(`${home.baseUrl}/data/${home.chapter.hash}/${files[winner]}`, { headers: UA }).catch(() => null)
+  return res?.ok ? Buffer.from(await res.arrayBuffer()) : null
+}
+
 async function fetchPages(slug, nameEn, year) {
   const id = await resolveId(slug, nameEn, year)
   await sleep(1100)
@@ -282,13 +323,11 @@ async function fetchPages(slug, nameEn, year) {
   for (const [at, spot] of SPOTS.entries()) {
     const chapter = chapters[Math.min(chapters.length - 1, Math.floor(chapters.length * spot))]
     const home = await getJson(`https://api.mangadex.org/at-home/server/${chapter.id}`)
-    const files = home?.chapter?.data ?? []
-    if (!files.length) continue
-    const res = await fetch(`${home.baseUrl}/data/${home.chapter.hash}/${files[Math.floor(files.length / 2)]}`, { headers: UA }).catch(() => null)
-    if (!res?.ok) continue
-    saved.push(Buffer.from(await res.arrayBuffer()))
+    const page = await bestPage(home)
+    if (!page) continue
+    saved.push(page)
     picked.push(chapter.attributes.chapter ?? '?')
-    await sleep(1300)
+    await sleep(700)
   }
   if (saved.length < 3) return null
 
