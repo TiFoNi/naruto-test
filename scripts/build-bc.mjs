@@ -1,10 +1,13 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import sharp from 'sharp'
 import {
   PUBLIC,
   ROOT,
+  cachedDownload,
   cachedJson,
   categoryMembers,
+  getJson,
   infobox,
   keepNotable,
   pickPicture,
@@ -33,6 +36,46 @@ const ANIME_MEDIA = 97940
 const MANGA_MEDIA = 86123
 
 const ANIME_ART = { 'Ursula Bloodlord': 'Witch Queen anime profile.png' }
+
+const RU_API = 'https://blackclover.fandom.com/ru/api.php'
+const RU_PORTAL = 'Шаблон:CharacterPortal2'
+const SQUARE_MIN = 280
+const COLOUR_MIN = 12
+
+async function ruSquares() {
+  const url = `${RU_API}?action=parse&page=${encodeURIComponent(RU_PORTAL)}&prop=wikitext&format=json`
+  const body = await getJson(url)
+  const text = body.parse?.wikitext?.['*'] ?? ''
+  const found = {}
+  for (const row of text.matchAll(/\{\{Portalbox\/ListPage\|[^|]*\|([^|]+\.(?:png|jpe?g))\|link=([^|}]+)\|/gi)) {
+    found[row[2].trim()] = row[1].trim()
+  }
+  return found
+}
+
+async function ruImages(files) {
+  const found = {}
+  for (let at = 0; at < files.length; at += 40) {
+    const titles = files.slice(at, at + 40).map((file) => `File:${file}`).join('|')
+    const body = await getJson(`${RU_API}?action=query&prop=imageinfo&iiprop=url|size&titles=${encodeURIComponent(titles)}&format=json`)
+    const back = Object.fromEntries((body.query.normalized ?? []).map((row) => [row.to, row.from]))
+    for (const page of Object.values(body.query.pages)) {
+      const name = (back[page.title] ?? page.title).replace(/^(File|Файл):/, '')
+      const info = page.imageinfo?.[0]
+      found[name] = info && Math.min(info.width, info.height) >= SQUARE_MIN ? info.url : null
+    }
+  }
+  return found
+}
+
+async function colourful(buffer) {
+  const { data, info } = await sharp(buffer).resize(40, 40, { fit: 'cover' }).removeAlpha().raw().toBuffer({ resolveWithObject: true })
+  let sum = 0
+  for (let at = 0; at < data.length; at += info.channels) {
+    sum += Math.max(data[at], data[at + 1], data[at + 2]) - Math.min(data[at], data[at + 1], data[at + 2])
+  }
+  return sum / (data.length / info.channels) >= COLOUR_MIN
+}
 const KEEP = 80
 
 const ARCS = [
@@ -235,6 +278,12 @@ async function main() {
   const animeUrls = await cachedJson(CACHE, 'anime-images.json', () =>
     wikiImageUrls(API, [...new Set([...Object.values(animeFiles), ...Object.values(profileFiles)])]),
   )
+  const squares = await cachedJson(CACHE, 'ru-portal.json', ruSquares)
+  const squareFiles = Object.fromEntries(
+    candidates.map((name) => [name, squares[pages[name]?.ru ?? ''] ?? `${name.split(' ')[0]} square.png`]),
+  )
+  const squareUrls = await cachedJson(CACHE, 'ru-squares.json', () => ruImages([...new Set(Object.values(squareFiles))]))
+
   const portraits = await cachedJson(CACHE, 'anilist.json', async () => Object.fromEntries(await anilistPictures([ANIME_MEDIA])))
   const mangaPortraits = await cachedJson(CACHE, 'anilist-manga.json', async () =>
     Object.fromEntries(await anilistPictures([MANGA_MEDIA])),
@@ -250,13 +299,11 @@ async function main() {
     const key = nameKey(bare(name))
     const anime = animeUrls[animeFiles[name]] ?? animeUrls[animeFiles[`${name}#short`]]
     const drawn = animeUrls[profileFiles[name]] ?? animeUrls[profileFiles[`${name}#short`]]
-    const buf = await pickPicture(path.join(CACHE, 'img'), String(id), [
-      anime,
-      portraits[key],
-      mangaPortraits[key],
-      drawn,
-      images[name],
-    ])
+    const square = await cachedDownload(path.join(CACHE, 'square'), String(id), [squareUrls[squareFiles[name]]])
+    const buf =
+      square && (await colourful(square))
+        ? square
+        : await pickPicture(path.join(CACHE, 'img'), String(id), [anime, portraits[key], mangaPortraits[key], drawn, images[name]])
     if (!buf) return console.warn('no image', name)
     try {
       await writeFullAndThumb(buf, path.join(OUT_IMG, 'full', `${id}.webp`), path.join(THUMBS, `${id}.webp`), 96)
