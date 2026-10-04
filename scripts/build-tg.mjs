@@ -21,6 +21,8 @@ import {
 import { transliterate } from './ru.mjs'
 import { dropDeleted, onlyAnswers } from './dropped.mjs'
 
+const NAMES = { 'Takeomi Kuroiwa': 'Такеоми Куроива' }
+
 const API = 'https://tokyoghoul.fandom.com/api.php'
 const CACHE = path.join(ROOT, '.cache', 'tg')
 const THUMBS = path.join(CACHE, 'thumb')
@@ -148,7 +150,7 @@ async function main() {
     const { series, volume } = debut(name)
     result.push(consistent({
       id,
-      name: ruName(name, ru, transliterate),
+      name: NAMES[name] ?? ruName(name, ru, transliterate),
       nameEn: name,
       gender: SEX[stripParens(field('gender')[0] ?? '')] ?? OTHER_SEX,
       species: matchRules(SPECIES_RULES, species),

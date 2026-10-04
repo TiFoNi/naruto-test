@@ -106,6 +106,9 @@ const OVERRIDES = {
 }
 
 const NAMES = {
+  'Ryūken Ishida': 'Рюукен Ишида',
+  'Sōken Ishida': 'Сокен Ишида',
+  'Izumi Ishida': 'Идзуми Ишида',
   'Zangetsu (Zanpakutō spirit)': 'Зангецу (дух занпакто)',
   'Zangetsu (Quincy Powers)': 'Зангецу (Яхве)',
   'Soul King': 'Король душ',
