@@ -8,6 +8,7 @@
   "year": 1997,
   "demographic": "Сёнэн",
   "status": "Выходит",
+  "image": "9aac4187",
   "pages": 3,
   "answer": true,
   "thumb": 0
@@ -21,6 +22,7 @@
   "year": 1999,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "faff01d9",
   "pages": 3,
   "answer": true,
   "thumb": 1
@@ -34,6 +36,7 @@
   "year": 2001,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "992a310e",
   "pages": 3,
   "answer": true,
   "thumb": 2
@@ -47,6 +50,7 @@
   "year": 1984,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "97222964",
   "pages": 3,
   "answer": true,
   "thumb": 3
@@ -60,10 +64,10 @@
   "year": 2003,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "2d22ee63",
   "pages": 3,
   "answer": true,
-  "thumb": 4,
-  "nameUk": "Зошит смерті"
+  "thumb": 4
  },
  {
   "id": 6,
@@ -74,10 +78,10 @@
   "year": 2009,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "8903a475",
   "pages": 3,
   "answer": true,
-  "thumb": 5,
-  "nameUk": "Атака титанів"
+  "thumb": 5
  },
  {
   "id": 7,
@@ -88,10 +92,10 @@
   "year": 2001,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "8fd3d698",
   "pages": 3,
   "answer": true,
-  "thumb": 6,
-  "nameUk": "Сталевий алхімік"
+  "thumb": 6
  },
  {
   "id": 8,
@@ -102,6 +106,7 @@
   "year": 1998,
   "demographic": "Сёнэн",
   "status": "Выходит",
+  "image": "6af6851c",
   "pages": 3,
   "answer": true,
   "thumb": 7
@@ -115,6 +120,7 @@
   "year": 1989,
   "demographic": "Сэйнэн",
   "status": "Выходит",
+  "image": "815e7031",
   "pages": 3,
   "answer": true,
   "thumb": 8
@@ -128,6 +134,7 @@
   "year": 1998,
   "demographic": "Сэйнэн",
   "status": "Выходит",
+  "image": "cfbdf73c",
   "pages": 3,
   "answer": true,
   "thumb": 9
@@ -141,10 +148,10 @@
   "year": 1999,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "ab7386aa",
   "pages": 3,
   "answer": true,
-  "thumb": 10,
-  "nameUk": "Діти 20-го століття"
+  "thumb": 10
  },
  {
   "id": 12,
@@ -155,10 +162,10 @@
   "year": 2005,
   "demographic": "Сэйнэн",
   "status": "Выходит",
+  "image": "a757b3ee",
   "pages": 3,
   "answer": true,
-  "thumb": 11,
-  "nameUk": "Сага про Вінланд"
+  "thumb": 11
  },
  {
   "id": 13,
@@ -169,6 +176,7 @@
   "year": 2011,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "990ca36e",
   "pages": 3,
   "answer": true,
   "thumb": 12
@@ -182,10 +190,10 @@
   "year": 2016,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "67b03a61",
   "pages": 3,
   "answer": true,
-  "thumb": 13,
-  "nameUk": "Клинок, що розтинає демонів"
+  "thumb": 13
  },
  {
   "id": 15,
@@ -196,10 +204,10 @@
   "year": 2018,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "f63a0b9a",
   "pages": 3,
   "answer": true,
-  "thumb": 14,
-  "nameUk": "Магічна битва"
+  "thumb": 14
  },
  {
   "id": 16,
@@ -210,10 +218,10 @@
   "year": 2018,
   "demographic": "Сёнэн",
   "status": "Выходит",
+  "image": "bdb13e90",
   "pages": 3,
   "answer": true,
-  "thumb": 15,
-  "nameUk": "Людина-бензопила"
+  "thumb": 15
  },
  {
   "id": 17,
@@ -224,10 +232,10 @@
   "year": 2014,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "782a0fcf",
   "pages": 3,
   "answer": true,
-  "thumb": 16,
-  "nameUk": "Моя геройська академія"
+  "thumb": 16
  },
  {
   "id": 18,
@@ -238,6 +246,7 @@
   "year": 1987,
   "demographic": "Сёнэн",
   "status": "Выходит",
+  "image": "c3d12d0e",
   "pages": 3,
   "answer": true,
   "thumb": 17
@@ -251,6 +260,7 @@
   "year": 1990,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "2f03e809",
   "pages": 3,
   "answer": true,
   "thumb": 18
@@ -264,6 +274,7 @@
   "year": 2012,
   "demographic": "Сэйнэн",
   "status": "Выходит",
+  "image": "9ffe5910",
   "pages": 3,
   "answer": true,
   "thumb": 19
@@ -277,6 +288,7 @@
   "year": 2000,
   "demographic": "Сёдзё",
   "status": "Выходит",
+  "image": "70599d0e",
   "pages": 3,
   "answer": true,
   "thumb": 20
@@ -290,6 +302,7 @@
   "year": 1991,
   "demographic": "Сёдзё",
   "status": "Завершена",
+  "image": "36fdde7e",
   "pages": 3,
   "answer": true,
   "thumb": 21
@@ -303,10 +316,10 @@
   "year": 2007,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "95f0742a",
   "pages": 3,
   "answer": true,
-  "thumb": 22,
-  "nameUk": "Надобраніч, Пунпуне"
+  "thumb": 22
  },
  {
   "id": 24,
@@ -317,6 +330,7 @@
   "year": 1997,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "6e577b74",
   "pages": 3,
   "answer": true,
   "thumb": 23
@@ -330,6 +344,7 @@
   "year": 2003,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "360c3ba0",
   "pages": 3,
   "answer": true,
   "thumb": 24
@@ -343,6 +358,7 @@
   "year": 1982,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "6a580e99",
   "pages": 3,
   "answer": true,
   "thumb": 25
@@ -356,6 +372,7 @@
   "year": 1988,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "3b869849",
   "pages": 3,
   "answer": true,
   "thumb": 26
@@ -369,6 +386,7 @@
   "year": 2000,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "ce860268",
   "pages": 3,
   "answer": true,
   "thumb": 27
@@ -382,10 +400,10 @@
   "year": 1968,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "a2ba1ad7",
   "pages": 3,
   "answer": true,
-  "thumb": 28,
-  "nameUk": "Завтрашній Джо"
+  "thumb": 28
  },
  {
   "id": 30,
@@ -396,6 +414,7 @@
   "year": 1997,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "dc695a89",
   "pages": 3,
   "answer": true,
   "thumb": 29
@@ -409,10 +428,10 @@
   "year": 2005,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "63e2a3ec",
   "pages": 3,
   "answer": true,
-  "thumb": 30,
-  "nameUk": "Гра брехунів"
+  "thumb": 30
  },
  {
   "id": 32,
@@ -423,10 +442,10 @@
   "year": 2016,
   "demographic": "Сэйнэн",
   "status": "Выходит",
+  "image": "03d51252",
   "pages": 3,
   "answer": true,
-  "thumb": 31,
-  "nameUk": "Ательє чаклунських капелюхів"
+  "thumb": 31
  },
  {
   "id": 33,
@@ -437,10 +456,10 @@
   "year": 2012,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "e2a27cc1",
   "pages": 3,
   "answer": true,
-  "thumb": 32,
-  "nameUk": "Країна самоцвітів"
+  "thumb": 32
  },
  {
   "id": 34,
@@ -451,6 +470,7 @@
   "year": 1994,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "8d505bbb",
   "pages": 3,
   "answer": true,
   "thumb": 33
@@ -464,6 +484,7 @@
   "year": 1999,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "22f49b94",
   "pages": 3,
   "answer": true,
   "thumb": 34
@@ -477,6 +498,7 @@
   "year": 2003,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "8f841856",
   "pages": 3,
   "answer": true,
   "thumb": 35
@@ -490,10 +512,10 @@
   "year": 1999,
   "demographic": "Сэйнэн",
   "status": "Выходит",
+  "image": "020629f3",
   "pages": 3,
   "answer": true,
-  "thumb": 36,
-  "nameUk": "Реальність"
+  "thumb": 36
  },
  {
   "id": 39,
@@ -504,10 +526,10 @@
   "year": 2014,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "719c40d1",
   "pages": 3,
   "answer": true,
-  "thumb": 37,
-  "nameUk": "Підземелля смаколиків"
+  "thumb": 37
  },
  {
   "id": 40,
@@ -518,6 +540,7 @@
   "year": 2003,
   "demographic": "Сэйнэн",
   "status": "Выходит",
+  "image": "5819a49c",
   "pages": 3,
   "answer": true,
   "thumb": 38
@@ -531,10 +554,10 @@
   "year": 2015,
   "demographic": "Сёнэн",
   "status": "Выходит",
+  "image": "64142f59",
   "pages": 3,
   "answer": true,
-  "thumb": 39,
-  "nameUk": "Чорна конюшина"
+  "thumb": 39
  },
  {
   "id": 45,
@@ -545,10 +568,10 @@
   "year": 2007,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "8bab3def",
   "pages": 3,
   "answer": true,
-  "thumb": 40,
-  "nameUk": "Скелелаз"
+  "thumb": 40
  },
  {
   "id": 47,
@@ -559,6 +582,7 @@
   "year": 2000,
   "demographic": "Сэйнэн",
   "status": "Завершена",
+  "image": "5f0484c5",
   "pages": 3,
   "answer": true,
   "thumb": 41
@@ -572,10 +596,10 @@
   "year": 2016,
   "demographic": "Сёнэн",
   "status": "Завершена",
+  "image": "90c1816f",
   "pages": 3,
   "answer": true,
-  "thumb": 42,
-  "nameUk": "Вогняний удар"
+  "thumb": 42
  },
  {
   "id": 49,
@@ -586,10 +610,10 @@
   "year": 2014,
   "demographic": "Сэйнэн",
   "status": "Выходит",
+  "image": "ac4c3cfb",
   "pages": 3,
   "answer": true,
-  "thumb": 43,
-  "nameUk": "Байка"
+  "thumb": 43
  },
  {
   "id": 50,
@@ -600,9 +624,527 @@
   "year": 2006,
   "demographic": "Сэйнэн",
   "status": "Выходит",
+  "image": "8dc99292",
   "pages": 3,
   "answer": true,
-  "thumb": 44,
-  "nameUk": "Царство"
+  "thumb": 44
+ },
+ {
+  "id": 51,
+  "slug": "pluto",
+  "name": "Плутон",
+  "nameEn": "Pluto",
+  "author": "Наоки Урасава",
+  "year": 2004,
+  "demographic": "Сэйнэн",
+  "status": "Завершена",
+  "image": "df0f025c",
+  "pages": 3,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 52,
+  "slug": "frieren",
+  "name": "Фрирен, провожающая в последний путь",
+  "nameEn": "Sousou no Frieren",
+  "author": "Канэхито Ямада, Цукаса Абэ",
+  "year": 2020,
+  "demographic": "Сёнэн",
+  "status": "Выходит",
+  "image": "7b864bb1",
+  "pages": 3,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 53,
+  "slug": "golden-kamuy",
+  "name": "Золотое божество",
+  "nameEn": "Golden Kamuy",
+  "author": "Сатору Нода",
+  "year": 2014,
+  "demographic": "Сэйнэн",
+  "status": "Завершена",
+  "image": "46df2061",
+  "pages": 3,
+  "answer": true,
+  "thumb": 47
+ },
+ {
+  "id": 55,
+  "slug": "lone-wolf",
+  "name": "Одинокий волк и волчонок",
+  "nameEn": "Lone Wolf and Cub",
+  "author": "Кадзуо Коикэ, Госэки Кодзима",
+  "year": 1970,
+  "demographic": "Сэйнэн",
+  "status": "Завершена",
+  "image": "437c88f5",
+  "pages": 3,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 56,
+  "slug": "nausicaa",
+  "name": "Навсикая из Долины ветров",
+  "nameEn": "Nausicaä of the Valley of the Wind",
+  "author": "Хаяо Миядзаки",
+  "year": 1982,
+  "demographic": "Сэйнэн",
+  "status": "Завершена",
+  "image": "4ed22b82",
+  "pages": 3,
+  "answer": true,
+  "thumb": 49
+ },
+ {
+  "id": 63,
+  "slug": "noragami",
+  "name": "Бездомный бог",
+  "nameEn": "Noragami",
+  "author": "Адати Токa",
+  "year": 2010,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "3eb1a5f9",
+  "pages": 3,
+  "answer": true,
+  "thumb": 50
+ },
+ {
+  "id": 64,
+  "slug": "uzumaki",
+  "name": "Спираль",
+  "nameEn": "Uzumaki",
+  "author": "Дзюндзи Ито",
+  "year": 1998,
+  "demographic": "Сэйнэн",
+  "status": "Завершена",
+  "image": "dd291c69",
+  "pages": 3,
+  "answer": true,
+  "thumb": 51
+ },
+ {
+  "id": 66,
+  "slug": "kuroko",
+  "name": "Баскетбол Куроко",
+  "nameEn": "Kuroko no Basket",
+  "author": "Тадатоси Фудзимаки",
+  "year": 2008,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "9a0dad02",
+  "pages": 3,
+  "answer": true,
+  "thumb": 52
+ },
+ {
+  "id": 67,
+  "slug": "kenshin",
+  "name": "Бродяга Кэнсин",
+  "nameEn": "Rurouni Kenshin",
+  "author": "Нобухиро Вацуки",
+  "year": 1994,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "1f966203",
+  "pages": 3,
+  "answer": true,
+  "thumb": 53
+ },
+ {
+  "id": 70,
+  "slug": "d-gray-man",
+  "name": "Ди.Грей-мен",
+  "nameEn": "D.Gray-man",
+  "author": "Кацура Хосино",
+  "year": 2004,
+  "demographic": "Сёнэн",
+  "status": "Выходит",
+  "image": "26478c54",
+  "pages": 3,
+  "answer": true,
+  "thumb": 54
+ },
+ {
+  "id": 71,
+  "slug": "promised-neverland",
+  "name": "Обещанный Неверленд",
+  "nameEn": "The Promised Neverland",
+  "author": "Кайу Сираи, Поска Дэмидзу",
+  "year": 2016,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "f6df383b",
+  "pages": 3,
+  "answer": true,
+  "thumb": 55
+ },
+ {
+  "id": 72,
+  "slug": "dr-stone",
+  "name": "Доктор Стоун",
+  "nameEn": "Dr. Stone",
+  "author": "Риитиро Инагаки, Боити",
+  "year": 2017,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "b42afa2f",
+  "pages": 3,
+  "answer": true,
+  "thumb": 56
+ },
+ {
+  "id": 75,
+  "slug": "hajime-no-ippo",
+  "name": "Первый шаг",
+  "nameEn": "Hajime no Ippo",
+  "author": "Дзёдзи Моррикава",
+  "year": 1989,
+  "demographic": "Сёнэн",
+  "status": "Выходит",
+  "image": "6ba75d65",
+  "pages": 3,
+  "answer": true,
+  "thumb": 57
+ },
+ {
+  "id": 76,
+  "slug": "kaiju-8",
+  "name": "Кайдзю №8",
+  "nameEn": "Kaiju No. 8",
+  "author": "Наоя Мацумото",
+  "year": 2020,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "e8ec491c",
+  "pages": 3,
+  "answer": true,
+  "thumb": 58
+ },
+ {
+  "id": 77,
+  "slug": "dandadan",
+  "name": "Дандадан",
+  "nameEn": "Dandadan",
+  "author": "Юкинобу Тацу",
+  "year": 2021,
+  "demographic": "Сёнэн",
+  "status": "Выходит",
+  "image": "f5c82a7f",
+  "pages": 3,
+  "answer": true,
+  "thumb": 59
+ },
+ {
+  "id": 78,
+  "slug": "spy-family",
+  "name": "Семья шпиона",
+  "nameEn": "SPY×FAMILY",
+  "author": "Тацуя Эндо",
+  "year": 2019,
+  "demographic": "Сёнэн",
+  "status": "Выходит",
+  "image": "180a0547",
+  "pages": 3,
+  "answer": true,
+  "thumb": 60
+ },
+ {
+  "id": 79,
+  "slug": "ao-no-exorcist",
+  "name": "Синий экзорцист",
+  "nameEn": "Ao no Exorcist",
+  "author": "Кадзуэ Като",
+  "year": 2009,
+  "demographic": "Сёнэн",
+  "status": "Выходит",
+  "image": "80ec83c9",
+  "pages": 3,
+  "answer": true,
+  "thumb": 61
+ },
+ {
+  "id": 80,
+  "slug": "devilman",
+  "name": "Человек-дьявол",
+  "nameEn": "Devilman",
+  "author": "Го Нагай",
+  "year": 1972,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "48607adc",
+  "pages": 3,
+  "answer": true,
+  "thumb": 62
+ },
+ {
+  "id": 81,
+  "slug": "black-jack",
+  "name": "Чёрный Джек",
+  "nameEn": "Black Jack",
+  "author": "Осаму Тэдзука",
+  "year": 1973,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "0a570dd8",
+  "pages": 3,
+  "answer": true,
+  "thumb": 63
+ },
+ {
+  "id": 82,
+  "slug": "sakamoto-days",
+  "name": "Дни Сакамото",
+  "nameEn": "Sakamoto Days",
+  "author": "Юто Судзуки",
+  "year": 2020,
+  "demographic": "Сёнэн",
+  "status": "Выходит",
+  "image": "bb662d0e",
+  "pages": 3,
+  "answer": true,
+  "thumb": 64
+ },
+ {
+  "id": 83,
+  "slug": "fairy-tail",
+  "name": "Хвост феи",
+  "nameEn": "Fairy Tail",
+  "author": "Хиро Масима",
+  "year": 2006,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "ddf8f873",
+  "pages": 3,
+  "answer": true,
+  "thumb": 65
+ },
+ {
+  "id": 84,
+  "slug": "trigun",
+  "name": "Триган",
+  "nameEn": "Trigun",
+  "author": "Ясухиро Найто",
+  "year": 1997,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "0620207d",
+  "pages": 3,
+  "answer": true,
+  "thumb": 66
+ },
+ {
+  "id": 85,
+  "slug": "blue-lock",
+  "name": "Синяя тюрьма",
+  "nameEn": "Blue Lock",
+  "author": "Мунэюки Канэсиро, Юсукэ Ноомура",
+  "year": 2018,
+  "demographic": "Сёнэн",
+  "status": "Выходит",
+  "image": "ff070851",
+  "pages": 3,
+  "answer": true,
+  "thumb": 67
+ },
+ {
+  "id": 86,
+  "slug": "horimiya",
+  "name": "Хоримия",
+  "nameEn": "Horimiya",
+  "author": "HERO, Дайсукэ Хагивара",
+  "year": 2011,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "fd5e9234",
+  "pages": 3,
+  "answer": true,
+  "thumb": 68
+ },
+ {
+  "id": 87,
+  "slug": "oshi-no-ko",
+  "name": "Звёздное дитя",
+  "nameEn": "Oshi no Ko",
+  "author": "Ака Акасака, Мэнго Ёкояри",
+  "year": 2020,
+  "demographic": "Сэйнэн",
+  "status": "Завершена",
+  "image": "112005e6",
+  "pages": 3,
+  "answer": true,
+  "thumb": 69
+ },
+ {
+  "id": 88,
+  "slug": "made-in-abyss",
+  "name": "Созданный в Бездне",
+  "nameEn": "Made in Abyss",
+  "author": "Акихито Цукуси",
+  "year": 2012,
+  "demographic": "Сэйнэн",
+  "status": "Выходит",
+  "image": "57fd39d3",
+  "pages": 3,
+  "answer": true,
+  "thumb": 70
+ },
+ {
+  "id": 89,
+  "slug": "elfen-lied",
+  "name": "Эльфийская песнь",
+  "nameEn": "Elfen Lied",
+  "author": "Линн Окамото",
+  "year": 2002,
+  "demographic": "Сэйнэн",
+  "status": "Завершена",
+  "image": "7723da51",
+  "pages": 3,
+  "answer": true,
+  "thumb": 71
+ },
+ {
+  "id": 90,
+  "slug": "3-gatsu",
+  "name": "Мартовский лев",
+  "nameEn": "March Comes in Like a Lion",
+  "author": "Тика Умино",
+  "year": 2007,
+  "demographic": "Сэйнэн",
+  "status": "Выходит",
+  "image": "bbac6e60",
+  "pages": 3,
+  "answer": true,
+  "thumb": 72
+ },
+ {
+  "id": 91,
+  "slug": "hokuto-no-ken",
+  "name": "Кулак Северной звезды",
+  "nameEn": "Fist of the North Star",
+  "author": "Буронсон, Тэцуо Хара",
+  "year": 1983,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "69bdefbf",
+  "pages": 3,
+  "answer": true,
+  "thumb": 73
+ },
+ {
+  "id": 92,
+  "slug": "fruits-basket",
+  "name": "Корзинка фруктов",
+  "nameEn": "Fruits Basket",
+  "author": "Нацуки Такая",
+  "year": 1998,
+  "demographic": "Сёдзё",
+  "status": "Завершена",
+  "image": "85332c95",
+  "pages": 3,
+  "answer": true,
+  "thumb": 74
+ },
+ {
+  "id": 93,
+  "slug": "eyeshield-21",
+  "name": "Эйршилд 21",
+  "nameEn": "Eyeshield 21",
+  "author": "Риитиро Инагаки, Юсукэ Мурата",
+  "year": 2002,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "b77891a6",
+  "pages": 3,
+  "answer": true,
+  "thumb": 75
+ },
+ {
+  "id": 94,
+  "slug": "kaguya",
+  "name": "Госпожа Кагуя",
+  "nameEn": "Kaguya-sama wa Kokurasetai",
+  "author": "Ака Акасака",
+  "year": 2015,
+  "demographic": "Сэйнэн",
+  "status": "Завершена",
+  "image": "78152a55",
+  "pages": 3,
+  "answer": true,
+  "thumb": 76
+ },
+ {
+  "id": 95,
+  "slug": "baki",
+  "name": "Боец Баки",
+  "nameEn": "Grappler Baki",
+  "author": "Кэйсукэ Итагаки",
+  "year": 1991,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "0608f86d",
+  "pages": 3,
+  "answer": true,
+  "thumb": 77
+ },
+ {
+  "id": 96,
+  "slug": "initial-d",
+  "name": "Инициал Ди",
+  "nameEn": "Initial D",
+  "author": "Сюити Сигэно",
+  "year": 1995,
+  "demographic": "Сэйнэн",
+  "status": "Завершена",
+  "image": "17b5aa0d",
+  "pages": 3,
+  "answer": true,
+  "thumb": 78
+ },
+ {
+  "id": 97,
+  "slug": "conan",
+  "name": "Детектив Конан",
+  "nameEn": "Detective Conan",
+  "author": "Госё Аояма",
+  "year": 1994,
+  "demographic": "Сёнэн",
+  "status": "Выходит",
+  "image": "6f94e348",
+  "pages": 3,
+  "answer": true,
+  "thumb": 79
+ },
+ {
+  "id": 98,
+  "slug": "beastars",
+  "name": "Выдающиеся звери",
+  "nameEn": "Beastars",
+  "author": "Пару Итагаки",
+  "year": 2016,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "de807015",
+  "pages": 3,
+  "answer": true,
+  "thumb": 80
+ },
+ {
+  "id": 99,
+  "slug": "hikaru-no-go",
+  "name": "Хикару и го",
+  "nameEn": "Hikaru no Go",
+  "author": "Юми Хотта, Такэси Обата",
+  "year": 1998,
+  "demographic": "Сёнэн",
+  "status": "Завершена",
+  "image": "e5380dd0",
+  "pages": 3,
+  "answer": true,
+  "thumb": 81
  }
 ]

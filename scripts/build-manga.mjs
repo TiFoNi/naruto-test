@@ -1,7 +1,8 @@
+import crypto from 'node:crypto'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import sharp from 'sharp'
-import { PUBLIC, ROOT, pruneImages, writeAtlas } from './lib.mjs'
+import { PUBLIC, ROOT, cachedJson, pruneImages, writeAtlas } from './lib.mjs'
 import { dropDeleted, onlyAnswers } from './dropped.mjs'
 
 const SEEDS = path.join(ROOT, 'seeds', 'manga')
@@ -12,56 +13,88 @@ const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'manga.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'manga-atlas.json')
 
 const TITLES = [
-  ['one-piece', 'Ван Пис', 'One Piece', 'Эйитиро Ода', 1997, 'Сёнэн', 'Выходит'],
-  ['naruto', 'Наруто', 'Naruto', 'Масаси Кисимото', 1999, 'Сёнэн', 'Завершена'],
-  ['bleach', 'Блич', 'Bleach', 'Тайто Кубо', 2001, 'Сёнэн', 'Завершена'],
-  ['dragon-ball', 'Драгон Болл', 'Dragon Ball', 'Акира Торияма', 1984, 'Сёнэн', 'Завершена'],
-  ['death-note', 'Тетрадь смерти', 'Death Note', 'Цугуми Оба, Такэси Обата', 2003, 'Сёнэн', 'Завершена'],
-  ['aot', 'Атака титанов', 'Attack on Titan', 'Хадзимэ Исаяма', 2009, 'Сёнэн', 'Завершена'],
-  ['fma', 'Стальной алхимик', 'Fullmetal Alchemist', 'Хирому Аракава', 2001, 'Сёнэн', 'Завершена'],
-  ['hxh', 'Хантер × Хантер', 'Hunter × Hunter', 'Ёсихиро Тогаси', 1998, 'Сёнэн', 'Выходит'],
-  ['berserk', 'Берсерк', 'Berserk', 'Кэнтаро Миура', 1989, 'Сэйнэн', 'Выходит'],
-  ['vagabond', 'Вагабонд', 'Vagabond', 'Такэхико Иноуэ', 1998, 'Сэйнэн', 'Выходит'],
-  ['20th-century-boys', 'Дети 20-го века', '20th Century Boys', 'Наоки Урасава', 1999, 'Сэйнэн', 'Завершена'],
-  ['vinland-saga', 'Сага о Винланде', 'Vinland Saga', 'Макото Юкимура', 2005, 'Сэйнэн', 'Выходит'],
-  ['tokyo-ghoul', 'Токийский гуль', 'Tokyo Ghoul', 'Суй Исида', 2011, 'Сэйнэн', 'Завершена'],
-  ['kny', 'Клинок, рассекающий демонов', 'Demon Slayer', 'Коёхару Готогэ', 2016, 'Сёнэн', 'Завершена'],
-  ['jujutsu-kaisen', 'Магическая битва', 'Jujutsu Kaisen', 'Гэгэ Акутами', 2018, 'Сёнэн', 'Завершена'],
-  ['chainsaw-man', 'Человек-бензопила', 'Chainsaw Man', 'Тацуки Фудзимото', 2018, 'Сёнэн', 'Выходит'],
-  ['mha', 'Моя геройская академия', 'My Hero Academia', 'Кохэй Хорикоси', 2014, 'Сёнэн', 'Завершена'],
-  ['jojo', 'ДжоДжо', "JoJo's Bizarre Adventure", 'Хирохико Араки', 1987, 'Сёнэн', 'Выходит'],
-  ['slam-dunk', 'Слэм-данк', 'Slam Dunk', 'Такэхико Иноуэ', 1990, 'Сёнэн', 'Завершена'],
-  ['one-punch-man', 'Ванпанчмен', 'One Punch Man', 'ONE, Юскэ Мурата', 2012, 'Сэйнэн', 'Выходит'],
-  ['nana', 'Нана', 'Nana', 'Ай Ядзава', 2000, 'Сёдзё', 'Выходит'],
-  ['sailor-moon', 'Сейлор Мун', 'Sailor Moon', 'Наоко Такэути', 1991, 'Сёдзё', 'Завершена'],
-  ['punpun', 'Спокойной ночи, Пунпун', 'Oyasumi Punpun', 'Инио Асано', 2007, 'Сэйнэн', 'Завершена'],
-  ['blame', 'Блэйм!', 'Blame!', 'Цутому Нихэй', 1997, 'Сэйнэн', 'Завершена'],
-  ['gintama', 'Гинтама', 'Gintama', 'Хидэаки Сорати', 2003, 'Сёнэн', 'Завершена'],
-  ['akira', 'Акира', 'Akira', 'Кацухиро Отомо', 1982, 'Сэйнэн', 'Завершена'],
-  ['parasyte', 'Паразит', 'Parasyte', 'Хитоси Ивааки', 1988, 'Сэйнэн', 'Завершена'],
-  ['dorohedoro', 'Дорохедоро', 'Dorohedoro', 'Кю Хаясида', 2000, 'Сэйнэн', 'Завершена'],
-  ['ashita-no-joe', 'Завтрашний Джо', 'Ashita no Joe', 'Тэцуя Тиба', 1968, 'Сёнэн', 'Завершена'],
-  ['hellsing', 'Хеллсинг', 'Hellsing', 'Кота Хирано', 1997, 'Сэйнэн', 'Завершена'],
-  ['liar-game', 'Игра лжецов', 'Liar Game', 'Синобу Кайтани', 2005, 'Сэйнэн', 'Завершена'],
-  ['witch-hat', 'Ателье колдовских колпаков', 'Witch Hat Atelier', 'Камомэ Сирахама', 2016, 'Сэйнэн', 'Выходит'],
-  ['houseki', 'Страна самоцветов', 'Land of the Lustrous', 'Харуко Итикава', 2012, 'Сэйнэн', 'Завершена'],
-  ['evangelion', 'Евангелион', 'Neon Genesis Evangelion', 'Ёсиюки Садамото', 1994, 'Сёнэн', 'Завершена'],
-  ['beck', 'Бек', 'Beck', 'Харольд Сакуиси', 1999, 'Сёнэн', 'Завершена'],
-  ['my-dearest-self', 'Моё дорогое я со злым умыслом', 'My Dearest Self with Malice Aforethought', 'Хадзимэ Инорю, Сёта Ито', 2020, 'Сёнэн', 'Завершена'],
-  ['homunculus', 'Гомункул', 'Homunculus', 'Хидэо Ямамото', 2003, 'Сэйнэн', 'Завершена'],
-  ['real', 'Реальность', 'Real', 'Такэхико Иноуэ', 1999, 'Сэйнэн', 'Выходит'],
-  ['dungeon-meshi', 'Подземелье вкусностей', 'Delicious in Dungeon', 'Рёко Куи', 2014, 'Сэйнэн', 'Завершена'],
-  ['yotsuba', 'Ёцуба!', 'Yotsuba&!', 'Киёхико Адзума', 2003, 'Сэйнэн', 'Выходит'],
-  ['claymore', 'Клеймор', 'Claymore', 'Норихиро Яги', 2001, 'Сёнэн', 'Завершена'],
-  ['jigokuraku', 'Адский рай', "Hell's Paradise", 'Юдзи Каку', 2018, 'Сёнэн', 'Завершена'],
-  ['black-clover', 'Чёрный клевер', 'Black Clover', 'Юки Табата', 2015, 'Сёнэн', 'Выходит'],
-  ['tomodachi-game', 'Игра друзей', 'Tomodachi Game', 'Микото Ямагути', 2013, 'Сёнэн', 'Выходит'],
-  ['kokou-no-hito', 'Скалолаз', 'The Climber', 'Синъити Сакамото', 2007, 'Сэйнэн', 'Завершена'],
-  ['ajin', 'Получеловек', 'Ajin', 'Гамон Сакураи', 2012, 'Сэйнэн', 'Завершена'],
-  ['gantz', 'Ганц', 'Gantz', 'Хироя Оку', 2000, 'Сэйнэн', 'Завершена'],
-  ['fire-punch', 'Огненный удар', 'Fire Punch', 'Тацуки Фудзимото', 2016, 'Сёнэн', 'Завершена'],
-  ['fable', 'Басня', 'The Fable', 'Кацухиса Минами', 2014, 'Сэйнэн', 'Выходит'],
-  ['kingdom', 'Царство', 'Kingdom', 'Ясухиса Хара', 2006, 'Сэйнэн', 'Выходит'],
+  [1, 'one-piece', 'Ван Пис', 'One Piece', 'Эйитиро Ода', 1997, 'Сёнэн', 'Выходит'],
+  [2, 'naruto', 'Наруто', 'Naruto', 'Масаси Кисимото', 1999, 'Сёнэн', 'Завершена'],
+  [3, 'bleach', 'Блич', 'Bleach', 'Тайто Кубо', 2001, 'Сёнэн', 'Завершена'],
+  [4, 'dragon-ball', 'Драгон Болл', 'Dragon Ball', 'Акира Торияма', 1984, 'Сёнэн', 'Завершена'],
+  [5, 'death-note', 'Тетрадь смерти', 'Death Note', 'Цугуми Оба, Такэси Обата', 2003, 'Сёнэн', 'Завершена'],
+  [6, 'aot', 'Атака титанов', 'Attack on Titan', 'Хадзимэ Исаяма', 2009, 'Сёнэн', 'Завершена'],
+  [7, 'fma', 'Стальной алхимик', 'Fullmetal Alchemist', 'Хирому Аракава', 2001, 'Сёнэн', 'Завершена'],
+  [8, 'hxh', 'Хантер × Хантер', 'Hunter × Hunter', 'Ёсихиро Тогаси', 1998, 'Сёнэн', 'Выходит'],
+  [9, 'berserk', 'Берсерк', 'Berserk', 'Кэнтаро Миура', 1989, 'Сэйнэн', 'Выходит'],
+  [10, 'vagabond', 'Вагабонд', 'Vagabond', 'Такэхико Иноуэ', 1998, 'Сэйнэн', 'Выходит'],
+  [11, '20th-century-boys', 'Дети 20-го века', '20th Century Boys', 'Наоки Урасава', 1999, 'Сэйнэн', 'Завершена'],
+  [12, 'vinland-saga', 'Сага о Винланде', 'Vinland Saga', 'Макото Юкимура', 2005, 'Сэйнэн', 'Выходит'],
+  [13, 'tokyo-ghoul', 'Токийский гуль', 'Tokyo Ghoul', 'Суй Исида', 2011, 'Сэйнэн', 'Завершена'],
+  [14, 'kny', 'Клинок, рассекающий демонов', 'Demon Slayer', 'Коёхару Готогэ', 2016, 'Сёнэн', 'Завершена'],
+  [15, 'jujutsu-kaisen', 'Магическая битва', 'Jujutsu Kaisen', 'Гэгэ Акутами', 2018, 'Сёнэн', 'Завершена'],
+  [16, 'chainsaw-man', 'Человек-бензопила', 'Chainsaw Man', 'Тацуки Фудзимото', 2018, 'Сёнэн', 'Выходит'],
+  [17, 'mha', 'Моя геройская академия', 'My Hero Academia', 'Кохэй Хорикоси', 2014, 'Сёнэн', 'Завершена'],
+  [18, 'jojo', 'ДжоДжо', "JoJo's Bizarre Adventure", 'Хирохико Араки', 1987, 'Сёнэн', 'Выходит'],
+  [19, 'slam-dunk', 'Слэм-данк', 'Slam Dunk', 'Такэхико Иноуэ', 1990, 'Сёнэн', 'Завершена'],
+  [20, 'one-punch-man', 'Ванпанчмен', 'One Punch Man', 'ONE, Юскэ Мурата', 2012, 'Сэйнэн', 'Выходит'],
+  [21, 'nana', 'Нана', 'Nana', 'Ай Ядзава', 2000, 'Сёдзё', 'Выходит'],
+  [22, 'sailor-moon', 'Сейлор Мун', 'Sailor Moon', 'Наоко Такэути', 1991, 'Сёдзё', 'Завершена'],
+  [23, 'punpun', 'Спокойной ночи, Пунпун', 'Oyasumi Punpun', 'Инио Асано', 2007, 'Сэйнэн', 'Завершена'],
+  [24, 'blame', 'Блэйм!', 'Blame!', 'Цутому Нихэй', 1997, 'Сэйнэн', 'Завершена'],
+  [25, 'gintama', 'Гинтама', 'Gintama', 'Хидэаки Сорати', 2003, 'Сёнэн', 'Завершена'],
+  [26, 'akira', 'Акира', 'Akira', 'Кацухиро Отомо', 1982, 'Сэйнэн', 'Завершена'],
+  [27, 'parasyte', 'Паразит', 'Parasyte', 'Хитоси Ивааки', 1988, 'Сэйнэн', 'Завершена'],
+  [28, 'dorohedoro', 'Дорохедоро', 'Dorohedoro', 'Кю Хаясида', 2000, 'Сэйнэн', 'Завершена'],
+  [29, 'ashita-no-joe', 'Завтрашний Джо', 'Ashita no Joe', 'Тэцуя Тиба', 1968, 'Сёнэн', 'Завершена'],
+  [30, 'hellsing', 'Хеллсинг', 'Hellsing', 'Кота Хирано', 1997, 'Сэйнэн', 'Завершена'],
+  [31, 'liar-game', 'Игра лжецов', 'Liar Game', 'Синобу Кайтани', 2005, 'Сэйнэн', 'Завершена'],
+  [32, 'witch-hat', 'Ателье колдовских колпаков', 'Witch Hat Atelier', 'Камомэ Сирахама', 2016, 'Сэйнэн', 'Выходит'],
+  [33, 'houseki', 'Страна самоцветов', 'Land of the Lustrous', 'Харуко Итикава', 2012, 'Сэйнэн', 'Завершена'],
+  [34, 'evangelion', 'Евангелион', 'Neon Genesis Evangelion', 'Ёсиюки Садамото', 1994, 'Сёнэн', 'Завершена'],
+  [35, 'beck', 'Бек', 'Beck', 'Харольд Сакуиси', 1999, 'Сёнэн', 'Завершена'],
+  [37, 'homunculus', 'Гомункул', 'Homunculus', 'Хидэо Ямамото', 2003, 'Сэйнэн', 'Завершена'],
+  [38, 'real', 'Реальность', 'Real', 'Такэхико Иноуэ', 1999, 'Сэйнэн', 'Выходит'],
+  [39, 'dungeon-meshi', 'Подземелье вкусностей', 'Delicious in Dungeon', 'Рёко Куи', 2014, 'Сэйнэн', 'Завершена'],
+  [40, 'yotsuba', 'Ёцуба!', 'Yotsuba&!', 'Киёхико Адзума', 2003, 'Сэйнэн', 'Выходит'],
+  [43, 'black-clover', 'Чёрный клевер', 'Black Clover', 'Юки Табата', 2015, 'Сёнэн', 'Выходит'],
+  [45, 'kokou-no-hito', 'Скалолаз', 'The Climber', 'Синъити Сакамото', 2007, 'Сэйнэн', 'Завершена'],
+  [47, 'gantz', 'Ганц', 'Gantz', 'Хироя Оку', 2000, 'Сэйнэн', 'Завершена'],
+  [48, 'fire-punch', 'Огненный удар', 'Fire Punch', 'Тацуки Фудзимото', 2016, 'Сёнэн', 'Завершена'],
+  [49, 'fable', 'Басня', 'The Fable', 'Кацухиса Минами', 2014, 'Сэйнэн', 'Выходит'],
+  [50, 'kingdom', 'Царство', 'Kingdom', 'Ясухиса Хара', 2006, 'Сэйнэн', 'Выходит'],
+  [51, 'pluto', 'Плутон', 'Pluto', 'Наоки Урасава', 2004, 'Сэйнэн', 'Завершена'],
+  [52, 'frieren', 'Фрирен, провожающая в последний путь', 'Sousou no Frieren', 'Канэхито Ямада, Цукаса Абэ', 2020, 'Сёнэн', 'Выходит'],
+  [53, 'golden-kamuy', 'Золотое божество', 'Golden Kamuy', 'Сатору Нода', 2014, 'Сэйнэн', 'Завершена'],
+  [55, 'lone-wolf', 'Одинокий волк и волчонок', 'Lone Wolf and Cub', 'Кадзуо Коикэ, Госэки Кодзима', 1970, 'Сэйнэн', 'Завершена'],
+  [56, 'nausicaa', 'Навсикая из Долины ветров', 'Nausicaä of the Valley of the Wind', 'Хаяо Миядзаки', 1982, 'Сэйнэн', 'Завершена'],
+  [63, 'noragami', 'Бездомный бог', 'Noragami', 'Адати Токa', 2010, 'Сёнэн', 'Завершена'],
+  [64, 'uzumaki', 'Спираль', 'Uzumaki', 'Дзюндзи Ито', 1998, 'Сэйнэн', 'Завершена'],
+  [66, 'kuroko', 'Баскетбол Куроко', 'Kuroko no Basket', 'Тадатоси Фудзимаки', 2008, 'Сёнэн', 'Завершена'],
+  [67, 'kenshin', 'Бродяга Кэнсин', 'Rurouni Kenshin', 'Нобухиро Вацуки', 1994, 'Сёнэн', 'Завершена'],
+  [70, 'd-gray-man', 'Ди.Грей-мен', 'D.Gray-man', 'Кацура Хосино', 2004, 'Сёнэн', 'Выходит'],
+  [71, 'promised-neverland', 'Обещанный Неверленд', 'The Promised Neverland', 'Кайу Сираи, Поска Дэмидзу', 2016, 'Сёнэн', 'Завершена'],
+  [72, 'dr-stone', 'Доктор Стоун', 'Dr. Stone', 'Риитиро Инагаки, Боити', 2017, 'Сёнэн', 'Завершена'],
+  [75, 'hajime-no-ippo', 'Первый шаг', 'Hajime no Ippo', 'Дзёдзи Моррикава', 1989, 'Сёнэн', 'Выходит'],
+  [76, 'kaiju-8', 'Кайдзю №8', 'Kaiju No. 8', 'Наоя Мацумото', 2020, 'Сёнэн', 'Завершена'],
+  [77, 'dandadan', 'Дандадан', 'Dandadan', 'Юкинобу Тацу', 2021, 'Сёнэн', 'Выходит'],
+  [78, 'spy-family', 'Семья шпиона', 'SPY×FAMILY', 'Тацуя Эндо', 2019, 'Сёнэн', 'Выходит'],
+  [79, 'ao-no-exorcist', 'Синий экзорцист', 'Ao no Exorcist', 'Кадзуэ Като', 2009, 'Сёнэн', 'Выходит'],
+  [80, 'devilman', 'Человек-дьявол', 'Devilman', 'Го Нагай', 1972, 'Сёнэн', 'Завершена'],
+  [81, 'black-jack', 'Чёрный Джек', 'Black Jack', 'Осаму Тэдзука', 1973, 'Сёнэн', 'Завершена'],
+  [82, 'sakamoto-days', 'Дни Сакамото', 'Sakamoto Days', 'Юто Судзуки', 2020, 'Сёнэн', 'Выходит'],
+  [83, 'fairy-tail', 'Хвост феи', 'Fairy Tail', 'Хиро Масима', 2006, 'Сёнэн', 'Завершена'],
+  [84, 'trigun', 'Триган', 'Trigun', 'Ясухиро Найто', 1997, 'Сёнэн', 'Завершена'],
+  [85, 'blue-lock', 'Синяя тюрьма', 'Blue Lock', 'Мунэюки Канэсиро, Юсукэ Ноомура', 2018, 'Сёнэн', 'Выходит'],
+  [86, 'horimiya', 'Хоримия', 'Horimiya', 'HERO, Дайсукэ Хагивара', 2011, 'Сёнэн', 'Завершена'],
+  [87, 'oshi-no-ko', 'Звёздное дитя', 'Oshi no Ko', 'Ака Акасака, Мэнго Ёкояри', 2020, 'Сэйнэн', 'Завершена'],
+  [88, 'made-in-abyss', 'Созданный в Бездне', 'Made in Abyss', 'Акихито Цукуси', 2012, 'Сэйнэн', 'Выходит'],
+  [89, 'elfen-lied', 'Эльфийская песнь', 'Elfen Lied', 'Линн Окамото', 2002, 'Сэйнэн', 'Завершена'],
+  [90, '3-gatsu', 'Мартовский лев', 'March Comes in Like a Lion', 'Тика Умино', 2007, 'Сэйнэн', 'Выходит'],
+  [91, 'hokuto-no-ken', 'Кулак Северной звезды', 'Fist of the North Star', 'Буронсон, Тэцуо Хара', 1983, 'Сёнэн', 'Завершена'],
+  [92, 'fruits-basket', 'Корзинка фруктов', 'Fruits Basket', 'Нацуки Такая', 1998, 'Сёдзё', 'Завершена'],
+  [93, 'eyeshield-21', 'Эйршилд 21', 'Eyeshield 21', 'Риитиро Инагаки, Юсукэ Мурата', 2002, 'Сёнэн', 'Завершена'],
+  [94, 'kaguya', 'Госпожа Кагуя', 'Kaguya-sama wa Kokurasetai', 'Ака Акасака', 2015, 'Сэйнэн', 'Завершена'],
+  [95, 'baki', 'Боец Баки', 'Grappler Baki', 'Кэйсукэ Итагаки', 1991, 'Сёнэн', 'Завершена'],
+  [96, 'initial-d', 'Инициал Ди', 'Initial D', 'Сюити Сигэно', 1995, 'Сэйнэн', 'Завершена'],
+  [97, 'conan', 'Детектив Конан', 'Detective Conan', 'Госё Аояма', 1994, 'Сёнэн', 'Выходит'],
+  [98, 'beastars', 'Выдающиеся звери', 'Beastars', 'Пару Итагаки', 2016, 'Сёнэн', 'Завершена'],
+  [99, 'hikaru-no-go', 'Хикару и го', 'Hikaru no Go', 'Юми Хотта, Такэси Обата', 1998, 'Сёнэн', 'Завершена'],
 ]
 
 const MANGADEX_IDS = {
@@ -100,6 +133,56 @@ const MANGADEX_IDS = {
   'one-piece': 'a1c7c817-4e59-43b7-9365-09675a149a6f',
   vagabond: 'd1a9fdeb-f713-407f-960c-8326b586e6fd',
   'slam-dunk': '319df2e2-e6a6-4e3a-a31c-68539c140a84',
+  'pluto': 'e171c073-4415-499b-85bc-ea93825127ac',
+  'frieren': 'b0b721ff-c388-4486-aa0f-c2b0bb321512',
+  'golden-kamuy': '8847f905-550d-4fe6-bcda-ac2b896789c7',
+  'mob-psycho': '736a2bf0-f875-4b52-a7b4-e8c40505b68a',
+  'lone-wolf': '526f68e3-4af1-460f-aea0-0fc29b0d6681',
+  'nausicaa': '0c9e19cd-86cb-490c-93e9-955af41746ca',
+  'nanatsu-no-taizai': 'e52d9403-3356-403b-b7bb-d7d6a420dd50',
+  'ccs': 'e4967558-c7fa-4c48-9a4f-1e462f50fb2c',
+  'ranma': 'd41bebac-1fd3-45dd-80f4-c371db540a2a',
+  'fire-force': 'ec514ef4-fb77-43b9-b9b4-528229de1308',
+  'tokyo-revengers': '59b36734-f2d6-46d7-97c0-06cfd2380852',
+  'inuyasha': '279c2494-8f85-4e5b-8bfb-a3223441fd13',
+  'noragami': 'e5ce88e2-8c46-482d-8acf-5c6d5a64a585',
+  'uzumaki': 'f4cfbb1c-766e-49db-ae80-1a5db3cbcc1b',
+  'haikyuu': '8f8b7cb0-7109-46e8-b12c-0448a6453dfa',
+  'kuroko': 'f8e41a48-5ca9-41e3-94a7-a1379a4fda62',
+  'kenshin': '754a46fa-62fa-457a-bc3b-4f31bf1373d4',
+  'shokugeki': '5f20891f-0136-4fa8-afb7-d72f2af23c65',
+  'bakuman': 'fa3e0b2f-4e1f-48ee-9af0-1de9dc28ca51',
+  'd-gray-man': 'b6886009-e60b-44a7-abc2-a575765277ba',
+  'promised-neverland': '46e9cae5-4407-4576-9b9e-4c517ae9298e',
+  'dr-stone': 'cfc3d743-bd89-48e2-991f-63e680cc4edf',
+  'assassination-classroom': '333f4d22-7753-4e3b-b0da-0a69b2cdce4f',
+  'shaman-king': '5ce0d9df-a3cc-421e-bc33-796869b6b9f7',
+  'hajime-no-ippo': 'f7888782-0727-49b0-95ec-a3530c70f83b',
+  'kaiju-8': '237d527f-adb5-420e-8e6e-b7dd006fbe47',
+  'dandadan': '68112dc1-2b80-4f20-beb8-2f2a8716a430',
+  'spy-family': '6b958848-c885-4735-9201-12ee77abcb3c',
+  'ao-no-exorcist': '3ee952f1-45c7-4c39-aea2-7df7676606d4',
+  'devilman': '4393fd4e-d646-4bab-9c95-786168ccb618',
+  'black-jack': 'fd86eab2-f0f3-47d3-bce5-5628e97f37dc',
+  'sakamoto-days': '9d9b04ad-9a83-49f4-8ae4-a9a3780fe9c0',
+  'fairy-tail': '227e3f72-863f-46f9-bafe-c43104ca29ee',
+  'trigun': 'c43bff07-d61d-4fc8-81ea-967817bb3b96',
+  'blue-lock': '4141c5dc-c525-4df5-afd7-cc7d192a832f',
+  'horimiya': 'a25e46ec-30f7-4db6-89df-cacbc1d9a900',
+  'oshi-no-ko': '296cbc31-af1a-4b5b-a34b-fee2b4cad542',
+  'made-in-abyss': '80422e14-b9ad-4fda-970f-de370d5fa4e5',
+  'elfen-lied': '5f7c27d0-7012-460e-83a0-020297244490',
+  '3-gatsu': '0ca1627e-95dd-4118-892a-f144adf02256',
+  'hokuto-no-ken': '75251a47-952c-4e38-b1c6-3572b9bfd481',
+  'fruits-basket': 'e9b1d4ba-b8fb-48c3-8d52-5a4eefd05980',
+  'eyeshield-21': '30460ee1-e7c1-4b1a-90a0-6861f9992c17',
+  'kaguya': '37f5cce0-8070-4ada-96e5-fa24b1bd4ff9',
+  'baki': 'ea3122bb-0c28-4669-8686-d6df1274512f',
+  'initial-d': '21f54bc1-aefd-4be1-8284-5858b1df0e55',
+  'conan': '7f30dfc3-0b80-4dcc-a3b9-0cd746fac005',
+  beastars: 'f5e3baad-3cd4-427c-a2ec-ad7d776b370d',
+  'hikaru-no-go': '17dcd7da-7692-420f-b813-a92159def4be',
+  'blue-period': 'f8e294c0-7c11-4c66-bdd7-4e25df52bf69',
 }
 
 const UA = { 'User-Agent': 'nandaguessr-build/1.0' }
@@ -154,6 +237,68 @@ async function fetchCover(slug, nameEn, year) {
   return file
 }
 
+const LANGS = ['en', 'ru', 'uk', 'es-la', 'pt-br']
+const SPOTS = [0.15, 0.5, 0.85]
+const REFRESH = process.argv.includes('--pages')
+const FORCE = process.argv.includes('--force')
+const DONE = path.join(CACHE, 'pages.json')
+
+async function chapterList(id) {
+  for (const lang of LANGS) {
+    const all = []
+    for (let offset = 0; offset < 600; offset += 100) {
+      const feed = await getJson(
+        `https://api.mangadex.org/manga/${id}/feed?translatedLanguage[]=${lang}&order[chapter]=asc&limit=100&offset=${offset}&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica`,
+      )
+      const data = feed?.data ?? []
+      all.push(...data.filter((one) => Number(one.attributes.pages) > 4))
+      if (data.length < 100) break
+      await sleep(400)
+    }
+    const seen = new Set()
+    const unique = all.filter((one) => {
+      const key = one.attributes.chapter ?? one.id
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
+    if (unique.length >= 3) return unique
+    await sleep(300)
+  }
+  return []
+}
+
+async function fetchPages(slug, nameEn, year) {
+  const id = await resolveId(slug, nameEn, year)
+  await sleep(1100)
+  if (!id) return null
+  const chapters = await chapterList(id)
+  if (chapters.length < 3) return null
+
+  const dir = path.join(SEEDS, slug)
+  await fs.mkdir(dir, { recursive: true })
+  const picked = []
+  const saved = []
+  for (const [at, spot] of SPOTS.entries()) {
+    const chapter = chapters[Math.min(chapters.length - 1, Math.floor(chapters.length * spot))]
+    const home = await getJson(`https://api.mangadex.org/at-home/server/${chapter.id}`)
+    const files = home?.chapter?.data ?? []
+    if (!files.length) continue
+    const res = await fetch(`${home.baseUrl}/data/${home.chapter.hash}/${files[Math.floor(files.length / 2)]}`, { headers: UA }).catch(() => null)
+    if (!res?.ok) continue
+    saved.push(Buffer.from(await res.arrayBuffer()))
+    picked.push(chapter.attributes.chapter ?? '?')
+    await sleep(1300)
+  }
+  if (saved.length < 3) return null
+
+  for (const file of await fs.readdir(dir)) {
+    if (IMAGE.test(file) && !/^cover\./i.test(file)) await fs.rm(path.join(dir, file))
+  }
+  for (const [at, buffer] of saved.entries()) await fs.writeFile(path.join(dir, `${at + 1}.jpg`), buffer)
+  return picked
+}
+
 const IMAGE = /\.(jpe?g|png|webp|gif|avif)$/i
 const PAGE_WIDTH = 900
 const PAGE_HEIGHT = 1300
@@ -172,12 +317,21 @@ async function main() {
   await fs.mkdir(THUMBS, { recursive: true })
   await fs.mkdir(path.join(OUT_IMG, 'full'), { recursive: true })
   await fs.mkdir(path.join(OUT_IMG, 'pages'), { recursive: true })
-  for (const [slug] of TITLES) await fs.mkdir(path.join(SEEDS, slug), { recursive: true })
+  for (const [, slug] of TITLES) await fs.mkdir(path.join(SEEDS, slug), { recursive: true })
+
+  const done = REFRESH ? await cachedJson(CACHE, 'pages.json', async () => ({})) : {}
 
   const result = []
   let missing = 0
-  for (const [index, [slug, name, nameEn, author, year, demographic, status]] of TITLES.entries()) {
-    const id = index + 1
+  for (const [id, slug, name, nameEn, author, year, demographic, status] of TITLES) {
+    if (REFRESH && (FORCE || !done[slug])) {
+      const picked = await fetchPages(slug, nameEn, year)
+      console.log(`${slug}: ${picked ? `розділи ${picked.join(', ')}` : 'сторінок на MangaDex нема'}`)
+      if (picked) {
+        done[slug] = picked
+        await fs.writeFile(DONE, JSON.stringify(done, null, 1))
+      }
+    }
     const { dir, cover, pages: found } = await pagesOf(slug)
     if (!found.length) missing++
 
@@ -210,7 +364,14 @@ async function main() {
     }
 
 
-    result.push({ id, slug, name, nameEn, author, year, demographic, status, pages: pages.length, answer: pages.length > 0 })
+    const stamp = []
+    for (const file of [path.join(OUT_IMG, 'full', `${id}.webp`), ...pages.map((_, at) => path.join(pageDir, `${at + 1}.webp`))]) {
+      const info = await fs.stat(file).catch(() => null)
+      if (info) stamp.push(`${path.basename(file)}:${info.size}`)
+    }
+    const image = crypto.createHash('sha1').update(stamp.join('|')).digest('hex').slice(0, 8)
+
+    result.push({ id, slug, name, nameEn, author, year, demographic, status, image, pages: pages.length, answer: pages.length > 0 })
   }
 
   dropDeleted(result, 'manga')
