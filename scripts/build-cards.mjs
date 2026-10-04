@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { PUBLIC, pool, writeCard } from './lib.mjs'
+import sharp from 'sharp'
+import { CARD, PUBLIC, pool, writeCard } from './lib.mjs'
 
 async function collect() {
   const jobs = []
@@ -26,7 +27,9 @@ async function main() {
   let skipped = 0
   await pool(jobs, 8, async (job) => {
     if (await fresh(job)) return skipped++
-    await writeCard(job.source, job.card)
+    const { width = 0, height = 0 } = await sharp(job.source).metadata()
+    const need = Math.max(CARD.width / width, CARD.height / height)
+    await writeCard(job.source, job.card, need > 1.2)
     made++
     if (made % 200 === 0) console.log(`  зроблено ${made}…`)
   })

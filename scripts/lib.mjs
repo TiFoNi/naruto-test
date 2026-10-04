@@ -226,7 +226,7 @@ export async function writeAtlas(entities, thumbDir, outFile, metaFile, cols, ce
 
 export async function picsVersion(folder) {
   const parts = []
-  for (const kind of ['full', 'card', 'thumbs.webp']) {
+  for (const kind of ['full', 'card', 'mini', 'thumbs.webp']) {
     const target = path.join(folder, kind)
     if (kind.endsWith('.webp')) {
       const info = await fs.stat(target).catch(() => null)
