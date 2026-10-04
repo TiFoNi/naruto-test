@@ -98,6 +98,20 @@ const TITLES = [
 ]
 
 const MANGADEX_IDS = {
+  'dragon-ball': '40bc649f-7b49-4645-859e-6cd94136e722',
+  aot: '304ceac3-8cdb-4fe7-acf7-2b6ff7a60613',
+  '20th-century-boys': 'ad06790a-01e3-400c-a449-0ec152d6756a',
+  'vinland-saga': '5d1fc77e-706a-4fc5-bea8-486c9be0145d',
+  'tokyo-ghoul': '6a1d1cb1-ecd5-40d9-89ff-9d88e40b136b',
+  kny: '789642f8-ca89-4e4e-8f7b-eee4d17ea08b',
+  'jujutsu-kaisen': 'c52b2ce3-7f95-469c-96b0-479524fb7a1a',
+  'chainsaw-man': 'a77742b1-befd-49a4-bff5-1ad4e6b0ef7b',
+  'one-punch-man': 'd8a959f7-648e-4c8d-8f23-f1f3f8e129f3',
+  nana: '7e2ddc4c-c07c-4163-bf48-2b7c45f7b7fb',
+  blame: 'b905f827-8d48-4948-b58c-0d6fd330d10d',
+  gintama: 'f65444dc-3694-4e31-a166-8afb2938ed55',
+  akira: '175cf215-2122-4656-9fac-37ac092438af',
+  kingdom: '077a3fed-1634-424f-be7a-9a96b7f07b78',
   real: '62b74aa6-24df-4b91-b76d-39e7ab3c3ca5',
   evangelion: 'dc33209f-d9d4-40df-a468-cca047b63979',
   'liar-game': 'd8779116-f000-446a-af46-cc221c0e7fc9',
