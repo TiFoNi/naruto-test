@@ -8419,3 +8419,15 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.bell-item.is-frame {
+  --tier: var(--accent);
+}
+
+.bell-frame {
+  border-color: transparent;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}

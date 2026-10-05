@@ -7,9 +7,9 @@ export type AwardRow = { id: string; tier: string; done: boolean; claimed: boole
 export type FreshAward = { id: string; tier: string }
 export type DuelInvite = { code: string; from: string; game: string | null; mode: string | null; best: number; seconds: number; at: string }
 export type FriendAsk = { id: string; nickname: string; tag: string | null; at: string }
-export type Feed = { awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[] }
+export type Feed = { awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[]; frames: string[] }
 
-const EMPTY: Feed = { awards: [], invites: [], requests: [] }
+const EMPTY: Feed = { awards: [], invites: [], requests: [], frames: [] }
 
 const watchers = new Set<(feed: Feed) => void>()
 
@@ -39,6 +39,10 @@ export function dropInvite(code: string) {
   return publish({ ...(cache ?? EMPTY), invites: (cache?.invites ?? []).filter((invite) => invite.code !== code) })
 }
 
+export function dropFrames() {
+  return publish({ ...(cache ?? EMPTY), frames: [] })
+}
+
 export function dropRequest(id: string) {
   return publish({ ...(cache ?? EMPTY), requests: (cache?.requests ?? []).filter((one) => one.id !== id) })
 }
@@ -58,7 +62,7 @@ export function freshFeed() {
   if (cache) return Promise.resolve(cache)
   pending ??= api<Partial<Feed>>('awards')
     .then(({ ok, data }) =>
-      ok ? publish({ awards: data.awards ?? [], invites: data.invites ?? [], requests: data.requests ?? [] }) : EMPTY,
+      ok ? publish({ awards: data.awards ?? [], invites: data.invites ?? [], requests: data.requests ?? [], frames: data.frames ?? [] }) : EMPTY,
     )
     .catch(() => EMPTY)
     .finally(() => {

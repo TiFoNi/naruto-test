@@ -11,6 +11,7 @@ export type UserDoc = {
   avatar?: string | null
   frame?: string | null
   frames?: string[]
+  framesSeen?: string[]
   xp?: number
   xpToday?: { day: string; daily: number; endless: number; duel?: number }
   stats?: Record<string, Partial<Stats>>

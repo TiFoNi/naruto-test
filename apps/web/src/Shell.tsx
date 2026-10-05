@@ -13,7 +13,8 @@ import ChallengeSkeleton from './ChallengeSkeleton'
 import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
-import { dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type Feed } from './awards'
+import { dropFrames, dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type Feed } from './awards'
+import { FRAMES, frameUrl } from './frames'
 import { MODE_XP, MODE_XP_AFTER } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
@@ -283,7 +284,7 @@ function Bell() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const box = useDropdown(open, setOpen)
-  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [] })
+  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [], frames: [] })
   const [hidden, setHidden] = useState<Set<string>>(() => new Set())
   const [busy, setBusy] = useState(false)
 
@@ -336,8 +337,14 @@ function Bell() {
     void refreshFeed()
   }
 
+  const seenFrames = () => {
+    dropFrames()
+    void api('profile', { action: 'seenFrames' }).catch(() => null)
+  }
+
   const awards = feed.awards.filter((award) => !hidden.has(award.id))
-  const count = awards.length + feed.invites.length + feed.requests.length
+  const frames = feed.frames.map((id) => FRAMES.find((one) => one.id === id)).filter((one) => one !== undefined)
+  const count = awards.length + feed.invites.length + feed.requests.length + frames.length
 
   return (
     <div ref={box} className={`bell-box ${open ? 'open' : ''}`}>
@@ -423,6 +430,23 @@ function Bell() {
                   </span>
                 </div>
                 <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} onClick={() => void answer(one.id, false)}>
+                  <CloseIcon />
+                </button>
+              </li>
+            ))}
+            {frames.map((frame) => (
+              <li key={frame.id} className="bell-item is-frame">
+                <Link className="bell-card" href={href.settings} onClick={() => { setOpen(false); seenFrames() }} prefetch={false}>
+                  <small>{t('frame.fresh')}</small>
+                  <span className="bell-main">
+                    <span className="bell-mark bell-frame" aria-hidden style={{ backgroundImage: `url(${frameUrl(frame.id)})` }} />
+                    <span className="bell-body">
+                      <b>{l(frame.label)}</b>
+                      <span className="bell-hint">{t(frame.kind === 'world' ? 'frame.freshWorld' : 'frame.freshAward')}</span>
+                    </span>
+                  </span>
+                </Link>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={seenFrames}>
                   <CloseIcon />
                 </button>
               </li>

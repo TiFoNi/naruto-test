@@ -48,5 +48,16 @@ export const POST = handle(async (request) => {
     return json(toProfile(doc ?? found.doc))
   }
 
+  if (body.action === 'seenFrames') {
+    const owned = found.doc.frames ?? []
+    if (!owned.length) return json(toProfile(found.doc))
+    const doc = await found.collection.findOneAndUpdate(
+      { _id: found.doc._id },
+      { $addToSet: { framesSeen: { $each: owned } } },
+      { returnDocument: 'after' },
+    )
+    return json(toProfile(doc ?? found.doc))
+  }
+
   return fail(400, 'bad_request')
 })

@@ -36,7 +36,7 @@ if (!doc) {
 }
 
 const update = take
-  ? { $pull: { frames: { $in: frames } }, ...(frames.includes(doc.frame) ? { $unset: { frame: '' } } : {}) }
+  ? { $pull: { frames: { $in: frames }, framesSeen: { $in: frames } }, ...(frames.includes(doc.frame) ? { $unset: { frame: '' } } : {}) }
   : { $addToSet: { frames: { $each: frames } } }
 
 await users.updateOne({ _id: doc._id }, update)

@@ -86,6 +86,8 @@ export const LIFE: Achievement[] = [
   life('technician150', 'modes', 'silver', 150, modePlayed('ability')),
   life('librarian', 'modes', 'bronze', 25, modePlayed('page')),
   life('librarian150', 'modes', 'silver', 150, modePlayed('page')),
+  life('sorter', 'modes', 'bronze', 25, modePlayed('odd')),
+  life('sorter150', 'modes', 'silver', 150, modePlayed('odd')),
   life('listener', 'modes', 'bronze', 25, modePlayed('phrase')),
   life('listener150', 'modes', 'silver', 150, modePlayed('phrase')),
   life('allRounder', 'modes', 'gold', 4, (f) => Object.values(f.modes).filter((m) => m.played >= 20 && m.won / m.played >= 0.9).length),

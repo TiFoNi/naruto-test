@@ -32,6 +32,7 @@ export const POOL: Quest[] = [
   { id: 'image3', tier: 'easy', xp: 45, metric: 'mode', goal: 3, mode: 'image' },
   { id: 'ability2', tier: 'easy', xp: 45, metric: 'mode', goal: 2, mode: 'ability' },
   { id: 'page2', tier: 'easy', xp: 45, metric: 'mode', goal: 2, mode: 'page' },
+  { id: 'odd3', tier: 'easy', xp: 45, metric: 'mode', goal: 3, mode: 'odd' },
 
   { id: 'solve5', tier: 'normal', xp: 70, metric: 'solve', goal: 5 },
   { id: 'daily1', tier: 'normal', xp: 80, metric: 'daily', goal: 1 },
