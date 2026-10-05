@@ -280,6 +280,7 @@ const readHidden = () => {
 
 function Bell() {
   const { t, l } = useI18n()
+  const { user, refresh } = useAuth()
   const href = useHref()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -305,6 +306,11 @@ function Bell() {
       window.removeEventListener('focus', tick)
     }
   }, [])
+
+  const fresh = feed.frames.filter((id) => !(user?.frames ?? []).includes(id)).join(',')
+  useEffect(() => {
+    if (fresh) void refresh()
+  }, [fresh, refresh])
 
   const hide = (id: string) => {
     const next = new Set(hidden).add(id)
