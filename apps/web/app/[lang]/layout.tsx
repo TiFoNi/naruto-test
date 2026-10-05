@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import Providers from './providers'
 import { SITE } from '@/src/brand'
 import { LANGS, dictionary, type Lang } from '@/src/i18n/ui'
-import { HOME, alternates } from '@/src/seo'
+import { alternates, homeCopy } from '@/src/seo'
 import { gameMeta } from '@/src/games/meta.server'
 import { CATEGORIES } from '@/src/games/types'
 import '@/src/styles.css'
@@ -29,7 +29,7 @@ export const revalidate = 600
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
-  const copy = HOME[(LANGS.some((l) => l.id === lang) ? lang : 'ru') as Lang]
+  const copy = await homeCopy((LANGS.some((l) => l.id === lang) ? lang : 'ru') as Lang)
 
   return {
     metadataBase: new URL(SITE),
