@@ -10,6 +10,7 @@ import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
+import * as meta from '@nanda/core/endpoints/meta'
 import * as achievements from '@nanda/core/endpoints/achievements'
 import * as awards from '@nanda/core/endpoints/awards'
 import * as friends from '@nanda/core/endpoints/friends'
@@ -110,6 +111,11 @@ export class GameController {
   @Post('admin/settings')
   adminSettings(@Req() req: Request, @Res() res: Response) {
     return bridge(admin.SETTINGS, req, res)
+  }
+
+  @Get('meta')
+  meta(@Req() req: Request, @Res() res: Response) {
+    return bridge(meta.GET, req, res)
   }
 
   @Get('entities')

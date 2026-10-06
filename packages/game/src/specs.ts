@@ -33,12 +33,13 @@ export type JudgeSpec = { key: string; kind: JudgeKind }
 
 export type PicShape = 'square' | 'poster' | 'wide'
 
-export type GameSpec = { data: string; images: string; columns: JudgeSpec[]; modes?: ModeId[]; shape?: PicShape }
+export type GameSpec = { data: string; images: string; columns: JudgeSpec[]; modes?: ModeId[]; shape?: PicShape; featured?: string[] }
 
 const col = (key: string, kind: JudgeKind): JudgeSpec => ({ key, kind })
 
 export const GAME_SPECS: Record<GameId, GameSpec> = {
   naruto: {
+    featured: ['Naruto Uzumaki', 'Sasuke Uchiha', 'Kakashi Hatake', 'Itachi Uchiha'],
     data: 'characters',
     images: 'characters',
     columns: [
@@ -52,6 +53,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   aot: {
+    featured: ['Eren Yeager', 'Mikasa Ackerman', 'Levi Ackerman', 'Armin Arlert'],
     data: 'aot',
     images: 'aot',
     columns: [
@@ -65,6 +67,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   bleach: {
+    featured: ['Ichigo Kurosaki', 'Rukia Kuchiki', 'Sousuke Aizen', 'Byakuya Kuchiki'],
     data: 'bleach',
     images: 'bleach',
     columns: [
@@ -78,6 +81,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   tg: {
+    featured: ['Ken Kaneki', 'Touka Kirishima', 'Kishou Arima'],
     data: 'tg',
     images: 'tg',
     columns: [
@@ -91,6 +95,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   berserk: {
+    featured: ['Guts', 'Griffith', 'Casca'],
     data: 'berserk',
     images: 'berserk',
     columns: [
@@ -103,6 +108,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   onepiece: {
+    featured: ['Monkey D. Luffy', 'Roronoa Zoro', 'Sanji'],
     data: 'onepiece',
     images: 'onepiece',
     columns: [
@@ -116,6 +122,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   jojo: {
+    featured: ['Jotaro Kujo', 'Dio Brando', 'Joseph Joestar'],
     data: 'jojo',
     images: 'jojo',
     columns: [
@@ -129,6 +136,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   dn: {
+    featured: ['Light Yagami', 'L', 'Ryuk'],
     data: 'dn',
     images: 'dn',
     columns: [
@@ -142,6 +150,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   manga: {
+    featured: ['Berserk', 'Vagabond', 'Slam Dunk'],
     shape: 'poster',
     data: 'manga',
     images: 'manga',
@@ -149,6 +158,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     columns: [],
   },
   se: {
+    featured: ['Maka Albarn', 'Soul Evans', 'Death the Kid'],
     data: 'se',
     images: 'se',
     columns: [
@@ -162,6 +172,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   ff: {
+    featured: ['Shinra Kusakabe', 'Arthur Boyle', 'Benimaru Shinmon'],
     data: 'ff',
     images: 'ff',
     columns: [
@@ -175,6 +186,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   csm: {
+    featured: ['Denji', 'Power', 'Makima'],
     data: 'csm',
     images: 'csm',
     columns: [
@@ -186,6 +198,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   jjk: {
+    featured: ['Yuji Itadori', 'Satoru Gojo', 'Megumi Fushiguro'],
     data: 'jjk',
     images: 'jjk',
     columns: [
@@ -198,6 +211,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   hxh: {
+    featured: ['Gon Freecss', 'Killua Zoldyck', 'Kurapika'],
     data: 'hxh',
     images: 'hxh',
     columns: [
@@ -210,6 +224,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   bc: {
+    featured: ['Asta', 'Yuno Grinberryall', 'Noelle Silva'],
     data: 'bc',
     images: 'bc',
     columns: [
@@ -223,6 +238,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   avatar: {
+    featured: ['Aang', 'Zuko', 'Korra'],
     data: 'avatar',
     images: 'avatar',
     columns: [
@@ -236,6 +252,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   kny: {
+    featured: ['Tanjiro Kamado', 'Nezuko Kamado', 'Zenitsu Agatsuma'],
     data: 'kny',
     images: 'kny',
     columns: [
@@ -249,6 +266,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   mk: {
+    featured: ['Scorpion', 'Sub-Zero', 'Raiden'],
     data: 'mk',
     images: 'mk',
     columns: [
@@ -261,6 +279,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   marvel: {
+    featured: ['Iron Man', 'Spider-Man', 'Thor'],
     data: 'marvel',
     images: 'marvel',
     modes: ['classic', 'image', 'odd'],
@@ -274,6 +293,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   football: {
+    featured: ['Lionel Messi', 'Cristiano Ronaldo', 'Pelé'],
     data: 'football',
     images: 'football',
     modes: ['classic', 'odd'],
@@ -288,6 +308,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   dota: {
+    featured: ['Pudge', 'Invoker', 'Crystal Maiden', 'Juggernaut'],
     shape: 'wide',
     data: 'dota',
     images: 'dota',
