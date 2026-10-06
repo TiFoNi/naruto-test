@@ -244,10 +244,18 @@ export async function duels(): Promise<Collection<DuelDoc>> {
 export function client() {
   const uri = process.env.MONGODB_URI
   if (!uri) throw new Error('MONGODB_URI is not set')
-  cache.__mongo ??= new MongoClient(uri, { serverSelectionTimeoutMS: 5000, connectTimeoutMS: 5000 }).connect().catch((error) => {
-    cache.__mongo = undefined
-    throw error
+  cache.__mongo ??= new MongoClient(uri, {
+    serverSelectionTimeoutMS: 5000,
+    connectTimeoutMS: 5000,
+    maxPoolSize: Number(process.env.MONGODB_POOL ?? 10),
+    minPoolSize: 0,
+    maxIdleTimeMS: 60_000,
   })
+    .connect()
+    .catch((error) => {
+      cache.__mongo = undefined
+      throw error
+    })
   return cache.__mongo
 }
 
