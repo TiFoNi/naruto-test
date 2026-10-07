@@ -8457,3 +8457,43 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   color: var(--text-3);
   font-size: 13px;
 }
+
+.home-about {
+  width: min(100%, 980px);
+  margin: 8px auto 40px;
+  padding: 20px 22px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--card);
+}
+
+.home-about h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.home-about p {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.home-about dl {
+  display: grid;
+  gap: 14px;
+  margin: 18px 0 0;
+}
+
+.home-about dt {
+  margin-bottom: 4px;
+  font-family: var(--display);
+  font-size: 15px;
+}
+
+.home-about dd {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.55;
+}

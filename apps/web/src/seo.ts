@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { SITE } from './brand'
 import { gameMeta } from './games/meta.server'
 import ui from './i18n/ui'
+import { faq } from './HomeAbout'
 import { LANGS, type Lang } from './i18n/ui'
 
 export const HOME: Record<Lang, { title: string; description: string }> = {
@@ -145,6 +146,15 @@ export async function homeSchema(lang: Lang) {
         isAccessibleForFree: true,
         offers: { '@type': 'Offer', price: 0, priceCurrency: 'USD' },
         description: summary(lang, games.length, cards),
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `${SITE}/#faq`,
+        mainEntity: faq(lang, games).map((row) => ({
+          '@type': 'Question',
+          name: row.q,
+          acceptedAnswer: { '@type': 'Answer', text: row.a },
+        })),
       },
       {
         '@type': 'ItemList',
