@@ -8459,41 +8459,51 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 }
 
 .home-about {
-  width: min(100%, 980px);
-  margin: 8px auto 40px;
-  padding: 20px 22px;
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  background: var(--card);
+  margin: 40px 0 4px;
+  padding-top: 30px;
+  border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
 }
 
 .home-about h2 {
-  margin: 0 0 10px;
-  font-size: 20px;
+  margin: 0 0 12px;
+  font-size: 11px;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
 }
 
-.home-about p {
+.home-about > p {
   margin: 0;
+  max-width: 76ch;
   color: var(--text-2);
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 15px;
+  line-height: 1.65;
 }
 
 .home-about dl {
   display: grid;
-  gap: 14px;
-  margin: 18px 0 0;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 24px 48px;
+  margin: 28px 0 0;
+}
+
+.home-about dl > div:last-child {
+  grid-column: 1 / -1;
 }
 
 .home-about dt {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   font-family: var(--display);
   font-size: 15px;
+  color: var(--text);
 }
 
 .home-about dd {
   margin: 0;
   color: var(--text-2);
   font-size: 14px;
-  line-height: 1.55;
+  line-height: 1.6;
 }
+
