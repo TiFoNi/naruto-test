@@ -1,32 +1,23 @@
 import ui, { type Lang } from './i18n/ui'
 import type { GameMeta } from './games/meta'
-
-export const faq = (lang: Lang, games: GameMeta[]) => {
-  const worlds = games.map((game) => game.label[lang]).join(', ')
-  return [
-    { q: ui['home.aboutTitle'][lang] + '?', a: ui['home.aboutLead'][lang] },
-    { q: ui['faq.playQ'][lang], a: ui['faq.playA'][lang] },
-    { q: ui['faq.freeQ'][lang], a: ui['faq.freeA'][lang] },
-    { q: ui['faq.wordleQ'][lang], a: ui['faq.wordleA'][lang] },
-    { q: ui['faq.worldsQ'][lang], a: `${games.length}: ${worlds}.` },
-  ]
-}
+import { counts } from './seo'
 
 export default function HomeAbout({ lang, games }: { lang: Lang; games: GameMeta[] }) {
-  const rows = faq(lang, games)
+  const cards = games.reduce((sum, game) => sum + game.count, 0)
+  const steps = [ui['home.step1'][lang], ui['home.step2'][lang], ui['home.step3'][lang]]
 
   return (
     <section className="home-about">
-      <h2>{ui['home.aboutTitle'][lang]}</h2>
-      <p>{ui['home.aboutLead'][lang]}</p>
-      <dl>
-        {rows.slice(1).map((row) => (
-          <div key={row.q}>
-            <dt>{row.q}</dt>
-            <dd>{row.a}</dd>
-          </div>
+      <h2>{ui['howto.title'][lang]}</h2>
+      <ol>
+        {steps.map((step, index) => (
+          <li key={step}>
+            <i>{index + 1}</i>
+            {step}
+          </li>
         ))}
-      </dl>
+      </ol>
+      <p>{counts(lang, games.length, cards)}</p>
     </section>
   )
 }

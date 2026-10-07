@@ -8465,45 +8465,50 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 }
 
 .home-about h2 {
-  margin: 0 0 12px;
-  font-size: 11px;
+  margin: 0 0 16px;
+  color: var(--text-3);
   font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-3);
+}
+
+.home-about ol {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px 40px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-about li {
+  display: flex;
+  gap: 12px;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.home-about li i {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 12px;
+  font-style: normal;
 }
 
 .home-about > p {
-  margin: 0;
-  max-width: 76ch;
-  color: var(--text-2);
-  font-size: 15px;
-  line-height: 1.65;
+  margin: 18px 0 0;
+  color: var(--text-3);
+  font-size: 13px;
 }
 
-.home-about dl {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-  gap: 24px 48px;
-  margin: 28px 0 0;
-}
-
-.home-about dl > div:last-child {
-  grid-column: 1 / -1;
-}
-
-.home-about dt {
-  margin-bottom: 6px;
-  font-family: var(--display);
-  font-size: 15px;
-  color: var(--text);
-}
-
-.home-about dd {
-  margin: 0;
-  color: var(--text-2);
-  font-size: 14px;
-  line-height: 1.6;
-}
 

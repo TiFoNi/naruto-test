@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { SITE } from './brand'
 import { gameMeta } from './games/meta.server'
 import ui from './i18n/ui'
-import { faq } from './HomeAbout'
 import { LANGS, type Lang } from './i18n/ui'
 
 export const HOME: Record<Lang, { title: string; description: string }> = {
@@ -106,6 +105,9 @@ const ENDING = {
   en: 'Hints after every try, a daily puzzle and duels with friends — no limits.',
 } as const
 
+export const counts = (lang: Lang, worlds: number, cards: number) =>
+  `${worlds} ${plural(lang, worlds, WORLDS[lang].forms)} · ${cards} ${plural(lang, cards, WORLDS[lang].cards)}`
+
 const summary = (lang: Lang, worlds: number, cards: number) =>
   `${worlds} ${plural(lang, worlds, WORLDS[lang].forms)} і ${cards} ${plural(lang, cards, WORLDS[lang].cards)}: ${TOP[lang]}. ${ENDING[lang]}`
     .replace(' і ', lang === 'ru' ? ' и ' : lang === 'en' ? ' and ' : ' і ')
@@ -146,15 +148,6 @@ export async function homeSchema(lang: Lang) {
         isAccessibleForFree: true,
         offers: { '@type': 'Offer', price: 0, priceCurrency: 'USD' },
         description: summary(lang, games.length, cards),
-      },
-      {
-        '@type': 'FAQPage',
-        '@id': `${SITE}/#faq`,
-        mainEntity: faq(lang, games).map((row) => ({
-          '@type': 'Question',
-          name: row.q,
-          acceptedAnswer: { '@type': 'Answer', text: row.a },
-        })),
       },
       {
         '@type': 'ItemList',
