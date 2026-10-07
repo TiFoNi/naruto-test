@@ -5,7 +5,7 @@ import {
   SEASON,
   claimAward,
   closeFinishedSeason,
-  collectFacts,
+  lifeFacts,
   progressOf,
   rarity,
   seasonFacts,
@@ -34,7 +34,7 @@ async function board(doc: UserDoc) {
   const id = doc._id!
   await closeFinishedSeason().catch(() => null)
 
-  const facts = await collectFacts(id, 1, doc.resetAt)
+  const facts = await lifeFacts(doc)
   const place = await placeOf(doc.solvedTotal ?? STAT_KEYS.reduce((sum, key) => sum + (doc.stats?.[key]?.solved ?? 0), 0))
   facts.rank = place.rank
   facts.players = place.players

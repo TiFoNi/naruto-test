@@ -18,6 +18,7 @@ export type UserDoc = {
   solvedTotal?: number
   visit?: { lastDay: string; streak: number; best: number; days: string[] }
   awards?: Record<string, Date>
+  tally?: import('./achievements').Tally
   awardsSolved?: number
   awardsAt?: Date
   lastChallengeAt?: Date | null

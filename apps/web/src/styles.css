@@ -8431,3 +8431,29 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   background-repeat: no-repeat;
   background-size: contain;
 }
+
+.world-about {
+  width: min(100%, 980px);
+  margin: 8px auto 32px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+  color: var(--text-2);
+}
+
+.world-about h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.world-about p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.world-names {
+  color: var(--text-3);
+  font-size: 13px;
+}

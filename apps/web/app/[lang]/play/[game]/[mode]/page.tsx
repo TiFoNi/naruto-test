@@ -1,5 +1,6 @@
 import GameAccent from '@/src/GameAccent'
 import PlayView from '@/src/PlayView'
+import WorldAbout from '@/src/WorldAbout'
 import type { Lang } from '@/src/i18n/ui'
 import { playMetadata, playSchema } from '@/src/seo'
 
@@ -18,6 +19,7 @@ export default async function PlayPage({ params }: Params) {
       {schema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />}
       <GameAccent game={game} />
       <PlayView game={game} mode={mode} daily={false} />
+      <WorldAbout game={game} lang={lang as Lang} />
     </>
   )
 }

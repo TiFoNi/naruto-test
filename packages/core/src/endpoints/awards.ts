@@ -1,5 +1,5 @@
 import { STAT_KEYS } from '@nanda/game'
-import { LIFE, SEASON, collectFacts, seasonFacts, syncAwards, syncSeasonAwards } from '../achievements'
+import { LIFE, SEASON, lifeFacts, seasonFacts, syncAwards, syncSeasonAwards } from '../achievements'
 import { seasons, users, type UserDoc } from '../db'
 import { seasonAt } from '../season'
 import { handle, json } from '../http'
@@ -24,7 +24,7 @@ async function ready(doc: UserDoc) {
   let seasonClaimed = running?.claimed ?? {}
 
   if (stale) {
-    const facts = await collectFacts(id, 1, doc.resetAt)
+    const facts = await lifeFacts(doc)
     const place = await placeOf(solved)
     facts.rank = place.rank
     facts.players = place.players

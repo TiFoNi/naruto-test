@@ -1,6 +1,6 @@
-import type { ObjectId } from 'mongodb'
 import { GAME_IDS, MODE_IDS, type GameId } from '@nanda/game'
-import { rounds, seasons, users } from './db'
+import { ObjectId } from 'mongodb'
+import { rounds, seasons, users, type UserDoc } from './db'
 import { gameData } from './games'
 import { addSeasonXp, previousSeason, seasonAt, seasonStanding, takeSeasonClose } from './season'
 import { TOP_FRAME, TOP_PLACES } from './frame-list'
@@ -188,135 +188,224 @@ export type Facts = {
 
 const dayOf = (date: Date) => new Date(date.getTime() + 3 * 3600_000).toISOString().slice(0, 10)
 
-export async function collectFacts(userId: ObjectId, languages = 1, since?: Date): Promise<Facts> {
-  const fresh = since ? { createdAt: { $gt: since } } : {}
-  const [roundList, person] = await Promise.all([
-    (await rounds())
-      .find(
-        { userId, challenge: { $exists: false }, ...fresh },
-        { projection: { game: 1, mode: 1, status: 1, answerId: 1, guessCount: 1, guesses: 1, daily: 1, finishedAt: 1, createdAt: 1 }, sort: { createdAt: 1 } },
-      )
-      .toArray(),
-    (await users()).findOne({ _id: userId }, { projection: { visit: 1, duelStats: 1, duelBestMs: 1, duelComeback: 1, langs: 1 } }),
-  ])
+export type Tally = {
+  at?: Date
+  pending?: string[]
+  solved: number
+  firstTry: number
+  imageFirstTry: number
+  dailySolved: number
+  night: number
+  morning: number
+  sniper: number
+  sniperRun: number
+  noGiveUp: number
+  noGiveUpRun: number
+  days: Record<string, number>
+  bestPerDay: number
+  firstTryDays: Record<string, number>
+  bestFirstTryDay: number
+  dailyDay?: string
+  perfectRun: number
+  modes: Record<string, { played: number; won: number }>
+  worlds: string[]
+  unique: Record<string, number[]>
+}
 
-  const modes: Facts['modes'] = {}
-  const perDay = new Map<string, number>()
-  const firstTryDay = new Map<string, number>()
-  const uniquePerGame = new Map<string, Set<number>>()
-  const played = new Set<string>()
-  let solved = 0
-  let firstTry = 0
-  let imageFirstTry = 0
-  let night = 0
-  let morning = 0
-  let gamesSolved = 0
-  let sniper = 0
-  let sniperRun = 0
-  let noGiveUpRun = 0
-  let noGiveUpBest = 0
-  const dailyWins: string[] = []
+type Played = {
+  _id?: ObjectId
+  game: string
+  mode: string
+  status: string
+  answerId: number
+  guessCount?: number
+  guesses?: number[]
+  daily?: string
+  finishedAt?: Date
+  createdAt: Date
+}
 
-  for (const round of roundList) {
-    const mode = (modes[round.mode] ??= { played: 0, won: 0 })
-    if (round.status !== 'active') {
-      mode.played += 1
-      played.add(round.game)
-    }
-    const won = round.status === 'won'
-    const tries = round.guessCount ?? round.guesses?.length ?? 0
+const blank = (): Tally => ({
+  solved: 0,
+  firstTry: 0,
+  imageFirstTry: 0,
+  dailySolved: 0,
+  night: 0,
+  morning: 0,
+  sniper: 0,
+  sniperRun: 0,
+  noGiveUp: 0,
+  noGiveUpRun: 0,
+  days: {},
+  bestPerDay: 0,
+  firstTryDays: {},
+  bestFirstTryDay: 0,
+  perfectRun: 0,
+  modes: {},
+  worlds: [],
+  unique: {},
+})
 
-    if (round.status === 'skipped' || round.status === 'lost') {
-      noGiveUpRun = 0
-      sniperRun = 0
-    }
-    if (!won) continue
+const nextDay = (day: string) => new Date(new Date(`${day}T00:00:00Z`).getTime() + 86_400_000).toISOString().slice(0, 10)
 
-    solved += 1
-    mode.won += 1
-    noGiveUpRun += 1
-    noGiveUpBest = Math.max(noGiveUpBest, noGiveUpRun)
+const WINDOW = 5
+const PENDING_MAX = 100
 
-    const set = uniquePerGame.get(round.game) ?? new Set<number>()
-    set.add(round.answerId)
-    uniquePerGame.set(round.game, set)
+function bump(counts: Record<string, number>, day: string) {
+  const value = (counts[day] = (counts[day] ?? 0) + 1)
+  const keys = Object.keys(counts).sort()
+  for (const old of keys.slice(0, Math.max(0, keys.length - WINDOW))) delete counts[old]
+  return value
+}
 
-    if (round.daily) dailyWins.push(round.daily)
+function fold(tally: Tally, round: Played) {
+  if (round.status === 'active') return
 
-    const when = round.finishedAt ?? round.createdAt
-    const key = when ? dayOf(when) : null
+  const mode = (tally.modes[round.mode] ??= { played: 0, won: 0 })
+  mode.played += 1
+  if (!tally.worlds.includes(round.game)) tally.worlds.push(round.game)
 
-    if (tries === 1) {
-      firstTry += 1
-      sniperRun += 1
-      sniper = Math.max(sniper, sniperRun)
-      if (round.mode === 'image') imageFirstTry += 1
-      if (key) firstTryDay.set(key, (firstTryDay.get(key) ?? 0) + 1)
-    } else {
-      sniperRun = 0
-    }
+  if (round.status !== 'won') {
+    tally.noGiveUpRun = 0
+    tally.sniperRun = 0
+    return
+  }
 
-    if (when && key) {
-      perDay.set(key, (perDay.get(key) ?? 0) + 1)
-      const hour = new Date(when.getTime() + 3 * 3600_000).getUTCHours()
-      if (hour < 5) night += 1
-      if (hour >= 5 && hour < 9) morning += 1
+  tally.solved += 1
+  mode.won += 1
+  tally.noGiveUpRun += 1
+  tally.noGiveUp = Math.max(tally.noGiveUp, tally.noGiveUpRun)
+
+  const seen = (tally.unique[round.game] ??= [])
+  if (!seen.includes(round.answerId)) seen.push(round.answerId)
+
+  if (round.daily) {
+    tally.dailySolved += 1
+    if (tally.dailyDay !== round.daily) {
+      tally.perfectRun = tally.dailyDay && nextDay(tally.dailyDay) === round.daily ? tally.perfectRun + 1 : 1
+      tally.dailyDay = round.daily
     }
   }
 
+  const when = round.finishedAt ?? round.createdAt
+  const key = when ? dayOf(when) : null
+  const tries = round.guessCount ?? round.guesses?.length ?? 0
+
+  if (tries === 1) {
+    tally.firstTry += 1
+    tally.sniperRun += 1
+    tally.sniper = Math.max(tally.sniper, tally.sniperRun)
+    if (round.mode === 'image') tally.imageFirstTry += 1
+    if (key) tally.bestFirstTryDay = Math.max(tally.bestFirstTryDay, bump(tally.firstTryDays, key))
+  } else {
+    tally.sniperRun = 0
+  }
+
+  if (when && key) {
+    tally.bestPerDay = Math.max(tally.bestPerDay, bump(tally.days, key))
+
+    const hour = new Date(when.getTime() + 3 * 3600_000).getUTCHours()
+    if (hour < 5) tally.night += 1
+    if (hour >= 5 && hour < 9) tally.morning += 1
+  }
+}
+
+async function readRounds(userId: ObjectId, filter: Record<string, unknown>) {
+  return (await rounds())
+    .find({ userId, challenge: { $exists: false }, ...filter }, {
+      projection: { game: 1, mode: 1, status: 1, answerId: 1, guessCount: 1, guesses: 1, daily: 1, finishedAt: 1, createdAt: 1 },
+      sort: { createdAt: 1 },
+    })
+    .toArray() as unknown as Promise<Played[]>
+}
+
+export async function growTally(userId: ObjectId, saved: Tally | undefined, resetAt?: Date) {
+  const tally = saved ? { ...blank(), ...saved } : blank()
+  const since = tally.at ?? resetAt
+  const waiting = (tally.pending ?? []).map((id) => new ObjectId(id))
+
+  const window = since ? { createdAt: { $gt: since } } : {}
+  const fresh = await readRounds(userId, waiting.length ? { $or: [window, { _id: { $in: waiting } }] } : window)
+
+  const pending: string[] = []
+  for (const round of fresh) {
+    if (round.status === 'active') {
+      pending.push(round._id!.toHexString())
+      continue
+    }
+    fold(tally, round)
+  }
+
+  const last = fresh.at(-1)?.createdAt
+  if (last && (!tally.at || last > tally.at)) tally.at = last
+  tally.at ??= resetAt
+  tally.pending = pending.slice(-PENDING_MAX)
+
+  return { tally, read: fresh.length }
+}
+
+async function shape(tally: Tally, person: UserDoc | null, languages: number): Promise<Facts> {
   let bestWorldShare = 0
   let bestWorldDone = 0
-  for (const [game, set] of uniquePerGame) {
+  let gamesSolved = 0
+
+  for (const [game, seen] of Object.entries(tally.unique)) {
+    if (game === 'dota' || game === 'mk') gamesSolved += seen.length
     if (!GAME_IDS.includes(game as GameId)) continue
     const { pool } = await gameData(game as GameId)
     if (!pool.length) continue
-    bestWorldShare = Math.max(bestWorldShare, Math.round((set.size / pool.length) * 100))
-    bestWorldDone = Math.max(bestWorldDone, set.size)
+    bestWorldShare = Math.max(bestWorldShare, Math.round((seen.length / pool.length) * 100))
+    bestWorldDone = Math.max(bestWorldDone, seen.length)
   }
-  for (const [game, set] of uniquePerGame) if (game === 'dota' || game === 'mk') gamesSolved += set.size
-
-  const perfectDays = [...new Set(dailyWins)].sort()
-  let perfectRun = 0
-  let previous: string | null = null
-  for (const day of perfectDays) {
-    const next = previous ? new Date(`${previous}T00:00:00Z`).getTime() + 86_400_000 : 0
-    perfectRun = previous && new Date(`${day}T00:00:00Z`).getTime() === next ? perfectRun + 1 : 1
-    previous = day
-  }
-
-  const duelWins = person?.duelStats?.wins ?? 0
-  const fastestDuelMs = person?.duelBestMs ?? null
-  const comeback = Boolean(person?.duelComeback)
 
   return {
-    solved,
-    firstTry,
-    imageFirstTry,
-    sniper,
-    dailySolved: dailyWins.length,
-    perfectDailyWeek: perfectRun,
-    bestPerDay: Math.max(0, ...perDay.values()),
-    bestFirstTryDay: Math.max(0, ...firstTryDay.values()),
+    solved: tally.solved,
+    firstTry: tally.firstTry,
+    imageFirstTry: tally.imageFirstTry,
+    sniper: tally.sniper,
+    dailySolved: tally.dailySolved,
+    perfectDailyWeek: tally.perfectRun,
+    bestPerDay: tally.bestPerDay,
+    bestFirstTryDay: tally.bestFirstTryDay,
     streak: person?.visit?.streak ?? 0,
     bestStreak: person?.visit?.best ?? 0,
-    night,
-    morning,
-    modes,
-    worlds: played.size,
+    night: tally.night,
+    morning: tally.morning,
+    modes: tally.modes,
+    worlds: tally.worlds.length,
     bestWorldShare,
     bestWorldDone,
     gamesSolved,
-    duelWins,
+    duelWins: person?.duelStats?.wins ?? 0,
     duelPlayed: person?.duelStats?.played ?? 0,
     whoWins: person?.duelStats?.modes?.who?.wins ?? 0,
-    fastestDuelMs,
-    comeback,
-    noGiveUpRun: noGiveUpBest,
+    fastestDuelMs: person?.duelBestMs ?? null,
+    comeback: Boolean(person?.duelComeback),
+    noGiveUpRun: tally.noGiveUp,
     days: 0,
     rank: null,
     players: 0,
     languages: Math.max(languages, person?.langs?.length ?? 0),
   }
+}
+
+export async function lifeFacts(person: UserDoc, languages = 1): Promise<Facts> {
+  const userId = person._id!
+  const before = JSON.stringify(person.tally ?? null)
+  const { tally } = await growTally(userId, person.tally, person.resetAt)
+  if (JSON.stringify(tally) !== before) await (await users()).updateOne({ _id: userId }, { $set: { tally } })
+  person.tally = tally
+  return shape(tally, person, languages)
+}
+
+export async function collectFacts(userId: ObjectId, languages = 1, since?: Date): Promise<Facts> {
+  const tally = blank()
+  for (const round of await readRounds(userId, since ? { createdAt: { $gt: since } } : {})) fold(tally, round)
+  const person = await (await users()).findOne(
+    { _id: userId },
+    { projection: { visit: 1, duelStats: 1, duelBestMs: 1, duelComeback: 1, langs: 1 } },
+  )
+  return shape(tally, person, languages)
 }
 
 export async function seasonFacts(userId: ObjectId, languages = 1, now = new Date()): Promise<Facts> {

@@ -571,6 +571,8 @@ const ui = {
   'dash.tipSolved': { ru: 'Угадано: {count}', uk: 'Вгадано: {count}', en: 'Solved: {count}' },
   'dash.tipSkipped': { ru: 'Сдался: {count}', uk: 'Здався: {count}', en: 'Gave up: {count}' },
   'dash.tipAvg': { ru: 'Ср. попыток: {value}', uk: 'Сер. спроб: {value}', en: 'Avg. guesses: {value}' },
+  'about.roster': { ru: 'Кого загадывают', uk: 'Кого загадують', en: 'Who you can get' },
+  'about.more': { ru: ' и ещё {count}.', uk: ' і ще {count}.', en: ' and {count} more.' },
   'dash.titles': { ru: 'Тайтлов: {count}', uk: 'Тайтлів: {count}', en: 'Titles: {count}' },
   'dash.mangaTitle': { ru: 'Манга', uk: 'Манга', en: 'Manga' },
   'play.manga': { ru: 'Манга', uk: 'Манга', en: 'Manga' },

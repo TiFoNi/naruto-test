@@ -54,7 +54,7 @@ export const alternates = (path: string) => {
     canonical: path,
     languages: {
       ...Object.fromEntries(LANGS.map(({ id }) => [id, `/${id}${bare}`])),
-      'x-default': bare || '/',
+      'x-default': `/en${bare}`,
     },
   }
 }
