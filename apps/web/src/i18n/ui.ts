@@ -571,6 +571,7 @@ const ui = {
   'dash.tipSolved': { ru: 'Угадано: {count}', uk: 'Вгадано: {count}', en: 'Solved: {count}' },
   'dash.tipSkipped': { ru: 'Сдался: {count}', uk: 'Здався: {count}', en: 'Gave up: {count}' },
   'dash.tipAvg': { ru: 'Ср. попыток: {value}', uk: 'Сер. спроб: {value}', en: 'Avg. guesses: {value}' },
+  'about.world': { ru: 'Об этой вселенной', uk: 'Про цей всесвіт', en: 'About this world' },
   'about.roster': { ru: 'Кого загадывают', uk: 'Кого загадують', en: 'Who you can get' },
   'about.more': { ru: ' и ещё {count}.', uk: ' і ще {count}.', en: ' and {count} more.' },
   'home.step1': {
@@ -604,6 +605,14 @@ const ui = {
   'legend.debutEarlier': { ru: 'Дебют раньше', uk: 'Дебют раніше', en: 'Debuts earlier' },
   'legend.higher': { ru: 'Больше / позже', uk: 'Більше / пізніше', en: 'Higher / later' },
   'legend.lower': { ru: 'Меньше / раньше', uk: 'Менше / раніше', en: 'Lower / earlier' },
+  'facet.what': { ru: 'Что бывает в этой колонке', uk: 'Що буває в цій колонці', en: 'What this column can hold' },
+  'facet.count': {
+    ru: '{count} вариант|{count} варианта|{count} вариантов',
+    uk: '{count} варіант|{count} варіанти|{count} варіантів',
+    en: '{count} option|{count} options',
+  },
+  'facet.debut': { ru: 'по порядку дебюта', uk: 'за порядком дебюту', en: 'in debut order' },
+  'facet.order': { ru: 'от меньшего к большему', uk: 'від меншого до більшого', en: 'low to high' },
   'image.loading': { ru: 'Загрузка…', uk: 'Завантаження…', en: 'Loading…' },
   'image.failed': { ru: 'Не удалось загрузить картинку', uk: 'Не вдалося завантажити картинку', en: 'Could not load the picture' },
   'result.won': { ru: 'Угадал!', uk: 'Вгадав!', en: 'Got it!' },

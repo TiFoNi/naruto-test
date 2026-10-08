@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
+import { GAME_SPECS } from '@nanda/game'
 import Thumb from './Thumb'
-import type { Game } from './games/types'
+import { EMPTY, type Column, type Entity, type Game, type RenderContext } from './games/types'
 import { useI18n } from './i18n'
 import { DownIcon, UpIcon } from './icons'
 import type { Guess } from './useRound'
@@ -19,6 +20,34 @@ const ICON_GAP = 3
 const CELL_PADDING = 7
 const TIP_WIDTH = 240
 const TIP_SPACE = 140
+const FACET_WIDTH = 272
+const FACET_MIN = 180
+const FACET_MAX = 330
+const ORDERED = ['order', 'optionalOrder']
+
+function facetValues(game: Game, col: Column<Entity>, ctx: RenderContext) {
+  const kind = GAME_SPECS[game.id].columns.find((spec) => spec.key === col.key)?.kind
+  const ordered = ORDERED.includes(kind ?? '')
+  const found = new Map<string, { count: number; order: number }>()
+
+  for (const entity of game.entities) {
+    const raw = (entity as unknown as Record<string, unknown>)[col.key]
+    const plain = Array.isArray(raw) ? raw.map(String) : raw ? [String(raw)] : []
+    const labels = ordered || typeof raw === 'number' ? [col.text(entity, ctx)] : plain.map(ctx.tv)
+    const order = typeof raw === 'number' ? raw : Number.POSITIVE_INFINITY
+    for (const label of labels.length ? labels : [ctx.tv(EMPTY)]) {
+      const seen = found.get(label)
+      if (seen) seen.count += 1
+      else found.set(label, { count: 1, order })
+    }
+  }
+
+  const rows = [...found]
+  rows.sort(([oneLabel, one], [twoLabel, two]) =>
+    ordered ? one.order - two.order : two.count - one.count || oneLabel.localeCompare(twoLabel, ctx.lang),
+  )
+  return { ordered, values: rows.map(([label]) => label) }
+}
 
 
 const ROW_STEP = 0.06
@@ -37,27 +66,54 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
   const [iconLimit, setIconLimit] = useState(9)
   const [textRoom, setTextRoom] = useState(0)
   const [tip, setTip] = useState<{ key: string; text: string; x: number; y: number; below: boolean } | null>(null)
+  const [facet, setFacet] = useState<{ key: string; title: string; note: string; values: string[]; x: number; y: number; room: number } | null>(null)
 
   useEffect(() => {
-    if (!tip) return
-    const away = () => setTip(null)
+    if (!tip && !facet) return
+    const away = () => {
+      setTip(null)
+      setFacet(null)
+    }
+    const escape = (event: KeyboardEvent) => event.key === 'Escape' && away()
     document.addEventListener('mousedown', away)
+    document.addEventListener('keydown', escape)
     window.addEventListener('scroll', away, true)
     window.addEventListener('resize', away)
     return () => {
       document.removeEventListener('mousedown', away)
+      document.removeEventListener('keydown', escape)
       window.removeEventListener('scroll', away, true)
       window.removeEventListener('resize', away)
     }
-  }, [tip])
+  }, [tip, facet])
 
   const showTip = (key: string, text: string, target: HTMLElement) => {
+    setFacet(null)
     if (tip?.key === key) return setTip(null)
     const rect = target.getBoundingClientRect()
     const half = TIP_WIDTH / 2
     const x = Math.min(Math.max(rect.left + rect.width / 2, half + 8), window.innerWidth - half - 8)
     const below = rect.top < TIP_SPACE
     setTip({ key, text, x, y: below ? rect.bottom + 8 : rect.top - 8, below })
+  }
+
+  const showFacet = (col: Column<Entity>, target: HTMLElement) => {
+    setTip(null)
+    if (facet?.key === col.key) return setFacet(null)
+    const { ordered, values } = facetValues(game, col, { tv, lang })
+    if (!values.length) return
+    const rect = target.getBoundingClientRect()
+    const half = FACET_WIDTH / 2
+    const hint = ordered ? ` · ${t(game.legend === 'debut' ? 'facet.debut' : 'facet.order')}` : ''
+    setFacet({
+      key: col.key,
+      title: l(col.title),
+      note: `${t('facet.count', { count: values.length })}${hint}`,
+      values,
+      x: Math.min(Math.max(rect.left + rect.width / 2, half + 8), window.innerWidth - half - 8),
+      y: rect.bottom + 10,
+      room: Math.max(FACET_MIN, Math.min(FACET_MAX, window.innerHeight - rect.bottom - 26)),
+    })
   }
 
   useEffect(() => {
@@ -94,15 +150,10 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
     return () => watcher.disconnect()
   }, [cols])
 
-  if (!guesses.length)
-    return (
-      <div className="grid-scroll" ref={box}>
-        <p className="grid-empty">{t(loading ? 'loading' : 'play.emptyGrid')}</p>
-      </div>
-    )
+  const style = { ['--cols' as string]: cols, ['--wrap-cols' as string]: perRow }
 
-  return (
-    <div className={`grid-scroll ${wrapped ? 'is-wrapped' : ''}`} ref={box}>
+  const tips = (
+    <>
       {tip && (
         <span
           className={`cell-tip ${tip.below ? 'below' : ''}`}
@@ -112,13 +163,61 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
           {tip.text}
         </span>
       )}
-      <div className="grid" style={{ ['--cols' as string]: cols, ['--wrap-cols' as string]: perRow }}>
-        <div className="grid-row header">
-          <div>{t(game.unit === 'manga' ? 'play.manga' : game.unit === 'hero' ? 'play.hero' : game.unit === 'player' ? 'play.player' : 'play.character')}</div>
-          {game.columns.map((c) => (
-            <div key={c.key}>{l(c.title)}</div>
-          ))}
+      {facet && (
+        <div
+          className="facet-tip"
+          style={{ left: facet.x, top: facet.y, width: FACET_WIDTH, maxHeight: facet.room }}
+          onMouseDown={(event) => event.stopPropagation()}
+        >
+          <b>{facet.title}</b>
+          <small>{facet.note}</small>
+          <div className="facet-values">
+            {facet.values.map((value) => (
+              <span key={value}>{value}</span>
+            ))}
+          </div>
         </div>
+      )}
+    </>
+  )
+
+  const header = (
+    <div className="grid-row header">
+      <div>{t(game.unit === 'manga' ? 'play.manga' : game.unit === 'hero' ? 'play.hero' : game.unit === 'player' ? 'play.player' : 'play.character')}</div>
+      {game.columns.map((col) => (
+        <div key={col.key}>
+          <button
+            type="button"
+            className={`head-pick ${facet?.key === col.key ? 'on' : ''}`}
+            title={t('facet.what')}
+            onMouseDown={(event) => event.stopPropagation()}
+            onClick={(event) => showFacet(col, event.currentTarget)}
+          >
+            {l(col.title)}
+          </button>
+        </div>
+      ))}
+    </div>
+  )
+
+  if (!guesses.length)
+    return (
+      <div className={`grid-scroll ${wrapped ? 'is-wrapped' : ''}`} ref={box}>
+        {tips}
+        {game.columns.length > 0 && (
+          <div className="grid" style={style}>
+            {header}
+          </div>
+        )}
+        <p className="grid-empty">{t(loading ? 'loading' : 'play.emptyGrid')}</p>
+      </div>
+    )
+
+  return (
+    <div className={`grid-scroll ${wrapped ? 'is-wrapped' : ''}`} ref={box}>
+      {tips}
+      <div className="grid" style={style}>
+        {header}
         {guesses.map(({ entity: g, judgement, pending }, row) => {
           const twin =
             !pending && game.columns.length > 0 && g.id !== answerId && game.columns.every((c) => judgement?.[c.key]?.verdict === 'correct')
@@ -157,7 +256,19 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
                   onMouseDown={(event) => event.stopPropagation()}
                   onClick={(event) => showTip(key, full, event.currentTarget)}
                 >
-                  <span className="cell-label" aria-hidden>
+                  <span
+                    className={`cell-label ${facet?.key === col.key ? 'on' : ''}`}
+                    aria-hidden={!wrapped}
+                    title={wrapped ? t('facet.what') : undefined}
+                    onClick={
+                      wrapped
+                        ? (event) => {
+                            event.stopPropagation()
+                            showFacet(col, event.currentTarget)
+                          }
+                        : undefined
+                    }
+                  >
                     {l(col.title)}
                   </span>
                   {verdict?.arrow && (

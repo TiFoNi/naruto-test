@@ -6398,6 +6398,10 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   cursor: default;
 }
 
+.grid + .grid-empty {
+  margin-top: 10px;
+}
+
 .grid-empty {
   display: grid;
   place-items: center;
@@ -7419,6 +7423,83 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   transform: translate(-50%, 0);
 }
 
+.grid-row.header .head-pick {
+  width: 100%;
+  align-self: flex-end;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-align: center;
+  cursor: pointer;
+  hyphens: auto;
+  transition: color 0.15s ease;
+}
+
+.grid-row.header .head-pick:hover {
+  color: var(--text-2);
+}
+
+.grid-row.header .head-pick.on {
+  color: var(--accent);
+}
+
+.facet-tip {
+  position: fixed;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 330px;
+  padding: 12px 13px;
+  border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
+  border-radius: 14px;
+  background: var(--overlay);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(22px);
+  transform: translate(-50%, 0);
+  animation: fade-in 0.14s ease;
+  overflow: hidden;
+}
+
+.facet-tip > b {
+  color: var(--text);
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.facet-tip > small {
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.facet-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+  padding-right: 2px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.facet-values span {
+  padding: 4px 8px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
 .is-wrapped .grid-row .cell.portrait {
   display: flex;
   grid-column: 1 / -1;
@@ -7701,7 +7782,13 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   text-transform: uppercase;
   opacity: 0.62;
   -webkit-box-orient: vertical;
+  cursor: pointer;
   -webkit-line-clamp: 2;
+}
+
+.is-wrapped .grid-row .cell .cell-label.on {
+  color: var(--accent);
+  opacity: 1;
 }
 
 .is-wrapped .grid-row .cell .cell-text,
@@ -8433,30 +8520,70 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 }
 
 .world-about {
-  width: min(100%, 980px);
-  margin: 8px auto 32px;
-  padding: 18px 20px;
+  width: 100%;
+  margin: 14px 0 34px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 16px;
   background: var(--card);
-  color: var(--text-2);
 }
 
-.world-about h2 {
-  margin: 0 0 8px;
-  font-size: 18px;
+.world-about > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  color: var(--text-2);
+  cursor: pointer;
+  list-style: none;
+}
+
+.world-about > summary::-webkit-details-marker {
+  display: none;
+}
+
+.world-about > summary b {
+  color: var(--text);
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.world-about > summary small {
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+.world-chevron {
+  margin-left: auto;
+  color: var(--text-3);
+  transition: transform 0.2s;
+}
+
+.world-about[open] .world-chevron {
+  transform: rotate(180deg);
+}
+
+.world-about[open] > summary {
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
 }
 
 .world-about p {
-  margin: 0 0 8px;
-  font-size: 14px;
-  line-height: 1.5;
+  margin: 0;
+  padding: 12px 16px 0;
+  color: var(--text-2);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.world-about p:last-child {
+  padding-bottom: 14px;
 }
 
 .world-names {
   color: var(--text-3);
   font-size: 13px;
 }
+
 
 .home-about {
   margin: 40px 0 4px;

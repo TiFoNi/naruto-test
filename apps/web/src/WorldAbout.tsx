@@ -1,6 +1,7 @@
 import { GAMES } from './games'
 import { apiJson } from './games/meta.server'
 import ui, { type Lang } from './i18n/ui'
+import { ChevronIcon } from './icons'
 
 type Row = { name: string; nameUk?: string; nameEn: string; answer?: boolean }
 
@@ -21,15 +22,17 @@ export default async function WorldAbout({ game, lang }: { game: string; lang: L
   const count = ui[world.unit === 'manga' ? 'dash.titles' : world.unit === 'hero' ? 'dash.heroes' : world.unit === 'player' ? 'dash.players' : 'dash.characters'][lang]
 
   return (
-    <section className="world-about">
-      <h2>{world.label[lang]}</h2>
-      <p>
-        {world.description[lang]} {count.replace('{count}', String(list.length))}.
-      </p>
+    <details className="world-about">
+      <summary>
+        <b>{ui['about.world'][lang]}</b>
+        <small>{count.replace('{count}', String(list.length))}</small>
+        <ChevronIcon className="world-chevron" />
+      </summary>
+      <p>{world.description[lang]}</p>
       <p className="world-names">
         {ui['about.roster'][lang]}: {shown.join(', ')}
         {names.length > shown.length ? ui['about.more'][lang].replace('{count}', String(names.length - shown.length)) : '.'}
       </p>
-    </section>
+    </details>
   )
 }
