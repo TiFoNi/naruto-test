@@ -18,8 +18,7 @@ export default async function PlayPage({ params }: Params) {
     <>
       {schema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />}
       <GameAccent game={game} />
-      <PlayView game={game} mode={mode} daily={false} />
-      <WorldAbout game={game} lang={lang as Lang} />
+      <PlayView game={game} mode={mode} daily={false} about={<WorldAbout game={game} lang={lang as Lang} />} />
     </>
   )
 }

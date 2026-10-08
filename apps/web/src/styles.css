@@ -8519,71 +8519,87 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   background-size: contain;
 }
 
-.world-about {
-  width: 100%;
-  margin: 14px 0 34px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: var(--card);
+.world-i {
+  position: relative;
+  flex: none;
 }
 
-.world-about > summary {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  color: var(--text-2);
+.world-i > summary {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--text-3);
   cursor: pointer;
   list-style: none;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
 }
 
-.world-about > summary::-webkit-details-marker {
+.world-i > summary::-webkit-details-marker {
   display: none;
 }
 
-.world-about > summary b {
+.world-i > summary svg {
+  width: 14px;
+  height: 14px;
+}
+
+.world-i > summary:hover,
+.world-i[open] > summary {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  color: var(--accent);
+}
+
+.world-pop {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  z-index: 30;
+  width: min(440px, calc(100vw - 24px));
+  max-height: 46vh;
+  padding: 14px 15px;
+  border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
+  border-radius: 16px;
+  background: var(--overlay);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(22px);
+  overflow-y: auto;
+  animation: fade-in 0.14s ease;
+}
+
+.world-pop-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.world-pop-head b {
   color: var(--text);
   font-family: var(--display);
   font-size: 14px;
   font-weight: 700;
 }
 
-.world-about > summary small {
+.world-pop-head small {
   color: var(--text-3);
-  font-size: 13px;
+  font-size: 12.5px;
 }
 
-.world-chevron {
-  margin-left: auto;
-  color: var(--text-3);
-  transition: transform 0.2s;
-}
-
-.world-about[open] .world-chevron {
-  transform: rotate(180deg);
-}
-
-.world-about[open] > summary {
-  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
-}
-
-.world-about p {
-  margin: 0;
-  padding: 12px 16px 0;
+.world-pop p {
+  margin: 10px 0 0;
   color: var(--text-2);
   font-size: 13.5px;
   line-height: 1.55;
 }
 
-.world-about p:last-child {
-  padding-bottom: 14px;
-}
-
 .world-names {
   color: var(--text-3);
-  font-size: 13px;
+  font-size: 12.5px;
 }
-
 
 .home-about {
   margin: 40px 0 4px;

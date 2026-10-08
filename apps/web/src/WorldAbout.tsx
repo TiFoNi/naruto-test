@@ -1,7 +1,7 @@
 import { GAMES } from './games'
 import { apiJson } from './games/meta.server'
 import ui, { type Lang } from './i18n/ui'
-import { ChevronIcon } from './icons'
+import { InfoIcon } from './icons'
 
 type Row = { name: string; nameUk?: string; nameEn: string; answer?: boolean }
 
@@ -22,17 +22,21 @@ export default async function WorldAbout({ game, lang }: { game: string; lang: L
   const count = ui[world.unit === 'manga' ? 'dash.titles' : world.unit === 'hero' ? 'dash.heroes' : world.unit === 'player' ? 'dash.players' : 'dash.characters'][lang]
 
   return (
-    <details className="world-about">
-      <summary>
-        <b>{ui['about.world'][lang]}</b>
-        <small>{count.replace('{count}', String(list.length))}</small>
-        <ChevronIcon className="world-chevron" />
+    <details className="world-i">
+      <summary title={ui['about.world'][lang]} aria-label={ui['about.world'][lang]}>
+        <InfoIcon />
       </summary>
-      <p>{world.description[lang]}</p>
-      <p className="world-names">
-        {ui['about.roster'][lang]}: {shown.join(', ')}
-        {names.length > shown.length ? ui['about.more'][lang].replace('{count}', String(names.length - shown.length)) : '.'}
-      </p>
+      <div className="world-pop">
+        <span className="world-pop-head">
+          <b>{ui['about.world'][lang]}</b>
+          <small>{count.replace('{count}', String(list.length))}</small>
+        </span>
+        <p>{world.description[lang]}</p>
+        <p className="world-names">
+          {ui['about.roster'][lang]}: {shown.join(', ')}
+          {names.length > shown.length ? ui['about.more'][lang].replace('{count}', String(names.length - shown.length)) : '.'}
+        </p>
+      </div>
     </details>
   )
 }

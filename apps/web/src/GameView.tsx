@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import type { CSSProperties } from 'react'
+import { useEffect, type CSSProperties, type ReactNode } from 'react'
 import { statsKey, useAuth } from './auth'
 import { GRID_GAMES, dailyKey } from '@nanda/game'
 import ClassicMode from './ClassicMode'
@@ -19,11 +19,46 @@ import { MODES, type ModeId } from './modes'
 import { useHref } from './router'
 import { emptyStats } from './stats'
 
-export default function GameView({ game, mode, daily }: { game: Game; mode: ModeId; daily: boolean }) {
+const POP_EDGE = 12
+
+export default function GameView({ game, mode, daily, about }: { game: Game; mode: ModeId; daily: boolean; about?: ReactNode }) {
   const { stats, user } = useAuth()
   const href = useHref()
   const { t, l } = useI18n()
   const statsFor = (m: ModeId, d: boolean) => stats[d ? dailyKey(game.id, m) : statsKey(game.id, m)] ?? emptyStats
+
+  useEffect(() => {
+    if (!about) return
+    const box = document.querySelector<HTMLDetailsElement>('.world-i')
+    const pop = box?.querySelector<HTMLElement>('.world-pop')
+    if (!box || !pop) return
+
+    const place = () => {
+      if (!box.open) return
+      pop.style.left = '0px'
+      const edge = box.getBoundingClientRect()
+      const room = window.innerWidth - pop.offsetWidth - POP_EDGE
+      pop.style.left = `${Math.min(Math.max(edge.left + edge.width / 2 - pop.offsetWidth / 2, POP_EDGE), room) - edge.left}px`
+    }
+    const away = (event: MouseEvent) => {
+      if (box.open && !box.contains(event.target as Node)) box.open = false
+    }
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') box.open = false
+    }
+
+    place()
+    box.addEventListener('toggle', place)
+    window.addEventListener('resize', place)
+    document.addEventListener('mousedown', away)
+    document.addEventListener('keydown', escape)
+    return () => {
+      box.removeEventListener('toggle', place)
+      window.removeEventListener('resize', place)
+      document.removeEventListener('mousedown', away)
+      document.removeEventListener('keydown', escape)
+    }
+  }, [about])
   const tabs = MODES.filter((m) => game.modes.includes(m.id) || (m.id === 'grid' && GRID_GAMES.includes(game.id) && !daily))
 
   return (
@@ -33,6 +68,7 @@ export default function GameView({ game, mode, daily }: { game: Game; mode: Mode
           <div className="game-name">
             <WorldMark game={game.id} className="game-mark" />
             <h1>{l(game.label)}</h1>
+            {about}
           </div>
         </div>
         <div className="game-switches">

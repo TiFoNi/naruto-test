@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 import BackButton from './BackButton'
 import GameView from './GameView'
 import { useAuth } from './auth'
@@ -13,7 +14,7 @@ import { useHref } from './router'
 import SoloGrid from './SoloGrid'
 import { GRID_GAMES } from '@nanda/game'
 
-export default function PlayView({ game: gameId, mode: modeId, daily }: { game: string; mode: string; daily: boolean }) {
+export default function PlayView({ game: gameId, mode: modeId, daily, about }: { game: string; mode: string; daily: boolean; about?: ReactNode }) {
   const { t } = useI18n()
   const href = useHref()
   const { user, loading } = useAuth()
@@ -48,7 +49,7 @@ export default function PlayView({ game: gameId, mode: modeId, daily }: { game: 
             </Link>
           </div>
         ) : (
-          <GameView game={game} mode={mode} daily={daily} />
+          <GameView game={game} mode={mode} daily={daily} about={about} />
         )}
       </main>
     </div>
