@@ -7,6 +7,7 @@ const RU_API = 'https://dota2.fandom.com/ru/api.php'
 const CACHE = path.join(ROOT, '.cache', 'dota-phrases')
 const OUT_AUDIO = path.join(PUBLIC, 'dota', 'voice')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'dota-phrases.json')
+const OUT_IDS = path.join(ROOT, 'packages', 'game', 'data', 'dota-phrase-ids.json')
 const MANUAL_RU = path.join(ROOT, 'packages', 'game', 'data', 'dota-phrases-ru.json')
 const HEROES = path.join(ROOT, 'packages', 'game', 'data', 'dota.json')
 
@@ -233,6 +234,7 @@ async function main() {
   })
 
   await fs.writeFile(OUT_JSON, JSON.stringify(out))
+  await fs.writeFile(OUT_IDS, JSON.stringify(Object.keys(out).map(Number).sort((one, two) => one - two)))
   const total = Object.values(out).reduce((sum, list) => sum + list.length, 0)
   const translated = Object.values(out).reduce((sum, list) => sum + list.filter((line) => line.ru).length, 0)
   console.log(`записано ${Object.keys(out).length} героїв, ${total} фраз із озвучкою, з перекладом ${translated}`)

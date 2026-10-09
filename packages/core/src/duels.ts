@@ -26,7 +26,7 @@ import {
 } from '@nanda/game'
 import { abilityByKey } from './abilities'
 import { duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type UserDoc } from './db'
-import { optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
+import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { gameData, isGame, isMode } from './games'
 import { matchesFacet, planGrid } from './grid'
 import { addXp, defaultNickname } from './profile'
@@ -321,7 +321,7 @@ async function roundStart(duel: DuelDoc) {
   if (duel.mode === 'who') return boardStart(duel)
   if (duel.mode === 'grid') return gridStart(duel)
   const game = duel.game as GameId
-  const { pool } = await gameData(game)
+  const pool = modePool((await gameData(game)).pool, duel.mode as ModeId)
   const fresh = pool.filter((e) => e.id !== duel.answerId)
   const answer = (fresh.length ? fresh : pool)[randomInt(fresh.length || pool.length)]
   const extra = await roundExtra(duel.game as GameId, duel.mode as ModeId, answer.id)

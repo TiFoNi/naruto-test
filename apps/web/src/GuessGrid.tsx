@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useBeforePaint } from './paint'
 import { GAME_SPECS } from '@nanda/game'
 import Thumb from './Thumb'
 import { EMPTY, type Column, type Entity, type Game, type RenderContext } from './games/types'
@@ -65,11 +66,46 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
   const [perRow, setPerRow] = useState(cols - 1)
   const [iconLimit, setIconLimit] = useState(9)
   const [textRoom, setTextRoom] = useState(0)
-  const [tip, setTip] = useState<{ key: string; text: string; x: number; y: number; below: boolean } | null>(null)
-  const [facet, setFacet] = useState<{ key: string; title: string; note: string; values: string[]; x: number; y: number; room: number } | null>(null)
+  const [tip, setTip] = useState<{ key: string; text: string } | null>(null)
+  const [facet, setFacet] = useState<{ key: string; title: string; note: string; values: string[] } | null>(null)
+  const tipBox = useRef<HTMLSpanElement>(null)
+  const facetBox = useRef<HTMLDivElement>(null)
+  const tipAt = useRef<HTMLElement | null>(null)
+  const facetAt = useRef<HTMLElement | null>(null)
+
+  const middle = (rect: DOMRect, width: number) => Math.min(Math.max(rect.left + rect.width / 2, width / 2 + 8), window.innerWidth - width / 2 - 8)
+
+  const place = () => {
+    const hint = tipBox.current
+    const hintAt = tipAt.current
+    if (hint && hintAt) {
+      if (!hintAt.isConnected) setTip(null)
+      else {
+        const rect = hintAt.getBoundingClientRect()
+        const below = rect.top < TIP_SPACE
+        hint.style.left = `${middle(rect, TIP_WIDTH)}px`
+        hint.style.top = `${below ? rect.bottom + 8 : rect.top - 8}px`
+        hint.style.transform = below ? 'translate(-50%, 0)' : 'translate(-50%, -100%)'
+      }
+    }
+    const pop = facetBox.current
+    const popAt = facetAt.current
+    if (pop && popAt) {
+      if (!popAt.isConnected) setFacet(null)
+      else {
+        const rect = popAt.getBoundingClientRect()
+        pop.style.left = `${middle(rect, FACET_WIDTH)}px`
+        pop.style.top = `${rect.bottom + 10}px`
+        pop.style.maxHeight = `${Math.max(FACET_MIN, Math.min(FACET_MAX, window.innerHeight - rect.bottom - 26))}px`
+      }
+    }
+  }
+
+  useBeforePaint(place)
 
   useEffect(() => {
     if (!tip && !facet) return
+    const follow = () => place()
     const away = () => {
       setTip(null)
       setFacet(null)
@@ -77,43 +113,33 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
     const escape = (event: KeyboardEvent) => event.key === 'Escape' && away()
     document.addEventListener('mousedown', away)
     document.addEventListener('keydown', escape)
-    window.addEventListener('scroll', away, true)
-    window.addEventListener('resize', away)
+    window.addEventListener('scroll', follow, true)
+    window.addEventListener('resize', follow)
     return () => {
       document.removeEventListener('mousedown', away)
       document.removeEventListener('keydown', escape)
-      window.removeEventListener('scroll', away, true)
-      window.removeEventListener('resize', away)
+      window.removeEventListener('scroll', follow, true)
+      window.removeEventListener('resize', follow)
     }
-  }, [tip, facet])
+  })
 
   const showTip = (key: string, text: string, target: HTMLElement) => {
     setFacet(null)
+    facetAt.current = null
     if (tip?.key === key) return setTip(null)
-    const rect = target.getBoundingClientRect()
-    const half = TIP_WIDTH / 2
-    const x = Math.min(Math.max(rect.left + rect.width / 2, half + 8), window.innerWidth - half - 8)
-    const below = rect.top < TIP_SPACE
-    setTip({ key, text, x, y: below ? rect.bottom + 8 : rect.top - 8, below })
+    tipAt.current = target
+    setTip({ key, text })
   }
 
   const showFacet = (col: Column<Entity>, target: HTMLElement) => {
     setTip(null)
+    tipAt.current = null
     if (facet?.key === col.key) return setFacet(null)
     const { ordered, values } = facetValues(game, col, { tv, lang })
     if (!values.length) return
-    const rect = target.getBoundingClientRect()
-    const half = FACET_WIDTH / 2
     const hint = ordered ? ` · ${t(game.legend === 'debut' ? 'facet.debut' : 'facet.order')}` : ''
-    setFacet({
-      key: col.key,
-      title: l(col.title),
-      note: `${t('facet.count', { count: values.length })}${hint}`,
-      values,
-      x: Math.min(Math.max(rect.left + rect.width / 2, half + 8), window.innerWidth - half - 8),
-      y: rect.bottom + 10,
-      room: Math.max(FACET_MIN, Math.min(FACET_MAX, window.innerHeight - rect.bottom - 26)),
-    })
+    facetAt.current = target
+    setFacet({ key: col.key, title: l(col.title), note: `${t('facet.count', { count: values.length })}${hint}` , values })
   }
 
   useEffect(() => {
@@ -155,20 +181,12 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
   const tips = (
     <>
       {tip && (
-        <span
-          className={`cell-tip ${tip.below ? 'below' : ''}`}
-          style={{ left: tip.x, top: tip.y, width: TIP_WIDTH }}
-          onMouseDown={(event) => event.stopPropagation()}
-        >
+        <span ref={tipBox} className="cell-tip" style={{ width: TIP_WIDTH }} onMouseDown={(event) => event.stopPropagation()}>
           {tip.text}
         </span>
       )}
       {facet && (
-        <div
-          className="facet-tip"
-          style={{ left: facet.x, top: facet.y, width: FACET_WIDTH, maxHeight: facet.room }}
-          onMouseDown={(event) => event.stopPropagation()}
-        >
+        <div ref={facetBox} className="facet-tip" style={{ width: FACET_WIDTH }} onMouseDown={(event) => event.stopPropagation()}>
           <b>{facet.title}</b>
           <small>{facet.note}</small>
           <div className="facet-values">

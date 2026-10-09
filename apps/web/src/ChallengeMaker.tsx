@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import phraseIds from '@nanda/game/data/dota-phrase-ids.json'
 import CharacterSearch from './CharacterSearch'
 import Share from './Share'
 import { api } from './api'
@@ -17,6 +18,12 @@ export default function ChallengeMaker({ game, mode }: { game: Game; mode: ModeI
   const [picked, setPicked] = useState<Entity | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
+
+  const silent = useMemo(() => {
+    if (mode !== 'phrase') return new Set<number>()
+    const spoken = new Set(phraseIds as number[])
+    return new Set(game.entities.filter((one) => !spoken.has(one.id)).map((one) => one.id))
+  }, [game, mode])
 
   useEffect(() => {
     if (!open) return
@@ -99,7 +106,7 @@ export default function ChallengeMaker({ game, mode }: { game: Game; mode: ModeI
                 </button>
               </>
             ) : (
-              <CharacterSearch game={game} exclude={new Set()} busy={busy} onPick={create} />
+              <CharacterSearch game={game} exclude={silent} busy={busy} onPick={create} />
             )}
 
             {error && <div className="notice error">{errorText(error)}</div>}

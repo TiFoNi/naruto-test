@@ -7419,10 +7419,6 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   backdrop-filter: blur(22px);
 }
 
-.cell-tip.below {
-  transform: translate(-50%, 0);
-}
-
 .grid-row.header .head-pick {
   width: 100%;
   align-self: flex-end;
@@ -7463,6 +7459,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   transform: translate(-50%, 0);
   animation: fade-in 0.14s ease;
   overflow: hidden;
+  overscroll-behavior: contain;
 }
 
 .facet-tip > b {
@@ -8568,6 +8565,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   box-shadow: 0 20px 44px rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(22px);
   overflow-y: auto;
+  overscroll-behavior: contain;
   animation: fade-in 0.14s ease;
 }
 

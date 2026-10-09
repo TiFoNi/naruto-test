@@ -5,7 +5,7 @@ import { rounds, type RoundDoc, type UserDoc } from './db'
 import { gameData, isGame, isMode, knows } from './games'
 import { applyDailyResult, applyResult, awardSolveXp, defaultNickname } from './profile'
 import { abilityByKey } from './abilities'
-import { modePool, oddOptions, oddTrait, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
+import { modeFits, modePool, oddOptions, oddTrait, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { findChallenge, recordSolve } from './challenges'
 import { markSeasonPlay } from './season'
 import { grantWorldFrame } from './frames'
@@ -15,7 +15,8 @@ import type { Collection } from 'mongodb'
 
 const RECENT = 25
 
-const playable = async (round: RoundDoc) => isGame(round.game) && (await knows(round.game, round.answerId))
+const playable = async (round: RoundDoc) =>
+  isGame(round.game) && modeFits(round.mode as ModeId, round.answerId) && (await knows(round.game, round.answerId))
 
 export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, guest = false, animeOnly = false) {
   const collection = await rounds()

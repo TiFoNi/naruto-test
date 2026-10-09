@@ -151,5 +151,12 @@ export function phraseAt(answerId: number, extra: string | undefined, step: numb
 
 export const phraseCount = (answerId: number) => phrasesOf(answerId).length
 
+const CONTENT: Partial<Record<ModeId, (id: number) => boolean>> = {
+  phrase: (id) => phrasesOf(id).length > 0,
+  ability: (id) => abilitiesOf(id).length > 0,
+}
+
+export const modeFits = (mode: ModeId, id: number) => CONTENT[mode]?.(id) ?? true
+
 export const modePool = <T extends { id: number }>(pool: T[], mode: ModeId) =>
-  mode === 'phrase' ? pool.filter((entity) => phraseCount(entity.id) > 0) : pool
+  CONTENT[mode] ? pool.filter((entity) => modeFits(mode, entity.id)) : pool

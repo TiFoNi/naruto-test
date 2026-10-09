@@ -2,7 +2,7 @@ import { randomInt } from 'node:crypto'
 import type { ObjectId } from 'mongodb'
 import { hasMode, type GameId, type ModeId } from '@nanda/game'
 import { challenges, users, type ChallengeDoc, type UserDoc } from './db'
-import { roundExtra } from './extra'
+import { modeFits, roundExtra } from './extra'
 import { gameData, isGame, isMode } from './games'
 import { defaultNickname } from './profile'
 
@@ -19,7 +19,7 @@ const KEEP_PER_AUTHOR = 50
 export async function createChallenge(author: UserDoc, game: unknown, mode: unknown, answerId: unknown) {
   if (!isGame(game) || !isMode(mode) || !hasMode(game, mode)) return 'bad_request'
   const { byId } = await gameData(game)
-  if (typeof answerId !== 'number' || !byId.has(answerId)) return 'bad_request'
+  if (typeof answerId !== 'number' || !byId.has(answerId) || !modeFits(mode, answerId)) return 'bad_request'
 
   const extra = await roundExtra(game, mode, answerId)
   if (mode === 'page' && !extra) return 'bad_request'
