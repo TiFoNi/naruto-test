@@ -874,6 +874,7 @@ const ui = {
   'profile.won': { ru: 'Угадан {name}', uk: 'Вгадано {name}', en: 'Guessed {name}' },
   'profile.lost': { ru: 'Не угадан {name}', uk: 'Не вгадано {name}', en: 'Missed {name}' },
   'profile.gaveUp': { ru: 'Сдался — {name}', uk: 'Здався — {name}', en: 'Gave up — {name}' },
+  'profile.secret': { ru: 'скрытый персонаж', uk: 'прихований персонаж', en: 'a hidden character' },
   'profile.tries': { ru: 'попыток: {count}', uk: 'спроб: {count}', en: 'guesses: {count}' },
   'profile.levelTitle': { ru: 'Уровень аккаунта', uk: 'Рівень акаунта', en: 'Account level' },
   'profile.questsTitle': { ru: 'Ежедневные задания', uk: 'Щоденні завдання', en: 'Daily quests' },

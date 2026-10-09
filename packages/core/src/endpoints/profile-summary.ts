@@ -176,6 +176,29 @@ async function gamePlaces(doc: UserDoc) {
     .sort((a, b) => a.position - b.position)
 }
 
+type Recent = { game: string; mode: string; daily?: string; challenge?: string }
+
+const liveKey = (round: Recent) =>
+  round.challenge ? `c:${round.challenge}` : round.daily ? `d:${round.daily}:${round.game}:${round.mode}` : ''
+
+async function stillHidden(viewerId: ObjectId, recent: Recent[]) {
+  const live = recent.filter((round) => round.challenge || round.daily === today())
+  if (!live.length) return new Set<string>()
+
+  const codes = [...new Set(live.filter((round) => round.challenge).map((round) => round.challenge!))]
+  const days = live.filter((round) => !round.challenge)
+  const or = [
+    ...(codes.length ? [{ challenge: { $in: codes } }] : []),
+    ...(days.length ? [{ daily: today(), game: { $in: [...new Set(days.map((round) => round.game))] } }] : []),
+  ]
+
+  const mine = await (await rounds())
+    .find({ userId: viewerId, status: { $ne: 'active' }, $or: or }, { projection: { challenge: 1, daily: 1, game: 1, mode: 1 } })
+    .toArray()
+  const played = new Set(mine.map((round) => liveKey(round as Recent)))
+  return new Set(live.map(liveKey).filter((key) => key && !played.has(key)))
+}
+
 export const GET = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
@@ -207,8 +230,11 @@ export const GET = handle(async (request) => {
   const active = streakOf([...past.days.map((row) => row._id), ...(doc.visit?.days ?? [])])
   const streak = { ...active, best: Math.max(active.best, doc.visit?.best ?? 0) }
 
+  const sealed = other ? await stillHidden(found.doc._id!, past.recent) : new Set<string>()
+
   const named = await Promise.all(
     past.recent.map(async (round) => {
+      if (sealed.has(liveKey(round))) return { ...round, answerId: undefined, name: null, hidden: true }
       const entity = GAME_IDS.includes(round.game as GameId)
         ? (await gameData(round.game as GameId)).byId.get(round.answerId)
         : undefined

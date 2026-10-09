@@ -57,6 +57,7 @@ type Summary = {
     challenge?: string
     finishedAt?: string
     name?: Named | null
+    hidden?: boolean
   }[]
 }
 
@@ -380,7 +381,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                     <span className={`activity-dot ${round.status}`} aria-hidden />
                     <span className="activity-text">
                       {t(round.status === 'won' ? 'profile.won' : round.status === 'skipped' ? 'profile.gaveUp' : 'profile.lost', {
-                        name: round.name ? round.name[lang] : `#${round.answerId}`,
+                        name: round.name ? round.name[lang] : round.hidden ? t('profile.secret') : `#${round.answerId}`,
                       })}
                       <small>
                         {gameLabel(round.game) ? l(gameLabel(round.game)!) : round.game} · {t(modeLabel(round.mode))}

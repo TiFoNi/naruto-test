@@ -79,14 +79,18 @@ export async function findChallenge(code: string) {
 export function challengeView(doc: ChallengeDoc, viewerId: ObjectId) {
   const mine = doc.authorId.equals(viewerId)
   const solve = doc.solves.find((s) => s.userId.equals(viewerId))
+  const over = mine || Boolean(solve)
   return {
     code: doc.code,
     game: doc.game as GameId,
     mode: doc.mode as ModeId,
     author: defaultNickname(doc.author),
     mine,
-    answerId: mine || solve ? doc.answerId : undefined,
-    solves: doc.solves.map((s) => ({ nickname: defaultNickname(s.nickname), guesses: s.guesses, guessIds: s.guessIds ?? [], solved: s.solved })),
+    answerId: over ? doc.answerId : undefined,
+    played: doc.solves.length,
+    solves: over
+      ? doc.solves.map((s) => ({ nickname: defaultNickname(s.nickname), guesses: s.guesses, guessIds: s.guessIds ?? [], solved: s.solved }))
+      : [],
   }
 }
 

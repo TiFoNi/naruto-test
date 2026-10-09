@@ -29,6 +29,7 @@ type Challenge = {
   author: string
   mine: boolean
   answerId?: number
+  played: number
   solves: Solve[]
 }
 
