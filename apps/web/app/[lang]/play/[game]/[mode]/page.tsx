@@ -4,6 +4,9 @@ import WorldAbout from '@/src/WorldAbout'
 import type { Lang } from '@/src/i18n/ui'
 import { playMetadata, playSchema } from '@/src/seo'
 
+export const revalidate = 600
+export const generateStaticParams = async () => []
+
 type Params = { params: Promise<{ lang: string; game: string; mode: string }> }
 
 export async function generateMetadata({ params }: Params) {
