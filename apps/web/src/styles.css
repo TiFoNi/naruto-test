@@ -8134,7 +8134,7 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 
 .avatar-frame {
   position: absolute;
-  inset: calc(-16% - 2px);
+  inset: calc(-11% - 2px);
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
