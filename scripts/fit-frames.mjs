@@ -8,6 +8,7 @@ const SIZE = 768
 const PALE = Number(process.argv.find((one) => one.startsWith('--pale='))?.slice(7) ?? 232)
 const EDGE_PASSES = 3
 const INK = 16
+const MAP = path.join(PUBLIC, '..', 'src', 'frames-fit.json')
 
 async function cutout(file) {
   const flat = await sharp(file).ensureAlpha().png().toBuffer()
@@ -116,7 +117,11 @@ const clear = { r: 0, g: 0, b: 0, alpha: 0 }
 const sources = process.argv.slice(2).filter((one) => !one.startsWith('--'))
 if (sources.length) await fs.mkdir(FOLDER, { recursive: true })
 
-const files = sources.length
+const onlyMap = process.argv.includes('--map')
+
+const files = onlyMap
+  ? []
+  : sources.length
   ? sources.map((one) => { const [from, name] = one.split('='); return { from, name: `${name ?? path.basename(from).split('.')[0]}.webp` } })
   : (await fs.readdir(FOLDER)).filter((name) => name.endsWith('.webp')).map((name) => ({ from: path.join(FOLDER, name), name }))
 
@@ -170,3 +175,13 @@ for (const { from, name } of files) {
     `${name.padEnd(14)} отвір ${(((after.right - after.left) / SIZE) * 100).toFixed(1)}% × ${(((after.bottom - after.top) / SIZE) * 100).toFixed(1)}%`,
   )
 }
+
+const drops = {}
+for (const name of (await fs.readdir(FOLDER)).filter((one) => one.endsWith('.webp')).sort()) {
+  const shot = await sharp(path.join(FOLDER, name)).ensureAlpha().raw().toBuffer({ resolveWithObject: true })
+  const gap = hole(shot.data, shot.info)
+  drops[name.replace('.webp', '')] = Math.round((0.5 - (gap.top + gap.bottom) / 2 / shot.info.height) * 1000) / 1000
+}
+
+await fs.writeFile(MAP, `${JSON.stringify(drops, null, 2)}\n`)
+console.log(`зсув по висоті: ${Object.entries(drops).map(([id, y]) => `${id} ${y > 0 ? '↓' : '↑'}${Math.abs(y * 100).toFixed(0)}%`).join(', ')}`)
