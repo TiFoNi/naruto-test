@@ -94,29 +94,29 @@
 }
 
 .profile-id .avatar {
-  width: 72px;
-  height: 72px;
-  border-radius: 20px;
-  font-size: 30px;
+  width: 84px;
+  height: 84px;
+  border-radius: 23px;
+  font-size: 35px;
 }
 
 .profile-id .ava-trigger {
-  border-radius: 20px;
+  border-radius: 23px;
 }
 
 .profile-id .ava-trigger .avatar {
-  width: 72px;
-  height: 72px;
-  border-radius: 20px;
-  font-size: 30px;
+  width: 84px;
+  height: 84px;
+  border-radius: 23px;
+  font-size: 35px;
 }
 
 .profile-id .avatar.has-frame {
-  margin: 10px;
+  margin: 11px;
 }
 
 .profile-id .ava-trigger:has(.avatar.has-frame) {
-  margin: 10px;
+  margin: 11px;
 }
 
 .profile-id .ava-trigger .avatar.has-frame {
