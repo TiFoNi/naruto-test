@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Avatar from './Avatar'
 import AvatarPicker from './AvatarPicker'
-import FramePicker from './FramePicker'
 import BackButton from './BackButton'
 import { useAuth } from './auth'
 import { api } from './api'
@@ -218,8 +217,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                 {tag && <i className="player-tag">#{tag}</i>}
               </div>
             </div>
-
-            {own && <FramePicker />}
 
             <div className="level-panel">
               <div className="level-line">
