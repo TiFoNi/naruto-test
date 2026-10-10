@@ -1,6 +1,6 @@
 'use client'
 
-const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, '') ?? ''
+const base = (process.env.NEXT_PUBLIC_STREAM_URL ?? process.env.NEXT_PUBLIC_API_URL ?? '').replace(/\/+$/, '')
 
 export type StreamHandlers = Record<string, (data: unknown) => void>
 
