@@ -8193,11 +8193,12 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   transform: rotate(-90deg);
 }
 
-.frame-modal {
+.card.modal.frame-modal {
   width: min(100%, 560px);
   max-height: min(84vh, 760px);
   padding: 22px;
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .frame-group {
@@ -8672,6 +8673,12 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 .ava-hover svg {
   width: 32%;
   height: auto;
+}
+
+.card.modal.ava-modal {
+  max-height: min(88vh, 760px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .ava-modal {
