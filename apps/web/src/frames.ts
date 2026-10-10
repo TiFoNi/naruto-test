@@ -12,7 +12,7 @@ const AWARDS: Frame[] = [
   { id: 'top3', kind: 'award', label: l10n('3-е место', '3-тє місце', '3rd place') },
 ]
 
-const OTHERS: Frame[] = [{ id: 'top10', kind: 'other', label: l10n('Топ-10', 'Топ-10', 'Top 10') }]
+const OTHERS: Frame[] = [{ id: 'top10', kind: 'other', label: l10n('Розы', 'Троянди', 'Roses') }]
 
 const WORLDS = ['berserk', 'ff', 'naruto', 'onepiece', 'bleach', 'kny', 'aot', 'jjk', 'csm', 'tg', 'hxh', 'jojo']
 
