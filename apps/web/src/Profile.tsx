@@ -214,7 +214,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                   {nickname}
                   {tag && <i className="player-tag">#{tag}</i>}
                 </h1>
-                {own && <span className="muted">{user?.username ?? ''}</span>}
               </div>
             </div>
 

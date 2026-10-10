@@ -118,7 +118,6 @@ export default function Settings() {
                     {current}
                     {user?.tag && <i className="player-tag">#{user.tag}</i>}
                   </b>
-                  <span className="muted">{user?.username ?? ''}</span>
                 </div>
               </div>
 
