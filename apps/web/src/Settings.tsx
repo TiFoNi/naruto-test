@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import AvatarPicker from './AvatarPicker'
-import FramePicker from './FramePicker'
 import BackButton from './BackButton'
 import { useAuth } from './auth'
 import { authClient } from './authClient'
@@ -118,8 +117,6 @@ export default function Settings() {
                   {user?.tag && <i className="player-tag">#{user.tag}</i>}
                 </div>
               </div>
-
-              <FramePicker />
 
               <form onSubmit={save}>
                 <label htmlFor="nickname">{t('profile.nickname')}</label>

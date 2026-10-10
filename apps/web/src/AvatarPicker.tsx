@@ -12,6 +12,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import Avatar from "./Avatar";
+import FramePicker from "./FramePicker";
 import { apiMode, apiUrl } from "./api";
 import { useAuth } from "./auth";
 import { useI18n } from "./i18n";
@@ -397,6 +398,7 @@ export default function AvatarPicker() {
                       {t("avatar.remove")}
                     </button>
                   )}
+                  <FramePicker />
                 </>
               )}
 
