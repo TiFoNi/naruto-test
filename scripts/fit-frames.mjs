@@ -8,8 +8,6 @@ const SIZE = 768
 const PALE = Number(process.argv.find((one) => one.startsWith('--pale='))?.slice(7) ?? 232)
 const EDGE_PASSES = 3
 const INK = 16
-const HUG = 0.88
-const KEEP = 0.76
 const MAP = path.join(PUBLIC, '..', 'src', 'frames-fit.json')
 
 async function cutout(file) {
@@ -184,15 +182,7 @@ const insets = {}
 for (const name of (await fs.readdir(FOLDER)).filter((one) => one.endsWith('.webp')).sort()) {
   const shot = await sharp(path.join(FOLDER, name)).ensureAlpha().raw().toBuffer({ resolveWithObject: true })
   const gap = hole(shot.data, shot.info)
-  const across = (gap.right - gap.left) / shot.info.width
-  const down = (gap.bottom - gap.top) / shot.info.height
-  const snug = (HUG / across - 1) / 2
-  const safe = (KEEP / down - 1) / 2
-
-  const pad = Math.min(0.3, Math.max(0.04, snug, safe))
-
   insets[name.replace('.webp', '')] = {
-    pad: round(pad),
     x: round(0.5 - (gap.left + gap.right) / 2 / shot.info.width),
     y: round(0.5 - (gap.top + gap.bottom) / 2 / shot.info.height),
   }
@@ -200,7 +190,7 @@ for (const name of (await fs.readdir(FOLDER)).filter((one) => one.endsWith('.web
 
 await fs.writeFile(MAP, `${JSON.stringify(insets, null, 2)}\n`)
 console.log(
-  `посадка рамок: ${Object.entries(insets)
-    .map(([id, one]) => `${id} ${(one.pad * 100).toFixed(0)}%${one.y ? ` ${one.y > 0 ? '↓' : '↑'}${Math.abs(one.y * 100).toFixed(0)}%` : ''}`)
+  `зсув рамок: ${Object.entries(insets)
+    .map(([id, one]) => `${id} ${one.y > 0 ? '↓' : '↑'}${Math.abs(one.y * 100).toFixed(0)}%`)
     .join(', ')}`,
 )

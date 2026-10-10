@@ -7,20 +7,19 @@ import insets from './frames-fit.json'
 
 type Props = { id?: string | null; name: string; avatar?: string | null; frame?: string | null; className?: string; hint?: ReactNode }
 
-type Fit = { pad: number; x: number; y: number }
+type Fit = { x: number; y: number }
 
-const FALLBACK: Fit = { pad: 0.16, x: 0, y: 0 }
+const FALLBACK: Fit = { x: 0, y: 0 }
 
+const PAD = 0.11
+const SPAN = 1 + 2 * PAD
 const NUDGE_X = -0.02
 
-const fit = (id: string) => (insets as Record<string, Fit>)[id] ?? FALLBACK
-
 const sit = (id: string) => {
-  const { pad, x, y } = fit(id)
-  const span = 1 + 2 * pad
-  const across = (x + NUDGE_X) * span
-  const edge = (shift: number) => `calc(${((shift - pad) * 100).toFixed(1)}% - 2px)`
-  return { top: edge(y * span), bottom: edge(-y * span), left: edge(across), right: edge(-across) }
+  const { x, y } = (insets as Record<string, Fit>)[id] ?? FALLBACK
+  const across = (x + NUDGE_X) * SPAN
+  const edge = (shift: number) => `calc(${((shift - PAD) * 100).toFixed(1)}% - 2px)`
+  return { top: edge(y * SPAN), bottom: edge(-y * SPAN), left: edge(across), right: edge(-across) }
 }
 
 export default function Avatar({ id, name, avatar, frame, className, hint }: Props) {

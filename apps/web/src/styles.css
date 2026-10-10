@@ -254,7 +254,8 @@ h2 {
 }
 
 .topbar.is-solid {
-  background: color-mix(in srgb, #0a0b0d 92%, transparent);
+  background: color-mix(in srgb, #0a0b0d 74%, transparent);
+  backdrop-filter: blur(8px);
   border-bottom-color: color-mix(in srgb, #000 55%, transparent);
 }
 
