@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb'
 import { rounds, seasons, users, type UserDoc } from './db'
 import { gameData } from './games'
 import { addSeasonXp, previousSeason, seasonAt, seasonStanding, takeSeasonClose } from './season'
-import { TOP_FRAME, TOP_PLACES } from './frame-list'
+import { PLACE_FRAMES, TOP_PLACES } from './frame-list'
 
 export type Tier = 'bronze' | 'silver' | 'gold' | 'legend' | 'secret'
 export type Kind = 'life' | 'season'
@@ -542,7 +542,7 @@ export async function grantSeasonTrophies(standing: { userId: ObjectId }[]) {
       { _id: row.userId },
       {
         $set: Object.fromEntries(won.map((trophy) => [`awards.${trophy.id}`, now])),
-        ...(place <= TOP_PLACES ? { $addToSet: { frames: TOP_FRAME } } : {}),
+        ...(place <= TOP_PLACES ? { $addToSet: { frames: PLACE_FRAMES[place - 1] } } : {}),
       },
     )
   }

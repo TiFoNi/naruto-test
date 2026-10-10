@@ -6,19 +6,22 @@ import { PUBLIC } from './lib.mjs'
 const FOLDER = path.join(PUBLIC, 'frames')
 const SIZE = 512
 const HOLE = 0.78
+const PALE = Number(process.argv.find((one) => one.startsWith('--pale='))?.slice(7) ?? 232)
 
 async function cutout(file) {
-  const meta = await sharp(file).metadata()
   const flat = await sharp(file).ensureAlpha().png().toBuffer()
-  if (meta.hasAlpha) return flat
-
   const { data, info } = await sharp(flat).raw().toBuffer({ resolveWithObject: true })
   const { width, height, channels } = info
+
+  let clear = false
+  for (let at = 0; at < width * height && !clear; at++) if (data[at * channels + 3] < 250) clear = true
+  if (clear) return flat
+
   const pale = (at) => {
     const r = data[at * channels]
     const g = data[at * channels + 1]
     const b = data[at * channels + 2]
-    return Math.min(r, g, b) > 232 && Math.max(r, g, b) - Math.min(r, g, b) < 14
+    return Math.min(r, g, b) >= PALE && Math.max(r, g, b) - Math.min(r, g, b) < 14
   }
 
   const seen = new Uint8Array(width * height)
@@ -88,7 +91,7 @@ function hole(data, info) {
 
 const clear = { r: 0, g: 0, b: 0, alpha: 0 }
 
-const sources = process.argv.slice(2)
+const sources = process.argv.slice(2).filter((one) => !one.startsWith('--'))
 if (sources.length) await fs.mkdir(FOLDER, { recursive: true })
 
 const files = sources.length

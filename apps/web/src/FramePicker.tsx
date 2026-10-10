@@ -68,15 +68,22 @@ export default function FramePicker() {
               </button>
               <h2>{title}</h2>
 
-              {(['award', 'world'] as const).map((kind) => {
+              {(['award', 'world', 'other'] as const).map((kind, index, kinds) => {
                 const list = owned.filter((one) => one.kind === kind)
                 if (!list.length) return null
+                const first = kinds.slice(0, index).every((before) => !owned.some((one) => one.kind === before))
 
                 return (
                   <section key={kind} className="frame-group">
-                    <h3>{kind === 'award' ? l({ ru: 'Награды', uk: 'Нагороди', en: 'Awards' }) : l({ ru: 'Вселенные', uk: 'Всесвіти', en: 'Worlds' })}</h3>
+                    <h3>
+                      {kind === 'award'
+                        ? l({ ru: 'Награды', uk: 'Нагороди', en: 'Awards' })
+                        : kind === 'world'
+                          ? l({ ru: 'Вселенные', uk: 'Всесвіти', en: 'Worlds' })
+                          : l({ ru: 'Другое', uk: 'Інше', en: 'Other' })}
+                    </h3>
                     <div className="frame-grid">
-                      {kind === 'award' && (
+                      {first && (
                         <button type="button" className={`frame-card ${user.frame ? '' : 'on'}`} disabled={busy} onClick={() => void pick(null)}>
                           <Avatar id={user.id} name={user.nickname} avatar={user.avatar} />
                           <span>{l({ ru: 'Без рамки', uk: 'Без рамки', en: 'No frame' })}</span>
