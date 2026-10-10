@@ -298,17 +298,18 @@ export default function AvatarPicker() {
         className="ava-trigger"
         onClick={() => setOpen(true)}
         aria-label={t("avatar.change")}
-        title={t("avatar.change")}
       >
         <Avatar
           id={user?.id}
           name={user?.nickname ?? "?"}
           avatar={user?.avatar}
           frame={user?.frame}
+          hint={
+            <span className="ava-hover" aria-hidden>
+              <PictureIcon />
+            </span>
+          }
         />
-        <span className="ava-hover" aria-hidden>
-          <PictureIcon />
-        </span>
       </button>
 
       {open &&

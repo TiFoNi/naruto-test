@@ -113,11 +113,9 @@ export default function Settings() {
               <span className="settings-eyebrow">{t('settings.profile')}</span>
               <div className="settings-who">
                 <AvatarPicker />
-                <div>
-                  <b>
-                    {current}
-                    {user?.tag && <i className="player-tag">#{user.tag}</i>}
-                  </b>
+                <div className="settings-name">
+                  <b>{current}</b>
+                  {user?.tag && <i className="player-tag">#{user.tag}</i>}
                 </div>
               </div>
 

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Avatar from './Avatar'
+import AvatarPicker from './AvatarPicker'
+import FramePicker from './FramePicker'
 import BackButton from './BackButton'
 import { useAuth } from './auth'
 import { api } from './api'
@@ -206,16 +208,18 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
         <div className="profile-column">
           <section className="card profile-card">
             <div className="profile-id">
-              <Avatar id={id ?? user?.id} name={nickname} avatar={own ? user?.avatar : summary?.avatar} frame={own ? user?.frame : summary?.frame}>
-                <b>{summary?.level.level ?? 1}</b>
-              </Avatar>
+              {own ? (
+                <AvatarPicker />
+              ) : (
+                <Avatar id={id} name={nickname} avatar={summary?.avatar} frame={summary?.frame} />
+              )}
               <div className="profile-names">
-                <h1>
-                  {nickname}
-                  {tag && <i className="player-tag">#{tag}</i>}
-                </h1>
+                <h1>{nickname}</h1>
+                {tag && <i className="player-tag">#{tag}</i>}
               </div>
             </div>
+
+            {own && <FramePicker />}
 
             <div className="level-panel">
               <div className="level-line">

@@ -3,7 +3,12 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
+}
+
+.profile-names .player-tag {
+  margin-left: 0;
+  font-size: 14px;
 }
 
 .profile-names h1 {
@@ -95,8 +100,27 @@
   font-size: 30px;
 }
 
+.profile-id .ava-trigger {
+  border-radius: 20px;
+}
+
+.profile-id .ava-trigger .avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  font-size: 30px;
+}
+
 .profile-id .avatar.has-frame {
-  margin: 10px 14px 10px 10px;
+  margin: 10px;
+}
+
+.profile-id .ava-trigger:has(.avatar.has-frame) {
+  margin: 10px;
+}
+
+.profile-id .ava-trigger .avatar.has-frame {
+  margin: 0;
 }
 
 .profile-facts {
