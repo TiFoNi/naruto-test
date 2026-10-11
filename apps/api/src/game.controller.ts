@@ -11,6 +11,8 @@ import * as challenge from '@nanda/core/endpoints/challenge'
 import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
 import * as pair from '@nanda/core/endpoints/pair'
+import * as shot from '@nanda/core/endpoints/shot'
+import * as shotImage from '@nanda/core/endpoints/shot-image'
 import * as meta from '@nanda/core/endpoints/meta'
 import * as achievements from '@nanda/core/endpoints/achievements'
 import * as awards from '@nanda/core/endpoints/awards'
@@ -197,6 +199,16 @@ export class GameController {
   @Post('pair')
   pairRound(@Req() req: Request, @Res() res: Response) {
     return bridge(pair.POST, req, res)
+  }
+
+  @Post('shot')
+  shotRound(@Req() req: Request, @Res() res: Response) {
+    return bridge(shot.POST, req, res)
+  }
+
+  @Get('shot/image')
+  shotPicture(@Req() req: Request, @Res() res: Response) {
+    return bridge(shotImage.GET, req, res)
   }
 
   @Get('stream/duel')

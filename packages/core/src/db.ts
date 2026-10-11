@@ -171,6 +171,24 @@ export type StreakDoc = {
   updatedAt: Date
 }
 
+export type ShotDoc = {
+  _id?: ObjectId
+  userId: ObjectId
+  guest?: boolean
+  answerId?: number
+  variant?: number[]
+  level: number
+  misses: number
+  score: number
+  streak: number
+  best: number
+  seen: number[]
+  lastId?: number
+  status: 'playing' | 'over'
+  createdAt: Date
+  updatedAt: Date
+}
+
 export type SeasonDoc = {
   _id: string
   season: string
@@ -198,6 +216,7 @@ const cache = globalThis as typeof globalThis & {
   __challengesIndexed?: Promise<unknown>
   __seasonsIndexed?: Promise<unknown>
   __streaksIndexed?: Promise<unknown>
+  __shotsIndexed?: Promise<unknown>
 }
 
 export const database = async () => (await client()).db(process.env.MONGODB_DB || 'nandaguessr')
@@ -236,6 +255,20 @@ export async function streaks(): Promise<Collection<StreakDoc>> {
     throw error
   })
   await cache.__streaksIndexed
+  return collection
+}
+
+export async function shotRuns(): Promise<Collection<ShotDoc>> {
+  const collection = (await database()).collection<ShotDoc>('shotRuns')
+  cache.__shotsIndexed ??= Promise.all([
+    collection.createIndex({ userId: 1 }, { unique: true }),
+    collection.createIndex({ best: -1 }),
+    collection.createIndex({ updatedAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 7, partialFilterExpression: { guest: true } }),
+  ]).catch((error) => {
+    cache.__shotsIndexed = undefined
+    throw error
+  })
+  await cache.__shotsIndexed
   return collection
 }
 

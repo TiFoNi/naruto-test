@@ -13,10 +13,22 @@ type Props = {
   compact?: boolean
   pickOnly?: boolean
   limited?: boolean
+  plain?: boolean
+  placeholder?: string
   onPick: (e: Entity) => void
 }
 
-export default function CharacterSearch({ game, exclude, busy = false, compact = false, pickOnly = false, limited = false, onPick }: Props) {
+export default function CharacterSearch({
+  game,
+  exclude,
+  busy = false,
+  compact = false,
+  pickOnly = false,
+  limited = false,
+  plain = false,
+  placeholder,
+  onPick,
+}: Props) {
   const [animeOnly] = useAnimeOnly(game.id)
   const pool = limited && animeOnly ? game.entities.filter((one) => one.anime !== false) : game.entities
   const { t, name, alt } = useI18n()
@@ -108,7 +120,7 @@ export default function CharacterSearch({ game, exclude, busy = false, compact =
         <SearchIcon />
         <input
           value={query}
-          placeholder={t(game.unit === 'hero' ? 'play.searchHero' : game.unit === 'player' ? 'play.searchPlayer' : 'play.searchCharacter')}
+          placeholder={placeholder ?? t(game.unit === 'hero' ? 'play.searchHero' : game.unit === 'player' ? 'play.searchPlayer' : 'play.searchCharacter')}
           onChange={(e) => {
             setQuery(e.target.value)
             setActive(0)
@@ -133,7 +145,7 @@ export default function CharacterSearch({ game, exclude, busy = false, compact =
             }
           }}
         />
-        {!compact && (
+        {!compact && !plain && (
           <span className="search-left">
             {t(game.unit === 'player' ? 'play.leftPlayer' : 'play.left', { count: pool.length - exclude.size })}
           </span>
@@ -161,7 +173,7 @@ export default function CharacterSearch({ game, exclude, busy = false, compact =
                 pick(e)
               }}
             >
-              <Thumb game={game} entity={e} size={44} />
+              {!plain && <Thumb game={game} entity={e} size={44} />}
               <span className="suggestion-name">
                 {name(e)}
                 {alt(e) && <small>{alt(e)}</small>}

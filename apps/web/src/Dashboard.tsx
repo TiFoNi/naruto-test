@@ -85,6 +85,9 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
             decoding="async"
             fetchPriority={eager ? 'high' : 'low'}
             draggable={false}
+            onError={(event) => {
+              event.currentTarget.hidden = true
+            }}
           />
         ))}
       </Link>

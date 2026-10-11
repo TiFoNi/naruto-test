@@ -35,14 +35,17 @@ export async function collectPics(only) {
     const atlas = path.join(PUBLIC, game.name, 'thumbs.webp')
     if (await fs.stat(atlas).catch(() => null)) files.push({ key: `${game.name}/thumbs.webp`, path: atlas })
 
-    for (const [folder, ext] of [['voice', '.mp3'], ['pages', '.webp']]) {
+    for (const [folder, ext] of [['voice', '.mp3'], ['pages', '.webp'], ['frames', '.webp']]) {
       const root = path.join(PUBLIC, game.name, folder)
       for (const entry of await fs.readdir(root, { withFileTypes: true }).catch(() => [])) {
         if (!entry.isDirectory() || !keep(entry.name)) continue
-        const dir = path.join(root, entry.name)
-        for (const file of await fs.readdir(dir).catch(() => [])) {
-          if (file.endsWith(ext)) files.push({ key: `${game.name}/${folder}/${entry.name}/${file}`, path: path.join(dir, file) })
+        const walk = async (dir, key) => {
+          for (const item of await fs.readdir(dir, { withFileTypes: true }).catch(() => [])) {
+            if (item.isDirectory()) await walk(path.join(dir, item.name), `${key}/${item.name}`)
+            else if (item.name.endsWith(ext)) files.push({ key: `${key}/${item.name}`, path: path.join(dir, item.name) })
+          }
         }
+        await walk(path.join(root, entry.name), `${game.name}/${folder}/${entry.name}`)
       }
     }
   }

@@ -3,12 +3,13 @@
 import Link from 'next/link'
 import { useEffect, type CSSProperties, type ReactNode } from 'react'
 import { statsKey, useAuth } from './auth'
-import { GRID_GAMES, dailyKey } from '@nanda/game'
+import { GRID_GAMES, dailyKey, hasDaily } from '@nanda/game'
 import ClassicMode from './ClassicMode'
 import ImageMode from './ImageMode'
 import AbilityMode from './AbilityMode'
 import OddMode from './OddMode'
 import PairMode from './PairMode'
+import ShotMode from './ShotMode'
 import PageMode from './PageMode'
 import PhraseMode from './PhraseMode'
 import { CalendarIcon, InfinityIcon, MedalIcon } from './icons'
@@ -60,7 +61,9 @@ export default function GameView({ game, mode, daily, about }: { game: Game; mod
       document.removeEventListener('keydown', escape)
     }
   }, [about])
-  const tabs = MODES.filter((m) => game.modes.includes(m.id) || (m.id === 'grid' && GRID_GAMES.includes(game.id) && !daily))
+  const tabs = MODES.filter((m) => game.modes.includes(m.id) || (m.id === 'grid' && GRID_GAMES.includes(game.id)))
+  const dailyModes = game.modes.filter(hasDaily)
+  const dailyMode = hasDaily(mode) ? mode : (dailyModes[0] ?? mode)
 
   return (
     <div className="game-view" style={{ '--game-accent': game.accent } as CSSProperties}>
@@ -73,26 +76,34 @@ export default function GameView({ game, mode, daily, about }: { game: Game; mod
           </div>
         </div>
         <div className="game-switches">
-          <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
-            <Link role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
-              <InfinityIcon /> {t('daily.endless')}
-            </Link>
-            <Link role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, mode, true)}>
-              <CalendarIcon /> {t('daily.daily')}
-            </Link>
-          </div>
-          <div className="mode-tabs" role="tablist" data-tabs={tabs.length}>
-            {tabs.map((m) => (
-              <Link
-                key={m.id}
-                role="tab"
-                aria-selected={mode === m.id}
-                className={mode === m.id ? 'active' : ''}
-                href={href.play(game.id, m.id, daily)}
-              >
-                {m.icon} {t(m.label)}
+          {dailyModes.length > 0 && (
+            <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
+              <Link role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
+                <InfinityIcon /> {t('daily.endless')}
               </Link>
-            ))}
+              <Link role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, dailyMode, true)}>
+                <CalendarIcon /> {t('daily.daily')}
+              </Link>
+            </div>
+          )}
+          <div className="mode-tabs" role="tablist" data-tabs={tabs.length}>
+            {tabs.map((m) =>
+              daily && !hasDaily(m.id) ? (
+                <span key={m.id} role="tab" aria-selected={false} aria-disabled className="locked" title={t('mode.noDaily')}>
+                  {m.icon} {t(m.label)}
+                </span>
+              ) : (
+                <Link
+                  key={m.id}
+                  role="tab"
+                  aria-selected={mode === m.id}
+                  className={mode === m.id ? 'active' : ''}
+                  href={href.play(game.id, m.id, daily)}
+                >
+                  {m.icon} {t(m.label)}
+                </Link>
+              ),
+            )}
           </div>
         </div>
 
@@ -120,6 +131,11 @@ export default function GameView({ game, mode, daily, about }: { game: Game; mod
           {game.modes.includes('pair') && !d && (
             <div hidden={mode !== 'pair'}>
               <PairMode game={game} active={!daily && mode === 'pair'} />
+            </div>
+          )}
+          {game.modes.includes('shot') && !d && (
+            <div hidden={mode !== 'shot'}>
+              <ShotMode game={game} active={!daily && mode === 'shot'} />
             </div>
           )}
           {game.modes.includes('image') && (

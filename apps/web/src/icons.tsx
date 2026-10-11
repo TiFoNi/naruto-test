@@ -282,6 +282,16 @@ export function PageIcon({ className }: IconProps) {
   )
 }
 
+export function FilmIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <rect x="2.8" y="4.5" width="18.4" height="15" rx="2.4" />
+      <path d="M7.4 4.5v15M16.6 4.5v15M2.8 12h18.4" />
+      <path d="M2.8 8.2h4.6M2.8 15.8h4.6M16.6 8.2h4.6M16.6 15.8h4.6" />
+    </svg>
+  )
+}
+
 export function PuzzleIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

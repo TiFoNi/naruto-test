@@ -12,7 +12,7 @@ import { useI18n } from './i18n'
 import type { ModeId } from './modes'
 import { useHref } from './router'
 import SoloGrid from './SoloGrid'
-import { GRID_GAMES } from '@nanda/game'
+import { GRID_GAMES, hasDaily } from '@nanda/game'
 
 export default function PlayView({ game: gameId, mode: modeId, daily, about }: { game: string; mode: string; daily: boolean; about?: ReactNode }) {
   const { t } = useI18n()
@@ -22,7 +22,8 @@ export default function PlayView({ game: gameId, mode: modeId, daily, about }: {
   useEntities(game)
   if (!game) return <div className="card center muted">{t('err.not_found')}</div>
   const solo = modeId === 'grid' && GRID_GAMES.includes(game.id) && !daily
-  const mode = (game.modes.includes(modeId as ModeId) ? modeId : game.modes[0]) as ModeId
+  const wanted = (game.modes.includes(modeId as ModeId) ? modeId : game.modes[0]) as ModeId
+  const mode = daily && !hasDaily(wanted) ? (game.modes.find(hasDaily) ?? wanted) : wanted
 
   return (
     <div className="play">

@@ -26,6 +26,8 @@
     "data:dn": "node scripts/build-dn.mjs",
     "data:avatar": "node scripts/build-avatar.mjs",
     "data:football": "node scripts/build-football.mjs",
+    "data:shots": "node scripts/build-shots.mjs",
+    "shots": "node scripts/build-shot-pics.mjs",
     "cards": "node scripts/build-cards.mjs",
     "check:data": "node scripts/check-data.mjs",
     "frames": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/give-frames.mjs",

@@ -20,8 +20,9 @@ export type GameId =
   | 'avatar'
   | 'jjk'
   | 'csm'
+  | 'shots'
 
-export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase' | 'who' | 'grid' | 'odd' | 'pair'
+export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase' | 'who' | 'grid' | 'odd' | 'pair' | 'shot'
 
 export type Verdict = 'correct' | 'partial' | 'wrong'
 
@@ -148,6 +149,14 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('status', 'exact'),
       col('arcIndex', 'order'),
     ],
+  },
+  shots: {
+    featured: ['Attack on Titan', 'Death Note', 'Naruto'],
+    shape: 'wide',
+    data: 'shots',
+    images: 'shots',
+    modes: ['shot'],
+    columns: [],
   },
   manga: {
     featured: ['Berserk', 'Vagabond', 'Slam Dunk'],
@@ -327,7 +336,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
-export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd', 'pair', 'who', 'grid']
+export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd', 'pair', 'shot', 'who', 'grid']
 
 export const ABILITY_STAGES = 6
 export const ABILITY_HINT_AT = 5
@@ -340,6 +349,7 @@ export const MODE_XP: Record<ModeId, number> = {
   page: 5,
   odd: 8,
   pair: 0,
+  shot: 0,
   who: 25,
   grid: 25,
 }
@@ -352,6 +362,7 @@ export const MODE_XP_AFTER: Record<ModeId, number> = {
   page: 1,
   odd: 2,
   pair: 0,
+  shot: 0,
   who: 5,
   grid: 5,
 }
@@ -359,6 +370,11 @@ export const MODE_XP_AFTER: Record<ModeId, number> = {
 export const DAILY_XP_FACTOR = 3
 
 export const DAILY_XP_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd']
+
+// режими-забіги: у них нема щоденного варіанта
+export const ENDLESS_MODES: ModeId[] = ['pair', 'shot', 'grid']
+
+export const hasDaily = (mode: ModeId) => !ENDLESS_MODES.includes(mode)
 
 export const ZOOM_LEVELS = [7, 5.1, 3.7, 2.6, 1.9, 1.4, 1] as const
 
@@ -402,6 +418,9 @@ export const DUEL_DEFAULT = { best: 5, seconds: 60 }
 export const DUEL_MATCH_XP = 50
 
 export const duelWinsNeeded = (best: number) => Math.floor(best / 2) + 1
+
+export const SHOT_POINTS = [4, 3, 2, 1] as const
+export const SHOT_MISS = 1
 
 export const PHRASE_EVERY = 3
 export const PHRASE_VOICE_AT = 3
