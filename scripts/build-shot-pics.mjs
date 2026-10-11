@@ -96,9 +96,14 @@ for (const folder of folders) {
     const target = path.join(OUT, 'frames', String(title.id), String(level))
     if (files.length) await fs.mkdir(target, { recursive: true })
     for (const [index, file] of files.entries()) {
-      await sharp(await trimmed(file))
-        .resize({ ...SIZE, fit: 'cover', position: 'attention' })
-        .webp({ quality: 80 })
+      const source = await trimmed(file)
+      const { width = 0 } = await sharp(source).metadata()
+      const stretched = width < SIZE.width
+      await sharp(source)
+        .resize({ ...SIZE, fit: 'cover', position: 'attention', kernel: 'lanczos3' })
+        // дрібні джерела доводиться розтягувати — трохи повертаємо різкість
+        .sharpen(stretched ? { sigma: 1.1, m1: 0.6, m2: 2 } : { sigma: 0.5 })
+        .webp({ quality: 82 })
         .toFile(path.join(target, `${index}.webp`))
     }
     counts.push(files.length)
