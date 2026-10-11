@@ -33,7 +33,7 @@ export const mk: Game<Fighter> = {
     'Shaolin, Lin Kuei, Outworld and the Netherrealm — fighters from the first MK to Mortal Kombat 1.',
   ),
   accent: '#d8a130',
-  modes: ['classic', 'image', 'odd'],
+  modes: ['classic', 'image', 'odd', 'pair'],
   featured: ['Scorpion', 'Sub-Zero', 'Raiden'],
   unit: 'character',
   entities: [],

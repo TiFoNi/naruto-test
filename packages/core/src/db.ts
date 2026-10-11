@@ -155,6 +155,22 @@ export type SettingsDoc = { game: string; updated?: string; atlas?: string }
 
 export type QuestDoc = { _id: string; userId: ObjectId; day: string; picks: string[]; claimed: string[]; createdAt: Date }
 
+export type StreakDoc = {
+  _id?: ObjectId
+  userId: ObjectId
+  game: string
+  streak: number
+  best: number
+  guest?: boolean
+  left?: number
+  right?: number
+  ask?: { parts: { key: string; value: string }[]; join: string }
+  answer?: string
+  status: 'playing' | 'over'
+  createdAt: Date
+  updatedAt: Date
+}
+
 export type SeasonDoc = {
   _id: string
   season: string
@@ -181,6 +197,7 @@ const cache = globalThis as typeof globalThis & {
   __duelsIndexed?: Promise<unknown>
   __challengesIndexed?: Promise<unknown>
   __seasonsIndexed?: Promise<unknown>
+  __streaksIndexed?: Promise<unknown>
 }
 
 export const database = async () => (await client()).db(process.env.MONGODB_DB || 'nandaguessr')
@@ -205,6 +222,20 @@ export async function rounds(): Promise<Collection<RoundDoc>> {
     throw error
   })
   await cache.__roundsIndexed
+  return collection
+}
+
+export async function streaks(): Promise<Collection<StreakDoc>> {
+  const collection = (await database()).collection<StreakDoc>('streaks')
+  cache.__streaksIndexed ??= Promise.all([
+    collection.createIndex({ userId: 1, game: 1 }, { unique: true }),
+    collection.createIndex({ game: 1, best: -1 }),
+    collection.createIndex({ updatedAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 7, partialFilterExpression: { guest: true } }),
+  ]).catch((error) => {
+    cache.__streaksIndexed = undefined
+    throw error
+  })
+  await cache.__streaksIndexed
   return collection
 }
 

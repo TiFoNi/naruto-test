@@ -38,7 +38,7 @@ export const bleach: Game<Character> = {
     'Gotei 13 Shinigami, Aizen’s Arrancar and the Wandenreich Quincy — from Substitute Shinigami to the Thousand-Year Blood War.',
   ),
   accent: '#d8c49a',
-  modes: ['classic', 'image', 'odd'],
+  modes: ['classic', 'image', 'odd', 'pair'],
   featured: ['Ichigo Kurosaki', 'Rukia Kuchiki', 'Sousuke Aizen', 'Byakuya Kuchiki'],
   unit: 'character',
   entities: [],

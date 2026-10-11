@@ -8,6 +8,7 @@ import ClassicMode from './ClassicMode'
 import ImageMode from './ImageMode'
 import AbilityMode from './AbilityMode'
 import OddMode from './OddMode'
+import PairMode from './PairMode'
 import PageMode from './PageMode'
 import PhraseMode from './PhraseMode'
 import { CalendarIcon, InfinityIcon, MedalIcon } from './icons'
@@ -114,6 +115,11 @@ export default function GameView({ game, mode, daily, about }: { game: Game; mod
           {game.modes.includes('classic') && (
             <div hidden={mode !== 'classic'}>
               <ClassicMode game={game} active={daily === d && mode === 'classic'} stats={statsFor('classic', d)} daily={d} />
+            </div>
+          )}
+          {game.modes.includes('pair') && !d && (
+            <div hidden={mode !== 'pair'}>
+              <PairMode game={game} active={!daily && mode === 'pair'} />
             </div>
           )}
           {game.modes.includes('image') && (

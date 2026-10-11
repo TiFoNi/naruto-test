@@ -21,7 +21,7 @@ export type GameId =
   | 'jjk'
   | 'csm'
 
-export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase' | 'who' | 'grid' | 'odd'
+export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase' | 'who' | 'grid' | 'odd' | 'pair'
 
 export type Verdict = 'correct' | 'partial' | 'wrong'
 
@@ -282,7 +282,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     featured: ['Iron Man', 'Spider-Man', 'Thor'],
     data: 'marvel',
     images: 'marvel',
-    modes: ['classic', 'image', 'odd'],
+    modes: ['classic', 'image', 'odd', 'pair'],
     columns: [
       col('gender', 'exact'),
       col('species', 'exact'),
@@ -296,7 +296,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     featured: ['Lionel Messi', 'Cristiano Ronaldo', 'Pelé'],
     data: 'football',
     images: 'football',
-    modes: ['classic', 'odd'],
+    modes: ['classic', 'odd', 'pair'],
     columns: [
       col('country', 'exact'),
       col('part', 'exact'),
@@ -312,7 +312,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     shape: 'wide',
     data: 'dota',
     images: 'dota',
-    modes: ['classic', 'image', 'ability', 'phrase', 'odd'],
+    modes: ['classic', 'image', 'ability', 'phrase', 'odd', 'pair'],
     columns: [
       col('gender', 'exact'),
       col('species', 'list'),
@@ -327,7 +327,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
-export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd', 'who', 'grid']
+export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd', 'pair', 'who', 'grid']
 
 export const ABILITY_STAGES = 6
 export const ABILITY_HINT_AT = 5
@@ -339,6 +339,7 @@ export const MODE_XP: Record<ModeId, number> = {
   ability: 5,
   page: 5,
   odd: 8,
+  pair: 0,
   who: 25,
   grid: 25,
 }
@@ -350,6 +351,7 @@ export const MODE_XP_AFTER: Record<ModeId, number> = {
   ability: 1,
   page: 1,
   odd: 2,
+  pair: 0,
   who: 5,
   grid: 5,
 }
@@ -404,7 +406,7 @@ export const duelWinsNeeded = (best: number) => Math.floor(best / 2) + 1
 export const PHRASE_EVERY = 3
 export const PHRASE_VOICE_AT = 3
 
-const DEFAULT_MODES: ModeId[] = ['classic', 'image', 'odd']
+const DEFAULT_MODES: ModeId[] = ['classic', 'image', 'odd', 'pair']
 
 export const modesOf = (game: GameId) => GAME_SPECS[game].modes ?? DEFAULT_MODES
 

@@ -35,7 +35,7 @@ export const avatar: Game<Character> = {
     'Benders of the four elements: from Aang and Team Avatar to Korra, Amon and the Red Lotus.',
   ),
   accent: '#4fa3d1',
-  modes: ['classic', 'image', 'odd'],
+  modes: ['classic', 'image', 'odd', 'pair'],
   featured: ['Aang', 'Zuko', 'Korra'],
   unit: 'character',
   entities: [],

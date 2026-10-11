@@ -826,11 +826,22 @@ main {
 .mode-tabs {
   display: flex;
   gap: 4px;
+  max-width: 100%;
   padding: 4px;
   border-radius: 12px;
   background: var(--card);
   border: 1px solid var(--line);
   width: fit-content;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.mode-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.mode-tabs a {
+  white-space: nowrap;
 }
 
 .mode-tabs a {
@@ -3504,6 +3515,42 @@ button.ghost.small {
   }
 
   .mode-tabs[data-tabs='4'] {
+    flex: 1 1 auto;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@container (max-width: 839px) {
+  .game-switches:has(.mode-tabs[data-tabs='5']) {
+    flex: 1 1 100%;
+  }
+
+  .mode-tabs[data-tabs='5'] {
+    flex: 1 1 auto;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@container (max-width: 999px) {
+  .game-switches:has(.mode-tabs[data-tabs='6']) {
+    flex: 1 1 100%;
+  }
+
+  .mode-tabs[data-tabs='6'] {
+    flex: 1 1 auto;
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@container (max-width: 1159px) {
+  .game-switches:has(.mode-tabs[data-tabs='7']) {
+    flex: 1 1 100%;
+  }
+
+  .mode-tabs[data-tabs='7'] {
     flex: 1 1 auto;
     flex-direction: column;
     width: 100%;
@@ -8799,4 +8846,214 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 .ava-error {
   margin: 0;
   width: 100%;
+}
+
+.ask-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+.ask-tag {
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ask-line b {
+  font-family: var(--display);
+  font-size: clamp(20px, 3vw, 28px);
+  line-height: 1.15;
+}
+
+.pair-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.pair-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 12px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--card-2);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.pair-card:hover:enabled {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.pair-card b {
+  font-size: 15px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.pair-face {
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  object-fit: contain;
+  background: var(--card-solid);
+}
+
+.pair-card.right {
+  border-color: var(--correct);
+  background: color-mix(in srgb, var(--correct) 16%, var(--card-2));
+}
+
+.pair-card.wrong {
+  border-color: var(--wrong);
+  background: color-mix(in srgb, var(--wrong) 16%, var(--card-2));
+}
+
+.pair-keys {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.pair-key {
+  flex: 0 1 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card-2);
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.pair-key:hover:enabled {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.pair-key.right {
+  border-color: var(--correct);
+  background: color-mix(in srgb, var(--correct) 18%, var(--card-2));
+}
+
+.pair-key.wrong {
+  border-color: var(--wrong);
+  background: color-mix(in srgb, var(--wrong) 18%, var(--card-2));
+}
+
+.pair-score b {
+  font-family: var(--display);
+  font-size: 26px;
+}
+
+.pair-over {
+  display: grid;
+  place-items: center;
+  padding: 10px 0 4px;
+}
+
+@media (max-width: 560px) {
+  .pair-key {
+    flex: 1 1 140px;
+  }
+}
+
+.ask-mix {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px 10px;
+}
+
+.ask-mix span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.ask-mix small {
+  color: var(--text-3);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ask-mix i {
+  margin-right: 4px;
+  color: var(--text-3);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.pair-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-top: 18px;
+  text-align: center;
+}
+
+.pair-truth {
+  margin: 0 0 6px;
+  color: var(--text-2);
+  font-size: 14px;
+}
+
+.pair-truth b {
+  color: var(--text);
+}
+
+.pair-count {
+  font-family: var(--display);
+  font-size: 56px;
+  line-height: 1;
+}
+
+.pair-count + small {
+  margin-top: 2px;
+}
+
+.pair-done small {
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+.pair-fresh {
+  color: var(--accent);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.pair-done .primary {
+  margin-top: 16px;
 }

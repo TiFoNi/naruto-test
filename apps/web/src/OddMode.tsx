@@ -84,9 +84,7 @@ export default function OddMode({ game, active, stats, daily = false, challenge 
       ? t(guesses.length === 1 ? 'odd.firstHint' : 'odd.gotHint', { trait })
       : mood === 'lost'
         ? t('odd.lostHint', { trait })
-        : field
-          ? t('play.oddPrompt', { field })
-          : t('play.oddPromptPlain')
+        : t('play.oddPromptPlain')
 
   return (
     <PlayBoard side={<PlaySide game={game} mode="odd" daily={daily} stats={stats} playing={playing} howto="odd" onGiveUp={giveUp} />}>
@@ -113,6 +111,13 @@ export default function OddMode({ game, active, stats, daily = false, challenge 
           </span>
         }
       >
+        {field && !over && (
+          <p className="ask-line">
+            <span className="ask-tag">{t('odd.lookIn')}</span>
+            <b>{field}</b>
+          </p>
+        )}
+
         <div className="odd-grid" role="radiogroup" aria-label={t('play.oddTitle')}>
           {four.map((option: Entity, index) => {
             const wrong = missed.has(option.id)
