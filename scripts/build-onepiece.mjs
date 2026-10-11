@@ -92,19 +92,18 @@ const SEX_CATEGORIES = [
 ]
 
 const RACE_RULES = [
-  ['Человек', /^Category:(Humans|Skypieans|Shandia)$/],
+  ['Человек', /^Category:(Humans|Skypieans|Shandia|Gorgon Sisters)$/],
   ['Рыболюд', /^Category:Fish-Men$/],
   ['Русал', /^Category:Merfolk$/],
   ['Минк', /^Category:(Minks|Mink Tribe)$/],
   ['Великан', /^Category:Giants$/],
   ['Гном', /^Category:Dwarves$/],
   ['Лунарианец', /^Category:Lunarians$/],
-  ['Киборг', /^Category:Cyborgs$/],
   ['Длиннорукий', /^Category:Longarm Tribe$/],
   ['Длинноногий', /^Category:Longleg Tribe$/],
   ['Змеешеий', /^Category:Snakeneck Tribe$/],
   ['Трёхглазый', /^Category:Three-Eye Tribe$/],
-  ['Животное', /^Category:(Animals|Talking Animals|Animals with Devil Fruit Abilities|Whales|Pets|[A-Za-z0-9 ']+ Animals)$/],
+  ['Животное', /^Category:(Animals|Talking Animals|Animals with Devil Fruit Abilities|Whales|Pets|(?!.*\b(?:Use|Using|Fighters|Riders)\b)[A-Za-z0-9 ']+ Animals)$/],
   ['Хоми', /^Category:Homies$/],
 ]
 
