@@ -9,10 +9,10 @@ const LEVELS = SHOT_POINTS.length
 
 const pointsAt = (level: number) => SHOT_POINTS[Math.min(level, LEVELS - 1)]
 
-const picture = (seen: number, level: number, variant: number) => `/api/shot/image?n=${seen}&l=${level}&v=${variant}`
+const picture = (key: string, level: number, variant: number) => `/api/shot/image?k=${key}&l=${level}&v=${variant}`
 
-const opened = (seen: number, level: number, variant: number[] = []) =>
-  Array.from({ length: Math.min(level, LEVELS - 1) + 1 }, (_, step) => picture(seen, step, variant[step] ?? 0))
+const opened = (key: string, level: number, variant: number[] = []) =>
+  Array.from({ length: Math.min(level, LEVELS - 1) + 1 }, (_, step) => picture(key, step, variant[step] ?? 0))
 
 const nextVariant = (count: number, last?: number) => {
   if (count <= 1) return 0
@@ -29,7 +29,7 @@ async function pickTitle(seen: number[], last?: number[]) {
   const counts = Array.isArray(title.frames) ? (title.frames as number[]) : []
   const same = title.id === seen[seen.length - 1] ? last : undefined
   const variant = Array.from({ length: LEVELS }, (_, level) => nextVariant(Math.max(1, counts[level] ?? 1), same?.[level]))
-  return { id: title.id, variant }
+  return { id: title.id, variant, key: Math.random().toString(36).slice(2, 10) }
 }
 
 const view = (doc: ShotDoc) => ({
@@ -42,7 +42,7 @@ const view = (doc: ShotDoc) => ({
   points: pointsAt(doc.level),
   levels: LEVELS,
   lastId: doc.status === 'over' ? doc.lastId : undefined,
-  shots: doc.status === 'playing' && doc.answerId !== undefined ? opened(doc.seen.length, doc.level, doc.variant) : undefined,
+  shots: doc.status === 'playing' && doc.answerId !== undefined ? opened(doc.key ?? '0', doc.level, doc.variant) : undefined,
 })
 
 export async function shotRun(userId: ObjectId, guest: boolean, fresh = false) {
@@ -60,6 +60,7 @@ export async function shotRun(userId: ObjectId, guest: boolean, fresh = false) {
     ...(guest ? { guest: true } : {}),
     answerId: next.id,
     variant: next.variant,
+    key: next.key,
     level: 0,
     misses: 0,
     score: 0,
@@ -90,15 +91,15 @@ async function nextTitle(doc: ShotDoc, score: number, streak: number) {
   const seen = [...doc.seen, next.id].slice(-60)
   await (await shotRuns()).updateOne(
     { _id: doc._id },
-    { $set: { answerId: next.id, variant: next.variant, level: 0, misses: 0, score, streak, seen, updatedAt: new Date() }, $unset: { lastId: '' } },
+    { $set: { answerId: next.id, variant: next.variant, key: next.key, level: 0, misses: 0, score, streak, seen, updatedAt: new Date() }, $unset: { lastId: '' } },
   )
-  return { score, streak, level: 0, points: pointsAt(0), shots: opened(seen.length, 0, next.variant) }
+  return { score, streak, level: 0, points: pointsAt(0), shots: opened(next.key, 0, next.variant) }
 }
 
 async function harder(doc: ShotDoc, score: number) {
   const level = doc.level + 1
   await (await shotRuns()).updateOne({ _id: doc._id }, { $set: { level, score, updatedAt: new Date() } })
-  return { score, level, points: pointsAt(level), shots: opened(doc.seen.length, level, doc.variant) }
+  return { score, level, points: pointsAt(level), shots: opened(doc.key ?? '0', level, doc.variant) }
 }
 
 async function playing(userId: ObjectId) {

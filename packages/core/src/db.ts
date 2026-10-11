@@ -177,6 +177,7 @@ export type ShotDoc = {
   guest?: boolean
   answerId?: number
   variant?: number[]
+  key?: string
   level: number
   misses: number
   score: number
