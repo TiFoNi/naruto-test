@@ -6,7 +6,8 @@ const SEEDS = path.join(ROOT, 'seeds', 'shots')
 const IN = path.join(ROOT, 'seeds', 'upscale', 'in')
 const OUT = path.join(ROOT, 'seeds', 'upscale', 'out')
 const KINDS = ['.jpg', '.jpeg', '.png', '.webp', '.avif']
-const SMALL = Number(process.argv.find((one) => one.startsWith('--under='))?.slice(8) ?? 1024)
+const LEDGER = path.join(ROOT, 'seeds', 'upscale', 'done.json')
+const again = process.argv.includes('--again')
 
 const sharp = (await import('sharp')).default
 
@@ -25,20 +26,23 @@ const walk = async (dir) => {
   return out
 }
 
+const done = again ? {} : await fs.readFile(LEDGER, 'utf8').then(JSON.parse).catch(() => ({}))
+
 let taken = 0
 let skipped = 0
 for (const file of await walk(SEEDS)) {
-  const { width = 0 } = await sharp(file).metadata()
-  if (width >= SMALL) {
+  const flat = path.relative(SEEDS, file).replace(/[\\/]/g, '~')
+  const { size } = await fs.stat(file)
+  if (done[flat] === size) {
     skipped++
     continue
   }
-  const flat = path.relative(SEEDS, file).replace(/[\\/]/g, '~')
   await fs.copyFile(file, path.join(IN, flat))
   taken++
 }
 
-console.log(`зібрано дрібних (<${SMALL}px): ${taken}, пропущено великих: ${skipped}`)
+console.log(taken ? `нових кадрів до апскейла: ${taken}, вже оброблених: ${skipped}` : `усе вже оброблено (${skipped} кадрів), нічого робити`)
+if (!taken) process.exit(0)
 console.log(`\n1. відкрий Upscayl → Batch Upscayl`)
 console.log(`2. вхідна тека:  ${IN}`)
 console.log(`3. вихідна тека: ${OUT}`)

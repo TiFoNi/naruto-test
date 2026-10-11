@@ -4,6 +4,7 @@ import { ROOT } from './lib.mjs'
 
 const SEEDS = path.join(ROOT, 'seeds', 'shots')
 const OUT = path.join(ROOT, 'seeds', 'upscale', 'out')
+const LEDGER = path.join(ROOT, 'seeds', 'upscale', 'done.json')
 const sharp = (await import('sharp')).default
 
 const files = await fs.readdir(OUT).catch(() => [])
@@ -11,6 +12,8 @@ if (!files.length) {
   console.log(`у ${OUT} порожньо — спершу прожени Upscayl`)
   process.exit(0)
 }
+
+const done = await fs.readFile(LEDGER, 'utf8').then(JSON.parse).catch(() => ({}))
 
 let put = 0
 let lost = 0
@@ -33,9 +36,12 @@ for (const file of files) {
   const before = (await sharp(dest).metadata()).width
   const after = (await sharp(path.join(OUT, file)).metadata()).width
   await fs.copyFile(path.join(OUT, file), dest)
+  done[path.relative(SEEDS, dest).replace(/[\\/]/g, '~')] = (await fs.stat(dest)).size
   console.log(`${path.relative(SEEDS, dest)}  ${before} → ${after}px`)
   put++
 }
+
+await fs.writeFile(LEDGER, JSON.stringify(done, null, 1))
 
 console.log(`\nповернуто: ${put}${lost ? `, не розпізнано: ${lost}` : ''}`)
 console.log('далі: node scripts/build-shot-pics.mjs')

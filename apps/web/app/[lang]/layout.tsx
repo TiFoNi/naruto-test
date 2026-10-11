@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next'
 import { Manrope, Unbounded } from 'next/font/google'
-import { notFound } from 'next/navigation'
 import Providers from './providers'
 import { SITE } from '@/src/brand'
 import { LANGS, dictionary, type Lang } from '@/src/i18n/ui'
@@ -59,16 +58,17 @@ export const generateStaticParams = () => LANGS.map(({ id }) => ({ lang: id }))
 
 export default async function RootLayout({ children, params }: { children: React.ReactNode; params: Promise<{ lang: string }> }) {
   const { lang } = await params
-  if (!LANGS.some((l) => l.id === lang)) notFound()
+  // мову перевіряють самі сторінки; тут підставляємо запасну, щоб 404 мала де відрендеритись
+  const safe = (LANGS.some((l) => l.id === lang) ? lang : 'ru') as Lang
 
   return (
-    <html lang={lang} className={`${manrope.variable} ${unbounded.variable}`} suppressHydrationWarning>
+    <html lang={safe} className={`${manrope.variable} ${unbounded.variable}`} suppressHydrationWarning>
       <head>
         {API && <link rel="preconnect" href={API} crossOrigin="use-credentials" />}
         <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
       </head>
       <body>
-        <Providers games={await gameMeta()} lang={lang as Lang} dict={dictionary(lang as Lang)}>
+        <Providers games={await gameMeta()} lang={safe} dict={dictionary(safe)}>
           {children}
         </Providers>
       </body>

@@ -1,0 +1,27 @@
+# NandaGuessr
+
+> Browser game about guessing anime, manga and game characters. Every day there is a new character to find by traits, pictures, frames or quotes. Twenty two worlds — Naruto, One Piece, Attack on Titan, Bleach, Demon Slayer, Jujutsu Kaisen and more — plus an endless mode, daily puzzles, duels between players and seasonal leaderboards. The interface is available in Russian, Ukrainian and English at /ru, /uk and /en.
+
+## Modes
+
+- [By traits](https://nandaguessr.com/en/play/naruto/classic): name the character, each guess shows which traits match
+- [By picture](https://nandaguessr.com/en/play/naruto/image): a zoomed fragment opens up with every wrong answer
+- [Which of two](https://nandaguessr.com/en/play/naruto/pair): two characters and a trait, decide who has it
+- [Odd one out](https://nandaguessr.com/en/play/naruto/odd): find the character who does not share the hidden trait
+- [Guess the anime](https://nandaguessr.com/en/play/shots/shot): four frames from hardest to easiest, name the title
+- [Manga page](https://nandaguessr.com/en/play/manga/page): name the title by a single page
+
+## Pages
+
+- [All games](https://nandaguessr.com/en): every world grouped by category
+- [Leaderboard](https://nandaguessr.com/en/leaderboard): best players of the season
+- [Duels](https://nandaguessr.com/en/duels): play against another person in real time
+- [Achievements](https://nandaguessr.com/en/achievements): what can be earned
+- [Terms](https://nandaguessr.com/en/terms)
+- [Privacy](https://nandaguessr.com/en/privacy)
+
+## Notes
+
+- Unofficial fan project; characters and images belong to their rights holders
+- Game data comes from community wikis listed in the footer
+- The /api/ path is for the game client and is closed to crawlers
