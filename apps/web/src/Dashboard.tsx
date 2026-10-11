@@ -9,7 +9,7 @@ import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
 import Quests from './Quests'
 import { useHref } from './router'
-import { GRID_GAMES, dailyKey } from '@nanda/game'
+import { GRID_GAMES, dailyKey, hasDaily } from '@nanda/game'
 import { average, emptyStats, kyivToday } from './stats'
 import { BallIcon, BookIcon, CalendarIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, PaletteIcon, PlayIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
 import { CARD, cardUrl } from './pics'
@@ -140,7 +140,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
                     </span>
                   </span>
                 )}
-                {user && m.id !== 'grid' && (
+                {user && hasDaily(m.id) && (
                   <Link
                     className={`mode-daily ${done ? 'done' : ''}`}
                     href={href.play(game.id, m.id, true)}

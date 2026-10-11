@@ -18,7 +18,7 @@ export const shots: Game<Shot> = {
   ),
   accent: '#ff6f91',
   modes: ['shot'],
-  featured: ['Attack on Titan', 'Death Note', 'Naruto'],
+  featured: ['Demon Slayer: Kimetsu no Yaiba', 'Attack on Titan', 'Naruto'],
   unit: 'manga',
   entities: [],
   columns: [],

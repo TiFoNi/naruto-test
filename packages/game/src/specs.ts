@@ -151,7 +151,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     ],
   },
   shots: {
-    featured: ['Attack on Titan', 'Death Note', 'Naruto'],
+    featured: ['Demon Slayer: Kimetsu no Yaiba', 'Attack on Titan', 'Naruto'],
     shape: 'wide',
     data: 'shots',
     images: 'shots',

@@ -22,7 +22,7 @@ import { shots } from './shots'
 import { tg } from './tg'
 import type { Entity, Game, GameId } from './types'
 
-const ALL = [naruto, onepiece, shots, aot, bleach, kny, jjk, csm, tg, berserk, hxh, bc, jojo, se, ff, dn, avatar, marvel, dota, mk, manga, football] as unknown as Game<Entity>[]
+const ALL = [shots, naruto, onepiece, aot, bleach, kny, jjk, csm, tg, berserk, hxh, bc, jojo, se, ff, dn, avatar, marvel, dota, mk, manga, football] as unknown as Game<Entity>[]
 
 export const GAMES = ALL
 

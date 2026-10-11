@@ -7,6 +7,7 @@ const DATA = path.join(ROOT, 'packages', 'game', 'data', 'shots.json')
 const SEEDS = path.join(ROOT, 'seeds', 'shots')
 const OUT = path.join(PUBLIC, 'shots')
 const SIZE = { width: 1024, height: 576 }
+const CARD = { width: 288, height: 384 }
 const KINDS = ['.jpg', '.jpeg', '.png', '.webp', '.avif']
 
 const LEVELS = [
@@ -88,6 +89,7 @@ for (const folder of folders) {
   if (levels.every((files) => !files.length)) continue
 
   await fs.rm(path.join(OUT, 'frames', String(title.id)), { recursive: true, force: true })
+  await fs.mkdir(path.join(OUT, 'card'), { recursive: true })
 
   const counts = []
   for (const [level, files] of levels.entries()) {
@@ -100,6 +102,14 @@ for (const folder of folders) {
         .toFile(path.join(target, `${index}.webp`))
     }
     counts.push(files.length)
+  }
+
+  const cover = [...levels].reverse().find((files) => files.length)?.[0]
+  if (cover) {
+    await sharp(await trimmed(cover))
+      .resize({ ...CARD, fit: 'cover', position: 'attention' })
+      .webp({ quality: 82 })
+      .toFile(path.join(OUT, 'card', `${title.id}.webp`))
   }
 
   title.frames = counts
