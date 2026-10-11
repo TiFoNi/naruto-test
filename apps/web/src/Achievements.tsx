@@ -15,6 +15,7 @@ type Tier = 'bronze' | 'silver' | 'gold' | 'legend' | 'secret'
 
 type Award = {
   id: string
+  family: string
   category: string
   tier: Tier
   kind: 'life' | 'season'
@@ -56,75 +57,119 @@ const FILTERS: { id: Filter; label: UiKey }[] = [
 
 const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
 
-function Card({ award, pinned, busy, take, onPin, onOpen }: { award: Award; pinned: boolean; busy: boolean; take: boolean; onPin: () => void; onOpen: () => void }) {
+type Family = {
+  id: string
+  single: boolean
+  category: string
+  kind: 'life' | 'season'
+  steps: Award[]
+  value: number
+  next: Award | null
+  ready: Award | null
+  open: Award
+  done: number
+}
+
+const families = (list: Award[]): Family[] => {
+  const byFamily = new Map<string, Award[]>()
+  for (const award of list) {
+    const key = award.family ?? award.id
+    byFamily.set(key, [...(byFamily.get(key) ?? []), award])
+  }
+
+  return [...byFamily.entries()].map(([id, all]) => {
+    const steps = [...all].sort((one, two) => one.target - two.target)
+    const next = steps.find((step) => !step.done) ?? null
+    const ready = steps.find((step) => step.done && !step.claimed) ?? null
+    return {
+      id,
+      single: steps.length === 1,
+      category: steps[0].category,
+      kind: steps[0].kind,
+      steps,
+      value: Math.max(...steps.map((step) => step.progress)),
+      next,
+      ready,
+      open: ready ?? next ?? steps[steps.length - 1],
+      done: steps.filter((step) => step.done).length,
+    }
+  })
+}
+
+function Card({ family, pinned, busy, onPin, onOpen }: { family: Family; pinned: string[]; busy: boolean; onPin: (id: string) => void; onOpen: (id: string) => void }) {
   const { t, lang } = useI18n()
-  const hidden = award.secret && !award.done
-  const share = award.rarity > 0 ? t('ach.share', { share: award.rarity }) : ''
-  const waiting = award.done && !award.claimed
-
-  const content = (
-    <>
-      <span className="award-mark" aria-hidden>
-        {waiting ? <GiftIcon /> : hidden ? <LockIcon /> : <TrophyIcon />}
-      </span>
-      <div className="award-body">
-        <div className="award-head">
-          <b>{hidden ? '???' : t(`ach.${award.id}` as UiKey)}</b>
-          <span className="award-tier">{hidden ? t('ach.secret') : t(`achTier.${award.tier}` as UiKey)}</span>
-        </div>
-        <p title={hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}>
-          {hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}
-        </p>
-        <span className="award-kind">{t(award.kind === 'season' ? 'ach.kindSeason' : 'ach.kindLife')}</span>
-      </div>
-      <div className="award-foot">
-        {award.claimed ? (
-          <span className="award-date">
-            <CheckIcon /> {award.at ? new Date(award.at).toLocaleDateString(LOCALES[lang], { day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}
-          </span>
-        ) : hidden ? (
-          <span className="award-date muted">{t('ach.hidden')}</span>
-        ) : waiting ? null : (
-          <span className="award-bar">
-            <span style={{ width: `${Math.round((award.progress / award.target) * 100)}%` }} />
-          </span>
-        )}
-        {!award.done && !hidden && (
-          <span className="award-count">
-            {award.progress} / {award.target}
-          </span>
-        )}
-        {share && (
-          <span className="award-rarity" title={share}>
-            {waiting ? `${award.rarity}%` : share}
-          </span>
-        )}
-        {waiting && <span className="award-reward">+{award.xp} XP</span>}
-      </div>
-    </>
-  )
-
-  const classes = `award tier-${award.tier} ${award.claimed ? 'done' : waiting ? 'is-ready' : hidden ? 'hidden' : ''}`
+  const { steps, value, next, ready, single } = family
+  const last = steps[steps.length - 1]
+  const hidden = steps.every((step) => step.secret && !step.done)
+  const goal = next ?? last
+  const crown = steps.filter((step) => step.done).pop() ?? steps[0]
+  const name = single ? (hidden ? '???' : t(`ach.${steps[0].id}` as UiKey)) : t(`achFam.${family.id}` as UiKey)
+  const hint = hidden ? t('ach.secretHint') : t(`ach.${goal.id}.hint` as UiKey)
+  const share = goal.rarity > 0 ? t('ach.share', { share: goal.rarity }) : ''
+  const held = steps.find((step) => step.claimed && pinned.includes(step.id))
+  const pinnable = [...steps].reverse().find((step) => step.claimed)
+  const whole = !next
 
   return (
-    <article className={classes}>
-      <button
-        type="button"
-        className="award-open"
-        aria-label={take ? t('ach.claim', { xp: award.xp }) : hidden ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}
-        disabled={busy}
-        onClick={onOpen}
-      >
-        {content}
+    <article className={`award tier-${crown.tier} ${whole ? 'done' : ready ? 'is-ready' : ''} ${hidden ? 'hidden' : ''}`}>
+      <button type="button" className="award-open" aria-label={name} disabled={busy} onClick={() => onOpen(family.open.id)}>
+        <span className="award-mark" aria-hidden>
+          {ready ? <GiftIcon /> : hidden ? <LockIcon /> : <TrophyIcon />}
+        </span>
+        <div className="award-body">
+          <div className="award-head">
+            <b>{name}</b>
+            <span className="award-tier">
+              {!single && <i className="award-steps">{family.done}/{steps.length}</i>}
+              {hidden ? t('ach.secret') : t(`achTier.${crown.tier}` as UiKey)}
+            </span>
+          </div>
+          <p title={hint}>{hint}</p>
+          <span className="award-kind">{t(family.kind === 'season' ? 'ach.kindSeason' : 'ach.kindLife')}</span>
+        </div>
+        <div className="award-foot">
+          {whole ? (
+            <span className="award-date">
+              <CheckIcon /> {last.at ? new Date(last.at).toLocaleDateString(LOCALES[lang], { day: '2-digit', month: '2-digit', year: 'numeric' }) : ''}
+            </span>
+          ) : hidden ? (
+            <span className="award-date muted">{t('ach.hidden')}</span>
+          ) : null}
+
+          <span className={`award-bar ${steps.length > 1 ? 'parts' : ''}`}>
+            {steps.map((step, index) => {
+              const floor = index === 0 ? 0 : steps[index - 1].target
+              const fill = Math.max(0, Math.min(1, (value - floor) / Math.max(1, step.target - floor)))
+              return (
+                <span key={step.id} className={step.done ? 'done' : ''}>
+                  <i style={{ width: `${Math.round(fill * 100)}%` }} />
+                </span>
+              )
+            })}
+          </span>
+
+          {!whole && !hidden && (
+            <span className="award-count">
+              {value.toLocaleString(LOCALES[lang])} / {goal.target.toLocaleString(LOCALES[lang])}
+            </span>
+          )}
+          {share && !hidden && (
+            <span className="award-rarity" title={share}>
+              {ready ? `${goal.rarity}%` : share}
+            </span>
+          )}
+          {ready && <span className="award-reward">+{ready.xp} XP</span>}
+        </div>
       </button>
-      {award.claimed && (
+
+      {pinnable && (
         <button
           type="button"
-          className={`award-pin ${pinned ? 'on' : ''}`}
-          title={t(pinned ? 'ach.unpin' : 'ach.pin')}
-          aria-label={t(pinned ? 'ach.unpin' : 'ach.pin')}
-          aria-pressed={pinned}
-          onClick={onPin}
+          className={`award-pin ${held ? 'on' : ''}`}
+          title={t(held ? 'ach.unpin' : 'ach.pin')}
+          aria-label={t(held ? 'ach.unpin' : 'ach.pin')}
+          aria-pressed={!!held}
+          onClick={() => onPin(held ? held.id : pinnable.id)}
         >
           <PinIcon />
         </button>
@@ -255,29 +300,26 @@ export default function Achievements() {
   }, [])
 
   const list = board?.achievements ?? []
-  const shown = useMemo(
-    () =>
-      list.filter((a) =>
-        filter === 'ready'
-          ? a.done && !a.claimed
-          : filter === 'done'
-            ? a.done
-            : filter === 'doing'
-              ? !a.done && a.progress > 0
-              : filter === 'locked'
-                ? !a.done && a.progress === 0
-                : true,
-      ),
-    [list, filter],
-  )
+  const rows = useMemo(() => families(list), [list])
+  const fits = (one: Family, kind: Filter) =>
+    kind === 'ready'
+      ? !!one.ready
+      : kind === 'done'
+        ? !one.next
+        : kind === 'doing'
+          ? !!one.next && one.value > 0
+          : kind === 'locked'
+            ? !!one.next && one.value === 0
+            : true
+  const shown = useMemo(() => rows.filter((one) => fits(one, filter)), [rows, filter])
   const counts: Record<Filter, number> = {
-    all: list.length,
-    ready: list.filter((a) => a.done && !a.claimed).length,
-    done: list.filter((a) => a.done).length,
-    doing: list.filter((a) => !a.done && a.progress > 0).length,
-    locked: list.filter((a) => !a.done && a.progress === 0).length,
+    all: rows.length,
+    ready: rows.filter((one) => fits(one, 'ready')).length,
+    done: rows.filter((one) => fits(one, 'done')).length,
+    doing: rows.filter((one) => fits(one, 'doing')).length,
+    locked: rows.filter((one) => fits(one, 'locked')).length,
   }
-  const share = list.length ? Math.round((counts.done / list.length) * 100) : 0
+  const share = list.length ? Math.round((list.filter((a) => a.done).length / list.length) * 100) : 0
   const pinned = board?.pinned ?? []
 
   const togglePin = (id: string) => {
@@ -424,29 +466,26 @@ export default function Achievements() {
           </div>
 
           {CATEGORIES.map((category) => {
-            const group = shown.filter((a) => a.category === category)
+            const group = shown.filter((one) => one.category === category)
             if (!group.length) return null
-            const total = list.filter((a) => a.category === category)
+            const total = rows.filter((one) => one.category === category)
             return (
               <section key={category} className="awards-group">
                 <h2>
                   {t(`achCat.${category}` as UiKey)}
                   <span>
-                    {total.filter((a) => a.done).length}/{total.length}
+                    {total.filter((one) => !one.next).length}/{total.length}
                   </span>
                 </h2>
                 <div className="awards-grid">
-                  {group.map((award) => (
+                  {group.map((one) => (
                     <Card
-                      key={award.id}
-                      award={award}
-                      pinned={pinned.includes(award.id)}
-                      busy={claiming === award.id}
-                      take={filter === 'ready' && award.done && !award.claimed}
-                      onPin={() => togglePin(award.id)}
-                      onOpen={() =>
-                        filter === 'ready' && award.done && !award.claimed ? void claim(award.id) : setOpened(award.id)
-                      }
+                      key={one.id}
+                      family={one}
+                      pinned={pinned}
+                      busy={claiming === one.open.id}
+                      onPin={togglePin}
+                      onOpen={(id) => (filter === 'ready' && one.ready ? void claim(one.ready.id) : setOpened(id))}
                     />
                   ))}
                 </div>

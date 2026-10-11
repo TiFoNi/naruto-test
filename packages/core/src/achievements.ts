@@ -152,6 +152,38 @@ export const SEASON: Achievement[] = [
   run('seasonMarathon30', 'season', 'bronze', 30, (f) => f.bestPerDay),
 ]
 
+// родини: кілька порогів однієї ачівки показуються одним рядком зі шкалою
+const GROUPS: Record<string, string[]> = {
+  solved: ['first', 'ten', 'fifty', 'hundred', 'fiveHundred', 'thousand', 'encyclopedia', 'immortal'],
+  firstTry: ['luckyTen', 'firstTry', 'firstTry200'],
+  sniper: ['sniper5', 'sniper'],
+  marathon: ['marathon25', 'marathon'],
+  daily: ['daily10', 'daily50', 'daily200'],
+  modeClassic: ['detective', 'detective250'],
+  modeImage: ['artist', 'artist250'],
+  modeAbility: ['technician', 'technician150'],
+  modePage: ['librarian', 'librarian150'],
+  modeOdd: ['sorter', 'sorter150'],
+  modePhrase: ['listener', 'listener150'],
+  worlds: ['traveller5', 'traveller', 'multiverse'],
+  worldDone: ['local50', 'local200'],
+  worldShare: ['fan', 'fan50', 'loremaster'],
+  duelWins: ['firstBlood', 'duel5', 'duelist', 'gladiator', 'warlord'],
+  duelPlayed: ['duelFan', 'duelFan100'],
+  boardWins: ['boardWin', 'boardWin10'],
+  streak: ['habit', 'week', 'onFire', 'ironWill', 'hundredDays', 'yearTogether'],
+  trophies: ['seasonTop100', 'seasonTop10', 'seasonChampion'],
+  seasonSolved: ['seasonStart', 'seasonSolve25', 'seasonSolve100', 'seasonSolve300'],
+  seasonDays: ['seasonDays7', 'seasonDays20'],
+  seasonDaily: ['seasonDaily10', 'seasonDaily25'],
+  seasonFirstTry: ['seasonFirstTry25', 'seasonFirstTry100'],
+  seasonDuel: ['seasonDuel5', 'seasonDuel20'],
+}
+
+const FAMILY = new Map(Object.entries(GROUPS).flatMap(([family, ids]) => ids.map((id) => [id, family] as const)))
+
+export const familyOf = (id: string) => FAMILY.get(id) ?? id
+
 export const ACHIEVEMENTS: Achievement[] = [...LIFE, ...SEASON]
 
 const byId = new Map(ACHIEVEMENTS.map((a) => [a.id, a]))

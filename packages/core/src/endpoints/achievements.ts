@@ -4,6 +4,7 @@ import {
   LIFE,
   SEASON,
   claimAward,
+  familyOf,
   closeFinishedSeason,
   lifeFacts,
   progressOf,
@@ -48,6 +49,7 @@ async function board(doc: UserDoc) {
     const done = !!holder[achievement.id]
     return {
       id: achievement.id,
+      family: familyOf(achievement.id),
       category: achievement.category,
       tier: achievement.tier,
       kind: achievement.kind,
