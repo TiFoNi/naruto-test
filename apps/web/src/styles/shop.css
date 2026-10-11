@@ -1,0 +1,180 @@
+.shop-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding-bottom: 40px;
+}
+
+.shop-body {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.shop-purse {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+  border-radius: 18px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 10%, var(--card)), var(--card) 60%);
+}
+
+.shop-purse-mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+}
+
+.shop-purse-mark .icon {
+  width: 22px;
+  height: 22px;
+}
+
+.shop-purse-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.shop-purse-text em {
+  color: var(--text-3);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.shop-purse-text b {
+  font-family: var(--display);
+  font-size: 26px;
+  line-height: 1;
+}
+
+.shop-purse-hint {
+  margin-left: auto;
+  max-width: 320px;
+  color: var(--text-3);
+  font-size: 12.5px;
+  text-align: right;
+}
+
+.shop-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+}
+
+.shop-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.shop-tabs button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.shop-tabs button:hover:not(.active) {
+  background: var(--card-2);
+  color: var(--text);
+}
+
+.shop-tabs button .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.shop-tabs button.active {
+  background: var(--accent);
+  color: #0d0f12;
+}
+
+.shop-empty {
+  display: flex;
+  min-height: 320px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 56px 24px;
+  border: 1px dashed var(--line);
+  border-radius: 20px;
+  background: var(--card);
+  text-align: center;
+}
+
+.shop-empty-mark {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: var(--card-2);
+  color: var(--text-3);
+}
+
+.shop-empty b {
+  font-size: 17px;
+}
+
+.shop-empty p {
+  margin: 0;
+  max-width: 420px;
+  font-size: 13.5px;
+}
+
+@media (max-width: 860px) {
+  .shop-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shop-tabs {
+    flex-direction: row;
+    width: fit-content;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .shop-tabs button {
+    width: auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 620px) {
+  .shop-purse {
+    flex-wrap: wrap;
+  }
+
+  .shop-purse-hint {
+    margin-left: 0;
+    max-width: none;
+    text-align: left;
+  }
+}

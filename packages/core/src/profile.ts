@@ -210,6 +210,7 @@ export function toProfile(doc: UserDoc) {
       frames: doc.frames ?? [],
       level: levelOf(xp),
       xp,
+      coins: number(doc.coins),
       today: todayXp(doc),
       streak: alive(doc.visit) ? (doc.visit?.streak ?? 0) : 0,
       bestStreak: doc.visit?.best ?? 0,

@@ -9229,3 +9229,36 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   margin-top: 16px;
 }
 
+.topbar-coins {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+  height: 40px;
+  padding: 0 13px;
+  border: 1px solid color-mix(in srgb, #ffffff 12%, transparent);
+  border-radius: 12px;
+  background: var(--chip);
+  color: var(--text-2);
+  text-decoration: none;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.topbar-coins .icon {
+  width: 17px;
+  height: 17px;
+  color: var(--accent);
+}
+
+.topbar-coins:hover,
+.topbar-coins.active {
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  color: var(--text);
+}
+
+.bonus-coins {
+  margin-left: 8px;
+  color: var(--accent);
+}

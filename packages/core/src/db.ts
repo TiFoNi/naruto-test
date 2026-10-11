@@ -13,6 +13,7 @@ export type UserDoc = {
   frames?: string[]
   framesSeen?: string[]
   xp?: number
+  coins?: number
   xpToday?: { day: string; daily: number; endless: number; duel?: number }
   stats?: Record<string, Partial<Stats>>
   solvedTotal?: number

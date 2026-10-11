@@ -19,6 +19,8 @@ export const RANKS = [
 
 export const FREE_XP = 25
 export const BONUS_XP = 120
+// монети дають лише за повний набір щоденних завдань
+export const BONUS_COINS = 25
 
 type Metric = 'play' | 'games' | 'mode' | 'solve' | 'daily' | 'perfect' | 'duel'
 
@@ -149,7 +151,7 @@ export async function questBoard(userId: ObjectId) {
   const items = list.filter((quest): quest is NonNullable<typeof quest> => quest !== null)
   const free = { xp: FREE_XP, claimed: claimed.has('free') }
   const ready = items.every((quest) => quest.claimed) && free.claimed
-  const bonus = { xp: BONUS_XP, claimed: claimed.has('bonus'), ready }
+  const bonus = { xp: BONUS_XP, coins: BONUS_COINS, claimed: claimed.has('bonus'), ready }
   const collected = items.filter((quest) => quest.claimed).length + (free.claimed ? 1 : 0)
 
   return { day, quests: items, free, bonus, collected, total: items.length + 1 }
@@ -181,7 +183,8 @@ export async function claimQuest(userId: ObjectId, id: string) {
   )
   if (!marked.modifiedCount) return null
 
-  await (await users()).updateOne({ _id: userId }, { $inc: { xp: award } })
+  const coins = id === 'bonus' ? BONUS_COINS : 0
+  await (await users()).updateOne({ _id: userId }, { $inc: coins ? { xp: award, coins } : { xp: award } })
   await addSeasonXp(userId, award)
-  return award
+  return { xp: award, coins }
 }

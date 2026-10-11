@@ -17,6 +17,7 @@ export type User = {
   frames: string[]
   level: number
   xp: number
+  coins: number
   today?: XpToday
   streak: number
   bestStreak: number

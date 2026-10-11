@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { api } from './api'
+import { useAuth } from './auth'
 import { useI18n } from './i18n'
 import type { UiKey } from './i18n/ui'
 import { GiftIcon } from './icons'
@@ -14,7 +15,7 @@ export type Board = {
   resetAt: number
   quests: { id: string; goal: number; xp: number; value: number; done: boolean; claimed: boolean }[]
   free: { xp: number; claimed: boolean }
-  bonus: { xp: number; claimed: boolean; ready: boolean }
+  bonus: { xp: number; coins: number; claimed: boolean; ready: boolean }
   collected: number
   total: number
 } & Level
@@ -26,6 +27,7 @@ keepPerUser(() => {
 })
 
 export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }) {
+  const { refresh } = useAuth()
   const { t } = useI18n()
   const [board, setBoard] = useState<Board | null>(known)
   const [claiming, setClaiming] = useState<string | null>(null)
@@ -53,11 +55,12 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
 
   const claim = async (id: string) => {
     setClaiming(id)
-    const { ok, data } = await api<Board>('quests/claim', { claim: id })
+    const { ok, data } = await api<Board & { coins?: number }>('quests/claim', { claim: id })
     setClaiming(null)
     if (!ok) return
     remember(data)
     onLevel?.(data)
+    if (data.coins) void refresh()
   }
 
   const left = (() => {
@@ -184,6 +187,7 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
               <span className="bonus-text">
                 <span className="bonus-label">
                   {t('quests.bonus')}: <b>+{board.bonus.xp} XP</b>
+                  {board.bonus.coins > 0 && <b className="bonus-coins">{t('quest.coins', { count: board.bonus.coins })}</b>}
                 </span>
                 {board.bonus.claimed ? (
                   <small className="quest-done">✓ {t('quests.claimed')}</small>

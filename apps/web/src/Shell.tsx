@@ -21,6 +21,7 @@ import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
 import {
   BellIcon,
+  CoinIcon,
   ChevronIcon,
   CloseIcon,
   ExitIcon,
@@ -625,6 +626,15 @@ export default function Shell({ children, games }: { children: ReactNode; games:
               )}
               {user && (
                 <>
+                  <Link
+                    className={`topbar-coins ${section === 'shop' ? 'active' : ''}`}
+                    href={href.shop}
+                    title={t('nav.shop')}
+                    aria-label={t('nav.shop')}
+                  >
+                    <CoinIcon />
+                    <b>{user.coins ?? 0}</b>
+                  </Link>
                   <Bell />
                   <AccountMenu nickname={user.nickname} level={user.level} section={section} id={user.id} avatar={user.avatar} />
                 </>

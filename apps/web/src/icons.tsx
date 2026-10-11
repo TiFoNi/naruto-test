@@ -381,6 +381,26 @@ export function CrownIcon({ className }: IconProps) {
   )
 }
 
+export function CoinIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <circle cx="12" cy="12" r="8.6" />
+      <circle cx="12" cy="12" r="5.2" />
+      <path d="M12 9.4v5.2M10.4 10.6h2.4a1.3 1.3 0 0 1 0 2.6h-2.4" />
+    </svg>
+  )
+}
+
+export function ShopIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M4.2 9.2h15.6l-1.1 9.1a2 2 0 0 1-2 1.8H7.3a2 2 0 0 1-2-1.8L4.2 9.2Z" />
+      <path d="M3.4 9.2 5.6 4.4a1.3 1.3 0 0 1 1.2-.8h10.4a1.3 1.3 0 0 1 1.2.8l2.2 4.8" />
+      <path d="M9.3 12.6a2.7 2.7 0 0 0 5.4 0" />
+    </svg>
+  )
+}
+
 export function PaletteIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

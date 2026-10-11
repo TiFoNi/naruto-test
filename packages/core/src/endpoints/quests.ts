@@ -32,11 +32,11 @@ export const POST = handle(async (request) => {
   const { claim } = (await readJson(request)) as { claim?: unknown }
   if (typeof claim !== 'string') return fail(400, 'bad_request')
 
-  const award = await claimQuest(found.doc._id!, claim)
-  if (award === null) return fail(409, 'not_ready')
+  const paid = await claimQuest(found.doc._id!, claim)
+  if (paid === null) return fail(409, 'not_ready')
   await touchVisit(await users(), found.doc._id!)
 
-  const xp = (found.doc.xp ?? 0) + award
+  const xp = (found.doc.xp ?? 0) + paid.xp
   const board = await questBoard(found.doc._id!)
-  return json({ ...board, resetAt: nextReset(), ...standing(xp), award })
+  return json({ ...board, resetAt: nextReset(), ...standing(xp), award: paid.xp, coins: paid.coins })
 })
