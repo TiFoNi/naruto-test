@@ -60,14 +60,6 @@
   line-height: 1;
 }
 
-.shop-purse-hint {
-  margin-left: auto;
-  max-width: 320px;
-  color: var(--text-3);
-  font-size: 12.5px;
-  text-align: right;
-}
-
 .shop-tabs {
   display: flex;
   flex-direction: column;
@@ -169,12 +161,6 @@
 
 @media (max-width: 620px) {
   .shop-purse {
-    flex-wrap: wrap;
-  }
-
-  .shop-purse-hint {
-    margin-left: 0;
-    max-width: none;
-    text-align: left;
+    align-items: flex-start;
   }
 }

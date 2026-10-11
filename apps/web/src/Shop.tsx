@@ -35,7 +35,6 @@ export default function Shop() {
           <em>{t('shop.purse')}</em>
           <b>{user?.coins ?? 0}</b>
         </span>
-        <span className="shop-purse-hint">{t('shop.earn')}</span>
       </div>
 
       <div className="shop-body">

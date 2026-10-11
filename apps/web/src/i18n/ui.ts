@@ -25,11 +25,6 @@ const ui = {
     en: 'Spend coins on cosmetics — frames, avatars and other profile trinkets.',
   },
   'shop.purse': { ru: 'Твои монеты', uk: 'Твої монети', en: 'Your coins' },
-  'shop.earn': {
-    ru: 'Монеты дают за подарок, когда собраны все задания дня',
-    uk: 'Монети дають за подарунок, коли зібрані всі завдання дня',
-    en: 'Coins come from the gift once every daily task is claimed',
-  },
   'shop.frames': { ru: 'Рамки', uk: 'Рамки', en: 'Frames' },
   'shop.avatars': { ru: 'Аватарки', uk: 'Аватарки', en: 'Avatars' },
   'shop.other': { ru: 'Прочее', uk: 'Інше', en: 'Other' },
