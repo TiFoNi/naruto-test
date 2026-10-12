@@ -48,7 +48,7 @@ export type DuelLogRow = {
   won: boolean
 }
 
-export type Stats = { solved: number; streak: number; best: number; totalGuesses: number; skipped: number; lastDay?: string }
+export type Stats = { solved: number; streak: number; best: number; totalGuesses: number; skipped: number; lastDay?: string; day?: string; dayBest?: number; points?: number }
 
 export type RoundStatus = 'active' | 'won' | 'lost' | 'skipped'
 

@@ -2,6 +2,7 @@ import { STAT_KEYS, statsKey } from '@nanda/game'
 import { users } from '../db'
 import { fail, handle, json } from '../http'
 import { currentUser, defaultNickname, unauthorized } from '../profile'
+import { today } from '../daily'
 import { levelOf } from '../quests'
 
 const LIMIT = 200
@@ -33,38 +34,45 @@ export const GET = handle(async (request) => {
   const params = new URL(request.url).searchParams
   const key = statsKey(params.get('game') ?? '', params.get('mode') ?? '')
   const sort = (params.get('sort') ?? 'best') as Sort
+  const day = params.get('scope') === 'day' ? today() : null
+  const field = key === 'shots_shot' ? 'points' : 'best'
   if (!STAT_KEYS.includes(key) || !(sort in SORTS)) return fail(400, 'bad_request')
   const reversed = params.get('dir') === 'rev'
   const spec = SORTS[sort]
   const order = { [spec.field]: reversed ? -spec.natural : spec.natural, ...spec.tie, _id: 1 }
 
   const stats = found.doc.stats?.[key]
-  const mine: Row | null = stats?.solved
+  const counted = day ? (stats?.day === day ? (stats.dayBest ?? 0) : 0) : (stats?.solved ?? 0)
+  const mine: Row | null = counted
     ? {
         _id: found.doc._id!,
         username: found.doc.username,
         nickname: found.doc.nickname,
         avatar: found.doc.avatar ?? null,
         xp: found.doc.xp,
-        solved: stats.solved,
-        best: stats.best ?? 0,
-        avg: (stats.totalGuesses ?? 0) / stats.solved,
+        solved: stats?.solved ?? 0,
+        best: day ? (stats?.dayBest ?? 0) : (stats?.[field] ?? 0),
+        avg: (stats?.totalGuesses ?? 0) / Math.max(1, stats?.solved ?? 0),
       }
     : null
 
   const path = `$stats.${key}`
   const [page] = (await (await users())
     .aggregate([
-      { $match: { [`stats.${key}.solved`]: { $gte: 1 } } },
+      {
+        $match: day
+          ? { [`stats.${key}.day`]: day, [`stats.${key}.dayBest`]: { $gte: 1 } }
+          : { [`stats.${key}.solved`]: { $gte: 1 } },
+      },
       {
         $project: {
           username: 1,
           nickname: 1,
           avatar: 1,
           xp: 1,
-          solved: `${path}.solved`,
-          best: { $ifNull: [`${path}.best`, 0] },
-          avg: { $divide: [{ $ifNull: [`${path}.totalGuesses`, 0] }, `${path}.solved`] },
+          solved: { $ifNull: [`${path}.solved`, 0] },
+          best: { $ifNull: [day ? `${path}.dayBest` : `${path}.${field}`, 0] },
+          avg: { $divide: [{ $ifNull: [`${path}.totalGuesses`, 0] }, { $max: [1, { $ifNull: [`${path}.solved`, 0] }] }] },
         },
       },
       {
@@ -96,6 +104,7 @@ export const GET = handle(async (request) => {
   return json({
     sort,
     reversed,
+    scope: day ? 'day' : 'all',
     total: page.size[0]?.value ?? 0,
     rows,
     me: mine ? (rows.find((row) => row.me) ?? view(mine, rank - 1)) : null,

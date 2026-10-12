@@ -59,6 +59,11 @@ const COLUMNS: Column[] = [
   { label: 'lb.colSolved', short: 'lb.shortSolved', sort: 'solved', raw: (r) => r.solved ?? 0, value: (r) => r.solved ?? 0 },
 ]
 
+const SHOT_COLUMNS: Column[] = [
+  { ...COLUMNS[0], label: 'lb.colScore', short: 'lb.shortScore' },
+  COLUMNS[1],
+]
+
 const PAGE_SIZE = 10
 const SKELETON_ROWS = PAGE_SIZE
 const TOP = 10
@@ -143,7 +148,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   }, [board, gameId, mode])
 
   const boardKey = `${gameId}:${mode}`
-  const columns = COLUMNS
+  const columns = mode === 'shot' ? SHOT_COLUMNS : COLUMNS
   const active = columns.find((c) => c.sort === sort) ?? columns[0]
   const all = board?.rows ?? []
   const waiting = !board && !error
@@ -411,7 +416,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                 <span>
                   <b>{record.best ?? 0}</b>
                   <i>
-                    {t('lb.shortBest')} · {record.nickname}
+                    {t(columns[0].short)} · {record.nickname}
                   </i>
                 </span>
               </p>

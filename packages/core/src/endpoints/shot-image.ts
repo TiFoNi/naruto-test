@@ -14,6 +14,6 @@ export const GET = handle(async (request) => {
   if (!image?.ok) return fail(502, 'server')
 
   return new Response(Buffer.from(await image.arrayBuffer()), {
-    headers: { 'content-type': 'image/webp', 'cache-control': 'private, no-store' },
+    headers: { 'content-type': 'image/webp', 'cache-control': 'private, max-age=900' },
   })
 })

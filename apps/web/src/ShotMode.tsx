@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import CharacterSearch from './CharacterSearch'
@@ -8,14 +9,17 @@ import PlayBoard from './PlayBoard'
 import PlayPanel from './PlayPanel'
 import RoundStatus from './RoundStatus'
 import { api, apiSrc } from './api'
+import { BRAND } from './brand'
 import type { Entity, Game } from './games/types'
 import { useI18n } from './i18n'
+import { useHref } from './router'
 import { CheckIcon, CloseIcon, TrophyIcon } from './icons'
 
 type Run = {
   score: number
   streak: number
   best: number
+  total?: number
   level: number
   points: number
   levels: number
@@ -32,28 +36,34 @@ type Answer = {
   score: number
   streak: number
   best: number
+  total?: number
   level?: number
   points?: number
   shots?: string[]
   fresh?: boolean
 }
 
-type Over = { score: number; streak: number; best: number; answerId?: number; fresh: boolean }
+type Over = { score: number; streak: number; best: number; total?: number; answerId?: number; fresh: boolean; shots?: string[] }
 
 const STEPS = [1, 2, 3, 4] as const
+const LEVEL_LABELS = ['shot.level1', 'shot.level2', 'shot.level3', 'shot.level4'] as const
 const FLASH = 1100
+const CHEER = 3000
 
 export default function ShotMode({ game, active }: { game: Game; active: boolean }) {
   const { t, name } = useI18n()
+  const href = useHref()
   const [run, setRun] = useState<Run | null>(null)
   const [over, setOver] = useState<Over | null>(null)
   const [flash, setFlash] = useState<{ kind: 'got' | 'miss'; text: string } | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [soon, setSoon] = useState(false)
+  const [won, setWon] = useState<{ name: string; gained: number; shots: string[] } | null>(null)
   const [big, setBig] = useState<string | null>(null)
   const [mounted, setMounted] = useState(false)
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const cheer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const byId = new Map(game.entities.map((one) => [one.id, one]))
 
@@ -67,9 +77,18 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
       return setError(data.error ?? 'server')
     }
     setFlash(null)
+    setWon(null)
     if (data.status === 'over') {
       setRun(null)
-      setOver({ score: data.score, streak: data.streak, best: data.best, answerId: data.lastId, fresh: data.score > 0 && data.score >= data.best })
+      setOver({
+        score: data.score,
+        streak: data.streak,
+        best: data.best,
+        total: data.total,
+        answerId: data.lastId,
+        fresh: data.score > 0 && data.score >= data.best,
+        shots: data.shots,
+      })
       return
     }
     setOver(null)
@@ -83,6 +102,14 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
 
   useEffect(() => setMounted(true), [])
 
+  const ahead = apiSrc(run?.shots?.[run.level])
+
+  useEffect(() => {
+    if (!ahead) return
+    const picture = new Image()
+    picture.src = ahead
+  }, [ahead])
+
   useEffect(() => {
     if (!big) return
     const escape = (event: KeyboardEvent) => event.key === 'Escape' && setBig(null)
@@ -93,9 +120,15 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
   useEffect(
     () => () => {
       if (timer.current) clearTimeout(timer.current)
+      if (cheer.current) clearTimeout(cheer.current)
     },
     [],
   )
+
+  const goOn = useCallback(() => {
+    if (cheer.current) clearTimeout(cheer.current)
+    setWon(null)
+  }, [])
 
   const show = (kind: 'got' | 'miss', text: string) => {
     setFlash({ kind, text })
@@ -114,7 +147,7 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
     }
     if (data.over) {
       setRun(null)
-      setOver({ score: data.score, streak: data.streak, best: data.best, answerId: data.answerId, fresh: !!data.fresh })
+      setOver({ score: data.score, streak: data.streak, best: data.best, total: data.total, answerId: data.answerId, fresh: !!data.fresh, shots: data.shots })
       return data
     }
     setRun((current) =>
@@ -124,6 +157,7 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
             score: data.score,
             streak: data.streak ?? current.streak,
             best: data.best ?? current.best,
+            total: data.total ?? current.total,
             level: data.level ?? current.level,
             points: data.points ?? current.points,
             shots: data.shots ?? current.shots,
@@ -134,10 +168,16 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
   }
 
   const pick = async (entity: Entity) => {
+    const seen = run?.shots ?? []
     const data = await send({ action: 'answer', pick: entity.id })
     if (!data || data.over) return
-    if (data.right) show('got', t('shot.got', { count: data.gained ?? 0 }))
-    else show('miss', t('shot.miss'))
+    if (!data.right) return show('miss', t('shot.miss'))
+
+    const title = data.answerId !== undefined ? byId.get(data.answerId) : undefined
+    setFlash(null)
+    setWon({ name: title ? name(title) : '', gained: data.gained ?? 0, shots: seen })
+    if (cheer.current) clearTimeout(cheer.current)
+    cheer.current = setTimeout(() => setWon(null), CHEER)
   }
 
   const revealed = over?.answerId !== undefined ? byId.get(over.answerId) : undefined
@@ -149,15 +189,11 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
           <div className="play-card play-stats shot-score">
             <div className="hot">
               <span>{t('shot.score')}</span>
-              <b>{over ? over.score : (run?.score ?? 0)}</b>
+              <b>{(over ? over.total : run?.total) ?? (over ? over.score : (run?.score ?? 0))}</b>
             </div>
             <div>
               <span>{t('shot.streak')}</span>
               <b>{over ? over.streak : (run?.streak ?? 0)}</b>
-            </div>
-            <div>
-              <span>{t('shot.best')}</span>
-              <b>{over ? over.best : (run?.best ?? 0)}</b>
             </div>
           </div>
           <div className="play-card play-howto">
@@ -171,6 +207,14 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
           </div>
           {run && !over && (
             <div className="play-actions">
+              <button
+                type="button"
+                className="ghost shot-skip"
+                disabled={busy || run.level >= run.levels - 1}
+                onClick={() => void send({ action: 'skip' })}
+              >
+                {t('shot.skip')}
+              </button>
               <GiveUp disabled={busy} onConfirm={() => void send({ action: 'giveup' })}>
                 {t('play.giveUp')}
               </GiveUp>
@@ -181,40 +225,30 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
     >
       <PlayPanel
         title={over ? t('shot.over') : t('shot.title')}
-        hint={over ? t('shot.overLook') : t('shot.hint')}
+        hint={t('shot.hint')}
         media={
           <span className="play-mystery" aria-hidden>
             {over ? <TrophyIcon /> : '?'}
           </span>
         }
-        aside={run && !over ? <span className="play-round">{t('shot.frame', { number: run.level + 1, total: run.levels })}</span> : undefined}
+        aside={
+          run || over ? (
+            <span className="play-round">
+              {t('shot.frame', { number: over ? STEPS.length : (run?.level ?? 0) + 1, total: STEPS.length })}
+            </span>
+          ) : undefined
+        }
       >
         <RoundStatus error={error} onRetry={() => void start()} />
 
         {soon && <p className="notice shot-soon">{t('shot.soon')}</p>}
 
-        {run && !over && (
+        {(run || over) && (
           <>
-            <div className="shot-grid">
-              {Array.from({ length: run.levels }, (_, step) => {
-                const src = apiSrc(run.shots?.[step])
-                return src ? (
-                  <button
-                    key={step}
-                    type="button"
-                    className="shot-cell"
-                    title={t('shot.open')}
-                    aria-label={t('shot.open')}
-                    onClick={() => setBig(src)}
-                  >
-                    <img key={src} src={src} alt="" draggable={false} />
-                  </button>
-                ) : (
-                  <span key={step} className="shot-cell locked" aria-hidden>
-                    {step + 1}
-                  </span>
-                )
-              })}
+            <div className={`shot-grid ${over || won ? 'is-over' : ''}`}>
+              {Array.from({ length: STEPS.length }, (_, step) => (
+                <Cell key={step} src={apiSrc((over?.shots ?? won?.shots ?? run?.shots)?.[step])} step={step} onOpen={setBig} />
+              ))}
               {flash && (
                 <span className={`shot-flash ${flash.kind}`}>
                   {flash.kind === 'got' ? <CheckIcon /> : <CloseIcon />}
@@ -223,30 +257,48 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
               )}
             </div>
 
-            <CharacterSearch game={game} exclude={new Set()} busy={busy} plain placeholder={t('shot.search')} onPick={(entity) => void pick(entity)} />
+            <div className={`shot-under ${over || won ? 'is-answer' : ''}`}>
+              <div className="shot-form">
+                <CharacterSearch
+                  game={game}
+                  exclude={new Set()}
+                  busy={busy || !!won || !!over}
+                  plain
+                  placeholder={t('shot.search')}
+                  onPick={(entity) => void pick(entity)}
+                />
+              </div>
 
-            <div className="shot-keys">
-              <button type="button" className="ghost" disabled={busy} onClick={() => void send({ action: 'skip' })}>
-                {t('shot.skip')}
-              </button>
+              {(over || won) && (
+                <div className="shot-strip">
+                  <b className="shot-was">
+                    {won && (
+                      <span className="shot-gain">
+                        <CheckIcon />+{won.gained}
+                      </span>
+                    )}
+                    {won ? t('shot.was', { name: won.name }) : revealed ? t('shot.was', { name: name(revealed) }) : t('shot.over')}
+                  </b>
+                  <div className="shot-keys">
+                    {won ? (
+                      <button type="button" className="primary" onClick={goOn}>
+                        {t('shot.next')}
+                      </button>
+                    ) : (
+                      <>
+                        <button className="primary" disabled={busy} onClick={() => void start(true)}>
+                          {t('shot.again')}
+                        </button>
+                        <Link className="ghost" href={href.leaderboard(game.id, 'shot')} prefetch={false}>
+                          {t('shot.board')}
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </>
-        )}
-
-        {over && (
-          <div className="shot-done">
-            <span className="shot-count">{over.score}</span>
-            <small>{t('shot.overHint', { count: over.score })}</small>
-            {revealed && <b className="shot-was">{t('shot.was', { name: name(revealed) })}</b>}
-            {over.fresh && over.score > 0 ? (
-              <i className="shot-fresh">{t('shot.record')}</i>
-            ) : (
-              over.best > 0 && <small>{t('shot.bestWas', { count: over.best })}</small>
-            )}
-            <button className="primary" disabled={busy} onClick={() => void start(true)}>
-              {t('shot.again')}
-            </button>
-          </div>
         )}
       </PlayPanel>
 
@@ -259,5 +311,42 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
           document.body,
         )}
     </PlayBoard>
+  )
+}
+
+function Cell({ src, step, onOpen }: { src?: string; step: number; onOpen: (src: string) => void }) {
+  const { t } = useI18n()
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    setReady(false)
+    if (!src) return
+    let alive = true
+    const picture = new Image()
+    const done = () => alive && setReady(true)
+    picture.onload = done
+    picture.onerror = done
+    picture.src = src
+    if (picture.complete) done()
+    return () => {
+      alive = false
+    }
+  }, [src])
+
+  if (!src || !ready)
+    return (
+      <span className={`shot-cell locked ${src ? 'is-coming' : ''}`} title={t('shot.locked')}>
+        <span className="shot-logo" aria-hidden>
+          {BRAND.mark}
+        </span>
+        <b>{t(LEVEL_LABELS[step])}</b>
+      </span>
+    )
+
+  return (
+    <button key={src} type="button" className="shot-cell is-open" title={t('shot.open')} aria-label={t('shot.open')} onClick={() => onOpen(src)}>
+      <img src={src} alt="" draggable={false} />
+      <em>{t(LEVEL_LABELS[step])}</em>
+    </button>
   )
 }
