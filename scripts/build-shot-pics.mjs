@@ -6,7 +6,7 @@ import { PUBLIC, ROOT } from './lib.mjs'
 const DATA = path.join(ROOT, 'packages', 'game', 'data', 'shots.json')
 const SEEDS = path.join(ROOT, 'seeds', 'shots')
 const OUT = path.join(PUBLIC, 'shots')
-const SIZE = { width: 1024, height: 576 }
+const SIZE = { width: 1280, height: 720 }
 const CARD = { width: 288, height: 384 }
 const KINDS = ['.jpg', '.jpeg', '.png', '.webp', '.avif']
 
@@ -103,7 +103,7 @@ for (const folder of folders) {
         .resize({ ...SIZE, fit: 'cover', position: 'attention', kernel: 'lanczos3' })
         // дрібні джерела доводиться розтягувати — трохи повертаємо різкість
         .sharpen(stretched ? { sigma: 1.1, m1: 0.6, m2: 2 } : { sigma: 0.5 })
-        .webp({ quality: 82 })
+        .webp({ quality: 88 })
         .toFile(path.join(target, `${index}.webp`))
     }
     counts.push(files.length)
