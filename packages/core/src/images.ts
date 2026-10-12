@@ -133,3 +133,56 @@ export async function dropPages(game: GameId, id: number, from: number, to: numb
       .catch(() => undefined)
   }
 }
+
+const FRAME = { width: 1280, height: 720 }
+const SHOT_CARD = { width: 288, height: 384 }
+const SHOTS = 'shots'
+
+export const frameKey = (id: number, level: number, index: number) => `${SHOTS}/frames/${id}/${level}/${index}.webp`
+
+async function unbarred(source: Buffer) {
+  const full = await sharp(source).metadata()
+  const cut = await sharp(source)
+    .trim({ background: '#000000', threshold: 18 })
+    .toBuffer({ resolveWithObject: true })
+    .catch(() => null)
+  if (!cut) return source
+  const left = (cut.info.width * cut.info.height) / ((full.width ?? 1) * (full.height ?? 1))
+  return left > 0.5 ? cut.data : source
+}
+
+export async function uploadFrames(id: number, level: number, sources: Buffer[], from: number) {
+  for (const [step, source] of sources.entries()) {
+    const plain = await unbarred(source)
+    const { width = 0 } = await sharp(plain).metadata()
+    const stretched = width < FRAME.width
+    const frame = await sharp(plain)
+      .resize({ ...FRAME, fit: 'cover', position: 'attention', kernel: 'lanczos3' })
+      .sharpen(stretched ? { sigma: 1.1, m1: 0.6, m2: 2 } : { sigma: 0.5 })
+      .webp({ quality: 88 })
+      .toBuffer()
+    await put(frameKey(id, level, from + step), frame)
+  }
+  return sources.length
+}
+
+export async function dropFrame(id: number, level: number, index: number, count: number) {
+  for (let step = index; step < count - 1; step++) {
+    const next = await get(frameKey(id, level, step + 1))
+    await put(frameKey(id, level, step), next)
+  }
+  await s3()
+    .send(new DeleteObjectCommand({ Bucket: bucket(), Key: frameKey(id, level, count - 1) }))
+    .catch(() => undefined)
+}
+
+export async function uploadShotCard(id: number, level: number) {
+  const frame = await get(frameKey(id, level, 0)).catch(() => null)
+  if (!frame) return null
+  const card = await sharp(frame)
+    .resize({ ...SHOT_CARD, fit: 'cover', position: 'attention' })
+    .webp({ quality: 82 })
+    .toBuffer()
+  await put(`${SHOTS}/card/${id}.webp`, card)
+  return version(card)
+}

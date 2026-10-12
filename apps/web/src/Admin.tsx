@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { GAME_SPECS } from '@nanda/game'
+import Link from 'next/link'
 import { api } from './api'
+import { useHref } from './router'
 import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
 import Thumb from './Thumb'
@@ -37,6 +39,7 @@ const hasPicture = (row: Row) => !!row.image || (row.thumb ?? -1) >= 0
 const LAST_GAME = 'admin-game'
 
 export default function Admin() {
+  const href = useHref()
   const [gameId, setGameId] = useState<GameId>(GAMES[0].id)
   const [rows, setRows] = useState<Row[] | null>(null)
   const [options, setOptions] = useState<Record<string, string[]>>({})
@@ -174,6 +177,9 @@ export default function Admin() {
             </svg>
             <input placeholder="Поиск по имени" value={query} onChange={(e) => setQuery(e.target.value)} />
           </label>
+          <Link className="admin-more" href={href.adminShots}>
+            Кадры аниме
+          </Link>
           <label className="admin-date" title="Дата, на которую актуальны данные — показывается в игре">
             данные на
             <input type="date" value={updated} onChange={(e) => void saveUpdated(e.target.value)} />

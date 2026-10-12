@@ -7,6 +7,7 @@ import * as summary from '@nanda/core/endpoints/profile-summary'
 import * as quests from '@nanda/core/endpoints/quests'
 import * as push from '@nanda/core/endpoints/push'
 import * as adminImage from '@nanda/core/endpoints/admin-image'
+import * as adminShots from '@nanda/core/endpoints/admin-shots'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
@@ -94,6 +95,21 @@ export class GameController {
   @Post('admin/image')
   adminImage(@Req() req: Request, @Res() res: Response) {
     return bridge(adminImage.POST, req, res)
+  }
+
+  @Get('admin/shots')
+  adminShots(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminShots.GET, req, res)
+  }
+
+  @Post('admin/shots/frame')
+  adminShotUpload(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminShots.UPLOAD, req, res)
+  }
+
+  @Post('admin/shots/drop')
+  adminShotDrop(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminShots.DROP, req, res)
   }
 
   @Get('quests')
