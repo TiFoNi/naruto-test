@@ -3,6 +3,7 @@
 import BackButton from './BackButton'
 import { useI18n } from './i18n'
 import { useHref } from './router'
+import { WEEKDAYS } from './weekdays'
 
 function Head({ withMark }: { withMark?: boolean }) {
   return (
@@ -48,32 +49,150 @@ function PlayGhost() {
   )
 }
 
-function ProfileGhost() {
-  const { t } = useI18n()
+export function ProfileGhost({ own }: { own: boolean }) {
+  const { t, lang } = useI18n()
   const href = useHref()
 
   return (
-    <div className="profile sk-page">
+    <div className="profile sk-profile">
       <BackButton href={href.home}>{t('profile.back')}</BackButton>
       <div className="profile-grid">
         <div className="profile-column">
-          <span className="sk who" />
-          <span className="sk streak" />
-          <span className="sk activity" />
+          <section className="card profile-card">
+            <div className="profile-id">
+              <span className="sk ava" />
+              <div className="profile-names">
+                <span className="sk nick" />
+                <span className="sk tag" />
+              </div>
+            </div>
+            <div className="level-panel">
+              <div className="level-line">
+                <span className="sk chip" />
+                <span className="sk chip wide" />
+              </div>
+              <span className="sk bar" />
+              <div className="level-line">
+                <span className="sk chip" />
+                <span className="sk chip wide" />
+              </div>
+            </div>
+            <div className="profile-facts">
+              {Array.from({ length: 4 }, (_, index) => (
+                <span key={index} className="sk fact" />
+              ))}
+            </div>
+            {!own && (
+              <div className="profile-acts">
+                <span className="sk act" />
+                <span className="sk act" />
+              </div>
+            )}
+          </section>
+
+          {own && (
+            <section className="card streak-card">
+              <header>
+                <span className="sk title" />
+                <span className="sk chip" />
+              </header>
+              <div className="streak-now">
+                <span className="sk flame" />
+                <span className="sk count" />
+                <span className="sk days" />
+              </div>
+              <ul className="streak-week">
+                {WEEKDAYS[lang].map((name) => (
+                  <li key={name}>
+                    <span className="sk day" />
+                    <small>{name}</small>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          <section className="card activity-card">
+            <header>
+              <span className="sk title" />
+            </header>
+            <ul className="activity">
+              {Array.from({ length: 5 }, (_, index) => (
+                <li key={index}>
+                  <span className="sk dot" />
+                  <span className="sk row">
+                    <span className="sk row-main" />
+                    <span className="sk row-sub" />
+                  </span>
+                  <span className="sk when" />
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
+
         <div className="profile-middle">
           <section className="profile-metrics">
-            <span className="sk metric" />
-            <span className="sk metric" />
-            <span className="sk metric" />
-            <span className="sk metric" />
+            {Array.from({ length: 4 }, (_, index) => (
+              <div key={index} className="card">
+                <span className="sk chip" />
+                <span className="sk big" />
+              </div>
+            ))}
           </section>
           <div className="profile-middle-cols">
             <div className="profile-column">
-              <span className="sk panel-tall" />
+              <section className="card worlds-card">
+                <header>
+                  <div className="card-title">
+                    <span className="sk title" />
+                    <span className="sk chip wide" />
+                  </div>
+                </header>
+                <ul className="worlds">
+                  {Array.from({ length: 6 }, (_, index) => (
+                    <li key={index}>
+                      <span className="sk tag-box" />
+                      <span className="sk name" />
+                      <span className="sk count-mini" />
+                      <span className="sk bar" />
+                    </li>
+                  ))}
+                </ul>
+              </section>
             </div>
+
             <div className="profile-column">
-              <span className="sk panel-tall" />
+              <section className="card modes-card">
+                <header>
+                  <span className="sk title" />
+                  <span className="sk chip" />
+                </header>
+                <ul className="modes-list">
+                  {Array.from({ length: 10 }, (_, index) => (
+                    <li key={index}>
+                      <span className="sk name" />
+                      <span className="sk count-mini" />
+                      <span className="sk share" />
+                      <span className="sk bar" />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+
+              <section className="card soon-card">
+                <header>
+                  <span className="sk title" />
+                </header>
+                <span className="sk chip wide" />
+                <span className="sk chip wide" />
+                <ul className="soon-badges">
+                  {Array.from({ length: 6 }, (_, index) => (
+                    <li key={index} />
+                  ))}
+                </ul>
+                {own && <span className="sk open" />}
+              </section>
             </div>
           </div>
         </div>
@@ -168,7 +287,7 @@ function MatesGhost() {
 
 export default function PageSkeleton({ section }: { section?: string }) {
   if (section === 'play') return <PlayGhost />
-  if (section === 'profile' || section === 'u') return <ProfileGhost />
+  if (section === 'profile' || section === 'u') return <ProfileGhost own={section === 'profile'} />
   if (section === 'leaderboard') return <BoardGhost />
   if (section === 'achievements') return <AwardsGhost />
   if (section === 'settings') return <SettingsGhost />

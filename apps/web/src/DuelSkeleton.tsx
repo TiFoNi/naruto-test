@@ -4,6 +4,8 @@ import BackButton from './BackButton'
 import { useI18n } from './i18n'
 import { useHref } from './router'
 
+const PICKS = [0, 1, 2, 3, 4]
+
 export default function DuelSkeleton() {
   const { t } = useI18n()
   const href = useHref()
@@ -18,19 +20,34 @@ export default function DuelSkeleton() {
             <h1>{t('duel.newTitle')}</h1>
             <p className="muted">{t('duel.newLead')}</p>
           </div>
-          <span className="sk bar" />
+          <span className="sk room" />
         </header>
-        <div className="duel-setup-grid">
-          <div className="duel-setup-main">
-            <span className="sk tall" />
-            <span className="sk mid" />
-            <span className="sk mid" />
+
+        <section className="duel-arena">
+          <div className="duel-corner is-you">
+            <span className="sk face" />
+            <span className="sk name" />
+            <span className="sk note" />
           </div>
-          <aside className="duel-setup-side">
-            <span className="sk mid" />
-            <span className="sk short" />
-          </aside>
+          <span className="duel-vs" aria-hidden>
+            VS
+          </span>
+          <div className="duel-corner is-rival">
+            <span className="sk face" />
+            <span className="sk name" />
+            <span className="sk note" />
+          </div>
+        </section>
+
+        <div className="duel-picks">
+          {PICKS.map((one) => (
+            <span key={one} className="sk pick" />
+          ))}
         </div>
+
+        <footer className="duel-bar">
+          <span className="sk go" />
+        </footer>
       </div>
 
       <div className="sk-play">

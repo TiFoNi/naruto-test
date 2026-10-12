@@ -3092,25 +3092,221 @@ button.ghost.small {
   height: 148px;
 }
 
-.sk.who {
-  height: 302px;
-}
-
-.sk.streak {
-  height: 236px;
-}
-
-.sk.activity {
-  height: 284px;
-}
-
 .sk.metric {
   height: 108px;
 }
 
-.sk.panel-tall {
-  flex: 1 1 auto;
-  min-height: 430px;
+.sk-profile .card {
+  pointer-events: none;
+}
+
+.sk-profile .profile-id .sk.ava {
+  width: 84px;
+  height: 84px;
+  border-radius: 23px;
+}
+
+.sk-profile .profile-names .sk.nick {
+  width: min(100%, 150px);
+  height: 24px;
+  margin: 3px 0;
+  border-radius: 8px;
+}
+
+.sk-profile .profile-names .sk.tag {
+  width: 62px;
+  height: 15px;
+  margin-top: 4px;
+  border-radius: 7px;
+}
+
+.sk-profile .level-panel .level-line {
+  min-height: 18px;
+  align-items: center;
+}
+
+.sk-profile .level-line .sk.chip {
+  width: 74px;
+  height: 12px;
+  border-radius: 6px;
+}
+
+.sk-profile .level-line .sk.chip.wide {
+  width: min(45%, 118px);
+}
+
+.sk-profile .level-panel .sk.bar {
+  width: 100%;
+  height: 7px;
+  border-radius: 999px;
+}
+
+.sk-profile .profile-facts .sk.fact {
+  height: 92px;
+  border-radius: 12px;
+}
+
+.sk-profile .profile-acts .sk.act {
+  height: 46px;
+  border-radius: 14px;
+}
+
+.sk-profile .card header .sk.title {
+  width: min(100%, 132px);
+  height: 22px;
+  border-radius: 8px;
+}
+
+.sk-profile .card header .sk.chip,
+.sk-profile .card-title .sk.chip {
+  width: 92px;
+  height: 18px;
+  border-radius: 6px;
+}
+
+.sk-profile .card-title .sk.chip.wide {
+  width: min(100%, 170px);
+}
+
+.sk-profile .streak-now .sk.flame {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+}
+
+.sk-profile .streak-now .sk.count {
+  width: 42px;
+  height: 34px;
+  border-radius: 10px;
+}
+
+.sk-profile .streak-now .sk.days {
+  width: 104px;
+  height: 30px;
+  border-radius: 8px;
+}
+
+.sk-profile .streak-week .sk.day {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 10px;
+}
+
+.sk-profile .streak-week small {
+  color: var(--text-3);
+}
+
+.sk-profile .activity .sk.dot {
+  width: 10px;
+  height: 10px;
+  margin-top: 5px;
+  border-radius: 50%;
+}
+
+.sk-profile .activity .sk.row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  animation: none;
+}
+
+.sk-profile .activity .sk.row-main {
+  width: min(100%, 196px);
+  height: 18px;
+  border-radius: 7px;
+}
+
+.sk-profile .activity .sk.row-sub {
+  width: min(100%, 148px);
+  height: 15px;
+  border-radius: 6px;
+}
+
+.sk-profile .activity .sk.when {
+  width: 54px;
+  height: 12px;
+  margin-top: 3px;
+  border-radius: 6px;
+}
+
+.sk-profile .profile-metrics .sk.chip {
+  width: min(100%, 104px);
+  height: 16px;
+  border-radius: 6px;
+}
+
+.sk-profile .profile-metrics .sk.big {
+  width: 76px;
+  height: 33px;
+  border-radius: 10px;
+}
+
+.sk-profile .worlds .sk.tag-box {
+  grid-row: 1 / span 2;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+}
+
+.sk-profile .worlds .sk.name {
+  width: min(100%, 124px);
+  height: 16px;
+  margin: 3px 0;
+  border-radius: 7px;
+}
+
+.sk-profile .modes-list .sk.name {
+  width: min(100%, 136px);
+  height: 16px;
+  margin: 3px 0;
+  border-radius: 7px;
+}
+
+.sk-profile .sk.count-mini {
+  justify-self: end;
+  width: 76px;
+  height: 13px;
+  border-radius: 6px;
+}
+
+.sk-profile .modes-list .sk.share {
+  width: 44px;
+  height: 22px;
+  border-radius: 7px;
+}
+
+.sk-profile .worlds .sk.bar {
+  grid-column: 2 / -1;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+}
+
+.sk-profile .modes-list .sk.bar {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+}
+
+.sk-profile .soon-card .sk.chip.wide {
+  width: min(100%, 212px);
+  height: 13px;
+  border-radius: 6px;
+}
+
+.sk-profile .soon-card .sk.chip.wide + .sk.chip.wide {
+  width: min(100%, 148px);
+  margin-top: -2px;
+}
+
+.sk-profile .soon-card .sk.open {
+  height: 44px;
+  margin-top: auto;
+  border-radius: 13px;
 }
 
 .sk.season {

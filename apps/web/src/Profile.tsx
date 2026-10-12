@@ -12,6 +12,8 @@ import { useI18n } from './i18n'
 import { type Level } from './Quests'
 import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
+import { ProfileGhost } from './PageSkeleton'
+import { WEEKDAYS } from './weekdays'
 import { CalendarIcon, CheckIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
 import { useHref, useNavigate } from './router'
 import { kyivToday } from './stats'
@@ -65,12 +67,6 @@ type Summary = {
 type FriendState = 'none' | 'out' | 'in' | 'friends'
 
 const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
-const WEEKDAYS = {
-  ru: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
-  uk: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'],
-  en: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-} as const
-
 const DAYS = {
   ru: ['день подряд', 'дня подряд', 'дней подряд'],
   uk: ['день поспіль', 'дні поспіль', 'днів поспіль'],
@@ -127,9 +123,11 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
   const [friend, setFriend] = useState<FriendState>('none')
 
+  const [failed, setFailed] = useState(false)
+
   const load = useCallback(async () => {
     const { ok, data } = await api<Summary>(own ? 'profile/summary' : `profile/summary?id=${id}`)
-    if (!ok) return
+    if (!ok) return setFailed(true)
     if (own) knownSummary = data
     setSummary(data)
   }, [id, own])
@@ -193,6 +191,8 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     setCalling(false)
     if (ok && data.duel) navigate(href.duel(data.duel.code))
   }
+
+  if (!summary && !failed) return <ProfileGhost own={own} />
 
   const accuracy = summary ? percent(summary.totals.solved, summary.totals.played) : 0
   const average = summary && summary.totals.solved ? (summary.totals.guesses / summary.totals.solved).toFixed(1) : '—'
@@ -408,20 +408,10 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
             <div className="card">
               <span>{t('profile.duelWins')}</span>
               <b>{summary?.duels.wins ?? 0}</b>
-              {!!summary?.duels.played && (
-                <small>
-                  {percent(summary.duels.wins, summary.duels.played)}% · {summary.duels.wins}–{summary.duels.losses}
-                </small>
-              )}
             </div>
             <div className="card">
               <span>{t('profile.accuracy')}</span>
               <b>{summary?.totals.played ? `${accuracy}%` : '—'}</b>
-              {!!summary?.totals.played && (
-                <small>
-                  {summary.totals.solved} / {summary.totals.played}
-                </small>
-              )}
             </div>
             <div className="card">
               <span>{t('profile.avgGuesses')}</span>

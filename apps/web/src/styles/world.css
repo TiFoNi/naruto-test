@@ -16,7 +16,6 @@
   box-shadow:
     inset 0 1px 0 color-mix(in srgb, var(--game-accent, var(--accent)) 22%, transparent),
     0 16px 40px rgb(0 0 0 / 24%);
-  overflow: hidden;
 }
 
 .world-head-body {
