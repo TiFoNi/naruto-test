@@ -12,7 +12,7 @@ import type { Category, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
 import type { DuelView } from './useDuel'
-import { CopyIcon, ExitIcon, SwordsIcon } from './icons'
+import { CopyIcon, ExitIcon } from './icons'
 
 const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
@@ -315,12 +315,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
       {picks}
 
       <footer className="duel-bar">
-        <div className="duel-bar-text">
-          <b>{rival ? t('duel.readyHint') : t('duel.callTitle')}</b>
-          <p className="muted small">{!rival ? t('duel.readyLocked') : duel.you?.ready ? t('duel.readyWait') : t('duel.newLead')}</p>
-        </div>
         <button type="button" className="primary big" disabled={busy || !rival} onClick={() => onReady(!duel.you?.ready)}>
-          <SwordsIcon />
           {duel.you?.ready ? t('duel.readyCancel') : t('duel.ready')}
         </button>
       </footer>
