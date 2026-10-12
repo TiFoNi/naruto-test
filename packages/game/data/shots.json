@@ -15,7 +15,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4z0vy5"
+  "ver": "mv4zme4w"
  },
  {
   "id": 2,
@@ -33,7 +33,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4z0mul"
+  "ver": "mv4zm43d"
  },
  {
   "id": 3,
@@ -51,7 +51,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4z0l0f"
+  "ver": "mv4zm2ad"
  },
  {
   "id": 4,
@@ -69,7 +69,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4z0il0"
+  "ver": "mv4zlzw7"
  },
  {
   "id": 5,
@@ -87,7 +87,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4z0hj2"
+  "ver": "mv4zlyvm"
  },
  {
   "id": 6,
@@ -105,7 +105,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4z0jon"
+  "ver": "mv4zm0zn"
  },
  {
   "id": 7,
@@ -115,9 +115,15 @@
   "nameEn": "One-Punch Man",
   "aliases": "One Punch Man, ワンパンマン, OPM, Wanpanman, איש האגרוף הבודד, 一拳超人, วันพันช์แมน, Jagoan Sekali Pukul S1",
   "year": 2015,
-  "frames": [],
-  "answer": false,
-  "thumb": 0
+  "frames": [
+   4,
+   4,
+   3,
+   3
+  ],
+  "answer": true,
+  "thumb": 0,
+  "ver": "mv4zmavb"
  },
  {
   "id": 8,
@@ -135,7 +141,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4z0siw"
+  "ver": "mv4zm9lw"
  },
  {
   "id": 9,
@@ -177,7 +183,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4z0p44"
+  "ver": "mv4zm6ba"
  },
  {
   "id": 12,
@@ -495,7 +501,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4z0fqu"
+  "ver": "mv4zlx6d"
  },
  {
   "id": 38,
@@ -645,7 +651,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4z0xri"
+  "ver": "mv4zmfwy"
  },
  {
   "id": 50,
@@ -1227,7 +1233,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4z0edk"
+  "ver": "mv4zlvvm"
  },
  {
   "id": 98,
