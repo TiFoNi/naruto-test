@@ -154,7 +154,10 @@ function Frames({
   onNote: (note: string) => void
 }) {
   const [busy, setBusy] = useState<number | null>(null)
+  const [shown, setShown] = useState<{ level: number; index: number } | null>(null)
   const counts = countsOf(title)
+  const frameUrl = (level: number, index: number) =>
+    `${pics}/shots/frames/${title.id}/${level}/${index}.webp?v=${title.ver ?? ''}`
 
   const say = (text: string) => {
     onNote(text)
@@ -199,8 +202,10 @@ function Frames({
           <div className="shots-tiles">
             {Array.from({ length: counts[level] }, (_, index) => (
               <figure key={`${title.ver}-${index}`} className="shots-tile">
-                <img src={`${pics}/shots/frames/${title.id}/${level}/${index}.webp?v=${title.ver ?? ''}`} alt="" loading="lazy" />
-                <button type="button" onClick={() => void drop(level, index)} aria-label="Удалить кадр">
+                <button type="button" className="shots-open" onClick={() => setShown({ level, index })} aria-label="Открыть кадр">
+                  <img src={frameUrl(level, index)} alt="" loading="lazy" />
+                </button>
+                <button type="button" className="shots-drop" onClick={() => void drop(level, index)} aria-label="Удалить кадр">
                   ✕
                 </button>
               </figure>
@@ -222,6 +227,87 @@ function Frames({
           </div>
         </section>
       ))}
+
+      {shown && (
+        <Viewer
+          title={title}
+          counts={counts}
+          shown={shown}
+          url={frameUrl(shown.level, shown.index)}
+          onShow={setShown}
+          onClose={() => setShown(null)}
+        />
+      )}
+    </div>
+  )
+}
+
+const walk = (counts: number[], shown: { level: number; index: number }, step: number) => {
+  const flat = counts.flatMap((count, level) => Array.from({ length: count }, (_, index) => ({ level, index })))
+  const at = flat.findIndex((one) => one.level === shown.level && one.index === shown.index)
+  return flat[(at + step + flat.length) % flat.length] ?? shown
+}
+
+function Viewer({
+  title,
+  counts,
+  shown,
+  url,
+  onShow,
+  onClose,
+}: {
+  title: Title
+  counts: number[]
+  shown: { level: number; index: number }
+  url: string
+  onShow: (shown: { level: number; index: number }) => void
+  onClose: () => void
+}) {
+  useEffect(() => {
+    const key = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
+      if (event.key === 'ArrowRight') onShow(walk(counts, shown, 1))
+      if (event.key === 'ArrowLeft') onShow(walk(counts, shown, -1))
+    }
+    document.addEventListener('keydown', key)
+    return () => document.removeEventListener('keydown', key)
+  }, [counts, shown, onShow, onClose])
+
+  const save = async () => {
+    const answer = await fetch(url).catch(() => null)
+    if (!answer?.ok) return void window.open(url, '_blank', 'noreferrer')
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(await answer.blob())
+    link.download = `${title.id}-${LEVELS[shown.level].label}-${shown.index}.webp`
+    link.click()
+    URL.revokeObjectURL(link.href)
+  }
+
+  return (
+    <div className="shots-view" onClick={onClose} role="presentation">
+      <figure onClick={(event) => event.stopPropagation()}>
+        <img src={url} alt="" />
+        <figcaption>
+          <span>
+            {title.name ?? title.id} · {LEVELS[shown.level].label} · кадр {shown.index + 1}
+          </span>
+          <button type="button" onClick={() => onShow(walk(counts, shown, -1))} aria-label="Предыдущий">
+            ‹
+          </button>
+          <button type="button" onClick={() => onShow(walk(counts, shown, 1))} aria-label="Следующий">
+            ›
+          </button>
+          <a href={url} target="_blank" rel="noreferrer">
+            Открыть
+          </a>
+          <button type="button" onClick={() => void save()}>
+            Скачать
+          </button>
+          <button type="button" onClick={onClose} aria-label="Закрыть">
+            ✕
+          </button>
+        </figcaption>
+      </figure>
     </div>
   )
 }
