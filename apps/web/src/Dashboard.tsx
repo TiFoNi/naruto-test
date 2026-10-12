@@ -71,7 +71,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
 
   return (
     <article className="franchise" style={{ '--tab-accent': game.accent } as CSSProperties}>
-      <Link className="franchise-art" href={href.play(game.id, game.modes[0])} aria-label={l(game.label)} prefetch={false}>
+      <Link className="franchise-art" href={href.world(game.id)} aria-label={l(game.label)} prefetch={false}>
         {game.featured.map(({ id, image }, i) => (
           <img
             key={id}
@@ -101,7 +101,7 @@ function FranchiseCard({ game, eager }: { game: GameMeta; eager: boolean }) {
         <p>{l(game.description)}</p>
         <div className="franchise-modes">
           {extra > 0 ? (
-            <Link className="modes-more" href={href.play(game.id, modes[MODE_ROWS].id)} prefetch={false}>
+            <Link className="modes-more" href={href.world(game.id)} prefetch={false}>
               {t('dash.moreModes', { count: extra })}
             </Link>
           ) : (

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, type CSSProperties, type ReactNode } from 'react'
 import { statsKey, useAuth } from './auth'
-import { GRID_GAMES, dailyKey, hasDaily } from '@nanda/game'
+import { dailyKey, hasDaily } from '@nanda/game'
 import ClassicMode from './ClassicMode'
 import ImageMode from './ImageMode'
 import AbilityMode from './AbilityMode'
@@ -17,7 +17,7 @@ import { CalendarIcon, InfinityIcon, MedalIcon } from './icons'
 import type { Game } from './games/types'
 import WorldMark from './WorldMark'
 import { useI18n } from './i18n'
-import { MODES, type ModeId } from './modes'
+import type { ModeId } from './modes'
 import { useHref } from './router'
 import { emptyStats } from './stats'
 
@@ -61,7 +61,6 @@ export default function GameView({ game, mode, daily, about }: { game: Game; mod
       document.removeEventListener('keydown', escape)
     }
   }, [about])
-  const tabs = MODES.filter((m) => game.modes.includes(m.id) || (m.id === 'grid' && GRID_GAMES.includes(game.id)))
   const dailyModes = game.modes.filter(hasDaily)
   const dailyMode = hasDaily(mode) ? mode : (dailyModes[0] ?? mode)
 
@@ -86,25 +85,6 @@ export default function GameView({ game, mode, daily, about }: { game: Game; mod
               </Link>
             </div>
           )}
-          <div className="mode-tabs" role="tablist" data-tabs={tabs.length}>
-            {tabs.map((m) =>
-              daily && !hasDaily(m.id) ? (
-                <span key={m.id} role="tab" aria-selected={false} aria-disabled className="locked" title={t('mode.noDaily')}>
-                  {m.icon} {t(m.label)}
-                </span>
-              ) : (
-                <Link
-                  key={m.id}
-                  role="tab"
-                  aria-selected={mode === m.id}
-                  className={mode === m.id ? 'active' : ''}
-                  href={href.play(game.id, m.id, daily)}
-                >
-                  {m.icon} {t(m.label)}
-                </Link>
-              ),
-            )}
-          </div>
         </div>
 
       </header>

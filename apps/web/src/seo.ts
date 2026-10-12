@@ -67,6 +67,24 @@ const TAIL = {
   en: 'hints after every try, no daily limits.',
 }
 
+export async function worldMetadata(lang: Lang, gameId: string): Promise<Metadata> {
+  const game = (await gameMeta()).find((one) => one.id === gameId)
+  if (!game) return {}
+
+  const unit = UNIT[lang][game.unit]
+  const title = `${game.label[lang]} — ${ui['world.pick'][lang].toLowerCase()}`
+  const description = `${game.description[lang]} ${game.count} ${plural(lang, game.count, unit)}, ${TAIL[lang]}`
+  const path = `/${lang}/play/${gameId}`
+
+  return {
+    title,
+    description,
+    alternates: alternates(path),
+    openGraph: { title, description, url: `${SITE}${path}`, type: 'website' },
+    twitter: { card: 'summary_large_image' },
+  }
+}
+
 export async function playMetadata(lang: Lang, gameId: string, modeId: string, daily: boolean): Promise<Metadata> {
   const game = (await gameMeta()).find((g) => g.id === gameId)
   if (!game) return {}

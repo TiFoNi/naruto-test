@@ -17,6 +17,18 @@ const ui = {
   'oops.search': { ru: 'Поиск вселенной…', uk: 'Пошук всесвіту…', en: 'Search for a world…' },
   'oops.empty': { ru: 'По запросу «{query}» ничего нет', uk: 'За запитом «{query}» нічого немає', en: 'Nothing matches “{query}”' },
   'oops.home': { ru: 'На главную', uk: 'На головну', en: 'Back home' },
+  'world.pick': { ru: 'Выбери режим', uk: 'Обери режим', en: 'Pick a mode' },
+  'world.solved': { ru: 'Разгадано: {count}', uk: 'Розгадано: {count}', en: 'Solved: {count}' },
+  'world.fresh': { ru: 'Ещё не играл', uk: 'Ще не грав', en: 'Not played yet' },
+  'world.daily': { ru: 'Загадка дня', uk: 'Загадка дня', en: 'Daily puzzle' },
+  'world.dailyDone': { ru: 'Дня — пройдено', uk: 'Дня — пройдено', en: 'Daily done' },
+  'world.modes': {
+    ru: '{count} режим|{count} режима|{count} режимов',
+    uk: '{count} режим|{count} режими|{count} режимів',
+    en: '{count} mode|{count} modes',
+  },
+  'world.total': { ru: 'Разгадано {count}', uk: 'Розгадано {count}', en: '{count} solved' },
+  'world.play': { ru: 'Играть', uk: 'Грати', en: 'Play' },
   'nav.shop': { ru: 'Магазин', uk: 'Магазин', en: 'Shop' },
   'shop.title': { ru: 'Магазин', uk: 'Магазин', en: 'Shop' },
   'shop.lead': {

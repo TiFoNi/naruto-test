@@ -15,7 +15,7 @@ import SoloGrid from './SoloGrid'
 import { GRID_GAMES, hasDaily } from '@nanda/game'
 
 export default function PlayView({ game: gameId, mode: modeId, daily, about }: { game: string; mode: string; daily: boolean; about?: ReactNode }) {
-  const { t } = useI18n()
+  const { t, l } = useI18n()
   const href = useHref()
   const { user, loading } = useAuth()
   const game = GAMES.find((g) => g.id === (gameId as GameId))
@@ -28,7 +28,7 @@ export default function PlayView({ game: gameId, mode: modeId, daily, about }: {
   return (
     <div className="play">
       <div className="play-nav">
-        <BackButton href={href.home}>{t('play.back')}</BackButton>
+        <BackButton href={href.world(game.id)}>{l(game.label)}</BackButton>
       </div>
       <main>
         {solo ? (
