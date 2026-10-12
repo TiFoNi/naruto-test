@@ -226,6 +226,19 @@
   border-radius: 20px;
   background: var(--card);
   --medal: #c9d1dc;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.25s,
+    transform 0.2s;
+}
+
+.lb-step:not(.vacant):hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--medal) 60%, var(--line));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--medal) 28%, transparent),
+    0 0 18px color-mix(in srgb, var(--medal) 24%, transparent),
+    0 14px 32px rgb(0 0 0 / 28%);
 }
 
 .lb-step.silver {
@@ -240,7 +253,17 @@
   --medal: #f5c451;
   padding-top: 42px;
   border-color: color-mix(in srgb, #f5c451 42%, var(--line));
-  background: linear-gradient(180deg, color-mix(in srgb, #f5c451 10%, var(--card)), var(--card) 60%);
+  background:
+    radial-gradient(120% 90% at 50% -10%, color-mix(in srgb, #f5c451 26%, transparent), transparent 62%),
+    linear-gradient(180deg, color-mix(in srgb, #f5c451 10%, var(--card)), var(--card) 60%);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #f5c451 38%, transparent),
+    0 0 26px color-mix(in srgb, #f5c451 16%, transparent),
+    0 18px 42px rgb(0 0 0 / 30%);
+}
+
+.lb-crown {
+  filter: drop-shadow(0 0 10px color-mix(in srgb, #f5c451 55%, transparent));
 }
 
 .lb-crown {

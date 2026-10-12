@@ -6955,12 +6955,32 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
 }
 
 .award {
-  transition: border-color 0.15s, transform 0.15s;
+  transition:
+    border-color 0.2s,
+    transform 0.2s,
+    box-shadow 0.25s;
 }
 
 .award:has(.award-open:hover:not(:disabled)) {
   border-color: color-mix(in srgb, var(--tier) 70%, transparent);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 6%),
+    0 0 0 1px color-mix(in srgb, var(--tier) 30%, transparent),
+    0 0 18px color-mix(in srgb, var(--tier) 28%, transparent),
+    0 14px 34px color-mix(in srgb, var(--tier) 16%, transparent);
+}
+
+.award.is-ready {
+  border-color: color-mix(in srgb, var(--tier) 45%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 5%),
+    0 0 14px color-mix(in srgb, var(--tier) 20%, transparent),
+    0 18px 38px rgb(0 0 0 / 22%);
+}
+
+.award.done {
+  border-color: color-mix(in srgb, var(--tier) 26%, transparent);
 }
 
 .award-open:disabled {
