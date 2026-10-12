@@ -15,7 +15,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4dwp4y"
+  "ver": "mv4yi5ee"
  },
  {
   "id": 2,
@@ -33,7 +33,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4dwfvk"
+  "ver": "mv4yhwgl"
  },
  {
   "id": 3,
@@ -51,7 +51,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4dwdxt"
+  "ver": "mv4yhunt"
  },
  {
   "id": 4,
@@ -61,9 +61,15 @@
   "nameEn": "Death Note",
   "aliases": "DEATH NOTE, デスノート, 死亡笔记, מחברת המוות, Notatnik śmierci, Carnet de la Mort, สมุดโน้ตกระชากวิญญาณ, مذكرة الموت",
   "year": 2006,
-  "frames": [],
-  "answer": false,
-  "thumb": 0
+  "frames": [
+   2,
+   4,
+   2,
+   2
+  ],
+  "answer": true,
+  "thumb": 0,
+  "ver": "mv4yhsbd"
  },
  {
   "id": 5,
@@ -73,9 +79,15 @@
   "nameEn": "My Hero Academia",
   "aliases": "Boku no Hero Academia, 僕のヒーローアカデミア, BNHA, MHA, 나의 히어로 아카데미아 1기, 나히아 1기, אקדמיית הגיבורים שלי, 我的英雄学院",
   "year": 2016,
-  "frames": [],
-  "answer": false,
-  "thumb": 0
+  "frames": [
+   5,
+   7,
+   6,
+   6
+  ],
+  "answer": true,
+  "thumb": 0,
+  "ver": "mv4yhrb1"
  },
  {
   "id": 6,
@@ -85,9 +97,15 @@
   "nameEn": "Hunter x Hunter (2011)",
   "aliases": "HUNTER×HUNTER (2011), ハンター×ハンター, HxH, 全职猎人, האנטר האנטר, ฮันเตอร์ x ฮันเตอร์, القناص , Мисливець X Мисливець",
   "year": 2011,
-  "frames": [],
-  "answer": false,
-  "thumb": 0
+  "frames": [
+   4,
+   4,
+   4,
+   3
+  ],
+  "answer": true,
+  "thumb": 0,
+  "ver": "mv4yhtd6"
  },
  {
   "id": 7,
@@ -117,7 +135,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4dwlu2"
+  "ver": "mv4yi22y"
  },
  {
   "id": 9,
@@ -159,7 +177,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4dwibu"
+  "ver": "mv4yhyp8"
  },
  {
   "id": 12,
@@ -477,7 +495,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4dwb6h"
+  "ver": "mv4yhpn7"
  },
  {
   "id": 38,
@@ -627,7 +645,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4dwqx7"
+  "ver": "mv4yi77k"
  },
  {
   "id": 50,
@@ -1209,7 +1227,7 @@
   ],
   "answer": true,
   "thumb": 0,
-  "ver": "mv4dw9vh"
+  "ver": "mv4yhobi"
  },
  {
   "id": 98,
