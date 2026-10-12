@@ -1,16 +1,18 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import { BOARD_DEFAULT, BOARD_SIZES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, GRID_GAMES } from '@nanda/game'
 import Avatar from './Avatar'
+import Picker from './Picker'
+import WorldMark from './WorldMark'
 import { api } from './api'
+import { useAuth } from './auth'
 import { GAMES, gameById } from './games'
 import type { Category, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
-import WorldMark from './WorldMark'
 import type { DuelView } from './useDuel'
-import { CopyIcon, ExitIcon, LinkIcon, SwordsIcon } from './icons'
+import { CopyIcon, ExitIcon, SwordsIcon } from './icons'
 
 const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
@@ -21,7 +23,6 @@ const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'sport', title: 'dash.sport' },
 ]
 
-type Rival = { id: string; nickname: string; wins: number; losses: number; avatar?: string | null }
 type Found = { id: string; nickname: string; tag?: string | null; avatar?: string | null }
 type Mate = { id: string; nickname: string; tag: string | null; avatar?: string | null }
 
@@ -44,12 +45,12 @@ const duelMode = (game: { modes: readonly string[] }, current: string | null) =>
 
 export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady, onLeave }: Props) {
   const { t, l } = useI18n()
+  const { duels } = useAuth()
   const host = duel.host
   const game = gameById((duel.game ?? 'naruto') as GameId)
   const [category, setCategory] = useState<Category>(game.category)
   const [query, setQuery] = useState('')
   const [found, setFound] = useState<Found[]>([])
-  const [rivals, setRivals] = useState<Rival[]>([])
   const [mates, setMates] = useState<Mate[]>([])
   const [copied, setCopied] = useState(false)
 
@@ -59,9 +60,8 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
 
   useEffect(() => {
     let alive = true
-    void api<{ rivals?: Rival[]; friends?: Mate[] }>('duel', { action: 'rivals' }).then(({ ok, data }) => {
+    void api<{ friends?: Mate[] }>('duel', { action: 'rivals' }).then(({ ok, data }) => {
       if (!alive || !ok) return
-      setRivals(data.rivals ?? [])
       setMates(data.friends ?? [])
     })
     return () => {
@@ -83,10 +83,9 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
   }, [query])
 
   const worlds = useMemo(() => GAMES.filter((one) => one.category === category && duelReady(one)), [category])
-  const modes = MODES.filter(
-    (mode) =>
-      DUEL_MODES.includes(mode.id) &&
-      (mode.id === 'who' || (mode.id === 'grid' ? GRID_GAMES.includes(game.id) : game.modes.includes(mode.id))),
+  const modes = useMemo(
+    () => MODES.filter((one) => DUEL_MODES.includes(one.id as never) && (one.id === 'who' || game.modes.includes(one.id) || (one.id === 'grid' && GRID_GAMES.includes(game.id)))),
+    [game],
   )
 
   const copy = () => {
@@ -113,308 +112,218 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
     value >= 120 && value % 60 === 0 ? t('duel.minutesShort', { count: value / 60 }) : t('duel.secondsShort', { count: value })
 
   const rival = duel.rival
+  const you = duel.you
   const waiting = duel.invited
-  const hostSide = duel.host ? duel.you : duel.rival
-  const guestSide = duel.host ? duel.rival : duel.you
+  const played = duels.played
+  const share = played ? Math.round((duels.wins / played) * 100) : 0
+  const suggested = [...found, ...mates.filter((one) => !found.some((f) => f.id === one.id))].slice(0, 6)
+
+  const picks = (
+    <div className="duel-picks">
+      <Picker
+        rich
+        disabled={!host || busy}
+        label={t(CATEGORIES.find((one) => one.id === category)?.title ?? 'dash.anime')}
+        value={category}
+        onChange={(next) => {
+          setCategory(next as Category)
+          const first = GAMES.find((one) => one.category === next && duelReady(one))
+          if (first && host) onSetup({ game: first.id, mode: duelMode(first, duel.mode) })
+        }}
+        options={CATEGORIES.filter((one) => GAMES.some((g) => g.category === one.id && duelReady(g))).map((one) => ({
+          value: one.id,
+          label: t(one.title),
+          hint: t('duel.category').toUpperCase(),
+        }))}
+      />
+
+      <Picker
+        rich
+        disabled={!host || busy}
+        label={l(game.label)}
+        value={game.id}
+        onChange={(next) => onSetup({ game: next, mode: duelMode(gameById(next as GameId), duel.mode) })}
+        options={worlds.map((one) => ({
+          value: one.id,
+          label: l(one.label),
+          accent: one.accent,
+          hint: t('lb.world').toUpperCase(),
+          media: <WorldMark game={one.id} className="picker-mark" style={{ '--tab-accent': one.accent } as CSSProperties} />,
+        }))}
+      />
+
+      <Picker
+        rich
+        disabled={!host || busy}
+        label={t(modes.find((one) => one.id === duel.mode)?.label ?? 'mode.classic')}
+        value={duel.mode ?? modes[0]?.id ?? 'classic'}
+        onChange={(next) => onSetup({ mode: next })}
+        options={modes.map((one) => ({
+          value: one.id,
+          label: t(one.label),
+          hint: t('duel.mode').toUpperCase(),
+          media: (
+            <span className="picker-mark" aria-hidden>
+              {one.icon}
+            </span>
+          ),
+        }))}
+      />
+
+      <Picker
+        rich
+        disabled={!host || busy}
+        label={t('duel.rounds', { count: duel.best })}
+        value={String(duel.best)}
+        onChange={(next) => onSetup({ best: Number(next) })}
+        options={DUEL_ROUNDS.map((value) => ({
+          value: String(value),
+          label: t('duel.rounds', { count: value }),
+          hint: t('duel.roundsTitle').toUpperCase(),
+        }))}
+      />
+
+      <Picker
+        rich
+        disabled={!host || busy}
+        label={timeLabel(duel.seconds)}
+        value={String(duel.seconds)}
+        onChange={(next) => onSetup({ seconds: Number(next) })}
+        options={DUEL_SECONDS.map((value) => ({
+          value: String(value),
+          label: timeLabel(value),
+          hint: t('duel.timeTitle').toUpperCase(),
+        }))}
+      />
+
+      {duel.mode === 'who' && (
+        <Picker
+          rich
+          disabled={!host || busy}
+          label={`${duel.size ?? BOARD_DEFAULT}×${duel.size ?? BOARD_DEFAULT}`}
+          value={String(duel.size ?? BOARD_DEFAULT)}
+          onChange={(next) => onSetup({ size: Number(next) })}
+          options={BOARD_SIZES.filter((value) => (duel.sizes ?? BOARD_SIZES).includes(value)).map((value) => ({
+            value: String(value),
+            label: `${value}×${value}`,
+            hint: t('who.size').toUpperCase(),
+          }))}
+        />
+      )}
+
+      {duel.mode === 'grid' && (
+        <Picker
+          rich
+          disabled={!host || busy}
+          label={t(duel.strict ? 'grid.strictOn' : 'grid.strictOff')}
+          value={duel.strict ? 'on' : 'off'}
+          onChange={(next) => onSetup({ strict: next === 'on' })}
+          options={[
+            { value: 'off', label: t('grid.strictOff'), hint: t('grid.strictTitle').toUpperCase() },
+            { value: 'on', label: t('grid.strictOn'), hint: t('grid.strictTitle').toUpperCase() },
+          ]}
+        />
+      )}
+    </div>
+  )
 
   return (
-    <div className="duel-setup">
-      <header className="duel-setup-head">
-        <div>
+    <div className={`duel-setup ${host ? '' : 'is-guest'}`}>
+      <header className="duel-top">
+        <div className="duel-top-name">
           <h1>{t('duel.newTitle')}</h1>
           <p className="muted">{t('duel.newLead')}</p>
         </div>
-        <div className="duel-code">
+        <div className="duel-room">
           <span className="muted">{t('duel.codeLabel')}</span>
           <b>{duel.code}</b>
           <button type="button" className="ghost" onClick={copy}>
             <CopyIcon />
             {copied ? t('duel.copied') : t('duel.copyLink')}
           </button>
-          <button type="button" className="duel-leave" onClick={onLeave} disabled={busy}>
+          <button type="button" className="duel-leave" onClick={onLeave} disabled={busy} aria-label={t('duel.leave')}>
             <ExitIcon />
-            {t('duel.leave')}
           </button>
         </div>
       </header>
 
-      <div className="duel-setup-grid">
-        <div className="duel-setup-main">
-          <section className="card duel-step">
-            <div className="duel-step-head">
-              <h2>
-                <i>1</i>
-                {t('duel.stepWorld')}
-              </h2>
-              <div className="duel-cats">
-                {CATEGORIES.filter((one) => GAMES.some((g) => g.category === one.id && duelReady(g))).map((one) => (
-                  <button
-                    key={one.id}
-                    type="button"
-                    className={category === one.id ? 'active' : ''}
-                    disabled={!host}
-                    onClick={() => setCategory(one.id)}
-                  >
-                    {t(one.title)}
-                  </button>
-                ))}
-              </div>
+      <section className="duel-arena">
+        <div className="duel-corner is-you">
+          {you && <Avatar className="duel-face" id={you.id} name={you.nickname} avatar={you.avatar} />}
+          <b>{you?.nickname ?? t('duel.youSide')}</b>
+          <small>
+            {t('duel.youSide')} · {t(host ? 'duel.hostSide' : 'duel.guestSide')}
+          </small>
+          {played > 0 && (
+            <div className="duel-chips-row">
+              <span>{t('duel.wins', { count: share })}</span>
+              <span>{t('duel.played', { count: played })}</span>
             </div>
-
-            <div className="duel-worlds">
-              {worlds.map((one) => (
-                <button
-                  key={one.id}
-                  type="button"
-                  className={`duel-world ${duel.game === one.id ? 'active' : ''}`}
-                  style={{ '--game': one.accent } as React.CSSProperties}
-                  disabled={!host || busy}
-                  onClick={() => onSetup({ game: one.id, mode: duelMode(one, duel.mode) })}
-                >
-                  <WorldMark game={one.id} className="duel-world-mark" />
-                  <span>{l(one.label)}</span>
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <section className="card duel-step">
-            <div className="duel-step-head">
-              <h2>
-                <i>2</i>
-                {t('duel.stepMode')}
-              </h2>
-              <span className="muted small">{t('duel.modesFor', { game: l(game.label) })}</span>
-            </div>
-            <div className="duel-modes">
-              {modes.map((mode) => (
-                <button
-                  key={mode.id}
-                  type="button"
-                  className={`duel-mode ${duel.mode === mode.id ? 'active' : ''}`}
-                  disabled={!host || busy}
-                  onClick={() => onSetup({ mode: mode.id })}
-                >
-                  <span className="duel-mode-icon" aria-hidden>
-                    {mode.icon}
-                  </span>
-                  <span>
-                    <b>{t(mode.label)}</b>
-                    <small>{t(mode.description)}</small>
-                  </span>
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <section className="card duel-step">
-            <div className="duel-step-head">
-              <h2>
-                <i>3</i>
-                {t('duel.stepRules')}
-              </h2>
-            </div>
-            <div className={`duel-rules ${duel.mode === 'who' ? 'with-board' : ''} ${duel.mode === 'grid' ? 'with-strict' : ''}`}>
-              <div>
-                <span className="duel-rules-title">{t('duel.roundsTitle')}</span>
-                <div className="duel-chips">
-                  {DUEL_ROUNDS.map((value) => (
-                    <button
-                      key={value}
-                      type="button"
-                      className={duel.best === value ? 'active' : ''}
-                      disabled={!host || busy}
-                      onClick={() => onSetup({ best: value })}
-                    >
-                      {value}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              {duel.mode === 'who' && (
-                <div>
-                  <span className="duel-rules-title">{t('who.size')}</span>
-                  <div className="duel-chips">
-                    {BOARD_SIZES.map((value) => (
-                      <button
-                        key={value}
-                        type="button"
-                        className={(duel.size ?? BOARD_DEFAULT) === value ? 'active' : ''}
-                        disabled={!host || busy || !(duel.sizes ?? BOARD_SIZES).includes(value)}
-                        title={(duel.sizes ?? BOARD_SIZES).includes(value) ? undefined : t('who.sizeShort', { count: value * value })}
-                        onClick={() => onSetup({ size: value })}
-                      >
-                        {value}×{value}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {duel.mode === 'grid' && (
-                <div>
-                  <span className="duel-rules-title">{t('grid.strictTitle')}</span>
-                  <div className="duel-chips wide">
-                    <button
-                      type="button"
-                      className={duel.strict ? '' : 'active'}
-                      disabled={!host || busy}
-                      onClick={() => onSetup({ strict: false })}
-                    >
-                      {t('grid.strictOff')}
-                    </button>
-                    <button
-                      type="button"
-                      className={duel.strict ? 'active' : ''}
-                      disabled={!host || busy}
-                      onClick={() => onSetup({ strict: true })}
-                    >
-                      {t('grid.strictOn')}
-                    </button>
-                  </div>
-                </div>
-              )}
-              <div>
-                <span className="duel-rules-title">{t('duel.timeTitle')}</span>
-                <div className="duel-chips">
-                  {DUEL_SECONDS.map((value) => (
-                    <button
-                      key={value}
-                      type="button"
-                      className={duel.seconds === value ? 'active' : ''}
-                      disabled={!host || busy}
-                      onClick={() => onSetup({ seconds: value })}
-                    >
-                      {timeLabel(value)}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <p className="duel-note">
-              {t(duel.mode === 'who' ? 'duel.rulesWho' : 'duel.rulesNote', {
-                needed: duel.needed,
-                best: duel.best,
-                time: timeLabel(duel.seconds),
-              })}
-            </p>
-          </section>
+          )}
+          <em className={you?.ready ? 'on' : ''}>{you?.ready ? t('duel.isReady') : t('duel.notReady')}</em>
         </div>
 
-        <aside className="duel-setup-side">
-          <section className="card duel-seats">
-            {hostSide ? (
-              <div className="duel-seat">
-                <span className="duel-seat-tag">{t('duel.host')}</span>
-                <Avatar id={hostSide.id} name={hostSide.nickname} avatar={hostSide.avatar} />
-                <b>{hostSide.nickname}</b>
-                <em className={hostSide.ready ? 'on' : ''}>{hostSide.ready ? t('duel.isReady') : t('duel.notReady')}</em>
-              </div>
-            ) : (
-              <div className="duel-seat empty">
-                <i aria-hidden>+</i>
-                <span>{t('duel.waitingRival')}</span>
-              </div>
-            )}
-            <span className="duel-seats-vs">VS</span>
-            {guestSide ? (
-              <div className="duel-seat">
-                <Avatar id={guestSide.id} name={guestSide.nickname} avatar={guestSide.avatar} />
-                <b>{guestSide.nickname}</b>
-                <em className={guestSide.ready ? 'on' : ''}>{guestSide.ready ? t('duel.isReady') : t('duel.notReady')}</em>
-              </div>
-            ) : (
-              <div className="duel-seat empty">
-                <i aria-hidden>+</i>
-                <span>{waiting ? t('duel.waitingInvited', { name: waiting }) : t('duel.waitingRival')}</span>
-                {duel.declined && <em className="off">{t('duel.inviteDeclined')}</em>}
-                {duel.left && <em className="off">{t('duel.rivalLeft', { name: duel.left })}</em>}
-              </div>
-            )}
-          </section>
+        <span className="duel-vs" aria-hidden>
+          VS
+        </span>
 
-          {host && !rival && (
-            <section className="card duel-invite-box">
-              <span className="duel-rules-title">{t('duel.inviteTitle')}</span>
-              <input value={query} placeholder={t('duel.invitePlaceholder')} onChange={(e) => setQuery(e.target.value)} />
-              {found.length > 0 && (
-                <ul className="duel-found">
-                  {found.map((one) => (
+        <div className="duel-corner is-rival">
+          {rival ? (
+            <>
+              <Avatar className="duel-face" id={rival.id} name={rival.nickname} avatar={rival.avatar} />
+              <b>{rival.nickname}</b>
+              <small>{t('duel.rivalSide')}</small>
+              <em className={rival.ready ? 'on' : ''}>{rival.ready ? t('duel.isReady') : t('duel.notReady')}</em>
+            </>
+          ) : (
+            <div className="duel-call">
+              <b>{t('duel.callTitle')}</b>
+              <p className="muted small">{waiting ? t('duel.waitingInvited', { name: waiting }) : t('duel.callLead')}</p>
+
+              <div className="duel-call-row">
+                <input value={query} placeholder={t('duel.invitePlaceholder')} onChange={(event) => setQuery(event.target.value)} />
+                <button
+                  type="button"
+                  className="ghost"
+                  disabled={busy || !suggested.length}
+                  onClick={() => suggested[0] && invite(suggested[0].id)}
+                >
+                  {t('duel.callAction')}
+                </button>
+              </div>
+
+              {suggested.length > 0 && (
+                <ul className="duel-call-list">
+                  {suggested.map((one) => (
                     <li key={one.id}>
-                      <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
-                      <b>
-                        {one.nickname}
-                        {one.tag && <i className="player-tag">#{one.tag}</i>}
-                      </b>
-                      <button type="button" className="ghost" disabled={busy} onClick={() => invite(one.id)}>
-                        {t('duel.invite')}
+                      <button type="button" disabled={busy} onClick={() => invite(one.id)}>
+                        <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
+                        <b>{one.nickname}</b>
                       </button>
                     </li>
                   ))}
                 </ul>
               )}
 
-              {mates.length > 0 && (
-                <>
-                  <span className="duel-rules-title">{t('friends.title')}</span>
-                  <ul className="duel-found">
-                    {mates.map((one) => (
-                      <li key={one.id}>
-                        <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
-                        <b>
-                          {one.nickname}
-                          {one.tag && <i className="player-tag">#{one.tag}</i>}
-                        </b>
-                        <button type="button" className="ghost" disabled={busy} onClick={() => invite(one.id)}>
-                          {t('duel.invite')}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-
-              {rivals.length > 0 && (
-                <>
-                  <span className="duel-rules-title">{t('duel.recent')}</span>
-                  <ul className="duel-found">
-                    {rivals.map((one) => (
-                      <li key={one.id}>
-                        <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
-                        <span className="duel-found-name">
-                          <b>{one.nickname}</b>
-                          <small>{t('duel.recentScore', { wins: one.wins, losses: one.losses })}</small>
-                        </span>
-                        <button type="button" className="ghost" disabled={busy} onClick={() => invite(one.id)}>
-                          {t('duel.invite')}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-
-              <button type="button" className="duel-copy-line" onClick={copy}>
-                <LinkIcon />
-                {copied ? t('duel.copied') : t('duel.orCopy')}
-              </button>
-            </section>
-          )}
-
-          <section className="card duel-go">
-            <div className="duel-summary">
-              <em>{l(game.label)}</em>
-              <em>{t(MODES.find((m) => m.id === duel.mode)?.label ?? 'mode.classic')}</em>
-              <em>{t('duel.rounds', { count: duel.best })}</em>
-              <em>{t('duel.timeShort', { time: timeLabel(duel.seconds) })}</em>
+              {duel.declined && <em className="off">{t('duel.inviteDeclined')}</em>}
+              {duel.left && <em className="off">{t('duel.rivalLeft', { name: duel.left })}</em>}
             </div>
-            <button type="button" className="primary big" disabled={busy || !rival} onClick={() => onReady(!duel.you?.ready)}>
-              <SwordsIcon />
-              {duel.you?.ready ? t('duel.readyCancel') : t('duel.ready')}
-            </button>
-            <p className="muted small">{!rival ? t('duel.readyLocked') : duel.you?.ready ? t('duel.readyWait') : t('duel.readyHint')}</p>
-          </section>
-        </aside>
-      </div>
+          )}
+        </div>
+      </section>
+
+      {picks}
+
+      <footer className="duel-bar">
+        <div className="duel-bar-text">
+          <b>{rival ? t('duel.readyHint') : t('duel.callTitle')}</b>
+          <p className="muted small">{!rival ? t('duel.readyLocked') : duel.you?.ready ? t('duel.readyWait') : t('duel.newLead')}</p>
+        </div>
+        <button type="button" className="primary big" disabled={busy || !rival} onClick={() => onReady(!duel.you?.ready)}>
+          <SwordsIcon />
+          {duel.you?.ready ? t('duel.readyCancel') : t('duel.ready')}
+        </button>
+      </footer>
     </div>
   )
 }

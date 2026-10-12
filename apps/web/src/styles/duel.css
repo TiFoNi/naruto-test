@@ -1962,3 +1962,387 @@ html[data-duel='play'] .duel-ghosts .sk-play {
     font-size: 9.5px;
   }
 }
+
+.duel-setup {
+  --you: var(--accent);
+  --rival: #8b78ff;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.duel-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.duel-top-name h1 {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 34px);
+}
+
+.duel-top-name p {
+  margin: 4px 0 0;
+  max-width: 560px;
+  font-size: 13.5px;
+}
+
+.duel-room {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  font-size: 13px;
+}
+
+.duel-room b {
+  font-family: var(--display);
+  letter-spacing: 0.04em;
+}
+
+.duel-room .ghost {
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.duel-leave {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+}
+
+.duel-leave:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--wrong) 60%, transparent);
+  color: var(--wrong-text, #ff8f99);
+}
+
+.duel-arena {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 10px;
+  min-height: 330px;
+  padding: 34px 26px;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background:
+    linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--you) 26%, transparent) 0%,
+      color-mix(in srgb, var(--you) 9%, transparent) 34%,
+      transparent 48%,
+      transparent 52%,
+      color-mix(in srgb, var(--rival) 9%, transparent) 66%,
+      color-mix(in srgb, var(--rival) 28%, transparent) 100%
+    ),
+    var(--card);
+  overflow: hidden;
+}
+
+.duel-arena::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  width: 1px;
+  height: 140%;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, #ffffff 14%, transparent), transparent);
+  transform: rotate(10deg);
+  pointer-events: none;
+}
+
+.duel-corner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 18px 16px;
+  text-align: center;
+}
+
+.duel-corner .duel-face + b {
+  margin-top: 8px;
+}
+
+.duel-corner b {
+  font-family: var(--display);
+  font-size: clamp(19px, 2.6vw, 26px);
+  line-height: 1.1;
+}
+
+.duel-corner small {
+  color: var(--text-3);
+  font-size: 12.5px;
+}
+
+.duel-corner em {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-3);
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.duel-corner em.on {
+  color: var(--correct);
+}
+
+.duel-corner em.off {
+  color: var(--wrong-text, #ff8f99);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.duel-face {
+  width: 88px;
+  height: 88px;
+  border-radius: 26px;
+  font-size: 34px;
+}
+
+.duel-corner.is-you .duel-face {
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--you) 60%, transparent),
+    0 0 26px color-mix(in srgb, var(--you) 32%, transparent);
+}
+
+.duel-corner.is-rival .duel-face {
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--rival) 60%, transparent),
+    0 0 26px color-mix(in srgb, var(--rival) 32%, transparent);
+}
+
+.duel-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.duel-chips-row span {
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card-2);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.duel-arena .duel-vs {
+  align-self: center;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  font-family: var(--display);
+  font-size: clamp(42px, 7.5vw, 74px);
+  line-height: 1;
+  background: linear-gradient(100deg, var(--you), var(--rival));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.duel-call {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+}
+
+.duel-call > b {
+  font-family: var(--display);
+  font-size: 20px;
+  text-align: center;
+}
+
+.duel-call > p {
+  margin: 0;
+  text-align: center;
+}
+
+.duel-call-row {
+  display: flex;
+  gap: 8px;
+}
+
+.duel-call-row input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+
+.duel-call-row input:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--rival) 55%, transparent);
+}
+
+.duel-call-row .ghost {
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-size: 13.5px;
+}
+
+.duel-call-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.duel-call-list button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  padding: 10px 8px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card-2);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.2s;
+}
+
+.duel-call-list button:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--rival) 60%, transparent);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--rival) 22%, transparent);
+}
+
+.duel-call-list b {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.duel-call-list small {
+  color: var(--text-3);
+  font-size: 11.5px;
+}
+
+.duel-picks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.duel-picks .picker.rich {
+  flex: 1 1 auto;
+  max-width: none;
+}
+
+.duel-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--card);
+}
+
+.duel-bar-text {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.duel-bar-text b {
+  font-size: 15px;
+}
+
+.duel-bar-text p {
+  margin: 2px 0 0;
+}
+
+.duel-bar .primary.big {
+  min-width: 220px;
+  height: 56px;
+  margin: 0;
+  justify-content: center;
+  border-radius: 16px;
+  font-size: 17px;
+  box-shadow: 0 0 26px color-mix(in srgb, var(--accent) 34%, transparent);
+}
+
+@media (max-width: 760px) {
+  .duel-arena {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px;
+  }
+
+  .duel-arena {
+    background:
+      linear-gradient(
+        170deg,
+        color-mix(in srgb, var(--you) 24%, transparent) 0%,
+        color-mix(in srgb, var(--you) 8%, transparent) 32%,
+        transparent 48%,
+        transparent 52%,
+        color-mix(in srgb, var(--rival) 8%, transparent) 68%,
+        color-mix(in srgb, var(--rival) 26%, transparent) 100%
+      ),
+      var(--card);
+  }
+
+  .duel-arena::after {
+    display: none;
+  }
+
+  .duel-arena .duel-vs {
+    justify-self: center;
+    padding: 2px 0;
+  }
+
+  .duel-corner {
+    padding: 12px 8px;
+  }
+
+  .duel-bar .primary.big {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+}
+
+.picker.is-locked .picker-button {
+  opacity: 0.55;
+  cursor: default;
+}

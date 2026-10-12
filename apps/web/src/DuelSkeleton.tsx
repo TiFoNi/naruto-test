@@ -13,8 +13,8 @@ export default function DuelSkeleton() {
       <BackButton href={href.home}>{t('play.back')}</BackButton>
 
       <div className="duel-setup sk-lobby">
-        <header className="duel-setup-head">
-          <div>
+        <header className="duel-top">
+          <div className="duel-top-name">
             <h1>{t('duel.newTitle')}</h1>
             <p className="muted">{t('duel.newLead')}</p>
           </div>

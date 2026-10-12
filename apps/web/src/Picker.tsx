@@ -3,9 +3,9 @@ import { ChevronIcon } from './icons'
 
 export type Option = { value: string; label: ReactNode; accent?: string; media?: ReactNode; hint?: string }
 
-type Props = { label: string; value: string; options: Option[]; onChange: (value: string) => void; rich?: boolean }
+type Props = { label: string; value: string; options: Option[]; onChange: (value: string) => void; rich?: boolean; disabled?: boolean }
 
-export default function Picker({ label, value, options, onChange, rich = false }: Props) {
+export default function Picker({ label, value, options, onChange, rich = false, disabled = false }: Props) {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(0)
   const [place, setPlace] = useState({ up: false, max: 320 })
@@ -47,13 +47,14 @@ export default function Picker({ label, value, options, onChange, rich = false }
   }
 
   return (
-    <div className={`picker ${rich ? 'rich' : ''} ${open ? 'open' : ''} ${place.up ? 'up' : ''}`} ref={root}>
+    <div className={`picker ${rich ? 'rich' : ''} ${open ? 'open' : ''} ${place.up ? 'up' : ''} ${disabled ? 'is-locked' : ''}`} ref={root}>
       {!rich && <span className="picker-label">{label}</span>}
       <button
         type="button"
         className="picker-button"
         aria-haspopup="listbox"
         aria-expanded={open}
+        disabled={disabled}
         style={{ '--tab-accent': current?.accent ?? 'var(--accent)' } as CSSProperties}
         onClick={() => setOpen((o) => !o)}
         onKeyDown={(e) => {
