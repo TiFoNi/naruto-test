@@ -191,7 +191,7 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
                 {board.bonus.claimed ? <CheckIcon /> : <GiftIcon />}
               </span>
               <span className="bonus-label">
-                {t('quests.bonus')} — <b>+{board.bonus.xp} XP</b>
+                {t('quests.bonus')}: <b>+{board.bonus.xp} XP</b>
                 {board.bonus.coins > 0 && <b className="bonus-coins">{t('quest.coins', { count: board.bonus.coins })}</b>}
               </span>
               <span className="bonus-count">
