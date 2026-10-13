@@ -98,6 +98,7 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
   const { t } = useI18n()
   const [board, setBoard] = useState<Board | null>(known)
   const [claiming, setClaiming] = useState<string | null>(null)
+  const [poke, setPoke] = useState({ id: '', turn: 0 })
 
   const remember = (next: Board) => {
     known = next
@@ -131,6 +132,8 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
   }
 
   const widest = board ? widestCount(board) : '12/12'
+  const nudge = (id: string) => setPoke((one) => ({ id, turn: one.id === id ? one.turn + 1 : 1 }))
+  const turnOf = (id: string) => (poke.id === id ? poke.turn : 0)
 
   const left = (() => {
     if (!board) return '—'
@@ -185,16 +188,18 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
             <button
               type="button"
               className={`quest ${quest.claimed ? 'is-claimed' : quest.done ? 'is-ready' : ''}`}
-              disabled={!quest.done || quest.claimed || claiming === quest.id}
+              disabled={claiming === quest.id}
               title={quest.done && !quest.claimed ? t('quests.take') : undefined}
-              onClick={() => claim(quest.id)}
+              onClick={() => (quest.done && !quest.claimed ? claim(quest.id) : nudge(quest.id))}
             >
               <span className="quest-icon" aria-hidden>
                 {quest.claimed ? <CheckIcon /> : iconOf(quest.id)}
               </span>
               <span className="quest-main">
                 <span className="quest-head">
-                  <Ticker className="quest-name">{t(`quest.${quest.id}` as UiKey)}</Ticker>
+                  <Ticker className="quest-name" play={turnOf(quest.id)}>
+                    {t(`quest.${quest.id}` as UiKey)}
+                  </Ticker>
                   <span className="quest-xp">+{quest.xp}</span>
                 </span>
                 <span className="quest-bar">
@@ -214,16 +219,18 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
             <button
               type="button"
               className={`quest ${board.free.claimed ? 'is-claimed' : 'is-ready'}`}
-              disabled={board.free.claimed || claiming === 'free'}
+              disabled={claiming === 'free'}
               title={board.free.claimed ? undefined : t('quests.take')}
-              onClick={() => claim('free')}
+              onClick={() => (board.free.claimed ? nudge('free') : claim('free'))}
             >
               <span className="quest-icon" aria-hidden>
                 {board.free.claimed ? <CheckIcon /> : <CalendarIcon />}
               </span>
               <span className="quest-main">
                 <span className="quest-head">
-                  <Ticker className="quest-name">{t('quests.free')}</Ticker>
+                  <Ticker className="quest-name" play={turnOf('free')}>
+                    {t('quests.free')}
+                  </Ticker>
                   <span className="quest-xp">+{board.free.xp}</span>
                 </span>
                 <span className="quest-bar">
@@ -243,14 +250,14 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
             <button
               type="button"
               className={`bonus ${board.bonus.claimed ? 'is-claimed' : board.bonus.ready ? 'is-ready' : ''}`}
-              disabled={!board.bonus.ready || board.bonus.claimed || claiming === 'bonus'}
+              disabled={claiming === 'bonus'}
               title={board.bonus.ready && !board.bonus.claimed ? t('quests.take') : undefined}
-              onClick={() => claim('bonus')}
+              onClick={() => (board.bonus.ready && !board.bonus.claimed ? claim('bonus') : nudge('bonus'))}
             >
               <span className="bonus-gift" aria-hidden>
                 {board.bonus.claimed ? <CheckIcon /> : <GiftIcon />}
               </span>
-              <Ticker className="bonus-label">
+              <Ticker className="bonus-label" play={turnOf('bonus')}>
                 {t('quests.bonus')}: <b>+{board.bonus.xp} XP</b>
                 {board.bonus.coins > 0 && <b className="bonus-coins">{t('quest.coins', { count: board.bonus.coins })}</b>}
               </Ticker>

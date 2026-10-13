@@ -6133,21 +6133,21 @@ html[data-auth] .guest-note {
 .ticker.is-live > span {
   display: inline-block;
   will-change: transform;
-  animation: ticker var(--ticker-time, 7s) ease-in-out infinite;
+  animation: ticker var(--ticker-time, 4s) ease-in-out 1 both;
 }
 
 @keyframes ticker {
   0%,
-  16% {
+  8% {
     transform: translateX(0);
   }
 
-  46%,
-  62% {
+  44%,
+  60% {
     transform: translateX(calc(var(--shift, 0px) * -1));
   }
 
-  92%,
+  96%,
   100% {
     transform: translateX(0);
   }
@@ -6219,6 +6219,7 @@ html[data-auth] .guest-note {
   align-items: center;
   gap: 2px;
   max-width: 100%;
+  margin-right: auto;
   padding: 6px;
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -6278,7 +6279,6 @@ html[data-auth] .guest-note {
   flex: 1 1 220px;
   max-width: 340px;
   height: 50px;
-  margin-left: auto;
   padding: 0 14px;
   border: 1px solid var(--line);
   border-radius: 16px;
@@ -6337,7 +6337,6 @@ html[data-auth] .guest-note {
 
 @media (max-width: 760px) {
   .cat-search {
-    margin-left: 0;
     max-width: none;
   }
 }
