@@ -6,7 +6,7 @@ import { useAuth } from './auth'
 import type { GameMeta } from './games/meta'
 import type { Category } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import Quests from './Quests'
+import Quests, { QuestsGhost } from './Quests'
 import { useHref } from './router'
 import { dailyKey, hasDaily } from '@nanda/game'
 import { kyivToday } from './stats'
@@ -67,8 +67,8 @@ function WorldTile({ game, hot, eager }: { game: GameMeta; hot: boolean; eager: 
   const done = !!user && game.modes.some((mode) => hasDaily(mode) && stats[dailyKey(game.id, mode)]?.lastDay === today)
 
   return (
-    <Link className="world-tile" href={href.world(game.id)} prefetch={false}>
-      <span className="world-tile-art">
+    <Link className="cat-card" href={href.world(game.id)} prefetch={false}>
+      <span className="cat-card-art">
         <img
           src={`/worlds/big/${game.id}.webp`}
           alt=""
@@ -86,12 +86,12 @@ function WorldTile({ game, hot, eager }: { game: GameMeta; hot: boolean; eager: 
           }}
         />
         {done ? (
-          <span className="world-tile-badge is-done">
+          <span className="cat-card-badge is-done">
             <CheckIcon />
             {t('dash.dailyDone')}
           </span>
         ) : (
-          hot && <span className="world-tile-badge">{t('dash.popular')}</span>
+          hot && <span className="cat-card-badge">{t('dash.popular')}</span>
         )}
       </span>
       <b>{l(game.label)}</b>
@@ -107,7 +107,7 @@ function WorldTile({ game, hot, eager }: { game: GameMeta; hot: boolean; eager: 
 export default function Dashboard({ games }: { games: GameMeta[] }) {
   const { t } = useI18n()
   const href = useHref()
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
 
   const shown = CATEGORIES.filter((category) => games.some((g) => g.category === category.id))
 
@@ -120,6 +120,8 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
   const tabs = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState<Category | undefined>(undefined)
   const [mark, setMark] = useState({ x: 0, y: 0, w: 0, h: 0 })
+  const [live, setLive] = useState(false)
+  const placed = useRef(false)
 
   useEffect(() => {
     setActive(storedCategory())
@@ -129,6 +131,10 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
     const row = tabs.current
     const on = row?.querySelector<HTMLElement>('.cat-tab.on')
     setMark(on ? { x: on.offsetLeft, y: on.offsetTop, w: on.offsetWidth, h: on.offsetHeight } : { x: 0, y: 0, w: 0, h: 0 })
+    if (on && !placed.current) {
+      placed.current = true
+      requestAnimationFrame(() => setLive(true))
+    }
   }, [active, shown.length])
 
   useEffect(() => {
@@ -198,6 +204,8 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         </div>
         {user ? (
           <Quests />
+        ) : loading ? (
+          <QuestsGhost />
         ) : (
           <div className="card hero-guest">
             <span className="hero-guest-title">{t('dash.yourStats')}</span>
@@ -222,7 +230,7 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
 
         <div className="cat-tabs" ref={tabs}>
           <span
-            className="cat-tabs-mark"
+            className={`cat-tabs-mark ${live ? 'is-live' : ''}`}
             aria-hidden
             style={{ '--x': `${mark.x}px`, '--y': `${mark.y}px`, '--w': `${mark.w}px`, '--h': `${mark.h}px`, opacity: mark.w ? 1 : 0 } as CSSProperties}
           />
@@ -274,7 +282,7 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
                     {t(category.title)}
                   </h3>
                 )}
-                <div className="world-grid">
+                <div className="cat-grid">
                   {found
                     .filter((g) => g.category === category.id)
                     .map((g) => (
@@ -301,7 +309,7 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
 
         return (
           <section key={category.id} className="category" data-id={category.id} data-first={index === 0 ? '' : undefined}>
-            <div className="world-grid">
+            <div className="cat-grid">
               {list.map((g, i) => (
                 <WorldTile key={g.id} game={g} hot={hot.has(g.id)} eager={index === 0 && i < 7} />
               ))}

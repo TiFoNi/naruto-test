@@ -43,6 +43,46 @@ const ICONS: Record<string, ReactNode> = {
 
 const iconOf = (id: string) => ICONS[id.replace(/\d+$/, '')] ?? <PlayIcon />
 
+export function QuestsGhost() {
+  const { t } = useI18n()
+
+  return (
+    <section className="card quests-card">
+      <header>
+        <h2>{t('profile.questsTitle')}</h2>
+        <span className="muted">{t('quests.reset', { time: '—' })}</span>
+      </header>
+
+      <ul className="quests">
+        {[0, 1, 2, 3].map((index) => (
+          <li key={index}>
+            <span className="quest is-skeleton" aria-hidden>
+              <span className="quest-icon" />
+              <span className="quest-main">
+                <span className="quest-head">
+                  <span className="quest-name">&nbsp;</span>
+                </span>
+                <span className="quest-bar">
+                  <i style={{ width: 0 }} />
+                </span>
+              </span>
+              <span className="quest-count">&nbsp;</span>
+            </span>
+          </li>
+        ))}
+
+        <li>
+          <span className="bonus is-skeleton" aria-hidden>
+            <span className="bonus-gift" />
+            <span className="bonus-label">&nbsp;</span>
+            <span className="bonus-count">&nbsp;</span>
+          </span>
+        </li>
+      </ul>
+    </section>
+  )
+}
+
 export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }) {
   const { refresh } = useAuth()
   const { t } = useI18n()
