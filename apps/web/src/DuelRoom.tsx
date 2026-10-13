@@ -436,39 +436,47 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
                 !over ? (you?.solved ? 'won' : 'skipped') : duel.youWon ? 'won' : duel.winner === null ? 'skipped' : 'lost'
               }`}
             >
-              <h2>
-                {!over
-                  ? you?.solved
-                    ? t('duel.waitRival')
-                    : t('duel.gaveUpWait')
-                  : duel.matchDone
-                    ? duel.youWon
-                      ? t('duel.matchWon')
-                      : t('duel.matchLost', { name: duel.winner ?? '' })
-                    : duel.youWon
-                      ? t('duel.youWon')
-                      : duel.winner
-                        ? t('duel.youLost', { name: duel.winner })
-                        : t('duel.draw')}
-              </h2>
-              <p className="duel-score">
-                {t('duel.score', { you: you?.wins ?? 0, rival: rival?.wins ?? 0 })}
-                {!duel.matchDone && <span> · {t('duel.roundOf', { round: duel.round, best: duel.best })}</span>}
-              </p>
-              <img className="result-image" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />
-              <div className="result-name">{name(answer)}</div>
-              <p className="round">
-                {you?.nickname}: {t('duel.guesses', { count: you?.guesses.length ?? 0 })}
-                {rival ? ` · ${rival.nickname}: ${t('duel.guesses', { count: rival.guessCount })}` : ''}
-              </p>
-              {over && !duel.matchDone && (
-                <div className="result-actions">
-                  <button className="primary" onClick={next} disabled={busy || you?.wantsNext}>
-                    {you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
-                  </button>
+              <span className="result-hero">
+                <img className="result-face" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />
+                <em className="result-badge">{you?.solved ? t('result.badgeWon') : t('result.badgeLost')}</em>
+              </span>
+
+              <div className="result-body">
+                <span className="result-eyebrow">
+                  {!over
+                    ? you?.solved
+                      ? t('duel.waitRival')
+                      : t('duel.gaveUpWait')
+                    : duel.matchDone
+                      ? duel.youWon
+                        ? t('duel.matchWon')
+                        : t('duel.matchLost', { name: duel.winner ?? '' })
+                      : duel.youWon
+                        ? t('duel.youWon')
+                        : duel.winner
+                          ? t('duel.youLost', { name: duel.winner })
+                          : t('duel.draw')}
+                </span>
+                <div className="result-name">{name(answer)}</div>
+
+                <div className="result-chips">
+                  <span className="result-chip">{t('duel.score', { you: you?.wins ?? 0, rival: rival?.wins ?? 0 })}</span>
+                  {!duel.matchDone && <span className="result-chip">{t('duel.roundOf', { round: duel.round, best: duel.best })}</span>}
+                  <span className="result-chip">
+                    {you?.nickname}: <b>{you?.guesses.length ?? 0}</b>
+                    {rival ? ` · ${rival.nickname}: ${rival.guessCount}` : ''}
+                  </span>
                 </div>
-              )}
-              {rival?.wantsNext && !you?.wantsNext && <p className="muted small">{t('duel.rivalWantsNext', { name: rival.nickname })}</p>}
+
+                {over && !duel.matchDone && (
+                  <div className="result-actions">
+                    <button className="primary" onClick={next} disabled={busy || you?.wantsNext}>
+                      {you?.wantsNext ? t('duel.nextWait') : t('duel.next')}
+                    </button>
+                  </div>
+                )}
+                {rival?.wantsNext && !you?.wantsNext && <p className="round">{t('duel.rivalWantsNext', { name: rival.nickname })}</p>}
+              </div>
             </div>
           )}
 

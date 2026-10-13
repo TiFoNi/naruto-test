@@ -2585,6 +2585,11 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   max-width: none;
 }
 
+.duel-picks .picker.rich .picker-button {
+  width: 100%;
+  min-width: 0;
+}
+
 .duel-bar {
   display: flex;
   flex-wrap: wrap;
