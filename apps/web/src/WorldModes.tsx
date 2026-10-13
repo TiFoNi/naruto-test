@@ -9,7 +9,7 @@ import { useAuth } from './auth'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
-import { CalendarIcon, CheckIcon, PlayIcon } from './icons'
+import { CalendarIcon, CheckIcon } from './icons'
 import { MODES } from './modes'
 import { useHref } from './router'
 import { emptyStats, kyivToday } from './stats'
@@ -62,9 +62,6 @@ export default function WorldModes({ game: gameId, about }: { game: string; abou
                 </span>
                 <b className="world-card-name">{t(one.label)}</b>
                 <small className="world-card-desc">{t(one.description)}</small>
-                <span className="world-card-go" aria-label={t('world.play')}>
-                  <PlayIcon />
-                </span>
               </Link>
 
               <div className="world-card-foot">
