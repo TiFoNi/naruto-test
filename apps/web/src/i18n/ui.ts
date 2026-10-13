@@ -1454,6 +1454,12 @@ const ui = {
     uk: 'Один персонаж для всіх гравців. Вгадай за найменше спроб — і порівняй результат з іншими.',
     en: 'One character for every player. Solve it in the fewest guesses and compare with the rest.',
   },
+  'dash.dailyTitleManga': { ru: 'Какая сегодня манга?', uk: 'Яка сьогодні манґа?', en: 'Which manga today?' },
+  'dash.dailyLeadManga': {
+    ru: 'Одна страница для всех игроков. Угадай тайтл за наименьшее число попыток — и сравни результат с другими.',
+    uk: 'Одна сторінка для всіх гравців. Вгадай тайтл за найменше спроб — і порівняй результат з іншими.',
+    en: 'One page for every player. Name the title in the fewest guesses and compare with the rest.',
+  },
   'dash.playDaily': { ru: 'Играть ежедневную', uk: 'Грати щоденну', en: 'Play daily' },
   'dash.characters': { ru: 'Персонажей: {count}', uk: 'Персонажів: {count}', en: 'Characters: {count}' },
   'dash.heroes': { ru: 'Героев: {count}', uk: 'Героїв: {count}', en: 'Heroes: {count}' },

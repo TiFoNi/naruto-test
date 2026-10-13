@@ -80,6 +80,7 @@ function DailyCard({ games }: { games: GameMeta[] }) {
   const mode = (game.modes.find((one) => DAILY_XP_MODES.includes(one)) ?? 'classic') as ModeId
   const today = kyivToday()
   const done = stats[dailyKey(game.id, mode)]?.lastDay === today
+  const titles = game.unit === 'manga'
 
   return (
     <section className="hero-daily" style={{ '--world-accent': game.accent } as CSSProperties}>
@@ -96,8 +97,8 @@ function DailyCard({ games }: { games: GameMeta[] }) {
         )}
       </span>
 
-      <h1>{t('dash.dailyTitle', { world: l(game.label) })}</h1>
-      <p>{t('dash.dailyLead')}</p>
+      <h1>{titles ? t('dash.dailyTitleManga') : t('dash.dailyTitle', { world: l(game.label) })}</h1>
+      <p>{t(titles ? 'dash.dailyLeadManga' : 'dash.dailyLead')}</p>
 
       <div className="hero-daily-actions">
         <Link className="primary" href={href.play(game.id, mode, true)} prefetch={false}>
