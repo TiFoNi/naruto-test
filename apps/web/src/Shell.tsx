@@ -559,7 +559,8 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   useVisitTracker()
   const [, , section, gameId, modeId] = pathname.split('/')
   const open = PUBLIC.has(section ?? '') || !SECTIONS.has(section ?? '')
-  const bare = section === 'login'
+  const gated = !user && !loading && !open
+  const bare = section === 'login' || gated
   const game = section === 'play' ? metaById(games, gameId as never) : null
   useBeforePaint(() => {
     const root = document.documentElement
