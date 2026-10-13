@@ -9567,6 +9567,19 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   transition: color 0.15s, border-color 0.15s;
 }
 
+.topbar-coins.topbar-shop {
+  justify-content: center;
+  width: 40px;
+  padding: 0;
+  color: var(--text);
+}
+
+.topbar-coins.topbar-shop .icon {
+  width: 19px;
+  height: 19px;
+  color: inherit;
+}
+
 .topbar-coins .icon {
   width: 17px;
   height: 17px;

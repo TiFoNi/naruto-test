@@ -394,9 +394,10 @@ export function CoinIcon({ className }: IconProps) {
 export function ShopIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>
-      <path d="M4.2 9.2h15.6l-1.1 9.1a2 2 0 0 1-2 1.8H7.3a2 2 0 0 1-2-1.8L4.2 9.2Z" />
-      <path d="M3.4 9.2 5.6 4.4a1.3 1.3 0 0 1 1.2-.8h10.4a1.3 1.3 0 0 1 1.2.8l2.2 4.8" />
-      <path d="M9.3 12.6a2.7 2.7 0 0 0 5.4 0" />
+      <path d="M5 10.4v8.2a1.4 1.4 0 0 0 1.4 1.4h11.2a1.4 1.4 0 0 0 1.4-1.4v-8.2" />
+      <path d="M3.1 9.6 4.7 4.9a1.3 1.3 0 0 1 1.2-.9h12.2a1.3 1.3 0 0 1 1.2.9l1.6 4.7" />
+      <path d="M3.1 9.6a2.3 2.3 0 0 0 4.5 0 2.3 2.3 0 0 0 4.4 0 2.3 2.3 0 0 0 4.4 0 2.3 2.3 0 0 0 4.5 0" />
+      <path d="M9.6 20v-5.1h4.8V20" />
     </svg>
   )
 }

@@ -316,7 +316,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
             {!own && id && (
               <div className="profile-acts">
-                <button type="button" className="primary big duel-call" disabled={calling} onClick={() => void challenge(id)}>
+                <button type="button" className="primary big profile-duel" disabled={calling} onClick={() => void challenge(id)}>
                   <SwordsIcon />
                   {t('duel.challenge')}
                 </button>

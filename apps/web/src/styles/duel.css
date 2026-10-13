@@ -2018,6 +2018,7 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 }
 
 .duel-room .ghost {
+  gap: 8px;
   height: 36px;
   padding: 0 12px;
   border-radius: 10px;
@@ -2385,6 +2386,37 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   .duel-bar .primary.big {
     flex: 1 1 100%;
     min-width: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .duel-top-name,
+  .duel-room {
+    width: 100%;
+  }
+
+  .duel-room {
+    flex-wrap: wrap;
+    padding: 10px;
+  }
+
+  .duel-room > .muted {
+    order: 1;
+  }
+
+  .duel-room b {
+    order: 2;
+    margin-right: auto;
+  }
+
+  .duel-room .duel-leave {
+    order: 3;
+  }
+
+  .duel-room .ghost {
+    order: 4;
+    flex: 1 0 100%;
+    justify-content: center;
   }
 }
 

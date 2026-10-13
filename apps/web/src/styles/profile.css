@@ -728,7 +728,7 @@
   font-weight: 600;
 }
 
-.duel-call {
+.profile-duel {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -737,7 +737,7 @@
   margin-top: 4px;
 }
 
-.duel-call svg {
+.profile-duel svg {
   width: 18px;
   height: 18px;
 }
@@ -755,7 +755,7 @@
   margin-top: 4px;
 }
 
-.profile-acts .duel-call {
+.profile-acts .profile-duel {
   margin-top: 0;
 }
 
