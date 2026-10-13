@@ -6205,6 +6205,7 @@ html[data-auth] .guest-note {
 }
 
 .picker h2 {
+  flex: 1 0 100%;
   margin: 0;
   font-family: var(--display);
   font-size: clamp(20px, 2.4vw, 28px);
