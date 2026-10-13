@@ -66,7 +66,9 @@ export function QuestsGhost() {
                   <i style={{ width: 0 }} />
                 </span>
               </span>
-              <span className="quest-count">&nbsp;</span>
+              <span className="quest-count">
+                <i aria-hidden>12/12</i>&nbsp;
+              </span>
             </span>
           </li>
         ))}
@@ -75,12 +77,19 @@ export function QuestsGhost() {
           <span className="bonus is-skeleton" aria-hidden>
             <span className="bonus-gift" />
             <span className="bonus-label">&nbsp;</span>
-            <span className="bonus-count">&nbsp;</span>
+            <span className="bonus-count">
+              <i aria-hidden>12/12</i>&nbsp;
+            </span>
           </span>
         </li>
       </ul>
     </section>
   )
+}
+
+const widestCount = (board: Board) => {
+  const all = [...board.quests.map((quest) => `${quest.value}/${quest.goal}`), board.free.claimed ? '1/1' : '0/1', `${board.collected}/${board.total}`]
+  return all.reduce((best, one) => (one.length > best.length ? one : best), '')
 }
 
 export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }) {
@@ -120,6 +129,8 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
     if (data.coins) void refresh()
   }
 
+  const widest = board ? widestCount(board) : '12/12'
+
   const left = (() => {
     if (!board) return '—'
     const ms = Math.max(board.resetAt - Date.now(), 0)
@@ -149,7 +160,9 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
                     <i style={{ width: 0 }} />
                   </span>
                 </span>
-                <span className="quest-count">&nbsp;</span>
+                <span className="quest-count">
+                  <i aria-hidden>12/12</i>&nbsp;
+                </span>
               </span>
             </li>
           ))}
@@ -159,7 +172,9 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
             <span className="bonus is-skeleton" aria-hidden>
               <span className="bonus-gift" />
               <span className="bonus-label">&nbsp;</span>
-              <span className="bonus-count">&nbsp;</span>
+              <span className="bonus-count">
+              <i aria-hidden>12/12</i>&nbsp;
+            </span>
             </span>
           </li>
         )}
@@ -186,6 +201,7 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
                 </span>
               </span>
               <span className="quest-count">
+                <i aria-hidden>{widest}</i>
                 {quest.value}/{quest.goal}
               </span>
             </button>
@@ -213,7 +229,10 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
                   <i style={{ width: board.free.claimed ? '100%' : '0%' }} />
                 </span>
               </span>
-              <span className="quest-count">{board.free.claimed ? '1/1' : '0/1'}</span>
+              <span className="quest-count">
+                <i aria-hidden>{widest}</i>
+                {board.free.claimed ? '1/1' : '0/1'}
+              </span>
             </button>
           </li>
         )}
@@ -235,6 +254,7 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
                 {board.bonus.coins > 0 && <b className="bonus-coins">{t('quest.coins', { count: board.bonus.coins })}</b>}
               </span>
               <span className="bonus-count">
+                <i aria-hidden>{widest}</i>
                 {board.collected}/{board.total}
               </span>
             </button>

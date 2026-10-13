@@ -5893,7 +5893,6 @@ html[data-auth] .guest-note {
 
 .quest-count {
   flex: none;
-  width: 48px;
   color: var(--text-3);
   font-family: var(--display);
   font-size: 14px;
@@ -6113,13 +6112,20 @@ html[data-auth] .guest-note {
 
 .bonus-count {
   flex: none;
-  width: 48px;
   color: var(--text-3);
   font-family: var(--display);
   font-size: 14px;
   font-variant-numeric: tabular-nums;
   text-align: right;
   white-space: nowrap;
+}
+
+.quest-count i,
+.bonus-count i {
+  display: block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
 }
 
 .quests li {
