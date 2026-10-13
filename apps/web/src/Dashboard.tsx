@@ -57,9 +57,7 @@ const categoryIcon = (id: Category) =>
     <GamepadIcon />
   )
 
-const POPULAR = 2
-
-function WorldTile({ game, hot, eager }: { game: GameMeta; hot: boolean; eager: boolean }) {
+function WorldTile({ game, eager }: { game: GameMeta; eager: boolean }) {
   const { t, l } = useI18n()
   const href = useHref()
   const { stats, user } = useAuth()
@@ -85,13 +83,11 @@ function WorldTile({ game, hot, eager }: { game: GameMeta; hot: boolean; eager: 
             } else img.hidden = true
           }}
         />
-        {done ? (
+        {done && (
           <span className="cat-card-badge is-done">
             <CheckIcon />
             {t('dash.dailyDone')}
           </span>
-        ) : (
-          hot && <span className="cat-card-badge">{t('dash.popular')}</span>
         )}
       </span>
       <b>{l(game.label)}</b>
@@ -286,7 +282,7 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
                   {found
                     .filter((g) => g.category === category.id)
                     .map((g) => (
-                      <WorldTile key={g.id} game={g} hot={false} eager={false} />
+                      <WorldTile key={g.id} game={g} eager={false} />
                     ))}
                 </div>
               </div>
@@ -299,19 +295,12 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
 
       {shown.map((category, index) => {
         const list = games.filter((g) => g.category === category.id)
-        const hot = new Set(
-          [...list]
-            .filter((g) => g.plays > 0)
-            .sort((a, b) => b.plays - a.plays)
-            .slice(0, POPULAR)
-            .map((g) => g.id),
-        )
 
         return (
           <section key={category.id} className="category" data-id={category.id} data-first={index === 0 ? '' : undefined}>
             <div className="cat-grid">
               {list.map((g, i) => (
-                <WorldTile key={g.id} game={g} hot={hot.has(g.id)} eager={index === 0 && i < 7} />
+                <WorldTile key={g.id} game={g} eager={index === 0 && i < 7} />
               ))}
             </div>
           </section>
