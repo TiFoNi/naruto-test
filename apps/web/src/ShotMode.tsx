@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import CharacterSearch from './CharacterSearch'
 import GiveUp from './GiveUp'
@@ -364,7 +364,15 @@ function Cell({ src, step, onOpen, onReveal }: { src?: string; step: number; onO
   }
 
   return (
-    <button key={src} type="button" className="shot-cell is-open" title={t('shot.open')} aria-label={t('shot.open')} onClick={() => onOpen(src)}>
+    <button
+      key={src}
+      type="button"
+      className="shot-cell is-open"
+      style={{ '--step': step } as CSSProperties}
+      title={t('shot.open')}
+      aria-label={t('shot.open')}
+      onClick={() => onOpen(src)}
+    >
       <img src={src} alt="" draggable={false} />
       <em>{t(LEVEL_LABELS[step])}</em>
     </button>

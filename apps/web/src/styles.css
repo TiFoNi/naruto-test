@@ -9503,7 +9503,7 @@ html[data-auth] .guest-note {
 }
 
 .shot-grid.is-over .shot-cell.is-open img {
-  animation: none;
+  animation-delay: calc(var(--step, 0) * 0.16s);
 }
 
 .shot-cell:hover {
