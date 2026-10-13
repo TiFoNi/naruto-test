@@ -247,7 +247,13 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
           <>
             <div className={`shot-grid ${over || won ? 'is-over' : ''}`}>
               {Array.from({ length: STEPS.length }, (_, step) => (
-                <Cell key={step} src={apiSrc((over?.shots ?? won?.shots ?? run?.shots)?.[step])} step={step} onOpen={setBig} />
+                <Cell
+                  key={step}
+                  src={apiSrc((over?.shots ?? won?.shots ?? run?.shots)?.[step])}
+                  step={step}
+                  onOpen={setBig}
+                  onReveal={run && !over && !won && !busy && run.level < run.levels - 1 ? () => void send({ action: 'skip' }) : undefined}
+                />
               ))}
               {flash && (
                 <span className={`shot-flash ${flash.kind}`}>
@@ -314,7 +320,7 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
   )
 }
 
-function Cell({ src, step, onOpen }: { src?: string; step: number; onOpen: (src: string) => void }) {
+function Cell({ src, step, onOpen, onReveal }: { src?: string; step: number; onOpen: (src: string) => void; onReveal?: () => void }) {
   const { t } = useI18n()
   const [ready, setReady] = useState(false)
 
@@ -333,15 +339,29 @@ function Cell({ src, step, onOpen }: { src?: string; step: number; onOpen: (src:
     }
   }, [src])
 
-  if (!src || !ready)
-    return (
-      <span className={`shot-cell locked ${src ? 'is-coming' : ''}`} title={t('shot.locked')}>
+  if (!src || !ready) {
+    const inside = (
+      <>
         <span className="shot-logo" aria-hidden>
           {BRAND.mark}
         </span>
         <b>{t(LEVEL_LABELS[step])}</b>
-      </span>
+      </>
     )
+
+    if (!onReveal)
+      return (
+        <span className={`shot-cell locked ${src ? 'is-coming' : ''}`} title={t('shot.locked')}>
+          {inside}
+        </span>
+      )
+
+    return (
+      <button type="button" className={`shot-cell locked is-next ${src ? 'is-coming' : ''}`} title={t('shot.skip')} aria-label={t('shot.skip')} onClick={onReveal}>
+        {inside}
+      </button>
+    )
+  }
 
   return (
     <button key={src} type="button" className="shot-cell is-open" title={t('shot.open')} aria-label={t('shot.open')} onClick={() => onOpen(src)}>

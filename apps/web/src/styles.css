@@ -9542,6 +9542,21 @@ html[data-auth] .guest-note {
   cursor: default;
 }
 
+.shot-cell.locked.is-next {
+  font: inherit;
+  cursor: pointer;
+}
+
+.shot-cell.locked.is-next:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--card-2));
+}
+
+.shot-cell.locked.is-next:hover b,
+.shot-cell.locked.is-next:hover .shot-logo {
+  color: color-mix(in srgb, var(--accent) 70%, var(--text-3));
+}
+
 .shot-cell.locked b {
   font-family: var(--display);
   font-size: clamp(14px, 2.2vw, 18px);
