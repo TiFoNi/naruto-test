@@ -120,7 +120,7 @@ function WorldTile({ game, eager }: { game: GameMeta; eager: boolean }) {
   const done = !!user && game.modes.some((mode) => hasDaily(mode) && stats[dailyKey(game.id, mode)]?.lastDay === today)
 
   return (
-    <Link className="cat-card" href={href.world(game.id)} prefetch={false}>
+    <Link className="cat-card" href={href.world(game.id)} prefetch={false} style={{ '--world-accent': game.accent } as CSSProperties}>
       <span className="cat-card-art">
         <img
           src={`/worlds/big/${game.id}.webp`}

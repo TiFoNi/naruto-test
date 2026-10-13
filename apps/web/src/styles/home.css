@@ -311,7 +311,7 @@
   display: block;
   width: 100%;
   aspect-ratio: 1;
-  border: 2px solid rgba(0, 0, 0, 0.18);
+  border: 2px solid color-mix(in srgb, var(--world-accent, var(--accent)) 38%, transparent);
   border-radius: 22px;
   background: color-mix(in srgb, #ffffff 4%, transparent);
   transition:
@@ -320,7 +320,7 @@
 }
 
 .cat-card:hover .cat-card-art {
-  border-color: rgba(0, 0, 0, 0.08);
+  border-color: color-mix(in srgb, var(--world-accent, var(--accent)) 72%, transparent);
 }
 
 .cat-card:hover .cat-card-art {
