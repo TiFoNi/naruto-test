@@ -1,5 +1,6 @@
 import { GAME_IDS, GAME_SPECS } from '@nanda/game'
 import { cached, handle } from '../http'
+import { rounds } from '../db'
 import { gameData } from '../games'
 import { findChallenge, isCode } from '../challenges'
 import { findDuel } from '../duels'
@@ -23,6 +24,14 @@ export const GET = handle(async (request) => {
     return cached(doc ? { game: doc.game, mode: doc.mode, author: defaultNickname(doc.author) } : {}, 60)
   }
 
+  const played = new Map<string, number>(
+    (
+      await (await rounds())
+        .aggregate<{ _id: string; plays: number }>([{ $match: { guest: { $ne: true } } }, { $group: { _id: '$game', plays: { $sum: 1 } } }])
+        .toArray()
+    ).map((row) => [row._id, row.plays]),
+  )
+
   const games = await Promise.all(
     GAME_IDS.map(async (game) => {
       const { list, pool } = await gameData(game)
@@ -34,6 +43,7 @@ export const GET = handle(async (request) => {
       return {
         game,
         count: list.length,
+        plays: played.get(game) ?? 0,
         featured: featured.map((entity) => ({ id: entity.id as number, image: entity.image as string | undefined })),
       }
     }),

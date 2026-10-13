@@ -1460,6 +1460,8 @@ const ui = {
   'dash.cartoon': { ru: 'Мультсериалы', uk: 'Мультсеріали', en: 'Cartoons' },
   'dash.screen': { ru: 'Кино и сериалы', uk: 'Кіно та серіали', en: 'Movies & TV' },
   'dash.sport': { ru: 'Спорт', uk: 'Спорт', en: 'Sport' },
+  'dash.popular': { ru: 'популярное', uk: 'популярне', en: 'popular' },
+  'dash.dailyDone': { ru: 'сегодня', uk: 'сьогодні', en: 'today' },
   'dash.characters': { ru: 'Персонажей: {count}', uk: 'Персонажів: {count}', en: 'Characters: {count}' },
   'dash.heroes': { ru: 'Героев: {count}', uk: 'Героїв: {count}', en: 'Heroes: {count}' },
   'dash.players': { ru: 'Футболистов: {count}', uk: 'Футболістів: {count}', en: 'Players: {count}' },

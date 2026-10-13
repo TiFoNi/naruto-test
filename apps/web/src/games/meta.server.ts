@@ -4,7 +4,7 @@ import type { GameMeta } from './meta'
 const API = (process.env.API_ORIGIN ?? process.env.NEXT_PUBLIC_API_URL ?? '').replace(/\/+$/, '')
 const FRESH = 600
 
-type Row = { game: string; count: number; featured: { id: number; image?: string }[] }
+type Row = { game: string; count: number; plays?: number; featured: { id: number; image?: string }[] }
 
 export async function apiJson<T>(path: string, fresh = FRESH): Promise<T | null> {
   if (!API) return null
@@ -31,6 +31,7 @@ export async function gameMeta(): Promise<GameMeta[]> {
       modes: game.modes,
       unit: game.unit,
       count: row?.count ?? 0,
+      plays: row?.plays ?? 0,
       featured: row?.featured ?? [],
     }
   })

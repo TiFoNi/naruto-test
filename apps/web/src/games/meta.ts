@@ -11,6 +11,7 @@ export type GameMeta = {
   modes: ModeId[]
   unit: 'character' | 'hero' | 'manga' | 'player'
   count: number
+  plays: number
   featured: { id: number; image?: string }[]
 }
 

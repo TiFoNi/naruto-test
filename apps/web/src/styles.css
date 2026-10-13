@@ -635,8 +635,6 @@ a.bell.active {
   font-weight: 700;
 }
 
-
-
 .account-link {
   border: 1px solid color-mix(in srgb, #ffffff 12%, transparent);
   background: var(--chip);
@@ -1107,7 +1105,6 @@ main {
   overflow-wrap: anywhere;
   animation: reveal 0.28s both;
 }
-
 
 .cell.pending {
   background: var(--card-2);
@@ -5772,11 +5769,10 @@ html[data-auth] .guest-note {
   gap: 12px;
 }
 
-
 .quest-bar {
   height: 6px;
   border-radius: 999px;
-  background: var(--card);
+  background: color-mix(in srgb, #ffffff 7%, transparent);
   overflow: hidden;
 }
 
@@ -5792,7 +5788,7 @@ html[data-auth] .guest-note {
 .quests {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -5800,232 +5796,194 @@ html[data-auth] .guest-note {
 
 .quest {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  align-items: center;
+  gap: 13px;
   width: 100%;
-  padding: 9px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  background: var(--card-2);
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 13px;
+  background: none;
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: default;
-  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  transition: background 0.18s ease;
 }
 
-.quest.is-ready {
-  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  background: color-mix(in srgb, var(--accent) 10%, var(--card-2));
-  cursor: pointer;
+.quest-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: color-mix(in srgb, #ffffff 6%, transparent);
+  color: var(--text-3);
 }
 
-.quest.is-ready:hover {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 16%, var(--card-2));
+.quest-icon svg {
+  width: 19px;
+  height: 19px;
 }
 
-.quest.is-ready:active {
-  transform: scale(0.99);
-}
-
-.quest.is-claimed {
-  opacity: 0.6;
-}
-
-.quest.is-skeleton,
-.bonus.is-skeleton {
-  opacity: 0.35;
-}
-
-.quest.is-skeleton {
-  height: 70px;
-}
-
-html[data-auth] .hero .quests-card {
-  min-height: var(--hero-card-h);
-}
-
-.quest.is-skeleton.short {
-  height: 58px;
-}
-
-.bonus.is-skeleton {
-  height: 66px;
-}
-
-.bonus.is-skeleton .bonus-steps::before {
-  content: '';
-  flex: 1;
-  height: 5px;
-  border-radius: 999px;
-  background: var(--card-2);
-}
-
-.quest-take {
-  color: var(--accent);
-  font-weight: 800;
+.quest-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .quest-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
 }
 
 .quest-name {
-  min-width: 0;
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  font-size: 13px;
+  font-size: 14.5px;
   font-weight: 700;
-  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .quest-xp {
+  flex: none;
   color: var(--accent);
   font-family: var(--display);
-  font-size: 13px;
-  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 800;
 }
 
-.quest-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1.3;
+.quest-count {
+  flex: none;
+  min-width: 34px;
+  color: var(--text-3);
+  font-family: var(--display);
+  font-size: 14px;
+  text-align: right;
 }
 
-.quest-foot > span {
-  min-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.quest.is-ready {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  cursor: pointer;
 }
 
-.quest-done {
-  color: #64c98a;
+.quest.is-ready .quest-icon {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--accent);
+}
+
+.quest.is-ready:hover {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.quest.is-claimed .quest-icon {
+  background: color-mix(in srgb, var(--correct) 22%, transparent);
+  color: var(--correct);
+}
+
+.quest.is-claimed .quest-bar i {
+  background: var(--correct);
+}
+
+.quest.is-claimed .quest-name,
+.quest.is-claimed .quest-xp {
+  color: var(--text-3);
+}
+
+.quest.is-skeleton {
+  pointer-events: none;
+}
+
+.bonus.is-skeleton {
+  pointer-events: none;
+}
+
+.bonus.is-skeleton .bonus-label {
+  width: 60%;
+  border-radius: 6px;
+  background: color-mix(in srgb, #ffffff 7%, transparent);
+}
+
+.quest.is-skeleton .quest-name {
+  width: 60%;
+  border-radius: 6px;
+  background: color-mix(in srgb, #ffffff 7%, transparent);
 }
 
 .bonus {
-  display: grid;
-  grid-template-columns: 32px minmax(0, 1fr) auto;
+  display: flex;
   align-items: center;
-  gap: 7px 10px;
-  width: calc(100% + 20px);
-  margin: 0 -10px;
-  padding: 10px;
-  border: 1px solid transparent;
-  border-radius: 12px;
+  gap: 12px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 9px 12px;
+  border: 1px dashed color-mix(in srgb, var(--accent) 35%, var(--line));
+  border-radius: 14px;
   background: none;
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: default;
-  transition:
-    border-color 0.15s,
-    background 0.15s,
-    transform 0.1s;
 }
 
 .bonus.is-ready {
-  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  background: color-mix(in srgb, var(--accent) 10%, var(--card-2));
+  border-style: solid;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
   cursor: pointer;
 }
 
-.bonus.is-ready .bonus-gift {
-  background: var(--accent);
-  color: #10131a;
-}
-
-.bonus.is-ready:hover {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 16%, var(--card-2));
-}
-
-.bonus.is-ready:active {
-  transform: scale(0.99);
-}
-
 .bonus.is-claimed {
-  opacity: 0.6;
+  border-color: color-mix(in srgb, var(--correct) 40%, transparent);
 }
 
 .bonus-gift {
-  grid-row: 1 / span 2;
-  align-self: center;
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
-  line-height: 0;
+  flex: none;
+  width: 30px;
+  height: 30px;
   border-radius: 10px;
   background: color-mix(in srgb, var(--accent) 18%, transparent);
   color: var(--accent);
-  font-size: 17px;
+}
+
+.bonus.is-claimed .bonus-gift {
+  background: color-mix(in srgb, var(--correct) 22%, transparent);
+  color: var(--correct);
 }
 
 .bonus-gift svg {
-  display: block;
-  width: 18px;
-  height: 18px;
-}
-
-.bonus-text {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.35;
-}
-
-.bonus-text small {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  width: 17px;
+  height: 17px;
 }
 
 .bonus-label {
+  flex: 1 1 auto;
+  min-width: 0;
   overflow: hidden;
+  font-size: 13.5px;
+  font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.bonus-text b {
+.bonus-label b {
   color: var(--accent);
 }
 
-.bonus-text small {
-  font-size: 11px;
+.bonus-coins {
+  margin-left: 6px;
 }
 
 .bonus-count {
+  flex: none;
+  color: var(--text-3);
   font-family: var(--display);
   font-size: 14px;
-}
-
-.bonus-steps {
-  grid-column: 2 / -1;
-  display: flex;
-  gap: 5px;
-}
-
-.bonus-steps i {
-  flex: 1;
-  height: 5px;
-  border-radius: 999px;
-  background: var(--card-2);
-}
-
-.bonus-steps i.on {
-  background: var(--accent);
 }
 
 .quests li {
@@ -6058,245 +6016,157 @@ html[data-auth] .hero .quests-card {
 
 .picker {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 20px;
 }
 
 .picker h2 {
   margin: 0;
   font-family: var(--display);
-  font-size: 16px;
+  font-size: clamp(20px, 2.4vw, 28px);
   color: var(--text);
   font-weight: 700;
 }
 
-.tiles {
+.cat-tabs {
+  position: relative;
   display: flex;
-  align-self: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 2px;
   max-width: 100%;
-  gap: 4px;
-  padding: 5px;
+  padding: 6px;
   border: 1px solid var(--line);
-  border-radius: 17px;
+  border-radius: 18px;
   background: var(--card);
 }
 
-.tile {
+.cat-tabs-mark {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: var(--w, 0);
+  height: var(--h, 0);
+  border-radius: 13px;
+  background: var(--accent);
+  transform: translate(var(--x, 0), var(--y, 0));
+  transition:
+    transform 0.32s cubic-bezier(0.4, 1.3, 0.5, 1),
+    width 0.32s cubic-bezier(0.4, 1.3, 0.5, 1),
+    height 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.cat-tab {
   position: relative;
-  flex: 0 0 auto;
-  min-width: max-content;
+  z-index: 1;
+  flex: none;
+  height: 38px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 13px;
+  background: none;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.cat-tab:hover {
+  color: var(--text);
+}
+
+.cat-tab.on {
+  color: #11140f;
+}
+
+.cat-search {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 7px 18px 7px 7px;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--text-2);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  overflow: hidden;
-  transition: background 0.22s, border-color 0.22s, color 0.22s;
+  flex: 1 1 220px;
+  max-width: 340px;
+  height: 50px;
+  margin-left: auto;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+  color: var(--text-3);
 }
 
-.tile:hover {
-  background: var(--card-2);
-  color: var(--text);
+.cat-search:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
 }
 
-html:not([data-cat]) .tile[data-first],
-html[data-cat='anime'] .tile[data-id='anime'],
-html[data-cat='manga'] .tile[data-id='manga'],
-html[data-cat='cartoon'] .tile[data-id='cartoon'],
-html[data-cat='games'] .tile[data-id='games'],
-html[data-cat='sport'] .tile[data-id='sport'],
-html[data-cat='screen'] .tile[data-id='screen'] {
-  color: var(--text);
-  background: color-mix(in srgb, var(--tile) 15%, var(--card-2));
-  border-color: color-mix(in srgb, var(--tile) 42%, transparent);
-}
-
-.tile-icon {
-  position: relative;
-  z-index: 2;
+.cat-search .icon {
   flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+.cat-search input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+}
+
+.cat-search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.cat-search-clear {
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 11px;
-  border: 1px solid var(--line);
-  background: var(--card-2);
+  flex: none;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
   color: var(--text-3);
-  font-size: 20px;
-  transition: background 0.22s, border-color 0.22s, color 0.22s;
+  cursor: pointer;
 }
 
-.tile:hover .tile-icon {
-  color: var(--text-2);
+.cat-search-clear:hover {
+  color: var(--text);
 }
 
-html:not([data-cat]) .tile[data-first] .tile-icon,
-html[data-cat='anime'] .tile[data-id='anime'] .tile-icon,
-html[data-cat='manga'] .tile[data-id='manga'] .tile-icon,
-html[data-cat='cartoon'] .tile[data-id='cartoon'] .tile-icon,
-html[data-cat='games'] .tile[data-id='games'] .tile-icon,
-html[data-cat='sport'] .tile[data-id='sport'] .tile-icon,
-html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
-  border-color: color-mix(in srgb, var(--tile) 45%, transparent);
-  background: color-mix(in srgb, var(--tile) 20%, transparent);
-  color: color-mix(in srgb, var(--tile) 80%, #fff);
-}
-
-.tile b {
-  font-family: var(--display);
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1.2;
-  color: inherit;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.tile small {
-  font-size: 12px;
-  color: var(--text-3);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-@media (max-width: 1200px) {
-  .tiles {
-    gap: 3px;
-    padding: 4px;
-  }
-
-  .tile {
-    gap: 7px;
-    padding: 6px 11px 6px 6px;
-  }
-
-  .tile-icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 9px;
-    font-size: 16px;
-  }
-
-  .tile b {
-    font-size: 13.5px;
-  }
-
-  .tile small {
-    display: none;
-  }
-}
-
-@media (max-width: 1060px) {
-  .tile {
-    gap: 6px;
-    padding: 6px 9px 6px 5px;
-  }
-
-  .tile-icon {
-    width: 27px;
-    height: 27px;
-    border-radius: 8px;
-    font-size: 15px;
-  }
-
-  .tile b {
-    font-size: 12.5px;
-  }
-}
-
-@media (max-width: 860px) {
-  .tiles {
-    gap: 3px;
-    padding: 5px;
-  }
-
-  .tile {
-    gap: 0;
-    padding: 6px;
-    min-width: 0;
-  }
-
-  .tile-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 9px;
-    font-size: 17px;
-  }
-
-  .tile-body {
-    max-width: 0;
-    margin: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-width 0.26s ease, margin 0.26s ease, opacity 0.18s ease;
-  }
-
-  html:not([data-cat]) .tile[data-first] .tile-body,
-  html[data-cat='anime'] .tile[data-id='anime'] .tile-body,
-  html[data-cat='manga'] .tile[data-id='manga'] .tile-body,
-  html[data-cat='cartoon'] .tile[data-id='cartoon'] .tile-body,
-  html[data-cat='games'] .tile[data-id='games'] .tile-body,
-  html[data-cat='sport'] .tile[data-id='sport'] .tile-body,
-  html[data-cat='screen'] .tile[data-id='screen'] .tile-body {
-    max-width: 170px;
-    margin-left: 9px;
-    margin-right: 3px;
-    opacity: 1;
-  }
-
-  .tile b {
-    font-size: 13px;
-    white-space: nowrap;
-  }
-}
-
-@media (max-width: 860px) and (prefers-reduced-motion: reduce) {
-  .tile-body {
+@media (prefers-reduced-motion: reduce) {
+  .cat-tabs-mark {
     transition: none;
   }
 }
 
-@media (max-width: 620px) {
-  .tiles {
-    align-self: stretch;
-    flex-direction: column;
-  }
-
-  .tile {
-    flex: none;
-    gap: 10px;
-    padding: 7px 18px 7px 7px;
-  }
-
-  .tile-body {
+@media (max-width: 760px) {
+  .cat-search {
+    margin-left: 0;
     max-width: none;
-    margin: 0;
-    opacity: 1;
+  }
+}
+
+@media (max-width: 680px) {
+  .cat-tabs {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
   }
 
-  .tile-icon {
-    display: grid;
-    width: 38px;
-    height: 38px;
-    border-radius: 11px;
-    font-size: 20px;
-  }
-
-  .tile b {
-    font-size: 15px;
-  }
-
-  .tile small {
-    display: block;
+  .cat-tab {
+    width: 100%;
+    text-align: left;
   }
 }
 
@@ -9615,7 +9485,6 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
   font-size: 17px;
 }
 
-
 .shot-fresh {
   color: var(--accent);
   font-size: 14px;
@@ -9719,8 +9588,6 @@ html[data-cat='screen'] .tile[data-id='screen'] .tile-icon {
     transform: translateY(8px) scale(0.99);
   }
 }
-
-
 
 .topbar-coins {
   display: inline-flex;
