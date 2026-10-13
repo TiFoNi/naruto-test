@@ -61,8 +61,6 @@ export default function GameView({ game, mode, daily, about }: { game: Game; mod
       document.removeEventListener('keydown', escape)
     }
   }, [about])
-  const dailyModes = game.modes.filter(hasDaily)
-  const dailyMode = hasDaily(mode) ? mode : (dailyModes[0] ?? mode)
 
   return (
     <div className="game-view" style={{ '--game-accent': game.accent } as CSSProperties}>
@@ -74,18 +72,18 @@ export default function GameView({ game, mode, daily, about }: { game: Game; mod
             {about}
           </div>
         </div>
-        <div className="game-switches">
-          {dailyModes.length > 0 && (
+        {hasDaily(mode) && (
+          <div className="game-switches">
             <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
               <Link role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
                 <InfinityIcon /> {t('daily.endless')}
               </Link>
-              <Link role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, dailyMode, true)}>
+              <Link role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, mode, true)}>
                 <CalendarIcon /> {t('daily.daily')}
               </Link>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
       </header>
 

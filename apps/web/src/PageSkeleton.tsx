@@ -3,6 +3,7 @@
 import BackButton from './BackButton'
 import { useI18n } from './i18n'
 import { useHref } from './router'
+import { hasDaily, type ModeId } from '@nanda/game'
 import { WEEKDAYS } from './weekdays'
 
 function Head({ withMark }: { withMark?: boolean }) {
@@ -15,7 +16,7 @@ function Head({ withMark }: { withMark?: boolean }) {
   )
 }
 
-function PlayGhost() {
+function PlayGhost({ mode }: { mode?: string }) {
   const { t } = useI18n()
   const href = useHref()
 
@@ -29,10 +30,11 @@ function PlayGhost() {
             <span className="sk line" />
           </div>
         </div>
-        <div className="game-switches">
-          <span className="sk tabs" />
-          <span className="sk tabs" />
-        </div>
+        {!!mode && hasDaily(mode as ModeId) && (
+          <div className="game-switches">
+            <span className="sk tabs" />
+          </div>
+        )}
       </header>
       <section className="play-layout">
         <div className="play-main">
@@ -285,8 +287,8 @@ function MatesGhost() {
   )
 }
 
-export default function PageSkeleton({ section }: { section?: string }) {
-  if (section === 'play') return <PlayGhost />
+export default function PageSkeleton({ section, mode }: { section?: string; mode?: string }) {
+  if (section === 'play') return <PlayGhost mode={mode} />
   if (section === 'profile' || section === 'u') return <ProfileGhost own={section === 'profile'} />
   if (section === 'leaderboard') return <BoardGhost />
   if (section === 'achievements') return <AwardsGhost />

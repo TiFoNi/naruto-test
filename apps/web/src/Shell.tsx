@@ -557,8 +557,9 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const scrolled = useScrolled()
   const [returning, setReturning] = useState(false)
   useVisitTracker()
-  const [, , section, gameId] = pathname.split('/')
+  const [, , section, gameId, modeId] = pathname.split('/')
   const open = PUBLIC.has(section ?? '') || !SECTIONS.has(section ?? '')
+  const bare = section === 'login'
   const game = section === 'play' ? metaById(games, gameId as never) : null
   useBeforePaint(() => {
     const root = document.documentElement
@@ -574,13 +575,14 @@ export default function Shell({ children, games }: { children: ReactNode; games:
 
   useBeforePaint(() => {
     const header = bar.current
-    if (!header || typeof ResizeObserver === 'undefined') return
+    if (!header) return document.documentElement.style.setProperty('--topbar-h', '0px')
+    if (typeof ResizeObserver === 'undefined') return
     const apply = () => document.documentElement.style.setProperty('--topbar-h', `${Math.round(header.getBoundingClientRect().height)}px`)
     apply()
     const watcher = new ResizeObserver(apply)
     watcher.observe(header)
     return () => watcher.disconnect()
-  }, [])
+  }, [bare])
 
   useBeforePaint(() => {
     setReturning(hadSession())
@@ -597,52 +599,54 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   return (
     <div className="app">
       <Background />
-      <header ref={bar} className={`topbar ${scrolled ? 'is-solid' : ''}`}>
-        <div className="topbar-inner">
-          <Link className="brand" href={href.home} aria-label={BRAND.name} prefetch={false}>
-            <span className="brand-mark" aria-hidden>
-              {BRAND.mark}
-            </span>
-            <span className="brand-name">
-              {BRAND.parts[0]}
-              <em>{BRAND.parts[1]}</em>
-            </span>
-          </Link>
+      {!bare && (
+        <header ref={bar} className={`topbar ${scrolled ? 'is-solid' : ''}`}>
+          <div className="topbar-inner">
+            <Link className="brand" href={href.home} aria-label={BRAND.name} prefetch={false}>
+              <span className="brand-mark" aria-hidden>
+                {BRAND.mark}
+              </span>
+              <span className="brand-name">
+                {BRAND.parts[0]}
+                <em>{BRAND.parts[1]}</em>
+              </span>
+            </Link>
 
-          <NavMenu user={!!user} section={section} />
+            <NavMenu user={!!user} section={section} />
 
-          <div className="topbar-right">
-            <LangSwitch />
-            <div className="topbar-slot">
-              {(section === 'login' || (!loading && !user && !open)) && (
-                <Link className="topbar-link guest" href={href.home}>
-                  <span className="topbar-link-label">{t('login.guest')}</span>
-                </Link>
-              )}
-              {!loading && !user && open && section !== 'login' && (
-                <Link className="topbar-link" href={href.login} prefetch={false}>
-                  <span className="topbar-link-label">{t('nav.signIn')}</span>
-                </Link>
-              )}
-              {user && (
-                <>
-                  <Link
-                    className={`topbar-coins ${section === 'shop' ? 'active' : ''}`}
-                    href={href.shop}
-                    title={t('nav.shop')}
-                    aria-label={t('nav.shop')}
-                  >
-                    <CoinIcon />
-                    <b>{user.coins ?? 0}</b>
+            <div className="topbar-right">
+              <LangSwitch />
+              <div className="topbar-slot">
+                {(section === 'login' || (!loading && !user && !open)) && (
+                  <Link className="topbar-link guest" href={href.home}>
+                    <span className="topbar-link-label">{t('login.guest')}</span>
                   </Link>
-                  <Bell />
-                  <AccountMenu nickname={user.nickname} level={user.level} section={section} id={user.id} avatar={user.avatar} />
-                </>
-              )}
+                )}
+                {!loading && !user && open && section !== 'login' && (
+                  <Link className="topbar-link" href={href.login} prefetch={false}>
+                    <span className="topbar-link-label">{t('nav.signIn')}</span>
+                  </Link>
+                )}
+                {user && (
+                  <>
+                    <Link
+                      className={`topbar-coins ${section === 'shop' ? 'active' : ''}`}
+                      href={href.shop}
+                      title={t('nav.shop')}
+                      aria-label={t('nav.shop')}
+                    >
+                      <CoinIcon />
+                      <b>{user.coins ?? 0}</b>
+                    </Link>
+                    <Bell />
+                    <AccountMenu nickname={user.nickname} level={user.level} section={section} id={user.id} avatar={user.avatar} />
+                  </>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
+      )}
 
       {user || open || (loading && returning) ? (
         children
@@ -652,13 +656,13 @@ export default function Shell({ children, games }: { children: ReactNode; games:
         ) : section === 'c' ? (
           <ChallengeSkeleton />
         ) : (
-          <PageSkeleton section={section} />
+          <PageSkeleton section={section} mode={modeId} />
         )
       ) : (
         <Landing games={games} />
       )}
 
-      <Footer />
+      {!bare && <Footer />}
       {user && <DuelDock />}
     </div>
   )

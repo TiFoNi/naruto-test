@@ -156,34 +156,39 @@ export default function AuthScreen() {
       </div>
 
       <form onSubmit={withLink} noValidate>
-        <label htmlFor="auth-email">{t('auth.email')}</label>
-        <div className={`auth-field ${error?.where === 'link' ? 'bad' : valid ? 'ready' : ''}`}>
-          <MailIcon />
-          <input
-            id="auth-email"
-            type="email"
-            autoComplete="email webauthn"
-            autoCapitalize="none"
-            spellCheck={false}
-            placeholder="you@example.com"
-            value={email}
-            maxLength={120}
-            onChange={(e) => {
-              setEmail(e.target.value)
-              setError(null)
-            }}
-          />
+        <div className="auth-row">
+          <div className={`auth-field ${error?.where === 'link' ? 'bad' : valid ? 'ready' : ''}`}>
+            <MailIcon />
+            <input
+              id="auth-email"
+              type="email"
+              aria-label={t('auth.email')}
+              autoComplete="email webauthn"
+              autoCapitalize="none"
+              spellCheck={false}
+              placeholder="you@example.com"
+              value={email}
+              maxLength={120}
+              onChange={(e) => {
+                setEmail(e.target.value)
+                setError(null)
+              }}
+            />
+          </div>
+          <button className="primary auth-send" type="submit" disabled={busy !== null} aria-label={t('auth.sendLink')} title={t('auth.sendLink')}>
+            <ArrowIcon />
+          </button>
         </div>
         {error?.where === 'link' && <div className="auth-error">{error.text}</div>}
-        <button className="primary" type="submit" disabled={busy !== null}>
-          {busy === 'link' ? t('auth.busy') : t('auth.sendLink')}
-          <ArrowIcon />
-        </button>
       </form>
 
+      <Link className="ghost auth-guest" href={href.home}>
+        {t('login.guest')}
+      </Link>
+
       <p className="auth-terms">
-        {t('auth.termsWith')} <Link href={href.terms}>{t('auth.termsTerms')}</Link> {t('auth.termsAnd')} <Link href={href.privacy}>{t('auth.termsPrivacy')}</Link>
-        .
+        {t('auth.guestNote')} {t('auth.termsWith')} <Link href={href.terms}>{t('auth.termsTerms')}</Link> {t('auth.termsAnd')}{' '}
+        <Link href={href.privacy}>{t('auth.termsPrivacy')}</Link>.
       </p>
     </section>
   )
