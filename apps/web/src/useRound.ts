@@ -42,12 +42,15 @@ export type Guess = { entity: Entity; judgement?: Record<string, Judgement>; pen
 const GUESS_GAP_MS = 1000
 
 export function useRound(game: Game, mode: ModeId, active: boolean, daily = false, challenge?: string) {
-  const { setStats, setXp, expire } = useAuth()
+  const { user, setStats, setXp, expire } = useAuth()
   const [round, setRound] = useState<RoundView | null>(null)
   const [pending, setPending] = useState<Entity | null>(null)
   const [busy, setBusy] = useState(false)
   const [cooling, setCooling] = useState(false)
   const lastGuess = useRef(0)
+  const [gained, setGained] = useState(0)
+  const xpNow = useRef(user?.xp ?? 0)
+  xpNow.current = user?.xp ?? xpNow.current
   const coolTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const [error, setError] = useState<string | null>(null)
 
@@ -67,6 +70,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
       )
       if (data.stats) setStats(data.stats.key, data.stats.value)
       if (data.xp) {
+        setGained(Math.max(0, data.xp.xp - xpNow.current))
         setXp(data.xp)
         void refreshFeed()
       }
@@ -149,5 +153,5 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
 
   const retry = () => setError(null)
 
-  return { round, guesses, exclude, over, won, skipped, answer, yesterday, busy: busy || cooling, error, guess, giveUp, refilter, next, retry }
+  return { round, guesses, exclude, over, won, skipped, answer, yesterday, gained, busy: busy || cooling, error, guess, giveUp, refilter, next, retry }
 }

@@ -17,7 +17,7 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 
 export default function OddMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t, l, tv, name } = useI18n()
-  const { round, guesses, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, refilter, next, retry } = useRound(
+  const { round, guesses, over, won, skipped, answer, yesterday, gained, busy, error, guess, giveUp, refilter, next, retry } = useRound(
     game,
     'odd',
     active,
@@ -160,6 +160,15 @@ export default function OddMode({ game, active, stats, daily = false, challenge 
           won={won}
           skipped={skipped}
           stats={stats}
+          gained={gained}
+          day={round?.daily}
+          board={[
+                  guesses
+                    .filter((g) => !g.pending)
+                    .slice(0, 4)
+                    .reverse()
+                    .map((g) => (g.entity.id === answer?.id ? 'correct' : 'wrong')),
+                ]}
           onNext={next}
           challenge={challenge}
           mode="odd"

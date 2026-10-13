@@ -16,7 +16,7 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 
 export default function ClassicMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t } = useI18n()
-  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, refilter, next, retry } = useRound(
+  const { round, guesses, exclude, over, won, skipped, answer, yesterday, gained, busy, error, guess, giveUp, refilter, next, retry } = useRound(
     game,
     'classic',
     active,
@@ -53,6 +53,13 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
           won={won}
           skipped={skipped}
           stats={stats}
+          gained={gained}
+          day={round?.daily}
+          board={guesses
+                  .filter((g) => !g.pending)
+                  .slice(0, 4)
+                  .reverse()
+                  .map((g) => game.columns.map((col) => g.judgement?.[col.key]?.verdict ?? 'wrong'))}
           onNext={next}
           challenge={challenge}
           mode="classic"

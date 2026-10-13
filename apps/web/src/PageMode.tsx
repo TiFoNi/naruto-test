@@ -17,7 +17,7 @@ type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; chall
 
 export default function PageMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t, name } = useI18n()
-  const { round, guesses, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, refilter, next, retry } = useRound(game, 'page', active, daily, challenge)
+  const { round, guesses, over, won, skipped, answer, yesterday, gained, busy, error, guess, giveUp, refilter, next, retry } = useRound(game, 'page', active, daily, challenge)
 
   const byId = new Map(game.entities.map((e) => [e.id, e]))
   const missed = new Set(guesses.filter((g) => !g.pending).map((g) => g.entity.id))
@@ -135,6 +135,15 @@ export default function PageMode({ game, active, stats, daily = false, challenge
             won={won}
             skipped={skipped}
             stats={stats}
+            gained={gained}
+            day={round?.daily}
+            board={[
+                        guesses
+                          .filter((g) => !g.pending)
+                          .slice(0, 4)
+                          .reverse()
+                          .map((g) => (g.entity.id === answer?.id ? 'correct' : 'wrong')),
+                      ]}
             onNext={next}
             challenge={challenge}
             mode="page"

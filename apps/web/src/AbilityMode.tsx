@@ -23,7 +23,7 @@ const clarityAt = (step: number) => Math.round((step / ABILITY_STAGES) * 100)
 
 export default function AbilityMode({ game, active, stats, daily = false, challenge }: Props) {
   const { t, name, lang } = useI18n()
-  const { round, guesses, exclude, over, won, skipped, answer, yesterday, busy, error, guess, giveUp, refilter, next, retry } = useRound(
+  const { round, guesses, exclude, over, won, skipped, answer, yesterday, gained, busy, error, guess, giveUp, refilter, next, retry } = useRound(
     game,
     'ability',
     active,
@@ -131,6 +131,15 @@ export default function AbilityMode({ game, active, stats, daily = false, challe
           won={won}
           skipped={skipped}
           stats={stats}
+          gained={gained}
+          day={round?.daily}
+          board={[
+                  guesses
+                    .filter((g) => !g.pending)
+                    .slice(0, 4)
+                    .reverse()
+                    .map((g) => (g.entity.id === answer?.id ? 'correct' : 'wrong')),
+                ]}
           onNext={next}
           challenge={challenge}
           mode="ability"

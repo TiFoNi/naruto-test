@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import Countdown from './Countdown'
 import type { Entity, Game } from './games/types'
-import { useAuth } from './auth'
 import { ArrowIcon } from './icons'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
@@ -13,6 +12,8 @@ import Share from './Share'
 import { SITE } from './brand'
 import type { ModeId } from './modes'
 
+const DAILY_FIRST = '2026-09-28'
+
 type Props = {
   game: Game
   mode: ModeId
@@ -20,16 +21,18 @@ type Props = {
   guesses: number
   won: boolean
   skipped: boolean
-  stats: Stats
+  stats?: Stats
   onNext: () => void
   challenge?: string
   nextAt?: number
   compact?: boolean
+  gained?: number
+  day?: string
+  board?: string[][]
 }
 
-export default function RoundResult({ game, mode, answer, guesses, won, skipped, stats, onNext, challenge, nextAt, compact }: Props) {
-  const { t, name, alt, l } = useI18n()
-  const { user } = useAuth()
+export default function RoundResult({ game, mode, answer, guesses, won, skipped, onNext, challenge, nextAt, compact, gained = 0, day, board }: Props) {
+  const { t, name, l } = useI18n()
   const href = useHref()
   const ref = useRef<HTMLDivElement>(null)
   const daily = nextAt !== undefined && !challenge
@@ -46,9 +49,11 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
     }
   }, [onNext, daily])
 
-  const note = challenge ? t('challenge.summary', { guesses }) : skipped ? t('result.notCounted') : ''
+  const note = challenge ? t('challenge.summary', { guesses }) : ''
   const verdict: UiKey = won ? 'result.won' : skipped ? 'result.skipped' : 'result.lost'
-  const eyebrow = t(verdict).replace(/…$/, '')
+  const headline = won && guesses > 0 ? t('result.wonTries', { count: guesses }) : skipped ? t('result.gaveUp') : t(verdict).replace(/…$/, '')
+  const number = day ? Math.round((Date.parse(`${day}T00:00:00Z`) - Date.parse(`${DAILY_FIRST}T00:00:00Z`)) / 86400000) + 1 : 0
+  const eyebrow = [daily && number > 0 ? t('result.dailyNo', { count: number }) : null, headline].filter(Boolean).join(' · ')
 
   const shareKey = daily ? (won ? 'share.dailyWon' : 'share.dailyLost') : won ? 'share.resultWon' : 'share.resultLost'
   const shareText = t(shareKey, {
@@ -59,25 +64,24 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
   })
   const shareUrl = `${SITE}${href.play(game.id, mode, daily)}`
 
-  const facts = [
-    { key: 'tries', value: guesses, label: t('result.factTries') },
-    { key: 'streak', value: daily ? (user?.streak ?? 0) : stats.streak, label: t(daily ? 'result.factDays' : 'result.factStreak'), hot: true },
-    { key: 'best', value: daily ? (user?.bestStreak ?? 0) : stats.best, label: t(daily ? 'result.factBestDays' : 'result.factBest') },
-  ]
-
   return (
     <div ref={ref} className={`card result ${won ? 'won' : skipped ? 'skipped' : 'lost'}`}>
+      {!compact && (
+        <span className="result-hero">
+          <img className="result-face" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />
+          <em className="result-badge">{won ? t('result.badgeWon') : skipped ? t('result.gaveUp') : t('result.badgeLost')}</em>
+        </span>
+      )}
+      <div className="result-body">
       <span className="result-eyebrow">{eyebrow}</span>
-      {!compact && <img className="result-image" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />}
       <div className="result-name">{name(answer)}</div>
-      {alt(answer) && <div className="result-name-en">{alt(answer)}</div>}
-      <div className="result-facts">
-        {facts.map((fact) => (
-          <div key={fact.key} className={fact.hot ? 'hot' : ''}>
-            <b>{fact.value}</b>
-            <span>{fact.label}</span>
-          </div>
-        ))}
+      <div className="result-chips">
+        {guesses > 0 && (
+          <span className="result-chip">
+            <b>{guesses}</b> {t('result.tries', { count: guesses }).replace(/^\d+\s*/, '')}
+          </span>
+        )}
+        {gained > 0 && <span className="result-chip is-xp">{t('result.xp', { count: gained })}</span>}
       </div>
       {note && <p className="round">{note}</p>}
       {daily ? (
@@ -89,7 +93,6 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
             <Link className="ghost" href={href.home}>
               {t('play.back')}
             </Link>
-            {!skipped && <Share text={shareText} url={shareUrl} />}
             <Link className="primary" href={href.play(game.id, mode)}>
               {t('daily.playEndless')}
             </Link>
@@ -101,20 +104,40 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
             <Link className="ghost" href={href.home}>
               {t('play.back')}
             </Link>
-            {!skipped && <Share text={shareText} url={shareUrl} />}
           </div>
         ) : (
           <div className="result-actions">
             <Link className="ghost" href={href.home}>
               {t('play.back')}
             </Link>
-            {!skipped && <Share text={shareText} url={shareUrl} />}
             <button className="primary" onClick={onNext}>
               {t('result.next')}
               <ArrowIcon />
             </button>
           </div>
         )
+      )}
+      </div>
+
+      {!skipped && (
+        <aside className="result-share">
+          <header>
+            <span>{t('share.action')}</span>
+            <small>{t('result.noSpoilers')}</small>
+          </header>
+          {!!board?.length && (
+            <div className="result-board" aria-hidden>
+              {board.map((row, index) => (
+                <div key={index} className="result-board-row">
+                  {row.map((verdict, cell) => (
+                    <i key={cell} className={verdict} />
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
+          <Share text={shareText} url={shareUrl} />
+        </aside>
       )}
     </div>
   )

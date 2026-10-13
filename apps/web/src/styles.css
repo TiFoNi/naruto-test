@@ -1298,23 +1298,202 @@ main {
 
 .result {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  text-align: center;
+  gap: clamp(20px, 3vw, 38px);
+  padding: clamp(16px, 2vw, 20px);
+  border-radius: 26px;
+  text-align: left;
   animation: reveal 0.35s ease-out;
 }
 
+@media (min-width: 761px) {
+  .play-panel,
+  .result {
+    min-height: 232px;
+  }
+}
+
+.result-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+}
+
+.result-hero {
+  position: relative;
+  flex: none;
+  display: block;
+  width: clamp(104px, 13vw, 150px);
+  margin: 6px 10px 6px 4px;
+  transform: rotate(-3deg);
+}
+
+.result-face {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 24px;
+  object-fit: cover;
+  background: var(--card);
+}
+
+.result-badge {
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  padding: 5px 14px;
+  border: 3px solid var(--bg);
+  border-radius: 999px;
+  color: #0e1a12;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 800;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.result.won .result-badge {
+  background: var(--correct);
+  color: #0b1f14;
+}
+
+.result.lost .result-badge,
+.result.skipped .result-badge {
+  background: #c9534a;
+  color: #230b09;
+}
+
+.result.won .result-face {
+  box-shadow:
+    0 0 0 4px var(--bg),
+    0 0 0 6px color-mix(in srgb, var(--correct) 80%, #9af0bf),
+    0 0 26px color-mix(in srgb, var(--correct) 45%, transparent);
+}
+
+.result.lost .result-face,
+.result.skipped .result-face {
+  box-shadow:
+    0 0 0 4px var(--bg),
+    0 0 0 6px #d4645b,
+    0 0 26px color-mix(in srgb, #e5483b 40%, transparent);
+}
+
+.result-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.result-chip {
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: color-mix(in srgb, #ffffff 6%, transparent);
+  color: var(--text-2);
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.result-chip b {
+  color: var(--text);
+  font-weight: 800;
+}
+
+.result-chip.is-xp {
+  background: color-mix(in srgb, var(--partial) 16%, transparent);
+  color: color-mix(in srgb, var(--partial) 75%, #ffffff);
+  font-weight: 700;
+}
+
+.result-share {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: 8px;
+  flex: none;
+  width: min(42%, 252px);
+  margin-left: auto;
+  padding: 12px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--bg) 45%, transparent);
+}
+
+.result-share header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--text-3);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.result-share header small {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.result-board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  flex: 1 1 auto;
+}
+
+.result-board-row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.result-board i {
+  flex: 1 1 0;
+  aspect-ratio: 1;
+  min-width: 0;
+  max-width: 21px;
+  border-radius: 6px;
+  background: var(--wrong);
+}
+
+.result-board i.correct {
+  background: var(--correct);
+}
+
+.result-board i.partial {
+  background: var(--partial);
+}
+
+.result-share .share {
+  width: 100%;
+}
+
+.result-share .share-open {
+  justify-content: center;
+  width: 100%;
+  height: 38px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
 .result.won {
-  border-color: color-mix(in srgb, var(--correct) 60%, transparent);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--correct) 12%, var(--card)), var(--card) 70%);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--correct) 18%, transparent);
+  background:
+    radial-gradient(circle clamp(120px, 15vw, 205px) at 11% 50%, color-mix(in srgb, var(--correct) 38%, transparent), transparent),
+    var(--card);
 }
 
 .result.lost,
 .result.skipped {
-  border-color: color-mix(in srgb, #e5483b 45%, transparent);
-  background: linear-gradient(180deg, color-mix(in srgb, #e5483b 10%, var(--card)), var(--card) 70%);
+  background:
+    radial-gradient(circle clamp(120px, 15vw, 205px) at 11% 50%, color-mix(in srgb, #e5483b 30%, transparent), transparent),
+    var(--card);
 }
 
 .result-eyebrow {
@@ -1334,46 +1513,11 @@ main {
   color: color-mix(in srgb, #e5483b 75%, #fff);
 }
 
-.result-facts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  width: min(100%, 460px);
-  margin: 8px auto 0;
-}
-
-.result-facts div {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 12px 10px;
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--bg) 45%, transparent);
-}
-
-.result-facts b {
-  font-family: var(--display);
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-.result-facts span {
-  color: var(--text-3);
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.result-facts .hot b {
-  color: var(--accent);
-}
-
 .result .result-actions {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(196px, 1fr));
-  gap: 10px;
-  width: min(100%, 460px);
-  margin: 8px auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0 0;
 }
 
 .result .result-actions > * {
@@ -1415,14 +1559,42 @@ main {
 .result-name {
   font-family: var(--display);
   font-weight: 700;
-  font-size: 26px;
+  font-size: clamp(24px, 3.1vw, 38px);
+  line-height: 1.1;
 }
 
-.result-name-en {
-  color: var(--text-3);
-  font-size: 14px;
-  font-weight: 700;
-  margin-top: -6px;
+.result .round,
+.result .daily-next {
+  margin: 4px 0 0;
+  font-size: 13px;
+}
+
+@media (max-width: 760px) {
+  .result {
+    flex-wrap: wrap;
+  }
+
+  .result-share {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .result {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .result-body {
+    align-items: center;
+  }
+
+  .result .result-actions,
+  .result-chips {
+    justify-content: center;
+  }
 }
 
 .primary {
