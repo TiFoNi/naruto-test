@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, type ReactN
 import { LANGS, type L10n, type Lang } from './langs'
 import type { Dict, UiKey } from './ui'
 import { useTerms } from '../terms'
+import { RU_VALUES } from './ru-values'
 import { pluralIndex } from '../plural'
 
 export { LANGS }
@@ -99,7 +100,7 @@ export function I18nProvider({ children, lang, dict }: { children: ReactNode; la
       setLang,
       t,
       l: (text) => text[lang],
-      tv: (v) => (lang === 'ru' ? v : (dictionary[v]?.[index] || v)),
+      tv: (v) => (lang === 'ru' ? (RU_VALUES[v] ?? v) : (dictionary[v]?.[index] || v)),
       name,
       alt: (entity) => {
         const secondary = lang === 'en' ? entity.name : entity.nameEn

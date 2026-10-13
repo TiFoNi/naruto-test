@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-export type Dictionary = Record<string, [uk: string, en: string]>
+export type Dictionary = Record<string, [uk: string, en: string, ru?: string]>
 
 export let terms: Dictionary = {}
 
