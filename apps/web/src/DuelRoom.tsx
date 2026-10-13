@@ -1,5 +1,6 @@
 'use client'
 
+import Avatar from './Avatar'
 import BackButton from './BackButton'
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import AbilityIcon from './AbilityIcon'
@@ -28,13 +29,15 @@ import DuelSetup from './DuelSetup'
 import DuelSkeleton from './DuelSkeleton'
 import GridBoard from './GridBoard'
 import type { Guess } from './useRound'
-import { ExitIcon, SwordsIcon, TrophyIcon } from './icons'
+import { SwordsIcon, TrophyIcon } from './icons'
 import { fullUrl } from './pics'
 import { api, apiSrc } from './api'
 import { useEntities } from './entities'
 
 
 const clarity = (step: number) => Math.round((step / ABILITY_STAGES) * 100)
+
+const RING = 2 * Math.PI * 44
 
 const clock = (ms: number) => {
   const total = Math.max(0, Math.floor(ms / 1000))
@@ -135,6 +138,48 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
   const clarityStep = revealed ? ABILITY_STAGES : Math.min(wrong, ABILITY_STAGES)
   const left = duel.endsAt ? duel.endsAt - serverNow() : 0
   const modeLabel = duel.mode ? t(MODES.find((m) => m.id === duel.mode)?.label ?? 'mode.classic') : null
+  const ticking = duel.status === 'playing' && duel.seconds > 0 && !!duel.endsAt
+  const share = ticking ? Math.max(0, Math.min(1, left / (duel.seconds * 1000))) : 0
+  const heat = ticking ? Math.round(Math.max(0, 1 - share / 0.2) * 100) : 0
+
+  const sideNote = (side: { ready?: boolean; solved?: boolean; gaveUp?: boolean } | undefined, count: number, cardsLeft: number) =>
+    inLobby
+      ? side?.ready
+        ? t('duel.isReady')
+        : t('duel.notReady')
+      : [
+          duel.mode === 'who'
+            ? t('who.cardsLeft', { count: cardsLeft })
+            : duel.mode === 'grid'
+              ? t('grid.misses', { count, max: GRID_MISSES })
+              : t('duel.guesses', { count }),
+          side?.solved ? t('duel.solved') : side?.gaveUp ? t(duel.mode === 'who' ? 'who.missed' : 'duel.gaveUp') : '',
+        ]
+          .filter(Boolean)
+          .join(' · ')
+
+  const youNote = sideNote(you, duel.mode === 'grid' ? (duel.you?.guesses.length ?? 0) : guesses.filter((g) => !g.pending).length, (duel.cards?.length ?? 0) - (duel.struck?.length ?? 0))
+  const rivalNote = rival ? sideNote(rival, rival.guessCount, duel.rivalLeft ?? 0) : ''
+
+  const quit =
+    duel.status === 'playing' &&
+    (solo ? (
+      <GiveUp hint="grid.giveUpHint" disabled={busy} onConfirm={giveUp}>
+        {t('grid.giveUp')}
+      </GiveUp>
+    ) : (
+      <button type="button" className="give-up" onClick={() => void leave()} disabled={busy}>
+        {t('duel.leave')}
+      </button>
+    ))
+
+  const settled = (you?.wins ?? 0) + (rival?.wins ?? 0) + (duel.draws ?? 0)
+  const roundMark = (index: number) => {
+    if (index < (you?.wins ?? 0)) return 'won'
+    if (index < (you?.wins ?? 0) + (rival?.wins ?? 0)) return 'lost'
+    if (index < settled) return 'drawn'
+    return index === settled && !over ? 'now' : ''
+  }
 
   return (
     <div className="duel">
@@ -142,79 +187,53 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
 
       {!inLobby && (
         <>
-      <header className="duel-head card" style={{ '--tab-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
-        <div>
-          <h1>
-            <SwordsIcon /> {game ? `${l(game.label)} · ${modeLabel}` : t('duel.room')}
-          </h1>
-          <p className="muted">
-            {solo ? t('grid.vsBot') : t('duel.code', { code: duel.code })}
-            {!solo && duel.round > 0 ? ` · ${t('duel.roundNo', { round: duel.round })}` : ''}
-          </p>
-        </div>
-        <div className="duel-head-side">
-          {duel.status === 'playing' && duel.seconds > 0 && duel.endsAt && <div className={`duel-timer ${left < 60000 ? 'hot' : ''}`}>{clock(left)}</div>}
-          {solo ? (
-            duel.status === 'playing' && (
-              <GiveUp className="duel-leave duel-solo-leave" hint="grid.giveUpHint" disabled={busy} onConfirm={giveUp}>
-                <ExitIcon />
-                {t('grid.giveUp')}
-              </GiveUp>
-            )
-          ) : (
-            <button type="button" className="duel-leave" onClick={() => void leave()} disabled={busy}>
-              <ExitIcon />
-              {t('duel.leave')}
-            </button>
-          )}
-        </div>
-      </header>
+      <header className="duel-hud card" style={{ '--tab-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
+        <span className="duel-hud-meta">
+          {[duel.round > 0 ? t('duel.roundOf', { round: duel.round, best: duel.best }) : null, game ? l(game.label) : null, modeLabel]
+            .filter(Boolean)
+            .join(' · ')}
+        </span>
 
-      <section className="duel-players card">
-        <div className={`duel-player ${you?.solved ? 'solved' : ''}`}>
-          <b>{you?.nickname}</b>
-          <span className="muted">
-            {inLobby
-              ? you?.ready
-                ? t('duel.isReady')
-                : t('duel.notReady')
-              : duel.mode === 'who'
-                ? t('who.cardsLeft', { count: (duel.cards?.length ?? 0) - (duel.struck?.length ?? 0) })
-                : duel.mode === 'grid'
-                  ? t('grid.misses', { count: duel.you?.guesses.length ?? 0, max: GRID_MISSES })
-                  : t('duel.guesses', { count: guesses.filter((g) => !g.pending).length })}
-            {!inLobby && you?.solved
-              ? ` · ${t('duel.solved')}`
-              : !inLobby && you?.gaveUp
-                ? ` · ${t(duel.mode === 'who' ? 'who.missed' : 'duel.gaveUp')}`
-                : ''}
-          </span>
-        </div>
-        <span className="duel-vs">{duel.round > 0 ? `${you?.wins ?? 0} : ${rival?.wins ?? 0}` : 'VS'}</span>
-        {rival ? (
-          <div className={`duel-player ${rival.solved ? 'solved' : ''}`}>
-            <b>{rival.nickname}</b>
-            <span className="muted">
-              {inLobby
-                ? rival.ready
-                  ? t('duel.isReady')
-                  : t('duel.notReady')
-                : duel.mode === 'who'
-                  ? t('who.cardsLeft', { count: duel.rivalLeft ?? 0 })
-                  : duel.mode === 'grid'
-                    ? t('grid.misses', { count: rival.guessCount, max: GRID_MISSES })
-                    : t('duel.guesses', { count: rival.guessCount })}
-              {!inLobby && rival.solved
-                ? ` · ${t('duel.solved')}`
-                : !inLobby && rival.gaveUp
-                  ? ` · ${t(duel.mode === 'who' ? 'who.missed' : 'duel.gaveUp')}`
-                  : ''}
+        <div className="duel-hud-row">
+          <div className="duel-hud-side is-you">
+            {you && <Avatar className="duel-hud-face" id={you.id} name={you.nickname} avatar={you.avatar} />}
+            <span className="duel-hud-name">
+              <b>{you?.nickname}</b>
+              <small>{youNote}</small>
             </span>
           </div>
-        ) : (
-          <div className="duel-player empty">{t('duel.waitingRival')}</div>
-        )}
-      </section>
+
+          <b className="duel-hud-score is-you">{you?.wins ?? 0}</b>
+
+          <div className="duel-hud-clock" style={{ '--heat': heat } as CSSProperties}>
+            {ticking && (
+              <svg className="duel-hud-ring" viewBox="0 0 100 100" aria-hidden>
+                <circle className="duel-hud-ring-bed" cx="50" cy="50" r="44" />
+                <circle className="duel-hud-ring-line" cx="50" cy="50" r="44" style={{ strokeDashoffset: RING * (1 - share) }} />
+              </svg>
+            )}
+            <span>{ticking ? clock(left) : '—'}</span>
+          </div>
+
+          <b className="duel-hud-score is-rival">{rival?.wins ?? 0}</b>
+
+          <div className="duel-hud-side is-rival">
+            <span className="duel-hud-name">
+              <b>{rival?.nickname ?? t('duel.waitingRival')}</b>
+              <small>{rivalNote}</small>
+            </span>
+            {rival && <Avatar className="duel-hud-face" id={rival.id} name={rival.nickname} avatar={rival.avatar} />}
+          </div>
+
+        </div>
+
+        <ul className="duel-hud-dots" aria-hidden>
+          {Array.from({ length: duel.best }, (_, index) => (
+            <li key={index} className={roundMark(index)} />
+          ))}
+        </ul>
+      </header>
+
         </>
       )}
 
@@ -286,7 +305,10 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
         />}
 
       {!inLobby && game && duel.mode === 'grid' && (
+        <>
         <GridBoard game={game} byId={byId} duel={duel} busy={busy} error={error} onMark={mark} onNext={next} />
+        {quit && <div className="duel-quit is-wide">{quit}</div>}
+        </>
       )}
 
       {!inLobby && game && duel.mode !== 'who' && duel.mode !== 'grid' && (
@@ -295,6 +317,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
           side={
             <aside className="play-side duel-side">
               {duel.mode === 'classic' && duel.rival && <RivalBoard game={game} rows={duel.rival.board ?? []} total={duel.rival.guessCount} />}
+              {quit && <div className="duel-quit">{quit}</div>}
             </aside>
           }
           media={

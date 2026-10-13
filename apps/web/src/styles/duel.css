@@ -14,6 +14,259 @@
   color: var(--accent);
 }
 
+.duel-hud {
+  --you: var(--accent);
+  --rival: #8b78ff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 16px 12px;
+  border: 1px solid color-mix(in srgb, #ffffff 8%, var(--bg));
+  border-top: 3px solid transparent;
+  background:
+    linear-gradient(97deg, color-mix(in srgb, var(--you) 12%, transparent), transparent 42%) padding-box,
+    linear-gradient(263deg, color-mix(in srgb, var(--rival) 12%, transparent), transparent 42%) padding-box,
+    linear-gradient(var(--card-solid), var(--card-solid)) padding-box,
+    linear-gradient(90deg, var(--you), var(--rival)) border-box;
+}
+
+.duel-hud-meta {
+  color: var(--text-3);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.duel-hud-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.duel-hud-side {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.duel-hud-side.is-rival {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.duel-hud-face {
+  flex: none;
+  width: 54px;
+  height: 54px;
+  border-radius: 17px;
+  font-size: 22px;
+}
+
+.duel-hud-side.is-you .duel-hud-face {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--you) 60%, transparent);
+}
+
+.duel-hud-side.is-rival .duel-hud-face {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--rival) 60%, transparent);
+}
+
+.duel-hud-name {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.duel-hud-name b {
+  overflow: hidden;
+  font-family: var(--display);
+  font-size: 17px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.duel-hud-name small {
+  overflow: hidden;
+  color: var(--text-3);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.duel-hud-side.is-you .duel-hud-name small {
+  color: color-mix(in srgb, var(--you) 55%, var(--text-3));
+}
+
+.duel-hud-side.is-rival .duel-hud-name small {
+  color: color-mix(in srgb, var(--rival) 60%, var(--text-3));
+}
+
+.duel-hud-score {
+  font-family: var(--display);
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1;
+}
+
+.duel-hud-score.is-you {
+  color: var(--you);
+}
+
+.duel-hud-score.is-rival {
+  color: var(--rival);
+}
+
+.duel-hud-clock {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  font-family: var(--display);
+  font-size: 15.5px;
+  letter-spacing: -0.01em;
+}
+
+.duel-hud-ring {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.duel-hud-ring circle {
+  fill: none;
+  stroke-width: 4.5;
+}
+
+.duel-hud-ring-bed {
+  stroke: color-mix(in srgb, var(--text-3) 26%, transparent);
+}
+
+.duel-hud-ring-line {
+  stroke: color-mix(in srgb, #ff4f4f calc(var(--heat, 0) * 1%), var(--you));
+  stroke-dasharray: 276.46;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s linear, stroke 0.5s linear;
+}
+
+.duel-quit {
+  display: flex;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.duel-quit .give-up {
+  width: 100%;
+}
+
+.duel-quit.is-wide {
+  justify-content: center;
+}
+
+.duel-quit.is-wide .give-up {
+  width: min(100%, 320px);
+}
+
+.duel-hud-exit {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.duel-hud-exit:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  color: var(--text);
+}
+
+.duel-hud-exit .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.duel-hud-dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.duel-hud-dots li {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text-3) 35%, transparent);
+}
+
+.duel-hud-dots li.won {
+  background: var(--you);
+}
+
+.duel-hud-dots li.lost {
+  background: var(--rival);
+}
+
+.duel-hud-dots li.drawn {
+  background: var(--text-2);
+}
+
+.duel-hud-dots li.now {
+  width: 24px;
+  background: var(--text);
+}
+
+@media (max-width: 760px) {
+  .duel-hud-row {
+    grid-template-columns: minmax(0, 1fr) auto auto auto minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .duel-hud-face {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    font-size: 17px;
+  }
+
+  .duel-hud-name b {
+    font-size: 14px;
+  }
+
+  .duel-hud-name small {
+    font-size: 11px;
+  }
+
+  .duel-hud-clock {
+    width: 70px;
+    height: 70px;
+    font-size: 13px;
+  }
+
+  .duel-hud-exit {
+    grid-column: 5;
+    grid-row: 1;
+    justify-self: end;
+    align-self: start;
+  }
+}
+
 .duel-head {
   display: flex;
   align-items: center;
