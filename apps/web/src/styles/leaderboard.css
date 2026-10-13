@@ -146,11 +146,14 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  width: calc(100% - 342px);
   flex-wrap: wrap;
 }
 
-.lb-filters > * {
-  min-width: 200px;
+.lb-filters > .picker {
+  flex: 1 1 0;
+  min-width: 220px;
+  max-width: none;
 }
 
 .lb-count {
@@ -513,7 +516,14 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  min-width: 0;
   text-decoration: none;
+}
+
+.lb-cta span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .lb-record {
@@ -559,6 +569,10 @@
 }
 
 @media (max-width: 1080px) {
+  .lb-filters {
+    width: 100%;
+  }
+
   .lb-layout {
     grid-template-columns: minmax(0, 1fr);
   }

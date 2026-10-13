@@ -200,7 +200,6 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
             ),
           }))}
         />
-        {board && <span className="lb-count">{t('lb.players', { count: board.total })}</span>}
       </div>
 
       <div className="lb-layout">
@@ -385,8 +384,9 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
             ) : (
               <p className="lb-mine empty">{t('lb.noRank')}</p>
             )}
-            <Link className="primary lb-cta" href={href.play(gameId, mode)}>
-              <PlayIcon /> {t('lb.playGame', { game: l(game.label) })}
+            <Link className="primary lb-cta" href={href.play(gameId, mode)} title={t('lb.playGame', { game: l(game.label) })}>
+              <PlayIcon />
+              <span>{t('lb.play')}</span>
             </Link>
           </div>
 
