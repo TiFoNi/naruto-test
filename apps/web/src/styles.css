@@ -5901,17 +5901,92 @@ html[data-auth] .guest-note {
 }
 
 .quest.is-ready {
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  position: relative;
+  isolation: isolate;
+  background: color-mix(in srgb, var(--accent) 13%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 24%, transparent);
   cursor: pointer;
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
 }
 
 .quest.is-ready .quest-icon {
-  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
   color: var(--accent);
+  animation: claim-glow 3.4s ease-in-out infinite;
 }
 
 .quest.is-ready:hover {
-  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 42%, transparent);
+  transform: translateY(-1px);
+}
+
+.quest.is-ready:active {
+  transform: translateY(0) scale(0.995);
+}
+
+.quest.is-ready::after,
+.bonus.is-ready::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(104deg, transparent 38%, color-mix(in srgb, #ffffff 17%, transparent) 50%, transparent 62%) no-repeat;
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  animation: claim-sweep 3.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.quest.is-ready .quest-icon svg,
+.bonus.is-ready .bonus-gift svg {
+  transform-origin: 50% 60%;
+  animation: gift-nudge 3.4s ease-in-out infinite;
+}
+
+.quest.is-ready:hover .quest-icon svg,
+.bonus.is-ready:hover .bonus-gift svg,
+.quest.is-ready:hover::after,
+.bonus.is-ready:hover::after {
+  animation: none;
+}
+
+@keyframes claim-sweep {
+  0% {
+    background-position: 100% 0;
+  }
+
+  46%,
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@keyframes claim-glow {
+  0%,
+  54%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 38%, transparent);
+  }
+
+  80% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 0%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quest.is-ready .quest-icon,
+  .quest.is-ready .quest-icon svg,
+  .quest.is-ready::after,
+  .bonus.is-ready .bonus-gift,
+  .bonus.is-ready .bonus-gift svg,
+  .bonus.is-ready::after {
+    animation: none;
+  }
 }
 
 .quest.is-claimed .quest-icon {
@@ -5965,9 +6040,30 @@ html[data-auth] .guest-note {
 }
 
 .bonus.is-ready {
+  position: relative;
+  isolation: isolate;
   border-style: solid;
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 48%, transparent);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
   cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.bonus.is-ready .bonus-gift {
+  animation: claim-glow 3.4s ease-in-out infinite;
+}
+
+.bonus.is-ready:hover {
+  border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+  background: color-mix(in srgb, var(--accent) 21%, transparent);
+  transform: translateY(-1px);
+}
+
+.bonus.is-ready:active {
+  transform: translateY(0) scale(0.995);
 }
 
 .bonus.is-claimed {
