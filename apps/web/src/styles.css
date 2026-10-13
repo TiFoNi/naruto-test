@@ -6120,6 +6120,46 @@ html[data-auth] .guest-note {
   white-space: nowrap;
 }
 
+.ticker {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ticker > span {
+  display: inline;
+}
+
+.ticker.is-live > span {
+  display: inline-block;
+  will-change: transform;
+  animation: ticker var(--ticker-time, 7s) ease-in-out infinite;
+}
+
+@keyframes ticker {
+  0%,
+  16% {
+    transform: translateX(0);
+  }
+
+  46%,
+  62% {
+    transform: translateX(calc(var(--shift, 0px) * -1));
+  }
+
+  92%,
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker.is-live > span {
+    display: inline;
+    animation: none;
+  }
+}
+
 .quest-count i,
 .bonus-count i {
   display: block;

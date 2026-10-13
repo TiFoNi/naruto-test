@@ -7,6 +7,7 @@ import { useI18n } from './i18n'
 import type { UiKey } from './i18n/ui'
 import { CalendarIcon, CheckIcon, GiftIcon, GlobeIcon, GridIcon, MedalIcon, PageIcon, PictureIcon, PlayIcon, PuzzleIcon, SparkIcon, SwordsIcon, TrophyIcon } from './icons'
 import { keepPerUser } from './session-cache'
+import Ticker from './Ticker'
 
 export type Level = { xp: number; level: number; into: number; need: number; rank: string; next: { from: number; id: string } | null }
 
@@ -193,7 +194,7 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
               </span>
               <span className="quest-main">
                 <span className="quest-head">
-                  <span className="quest-name">{t(`quest.${quest.id}` as UiKey)}</span>
+                  <Ticker className="quest-name">{t(`quest.${quest.id}` as UiKey)}</Ticker>
                   <span className="quest-xp">+{quest.xp}</span>
                 </span>
                 <span className="quest-bar">
@@ -222,7 +223,7 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
               </span>
               <span className="quest-main">
                 <span className="quest-head">
-                  <span className="quest-name">{t('quests.free')}</span>
+                  <Ticker className="quest-name">{t('quests.free')}</Ticker>
                   <span className="quest-xp">+{board.free.xp}</span>
                 </span>
                 <span className="quest-bar">
@@ -249,10 +250,10 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
               <span className="bonus-gift" aria-hidden>
                 {board.bonus.claimed ? <CheckIcon /> : <GiftIcon />}
               </span>
-              <span className="bonus-label">
+              <Ticker className="bonus-label">
                 {t('quests.bonus')}: <b>+{board.bonus.xp} XP</b>
                 {board.bonus.coins > 0 && <b className="bonus-coins">{t('quest.coins', { count: board.bonus.coins })}</b>}
-              </span>
+              </Ticker>
               <span className="bonus-count">
                 <i aria-hidden>{widest}</i>
                 {board.collected}/{board.total}

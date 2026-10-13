@@ -566,7 +566,7 @@
   color: #1a0f05;
 }
 
-.award.done .award-head {
+.award:has(.award-pin) .award-head {
   padding-right: 34px;
 }
 

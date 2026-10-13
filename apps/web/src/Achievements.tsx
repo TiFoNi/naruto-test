@@ -485,7 +485,7 @@ export default function Achievements() {
                       pinned={pinned}
                       busy={claiming === one.open.id}
                       onPin={togglePin}
-                      onOpen={(id) => (filter === 'ready' && one.ready ? void claim(one.ready.id) : setOpened(id))}
+                      onOpen={(id) => (one.ready ? void claim(one.ready.id) : setOpened(id))}
                     />
                   ))}
                 </div>
