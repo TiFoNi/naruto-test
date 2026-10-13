@@ -64,8 +64,37 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
   })
   const shareUrl = `${SITE}${href.play(game.id, mode, daily)}`
 
+  const rows = board?.length === 1 ? [[...board[0], ...Array(Math.max(0, 4 - board[0].length)).fill('blank')]] : board
+
+  const actions = daily ? (
+    <div className="result-actions">
+      <Link className="ghost" href={href.home}>
+        {t('play.back')}
+      </Link>
+      <Link className="primary" href={href.play(game.id, mode)}>
+        {t('daily.playEndless')}
+      </Link>
+    </div>
+  ) : challenge ? (
+    <div className="result-actions">
+      <Link className="ghost" href={href.home}>
+        {t('play.back')}
+      </Link>
+    </div>
+  ) : (
+    <div className="result-actions">
+      <Link className="ghost" href={href.home}>
+        {t('play.back')}
+      </Link>
+      <button className="primary" onClick={onNext}>
+        {t('result.next')}
+        <ArrowIcon />
+      </button>
+    </div>
+  )
+
   return (
-    <div ref={ref} className={`card result ${won ? 'won' : skipped ? 'skipped' : 'lost'}`}>
+    <div ref={ref} className={`card result ${won ? 'won' : skipped ? 'skipped' : 'lost'} ${compact ? 'is-compact' : ''}`}>
       {!compact && (
         <span className="result-hero">
           <img className="result-face" src={fullUrl(game.id, answer.id, answer.image)} alt={name(answer)} />
@@ -73,61 +102,33 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
         </span>
       )}
       <div className="result-body">
-      <span className="result-eyebrow">{eyebrow}</span>
-      <div className="result-name">{name(answer)}</div>
-      <div className="result-chips">
-        {guesses > 0 && (
-          <span className="result-chip">
-            <b>{guesses}</b> {t('result.tries', { count: guesses }).replace(/^\d+\s*/, '')}
-          </span>
-        )}
-        {gained > 0 && <span className="result-chip is-xp">{t('result.xp', { count: gained })}</span>}
-      </div>
-      {note && <p className="round">{note}</p>}
-      {daily ? (
-        <>
+        <span className="result-eyebrow">{eyebrow}</span>
+        <div className="result-name">{name(answer)}</div>
+        <div className="result-chips">
+          {guesses > 0 && (
+            <span className="result-chip">
+              <b>{guesses}</b> {t('result.tries', { count: guesses }).replace(/^\d+\s*/, '')}
+            </span>
+          )}
+          {gained > 0 && <span className="result-chip is-xp">{t('result.xp', { count: gained })}</span>}
+        </div>
+        {note && <p className="round">{note}</p>}
+        {daily && (
           <p className="daily-next">
             {t('daily.nextIn')} <Countdown until={nextAt} onDone={onNext} />
           </p>
-          <div className="result-actions">
-            <Link className="ghost" href={href.home}>
-              {t('play.back')}
-            </Link>
-            <Link className="primary" href={href.play(game.id, mode)}>
-              {t('daily.playEndless')}
-            </Link>
-          </div>
-        </>
-      ) : (
-        challenge ? (
-          <div className="result-actions">
-            <Link className="ghost" href={href.home}>
-              {t('play.back')}
-            </Link>
-          </div>
-        ) : (
-          <div className="result-actions">
-            <Link className="ghost" href={href.home}>
-              {t('play.back')}
-            </Link>
-            <button className="primary" onClick={onNext}>
-              {t('result.next')}
-              <ArrowIcon />
-            </button>
-          </div>
-        )
-      )}
+        )}
+        {!compact && actions}
       </div>
 
       {!skipped && (
         <aside className="result-share">
           <header>
             <span>{t('share.action')}</span>
-            <small>{t('result.noSpoilers')}</small>
           </header>
-          {!!board?.length && (
+          {!!rows?.length && (
             <div className="result-board" aria-hidden>
-              {board.map((row, index) => (
+              {rows.map((row, index) => (
                 <div key={index} className="result-board-row">
                   {row.map((verdict, cell) => (
                     <i key={cell} className={verdict} />
@@ -139,6 +140,8 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
           <Share text={shareText} url={shareUrl} />
         </aside>
       )}
+
+      {compact && actions}
     </div>
   )
 }
