@@ -5893,11 +5893,13 @@ html[data-auth] .guest-note {
 
 .quest-count {
   flex: none;
-  min-width: 34px;
+  width: 48px;
   color: var(--text-3);
   font-family: var(--display);
   font-size: 14px;
+  font-variant-numeric: tabular-nums;
   text-align: right;
+  white-space: nowrap;
 }
 
 .quest.is-ready {
@@ -6029,7 +6031,7 @@ html[data-auth] .guest-note {
   gap: 12px;
   width: 100%;
   margin-top: 6px;
-  padding: 9px 12px;
+  padding: 9px 7px 9px 12px;
   border: 1px dashed color-mix(in srgb, var(--accent) 35%, var(--line));
   border-radius: 14px;
   background: none;
@@ -6111,9 +6113,13 @@ html[data-auth] .guest-note {
 
 .bonus-count {
   flex: none;
+  width: 48px;
   color: var(--text-3);
   font-family: var(--display);
   font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .quests li {
