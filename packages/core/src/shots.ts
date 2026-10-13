@@ -111,6 +111,7 @@ async function markSolved(userId: ObjectId, frames: number, streak: number, gain
     {
       $inc: { [`${PATH}.solved`]: 1, [`${PATH}.totalGuesses`]: frames, [`${PATH}.points`]: gained },
       $set: { [`${PATH}.streak`]: streak },
+      $max: { [`${PATH}.bestStreak`]: streak },
     },
     { returnDocument: 'after', projection: { [`${PATH}.points`]: 1 } },
   )

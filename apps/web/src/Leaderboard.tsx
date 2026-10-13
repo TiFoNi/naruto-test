@@ -12,7 +12,7 @@ import { avatarUrl } from './pics'
 import { useNavigate, useHref } from './router'
 import { keepPerUser } from './session-cache'
 import Picker from './Picker'
-import { ChevronIcon, CrownIcon, PlayIcon, ShieldIcon, SortIcon, TrophyIcon } from './icons'
+import { ChevronIcon, CrownIcon, PlayIcon, ShieldIcon, TrophyIcon } from './icons'
 
 type Sort = 'best' | 'solved'
 
@@ -59,11 +59,6 @@ const COLUMNS: Column[] = [
   { label: 'lb.colSolved', short: 'lb.shortSolved', sort: 'solved', raw: (r) => r.solved ?? 0, value: (r) => r.solved ?? 0 },
 ]
 
-const SHOT_COLUMNS: Column[] = [
-  { ...COLUMNS[0], label: 'lb.colScore', short: 'lb.shortScore' },
-  COLUMNS[1],
-]
-
 const PAGE_SIZE = 10
 const SKELETON_ROWS = PAGE_SIZE
 const TOP = 10
@@ -99,17 +94,10 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   const { t, l, error: errorText } = useI18n()
   const href = useHref()
   const game = gameById(gameId)
-  const [sort, setSort] = useState<Sort>('best')
-  const [reversed, setReversed] = useState(false)
-
-  const pick = (next: Sort) => {
-    if (next === sort) return setReversed((r) => !r)
-    setSort(next)
-    setReversed(false)
-  }
+  const sort: Sort = 'best'
   const navigate = useNavigate()
   const [page, setPage] = useState(1)
-  const cacheKey = `${gameId}:${mode}:${sort}:${reversed ? 'rev' : 'top'}`
+  const cacheKey = `${gameId}:${mode}:${sort}`
   const [board, setBoard] = useState<Board | null>(known.get(cacheKey) ?? null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -119,7 +107,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
     const slow = setTimeout(() => !cancelled && setLoading(true), 300)
     setError(null)
     setBoard(known.get(cacheKey) ?? null)
-    api<Board>(`leaderboard?game=${gameId}&mode=${mode}&sort=${sort}${reversed ? '&dir=rev' : ''}`)
+    api<Board>(`leaderboard?game=${gameId}&mode=${mode}&sort=${sort}`)
       .then(({ ok, data }) => {
         if (cancelled) return
         if (ok) {
@@ -139,22 +127,22 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
       cancelled = true
       clearTimeout(slow)
     }
-  }, [gameId, mode, sort, reversed])
+  }, [gameId, mode, sort])
 
-  useEffect(() => setPage(1), [gameId, mode, sort, reversed])
+  useEffect(() => setPage(1), [gameId, mode])
 
   useEffect(() => {
     if (board) lastSize.set(`${gameId}:${mode}`, Math.min(board.rows.length, PAGE_SIZE))
   }, [board, gameId, mode])
 
   const boardKey = `${gameId}:${mode}`
-  const columns = mode === 'shot' ? SHOT_COLUMNS : COLUMNS
+  const columns = COLUMNS
   const active = columns.find((c) => c.sort === sort) ?? columns[0]
   const all = board?.rows ?? []
   const waiting = !board && !error
-  const standing = !reversed && all.length > 0
-  const podium = standing ? [all[0] ?? null, all[1] ?? null, all[2] ?? null] : waiting && !reversed ? [null, null, null] : []
-  const listed = all.slice(standing ? 3 : 0).filter((row) => !row.me)
+  const standing = all.length > 0
+  const podium = standing ? [all[0] ?? null, all[1] ?? null, all[2] ?? null] : waiting ? [null, null, null] : []
+  const listed = all.slice(standing ? 3 : 0)
   const pages = Math.max(1, Math.ceil(listed.length / PAGE_SIZE))
   const shown = listed.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
   const peak = Math.max(1, ...all.map((r) => active.raw(r)))
@@ -274,11 +262,8 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                         <th>#</th>
                         <th>{t('lb.player')}</th>
                         {columns.map((c) => (
-                          <th key={c.label} className={c.sort === sort ? 'sorted' : 'sortable'}>
-                            <button type="button" onClick={() => pick(c.sort)} title={t('lb.sortMore')}>
-                              {t(c.label)}
-                              <SortIcon className={c.sort === sort ? (reversed ? 'up' : '') : 'idle'} />
-                            </button>
+                          <th key={c.label} className={c === active ? 'sorted' : ''}>
+                            {t(c.label)}
                           </th>
                         ))}
                       </tr>
@@ -307,18 +292,17 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                         </tr>
                       )}
                       {shown.map((row) => (
-                        <tr key={`${row.rank}-${row.nickname}`} className={row.me ? 'me' : ''}>
-                          <td className="lb-rank">{row.rank}</td>
+                        <tr key={`${row.rank}-${row.nickname}`}>
+                          <td className="lb-rank">#{row.rank}</td>
                           <td className="lb-name">
                             <Link className="lb-player" href={row.me || !row.id ? href.profile : href.player(row.id)} prefetch={false}>
                               <Avatar id={row.id} nickname={row.nickname} avatar={row.avatar} />
                               <span className="lb-nick">{row.nickname}</span>
                             </Link>
                             {row.level ? <span className="lb-level">{t('nav.level', { level: row.level })}</span> : null}
-                            {row.me && <span className="lb-you">{t('lb.you')}</span>}
                           </td>
                           {columns.map((c) => (
-                            <td key={c.label} className={c.sort === sort ? 'sorted' : ''}>
+                            <td key={c.label} className={c === active ? 'sorted' : ''}>
                               {c === active ? (
                                 <span className="lb-meter">
                                   <em>{c.value(row)}</em>
@@ -341,14 +325,14 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                     {me && (
                       <tfoot>
                         <tr className="me">
-                          <td className="lb-rank">{me.rank}</td>
+                          <td className="lb-rank">#{me.rank}</td>
                           <td className="lb-name">
                             <Avatar id={me.id} nickname={me.nickname} avatar={me.avatar} />
                             <span className="lb-nick">{me.nickname}</span>
                             <span className="lb-you">{t('lb.you')}</span>
                           </td>
                           {columns.map((c) => (
-                            <td key={c.label} className={c.sort === sort ? 'sorted' : ''}>
+                            <td key={c.label} className={c === active ? 'sorted' : ''}>
                               {c.value(me)}
                             </td>
                           ))}

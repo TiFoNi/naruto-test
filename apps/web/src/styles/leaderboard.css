@@ -82,10 +82,6 @@
   scrollbar-color: var(--card-2) transparent;
 }
 
-.lb-table th.sortable button:hover {
-  color: var(--text-2);
-}
-
 .lb-table th.sorted {
   color: var(--accent);
 }
@@ -136,10 +132,6 @@
 
 .lb-blank:hover td {
   background: none;
-}
-
-.lb-table th .icon.up {
-  transform: rotate(180deg);
 }
 
 .lb-top {
@@ -356,6 +348,10 @@
   border-bottom: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+}
+
+.lb-table tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, #ffffff 3%, transparent);
 }
 
 .lb-table tbody tr:last-child td {
@@ -610,14 +606,6 @@
   padding: 34px 20px 30px;
   border-bottom: 0;
   text-align: center;
-}
-
-.lb-table th .icon.idle {
-  opacity: 0.3;
-}
-
-.lb-table th.sortable button:hover .icon.idle {
-  opacity: 0.6;
 }
 
 .lb-step.vacant {

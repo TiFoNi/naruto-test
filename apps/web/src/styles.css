@@ -3755,25 +3755,6 @@ button.ghost.small {
   color: var(--text);
 }
 
-.lb-table th button {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  cursor: pointer;
-  transition: color 0.15s ease;
-}
-
-.lb-table th .icon {
-  font-size: 13px;
-}
-
 .lb-blank td {
   padding: 26px 0 10px;
   color: var(--text-3);

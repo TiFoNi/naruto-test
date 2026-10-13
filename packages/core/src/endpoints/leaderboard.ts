@@ -35,7 +35,7 @@ export const GET = handle(async (request) => {
   const key = statsKey(params.get('game') ?? '', params.get('mode') ?? '')
   const sort = (params.get('sort') ?? 'best') as Sort
   const day = params.get('scope') === 'day' ? today() : null
-  const field = key === 'shots_shot' ? 'points' : 'best'
+  const field = key === 'shots_shot' ? 'bestStreak' : 'best'
   if (!STAT_KEYS.includes(key) || !(sort in SORTS)) return fail(400, 'bad_request')
   const reversed = params.get('dir') === 'rev'
   const spec = SORTS[sort]
