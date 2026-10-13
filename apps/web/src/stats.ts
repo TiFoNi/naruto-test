@@ -2,6 +2,11 @@ export type Stats = { solved: number; streak: number; best: number; totalGuesses
 
 export const kyivToday = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Kyiv' }).format(new Date())
 
+export const DAILY_FIRST = '2026-09-28'
+
+export const dailyNumber = (day: string) =>
+  Math.round((Date.parse(`${day}T00:00:00Z`) - Date.parse(`${DAILY_FIRST}T00:00:00Z`)) / 86400000) + 1
+
 export const emptyStats: Stats = { solved: 0, streak: 0, best: 0, totalGuesses: 0, skipped: 0 }
 
 export function applyResult(stats: Stats, won: boolean, guesses: number): Stats {

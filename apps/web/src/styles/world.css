@@ -251,20 +251,34 @@
 
 @media (max-width: 620px) {
   .world-head-body {
-    grid-template-columns: minmax(0, 1fr);
-    padding: 20px;
-    gap: 8px;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    padding: 18px;
+    gap: 12px 14px;
   }
 
   .world-mark {
-    width: 56px;
-    height: 56px;
-    border-radius: 18px;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
     grid-row: auto;
+  }
+
+  .world-title {
+    grid-column: 2;
+    align-items: flex-start;
+  }
+
+  .world-title h1 {
+    font-size: clamp(22px, 6.4vw, 30px);
   }
 
   .world-lead,
   .world-chips {
-    grid-column: 1;
+    grid-column: 1 / -1;
+  }
+
+  .world-chips {
+    margin-top: 0;
   }
 }

@@ -17,7 +17,7 @@ export async function grantWorldFrame(users: Collection<UserDoc>, userId: Object
   const pool = (await gameData(game)).pool.length
   if (!pool) return
 
-  const solved = await (await rounds()).distinct('answerId', { userId, game, status: 'won' })
+  const solved = await (await rounds()).distinct('answerId', { userId, game, mode: { $ne: 'pair' }, status: 'won' })
   if (solved.length < pool) return
 
   await users.updateOne({ _id: userId }, { $addToSet: { frames: game } })

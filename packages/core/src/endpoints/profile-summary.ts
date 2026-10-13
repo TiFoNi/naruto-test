@@ -31,7 +31,7 @@ async function history(userId: ObjectId) {
         $facet: {
           games: [
             counted,
-            { $match: { status: 'won' } },
+            { $match: { status: 'won', mode: { $ne: 'pair' } } },
             { $group: { _id: { game: '$game', answerId: '$answerId' } } },
             { $group: { _id: '$_id.game', unique: { $sum: 1 } } },
           ],

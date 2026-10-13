@@ -6,13 +6,11 @@ import { ArrowIcon } from './icons'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
 import { useHref } from './router'
-import type { Stats } from './stats'
+import { dailyNumber, type Stats } from './stats'
 import { fullUrl } from './pics'
 import Share from './Share'
 import { SITE } from './brand'
 import type { ModeId } from './modes'
-
-const DAILY_FIRST = '2026-09-28'
 
 type Props = {
   game: Game
@@ -52,7 +50,7 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
   const note = challenge ? t('challenge.summary', { guesses }) : ''
   const verdict: UiKey = won ? 'result.won' : skipped ? 'result.skipped' : 'result.lost'
   const headline = won && guesses > 0 ? t('result.wonTries', { count: guesses }) : skipped ? t('result.gaveUp') : t(verdict).replace(/…$/, '')
-  const number = day ? Math.round((Date.parse(`${day}T00:00:00Z`) - Date.parse(`${DAILY_FIRST}T00:00:00Z`)) / 86400000) + 1 : 0
+  const number = day ? dailyNumber(day) : 0
   const eyebrow = [daily && number > 0 ? t('result.dailyNo', { count: number }) : null, headline].filter(Boolean).join(' · ')
 
   const shareKey = daily ? (won ? 'share.dailyWon' : 'share.dailyLost') : won ? 'share.resultWon' : 'share.resultLost'

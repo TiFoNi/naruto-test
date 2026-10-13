@@ -611,8 +611,6 @@ const ui = {
   'dash.tipSkipped': { ru: 'Сдался: {count}', uk: 'Здався: {count}', en: 'Gave up: {count}' },
   'dash.tipAvg': { ru: 'Ср. попыток: {value}', uk: 'Сер. спроб: {value}', en: 'Avg. guesses: {value}' },
   'about.world': { ru: 'Об этой вселенной', uk: 'Про цей всесвіт', en: 'About this world' },
-  'about.roster': { ru: 'Кого загадывают', uk: 'Кого загадують', en: 'Who you can get' },
-  'about.more': { ru: ' и ещё {count}.', uk: ' і ще {count}.', en: ' and {count} more.' },
   'home.step1': {
     ru: 'Выбери вселенную и режим — по признакам, по картинке, по цитате или по странице манги',
     uk: 'Обери всесвіт і режим — за ознаками, за картинкою, за цитатою чи за сторінкою манґи',
@@ -964,7 +962,6 @@ const ui = {
     en: 'Experience comes from daily quests only.',
   },
 
-  'quests.reset': { ru: 'обновление через {time}', uk: 'оновлення через {time}', en: 'resets in {time}' },
   'quests.take': { ru: 'Нажми, чтобы забрать', uk: 'Натисни, щоб забрати', en: 'Tap to claim' },
   'quests.claimed': { ru: 'Получено', uk: 'Отримано', en: 'Claimed' },
   'quests.free': { ru: 'Заходи каждый день', uk: 'Заходь щодня', en: 'Drop by every day' },
@@ -992,11 +989,6 @@ const ui = {
   'quest.duel1': { ru: 'Выиграй дуэль', uk: 'Виграй дуель', en: 'Win a duel' },
   'quest.duel3': { ru: 'Выиграй 3 дуэли', uk: 'Виграй 3 дуелі', en: 'Win 3 duels' },
 
-  'dash.sub': {
-    ru: 'Выбирай вселенную и режим: бесконечные раунды или одна загадка дня для всех.',
-    uk: 'Обирай всесвіт і режим: нескінченні раунди або одна загадка дня для всіх.',
-    en: 'Pick a world and a mode: endless rounds, or one puzzle a day for everyone.',
-  },
   'dash.search': { ru: 'Поиск по всем категориям', uk: 'Пошук по всіх категоріях', en: 'Search every category' },
   'dash.searchClear': { ru: 'Очистить', uk: 'Очистити', en: 'Clear' },
   'dash.searchFound': { ru: 'Найдено: {count}', uk: 'Знайдено: {count}', en: 'Found: {count}' },
@@ -1446,12 +1438,6 @@ const ui = {
   'profile.resetting': { ru: 'Сбрасываю…', uk: 'Скидаю…', en: 'Resetting…' },
   'profile.resetDone': { ru: 'Аккаунт обнулён', uk: 'Акаунт обнулено', en: 'Account has been reset' },
 
-  'dash.hello': { ru: 'Привет, {name}!', uk: 'Привіт, {name}!', en: 'Hi, {name}!' },
-  'dash.title': {
-    ru: 'Угадывай персонажей и тайтлы — сколько угодно раз',
-    uk: 'Вгадуй персонажів і тайтли — скільки завгодно разів',
-    en: 'Guess characters and titles — as many times as you like',
-  },
   'dash.yourStats': { ru: 'Твоя статистика', uk: 'Твоя статистика', en: 'Your stats' },
   'dash.openProfile': { ru: 'Открыть профиль', uk: 'Відкрити профіль', en: 'Open profile' },
   'dash.anime': { ru: 'Аниме', uk: 'Аніме', en: 'Anime' },
@@ -1461,6 +1447,14 @@ const ui = {
   'dash.sport': { ru: 'Спорт', uk: 'Спорт', en: 'Sport' },
   'dash.popular': { ru: 'популярное', uk: 'популярне', en: 'popular' },
   'dash.dailyDone': { ru: 'сегодня', uk: 'сьогодні', en: 'today' },
+  'dash.dailyKicker': { ru: 'Ежедневная игра', uk: 'Щоденна гра', en: 'Daily game' },
+  'dash.dailyTitle': { ru: 'Кто сегодня в\u00a0«{world}»?', uk: 'Хто сьогодні в\u00a0«{world}»?', en: 'Who is it today in\u00a0{world}?' },
+  'dash.dailyLead': {
+    ru: 'Один персонаж для всех игроков. Угадай за наименьшее число попыток — и сравни результат с другими.',
+    uk: 'Один персонаж для всіх гравців. Вгадай за найменше спроб — і порівняй результат з іншими.',
+    en: 'One character for every player. Solve it in the fewest guesses and compare with the rest.',
+  },
+  'dash.playDaily': { ru: 'Играть ежедневную', uk: 'Грати щоденну', en: 'Play daily' },
   'dash.characters': { ru: 'Персонажей: {count}', uk: 'Персонажів: {count}', en: 'Characters: {count}' },
   'dash.heroes': { ru: 'Героев: {count}', uk: 'Героїв: {count}', en: 'Heroes: {count}' },
   'dash.players': { ru: 'Футболистов: {count}', uk: 'Футболістів: {count}', en: 'Players: {count}' },

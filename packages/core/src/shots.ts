@@ -1,11 +1,14 @@
 import type { ObjectId } from 'mongodb'
 import { SHOT_MISS, SHOT_POINTS } from '@nanda/game'
-import { shotRuns, users, type ShotDoc } from './db'
+import { rounds, shotRuns, users, type ShotDoc } from './db'
 import { gameData } from './games'
 import { addXp } from './profile'
 import { today } from './daily'
+import { markSeasonPlay } from './season'
+import { grantWorldFrame } from './frames'
 
 const GAME = 'shots'
+const MODE = 'shot'
 const LEVELS = SHOT_POINTS.length
 
 const pointsAt = (level: number) => SHOT_POINTS[Math.min(level, LEVELS - 1)]
@@ -123,12 +126,31 @@ async function markMiss(userId: ObjectId) {
   return pointsOf(doc)
 }
 
-async function endRun(doc: ShotDoc, revealed: number) {
+async function logRound(doc: ShotDoc, answerId: number, status: 'won' | 'lost' | 'skipped', frames: number) {
+  if (doc.guest) return
+  const now = new Date()
+  await (await rounds()).insertOne({
+    userId: doc.userId,
+    game: GAME,
+    mode: MODE,
+    answerId,
+    guesses: [],
+    guessCount: frames,
+    status,
+    createdAt: now,
+    finishedAt: now,
+  })
+  await markSeasonPlay(doc.userId, status === 'won', today())
+  if (status === 'won') await grantWorldFrame(await users(), doc.userId, GAME)
+}
+
+async function endRun(doc: ShotDoc, revealed: number, status: 'lost' | 'skipped') {
   const best = Math.max(doc.best, doc.score)
   await (await shotRuns()).updateOne(
     { _id: doc._id },
     { $set: { status: 'over', best, lastId: revealed, level: LEVELS - 1, updatedAt: new Date() }, $unset: { answerId: '' } },
   )
+  await logRound(doc, revealed, status, LEVELS)
   if (!doc.guest) await keepScore(doc.userId, doc.score, best)
   if (doc.score > 0 && !doc.guest) await addXp(await users(), doc.userId, Math.min(doc.score, 25), 'endless')
   return {
@@ -172,6 +194,7 @@ export async function shotAnswer(userId: ObjectId, pick: number) {
     const gained = pointsAt(doc.level)
     const next = await nextTitle(doc, doc.score + gained, doc.streak + 1)
     if (!next) return null
+    await logRound(doc, doc.answerId, 'won', doc.level + 1)
     const total = doc.guest ? undefined : await markSolved(doc.userId, doc.level + 1, doc.streak + 1, gained)
     return { right: true as const, answerId: doc.answerId, gained, best: doc.best, total, ...next }
   }
@@ -179,20 +202,20 @@ export async function shotAnswer(userId: ObjectId, pick: number) {
   const score = Math.max(0, doc.score - SHOT_MISS)
   await (await shotRuns()).updateOne({ _id: doc._id }, { $inc: { misses: 1 } })
   const total = doc.guest ? undefined : await markMiss(doc.userId)
-  if (doc.level + 1 >= LEVELS) return { right: false as const, total, ...(await endRun({ ...doc, score }, doc.answerId!)) }
+  if (doc.level + 1 >= LEVELS) return { right: false as const, total, ...(await endRun({ ...doc, score }, doc.answerId!, 'lost')) }
   return { right: false as const, gained: -SHOT_MISS, streak: doc.streak, best: doc.best, total, ...(await harder(doc, score)) }
 }
 
 export async function shotSkip(userId: ObjectId) {
   const doc = await playing(userId)
   if (!doc) return null
-  if (doc.level + 1 >= LEVELS) return { skipped: true as const, ...(await endRun(doc, doc.answerId!)) }
+  if (doc.level + 1 >= LEVELS) return { skipped: true as const, ...(await endRun(doc, doc.answerId!, 'skipped')) }
   return { skipped: true as const, streak: doc.streak, best: doc.best, ...(await harder(doc, doc.score)) }
 }
 
 export async function shotGiveUp(userId: ObjectId) {
   const doc = await playing(userId)
-  return doc ? { gaveUp: true as const, ...(await endRun(doc, doc.answerId!)) } : null
+  return doc ? { gaveUp: true as const, ...(await endRun(doc, doc.answerId!, 'skipped')) } : null
 }
 
 export async function shotShown(userId: ObjectId, want?: number) {

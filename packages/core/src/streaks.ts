@@ -1,8 +1,10 @@
 import type { ObjectId } from 'mongodb'
 import type { GameId } from '@nanda/game'
-import { streaks, users, type StreakDoc } from './db'
+import { rounds, streaks, users, type StreakDoc } from './db'
 import { addXp } from './profile'
 import { pairRound, type PairSide } from './pairs'
+import { markSeasonPlay } from './season'
+import { today } from './daily'
 
 const SIDES: PairSide[] = ['left', 'right', 'both', 'none']
 
@@ -62,6 +64,22 @@ export async function pairRun(userId: ObjectId, game: GameId, guest: boolean, fr
   return view(doc)
 }
 
+async function logPair(doc: StreakDoc, won: boolean) {
+  if (doc.guest || doc.left === undefined || doc.right === undefined) return
+  const now = new Date()
+  await (await rounds()).insertOne({
+    userId: doc.userId,
+    game: doc.game,
+    mode: 'pair',
+    answerId: doc.answer === 'right' ? doc.right : doc.left,
+    guesses: [],
+    status: won ? 'won' : 'lost',
+    createdAt: now,
+    finishedAt: now,
+  })
+  await markSeasonPlay(doc.userId, won, today())
+}
+
 export async function pairAnswer(userId: ObjectId, game: GameId, pick: PairSide) {
   const collection = await streaks()
   const found = await collection.findOne({ userId, game })
@@ -71,6 +89,8 @@ export async function pairAnswer(userId: ObjectId, game: GameId, pick: PairSide)
   const streak = right ? found.streak + 1 : found.streak
   const best = Math.max(found.best, streak)
   const now = new Date()
+
+  await logPair(found, right)
 
   if (!right) {
     await collection.updateOne(

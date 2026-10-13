@@ -293,6 +293,7 @@ function bump(counts: Record<string, number>, day: string) {
 function fold(tally: Tally, round: Played) {
   if (round.status === 'active') return
 
+  const guessed = round.mode !== 'pair'
   const mode = (tally.modes[round.mode] ??= { played: 0, won: 0 })
   mode.played += 1
   if (!tally.worlds.includes(round.game)) tally.worlds.push(round.game)
@@ -308,8 +309,10 @@ function fold(tally: Tally, round: Played) {
   tally.noGiveUpRun += 1
   tally.noGiveUp = Math.max(tally.noGiveUp, tally.noGiveUpRun)
 
-  const seen = (tally.unique[round.game] ??= [])
-  if (!seen.includes(round.answerId)) seen.push(round.answerId)
+  if (guessed) {
+    const seen = (tally.unique[round.game] ??= [])
+    if (!seen.includes(round.answerId)) seen.push(round.answerId)
+  }
 
   if (round.daily) {
     tally.dailySolved += 1
@@ -323,13 +326,13 @@ function fold(tally: Tally, round: Played) {
   const key = when ? dayOf(when) : null
   const tries = round.guessCount ?? round.guesses?.length ?? 0
 
-  if (tries === 1) {
+  if (guessed && tries === 1) {
     tally.firstTry += 1
     tally.sniperRun += 1
     tally.sniper = Math.max(tally.sniper, tally.sniperRun)
     if (round.mode === 'image') tally.imageFirstTry += 1
     if (key) tally.bestFirstTryDay = Math.max(tally.bestFirstTryDay, bump(tally.firstTryDays, key))
-  } else {
+  } else if (guessed) {
     tally.sniperRun = 0
   }
 

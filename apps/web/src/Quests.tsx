@@ -51,7 +51,6 @@ export function QuestsGhost() {
     <section className="card quests-card">
       <header>
         <h2>{t('profile.questsTitle')}</h2>
-        <span className="muted">{t('quests.reset', { time: '—' })}</span>
       </header>
 
       <ul className="quests">
@@ -135,19 +134,10 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
   const nudge = (id: string) => setPoke((one) => ({ id, turn: one.id === id ? one.turn + 1 : 1 }))
   const turnOf = (id: string) => (poke.id === id ? poke.turn : 0)
 
-  const left = (() => {
-    if (!board) return '—'
-    const ms = Math.max(board.resetAt - Date.now(), 0)
-    const hours = Math.floor(ms / 3600000)
-    const minutes = Math.floor((ms % 3600000) / 60000)
-    return `${hours}:${String(minutes).padStart(2, '0')}`
-  })()
-
   return (
     <section className="card quests-card">
       <header>
         <h2>{t('profile.questsTitle')}</h2>
-        <span className="muted">{t('quests.reset', { time: left })}</span>
       </header>
 
       <ul className="quests">

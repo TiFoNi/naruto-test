@@ -2602,11 +2602,9 @@ main {
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
-  grid-template-areas:
-    'copy card'
-    'search card';
+  grid-template-areas: 'copy card';
   gap: 18px 24px;
-  align-items: center;
+  align-items: stretch;
   padding-top: 12px;
 }
 
@@ -5690,8 +5688,7 @@ html[data-auth] .guest-note {
   margin-bottom: 4px;
 }
 
-.profile .card header > :last-child,
-.quests-card header > :last-child {
+.profile .card header > :last-child {
   text-align: right;
 }
 
@@ -8984,6 +8981,7 @@ html[data-auth] .guest-note {
   position: absolute;
   top: calc(100% + 10px);
   left: 0;
+  right: auto;
   z-index: 30;
   width: min(440px, calc(100vw - 24px));
   max-height: 46vh;
@@ -8996,6 +8994,18 @@ html[data-auth] .guest-note {
   overflow-y: auto;
   overscroll-behavior: contain;
   animation: fade-in 0.14s ease;
+}
+
+@media (max-width: 620px) {
+  .world-i {
+    position: static;
+  }
+
+  .world-pop {
+    left: 14px;
+    right: 14px;
+    width: auto;
+  }
 }
 
 .world-pop-head {
@@ -9021,11 +9031,6 @@ html[data-auth] .guest-note {
   color: var(--text-2);
   font-size: 13.5px;
   line-height: 1.55;
-}
-
-.world-names {
-  color: var(--text-3);
-  font-size: 12.5px;
 }
 
 .home-about {

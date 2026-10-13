@@ -8,9 +8,9 @@ import type { Category } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import Quests, { QuestsGhost } from './Quests'
 import { useHref } from './router'
-import { dailyKey, hasDaily } from '@nanda/game'
-import { kyivToday } from './stats'
-import { BallIcon, BookIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, PaletteIcon, PlayIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
+import { DAILY_XP_MODES, dailyKey, hasDaily, type ModeId } from '@nanda/game'
+import { dailyNumber, kyivToday, type Stats } from './stats'
+import { ArrowIcon, BallIcon, BookIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, PaletteIcon, PlayIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
 import { useBeforePaint } from './paint'
 import { searchGames } from './search'
 
@@ -56,6 +56,61 @@ const categoryIcon = (id: Category) =>
   ) : (
     <GamepadIcon />
   )
+
+const favourite = (games: GameMeta[], stats: Record<string, Stats>) => {
+  const score = new Map<string, number>()
+  for (const [key, value] of Object.entries(stats)) {
+    const id = key.split('_')[0]
+    score.set(id, (score.get(id) ?? 0) + (value?.solved ?? 0) + (value?.skipped ?? 0))
+  }
+
+  return [...games]
+    .filter((one) => one.modes.some((mode) => DAILY_XP_MODES.includes(mode)))
+    .sort((one, two) => (score.get(two.id) ?? 0) - (score.get(one.id) ?? 0) || two.plays - one.plays)[0]
+}
+
+function DailyCard({ games }: { games: GameMeta[] }) {
+  const { t, l } = useI18n()
+  const href = useHref()
+  const { stats } = useAuth()
+
+  const game = useMemo(() => favourite(games, stats), [games, stats])
+  if (!game) return null
+
+  const mode = (game.modes.find((one) => DAILY_XP_MODES.includes(one)) ?? 'classic') as ModeId
+  const today = kyivToday()
+  const done = stats[dailyKey(game.id, mode)]?.lastDay === today
+
+  return (
+    <section className="hero-daily" style={{ '--world-accent': game.accent } as CSSProperties}>
+      <img className="hero-daily-art" src={`/worlds/big/${game.id}.webp`} alt="" aria-hidden width={448} height={448} />
+
+      <span className="hero-daily-kicker">
+        <i aria-hidden />
+        {t('dash.dailyKicker')} · #{dailyNumber(today)}
+        {done && (
+          <em>
+            <CheckIcon />
+            {t('dash.dailyDone')}
+          </em>
+        )}
+      </span>
+
+      <h1>{t('dash.dailyTitle', { world: l(game.label) })}</h1>
+      <p>{t('dash.dailyLead')}</p>
+
+      <div className="hero-daily-actions">
+        <Link className="primary" href={href.play(game.id, mode, true)} prefetch={false}>
+          {t('dash.playDaily')}
+          <ArrowIcon />
+        </Link>
+        <Link className="ghost" href={href.play(game.id, mode)} prefetch={false}>
+          {t('daily.endless')}
+        </Link>
+      </div>
+    </section>
+  )
+}
 
 function WorldTile({ game, eager }: { game: GameMeta; eager: boolean }) {
   const { t, l } = useI18n()
@@ -193,11 +248,7 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
   return (
     <main className="dashboard">
       <section className="hero">
-        <div className="hero-copy">
-          <span className="eyebrow">{user ? t('dash.hello', { name: user.nickname }) : '\u00a0'}</span>
-          <h1>{t('dash.title')}</h1>
-          <p className="hero-sub">{t('dash.sub')}</p>
-        </div>
+        <DailyCard games={games} />
         {user ? (
           <Quests />
         ) : loading ? (
