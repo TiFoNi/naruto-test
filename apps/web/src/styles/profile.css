@@ -1498,6 +1498,29 @@ button.world-pic.is-empty:hover {
   margin-top: 6px;
 }
 
+.world-shelf.is-ghost .world-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.world-shelf.is-ghost .world-word {
+  width: 58%;
+  height: 11px;
+  border-radius: 6px;
+}
+
+.world-shelf.is-ghost .world-num {
+  width: 26px;
+  height: 11px;
+  border-radius: 6px;
+}
+
+.world-shelf.is-ghost .world-bar {
+  background: color-mix(in srgb, #ffffff 6%, transparent);
+}
+
 .world-shelf.is-board::before {
   content: '';
   position: absolute;

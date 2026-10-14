@@ -385,10 +385,15 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       {!rows && failed ? (
         <div className="card center muted">{t('err.server')}</div>
       ) : !rows ? (
-        <ul className="world-shelf is-all">
-          {Array.from({ length: 16 }, (_, index) => (
-            <li key={`ghost-${index}`}>
+        <ul className={`world-shelf is-all is-board is-ghost ${id ? 'is-plain' : ''}`} ref={grid}>
+          {Array.from({ length: 24 }, (_, index) => (
+            <li key={`ghost-${index}`} data-game={`ghost-${index}`} className={index < SHOWCASE_MAX ? 'is-shown' : ''}>
               <span className="sk world-pic" />
+              <span className="world-line">
+                <span className="sk world-word" />
+                <span className="sk world-num" />
+              </span>
+              <span className="world-bar" />
             </li>
           ))}
         </ul>

@@ -16,6 +16,7 @@
 }
 
 .awards-filters {
+  position: relative;
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
@@ -27,6 +28,8 @@
 }
 
 .awards-filters button {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
@@ -56,9 +59,14 @@
 }
 
 .awards-filters button.active {
-  background: var(--card-2);
   color: var(--text);
 }
+
+.awards-filters button.active b {
+  color: var(--text-2);
+}
+
+
 
 .awards-group {
   display: flex;

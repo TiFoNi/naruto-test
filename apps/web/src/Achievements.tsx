@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { api } from './api'
 import BackButton from './BackButton'
 import { AwardsGhost } from './PageSkeleton'
@@ -47,12 +47,13 @@ type Board = {
 
 const PINNED_MAX = 8
 
-type Filter = 'all' | 'done' | 'doing' | 'secret'
+type Filter = 'all' | 'ready' | 'done' | 'doing' | 'secret'
 
 const CATEGORIES = ['season', 'guessing', 'duels', 'streaks', 'modes', 'worlds', 'ranking', 'secret']
 const TIERS: Tier[] = ['bronze', 'silver', 'gold', 'legend', 'mythic', 'secret']
 const FILTERS: { id: Filter; label: UiKey }[] = [
   { id: 'all', label: 'ach.all' },
+  { id: 'ready', label: 'ach.ready' },
   { id: 'done', label: 'ach.done' },
   { id: 'doing', label: 'ach.doing' },
   { id: 'secret', label: 'ach.secretOnes' },
@@ -324,6 +325,8 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
   const [board, setBoard] = useState<Board | null>(id ? null : known)
   const [error, setError] = useState(false)
   const [filter, setFilter] = useState<Filter>('all')
+  const [ink, setInk] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
+  const tabs = useRef<HTMLDivElement>(null)
   const [group, setGroup] = useState<string>('all')
   const [claiming, setClaiming] = useState<string | null>(null)
   const [opened, setOpened] = useState<string | null>(null)
@@ -350,17 +353,20 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
   const list = board?.achievements ?? []
   const rows = useMemo(() => families(list).sort(byRank), [list])
   const fits = (one: Family, kind: Filter) =>
-    kind === 'done'
-      ? !one.next
-      : kind === 'doing'
-        ? !!one.next
-        : kind === 'secret'
-          ? one.steps.some((step) => step.secret)
-          : true
+    kind === 'ready'
+      ? !!one.ready
+      : kind === 'done'
+        ? !one.next
+        : kind === 'doing'
+          ? !!one.next
+          : kind === 'secret'
+            ? one.steps.some((step) => step.secret)
+            : true
   const inGroup = useMemo(() => (group === 'all' ? rows : rows.filter((one) => one.category === group)), [rows, group])
   const shown = useMemo(() => inGroup.filter((one) => fits(one, filter)), [inGroup, filter])
   const counts: Record<Filter, number> = {
     all: inGroup.length,
+    ready: inGroup.filter((one) => fits(one, 'ready')).length,
     done: inGroup.filter((one) => fits(one, 'done')).length,
     doing: inGroup.filter((one) => fits(one, 'doing')).length,
     secret: inGroup.filter((one) => fits(one, 'secret')).length,
@@ -379,6 +385,25 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
     })
     void api('achievements', { pinned: next })
   }
+
+  const slide = useCallback(() => {
+    const row = tabs.current
+    const on = row?.querySelector<HTMLElement>(`button[data-filter="${filter}"]`)
+    if (!row || !on) return
+    setInk({ x: on.offsetLeft, y: on.offsetTop, w: on.offsetWidth, h: on.offsetHeight })
+  }, [filter])
+
+  useLayoutEffect(() => {
+    slide()
+  }, [slide, counts.all, counts.ready, counts.done, counts.doing, counts.secret])
+
+  useEffect(() => {
+    const row = tabs.current
+    if (!row || typeof ResizeObserver === 'undefined') return
+    const watcher = new ResizeObserver(slide)
+    watcher.observe(row)
+    return () => watcher.disconnect()
+  }, [slide])
 
   const active = opened ? (list.find((a) => a.id === opened) ?? null) : null
 
@@ -485,9 +510,18 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
           </section>
 
           <div className="awards-sort">
-            <div className="awards-filters" role="tablist">
+            <div className="awards-filters" role="tablist" ref={tabs}>
+              <span className={`seg-ink ${ink ? 'is-set' : ''}`} style={ink ? { transform: `translate(${ink.x}px, ${ink.y}px)`, width: ink.w, height: ink.h } : undefined} aria-hidden />
               {FILTERS.map(({ id, label }) => (
-                <button key={id} type="button" role="tab" aria-selected={filter === id} className={filter === id ? 'active' : ''} onClick={() => setFilter(id)}>
+                <button
+                  key={id}
+                  type="button"
+                  role="tab"
+                  data-filter={id}
+                  aria-selected={filter === id}
+                  className={filter === id ? 'active' : ''}
+                  onClick={() => setFilter(id)}
+                >
                   {t(label)} <b>{counts[id]}</b>
                 </button>
               ))}

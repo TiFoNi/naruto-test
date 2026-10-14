@@ -6263,6 +6263,7 @@ html[data-auth] .guest-note {
 }
 
 .cat-rail {
+  width: max-content;
   max-width: 100%;
   margin-right: auto;
 }
@@ -9896,6 +9897,59 @@ html[data-auth] .guest-note {
 .rail-chips button.active {
   border-color: color-mix(in srgb, #ffffff 14%, transparent);
   background: var(--card-2);
+  color: var(--text);
+}
+
+.seg-ink {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 11px;
+  background: var(--card-2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.28s cubic-bezier(0.22, 0.9, 0.24, 1),
+    width 0.28s cubic-bezier(0.22, 0.9, 0.24, 1),
+    height 0.28s cubic-bezier(0.22, 0.9, 0.24, 1),
+    opacity 0.18s ease;
+}
+
+.seg-ink.is-set {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seg-ink {
+    transition: opacity 0.18s ease;
+  }
+}
+
+.cat-rail .rail-track {
+  position: relative;
+  gap: 6px;
+  padding: 5px;
+  border: 1px solid color-mix(in srgb, #ffffff 8%, transparent);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 18px 38px rgba(0, 0, 0, 0.22);
+}
+
+.cat-rail .rail-chips button {
+  position: relative;
+  z-index: 1;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 11px;
+  background: none;
+  font-size: 14px;
+}
+
+.cat-rail .rail-chips button.active {
+  background: none;
   color: var(--text);
 }
 

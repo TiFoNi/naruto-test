@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { useAuth } from './auth'
 import type { GameMeta } from './games/meta'
 import type { Category } from './games/types'
@@ -172,10 +172,29 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
   const started = useRef(false)
   const tabs = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState<Category | undefined>(undefined)
+  const [ink, setInk] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
 
   useEffect(() => {
     setActive(storedCategory())
   }, [])
+
+  const slide = useCallback(() => {
+    const row = tabs.current
+    const on = row?.querySelector<HTMLElement>('.cat-tab.active')
+    setInk(on ? { x: on.offsetLeft, y: on.offsetTop, w: on.offsetWidth, h: on.offsetHeight } : null)
+  }, [])
+
+  useLayoutEffect(() => {
+    slide()
+  }, [slide, active, query])
+
+  useEffect(() => {
+    const row = tabs.current
+    if (!row || typeof ResizeObserver === 'undefined') return
+    const watcher = new ResizeObserver(slide)
+    watcher.observe(row)
+    return () => watcher.disconnect()
+  }, [slide])
 
   useEffect(() => {
     const row = tabs.current
@@ -261,6 +280,11 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         <h2>{t('dash.pick')}</h2>
 
         <Rail className="cat-rail" trackClass="rail-chips" innerRef={tabs}>
+          <span
+            className={`seg-ink ${ink ? 'is-set' : ''}`}
+            style={ink ? { transform: `translate(${ink.x}px, ${ink.y}px)`, width: ink.w, height: ink.h } : undefined}
+            aria-hidden
+          />
           {shown.map((category) => (
             <button
               key={category.id}
