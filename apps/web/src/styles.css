@@ -7443,7 +7443,7 @@ html[data-auth] .guest-note {
 }
 
 .tier-secret .award-art {
-  filter: grayscale(1) contrast(0.9) brightness(0.5) sepia(1) saturate(2.2) hue-rotate(102deg);
+  filter: grayscale(1) contrast(0.9) brightness(0.56) sepia(1) saturate(2.3) hue-rotate(102deg);
 }
 
 .tier-bronze {

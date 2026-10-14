@@ -115,7 +115,7 @@ function Card({ family, busy, onOpen }: { family: Family; busy: boolean; onOpen:
   const goal = next ?? last
   const gained = steps.filter((step) => step.done).pop() ?? null
   const crown = gained ?? goal
-  const name = single ? (hidden ? '???' : t(`ach.${steps[0].id}` as UiKey)) : t(`achFam.${family.id}` as UiKey)
+  const name = hidden ? '???' : t(`ach.${crown.id}` as UiKey)
   const hint = hidden ? t('ach.secretHint') : t(`ach.${goal.id}.hint` as UiKey)
   const seasonal = family.kind === 'season'
   const share = goal.rarity > 0 && !seasonal ? t('ach.share', { share: goal.rarity }) : ''
@@ -204,6 +204,7 @@ function AwardModal({
   const hidden = award.secret && !award.done
   const waiting = award.done && !award.claimed
   const top = [...steps].reverse().find((step) => step.claimed)
+  const crown = [...steps].filter((step) => step.done).pop() ?? award
   const held = !!top && pinnedIds.includes(top.id)
   const locked = !top || (full && !held)
   const percent = Math.min(Math.round((award.progress / award.target) * 100), 100)
@@ -222,7 +223,7 @@ function AwardModal({
         <span className="award-modal-mark" aria-hidden>
           {waiting ? <GiftIcon /> : hidden ? <LockIcon /> : <AwardIcon family={award.family} award={award.id} />}
         </span>
-        <h2>{hidden ? '???' : steps.length > 1 ? t(`achFam.${award.family}` as UiKey) : t(`ach.${award.id}` as UiKey)}</h2>
+        <h2>{hidden ? '???' : t(`ach.${crown.id}` as UiKey)}</h2>
         <p className="award-modal-hint">{hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}</p>
         {award.kind !== 'season' && (
           <div className="award-modal-tags">

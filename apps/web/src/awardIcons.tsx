@@ -106,6 +106,7 @@ const ART: Record<string, string> = {
   earlyBird: 'earlyBird',
   worlds: 'worlds',
   streak: 'streak',
+  polyglot: 'polyglot',
 }
 
 export default function AwardIcon({ award, family }: { award?: string | null; family?: string | null }) {
