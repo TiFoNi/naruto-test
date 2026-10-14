@@ -1446,6 +1446,36 @@
   color: var(--accent);
 }
 
+button.world-pic.is-empty {
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+}
+
+button.world-pic.is-empty:hover {
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  color: var(--accent);
+  transform: translateY(-3px);
+}
+
+.world-shelf li.is-seat.is-aim .world-pic.is-empty {
+  border-style: solid;
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+  animation: world-seat 1.6s ease-in-out infinite;
+}
+
+.world-shelf li.is-seat.is-aim .world-line b {
+  color: var(--accent);
+}
+
+.world-shelf.is-aiming li:not(.is-seat) .world-flip:hover .world-pic {
+  border-color: var(--accent);
+}
+
 .world-shelf.is-board {
   position: relative;
 }

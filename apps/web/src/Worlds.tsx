@@ -18,6 +18,7 @@ const THRESHOLD = 6
 const HOLD = 300
 const SETTLE = 560
 const EDGE_STEP = 16
+const EDGE_GAP = 24
 
 export default function Worlds({ id, nickname }: { id?: string; nickname?: string } = {}) {
   const { t, l } = useI18n()
@@ -29,6 +30,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
   const [drag, setDrag] = useState<Drag | null>(null)
   const [saved, setSaved] = useState<string[]>([])
   const [pending, setPending] = useState(false)
+  const [aim, setAim] = useState<number | null>(null)
   const [busy, setBusy] = useState(false)
   const page = useRef<HTMLDivElement>(null)
   const grid = useRef<HTMLUListElement>(null)
@@ -54,6 +56,13 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     void load()
   }, [load])
 
+  useEffect(() => {
+    if (aim === null) return
+    const off = (event: KeyboardEvent) => event.key === 'Escape' && setAim(null)
+    window.addEventListener('keydown', off)
+    return () => window.removeEventListener('keydown', off)
+  }, [aim])
+
   const keep = async () => {
     setBusy(true)
     const { ok } = await api('profile', { action: 'showcase', showcase: order.slice(0, SHOWCASE_MAX).filter(Boolean) })
@@ -64,12 +73,26 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     setPending(false)
   }
 
+  const fill = (slot: number, game: string) => {
+    const from = order.indexOf(game)
+    if (from < 0 || slot >= SHOWCASE_MAX) return
+    const next = [...order]
+    if (from < SHOWCASE_MAX) next[from] = ''
+    else next.splice(from, 1)
+    next[slot] = game
+    pop.current = game
+    setAim(null)
+    setOrder(next)
+    setPending(next.slice(0, SHOWCASE_MAX).join() !== saved.slice(0, SHOWCASE_MAX).join())
+  }
+
   const free = (slot: number) => {
     const next = [...order]
     const game = next[slot]
     if (!game) return
     next[slot] = ''
     next.push(game)
+    setAim(null)
     setOrder(next)
     setPending(next.slice(0, SHOWCASE_MAX).join() !== saved.slice(0, SHOWCASE_MAX).join())
   }
@@ -186,10 +209,14 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       const node = lift.current
       if (node) node.style.transform = `translate3d(${liftAt.current.x}px, ${liftAt.current.y}px, 0)`
 
-      const edge = 110
+      const edge = 56
       const top = spot.y - edge
       const low = spot.y - (window.innerHeight - edge)
-      const push = top < 0 ? Math.max(-EDGE_STEP, top / 4) : low > 0 ? Math.min(EDGE_STEP, low / 4) : 0
+      const depth = top < 0 ? top : low > 0 ? low : 0
+      const want = depth ? Math.sign(depth) * EDGE_STEP * Math.min(1, Math.abs(depth) / edge) : 0
+      const box = grid.current?.getBoundingClientRect()
+      const room = !box ? want : want < 0 ? Math.min(0, box.top - EDGE_GAP) : Math.max(0, box.bottom - (window.innerHeight - EDGE_GAP))
+      const push = want < 0 ? Math.max(want, room) : Math.min(want, room)
       if (push) {
         window.scrollBy(0, push)
         frame = requestAnimationFrame(paint)
@@ -220,6 +247,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       if (moved) return
       moved = true
       held.current = true
+      setAim(null)
       liftAt.current = { x: spot.x - hold.dx, y: spot.y - hold.dy }
       setFlipped((open) => open.filter((one) => one !== row.game))
       setDrag({ game: row.game, w: box.width })
@@ -255,6 +283,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       held.current = false
       setDrag(null)
       if (!moved) {
+        if (aim !== null) return fill(aim, row.game)
         setFlipped((open) => (open.includes(row.game) ? open.filter((one) => one !== row.game) : [...open, row.game]))
         return
       }
@@ -363,17 +392,29 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
           ))}
         </ul>
       ) : (
-        <ul className={`world-shelf is-all is-board ${drag ? 'is-live' : ''} ${id ? 'is-plain' : ''}`} ref={grid}>
+        <ul className={`world-shelf is-all is-board ${drag ? 'is-live' : ''} ${aim !== null ? 'is-aiming' : ''} ${id ? 'is-plain' : ''}`} ref={grid}>
           {order.map((game, index) =>
             game ? (
               Tile(game, index)
             ) : (
-              <li key={`seat-${index}`} data-game={`seat-${index}`} className="is-seat">
-                <span className="world-pic is-empty">
-                  <PlusIcon />
-                </span>
+              <li key={`seat-${index}`} data-game={`seat-${index}`} className={`is-seat ${aim === index ? 'is-aim' : ''}`}>
+                {id ? (
+                  <span className="world-pic is-empty">
+                    <PlusIcon />
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    className="world-pic is-empty"
+                    aria-label={t('worlds.pick')}
+                    aria-pressed={aim === index}
+                    onClick={() => setAim((one) => (one === index ? null : index))}
+                  >
+                    <PlusIcon />
+                  </button>
+                )}
                 <span className="world-line">
-                  <b>{t('worlds.empty')}</b>
+                  <b>{t(aim === index ? 'worlds.aim' : 'worlds.empty')}</b>
                 </span>
                 <span className="world-bar" />
               </li>

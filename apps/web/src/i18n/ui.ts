@@ -1017,6 +1017,8 @@ const ui = {
   'profile.worldsAll': { ru: 'Все {count}', uk: 'Усі {count}', en: 'All {count}' },
   'worlds.leadGuest': { ru: 'Прогресс игрока по каждой вселенной.', uk: 'Прогрес гравця по кожному всесвіту.', en: 'This player’s progress in every world.' },
   'worlds.empty': { ru: 'Свободно', uk: 'Вільно', en: 'Empty' },
+  'worlds.pick': { ru: 'Поставить на витрину', uk: 'Поставити на вітрину', en: 'Add to showcase' },
+  'worlds.aim': { ru: 'Выбери вселенную', uk: 'Обери всесвіт', en: 'Pick a world' },
   'worlds.remove': { ru: 'Убрать с витрины', uk: 'Прибрати з вітрини', en: 'Remove from showcase' },
   'worlds.keep': { ru: 'Готово', uk: 'Готово', en: 'Save' },
   'worlds.undo': { ru: 'Сбросить', uk: 'Скинути', en: 'Reset' },
