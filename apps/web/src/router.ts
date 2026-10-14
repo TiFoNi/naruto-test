@@ -15,6 +15,7 @@ export function hrefs(lang: Lang) {
     settings: at('/settings'),
     friends: at('/friends'),
     achievements: at('/achievements'),
+    worlds: at('/worlds'),
     shop: at('/shop'),
     admin: at('/admin'),
     adminShots: at('/admin/shots'),

@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
 import { GAME_IDS, STAT_KEYS, type GameId } from '@nanda/game'
 import { ACHIEVEMENTS } from '../achievements'
+import { PINNED_MAX } from './achievements'
 import { rounds, seasons, users, type UserDoc } from '../db'
 import { gameData } from '../games'
 import { fail, handle, json } from '../http'
@@ -132,6 +133,14 @@ async function place(userId: ObjectId) {
   return { position, players: Math.max((row?.players as number) ?? 0, position) }
 }
 
+async function earnedAwards(doc: UserDoc) {
+  const life = Object.keys(doc.claimed ?? {}).filter((id) => TIERS.has(id)).length
+  const mine = await (await seasons()).findOne({ season: seasonAt().id, userId: doc._id! }, { projection: { claimed: 1 } })
+  const current = Object.keys(mine?.claimed ?? {}).filter((id) => TIERS.has(id)).length
+
+  return life + current
+}
+
 async function gamePlaces(doc: UserDoc) {
   const mine = Object.entries(doc.stats ?? {}).filter(([key, value]) => STAT_KEYS.includes(key) && (value?.solved ?? 0) > 0)
   if (!mine.length) return []
@@ -258,12 +267,14 @@ export const GET = handle(async (request) => {
     since: doc.createdAt,
     pinned: (doc.pinned ?? [])
       .filter((award) => doc.claimed?.[award] && TIERS.has(award))
-      .slice(0, 6)
+      .slice(0, PINNED_MAX)
       .map((id) => {
         const veiled = other && SECRETS.has(id) && !found.doc.awards?.[id]
         return { id: veiled ? null : id, tier: TIERS.get(id)!, at: veiled ? null : doc.awards![id], hidden: veiled }
       }),
-    awards: Object.keys(doc.awards ?? {}).length,
+    showcase: doc.showcase ?? [],
+    awards: await earnedAwards(doc),
+    awardsTotal: ACHIEVEMENTS.length,
     level: { xp, level, into: xp % LEVEL_XP, need: LEVEL_XP, rank: rankOf(level).id, next: nextRank(level) },
     totals: {
       solved: totals.won,

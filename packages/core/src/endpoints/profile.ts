@@ -2,6 +2,9 @@ import { fail, handle, json, readJson } from '../http'
 import { quests, rounds, seasons } from '../db'
 import { claimTag, currentUser, lowerNickname, parseNickname, toProfile, unauthorized } from '../profile'
 import { isFrame } from '../frames'
+import { GAME_IDS } from '@nanda/game'
+
+const SHOWCASE_MAX = 8
 
 export const POST = handle(async (request) => {
   const found = await currentUser(request)
@@ -45,6 +48,14 @@ export const POST = handle(async (request) => {
       frame === null ? { $unset: { frame: '' } } : { $set: { frame } },
       { returnDocument: 'after' },
     )
+    return json(toProfile(doc ?? found.doc))
+  }
+
+  if (body.action === 'showcase') {
+    const asked = Array.isArray(body.showcase) ? body.showcase : null
+    if (!asked) return fail(400, 'bad_request')
+    const picked = [...new Set(asked.filter((id: unknown): id is string => typeof id === 'string' && (GAME_IDS as string[]).includes(id)))].slice(0, SHOWCASE_MAX)
+    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $set: { showcase: picked } }, { returnDocument: 'after' })
     return json(toProfile(doc ?? found.doc))
   }
 

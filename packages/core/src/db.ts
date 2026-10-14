@@ -27,6 +27,7 @@ export type UserDoc = {
   claimed?: Record<string, Date>
   resetAt?: Date
   pinned?: string[]
+  showcase?: string[]
   duelStats?: { played?: number; wins?: number; losses?: number; draws?: number; modes?: Record<string, { played?: number; wins?: number }> }
   duelLog?: DuelLogRow[]
   duelBestMs?: number

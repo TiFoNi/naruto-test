@@ -41,7 +41,7 @@ type Board = {
   pinned: string[]
 }
 
-const PINNED_MAX = 6
+const PINNED_MAX = 8
 
 type Filter = 'all' | 'ready' | 'done' | 'doing' | 'locked'
 

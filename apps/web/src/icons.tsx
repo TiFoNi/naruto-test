@@ -165,6 +165,14 @@ export function CheckIcon({ className }: IconProps) {
   )
 }
 
+export function PlusIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2.4}>
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  )
+}
+
 export function InfoIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`} strokeWidth={2}>

@@ -43,7 +43,7 @@ import { useBeforePaint } from './paint'
 import { useHref, useNavigate, useVisitTracker } from './router'
 
 const PUBLIC = new Set(['', 'play', 'privacy', 'terms'])
-const SECTIONS = new Set(['', 'achievements', 'admin', 'c', 'duel', 'duels', 'friends', 'leaderboard', 'login', 'play', 'privacy', 'profile', 'settings', 'terms', 'u'])
+const SECTIONS = new Set(['', 'achievements', 'admin', 'c', 'duel', 'duels', 'friends', 'leaderboard', 'login', 'play', 'privacy', 'profile', 'settings', 'terms', 'u', 'worlds'])
 
 function useDropdown(open: boolean, setOpen: (open: boolean) => void) {
   const box = useRef<HTMLDivElement>(null)

@@ -4,7 +4,6 @@ import BackButton from './BackButton'
 import { useI18n } from './i18n'
 import { useHref } from './router'
 import { hasDaily, type ModeId } from '@nanda/game'
-import { WEEKDAYS } from './weekdays'
 
 function Head({ withMark }: { withMark?: boolean }) {
   return (
@@ -52,112 +51,61 @@ function PlayGhost({ mode }: { mode?: string }) {
 }
 
 export function ProfileGhost({ own }: { own: boolean }) {
-  const { t, lang } = useI18n()
+  const { t } = useI18n()
   const href = useHref()
 
   return (
     <div className="profile sk-profile">
       <BackButton href={href.home}>{t('profile.back')}</BackButton>
-      <div className="profile-grid">
-        <div className="profile-column">
-          <section className="card profile-card">
-            <div className="profile-id">
-              <span className="sk ava" />
-              <div className="profile-names">
-                <span className="sk nick" />
-                <span className="sk tag" />
-              </div>
+      <section className="profile-hero">
+        <div className="profile-hero-id">
+          <span className="sk ava" />
+          <div className="profile-hero-main">
+            <div className="profile-hero-name">
+              <span className="sk nick" />
+              <span className="sk tag" />
+              <span className="sk chip lvl" />
+              <span className="sk chip" />
             </div>
             <div className="level-panel">
-              <div className="level-line">
-                <span className="sk chip" />
-                <span className="sk chip wide" />
-              </div>
               <span className="sk bar" />
               <div className="level-line">
                 <span className="sk chip" />
                 <span className="sk chip wide" />
               </div>
             </div>
-            <div className="profile-facts">
-              {Array.from({ length: 4 }, (_, index) => (
-                <span key={index} className="sk fact" />
-              ))}
-            </div>
             {!own && (
-              <div className="profile-acts">
+              <div className="profile-hero-acts">
                 <span className="sk act" />
                 <span className="sk act" />
               </div>
             )}
-          </section>
-
-          {own && (
-            <section className="card streak-card">
-              <header>
-                <span className="sk title" />
-                <span className="sk chip" />
-              </header>
-              <div className="streak-now">
-                <span className="sk flame" />
-                <span className="sk count" />
-                <span className="sk days" />
-              </div>
-              <ul className="streak-week">
-                {WEEKDAYS[lang].map((name) => (
-                  <li key={name}>
-                    <span className="sk day" />
-                    <small>{name}</small>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          <section className="card activity-card">
-            <header>
-              <span className="sk title" />
-            </header>
-            <ul className="activity">
-              {Array.from({ length: 5 }, (_, index) => (
-                <li key={index}>
-                  <span className="sk dot" />
-                  <span className="sk row">
-                    <span className="sk row-main" />
-                    <span className="sk row-sub" />
-                  </span>
-                  <span className="sk when" />
-                </li>
-              ))}
-            </ul>
-          </section>
+          </div>
         </div>
+        <div className="profile-hero-tiles">
+          {Array.from({ length: 4 }, (_, index) => (
+            <div key={index} className="hero-tile">
+              <span className="sk chip" />
+              <span className="sk big" />
+              <span className="sk chip" />
+            </div>
+          ))}
+        </div>
+      </section>
 
+      <div className="profile-grid">
         <div className="profile-middle">
-          <section className="profile-metrics">
-            {Array.from({ length: 4 }, (_, index) => (
-              <div key={index} className="card">
-                <span className="sk chip" />
-                <span className="sk big" />
-              </div>
-            ))}
-          </section>
           <div className="profile-middle-cols">
             <div className="profile-column">
               <section className="card worlds-card">
                 <header>
-                  <div className="card-title">
-                    <span className="sk title" />
-                    <span className="sk chip wide" />
-                  </div>
+                  <span className="sk title" />
+                  <span className="sk chip" />
                 </header>
-                <ul className="worlds">
-                  {Array.from({ length: 6 }, (_, index) => (
+                <ul className="world-shelf">
+                  {Array.from({ length: 8 }, (_, index) => (
                     <li key={index}>
-                      <span className="sk tag-box" />
-                      <span className="sk name" />
-                      <span className="sk count-mini" />
-                      <span className="sk bar" />
+                      <span className="sk world-pic" />
                     </li>
                   ))}
                 </ul>
@@ -165,35 +113,18 @@ export function ProfileGhost({ own }: { own: boolean }) {
             </div>
 
             <div className="profile-column">
-              <section className="card modes-card">
+              <section className="card soon-card">
                 <header>
                   <span className="sk title" />
                   <span className="sk chip" />
                 </header>
-                <ul className="modes-list">
-                  {Array.from({ length: 10 }, (_, index) => (
+                <ul className="soon-badges">
+                  {Array.from({ length: 8 }, (_, index) => (
                     <li key={index}>
-                      <span className="sk name" />
-                      <span className="sk count-mini" />
-                      <span className="sk share" />
-                      <span className="sk bar" />
+                      <span className="sk soon-mark" />
                     </li>
                   ))}
                 </ul>
-              </section>
-
-              <section className="card soon-card">
-                <header>
-                  <span className="sk title" />
-                </header>
-                <span className="sk chip wide" />
-                <span className="sk chip wide" />
-                <ul className="soon-badges">
-                  {Array.from({ length: 6 }, (_, index) => (
-                    <li key={index} />
-                  ))}
-                </ul>
-                {own && <span className="sk open" />}
               </section>
             </div>
           </div>

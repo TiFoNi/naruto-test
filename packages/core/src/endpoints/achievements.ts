@@ -19,7 +19,7 @@ import type { Facts } from '../achievements'
 import { fail, handle, json, readJson } from '../http'
 import { currentUser, unauthorized } from '../profile'
 
-export const PINNED_MAX = 6
+export const PINNED_MAX = 8
 
 export async function placeOf(solved: number) {
   const collection = await users()
@@ -59,7 +59,7 @@ async function board(doc: UserDoc) {
       done,
       claimed: !!taken[achievement.id],
       at: holder[achievement.id] ?? null,
-      progress: Math.min(achievement.awarded ? (done ? achievement.target : 0) : progressOf(achievement.id, source), achievement.target),
+      progress: done ? achievement.target : achievement.awarded ? 0 : Math.min(progressOf(achievement.id, source), achievement.target),
       rarity: share[achievement.id] ?? 0,
     }
   }

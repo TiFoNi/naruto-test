@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
 import Avatar from './Avatar'
 import AvatarPicker from './AvatarPicker'
@@ -7,16 +7,15 @@ import { useAuth } from './auth'
 import { api } from './api'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
-import WorldMark from './WorldMark'
 import { useI18n } from './i18n'
 import { type Level } from './Quests'
 import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
 import { ProfileGhost } from './PageSkeleton'
-import { WEEKDAYS } from './weekdays'
-import { CalendarIcon, CheckIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
+import { ArrowIcon, PlusIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
 import { useHref, useNavigate } from './router'
 import { kyivToday } from './stats'
+import { SHOWCASE_MAX } from './showcase'
 import { keepPerUser } from './session-cache'
 import { refreshFeed } from './awards'
 
@@ -25,6 +24,8 @@ type Named = { ru: string; uk: string; en: string }
 type Summary = {
   since: string
   pinned: { id: string | null; tier: string; at: string | null; hidden?: boolean }[]
+  awards: number
+  awardsTotal: number
   level: Level
   totals: {
     solved: number
@@ -43,6 +44,7 @@ type Summary = {
   frame?: string | null
   friend?: FriendState
   gamePlaces: { game: GameId; mode: string; position: number }[]
+  showcase: string[]
   streak: {
     current: number
     best: number
@@ -67,6 +69,9 @@ type Summary = {
 type FriendState = 'none' | 'out' | 'in' | 'friends'
 
 const LOCALES = { ru: 'ru-RU', uk: 'uk-UA', en: 'en-GB' } as const
+const SHOW_FACTS = false
+const SHOW_ACTIVITY = false
+
 const DAYS = {
   ru: ['день подряд', 'дня подряд', 'дней подряд'],
   uk: ['день поспіль', 'дні поспіль', 'днів поспіль'],
@@ -120,6 +125,23 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
       document.removeEventListener('keydown', escape)
     }
   }, [places])
+
+  const [tip, setTip] = useState(false)
+  const modesRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!tip) return
+    const away = (event: MouseEvent) => {
+      if (!modesRef.current?.contains(event.target as Node)) setTip(false)
+    }
+    const escape = (event: KeyboardEvent) => event.key === 'Escape' && setTip(false)
+    document.addEventListener('mousedown', away)
+    document.addEventListener('keydown', escape)
+    return () => {
+      document.removeEventListener('mousedown', away)
+      document.removeEventListener('keydown', escape)
+    }
+  }, [tip])
 
   const [friend, setFriend] = useState<FriendState>('none')
 
@@ -179,6 +201,14 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
   const medal = (position: number) => (position === 1 ? 'gold' : position === 2 ? 'silver' : position === 3 ? 'bronze' : '')
 
+  const games = summary?.games ?? []
+  const picked = (summary?.showcase ?? [])
+    .map((id) => games.find((row) => row.game === id))
+    .filter((row): row is NonNullable<typeof row> => !!row)
+    .slice(0, SHOWCASE_MAX)
+  const shelf = picked.length ? picked : games.slice(0, SHOWCASE_MAX)
+  const blanks = Math.max(0, SHOWCASE_MAX - shelf.length)
+
   const gameLabel = (id: string) => GAMES.find((g) => g.id === id)?.label
   const modeLabel = (id: string) => MODES.find((m) => m.id === id)?.label ?? 'mode.classic'
   const navigate = useNavigate()
@@ -194,45 +224,23 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
   if (!summary && !failed) return <ProfileGhost own={own} />
 
-  const accuracy = summary ? percent(summary.totals.solved, summary.totals.played) : 0
-  const average = summary && summary.totals.solved ? (summary.totals.guesses / summary.totals.solved).toFixed(1) : '—'
-
   return (
     <div className="profile">
       <BackButton href="/" onClick={onBack}>
         {t('profile.back')}
       </BackButton>
 
-      <div className="profile-grid">
-        <div className="profile-column">
-          <section className="card profile-card">
-            <div className="profile-id">
-              {own ? (
-                <AvatarPicker />
-              ) : (
-                <Avatar id={id} name={nickname} avatar={summary?.avatar} frame={summary?.frame} />
-              )}
-              <div className="profile-names">
-                <h1>{nickname}</h1>
-                {tag && <i className="player-tag">#{tag}</i>}
-              </div>
+      <section className="profile-hero">
+        <div className="profile-hero-id">
+          {own ? <AvatarPicker /> : <Avatar id={id} name={nickname} avatar={summary?.avatar} frame={summary?.frame} />}
+          <div className="profile-hero-main">
+            <div className="profile-hero-name">
+              <h1>{nickname}</h1>
+              {tag && <i className="player-tag">#{tag}</i>}
+              <span className="profile-hero-level">{t('nav.level', { level: summary?.level.level ?? 1 })}</span>
+              <span className="profile-hero-rank">{t(`rank.${summary?.level.rank ?? 'rookie'}` as UiKey)}</span>
             </div>
-
             <div className="level-panel">
-              <div className="level-line">
-                <span className="level-rank">
-                  <b>{t(`rank.${summary?.level.rank ?? 'rookie'}` as UiKey)}</b>
-                </span>
-                <small>
-                  {summary?.level.next ? (
-                    <>
-                      {t('level.next')} <b>{t(`rank.${summary.level.next.id}` as UiKey)}</b>
-                    </>
-                  ) : (
-                    t('level.top')
-                  )}
-                </small>
-              </div>
               <div className="level-bar">
                 <i style={{ width: `${Math.round(((summary?.level.into ?? 0) / (summary?.level.need ?? 1)) * 100)}%` }} />
               </div>
@@ -248,24 +256,100 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                 </small>
               </div>
             </div>
-
-            <div className="profile-facts" ref={factsRef}>
-              <div className={`fact fact-rank ${summary?.rank ? medal(summary.rank.position) : ''}`}>
-                <span>{t('profile.rank')}</span>
-                {summary?.rank ? (
-                  <p className="fact-place">
-                    <b>#{summary.rank.position}</b>
-                    <small>{t('lb.outOf', { total: summary.rank.players })}</small>
-                  </p>
+            {!own && id && (
+              <div className="profile-hero-acts">
+                <button type="button" className="primary profile-duel" disabled={calling} onClick={() => void challenge(id)}>
+                  <SwordsIcon />
+                  {t('duel.challenge')}
+                </button>
+                {friend === 'in' ? (
+                  <div className="profile-friend-ask">
+                    <button type="button" className="ghost" onClick={() => void answerFriend(id, true)}>
+                      {t('friends.accept')}
+                    </button>
+                    <button type="button" className="ghost" onClick={() => void answerFriend(id, false)}>
+                      {t('friends.decline')}
+                    </button>
+                  </div>
                 ) : (
-                  <b className="empty">—</b>
-                )}
-                {summary?.rank && (
-                  <Link className="fact-more" href={href.board}>
-                    {t('profile.placesMore')}
-                  </Link>
+                  <button
+                    type="button"
+                    className="ghost profile-friend"
+                    onClick={() => void (friend === 'none' ? askFriend(id) : removeFriend(id))}
+                  >
+                    <UserIcon />
+                    {t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}
+                  </button>
                 )}
               </div>
+            )}
+          </div>
+        </div>
+
+        <div className="profile-hero-tiles">
+          <div className={`hero-tile is-modes ${tip ? 'is-open' : ''}`} ref={modesRef}>
+            <button type="button" className="hero-tile-open" aria-expanded={tip} onClick={() => setTip(!tip)}>
+              <span>{t('profile.characters')}</span>
+              <b>{summary?.totals.solved ?? 0}</b>
+            </button>
+            {tip && (
+              <div className="modes-pop" role="dialog">
+                <header>
+                  <h2>{t('profile.modes')}</h2>
+                  <span className="muted">{t('profile.accuracy')}</span>
+                </header>
+                <ul className="modes-list">
+                  {MODES.map((mode) => {
+                    const row = summary?.modes.find((item) => item.mode === mode.id)
+                    const played = row?.played ?? 0
+                    const share = percent(row?.won ?? 0, played)
+                    return (
+                      <li key={mode.id} className={played ? '' : 'is-empty'}>
+                        <span className="mode-name">{t(mode.label)}</span>
+                        <span className="mode-count muted">
+                          {played} {pluralOf(played, lang)}
+                        </span>
+                        <b>{share}%</b>
+                        <span className="mode-bar">{!!played && <i style={{ width: `${Math.max(share, 2)}%` }} />}</span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            )}
+          </div>
+          <div className="hero-tile">
+            <span>{t('profile.duelsTitle')}</span>
+            <b>{summary?.duels.played ? `${percent(summary.duels.wins, summary.duels.played)}%` : '—'}</b>
+            <small>{t('profile.duelScore', { wins: summary?.duels.wins ?? 0, losses: summary?.duels.losses ?? 0 })}</small>
+          </div>
+          <div className={`hero-tile ${summary?.rank ? medal(summary.rank.position) : ''}`}>
+            <span>{t('profile.rank')}</span>
+            <b>{summary?.rank ? `#${summary.rank.position}` : '—'}</b>
+            <small>{summary?.rank ? t('lb.outOf', { total: summary.rank.players }) : ' '}</small>
+          </div>
+          <div className="hero-tile is-streak">
+            <span>{t('profile.streakTitle')}</span>
+            <b>
+              {summary?.streak.current ?? 0}
+              <i>{t('profile.streakRecord', { days: summary?.streak.best ?? 0 })}</i>
+            </b>
+            <ul className="streak-dots">
+              {(summary?.streak.week ?? []).map((day) => (
+                <li key={day.day} className={`${day.played ? 'on' : ''} ${day.day === today ? 'now' : ''}`} />
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div className="profile-grid">
+        {(SHOW_FACTS || SHOW_ACTIVITY) && (
+        <div className="profile-column">
+          {SHOW_FACTS && (
+          <section className="card profile-card">
+            {SHOW_FACTS && (
+            <div className="profile-facts" ref={factsRef}>
               <div className={`fact fact-rank ${best ? medal(best.position) : ''} ${places ? 'open' : ''}`}>
                 <span>{t('profile.bestGame')}</span>
                 {best ? (
@@ -308,68 +392,13 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                   <b className="empty">—</b>
                 )}
               </div>
-              <div className="fact">
-                <span>{t('profile.since')}</span>
-                {summary?.since ? <b className="small">{date(summary.since, true)}</b> : <b className="empty">—</b>}
-              </div>
             </div>
-
-            {!own && id && (
-              <div className="profile-acts">
-                <button type="button" className="primary big profile-duel" disabled={calling} onClick={() => void challenge(id)}>
-                  <SwordsIcon />
-                  {t('duel.challenge')}
-                </button>
-                {friend === 'in' ? (
-                  <div className="profile-friend-ask">
-                    <button type="button" className="ghost" onClick={() => void answerFriend(id, true)}>
-                      {t('friends.accept')}
-                    </button>
-                    <button type="button" className="ghost" onClick={() => void answerFriend(id, false)}>
-                      {t('friends.decline')}
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    type="button"
-                    className="ghost profile-friend"
-                    onClick={() => void (friend === 'none' ? askFriend(id) : removeFriend(id))}
-                  >
-                    <UserIcon />
-                    {t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}
-                  </button>
-                )}
-              </div>
             )}
-          </section>
 
-          {own && (
-            <section className="card streak-card">
-              <header>
-                <h2>{t('profile.streakTitle')}</h2>
-                <span className="muted">{t('profile.streakRecord', { days: summary?.streak.best ?? 0 })}</span>
-              </header>
-              <div className="streak-now">
-                <span className="streak-flame" aria-hidden>
-                  <CalendarIcon />
-                </span>
-                <b>{summary?.streak.current ?? 0}</b>
-                <div>
-                  <span>{pluralOf(summary?.streak.current ?? 0, lang, DAYS)}</span>
-                  <small className={summary?.streak.week.find((d) => d.day === today)?.played ? 'ok' : 'muted'}>{summary?.streak.week.find((d) => d.day === today)?.played ? t('profile.streakToday') : t('profile.streakIdle')}</small>
-                </div>
-              </div>
-              <ul className="streak-week">
-                {(summary?.streak.week ?? []).map((day) => (
-                  <li key={day.day} className={`${day.played ? 'on' : ''} ${day.day === today ? 'now' : day.day > today ? 'future' : ''}`}>
-                    <span aria-hidden>{day.played ? <CheckIcon /> : null}</span>
-                    <small>{WEEKDAYS[lang][(new Date(`${day.day}T00:00:00Z`).getUTCDay() + 6) % 7]}</small>
-                  </li>
-                ))}
-              </ul>
-            </section>
+          </section>
           )}
 
+          {SHOW_ACTIVITY && (
           <section className="card activity-card">
             <header>
               <h2>{t('profile.activity')}</h2>
@@ -397,65 +426,71 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
               <p className="muted center">{t('profile.activityEmpty')}</p>
             )}
           </section>
+          )}
         </div>
+        )}
 
         <div className="profile-middle">
-          <section className="profile-metrics">
-            <div className="card">
-              <span>{t('profile.characters')}</span>
-              <b>{summary?.totals.characters ?? 0}</b>
-            </div>
-            <div className="card">
-              <span>{t('profile.duelWins')}</span>
-              <b>{summary?.duels.wins ?? 0}</b>
-            </div>
-            <div className="card">
-              <span>{t('profile.accuracy')}</span>
-              <b>{summary?.totals.played ? `${accuracy}%` : '—'}</b>
-            </div>
-            <div className="card">
-              <span>{t('profile.avgGuesses')}</span>
-              <b>{average}</b>
-            </div>
-          </section>
-
           <div className="profile-middle-cols">
             <div className="profile-column">
               <section className="card worlds-card">
                 <header>
-                  <div className="card-title">
-                    <h2>{t('profile.worlds')}</h2>
-                    <p className="muted">{t('profile.worldsHint')}</p>
-                  </div>
+                  <h2>{t('profile.worlds')}</h2>
+                  {own && (
+                    <Link className="worlds-all" href={href.worlds}>
+                      {t('profile.worldsAll', { count: summary?.games.length ?? 0 })}
+                      <ArrowIcon />
+                    </Link>
+                  )}
                 </header>
-                {summary?.games.length ? (
-                  <ul className="worlds">
-                    {summary.games.map((row) => {
+                {shelf.length || own ? (
+                  <ul className="world-shelf">
+                    {shelf.map((row) => {
                       const game = GAMES.find((g) => g.id === row.game)
+                      const share = percent(row.solved, row.pool)
                       return (
-                        <li key={row.game} className={row.solved ? '' : 'is-empty'}>
-                          <WorldMark
-                            game={row.game as GameId}
-                            className="world-tag"
-                            style={{ background: game?.accent ?? 'var(--accent)' }}
-                          />
-                          <span className="world-name">{game ? l(game.label) : row.game}</span>
-                          <span className="world-count">
-                            <b>{row.solved}</b> / {row.pool} · {percent(row.solved, row.pool)}%
-                          </span>
-                          <span className="world-bar">
-                            {!!row.solved && (
-                              <i
-                                style={{
-                                  width: `${Math.max(percent(row.solved, row.pool), 2)}%`,
-                                  background: game?.accent ?? 'var(--accent)',
-                                }}
-                              />
-                            )}
-                          </span>
+                        <li key={row.game} style={{ '--world-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
+                          <Link href={href.world(row.game as GameId)} prefetch={false}>
+                            <img
+                              className="world-pic"
+                              src={`/worlds/big/${row.game}.webp`}
+                              alt=""
+                              width={448}
+                              height={448}
+                              loading="lazy"
+                              decoding="async"
+                              draggable={false}
+                            />
+                            <span className="world-line">
+                              <b>{game ? l(game.label) : row.game}</b>
+                              <em>{share}%</em>
+                            </span>
+                            <span className="world-bar">
+                              <i style={{ width: `${Math.max(share, 2)}%`, background: game?.accent ?? 'var(--accent)' }} />
+                            </span>
+                          </Link>
                         </li>
                       )
                     })}
+                    {Array.from({ length: blanks }, (_, index) => (
+                      <li key={`blank-${index}`} className="is-blank">
+                        {own ? (
+                          <Link className="world-blank" href={href.worlds} aria-label={t('worlds.pin')} title={t('worlds.pin')} prefetch={false}>
+                            <span className="world-pic is-empty">
+                              <PlusIcon />
+                            </span>
+                            <span className="world-line" aria-hidden />
+                            <span className="world-bar" />
+                          </Link>
+                        ) : (
+                          <span className="world-blank" aria-hidden>
+                            <span className="world-pic is-empty" />
+                            <span className="world-line" />
+                            <span className="world-bar" />
+                          </span>
+                        )}
+                      </li>
+                    ))}
                   </ul>
                 ) : (
                   <p className="muted center">{t('profile.activityEmpty')}</p>
@@ -464,60 +499,52 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
             </div>
 
             <div className="profile-column">
-              <section className="card modes-card">
-                <header>
-                  <h2>{t('profile.modes')}</h2>
-                  <span className="muted">{t('profile.accuracy')}</span>
-                </header>
-                <ul className="modes-list">
-                  {MODES.map((mode) => {
-                    const row = summary?.modes.find((item) => item.mode === mode.id)
-                    const played = row?.played ?? 0
-                    const share = percent(row?.won ?? 0, played)
-                    return (
-                      <li key={mode.id} className={played ? '' : 'is-empty'}>
-                        <span className="mode-name">{t(mode.label)}</span>
-                        <span className="mode-count muted">
-                          {played} {pluralOf(played, lang)}
-                        </span>
-                        <b>{share}%</b>
-                        <span className="mode-bar">{!!played && <i style={{ width: `${Math.max(share, 2)}%` }} />}</span>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </section>
-
               <section className="card soon-card">
                 <header>
                   <h2>
-                    <TrophyIcon /> {t('profile.awardsTitle')}
-                    <span className="soon-count">{pinned.length}/6</span>
+                    {t('profile.awardsTitle')}
+                    <small>
+                      {summary?.awards ?? 0} / {summary?.awardsTotal ?? 0}
+                    </small>
                   </h2>
+                  {own && (
+                    <Link className="worlds-all" href={href.achievements}>
+                      {t('ach.open')}
+                      <ArrowIcon />
+                    </Link>
+                  )}
                 </header>
-                <p className="muted">{pinned.length ? t('profile.awardsSoon') : own ? t('profile.awardsPinHint') : t('profile.awardsNone')}</p>
                 <ul className="soon-badges">
-                  {Array.from({ length: 6 }, (_, index) => {
+                  {Array.from({ length: SHOWCASE_MAX }, (_, index) => {
                     const award = pinned[index]
-                    if (!award) return <li key={index} />
+                    if (!award)
+                      return (
+                        <li key={index} className="free">
+                          <span className="soon-mark" aria-hidden>
+                            <PlusIcon />
+                          </span>
+                          <b>{t('profile.awardsFree')}</b>
+                          <small>{own ? t('profile.awardsFreeHint') : ' '}</small>
+                        </li>
+                      )
+                    const secret = award.hidden || !award.id
                     return (
                       <li key={award.id ?? `secret-${index}`} className={`on tier-${award.tier}`}>
-                        <TrophyIcon />
-                        <b>{award.hidden || !award.id ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
+                        <span className="soon-mark" aria-hidden>
+                          <TrophyIcon />
+                        </span>
+                        <b>{secret ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
+                        <small>{secret ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}</small>
                       </li>
                     )
                   })}
                 </ul>
-                {own && (
-                  <Link className="lb-link awards-open" href={href.achievements}>
-                    <TrophyIcon /> {t('ach.open')}
-                  </Link>
-                )}
               </section>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   )
 }

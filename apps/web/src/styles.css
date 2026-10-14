@@ -3385,24 +3385,48 @@ button.ghost.small {
   pointer-events: none;
 }
 
-.sk-profile .profile-id .sk.ava {
-  width: 84px;
-  height: 84px;
-  border-radius: 23px;
+.sk-profile .profile-hero-id .sk.ava {
+  width: 148px;
+  height: 148px;
+  border-radius: 38px;
 }
 
-.sk-profile .profile-names .sk.nick {
-  width: min(100%, 150px);
-  height: 24px;
-  margin: 3px 0;
-  border-radius: 8px;
+.sk-profile .profile-hero-name .sk.nick {
+  width: min(100%, 190px);
+  height: 34px;
+  border-radius: 10px;
 }
 
-.sk-profile .profile-names .sk.tag {
-  width: 62px;
+.sk-profile .profile-hero-name .sk.chip {
+  width: 92px;
+  height: 22px;
+  border-radius: 999px;
+}
+
+.sk-profile .profile-hero-name .sk.chip.lvl {
+  width: 56px;
   height: 15px;
-  margin-top: 4px;
+  margin-left: auto;
   border-radius: 7px;
+}
+
+.sk-profile .profile-hero-main .sk.tag {
+  width: 170px;
+  height: 14px;
+  border-radius: 7px;
+}
+
+.sk-profile .hero-tile .sk.chip {
+  width: min(100%, 112px);
+  height: 12px;
+  border-radius: 6px;
+}
+
+.sk-profile .hero-tile .sk.big {
+  width: 92px;
+  height: 34px;
+  margin: 2px 0;
+  border-radius: 10px;
 }
 
 .sk-profile .level-panel .level-line {
@@ -3431,9 +3455,10 @@ button.ghost.small {
   border-radius: 12px;
 }
 
-.sk-profile .profile-acts .sk.act {
-  height: 46px;
-  border-radius: 14px;
+.sk-profile .profile-hero-acts .sk.act {
+  width: 150px;
+  height: 40px;
+  border-radius: 12px;
 }
 
 .sk-profile .card header .sk.title {
@@ -3517,16 +3542,23 @@ button.ghost.small {
   border-radius: 6px;
 }
 
-.sk-profile .profile-metrics .sk.chip {
-  width: min(100%, 104px);
-  height: 16px;
-  border-radius: 6px;
+.world-shelf li > .sk {
+  display: block;
 }
 
-.sk-profile .profile-metrics .sk.big {
-  width: 76px;
-  height: 33px;
-  border-radius: 10px;
+.world-shelf li:has(> .sk) {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 39px;
+}
+
+.world-shelf .sk.world-pic {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 18px;
 }
 
 .sk-profile .worlds .sk.tag-box {
@@ -3543,26 +3575,6 @@ button.ghost.small {
   border-radius: 7px;
 }
 
-.sk-profile .modes-list .sk.name {
-  width: min(100%, 136px);
-  height: 16px;
-  margin: 3px 0;
-  border-radius: 7px;
-}
-
-.sk-profile .sk.count-mini {
-  justify-self: end;
-  width: 76px;
-  height: 13px;
-  border-radius: 6px;
-}
-
-.sk-profile .modes-list .sk.share {
-  width: 44px;
-  height: 22px;
-  border-radius: 7px;
-}
-
 .sk-profile .worlds .sk.bar {
   grid-column: 2 / -1;
   width: 100%;
@@ -3570,28 +3582,16 @@ button.ghost.small {
   border-radius: 999px;
 }
 
-.sk-profile .modes-list .sk.bar {
-  grid-column: 1 / -1;
+.soon-badges li:has(> .sk) {
+  padding-bottom: 41px;
+}
+
+.sk-profile .soon-badges .sk.soon-mark {
+  display: block;
   width: 100%;
-  height: 6px;
-  border-radius: 999px;
-}
-
-.sk-profile .soon-card .sk.chip.wide {
-  width: min(100%, 212px);
-  height: 13px;
-  border-radius: 6px;
-}
-
-.sk-profile .soon-card .sk.chip.wide + .sk.chip.wide {
-  width: min(100%, 148px);
-  margin-top: -2px;
-}
-
-.sk-profile .soon-card .sk.open {
-  height: 44px;
-  margin-top: auto;
-  border-radius: 13px;
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 18px;
 }
 
 .sk.season {
@@ -5645,20 +5645,6 @@ html[data-auth] .guest-note {
   flex-direction: column;
   padding-top: 16px;
   border-top: 1px solid var(--line);
-}
-
-.profile-metrics {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  grid-auto-rows: 1fr;
-  gap: 12px;
-}
-
-.profile-metrics .card {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 16px;
 }
 
 .profile .card header {
