@@ -1205,12 +1205,51 @@
     min-height: 92px;
   }
 
+  .profile-hero-id {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 18px;
+    row-gap: 10px;
+  }
+
+  .profile-hero-id > .avatar,
+  .profile-hero-id > .ava-trigger {
+    grid-row: 1 / span 3;
+    grid-column: 1;
+  }
+
+  .profile-hero-main {
+    display: contents;
+  }
+
+  .profile-hero .level-line small {
+    display: none;
+  }
+
+  .profile-hero-name,
+  .profile-hero .level-bar,
+  .profile-hero .level-line {
+    grid-column: 2;
+  }
+
   .profile-hero-acts {
+    grid-column: 1 / -1;
     width: 100%;
+    margin-top: 2px;
   }
 
   .profile-hero-acts > * {
     flex: 1 1 140px;
+  }
+
+  .profile-hero-acts .profile-duel,
+  .profile-hero-acts .profile-friend,
+  .profile-hero-acts .profile-friend-ask button {
+    min-height: 42px;
+    padding: 0 14px;
+    font-size: 14px;
+    white-space: nowrap;
   }
 
   .profile-hero-acts .profile-friend-ask button {
