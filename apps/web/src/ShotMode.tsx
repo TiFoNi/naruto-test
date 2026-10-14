@@ -46,7 +46,12 @@ type Answer = {
 type Over = { score: number; streak: number; best: number; total?: number; answerId?: number; fresh: boolean; shots?: string[] }
 
 const STEPS = [1, 2, 3, 4] as const
-const LEVELS = [null, { label: 'shot.hard', tone: 'hard' }, { label: 'shot.medium', tone: 'medium' }, { label: 'shot.easy', tone: 'easy' }] as const
+const LEVELS = [
+  { label: 'shot.extreme', tone: 'extreme' },
+  { label: 'shot.hard', tone: 'hard' },
+  { label: 'shot.medium', tone: 'medium' },
+  { label: 'shot.easy', tone: 'easy' },
+] as const
 const CHEER = 3000
 
 export default function ShotMode({ game, active }: { game: Game; active: boolean }) {
@@ -321,27 +326,28 @@ function Cell({ src, step, onOpen, onReveal }: { src?: string; step: number; onO
     }
   }, [src])
 
+  const level = LEVELS[step]
+
   if (!src || !ready) {
-    const level = LEVELS[step]
     const inside = (
       <>
         <span className="shot-logo" aria-hidden>
           {BRAND.mark}
         </span>
-        {!!level && <b>{t(level.label)}</b>}
+        <b>{t(level.label)}</b>
       </>
     )
-    const tone = level ? `is-${level.tone}` : ''
+    const tone = `is-${level.tone}`
 
     if (!onReveal)
       return (
-        <span className={`shot-cell locked ${tone} ${src ? 'is-coming' : ''}`} title={t('shot.locked')}>
+        <span className={`shot-cell locked ${tone} ${src ? 'is-coming' : ''}`} title={t(level.label)}>
           {inside}
         </span>
       )
 
     return (
-      <button type="button" className={`shot-cell locked is-next ${tone} ${src ? 'is-coming' : ''}`} title={t('shot.skip')} aria-label={t('shot.skip')} onClick={onReveal}>
+      <button type="button" className={`shot-cell locked is-next ${tone} ${src ? 'is-coming' : ''}`} title={t(level.label)} aria-label={t('shot.skip')} onClick={onReveal}>
         {inside}
       </button>
     )
@@ -351,14 +357,14 @@ function Cell({ src, step, onOpen, onReveal }: { src?: string; step: number; onO
     <button
       key={src}
       type="button"
-      className={`shot-cell is-open ${LEVELS[step] ? `is-${LEVELS[step]!.tone}` : ''}`}
+      className={`shot-cell is-open is-${level.tone}`}
       style={{ '--step': step } as CSSProperties}
-      title={t('shot.open')}
+      title={t(level.label)}
       aria-label={t('shot.open')}
       onClick={() => onOpen(src)}
     >
       <img src={src} alt="" draggable={false} />
-      {!!LEVELS[step] && <em>{t(LEVELS[step]!.label)}</em>}
+      <em>{t(level.label)}</em>
     </button>
   )
 }

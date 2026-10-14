@@ -664,6 +664,7 @@ const ui = {
   'shot.over': { ru: 'Серия прервалась', uk: 'Серія обірвалась', en: 'Streak over' },
   'shot.again': { ru: 'Ещё раз', uk: 'Ще раз', en: 'Play again' },
   'shot.next': { ru: 'Дальше', uk: 'Далі', en: 'Next' },
+  'shot.extreme': { ru: 'Запредельный', uk: 'Позамежний', en: 'Extreme' },
   'shot.hard': { ru: 'Тяжёлый', uk: 'Важкий', en: 'Hard' },
   'shot.medium': { ru: 'Средний', uk: 'Середній', en: 'Medium' },
   'shot.easy': { ru: 'Лёгкий', uk: 'Легкий', en: 'Easy' },

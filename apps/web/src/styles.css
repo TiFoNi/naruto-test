@@ -9555,6 +9555,10 @@ html[data-auth] .guest-note {
   font-weight: 700;
 }
 
+.shot-cell.is-extreme {
+  --level: #a78bfa;
+}
+
 .shot-cell.is-hard {
   --level: #e0715f;
 }
@@ -9567,16 +9571,12 @@ html[data-auth] .guest-note {
   --level: #64c98a;
 }
 
-.shot-cell.locked.is-hard b,
-.shot-cell.locked.is-medium b,
-.shot-cell.locked.is-easy b {
-  color: var(--level);
+.shot-cell.locked b {
+  color: var(--level, var(--text-3));
 }
 
-.shot-cell.locked.is-hard .shot-logo,
-.shot-cell.locked.is-medium .shot-logo,
-.shot-cell.locked.is-easy .shot-logo {
-  color: color-mix(in srgb, var(--level) 60%, transparent);
+.shot-cell.locked .shot-logo {
+  color: color-mix(in srgb, var(--level, var(--text-3)) 60%, transparent);
 }
 
 .shot-cell.locked.is-next:hover .shot-logo {
