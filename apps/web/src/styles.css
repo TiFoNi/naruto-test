@@ -3386,6 +3386,7 @@ button.ghost.small {
 }
 
 .sk-profile .profile-hero-id .sk.ava {
+  flex: none;
   width: 148px;
   height: 148px;
   border-radius: 38px;

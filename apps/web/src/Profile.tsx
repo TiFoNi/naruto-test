@@ -15,7 +15,6 @@ import { ProfileGhost } from './PageSkeleton'
 import { ArrowIcon, PlusIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
 import AwardIcon from './awardIcons'
 import { useHref, useNavigate } from './router'
-import { kyivToday } from './stats'
 import { SHOWCASE_MAX } from './showcase'
 import { keepPerUser } from './session-cache'
 import { refreshFeed } from './awards'
@@ -107,7 +106,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const own = !id
   const { t, l, lang } = useI18n()
   const href = useHref()
-  const today = kyivToday()
 
   const [summary, setSummary] = useState<Summary | null>(own ? knownSummary : null)
   const [places, setPlaces] = useState(false)
@@ -238,8 +236,8 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
             <div className="profile-hero-name">
               <h1>{nickname}</h1>
               {tag && <i className="player-tag">#{tag}</i>}
-              <span className="profile-hero-level">{t('nav.level', { level: summary?.level.level ?? 1 })}</span>
               <span className="profile-hero-rank">{t(`rank.${summary?.level.rank ?? 'rookie'}` as UiKey)}</span>
+              <span className="profile-hero-level">{t('nav.level', { level: summary?.level.level ?? 1 })}</span>
             </div>
             <div className="level-panel">
               <div className="level-bar">
@@ -324,22 +322,23 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
             <b>{summary?.duels.played ? `${percent(summary.duels.wins, summary.duels.played)}%` : '—'}</b>
             <small>{t('profile.duelScore', { wins: summary?.duels.wins ?? 0, losses: summary?.duels.losses ?? 0 })}</small>
           </div>
-          <div className={`hero-tile ${summary?.rank ? medal(summary.rank.position) : ''}`}>
-            <span>{t('profile.rank')}</span>
-            <b>{summary?.rank ? `#${summary.rank.position}` : '—'}</b>
-            <small>{summary?.rank ? t('lb.outOf', { total: summary.rank.players }) : ' '}</small>
-          </div>
+          {summary?.rank ? (
+            <Link className={`hero-tile is-link ${medal(summary.rank.position)}`} href={href.board}>
+              <span>{t('profile.rank')}</span>
+              <b>#{summary.rank.position}</b>
+              <small>{t('lb.outOf', { total: summary.rank.players })}</small>
+            </Link>
+          ) : (
+            <div className="hero-tile">
+              <span>{t('profile.rank')}</span>
+              <b>—</b>
+              <small> </small>
+            </div>
+          )}
           <div className="hero-tile is-streak">
             <span>{t('profile.streakTitle')}</span>
-            <b>
-              {summary?.streak.current ?? 0}
-              <i>{t('profile.streakRecord', { days: summary?.streak.best ?? 0 })}</i>
-            </b>
-            <ul className="streak-dots">
-              {(summary?.streak.week ?? []).map((day) => (
-                <li key={day.day} className={`${day.played ? 'on' : ''} ${day.day === today ? 'now' : ''}`} />
-              ))}
-            </ul>
+            <b>{summary?.streak.current ?? 0}</b>
+            <small>{t('profile.streakRecord', { days: summary?.streak.best ?? 0 })}</small>
           </div>
         </div>
       </section>
@@ -510,7 +509,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                   </h2>
                   {own && (
                     <Link className="worlds-all" href={href.achievements}>
-                      {t('ach.open')}
+                      {t('profile.worldsAll', { count: summary?.awardsTotal ?? 0 })}
                       <ArrowIcon />
                     </Link>
                   )}
