@@ -88,7 +88,7 @@ const ICONS: Record<string, ComponentType<{ className?: string }>> = {
 }
 
 const ART: Record<string, string> = {
-  firstTry: 'firstTry',
+  sniper: 'sniper',
   sharpEye: 'sharpEye',
   owlMarathon: 'owlMarathon',
   duelPlayed: 'duelPlayed',
@@ -109,6 +109,15 @@ const ART: Record<string, string> = {
   polyglot: 'polyglot',
   duelWins: 'duelWins',
   sniperDay: 'sniperDay',
+  solved: 'solved',
+  seasonSolved: 'season',
+  seasonDays: 'season',
+  seasonDaily: 'season',
+  seasonFirstTry: 'season',
+  seasonDuel: 'season',
+  seasonWorlds5: 'season',
+  seasonModes4: 'season',
+  seasonMarathon30: 'season',
 }
 
 export default function AwardIcon({ award, family }: { award?: string | null; family?: string | null }) {

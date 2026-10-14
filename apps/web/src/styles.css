@@ -7415,9 +7415,20 @@ html[data-auth] .guest-note {
   height: 80%;
 }
 
+.awards-chip .icon.award-art {
+  width: 30px;
+  height: 30px;
+}
+
+@media (max-width: 720px) {
+  .awards-chip .icon.award-art {
+    width: 27px;
+    height: 27px;
+  }
+}
+
 .award-mark:has(.award-art),
 .award-modal-mark:has(.award-art),
-.awards-chip:has(.award-art),
 .soon-mark:has(.award-art),
 .award.done .award-mark:has(.award-art),
 .award.is-ready .award-mark:has(.award-art),
@@ -7427,6 +7438,10 @@ html[data-auth] .guest-note {
   border: 0;
   background: none;
   box-shadow: none;
+}
+
+.is-season .award-art {
+  filter: url(#tint-season);
 }
 
 .tier-bronze .award-art {
@@ -7470,7 +7485,7 @@ html[data-auth] .guest-note {
 }
 
 .tier-mythic {
-  --tier: #ff5fa2;
+  --tier: #f1476b;
 }
 
 .tier-secret {
