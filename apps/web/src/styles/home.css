@@ -119,6 +119,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  margin: 0;
   height: 46px;
   padding: 0 16px;
   border-radius: 14px;
