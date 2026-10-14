@@ -9499,7 +9499,7 @@ html[data-auth] .guest-note {
 }
 
 .shot-cell:hover {
-  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  border-color: color-mix(in srgb, var(--level, var(--accent)) 55%, transparent);
 }
 
 .shot-cell img {
@@ -9540,13 +9540,12 @@ html[data-auth] .guest-note {
 }
 
 .shot-cell.locked.is-next:hover {
-  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  background: color-mix(in srgb, var(--accent) 8%, var(--card-2));
+  border-color: color-mix(in srgb, var(--level, var(--accent)) 60%, transparent);
+  background: color-mix(in srgb, var(--level, var(--accent)) 10%, var(--card-2));
 }
 
-.shot-cell.locked.is-next:hover b,
-.shot-cell.locked.is-next:hover .shot-logo {
-  color: color-mix(in srgb, var(--accent) 70%, var(--text-3));
+.shot-cell.locked.is-next:hover b {
+  color: color-mix(in srgb, var(--level, var(--accent)) 85%, var(--text));
 }
 
 .shot-cell.locked b {
@@ -9554,6 +9553,38 @@ html[data-auth] .guest-note {
   font-size: clamp(14px, 2.2vw, 18px);
   color: var(--text-3);
   font-weight: 700;
+}
+
+.shot-cell.is-hard {
+  --level: #e0715f;
+}
+
+.shot-cell.is-medium {
+  --level: #f5c451;
+}
+
+.shot-cell.is-easy {
+  --level: #64c98a;
+}
+
+.shot-cell.locked.is-hard b,
+.shot-cell.locked.is-medium b,
+.shot-cell.locked.is-easy b {
+  color: var(--level);
+}
+
+.shot-cell.locked.is-hard .shot-logo,
+.shot-cell.locked.is-medium .shot-logo,
+.shot-cell.locked.is-easy .shot-logo {
+  color: color-mix(in srgb, var(--level) 60%, transparent);
+}
+
+.shot-cell.locked.is-next:hover .shot-logo {
+  color: color-mix(in srgb, var(--level, var(--accent)) 80%, transparent);
+}
+
+.shot-cell.is-open em {
+  color: var(--level, #fff);
 }
 
 .shot-logo {
@@ -9630,36 +9661,6 @@ html[data-auth] .guest-note {
     opacity: 0;
     transform: scale(0.9);
   }
-}
-
-.shot-flash {
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 14px;
-  font-weight: 800;
-  transform: translateX(-50%);
-  animation: shot-in 0.2s ease;
-}
-
-.shot-flash.got {
-  background: color-mix(in srgb, var(--correct) 88%, transparent);
-  color: #06210f;
-}
-
-.shot-flash.miss {
-  background: color-mix(in srgb, var(--wrong) 88%, transparent);
-  color: #fff;
-}
-
-.shot-flash .icon {
-  width: 16px;
-  height: 16px;
 }
 
 .shot-keys {

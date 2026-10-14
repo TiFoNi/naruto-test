@@ -13,7 +13,7 @@ import { BRAND } from './brand'
 import type { Entity, Game } from './games/types'
 import { useI18n } from './i18n'
 import { useHref } from './router'
-import { CheckIcon, CloseIcon, TrophyIcon } from './icons'
+import { CheckIcon, TrophyIcon } from './icons'
 
 type Run = {
   score: number
@@ -46,8 +46,7 @@ type Answer = {
 type Over = { score: number; streak: number; best: number; total?: number; answerId?: number; fresh: boolean; shots?: string[] }
 
 const STEPS = [1, 2, 3, 4] as const
-const LEVEL_LABELS = ['shot.level1', 'shot.level2', 'shot.level3', 'shot.level4'] as const
-const FLASH = 1100
+const LEVELS = [null, { label: 'shot.hard', tone: 'hard' }, { label: 'shot.medium', tone: 'medium' }, { label: 'shot.easy', tone: 'easy' }] as const
 const CHEER = 3000
 
 export default function ShotMode({ game, active }: { game: Game; active: boolean }) {
@@ -55,14 +54,12 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
   const href = useHref()
   const [run, setRun] = useState<Run | null>(null)
   const [over, setOver] = useState<Over | null>(null)
-  const [flash, setFlash] = useState<{ kind: 'got' | 'miss'; text: string } | null>(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [soon, setSoon] = useState(false)
   const [won, setWon] = useState<{ name: string; gained: number; shots: string[] } | null>(null)
   const [big, setBig] = useState<string | null>(null)
   const [mounted, setMounted] = useState(false)
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const cheer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const byId = new Map(game.entities.map((one) => [one.id, one]))
@@ -76,7 +73,6 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
       if (data.error === 'not_ready') return setSoon(true)
       return setError(data.error ?? 'server')
     }
-    setFlash(null)
     setWon(null)
     if (data.status === 'over') {
       setRun(null)
@@ -119,7 +115,6 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
 
   useEffect(
     () => () => {
-      if (timer.current) clearTimeout(timer.current)
       if (cheer.current) clearTimeout(cheer.current)
     },
     [],
@@ -129,12 +124,6 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
     if (cheer.current) clearTimeout(cheer.current)
     setWon(null)
   }, [])
-
-  const show = (kind: 'got' | 'miss', text: string) => {
-    setFlash({ kind, text })
-    if (timer.current) clearTimeout(timer.current)
-    timer.current = setTimeout(() => setFlash(null), FLASH)
-  }
 
   const send = async (body: Record<string, unknown>) => {
     if (!run || busy) return null
@@ -171,10 +160,9 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
     const seen = run?.shots ?? []
     const data = await send({ action: 'answer', pick: entity.id })
     if (!data || data.over) return
-    if (!data.right) return show('miss', t('shot.miss'))
+    if (!data.right) return
 
     const title = data.answerId !== undefined ? byId.get(data.answerId) : undefined
-    setFlash(null)
     setWon({ name: title ? name(title) : '', gained: data.gained ?? 0, shots: seen })
     if (cheer.current) clearTimeout(cheer.current)
     cheer.current = setTimeout(() => setWon(null), CHEER)
@@ -255,12 +243,6 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
                   onReveal={run && !over && !won && !busy && run.level < run.levels - 1 ? () => void send({ action: 'skip' }) : undefined}
                 />
               ))}
-              {flash && (
-                <span className={`shot-flash ${flash.kind}`}>
-                  {flash.kind === 'got' ? <CheckIcon /> : <CloseIcon />}
-                  {flash.text}
-                </span>
-              )}
             </div>
 
             <div className={`shot-under ${over || won ? 'is-answer' : ''}`}>
@@ -340,24 +322,26 @@ function Cell({ src, step, onOpen, onReveal }: { src?: string; step: number; onO
   }, [src])
 
   if (!src || !ready) {
+    const level = LEVELS[step]
     const inside = (
       <>
         <span className="shot-logo" aria-hidden>
           {BRAND.mark}
         </span>
-        <b>{t(LEVEL_LABELS[step])}</b>
+        {!!level && <b>{t(level.label)}</b>}
       </>
     )
+    const tone = level ? `is-${level.tone}` : ''
 
     if (!onReveal)
       return (
-        <span className={`shot-cell locked ${src ? 'is-coming' : ''}`} title={t('shot.locked')}>
+        <span className={`shot-cell locked ${tone} ${src ? 'is-coming' : ''}`} title={t('shot.locked')}>
           {inside}
         </span>
       )
 
     return (
-      <button type="button" className={`shot-cell locked is-next ${src ? 'is-coming' : ''}`} title={t('shot.skip')} aria-label={t('shot.skip')} onClick={onReveal}>
+      <button type="button" className={`shot-cell locked is-next ${tone} ${src ? 'is-coming' : ''}`} title={t('shot.skip')} aria-label={t('shot.skip')} onClick={onReveal}>
         {inside}
       </button>
     )
@@ -367,14 +351,14 @@ function Cell({ src, step, onOpen, onReveal }: { src?: string; step: number; onO
     <button
       key={src}
       type="button"
-      className="shot-cell is-open"
+      className={`shot-cell is-open ${LEVELS[step] ? `is-${LEVELS[step]!.tone}` : ''}`}
       style={{ '--step': step } as CSSProperties}
       title={t('shot.open')}
       aria-label={t('shot.open')}
       onClick={() => onOpen(src)}
     >
       <img src={src} alt="" draggable={false} />
-      <em>{t(LEVEL_LABELS[step])}</em>
+      {!!LEVELS[step] && <em>{t(LEVELS[step]!.label)}</em>}
     </button>
   )
 }
