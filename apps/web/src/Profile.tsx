@@ -206,7 +206,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     .filter((row): row is NonNullable<typeof row> => !!row)
     .slice(0, SHOWCASE_MAX)
   const shelf = picked.length ? picked : games.slice(0, SHOWCASE_MAX)
-  const blanks = picked.length ? 0 : Math.max(0, SHOWCASE_MAX - shelf.length)
+  const blanks = Math.max(0, SHOWCASE_MAX - shelf.length)
 
   const gameLabel = (id: string) => GAMES.find((g) => g.id === id)?.label
   const modeLabel = (id: string) => MODES.find((m) => m.id === id)?.label ?? 'mode.classic'

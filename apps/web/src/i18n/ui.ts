@@ -1016,6 +1016,7 @@ const ui = {
   'profile.streakIdle': { ru: 'Сыграй сегодня, чтобы продолжить', uk: 'Зіграй сьогодні, щоб продовжити', en: 'Play today to keep it going' },
   'profile.worldsAll': { ru: 'Все {count}', uk: 'Усі {count}', en: 'All {count}' },
   'worlds.leadGuest': { ru: 'Прогресс игрока по каждой вселенной.', uk: 'Прогрес гравця по кожному всесвіту.', en: 'This player’s progress in every world.' },
+  'worlds.empty': { ru: 'Свободно', uk: 'Вільно', en: 'Empty' },
   'worlds.remove': { ru: 'Убрать с витрины', uk: 'Прибрати з вітрини', en: 'Remove from showcase' },
   'worlds.keep': { ru: 'Готово', uk: 'Готово', en: 'Save' },
   'worlds.undo': { ru: 'Сбросить', uk: 'Скинути', en: 'Reset' },

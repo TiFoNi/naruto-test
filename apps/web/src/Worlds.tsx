@@ -5,16 +5,17 @@ import BackButton from './BackButton'
 import { api } from './api'
 import { GAMES } from './games'
 import { useI18n } from './i18n'
-import { MinusIcon, PlusIcon } from './icons'
+import { CloseIcon, PlusIcon } from './icons'
 import { useHref } from './router'
 import { SHOWCASE_MAX } from './showcase'
 
 type Row = { game: string; pool: number; solved: number }
 type Summary = { games: Row[]; showcase: string[] }
-type Drag = { game: string; w: number; shelf: boolean }
+type Drag = { game: string; w: number }
 
 const percent = (part: number, whole: number) => (whole ? Math.round((part / whole) * 100) : 0)
 const THRESHOLD = 6
+const HOLD = 300
 const SETTLE = 560
 const EDGE_STEP = 16
 
@@ -61,6 +62,16 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     setFailed(false)
     setSaved(order)
     setPending(false)
+  }
+
+  const free = (slot: number) => {
+    const next = [...order]
+    const game = next[slot]
+    if (!game) return
+    next[slot] = ''
+    next.push(game)
+    setOrder(next)
+    setPending(next.slice(0, SHOWCASE_MAX).join() !== saved.slice(0, SHOWCASE_MAX).join())
   }
 
   const undo = () => {
@@ -152,8 +163,15 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     let frame = 0
     let marked: HTMLElement | null = null
     let swap = !(event.altKey || event.metaKey)
-    let dumped = false
     let spot = { x: event.clientX, y: event.clientY }
+    const touch = event.pointerType === 'touch'
+    let ready = !touch
+    let timer = touch
+      ? window.setTimeout(() => {
+          ready = true
+          begin()
+        }, HOLD)
+      : 0
 
     const mark = (tile: HTMLElement | null) => {
       if (marked === tile) return
@@ -181,61 +199,63 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       const tiles = grid.current?.querySelectorAll<HTMLElement>('li[data-game]')
       const seat = slot >= 0 ? (tiles?.[slot] ?? null) : null
 
-      dumped = slot === home.length
-      if (dumped) {
-        mark(seat)
-        if (plan.join() === home.join()) return
-        plan = home
-        pop.current = null
-        setOrder(home)
-        return
-      }
-
       mark(swap && seat?.dataset.game !== row.game ? seat : null)
 
       const next = place(home, plan, row.game, slot, swap)
       if (next.join() === plan.join()) return
       const seatBack = home.indexOf(row.game)
-      pop.current = seatBack >= 0 && next[seatBack] ? next[seatBack] : null
+      const back = seatBack >= 0 && next[seatBack] === row.game
+      const came = seatBack >= 0 && home[slot] ? next[seatBack] : null
+      const went = back && plan[seatBack] !== row.game ? plan[seatBack] : null
+      pop.current = (back ? went : came) || null
       plan = next
       setOrder(next)
     }
 
-    const move = (step: PointerEvent) => {
-      spot = { x: step.clientX, y: step.clientY }
-      swap = !(step.altKey || step.metaKey)
-      if (!moved && Math.abs(step.clientX - start.x) <= THRESHOLD && Math.abs(step.clientY - start.y) <= THRESHOLD) return
-      if (!moved) {
-        moved = true
-        held.current = true
-        liftAt.current = { x: spot.x - hold.dx, y: spot.y - hold.dy }
-        setFlipped((open) => open.filter((one) => one !== row.game))
-        setDrag({ game: row.game, w: box.width, shelf: home.indexOf(row.game) < SHOWCASE_MAX })
-      }
+    const block = (step: Event) => step.cancelable && step.preventDefault()
+
+    const begin = () => {
+      if (moved) return
+      moved = true
+      held.current = true
+      liftAt.current = { x: spot.x - hold.dx, y: spot.y - hold.dy }
+      if (touch) window.addEventListener('touchmove', block, { passive: false })
+      setFlipped((open) => open.filter((one) => one !== row.game))
+      setDrag({ game: row.game, w: box.width })
       if (!frame) frame = requestAnimationFrame(paint)
     }
 
-    const drop = () => {
+    const move = (step: PointerEvent) => {
+      const far = Math.abs(step.clientX - start.x) > THRESHOLD || Math.abs(step.clientY - start.y) > THRESHOLD
+      if (!ready) {
+        if (far) quit()
+        return
+      }
+      spot = { x: step.clientX, y: step.clientY }
+      swap = !(step.altKey || step.metaKey)
+      if (!moved && !far) return
+      if (!moved) return begin()
+      if (!frame) frame = requestAnimationFrame(paint)
+    }
+
+    const quit = () => {
       window.removeEventListener('pointermove', move)
       window.removeEventListener('pointerup', drop)
       window.removeEventListener('pointercancel', drop)
+      window.removeEventListener('touchmove', block)
+      window.removeEventListener('contextmenu', block)
+      if (timer) window.clearTimeout(timer)
       if (frame) cancelAnimationFrame(frame)
       mark(null)
+    }
+
+    const drop = () => {
+      quit()
       held.current = false
       setDrag(null)
       if (!moved) {
         setFlipped((open) => (open.includes(row.game) ? open.filter((one) => one !== row.game) : [...open, row.game]))
         return
-      }
-      if (dumped) {
-        const next = [...home]
-        const at = next.indexOf(row.game)
-        if (at >= 0 && at < SHOWCASE_MAX) {
-          next[at] = ''
-          next.push(row.game)
-          plan = next
-          setOrder(next)
-        }
       }
       setPending(plan.slice(0, SHOWCASE_MAX).join() !== saved.slice(0, SHOWCASE_MAX).join())
     }
@@ -243,6 +263,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', drop)
     window.addEventListener('pointercancel', drop)
+    if (touch) window.addEventListener('contextmenu', block)
   }
 
   const Tile = (game: string, index: number) => {
@@ -291,12 +312,16 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
         <span className="world-bar">
           <i style={{ width: `${Math.max(share, 2)}%`, background: meta?.accent ?? 'var(--accent)' }} />
         </span>
+        {index < SHOWCASE_MAX && !id && (
+          <button type="button" className="world-drop" title={t('worlds.remove')} aria-label={t('worlds.remove')} onClick={() => free(index)}>
+            <CloseIcon />
+          </button>
+        )}
       </li>
     )
   }
 
   const lifted = drag ? rows?.get(drag.game) : undefined
-  const dumping = !!drag?.shelf && !id
   const dirty = pending
 
   return (
@@ -343,19 +368,12 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
                 <span className="world-pic is-empty">
                   <PlusIcon />
                 </span>
-                <span className="world-line" aria-hidden />
+                <span className="world-line">
+                  <b>{t('worlds.empty')}</b>
+                </span>
                 <span className="world-bar" />
               </li>
             ),
-          )}
-          {dumping && (
-            <li key="dump" data-game="dump" className="is-seat is-dump">
-              <span className="world-pic is-empty">
-                <MinusIcon />
-              </span>
-              <span className="world-line" aria-hidden />
-              <span className="world-bar" />
-            </li>
           )}
         </ul>
       )}
