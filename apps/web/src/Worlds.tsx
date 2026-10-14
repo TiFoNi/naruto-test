@@ -15,7 +15,7 @@ type Drag = { game: string; w: number; shelf: boolean }
 
 const percent = (part: number, whole: number) => (whole ? Math.round((part / whole) * 100) : 0)
 const THRESHOLD = 6
-const SETTLE = 240
+const SETTLE = 560
 const EDGE_STEP = 16
 
 export default function Worlds({ id, nickname }: { id?: string; nickname?: string } = {}) {
@@ -33,7 +33,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
   const grid = useRef<HTMLUListElement>(null)
   const lift = useRef<HTMLSpanElement | null>(null)
   const liftAt = useRef({ x: 0, y: 0 })
-  const seats = useRef(new Map<string, DOMRect>())
+  const pop = useRef<string | null>(null)
   const held = useRef(false)
 
   const load = useCallback(async () => {
@@ -64,37 +64,29 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
   }
 
   const undo = () => {
-    remember()
     setOrder(saved)
     setPending(false)
   }
 
-  const remember = () => {
-    const node = grid.current
-    if (!node) return
-    seats.current = new Map(
-      [...node.querySelectorAll<HTMLElement>('li[data-game]')].map((tile) => [tile.dataset.game!, tile.getBoundingClientRect()]),
-    )
-  }
-
   useLayoutEffect(() => {
     const node = grid.current
-    if (!node || !seats.current.size) return
-    for (const tile of node.querySelectorAll<HTMLElement>('li[data-game]')) {
-      const was = seats.current.get(tile.dataset.game!)
-      if (!was) continue
-      const now = tile.getBoundingClientRect()
-      const dx = was.left - now.left
-      const dy = was.top - now.top
-      if (!dx && !dy) continue
-      tile.style.transition = 'none'
-      tile.style.transform = `translate(${dx}px, ${dy}px)`
-      requestAnimationFrame(() => {
-        tile.style.transition = `transform ${SETTLE}ms cubic-bezier(0.2, 0.85, 0.3, 1)`
-        tile.style.transform = ''
-      })
-    }
-    seats.current = new Map()
+    const name = pop.current
+    if (!node || !name) return
+    pop.current = null
+    const tile = node.querySelector<HTMLElement>(`li[data-game="${name}"]`)
+    if (!tile) return
+    const face = tile.querySelector<HTMLElement>('.world-flip') ?? tile
+    if (typeof face.animate !== 'function') return
+    for (const old of face.getAnimations()) old.cancel()
+    face.animate(
+      [
+        { transform: 'scale(0.955)', opacity: 0.7, offset: 0 },
+        { transform: 'scale(1.012)', opacity: 1, offset: 0.6 },
+        { transform: 'scale(0.998)', offset: 0.85 },
+        { transform: 'scale(1)', offset: 1 },
+      ],
+      { duration: SETTLE, easing: 'cubic-bezier(0.16, 0.9, 0.2, 1)' },
+    )
   })
 
   useEffect(() => {
@@ -192,6 +184,10 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       dumped = slot === home.length
       if (dumped) {
         mark(seat)
+        if (plan.join() === home.join()) return
+        plan = home
+        pop.current = null
+        setOrder(home)
         return
       }
 
@@ -199,8 +195,9 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
 
       const next = place(home, plan, row.game, slot, swap)
       if (next.join() === plan.join()) return
+      const seatBack = home.indexOf(row.game)
+      pop.current = seatBack >= 0 && next[seatBack] ? next[seatBack] : null
       plan = next
-      remember()
       setOrder(next)
     }
 
