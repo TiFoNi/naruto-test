@@ -507,6 +507,19 @@
   min-height: 42px;
 }
 
+.award-modal-actions button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: auto;
+}
+
+.award-modal-actions button:disabled:hover {
+  border-color: var(--line);
+  background: var(--card);
+  color: var(--text-2);
+  transform: none;
+}
+
 
 .award.tier-mythic .award-mark {
   box-shadow: 0 0 18px color-mix(in srgb, var(--tier) 45%, transparent);

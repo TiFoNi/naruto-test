@@ -178,7 +178,8 @@ function AwardModal({
   award,
   steps,
   onStep,
-  pinned,
+  full,
+  pinnedIds,
   busy,
   onPin,
   onClaim,
@@ -187,15 +188,19 @@ function AwardModal({
   award: Award
   steps: Award[]
   onStep: (id: string) => void
-  pinned: boolean
+  pinnedIds: string[]
+  full: boolean
   busy: boolean
-  onPin: () => void
+  onPin: (id: string) => void
   onClaim: () => void
   onClose: () => void
 }) {
   const { t, lang } = useI18n()
   const hidden = award.secret && !award.done
   const waiting = award.done && !award.claimed
+  const top = [...steps].reverse().find((step) => step.claimed)
+  const held = !!top && pinnedIds.includes(top.id)
+  const locked = !top || (full && !held)
   const percent = Math.min(Math.round((award.progress / award.target) * 100), 100)
 
   return (
@@ -285,9 +290,15 @@ function AwardModal({
               {t('ach.claim', { xp: award.xp })}
             </button>
           )}
-          {award.claimed && award.kind !== 'season' && (
-            <button type="button" className="ghost" disabled={busy} onClick={onPin}>
-              <PinIcon /> {t(pinned ? 'ach.unpin' : 'ach.pin')}
+          {award.kind !== 'season' && (
+            <button
+              type="button"
+              className="ghost"
+              disabled={busy || locked}
+              title={locked ? t(!top ? 'ach.pinNone' : 'ach.pinFull') : undefined}
+              onClick={() => top && onPin(top.id)}
+            >
+              <PinIcon /> {t(held ? 'ach.unpin' : 'ach.pin')}
             </button>
           )}
         </div>
@@ -517,9 +528,10 @@ export default function Achievements() {
           award={active}
           steps={rows.find((one) => one.steps.some((step) => step.id === active.id))?.steps ?? [active]}
           onStep={setOpened}
-          pinned={pinned.includes(active.id)}
+          full={pinned.length >= PINNED_MAX}
+          pinnedIds={pinned}
           busy={claiming === active.id}
-          onPin={() => togglePin(active.id)}
+          onPin={togglePin}
           onClaim={() => void claim(active.id)}
           onClose={() => setOpened(null)}
         />

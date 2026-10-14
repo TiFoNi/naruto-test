@@ -1278,6 +1278,12 @@ const ui = {
   },
   'ach.showcaseEmpty': { ru: 'Свободно', uk: 'Вільно', en: 'Empty' },
   'ach.pin': { ru: 'Закрепить в профиле', uk: 'Закріпити в профілі', en: 'Pin to profile' },
+  'ach.pinFull': { ru: 'Витрина заполнена — открепи что-нибудь', uk: 'Вітрина заповнена — відкріпи щось', en: 'Showcase is full — unpin something first' },
+  'ach.pinNone': {
+    ru: 'Сначала получи хотя бы один этап',
+    uk: 'Спочатку отримай хоча б один етап',
+    en: 'Earn at least one stage first',
+  },
   'ach.unpin': { ru: 'Открепить', uk: 'Відкріпити', en: 'Unpin' },
   'ach.myProfile': { ru: 'Мой профиль', uk: 'Мій профіль', en: 'My profile' },
   'ach.title': { ru: 'Достижения', uk: 'Досягнення', en: 'Achievements' },

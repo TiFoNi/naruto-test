@@ -117,8 +117,12 @@ export const POST = handle(async (request) => {
 
   const owned = found.doc.claimed ?? {}
   const known = new Set(LIFE.map((a) => a.id))
+  const topOfFamily = (id: string) =>
+    LIFE.filter((a) => familyOf(a.id) === familyOf(id) && owned[a.id])
+      .sort((one, two) => one.xp - two.xp || one.target - two.target)
+      .pop()?.id
   const pinned = [...new Set(body.pinned.filter((id): id is string => typeof id === 'string'))]
-    .filter((id) => known.has(id) && owned[id])
+    .filter((id) => known.has(id) && owned[id] && topOfFamily(id) === id)
     .slice(0, PINNED_MAX)
 
   await (await users()).updateOne({ _id: found.doc._id! }, { $set: { pinned } })
