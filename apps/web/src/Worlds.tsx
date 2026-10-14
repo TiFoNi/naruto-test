@@ -212,14 +212,15 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       setOrder(next)
     }
 
-    const block = (step: Event) => step.cancelable && step.preventDefault()
+    const block = (step: Event) => moved && step.cancelable && step.preventDefault()
+
+    const stop = (step: Event) => step.cancelable && step.preventDefault()
 
     const begin = () => {
       if (moved) return
       moved = true
       held.current = true
       liftAt.current = { x: spot.x - hold.dx, y: spot.y - hold.dy }
-      if (touch) window.addEventListener('touchmove', block, { passive: false })
       setFlipped((open) => open.filter((one) => one !== row.game))
       setDrag({ game: row.game, w: box.width })
       if (!frame) frame = requestAnimationFrame(paint)
@@ -243,7 +244,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       window.removeEventListener('pointerup', drop)
       window.removeEventListener('pointercancel', drop)
       window.removeEventListener('touchmove', block)
-      window.removeEventListener('contextmenu', block)
+      window.removeEventListener('contextmenu', stop)
       if (timer) window.clearTimeout(timer)
       if (frame) cancelAnimationFrame(frame)
       mark(null)
@@ -263,7 +264,10 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', drop)
     window.addEventListener('pointercancel', drop)
-    if (touch) window.addEventListener('contextmenu', block)
+    if (touch) {
+      window.addEventListener('touchmove', block, { passive: false })
+      window.addEventListener('contextmenu', stop)
+    }
   }
 
   const Tile = (game: string, index: number) => {
