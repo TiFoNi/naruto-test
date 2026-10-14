@@ -171,8 +171,10 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       return next
     }
 
-    const base = home.filter((one) => one !== game)
-    return [...base.slice(0, slot), game, ...base.slice(slot)]
+    const base = home.filter((one) => one && one !== game)
+    const gap = plan.slice(0, slot).filter((one) => !one).length
+    const at = Math.max(0, Math.min(base.length, slot - gap))
+    return [...base.slice(0, at), game, ...base.slice(at)]
   }
 
   const grab = (row: Row) => (event: ReactPointer<HTMLButtonElement>) => {
