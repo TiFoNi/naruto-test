@@ -15,10 +15,73 @@
   flex-wrap: wrap;
 }
 
+.rail {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
 .awards-cats {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
+  min-width: 0;
+}
+
+.rail-arrow {
+  position: absolute;
+  z-index: 2;
+  display: none;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, #ffffff 12%, transparent);
+  border-radius: 999px;
+  background: var(--overlay);
+  color: var(--text);
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.rail-arrow.left {
+  left: -4px;
+}
+
+.rail-arrow.right {
+  right: -4px;
+}
+
+.rail-arrow .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.rail-arrow.left .icon {
+  transform: rotate(90deg);
+}
+
+.rail-arrow.right .icon {
+  transform: rotate(-90deg);
+}
+
+.rail.has-left .rail-arrow.left,
+.rail.has-right .rail-arrow.right {
+  display: flex;
+}
+
+.rail.has-left .awards-cats {
+  mask-image: linear-gradient(90deg, transparent 0, #000 34px);
+}
+
+.rail.has-right .awards-cats {
+  mask-image: linear-gradient(90deg, #000 calc(100% - 34px), transparent 100%);
+}
+
+.rail.has-left.has-right .awards-cats {
+  mask-image: linear-gradient(90deg, transparent 0, #000 34px, #000 calc(100% - 34px), transparent 100%);
 }
 
 .awards-cats button {
@@ -623,10 +686,34 @@
 .awards-hero {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'ring title tiers'
+    'ring body tiers';
   align-items: center;
-  gap: 26px;
+  gap: 8px 26px;
   width: 100%;
   padding: 22px 26px;
+}
+
+.awards-hero > h1 {
+  grid-area: title;
+  align-self: end;
+  margin: 0;
+  font-size: clamp(26px, 3.4vw, 38px);
+  line-height: 1.05;
+}
+
+.awards-ring {
+  grid-area: ring;
+}
+
+.awards-hero-body {
+  grid-area: body;
+  align-self: start;
+}
+
+.awards-tiers {
+  grid-area: tiers;
 }
 
 .awards-ring {
@@ -682,12 +769,6 @@
   flex-direction: column;
   gap: 8px;
   min-width: 0;
-}
-
-.awards-hero-body h1 {
-  margin: 0;
-  font-size: clamp(26px, 3.4vw, 38px);
-  line-height: 1.05;
 }
 
 .awards-hero-body p {
@@ -783,11 +864,14 @@
 @media (max-width: 1000px) {
   .awards-hero {
     grid-template-columns: auto minmax(0, 1fr);
-    row-gap: 18px;
+    grid-template-areas:
+      'ring title'
+      'ring body'
+      'tiers tiers';
+    row-gap: 14px;
   }
 
   .awards-tiers {
-    grid-column: 1 / -1;
     grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
   }
 }
@@ -817,9 +901,17 @@
     font-size: 11px;
   }
 
-  .awards-hero-body h1 {
-    font-size: clamp(21px, 6.4vw, 26px);
-    overflow-wrap: anywhere;
+  .awards-hero {
+    grid-template-areas:
+      'title title'
+      'ring body'
+      'tiers tiers';
+  }
+
+  .awards-hero > h1 {
+    align-self: center;
+    font-size: clamp(23px, 7vw, 28px);
+    text-align: center;
   }
 
   .awards-hero-body p {
@@ -837,7 +929,6 @@
   }
 
   .awards-tiers {
-    grid-column: 1 / -1;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 

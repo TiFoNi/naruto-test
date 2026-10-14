@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { api } from './api'
 import BackButton from './BackButton'
 import { useI18n, type UiKey } from './i18n'
-import { CheckIcon, CloseIcon, GiftIcon, LockIcon, PinIcon } from './icons'
+import { CheckIcon, ChevronIcon, CloseIcon, GiftIcon, LockIcon, PinIcon } from './icons'
 import AwardIcon from './awardIcons'
 import { useAuth } from './auth'
 import { putAwards } from './awards'
@@ -102,6 +102,46 @@ const RANKS: Tier[] = ['bronze', 'silver', 'gold', 'legend', 'mythic', 'secret']
 const byRank = (one: Family, two: Family) => {
   const last = (family: Family) => family.steps[family.steps.length - 1]
   return RANKS.indexOf(last(one).tier) - RANKS.indexOf(last(two).tier) || last(one).xp - last(two).xp || one.steps.length - two.steps.length
+}
+
+function Rail({ children }: { children: ReactNode }) {
+  const { t } = useI18n()
+  const rail = useRef<HTMLDivElement>(null)
+  const [ends, setEnds] = useState({ left: false, right: false })
+
+  const sync = useCallback(() => {
+    const node = rail.current
+    if (!node) return
+    setEnds({ left: node.scrollLeft > 4, right: node.scrollLeft + node.clientWidth < node.scrollWidth - 4 })
+  }, [])
+
+  useEffect(() => {
+    const node = rail.current
+    if (!node) return
+    sync()
+    node.addEventListener('scroll', sync, { passive: true })
+    window.addEventListener('resize', sync)
+    return () => {
+      node.removeEventListener('scroll', sync)
+      window.removeEventListener('resize', sync)
+    }
+  }, [sync])
+
+  const slide = (way: number) => rail.current?.scrollBy({ left: way * Math.max(160, rail.current.clientWidth * 0.7), behavior: 'smooth' })
+
+  return (
+    <div className={`rail ${ends.left ? 'has-left' : ''} ${ends.right ? 'has-right' : ''}`}>
+      <button type="button" className="rail-arrow left" aria-label={t('ach.scrollPrev')} onClick={() => slide(-1)}>
+        <ChevronIcon />
+      </button>
+      <div className="awards-cats" ref={rail}>
+        {children}
+      </div>
+      <button type="button" className="rail-arrow right" aria-label={t('ach.scrollNext')} onClick={() => slide(1)}>
+        <ChevronIcon />
+      </button>
+    </div>
+  )
 }
 
 function Card({ family, busy, onOpen }: { family: Family; busy: boolean; onOpen: (id: string) => void }) {
@@ -424,8 +464,9 @@ export default function Achievements() {
               </span>
             </div>
 
+            <h1>{t('ach.title')}</h1>
+
             <div className="awards-hero-body">
-              <h1>{t('ach.title')}</h1>
               <p className="muted">{t('ach.heroLead', { xp: board?.xp ?? 0 })}</p>
               <div className="awards-shelf">
                 <span className="awards-shelf-label">
@@ -478,7 +519,7 @@ export default function Achievements() {
               ))}
             </div>
 
-            <div className="awards-cats">
+            <Rail>
               <button type="button" className={group === 'all' ? 'active' : ''} onClick={() => setGroup('all')}>
                 {t('ach.allCats')}
               </button>
@@ -492,7 +533,7 @@ export default function Achievements() {
                   {t(`achCatShort.${category}` as UiKey)}
                 </button>
               ))}
-            </div>
+            </Rail>
           </div>
 
           {CATEGORIES.map((category) => {

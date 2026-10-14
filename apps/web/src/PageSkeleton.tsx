@@ -162,8 +162,8 @@ function AwardsGhost() {
       <BackButton href={href.profile}>{t('nav.profile')}</BackButton>
       <section className="card awards-hero">
         <span className="sk ring" />
+        <span className="sk head" />
         <div className="awards-hero-body">
-          <span className="sk head" />
           <span className="sk line" />
           <div className="awards-shelf">
             <span className="sk shelf-label" />

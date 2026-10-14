@@ -1231,6 +1231,8 @@ const ui = {
     uk: 'Отримано {xp} XP за досягнення. Закріпи найкращі — їх побачать у твоєму профілі.',
     en: 'You earned {xp} XP from achievements. Pin the best ones — they show on your profile.',
   },
+  'ach.scrollPrev': { ru: 'Предыдущие разделы', uk: 'Попередні розділи', en: 'Previous sections' },
+  'ach.scrollNext': { ru: 'Следующие разделы', uk: 'Наступні розділи', en: 'Next sections' },
   'ach.allCats': { ru: 'Все разделы', uk: 'Усі розділи', en: 'All sections' },
   'ach.steps': { ru: '{done} из {total} ступеней', uk: '{done} з {total} щаблів', en: '{done} of {total} tiers' },
   'ach.toNext': { ru: 'до {tier} — ещё {left}', uk: 'до {tier} — ще {left}', en: '{left} to {tier}' },
