@@ -31,32 +31,39 @@
 
 .rail-arrow {
   position: absolute;
+  top: 0;
+  bottom: 0;
   z-index: 2;
   display: none;
-  width: 30px;
-  height: 30px;
+  width: 54px;
   align-items: center;
-  justify-content: center;
   padding: 0;
-  border: 1px solid color-mix(in srgb, #ffffff 12%, transparent);
-  border-radius: 999px;
-  background: var(--overlay);
-  color: var(--text);
+  border: 0;
+  background: none;
+  color: var(--text-3);
   cursor: pointer;
-  backdrop-filter: blur(8px);
+  transition: color 0.16s ease;
+}
+
+.rail-arrow:hover {
+  color: var(--text);
 }
 
 .rail-arrow.left {
-  left: -4px;
+  left: 0;
+  justify-content: flex-start;
+  background: linear-gradient(90deg, var(--bg) 42%, transparent);
 }
 
 .rail-arrow.right {
-  right: -4px;
+  right: 0;
+  justify-content: flex-end;
+  background: linear-gradient(270deg, var(--bg) 42%, transparent);
 }
 
 .rail-arrow .icon {
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
 }
 
 .rail-arrow.left .icon {
@@ -72,17 +79,7 @@
   display: flex;
 }
 
-.rail.has-left .awards-cats {
-  mask-image: linear-gradient(90deg, transparent 0, #000 34px);
-}
 
-.rail.has-right .awards-cats {
-  mask-image: linear-gradient(90deg, #000 calc(100% - 34px), transparent 100%);
-}
-
-.rail.has-left.has-right .awards-cats {
-  mask-image: linear-gradient(90deg, transparent 0, #000 34px, #000 calc(100% - 34px), transparent 100%);
-}
 
 .awards-cats button {
   padding: 9px 14px;
