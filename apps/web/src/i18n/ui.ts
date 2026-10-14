@@ -1016,6 +1016,7 @@ const ui = {
   'profile.streakToday': { ru: 'Сегодня уже засчитано', uk: 'Сьогодні вже зараховано', en: 'Today is counted' },
   'profile.streakIdle': { ru: 'Сыграй сегодня, чтобы продолжить', uk: 'Зіграй сьогодні, щоб продовжити', en: 'Play today to keep it going' },
   'profile.worldsAll': { ru: 'Все {count}', uk: 'Усі {count}', en: 'All {count}' },
+  'worlds.leadGuest': { ru: 'Прогресс игрока по каждой вселенной.', uk: 'Прогрес гравця по кожному всесвіту.', en: 'This player’s progress in every world.' },
   'worlds.title': { ru: 'Вселенные', uk: 'Всесвіти', en: 'Worlds' },
   'worlds.lead': {
     ru: 'Прогресс по каждой вселенной. Отметь до {count} — они попадут на витрину профиля.',
@@ -1226,6 +1227,11 @@ const ui = {
   'achCatShort.ranking': { ru: 'Рейтинг', uk: 'Рейтинг', en: 'Ranking' },
   'achCatShort.secret': { ru: 'Секретные', uk: 'Секретні', en: 'Secret' },
   'ach.outOf': { ru: 'из {total}', uk: 'з {total}', en: 'of {total}' },
+  'ach.heroGuest': {
+    ru: 'Достижения игрока. Закреплённые видны в его профиле.',
+    uk: 'Досягнення гравця. Закріплені видно в його профілі.',
+    en: 'This player’s achievements. Pinned ones show on their profile.',
+  },
   'ach.heroLead': {
     ru: 'Получено {xp} XP за достижения. Закрепи лучшие — их увидят в твоём профиле.',
     uk: 'Отримано {xp} XP за досягнення. Закріпи найкращі — їх побачать у твоєму профілі.',

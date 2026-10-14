@@ -12,6 +12,8 @@ export function hrefs(lang: Lang) {
     login: at('/login'),
     profile: at('/profile'),
     player: (id: string) => at(`/u/${id}`),
+    playerWorlds: (id: string) => at(`/u/${id}/worlds`),
+    playerAwards: (id: string) => at(`/u/${id}/achievements`),
     settings: at('/settings'),
     friends: at('/friends'),
     achievements: at('/achievements'),

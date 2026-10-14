@@ -180,6 +180,7 @@ function AwardModal({
   steps,
   onStep,
   full,
+  guest,
   pinnedIds,
   busy,
   onPin,
@@ -191,6 +192,7 @@ function AwardModal({
   onStep: (id: string) => void
   pinnedIds: string[]
   full: boolean
+  guest: boolean
   busy: boolean
   onPin: (id: string) => void
   onClaim: () => void
@@ -286,12 +288,12 @@ function AwardModal({
         </dl>
 
         <div className="award-modal-actions">
-          {waiting && (
+          {waiting && !guest && (
             <button type="button" className="primary" disabled={busy} onClick={onClaim}>
               {t('ach.claim', { xp: award.xp })}
             </button>
           )}
-          {award.kind !== 'season' && (
+          {award.kind !== 'season' && !guest && (
             <button
               type="button"
               className="ghost"
@@ -314,11 +316,11 @@ keepPerUser(() => {
   known = null
 })
 
-export default function Achievements() {
+export default function Achievements({ id, nickname }: { id?: string; nickname?: string } = {}) {
   const { t } = useI18n()
   const href = useHref()
   const { refresh } = useAuth()
-  const [board, setBoard] = useState<Board | null>(known)
+  const [board, setBoard] = useState<Board | null>(id ? null : known)
   const [error, setError] = useState(false)
   const [filter, setFilter] = useState<Filter>('all')
   const [group, setGroup] = useState<string>('all')
@@ -327,20 +329,22 @@ export default function Achievements() {
 
   useEffect(() => {
     let alive = true
-    api<Board>('achievements')
+    api<Board>(id ? `achievements?id=${id}` : 'achievements')
       .then(({ ok, data }) => {
         if (!alive) return
         if (ok) {
-          known = data
+          if (!id) {
+            known = data
+            putAwards(data.achievements)
+          }
           setBoard(data)
-          putAwards(data.achievements)
         } else setError(true)
       })
       .catch(() => alive && setError(true))
     return () => {
       alive = false
     }
-  }, [])
+  }, [id])
 
   const list = board?.achievements ?? []
   const rows = useMemo(() => families(list).sort(byRank), [list])
@@ -407,7 +411,7 @@ export default function Achievements() {
 
   return (
     <div className="awards-page">
-      <BackButton href={href.profile}>{t('nav.profile')}</BackButton>
+      <BackButton href={id ? href.player(id) : href.profile}>{t(id ? 'profile.back' : 'nav.profile')}</BackButton>
 
       {error ? (
         <div className="card center muted">{t('err.server')}</div>
@@ -425,10 +429,10 @@ export default function Achievements() {
               </span>
             </div>
 
-            <h1>{t('ach.title')}</h1>
+            <h1>{id && nickname ? nickname : t('ach.title')}</h1>
 
             <div className="awards-hero-body">
-              <p className="muted">{t('ach.heroLead', { xp: board?.xp ?? 0 })}</p>
+              <p className="muted">{t(id ? 'ach.heroGuest' : 'ach.heroLead', { xp: board?.xp ?? 0 })}</p>
               <div className="awards-shelf">
                 <span className="awards-shelf-label">
                   {t('ach.showcase')} {pinned.length}/{PINNED_MAX}
@@ -437,6 +441,12 @@ export default function Achievements() {
                   const award = pinned[index] ? list.find((one) => one.id === pinned[index]) : undefined
                   if (!award)
                     return <span key={index} className="awards-chip free" aria-hidden />
+                  if (id)
+                    return (
+                      <span key={award.id} className={`awards-chip tier-${award.tier}`} title={t(`ach.${award.id}` as UiKey)}>
+                        <AwardIcon family={award.family} award={award.id} />
+                      </span>
+                    )
                   return (
                     <button
                       key={award.id}
@@ -515,7 +525,7 @@ export default function Achievements() {
                       key={one.id}
                       family={one}
                       busy={claiming === one.open.id}
-                      onOpen={(id) => (one.ready ? void claim(one.ready.id) : setOpened(id))}
+                      onOpen={(open) => (!id && one.ready ? void claim(one.ready.id) : setOpened(open))}
                     />
                   ))}
                 </div>
@@ -532,6 +542,7 @@ export default function Achievements() {
           onStep={setOpened}
           full={pinned.length >= PINNED_MAX}
           pinnedIds={pinned}
+          guest={!!id}
           busy={claiming === active.id}
           onPin={togglePin}
           onClaim={() => void claim(active.id)}

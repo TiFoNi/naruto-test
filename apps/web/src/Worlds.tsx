@@ -16,7 +16,7 @@ type Summary = { games: Row[]; showcase: string[] }
 
 const percent = (part: number, whole: number) => (whole ? Math.round((part / whole) * 100) : 0)
 
-export default function Worlds() {
+export default function Worlds({ id, nickname }: { id?: string; nickname?: string } = {}) {
   const { t, l } = useI18n()
   const href = useHref()
   const [rows, setRows] = useState<Row[] | null>(null)
@@ -24,11 +24,11 @@ export default function Worlds() {
   const [failed, setFailed] = useState(false)
 
   const load = useCallback(async () => {
-    const { ok, data } = await api<Summary>('profile/summary')
+    const { ok, data } = await api<Summary>(id ? `profile/summary?id=${id}` : 'profile/summary')
     if (!ok) return setFailed(true)
     setRows(data.games ?? [])
     setPicked(data.showcase ?? [])
-  }, [])
+  }, [id])
 
   useEffect(() => {
     void load()
@@ -50,11 +50,11 @@ export default function Worlds() {
     <div className="worlds-page">
       <div className="worlds-top">
         <header className="lb-head">
-          <BackButton href={href.profile}>{t('nav.profile')}</BackButton>
-          <h1>{t('worlds.title')}</h1>
-          <p className="muted">{t('worlds.lead', { count: SHOWCASE_MAX })}</p>
+          <BackButton href={id ? href.player(id) : href.profile}>{t(id ? 'profile.back' : 'nav.profile')}</BackButton>
+          <h1>{id && nickname ? nickname : t('worlds.title')}</h1>
+          <p className="muted">{id ? t('worlds.leadGuest') : t('worlds.lead', { count: SHOWCASE_MAX })}</p>
         </header>
-        <span className="worlds-counter">{t('worlds.picked', { count: picked.length, max: SHOWCASE_MAX })}</span>
+        {!id && <span className="worlds-counter">{t('worlds.picked', { count: picked.length, max: SHOWCASE_MAX })}</span>}
       </div>
 
       {failed && <p className="notice worlds-failed">{t('err.server')}</p>}
@@ -76,7 +76,7 @@ export default function Worlds() {
             const full = !on && picked.length >= SHOWCASE_MAX
 
             return (
-              <li key={row.game} className={on ? 'is-picked' : ''} style={{ '--world-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
+              <li key={row.game} className={!id && on ? 'is-picked' : ''} style={{ '--world-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
                 <Link href={href.world(row.game as GameId)} prefetch={false}>
                   <img
                     className="world-pic"
@@ -96,17 +96,19 @@ export default function Worlds() {
                     <i style={{ width: `${Math.max(share, 2)}%`, background: game?.accent ?? 'var(--accent)' }} />
                   </span>
                 </Link>
-                <button
-                  type="button"
-                  className={`world-pin ${on ? 'on' : ''}`}
-                  disabled={full}
-                  title={t(on ? 'worlds.unpin' : full ? 'worlds.full' : 'worlds.pin', { max: SHOWCASE_MAX })}
-                  aria-label={t(on ? 'worlds.unpin' : 'worlds.pin')}
-                  aria-pressed={on}
-                  onClick={() => void toggle(row.game)}
-                >
-                  <CheckIcon />
-                </button>
+                {!id && (
+                  <button
+                    type="button"
+                    className={`world-pin ${on ? 'on' : ''}`}
+                    disabled={full}
+                    title={t(on ? 'worlds.unpin' : full ? 'worlds.full' : 'worlds.pin', { max: SHOWCASE_MAX })}
+                    aria-label={t(on ? 'worlds.unpin' : 'worlds.pin')}
+                    aria-pressed={on}
+                    onClick={() => void toggle(row.game)}
+                  >
+                    <CheckIcon />
+                  </button>
+                )}
               </li>
             )
           })}

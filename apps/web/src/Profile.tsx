@@ -435,8 +435,8 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
               <section className="card worlds-card">
                 <header>
                   <h2>{t('profile.worlds')}</h2>
-                  {own && (
-                    <Link className="worlds-all" href={href.worlds}>
+                  {!!user && (
+                    <Link className="worlds-all" href={own || !id ? href.worlds : href.playerWorlds(id)}>
                       {t('profile.worldsAll', { count: summary?.games.length ?? 0 })}
                       <ArrowIcon />
                     </Link>
@@ -473,8 +473,14 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                     })}
                     {Array.from({ length: blanks }, (_, index) => (
                       <li key={`blank-${index}`} className="is-blank">
-                        {own ? (
-                          <Link className="world-blank" href={href.worlds} aria-label={t('worlds.pin')} title={t('worlds.pin')} prefetch={false}>
+                        {user ? (
+                          <Link
+                            className="world-blank"
+                            href={own || !id ? href.worlds : href.playerWorlds(id)}
+                            aria-label={own ? t('worlds.pin') : t('worlds.title')}
+                            title={own ? t('worlds.pin') : t('worlds.title')}
+                            prefetch={false}
+                          >
                             <span className="world-pic is-empty">
                               <PlusIcon />
                             </span>
@@ -506,8 +512,8 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                       {summary?.awards ?? 0} / {summary?.awardsTotal ?? 0}
                     </small>
                   </h2>
-                  {own && (
-                    <Link className="worlds-all" href={href.achievements}>
+                  {!!user && (
+                    <Link className="worlds-all" href={own || !id ? href.achievements : href.playerAwards(id)}>
                       {t('profile.worldsAll', { count: summary?.awardsTotal ?? 0 })}
                       <ArrowIcon />
                     </Link>
@@ -519,8 +525,12 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                     if (!award)
                       return (
                         <li key={index} className="free">
-                          {own ? (
-                            <Link href={href.achievements} aria-label={t('profile.awardsFreeHint')} prefetch={false}>
+                          {user ? (
+                            <Link
+                              href={own || !id ? href.achievements : href.playerAwards(id)}
+                              aria-label={own ? t('profile.awardsFreeHint') : t('ach.open')}
+                              prefetch={false}
+                            >
                               <span className="soon-mark" aria-hidden>
                                 <PlusIcon />
                               </span>
@@ -541,8 +551,8 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                     const secret = award.hidden || !award.id
                     return (
                       <li key={award.id ?? `secret-${index}`} className={`on tier-${award.tier}`}>
-                        {own ? (
-                          <Link href={href.achievements} prefetch={false}>
+                        {user ? (
+                          <Link href={own || !id ? href.achievements : href.playerAwards(id)} prefetch={false}>
                             <span className="soon-mark" aria-hidden>
                               {secret ? <TrophyIcon /> : <AwardIcon family={award.family} award={award.id} />}
                             </span>

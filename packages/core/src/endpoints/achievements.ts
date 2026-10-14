@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb'
 import { STAT_KEYS } from '@nanda/game'
 import {
   ACHIEVEMENTS,
@@ -93,9 +94,55 @@ async function board(doc: UserDoc) {
   }
 }
 
+async function guestBoard(doc: UserDoc) {
+  const awards = doc.awards ?? {}
+  const claimed = doc.claimed ?? {}
+  const { share } = await rarity()
+
+  const list = LIFE.map((achievement) => ({
+    id: achievement.id,
+    family: familyOf(achievement.id),
+    category: achievement.category,
+    tier: achievement.tier,
+    kind: achievement.kind,
+    target: achievement.target,
+    xp: achievement.xp,
+    secret: achievement.secret ?? false,
+    awarded: achievement.awarded ?? false,
+    unit: achievement.unit ?? null,
+    done: !!awards[achievement.id],
+    claimed: !!claimed[achievement.id],
+    at: awards[achievement.id] ?? null,
+    progress: awards[achievement.id] ? achievement.target : 0,
+    rarity: share[achievement.id] ?? 0,
+  }))
+
+  return {
+    achievements: list,
+    earned: list.filter((a) => a.done).length,
+    xp: list.reduce((sum, a) => sum + (a.claimed ? a.xp : 0), 0),
+    xpLeft: 0,
+    ready: 0,
+    xpReady: 0,
+    rarest: null,
+    players: 0,
+    rank: null,
+    season: { id: seasonAt().id, number: seasonAt().number, endsAt: seasonAt().to.getTime() },
+    gained: [],
+    pinned: (doc.pinned ?? []).filter((award) => claimed[award]).slice(0, PINNED_MAX),
+  }
+}
+
 export const GET = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
+
+  const wanted = new URL(request.url).searchParams.get('id')
+  if (wanted && ObjectId.isValid(wanted) && wanted !== found.doc._id!.toHexString()) {
+    const doc = await (await users()).findOne({ _id: new ObjectId(wanted) })
+    if (!doc) return fail(404, 'not_found')
+    return json(await guestBoard(doc))
+  }
 
   return json(await board(found.doc))
 })
