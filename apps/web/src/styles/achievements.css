@@ -52,13 +52,11 @@
 .rail-arrow.left {
   left: 0;
   justify-content: flex-start;
-  background: linear-gradient(90deg, var(--bg) 42%, transparent);
 }
 
 .rail-arrow.right {
   right: 0;
   justify-content: flex-end;
-  background: linear-gradient(270deg, var(--bg) 42%, transparent);
 }
 
 .rail-arrow .icon {
@@ -77,6 +75,18 @@
 .rail.has-left .rail-arrow.left,
 .rail.has-right .rail-arrow.right {
   display: flex;
+}
+
+.rail.has-left .awards-cats {
+  mask-image: linear-gradient(90deg, transparent 0, #000 58px);
+}
+
+.rail.has-right .awards-cats {
+  mask-image: linear-gradient(90deg, #000 calc(100% - 58px), transparent 100%);
+}
+
+.rail.has-left.has-right .awards-cats {
+  mask-image: linear-gradient(90deg, transparent 0, #000 58px, #000 calc(100% - 58px), transparent 100%);
 }
 
 
