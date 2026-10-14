@@ -81,7 +81,9 @@ export function pickQuests(userId: ObjectId, day: string) {
 
 async function progress(userId: ObjectId, day: string) {
   const sameDay = {
-    $expr: { $eq: [{ $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: 'Europe/Kyiv' } }, day] },
+    $expr: {
+      $eq: [{ $dateToString: { format: '%Y-%m-%d', date: { $ifNull: ['$finishedAt', '$createdAt'] }, timezone: 'Europe/Kyiv' } }, day],
+    },
   }
 
   const [counts] = await (await rounds())

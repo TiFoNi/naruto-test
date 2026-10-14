@@ -48,7 +48,7 @@ async function history(userId: ObjectId) {
           ],
           days: [
             counted,
-            { $group: { _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: ZONE } } } },
+            { $group: { _id: { $dateToString: { format: '%Y-%m-%d', date: { $ifNull: ['$finishedAt', '$createdAt'] }, timezone: ZONE } } } },
             { $sort: { _id: -1 } },
           ],
           recent: [
