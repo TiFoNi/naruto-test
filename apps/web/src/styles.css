@@ -7390,8 +7390,21 @@ html[data-auth] .guest-note {
   --tier: #a78bfa;
 }
 
+.tier-mythic {
+  --tier: #ff5fa2;
+}
+
 .tier-secret {
   --tier: #4ad6c4;
+}
+
+.award.is-season,
+.award-modal.is-season {
+  --tier: #7f9bd1;
+}
+
+.award.is-season .award-tier:empty {
+  display: none;
 }
 
 .award-kind {

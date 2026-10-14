@@ -556,3 +556,109 @@ export function UsersIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function BoltIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M13.5 2.5 4.5 13.5h6l-1 8 9-11h-6z" />
+    </svg>
+  )
+}
+
+export function MoonIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" />
+    </svg>
+  )
+}
+
+export function SunriseIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M12 3.5v4M5.2 7.2l2.1 2.1M18.8 7.2l-2.1 2.1M3 17h18" />
+      <path d="M7.5 17a4.5 4.5 0 0 1 9 0" />
+      <path d="M5 21h14" />
+    </svg>
+  )
+}
+
+export function FlameIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M12 2.8c3.4 3 5 5.6 5 8.4a5 5 0 0 1-10 0c0-1.4.5-2.7 1.4-3.9.5 1.2 1.2 1.9 2 2.1-.3-2.6.2-4.8 1.6-6.6z" />
+    </svg>
+  )
+}
+
+export function TargetIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <circle cx="12" cy="12" r="8.5" />
+      <circle cx="12" cy="12" r="4.5" />
+      <circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
+export function RefreshIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M20 12a8 8 0 1 1-2.6-5.9" />
+      <path d="M20.5 3.5v5h-5" />
+    </svg>
+  )
+}
+
+export function LayersIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="m12 3 8.5 4.5L12 12 3.5 7.5z" />
+      <path d="m4 12.5 8 4.2 8-4.2" />
+      <path d="m4 17 8 4.2 8-4.2" />
+    </svg>
+  )
+}
+
+export function EyeIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M2.8 12S6.5 5.8 12 5.8 21.2 12 21.2 12 17.5 18.2 12 18.2 2.8 12 2.8 12z" />
+      <circle cx="12" cy="12" r="2.8" />
+    </svg>
+  )
+}
+
+export function StarIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="m12 3.2 2.6 5.5 6 .8-4.4 4.2 1.1 6-5.3-2.9-5.3 2.9 1.1-6L3.4 9.5l6-.8z" />
+    </svg>
+  )
+}
+
+export function FlagIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M5.5 21V3.8" />
+      <path d="M5.5 4.6h11l-2.2 3.8 2.2 3.8h-11z" />
+    </svg>
+  )
+}
+
+export function ClockIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 2" />
+    </svg>
+  )
+}
+
+export function SpeechIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M20.5 12.5c0 3.6-3.8 6.5-8.5 6.5-.9 0-1.8-.1-2.6-.3L4 21l1.3-3.5C4.1 16.2 3.5 14.4 3.5 12.5 3.5 8.9 7.3 6 12 6s8.5 2.9 8.5 6.5z" />
+    </svg>
+  )
+}

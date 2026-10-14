@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { GAME_IDS, STAT_KEYS, type GameId } from '@nanda/game'
-import { ACHIEVEMENTS } from '../achievements'
+import { ACHIEVEMENTS, LIFE, familyOf } from '../achievements'
 import { PINNED_MAX } from './achievements'
 import { rounds, seasons, users, type UserDoc } from '../db'
 import { gameData } from '../games'
@@ -14,6 +14,7 @@ import { seasonAt } from '../season'
 const RECENT = 8
 
 const TIERS = new Map(ACHIEVEMENTS.map((achievement) => [achievement.id, achievement.tier]))
+const LIFETIME = new Set(LIFE.map((achievement) => achievement.id))
 const SECRETS = new Set(ACHIEVEMENTS.filter((achievement) => achievement.secret).map((achievement) => achievement.id))
 
 type Counted = { _id: string; played: number; won: number; guesses: number }
@@ -133,12 +134,8 @@ async function place(userId: ObjectId) {
   return { position, players: Math.max((row?.players as number) ?? 0, position) }
 }
 
-async function earnedAwards(doc: UserDoc) {
-  const life = Object.keys(doc.claimed ?? {}).filter((id) => TIERS.has(id)).length
-  const mine = await (await seasons()).findOne({ season: seasonAt().id, userId: doc._id! }, { projection: { claimed: 1 } })
-  const current = Object.keys(mine?.claimed ?? {}).filter((id) => TIERS.has(id)).length
-
-  return life + current
+function earnedAwards(doc: UserDoc) {
+  return Object.keys(doc.claimed ?? {}).filter((id) => LIFETIME.has(id)).length
 }
 
 async function gamePlaces(doc: UserDoc) {
@@ -270,11 +267,17 @@ export const GET = handle(async (request) => {
       .slice(0, PINNED_MAX)
       .map((id) => {
         const veiled = other && SECRETS.has(id) && !found.doc.awards?.[id]
-        return { id: veiled ? null : id, tier: TIERS.get(id)!, at: veiled ? null : doc.awards![id], hidden: veiled }
+        return {
+          id: veiled ? null : id,
+          family: veiled ? null : familyOf(id),
+          tier: TIERS.get(id)!,
+          at: veiled ? null : doc.awards![id],
+          hidden: veiled,
+        }
       }),
     showcase: doc.showcase ?? [],
-    awards: await earnedAwards(doc),
-    awardsTotal: ACHIEVEMENTS.length,
+    awards: earnedAwards(doc),
+    awardsTotal: LIFE.length,
     level: { xp, level, into: xp % LEVEL_XP, need: LEVEL_XP, rank: rankOf(level).id, next: nextRank(level) },
     totals: {
       solved: totals.won,

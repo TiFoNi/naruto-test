@@ -5,7 +5,7 @@ import { gameData } from './games'
 import { addSeasonXp, previousSeason, seasonAt, seasonStanding, takeSeasonClose } from './season'
 import { PLACE_FRAMES, TOP_PLACES } from './frame-list'
 
-export type Tier = 'bronze' | 'silver' | 'gold' | 'legend' | 'secret'
+export type Tier = 'bronze' | 'silver' | 'gold' | 'legend' | 'mythic' | 'secret'
 export type Kind = 'life' | 'season'
 export type Category = 'guessing' | 'duels' | 'streaks' | 'modes' | 'worlds' | 'season' | 'ranking' | 'secret'
 
@@ -21,7 +21,7 @@ export type Achievement = {
   value?: (facts: Facts) => number
 }
 
-export const XP = { bronze: 50, silver: 120, gold: 300, legend: 800, secret: 250 } as const
+export const XP = { bronze: 50, silver: 120, gold: 300, legend: 800, mythic: 2000, secret: 250 } as const
 
 const life = (id: string, category: Category, tier: Tier, target: number, value: (facts: Facts) => number): Achievement => ({
   id,
@@ -57,17 +57,14 @@ const modePlayed = (name: string) => (facts: Facts) => facts.modes[name]?.played
 
 export const LIFE: Achievement[] = [
   life('first', 'guessing', 'bronze', 1, (f) => f.solved),
-  life('ten', 'guessing', 'bronze', 10, (f) => f.solved),
-  life('fifty', 'guessing', 'bronze', 50, (f) => f.solved),
-  life('hundred', 'guessing', 'bronze', 100, (f) => f.solved),
-  life('fiveHundred', 'guessing', 'silver', 500, (f) => f.solved),
-  life('thousand', 'guessing', 'silver', 1000, (f) => f.solved),
-  life('encyclopedia', 'guessing', 'gold', 5000, (f) => f.solved),
-  life('immortal', 'guessing', 'legend', 10000, (f) => f.solved),
+  life('hundred', 'guessing', 'silver', 100, (f) => f.solved),
+  life('thousand', 'guessing', 'gold', 1000, (f) => f.solved),
+  life('encyclopedia', 'guessing', 'legend', 5000, (f) => f.solved),
+  life('immortal', 'guessing', 'mythic', 10000, (f) => f.solved),
   life('luckyTen', 'guessing', 'bronze', 10, (f) => f.firstTry),
   life('firstTry', 'guessing', 'silver', 50, (f) => f.firstTry),
   life('firstTry200', 'guessing', 'gold', 200, (f) => f.firstTry),
-  life('sniper5', 'guessing', 'bronze', 5, (f) => f.sniper),
+  life('sniper5', 'guessing', 'silver', 5, (f) => f.sniper),
   life('sniper', 'guessing', 'gold', 15, (f) => f.sniper),
   life('sharpEye', 'guessing', 'bronze', 1, (f) => f.imageFirstTry),
   life('marathon25', 'guessing', 'bronze', 25, (f) => f.bestPerDay),
@@ -93,20 +90,20 @@ export const LIFE: Achievement[] = [
   life('allRounder', 'modes', 'gold', 4, (f) => Object.values(f.modes).filter((m) => m.played >= 20 && m.won / m.played >= 0.9).length),
 
   life('traveller5', 'worlds', 'bronze', 5, (f) => f.worlds),
-  life('traveller', 'worlds', 'bronze', 10, (f) => f.worlds),
-  life('multiverse', 'worlds', 'silver', GAME_IDS.length, (f) => f.worlds),
+  life('traveller', 'worlds', 'silver', 10, (f) => f.worlds),
+  life('multiverse', 'worlds', 'gold', GAME_IDS.length, (f) => f.worlds),
   life('local50', 'worlds', 'bronze', 50, (f) => f.bestWorldDone),
   life('local200', 'worlds', 'silver', 200, (f) => f.bestWorldDone),
-  life('fan', 'worlds', 'bronze', 25, (f) => f.bestWorldShare),
-  life('fan50', 'worlds', 'silver', 50, (f) => f.bestWorldShare),
-  life('loremaster', 'worlds', 'gold', 100, (f) => f.bestWorldShare),
+  life('fan', 'worlds', 'gold', 25, (f) => f.bestWorldShare),
+  life('fan50', 'worlds', 'legend', 50, (f) => f.bestWorldShare),
+  life('loremaster', 'worlds', 'mythic', 100, (f) => f.bestWorldShare),
   life('gamer', 'worlds', 'silver', 100, (f) => f.gamesSolved),
 
   life('firstBlood', 'duels', 'bronze', 1, (f) => f.duelWins),
-  life('duel5', 'duels', 'bronze', 5, (f) => f.duelWins),
-  life('duelist', 'duels', 'silver', 15, (f) => f.duelWins),
-  life('gladiator', 'duels', 'gold', 50, (f) => f.duelWins),
-  life('warlord', 'duels', 'legend', 150, (f) => f.duelWins),
+  life('duel5', 'duels', 'silver', 5, (f) => f.duelWins),
+  life('duelist', 'duels', 'gold', 15, (f) => f.duelWins),
+  life('gladiator', 'duels', 'legend', 50, (f) => f.duelWins),
+  life('warlord', 'duels', 'mythic', 150, (f) => f.duelWins),
   life('duelFan', 'duels', 'bronze', 10, (f) => f.duelPlayed),
   life('duelFan100', 'duels', 'silver', 100, (f) => f.duelPlayed),
   life('blitz', 'duels', 'gold', 1, (f) => (f.fastestDuelMs !== null && f.fastestDuelMs <= 10_000 ? 1 : 0)),
@@ -114,17 +111,16 @@ export const LIFE: Achievement[] = [
   life('boardWin10', 'duels', 'silver', 10, (f) => f.whoWins),
 
   life('habit', 'streaks', 'bronze', 3, (f) => Math.max(f.streak, f.bestStreak)),
-  life('week', 'streaks', 'bronze', 7, (f) => Math.max(f.streak, f.bestStreak)),
-  life('onFire', 'streaks', 'silver', 10, (f) => Math.max(f.streak, f.bestStreak)),
+  life('week', 'streaks', 'silver', 7, (f) => Math.max(f.streak, f.bestStreak)),
   life('ironWill', 'streaks', 'gold', 30, (f) => Math.max(f.streak, f.bestStreak)),
   life('hundredDays', 'streaks', 'legend', 100, (f) => Math.max(f.streak, f.bestStreak)),
-  life('yearTogether', 'streaks', 'legend', 365, (f) => Math.max(f.streak, f.bestStreak)),
+  life('yearTogether', 'streaks', 'mythic', 365, (f) => Math.max(f.streak, f.bestStreak)),
   life('nightOwl', 'streaks', 'bronze', 10, (f) => f.night),
   life('earlyBird', 'streaks', 'bronze', 10, (f) => f.morning),
 
-  trophy('seasonTop100', 'silver', 100),
-  trophy('seasonTop10', 'gold', 10),
-  trophy('seasonChampion', 'legend', 1),
+  trophy('seasonTop100', 'gold', 100),
+  trophy('seasonTop10', 'legend', 10),
+  trophy('seasonChampion', 'mythic', 1),
 
   hidden('lucky', 1, (f) => (f.firstTry > 0 ? 1 : 0)),
   hidden('comeback', 1, (f) => (f.comeback ? 1 : 0)),
@@ -154,7 +150,7 @@ export const SEASON: Achievement[] = [
 
 // родини: кілька порогів однієї ачівки показуються одним рядком зі шкалою
 const GROUPS: Record<string, string[]> = {
-  solved: ['first', 'ten', 'fifty', 'hundred', 'fiveHundred', 'thousand', 'encyclopedia', 'immortal'],
+  solved: ['first', 'hundred', 'thousand', 'encyclopedia', 'immortal'],
   firstTry: ['luckyTen', 'firstTry', 'firstTry200'],
   sniper: ['sniper5', 'sniper'],
   marathon: ['marathon25', 'marathon'],
@@ -171,7 +167,7 @@ const GROUPS: Record<string, string[]> = {
   duelWins: ['firstBlood', 'duel5', 'duelist', 'gladiator', 'warlord'],
   duelPlayed: ['duelFan', 'duelFan100'],
   boardWins: ['boardWin', 'boardWin10'],
-  streak: ['habit', 'week', 'onFire', 'ironWill', 'hundredDays', 'yearTogether'],
+  streak: ['habit', 'week', 'ironWill', 'hundredDays', 'yearTogether'],
   trophies: ['seasonTop100', 'seasonTop10', 'seasonChampion'],
   seasonSolved: ['seasonStart', 'seasonSolve25', 'seasonSolve100', 'seasonSolve300'],
   seasonDays: ['seasonDays7', 'seasonDays20'],
@@ -185,6 +181,17 @@ const FAMILY = new Map(Object.entries(GROUPS).flatMap(([family, ids]) => ids.map
 export const familyOf = (id: string) => FAMILY.get(id) ?? id
 
 export const ACHIEVEMENTS: Achievement[] = [...LIFE, ...SEASON]
+
+const ACHIEVEMENT_TIERS = new Map(ACHIEVEMENTS.map((a) => [a.id, a.tier]))
+
+const FAMILY_TIER = new Map(
+  Object.entries(GROUPS).map(([family, ids]) => {
+    const steps = ids.map((id) => ACHIEVEMENT_TIERS.get(id)).filter(Boolean) as Tier[]
+    return [family, steps[steps.length - 1]] as const
+  }),
+)
+
+export const tierOf = (id: string) => FAMILY_TIER.get(familyOf(id)) ?? ACHIEVEMENT_TIERS.get(id) ?? 'bronze'
 
 const byId = new Map(ACHIEVEMENTS.map((a) => [a.id, a]))
 

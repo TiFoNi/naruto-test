@@ -13,6 +13,7 @@ import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
 import { ProfileGhost } from './PageSkeleton'
 import { ArrowIcon, PlusIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
+import AwardIcon from './awardIcons'
 import { useHref, useNavigate } from './router'
 import { kyivToday } from './stats'
 import { SHOWCASE_MAX } from './showcase'
@@ -23,7 +24,7 @@ type Named = { ru: string; uk: string; en: string }
 
 type Summary = {
   since: string
-  pinned: { id: string | null; tier: string; at: string | null; hidden?: boolean }[]
+  pinned: { id: string | null; family: string | null; tier: string; at: string | null; hidden?: boolean }[]
   awards: number
   awardsTotal: number
   level: Level
@@ -531,7 +532,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                     return (
                       <li key={award.id ?? `secret-${index}`} className={`on tier-${award.tier}`}>
                         <span className="soon-mark" aria-hidden>
-                          <TrophyIcon />
+                          {secret ? <TrophyIcon /> : <AwardIcon family={award.family} award={award.id} />}
                         </span>
                         <b>{secret ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
                         <small>{secret ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}</small>

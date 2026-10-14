@@ -56,6 +56,7 @@ async function board(doc: UserDoc) {
       target: achievement.target,
       xp: achievement.xp,
       secret: achievement.secret ?? false,
+      awarded: achievement.awarded ?? false,
       done,
       claimed: !!taken[achievement.id],
       at: holder[achievement.id] ?? null,

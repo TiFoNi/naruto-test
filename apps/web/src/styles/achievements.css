@@ -275,13 +275,15 @@
 }
 
 .award-tier {
+  display: inline-flex;
   flex: none;
-  padding: 2px 7px;
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--tier) 16%, transparent);
+  align-items: center;
+  gap: 6px;
   color: var(--tier);
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .award-body p {
@@ -365,14 +367,18 @@
 }
 
 .award-steps {
-  margin-right: 6px;
-  padding: 1px 6px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--tier) 16%, transparent);
-  color: var(--tier);
-  font-size: 10.5px;
+  color: color-mix(in srgb, var(--tier) 70%, var(--text-3));
+  font-family: var(--display);
+  font-size: 11.5px;
   font-style: normal;
   font-weight: 800;
+  letter-spacing: 0;
+}
+
+.award-steps::after {
+  content: '·';
+  margin: 0 1px 0 5px;
+  color: var(--text-3);
 }
 
 .award-count,
@@ -535,41 +541,6 @@
   text-decoration: underline;
 }
 
-.award-pin {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border: 1px solid var(--line);
-  border-radius: 9px;
-  padding: 0;
-  background: none;
-  color: var(--text-3);
-  font-size: 16px;
-  line-height: 1;
-  cursor: pointer;
-  transition: background 0.16s, color 0.16s, border-color 0.16s;
-}
-
-.award-pin:hover {
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
-  background: var(--card-2);
-  color: var(--text);
-}
-
-.award-pin.on {
-  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-  background: var(--accent);
-  color: #1a0f05;
-}
-
-.award:has(.award-pin) .award-head {
-  padding-right: 34px;
-}
-
 @media (max-width: 760px) {
   .awards-showcase-link {
     order: 3;
@@ -587,12 +558,45 @@
   overflow-y: auto;
 }
 
+.award-modal.has-steps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 330px);
+  align-content: start;
+  column-gap: 24px;
+  width: min(100%, 780px);
+  padding-top: 48px;
+}
+
+.award-modal.has-steps > * {
+  grid-column: 1;
+}
+
+.award-modal.has-steps > .award-steps-list {
+  grid-column: 2;
+  grid-row: 1 / 100;
+  align-self: start;
+  text-align: left;
+}
+
+@media (max-width: 720px) {
+  .award-modal.has-steps {
+    grid-template-columns: minmax(0, 1fr);
+    width: min(100%, 420px);
+  }
+
+  .award-modal.has-steps > .award-steps-list {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
 .award-modal-mark {
   display: grid;
   place-items: center;
   width: 68px;
   height: 68px;
   margin: 0 auto 14px;
+  flex: none;
   border: 1px solid color-mix(in srgb, var(--tier) 50%, var(--line));
   border-radius: 20px;
   background: color-mix(in srgb, var(--tier) 14%, var(--card-2-solid));
@@ -658,6 +662,11 @@
   height: 8px;
 }
 
+.award-modal-progress .award-bar > span {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--tier) 70%, transparent), var(--tier));
+  transition: width 0.35s ease;
+}
+
 .award-modal-progress b {
   font-size: 13px;
   font-variant-numeric: tabular-nums;
@@ -710,5 +719,87 @@
   justify-content: center;
   gap: 8px;
   min-height: 42px;
+}
+
+
+.award.tier-mythic .award-mark {
+  box-shadow: 0 0 18px color-mix(in srgb, var(--tier) 45%, transparent);
+}
+
+.award-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card-2);
+}
+
+.award-steps-list header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.award-steps-list ol {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.award-steps-list li {
+  display: grid;
+  grid-template-columns: 18px auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  font-size: 13px;
+  opacity: 0.55;
+}
+
+.award-steps-list li.done {
+  opacity: 1;
+}
+
+.award-steps-list li.now {
+  background: color-mix(in srgb, var(--tier) 12%, transparent);
+  opacity: 1;
+}
+
+.award-steps-list li i {
+  display: grid;
+  place-items: center;
+  color: var(--tier);
+}
+
+.award-steps-list li i .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.award-steps-list li b {
+  font-family: var(--display);
+  font-size: 15px;
+}
+
+.award-steps-list li span {
+  color: var(--tier);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.award-steps-list li em {
+  color: var(--text-3);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
 }
 
