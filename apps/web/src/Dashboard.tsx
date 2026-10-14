@@ -7,6 +7,7 @@ import type { GameMeta } from './games/meta'
 import type { Category } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import Quests, { QuestsGhost } from './Quests'
+import Rail from './Rail'
 import { useHref } from './router'
 import { DAILY_XP_MODES, dailyKey, hasDaily, type ModeId } from '@nanda/game'
 import { dailyNumber, kyivToday, type Stats } from './stats'
@@ -171,35 +172,18 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
   const started = useRef(false)
   const tabs = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState<Category | undefined>(undefined)
-  const [mark, setMark] = useState({ x: 0, y: 0, w: 0, h: 0 })
-  const [live, setLive] = useState(false)
-  const placed = useRef(false)
 
   useEffect(() => {
     setActive(storedCategory())
   }, [])
 
-  useBeforePaint(() => {
-    const row = tabs.current
-    const on = row?.querySelector<HTMLElement>('.cat-tab.on')
-    setMark(on ? { x: on.offsetLeft, y: on.offsetTop, w: on.offsetWidth, h: on.offsetHeight } : { x: 0, y: 0, w: 0, h: 0 })
-    if (on && !placed.current) {
-      placed.current = true
-      requestAnimationFrame(() => setLive(true))
-    }
-  }, [active, shown.length])
-
   useEffect(() => {
     const row = tabs.current
-    if (!row || typeof ResizeObserver === 'undefined') return
-    const sync = () => {
-      const on = row.querySelector<HTMLElement>('.cat-tab.on')
-      if (on) setMark({ x: on.offsetLeft, y: on.offsetTop, w: on.offsetWidth, h: on.offsetHeight })
-    }
-    const watcher = new ResizeObserver(sync)
-    watcher.observe(row)
-    return () => watcher.disconnect()
-  }, [])
+    const on = row?.querySelector<HTMLElement>('.cat-tab.active')
+    if (!row || !on) return
+    const left = on.offsetLeft - (row.clientWidth - on.offsetWidth) / 2
+    row.scrollTo({ left: Math.max(0, left), behavior: 'smooth' })
+  }, [active])
 
   useBeforePaint(() => {
     const root = document.documentElement
@@ -276,24 +260,19 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
       <section className="picker">
         <h2>{t('dash.pick')}</h2>
 
-        <div className="cat-tabs" ref={tabs}>
-          <span
-            className={`cat-tabs-mark ${live ? 'is-live' : ''}`}
-            aria-hidden
-            style={{ '--x': `${mark.x}px`, '--y': `${mark.y}px`, '--w': `${mark.w}px`, '--h': `${mark.h}px`, opacity: mark.w ? 1 : 0 } as CSSProperties}
-          />
+        <Rail className="cat-rail" trackClass="rail-chips" innerRef={tabs}>
           {shown.map((category) => (
             <button
               key={category.id}
               type="button"
-              className={`cat-tab ${active === category.id ? 'on' : ''}`}
+              className={`cat-tab ${active === category.id ? 'active' : ''}`}
               data-id={category.id}
               onClick={() => pick(category.id)}
             >
               {t(category.title)}
             </button>
           ))}
-        </div>
+        </Rail>
 
         <label className="cat-search">
           <SearchIcon />
