@@ -977,6 +977,49 @@
   white-space: nowrap;
 }
 
+.soon-badges li > a {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.soon-badges li > a .soon-mark {
+  transition:
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.soon-badges li.on > a:hover .soon-mark {
+  border-color: var(--tier, var(--accent));
+  transform: translateY(-3px);
+}
+
+.soon-badges li.free > a {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.soon-badges li.free > a .soon-mark {
+  transition:
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.soon-badges li.free > a:hover .soon-mark {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  color: var(--accent);
+  transform: translateY(-3px);
+}
+
 .soon-badges li.free .soon-mark {
   border: 1.5px dashed color-mix(in srgb, #ffffff 13%, transparent);
   background: color-mix(in srgb, #ffffff 3%, transparent);
@@ -1107,6 +1150,24 @@
   .modes-pop {
     left: auto;
     right: 0;
+  }
+}
+
+@media (max-width: 620px) {
+  .hero-tile.is-modes.is-open {
+    transform: none;
+  }
+
+  .modes-pop {
+    position: fixed;
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    z-index: 60;
+    width: auto;
+    max-width: none;
+    max-height: 72vh;
   }
 }
 

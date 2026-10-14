@@ -3464,7 +3464,7 @@ button.ghost.small {
 
 .sk-profile .card header .sk.title {
   width: min(100%, 132px);
-  height: 22px;
+  height: 20px;
   border-radius: 8px;
 }
 
@@ -3607,9 +3607,65 @@ button.ghost.small {
   height: 286px;
 }
 
-.sk.hero-awards {
-  height: 190px;
-  border-radius: var(--radius);
+.sk-page .awards-hero .sk.ring {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+}
+
+.sk-page .awards-hero .sk.head {
+  width: min(100%, 250px);
+  height: 40px;
+  border-radius: 12px;
+}
+
+.sk-page .awards-hero .sk.line {
+  width: 100%;
+  height: 36px;
+  border-radius: 10px;
+}
+
+.sk-page .awards-hero .sk.shelf-label {
+  width: 100%;
+  height: 15px;
+  border-radius: 6px;
+}
+
+.sk-page .awards-hero .sk.chip-square {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.sk-page .awards-hero .sk.tier-card {
+  min-width: 128px;
+  height: 57px;
+  border-radius: 14px;
+}
+
+@media (max-width: 620px) {
+  .sk-page .awards-hero .sk.ring {
+    width: 96px;
+    height: 96px;
+  }
+
+  .sk-page .awards-hero .sk.head {
+    height: 27px;
+  }
+
+  .sk-page .awards-hero .sk.line {
+    height: 46px;
+  }
+
+  .sk-page .awards-hero .sk.chip-square {
+    width: 36px;
+    height: 36px;
+  }
+
+  .sk-page .awards-hero .sk.tier-card {
+    min-width: 0;
+    height: 53px;
+  }
 }
 
 .sk.showcase {

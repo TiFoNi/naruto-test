@@ -65,7 +65,6 @@ export function ProfileGhost({ own }: { own: boolean }) {
               <span className="sk nick" />
               <span className="sk tag" />
               <span className="sk chip lvl" />
-              <span className="sk chip" />
             </div>
             <div className="level-panel">
               <span className="sk bar" />
@@ -161,7 +160,24 @@ function AwardsGhost() {
   return (
     <div className="awards-page sk-page">
       <BackButton href={href.profile}>{t('nav.profile')}</BackButton>
-      <span className="sk hero-awards" />
+      <section className="card awards-hero">
+        <span className="sk ring" />
+        <div className="awards-hero-body">
+          <span className="sk head" />
+          <span className="sk line" />
+          <div className="awards-shelf">
+            <span className="sk shelf-label" />
+            {Array.from({ length: 8 }, (_, index) => (
+              <span key={index} className="sk chip-square" />
+            ))}
+          </div>
+        </div>
+        <div className="awards-tiers">
+          {Array.from({ length: 6 }, (_, index) => (
+            <span key={index} className="sk tier-card" />
+          ))}
+        </div>
+      </section>
       <span className="sk tabs" />
       <div className="sk-awards">
         {Array.from({ length: 6 }, (_, index) => (

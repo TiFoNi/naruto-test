@@ -236,7 +236,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
             <div className="profile-hero-name">
               <h1>{nickname}</h1>
               {tag && <i className="player-tag">#{tag}</i>}
-              <span className="profile-hero-rank">{t(`rank.${summary?.level.rank ?? 'rookie'}` as UiKey)}</span>
               <span className="profile-hero-level">{t('nav.level', { level: summary?.level.level ?? 1 })}</span>
             </div>
             <div className="level-panel">
@@ -520,21 +519,45 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                     if (!award)
                       return (
                         <li key={index} className="free">
-                          <span className="soon-mark" aria-hidden>
-                            <PlusIcon />
-                          </span>
-                          <b>{t('profile.awardsFree')}</b>
-                          <small>{own ? t('profile.awardsFreeHint') : ' '}</small>
+                          {own ? (
+                            <Link href={href.achievements} aria-label={t('profile.awardsFreeHint')} prefetch={false}>
+                              <span className="soon-mark" aria-hidden>
+                                <PlusIcon />
+                              </span>
+                              <b>{t('profile.awardsFree')}</b>
+                              <small>{t('profile.awardsFreeHint')}</small>
+                            </Link>
+                          ) : (
+                            <>
+                              <span className="soon-mark" aria-hidden>
+                                <PlusIcon />
+                              </span>
+                              <b>{t('profile.awardsFree')}</b>
+                              <small> </small>
+                            </>
+                          )}
                         </li>
                       )
                     const secret = award.hidden || !award.id
                     return (
                       <li key={award.id ?? `secret-${index}`} className={`on tier-${award.tier}`}>
-                        <span className="soon-mark" aria-hidden>
-                          {secret ? <TrophyIcon /> : <AwardIcon family={award.family} award={award.id} />}
-                        </span>
-                        <b>{secret ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
-                        <small>{secret ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}</small>
+                        {own ? (
+                          <Link href={href.achievements} prefetch={false}>
+                            <span className="soon-mark" aria-hidden>
+                              {secret ? <TrophyIcon /> : <AwardIcon family={award.family} award={award.id} />}
+                            </span>
+                            <b>{secret ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
+                            <small>{secret ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}</small>
+                          </Link>
+                        ) : (
+                          <>
+                            <span className="soon-mark" aria-hidden>
+                              {secret ? <TrophyIcon /> : <AwardIcon family={award.family} award={award.id} />}
+                            </span>
+                            <b>{secret ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
+                            <small>{secret ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}</small>
+                          </>
+                        )}
                       </li>
                     )
                   })}
