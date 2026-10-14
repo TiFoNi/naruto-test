@@ -8845,8 +8845,9 @@ html[data-auth] .guest-note {
   width: 100%;
   aspect-ratio: 1;
   border-radius: 14px;
-  background: var(--card-2);
+  background: var(--card-solid);
   object-fit: cover;
+  object-position: 50% 28%;
 }
 
 .odd-card b {

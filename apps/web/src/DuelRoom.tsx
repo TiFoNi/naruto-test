@@ -227,11 +227,13 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
 
         </div>
 
-        <ul className="duel-hud-dots" aria-hidden>
-          {Array.from({ length: duel.best }, (_, index) => (
-            <li key={index} className={roundMark(index)} />
-          ))}
-        </ul>
+        {duel.best > 1 && (
+          <ul className="duel-hud-dots" aria-hidden>
+            {Array.from({ length: duel.best }, (_, index) => (
+              <li key={index} className={roundMark(index)} />
+            ))}
+          </ul>
+        )}
       </header>
 
         </>

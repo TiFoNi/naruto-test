@@ -9,7 +9,7 @@ import Yesterday from './Yesterday'
 import type { Entity, Game } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { ArrowIcon, CheckIcon, CloseIcon } from './icons'
-import { miniUrl } from './pics'
+import { cardUrl } from './pics'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
 
@@ -134,7 +134,7 @@ export default function OddMode({ game, active, stats, daily = false, challenge 
                 onClick={() => guess(option)}
               >
                 <span className="odd-key">{index + 1}</span>
-                <img src={miniUrl(game.id, option.id, option.image)} alt="" loading="lazy" decoding="async" draggable={false} />
+                <img src={cardUrl(game.id, option.id, option.image)} alt="" loading="lazy" decoding="async" draggable={false} />
                 <b>{name(option)}</b>
                 {(right || wrong) && <span className="odd-mark">{right ? <CheckIcon /> : <CloseIcon />}</span>}
               </button>
