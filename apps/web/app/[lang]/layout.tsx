@@ -7,6 +7,12 @@ import { alternates, homeCopy } from '@/src/seo'
 import { gameMeta } from '@/src/games/meta.server'
 import { CATEGORIES } from '@/src/games/types'
 import '@/src/styles.css'
+import '@/src/styles/profile.css'
+import '@/src/styles/achievements.css'
+import '@/src/styles/leaderboard.css'
+import '@/src/styles/friends.css'
+import '@/src/styles/duel.css'
+import '@/src/styles/challenge.css'
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
