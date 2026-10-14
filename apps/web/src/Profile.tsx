@@ -450,22 +450,29 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                       return (
                         <li key={row.game} style={{ '--world-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
                           <Link href={href.world(row.game as GameId)} prefetch={false}>
-                            <img
-                              className="world-pic"
-                              src={`/worlds/big/${row.game}.webp`}
-                              alt=""
-                              width={448}
-                              height={448}
-                              loading="lazy"
-                              decoding="async"
-                              draggable={false}
-                            />
+                            <span className="world-pic" style={{ '--fill': `${share}%` } as CSSProperties}>
+                              <img
+                                className="world-art"
+                                src={`/worlds/big/${row.game}.webp`}
+                                alt=""
+                                width={448}
+                                height={448}
+                                loading="lazy"
+                                decoding="async"
+                                draggable={false}
+                              />
+                              <span className="world-lit" style={{ backgroundImage: `url(/worlds/big/${row.game}.webp)` }} />
+                              {share > 0 && share < 100 && <i className="world-edge" />}
+                              <em className={`world-share ${share >= 100 ? 'is-full' : ''}`}>
+                                {share}%
+                              </em>
+                              <b className="world-count">
+                                {row.solved}
+                                <small>/ {row.pool}</small>
+                              </b>
+                            </span>
                             <span className="world-line">
                               <b>{game ? l(game.label) : row.game}</b>
-                              <em>{share}%</em>
-                            </span>
-                            <span className="world-bar">
-                              <i style={{ width: `${Math.max(share, 2)}%`, background: game?.accent ?? 'var(--accent)' }} />
                             </span>
                           </Link>
                         </li>
@@ -485,13 +492,11 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                               <PlusIcon />
                             </span>
                             <span className="world-line" aria-hidden />
-                            <span className="world-bar" />
                           </Link>
                         ) : (
                           <span className="world-blank" aria-hidden>
                             <span className="world-pic is-empty" />
                             <span className="world-line" />
-                            <span className="world-bar" />
                           </span>
                         )}
                       </li>
@@ -530,9 +535,13 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                               <span className="soon-mark" aria-hidden>
                                 <PlusIcon />
                               </span>
+                              <b aria-hidden />
                             </Link>
                           ) : (
-                            <span className="soon-mark" aria-hidden />
+                            <>
+                              <span className="soon-mark" aria-hidden />
+                              <b aria-hidden />
+                            </>
                           )}
                         </li>
                       )
@@ -545,7 +554,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                               {secret ? <TrophyIcon /> : <AwardIcon family={award.family} award={award.id} />}
                             </span>
                             <b>{secret ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
-                            <small>{secret ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}</small>
                           </Link>
                         ) : (
                           <>
@@ -553,7 +561,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                               {secret ? <TrophyIcon /> : <AwardIcon family={award.family} award={award.id} />}
                             </span>
                             <b>{secret ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
-                            <small>{secret ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}</small>
                           </>
                         )}
                       </li>

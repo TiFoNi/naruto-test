@@ -637,6 +637,14 @@ export function StarIcon({ className }: IconProps) {
   )
 }
 
+export function StarFullIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`} fill="currentColor" stroke="none">
+      <path d="M12 1.9 15.05 8.9 22.6 9.75 17 14.85 18.6 22.3 12 18.4 5.4 22.3 7 14.85 1.4 9.75 8.95 8.9z" />
+    </svg>
+  )
+}
+
 export function FlagIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

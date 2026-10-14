@@ -26,7 +26,6 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
   const [rows, setRows] = useState<Map<string, Row> | null>(null)
   const [order, setOrder] = useState<string[]>([])
   const [failed, setFailed] = useState(false)
-  const [flipped, setFlipped] = useState<string[]>([])
   const [drag, setDrag] = useState<Drag | null>(null)
   const [saved, setSaved] = useState<string[]>([])
   const [pending, setPending] = useState(false)
@@ -250,7 +249,6 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       held.current = true
       setAim(null)
       liftAt.current = { x: spot.x - hold.dx, y: spot.y - hold.dy }
-      setFlipped((open) => open.filter((one) => one !== row.game))
       setDrag({ game: row.game, w: box.width })
       if (!frame) frame = requestAnimationFrame(paint)
     }
@@ -284,8 +282,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       held.current = false
       setDrag(null)
       if (!moved) {
-        if (aim !== null) return fill(aim, row.game)
-        setFlipped((open) => (open.includes(row.game) ? open.filter((one) => one !== row.game) : [...open, row.game]))
+        if (aim !== null) fill(aim, row.game)
         return
       }
       setPending(plan.slice(0, SHOWCASE_MAX).join() !== saved.slice(0, SHOWCASE_MAX).join())
@@ -305,26 +302,20 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     if (!row) return null
     const meta = GAMES.find((one) => one.id === game)
     const share = percent(row.solved, row.pool)
-    const open = flipped.includes(game)
+    const full = row.solved >= row.pool
     const held = drag?.game === game
 
     return (
       <li
         key={game}
         data-game={game}
-        className={`${open ? 'is-flipped' : ''} ${held ? 'is-held' : ''} ${index < SHOWCASE_MAX ? 'is-shown' : ''}`}
+        className={`${held ? 'is-held' : ''} ${index < SHOWCASE_MAX ? 'is-shown' : ''}`}
         style={{ '--world-accent': meta?.accent ?? 'var(--accent)' } as CSSProperties}
       >
-        <button
-          type="button"
-          className="world-flip"
-          aria-pressed={open}
-          aria-label={meta ? l(meta.label) : game}
-          onPointerDown={grab(row)}
-        >
-          <span className="world-face is-front">
+        <button type="button" className="world-flip" aria-label={meta ? l(meta.label) : game} onPointerDown={grab(row)}>
+          <span className="world-pic" style={{ '--fill': `${share}%` } as CSSProperties}>
             <img
-              className="world-pic"
+              className="world-art"
               src={`/worlds/big/${game}.webp`}
               alt=""
               width={448}
@@ -333,18 +324,19 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
               decoding="async"
               draggable={false}
             />
-          </span>
-          <span className="world-face is-back">
-            <b>{row.solved}</b>
-            <em>/ {row.pool}</em>
+            <span className="world-lit" style={{ backgroundImage: `url(/worlds/big/${game}.webp)` }} />
+            {share > 0 && share < 100 && <i className="world-edge" />}
+            <em className={`world-share ${full ? 'is-full' : ''}`}>
+              {share}%
+            </em>
+            <b className="world-count">
+              {row.solved}
+              <small>/ {row.pool}</small>
+            </b>
           </span>
         </button>
         <span className="world-line">
           <b>{meta ? l(meta.label) : game}</b>
-          <em>{share}%</em>
-        </span>
-        <span className="world-bar">
-          <i style={{ width: `${Math.max(share, 2)}%`, background: meta?.accent ?? 'var(--accent)' }} />
         </span>
         {index < SHOWCASE_MAX && !id && (
           <button type="button" className="world-drop" title={t('worlds.remove')} aria-label={t('worlds.remove')} onClick={() => free(index)}>
@@ -391,9 +383,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
               <span className="sk world-pic" />
               <span className="world-line">
                 <span className="sk world-word" />
-                <span className="sk world-num" />
               </span>
-              <span className="world-bar" />
             </li>
           ))}
         </ul>
@@ -422,7 +412,6 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
                 <span className="world-line">
                   <b>{t(aim === index ? 'worlds.aim' : 'worlds.empty')}</b>
                 </span>
-                <span className="world-bar" />
               </li>
             ),
           )}
@@ -444,7 +433,11 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
             } as CSSProperties
           }
         >
-          <img className="world-pic" src={`/worlds/big/${drag.game}.webp`} alt="" draggable={false} />
+          <span className="world-pic" style={{ '--fill': `${percent(lifted.solved, lifted.pool)}%` } as CSSProperties}>
+            <img className="world-art" src={`/worlds/big/${drag.game}.webp`} alt="" draggable={false} />
+            <span className="world-lit" style={{ backgroundImage: `url(/worlds/big/${drag.game}.webp)` }} />
+            {lifted.solved > 0 && lifted.solved < lifted.pool && <i className="world-edge" />}
+          </span>
         </span>
       )}
     </div>
