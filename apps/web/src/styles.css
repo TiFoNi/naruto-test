@@ -3680,14 +3680,29 @@ button.ghost.small {
   height: 190px;
 }
 
-.sk-awards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 12px;
+.sk.award {
+  height: 100%;
+  min-height: 112px;
+  border-radius: 16px;
 }
 
-.sk.award {
-  height: 124px;
+.sk-page .awards-sort .sk.pills {
+  width: min(100%, 420px);
+  height: 44px;
+  border-radius: 15px;
+}
+
+.sk-page .awards-sort .sk.rail {
+  width: min(100%, 520px);
+  height: 40px;
+  border-radius: 12px;
+}
+
+.sk-page .awards-group .sk.group-title {
+  width: min(100%, 220px);
+  height: 24px;
+  margin-bottom: 8px;
+  border-radius: 8px;
 }
 
 .sk.nav {

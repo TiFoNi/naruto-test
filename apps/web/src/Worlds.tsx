@@ -5,12 +5,13 @@ import BackButton from './BackButton'
 import { api } from './api'
 import { GAMES } from './games'
 import { useI18n } from './i18n'
+import { MinusIcon, PlusIcon } from './icons'
 import { useHref } from './router'
 import { SHOWCASE_MAX } from './showcase'
 
 type Row = { game: string; pool: number; solved: number }
 type Summary = { games: Row[]; showcase: string[] }
-type Drag = { game: string; w: number }
+type Drag = { game: string; w: number; shelf: boolean }
 
 const percent = (part: number, whole: number) => (whole ? Math.round((part / whole) * 100) : 0)
 const THRESHOLD = 6
@@ -33,13 +34,15 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
   const lift = useRef<HTMLSpanElement | null>(null)
   const liftAt = useRef({ x: 0, y: 0 })
   const seats = useRef(new Map<string, DOMRect>())
+  const held = useRef(false)
 
   const load = useCallback(async () => {
     const { ok, data } = await api<Summary>(id ? `profile/summary?id=${id}` : 'profile/summary')
     if (!ok) return setFailed(true)
     const games = data.games ?? []
-    const showcase = (data.showcase ?? []).filter((one) => games.some((row) => row.game === one))
-    const list = [...showcase, ...games.map((row) => row.game).filter((one) => !showcase.includes(one))]
+    const showcase = (data.showcase ?? []).filter((one) => games.some((row) => row.game === one)).slice(0, SHOWCASE_MAX)
+    const seats = Array.from({ length: SHOWCASE_MAX }, (_, index) => showcase[index] ?? '')
+    const list = [...seats, ...games.map((row) => row.game).filter((one) => !showcase.includes(one))]
     setRows(new Map(games.map((row) => [row.game, row])))
     setOrder(list)
     setSaved(list)
@@ -52,7 +55,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
 
   const keep = async () => {
     setBusy(true)
-    const { ok } = await api('profile', { action: 'showcase', showcase: order.slice(0, SHOWCASE_MAX) })
+    const { ok } = await api('profile', { action: 'showcase', showcase: order.slice(0, SHOWCASE_MAX).filter(Boolean) })
     setBusy(false)
     if (!ok) return setFailed(true)
     setFailed(false)
@@ -98,6 +101,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     const node = grid.current
     if (!node) return
     const fit = () => {
+      if (held.current) return
       const tiles = node.querySelectorAll<HTMLElement>('li[data-game]')
       const last = tiles[Math.min(SHOWCASE_MAX, tiles.length) - 1]
       if (last) node.style.setProperty('--seats', `${last.offsetTop + last.offsetHeight}px`)
@@ -126,11 +130,16 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
 
   const place = (home: string[], plan: string[], game: string, slot: number, swap: boolean) => {
     const from = home.indexOf(game)
-    if (slot < 0 || from < 0 || slot >= home.length) return plan
+    if (slot < 0 || from < 0 || slot > home.length) return plan
     if (slot === from) return home
 
     if (swap) {
       const next = [...home]
+      if (slot < SHOWCASE_MAX && from >= SHOWCASE_MAX && !home[slot]) {
+        next.splice(from, 1)
+        next[slot] = game
+        return next
+      }
       next[from] = home[slot]
       next[slot] = game
       return next
@@ -149,8 +158,9 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     let moved = false
     let plan = order
     let frame = 0
-    let swap = !(event.altKey || event.metaKey)
     let marked: HTMLElement | null = null
+    let swap = !(event.altKey || event.metaKey)
+    let dumped = false
     let spot = { x: event.clientX, y: event.clientY }
 
     const mark = (tile: HTMLElement | null) => {
@@ -178,6 +188,13 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       const slot = slotAt(spot.x, spot.y)
       const tiles = grid.current?.querySelectorAll<HTMLElement>('li[data-game]')
       const seat = slot >= 0 ? (tiles?.[slot] ?? null) : null
+
+      dumped = slot === home.length
+      if (dumped) {
+        mark(seat)
+        return
+      }
+
       mark(swap && seat?.dataset.game !== row.game ? seat : null)
 
       const next = place(home, plan, row.game, slot, swap)
@@ -193,9 +210,10 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       if (!moved && Math.abs(step.clientX - start.x) <= THRESHOLD && Math.abs(step.clientY - start.y) <= THRESHOLD) return
       if (!moved) {
         moved = true
+        held.current = true
         liftAt.current = { x: spot.x - hold.dx, y: spot.y - hold.dy }
         setFlipped((open) => open.filter((one) => one !== row.game))
-        setDrag({ game: row.game, w: box.width })
+        setDrag({ game: row.game, w: box.width, shelf: home.indexOf(row.game) < SHOWCASE_MAX })
       }
       if (!frame) frame = requestAnimationFrame(paint)
     }
@@ -206,10 +224,21 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       window.removeEventListener('pointercancel', drop)
       if (frame) cancelAnimationFrame(frame)
       mark(null)
+      held.current = false
       setDrag(null)
       if (!moved) {
         setFlipped((open) => (open.includes(row.game) ? open.filter((one) => one !== row.game) : [...open, row.game]))
         return
+      }
+      if (dumped) {
+        const next = [...home]
+        const at = next.indexOf(row.game)
+        if (at >= 0 && at < SHOWCASE_MAX) {
+          next[at] = ''
+          next.push(row.game)
+          plan = next
+          setOrder(next)
+        }
       }
       setPending(plan.slice(0, SHOWCASE_MAX).join() !== saved.slice(0, SHOWCASE_MAX).join())
     }
@@ -270,6 +299,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
   }
 
   const lifted = drag ? rows?.get(drag.game) : undefined
+  const dumping = !!drag?.shelf && !id
   const dirty = pending
 
   return (
@@ -308,7 +338,28 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
         </ul>
       ) : (
         <ul className={`world-shelf is-all is-board ${drag ? 'is-live' : ''} ${id ? 'is-plain' : ''}`} ref={grid}>
-          {order.map(Tile)}
+          {order.map((game, index) =>
+            game ? (
+              Tile(game, index)
+            ) : (
+              <li key={`seat-${index}`} data-game={`seat-${index}`} className="is-seat">
+                <span className="world-pic is-empty">
+                  <PlusIcon />
+                </span>
+                <span className="world-line" aria-hidden />
+                <span className="world-bar" />
+              </li>
+            ),
+          )}
+          {dumping && (
+            <li key="dump" data-game="dump" className="is-seat is-dump">
+              <span className="world-pic is-empty">
+                <MinusIcon />
+              </span>
+              <span className="world-line" aria-hidden />
+              <span className="world-bar" />
+            </li>
+          )}
         </ul>
       )}
 

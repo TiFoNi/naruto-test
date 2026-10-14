@@ -153,7 +153,7 @@ function BoardGhost() {
   )
 }
 
-function AwardsGhost() {
+export function AwardsGhost() {
   const { t } = useI18n()
   const href = useHref()
 
@@ -178,12 +178,21 @@ function AwardsGhost() {
           ))}
         </div>
       </section>
-      <span className="sk tabs" />
-      <div className="sk-awards">
-        {Array.from({ length: 6 }, (_, index) => (
-          <span key={index} className="sk award" />
-        ))}
+      <div className="awards-sort">
+        <span className="sk pills" />
+        <span className="sk rail" />
       </div>
+
+      {Array.from({ length: 2 }, (_, group) => (
+        <section key={group} className="awards-group">
+          <span className="sk group-title" />
+          <div className="awards-grid">
+            {Array.from({ length: group ? 3 : 6 }, (_, index) => (
+              <span key={index} className="sk award" />
+            ))}
+          </div>
+        </section>
+      ))}
     </div>
   )
 }

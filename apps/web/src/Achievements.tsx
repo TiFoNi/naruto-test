@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { api } from './api'
 import BackButton from './BackButton'
+import { AwardsGhost } from './PageSkeleton'
 import { useI18n, type UiKey } from './i18n'
 import { CheckIcon, CloseIcon, GiftIcon, LockIcon, PinIcon } from './icons'
 import Rail from './Rail'
@@ -408,6 +409,8 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
     }
     setClaiming(null)
   }
+
+  if (!board && !error) return <AwardsGhost />
 
   return (
     <div className="awards-page">
