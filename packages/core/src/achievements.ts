@@ -547,10 +547,7 @@ export async function claimAward(userId: ObjectId, id: string, now = new Date())
     )
     if (!marked.modifiedCount) return null
     const at = new Date()
-    await (await users()).updateOne(
-      { _id: userId },
-      { $inc: { xp: achievement.xp }, $set: { [`awards.${id}`]: at, [`claimed.${id}`]: at } },
-    )
+    await (await users()).updateOne({ _id: userId }, { $set: { [`awards.${id}`]: at, [`claimed.${id}`]: at } })
     await addSeasonXp(userId, achievement.xp, now)
     return achievement.xp
   }

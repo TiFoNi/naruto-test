@@ -1264,7 +1264,11 @@ const ui = {
   'achTier.legend': { ru: 'Легендарное', uk: 'Легендарне', en: 'Legendary' },
   'achTier.mythic': { ru: 'Мифическое', uk: 'Міфічне', en: 'Mythic' },
   'achTier.secret': { ru: 'Секретное', uk: 'Секретне', en: 'Secret' },
-  'ach.kindSeason': { ru: 'сезонное · опыт идёт в рейтинг', uk: 'сезонне · досвід іде в рейтинг', en: 'seasonal · XP counts to the rating' },
+  'ach.kindSeason': {
+    ru: 'сезонное · опыт только в рейтинг сезона',
+    uk: 'сезонне · досвід лише в рейтинг сезону',
+    en: 'seasonal · XP goes to the season rating only',
+  },
   'ach.kindLife': { ru: 'постоянное · опыт только в уровень', uk: 'постійне · досвід лише в рівень', en: 'permanent · XP goes to your level only' },
   'ach.showcase': { ru: 'Витрина профиля', uk: 'Вітрина профілю', en: 'Profile showcase' },
   'ach.showcaseHint': {

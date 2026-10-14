@@ -71,8 +71,9 @@ async function board(doc: UserDoc) {
     ...SEASON.map((achievement) => shape(achievement, season.awards, season.claimed, running)),
   ]
 
-  const total = list.reduce((sum, a) => sum + (a.claimed ? a.xp : 0), 0)
-  const left = list.reduce((sum, a) => sum + (a.claimed ? 0 : a.xp), 0)
+  const lifetime = list.filter((a) => a.kind !== 'season')
+  const total = lifetime.reduce((sum, a) => sum + (a.claimed ? a.xp : 0), 0)
+  const left = lifetime.reduce((sum, a) => sum + (a.claimed ? 0 : a.xp), 0)
   const ready = list.filter((a) => a.done && !a.claimed)
   const rarest = list.filter((a) => a.done).sort((a, b) => a.rarity - b.rarity)[0] ?? null
 
