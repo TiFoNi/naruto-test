@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Avatar from './Avatar'
 import Background from './Background'
+import AwardFilters from './awardFilters'
 import DuelDock from './DuelDock'
 import DuelSkeleton from './DuelSkeleton'
 import PageSkeleton from './PageSkeleton'
@@ -600,6 +601,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   return (
     <div className="app">
       <Background />
+      <AwardFilters />
       {!bare && (
         <header ref={bar} className={`topbar ${scrolled ? 'is-solid' : ''}`}>
           <div className="topbar-inner">

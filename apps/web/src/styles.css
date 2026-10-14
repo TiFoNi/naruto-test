@@ -7396,11 +7396,18 @@ html[data-auth] .guest-note {
   }
 }
 
+.award-filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
 .icon.award-art {
   width: 2.45em;
   height: 2.45em;
   object-fit: contain;
-  filter: grayscale(1) contrast(0.8) brightness(1.02);
+  filter: url(#tint-silver);
 }
 
 .soon-mark .icon.award-art {
@@ -7423,27 +7430,27 @@ html[data-auth] .guest-note {
 }
 
 .tier-bronze .award-art {
-  filter: grayscale(1) contrast(0.8) brightness(0.74) sepia(1) saturate(2.2) hue-rotate(-4deg);
+  filter: url(#tint-bronze);
 }
 
 .tier-silver .award-art {
-  filter: grayscale(1) contrast(0.8) brightness(1.01) sepia(1) saturate(0.4) hue-rotate(178deg);
+  filter: url(#tint-silver);
 }
 
 .tier-gold .award-art {
-  filter: grayscale(1) contrast(0.8) brightness(0.88) sepia(1) saturate(2.4) hue-rotate(4deg);
+  filter: url(#tint-gold);
 }
 
 .tier-legend .award-art {
-  filter: grayscale(1) contrast(0.8) brightness(0.75) sepia(1) saturate(1.2) hue-rotate(232deg);
+  filter: url(#tint-legend);
 }
 
 .tier-mythic .award-art {
-  filter: grayscale(1) contrast(0.9) brightness(0.52) sepia(1) saturate(2.4) hue-rotate(276deg);
+  filter: url(#tint-mythic);
 }
 
 .tier-secret .award-art {
-  filter: grayscale(1) contrast(0.9) brightness(0.56) sepia(1) saturate(2.3) hue-rotate(102deg);
+  filter: url(#tint-secret);
 }
 
 .tier-bronze {
