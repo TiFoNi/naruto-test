@@ -7396,6 +7396,56 @@ html[data-auth] .guest-note {
   }
 }
 
+.icon.award-art {
+  width: 2.45em;
+  height: 2.45em;
+  object-fit: contain;
+  filter: grayscale(1) contrast(0.8) brightness(1.02);
+}
+
+.soon-mark .icon.award-art {
+  width: 80%;
+  height: 80%;
+}
+
+.award-mark:has(.award-art),
+.award-modal-mark:has(.award-art),
+.awards-chip:has(.award-art),
+.soon-mark:has(.award-art),
+.award.done .award-mark:has(.award-art),
+.award.is-ready .award-mark:has(.award-art),
+.award.tier-mythic .award-mark:has(.award-art),
+.soon-badges li.on .soon-mark:has(.award-art),
+.soon-badges li.on > a:hover .soon-mark:has(.award-art) {
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.tier-bronze .award-art {
+  filter: grayscale(1) contrast(0.8) brightness(0.74) sepia(1) saturate(2.2) hue-rotate(-4deg);
+}
+
+.tier-silver .award-art {
+  filter: grayscale(1) contrast(0.8) brightness(1.01) sepia(1) saturate(0.4) hue-rotate(178deg);
+}
+
+.tier-gold .award-art {
+  filter: grayscale(1) contrast(0.8) brightness(0.88) sepia(1) saturate(2.4) hue-rotate(4deg);
+}
+
+.tier-legend .award-art {
+  filter: grayscale(1) contrast(0.8) brightness(0.75) sepia(1) saturate(1.2) hue-rotate(232deg);
+}
+
+.tier-mythic .award-art {
+  filter: grayscale(1) contrast(0.9) brightness(0.52) sepia(1) saturate(2.4) hue-rotate(276deg);
+}
+
+.tier-secret .award-art {
+  filter: grayscale(1) contrast(0.9) brightness(0.5) sepia(1) saturate(2.2) hue-rotate(102deg);
+}
+
 .tier-bronze {
   --tier: #d98a4e;
 }
@@ -7417,7 +7467,7 @@ html[data-auth] .guest-note {
 }
 
 .tier-secret {
-  --tier: #4ad6c4;
+  --tier: #3bb682;
 }
 
 .award.is-season,

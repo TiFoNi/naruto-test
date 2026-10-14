@@ -222,7 +222,7 @@ function AwardModal({
         <span className="award-modal-mark" aria-hidden>
           {waiting ? <GiftIcon /> : hidden ? <LockIcon /> : <AwardIcon family={award.family} award={award.id} />}
         </span>
-        <h2>{hidden ? '???' : t(`ach.${award.id}` as UiKey)}</h2>
+        <h2>{hidden ? '???' : steps.length > 1 ? t(`achFam.${award.family}` as UiKey) : t(`ach.${award.id}` as UiKey)}</h2>
         <p className="award-modal-hint">{hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}</p>
         {award.kind !== 'season' && (
           <div className="award-modal-tags">

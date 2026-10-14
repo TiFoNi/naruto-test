@@ -87,7 +87,30 @@ const ICONS: Record<string, ComponentType<{ className?: string }>> = {
   seasonMarathon30: InfinityIcon,
 }
 
+const ART: Record<string, string> = {
+  firstTry: 'firstTry',
+  sharpEye: 'sharpEye',
+  owlMarathon: 'owlMarathon',
+  duelPlayed: 'duelPlayed',
+  blitz: 'blitz',
+  marathon: 'marathon',
+  allRounder: 'allRounder',
+  gamer: 'gamer',
+  trophies: 'trophies',
+  lucky: 'lucky',
+  perfectWeek: 'perfectWeek',
+  modePhrase: 'modePhrase',
+  worldShare: 'worldShare',
+  comeback: 'comeback',
+  gaveUpNever: 'gaveUpNever',
+  earlyBird: 'earlyBird',
+  worlds: 'worlds',
+  streak: 'streak',
+}
+
 export default function AwardIcon({ award, family }: { award?: string | null; family?: string | null }) {
+  const art = ART[family ?? ''] ?? ART[award ?? '']
+  if (art) return <img className="icon award-art" src={`/awards/${art}.webp`} alt="" width={512} height={512} loading="lazy" decoding="async" draggable={false} />
   const Icon = ICONS[family ?? ''] ?? ICONS[award ?? ''] ?? TrophyIcon
   return <Icon />
 }
