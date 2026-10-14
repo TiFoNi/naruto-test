@@ -57,6 +57,7 @@ async function board(doc: UserDoc) {
       xp: achievement.xp,
       secret: achievement.secret ?? false,
       awarded: achievement.awarded ?? false,
+      unit: achievement.unit ?? null,
       done,
       claimed: !!taken[achievement.id],
       at: holder[achievement.id] ?? null,
@@ -87,7 +88,7 @@ async function board(doc: UserDoc) {
     rank: place.rank,
     season: { id: seasonAt().id, number: seasonAt().number, endsAt: seasonAt().to.getTime() },
     gained: [...gained, ...season.gained],
-    pinned: (doc.pinned ?? []).filter((award) => claimed[award] || season.claimed[award]).slice(0, PINNED_MAX),
+    pinned: (doc.pinned ?? []).filter((award) => claimed[award]).slice(0, PINNED_MAX),
   }
 }
 
@@ -113,10 +114,8 @@ export const POST = handle(async (request) => {
 
   if (!Array.isArray(body.pinned)) return fail(400, 'bad_request')
 
-  const running = await seasonFacts(found.doc._id!)
-  const season = await syncSeasonAwards(found.doc._id!, running, { awards: found.doc.awards })
-  const owned = { ...(found.doc.claimed ?? {}), ...season.claimed }
-  const known = new Set(ACHIEVEMENTS.map((a) => a.id))
+  const owned = found.doc.claimed ?? {}
+  const known = new Set(LIFE.map((a) => a.id))
   const pinned = [...new Set(body.pinned.filter((id): id is string => typeof id === 'string'))]
     .filter((id) => known.has(id) && owned[id])
     .slice(0, PINNED_MAX)

@@ -18,6 +18,7 @@ export type Achievement = {
   xp: number
   secret?: boolean
   awarded?: boolean
+  unit?: 'percent'
   value?: (facts: Facts) => number
 }
 
@@ -51,6 +52,11 @@ const trophy = (id: string, tier: Tier, target: number): Achievement => ({
   target,
   xp: XP[tier],
   awarded: true,
+})
+
+const percent = (id: string, category: Category, tier: Tier, target: number, value: (facts: Facts) => number): Achievement => ({
+  ...life(id, category, tier, target, value),
+  unit: 'percent',
 })
 
 const modePlayed = (name: string) => (facts: Facts) => facts.modes[name]?.played ?? 0
@@ -94,9 +100,9 @@ export const LIFE: Achievement[] = [
   life('multiverse', 'worlds', 'gold', GAME_IDS.length, (f) => f.worlds),
   life('local50', 'worlds', 'bronze', 50, (f) => f.bestWorldDone),
   life('local200', 'worlds', 'silver', 200, (f) => f.bestWorldDone),
-  life('fan', 'worlds', 'gold', 25, (f) => f.bestWorldShare),
-  life('fan50', 'worlds', 'legend', 50, (f) => f.bestWorldShare),
-  life('loremaster', 'worlds', 'mythic', 100, (f) => f.bestWorldShare),
+  percent('fan', 'worlds', 'gold', 25, (f) => f.bestWorldShare),
+  percent('fan50', 'worlds', 'legend', 50, (f) => f.bestWorldShare),
+  percent('loremaster', 'worlds', 'mythic', 100, (f) => f.bestWorldShare),
   life('gamer', 'worlds', 'silver', 100, (f) => f.gamesSolved),
 
   life('firstBlood', 'duels', 'bronze', 1, (f) => f.duelWins),

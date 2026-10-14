@@ -14,7 +14,10 @@ import { seasonAt } from '../season'
 const RECENT = 8
 
 const TIERS = new Map(ACHIEVEMENTS.map((achievement) => [achievement.id, achievement.tier]))
-const LIFETIME = new Set(LIFE.map((achievement) => achievement.id))
+const LIFE_FAMILIES = LIFE.reduce((map, achievement) => {
+  const family = familyOf(achievement.id)
+  return map.set(family, [...(map.get(family) ?? []), achievement.id])
+}, new Map<string, string[]>())
 const SECRETS = new Set(ACHIEVEMENTS.filter((achievement) => achievement.secret).map((achievement) => achievement.id))
 
 type Counted = { _id: string; played: number; won: number; guesses: number }
@@ -135,7 +138,8 @@ async function place(userId: ObjectId) {
 }
 
 function earnedAwards(doc: UserDoc) {
-  return Object.keys(doc.claimed ?? {}).filter((id) => LIFETIME.has(id)).length
+  const claimed = doc.claimed ?? {}
+  return [...LIFE_FAMILIES.values()].filter((ids) => ids.every((id) => claimed[id])).length
 }
 
 async function gamePlaces(doc: UserDoc) {
@@ -277,7 +281,7 @@ export const GET = handle(async (request) => {
       }),
     showcase: doc.showcase ?? [],
     awards: earnedAwards(doc),
-    awardsTotal: LIFE.length,
+    awardsTotal: LIFE_FAMILIES.size,
     level: { xp, level, into: xp % LEVEL_XP, need: LEVEL_XP, rank: rankOf(level).id, next: nextRank(level) },
     totals: {
       solved: totals.won,

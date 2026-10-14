@@ -3606,6 +3606,11 @@ button.ghost.small {
   height: 286px;
 }
 
+.sk.hero-awards {
+  height: 190px;
+  border-radius: var(--radius);
+}
+
 .sk.showcase {
   height: 190px;
 }

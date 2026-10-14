@@ -161,13 +161,7 @@ function AwardsGhost() {
   return (
     <div className="awards-page sk-page">
       <BackButton href={href.profile}>{t('nav.profile')}</BackButton>
-      <Head />
-      <div className="awards-top">
-        <span className="sk metric" />
-        <span className="sk metric" />
-        <span className="sk metric" />
-      </div>
-      <span className="sk showcase" />
+      <span className="sk hero-awards" />
       <span className="sk tabs" />
       <div className="sk-awards">
         {Array.from({ length: 6 }, (_, index) => (
