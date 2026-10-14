@@ -1,118 +1,334 @@
 'use client'
 
-import Link from 'next/link'
-import { useCallback, useEffect, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointer } from 'react'
 import BackButton from './BackButton'
 import { api } from './api'
 import { GAMES } from './games'
-import type { GameId } from './games/types'
 import { useI18n } from './i18n'
-import { CheckIcon } from './icons'
 import { useHref } from './router'
 import { SHOWCASE_MAX } from './showcase'
 
 type Row = { game: string; pool: number; solved: number }
 type Summary = { games: Row[]; showcase: string[] }
+type Drag = { game: string; w: number }
 
 const percent = (part: number, whole: number) => (whole ? Math.round((part / whole) * 100) : 0)
+const THRESHOLD = 6
+const SETTLE = 240
+const EDGE_STEP = 16
 
 export default function Worlds({ id, nickname }: { id?: string; nickname?: string } = {}) {
   const { t, l } = useI18n()
   const href = useHref()
-  const [rows, setRows] = useState<Row[] | null>(null)
-  const [picked, setPicked] = useState<string[]>([])
+  const [rows, setRows] = useState<Map<string, Row> | null>(null)
+  const [order, setOrder] = useState<string[]>([])
   const [failed, setFailed] = useState(false)
+  const [flipped, setFlipped] = useState<string[]>([])
+  const [drag, setDrag] = useState<Drag | null>(null)
+  const [saved, setSaved] = useState<string[]>([])
+  const [pending, setPending] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const page = useRef<HTMLDivElement>(null)
+  const grid = useRef<HTMLUListElement>(null)
+  const lift = useRef<HTMLSpanElement | null>(null)
+  const liftAt = useRef({ x: 0, y: 0 })
+  const seats = useRef(new Map<string, DOMRect>())
 
   const load = useCallback(async () => {
     const { ok, data } = await api<Summary>(id ? `profile/summary?id=${id}` : 'profile/summary')
     if (!ok) return setFailed(true)
-    setRows(data.games ?? [])
-    setPicked(data.showcase ?? [])
+    const games = data.games ?? []
+    const showcase = (data.showcase ?? []).filter((one) => games.some((row) => row.game === one))
+    const list = [...showcase, ...games.map((row) => row.game).filter((one) => !showcase.includes(one))]
+    setRows(new Map(games.map((row) => [row.game, row])))
+    setOrder(list)
+    setSaved(list)
+    setPending(false)
   }, [id])
 
   useEffect(() => {
     void load()
   }, [load])
 
-  const toggle = async (id: string) => {
-    const next = picked.includes(id) ? picked.filter((one) => one !== id) : picked.length < SHOWCASE_MAX ? [...picked, id] : picked
-    if (next === picked) return
-    const kept = picked
-    setPicked(next)
-    const { ok } = await api('profile', { action: 'showcase', showcase: next })
-    if (!ok) {
-      setPicked(kept)
-      setFailed(true)
-    }
+  const keep = async () => {
+    setBusy(true)
+    const { ok } = await api('profile', { action: 'showcase', showcase: order.slice(0, SHOWCASE_MAX) })
+    setBusy(false)
+    if (!ok) return setFailed(true)
+    setFailed(false)
+    setSaved(order)
+    setPending(false)
   }
 
+  const undo = () => {
+    remember()
+    setOrder(saved)
+    setPending(false)
+  }
+
+  const remember = () => {
+    const node = grid.current
+    if (!node) return
+    seats.current = new Map(
+      [...node.querySelectorAll<HTMLElement>('li[data-game]')].map((tile) => [tile.dataset.game!, tile.getBoundingClientRect()]),
+    )
+  }
+
+  useLayoutEffect(() => {
+    const node = grid.current
+    if (!node || !seats.current.size) return
+    for (const tile of node.querySelectorAll<HTMLElement>('li[data-game]')) {
+      const was = seats.current.get(tile.dataset.game!)
+      if (!was) continue
+      const now = tile.getBoundingClientRect()
+      const dx = was.left - now.left
+      const dy = was.top - now.top
+      if (!dx && !dy) continue
+      tile.style.transition = 'none'
+      tile.style.transform = `translate(${dx}px, ${dy}px)`
+      requestAnimationFrame(() => {
+        tile.style.transition = `transform ${SETTLE}ms cubic-bezier(0.2, 0.85, 0.3, 1)`
+        tile.style.transform = ''
+      })
+    }
+    seats.current = new Map()
+  })
+
+  useEffect(() => {
+    const node = grid.current
+    if (!node) return
+    const fit = () => {
+      const tiles = node.querySelectorAll<HTMLElement>('li[data-game]')
+      const last = tiles[Math.min(SHOWCASE_MAX, tiles.length) - 1]
+      if (last) node.style.setProperty('--seats', `${last.offsetTop + last.offsetHeight}px`)
+    }
+    fit()
+    if (typeof ResizeObserver === 'undefined') return
+    const watcher = new ResizeObserver(fit)
+    watcher.observe(node)
+    return () => watcher.disconnect()
+  }, [rows, order.length])
+
+  const slotAt = (x: number, y: number) => {
+    const node = grid.current
+    if (!node) return -1
+    const box = node.getBoundingClientRect()
+    const px = x - box.left
+    const py = y - box.top
+    return [...node.querySelectorAll<HTMLElement>('li[data-game]')].findIndex(
+      (tile) =>
+        px >= tile.offsetLeft &&
+        px <= tile.offsetLeft + tile.offsetWidth &&
+        py >= tile.offsetTop &&
+        py <= tile.offsetTop + tile.offsetHeight,
+    )
+  }
+
+  const place = (home: string[], plan: string[], game: string, slot: number, swap: boolean) => {
+    const from = home.indexOf(game)
+    if (slot < 0 || from < 0 || slot >= home.length) return plan
+    if (slot === from) return home
+
+    if (swap) {
+      const next = [...home]
+      next[from] = home[slot]
+      next[slot] = game
+      return next
+    }
+
+    const base = home.filter((one) => one !== game)
+    return [...base.slice(0, slot), game, ...base.slice(slot)]
+  }
+
+  const grab = (row: Row) => (event: ReactPointer<HTMLButtonElement>) => {
+    if (id || event.button !== 0) return
+    const box = event.currentTarget.getBoundingClientRect()
+    const start = { x: event.clientX, y: event.clientY }
+    const hold = { dx: event.clientX - box.left, dy: event.clientY - box.top }
+    const home = order
+    let moved = false
+    let plan = order
+    let frame = 0
+    let swap = !(event.altKey || event.metaKey)
+    let marked: HTMLElement | null = null
+    let spot = { x: event.clientX, y: event.clientY }
+
+    const mark = (tile: HTMLElement | null) => {
+      if (marked === tile) return
+      marked?.classList.remove('is-swap')
+      tile?.classList.add('is-swap')
+      marked = tile
+    }
+
+    const paint = () => {
+      frame = 0
+      liftAt.current = { x: spot.x - hold.dx, y: spot.y - hold.dy }
+      const node = lift.current
+      if (node) node.style.transform = `translate3d(${liftAt.current.x}px, ${liftAt.current.y}px, 0)`
+
+      const edge = 110
+      const top = spot.y - edge
+      const low = spot.y - (window.innerHeight - edge)
+      const push = top < 0 ? Math.max(-EDGE_STEP, top / 4) : low > 0 ? Math.min(EDGE_STEP, low / 4) : 0
+      if (push) {
+        window.scrollBy(0, push)
+        frame = requestAnimationFrame(paint)
+      }
+
+      const slot = slotAt(spot.x, spot.y)
+      const tiles = grid.current?.querySelectorAll<HTMLElement>('li[data-game]')
+      const seat = slot >= 0 ? (tiles?.[slot] ?? null) : null
+      mark(swap && seat?.dataset.game !== row.game ? seat : null)
+
+      const next = place(home, plan, row.game, slot, swap)
+      if (next.join() === plan.join()) return
+      plan = next
+      remember()
+      setOrder(next)
+    }
+
+    const move = (step: PointerEvent) => {
+      spot = { x: step.clientX, y: step.clientY }
+      swap = !(step.altKey || step.metaKey)
+      if (!moved && Math.abs(step.clientX - start.x) <= THRESHOLD && Math.abs(step.clientY - start.y) <= THRESHOLD) return
+      if (!moved) {
+        moved = true
+        liftAt.current = { x: spot.x - hold.dx, y: spot.y - hold.dy }
+        setFlipped((open) => open.filter((one) => one !== row.game))
+        setDrag({ game: row.game, w: box.width })
+      }
+      if (!frame) frame = requestAnimationFrame(paint)
+    }
+
+    const drop = () => {
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', drop)
+      window.removeEventListener('pointercancel', drop)
+      if (frame) cancelAnimationFrame(frame)
+      mark(null)
+      setDrag(null)
+      if (!moved) {
+        setFlipped((open) => (open.includes(row.game) ? open.filter((one) => one !== row.game) : [...open, row.game]))
+        return
+      }
+      setPending(plan.slice(0, SHOWCASE_MAX).join() !== saved.slice(0, SHOWCASE_MAX).join())
+    }
+
+    window.addEventListener('pointermove', move)
+    window.addEventListener('pointerup', drop)
+    window.addEventListener('pointercancel', drop)
+  }
+
+  const Tile = (game: string, index: number) => {
+    const row = rows?.get(game)
+    if (!row) return null
+    const meta = GAMES.find((one) => one.id === game)
+    const share = percent(row.solved, row.pool)
+    const open = flipped.includes(game)
+    const held = drag?.game === game
+
+    return (
+      <li
+        key={game}
+        data-game={game}
+        className={`${open ? 'is-flipped' : ''} ${held ? 'is-held' : ''} ${index < SHOWCASE_MAX ? 'is-shown' : ''}`}
+        style={{ '--world-accent': meta?.accent ?? 'var(--accent)' } as CSSProperties}
+      >
+        <button
+          type="button"
+          className="world-flip"
+          aria-pressed={open}
+          aria-label={meta ? l(meta.label) : game}
+          onPointerDown={grab(row)}
+        >
+          <span className="world-face is-front">
+            <img
+              className="world-pic"
+              src={`/worlds/big/${game}.webp`}
+              alt=""
+              width={448}
+              height={448}
+              loading="lazy"
+              decoding="async"
+              draggable={false}
+            />
+          </span>
+          <span className="world-face is-back">
+            <b>{row.solved}</b>
+            <em>/ {row.pool}</em>
+          </span>
+        </button>
+        <span className="world-line">
+          <b>{meta ? l(meta.label) : game}</b>
+          <em>{share}%</em>
+        </span>
+        <span className="world-bar">
+          <i style={{ width: `${Math.max(share, 2)}%`, background: meta?.accent ?? 'var(--accent)' }} />
+        </span>
+      </li>
+    )
+  }
+
+  const lifted = drag ? rows?.get(drag.game) : undefined
+  const dirty = pending
+
   return (
-    <div className="worlds-page">
+    <div className="worlds-page" ref={page}>
       <div className="worlds-top">
         <header className="lb-head">
           <BackButton href={id ? href.player(id) : href.profile}>{t(id ? 'profile.back' : 'nav.profile')}</BackButton>
           <h1>{id && nickname ? nickname : t('worlds.title')}</h1>
           <p className="muted">{id ? t('worlds.leadGuest') : t('worlds.lead', { count: SHOWCASE_MAX })}</p>
         </header>
-        {!id && <span className="worlds-counter">{t('worlds.picked', { count: picked.length, max: SHOWCASE_MAX })}</span>}
+        {!id && (
+          <div className="worlds-acts">
+            <span className={`worlds-save ${dirty ? '' : 'is-off'}`} aria-hidden={!dirty}>
+              <button type="button" className="ghost" disabled={busy || !dirty} tabIndex={dirty ? 0 : -1} onClick={undo}>
+                {t('worlds.undo')}
+              </button>
+              <button type="button" className="primary" disabled={busy || !dirty} tabIndex={dirty ? 0 : -1} onClick={() => void keep()}>
+                {t('worlds.keep')}
+              </button>
+            </span>
+          </div>
+        )}
       </div>
 
       {failed && <p className="notice worlds-failed">{t('err.server')}</p>}
 
       {!rows && failed ? (
         <div className="card center muted">{t('err.server')}</div>
-      ) : (
+      ) : !rows ? (
         <ul className="world-shelf is-all">
-          {(rows ?? Array.from({ length: 12 }, () => null)).map((row, index) => {
-            if (!row)
-              return (
-                <li key={`ghost-${index}`}>
-                  <span className="sk world-pic" />
-                </li>
-              )
-            const game = GAMES.find((one) => one.id === row.game)
-            const share = percent(row.solved, row.pool)
-            const on = picked.includes(row.game)
-            const full = !on && picked.length >= SHOWCASE_MAX
-
-            return (
-              <li key={row.game} className={!id && on ? 'is-picked' : ''} style={{ '--world-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
-                <Link href={href.world(row.game as GameId)} prefetch={false}>
-                  <img
-                    className="world-pic"
-                    src={`/worlds/big/${row.game}.webp`}
-                    alt=""
-                    width={448}
-                    height={448}
-                    loading="lazy"
-                    decoding="async"
-                    draggable={false}
-                  />
-                  <span className="world-line">
-                    <b>{game ? l(game.label) : row.game}</b>
-                    <em>{share}%</em>
-                  </span>
-                  <span className="world-bar">
-                    <i style={{ width: `${Math.max(share, 2)}%`, background: game?.accent ?? 'var(--accent)' }} />
-                  </span>
-                </Link>
-                {!id && (
-                  <button
-                    type="button"
-                    className={`world-pin ${on ? 'on' : ''}`}
-                    disabled={full}
-                    title={t(on ? 'worlds.unpin' : full ? 'worlds.full' : 'worlds.pin', { max: SHOWCASE_MAX })}
-                    aria-label={t(on ? 'worlds.unpin' : 'worlds.pin')}
-                    aria-pressed={on}
-                    onClick={() => void toggle(row.game)}
-                  >
-                    <CheckIcon />
-                  </button>
-                )}
-              </li>
-            )
-          })}
+          {Array.from({ length: 16 }, (_, index) => (
+            <li key={`ghost-${index}`}>
+              <span className="sk world-pic" />
+            </li>
+          ))}
         </ul>
+      ) : (
+        <ul className={`world-shelf is-all is-board ${drag ? 'is-live' : ''} ${id ? 'is-plain' : ''}`} ref={grid}>
+          {order.map(Tile)}
+        </ul>
+      )}
+
+      {!!lifted && !!drag && (
+        <span
+          className="world-lift"
+          aria-hidden
+          ref={(node) => {
+            lift.current = node
+            if (node) node.style.transform = `translate3d(${liftAt.current.x}px, ${liftAt.current.y}px, 0)`
+          }}
+          style={
+            {
+              width: drag.w,
+              '--world-accent': GAMES.find((one) => one.id === drag.game)?.accent ?? 'var(--accent)',
+            } as CSSProperties
+          }
+        >
+          <img className="world-pic" src={`/worlds/big/${drag.game}.webp`} alt="" draggable={false} />
+        </span>
       )}
     </div>
   )

@@ -16,7 +16,7 @@ export const shots: Game<Shot> = {
     'Чотири кадри від найскладнішого до найпростішого. Чим раніше назвеш тайтл, тим більше очок.',
     'Four frames, from the hardest to the easiest. Name the title early and score more.',
   ),
-  accent: '#ff6f91',
+  accent: '#f05a2a',
   modes: ['shot'],
   featured: ['Demon Slayer: Kimetsu no Yaiba', 'Attack on Titan', 'Naruto'],
   unit: 'manga',
