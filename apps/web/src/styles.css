@@ -3392,6 +3392,14 @@ button.ghost.small {
   border-radius: 38px;
 }
 
+@media (max-width: 560px) {
+  .sk-profile .profile-hero-id .sk.ava {
+    width: 92px;
+    height: 92px;
+    border-radius: 26px;
+  }
+}
+
 .sk-profile .profile-hero-name .sk.nick {
   width: min(100%, 190px);
   height: 34px;
