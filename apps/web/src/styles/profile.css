@@ -960,6 +960,7 @@
 .soon-badges li b {
   overflow: hidden;
   min-height: 18px;
+  text-align: center;
   color: var(--text);
   font-size: 14.5px;
   font-weight: 800;
