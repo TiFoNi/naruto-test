@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import Avatar from './Avatar'
 import Background from './Background'
 import AwardFilters from './awardFilters'
+import AwardIcon from './awardIcons'
 import DuelDock from './DuelDock'
 import DuelSkeleton from './DuelSkeleton'
 import PageSkeleton from './PageSkeleton'
@@ -31,7 +32,6 @@ import {
   PodiumIcon,
   ShopIcon,
   SwordsIcon,
-  TrophyIcon,
   UserIcon,
   UsersIcon,
 } from './icons'
@@ -465,7 +465,7 @@ function Bell() {
                   <small>{t('ach.fresh')}</small>
                   <span className="bell-main">
                     <span className="bell-mark" aria-hidden>
-                      <TrophyIcon />
+                      <AwardIcon family={award.family} award={award.id} />
                     </span>
                     <span className="bell-body">
                       <b>{t(`ach.${award.id}` as UiKey)}</b>

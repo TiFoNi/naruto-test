@@ -79,6 +79,7 @@ function DailyCard({ games }: { games: GameMeta[] }) {
   const href = useHref()
   const { stats } = useAuth()
   const [shown, setShown] = useState(0)
+  const [turns, setTurns] = useState(0)
   const swipe = useRef<{ x: number; y: number } | null>(null)
 
   const today = kyivToday()
@@ -127,7 +128,10 @@ function DailyCard({ games }: { games: GameMeta[] }) {
 
   useEffect(() => {
     if (count < 2) return
-    const timer = window.setInterval(() => setShown((one) => (one + 1) % count), SPIN)
+    const timer = window.setInterval(() => {
+      setShown((one) => (one + 1) % count)
+      setTurns((one) => one + 1)
+    }, SPIN)
     return () => window.clearInterval(timer)
   }, [count, shown])
 
@@ -144,6 +148,7 @@ function DailyCard({ games }: { games: GameMeta[] }) {
     const dx = event.clientX - from.x
     if (Math.abs(dx) < 45 || Math.abs(event.clientY - from.y) > Math.abs(dx)) return
     setShown((one) => (one + (dx < 0 ? 1 : count - 1)) % count)
+    setTurns((one) => one + 1)
   }
 
   return (
@@ -154,9 +159,9 @@ function DailyCard({ games }: { games: GameMeta[] }) {
       onPointerUp={end}
       onPointerCancel={() => (swipe.current = null)}
     >
-      <img key={slide.art} className="hero-daily-art" src={slide.art} alt="" aria-hidden width={448} height={448} />
+      <img key={slide.art} className={`hero-daily-art ${turns ? 'is-swap' : ''}`} src={slide.art} alt="" aria-hidden width={448} height={448} />
 
-      <div key={slide.id} className="hero-daily-copy">
+      <div key={slide.id} className={`hero-daily-copy ${turns ? 'is-swap' : ''}`}>
         <span className="hero-daily-kicker">
           <i aria-hidden />
           {slide.kicker}
@@ -188,7 +193,10 @@ function DailyCard({ games }: { games: GameMeta[] }) {
               className={index === at ? 'active' : ''}
               aria-label={t('dash.slide', { number: index + 1 })}
               aria-current={index === at}
-              onClick={() => setShown(index)}
+              onClick={() => {
+                setShown(index)
+                setTurns((one) => one + 1)
+              }}
             />
           ))}
         </div>

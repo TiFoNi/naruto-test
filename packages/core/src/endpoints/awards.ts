@@ -1,5 +1,5 @@
 import { STAT_KEYS } from '@nanda/game'
-import { LIFE, SEASON, lifeFacts, seasonFacts, syncAwards, syncSeasonAwards } from '../achievements'
+import { LIFE, SEASON, familyOf, lifeFacts, seasonFacts, syncAwards, syncSeasonAwards } from '../achievements'
 import { seasons, users, type UserDoc } from '../db'
 import { seasonAt } from '../season'
 import { handle, json } from '../http'
@@ -40,7 +40,7 @@ async function ready(doc: UserDoc) {
 
   const own = LIFE.filter((achievement) => awards[achievement.id] && !claimed[achievement.id])
   const run = SEASON.filter((achievement) => seasonAwards[achievement.id] && !seasonClaimed[achievement.id])
-  return [...run, ...own].map(({ id: award, tier }) => ({ id: award, tier }))
+  return [...run, ...own].map(({ id: award, tier }) => ({ id: award, tier, family: familyOf(award) }))
 }
 
 export const GET = handle(async (request) => {
