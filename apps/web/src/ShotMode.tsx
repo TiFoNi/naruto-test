@@ -200,14 +200,6 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
           </div>
           {run && !over && (
             <div className="play-actions">
-              <button
-                type="button"
-                className="ghost shot-skip"
-                disabled={busy || run.level >= run.levels - 1}
-                onClick={() => void send({ action: 'skip' })}
-              >
-                {t('shot.skip')}
-              </button>
               <GiveUp disabled={busy} onConfirm={() => void send({ action: 'giveup' })}>
                 {t('play.giveUp')}
               </GiveUp>
@@ -245,7 +237,11 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
                   src={apiSrc((over?.shots ?? won?.shots ?? run?.shots)?.[step])}
                   step={step}
                   onOpen={setBig}
-                  onReveal={run && !over && !won && !busy && run.level < run.levels - 1 ? () => void send({ action: 'skip' }) : undefined}
+                  onReveal={
+                    run && !over && !won && !busy && run.level < run.levels - 1 && step === run.level + 1
+                      ? () => void send({ action: 'skip' })
+                      : undefined
+                  }
                 />
               ))}
             </div>
@@ -308,6 +304,7 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
 }
 
 function Cell({ src, step, onOpen, onReveal }: { src?: string; step: number; onOpen: (src: string) => void; onReveal?: () => void }) {
+  const [deny, setDeny] = useState(false)
   const { t } = useI18n()
   const [ready, setReady] = useState(false)
 
@@ -341,9 +338,18 @@ function Cell({ src, step, onOpen, onReveal }: { src?: string; step: number; onO
 
     if (!onReveal)
       return (
-        <span className={`shot-cell locked ${tone} ${src ? 'is-coming' : ''}`} title={t(level.label)}>
+        <button
+          type="button"
+          className={`shot-cell locked is-shut ${tone} ${src ? 'is-coming' : ''} ${deny ? 'is-deny' : ''}`}
+          title={t(level.label)}
+          aria-disabled
+          onClick={() => {
+            setDeny(true)
+            window.setTimeout(() => setDeny(false), 420)
+          }}
+        >
           {inside}
-        </span>
+        </button>
       )
 
     return (

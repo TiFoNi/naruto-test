@@ -61,7 +61,6 @@ const COLUMNS: Column[] = [
 
 const PAGE_SIZE = 10
 const SKELETON_ROWS = PAGE_SIZE
-const TOP = 10
 const lastSize = new Map<string, number>()
 const known = new Map<string, Board>()
 
@@ -147,9 +146,6 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   const shown = listed.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
   const peak = Math.max(1, ...all.map((r) => active.raw(r)))
   const me = board?.me ?? null
-  const tenth = all[TOP - 1]
-  const gap = me && tenth && me.rank > TOP ? Math.abs(active.raw(tenth) - active.raw(me)) : 0
-  const reach = me && tenth ? active.raw(me) / Math.max(1, active.raw(tenth)) : 0
   const record = all.reduce<Row | null>((top, row) => (!top || (row.best ?? 0) > (top.best ?? 0) ? row : top), null)
   const onPodium = podium.some((row) => row?.me)
   const table = !board || !!error || all.length === 0 || listed.length > 0 || (!!me && !onPodium)
@@ -359,31 +355,22 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
         </section>
 
         <aside className="lb-side">
-          <div className="lb-side-card">
-            <span className="lb-side-title">{t('lb.yourPosition')}</span>
-            {me ? (
-              <>
-                <p className="lb-mine">
-                  <b>{me.rank}</b>
-                  <span>{t('lb.outOf', { total: board?.total ?? 0 })}</span>
-                </p>
-                <div className="lb-goal">
-                  <span>
-                    <b>{t('lb.toTop')}</b>
-                    <i>{gap ? t('lb.gap', { value: gap }) : t('lb.inTop')}</i>
-                  </span>
-                  <span className="lb-bar big">
-                    <span
-                      style={{
-                        width: `${Math.min(100, Math.round(reach * 100))}%`,
-                      }}
-                    />
-                  </span>
-                </div>
-              </>
-            ) : (
-              <p className="lb-mine empty">{t('lb.noRank')}</p>
-            )}
+          <div className="lb-side-card lb-how">
+            <span className="lb-side-title">{t('lb.howTitle')}</span>
+            <ol>
+              <li>
+                <i>1</i>
+                {t('lb.gameHow1')}
+              </li>
+              <li>
+                <i>2</i>
+                {t('lb.gameHow2')}
+              </li>
+              <li>
+                <i>3</i>
+                {t('lb.gameHow3')}
+              </li>
+            </ol>
             <Link className="primary lb-cta" href={href.play(gameId, mode)} title={t('lb.playGame', { game: l(game.label) })}>
               <PlayIcon />
               <span>{t('lb.play')}</span>

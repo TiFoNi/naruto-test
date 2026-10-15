@@ -9951,6 +9951,12 @@ html[data-auth] .guest-note {
   border-style: dashed;
   color: var(--text-3);
   cursor: default;
+  transition:
+    border-color 0.4s ease,
+    background 0.4s ease,
+    box-shadow 0.4s ease,
+    color 0.4s ease,
+    opacity 0.4s ease;
 }
 
 .shot-cell.locked.is-next {
@@ -9961,6 +9967,49 @@ html[data-auth] .guest-note {
 .shot-cell.locked.is-next:hover {
   border-color: color-mix(in srgb, var(--level, var(--accent)) 60%, transparent);
   background: color-mix(in srgb, var(--level, var(--accent)) 10%, var(--card-2));
+}
+
+.shot-cell.locked.is-shut {
+  font: inherit;
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.shot-cell.locked.is-deny {
+  animation: shot-deny 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes shot-deny {
+  0% {
+    transform: translateX(0);
+  }
+
+  18% {
+    transform: translateX(-6px) rotate(-0.6deg);
+  }
+
+  38% {
+    transform: translateX(5px) rotate(0.5deg);
+  }
+
+  58% {
+    transform: translateX(-4px) rotate(-0.4deg);
+  }
+
+  78% {
+    transform: translateX(3px) rotate(0.3deg);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shot-cell.locked.is-deny {
+    animation: none;
+    border-color: color-mix(in srgb, var(--wrong) 60%, transparent);
+  }
 }
 
 .shot-cell.locked.is-next:hover b {

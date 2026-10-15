@@ -1789,6 +1789,21 @@ const ui = {
   'lb.toTop100': { ru: 'До топ-100', uk: 'До топ-100', en: 'To top 100' },
   'lb.moreXp': { ru: 'ещё {xp} XP', uk: 'ще {xp} XP', en: '{xp} XP to go' },
   'lb.inTop100': { ru: 'ты уже в топ-100', uk: 'ти вже в топ-100', en: "you're in the top 100" },
+  'lb.gameHow1': {
+    ru: 'Таблица считает твой лучший результат в этом режиме: самую длинную серию побед подряд и общее число разгадок.',
+    uk: 'Таблиця рахує твій найкращий результат у цьому режимі: найдовшу серію перемог поспіль і загальну кількість розгадок.',
+    en: 'The board tracks your best result in this mode: the longest winning streak and the total number of solves.',
+  },
+  'lb.gameHow2': {
+    ru: 'Серия обрывается, если сдался или не угадал — рекорд при этом остаётся в таблице.',
+    uk: 'Серія обривається, якщо здався або не вгадав — рекорд при цьому лишається в таблиці.',
+    en: 'A streak breaks when you give up or miss — your record still stays on the board.',
+  },
+  'lb.gameHow3': {
+    ru: 'У каждой вселенной и режима своя таблица, а результаты обновляются сразу после раунда.',
+    uk: 'У кожного всесвіту й режиму своя таблиця, а результати оновлюються одразу після раунду.',
+    en: 'Every world and mode has its own board, and results update right after the round.',
+  },
   'lb.howTitle': { ru: 'Как считается', uk: 'Як рахується', en: 'How it works' },
   'lb.how1': {
     ru: 'Опыт из всех игр: ежедневные, бесконечные раунды, дуэли, задания.',
