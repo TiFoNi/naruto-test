@@ -691,9 +691,78 @@
 .awards-shelf {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
   margin-top: 4px;
+}
+
+.awards-slots {
+  display: grid;
+  grid-template-columns: repeat(8, 40px);
+  gap: 8px;
+}
+
+.awards-seat {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.awards-seat.is-free::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1.5px dashed color-mix(in srgb, #ffffff 12%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, #ffffff 3%, transparent);
+}
+
+.awards-seat .awards-chip {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  transition:
+    border-color 0.16s ease,
+    opacity 0.16s ease,
+    transform 0.16s ease;
+}
+
+.awards-seat button.awards-chip {
+  cursor: grab;
+}
+
+.awards-seat .awards-chip.is-held {
+  opacity: 0;
+}
+
+.awards-seat:has(.awards-chip.is-held)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1.5px dashed color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.awards-lift {
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--tier, var(--accent));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--tier, #ffffff) 16%, var(--card-2-solid));
+  color: var(--tier, var(--accent));
+  font-size: 19px;
+  pointer-events: none;
+  box-shadow: 0 14px 28px rgb(0 0 0 / 55%);
+  transform-origin: center;
+  will-change: transform;
 }
 
 .awards-shelf-label {
@@ -706,6 +775,7 @@
 }
 
 .awards-chip {
+  box-sizing: border-box;
   display: grid;
   place-items: center;
   width: 40px;
@@ -727,11 +797,7 @@
   transform: translateY(-2px);
 }
 
-.awards-chip.free {
-  border: 1.5px dashed color-mix(in srgb, #ffffff 12%, transparent);
-  background: color-mix(in srgb, #ffffff 3%, transparent);
-  cursor: default;
-}
+
 
 .awards-tiers {
   display: grid;
@@ -838,6 +904,16 @@
     width: 36px;
     height: 36px;
     font-size: 17px;
+  }
+
+  .awards-slots {
+    grid-template-columns: repeat(auto-fill, 36px);
+    gap: 6px;
+  }
+
+  .awards-seat {
+    width: 36px;
+    height: 36px;
   }
 
   .awards-tiers {

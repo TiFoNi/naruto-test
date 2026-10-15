@@ -7744,15 +7744,17 @@ html[data-auth] .guest-note {
   height: 80%;
 }
 
-.awards-chip .icon.award-art {
-  width: 30px;
-  height: 30px;
+.awards-chip .icon.award-art,
+.awards-lift .icon.award-art {
+  width: 36px;
+  height: 36px;
 }
 
 @media (max-width: 720px) {
-  .awards-chip .icon.award-art {
-    width: 27px;
-    height: 27px;
+  .awards-chip .icon.award-art,
+  .awards-lift .icon.award-art {
+    width: 32px;
+    height: 32px;
   }
 }
 

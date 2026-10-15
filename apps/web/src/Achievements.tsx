@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as ReactPointer } from 'react'
 import { api } from './api'
 import BackButton from './BackButton'
 import { AwardsGhost } from './PageSkeleton'
@@ -327,7 +327,12 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
   const [error, setError] = useState(false)
   const [filter, setFilter] = useState<Filter>('all')
   const [ink, setInk] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
+  const [held, setHeld] = useState<string | null>(null)
+  const [lift, setLift] = useState<{ id: string; size: number } | null>(null)
+  const liftBox = useRef<HTMLSpanElement | null>(null)
+  const liftAt = useRef({ x: 0, y: 0 })
   const tabs = useRef<HTMLDivElement>(null)
+  const shelf = useRef<HTMLDivElement>(null)
   const [group, setGroup] = useState<string>('all')
   const [claiming, setClaiming] = useState<string | null>(null)
   const [opened, setOpened] = useState<string | null>(null)
@@ -377,14 +382,72 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
   const share = lifetime.length ? Math.round((earned / lifetime.length) * 100) : 0
   const pinned = board?.pinned ?? []
 
-  const togglePin = (id: string) => {
-    const next = pinned.includes(id) ? pinned.filter((p) => p !== id) : [...pinned, id].slice(0, PINNED_MAX)
+  const savePins = (next: string[]) => {
     setBoard((current) => {
       const updated = current ? { ...current, pinned: next } : current
       known = updated
       return updated
     })
     void api('achievements', { pinned: next })
+  }
+
+  const togglePin = (id: string) => savePins(pinned.includes(id) ? pinned.filter((p) => p !== id) : [...pinned, id].slice(0, PINNED_MAX))
+
+  const grabPin = (id: string) => (event: ReactPointer<HTMLButtonElement>) => {
+    if (event.button !== 0) return
+    const row = shelf.current
+    if (!row) return
+    const box = event.currentTarget.getBoundingClientRect()
+    const grip = { x: event.clientX - box.left, y: event.clientY - box.top }
+    const start = { x: event.clientX, y: event.clientY }
+    let order = [...pinned]
+    let moved = false
+
+    const seatAt = (x: number) =>
+      [...row.querySelectorAll<HTMLElement>('.awards-seat')].findIndex((cell) => {
+        const spot = cell.getBoundingClientRect()
+        return x >= spot.left && x <= spot.right
+      })
+
+    const place = (step: PointerEvent) => {
+      liftAt.current = { x: step.clientX - grip.x, y: step.clientY - grip.y }
+      const node = liftBox.current
+      if (node) node.style.transform = `translate3d(${liftAt.current.x}px, ${liftAt.current.y}px, 0)`
+    }
+
+    const move = (step: PointerEvent) => {
+      if (!moved && Math.abs(step.clientX - start.x) < 5 && Math.abs(step.clientY - start.y) < 5) return
+      if (!moved) {
+        moved = true
+        setHeld(id)
+        setLift({ id, size: box.width })
+      }
+
+      place(step)
+
+      const seat = seatAt(step.clientX)
+      const from = order.indexOf(id)
+      if (seat < 0 || from < 0 || seat === from || seat >= order.length) return
+      const next = [...order]
+      next.splice(from, 1)
+      next.splice(seat, 0, id)
+      order = next
+      setBoard((current) => (current ? { ...current, pinned: next } : current))
+    }
+
+    const drop = () => {
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', drop)
+      window.removeEventListener('pointercancel', drop)
+      setHeld(null)
+      setLift(null)
+      if (moved) savePins(order)
+      else togglePin(id)
+    }
+
+    window.addEventListener('pointermove', move)
+    window.addEventListener('pointerup', drop)
+    window.addEventListener('pointercancel', drop)
   }
 
   const slide = useCallback(() => {
@@ -466,29 +529,32 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
                 <span className="awards-shelf-label">
                   {t('ach.showcase')} {pinned.length}/{PINNED_MAX}
                 </span>
-                {Array.from({ length: PINNED_MAX }, (_, index) => {
-                  const award = pinned[index] ? list.find((one) => one.id === pinned[index]) : undefined
-                  if (!award)
-                    return <span key={index} className="awards-chip free" aria-hidden />
-                  if (id)
+                <div className="awards-slots" ref={shelf}>
+                  {Array.from({ length: PINNED_MAX }, (_, index) => {
+                    const award = pinned[index] ? list.find((one) => one.id === pinned[index]) : undefined
+
                     return (
-                      <span key={award.id} className={`awards-chip tier-${award.tier}`} title={t(`ach.${award.id}` as UiKey)}>
-                        <AwardIcon family={award.family} award={award.id} />
+                      <span key={`seat-${index}`} className={`awards-seat ${award ? '' : 'is-free'}`}>
+                        {award &&
+                          (id ? (
+                            <span className={`awards-chip tier-${award.tier}`} title={t(`ach.${award.id}` as UiKey)}>
+                              <AwardIcon family={award.family} award={award.id} />
+                            </span>
+                          ) : (
+                            <button
+                              type="button"
+                              className={`awards-chip tier-${award.tier} ${held === award.id ? 'is-held' : ''}`}
+                              title={`${t(`ach.${award.id}` as UiKey)} — ${t('ach.unpin')}`}
+                              aria-label={t('ach.unpin')}
+                              onPointerDown={grabPin(award.id)}
+                            >
+                              <AwardIcon family={award.family} award={award.id} />
+                            </button>
+                          ))}
                       </span>
                     )
-                  return (
-                    <button
-                      key={award.id}
-                      type="button"
-                      className={`awards-chip tier-${award.tier}`}
-                      title={`${t(`ach.${award.id}` as UiKey)} — ${t('ach.unpin')}`}
-                      aria-label={t('ach.unpin')}
-                      onClick={() => togglePin(award.id)}
-                    >
-                      <AwardIcon family={award.family} award={award.id} />
-                    </button>
-                  )
-                })}
+                  })}
+                </div>
               </div>
             </div>
 
@@ -572,6 +638,25 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
           })}
         </>
       )}
+
+      {!!lift &&
+        (() => {
+          const award = list.find((one) => one.id === lift.id)
+          if (!award) return null
+          return (
+            <span
+              className={`awards-lift tier-${award.tier}`}
+              aria-hidden
+              ref={(node) => {
+                liftBox.current = node
+                if (node) node.style.transform = `translate3d(${liftAt.current.x}px, ${liftAt.current.y}px, 0)`
+              }}
+              style={{ width: lift.size, height: lift.size }}
+            >
+              <AwardIcon family={award.family} award={award.id} />
+            </span>
+          )
+        })()}
 
       {active && (
         <AwardModal
