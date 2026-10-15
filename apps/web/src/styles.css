@@ -10601,15 +10601,9 @@ html[data-auth] .guest-note {
 
 .support-total {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 9px;
   margin: 0;
-}
-
-.support-total .icon {
-  width: 26px;
-  height: 26px;
-  color: #f0bf45;
 }
 
 .support-total b {

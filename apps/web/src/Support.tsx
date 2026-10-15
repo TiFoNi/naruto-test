@@ -65,7 +65,6 @@ export default function Support() {
           <span className="play-card-title">{t('support.youGet')}</span>
 
           <p className="support-total">
-            <CoinIcon />
             <b>{nice(pack.base + pack.bonus)}</b>
             <small>{t('support.coins')}</small>
           </p>
