@@ -99,6 +99,7 @@ const ART: Record<string, string> = {
   trophies: 'trophies',
   lucky: 'lucky',
   perfectWeek: 'perfectWeek',
+  modeTour: 'modeTour',
   modeClassic: 'modeClassic',
   modeImage: 'modeImage',
   modeOdd: 'modeOdd',
