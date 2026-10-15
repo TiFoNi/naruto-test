@@ -639,10 +639,10 @@
 .duel-rules-title {
   display: block;
   margin-bottom: 8px;
-  color: var(--text-3);
-  font-size: 11px;
+  color: var(--text-2);
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.055em;
   text-transform: uppercase;
 }
 

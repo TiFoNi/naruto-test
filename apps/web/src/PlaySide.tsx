@@ -5,7 +5,7 @@ import GiveUp from './GiveUp'
 import { useAuth } from './auth'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
-import { CheckIcon, CloseIcon, DownIcon, MinusIcon, PodiumIcon, UpIcon } from './icons'
+import { CheckIcon, CloseIcon, MinusIcon, PodiumIcon, UpIcon } from './icons'
 import type { ModeId } from './modes'
 import { useHref } from './router'
 import { average, type Stats } from './stats'
@@ -55,7 +55,7 @@ function HowTo({ kind, game }: { kind: keyof typeof STEPS; game: Game }) {
 
 export function Legend({ game }: { game: Game }) {
   const { t } = useI18n()
-  const arrows = game.legend === 'debut' ? (['legend.debutLater', 'legend.debutEarlier'] as const) : (['legend.higher', 'legend.lower'] as const)
+  const order = game.legend === 'debut' ? 'legend.debutOrder' : 'legend.valueOrder'
 
   return (
     <div className="play-card play-legend">
@@ -78,17 +78,11 @@ export function Legend({ game }: { game: Game }) {
         </i>
         {t('legend.wrong')}
       </span>
-      <span>
+      <span className="is-order">
         <i className="legend-badge arrow">
           <UpIcon />
         </i>
-        {t(arrows[0])}
-      </span>
-      <span>
-        <i className="legend-badge arrow">
-          <DownIcon />
-        </i>
-        {t(arrows[1])}
+        {t(order)}
       </span>
     </div>
   )

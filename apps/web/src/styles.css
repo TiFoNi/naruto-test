@@ -425,10 +425,10 @@ a.bell.active {
   justify-content: space-between;
   gap: 10px;
   padding: 8px 10px 6px;
-  color: var(--text-3);
-  font-size: 11px;
+  color: var(--text-2);
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.055em;
   text-transform: uppercase;
 }
 
@@ -552,9 +552,9 @@ a.bell.active {
 
 .bell-card > small {
   color: var(--tier);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.055em;
   text-transform: uppercase;
 }
 
@@ -837,8 +837,8 @@ main {
 }
 
 .stats dt {
-  font-size: 11px;
-  color: var(--text-3);
+  font-size: 12px;
+  color: var(--text-2);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -1055,7 +1055,7 @@ main {
   border-radius: 8px;
   background: var(--partial);
   color: #221a05;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1491,8 +1491,8 @@ main {
 }
 
 .result-eyebrow {
-  color: var(--text-3);
-  font-size: 11px;
+  color: var(--text-2);
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.8px;
   text-transform: uppercase;
@@ -2360,10 +2360,10 @@ main {
   flex: none;
   min-width: 0;
   overflow: hidden;
-  color: var(--text-3);
-  font-size: 11px;
+  color: var(--text-2);
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.055em;
   text-transform: uppercase;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -6606,10 +6606,10 @@ html[data-auth] .guest-note {
 }
 
 .play-card-title {
-  color: var(--text-3);
-  font-size: 11px;
+  color: var(--text-2);
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.055em;
   text-transform: uppercase;
 }
 
@@ -6627,8 +6627,8 @@ html[data-auth] .guest-note {
 
 .play-stats span {
   display: block;
-  color: var(--text-3);
-  font-size: 11px;
+  color: var(--text-2);
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -6655,17 +6655,26 @@ html[data-auth] .guest-note {
 }
 
 .play-legend {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 14px;
 }
 
-.play-legend > span {
+.play-legend .play-card-title {
+  grid-column: 1 / -1;
+}
+
+.play-legend > span:not(.play-card-title) {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 14px;
+  gap: 9px;
+  min-width: 0;
+  font-size: 13.5px;
   font-weight: 600;
+}
+
+.play-legend > span.is-order {
+  line-height: 1.2;
 }
 
 .legend-badge {
@@ -7159,7 +7168,7 @@ html[data-auth] .guest-note {
   gap: 10px;
 }
 
-.play-howto > span {
+.play-howto > span:not(.play-card-title) {
   display: flex;
   gap: 10px;
   color: var(--text-2);
@@ -7307,9 +7316,9 @@ html[data-auth] .guest-note {
 
 .footer-col h2 {
   margin: 0 0 2px;
-  color: var(--text-3);
+  color: var(--text-2);
   font-family: var(--font-body), system-ui, sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -7502,7 +7511,7 @@ html[data-auth] .guest-note {
 }
 
 .award-kind {
-  font-size: 10.5px;
+  font-size: 11.5px;
   font-weight: 800;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -8619,8 +8628,8 @@ html[data-auth] .guest-note {
 
 .xp-tip th {
   padding: 0 0 5px;
-  color: var(--text-3);
-  font-size: 10.5px;
+  color: var(--text-2);
+  font-size: 11.5px;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-align: right;
@@ -8738,11 +8747,11 @@ html[data-auth] .guest-note {
 
 .frame-group h3 {
   margin: 0;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.055em;
   text-transform: uppercase;
-  color: var(--text-3);
+  color: var(--text-2);
 }
 
 .frame-modal h2 {
@@ -9121,9 +9130,9 @@ html[data-auth] .guest-note {
 
 .home-about h2 {
   margin: 0 0 16px;
-  color: var(--text-3);
+  color: var(--text-2);
   font-family: var(--font-body), system-ui, sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -9345,8 +9354,8 @@ html[data-auth] .guest-note {
 }
 
 .ask-tag {
-  color: var(--text-3);
-  font-size: 11px;
+  color: var(--text-2);
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -9483,11 +9492,11 @@ html[data-auth] .guest-note {
 }
 
 .ask-mix small {
-  color: var(--text-3);
+  color: var(--text-2);
   font-family: var(--font-body), system-ui, sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.055em;
   text-transform: uppercase;
 }
 

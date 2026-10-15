@@ -640,6 +640,8 @@ const ui = {
   'legend.wrong': { ru: 'Мимо', uk: 'Повз', en: 'Miss' },
   'legend.debutLater': { ru: 'Дебют позже', uk: 'Дебют пізніше', en: 'Debuts later' },
   'legend.debutEarlier': { ru: 'Дебют раньше', uk: 'Дебют раніше', en: 'Debuts earlier' },
+  'legend.debutOrder': { ru: 'Раньше/позже', uk: 'Раніше/пізніше', en: 'Earlier/later' },
+  'legend.valueOrder': { ru: 'Больше/меньше', uk: 'Більше/менше', en: 'Higher/lower' },
   'legend.higher': { ru: 'Больше / позже', uk: 'Більше / пізніше', en: 'Higher / later' },
   'mode.noDaily': { ru: 'Только в бесконечном', uk: 'Лише в безкінечному', en: 'Endless only' },
   'mode.shot': { ru: 'Угадай аниме', uk: 'Вгадай аніме', en: 'Guess the anime' },
