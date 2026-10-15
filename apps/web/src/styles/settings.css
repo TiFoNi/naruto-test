@@ -33,53 +33,30 @@
 }
 
 .settings-layout {
-  display: grid;
-  grid-template-columns: 250px minmax(0, 1fr);
-  align-items: start;
-  gap: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.settings-rail {
+  position: relative;
+  min-width: 0;
 }
 
 .settings-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  position: relative;
 }
 
 .settings-nav button {
-  position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 13px 16px;
-  border: 0;
-  border-radius: 14px;
-  background: none;
-  color: var(--text-2);
-  font: inherit;
-  font-size: 14.5px;
-  font-weight: 700;
-  text-align: left;
-  cursor: pointer;
-  transition: background 0.16s, color 0.16s;
+  gap: 8px;
 }
 
 .settings-nav .icon {
-  font-size: 18px;
-  color: var(--text-3);
-}
-
-.settings-nav button:hover {
-  color: var(--text);
-}
-
-.settings-nav button.active {
-  color: var(--text);
-  background: var(--card-2);
-  box-shadow: inset 3px 0 0 var(--accent);
-}
-
-.settings-nav button.active .icon {
-  color: var(--text);
+  width: 16px;
+  height: 16px;
+  color: currentColor;
 }
 
 .settings-block + .settings-block {
@@ -267,18 +244,8 @@
 }
 
 @media (max-width: 760px) {
-  .settings-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .settings-nav {
-    flex-direction: row;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .settings-nav button {
-    white-space: nowrap;
+  .settings-block {
+    padding: 18px;
   }
 }
 
@@ -300,8 +267,35 @@
   max-width: 420px;
 }
 
+.install-how {
+  margin-top: 8px;
+}
+
+.install-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: var(--text-3);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
 .install-row {
-  gap: 14px;
+  flex-wrap: wrap;
+  gap: 12px 14px;
+}
+
+.install-row .install-go {
+  height: 38px;
+  padding: 0 18px;
+}
+
+@media (max-width: 560px) {
+  .install-row .install-go {
+    width: 100%;
+  }
 }
 
 .install-row > div {

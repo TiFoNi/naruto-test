@@ -28,7 +28,7 @@ const remember = () => {
 
 export default function InstallBanner() {
   const { t } = useI18n()
-  const { ready, ios, installed, run } = useInstall()
+  const { ready, ios, safari, mac, installed, run } = useInstall()
   const [show, setShow] = useState(false)
 
   const hide = useCallback(() => {
@@ -37,19 +37,19 @@ export default function InstallBanner() {
   }, [])
 
   useEffect(() => {
-    if (!onPhone() || already() || kept()) return
+    if (already() || kept()) return
 
     const timer = window.setTimeout(() => setShow(true), DELAY_MS)
     return () => window.clearTimeout(timer)
   }, [])
 
-  if (!show || installed) return null
+  if (!show || installed || (!ready && !onPhone())) return null
 
   return (
     <aside className="install-bar" role="dialog" aria-label={t('install.title')}>
       <span className="install-copy">
         <b>{t('install.title')}</b>
-        <small>{ready ? t('install.text') : ios ? t('install.ios') : t('install.hint')}</small>
+        <small>{ready ? t('install.text') : ios ? t(safari ? 'install.ios' : 'install.iosOther') : mac ? t('install.mac') : t('install.hint')}</small>
       </span>
 
       {ready && (

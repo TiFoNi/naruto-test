@@ -1,8 +1,9 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type FormEvent } from 'react'
 import AvatarPicker from './AvatarPicker'
 import BackButton from './BackButton'
+import Rail from './Rail'
 import { useAuth } from './auth'
 import { authClient } from './authClient'
 import { useI18n, type UiKey } from './i18n'
@@ -39,6 +40,8 @@ export default function Settings() {
   const href = useHref()
 
   const [tab, setTab] = useState<Tab>(lastTab)
+  const tabs = useRef<HTMLDivElement>(null)
+  const [ink, setInk] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
   const current = user?.nickname ?? ''
   const [nickname, setDraft] = useState(current)
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null)
@@ -53,6 +56,31 @@ export default function Settings() {
   }, [message])
 
   const filled = useRef(false)
+
+  const slide = useCallback(() => {
+    const on = tabs.current?.querySelector<HTMLElement>('.cat-tab.active')
+    setInk(on ? { x: on.offsetLeft, y: on.offsetTop, w: on.offsetWidth, h: on.offsetHeight } : null)
+  }, [])
+
+  useLayoutEffect(() => {
+    slide()
+  }, [slide, tab])
+
+  useEffect(() => {
+    const row = tabs.current
+    if (!row || typeof ResizeObserver === 'undefined') return
+    const watcher = new ResizeObserver(slide)
+    watcher.observe(row)
+    return () => watcher.disconnect()
+  }, [slide])
+
+  useEffect(() => {
+    const row = tabs.current
+    const on = row?.querySelector<HTMLElement>('.cat-tab.active')
+    if (!row || !on || row.scrollWidth <= row.clientWidth) return
+    const left = on.offsetLeft - (row.clientWidth - on.offsetWidth) / 2
+    row.scrollTo({ left: Math.max(0, left), behavior: 'smooth' })
+  }, [tab])
 
   useEffect(() => {
     if (filled.current || !user) return
@@ -89,14 +117,19 @@ export default function Settings() {
       <h1>{t('settings.title')}</h1>
 
       <div className="settings-layout">
-        <nav className="settings-nav" role="tablist" aria-label={t('settings.title')}>
+        <Rail className="cat-rail settings-rail" trackClass="rail-chips settings-nav" innerRef={tabs}>
+          <span
+            className={`seg-ink ${ink ? 'is-set' : ''}`}
+            style={ink ? { transform: `translate(${ink.x}px, ${ink.y}px)`, width: ink.w, height: ink.h } : undefined}
+            aria-hidden
+          />
           {TABS.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               type="button"
               role="tab"
               aria-selected={tab === id}
-              className={tab === id ? 'active' : ''}
+              className={`cat-tab ${tab === id ? 'active' : ''}`}
               onClick={() => {
                 lastTab = id
                 setTab(id)
@@ -105,7 +138,7 @@ export default function Settings() {
               <Icon /> {t(label)}
             </button>
           ))}
-        </nav>
+        </Rail>
 
         <div className="settings-body">
           {tab === 'profile' && (
@@ -308,7 +341,7 @@ function PasskeyRows() {
 
 function InstallBlock() {
   const { t } = useI18n()
-  const { ready, ios, installed, run } = useInstall()
+  const { ready, ios, safari, mac, installed, run } = useInstall()
 
   if (installed || already()) return null
 
@@ -318,8 +351,16 @@ function InstallBlock() {
       <div className="push-row install-row">
         <div>
           <b>{t('install.title')}</b>
-          <p className="muted">{ready ? t('install.text') : ios ? t('install.ios') : t('install.hint')}</p>
+          <p className="muted">{ready || (ios && safari) ? t('install.text') : ios ? t('install.iosOther') : mac ? t('install.mac') : t('install.hint')}</p>
+          {!ready && ios && safari && (
+            <ol className="install-steps">
+              <li>{t('install.step1')}</li>
+              <li>{t('install.step2')}</li>
+              <li>{t('install.step3')}</li>
+            </ol>
+          )}
         </div>
+
         {ready && (
           <button type="button" className="primary install-go" onClick={() => void run()}>
             {t('install.go')}

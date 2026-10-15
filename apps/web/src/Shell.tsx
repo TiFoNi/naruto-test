@@ -7,6 +7,7 @@ import Avatar from './Avatar'
 import Background from './Background'
 import AwardFilters from './awardFilters'
 import InstallBanner from './InstallBanner'
+import { useInstall } from './install'
 import AwardIcon from './awardIcons'
 import DuelDock from './DuelDock'
 import DuelSkeleton from './DuelSkeleton'
@@ -29,6 +30,7 @@ import {
   ExitIcon,
   GearIcon,
   InfoIcon,
+  DownIcon,
   MenuIcon,
   PodiumIcon,
   ShopIcon,
@@ -70,6 +72,7 @@ function useDropdown(open: boolean, setOpen: (open: boolean) => void) {
 function NavMenu({ user, section }: { user: boolean; section?: string }) {
   const { t } = useI18n()
   const href = useHref()
+  const { ready, installed, run } = useInstall()
   const [open, setOpen] = useState(false)
   const box = useDropdown(open, setOpen)
   const onDuels = section === 'duels' || section === 'duel'
@@ -105,6 +108,21 @@ function NavMenu({ user, section }: { user: boolean; section?: string }) {
               {t('nav.leaderboard')}
             </Link>
           </>
+        )}
+        {ready && !installed && (
+          <button
+            type="button"
+            className="topbar-nav-get"
+            onClick={() => {
+              setOpen(false)
+              void run()
+            }}
+          >
+            <span className="topbar-nav-icon" aria-hidden>
+              <DownIcon />
+            </span>
+            {t('install.go')}
+          </button>
         )}
       </nav>
     </div>
