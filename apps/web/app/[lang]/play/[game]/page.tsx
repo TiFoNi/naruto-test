@@ -1,6 +1,5 @@
 import GameAccent from '@/src/GameAccent'
 import WorldModes from '@/src/WorldModes'
-import WorldAbout from '@/src/WorldAbout'
 import type { Lang } from '@/src/i18n/ui'
 import { worldMetadata } from '@/src/seo'
 
@@ -15,11 +14,11 @@ export async function generateMetadata({ params }: Params) {
 }
 
 export default async function WorldPage({ params }: Params) {
-  const { lang, game } = await params
+  const { game } = await params
   return (
     <>
       <GameAccent game={game} />
-      <WorldModes game={game} about={<WorldAbout game={game} lang={lang as Lang} />} />
+      <WorldModes game={game} />
     </>
   )
 }

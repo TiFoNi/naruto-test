@@ -9371,7 +9371,7 @@ html[data-auth] .guest-note {
 }
 
 .world-i {
-  position: relative;
+  position: static;
   flex: none;
 }
 
@@ -9408,10 +9408,10 @@ html[data-auth] .guest-note {
 .world-pop {
   position: absolute;
   top: calc(100% + 10px);
-  left: 0;
-  right: auto;
+  left: auto;
+  right: 14px;
   z-index: 30;
-  width: min(440px, calc(100vw - 24px));
+  width: min(440px, calc(100% - 28px));
   max-height: 46vh;
   padding: 14px 15px;
   border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
@@ -9438,8 +9438,10 @@ html[data-auth] .guest-note {
 
 .world-pop-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 4px 10px;
 }
 
 .world-pop-head b {
@@ -9452,6 +9454,7 @@ html[data-auth] .guest-note {
 .world-pop-head small {
   color: var(--text-3);
   font-size: 12.5px;
+  white-space: nowrap;
 }
 
 .world-pop p {

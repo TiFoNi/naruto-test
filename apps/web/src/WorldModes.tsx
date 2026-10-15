@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import type { ReactNode } from 'react'
 import { GRID_GAMES, dailyKey, hasDaily, statsKey } from '@nanda/game'
 import BackButton from './BackButton'
 import WorldMark from './WorldMark'
@@ -14,7 +13,7 @@ import { MODES } from './modes'
 import { useHref } from './router'
 import { emptyStats, kyivToday } from './stats'
 
-export default function WorldModes({ game: gameId, about }: { game: string; about?: ReactNode }) {
+export default function WorldModes({ game: gameId }: { game: string }) {
   const { t, l } = useI18n()
   const href = useHref()
   const { user, stats } = useAuth()
@@ -35,7 +34,6 @@ export default function WorldModes({ game: gameId, about }: { game: string; abou
           <WorldMark game={game.id} className="world-mark" />
           <div className="world-title">
             <h1>{l(game.label)}</h1>
-            {about}
           </div>
           <p className="world-lead">{l(game.description)}</p>
           <div className="world-chips">
