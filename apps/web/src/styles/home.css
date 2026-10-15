@@ -168,7 +168,6 @@
   overflow: hidden;
   margin: 0;
   max-width: min(34ch, 62%);
-  min-height: 2.25em;
   font-size: clamp(24px, 2.8vw, 34px);
   line-height: 1.1;
 }
