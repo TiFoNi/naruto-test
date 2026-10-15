@@ -37,13 +37,13 @@ export default function InstallBanner() {
   }, [])
 
   useEffect(() => {
-    if (already() || kept()) return
+    if (!onPhone() || already() || kept()) return
 
     const timer = window.setTimeout(() => setShow(true), DELAY_MS)
     return () => window.clearTimeout(timer)
   }, [])
 
-  if (!show || installed || (!ready && !onPhone())) return null
+  if (!show || installed) return null
 
   return (
     <aside className="install-bar" role="dialog" aria-label={t('install.title')}>
