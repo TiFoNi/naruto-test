@@ -114,7 +114,7 @@ function Card({ family, busy, onOpen }: { family: Family; busy: boolean; onOpen:
   const hidden = steps.every((step) => step.secret && !step.done)
   const goal = next ?? last
   const gained = steps.filter((step) => step.done).pop() ?? null
-  const crown = gained ?? goal
+  const crown = ready ?? gained ?? goal
   const name = hidden ? '???' : t(`ach.${crown.id}` as UiKey)
   const hint = hidden ? t('ach.secretHint') : t(`ach.${goal.id}.hint` as UiKey)
   const seasonal = family.kind === 'season'
@@ -202,9 +202,9 @@ function AwardModal({
 }) {
   const { t, lang } = useI18n()
   const hidden = award.secret && !award.done
-  const waiting = award.done && !award.claimed
   const top = [...steps].reverse().find((step) => step.claimed)
-  const crown = [...steps].filter((step) => step.done).pop() ?? award
+  const waiting = award.done && !award.claimed
+  const crown = waiting ? award : ([...steps].filter((step) => step.done).pop() ?? award)
   const held = !!top && pinnedIds.includes(top.id)
   const locked = !top || (full && !held)
   const percent = Math.min(Math.round((award.progress / award.target) * 100), 100)
