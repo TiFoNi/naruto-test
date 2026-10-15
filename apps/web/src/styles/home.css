@@ -47,10 +47,16 @@
 
 .hero-daily-copy {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
   width: 100%;
+}
+
+.hero-daily-copy .hero-daily-actions {
+  margin-top: auto;
+  padding-top: 14px;
 }
 
 .hero-daily-copy.is-swap {
@@ -951,9 +957,14 @@ html[data-auth][data-checking] .hero-guest {
     padding: 0 16px;
   }
 
+  .hero-daily {
+    min-height: 330px;
+  }
+
   .hero-daily .hero-dots {
-    right: 16px;
-    bottom: 14px;
+    position: static;
+    align-self: center;
+    margin-top: 2px;
   }
 
 }
