@@ -11,7 +11,7 @@ import Rail from './Rail'
 import { useHref } from './router'
 import { DAILY_XP_MODES, dailyKey, hasDaily, type ModeId } from '@nanda/game'
 import { dailyNumber, kyivToday, type Stats } from './stats'
-import { ArrowIcon, BallIcon, BookIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, PaletteIcon, PlayIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
+import { BallIcon, BookIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, PaletteIcon, PlayIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
 import { useBeforePaint } from './paint'
 import { searchGames } from './search'
 
@@ -179,7 +179,6 @@ function DailyCard({ games }: { games: GameMeta[] }) {
         <div className="hero-daily-actions">
           <Link className="primary" href={slide.href} prefetch={false}>
             {slide.cta}
-            <ArrowIcon />
           </Link>
         </div>
       </div>
