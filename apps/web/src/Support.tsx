@@ -42,6 +42,7 @@ export default function Support() {
   const [least, setLeast] = useState<number | null>(null)
   const [floor, setFloor] = useState<number | null>(null)
   const [charges, setCharges] = useState<Record<string, PackRow>>({})
+  const [loaded, setLoaded] = useState(false)
 
   const watch = useCallback(
     async (order: string, stopped: () => boolean) => {
@@ -67,7 +68,9 @@ export default function Support() {
   useEffect(() => {
     let gone = false
     api<{ coins?: CoinRow[]; least?: number | null; packs?: PackRow[] }>('shop').then(({ ok, data }) => {
-      if (gone || !ok) return
+      if (gone) return
+      setLoaded(true)
+      if (!ok) return
       if (data.packs?.length) setCharges(Object.fromEntries(data.packs.map((one) => [one.id, one])))
       if (data.coins?.length) {
         setCoins(data.coins)
@@ -277,8 +280,8 @@ export default function Support() {
             )}
           </div>
 
-          <button type="button" className="primary support-buy" onClick={buy} disabled={busy || short(pack)}>
-            {busy ? t('support.going') : short(pack) ? t('support.soonShort') : user ? t('support.buy') : t('support.buyLogin')}
+          <button type="button" className="primary support-buy" onClick={buy} disabled={busy || !loaded || short(pack)}>
+            {busy || !loaded ? t('support.going') : short(pack) ? t('support.soonShort') : user ? t('support.buy') : t('support.buyLogin')}
           </button>
 
           {short(pack) && <p className="support-flash">{t('support.cryptoFrom', { least: `$${(floor ?? 0).toFixed(2)}` })}</p>}

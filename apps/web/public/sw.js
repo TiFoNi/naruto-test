@@ -1,5 +1,25 @@
-self.addEventListener('install', () => self.skipWaiting())
-self.addEventListener('activate', (event) => event.waitUntil(self.clients.claim()))
+const OFFLINE = 'nanda-offline-v1'
+const FALLBACK = '/offline.html'
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(caches.open(OFFLINE).then((store) => store.add(FALLBACK)))
+  self.skipWaiting()
+})
+
+self.addEventListener('activate', (event) =>
+  event.waitUntil(
+    (async () => {
+      const names = await caches.keys()
+      await Promise.all(names.filter((name) => name !== OFFLINE).map((name) => caches.delete(name)))
+      await self.clients.claim()
+    })(),
+  ),
+)
+
+self.addEventListener('fetch', (event) => {
+  if (event.request.mode !== 'navigate') return
+  event.respondWith(fetch(event.request).catch(async () => (await caches.match(FALLBACK)) ?? Response.error()))
+})
 
 self.addEventListener('push', (event) => {
   let data = {}

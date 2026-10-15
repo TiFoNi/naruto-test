@@ -7,6 +7,7 @@ import { useAuth } from './auth'
 import { authClient } from './authClient'
 import { useI18n, type UiKey } from './i18n'
 import { BellIcon, CloseIcon, KeyIcon, MailIcon, ShieldIcon, UserIcon } from './icons'
+import { already, useInstall } from './install'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
 import { disablePush, enablePush, pushState, pushSupported, type PushState } from './push'
@@ -204,6 +205,7 @@ export default function Settings() {
           )}
 
           {tab === 'notifications' && <PushBlock />}
+          {tab === 'notifications' && <InstallBlock />}
 
           {tab === 'privacy' && (
             <section className="settings-block">
@@ -301,6 +303,30 @@ function PasskeyRows() {
         </div>
       ))}
     </>
+  )
+}
+
+function InstallBlock() {
+  const { t } = useI18n()
+  const { ready, ios, installed, run } = useInstall()
+
+  if (installed || already()) return null
+
+  return (
+    <section className="settings-block">
+      <span className="settings-eyebrow">{t('install.block')}</span>
+      <div className="push-row install-row">
+        <div>
+          <b>{t('install.title')}</b>
+          <p className="muted">{ready ? t('install.text') : ios ? t('install.ios') : t('install.hint')}</p>
+        </div>
+        {ready && (
+          <button type="button" className="primary install-go" onClick={() => void run()}>
+            {t('install.go')}
+          </button>
+        )}
+      </div>
+    </section>
   )
 }
 

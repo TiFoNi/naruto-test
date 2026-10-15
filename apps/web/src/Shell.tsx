@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import Avatar from './Avatar'
 import Background from './Background'
 import AwardFilters from './awardFilters'
+import InstallBanner from './InstallBanner'
 import AwardIcon from './awardIcons'
 import DuelDock from './DuelDock'
 import DuelSkeleton from './DuelSkeleton'
@@ -669,6 +670,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
       </div>
 
       {!bare && <Footer />}
+      {!bare && <InstallBanner />}
       {user && <DuelDock />}
     </div>
   )

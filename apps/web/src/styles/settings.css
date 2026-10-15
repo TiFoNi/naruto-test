@@ -82,6 +82,10 @@
   color: var(--text);
 }
 
+.settings-block + .settings-block {
+  margin-top: 14px;
+}
+
 .settings-block {
   display: flex;
   flex-direction: column;
@@ -294,6 +298,15 @@
   margin: 4px 0 0;
   font-size: 13px;
   max-width: 420px;
+}
+
+.install-row {
+  gap: 14px;
+}
+
+.install-row > div {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .push-switch {
