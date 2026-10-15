@@ -273,7 +273,7 @@ export const GET = handle(async (request) => {
         const veiled = other && SECRETS.has(id) && !found.doc.awards?.[id]
         return {
           id: veiled ? null : id,
-          family: veiled ? null : familyOf(id),
+          family: familyOf(id),
           tier: TIERS.get(id)!,
           at: veiled ? null : doc.awards![id],
           hidden: veiled,

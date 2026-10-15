@@ -5,7 +5,7 @@ import { api } from './api'
 import BackButton from './BackButton'
 import { AwardsGhost } from './PageSkeleton'
 import { useI18n, type UiKey } from './i18n'
-import { CheckIcon, CloseIcon, GiftIcon, LockIcon, PinIcon } from './icons'
+import { CheckIcon, CloseIcon, GiftIcon, PinIcon } from './icons'
 import Rail from './Rail'
 import AwardIcon from './awardIcons'
 import { useAuth } from './auth'
@@ -125,7 +125,7 @@ function Card({ family, busy, onOpen }: { family: Family; busy: boolean; onOpen:
     <article className={`award ${seasonal ? 'is-season' : `tier-${crown.tier}`} ${whole ? 'done' : ready ? 'is-ready' : ''} ${hidden ? 'hidden' : ''}`}>
       <button type="button" className="award-open" aria-label={name} disabled={busy} onClick={() => onOpen(family.open.id)}>
         <span className="award-mark" aria-hidden>
-          {ready ? <GiftIcon /> : hidden ? <LockIcon /> : <AwardIcon family={family.id} award={steps[0].id} />}
+          {ready ? <GiftIcon /> : <AwardIcon family={family.id} award={steps[0].id} />}
         </span>
         <div className="award-body">
           <div className="award-head">
@@ -221,7 +221,7 @@ function AwardModal({
           <CloseIcon />
         </button>
         <span className="award-modal-mark" aria-hidden>
-          {waiting ? <GiftIcon /> : hidden ? <LockIcon /> : <AwardIcon family={award.family} award={award.id} />}
+          {waiting ? <GiftIcon /> : <AwardIcon family={award.family} award={award.id} />}
         </span>
         <h2>{hidden ? '???' : t(`ach.${crown.id}` as UiKey)}</h2>
         <p className="award-modal-hint">{hidden ? t('ach.secretHint') : t(`ach.${award.id}.hint` as UiKey)}</p>

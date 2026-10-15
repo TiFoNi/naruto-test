@@ -551,14 +551,14 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                         {user ? (
                           <Link href={own || !id ? href.achievements : href.playerAwards(id)} prefetch={false}>
                             <span className="soon-mark" aria-hidden>
-                              {secret ? <TrophyIcon /> : <AwardIcon family={award.family} award={award.id} />}
+                              {award.family ? <AwardIcon family={award.family} award={award.id} /> : <TrophyIcon />}
                             </span>
                             <b>{secret ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
                           </Link>
                         ) : (
                           <>
                             <span className="soon-mark" aria-hidden>
-                              {secret ? <TrophyIcon /> : <AwardIcon family={award.family} award={award.id} />}
+                              {award.family ? <AwardIcon family={award.family} award={award.id} /> : <TrophyIcon />}
                             </span>
                             <b>{secret ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
                           </>
