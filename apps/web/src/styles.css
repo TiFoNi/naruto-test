@@ -241,6 +241,14 @@ h2 {
   gap: 20px;
 }
 
+.app-main {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  gap: 20px;
+  min-height: calc(100dvh - var(--topbar-h, 0px) - 54px);
+}
+
 .topbar {
   position: fixed;
   inset: 0 0 auto;

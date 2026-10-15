@@ -652,19 +652,21 @@ export default function Shell({ children, games }: { children: ReactNode; games:
         </header>
       )}
 
-      {user || open || (loading && returning) ? (
-        children
-      ) : loading ? (
-        section === 'duel' || section === 'duels' ? (
-          <DuelSkeleton />
-        ) : section === 'c' ? (
-          <ChallengeSkeleton />
+      <div className="app-main">
+        {user || open || (loading && returning) ? (
+          children
+        ) : loading ? (
+          section === 'duel' || section === 'duels' ? (
+            <DuelSkeleton />
+          ) : section === 'c' ? (
+            <ChallengeSkeleton />
+          ) : (
+            <PageSkeleton section={section} mode={modeId} />
+          )
         ) : (
-          <PageSkeleton section={section} mode={modeId} />
-        )
-      ) : (
-        <Landing games={games} />
-      )}
+          <Landing games={games} />
+        )}
+      </div>
 
       {!bare && <Footer />}
       {user && <DuelDock />}
