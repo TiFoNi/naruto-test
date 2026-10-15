@@ -10427,7 +10427,7 @@ html[data-auth] .guest-note {
   top: 0;
   bottom: 0;
   z-index: 2;
-  display: none;
+  display: flex;
   width: 54px;
   align-items: center;
   padding: 0;
@@ -10435,7 +10435,13 @@ html[data-auth] .guest-note {
   background: none;
   color: var(--text-2);
   cursor: pointer;
-  transition: color 0.16s ease;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.14s ease,
+    visibility 0.14s ease,
+    color 0.16s ease;
 }
 
 .rail-arrow:hover {
@@ -10467,19 +10473,36 @@ html[data-auth] .guest-note {
 
 .rail.has-left .rail-arrow.left,
 .rail.has-right .rail-arrow.right {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+@property --rail-left {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --rail-right {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+.rail-track {
+  --rail-left: 0px;
+  --rail-right: 0px;
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--rail-left), #000 calc(100% - var(--rail-right)), transparent 100%);
+  transition: border-radius 0.14s ease;
 }
 
 .rail.has-left .rail-track {
-  mask-image: linear-gradient(90deg, transparent 0, #000 58px);
+  --rail-left: 58px;
 }
 
 .rail.has-right .rail-track {
-  mask-image: linear-gradient(90deg, #000 calc(100% - 58px), transparent 100%);
-}
-
-.rail.has-left.has-right .rail-track {
-  mask-image: linear-gradient(90deg, transparent 0, #000 58px, #000 calc(100% - 58px), transparent 100%);
+  --rail-right: 58px;
 }
 
 .cat-rail.has-left .rail-track {
