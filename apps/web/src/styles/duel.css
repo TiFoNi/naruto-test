@@ -2563,25 +2563,36 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 }
 
 .duel-call-list {
+  --call-row: 74px;
+
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  grid-auto-rows: var(--call-row);
   align-content: start;
   gap: 8px;
   margin: 0;
   padding: 0 2px 0 0;
-  max-height: 166px;
+  max-height: calc(var(--call-row) * 2 + 8px);
   overflow-y: auto;
   list-style: none;
   scrollbar-width: thin;
+  scroll-snap-type: y proximity;
+}
+
+.duel-call-list li {
+  min-height: 0;
+  scroll-snap-align: start;
 }
 
 .duel-call-list button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 5px;
   width: 100%;
-  padding: 10px 8px;
+  height: 100%;
+  padding: 8px;
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--card-2);
@@ -2675,7 +2686,9 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   }
 
   .duel-call-list {
-    max-height: 132px;
+    --call-row: 68px;
+
+    max-height: calc(var(--call-row) * 2 + 8px);
   }
 
   .duel-bar .primary.big {

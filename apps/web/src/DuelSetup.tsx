@@ -116,7 +116,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
   const waiting = duel.invited
   const played = duels.played
   const share = played ? Math.round((duels.wins / played) * 100) : 0
-  const suggested = [...found, ...mates.filter((one) => !found.some((f) => f.id === one.id))].slice(0, 6)
+  const suggested = [...found, ...mates.filter((one) => !found.some((f) => f.id === one.id))]
 
   const picks = (
     <div className="duel-picks">
