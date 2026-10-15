@@ -211,18 +211,21 @@ function cryptomus(): Provider {
   }
 }
 
-export async function floorUsd(): Promise<number | null> {
-  const fresh = Date.now() - floor.at < 10 * 60 * 1000
-  if (fresh) return floor.usd
+export async function minsUsd(): Promise<Record<string, number | null>> {
+  if (Date.now() - floor.at < 10 * 60 * 1000) return floor.coins
 
-  const all = await Promise.all(provider.coins.map((coin) => provider.minUsd(coin)))
-  const known = all.filter((one): one is number => typeof one === 'number')
+  const pairs = await Promise.all(provider.coins.map(async (coin) => [coin, await provider.minUsd(coin)] as const))
   floor.at = Date.now()
-  floor.usd = known.length > 0 ? Math.min(...known) : null
-  return floor.usd
+  floor.coins = Object.fromEntries(pairs)
+  return floor.coins
 }
 
-const floor: { at: number; usd: number | null } = { at: 0, usd: null }
+export async function floorUsd(): Promise<number | null> {
+  const known = Object.values(await minsUsd()).filter((one): one is number => typeof one === 'number')
+  return known.length > 0 ? Math.min(...known) : null
+}
+
+const floor: { at: number; coins: Record<string, number | null> } = { at: 0, coins: {} }
 
 const pick = (): Provider => {
   const named = (process.env.PAYMENTS_PROVIDER ?? '').trim().toLowerCase()

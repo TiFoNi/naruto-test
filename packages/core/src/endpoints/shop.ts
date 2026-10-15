@@ -1,14 +1,17 @@
 import { COIN_PACKS, PAY_COINS } from '@nanda/game'
-import { purchaseState, startPurchase } from '../coins'
+import { chargeUsd, feeUsd, purchaseState, startPurchase } from '../coins'
 import { fail, handle, json, readJson } from '../http'
-import { floorUsd, provider } from '../payments'
+import { floorUsd, minsUsd, provider } from '../payments'
 import { currentUser, unauthorized } from '../profile'
 
 export const GET = handle(async (request) => {
   const order = new URL(request.url).searchParams.get('order')
   if (!order) {
+    const mins = provider.ready ? await minsUsd() : {}
+    const coins = PAY_COINS.filter((one) => provider.coins.includes(one.id)).map((one) => ({ ...one, least: mins[one.id] ?? null }))
     const least = provider.ready ? await floorUsd() : null
-    return json({ packs: COIN_PACKS, coins: PAY_COINS.filter((one) => provider.coins.includes(one.id)), live: provider.ready, least })
+    const packs = COIN_PACKS.map((one) => ({ ...one, charge: chargeUsd(one.usd), fee: feeUsd(one.usd) }))
+    return json({ packs, coins, live: provider.ready, least })
   }
 
   const found = await currentUser(request)

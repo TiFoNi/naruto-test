@@ -4,6 +4,13 @@ import { coinOf, coinsOf, packOf } from '@nanda/game'
 import { coinLedger, purchases, users } from './db'
 import { provider, type PaymentEvent } from './payments'
 
+const FEE_FLAT = Number(process.env.PAYMENTS_FEE_USD ?? 3.6)
+const FEE_PCT = Number(process.env.PAYMENTS_FEE_PCT ?? 1)
+
+export const chargeUsd = (usd: number) => Math.ceil(((usd + FEE_FLAT) / (1 - FEE_PCT / 100)) * 100) / 100
+
+export const feeUsd = (usd: number) => Math.round((chargeUsd(usd) - usd) * 100) / 100
+
 export type Started = { url: string; orderId: string }
 
 export type TooSmall = { tooSmall: number }
@@ -16,8 +23,9 @@ export async function startPurchase(userId: ObjectId, packId: unknown, coinId: u
   if (!provider.ready) return 'off'
 
   const least = coin ? await provider.minUsd(coin.id) : null
-  if (least !== null && pack.usd < least) return { tooSmall: Math.ceil(least * 100) / 100 }
+  if (least !== null && chargeUsd(pack.usd) < least) return { tooSmall: Math.ceil(least * 100) / 100 }
 
+  const charge = chargeUsd(pack.usd)
   const orderId = `ng_${randomUUID().replace(/-/g, '').slice(0, 20)}`
   const book = await purchases()
   await book.insertOne({
@@ -26,6 +34,7 @@ export async function startPurchase(userId: ObjectId, packId: unknown, coinId: u
     base: pack.base,
     bonus: pack.bonus,
     usd: pack.usd,
+    charged: charge,
     provider: provider.id,
     orderId,
     ...(coin ? { payCurrency: coin.id } : {}),
@@ -34,7 +43,7 @@ export async function startPurchase(userId: ObjectId, packId: unknown, coinId: u
   })
 
   try {
-    const invoice = await provider.invoice({ orderId, usd: pack.usd, coins: coinsOf(pack), packId: pack.id, coin: coin?.id ?? '' })
+    const invoice = await provider.invoice({ orderId, usd: charge, coins: coinsOf(pack), packId: pack.id, coin: coin?.id ?? '' })
     await book.updateOne({ orderId }, { $set: { invoiceId: invoice.invoiceId, updatedAt: new Date() } })
     return { url: invoice.url, orderId }
   } catch (error) {

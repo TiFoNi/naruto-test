@@ -4,6 +4,10 @@ import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { COIN_PACKS, type PayCoin } from '@nanda/game'
+
+type CoinRow = PayCoin & { least?: number | null }
+
+type PackRow = { id: string; charge: number; fee: number }
 import { api } from './api'
 import { useAuth } from './auth'
 import BackButton from './BackButton'
@@ -30,13 +34,14 @@ export default function Support() {
   const router = useRouter()
   const { user, refresh } = useAuth()
   const [picked, setPicked] = useState<string>('mid')
-  const [coins, setCoins] = useState<PayCoin[]>([])
+  const [coins, setCoins] = useState<CoinRow[]>([])
   const [coin, setCoin] = useState<string>('')
   const [busy, setBusy] = useState(false)
   const [note, setNote] = useState<'credited' | 'waiting' | 'partial' | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [least, setLeast] = useState<number | null>(null)
   const [floor, setFloor] = useState<number | null>(null)
+  const [charges, setCharges] = useState<Record<string, PackRow>>({})
 
   const watch = useCallback(
     async (order: string, stopped: () => boolean) => {
@@ -46,6 +51,7 @@ export default function Support() {
         if (ok && data.status === 'paid') {
           setNote('credited')
           void refresh()
+          window.history.replaceState(null, '', window.location.pathname)
           return
         }
         if (ok && data.status === 'partial') return setNote('partial')
@@ -60,8 +66,9 @@ export default function Support() {
 
   useEffect(() => {
     let gone = false
-    api<{ coins?: PayCoin[]; least?: number | null }>('shop').then(({ ok, data }) => {
+    api<{ coins?: CoinRow[]; least?: number | null; packs?: PackRow[] }>('shop').then(({ ok, data }) => {
       if (gone || !ok) return
+      if (data.packs?.length) setCharges(Object.fromEntries(data.packs.map((one) => [one.id, one])))
       if (data.coins?.length) {
         setCoins(data.coins)
         setCoin((now) => now || data.coins![0].id)
@@ -77,6 +84,19 @@ export default function Support() {
     return () => {
       gone = true
     }
+  }, [])
+
+  useEffect(() => {
+    const wake = (event: PageTransitionEvent) => {
+      if (!event.persisted) return
+      setBusy(false)
+      if (new URLSearchParams(window.location.search).get('paid')) return
+      setNote(null)
+      setError(null)
+    }
+
+    window.addEventListener('pageshow', wake)
+    return () => window.removeEventListener('pageshow', wake)
   }, [])
 
   useEffect(() => {
@@ -101,7 +121,7 @@ export default function Support() {
       url?: string
       error?: string
       least?: number
-    }>('shop/checkout', coin ? { pack: picked, coin } : { pack: picked })
+    }>('shop/checkout', paying ? { pack: picked, coin: paying } : { pack: picked })
     if (ok && data.url) {
       window.location.href = data.url
       return
@@ -119,7 +139,12 @@ export default function Support() {
   const locale = lang === 'en' ? 'en-GB' : lang === 'uk' ? 'uk-UA' : 'ru-RU'
   const nice = (count: number) => count.toLocaleString(locale)
   const pack = PACKS.find((one) => one.id === picked) ?? PACKS[1]
-  const short = (one: (typeof PACKS)[number]) => floor !== null && one.usd < floor
+  const short = (one: (typeof PACKS)[number]) => floor !== null && (charges[one.id]?.charge ?? one.usd) < floor
+  const bill = charges[pack.id]
+  const barred = (one: CoinRow) => typeof one.least === 'number' && (bill?.charge ?? pack.usd) < one.least
+  const fine = coins.find((one) => !barred(one))
+  const chosen = coins.find((one) => one.id === coin)
+  const paying = !chosen ? '' : barred(chosen) ? (fine?.id ?? '') : chosen.id
 
   return (
     <div className="support-page">
@@ -131,37 +156,57 @@ export default function Support() {
       </header>
 
       <div className="support-body">
-        <section className="support-packs" role="radiogroup" aria-label={t('support.packs')}>
-          {PACKS.map((one) => (
-            <button
-              key={one.id}
-              type="button"
-              role="radio"
-              aria-checked={picked === one.id}
-              className={`support-pack ${picked === one.id ? 'active' : ''} ${short(one) ? 'is-shut' : ''}`}
-              onClick={() => setPicked(one.id)}
-            >
-              <img
-                className="support-art"
-                style={{ '--grow': one.grow } as React.CSSProperties}
-                src={`/shop/${one.art}.webp`}
-                alt=""
-                width={512}
-                height={512}
-                loading="lazy"
-                decoding="async"
-                draggable={false}
-              />
+        <div className="support-left">
+          <section className="support-packs" role="radiogroup" aria-label={t('support.packs')}>
+            {PACKS.map((one) => (
+              <button
+                key={one.id}
+                type="button"
+                role="radio"
+                aria-checked={picked === one.id}
+                className={`support-pack ${picked === one.id ? 'active' : ''} ${short(one) ? 'is-shut' : ''}`}
+                onClick={() => {
+                  setPicked(one.id)
+                  setError(null)
+                }}
+              >
+                <img
+                  className="support-art"
+                  style={{ '--grow': one.grow } as React.CSSProperties}
+                  src={`/shop/${one.art}.webp`}
+                  alt=""
+                  width={512}
+                  height={512}
+                  loading="lazy"
+                  decoding="async"
+                  draggable={false}
+                />
 
-              <span className="support-amount">
-                <CoinIcon />
-                <b>{nice(one.base)}</b>
-                <em className="support-bonus">{t('support.bonusChip', { count: nice(one.bonus) })}</em>
-              </span>
-              <span className="support-price">{short(one) ? t('support.soonShort') : money(one.usd)}</span>
-            </button>
-          ))}
-        </section>
+                <span className="support-amount">
+                  <CoinIcon />
+                  <b>{nice(one.base)}</b>
+                  <em className="support-bonus">{t('support.bonusChip', { count: nice(one.bonus) })}</em>
+                </span>
+                <span className="support-price">{short(one) ? t('support.soonShort') : money(one.usd)}</span>
+              </button>
+            ))}
+          </section>
+
+          <section className="support-where">
+            <span className="play-card-title">{t('support.whereTitle')}</span>
+            <ul>
+              {WHERE.map(({ key, name, Icon }) => (
+                <li key={key}>
+                  <b>
+                    <Icon />
+                    {t(name)}
+                  </b>
+                  <span>{t(key)}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
 
         <aside className="support-sum">
           <span className="play-card-title">{t('support.youGet')}</span>
@@ -180,9 +225,19 @@ export default function Support() {
               <dt>{t('support.bonusLine')}</dt>
               <dd>+{nice(pack.bonus)}</dd>
             </div>
+            <div>
+              <dt>{t('support.price')}</dt>
+              <dd>{money(pack.usd)}</dd>
+            </div>
+            {bill && bill.fee > 0 && (
+              <div className="is-fee">
+                <dt>{t('support.netFee')}</dt>
+                <dd>+{money(bill.fee)}</dd>
+              </div>
+            )}
             <div className="is-total">
               <dt>{t('support.total')}</dt>
-              <dd>{money(pack.usd)}</dd>
+              <dd>{money(bill?.charge ?? pack.usd)}</dd>
             </div>
           </dl>
 
@@ -206,15 +261,16 @@ export default function Support() {
                     key={one.id}
                     type="button"
                     role="radio"
-                    aria-checked={coin === one.id}
-                    className={`pay-coin ${coin === one.id ? 'active' : ''}`}
+                    aria-checked={paying === one.id}
+                    disabled={barred(one)}
+                    className={`pay-coin ${paying === one.id ? 'active' : ''} ${barred(one) ? 'is-barred' : ''}`}
                     onClick={() => {
                       setCoin(one.id)
                       setError(null)
                     }}
                   >
                     <b>{one.label}</b>
-                    <small>{one.note}</small>
+                    <small>{barred(one) ? t('support.coinFrom', { least: `$${(Math.ceil((one.least ?? 0) * 100) / 100).toFixed(2)}` }) : one.note}</small>
                   </button>
                 ))}
               </div>
@@ -251,21 +307,6 @@ export default function Support() {
           </p>
         </aside>
       </div>
-
-      <section className="support-where">
-        <span className="play-card-title">{t('support.whereTitle')}</span>
-        <ul>
-          {WHERE.map(({ key, name, Icon }) => (
-            <li key={key}>
-              <b>
-                <Icon />
-                {t(name)}
-              </b>
-              <span>{t(key)}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
     </div>
   )
 }

@@ -162,6 +162,7 @@ export type PurchaseDoc = {
   base: number
   bonus: number
   usd: number
+  charged?: number
   provider: string
   orderId: string
   invoiceId?: string

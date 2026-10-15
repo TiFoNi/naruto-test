@@ -10527,6 +10527,13 @@ html[data-auth] .guest-note {
   align-items: start;
 }
 
+.support-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
 .support-packs {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -10651,6 +10658,10 @@ html[data-auth] .guest-note {
 
 .support-bill .is-bonus dd {
   color: var(--correct);
+}
+
+.support-bill .is-fee dd {
+  color: var(--text-2);
 }
 
 .support-bill .is-total {
@@ -10842,7 +10853,12 @@ html[data-auth] .guest-note {
   font-size: 10.5px;
 }
 
-.pay-coin:hover {
+.pay-coin.is-barred {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.pay-coin:not(.is-barred):hover {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
 }
 
@@ -10912,7 +10928,7 @@ html[data-auth] .guest-note {
 
 .support-where ul {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 12px;
   margin: 0;
   padding: 0;
