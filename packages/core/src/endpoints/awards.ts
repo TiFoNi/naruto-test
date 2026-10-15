@@ -40,7 +40,7 @@ async function ready(doc: UserDoc) {
 
   const own = LIFE.filter((achievement) => awards[achievement.id] && !claimed[achievement.id])
   const run = SEASON.filter((achievement) => seasonAwards[achievement.id] && !seasonClaimed[achievement.id])
-  return [...run, ...own].map(({ id: award, tier }) => ({ id: award, tier, family: familyOf(award) }))
+  return [...run, ...own].map(({ id: award, tier, kind }) => ({ id: award, tier, kind, family: familyOf(award) }))
 }
 
 export const GET = handle(async (request) => {

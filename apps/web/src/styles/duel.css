@@ -245,8 +245,30 @@
     font-size: 17px;
   }
 
+  .duel-hud-side {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
+
+  .duel-hud-side.is-rival {
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    text-align: center;
+  }
+
+  .duel-hud-name {
+    align-items: center;
+    width: 100%;
+  }
+
   .duel-hud-name b {
-    font-size: 14px;
+    overflow: visible;
+    max-width: 100%;
+    font-size: 13.5px;
+    line-height: 1.2;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .duel-hud-name small {
@@ -935,6 +957,21 @@
 @media (max-width: 1080px) {
   .play-side.duel-side {
     display: none;
+  }
+}
+
+.duel-quit.is-narrow {
+  display: none;
+  margin-top: 14px;
+}
+
+@media (max-width: 1080px) {
+  .duel-quit.is-narrow {
+    display: block;
+  }
+
+  .duel-quit.is-narrow .give-up {
+    width: 100%;
   }
 }
 

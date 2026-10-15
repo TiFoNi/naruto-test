@@ -3,8 +3,8 @@
 import { api } from './api'
 import { keepPerUser } from './session-cache'
 
-export type AwardRow = { id: string; tier: string; family?: string | null; done: boolean; claimed: boolean }
-export type FreshAward = { id: string; tier: string; family?: string | null }
+export type AwardRow = { id: string; tier: string; family?: string | null; kind?: string; done: boolean; claimed: boolean }
+export type FreshAward = { id: string; tier: string; family?: string | null; kind?: string }
 export type DuelInvite = { code: string; from: string; game: string | null; mode: string | null; best: number; seconds: number; at: string }
 export type FriendAsk = { id: string; nickname: string; tag: string | null; at: string }
 export type Feed = { awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[]; frames: string[] }
@@ -31,7 +31,7 @@ function publish(feed: Feed) {
 export function putAwards(list: AwardRow[]) {
   return publish({
     ...(cache ?? EMPTY),
-    awards: list.filter((a) => a.done && !a.claimed).map(({ id, tier, family }) => ({ id, tier, family })),
+    awards: list.filter((a) => a.done && !a.claimed).map(({ id, tier, family, kind }) => ({ id, tier, family, kind })),
   })
 }
 

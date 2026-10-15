@@ -460,7 +460,7 @@ function Bell() {
               </li>
             ))}
             {awards.map((award) => (
-              <li key={award.id} className={`bell-item tier-${award.tier}`}>
+              <li key={award.id} className={`bell-item ${award.kind === 'season' ? 'is-season' : `tier-${award.tier}`}`}>
                 <Link className="bell-card" href={href.achievements} onClick={() => setOpen(false)} prefetch={false}>
                   <small>{t('ach.fresh')}</small>
                   <span className="bell-main">
@@ -470,9 +470,11 @@ function Bell() {
                     <span className="bell-body">
                       <b>{t(`ach.${award.id}` as UiKey)}</b>
                       <span className="bell-hint">{t(`ach.${award.id}.hint` as UiKey)}</span>
-                      <span className="bell-tags">
-                        <em>{t(`achTier.${award.tier}` as UiKey)}</em>
-                      </span>
+                      {award.kind !== 'season' && (
+                        <span className="bell-tags">
+                          <em>{t(`achTier.${award.tier}` as UiKey)}</em>
+                        </span>
+                      )}
                     </span>
                   </span>
                 </Link>

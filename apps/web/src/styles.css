@@ -7750,6 +7750,15 @@ html[data-auth] .guest-note {
   height: 36px;
 }
 
+.bell-mark .icon.award-art {
+  width: 44px;
+  height: 44px;
+}
+
+.bell-item.is-season {
+  --tier: #7f9bd1;
+}
+
 @media (max-width: 720px) {
   .awards-chip .icon.award-art,
   .awards-lift .icon.award-art {
