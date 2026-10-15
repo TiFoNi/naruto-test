@@ -260,6 +260,46 @@
   border: 1px solid transparent;
   border-radius: 18px;
   background: var(--card-2);
+  animation: tile-float 9s ease-in-out infinite;
+}
+
+.profile-facts .hero-tile:nth-child(2) {
+  animation-duration: 11.5s;
+  animation-delay: -3.5s;
+}
+
+.profile-facts .hero-tile:nth-child(3) {
+  animation-duration: 10.5s;
+  animation-delay: -6s;
+}
+
+.profile-facts .hero-tile:nth-child(4) {
+  animation-duration: 12.5s;
+  animation-delay: -1.5s;
+}
+
+.hero-tile:hover {
+  animation-play-state: paused;
+}
+
+@keyframes tile-float {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -3px, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-tile {
+    animation: none;
+  }
 }
 
 .hero-tile.is-modes {
@@ -468,7 +508,7 @@
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 14px;
 }
 
 .profile-facts .fact {

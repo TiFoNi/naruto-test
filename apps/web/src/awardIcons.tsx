@@ -108,6 +108,7 @@ const ART: Record<string, string> = {
   streak: 'streak',
   polyglot: 'polyglot',
   duelWins: 'duelWins',
+  boardWins: 'boardWins',
   sniperDay: 'sniperDay',
   solved: 'solved',
   daily: 'daily',
