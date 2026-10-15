@@ -17,6 +17,16 @@ export default function SocialGlyph({ id }: { id: string }) {
         <path d="M14.6 2.5h2.8c.2 1.6 1.1 3 2.5 3.7.6.3 1.3.5 2 .5v2.9c-1.7 0-3.3-.5-4.7-1.4v6.5c0 3.4-2.8 6.2-6.2 6.2S4.8 18.1 4.8 14.7s2.8-6.2 6.2-6.2c.4 0 .7 0 1.1.1v3c-.3-.1-.7-.2-1.1-.2-1.8 0-3.3 1.5-3.3 3.3S9.2 18 11 18s3.3-1.5 3.3-3.3V2.5z" />
       </svg>
     );
+  if (id === "mail")
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden>
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M5.4 5.2h13.2c1.5 0 2.7 1.2 2.7 2.7v8.2c0 1.5-1.2 2.7-2.7 2.7H5.4a2.7 2.7 0 0 1-2.7-2.7V7.9c0-1.5 1.2-2.7 2.7-2.7Zm.5 2.6-.9 1.3 6.3 4.4c.4.3 1 .3 1.4 0l6.3-4.4-.9-1.3L12 11.8 5.9 7.8Z"
+        />
+      </svg>
+    );
   if (id === "yt")
     return (
       <svg viewBox="0 0 24 24" aria-hidden>

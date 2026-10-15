@@ -4,7 +4,6 @@ import Link from "next/link";
 import { BRAND } from "./brand";
 import { CONTACT, SOCIALS } from "./contacts";
 import { useI18n } from "./i18n";
-import { MailIcon } from "./icons";
 import { useHref } from "./router";
 import SocialGlyph from "./SocialGlyph";
 
@@ -58,9 +57,13 @@ export default function Footer() {
         >
           <h2>{t("footer.contact")}</h2>
           {CONTACT.email && (
-            <a className="footer-note" href={`mailto:${CONTACT.email}`}>
+            <a
+              className="footer-note is-mail"
+              href={`mailto:${CONTACT.email}`}
+              style={{ "--social": "#f0862a" } as React.CSSProperties}
+            >
               <i aria-hidden>
-                <MailIcon />
+                <SocialGlyph id="mail" />
               </i>
               <span>
                 <small>{t("footer.mailHint")}</small>
