@@ -7260,21 +7260,20 @@ html[data-auth] .guest-note {
 
 .site-footer {
   margin: 60px calc(50% - 50vw) 0;
-  padding: 72px max(var(--gutter), calc(50vw - 700px)) 40px;
+  padding: 72px max(var(--gutter), calc(50vw - 700px)) 34px;
   width: 100vw;
   border-top: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
   color: var(--text);
 }
 
 .footer-top {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px 72px;
-  padding-bottom: 44px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) repeat(2, minmax(0, 0.85fr));
+  gap: 40px;
+  padding-bottom: 36px;
 }
 
 .footer-brand {
-  flex: 0 1 340px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -7300,36 +7299,35 @@ html[data-auth] .guest-note {
 
 .footer-brand p {
   margin: 0;
+  max-width: 330px;
   color: var(--text-2);
   font-size: 14px;
   line-height: 1.6;
 }
 
 .footer-col {
-  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 11px;
   min-width: 0;
 }
 
 .footer-col h2 {
-  margin: 0 0 2px;
-  color: var(--text-2);
-  font-family: var(--font-body), system-ui, sans-serif;
-  font-size: 12px;
+  margin: 0 0 4px;
+  color: var(--text);
+  font-family: var(--display);
+  font-size: 15px;
   font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
 }
 
 .footer-col a {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: #fff;
-  font-size: 15px;
+  color: var(--text-2);
+  font-size: 14.5px;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.16s;
@@ -7341,55 +7339,295 @@ html[data-auth] .guest-note {
 
 .footer-socials {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 330px;
+  margin-top: 2px;
+}
+
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 12px;
+  border: 1px solid color-mix(in srgb, var(--social) 24%, var(--line));
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--social) 7%, transparent);
+  color: var(--text);
+  text-decoration: none;
+  transition:
+    border-color 0.16s ease,
+    background 0.16s ease,
+    transform 0.16s ease;
+}
+
+.footer-social:hover {
+  border-color: color-mix(in srgb, var(--social) 60%, transparent);
+  background: color-mix(in srgb, var(--social) 13%, transparent);
+  transform: translateY(-2px);
+}
+
+.footer-social i {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--social) 92%, #ffffff), var(--social));
+  color: #ffffff;
+}
+
+.footer-social i svg {
+  width: 19px;
+  height: 19px;
+  fill: currentColor;
+}
+
+.footer-social span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.footer-social b {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.footer-social small {
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.footer-social-go {
+  width: 17px;
+  height: 17px;
+  margin-left: auto;
+  fill: none;
+  stroke: color-mix(in srgb, var(--social) 70%, #ffffff);
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.75;
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease;
+}
+
+.footer-social:hover .footer-social-go {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+.footer-social.is-tiktok i,
+.social-card.is-tiktok .social-mark {
+  background: linear-gradient(160deg, #26262c, #09090b);
+}
+
+.tiktok-cyan {
+  fill: #25f4ee;
+  transform: translate(-0.9px, -0.9px);
+}
+
+.tiktok-red {
+  fill: #fe2c55;
+  transform: translate(0.9px, 0.9px);
+}
+
+.footer-note {
+  display: flex;
+  align-items: center;
   gap: 10px;
-  margin-top: 4px;
+  color: var(--text);
 }
 
-.footer-socials a {
-  padding: 8px 14px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  font-size: 13px;
+.footer-support {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  max-width: 330px;
+  margin-top: 2px;
+  padding: 10px 13px;
+  border: 1px solid color-mix(in srgb, var(--social) 32%, var(--line));
+  border-radius: 16px;
+  background:
+    radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--social) 14%, transparent), transparent 64%),
+    var(--card-2);
 }
 
-.footer-socials a:hover {
-  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+.footer-support i {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--social) 92%, #ffffff), var(--social));
+  color: #ffffff;
+  animation: patch-drift 9s ease-in-out infinite;
+}
+
+.footer-support i svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.footer-support span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.footer-support b {
+  font-size: 14.5px;
+  font-weight: 800;
+}
+
+.footer-support small {
+  color: var(--text-3);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.footer-note {
+  transition: color 0.16s ease;
+}
+
+.footer-note:hover {
+  color: var(--social, var(--accent));
+}
+
+.footer-note i {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: 1px solid color-mix(in srgb, var(--social, var(--line)) 34%, var(--line));
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--social, transparent) 12%, var(--card-2));
+  color: var(--social, var(--accent));
+}
+
+.footer-note.is-tiktok i {
+  background: linear-gradient(160deg, #26262c, #09090b);
+  color: #ffffff;
+}
+
+.footer-note i svg {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
+}
+
+.footer-note i .icon {
+  width: 17px;
+  height: 17px;
+  fill: none;
+}
+
+.footer-note span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.footer-note small {
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.footer-note b {
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .footer-fine {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-top: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  padding-top: 20px;
+  border-top: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
   color: var(--text-3);
-  font-size: 12.5px;
-  line-height: 1.6;
-}
-
-.footer-fine p {
-  margin: 0;
-  max-width: 900px;
-}
-
-.footer-sources {
-  color: color-mix(in srgb, var(--text-3) 78%, transparent);
-  font-size: 11.5px;
+  font-size: 13px;
 }
 
 .footer-copy {
-  margin-top: 6px;
-  color: var(--text-3);
+  margin: 0;
   font-weight: 700;
 }
 
-@media (max-width: 900px) {
-  .footer-top {
-    gap: 30px 48px;
-  }
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-left: auto;
+}
 
-  .footer-brand {
-    flex-basis: 100%;
+.footer-legal a {
+  color: var(--text-3);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.16s;
+}
+
+.footer-legal a:hover {
+  color: var(--accent);
+}
+
+.footer-disclaimer {
+  margin: 14px 0 0;
+  max-width: 900px;
+  color: color-mix(in srgb, var(--text-3) 82%, transparent);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.sources-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px 24px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sources-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sources-list a {
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.sources-list a:hover {
+  color: var(--accent);
+}
+
+.sources-list small {
+  color: var(--text-3);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+@media (max-width: 1040px) {
+  .footer-top {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 34px 40px;
   }
 }
 
@@ -7399,9 +7637,13 @@ html[data-auth] .guest-note {
   }
 
   .footer-top {
-    flex-direction: column;
-    gap: 26px;
-    padding-bottom: 30px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    padding-bottom: 26px;
+  }
+
+  .footer-legal {
+    margin-left: 0;
   }
 }
 

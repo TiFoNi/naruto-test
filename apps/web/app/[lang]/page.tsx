@@ -18,7 +18,9 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <Dashboard games={games} />
-      <HomeAbout lang={lang as Lang} games={games} />
+      <div className="seo-only">
+        <HomeAbout lang={lang as Lang} games={games} />
+      </div>
     </>
   )
 }
