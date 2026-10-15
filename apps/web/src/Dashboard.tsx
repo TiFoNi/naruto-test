@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointer } from 'react'
 import { useAuth } from './auth'
 import type { GameMeta } from './games/meta'
 import type { Category } from './games/types'
@@ -70,46 +70,129 @@ const favourite = (games: GameMeta[], stats: Record<string, Stats>) => {
     .sort((one, two) => (score.get(two.id) ?? 0) - (score.get(one.id) ?? 0) || two.plays - one.plays)[0]
 }
 
+type Slide = { id: string; accent: string; art: string; kicker: string; done?: boolean; title: string; lead: string; cta: string; href: string }
+
+const SPIN = 7000
+
 function DailyCard({ games }: { games: GameMeta[] }) {
   const { t, l } = useI18n()
   const href = useHref()
   const { stats } = useAuth()
+  const [shown, setShown] = useState(0)
+  const swipe = useRef<{ x: number; y: number } | null>(null)
 
-  const game = useMemo(() => favourite(games, stats), [games, stats])
-  if (!game) return null
-
-  const mode = (game.modes.find((one) => DAILY_XP_MODES.includes(one)) ?? 'classic') as ModeId
   const today = kyivToday()
-  const done = stats[dailyKey(game.id, mode)]?.lastDay === today
-  const titles = game.unit === 'manga'
+  const loved = useMemo(() => favourite(games, stats), [games, stats])
+  const shots = games.find((one) => one.id === 'shots')
+  const hot = useMemo(() => {
+    const rank = [...games].filter((one) => one.modes.some((mode) => DAILY_XP_MODES.includes(mode))).sort((one, two) => two.plays - one.plays)
+    const second = rank[1]
+    return second && second.id !== loved?.id ? second : rank.find((one) => one.id !== loved?.id)
+  }, [games, loved])
+
+  const daily = (game: GameMeta, kicker: string): Slide => {
+    const mode = (game.modes.find((one) => DAILY_XP_MODES.includes(one)) ?? 'classic') as ModeId
+    const titles = game.unit === 'manga'
+    return {
+      id: `${game.id}-${mode}`,
+      accent: game.accent,
+      art: `/worlds/big/${game.id}.webp`,
+      kicker,
+      done: stats[dailyKey(game.id, mode)]?.lastDay === today,
+      title: titles ? t('dash.dailyTitleManga') : t('dash.dailyTitle', { world: l(game.label) }),
+      lead: t(titles ? 'dash.dailyLeadManga' : 'dash.dailyLead'),
+      cta: t('dash.playDaily'),
+      href: href.play(game.id, mode, true),
+    }
+  }
+
+  const slides: Slide[] = []
+  if (loved) slides.push(daily(loved, `${t('dash.dailyKicker')} · #${dailyNumber(today)}`))
+  if (shots)
+    slides.push({
+      id: 'shots',
+      accent: shots.accent,
+      art: `/worlds/big/${shots.id}.webp`,
+      kicker: t('dash.newMode'),
+      title: t('mode.shot'),
+      lead: t('mode.shot.desc'),
+      cta: t('dash.tryMode'),
+      href: href.play(shots.id, 'shot'),
+    })
+  if (hot) slides.push(daily(hot, t('dash.hotWorld')))
+
+  const count = slides.length
+  const at = count ? shown % count : 0
+  const slide = slides[at]
+
+  useEffect(() => {
+    if (count < 2) return
+    const timer = window.setInterval(() => setShown((one) => (one + 1) % count), SPIN)
+    return () => window.clearInterval(timer)
+  }, [count, shown])
+
+  if (!slide) return null
+
+  const start = (event: ReactPointer<HTMLElement>) => {
+    swipe.current = { x: event.clientX, y: event.clientY }
+  }
+
+  const end = (event: ReactPointer<HTMLElement>) => {
+    const from = swipe.current
+    swipe.current = null
+    if (!from || count < 2) return
+    const dx = event.clientX - from.x
+    if (Math.abs(dx) < 45 || Math.abs(event.clientY - from.y) > Math.abs(dx)) return
+    setShown((one) => (one + (dx < 0 ? 1 : count - 1)) % count)
+  }
 
   return (
-    <section className="hero-daily" style={{ '--world-accent': game.accent } as CSSProperties}>
-      <img className="hero-daily-art" src={`/worlds/big/${game.id}.webp`} alt="" aria-hidden width={448} height={448} />
+    <section
+      className="hero-daily"
+      style={{ '--world-accent': slide.accent } as CSSProperties}
+      onPointerDown={start}
+      onPointerUp={end}
+      onPointerCancel={() => (swipe.current = null)}
+    >
+      <img key={slide.art} className="hero-daily-art" src={slide.art} alt="" aria-hidden width={448} height={448} />
 
-      <span className="hero-daily-kicker">
-        <i aria-hidden />
-        {t('dash.dailyKicker')} · #{dailyNumber(today)}
-        {done && (
-          <em>
-            <CheckIcon />
-            {t('dash.dailyDone')}
-          </em>
-        )}
-      </span>
+      <div key={slide.id} className="hero-daily-copy">
+        <span className="hero-daily-kicker">
+          <i aria-hidden />
+          {slide.kicker}
+          {slide.done && (
+            <em>
+              <CheckIcon />
+              {t('dash.dailyDone')}
+            </em>
+          )}
+        </span>
 
-      <h1>{titles ? t('dash.dailyTitleManga') : t('dash.dailyTitle', { world: l(game.label) })}</h1>
-      <p>{t(titles ? 'dash.dailyLeadManga' : 'dash.dailyLead')}</p>
+        <h1>{slide.title}</h1>
+        <p>{slide.lead}</p>
 
-      <div className="hero-daily-actions">
-        <Link className="primary" href={href.play(game.id, mode, true)} prefetch={false}>
-          {t('dash.playDaily')}
-          <ArrowIcon />
-        </Link>
-        <Link className="ghost" href={href.play(game.id, mode)} prefetch={false}>
-          {t('daily.endless')}
-        </Link>
+        <div className="hero-daily-actions">
+          <Link className="primary" href={slide.href} prefetch={false}>
+            {slide.cta}
+            <ArrowIcon />
+          </Link>
+        </div>
       </div>
+
+      {count > 1 && (
+        <div className="hero-dots">
+          {slides.map((one, index) => (
+            <button
+              key={one.id}
+              type="button"
+              className={index === at ? 'active' : ''}
+              aria-label={t('dash.slide', { number: index + 1 })}
+              aria-current={index === at}
+              onClick={() => setShown(index)}
+            />
+          ))}
+        </div>
+      )}
     </section>
   )
 }
