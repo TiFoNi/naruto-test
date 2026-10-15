@@ -7,7 +7,6 @@ import Avatar from './Avatar'
 import Background from './Background'
 import AwardFilters from './awardFilters'
 import InstallBanner from './InstallBanner'
-import { useInstall } from './install'
 import AwardIcon from './awardIcons'
 import DuelDock from './DuelDock'
 import DuelSkeleton from './DuelSkeleton'
@@ -17,27 +16,13 @@ import ChallengeSkeleton from './ChallengeSkeleton'
 import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
-import { dropFrames, dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type Feed } from './awards'
+import { dropFrames, dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type DuelInvite, type Feed } from './awards'
 import { FRAMES, frameUrl } from './frames'
 import { MODE_XP, MODE_XP_AFTER } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
-import {
-  BellIcon,
-  ChevronIcon,
-  CloseIcon,
-  ExitIcon,
-  GearIcon,
-  InfoIcon,
-  DownIcon,
-  MenuIcon,
-  PodiumIcon,
-  ShopIcon,
-  SwordsIcon,
-  UserIcon,
-  UsersIcon,
-} from './icons'
+import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MenuIcon, PodiumIcon, ShopIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { api } from './api'
 import { openStream } from './stream'
 import { gameById } from './games'
@@ -47,7 +32,24 @@ import { useBeforePaint } from './paint'
 import { useHref, useNavigate, useVisitTracker } from './router'
 
 const PUBLIC = new Set(['', 'play', 'privacy', 'terms'])
-const SECTIONS = new Set(['', 'achievements', 'admin', 'c', 'duel', 'duels', 'friends', 'leaderboard', 'login', 'play', 'privacy', 'profile', 'settings', 'terms', 'u', 'worlds'])
+const SECTIONS = new Set([
+  '',
+  'achievements',
+  'admin',
+  'c',
+  'duel',
+  'duels',
+  'friends',
+  'leaderboard',
+  'login',
+  'play',
+  'privacy',
+  'profile',
+  'settings',
+  'terms',
+  'u',
+  'worlds',
+])
 
 function useDropdown(open: boolean, setOpen: (open: boolean) => void) {
   const box = useRef<HTMLDivElement>(null)
@@ -72,7 +74,6 @@ function useDropdown(open: boolean, setOpen: (open: boolean) => void) {
 function NavMenu({ user, section }: { user: boolean; section?: string }) {
   const { t } = useI18n()
   const href = useHref()
-  const { ready, installed, run } = useInstall()
   const [open, setOpen] = useState(false)
   const box = useDropdown(open, setOpen)
   const onDuels = section === 'duels' || section === 'duel'
@@ -108,21 +109,6 @@ function NavMenu({ user, section }: { user: boolean; section?: string }) {
               {t('nav.leaderboard')}
             </Link>
           </>
-        )}
-        {ready && !installed && (
-          <button
-            type="button"
-            className="topbar-nav-get"
-            onClick={() => {
-              setOpen(false)
-              void run()
-            }}
-          >
-            <span className="topbar-nav-icon" aria-hidden>
-              <DownIcon />
-            </span>
-            {t('install.go')}
-          </button>
         )}
       </nav>
     </div>
@@ -289,6 +275,7 @@ function AccountMenu({ nickname, level, section, id, avatar }: { nickname: strin
 
 const HIDDEN = 'nanda.seen-awards'
 const POLL_MS = 60_000
+const TOAST_MS = 10_000
 
 const readHidden = () => {
   try {
@@ -309,6 +296,9 @@ function Bell() {
   const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [], frames: [] })
   const [hidden, setHidden] = useState<Set<string>>(() => new Set())
   const [busy, setBusy] = useState(false)
+  const [toast, setToast] = useState<DuelInvite | null>(null)
+  const known = useRef<Map<string, string> | null>(null)
+  const since = useRef(Date.now())
 
   useEffect(() => {
     setHidden(readHidden())
@@ -327,6 +317,26 @@ function Bell() {
       window.removeEventListener('focus', tick)
     }
   }, [])
+
+  useEffect(() => {
+    const seen = known.current
+    known.current = new Map(feed.invites.map((one) => [one.code, one.at]))
+    if (!seen) return
+
+    const latest = feed.invites.find((one) => seen.get(one.code) !== one.at && new Date(one.at).getTime() >= since.current)
+    if (latest) setToast(latest)
+  }, [feed.invites])
+
+  useEffect(() => {
+    if (!toast) return
+    const timer = window.setTimeout(() => setToast(null), TOAST_MS)
+    return () => window.clearTimeout(timer)
+  }, [toast])
+
+  useEffect(() => {
+    if (!toast) return
+    if (open || !feed.invites.some((one) => one.code === toast.code)) setToast(null)
+  }, [open, feed.invites, toast])
 
   const fresh = feed.frames.filter((id) => !(user?.frames ?? []).includes(id)).join(',')
   useEffect(() => {
@@ -386,6 +396,49 @@ function Bell() {
         <BellIcon />
         {count > 0 && <i className="bell-count">{count}</i>}
       </button>
+
+      {toast && !open && (
+        <div className="bell-menu bell-pop" role="status" style={{ '--toast': `${TOAST_MS}ms` } as React.CSSProperties}>
+          <i className="bell-pop-tip" aria-hidden />
+          <div className="bell-item is-duel">
+            <div key={`${toast.code}-${toast.at}`} className="bell-card">
+              <small>{t('duel.inviteNew')}</small>
+              <span className="bell-main">
+                <span className="bell-mark" aria-hidden>
+                  <SwordsIcon />
+                </span>
+                <span className="bell-body">
+                  <b>{t('duel.inviteFrom', { name: toast.from })}</b>
+                  <span className="bell-tags">
+                    {toast.game && <em>{l(gameById(toast.game as GameId).label)}</em>}
+                    {toast.mode && <em>{t((MODES.find((one) => one.id === toast.mode) ?? MODES[0]).label)}</em>}
+                    <em>{t('duel.rounds', { count: toast.best })}</em>
+                  </span>
+                </span>
+              </span>
+              <span className="bell-actions">
+                <button type="button" className="primary" disabled={busy} onClick={() => accept(toast.code)}>
+                  {t('duel.accept')}
+                </button>
+                <button
+                  type="button"
+                  className="ghost"
+                  disabled={busy}
+                  onClick={() => {
+                    setToast(null)
+                    void decline(toast.code)
+                  }}
+                >
+                  {t('duel.declineInvite')}
+                </button>
+              </span>
+            </div>
+            <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} onClick={() => setToast(null)}>
+              <CloseIcon />
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="bell-menu">
         <div className="bell-head">
@@ -463,7 +516,15 @@ function Bell() {
             ))}
             {frames.map((frame) => (
               <li key={frame.id} className="bell-item is-frame">
-                <Link className="bell-card" href={href.settings} onClick={() => { setOpen(false); seenFrames() }} prefetch={false}>
+                <Link
+                  className="bell-card"
+                  href={href.settings}
+                  onClick={() => {
+                    setOpen(false)
+                    seenFrames()
+                  }}
+                  prefetch={false}
+                >
                   <small>{t('frame.fresh')}</small>
                   <span className="bell-main">
                     <span className="bell-mark bell-frame" aria-hidden style={{ backgroundImage: `url(${frameUrl(frame.id)})` }} />
