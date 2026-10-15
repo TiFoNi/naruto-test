@@ -15,40 +15,7 @@
   flex-wrap: wrap;
 }
 
-.awards-filters {
-  position: relative;
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  padding: 5px;
-  border: 1px solid color-mix(in srgb, #ffffff 8%, transparent);
-  border-radius: 15px;
-  background: rgba(255, 255, 255, 0.035);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 18px 38px rgba(0, 0, 0, 0.22);
-}
-
-.awards-filters button {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  padding: 8px 14px;
-  white-space: nowrap;
-  border: 0;
-  border-radius: 11px;
-  background: none;
-  color: var(--text-2);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.18s, color 0.18s;
-}
-
-.awards-filters button b {
+.awards-rail .rail-chips button b {
   min-width: 2.4ch;
   color: var(--text-3);
   font-size: 12px;
@@ -56,19 +23,9 @@
   text-align: right;
 }
 
-.awards-filters button:hover {
-  color: var(--text);
-}
-
-.awards-filters button.active {
-  color: var(--text);
-}
-
-.awards-filters button.active b {
+.awards-rail .rail-chips button.active b {
   color: var(--text-2);
 }
-
-
 
 .awards-group {
   display: flex;
@@ -700,8 +657,12 @@
 
 .awards-slots {
   display: grid;
-  grid-template-columns: repeat(8, 40px);
+  grid-template-columns: repeat(auto-fill, 40px);
+  justify-content: start;
+  flex: 1 1 100%;
   gap: 8px;
+  width: 100%;
+  min-width: 0;
 }
 
 .awards-seat {
@@ -913,6 +874,10 @@
     gap: 6px;
   }
 
+  .awards-shelf-label {
+    flex: 1 1 100%;
+  }
+
   .awards-seat {
     width: 36px;
     height: 36px;
@@ -935,14 +900,5 @@
     gap: 10px;
   }
 
-  .awards-filters {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 100%;
-  }
-
-  .awards-filters button {
-    justify-content: center;
-  }
 
 }

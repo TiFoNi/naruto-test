@@ -89,6 +89,7 @@ const ICONS: Record<string, ComponentType<{ className?: string }>> = {
 
 const ART: Record<string, string> = {
   sniper: 'sniper',
+  firstTry: 'firstTry',
   sharpEye: 'sharpEye',
   owlMarathon: 'owlMarathon',
   duelPlayed: 'duelPlayed',

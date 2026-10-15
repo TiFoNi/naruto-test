@@ -10482,6 +10482,18 @@ html[data-auth] .guest-note {
   mask-image: linear-gradient(90deg, transparent 0, #000 58px, #000 calc(100% - 58px), transparent 100%);
 }
 
+.cat-rail.has-left .rail-track {
+  border-left: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.cat-rail.has-right .rail-track {
+  border-right: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 .support-page {
   display: flex;
   flex-direction: column;

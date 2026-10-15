@@ -577,7 +577,7 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
           </section>
 
           <div className="awards-sort">
-            <div className="awards-filters" role="tablist" ref={tabs}>
+            <Rail className="cat-rail awards-rail" trackClass="rail-chips" innerRef={tabs}>
               <span className={`seg-ink ${ink ? 'is-set' : ''}`} style={ink ? { transform: `translate(${ink.x}px, ${ink.y}px)`, width: ink.w, height: ink.h } : undefined} aria-hidden />
               {FILTERS.map(({ id, label }) => (
                 <button
@@ -592,7 +592,7 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
                   {t(label)} <b>{counts[id]}</b>
                 </button>
               ))}
-            </div>
+            </Rail>
 
             <Rail trackClass="rail-chips">
               <button type="button" className={group === 'all' ? 'active' : ''} onClick={() => setGroup('all')}>
