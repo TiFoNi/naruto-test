@@ -253,4 +253,39 @@
   .world-chips {
     margin-top: 0;
   }
+
+  .world-grid {
+    gap: 10px;
+  }
+
+  .world-card-main {
+    gap: 2px 12px;
+    padding: 14px;
+  }
+
+  .world-card-mark {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+  }
+
+  .world-card-mark .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .world-card-name {
+    font-size: 15.5px;
+  }
+
+  .world-card-desc {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    min-height: 0;
+  }
+
+  .world-card-foot {
+    min-height: 42px;
+    padding: 7px 14px;
+  }
 }
