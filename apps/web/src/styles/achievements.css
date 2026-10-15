@@ -49,9 +49,11 @@
 }
 
 .awards-filters button b {
+  min-width: 2.4ch;
   color: var(--text-3);
   font-size: 12px;
   font-variant-numeric: tabular-nums;
+  text-align: right;
 }
 
 .awards-filters button:hover {
