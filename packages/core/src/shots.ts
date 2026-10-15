@@ -27,8 +27,11 @@ const nextVariant = (count: number, last?: number) => {
 async function pickTitle(seen: number[], last?: number[]) {
   const pool = (await gameData(GAME)).pool
   if (!pool.length) return null
-  const fresh = pool.filter((one) => !seen.includes(one.id))
-  const choices = fresh.length ? fresh : pool
+  const window = Math.max(1, Math.floor(pool.length * 0.6))
+  const recent = seen.slice(-window)
+  const fresh = pool.filter((one) => !recent.includes(one.id))
+  const choices = fresh.length ? fresh : pool.filter((one) => one.id !== seen[seen.length - 1])
+  if (!choices.length) return null
   const title = choices[Math.floor(Math.random() * choices.length)]
   const counts = Array.isArray(title.frames) ? (title.frames as number[]) : []
   const same = title.id === seen[seen.length - 1] ? last : undefined
@@ -62,7 +65,7 @@ export async function shotRun(userId: ObjectId, guest: boolean, fresh = false) {
   if (!fresh && found?.status === 'playing' && found.answerId !== undefined) return view(found)
   if (!fresh && found?.status === 'over') return view(found)
 
-  const next = await pickTitle(found?.seen?.slice(-1) ?? [], found?.variant)
+  const next = await pickTitle(found?.seen ?? [], found?.variant)
   if (!next) return null
 
   const now = new Date()
@@ -77,7 +80,7 @@ export async function shotRun(userId: ObjectId, guest: boolean, fresh = false) {
     score: 0,
     streak: 0,
     best: found?.best ?? 0,
-    seen: [next.id],
+    seen: [...(found?.seen ?? []), next.id].slice(-60),
     status: 'playing',
     createdAt: found?.createdAt ?? now,
     updatedAt: now,
