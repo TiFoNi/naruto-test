@@ -155,6 +155,34 @@ export type EntityDoc = Record<string, unknown> & {
 
 export type SettingsDoc = { game: string; updated?: string; atlas?: string }
 
+export type PurchaseDoc = {
+  _id?: ObjectId
+  userId: ObjectId
+  packId: string
+  base: number
+  bonus: number
+  usd: number
+  provider: string
+  orderId: string
+  invoiceId?: string
+  paymentId?: string
+  payCurrency?: string
+  got?: number
+  need?: number
+  status: 'pending' | 'paid' | 'partial' | 'failed' | 'refunded'
+  createdAt: Date
+  updatedAt?: Date
+}
+
+export type LedgerDoc = {
+  _id?: ObjectId
+  userId: ObjectId
+  delta: number
+  reason: 'purchase' | 'refund'
+  purchaseId: ObjectId
+  at: Date
+}
+
 export type QuestDoc = { _id: string; userId: ObjectId; day: string; picks: string[]; claimed: string[]; createdAt: Date }
 
 export type StreakDoc = {
@@ -220,6 +248,8 @@ const cache = globalThis as typeof globalThis & {
   __seasonsIndexed?: Promise<unknown>
   __streaksIndexed?: Promise<unknown>
   __shotsIndexed?: Promise<unknown>
+  __purchasesIndexed?: Promise<unknown>
+  __ledgerIndexed?: Promise<unknown>
 }
 
 export const database = async () => (await client()).db(process.env.MONGODB_DB || 'nandaguessr')
@@ -374,6 +404,33 @@ export async function seasons(): Promise<Collection<SeasonDoc>> {
     throw error
   })
   await cache.__seasonsIndexed
+  return collection
+}
+
+export async function purchases(): Promise<Collection<PurchaseDoc>> {
+  const collection = (await database()).collection<PurchaseDoc>('purchases')
+  cache.__purchasesIndexed ??= Promise.all([
+    collection.createIndex({ orderId: 1 }, { unique: true }),
+    collection.createIndex({ userId: 1, createdAt: -1 }),
+    collection.createIndex({ provider: 1, paymentId: 1 }),
+  ]).catch((error) => {
+    cache.__purchasesIndexed = undefined
+    throw error
+  })
+  await cache.__purchasesIndexed
+  return collection
+}
+
+export async function coinLedger(): Promise<Collection<LedgerDoc>> {
+  const collection = (await database()).collection<LedgerDoc>('coinLedger')
+  cache.__ledgerIndexed ??= Promise.all([
+    collection.createIndex({ userId: 1, at: -1 }),
+    collection.createIndex({ purchaseId: 1, reason: 1 }, { unique: true }),
+  ]).catch((error) => {
+    cache.__ledgerIndexed = undefined
+    throw error
+  })
+  await cache.__ledgerIndexed
   return collection
 }
 

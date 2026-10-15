@@ -1,3 +1,5 @@
+export * from './packs'
+
 export type GameId =
   | 'marvel'
   | 'football'

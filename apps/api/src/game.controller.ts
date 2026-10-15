@@ -5,6 +5,8 @@ import * as me from '@nanda/core/endpoints/me'
 import * as admin from '@nanda/core/endpoints/admin'
 import * as summary from '@nanda/core/endpoints/profile-summary'
 import * as quests from '@nanda/core/endpoints/quests'
+import * as shop from '@nanda/core/endpoints/shop'
+import * as shopWebhook from '@nanda/core/endpoints/shop-webhook'
 import * as push from '@nanda/core/endpoints/push'
 import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as adminShots from '@nanda/core/endpoints/admin-shots'
@@ -110,6 +112,21 @@ export class GameController {
   @Post('admin/shots/drop')
   adminShotDrop(@Req() req: Request, @Res() res: Response) {
     return bridge(adminShots.DROP, req, res)
+  }
+
+  @Get('shop')
+  shopPacks(@Req() req: Request, @Res() res: Response) {
+    return bridge(shop.GET, req, res)
+  }
+
+  @Post('shop/checkout')
+  shopCheckout(@Req() req: Request, @Res() res: Response) {
+    return bridge(shop.POST, req, res)
+  }
+
+  @Post('shop/webhook')
+  shopWebhook(@Req() req: Request, @Res() res: Response) {
+    return bridge(shopWebhook.POST, req, res)
   }
 
   @Get('quests')
