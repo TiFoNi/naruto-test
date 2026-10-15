@@ -102,6 +102,7 @@ const ART: Record<string, string> = {
   modeTour: 'modeTour',
   modeClassic: 'modeClassic',
   modeImage: 'modeImage',
+  modeAbility: 'modeAbility',
   modeOdd: 'modeOdd',
   modePage: 'modePage',
   modePhrase: 'modePhrase',
