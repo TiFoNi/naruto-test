@@ -83,10 +83,7 @@ export default function SeasonBoard() {
   const gone = from ? Math.min(1, Math.max(0, (now - from.getTime()) / span)) : 0
 
   const rows = board?.rows ?? []
-  const me = board?.me ?? null
   const peak = Math.max(1, ...rows.map((row) => row.xp))
-  const crowd = (board?.total ?? 0) >= 10
-  const share = me && board ? Math.max(1, Math.round((me.rank / Math.max(1, board.total)) * 100)) : 0
 
   return (
     <div className="leaderboard season-board">
@@ -210,32 +207,6 @@ export default function SeasonBoard() {
         </section>
 
         <aside className="lb-side">
-          <section className="card lb-me season-me">
-            <span className="play-card-title">{t('lb.yourPosition')}</span>
-            {me ? (
-              <>
-                <p className="season-place">
-                  <b>#{me.rank}</b>
-                  <span>{t('lb.outOf', { total: board?.total ?? 0 })}</span>
-                </p>
-                <div className="season-chips">
-                  {crowd && <span className="season-chip">{t('lb.topShare', { percent: share })}</span>}
-                </div>
-                <div className="season-goal">
-                  <span>
-                    {t('lb.toTop100')}
-                    <em>{board && board.toTop > 0 ? t('lb.moreXp', { xp: board.toTop }) : t('lb.inTop100')}</em>
-                  </span>
-                  <span className="season-line">
-                    <i style={{ width: `${board && board.toTop > 0 ? Math.min(96, Math.round((me.xp / (me.xp + board.toTop)) * 100)) : 100}%` }} />
-                  </span>
-                </div>
-              </>
-            ) : (
-              <p className="muted">{t('lb.seasonNoRank')}</p>
-            )}
-          </section>
-
           <section className="card season-how">
             <span className="play-card-title">{t('lb.howTitle')}</span>
             <ol>

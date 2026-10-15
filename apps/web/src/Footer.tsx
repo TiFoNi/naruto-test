@@ -27,8 +27,9 @@ export default function Footer() {
           </span>
           <p>{t("footer.tagline")}</p>
 
-          <span
+          <Link
             className="footer-support"
+            href={href.support}
             style={{ "--social": "#ff9a3d" } as React.CSSProperties}
           >
             <i aria-hidden>
@@ -38,7 +39,7 @@ export default function Footer() {
               <b>{t("social.support")}</b>
               <small>{t("social.support.hint")}</small>
             </span>
-          </span>
+          </Link>
         </div>
 
         <nav className="footer-col" aria-label={t("footer.nav")}>

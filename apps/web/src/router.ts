@@ -25,6 +25,7 @@ export function hrefs(lang: Lang) {
     privacy: at('/privacy'),
     terms: at('/terms'),
     sources: at('/sources'),
+    support: at('/support'),
     duel: (code: string) => at(`/duel/${code}`),
     challenge: (code: string) => at(`/c/${code}`),
     world: (game: GameId) => at(`/play/${game}`),

@@ -110,6 +110,7 @@ const ART: Record<string, string> = {
   duelWins: 'duelWins',
   sniperDay: 'sniperDay',
   solved: 'solved',
+  daily: 'daily',
   seasonSolved: 'season',
   seasonDays: 'season',
   seasonDaily: 'season',
