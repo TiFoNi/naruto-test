@@ -103,7 +103,7 @@
 .profile-hero-id {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 14px;
   min-width: 0;
 }
 
@@ -119,18 +119,14 @@
   border-radius: 50%;
 }
 
-.profile-hero-id .avatar.has-frame,
-.profile-hero-id .ava-trigger:has(.avatar.has-frame) {
+.profile-hero-id > .avatar,
+.profile-hero-id > .ava-trigger {
   margin: 16px;
 }
 
 .profile-hero-id .avatar:not(.has-frame) {
   outline: 1.5px solid color-mix(in srgb, var(--accent) 45%, transparent);
   outline-offset: 13px;
-}
-
-.profile-hero-id .ava-trigger .avatar.has-frame {
-  margin: 0;
 }
 
 .profile-hero-main {
@@ -471,7 +467,7 @@
 .profile-id {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 3px;
 }
 
 .profile-id .avatar {
@@ -492,16 +488,9 @@
   font-size: 35px;
 }
 
-.profile-id .avatar.has-frame {
+.profile-id > .avatar,
+.profile-id > .ava-trigger {
   margin: 11px;
-}
-
-.profile-id .ava-trigger:has(.avatar.has-frame) {
-  margin: 11px;
-}
-
-.profile-id .ava-trigger .avatar.has-frame {
-  margin: 0;
 }
 
 .profile-facts {
@@ -1217,15 +1206,11 @@
   }
 
   .profile-hero-id {
-    gap: 24px;
+    gap: 14px;
   }
 
   .profile-hero-id .avatar:not(.has-frame) {
     outline-offset: 8px;
-  }
-
-  .profile-hero-id:has(.avatar.has-frame) {
-    gap: 8px;
   }
 
   .profile-hero-id .avatar,
@@ -1236,8 +1221,8 @@
     font-size: 38px;
   }
 
-  .profile-hero-id .avatar.has-frame,
-  .profile-hero-id .ava-trigger:has(.avatar.has-frame) {
+  .profile-hero-id > .avatar,
+  .profile-hero-id > .ava-trigger {
     margin: 10px;
   }
 

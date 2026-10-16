@@ -2743,7 +2743,7 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 .duel-ghosts .sk.face {
   width: 88px;
   height: 88px;
-  border-radius: 26px;
+  border-radius: 50%;
 }
 
 .duel-ghosts .sk.name {

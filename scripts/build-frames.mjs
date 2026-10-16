@@ -11,7 +11,14 @@ const SOFT = 10
 const SOLID = 60
 const MARGIN = 1.02
 
-const keyOf = (name) => (name.includes('.magenta') ? 'magenta' : name.includes('.fill') ? 'fill' : 'green')
+const keyOf = (name, data) => {
+  if (name.includes('.magenta')) return 'magenta'
+  if (name.includes('.fill')) return 'fill'
+
+  let clear = 0
+  for (let at = 3; at < data.length; at += 4) if (data[at] < 10) clear++
+  return clear > data.length / 4 / 10 ? 'ready' : 'green'
+}
 
 const STEP = 12
 
@@ -77,15 +84,15 @@ function reachOf(data, width, height) {
 }
 
 async function cut(file) {
-  const key = keyOf(file)
   const image = sharp(path.join(RAW, file)).ensureAlpha()
   const { width, height } = await image.metadata()
   const { data } = await image.raw().toBuffer({ resolveWithObject: true })
+  const key = keyOf(file, data)
 
   if (key === 'fill') flood(data, width, height)
   const tint = key === 'magenta' ? 'magenta' : 'green'
 
-  for (let at = 0; at < data.length; at += 4) {
+  for (let at = 0; key !== 'ready' && at < data.length; at += 4) {
     const r = data[at]
     const g = data[at + 1]
     const b = data[at + 2]
@@ -109,7 +116,7 @@ async function cut(file) {
     }
   }
 
-  const id = file.replace(/\.(magenta|green|fill)\.png$/i, '').replace(/\.png$/i, '')
+  const id = file.replace(/\.(magenta|green|fill)\.(png|webp)$/i, '').replace(/\.(png|webp)$/i, '')
   const target = path.join(OUT, `${id}.webp`)
   const fit = reachOf(data, width, height)
 
@@ -124,8 +131,8 @@ async function cut(file) {
 }
 
 await fs.mkdir(OUT, { recursive: true })
-const files = (await fs.readdir(RAW).catch(() => [])).filter((name) => name.endsWith('.png'))
-if (!files.length) console.log(`поклади згенеровані png у ${path.relative(ROOT, RAW)}`)
+const files = (await fs.readdir(RAW).catch(() => [])).filter((name) => /\.(png|webp)$/i.test(name))
+if (!files.length) console.log(`поклади згенеровані png або webp у ${path.relative(ROOT, RAW)}`)
 
 const fits = {}
 for (const file of files.sort()) {

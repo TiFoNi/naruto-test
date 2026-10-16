@@ -31,14 +31,14 @@ const ALL: Omit<Frame, 'fit'>[] = [
   ...OTHER_FRAMES.map((id) => ({ id, kind: 'other' as const, label: l10n('Топ-10', 'Топ-10', 'Top 10') })),
 ]
 
-const TIGHT = 1.06
+const TIGHT = 1.075
 
 export const FRAMES: Frame[] = ALL.filter((one) => DRAWN.has(one.id as (typeof NATURE_FRAMES)[number])).map((one) => ({
   ...one,
   fit: Math.min(0.95, ((fits as Record<string, number>)[one.id] ?? 0.6) * TIGHT),
 }))
 
-const ART = '6'
+const ART = '11'
 
 export const frameUrl = (id: string) => `/frames/${id}.webp?v=${ART}`
 

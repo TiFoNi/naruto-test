@@ -3498,14 +3498,15 @@ button.ghost.small {
   flex: none;
   width: 148px;
   height: 148px;
-  border-radius: 38px;
+  margin: 16px;
+  border-radius: 50%;
 }
 
 @media (max-width: 560px) {
   .sk-profile .profile-hero-id .sk.ava {
     width: 92px;
     height: 92px;
-    border-radius: 26px;
+    margin: 10px;
   }
 }
 
@@ -3536,14 +3537,17 @@ button.ghost.small {
 
 .sk-profile .hero-tile .sk.chip {
   width: min(100%, 112px);
-  height: 12px;
+  height: 15px;
   border-radius: 6px;
+}
+
+.sk-profile .hero-tile .sk.chip:last-child {
+  height: 17px;
 }
 
 .sk-profile .hero-tile .sk.big {
   width: 92px;
   height: 34px;
-  margin: 2px 0;
   border-radius: 10px;
 }
 
@@ -3668,7 +3672,7 @@ button.ghost.small {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding-bottom: 39px;
+  padding-bottom: 28px;
 }
 
 .world-shelf .sk.world-pic {
@@ -3701,7 +3705,7 @@ button.ghost.small {
 }
 
 .soon-badges li:has(> .sk) {
-  padding-bottom: 41px;
+  padding-bottom: 26px;
 }
 
 .sk-profile .soon-badges .sk.soon-mark {
