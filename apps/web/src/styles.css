@@ -2674,7 +2674,7 @@ main {
 .avatar.small {
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: 8px;
   font-size: 13px;
 }
 
@@ -9694,7 +9694,7 @@ html[data-auth] .guest-note {
   width: 300px;
   height: 300px;
   max-width: 100%;
-  border-radius: 50%;
+  border-radius: 86px;
   background: #0d0f12;
   box-shadow: 0 0 0 1px color-mix(in srgb, #ffffff 14%, transparent), 0 0 0 10px rgba(0, 0, 0, 0.3);
   cursor: grab;
