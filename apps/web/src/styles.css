@@ -11188,61 +11188,8 @@ html[data-auth] .guest-note {
   color: var(--wrong-text);
 }
 
-.support-where {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.support-where ul {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 12px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.support-where li {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  padding: 16px 18px;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  background: var(--card);
-}
-
-.support-where li b {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-family: var(--display);
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.support-where li .icon {
-  width: 18px;
-  height: 18px;
-  flex: none;
-  color: var(--accent);
-}
-
-.support-where li span {
-  color: var(--text-3);
-  font-size: 13.5px;
-  line-height: 1.55;
-}
-
 @media (max-width: 900px) {
   .support-body {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-@media (max-width: 760px) {
-  .support-where ul {
     grid-template-columns: minmax(0, 1fr);
   }
 }

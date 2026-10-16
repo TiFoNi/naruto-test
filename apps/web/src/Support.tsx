@@ -12,19 +12,13 @@ import { api } from './api'
 import { useAuth } from './auth'
 import BackButton from './BackButton'
 import { useI18n } from './i18n'
-import { CoinIcon, GlobeIcon, GridIcon, ShieldIcon, StarIcon } from './icons'
+import { CoinIcon, StarIcon } from './icons'
 import { useHref } from './router'
 
 const PACKS = COIN_PACKS
 
 const WAIT_STEPS = 20
 const WAIT_MS = 3000
-
-const WHERE = [
-  { key: 'support.where1', name: 'support.where1name', Icon: GlobeIcon },
-  { key: 'support.where2', name: 'support.where2name', Icon: GridIcon },
-  { key: 'support.where3', name: 'support.where3name', Icon: ShieldIcon },
-] as const
 
 const money = (usd: number) => `$${usd.toFixed(2)}`
 
@@ -198,21 +192,6 @@ export default function Support() {
                 </span>
               </button>
             ))}
-          </section>
-
-          <section className="support-where">
-            <span className="play-card-title">{t('support.whereTitle')}</span>
-            <ul>
-              {WHERE.map(({ key, name, Icon }) => (
-                <li key={key}>
-                  <b>
-                    <Icon />
-                    {t(name)}
-                  </b>
-                  <span>{t(key)}</span>
-                </li>
-              ))}
-            </ul>
           </section>
         </div>
 
