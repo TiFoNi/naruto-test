@@ -53,6 +53,7 @@ const LEVELS = [
   { label: 'shot.easy', tone: 'easy' },
 ] as const
 const CHEER = 3000
+const LABEL_ROOM = 16
 
 export default function ShotMode({ game, active }: { game: Game; active: boolean }) {
   const { t, name } = useI18n()
@@ -307,6 +308,8 @@ function Cell({ src, step, onOpen, onReveal }: { src?: string; step: number; onO
   const [deny, setDeny] = useState(false)
   const { t } = useI18n()
   const [ready, setReady] = useState(false)
+  const [tight, setTight] = useState(false)
+  const box = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     setReady(false)
@@ -322,6 +325,18 @@ function Cell({ src, step, onOpen, onReveal }: { src?: string; step: number; onO
       alive = false
     }
   }, [src])
+
+  useEffect(() => {
+    const node = box.current
+    const label = node?.querySelector('b')
+    if (!node || !label) return
+
+    const fit = () => setTight(label.scrollWidth > node.clientWidth - LABEL_ROOM)
+    fit()
+    const watch = new ResizeObserver(fit)
+    watch.observe(node)
+    return () => watch.disconnect()
+  })
 
   const level = LEVELS[step]
 
@@ -340,7 +355,8 @@ function Cell({ src, step, onOpen, onReveal }: { src?: string; step: number; onO
       return (
         <button
           type="button"
-          className={`shot-cell locked is-shut ${tone} ${src ? 'is-coming' : ''} ${deny ? 'is-deny' : ''}`}
+          ref={box}
+          className={`shot-cell locked is-shut ${tone} ${tight ? 'is-tight' : ''} ${src ? 'is-coming' : ''} ${deny ? 'is-deny' : ''}`}
           title={t(level.label)}
           aria-disabled
           onClick={() => {
@@ -353,7 +369,14 @@ function Cell({ src, step, onOpen, onReveal }: { src?: string; step: number; onO
       )
 
     return (
-      <button type="button" className={`shot-cell locked is-next ${tone} ${src ? 'is-coming' : ''}`} title={t(level.label)} aria-label={t('shot.skip')} onClick={onReveal}>
+      <button
+        type="button"
+        ref={box}
+        className={`shot-cell locked is-next ${tone} ${tight ? 'is-tight' : ''} ${src ? 'is-coming' : ''}`}
+        title={t(level.label)}
+        aria-label={t('shot.skip')}
+        onClick={onReveal}
+      >
         {inside}
       </button>
     )

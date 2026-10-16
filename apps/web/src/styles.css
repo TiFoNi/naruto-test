@@ -10143,6 +10143,12 @@ html[data-auth] .guest-note {
   font-size: clamp(14px, 2.2vw, 18px);
   color: var(--text-3);
   font-weight: 700;
+  white-space: nowrap;
+}
+
+.shot-cell.locked.is-tight b {
+  position: absolute;
+  visibility: hidden;
 }
 
 .shot-cell.is-extreme {
