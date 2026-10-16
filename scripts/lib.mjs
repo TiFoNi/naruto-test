@@ -135,6 +135,19 @@ export function stripParens(s) {
   return s.replace(/\s*\([^)]*\)\s*/g, ' ').trim()
 }
 
+export function comicIssue(raw) {
+  if (!raw) return null
+  const value = raw
+    .replace(/\{\{sld\|([^{}]*)\}\}/g, '$1')
+    .split('<br')[0]
+    .split('(')[0]
+    .trim()
+  const found = value.match(/^(.+?) Vol (\d+) (\d+)$/)
+  if (!found) return null
+  const [, series, volume, number] = found
+  return volume === '1' ? `${series} #${number}` : `${series} Vol. ${volume} #${number}`
+}
+
 async function download(url) {
   for (let attempt = 0; attempt < 3; attempt++) {
     const res = await fetch(url, { headers: UA }).catch(() => null)

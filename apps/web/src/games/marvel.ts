@@ -9,6 +9,7 @@ type Hero = Entity & {
   teams: string[]
   powers: string[]
   debut: string
+  debutWork: string | null
   debutIndex: number
 }
 
@@ -20,7 +21,11 @@ const columns: Column<Hero>[] = [
   { title: l10n('Сторона', 'Сторона', 'Side') , ...exact('side') },
   { title: l10n('Команда', 'Команда', 'Team'), ...list('teams') },
   { title: l10n('Способности', 'Здібності', 'Powers'), ...list('powers') },
-  { title: l10n('Первое появление', 'Перша поява', 'First appearance'), key: 'debutIndex', text: (hero) => hero.debut },
+  {
+    title: l10n('Первое появление', 'Перша поява', 'First appearance'),
+    key: 'debutIndex',
+    text: (hero) => (hero.debutWork ? `${hero.debut} · ${hero.debutWork}` : hero.debut),
+  },
 ]
 
 export const marvel: Game<Hero> = {

@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { PUBLIC, ROOT, cachedDownload, cachedJson, pool, pruneImages, wikiImageUrls, wikiPages, wikiQuery, writeAtlas, writeFullAndThumb } from './lib.mjs'
+import { PUBLIC, ROOT, cachedDownload, cachedJson, comicIssue, infobox, pool, pruneImages, wikiImageUrls, wikiPages, wikiQuery, writeAtlas, writeFullAndThumb } from './lib.mjs'
 import { dropDeleted, onlyAnswers } from './dropped.mjs'
 
 const API = 'https://marvel.fandom.com/api.php'
@@ -20,6 +20,12 @@ const PICK = {
   Mantis: 'Mantis (Brandt) (Earth-616) from Silver Surfer Vol 3 3 0001.jpg',
   Sentry: 'Robert Reynolds (Earth-616) from New Avengers Vol 1 10 001.jpg',
   Polaris: 'Lorna Dane (Earth-616) from X-Men Legends Vol 1 5 001.jpg',
+}
+
+const FIRST = {
+  Mystique: 'Ms. Marvel Vol 1 16',
+  Apocalypse: 'X-Factor Vol 1 5',
+  'Spider-Ham': 'Marvel Tails Vol 1 1',
 }
 
 const M = 'Мужской'
@@ -216,7 +222,8 @@ async function main() {
     } catch (error) {
       return missing.push(`${nameEn} (${error.message})`)
     }
-    result.push({ id, name: nameRu, nameEn, nameUk, gender, side, teams, powers, species, debut: String(year), debutIndex: year, answer: true })
+    const issue = comicIssue(FIRST[nameEn] ?? infobox(page.text, 'First'))
+    result.push({ id, name: nameRu, nameEn, nameUk, gender, side, teams, powers, species, debut: String(year), debutWork: issue, debutIndex: year, answer: true })
     },
   )
 
