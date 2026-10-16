@@ -163,6 +163,8 @@ export type PurchaseDoc = {
   bonus: number
   usd: number
   charged?: number
+  stars?: number
+  way?: 'crypto' | 'stars'
   provider: string
   orderId: string
   invoiceId?: string

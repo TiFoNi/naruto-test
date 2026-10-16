@@ -1,8 +1,9 @@
 import { randomUUID } from 'node:crypto'
 import type { ObjectId } from 'mongodb'
-import { coinOf, coinsOf, packOf } from '@nanda/game'
+import { coinOf, coinsOf, packOf, wayOf } from '@nanda/game'
 import { coinLedger, purchases, users } from './db'
 import { provider, type PaymentEvent } from './payments'
+import { starsLink, starsReady } from './telegram'
 
 const FEE_FLAT = Number(process.env.PAYMENTS_FEE_USD ?? 3.6)
 const FEE_PCT = Number(process.env.PAYMENTS_FEE_PCT ?? 1)
@@ -15,19 +16,51 @@ export type Started = { url: string; orderId: string }
 
 export type TooSmall = { tooSmall: number }
 
-export async function startPurchase(userId: ObjectId, packId: unknown, coinId: unknown): Promise<Started | TooSmall | 'bad_pack' | 'off'> {
+export async function startPurchase(userId: ObjectId, packId: unknown, coinId: unknown, wayId: unknown = 'crypto'): Promise<Started | TooSmall | 'bad_pack' | 'off'> {
   const pack = packOf(packId)
+  const way = wayOf(wayId)
+  if (!pack || !way) return 'bad_pack'
+
+  const orderId = `ng_${randomUUID().replace(/-/g, '').slice(0, 20)}`
+  const book = await purchases()
+  const coins = coinsOf(pack)
+
+  if (way === 'stars') {
+    if (!starsReady()) return 'off'
+
+    await book.insertOne({
+      userId,
+      packId: pack.id,
+      base: pack.base,
+      bonus: pack.bonus,
+      usd: pack.usd,
+      stars: pack.stars,
+      way,
+      provider: 'telegram',
+      orderId,
+      status: 'pending',
+      createdAt: new Date(),
+    })
+
+    try {
+      const url = await starsLink({ orderId, stars: pack.stars, coins, packId: pack.id })
+      await book.updateOne({ orderId }, { $set: { updatedAt: new Date() } })
+      return { url, orderId }
+    } catch (error) {
+      await book.updateOne({ orderId, status: 'pending' }, { $set: { status: 'failed', updatedAt: new Date() } })
+      throw error
+    }
+  }
+
   const asks = provider.coins.length > 0
   const coin = asks ? coinOf(coinId) : null
-  if (!pack || (asks && (!coin || !provider.coins.includes(coin.id)))) return 'bad_pack'
+  if (asks && (!coin || !provider.coins.includes(coin.id))) return 'bad_pack'
   if (!provider.ready) return 'off'
 
   const least = coin ? await provider.minUsd(coin.id) : null
   if (least !== null && chargeUsd(pack.usd) < least) return { tooSmall: Math.ceil(least * 100) / 100 }
 
   const charge = chargeUsd(pack.usd)
-  const orderId = `ng_${randomUUID().replace(/-/g, '').slice(0, 20)}`
-  const book = await purchases()
   await book.insertOne({
     userId,
     packId: pack.id,
@@ -35,6 +68,7 @@ export async function startPurchase(userId: ObjectId, packId: unknown, coinId: u
     bonus: pack.bonus,
     usd: pack.usd,
     charged: charge,
+    way,
     provider: provider.id,
     orderId,
     ...(coin ? { payCurrency: coin.id } : {}),
@@ -43,7 +77,7 @@ export async function startPurchase(userId: ObjectId, packId: unknown, coinId: u
   })
 
   try {
-    const invoice = await provider.invoice({ orderId, usd: charge, coins: coinsOf(pack), packId: pack.id, coin: coin?.id ?? '' })
+    const invoice = await provider.invoice({ orderId, usd: charge, coins, packId: pack.id, coin: coin?.id ?? '' })
     await book.updateOne({ orderId }, { $set: { invoiceId: invoice.invoiceId, updatedAt: new Date() } })
     return { url: invoice.url, orderId }
   } catch (error) {

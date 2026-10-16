@@ -7,6 +7,7 @@ import * as summary from '@nanda/core/endpoints/profile-summary'
 import * as quests from '@nanda/core/endpoints/quests'
 import * as shop from '@nanda/core/endpoints/shop'
 import * as shopWebhook from '@nanda/core/endpoints/shop-webhook'
+import * as shopStars from '@nanda/core/endpoints/shop-telegram'
 import * as push from '@nanda/core/endpoints/push'
 import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as adminShots from '@nanda/core/endpoints/admin-shots'
@@ -127,6 +128,11 @@ export class GameController {
   @Post('shop/webhook')
   shopWebhook(@Req() req: Request, @Res() res: Response) {
     return bridge(shopWebhook.POST, req, res)
+  }
+
+  @Post('shop/telegram')
+  shopStars(@Req() req: Request, @Res() res: Response) {
+    return bridge(shopStars.POST, req, res)
   }
 
   @Get('quests')

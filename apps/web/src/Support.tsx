@@ -12,7 +12,7 @@ import { api } from './api'
 import { useAuth } from './auth'
 import BackButton from './BackButton'
 import { useI18n } from './i18n'
-import { CoinIcon, GlobeIcon, GridIcon, ShieldIcon } from './icons'
+import { CoinIcon, GlobeIcon, GridIcon, ShieldIcon, StarIcon } from './icons'
 import { useHref } from './router'
 
 const PACKS = COIN_PACKS
@@ -36,6 +36,8 @@ export default function Support() {
   const [picked, setPicked] = useState<string>('mid')
   const [coins, setCoins] = useState<CoinRow[]>([])
   const [coin, setCoin] = useState<string>('')
+  const [way, setWay] = useState<'crypto' | 'stars'>('crypto')
+  const [stars, setStars] = useState(false)
   const [busy, setBusy] = useState(false)
   const [note, setNote] = useState<'credited' | 'waiting' | 'partial' | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -67,10 +69,11 @@ export default function Support() {
 
   useEffect(() => {
     let gone = false
-    api<{ coins?: CoinRow[]; least?: number | null; packs?: PackRow[] }>('shop').then(({ ok, data }) => {
+    api<{ coins?: CoinRow[]; least?: number | null; packs?: PackRow[]; stars?: boolean }>('shop').then(({ ok, data }) => {
       if (gone) return
       setLoaded(true)
       if (!ok) return
+      if (data.stars) setStars(true)
       if (data.packs?.length) setCharges(Object.fromEntries(data.packs.map((one) => [one.id, one])))
       if (data.coins?.length) {
         setCoins(data.coins)
@@ -124,7 +127,7 @@ export default function Support() {
       url?: string
       error?: string
       least?: number
-    }>('shop/checkout', paying ? { pack: picked, coin: paying } : { pack: picked })
+    }>('shop/checkout', way === 'stars' ? { pack: picked, way } : { pack: picked, way, coin: paying })
     if (ok && data.url) {
       window.location.href = data.url
       return
@@ -142,7 +145,7 @@ export default function Support() {
   const locale = lang === 'en' ? 'en-GB' : lang === 'uk' ? 'uk-UA' : 'ru-RU'
   const nice = (count: number) => count.toLocaleString(locale)
   const pack = PACKS.find((one) => one.id === picked) ?? PACKS[1]
-  const short = (one: (typeof PACKS)[number]) => floor !== null && (charges[one.id]?.charge ?? one.usd) < floor
+  const short = (one: (typeof PACKS)[number]) => way === 'crypto' && floor !== null && (charges[one.id]?.charge ?? one.usd) < floor
   const bill = charges[pack.id]
   const barred = (one: CoinRow) => typeof one.least === 'number' && (bill?.charge ?? pack.usd) < one.least
   const fine = coins.find((one) => !barred(one))
@@ -190,7 +193,9 @@ export default function Support() {
                   <b>{nice(one.base)}</b>
                   <em className="support-bonus">{t('support.bonusChip', { count: nice(one.bonus) })}</em>
                 </span>
-                <span className="support-price">{short(one) ? t('support.soonShort') : money(one.usd)}</span>
+                <span className="support-price">
+                  {short(one) ? t('support.soonShort') : way === 'stars' ? t('support.starsCount', { count: nice(one.stars) }) : money(one.usd)}
+                </span>
               </button>
             ))}
           </section>
@@ -232,22 +237,32 @@ export default function Support() {
               <dt>{t('support.price')}</dt>
               <dd>{money(pack.usd)}</dd>
             </div>
-            {bill && bill.fee > 0 && (
-              <div className="is-fee">
-                <dt>{t('support.netFee')}</dt>
-                <dd>+{money(bill.fee)}</dd>
-              </div>
-            )}
+            <div className="is-fee">
+              <dt>{t('support.netFee')}</dt>
+              <dd>{way === 'crypto' && bill && bill.fee > 0 ? `+${money(bill.fee)}` : t('support.noFee')}</dd>
+            </div>
             <div className="is-total">
               <dt>{t('support.total')}</dt>
-              <dd>{money(bill?.charge ?? pack.usd)}</dd>
+              <dd>{way === 'stars' ? t('support.starsCount', { count: nice(pack.stars) }) : money(bill?.charge ?? pack.usd)}</dd>
             </div>
           </dl>
 
           <div className="pay-ways">
             <span className="play-card-title">{t('support.howPay')}</span>
 
-            <div className="pay-way is-live">
+            {stars && (
+              <button type="button" className={`pay-way ${way === 'stars' ? 'is-live' : ''}`} onClick={() => setWay('stars')}>
+                <i aria-hidden>
+                  <StarIcon />
+                </i>
+                <span>
+                  <b>{t('support.wayStars')}</b>
+                  <small>{t('support.starsNote')}</small>
+                </span>
+              </button>
+            )}
+
+            <button type="button" className={`pay-way ${way === 'crypto' ? 'is-live' : ''}`} onClick={() => setWay('crypto')} disabled={!stars}>
               <i aria-hidden>
                 <CoinIcon />
               </i>
@@ -255,29 +270,31 @@ export default function Support() {
                 <b>{t('support.wayCrypto')}</b>
                 <small>{coins.map((one) => one.label).join(' · ') || 'USDT · TRX · LTC'}</small>
               </span>
-            </div>
+            </button>
 
-            {coins.length > 0 && (
-              <div className="pay-coins" role="radiogroup" aria-label={t('support.coinPick')}>
-                {coins.map((one) => (
-                  <button
-                    key={one.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={paying === one.id}
-                    disabled={barred(one)}
-                    className={`pay-coin ${paying === one.id ? 'active' : ''} ${barred(one) ? 'is-barred' : ''}`}
-                    onClick={() => {
-                      setCoin(one.id)
-                      setError(null)
-                    }}
-                  >
-                    <b>{one.label}</b>
-                    <small>{barred(one) ? t('support.coinFrom', { least: `$${(Math.ceil((one.least ?? 0) * 100) / 100).toFixed(2)}` }) : one.note}</small>
-                  </button>
-                ))}
-              </div>
-            )}
+            <div className="pay-slot">
+              {way === 'crypto' && coins.length > 0 && (
+                <div className="pay-coins" role="radiogroup" aria-label={t('support.coinPick')}>
+                  {coins.map((one) => (
+                    <button
+                      key={one.id}
+                      type="button"
+                      role="radio"
+                      aria-checked={paying === one.id}
+                      disabled={barred(one)}
+                      className={`pay-coin ${paying === one.id ? 'active' : ''} ${barred(one) ? 'is-barred' : ''}`}
+                      onClick={() => {
+                        setCoin(one.id)
+                        setError(null)
+                      }}
+                    >
+                      <b>{one.label}</b>
+                      <small>{barred(one) ? t('support.coinFrom', { least: `$${(Math.ceil((one.least ?? 0) * 100) / 100).toFixed(2)}` }) : one.note}</small>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <button type="button" className="primary support-buy" onClick={buy} disabled={busy || !loaded || short(pack)}>
@@ -297,11 +314,19 @@ export default function Support() {
             </p>
           )}
 
-          <ul className="support-memo">
-            <li>{t('support.memoAmount')}</li>
-            <li>{t('support.memoNet')}</li>
-            <li>{t('support.memoWait')}</li>
-          </ul>
+          {way === 'crypto' ? (
+            <ul className="support-memo">
+              <li>{t('support.memoAmount')}</li>
+              <li>{t('support.memoNet')}</li>
+              <li>{t('support.memoWait')}</li>
+            </ul>
+          ) : (
+            <ul className="support-memo">
+              <li>{t('support.starsOpen')}</li>
+              <li>{t('support.starsBuy')}</li>
+              <li>{t('support.starsBack')}</li>
+            </ul>
+          )}
 
           <p className="support-fine">
             {t('support.agree')} <Link href={href.terms}>{t('footer.terms')}</Link>
