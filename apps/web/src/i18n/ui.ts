@@ -616,7 +616,6 @@ const ui = {
   'dash.tipSolved': { ru: 'Угадано: {count}', uk: 'Вгадано: {count}', en: 'Solved: {count}' },
   'dash.tipSkipped': { ru: 'Сдался: {count}', uk: 'Здався: {count}', en: 'Gave up: {count}' },
   'dash.tipAvg': { ru: 'Ср. попыток: {value}', uk: 'Сер. спроб: {value}', en: 'Avg. guesses: {value}' },
-  'about.world': { ru: 'Об этой вселенной', uk: 'Про цей всесвіт', en: 'About this world' },
   'home.step1': {
     ru: 'Выбери вселенную и режим — по признакам, по картинке, по цитате или по странице манги',
     uk: 'Обери всесвіт і режим — за ознаками, за картинкою, за цитатою чи за сторінкою манґи',

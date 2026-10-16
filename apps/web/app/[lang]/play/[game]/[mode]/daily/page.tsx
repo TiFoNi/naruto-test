@@ -1,6 +1,5 @@
 import GameAccent from '@/src/GameAccent'
 import PlayView from '@/src/PlayView'
-import WorldAbout from '@/src/WorldAbout'
 import type { Lang } from '@/src/i18n/ui'
 import { playMetadata } from '@/src/seo'
 
@@ -15,11 +14,11 @@ export async function generateMetadata({ params }: Params) {
 }
 
 export default async function PlayPage({ params }: Params) {
-  const { lang, game, mode } = await params
+  const { game, mode } = await params
   return (
     <>
       <GameAccent game={game} />
-      <PlayView game={game} mode={mode} daily={true} about={<WorldAbout game={game} lang={lang as Lang} />} />
+      <PlayView game={game} mode={mode} daily={true} />
     </>
   )
 }
