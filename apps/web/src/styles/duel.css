@@ -65,7 +65,7 @@
   flex: none;
   width: 54px;
   height: 54px;
-  border-radius: 17px;
+  border-radius: 50%;
   font-size: 22px;
 }
 
@@ -241,7 +241,7 @@
   .duel-hud-face {
     width: 42px;
     height: 42px;
-    border-radius: 14px;
+    border-radius: 50%;
     font-size: 17px;
   }
 
@@ -1525,7 +1525,7 @@
   align-items: center;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 50%;
   background: var(--card);
   backface-visibility: hidden;
   transition: border-color 0.15s;
@@ -2426,7 +2426,7 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 .duel-face {
   width: 88px;
   height: 88px;
-  border-radius: 26px;
+  border-radius: 50%;
   font-size: 34px;
 }
 

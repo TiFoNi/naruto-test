@@ -18,6 +18,8 @@ const entities = db.collection('entities')
 await entities.createIndex({ game: 1, id: 1 }, { unique: true })
 await entities.createIndex({ game: 1, answer: 1, hidden: 1 })
 
+const LIVE_FIELDS = { shots: ['frames', 'answer', 'ver'] }
+
 const updatedAt = new Date()
 const only = process.argv[2]
 let total = 0
@@ -31,13 +33,20 @@ for (const [game, spec] of Object.entries(GAME_SPECS)) {
   }
 
   const list = JSON.parse(fs.readFileSync(file, 'utf8'))
-  const ops = list.map((entity) => ({
-    updateOne: {
-      filter: { game, id: entity.id },
-      update: { $set: { ...entity, game, updatedAt } },
-      upsert: true,
-    },
-  }))
+  const owned = LIVE_FIELDS[game] ?? []
+  const ops = list.map((entity) => {
+    const seeded = Object.fromEntries(owned.filter((field) => field in entity).map((field) => [field, entity[field]]))
+    const set = { ...entity, game, updatedAt }
+    for (const field of owned) delete set[field]
+
+    return {
+      updateOne: {
+        filter: { game, id: entity.id },
+        update: Object.keys(seeded).length ? { $set: set, $setOnInsert: seeded } : { $set: set },
+        upsert: true,
+      },
+    }
+  })
 
   const result = await entities.bulkWrite(ops, { ordered: false })
   const stale = await entities.deleteMany({ game, updatedAt: { $lt: updatedAt } })

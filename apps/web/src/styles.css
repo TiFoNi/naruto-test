@@ -2636,7 +2636,7 @@ main {
   width: 56px;
   height: 56px;
   flex-shrink: 0;
-  border-radius: 16px;
+  border-radius: 50%;
   display: grid;
   place-items: center;
   background: var(--accent-soft);
@@ -2674,7 +2674,6 @@ main {
 .avatar.small {
   width: 28px;
   height: 28px;
-  border-radius: 8px;
   font-size: 13px;
 }
 
@@ -6466,7 +6465,7 @@ html[data-auth] .guest-note {
   flex: none;
   width: 36px;
   height: 36px;
-  border-radius: 10px;
+  border-radius: 50%;
   background: var(--tone-bg);
   color: var(--tone-ink);
   font-family: var(--display);
@@ -6477,7 +6476,6 @@ html[data-auth] .guest-note {
 .lb-av.big {
   width: 64px;
   height: 64px;
-  border-radius: 20px;
   font-size: 26px;
 }
 
@@ -9110,7 +9108,7 @@ html[data-auth] .guest-note {
 
 .avatar-frame {
   position: absolute;
-  inset: calc(-11% - 2px);
+  inset: calc((1 - 1 / var(--fit, 0.55)) / 2 * 100%);
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -9531,7 +9529,7 @@ html[data-auth] .guest-note {
   flex: none;
   padding: 0;
   border: 0;
-  border-radius: 17px;
+  border-radius: 50%;
   background: none;
   cursor: pointer;
 }
@@ -9539,7 +9537,6 @@ html[data-auth] .guest-note {
 .ava-trigger .avatar {
   width: 54px;
   height: 54px;
-  border-radius: 17px;
   font-size: 22px;
 }
 
@@ -9600,7 +9597,7 @@ html[data-auth] .guest-note {
   width: 300px;
   height: 300px;
   max-width: 100%;
-  border-radius: 86px;
+  border-radius: 50%;
   background: #0d0f12;
   box-shadow: 0 0 0 1px color-mix(in srgb, #ffffff 14%, transparent), 0 0 0 10px rgba(0, 0, 0, 0.3);
   cursor: grab;

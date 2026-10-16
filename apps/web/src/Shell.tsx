@@ -530,7 +530,7 @@ function Bell() {
                     <span className="bell-mark bell-frame" aria-hidden style={{ backgroundImage: `url(${frameUrl(frame.id)})` }} />
                     <span className="bell-body">
                       <b>{l(frame.label)}</b>
-                      <span className="bell-hint">{t(frame.kind === 'world' ? 'frame.freshWorld' : 'frame.freshAward')}</span>
+                      <span className="bell-hint">{t(frame.kind === 'award' ? 'frame.freshAward' : 'frame.freshWorld')}</span>
                     </span>
                   </span>
                 </Link>

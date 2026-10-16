@@ -68,7 +68,7 @@ export default function FramePicker() {
               </button>
               <h2>{title}</h2>
 
-              {(['award', 'world', 'other'] as const).map((kind, index, kinds) => {
+              {(['award', 'world', 'nature', 'other'] as const).map((kind, index, kinds) => {
                 const list = owned.filter((one) => one.kind === kind)
                 if (!list.length) return null
                 const first = kinds.slice(0, index).every((before) => !owned.some((one) => one.kind === before))
@@ -80,7 +80,9 @@ export default function FramePicker() {
                         ? l({ ru: 'Награды', uk: 'Нагороди', en: 'Awards' })
                         : kind === 'world'
                           ? l({ ru: 'Вселенные', uk: 'Всесвіти', en: 'Worlds' })
-                          : l({ ru: 'Другое', uk: 'Інше', en: 'Other' })}
+                          : kind === 'nature'
+                            ? l({ ru: 'Стихии', uk: 'Стихії', en: 'Elements' })
+                            : l({ ru: 'Другое', uk: 'Інше', en: 'Other' })}
                     </h3>
                     <div className="frame-grid">
                       {first && (

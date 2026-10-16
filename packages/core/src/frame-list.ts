@@ -19,9 +19,11 @@ export const WORLD_FRAMES = [
   'jojo',
 ] as const
 
+export const NATURE_FRAMES = ['sakura', 'frost', 'leaf', 'dusk', 'abyss'] as const
+
 export const OTHER_FRAMES = ['top10'] as const
 
-export const FRAMES = [...AWARD_FRAMES, ...WORLD_FRAMES, ...OTHER_FRAMES] as const
+export const FRAMES = [...AWARD_FRAMES, ...WORLD_FRAMES, ...NATURE_FRAMES, ...OTHER_FRAMES] as const
 
 export type Frame = (typeof FRAMES)[number]
 
