@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, type PointerEvent as Pointer } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent as Pointer } from 'react'
 import { TUNE_LEVELS, type TuneLevel } from '@nanda/game'
 import CharacterSearch from './CharacterSearch'
 import { SoundIcon } from './icons'
@@ -393,7 +393,7 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
           <header className="tune-head">
             <button
               type="button"
-              className="tune-player"
+              className={`tune-player ${going ? 'is-live' : ''}`}
               onClick={toggle}
               disabled={!run.clip}
               aria-label={going ? t('tune.pause') : t('tune.listen', { seconds: tick(run.open) })}
@@ -436,6 +436,7 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
                     max={1}
                     step={0.05}
                     value={loud}
+                    style={{ '--fill': `${Math.round(loud * 100)}%` } as CSSProperties}
                     tabIndex={openLoud ? 0 : -1}
                     aria-label={t('tune.volume')}
                     onChange={(event) => setLoud(Number(event.target.value))}

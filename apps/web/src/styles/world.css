@@ -373,6 +373,7 @@
 
 
 
+
 .tune-player::before {
   position: absolute;
   inset: -4%;
@@ -612,14 +613,14 @@
   right: calc(100% + 8px);
   display: flex;
   align-items: center;
-  width: 124px;
-  height: 32px;
-  padding: 0 12px;
+  width: 148px;
+  height: 36px;
+  padding: 0 14px;
   transform: translateY(-50%);
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--card-2-solid, var(--card-2));
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
   z-index: 3;
   opacity: 0;
   visibility: hidden;
@@ -631,35 +632,86 @@
 }
 
 .tune-loud input {
+  --fill: 80%;
   flex: 1;
   min-width: 0;
-  height: 4px;
+  height: 36px;
   margin: 0;
   appearance: none;
   -webkit-appearance: none;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--text-3) 35%, transparent);
+  background: none;
   cursor: pointer;
+}
+
+.tune-loud input::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--game-accent, var(--accent)) 0 var(--fill),
+    color-mix(in srgb, var(--text-3) 28%, transparent) var(--fill) 100%
+  );
+}
+
+.tune-loud input::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text-3) 28%, transparent);
+}
+
+.tune-loud input::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--game-accent, var(--accent));
 }
 
 .tune-loud input::-webkit-slider-thumb {
   appearance: none;
   -webkit-appearance: none;
-  width: 13px;
-  height: 13px;
-  border: 0;
+  width: 16px;
+  height: 16px;
+  margin-top: -5px;
+  border: 3px solid var(--game-accent, var(--accent));
   border-radius: 50%;
-  background: var(--game-accent, var(--accent));
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
   cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
 }
 
 .tune-loud input::-moz-range-thumb {
-  width: 13px;
-  height: 13px;
-  border: 0;
+  width: 16px;
+  height: 16px;
+  border: 3px solid var(--game-accent, var(--accent));
   border-radius: 50%;
-  background: var(--game-accent, var(--accent));
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
   cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.tune-loud input:hover::-webkit-slider-thumb,
+.tune-loud input:focus-visible::-webkit-slider-thumb {
+  transform: scale(1.15);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.5),
+    0 0 0 5px color-mix(in srgb, var(--game-accent, var(--accent)) 24%, transparent);
+}
+
+.tune-loud input:hover::-moz-range-thumb,
+.tune-loud input:focus-visible::-moz-range-thumb {
+  transform: scale(1.15);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.5),
+    0 0 0 5px color-mix(in srgb, var(--game-accent, var(--accent)) 24%, transparent);
+}
+
+.tune-loud input:focus-visible {
+  outline: none;
 }
 
 .tune-time {
@@ -688,6 +740,8 @@
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 .tune-bar {
@@ -846,6 +900,7 @@
 .tune-track.is-flat,
 .tune-track.is-locked {
   cursor: default;
+  touch-action: auto;
 }
 
 .tune-track.is-flat .tune-needle {

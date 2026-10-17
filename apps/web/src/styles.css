@@ -6728,10 +6728,14 @@ html[data-auth] .guest-note {
 .play-stats {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
   gap: 10px;
 }
 
 .play-stats > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 12px;
   border-radius: 12px;
   background: var(--card-2);
@@ -6739,8 +6743,10 @@ html[data-auth] .guest-note {
 
 .play-stats span {
   display: block;
+  min-height: 2.5em;
   color: var(--text-2);
   font-size: 12px;
+  line-height: 1.25;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
