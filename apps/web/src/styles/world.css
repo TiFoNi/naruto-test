@@ -219,12 +219,6 @@
 }
 
 @media (max-width: 620px) {
-  .world-head-art {
-    right: -12%;
-    height: 96%;
-    opacity: 0.18;
-  }
-
   .world-head-body {
     padding: 18px;
     gap: 10px;
