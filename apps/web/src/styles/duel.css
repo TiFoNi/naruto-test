@@ -2869,11 +2869,11 @@ html[data-duel='play'] .duel-ghosts .sk-play {
     width: 100%;
   }
 
-  .duel-team {
+  .duel-corner .duel-team {
     max-width: none;
   }
 
-  .duel-team li {
+  .duel-corner .duel-team li {
     max-width: calc(50% - 6px);
   }
 
