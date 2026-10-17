@@ -38,6 +38,8 @@ for (const row of wanted) {
     continue
   }
 
+  if (row.hidden) continue
+
   if (!row.slug) {
     missed.push(`${row.id} ${row.nameEn}: немає slug`)
     continue

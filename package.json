@@ -46,6 +46,8 @@
     "dictionary": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/fill-dictionary.mjs",
     "backfill:solved": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/backfill-solved.mjs",
     "tunes:get": "node scripts/fetch-tunes.mjs",
+    "tunes:mark": "node scripts/mark-tunes.mjs",
+    "tunes:drop": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/drop-tunes.mjs",
     "tunes": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/build-tunes.mjs"
   },
   "devDependencies": {

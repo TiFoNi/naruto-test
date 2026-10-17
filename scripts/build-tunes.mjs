@@ -122,6 +122,7 @@ const missing = []
 
 for (const row of list) {
   if (only && String(row.id) !== only) continue
+  if (row.hidden) continue
   const source = await sourceOf(row.id)
   if (!source) {
     missing.push(`${row.id} ${row.nameEn}`)
@@ -161,7 +162,10 @@ if (!kept.length) console.log(`поклади аудіо у ${path.relative(ROOT
 else if (dry) console.log(`\n--dry: нічого не залито, зібрано б ${kept.length}`)
 else {
   const had = JSON.parse(await fs.readFile(OUT, 'utf8').catch(() => '[]'))
-  const merged = [...had.filter((one) => !kept.some((row) => row.id === one.id)), ...kept].sort((a, b) => a.id - b.id)
+  const gone = new Set(list.filter((row) => row.hidden).map((row) => row.id))
+  const merged = [...had.filter((one) => !kept.some((row) => row.id === one.id)), ...kept]
+    .sort((a, b) => a.id - b.id)
+    .map(({ hidden, ...row }) => (gone.has(row.id) ? { ...row, hidden: true } : row))
   await fs.writeFile(OUT, `${JSON.stringify(merged, null, 1)}\n`)
   console.log(`\nу tunes.json тепер ${merged.length}`)
 }

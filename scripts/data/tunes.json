@@ -9,7 +9,8 @@
   "year": 2008,
   "op": 3,
   "song": "Blue Bird",
-  "artist": "Ikimonogakari"
+  "artist": "Ikimonogakari",
+  "start": 0.73
  },
  {
   "id": 2,
@@ -21,7 +22,8 @@
   "year": 2013,
   "op": 1,
   "song": "Guren no Yumiya",
-  "artist": "Linked Horizon"
+  "artist": "Linked Horizon",
+  "start": 0.24
  },
  {
   "id": 3,
@@ -33,7 +35,8 @@
   "year": 2019,
   "op": 1,
   "song": "Gurenge",
-  "artist": "LiSA"
+  "artist": "LiSA",
+  "start": 0.94
  },
  {
   "id": 4,
@@ -45,7 +48,8 @@
   "year": 2020,
   "op": 1,
   "song": "Kaikai Kitan",
-  "artist": "Eve"
+  "artist": "Eve",
+  "start": 48.61
  },
  {
   "id": 5,
@@ -57,7 +61,8 @@
   "year": 2006,
   "op": 1,
   "song": "the WORLD",
-  "artist": "Nightmare"
+  "artist": "Nightmare",
+  "start": 0.62
  },
  {
   "id": 6,
@@ -70,7 +75,8 @@
   "op": 3,
   "src": 1,
   "song": "Peace Sign",
-  "artist": "Kenshi Yonezu"
+  "artist": "Kenshi Yonezu",
+  "start": 60.17
  },
  {
   "id": 7,
@@ -82,7 +88,8 @@
   "year": 1999,
   "op": 1,
   "song": "We Are!",
-  "artist": "Hiroshi Kitadani"
+  "artist": "Hiroshi Kitadani",
+  "start": 31.15
  },
  {
   "id": 8,
@@ -94,7 +101,8 @@
   "year": 2022,
   "op": 1,
   "song": "KICK BACK",
-  "artist": "Kenshi Yonezu"
+  "artist": "Kenshi Yonezu",
+  "start": 52.81
  },
  {
   "id": 9,
@@ -106,7 +114,8 @@
   "year": 2009,
   "op": 1,
   "song": "again",
-  "artist": "YUI"
+  "artist": "YUI",
+  "start": 0.3
  },
  {
   "id": 10,
@@ -118,7 +127,8 @@
   "year": 2014,
   "op": 1,
   "song": "Unravel",
-  "artist": "TK from Ling tosite sigure"
+  "artist": "TK from Ling tosite sigure",
+  "start": 0.25
  },
  {
   "id": 11,
@@ -130,7 +140,8 @@
   "year": 1995,
   "op": 1,
   "song": "Zankoku na Tenshi no Thesis",
-  "artist": "Yoko Takahashi"
+  "artist": "Yoko Takahashi",
+  "start": 67.95
  },
  {
   "id": 12,
@@ -142,7 +153,8 @@
   "year": 1998,
   "op": 1,
   "song": "Tank!",
-  "artist": "Seatbelts"
+  "artist": "Seatbelts",
+  "start": 3.27
  },
  {
   "id": 13,
@@ -154,7 +166,8 @@
   "year": 2023,
   "op": 1,
   "song": "Idol",
-  "artist": "YOASOBI"
+  "artist": "YOASOBI",
+  "start": 0.38
  },
  {
   "id": 14,
@@ -166,7 +179,8 @@
   "year": 2004,
   "op": 1,
   "song": "*~Asterisk~",
-  "artist": "ORANGE RANGE"
+  "artist": "ORANGE RANGE",
+  "start": 0.64
  },
  {
   "id": 15,
@@ -178,7 +192,8 @@
   "year": 2011,
   "op": 1,
   "song": "departure!",
-  "artist": "Masatoshi Ono"
+  "artist": "Masatoshi Ono",
+  "start": 3.81
  },
  {
   "id": 16,
@@ -190,7 +205,8 @@
   "year": 2006,
   "op": 1,
   "song": "COLORS",
-  "artist": "FLOW"
+  "artist": "FLOW",
+  "start": 8.5
  },
  {
   "id": 17,
@@ -202,7 +218,8 @@
   "year": 2015,
   "op": 1,
   "song": "THE HERO !! ~Okoreru Kobushi ni Hi wo Tsukero~",
-  "artist": "JAM Project"
+  "artist": "JAM Project",
+  "start": 9.22
  },
  {
   "id": 18,
@@ -214,7 +231,8 @@
   "year": 2022,
   "op": 1,
   "song": "Mixed Nuts",
-  "artist": "Official HIGE DANdism"
+  "artist": "Official HIGE DANdism",
+  "start": 50.79
  },
  {
   "id": 19,
@@ -226,7 +244,8 @@
   "year": 2011,
   "op": 1,
   "song": "Hacking to the Gate",
-  "artist": "Kanako Itou"
+  "artist": "Kanako Itou",
+  "start": 5.2
  },
  {
   "id": 20,
@@ -238,7 +257,8 @@
   "year": 2012,
   "op": 1,
   "song": "crossing field",
-  "artist": "LiSA"
+  "artist": "LiSA",
+  "start": 45.45
  },
  {
   "id": 21,
@@ -250,7 +270,8 @@
   "year": 2014,
   "op": 1,
   "song": "Imagination",
-  "artist": "SPYAIR"
+  "artist": "SPYAIR",
+  "start": 36.31
  },
  {
   "id": 22,
@@ -262,7 +283,8 @@
   "year": 2016,
   "op": 1,
   "song": "99",
-  "artist": "MOB CHOIR"
+  "artist": "MOB CHOIR",
+  "start": 12.31
  },
  {
   "id": 23,
@@ -274,19 +296,8 @@
   "year": 2009,
   "op": 1,
   "song": "Snow Fairy",
-  "artist": "FUNKIST"
- },
- {
-  "id": 24,
-  "nameEn": "Blue Exorcist",
-  "name": "Синий экзорцист",
-  "nameUk": "Синій екзорцист",
-  "aliases": "Ao no Exorcist, 青の祓魔師",
-  "slug": "ao_no_exorcist",
-  "year": 2011,
-  "op": 1,
-  "song": "Core Pride",
-  "artist": "UVERworld"
+  "artist": "FUNKIST",
+  "start": 6.28
  },
  {
   "id": 25,
@@ -298,7 +309,8 @@
   "year": 2014,
   "op": 1,
   "song": "Let Me Hear",
-  "artist": "Fear, and Loathing in Las Vegas"
+  "artist": "Fear, and Loathing in Las Vegas",
+  "start": 0.19
  },
  {
   "id": 26,
@@ -310,19 +322,8 @@
   "year": 2008,
   "op": 1,
   "song": "Resonance",
-  "artist": "T.M.Revolution"
- },
- {
-  "id": 27,
-  "nameEn": "Gintama",
-  "name": "Гинтама",
-  "nameUk": "Ґінтама",
-  "aliases": "銀魂",
-  "slug": "gintama",
-  "year": 2006,
-  "op": 1,
-  "song": "Pray",
-  "artist": "Tommy heavenly6"
+  "artist": "T.M.Revolution",
+  "start": 60.15
  },
  {
   "id": 28,
@@ -334,7 +335,8 @@
   "year": 2019,
   "op": 1,
   "song": "Good Morning World!",
-  "artist": "BURNOUT SYNDROMES"
+  "artist": "BURNOUT SYNDROMES",
+  "start": 0.22
  },
  {
   "id": 29,
@@ -346,7 +348,8 @@
   "year": 2019,
   "op": 1,
   "song": "MUKANJYO",
-  "artist": "Survive Said The Prophet"
+  "artist": "Survive Said The Prophet",
+  "start": 31.18
  },
  {
   "id": 30,
@@ -358,7 +361,8 @@
   "year": 2015,
   "op": 1,
   "song": "Seishun Satsubatsu-ron",
-  "artist": "3-nen E-gumi Utatan"
+  "artist": "3-nen E-gumi Utatan",
+  "start": 47.55
  },
  {
   "id": 31,
@@ -370,7 +374,8 @@
   "year": 2004,
   "op": 1,
   "song": "Battlecry",
-  "artist": "Nujabes feat. Shing02"
+  "artist": "Nujabes feat. Shing02",
+  "start": 8.24
  },
  {
   "id": 32,
@@ -382,19 +387,8 @@
   "year": 1999,
   "op": 1,
   "song": "Driver's High",
-  "artist": "L'Arc~en~Ciel"
- },
- {
-  "id": 33,
-  "nameEn": "Trigun",
-  "name": "Триган",
-  "nameUk": "Триґан",
-  "aliases": "トライガン",
-  "slug": "trigun",
-  "year": 1998,
-  "op": 1,
-  "song": "H.T.",
-  "artist": "Tsuneo Imahori"
+  "artist": "L'Arc~en~Ciel",
+  "start": 5.43
  },
  {
   "id": 34,
@@ -406,19 +400,8 @@
   "year": 2004,
   "op": 1,
   "song": "GRAIN",
-  "artist": "Kuniaki Haishima"
- },
- {
-  "id": 35,
-  "nameEn": "Baccano!",
-  "name": "Баккано!",
-  "nameUk": "Баккано!",
-  "aliases": "バッカーノ!",
-  "slug": "baccano",
-  "year": 2007,
-  "op": 1,
-  "song": "Guns & Roses",
-  "artist": "PARADISE LUNCH"
+  "artist": "Kuniaki Haishima",
+  "start": 9.69
  },
  {
   "id": 36,
@@ -430,7 +413,8 @@
   "year": 2006,
   "op": 1,
   "song": "Puzzle",
-  "artist": "ROUND TABLE feat. Nino"
+  "artist": "ROUND TABLE feat. Nino",
+  "start": 57.67
  },
  {
   "id": 37,
@@ -442,7 +426,8 @@
   "year": 1998,
   "op": 1,
   "song": "Duvet",
-  "artist": "Bôa"
+  "artist": "Bôa",
+  "start": 0.23
  },
  {
   "id": 38,
@@ -454,7 +439,8 @@
   "year": 2006,
   "op": 1,
   "song": "Red Fraction",
-  "artist": "MELL"
+  "artist": "MELL",
+  "start": 46.99
  },
  {
   "id": 39,
@@ -466,19 +452,8 @@
   "year": 1997,
   "op": 1,
   "song": "Tell Me Why",
-  "artist": "PENPALS"
- },
- {
-  "id": 40,
-  "nameEn": "Hajime no Ippo",
-  "name": "Первый шаг",
-  "nameUk": "Перший крок",
-  "aliases": "はじめの一歩, Fighting Spirit",
-  "slug": "hajime_no_ippo",
-  "year": 2000,
-  "op": 1,
-  "song": "Under Star",
-  "artist": "Shocking Lemon"
+  "artist": "PENPALS",
+  "start": 20.21
  },
  {
   "id": 41,
@@ -490,7 +465,8 @@
   "year": 1989,
   "op": 1,
   "song": "Cha-La Head-Cha-La",
-  "artist": "Hironobu Kageyama"
+  "artist": "Hironobu Kageyama",
+  "start": 2.04
  },
  {
   "id": 42,
@@ -502,7 +478,8 @@
   "year": 1997,
   "op": 1,
   "song": "Mezase Pokemon Master",
-  "artist": "Rika Matsumoto"
+  "artist": "Rika Matsumoto",
+  "start": 6.77
  },
  {
   "id": 43,
@@ -514,43 +491,8 @@
   "year": 1992,
   "op": 1,
   "song": "Moonlight Densetsu",
-  "artist": "DALI"
- },
- {
-  "id": 44,
-  "nameEn": "Yuu☆Yuu☆Hakusho",
-  "name": "Отчёт о буйстве духов",
-  "nameUk": "Звіт про буйство духів",
-  "aliases": "幽☆遊☆白書, Yu Yu Hakusho",
-  "slug": "yuuyuuhakusho",
-  "year": 1992,
-  "op": 1,
-  "song": "Hohoemi no Bakudan",
-  "artist": "Mawatari Matsuko"
- },
- {
-  "id": 45,
-  "nameEn": "Rurouni Kenshin",
-  "name": "Бродяга Кэнсин",
-  "nameUk": "Бродяга Кенсін",
-  "aliases": "るろうに剣心, Samurai X",
-  "slug": "rurouni_kenshin_meiji_kenkaku_romantan",
-  "year": 1996,
-  "op": 1,
-  "song": "Sobakasu",
-  "artist": "JUDY AND MARY"
- },
- {
-  "id": 46,
-  "nameEn": "Slam Dunk",
-  "name": "Слэм-данк",
-  "nameUk": "Слем-данк",
-  "aliases": "スラムダンク",
-  "slug": "slam_dunk",
-  "year": 1993,
-  "op": 1,
-  "song": "Kimi ga Suki da to Sakebitai",
-  "artist": "BAAD"
+  "artist": "DALI",
+  "start": 27.19
  },
  {
   "id": 47,
@@ -562,7 +504,8 @@
   "year": 2000,
   "op": 1,
   "song": "Change the World",
-  "artist": "V6"
+  "artist": "V6",
+  "start": 1.17
  },
  {
   "id": 48,
@@ -574,7 +517,8 @@
   "year": 2020,
   "op": 1,
   "song": "Fly with me",
-  "artist": "millennium parade"
+  "artist": "millennium parade",
+  "start": 5.28
  },
  {
   "id": 49,
@@ -586,43 +530,8 @@
   "year": 2004,
   "op": 1,
   "song": "LILIUM",
-  "artist": "Kumiko Noma"
- },
- {
-  "id": 50,
-  "nameEn": "Higurashi no Naku Koro ni",
-  "name": "Когда плачут цикады",
-  "nameUk": "Коли плачуть цикади",
-  "aliases": "ひぐらしのなく頃に, When They Cry",
-  "slug": "higurashi_no_naku_koro_ni",
-  "year": 2006,
-  "op": 1,
-  "song": "Higurashi no Naku Koro ni",
-  "artist": "Eiko Shimamiya"
- },
- {
-  "id": 51,
-  "nameEn": "Clannad",
-  "name": "Кланнад",
-  "nameUk": "Кланнад",
-  "aliases": "クラナド",
-  "slug": "clannad",
-  "year": 2007,
-  "op": 1,
-  "song": "Megumeru ~cuckool mix 2007~",
-  "artist": "eufonius"
- },
- {
-  "id": 52,
-  "nameEn": "Toradora!",
-  "name": "Торадора!",
-  "nameUk": "Торадора!",
-  "aliases": "とらドラ!",
-  "slug": "toradora",
-  "year": 2008,
-  "op": 1,
-  "song": "Pre-Parade",
-  "artist": "Eri Kitamura, Rie Kugimiya, Yui Horie"
+  "artist": "Kumiko Noma",
+  "start": 1.14
  },
  {
   "id": 53,
@@ -634,43 +543,8 @@
   "year": 2009,
   "op": 1,
   "song": "Cagayake! GIRLS",
-  "artist": "Aki Toyosaki, Youko Hikasa, Minako Kotobuki, Satomi Satou"
- },
- {
-  "id": 54,
-  "nameEn": "Angel Beats!",
-  "name": "Ангельские ритмы",
-  "nameUk": "Ангельські ритми",
-  "aliases": "エンジェルビーツ",
-  "slug": "angel_beats",
-  "year": 2010,
-  "op": 1,
-  "song": "My Soul, Your Beats!",
-  "artist": "Lia"
- },
- {
-  "id": 55,
-  "nameEn": "Mahou Shoujo Madoka★Magica",
-  "name": "Девочка-волшебница Мадока",
-  "nameUk": "Дівчинка-чарівниця Мадока",
-  "aliases": "Puella Magi Madoka Magica, まどか☆マギカ",
-  "slug": "mahou_shoujo_madokamagica",
-  "year": 2011,
-  "op": 1,
-  "song": "Connect",
-  "artist": "ClariS"
- },
- {
-  "id": 56,
-  "nameEn": "Nichijou",
-  "name": "Обыденность",
-  "nameUk": "Буденність",
-  "aliases": "日常, My Ordinary Life",
-  "slug": "nichijou",
-  "year": 2011,
-  "op": 1,
-  "song": "Hyadain no Kakakata☆Kataomoi - C",
-  "artist": "Hyadain"
+  "artist": "Aki Toyosaki, Youko Hikasa, Minako Kotobuki, Satomi Satou",
+  "start": 7.97
  },
  {
   "id": 57,
@@ -682,7 +556,8 @@
   "year": 2012,
   "op": 1,
   "song": "abnormalize",
-  "artist": "Ling Tosite Sigure"
+  "artist": "Ling Tosite Sigure",
+  "start": 0.35
  },
  {
   "id": 58,
@@ -694,7 +569,8 @@
   "year": 2014,
   "op": 1,
   "song": "Netsujou no Spectrum",
-  "artist": "Ikimonogakari"
+  "artist": "Ikimonogakari",
+  "start": 57.04
  },
  {
   "id": 59,
@@ -706,7 +582,8 @@
   "year": 2014,
   "op": 1,
   "song": "Hikaru nara",
-  "artist": "Goose House"
+  "artist": "Goose House",
+  "start": 52.91
  },
  {
   "id": 60,
@@ -718,7 +595,8 @@
   "year": 2014,
   "op": 1,
   "song": "Goya no Machiawase",
-  "artist": "Hello Sleepwalkers"
+  "artist": "Hello Sleepwalkers",
+  "start": 40.54
  },
  {
   "id": 61,
@@ -730,7 +608,8 @@
   "year": 2014,
   "op": 1,
   "song": "Skyreach",
-  "artist": "Sora Amamiya"
+  "artist": "Sora Amamiya",
+  "start": 43.62
  },
  {
   "id": 62,
@@ -742,7 +621,8 @@
   "year": 2010,
   "op": 1,
   "song": "Uragiri no Yuuyake",
-  "artist": "THEATRE BROOK"
+  "artist": "THEATRE BROOK",
+  "start": 28.27
  },
  {
   "id": 63,
@@ -754,7 +634,8 @@
   "year": 2016,
   "op": 1,
   "song": "Trash Candy",
-  "artist": "GRANRODEO"
+  "artist": "GRANRODEO",
+  "start": 18.64
  },
  {
   "id": 64,
@@ -766,7 +647,8 @@
   "year": 2016,
   "op": 1,
   "song": "Redo",
-  "artist": "Konomi Suzuki"
+  "artist": "Konomi Suzuki",
+  "start": 34.05
  },
  {
   "id": 65,
@@ -778,19 +660,8 @@
   "year": 2016,
   "op": 1,
   "song": "fantastic dreamer",
-  "artist": "Machico"
- },
- {
-  "id": 66,
-  "nameEn": "Boku dake ga Inai Machi",
-  "name": "Город, в котором меня нет",
-  "nameUk": "Місто, в якому мене немає",
-  "aliases": "Erased, 僕だけがいない街",
-  "slug": "boku_dake_ga_inai_machi",
-  "year": 2016,
-  "op": 1,
-  "song": "Re:Re:",
-  "artist": "Asian Kung-Fu Generation"
+  "artist": "Machico",
+  "start": 53.7
  },
  {
   "id": 67,
@@ -802,7 +673,8 @@
   "year": 2019,
   "op": 1,
   "song": "Love Dramatic feat. Rikka Ihara",
-  "artist": "Masayuki Suzuki"
+  "artist": "Masayuki Suzuki",
+  "start": 54.33
  },
  {
   "id": 68,
@@ -814,7 +686,8 @@
   "year": 2019,
   "op": 1,
   "song": "Touch Off",
-  "artist": "UVERworld"
+  "artist": "UVERworld",
+  "start": 64.25
  },
  {
   "id": 69,
@@ -826,7 +699,8 @@
   "year": 2019,
   "op": 1,
   "song": "Inferno",
-  "artist": "Mrs. GREEN APPLE"
+  "artist": "Mrs. GREEN APPLE",
+  "start": 36.8
  },
  {
   "id": 70,
@@ -838,7 +712,8 @@
   "year": 2020,
   "op": 10,
   "song": "Black Catcher",
-  "artist": "Vickeblanka"
+  "artist": "Vickeblanka",
+  "start": 4.89
  },
  {
   "id": 71,
@@ -850,19 +725,8 @@
   "year": 2021,
   "op": 1,
   "song": "Cry Baby",
-  "artist": "Official HIGE DANdism"
- },
- {
-  "id": 72,
-  "nameEn": "Horimiya",
-  "name": "Хоримия",
-  "nameUk": "Хорімія",
-  "aliases": "ホリミヤ",
-  "slug": "horimiya",
-  "year": 2021,
-  "op": 1,
-  "song": "Iro Kousui",
-  "artist": "Yoh Kamiyama"
+  "artist": "Official HIGE DANdism",
+  "start": 0.84
  },
  {
   "id": 73,
@@ -874,19 +738,8 @@
   "year": 2021,
   "op": 1,
   "song": "Tabibito no Uta",
-  "artist": "Yuiko Oohara"
- },
- {
-  "id": 74,
-  "nameEn": "Ousama Ranking",
-  "name": "Рейтинг королей",
-  "nameUk": "Рейтинг королів",
-  "aliases": "Ranking of Kings, 王様ランキング",
-  "slug": "ousama_ranking",
-  "year": 2021,
-  "op": 1,
-  "song": "BOY",
-  "artist": "King Gnu"
+  "artist": "Yuiko Oohara",
+  "start": 4.86
  },
  {
   "id": 75,
@@ -898,19 +751,8 @@
   "year": 2022,
   "op": 1,
   "song": "This Fffire",
-  "artist": "Franz Ferdinand"
- },
- {
-  "id": 76,
-  "nameEn": "Bocchi the Rock!",
-  "name": "Одинокий рокер",
-  "nameUk": "Самотня рокерка",
-  "aliases": "ぼっち・ざ・ろっく!",
-  "slug": "bocchi_the_rock",
-  "year": 2022,
-  "op": 1,
-  "song": "Seishun Complex",
-  "artist": "Kessoku Band"
+  "artist": "Franz Ferdinand",
+  "start": 61.83
  },
  {
   "id": 77,
@@ -922,7 +764,8 @@
   "year": 2022,
   "op": 1,
   "song": "Chaos ga Kiwamaru",
-  "artist": "UNISON SQUARE GARDEN"
+  "artist": "UNISON SQUARE GARDEN",
+  "start": 0.16
  },
  {
   "id": 78,
@@ -934,7 +777,8 @@
   "year": 2023,
   "op": 1,
   "song": "Yuusha",
-  "artist": "YOASOBI"
+  "artist": "YOASOBI",
+  "start": 57.83
  },
  {
   "id": 79,
@@ -946,7 +790,8 @@
   "year": 2023,
   "op": 1,
   "song": "W●RK",
-  "artist": "millennium parade, Ringo Shiina"
+  "artist": "millennium parade, Ringo Shiina",
+  "start": 0.58
  },
  {
   "id": 80,
@@ -958,7 +803,8 @@
   "year": 2024,
   "op": 1,
   "song": "LEveL",
-  "artist": "TOMORROW X TOGETHER, SawanoHiroyuki[nZk]"
+  "artist": "TOMORROW X TOGETHER, SawanoHiroyuki[nZk]",
+  "start": 30.08
  },
  {
   "id": 81,
@@ -970,7 +816,8 @@
   "year": 2024,
   "op": 1,
   "song": "Otonoke",
-  "artist": "Creepy Nuts"
+  "artist": "Creepy Nuts",
+  "start": 10.47
  },
  {
   "id": 82,
@@ -982,43 +829,8 @@
   "year": 2024,
   "op": 1,
   "song": "Abyss",
-  "artist": "YUNGBLUD"
- },
- {
-  "id": 83,
-  "nameEn": "Zom 100: Zombie ni Naru made ni Shitai 100 no Koto",
-  "name": "Zom 100",
-  "nameUk": "Zom 100",
-  "aliases": "ゾン100",
-  "slug": "zom_100_zombie_ni_naru_made_ni_shitai_100_no_koto",
-  "year": 2023,
-  "op": 1,
-  "song": "Song of the Dead",
-  "artist": "KANA-BOON"
- },
- {
-  "id": 84,
-  "nameEn": "Ouran Koukou Host Club",
-  "name": "Клуб свиданий Оран",
-  "nameUk": "Клуб побачень Оран",
-  "aliases": "Ouran High School Host Club, 桜蘭高校ホスト部",
-  "slug": "ouran_koukou_host_club",
-  "year": 2006,
-  "op": 1,
-  "song": "Sakura Kiss",
-  "artist": "Chieko Kawabe"
- },
- {
-  "id": 85,
-  "nameEn": "Fruits Basket (2019)",
-  "name": "Корзинка фруктов",
-  "nameUk": "Кошик фруктів",
-  "aliases": "フルーツバスケット",
-  "slug": "fruits_basket_2019",
-  "year": 2019,
-  "op": 1,
-  "song": "Again",
-  "artist": "Beverly"
+  "artist": "YUNGBLUD",
+  "start": 14.89
  },
  {
   "id": 86,
@@ -1030,7 +842,8 @@
   "year": 2006,
   "op": 1,
   "song": "Rose",
-  "artist": "Anna Tsuchiya inspi' NANA"
+  "artist": "Anna Tsuchiya inspi' NANA",
+  "start": 55.16
  },
  {
   "id": 87,
@@ -1042,31 +855,8 @@
   "year": 2009,
   "op": 1,
   "song": "Kimi ni Todoke",
-  "artist": "Tanizawa Tomofumi"
- },
- {
-  "id": 88,
-  "nameEn": "Shokugeki no Souma",
-  "name": "Кулинарные поединки Сомы",
-  "nameUk": "Кулінарні поєдинки Соми",
-  "aliases": "Food Wars, 食戟のソーマ",
-  "slug": "shokugeki_no_souma_food_wars",
-  "year": 2015,
-  "op": 1,
-  "song": "Kibou no Uta",
-  "artist": "ULTRA TOWER"
- },
- {
-  "id": 89,
-  "nameEn": "Overlord",
-  "name": "Повелитель",
-  "nameUk": "Володар",
-  "aliases": "オーバーロード",
-  "slug": "overlord",
-  "year": 2015,
-  "op": 1,
-  "song": "Clattanoia",
-  "artist": "OxT"
+  "artist": "Tanizawa Tomofumi",
+  "start": 28.08
  },
  {
   "id": 90,
@@ -1078,31 +868,8 @@
   "year": 2014,
   "op": 1,
   "song": "This game",
-  "artist": "Konomi Suzuki"
- },
- {
-  "id": 91,
-  "nameEn": "Charlotte",
-  "name": "Шарлотта",
-  "nameUk": "Шарлотта",
-  "aliases": "シャーロット",
-  "slug": "charlotte",
-  "year": 2015,
-  "op": 1,
-  "song": "Bravely You",
-  "artist": "Lia"
- },
- {
-  "id": 92,
-  "nameEn": "Devilman: Crybaby",
-  "name": "Человек-дьявол",
-  "nameUk": "Людина-диявол",
-  "aliases": "デビルマン クライベイビー",
-  "slug": "devilman_crybaby",
-  "year": 2018,
-  "op": 1,
-  "song": "MAN HUMAN (DEVILMAN crybaby Ver.)",
-  "artist": "Denki Groove"
+  "artist": "Konomi Suzuki",
+  "start": 26.19
  },
  {
   "id": 93,
@@ -1114,7 +881,8 @@
   "year": 2019,
   "op": 1,
   "song": "Kaen",
-  "artist": "Ziyoou-vachi"
+  "artist": "Ziyoou-vachi",
+  "start": 54.23
  },
  {
   "id": 94,
@@ -1126,7 +894,8 @@
   "year": 2019,
   "op": 1,
   "song": "Wild Side",
-  "artist": "ALI"
+  "artist": "ALI",
+  "start": 47.72
  },
  {
   "id": 95,
@@ -1138,19 +907,8 @@
   "year": 2018,
   "op": 1,
   "song": "Winding Road",
-  "artist": "MAN WITH A MISSION"
- },
- {
-  "id": 96,
-  "nameEn": "Banana Fish",
-  "name": "Банановая рыба",
-  "nameUk": "Бананова риба",
-  "aliases": "バナナフィッシュ",
-  "slug": "banana_fish",
-  "year": 2018,
-  "op": 1,
-  "song": "found & lost",
-  "artist": "Survive Said The Prophet"
+  "artist": "MAN WITH A MISSION",
+  "start": 30.94
  },
  {
   "id": 97,
@@ -1162,7 +920,8 @@
   "year": 2017,
   "op": 2,
   "song": "Deep in Abyss",
-  "artist": "Mariya Ise, Miyu Tomita"
+  "artist": "Mariya Ise, Miyu Tomita",
+  "start": 1.39
  },
  {
   "id": 98,
@@ -1174,19 +933,8 @@
   "year": 2018,
   "op": 1,
   "song": "Sincerely",
-  "artist": "TRUE"
- },
- {
-  "id": 99,
-  "nameEn": "3-gatsu no Lion",
-  "name": "Мартовский лев",
-  "nameUk": "Березневий лев",
-  "aliases": "March Comes in Like a Lion, 3月のライオン",
-  "slug": "3_gatsu_no_lion",
-  "year": 2016,
-  "op": 1,
-  "song": "Answer",
-  "artist": "BUMP OF CHICKEN"
+  "artist": "TRUE",
+  "start": 0.35
  },
  {
   "id": 100,
@@ -1198,6 +946,7 @@
   "year": 2016,
   "op": 1,
   "song": "History Maker",
-  "artist": "Dean Fujioka"
+  "artist": "Dean Fujioka",
+  "start": 0.47
  }
 ]

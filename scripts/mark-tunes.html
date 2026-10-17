@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Мітки опенінгів</title>
+    <style>
+      :root { color-scheme: dark; --line: #2a2f3a; --card: #141821; --accent: #f0a830; --text: #e8ebf2; --dim: #8b93a5; }
+      * { box-sizing: border-box; }
+      body { margin: 0; display: grid; grid-template-columns: 320px minmax(0, 1fr); height: 100vh; background: #0a0c10; color: var(--text); font: 15px/1.5 system-ui, sans-serif; }
+      aside { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--line); }
+      .head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+      .head b { font-size: 14px; }
+      .head span { margin-left: auto; color: var(--dim); font-size: 13px; }
+      .roll { flex: 1; overflow-y: auto; }
+      .roll button { display: flex; width: 100%; align-items: center; gap: 8px; padding: 9px 14px; border: 0; border-bottom: 1px solid var(--line); background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+      .roll button:hover { background: #161b25; }
+      .roll button.on { background: #1d2430; box-shadow: inset 3px 0 0 var(--accent); }
+      .roll button.gone { opacity: .38; text-decoration: line-through; }
+      .roll b { overflow: hidden; flex: 1; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+      .roll i { font-style: normal; color: var(--dim); font-size: 12px; }
+      .roll i.set { color: var(--accent); font-weight: 700; }
+      main { display: flex; flex-direction: column; gap: 16px; padding: 22px 28px; overflow-y: auto; }
+      h1 { margin: 0; font-size: 23px; }
+      p.sub { margin: 2px 0 0; color: var(--dim); }
+      canvas { width: 100%; height: 230px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); cursor: grab; touch-action: none; user-select: none; }
+      canvas.held { cursor: grabbing; }
+      .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+      button.act { padding: 9px 15px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: inherit; font: inherit; cursor: pointer; }
+      button.act:hover { border-color: #3c4454; }
+      button.act.main { border-color: var(--accent); background: var(--accent); color: #11131a; font-weight: 700; }
+      button.act.warn { border-color: #7a3b44; color: #e79aa2; }
+      button.act.lit { border-color: var(--accent); color: var(--accent); }
+      .hint { color: var(--dim); font-size: 13px; }
+      kbd { padding: 1px 6px; border: 1px solid var(--line); border-radius: 5px; background: #1b2029; font-size: 12px; }
+      .flash { position: fixed; right: 22px; bottom: 20px; padding: 11px 18px; border-radius: 12px; background: var(--accent); color: #11131a; font-weight: 700; opacity: 0; transition: opacity .2s; pointer-events: none; }
+      .flash.on { opacity: 1; }
+      .zone { font-variant-numeric: tabular-nums; }
+    </style>
+  </head>
+  <body>
+    <aside>
+      <div class="head">
+        <b>Опенінги</b>
+        <span id="count"></span>
+      </div>
+      <div class="row" style="padding: 8px 12px; border-bottom: 1px solid var(--line)">
+        <button class="act" id="filter" style="padding: 5px 10px; font-size: 13px">Усі</button>
+        <button class="act" id="jump" style="padding: 5px 10px; font-size: 13px">До першого без зони</button>
+      </div>
+      <div class="roll" id="list"></div>
+    </aside>
+    <main>
+      <div>
+        <h1 id="title">—</h1>
+        <p class="sub" id="sub"></p>
+      </div>
+      <canvas id="wave"></canvas>
+      <div class="row">
+        <span class="hint">Слухати:</span>
+        <span id="lens" class="row"></span>
+        <button class="act" id="whole">Весь трек</button>
+        <button class="act" id="stop">Стоп</button>
+        <span class="hint zone" id="where"></span>
+      </div>
+      <div class="row">
+        <button class="act main" id="save">Зберегти й далі <kbd>Enter</kbd></button>
+        <button class="act" id="keep">Зберегти</button>
+        <button class="act" id="auto">Повернути авто</button>
+        <button class="act warn" id="drop">Прибрати тайтл <kbd>D</kbd></button>
+      </div>
+      <p class="hint">
+        Тягни зону по хвилі · <kbd>1</kbd>–<kbd>6</kbd> тривалість · <kbd>Пробіл</kbd> слухати · <kbd>←</kbd><kbd>→</kbd> зсув на 0,1 с · <kbd>↑</kbd><kbd>↓</kbd> між тайтлами
+      </p>
+    </main>
+    <div class="flash" id="flash"></div>
+    <script type="module">
+      const LENS = [0.5, 1, 2, 4, 8, 16]
+      const FULL = 16
+      const ac = new AudioContext()
+
+      let rows = await fetch('/data').then((r) => r.json())
+      let at = 0
+      let buffer = null
+      let mark = 0
+      let node = null
+      let playing = null
+      let onlyFree = false
+      let heard = 2
+
+      const list = document.getElementById('list')
+      const wave = document.getElementById('wave')
+      const draw = wave.getContext('2d')
+      const flash = document.getElementById('flash')
+
+      const latest = () => Math.max(0, (buffer?.duration ?? FULL) - FULL)
+      const clamp = (value) => Math.min(latest(), Math.max(0, value))
+
+      const paint = () => {
+        const width = (wave.width = wave.clientWidth * devicePixelRatio)
+        const height = (wave.height = 230 * devicePixelRatio)
+        draw.clearRect(0, 0, width, height)
+        if (!buffer) return
+
+        const span = buffer.duration
+        const px = (seconds) => (seconds / span) * width
+        const from = px(mark)
+        const to = px(Math.min(span, mark + FULL))
+        const hot = px(Math.min(span, mark + heard))
+
+        draw.fillStyle = '#1b2029'
+        draw.fillRect(from, 0, to - from, height)
+        draw.fillStyle = '#2e2718'
+        draw.fillRect(from, 0, hot - from, height)
+
+        const data = buffer.getChannelData(0)
+        const step = Math.floor(data.length / width)
+        for (let x = 0; x < width; x++) {
+          let peak = 0
+          for (let n = x * step; n < (x + 1) * step; n += 7) peak = Math.max(peak, Math.abs(data[n] ?? 0))
+          const tall = Math.max(2, peak * height * 0.9)
+          draw.fillStyle = x < from || x > to ? '#2c313c' : x < hot ? '#f0a830' : '#7d879b'
+          draw.fillRect(x, (height - tall) / 2, 1, tall)
+        }
+
+        draw.fillStyle = '#f0a830'
+        draw.fillRect(from - 1.5, 0, 3, height)
+        draw.fillStyle = 'rgba(240, 168, 48, 0.5)'
+        draw.fillRect(to - 1.5, 0, 3, height)
+
+        draw.fillStyle = '#f0a830'
+        for (const y of [14 * devicePixelRatio, height - 14 * devicePixelRatio]) {
+          draw.beginPath()
+          draw.arc(from, y, 11 * devicePixelRatio, 0, Math.PI * 2)
+          draw.fill()
+        }
+
+        if (playing) {
+          const gone = ac.currentTime - playing.since
+          if (gone <= playing.span) {
+            draw.fillStyle = '#ffffff'
+            draw.fillRect(px(playing.from + gone) - 1, 0, 2, height)
+          }
+        }
+
+        draw.fillStyle = '#11131a'
+        draw.font = `700 ${12 * devicePixelRatio}px system-ui`
+        draw.textAlign = 'center'
+        if (hot - from > 40 * devicePixelRatio) draw.fillText(`${heard} с`, (from + hot) / 2, height / 2 + 4 * devicePixelRatio)
+      }
+
+      const tick = () => {
+        if (playing) {
+          paint()
+          requestAnimationFrame(tick)
+        }
+      }
+
+      const stop = () => {
+        if (node) {
+          node.onended = null
+          node.stop()
+          node = null
+        }
+        playing = null
+        paint()
+      }
+
+      const play = (from, span) => {
+        stop()
+        if (!buffer) return
+        node = ac.createBufferSource()
+        node.buffer = buffer
+        node.connect(ac.destination)
+        node.start(0, from, span)
+        playing = { from, span, since: ac.currentTime }
+        node.onended = () => {
+          node = null
+          playing = null
+          paint()
+        }
+        requestAnimationFrame(tick)
+      }
+
+      const shown = () => (onlyFree ? rows.filter((row) => row.start === undefined && !row.hidden) : rows)
+
+      const paintList = () => {
+        list.innerHTML = ''
+        for (const row of shown()) {
+          const index = rows.indexOf(row)
+          const item = document.createElement('button')
+          item.className = `${index === at ? 'on' : ''} ${row.hidden ? 'gone' : ''}`
+          item.innerHTML = `<b>${row.nameEn}</b><i class="${row.start === undefined ? '' : 'set'}">${row.start === undefined ? 'авто' : row.start.toFixed(1)}</i>`
+          item.onclick = () => load(index)
+          list.append(item)
+          if (index === at) queueMicrotask(() => item.scrollIntoView({ block: 'nearest' }))
+        }
+        const set = rows.filter((row) => row.start !== undefined).length
+        const gone = rows.filter((row) => row.hidden).length
+        document.getElementById('count').textContent = `${set} з ${rows.length}${gone ? ` · ${gone} прибрано` : ''}`
+      }
+
+      const paintLens = () => {
+        const box = document.getElementById('lens')
+        box.innerHTML = ''
+        LENS.forEach((span, index) => {
+          const item = document.createElement('button')
+          item.className = `act ${span === heard ? 'lit' : ''}`
+          item.style.padding = '7px 11px'
+          item.textContent = `${span} с`
+          item.onclick = () => {
+            heard = span
+            paintLens()
+            play(mark, span)
+          }
+          box.append(item)
+        })
+      }
+
+      const show = () => {
+        const row = rows[at]
+        document.getElementById('title').textContent = row.nameEn
+        document.getElementById('sub').textContent = `${row.song} — ${row.artist} · OP${row.op} · ${row.year}`
+        document.getElementById('where').textContent = `зона ${mark.toFixed(2)} – ${(mark + FULL).toFixed(2)} с${row.start === undefined ? ' · авто' : ' · збережено'}`
+        wave.classList.toggle('held', holding)
+        paintList()
+        paintLens()
+        paint()
+      }
+
+      async function load(index) {
+        stop()
+        at = index
+        buffer = null
+        mark = rows[at].start ?? 0
+        show()
+        const bytes = await fetch(`/audio/${rows[at].id}`).then((r) => r.arrayBuffer())
+        buffer = await ac.decodeAudioData(bytes)
+        show()
+      }
+
+      let holding = false
+      let grabbed = null
+      let shift = 0
+
+      const secondsAt = (event) => {
+        const box = wave.getBoundingClientRect()
+        const share = Math.min(1, Math.max(0, (event.clientX - box.left) / box.width))
+        return share * buffer.duration
+      }
+
+      wave.addEventListener('pointerdown', (event) => {
+        if (!buffer) return
+        stop()
+        const spot = secondsAt(event)
+        const inside = spot >= mark && spot <= mark + FULL
+        shift = inside ? spot - mark : heard / 2
+        mark = clamp(spot - shift)
+        holding = true
+        show()
+        try {
+          wave.setPointerCapture(event.pointerId)
+          grabbed = event.pointerId
+        } catch {
+          grabbed = null
+        }
+      })
+
+      wave.addEventListener('pointermove', (event) => {
+        if (!holding || !buffer) return
+        mark = clamp(secondsAt(event) - shift)
+        show()
+      })
+
+      const drop = () => {
+        if (!holding) return
+        holding = false
+        if (grabbed !== null && wave.hasPointerCapture(grabbed)) wave.releasePointerCapture(grabbed)
+        grabbed = null
+        show()
+        play(mark, heard)
+      }
+
+      wave.addEventListener('pointerup', drop)
+      wave.addEventListener('pointercancel', drop)
+
+      const say = (text) => {
+        flash.textContent = text
+        flash.classList.add('on')
+        setTimeout(() => flash.classList.remove('on'), 900)
+      }
+
+      const send = async (patch, note) => {
+        const answer = await fetch('/save', { method: 'POST', body: JSON.stringify({ id: rows[at].id, ...patch }) }).then((r) => r.json())
+        rows[at] = answer.row
+        show()
+        if (note) say(note)
+      }
+
+      const nextFree = () => {
+        for (let step = 1; step <= rows.length; step++) {
+          const index = (at + step) % rows.length
+          if (rows[index].start === undefined && !rows[index].hidden) return index
+        }
+        return null
+      }
+
+      document.getElementById('whole').onclick = () => play(0, buffer?.duration ?? 0)
+      document.getElementById('stop').onclick = stop
+      document.getElementById('keep').onclick = () => send({ start: mark }, 'Збережено')
+      document.getElementById('auto').onclick = () => send({ start: null }, 'Повернуто авто')
+      document.getElementById('drop').onclick = () => send({ hidden: !rows[at].hidden }, rows[at].hidden ? 'Повернуто' : 'Прибрано')
+      document.getElementById('save').onclick = async () => {
+        await send({ start: mark }, 'Збережено')
+        if (at + 1 < rows.length) load(at + 1)
+      }
+      document.getElementById('filter').onclick = (event) => {
+        onlyFree = !onlyFree
+        event.target.textContent = onlyFree ? 'Без зони' : 'Усі'
+        event.target.classList.toggle('lit', onlyFree)
+        paintList()
+      }
+      document.getElementById('jump').onclick = () => {
+        const free = nextFree()
+        if (free === null) say('Усі розставлені')
+        else load(free)
+      }
+
+      addEventListener('keydown', (event) => {
+        const key = Number(event.key)
+        if (key >= 1 && key <= LENS.length) {
+          heard = LENS[key - 1]
+          paintLens()
+          paint()
+          play(mark, heard)
+          return
+        }
+        if (event.code === 'Space') { event.preventDefault(); play(mark, heard) }
+        if (event.code === 'Enter') { event.preventDefault(); document.getElementById('save').click() }
+        if (event.key === 'd' || event.key === 'D') document.getElementById('drop').click()
+        if (event.code === 'ArrowDown') { event.preventDefault(); at + 1 < rows.length && load(at + 1) }
+        if (event.code === 'ArrowUp') { event.preventDefault(); at > 0 && load(at - 1) }
+        if (event.code === 'ArrowRight') { event.preventDefault(); mark = clamp(mark + 0.1); show() }
+        if (event.code === 'ArrowLeft') { event.preventDefault(); mark = clamp(mark - 0.1); show() }
+      })
+
+      addEventListener('resize', paint)
+      await load(0)
+    </script>
+  </body>
+</html>
