@@ -566,15 +566,15 @@
  },
  {
   "id": 48,
-  "nameEn": "Koukaku Kidoutai: Stand Alone Complex",
+  "nameEn": "Ghost in the Shell",
   "name": "Призрак в доспехах",
   "nameUk": "Привид у латах",
-  "aliases": "Ghost in the Shell, 攻殻機動隊",
-  "slug": "ghost_in_the_shell_stand_alone_complex",
-  "year": 2002,
+  "aliases": "Koukaku Kidoutai, 攻殻機動隊, Stand Alone Complex, SAC_2045",
+  "slug": "ghost_in_the_shell_sac_2045",
+  "year": 2020,
   "op": 1,
-  "song": "Inner Universe",
-  "artist": "Origa"
+  "song": "Fly with me",
+  "artist": "millennium parade"
  },
  {
   "id": 49,
