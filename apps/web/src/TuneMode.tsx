@@ -75,6 +75,7 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
   const [busy, setBusy] = useState(false)
   const [held, setHeld] = useState(false)
   const [bumped, setBumped] = useState(false)
+  const [touched, setTouched] = useState(false)
   const [loud, setLoud] = useState(() => {
     const kept = typeof window === 'undefined' ? null : window.localStorage.getItem(LOUD_KEY)
     const value = kept === null ? 0.8 : Number(kept)
@@ -126,7 +127,10 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
     node.addEventListener('timeupdate', move)
     node.addEventListener('ended', rewind)
     node.addEventListener('pause', stop)
-    node.addEventListener('play', () => setGoing(true))
+    node.addEventListener('play', () => {
+      setGoing(true)
+      setTouched(true)
+    })
     return () => {
       node.removeEventListener('timeupdate', move)
       node.removeEventListener('ended', rewind)
@@ -137,6 +141,10 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
   useEffect(() => {
     setAt(0)
   }, [run?.clip])
+
+  useEffect(() => {
+    setTouched(false)
+  }, [run?.answerId, run?.lastId])
 
   useEffect(() => {
     if (!going) return
@@ -244,9 +252,18 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
   }, [openLoud])
 
   const pickGrade = async (next: TuneLevel) => {
+    if (next === grade) return
     sound.current?.pause()
     setGrade(next)
     await send({ action: 'restart', grade: next })
+  }
+
+  const swapGrade = async (next: TuneLevel) => {
+    if (next === grade) return
+    sound.current?.pause()
+    setGrade(next)
+    const done = await send({ action: 'giveup' })
+    if (done?.status === 'over') fanfare.current = true
   }
 
   useEffect(() => {
@@ -333,6 +350,7 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
     sound.current?.pause()
     holding.current = true
     setHeld(true)
+    setTouched(true)
     seek(event)
 
     try {
@@ -355,6 +373,7 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
   if (!run) return <div className="tune-wrap is-wait" />
 
   const over = run.status === 'over'
+  const started = run.status === 'playing' && (run.step > 0 || touched)
   const answered = over && run.lastId !== undefined ? game.entities.find((one) => one.id === run.lastId) : null
   const edge = spotOf(run.open, run.full, over)
   const played = spotOf(at, run.full, over)
@@ -401,19 +420,27 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
     <PlayBoard side={side}>
       <div className="tune-wrap">
         <div className="tune-grades" role="radiogroup" aria-label={t('tune.grade')}>
-          {TUNE_LEVELS.map((one) => (
-            <button
-              key={one}
-              type="button"
-              role="radio"
-              aria-checked={run.grade === one}
-              className={`tune-grade is-${one} ${run.grade === one ? 'on' : ''}`}
-              disabled={busy}
-              onClick={() => void pickGrade(one)}
-            >
-              {t(GRADE_LABEL[one])}
-            </button>
-          ))}
+          {TUNE_LEVELS.map((one) => {
+            const here = run.grade === one
+            const style = `tune-grade is-${one} ${here ? 'on' : ''}`
+            return started && !here ? (
+              <GiveUp key={one} className={style} disabled={busy} hint="tune.swapAsk" onConfirm={() => void swapGrade(one)}>
+                {t(GRADE_LABEL[one])}
+              </GiveUp>
+            ) : (
+              <button
+                key={one}
+                type="button"
+                role="radio"
+                aria-checked={here}
+                className={style}
+                disabled={busy}
+                onClick={() => void pickGrade(one)}
+              >
+                {t(GRADE_LABEL[one])}
+              </button>
+            )
+          })}
         </div>
 
         <div className={`play-card tune-board ${over ? 'is-done' : ''}`}>

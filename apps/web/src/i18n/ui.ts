@@ -678,6 +678,11 @@ const ui = {
   'tune.play': { ru: 'Играть', uk: 'Грати', en: 'Play' },
   'tune.pause': { ru: 'Пауза', uk: 'Пауза', en: 'Pause' },
   'tune.guessed': { ru: 'Угадано за {seconds}', uk: 'Вгадано за {seconds}', en: 'Guessed in {seconds}' },
+  'tune.swapAsk': {
+    ru: 'Сложность меняется только с новым опенингом — этот будет засчитан как проигранный',
+    uk: 'Складність міняється лише з новим опенінгом — цей зарахується як програний',
+    en: 'Changing difficulty starts a new opening — this one counts as lost',
+  },
   'tune.skip': { ru: 'Ещё кусок', uk: 'Ще шматок', en: 'More' },
   'tune.missed': { ru: 'Правильный ответ', uk: 'Правильна відповідь', en: 'The answer was' },
   'tune.was': { ru: 'Это был опенинг «{name}»', uk: 'Це був опенінг «{name}»', en: 'That was the opening of "{name}"' },

@@ -38,7 +38,7 @@ export default function CharacterSearch({
   const [active, setActive] = useState(0)
   const list = useRef<HTMLUListElement>(null)
   const box = useRef<HTMLDivElement>(null)
-  const [place, setPlace] = useState<{ up: boolean; max: number }>({ up: false, max: 400 })
+  const [place, setPlace] = useState<{ up: boolean; max: number; near: number }>({ up: false, max: 400, near: 0 })
 
   const index = useMemo(
     () =>
@@ -83,7 +83,11 @@ export default function CharacterSearch({
       const above = rect.top - gap
       const up = below < 220 && above > below
       const max = Math.max(120, Math.min(400, up ? above : below))
-      setPlace((current) => (current.up === up && current.max === max ? current : { up, max }))
+      const field = box.current!
+      const near = up ? (field.offsetParent as HTMLElement | null ?? field).offsetHeight - field.offsetTop : field.offsetTop + field.offsetHeight
+      setPlace((current) =>
+        current.up === up && current.max === max && current.near === near ? current : { up, max, near },
+      )
     }
 
     const schedule = () => {
@@ -113,6 +117,7 @@ export default function CharacterSearch({
     onPick(e)
     setQuery('')
     setActive(0)
+    if (matchMedia('(pointer: coarse)').matches) box.current?.querySelector('input')?.blur()
   }
 
   return (
@@ -175,7 +180,11 @@ export default function CharacterSearch({
       </button>
       </div>
       {matches.length > 0 && (
-        <ul className={`suggestions ${place.up ? 'up' : ''}`} ref={list} style={{ maxHeight: place.max }}>
+        <ul
+          className={`suggestions ${place.up ? 'up' : ''}`}
+          ref={list}
+          style={place.up ? { maxHeight: place.max, bottom: place.near + 6 } : { maxHeight: place.max, top: place.near + 6 }}
+        >
           {matches.map((e, i) => (
             <li
               key={e.id}

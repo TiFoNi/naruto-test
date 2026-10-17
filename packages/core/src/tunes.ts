@@ -69,7 +69,7 @@ export async function tuneRun(userId: ObjectId, guest: boolean, grade: TuneLevel
   const known = (await gameData(GAME)).byId
   const alive = (id?: number) => id !== undefined && known.has(id)
 
-  if (!fresh && same && found.status === 'playing' && alive(found.answerId)) return view(found)
+  if (!fresh && found && found.status === 'playing' && alive(found.answerId)) return view(found)
   if (!fresh && same && found.status === 'over' && alive(found.lastId)) return view(found)
 
   const next = await pickTitle(found?.seen ?? [])
@@ -85,8 +85,8 @@ export async function tuneRun(userId: ObjectId, guest: boolean, grade: TuneLevel
     grade,
     step: 0,
     misses: 0,
-    score: same ? (found?.score ?? 0) : 0,
-    streak: same ? (found?.streak ?? 0) : 0,
+    score: found?.score ?? 0,
+    streak: found?.streak ?? 0,
     best: found?.best ?? 0,
     seen: [...(found?.seen ?? []), next.id].slice(-60),
     status: 'playing',
