@@ -17,4 +17,5 @@ export const MODES: { id: ModeId; label: UiKey; description: UiKey; icon: ReactN
   { id: 'phrase', label: 'mode.phrase', description: 'mode.phrase.desc', icon: <SoundIcon /> },
   { id: 'who', label: 'mode.who', description: 'mode.who.desc', icon: <UserIcon /> },
   { id: 'grid', label: 'mode.grid', description: 'mode.grid.desc', icon: <HashIcon /> },
+  { id: 'clue', label: 'mode.clue', description: 'mode.clue.desc', icon: <UsersIcon /> },
 ]

@@ -28,6 +28,7 @@ import { useDuel } from './useDuel'
 import DuelSetup from './DuelSetup'
 import DuelSkeleton from './DuelSkeleton'
 import GridBoard from './GridBoard'
+import ClueBoard from './ClueBoard'
 import type { Guess } from './useRound'
 import { SwordsIcon, TrophyIcon } from './icons'
 import { fullUrl } from './pics'
@@ -48,7 +49,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
   const { t, l, name, lang, error: errorText } = useI18n()
   const href = useHref()
   const navigate = useNavigate()
-  const { duel, error, busy, pending, serverNow, ready, setup, team, invite, next, toLobby, giveUp, guess, pick, pass, mark, strike, answer: markAnswer, refresh } = useDuel(code)
+  const { duel, error, busy, pending, serverNow, ready, setup, seat, clue, open, skip, invite, next, toLobby, giveUp, guess, pick, pass, mark, strike, answer: markAnswer, refresh } = useDuel(code)
   const [, redraw] = useState(0)
   const [pageReady, setPageReady] = useState(false)
   const [showResult, setShowResult] = useState(true)
@@ -302,7 +303,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
       )}
 
       {inLobby && (
-        <DuelSetup duel={duel} busy={busy} link={link} onSetup={setup} onInvite={invite} onReady={ready} onTeam={team} onLeave={() => void leave()} />
+        <DuelSetup duel={duel} busy={busy} link={link} onSetup={setup} onInvite={invite} onReady={ready} onSeat={seat} onLeave={() => void leave()} />
       )}
 
       {duel.matchDone && over && showResult && (
@@ -389,6 +390,13 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
           onNext={next}
         />}
 
+      {!inLobby && game && duel.mode === 'clue' && (
+        <>
+          <ClueBoard game={game} byId={byId} duel={duel} busy={busy} onClue={clue} onOpen={open} onSkip={skip} onNext={next} />
+          {quit && <div className="duel-quit is-wide">{quit}</div>}
+        </>
+      )}
+
       {!inLobby && game && duel.mode === 'grid' && (
         <>
         <GridBoard game={game} byId={byId} duel={duel} busy={busy} error={error} onMark={mark} onNext={next} />
@@ -396,7 +404,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
         </>
       )}
 
-      {!inLobby && game && duel.mode !== 'who' && duel.mode !== 'grid' && (
+      {!inLobby && game && duel.mode !== 'who' && duel.mode !== 'grid' && duel.mode !== 'clue' && (
         <PlayBoard
           variant={duel.mode === 'image' ? 'shot' : duel.mode === 'ability' ? 'ability' : 'classic'}
           side={

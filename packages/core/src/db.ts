@@ -92,6 +92,7 @@ export type DuelPlayer = {
   userId: ObjectId
   nickname: string
   team?: number
+  lead?: boolean
   avatar?: string | null
   secret?: number
   cards?: number[]
@@ -125,6 +126,16 @@ export type DuelDoc = {
   bot?: boolean
   firstId?: ObjectId | null
   turnId?: ObjectId | null
+  clue?: {
+    cards: number[]
+    key: number[]
+    open: number[]
+    turn: number
+    word?: string | null
+    count?: number
+    left?: number
+    hit?: { index: number; kind: number } | null
+  } | null
   grid?: {
     rows: { key: string; value: string }[]
     cols: { key: string; value: string }[]

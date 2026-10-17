@@ -23,7 +23,7 @@ export type GameId =
   | 'shots'
   | 'tunes'
 
-export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase' | 'who' | 'grid' | 'odd' | 'pair' | 'shot' | 'tune'
+export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase' | 'who' | 'grid' | 'clue' | 'odd' | 'pair' | 'shot' | 'tune'
 
 export type Verdict = 'correct' | 'partial' | 'wrong'
 
@@ -345,7 +345,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
-export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd', 'pair', 'shot', 'tune', 'who', 'grid']
+export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd', 'pair', 'shot', 'tune', 'who', 'grid', 'clue']
 
 export const ABILITY_STAGES = 6
 export const ABILITY_HINT_AT = 5
@@ -362,6 +362,7 @@ export const MODE_XP: Record<ModeId, number> = {
   tune: 0,
   who: 25,
   grid: 25,
+  clue: 25,
 }
 
 export const MODE_XP_AFTER: Record<ModeId, number> = {
@@ -376,6 +377,7 @@ export const MODE_XP_AFTER: Record<ModeId, number> = {
   tune: 0,
   who: 5,
   grid: 5,
+  clue: 5,
 }
 
 export const DAILY_XP_FACTOR = 3
@@ -394,7 +396,7 @@ export const XP_CAPS = { daily: 400, endless: 300, duel: 200 } as const
 
 export type XpSource = keyof typeof XP_CAPS
 
-export const DUEL_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'who', 'grid']
+export const DUEL_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'who', 'grid', 'clue']
 
 // світи, де даних вистачає на сітку з мінімум 5 персонажами в кожній клітинці
 export const GRID_GAMES: GameId[] = [
@@ -423,19 +425,42 @@ export const GRID_MISSES = 3
 
 export const BOARD_SIZES = [4, 5, 6, 7] as const
 export const BOARD_DEFAULT = 5
-export const TEAM_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase']
+export const TEAM_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'clue']
 
 export const DUEL_TEAM_SIZES = [1, 2, 3] as const
 
 export const DUEL_TEAM_COUNTS = [2, 3] as const
 
+export const CLUE_SIZES = [4, 5, 6] as const
+export const CLUE_DEFAULT = 5
+export const CLUE_TEAM_SIZES = [2, 3] as const
+export const CLUE_WORD_MAX = 24
+
+export type ClueKind = 'own' | 'foe' | 'grey' | 'black'
+
+export const clueSide = (size: unknown) => {
+  const asked = Number(size)
+  return (CLUE_SIZES as readonly number[]).includes(asked) ? asked : CLUE_DEFAULT
+}
+
+export const cluePlan = (size: unknown) => {
+  const side = clueSide(size)
+  const cells = side * side
+  const black = 1
+  const first = Math.round(cells * 0.36)
+  const second = first - 1
+  return { side, cells, black, first, second, grey: cells - black - first - second }
+}
+
 export const teamSize = (mode: unknown, value: unknown) => {
   const asked = Number(value)
+  if (mode === 'clue') return (CLUE_TEAM_SIZES as readonly number[]).includes(asked) ? asked : 2
   const fits = (DUEL_TEAM_SIZES as readonly number[]).includes(asked)
   return TEAM_MODES.includes(mode as ModeId) && fits ? asked : 1
 }
 
 export const teamCount = (mode: unknown, value: unknown) => {
+  if (mode === 'clue') return 2
   const asked = Number(value)
   const fits = (DUEL_TEAM_COUNTS as readonly number[]).includes(asked)
   return TEAM_MODES.includes(mode as ModeId) && fits ? asked : 2

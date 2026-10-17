@@ -5,13 +5,14 @@ import { useAuth } from './auth'
 import type { Entity } from './games/types'
 import type { Judgement } from '@nanda/game'
 
-export type DuelSide = { id: string; nickname: string; avatar?: string | null; ready: boolean; wantsNext: boolean; wins: number; solved: boolean; gaveUp: boolean }
+export type DuelSide = { id: string; nickname: string; avatar?: string | null; lead?: boolean; ready: boolean; wantsNext: boolean; wins: number; solved: boolean; gaveUp: boolean }
 
 export type DuelMate = {
   id: string
   nickname: string
   avatar?: string | null
   you: boolean
+  lead?: boolean
   ready: boolean
   wins: number
   solved: boolean
@@ -64,6 +65,21 @@ export type DuelView = {
     marks: ('you' | 'rival' | null)[]
     picks?: (number | undefined)[]
     miss?: { you: boolean; entityId: number } | null
+  }
+  clue?: {
+    cards: number[]
+    opened: (number | null)[]
+    shown: (number | null)[]
+    key?: number[]
+    turn: number
+    yours: boolean
+    lead: boolean
+    word: string | null
+    count: number
+    left: number
+    hit?: { index: number; kind: number } | null
+    mine: number
+    foes: number
   }
   secret?: number | null
   picking?: boolean
@@ -193,6 +209,10 @@ export function useDuel(code: string) {
         strict: patch.strict ?? duel?.strict,
       }),
     team: () => send({ action: 'team' }),
+    seat: (team: number, lead = false) => send({ action: 'seat', team, lead }),
+    clue: (word: string, count: number) => send({ action: 'clue', word, count }),
+    open: (index: number) => send({ action: 'open', index }),
+    skip: () => send({ action: 'skip' }),
     invite: (to: string) => send({ action: 'invite', to }),
     next: () => send({ action: 'next' }),
     toLobby: () => send({ action: 'lobby' }),

@@ -3,7 +3,11 @@ import { currentUser, searchPlayers, unauthorized } from '../profile'
 import {
   answerCard,
   backToLobby,
+  cluePass,
   createDuel,
+  giveClue,
+  openCard,
+  takeSeat,
   declineInvite,
   dropIdle,
   duelGuess,
@@ -109,6 +113,28 @@ export const POST = handle(async (request) => {
   if (action === 'lobby') return json({ duel: await duelView(await backToLobby(live, userId), userId) })
   if (action === 'ready') return json({ duel: await duelView(await setReady(live, userId, body.ready !== false), userId) })
   if (action === 'team') return json({ duel: await duelView(await switchTeam(live, userId), userId) })
+  if (action === 'seat') return json({ duel: await duelView(await takeSeat(live, userId, body.team, body.lead), userId) })
+
+  if (action === 'clue') {
+    const result = await giveClue(live, userId, body.word, body.count)
+    if (result.error)
+      return fail(result.error === 'round_over' ? 409 : result.error === 'not_your_turn' ? 403 : 400, result.error)
+    return json({ duel: await duelView(result.duel!, userId) })
+  }
+
+  if (action === 'open') {
+    const result = await openCard(live, userId, body.index)
+    if (result.error)
+      return fail(result.error === 'round_over' ? 409 : result.error === 'not_your_turn' ? 403 : 400, result.error)
+    return json({ duel: await duelView(await settle(result.duel!), userId) })
+  }
+
+  if (action === 'skip') {
+    const result = await cluePass(live, userId)
+    if (result.error)
+      return fail(result.error === 'round_over' ? 409 : result.error === 'not_your_turn' ? 403 : 400, result.error)
+    return json({ duel: await duelView(result.duel!, userId) })
+  }
   if (action === 'giveup') return json({ duel: await duelView(await giveUpDuel(live, userId), userId) })
 
   if (action === 'mark') {
