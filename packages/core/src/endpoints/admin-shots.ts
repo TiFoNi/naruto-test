@@ -29,7 +29,7 @@ async function apply(id: number, counts: number[]) {
 
   const patch = {
     frames: counts,
-    answer: counts.some((count) => count > 0),
+    answer: counts.every((count) => count > 0),
     ver: Date.now().toString(36),
     updatedAt: new Date(),
   }

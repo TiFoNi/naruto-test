@@ -24,8 +24,16 @@ const nextVariant = (count: number, last?: number) => {
   return last === undefined || pick < last ? pick : pick + 1
 }
 
+const framesOf = (title: Record<string, unknown> | undefined) =>
+  Array.isArray(title?.frames) ? (title.frames as number[]) : []
+
+const complete = (title: Record<string, unknown>) => {
+  const counts = framesOf(title)
+  return Array.from({ length: LEVELS }, (_, level) => Number(counts[level]) || 0).every((count) => count > 0)
+}
+
 async function pickTitle(seen: number[], last?: number[]) {
-  const pool = (await gameData(GAME)).pool
+  const pool = (await gameData(GAME)).pool.filter(complete)
   if (!pool.length) return null
   const window = Math.max(1, Math.floor(pool.length * 0.6))
   const recent = seen.slice(-window)
@@ -33,7 +41,7 @@ async function pickTitle(seen: number[], last?: number[]) {
   const choices = fresh.length ? fresh : pool.filter((one) => one.id !== seen[seen.length - 1])
   if (!choices.length) return null
   const title = choices[Math.floor(Math.random() * choices.length)]
-  const counts = Array.isArray(title.frames) ? (title.frames as number[]) : []
+  const counts = framesOf(title)
   const same = title.id === seen[seen.length - 1] ? last : undefined
   const variant = Array.from({ length: LEVELS }, (_, level) => nextVariant(Math.max(1, counts[level] ?? 1), same?.[level]))
   return { id: title.id, variant, key: Math.random().toString(36).slice(2, 10) }
@@ -230,7 +238,10 @@ export async function shotShown(userId: ObjectId, want?: number) {
   const open = doc.status === 'over' ? LEVELS - 1 : Math.min(doc.level, LEVELS - 1)
   const level = Number.isInteger(want) && want! >= 0 && want! <= open ? want! : open
   const title = (await gameData(GAME)).byId.get(shown)
-  return { answerId: shown, level, variant: doc.variant?.[level] ?? 0, ver: typeof title?.ver === 'string' ? title.ver : '' }
+  const count = Number(framesOf(title)[level]) || 0
+  const asked = doc.variant?.[level] ?? 0
+  const variant = count ? Math.min(asked, count - 1) : 0
+  return { answerId: shown, level, variant, ver: typeof title?.ver === 'string' ? title.ver : '' }
 }
 
 export async function shotBoard(limit = 20) {

@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { GRID_GAMES, dailyKey, hasDaily, statsKey } from '@nanda/game'
 import BackButton from './BackButton'
-import WorldMark from './WorldMark'
 import { useAuth } from './auth'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
@@ -30,8 +29,26 @@ export default function WorldModes({ game: gameId }: { game: string }) {
       </div>
 
       <header className="world-head">
+        <img
+          className="world-head-art"
+          src={`/worlds/big/${game.id}.webp`}
+          alt=""
+          aria-hidden
+          width={448}
+          height={448}
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+          onError={(event) => {
+            const img = event.currentTarget
+            if (img.dataset.small === undefined) {
+              img.dataset.small = ''
+              img.src = `/worlds/${game.id}.webp`
+            } else img.hidden = true
+          }}
+        />
+
         <div className="world-head-body">
-          <WorldMark game={game.id} className="world-mark" />
           <div className="world-title">
             <h1>{l(game.label)}</h1>
           </div>
