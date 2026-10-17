@@ -413,25 +413,25 @@
 .tune-disc-label {
   position: absolute;
   inset: 34%;
+  display: grid;
+  place-items: center;
   border-radius: 50%;
   background: linear-gradient(150deg, color-mix(in srgb, var(--game-accent, var(--accent)) 72%, #ffffff), var(--game-accent, var(--accent)));
   box-shadow:
     0 0 0 2px #08090c,
     0 0 0 3px rgba(255, 255, 255, 0.08),
     inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+  color: #15171d;
+  font-family: var(--display);
+  font-size: calc(var(--size) * 0.115);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
-.tune-disc-label::after {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 12%;
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: #0a0c10;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--game-accent, var(--accent)) 60%, transparent);
-  content: '';
+.tune-disc-label b {
+  font-weight: inherit;
+  transform: translateX(-0.055em);
 }
 
 .tune-arm {

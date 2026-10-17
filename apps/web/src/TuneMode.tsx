@@ -6,6 +6,7 @@ import CharacterSearch from './CharacterSearch'
 import { SoundIcon } from './icons'
 import GiveUp from './GiveUp'
 import PlayBoard from './PlayBoard'
+import { BRAND } from './brand'
 import { api } from './api'
 import { useAuth } from './auth'
 import { useI18n } from './i18n'
@@ -454,7 +455,9 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
               title={going ? t('tune.pause') : t('tune.listen', { seconds: tick(run.open) })}
             >
               <span className={`tune-disc ${going ? 'is-spin' : ''}`} aria-hidden>
-                <span className="tune-disc-label" />
+                <span className="tune-disc-label">
+                  <b>{BRAND.mark}</b>
+                </span>
               </span>
               <i className="tune-pivot" aria-hidden />
               <i className={`tune-arm ${going ? 'is-down' : ''}`} aria-hidden />
