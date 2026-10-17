@@ -18,7 +18,7 @@ const entities = db.collection('entities')
 await entities.createIndex({ game: 1, id: 1 }, { unique: true })
 await entities.createIndex({ game: 1, answer: 1, hidden: 1 })
 
-const LIVE_FIELDS = { shots: ['frames', 'answer', 'ver'] }
+const LIVE_FIELDS = { shots: ['frames', 'answer', 'ver'], tunes: ['peaks', 'answer', 'thumb'] }
 
 const updatedAt = new Date()
 const only = process.argv[2]

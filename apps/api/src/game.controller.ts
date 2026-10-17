@@ -16,6 +16,8 @@ import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
 import * as pair from '@nanda/core/endpoints/pair'
 import * as shot from '@nanda/core/endpoints/shot'
+import * as tune from '@nanda/core/endpoints/tune'
+import * as tuneAudio from '@nanda/core/endpoints/tune-audio'
 import * as shotImage from '@nanda/core/endpoints/shot-image'
 import * as meta from '@nanda/core/endpoints/meta'
 import * as achievements from '@nanda/core/endpoints/achievements'
@@ -248,6 +250,16 @@ export class GameController {
   @Get('shot/image')
   shotPicture(@Req() req: Request, @Res() res: Response) {
     return bridge(shotImage.GET, req, res)
+  }
+
+  @Post('tune')
+  tuneRound(@Req() req: Request, @Res() res: Response) {
+    return bridge(tune.POST, req, res)
+  }
+
+  @Get('tune/audio')
+  tuneSound(@Req() req: Request, @Res() res: Response) {
+    return bridge(tuneAudio.GET, req, res)
   }
 
   @Get('stream/duel')

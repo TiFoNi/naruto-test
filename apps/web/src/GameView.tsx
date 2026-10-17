@@ -10,6 +10,7 @@ import AbilityMode from './AbilityMode'
 import OddMode from './OddMode'
 import PairMode from './PairMode'
 import ShotMode from './ShotMode'
+import TuneMode from './TuneMode'
 import PageMode from './PageMode'
 import PhraseMode from './PhraseMode'
 import { CalendarIcon, InfinityIcon, MedalIcon } from './icons'
@@ -78,6 +79,11 @@ export default function GameView({ game, mode, daily }: { game: Game; mode: Mode
           {game.modes.includes('shot') && !d && (
             <div hidden={mode !== 'shot'}>
               <ShotMode game={game} active={!daily && mode === 'shot'} />
+            </div>
+          )}
+          {game.modes.includes('tune') && !d && (
+            <div hidden={mode !== 'tune'}>
+              <TuneMode game={game} active={!daily && mode === 'tune'} />
             </div>
           )}
           {game.modes.includes('image') && (

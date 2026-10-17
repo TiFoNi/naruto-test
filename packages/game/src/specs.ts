@@ -21,8 +21,9 @@ export type GameId =
   | 'jjk'
   | 'csm'
   | 'shots'
+  | 'tunes'
 
-export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase' | 'who' | 'grid' | 'odd' | 'pair' | 'shot'
+export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase' | 'who' | 'grid' | 'odd' | 'pair' | 'shot' | 'tune'
 
 export type Verdict = 'correct' | 'partial' | 'wrong'
 
@@ -149,6 +150,14 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('status', 'exact'),
       col('arcIndex', 'order'),
     ],
+  },
+  tunes: {
+    featured: ['Naruto: Shippuden', 'Attack on Titan', 'Demon Slayer: Kimetsu no Yaiba'],
+    shape: 'poster',
+    data: 'tunes',
+    images: 'tunes',
+    modes: ['tune'],
+    columns: [],
   },
   shots: {
     featured: ['Demon Slayer: Kimetsu no Yaiba', 'Attack on Titan', 'Naruto'],
@@ -336,7 +345,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
-export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd', 'pair', 'shot', 'who', 'grid']
+export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd', 'pair', 'shot', 'tune', 'who', 'grid']
 
 export const ABILITY_STAGES = 6
 export const ABILITY_HINT_AT = 5
@@ -350,6 +359,7 @@ export const MODE_XP: Record<ModeId, number> = {
   odd: 8,
   pair: 0,
   shot: 0,
+  tune: 0,
   who: 25,
   grid: 25,
 }
@@ -363,6 +373,7 @@ export const MODE_XP_AFTER: Record<ModeId, number> = {
   odd: 2,
   pair: 0,
   shot: 0,
+  tune: 0,
   who: 5,
   grid: 5,
 }
@@ -372,7 +383,7 @@ export const DAILY_XP_FACTOR = 3
 export const DAILY_XP_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd']
 
 // режими-забіги: у них нема щоденного варіанта
-export const ENDLESS_MODES: ModeId[] = ['pair', 'shot', 'grid']
+export const ENDLESS_MODES: ModeId[] = ['pair', 'shot', 'tune', 'grid']
 
 export const hasDaily = (mode: ModeId) => !ENDLESS_MODES.includes(mode)
 
@@ -421,6 +432,43 @@ export const duelWinsNeeded = (best: number) => Math.floor(best / 2) + 1
 
 export const SHOT_POINTS = [4, 3, 2, 1] as const
 export const SHOT_MISS = 1
+
+export type TuneLevel = 'easy' | 'normal' | 'hard' | 'expert'
+
+export const TUNE_LEVELS: TuneLevel[] = ['easy', 'normal', 'hard', 'expert']
+
+export const TUNE_STEPS: Record<TuneLevel, number[]> = {
+  easy: [2, 4, 6, 8, 12, 16],
+  normal: [1, 2, 4, 7, 11, 16],
+  hard: [0.5, 1, 2, 4, 8, 16],
+  expert: [0.1, 0.3, 1, 3, 7, 16],
+}
+
+export const TUNE_POINTS: Record<TuneLevel, number[]> = {
+  easy: [6, 5, 4, 3, 2, 1],
+  normal: [8, 6, 5, 4, 2, 1],
+  hard: [12, 9, 7, 5, 3, 1],
+  expert: [20, 15, 11, 7, 4, 1],
+}
+
+export const TUNE_FAME: Record<TuneLevel, number> = {
+  easy: 1,
+  normal: 2,
+  hard: 3,
+  expert: 4,
+}
+
+export const TUNE_FAME_MAX = 4
+
+export const TUNE_FULL = 16
+
+export const TUNE_MISS = 1
+
+export const TUNE_PEAKS = 120
+
+export const tuneLevel = (value: unknown): TuneLevel => (TUNE_LEVELS.includes(value as TuneLevel) ? (value as TuneLevel) : 'easy')
+
+export const TUNE_CUTS = [...new Set(TUNE_LEVELS.flatMap((level) => TUNE_STEPS[level]))].sort((a, b) => a - b)
 
 export const PHRASE_EVERY = 3
 export const PHRASE_VOICE_AT = 3

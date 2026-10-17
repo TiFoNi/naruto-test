@@ -19,11 +19,14 @@ import { mk } from './mk'
 import { naruto } from './naruto'
 import { onepiece } from './onepiece'
 import { shots } from './shots'
+import { tunes } from './tunes'
 import { tg } from './tg'
 import type { Entity, Game, GameId } from './types'
 
-const ALL = [shots, naruto, onepiece, aot, bleach, kny, jjk, csm, tg, berserk, hxh, bc, jojo, se, ff, dn, avatar, marvel, dota, mk, manga, football] as unknown as Game<Entity>[]
+const ALL = [tunes, shots, naruto, onepiece, aot, bleach, kny, jjk, csm, tg, berserk, hxh, bc, jojo, se, ff, dn, avatar, marvel, dota, mk, manga, football] as unknown as Game<Entity>[]
 
 export const GAMES = ALL
+
+export const BOARD_START = { game: 'naruto', mode: 'classic' } as const
 
 export const gameById = (id: GameId) => GAMES.find((g) => g.id === id) ?? GAMES[0]

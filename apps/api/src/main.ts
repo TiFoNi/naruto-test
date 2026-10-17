@@ -11,7 +11,12 @@ async function bootstrap() {
   const port = Number(process.env.PORT ?? 4000)
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   app.set('trust proxy', 1)
-  app.use(compression({ filter: (req, res) => !req.path.startsWith('/api/stream/') && compression.filter(req, res) }))
+  const plain = ['/api/stream/', '/api/tune/audio']
+  app.use(
+    compression({
+      filter: (req, res) => !plain.some((path) => req.path.startsWith(path)) && compression.filter(req, res),
+    }),
+  )
   app.use(raw({ type: 'multipart/form-data', limit: '40mb' }))
   app.enableCors({ origin: origins, credentials: true })
   await app.listen(port, '0.0.0.0')

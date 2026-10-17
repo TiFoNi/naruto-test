@@ -1525,7 +1525,7 @@
   align-items: center;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 50%;
+  border-radius: 12px;
   background: var(--card);
   backface-visibility: hidden;
   transition: border-color 0.15s;

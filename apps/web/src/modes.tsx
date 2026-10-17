@@ -13,6 +13,7 @@ export const MODES: { id: ModeId; label: UiKey; description: UiKey; icon: ReactN
   { id: 'odd', label: 'mode.odd', description: 'mode.odd.desc', icon: <PuzzleIcon /> },
   { id: 'pair', label: 'mode.pair', description: 'mode.pair.desc', icon: <UsersIcon /> },
   { id: 'shot', label: 'mode.shot', description: 'mode.shot.desc', icon: <FilmIcon /> },
+  { id: 'tune', label: 'mode.tune', description: 'mode.tune.desc', icon: <SoundIcon /> },
   { id: 'phrase', label: 'mode.phrase', description: 'mode.phrase.desc', icon: <SoundIcon /> },
   { id: 'who', label: 'mode.who', description: 'mode.who.desc', icon: <UserIcon /> },
   { id: 'grid', label: 'mode.grid', description: 'mode.grid.desc', icon: <HashIcon /> },

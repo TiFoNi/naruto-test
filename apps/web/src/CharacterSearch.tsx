@@ -14,6 +14,7 @@ type Props = {
   pickOnly?: boolean
   limited?: boolean
   plain?: boolean
+  noThumbs?: boolean
   placeholder?: string
   onPick: (e: Entity) => void
 }
@@ -26,6 +27,7 @@ export default function CharacterSearch({
   pickOnly = false,
   limited = false,
   plain = false,
+  noThumbs = false,
   placeholder,
   onPick,
 }: Props) {
@@ -120,7 +122,18 @@ export default function CharacterSearch({
         <SearchIcon />
         <input
           value={query}
-          placeholder={placeholder ?? t(game.unit === 'hero' ? 'play.searchHero' : game.unit === 'player' ? 'play.searchPlayer' : 'play.searchCharacter')}
+          placeholder={
+            placeholder ??
+            t(
+              game.unit === 'hero'
+                ? 'play.searchHero'
+                : game.unit === 'player'
+                  ? 'play.searchPlayer'
+                  : game.unit === 'manga'
+                    ? 'play.searchTitle'
+                    : 'play.searchCharacter',
+            )
+          }
           onChange={(e) => {
             setQuery(e.target.value)
             setActive(0)
@@ -147,7 +160,7 @@ export default function CharacterSearch({
         />
         {!compact && !plain && (
           <span className="search-left">
-            {t(game.unit === 'player' ? 'play.leftPlayer' : 'play.left', { count: pool.length - exclude.size })}
+            {t(game.unit === 'player' ? 'play.leftPlayer' : game.unit === 'manga' ? 'play.leftTitle' : 'play.left', { count: pool.length - exclude.size })}
           </span>
         )}
       </div>
@@ -173,7 +186,7 @@ export default function CharacterSearch({
                 pick(e)
               }}
             >
-              {!plain && <Thumb game={game} entity={e} size={44} />}
+              {!plain && !noThumbs && <Thumb game={game} entity={e} size={44} />}
               <span className="suggestion-name">
                 {name(e)}
                 {alt(e) && <small>{alt(e)}</small>}
