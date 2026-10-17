@@ -345,12 +345,10 @@
   transition: transform 0.18s ease;
 }
 
-.tune-player:hover:not(:disabled),
 .tune-player:focus-visible {
   transform: scale(1.04);
 }
 
-.tune-player:hover:not(:disabled) .tune-disc,
 .tune-player:focus-visible .tune-disc {
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.12),
@@ -360,7 +358,6 @@
     0 0 26px color-mix(in srgb, var(--game-accent, var(--accent)) 40%, transparent);
 }
 
-.tune-player:hover:not(:disabled)::before,
 .tune-player:focus-visible::before {
   border-color: color-mix(in srgb, var(--game-accent, var(--accent)) 45%, transparent);
 }
@@ -494,7 +491,7 @@
 
 .tune-grades {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -529,12 +526,6 @@
   border-color: #ef7623;
   background: color-mix(in srgb, #ef7623 22%, transparent);
   color: #ef7623;
-}
-
-.tune-grade.is-expert.on {
-  border-color: #e0556b;
-  background: color-mix(in srgb, #e0556b 22%, transparent);
-  color: #e0556b;
 }
 
 .tune-board {
@@ -582,7 +573,6 @@
     background 0.15s;
 }
 
-.tune-loud-knob:hover,
 .tune-loud-knob:focus-visible,
 .tune-loud.is-open .tune-loud-knob {
   border-color: color-mix(in srgb, var(--game-accent, var(--accent)) 50%, var(--line));
@@ -596,14 +586,12 @@
   transition: color 0.15s;
 }
 
-.tune-loud.is-open svg,
-.tune-loud-knob:hover svg {
+.tune-loud.is-open svg {
   color: var(--game-accent, var(--accent));
 }
 
 .tune-loud svg.is-off,
-.tune-loud.is-open svg.is-off,
-.tune-loud-knob:hover svg.is-off {
+.tune-loud.is-open svg.is-off {
   color: color-mix(in srgb, var(--wrong, #e4564a) 75%, var(--text-3));
 }
 
@@ -694,7 +682,6 @@
     box-shadow 0.12s ease;
 }
 
-.tune-loud input:hover::-webkit-slider-thumb,
 .tune-loud input:focus-visible::-webkit-slider-thumb {
   transform: scale(1.15);
   box-shadow:
@@ -702,7 +689,6 @@
     0 0 0 5px color-mix(in srgb, var(--game-accent, var(--accent)) 24%, transparent);
 }
 
-.tune-loud input:hover::-moz-range-thumb,
 .tune-loud input:focus-visible::-moz-range-thumb {
   transform: scale(1.15);
   box-shadow:
@@ -812,6 +798,52 @@
   margin: 0;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .tune-player:hover:not(:disabled) {
+    transform: scale(1.04);
+  }
+
+  .tune-player:hover:not(:disabled) .tune-disc {
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+      inset 0 0 18px rgba(0, 0, 0, 0.6),
+      0 14px 30px rgba(0, 0, 0, 0.55),
+      0 0 0 3px color-mix(in srgb, var(--game-accent, var(--accent)) 35%, transparent),
+      0 0 26px color-mix(in srgb, var(--game-accent, var(--accent)) 40%, transparent);
+  }
+
+  .tune-player:hover:not(:disabled)::before {
+    border-color: color-mix(in srgb, var(--game-accent, var(--accent)) 45%, transparent);
+  }
+
+  .tune-loud-knob:hover {
+    border-color: color-mix(in srgb, var(--game-accent, var(--accent)) 50%, var(--line));
+    background: color-mix(in srgb, var(--game-accent, var(--accent)) 14%, var(--card-2));
+  }
+
+  .tune-loud-knob:hover svg {
+    color: var(--game-accent, var(--accent));
+  }
+
+  .tune-loud-knob:hover svg.is-off {
+    color: color-mix(in srgb, var(--wrong, #e4564a) 75%, var(--text-3));
+  }
+
+  .tune-loud input:hover::-webkit-slider-thumb {
+    transform: scale(1.15);
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.5),
+      0 0 0 5px color-mix(in srgb, var(--game-accent, var(--accent)) 24%, transparent);
+  }
+
+  .tune-loud input:hover::-moz-range-thumb {
+    transform: scale(1.15);
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.5),
+      0 0 0 5px color-mix(in srgb, var(--game-accent, var(--accent)) 24%, transparent);
+  }
+}
+
 @keyframes tune-spin {
   to {
     rotate: 360deg;
@@ -844,8 +876,9 @@
     height: 20px;
   }
 
-  .tune-grades {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .tune-grade {
+    padding: 11px 6px;
+    font-size: 14px;
   }
 
   .tune-track {

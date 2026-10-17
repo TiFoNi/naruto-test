@@ -45,7 +45,6 @@ const GRADE_LABEL: Record<TuneLevel, UiKey> = {
   easy: 'tune.gradeEasy',
   normal: 'tune.gradeNormal',
   hard: 'tune.gradeHard',
-  expert: 'tune.gradeExpert',
 }
 
 const CURVE = 0.35
@@ -90,6 +89,15 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
   const holding = useRef(false)
   const grabbed = useRef<number | null>(null)
 
+  const start = useCallback((node: HTMLAudioElement) => {
+    node.play().catch(() => {
+      const retry = () => {
+        node.play().catch(() => setGoing(false))
+      }
+      node.addEventListener('canplay', retry, { once: true })
+    })
+  }, [])
+
   const send = useCallback(async (body: Record<string, unknown>) => {
     setBusy(true)
     const { ok, data } = await api<Run>('tune', body)
@@ -132,19 +140,34 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
   }, [run?.clip])
 
   useEffect(() => {
+    if (!going) return
+    const node = sound.current
+    if (!node) return
+
+    let frame = 0
+    const follow = () => {
+      if (!holding.current) setAt(node.currentTime)
+      frame = requestAnimationFrame(follow)
+    }
+
+    frame = requestAnimationFrame(follow)
+    return () => cancelAnimationFrame(frame)
+  }, [going])
+
+  useEffect(() => {
     const node = sound.current
     if (!node || !fanfare.current) return
     fanfare.current = false
 
     const go = () => {
       node.currentTime = 0
-      void node.play()
+      start(node)
     }
 
     if (node.readyState >= 2) go()
     else node.addEventListener('canplay', go, { once: true })
     return () => node.removeEventListener('canplay', go)
-  }, [run?.clip])
+  }, [run?.clip, start])
 
   const answer = async (entity: Entity) => {
     sound.current?.pause()
@@ -255,13 +278,17 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
     release()
     const node = sound.current
     if (!node) return
-    if (going) return node.pause()
+    if (!node.paused) {
+      node.pause()
+      setGoing(false)
+      return
+    }
 
     const end = Number.isFinite(node.duration) ? node.duration : 0
     const spot = end && at >= end - 0.05 ? 0 : at
     if (Number.isFinite(node.duration)) node.currentTime = Math.min(spot, node.duration)
-    void node.play()
-  }, [release, going, at])
+    start(node)
+  }, [release, at, start])
 
   useEffect(() => {
     if (!active) return
@@ -349,7 +376,7 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
 
       <div className="play-card play-howto">
         <span className="play-card-title">{t('howto.title')}</span>
-        {[1, 2, 3, 4, 5].map((step) => (
+        {[1, 2, 3, 4].map((step) => (
           <span key={step}>
             <i>{step}</i>
             {t(`howtoTune.step${step}` as 'howtoTune.step1')}

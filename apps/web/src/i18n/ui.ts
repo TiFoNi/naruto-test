@@ -693,14 +693,9 @@ const ui = {
     en: 'Drag the yellow marker to listen from any spot, space plays and pauses',
   },
   'howtoTune.step4': {
-    ru: 'Сложность задаёт первый кусок: 2 секунды на лёгкой, 0,1 на эксперте',
-    uk: 'Складність задає перший шматок: 2 секунди на легкій, 0,1 на експерті',
-    en: 'Difficulty sets the first piece: 2 seconds on easy, 0.1 on expert',
-  },
-  'howtoTune.step5': {
-    ru: 'И треки разные: на лёгкой — те, что знают все, на эксперте — для задротов',
-    uk: 'І треки різні: на легкій — ті, що знають усі, на експерті — для задротів',
-    en: 'The tracks differ too: easy picks the ones everybody knows, expert digs deep',
+    ru: 'Сложность задаёт первый кусок: 2 секунды на лёгкой, 0,5 на сложной',
+    uk: 'Складність задає перший шматок: 2 секунди на легкій, 0,5 на складній',
+    en: 'Difficulty sets the first piece: 2 seconds on easy, 0.5 on hard',
   },
   'tune.solved': { ru: 'Угадано опенингов', uk: 'Вгадано опенінгів', en: 'Openings guessed' },
   'tune.avg': { ru: 'Среднее время', uk: 'Середній час', en: 'Average time' },
@@ -709,7 +704,6 @@ const ui = {
   'tune.gradeEasy': { ru: 'Легко', uk: 'Легко', en: 'Easy' },
   'tune.gradeNormal': { ru: 'Средне', uk: 'Середньо', en: 'Normal' },
   'tune.gradeHard': { ru: 'Сложно', uk: 'Складно', en: 'Hard' },
-  'tune.gradeExpert': { ru: 'Эксперт', uk: 'Експерт', en: 'Expert' },
   'tune.soon': {
     ru: 'Опенинги ещё загружаются — загляни позже',
     uk: 'Опенінги ще завантажуються — зазирни пізніше',

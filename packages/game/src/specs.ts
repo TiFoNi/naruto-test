@@ -433,32 +433,21 @@ export const duelWinsNeeded = (best: number) => Math.floor(best / 2) + 1
 export const SHOT_POINTS = [4, 3, 2, 1] as const
 export const SHOT_MISS = 1
 
-export type TuneLevel = 'easy' | 'normal' | 'hard' | 'expert'
+export type TuneLevel = 'easy' | 'normal' | 'hard'
 
-export const TUNE_LEVELS: TuneLevel[] = ['easy', 'normal', 'hard', 'expert']
+export const TUNE_LEVELS: TuneLevel[] = ['easy', 'normal', 'hard']
 
 export const TUNE_STEPS: Record<TuneLevel, number[]> = {
   easy: [2, 4, 6, 8, 12, 16],
   normal: [1, 2, 4, 7, 11, 16],
   hard: [0.5, 1, 2, 4, 8, 16],
-  expert: [0.1, 0.3, 1, 3, 7, 16],
 }
 
 export const TUNE_POINTS: Record<TuneLevel, number[]> = {
   easy: [6, 5, 4, 3, 2, 1],
   normal: [8, 6, 5, 4, 2, 1],
   hard: [12, 9, 7, 5, 3, 1],
-  expert: [20, 15, 11, 7, 4, 1],
 }
-
-export const TUNE_FAME: Record<TuneLevel, number> = {
-  easy: 1,
-  normal: 2,
-  hard: 3,
-  expert: 4,
-}
-
-export const TUNE_FAME_MAX = 4
 
 export const TUNE_FULL = 16
 

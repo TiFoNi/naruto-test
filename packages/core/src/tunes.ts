@@ -1,7 +1,7 @@
 import type { ObjectId } from 'mongodb'
-import { TUNE_FAME, TUNE_FAME_MAX, TUNE_FULL, TUNE_MISS, TUNE_POINTS, TUNE_STEPS, tuneLevel, type TuneLevel } from '@nanda/game'
+import { TUNE_FULL, TUNE_MISS, TUNE_POINTS, TUNE_STEPS, tuneLevel, type TuneLevel } from '@nanda/game'
 import { rounds, tuneRuns, users, type TuneDoc } from './db'
-import { gameData, type Entity } from './games'
+import { gameData } from './games'
 import { addXp } from './profile'
 import { today } from './daily'
 import { markSeasonPlay } from './season'
@@ -19,23 +19,9 @@ const pointsAt = (grade: TuneLevel, step: number) => TUNE_POINTS[grade][Math.min
 
 const clip = (key: string, seconds: number) => `/api/tune/audio?k=${key}&t=${seconds}`
 
-const fameOf = (title: Entity) => {
-  const value = Number(title.fame)
-  return Number.isFinite(value) ? Math.min(TUNE_FAME_MAX, Math.max(1, Math.round(value))) : 2
-}
-
-function bandFor(pool: Entity[], want: number) {
-  for (let reach = 0; reach < TUNE_FAME_MAX; reach++) {
-    const band = pool.filter((one) => Math.abs(fameOf(one) - want) <= reach)
-    if (band.length) return band
-  }
-  return pool
-}
-
-async function pickTitle(seen: number[], grade: TuneLevel) {
-  const all = (await gameData(GAME)).pool
-  if (!all.length) return null
-  const pool = bandFor(all, TUNE_FAME[grade])
+async function pickTitle(seen: number[]) {
+  const pool = (await gameData(GAME)).pool
+  if (!pool.length) return null
   const window = Math.max(1, Math.floor(pool.length * 0.6))
   const recent = seen.slice(-window)
   const fresh = pool.filter((one) => !recent.includes(one.id))
@@ -86,7 +72,7 @@ export async function tuneRun(userId: ObjectId, guest: boolean, grade: TuneLevel
   if (!fresh && same && found.status === 'playing' && alive(found.answerId)) return view(found)
   if (!fresh && same && found.status === 'over' && alive(found.lastId)) return view(found)
 
-  const next = await pickTitle(found?.seen ?? [], grade)
+  const next = await pickTitle(found?.seen ?? [])
   if (!next) return null
 
   const now = new Date()
