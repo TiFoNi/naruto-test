@@ -389,9 +389,6 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
 
       {!over && (
         <div className="play-actions">
-          <button type="button" className="ghost tune-skip" disabled={busy || run.step + 1 >= tries} onClick={() => void skip()}>
-            {t('tune.skip')}
-          </button>
           <GiveUp disabled={busy} onConfirm={() => void quit()}>
             {t('play.giveUp')}
           </GiveUp>
@@ -432,6 +429,7 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
               <span className={`tune-disc ${going ? 'is-spin' : ''}`} aria-hidden>
                 <span className="tune-disc-label" />
               </span>
+              <i className="tune-pivot" aria-hidden />
               <i className={`tune-arm ${going ? 'is-down' : ''}`} aria-hidden />
             </button>
 
@@ -445,6 +443,17 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
               </span>
               <h2>{over && answered ? name(answered) : t('tune.title')}</h2>
               {over && answered && <p className="tune-meta">{meta(answered)}</p>}
+
+              {!over && (
+                <div className="tune-acts">
+                  <button type="button" className="primary" disabled={!run.clip} onClick={toggle}>
+                    {going ? t('tune.pause') : t('tune.play')}
+                  </button>
+                  <button type="button" className="ghost" disabled={busy || run.step + 1 >= tries} onClick={() => void skip()}>
+                    {t('tune.skip')}
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="tune-aside">
