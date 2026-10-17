@@ -42,7 +42,7 @@ export const GET = handle(async (request) => {
 
       return {
         game,
-        count: list.length,
+        count: pool.length,
         plays: played.get(game) ?? 0,
         featured: featured.map((entity) => ({ id: entity.id as number, image: entity.image as string | undefined })),
       }
