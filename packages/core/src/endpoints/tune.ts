@@ -12,17 +12,17 @@ export const POST = handle(async (request) => {
 
   if (body.action === 'answer') {
     if (typeof body.pick !== 'number') return fail(400, 'bad_request')
-    const result = await tuneAnswer(owner.id, body.pick)
+    const result = await tuneAnswer(owner.id, body.pick, owner.guest)
     return result ? json(result, 200, owner.cookie) : fail(409, 'no_round')
   }
 
   if (body.action === 'skip') {
-    const result = await tuneSkip(owner.id)
+    const result = await tuneSkip(owner.id, owner.guest)
     return result ? json(result, 200, owner.cookie) : fail(409, 'no_round')
   }
 
   if (body.action === 'giveup') {
-    const result = await tuneGiveUp(owner.id)
+    const result = await tuneGiveUp(owner.id, owner.guest)
     if (!result) return fail(409, 'no_round')
     return json({ ...result, total: owner.guest ? undefined : await tunePoints(owner.id) }, 200, owner.cookie)
   }

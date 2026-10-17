@@ -123,10 +123,13 @@ async function logRound(doc: TuneDoc, answerId: number, status: 'won' | 'lost' |
   await markSeasonPlay(doc.userId, status === 'won', today())
 }
 
-export async function tuneAnswer(userId: ObjectId, pick: number) {
+const stillThere = async (id?: number) => id !== undefined && (await gameData(GAME)).byId.has(id)
+
+export async function tuneAnswer(userId: ObjectId, pick: number, guest = false) {
   const collection = await tuneRuns()
   const doc = await collection.findOne({ userId })
   if (!doc || doc.status !== 'playing' || doc.answerId === undefined) return null
+  if (!(await stillThere(doc.answerId))) return tuneRun(userId, guest, tuneLevel(doc.grade), true)
 
   const grade = tuneLevel(doc.grade)
   const right = pick === doc.answerId
@@ -172,24 +175,26 @@ export async function tuneAnswer(userId: ObjectId, pick: number) {
   return { ...(await view({ ...doc, ...next } as TuneDoc)), right: false, answerId: done ? doc.answerId : undefined }
 }
 
-export async function tuneSkip(userId: ObjectId) {
+export async function tuneSkip(userId: ObjectId, guest = false) {
   const collection = await tuneRuns()
   const doc = await collection.findOne({ userId })
   if (!doc || doc.status !== 'playing' || doc.answerId === undefined) return null
+  if (!(await stillThere(doc.answerId))) return tuneRun(userId, guest, tuneLevel(doc.grade), true)
 
   const grade = tuneLevel(doc.grade)
   const step = doc.step + 1
-  if (step > lastStep(grade)) return tuneGiveUp(userId)
+  if (step > lastStep(grade)) return tuneGiveUp(userId, guest)
 
   const next: Partial<TuneDoc> = { step, misses: doc.misses + 1, updatedAt: new Date() }
   await collection.updateOne({ userId }, { $set: next })
   return view({ ...doc, ...next } as TuneDoc)
 }
 
-export async function tuneGiveUp(userId: ObjectId) {
+export async function tuneGiveUp(userId: ObjectId, guest = false) {
   const collection = await tuneRuns()
   const doc = await collection.findOne({ userId })
   if (!doc || doc.status !== 'playing' || doc.answerId === undefined) return null
+  if (!(await stillThere(doc.answerId))) return tuneRun(userId, guest, tuneLevel(doc.grade), true)
 
   const next: Partial<TuneDoc> = { status: 'over', lastId: doc.answerId, won: false, streak: 0, updatedAt: new Date() }
   await collection.updateOne({ userId }, { $set: next })

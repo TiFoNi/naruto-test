@@ -75,7 +75,6 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
   const [busy, setBusy] = useState(false)
   const [held, setHeld] = useState(false)
   const [bumped, setBumped] = useState(false)
-  const [slots, setSlots] = useState(90)
   const [loud, setLoud] = useState(() => {
     const kept = typeof window === 'undefined' ? null : window.localStorage.getItem(LOUD_KEY)
     const value = kept === null ? 0.8 : Number(kept)
@@ -256,7 +255,6 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
 
     const fit = () => {
       const room = node.clientWidth
-      setSlots(Math.max(26, Math.min(120, Math.floor(room / 6))))
       setTight(room < 520)
       setWide(room)
     }
@@ -361,7 +359,6 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
   const edge = spotOf(run.open, run.full, over)
   const played = spotOf(at, run.full, over)
   const tries = run.steps.length
-  const peakAt = (seconds: number) => run.peaks[Math.min(run.peaks.length - 1, Math.round((seconds / run.full) * (run.peaks.length - 1)))] ?? 0
 
   const side = (
     <aside className="play-side">
@@ -479,8 +476,8 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
             </div>
           </header>
 
-          <div
-            className={`tune-track ${held ? 'is-held' : ''} ${over ? 'is-locked' : ''} ${!over && !roomy ? 'is-flat' : ''}`}
+                    <div
+            className={`tune-rail ${held ? 'is-held' : ''} ${over ? 'is-locked' : ''} ${!over && !roomy ? 'is-flat' : ''}`}
             ref={track}
             onPointerDown={grab}
             onPointerMove={drag}
@@ -488,19 +485,19 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
             onPointerCancel={drop}
             role="presentation"
           >
-            {Array.from({ length: slots }, (_, index) => {
-              const spot = (index + 0.5) / slots
-              const seconds = timeOf(spot, run.full, over)
-              return (
-                <i
-                  key={index}
-                  className={`tune-bar ${seconds <= run.open ? 'is-open' : ''} ${spot <= played ? 'is-played' : ''}`}
-                  style={{ height: `${Math.max(8, peakAt(seconds) * 100)}%` }}
-                />
-              )
-            })}
-            <span className={`tune-edge ${bumped ? 'is-bumped' : ''}`} style={{ left: `${edge * 100}%` }} />
-            <span className="tune-needle" style={{ left: `${Math.min(100, played * 100)}%` }}>{roomy && <i className="tune-grip" />}</span>
+            <i className="tune-lane">
+              <i className={`tune-open ${bumped ? 'is-bumped' : ''}`} style={{ width: `${edge * 100}%` }} />
+              <i className="tune-played" style={{ width: `${Math.min(100, played * 100)}%` }} />
+              {run.steps
+                .slice(0, -1)
+                .filter((seconds) => seconds !== run.open)
+                .map((seconds) => (
+                  <i key={seconds} className="tune-notch" style={{ left: `${spotOf(seconds, run.full, over) * 100}%` }} />
+                ))}
+            </i>
+            <span className="tune-mark" style={{ '--at': `${Math.min(100, played * 100)}%` } as CSSProperties}>
+              <b>{tick(at)}</b>
+            </span>
           </div>
 
           <div className="tune-scale" aria-hidden>

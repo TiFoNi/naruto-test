@@ -330,12 +330,12 @@
 }
 
 .tune-player {
-  --size: clamp(76px, 7vw + 38px, 150px);
+  --size: clamp(106px, 9.8vw + 53px, 210px);
   position: relative;
   width: var(--size);
   height: var(--size);
-  max-width: 150px;
-  max-height: 150px;
+  max-width: 210px;
+  max-height: 210px;
   flex: none;
   padding: 0;
   border: 0;
@@ -716,12 +716,12 @@
   font-size: inherit;
 }
 
-.tune-track {
+.tune-rail {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 2px;
-  height: 150px;
+  height: 52px;
+  padding: 0 2px;
   cursor: pointer;
   touch-action: none;
   user-select: none;
@@ -730,34 +730,85 @@
   -webkit-touch-callout: none;
 }
 
-.tune-bar {
-  flex: 1;
-  min-width: 0;
+.tune-lane {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 22px;
+  overflow: hidden;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--text-3) 30%, transparent);
-  transition: background 0.12s;
+  background: color-mix(in srgb, var(--text-3) 24%, #0a0c10);
 }
 
-.tune-bar.is-open {
-  background: color-mix(in srgb, var(--text) 55%, transparent);
+.tune-open {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 999px 0 0 999px;
+  background: color-mix(in srgb, var(--game-accent, var(--accent)) 52%, #0a0c10);
+  transition: background 0.15s;
 }
 
-.tune-bar.is-played {
+.tune-open.is-bumped {
+  background: color-mix(in srgb, var(--wrong, #e4564a) 55%, #0a0c10);
+}
+
+.tune-played {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 999px 0 0 999px;
   background: var(--game-accent, var(--accent));
 }
 
-.tune-board.is-done .tune-bar.is-open {
-  background: color-mix(in srgb, var(--correct) 70%, transparent);
+.tune-notch {
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  width: 1px;
+  background: color-mix(in srgb, var(--text-3) 72%, #0a0c10);
 }
 
-.tune-needle {
+.tune-board.is-done .tune-open {
+  background: color-mix(in srgb, var(--correct) 50%, #0a0c10);
+}
+
+.tune-board.is-done .tune-played {
+  background: var(--correct);
+}
+
+.tune-mark {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 2px;
-  background: var(--game-accent, var(--accent));
-  box-shadow: 0 0 12px var(--game-accent, var(--accent));
+  left: clamp(16px, var(--at, 0%), calc(100% - 16px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-50%);
   pointer-events: none;
+}
+
+.tune-mark b {
+  position: absolute;
+  top: calc(50% + 17px);
+  color: var(--game-accent, var(--accent));
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.tune-board.is-done .tune-mark b {
+  color: var(--correct);
+}
+
+.tune-rail.is-flat,
+.tune-rail.is-locked {
+  cursor: default;
+  touch-action: auto;
 }
 
 .tune-scale {
@@ -865,83 +916,10 @@
     padding: 16px 14px 14px;
   }
 
-  .tune-track {
-    gap: 3px;
-    height: 118px;
-  }
-
-  .tune-grip {
-    top: -9px;
-    width: 20px;
-    height: 20px;
-  }
-
   .tune-grade {
     padding: 11px 6px;
     font-size: 14px;
   }
-
-  .tune-track {
-    height: 110px;
-  }
-}
-
-.tune-edge {
-  position: absolute;
-  top: 6%;
-  bottom: 6%;
-  width: 1px;
-  background: color-mix(in srgb, var(--text-3) 60%, transparent);
-  pointer-events: none;
-  transition:
-    background 0.15s,
-    box-shadow 0.15s;
-}
-
-.tune-edge.is-bumped {
-  background: var(--game-accent, var(--accent));
-  box-shadow: 0 0 10px var(--game-accent, var(--accent));
-}
-
-.tune-needle {
-  cursor: grab;
-}
-
-.tune-track.is-held .tune-needle {
-  cursor: grabbing;
-}
-
-.tune-grip {
-  position: absolute;
-  pointer-events: auto;
-  top: -7px;
-  left: 50%;
-  width: 16px;
-  height: 16px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: var(--game-accent, var(--accent));
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
-.tune-grip::after {
-  position: absolute;
-  inset: -12px;
-  content: '';
-}
-
-.tune-track.is-flat,
-.tune-track.is-locked {
-  cursor: default;
-  touch-action: auto;
-}
-
-.tune-track.is-flat .tune-needle {
-  cursor: default;
-}
-
-.tune-track.is-locked .tune-needle {
-  cursor: default;
 }
 
 .tune-skip {

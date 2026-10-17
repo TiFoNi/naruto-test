@@ -6,5 +6,5 @@ export const GET = handle(async (request) => {
   if (!isGame(game)) return fail(400, 'bad_request')
 
   const { list, updated, atlas } = await gameData(game)
-  return cached({ entities: list, updated, atlas }, 300)
+  return cached({ entities: list, updated, atlas }, 300, request)
 })

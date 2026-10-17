@@ -4,14 +4,30 @@ export function json(data: unknown, status = 200, cookie?: string | string[]) {
   return new Response(JSON.stringify(data), { status, headers })
 }
 
-export function cached(data: unknown, seconds: number) {
-  return new Response(JSON.stringify(data), {
-    status: 200,
-    headers: {
-      'content-type': 'application/json; charset=utf-8',
-      'cache-control': `private, max-age=${seconds}, stale-while-revalidate=${seconds * 2}`,
-    },
-  })
+const stamp = (body: string) => {
+  let hash = 2166136261
+  for (let at = 0; at < body.length; at++) {
+    hash ^= body.charCodeAt(at)
+    hash = Math.imul(hash, 16777619)
+  }
+  return `${(hash >>> 0).toString(36)}-${body.length.toString(36)}`
+}
+
+export function cached(data: unknown, seconds: number, request?: Request) {
+  const body = JSON.stringify(data)
+  const headers: Record<string, string> = {
+    'content-type': 'application/json; charset=utf-8',
+    'cache-control': `private, max-age=${seconds}, stale-while-revalidate=${seconds * 2}`,
+  }
+
+  if (!request) return new Response(body, { status: 200, headers })
+
+  const etag = `"${stamp(body)}"`
+  headers.etag = etag
+  headers['cache-control'] = 'private, max-age=0, must-revalidate'
+  if (request.headers.get('if-none-match') === etag) return new Response(null, { status: 304, headers })
+
+  return new Response(body, { status: 200, headers })
 }
 
 export const fail = (status: number, error: string) => json({ error }, status)
