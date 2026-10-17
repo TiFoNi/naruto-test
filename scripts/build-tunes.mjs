@@ -121,7 +121,6 @@ for (const row of list) {
     aliases: row.aliases ?? '',
     year: row.year ?? null,
     op: row.op ?? null,
-    fame: Math.min(4, Math.max(1, Math.round(Number(row.fame)) || 2)),
     song: row.song ?? '',
     artist: row.artist ?? '',
     peaks,

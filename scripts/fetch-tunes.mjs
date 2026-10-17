@@ -43,12 +43,13 @@ for (const row of wanted) {
     continue
   }
 
+  const want = row.src ?? row.op
   const found = await ask(`${API}/anime/${row.slug}?include=animethemes.song,animethemes.animethemeentries.videos.audio`)
-  const theme = found?.anime?.animethemes?.find((one) => one.type === 'OP' && (one.sequence ?? 1) === row.op)
+  const theme = found?.anime?.animethemes?.find((one) => one.type === 'OP' && (one.sequence ?? 1) === want)
   const link = theme?.animethemeentries?.[0]?.videos?.[0]?.audio?.link
 
   if (!link) {
-    missed.push(`${row.id} ${row.nameEn}: не знайшов OP${row.op}`)
+    missed.push(`${row.id} ${row.nameEn}: не знайшов OP${want}`)
     continue
   }
 
