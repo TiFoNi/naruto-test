@@ -172,6 +172,20 @@ export async function tuneAnswer(userId: ObjectId, pick: number) {
   return { ...(await view({ ...doc, ...next } as TuneDoc)), right: false, answerId: done ? doc.answerId : undefined }
 }
 
+export async function tuneSkip(userId: ObjectId) {
+  const collection = await tuneRuns()
+  const doc = await collection.findOne({ userId })
+  if (!doc || doc.status !== 'playing' || doc.answerId === undefined) return null
+
+  const grade = tuneLevel(doc.grade)
+  const step = doc.step + 1
+  if (step > lastStep(grade)) return tuneGiveUp(userId)
+
+  const next: Partial<TuneDoc> = { step, misses: doc.misses + 1, updatedAt: new Date() }
+  await collection.updateOne({ userId }, { $set: next })
+  return view({ ...doc, ...next } as TuneDoc)
+}
+
 export async function tuneGiveUp(userId: ObjectId) {
   const collection = await tuneRuns()
   const doc = await collection.findOne({ userId })

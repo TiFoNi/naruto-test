@@ -32,6 +32,11 @@ async function sourceOf(id) {
   return hit ? path.join(RAW, hit) : null
 }
 
+const LEAD = 0.12
+const HOLD = 6
+const SHARE = 0.5
+const LATEST = 5
+
 async function soundAt(source) {
   const { stdout } = await run('ffmpeg', [
     '-v', 'error',
@@ -42,12 +47,32 @@ async function soundAt(source) {
   ], { encoding: 'buffer', maxBuffer: 1 << 26 })
 
   const samples = stdout.length >> 1
-  let loudest = 0
-  for (let at = 0; at < samples; at++) loudest = Math.max(loudest, Math.abs(stdout.readInt16LE(at * 2)))
-  const floor = loudest * 0.04
-  for (let at = 0; at < samples; at++) {
-    if (Math.abs(stdout.readInt16LE(at * 2)) > floor) return Math.max(0, at / 1000 - 0.08)
+  if (!samples) return 0
+
+  const windows = []
+  for (let from = 0; from + 100 <= samples; from += 100) {
+    let sum = 0
+    for (let at = from; at < from + 100; at++) {
+      const value = stdout.readInt16LE(at * 2)
+      sum += value * value
+    }
+    windows.push(Math.sqrt(sum / 100))
   }
+  if (!windows.length) return 0
+
+  const ranked = [...windows].sort((a, b) => a - b)
+  const loud = ranked[Math.floor(ranked.length * 0.7)]
+  const floor = loud * SHARE
+
+  for (let at = 0; at + HOLD < windows.length; at++) {
+    if (windows[at] < floor) continue
+    let kept = 0
+    for (let ahead = at; ahead < at + HOLD; ahead++) if (windows[ahead] >= floor * 0.8) kept += 1
+    if (kept >= HOLD - 2) return Math.min(LATEST, Math.max(0, at / 10 - LEAD))
+  }
+
+  const quiet = ranked[ranked.length - 1] * 0.04
+  for (let at = 0; at < windows.length; at++) if (windows[at] > quiet) return Math.min(LATEST, Math.max(0, at / 10 - LEAD))
   return 0
 }
 

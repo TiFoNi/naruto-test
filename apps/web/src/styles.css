@@ -2639,11 +2639,18 @@ main {
   border-radius: 50%;
   display: grid;
   place-items: center;
+  container-type: inline-size;
   background: var(--accent-soft);
   color: var(--accent);
   font-family: var(--display);
   font-weight: 800;
-  font-size: 24px;
+}
+
+.avatar-letter {
+  grid-area: 1 / 1;
+  font-size: 42cqi;
+  font-weight: inherit;
+  line-height: 1;
 }
 
 .avatar.has-pic {
@@ -2674,7 +2681,6 @@ main {
 .avatar.small {
   width: 28px;
   height: 28px;
-  font-size: 13px;
 }
 
 .back {

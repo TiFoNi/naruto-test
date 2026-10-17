@@ -2,7 +2,7 @@ import { tuneLevel } from '@nanda/game'
 import { fail, handle, json, readJson } from '../http'
 import { gameData } from '../games'
 import { roundOwner } from '../profile'
-import { tuneAnswer, tuneGiveUp, tunePoints, tuneRun } from '../tunes'
+import { tuneAnswer, tuneGiveUp, tunePoints, tuneRun, tuneSkip } from '../tunes'
 
 export const POST = handle(async (request) => {
   const owner = await roundOwner(request)
@@ -13,6 +13,11 @@ export const POST = handle(async (request) => {
   if (body.action === 'answer') {
     if (typeof body.pick !== 'number') return fail(400, 'bad_request')
     const result = await tuneAnswer(owner.id, body.pick)
+    return result ? json(result, 200, owner.cookie) : fail(409, 'no_round')
+  }
+
+  if (body.action === 'skip') {
+    const result = await tuneSkip(owner.id)
     return result ? json(result, 200, owner.cookie) : fail(409, 'no_round')
   }
 

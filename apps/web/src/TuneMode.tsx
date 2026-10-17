@@ -181,6 +181,12 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
     if (next?.status === 'over') fanfare.current = true
   }
 
+  const skip = async () => {
+    sound.current?.pause()
+    const next = await send({ action: 'skip' })
+    if (next?.status === 'over') fanfare.current = true
+  }
+
   const again = useCallback(async () => {
     sound.current?.pause()
     await send({ action: 'restart', grade })
@@ -386,6 +392,9 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
 
       {!over && (
         <div className="play-actions">
+          <button type="button" className="ghost tune-skip" disabled={busy || run.step + 1 >= tries} onClick={() => void skip()}>
+            {t('tune.skip')}
+          </button>
           <GiveUp disabled={busy} onConfirm={() => void quit()}>
             {t('play.giveUp')}
           </GiveUp>

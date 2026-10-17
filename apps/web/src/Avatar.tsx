@@ -12,7 +12,7 @@ export default function Avatar({ id, name, avatar, frame, className, hint }: Pro
 
   return (
     <span className={`avatar ${src ? 'has-pic' : ''} ${worn ? 'has-frame' : ''} ${className ?? ''}`} aria-hidden>
-      {name.charAt(0).toUpperCase()}
+      <b className="avatar-letter">{name.charAt(0).toUpperCase()}</b>
       {src && (
         <img
           src={src}

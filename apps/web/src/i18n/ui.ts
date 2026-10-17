@@ -678,6 +678,7 @@ const ui = {
   'tune.play': { ru: 'Играть', uk: 'Грати', en: 'Play' },
   'tune.pause': { ru: 'Пауза', uk: 'Пауза', en: 'Pause' },
   'tune.guessed': { ru: 'Угадано за {seconds}', uk: 'Вгадано за {seconds}', en: 'Guessed in {seconds}' },
+  'tune.skip': { ru: 'Открыть ещё кусок', uk: 'Відкрити ще шматок', en: 'Open a longer piece' },
   'tune.missed': { ru: 'Правильный ответ', uk: 'Правильна відповідь', en: 'The answer was' },
   'tune.was': { ru: 'Это был опенинг «{name}»', uk: 'Це був опенінг «{name}»', en: 'That was the opening of "{name}"' },
   'tune.op': { ru: 'OP {number}', uk: 'OP {number}', en: 'OP {number}' },
