@@ -23,6 +23,7 @@ export type DuelView = {
   code: string
   bot?: boolean
   per?: number
+  teams?: number
   seats?: number
   teamly?: boolean
   youTeam?: number
@@ -179,7 +180,7 @@ export function useDuel(code: string) {
     pending,
     serverNow: () => Date.now() + offset.current,
     ready: (want = true) => send({ action: 'ready', ready: want }),
-    setup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; per?: number; strict?: boolean }) =>
+    setup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; per?: number; teams?: number; strict?: boolean }) =>
       send({
         action: 'setup',
         game: patch.game ?? duel?.game ?? 'naruto',
@@ -188,6 +189,7 @@ export function useDuel(code: string) {
         seconds: patch.seconds ?? duel?.seconds,
         size: patch.size ?? duel?.size,
         per: patch.per ?? duel?.per,
+        teams: patch.teams ?? duel?.teams,
         strict: patch.strict ?? duel?.strict,
       }),
     team: () => send({ action: 'team' }),

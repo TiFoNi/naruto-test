@@ -120,6 +120,7 @@ export type DuelDoc = {
   seconds?: number | null
   size?: number
   per?: number
+  teams?: number
   strict?: boolean
   bot?: boolean
   firstId?: ObjectId | null

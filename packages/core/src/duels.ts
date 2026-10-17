@@ -21,6 +21,7 @@ import {
   duelWinsNeeded,
   hasMode,
   judgeAll,
+  teamCount,
   teamSize,
   TEAM_MODES,
   type GameId,
@@ -69,13 +70,21 @@ export const isHost = (duel: DuelDoc, userId: ObjectId) => duel.hostId.equals(us
 
 export const perTeam = (duel: DuelDoc) => teamSize(duel.mode, duel.per)
 
-export const seatsOf = (duel: DuelDoc) => perTeam(duel) * 2
+export const sideCount = (duel: DuelDoc) => teamCount(duel.mode, duel.teams)
 
-const teamOf = (side: DuelPlayer) => (side.team === 1 ? 1 : 0)
+export const seatsOf = (duel: DuelDoc) => perTeam(duel) * sideCount(duel)
 
-const squad = (duel: DuelDoc, team: number) => duel.players.filter((side) => teamOf(side) === team)
+const lineUp = (duel: DuelDoc) => Array.from({ length: sideCount(duel) }, (_, team) => team)
 
-const thinner = (duel: DuelDoc) => (squad(duel, 0).length <= squad(duel, 1).length ? 0 : 1)
+const teamOf = (duel: DuelDoc, side: DuelPlayer) => {
+  const want = Number(side.team)
+  return Number.isInteger(want) && want >= 0 && want < sideCount(duel) ? want : 0
+}
+
+const squad = (duel: DuelDoc, team: number) => duel.players.filter((side) => teamOf(duel, side) === team)
+
+const thinner = (duel: DuelDoc) =>
+  lineUp(duel).reduce((best, team) => (squad(duel, team).length < squad(duel, best).length ? team : best), 0)
 
 const rounds = (value: unknown) => (DUEL_ROUNDS as readonly number[]).includes(Number(value)) ? Number(value) : null
 const seconds = (value: unknown) => (DUEL_SECONDS as readonly number[]).includes(Number(value)) ? Number(value) : null
@@ -122,7 +131,7 @@ export async function joinDuel(duel: DuelDoc, doc: UserDoc) {
   if (sideOf(duel, doc._id!)) return duel
   const seats = seatsOf(duel)
   if (duel.players.length >= seats) return null
-  const team = duel.players.length === 1 ? 1 : thinner(duel)
+  const team = thinner(duel)
   return (await duels()).findOneAndUpdate(
     { _id: duel._id, players: { $size: duel.players.length } },
     { $push: { players: { ...player(doc), team } } },
@@ -134,8 +143,10 @@ export async function switchTeam(duel: DuelDoc, userId: ObjectId) {
   if (duel.status !== 'lobby') return duel
   const index = duel.players.findIndex((side) => side.userId.equals(userId))
   if (index < 0) return duel
-  const want = teamOf(duel.players[index]) === 0 ? 1 : 0
-  if (squad(duel, want).length >= perTeam(duel)) return duel
+  const now = teamOf(duel, duel.players[index])
+  const line = lineUp(duel)
+  const want = line.slice(now + 1).concat(line.slice(0, now)).find((team) => squad(duel, team).length < perTeam(duel))
+  if (want === undefined) return duel
   const calm = Object.fromEntries(duel.players.map((_, slot) => [`players.${slot}.ready`, false]))
   const updated = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: 'lobby' },
@@ -161,20 +172,26 @@ export async function setupDuel(duel: DuelDoc, userId: ObjectId, body: Record<st
   const asked = Number(body.size) || duel.size || BOARD_DEFAULT
   const size = allowed.includes(asked) ? asked : Math.max(...allowed.filter((side) => side <= asked), allowed[0])
   const strict = typeof body.strict === 'boolean' ? body.strict : duel.strict ?? false
-  const per = teamSize(mode, body.per ?? duel.per)
-  const room = [0, 0]
+  const here = duel.players.length
+  const wantPer = teamSize(mode, body.per ?? duel.per)
+  const wantTeams = teamCount(mode, body.teams ?? duel.teams)
+  const per = wantPer * wantTeams >= here ? wantPer : Math.min(3, Math.max(wantPer, Math.ceil(here / wantTeams)))
+  const teams = per * wantTeams >= here ? wantTeams : Math.min(3, Math.max(wantTeams, Math.ceil(here / per)))
+  const plan = { ...duel, mode, per, teams } as DuelDoc
+  const room = Array.from({ length: teams }, () => 0)
   const calm = Object.fromEntries(duel.players.map((_, slot) => [`players.${slot}.ready`, false]))
   const seated = Object.fromEntries(
     duel.players.map((side, index) => {
-      const want = side.team === undefined ? index % 2 : teamOf(side)
-      const team = room[want] < per ? want : want === 0 ? 1 : 0
-      room[team] += 1
-      return [`players.${index}.team`, team]
+      const want = side.team === undefined ? index % teams : teamOf(plan, side)
+      const team = room[want] < per ? want : room.findIndex((taken) => taken < per)
+      const seat = team < 0 ? want : team
+      room[seat] += 1
+      return [`players.${index}.team`, seat]
     }),
   )
   const updated = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: 'lobby' },
-    { $set: { game, mode, best, seconds: limit, size, strict, per, ...seated, ...calm } },
+    { $set: { game, mode, best, seconds: limit, size, strict, per, teams, ...seated, ...calm } },
     { returnDocument: 'after' },
   )
   return updated ?? duel
@@ -446,14 +463,14 @@ async function dropPlayers(duel: DuelDoc, gone: DuelPlayer[]) {
 
   const running = duel.status === 'playing' || (duel.status === 'finished' && !duel.matchDone)
   const played = duel.players.some((side) => (side.wins ?? 0) > 0) || duel.round > 0
-  const standing = new Set(rest.map(teamOf))
-  if (running && played && standing.size === 1 && gone.some((side) => !standing.has(teamOf(side)))) {
+  const standing = new Set(rest.map((side) => teamOf(duel, side)))
+  if (running && played && standing.size === 1 && gone.some((side) => !standing.has(teamOf(duel, side)))) {
     const winnerTeam = [...standing][0]
     const at = new Date()
     const scores = duel.players.map((side) => ({
       userId: side.userId,
       nickname: side.nickname,
-      team: teamOf(side),
+      team: teamOf(duel, side),
       wins: side.wins ?? 0,
     }))
     await applyDuelStats(winnerTeam, [...rest, ...gone], duel.mode)
@@ -539,10 +556,10 @@ const turnMode = (duel: DuelDoc) => duel.mode === 'who' || duel.mode === 'grid'
 function decide(duel: DuelDoc) {
   if (turnMode(duel)) {
     const solver = duel.players.find((side) => side.solvedAt)
-    if (solver) return teamOf(solver)
+    if (solver) return teamOf(duel, solver)
     if (duel.players.length > 1 && duel.players.every((side) => side.gaveUp)) return null
     const missed = duel.players.find((side) => side.gaveUp)
-    return missed ? (teamOf(missed) === 0 ? 1 : 0) : null
+    return missed ? lineUp(duel).find((team) => team !== teamOf(duel, missed)) ?? null : null
   }
 
   const tally = (team: number) => {
@@ -558,15 +575,21 @@ function decide(duel: DuelDoc) {
     }
   }
 
-  const [x, y] = [tally(0), tally(1)]
-  if (!x.alive || !y.alive) return null
-  if (x.full !== y.full) return x.full ? 0 : 1
-  if (x.full && x.time !== y.time) return x.time < y.time ? 0 : 1
-  if (!x.full && x.solved !== y.solved) return x.solved > y.solved ? 0 : 1
-  if (!x.full && !x.solved) return null
-  if (x.guesses !== y.guesses) return x.guesses < y.guesses ? 0 : 1
-  if (x.time !== y.time) return x.time < y.time ? 0 : 1
-  return null
+  const boards = lineUp(duel)
+    .map((team) => ({ team, ...tally(team) }))
+    .filter((one) => one.alive)
+  if (boards.length < 2) return null
+
+  const rank = (a: typeof boards[number], b: typeof boards[number]) => {
+    if (a.full !== b.full) return a.full ? -1 : 1
+    if (a.solved !== b.solved) return b.solved - a.solved
+    if (a.guesses !== b.guesses) return a.guesses - b.guesses
+    return a.time - b.time
+  }
+
+  const [best, next] = [...boards].sort(rank)
+  if (!best.full && !best.solved) return null
+  return rank(best, next) === 0 ? null : best.team
 }
 
 async function pushDuelLog(
@@ -601,7 +624,7 @@ async function applyDuelStats(winnerTeam: number | null, players: DuelPlayer[], 
   const byMode = mode ? { [`duelStats.modes.${mode}.played`]: 1 } : {}
   await Promise.all(
     players.map((side) => {
-      const field = winnerTeam === null ? 'draws' : teamOf(side) === winnerTeam ? 'wins' : 'losses'
+      const field = winnerTeam === null ? 'draws' : side.team === winnerTeam ? 'wins' : 'losses'
       const won = mode && field === 'wins' ? { [`duelStats.modes.${mode}.wins`]: 1 } : {}
       return collection.updateOne({ _id: side.userId }, { $inc: { 'duelStats.played': 1, [`duelStats.${field}`]: 1, ...byMode, ...won } })
     }),
@@ -616,7 +639,7 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   const over = turnMode(duel) ? duel.players.some(done) : duel.players.every(done)
   if (!timeUp && !over) return duel
   const winnerTeam = decide(duel)
-  const champs = winnerTeam === null ? [] : duel.players.filter((side) => teamOf(side) === winnerTeam)
+  const champs = winnerTeam === null ? [] : duel.players.filter((side) => teamOf(duel, side) === winnerTeam)
   const lead = champs.find((side) => side.solvedAt) ?? champs[0] ?? null
   const winnerId = lead?.userId ?? null
   const taken = (lead?.wins ?? 0) + 1
@@ -627,11 +650,11 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   const scores = duel.players.map((side) => ({
     userId: side.userId,
     nickname: side.nickname,
-    team: teamOf(side),
-    wins: (side.wins ?? 0) + (winnerTeam !== null && teamOf(side) === winnerTeam ? 1 : 0),
+    team: teamOf(duel, side),
+    wins: (side.wins ?? 0) + (winnerTeam !== null && teamOf(duel, side) === winnerTeam ? 1 : 0),
   }))
   const won = Object.fromEntries(
-    duel.players.flatMap((side, index) => (winnerTeam !== null && teamOf(side) === winnerTeam ? [[`players.${index}.wins`, 1]] : [])),
+    duel.players.flatMap((side, index) => (winnerTeam !== null && teamOf(duel, side) === winnerTeam ? [[`players.${index}.wins`, 1]] : [])),
   )
   const finished = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: 'playing' },
@@ -1052,8 +1075,8 @@ async function duelShot(duel: DuelDoc, side: DuelPlayer, known: boolean) {
 export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
   const you = sideOf(duel, userId)
   const mine = duel.players.findIndex((p) => p.userId.equals(userId))
-  const yours = you ? teamOf(you) : 0
-  const rival = duel.players.find((p) => teamOf(p) !== yours) ?? duel.players.find((p) => !p.userId.equals(userId))
+  const yours = you ? teamOf(duel, you) : 0
+  const rival = duel.players.find((p) => teamOf(duel, p) !== yours) ?? duel.players.find((p) => !p.userId.equals(userId))
   const playing = duel.status === 'playing'
   const finished = duel.status === 'finished'
   const game = duel.game as GameId | undefined
@@ -1079,11 +1102,12 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
     declined: Boolean(duel.invite?.declined) && duel.players.length < seatsOf(duel),
     left: duel.left && duel.players.length < seatsOf(duel) && Date.now() - duel.left.at.getTime() < 120_000 ? duel.left.nickname : null,
     per: perTeam(duel),
+    teams: sideCount(duel),
     seats: seatsOf(duel),
     teamly: TEAM_MODES.includes(duel.mode as ModeId),
     youTeam: yours,
     winnerTeam: finished ? duel.winnerTeam ?? null : undefined,
-    squads: [0, 1].map((team) =>
+    squads: lineUp(duel).map((team) =>
       squad(duel, team).map((side) => ({
         id: side.userId.toHexString(),
         nickname: side.nickname,

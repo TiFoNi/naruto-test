@@ -2,7 +2,7 @@
 
 import Avatar from './Avatar'
 import BackButton from './BackButton'
-import { useEffect, useMemo, useState, type CSSProperties } from 'react'
+import { Fragment, useEffect, useMemo, useState, type CSSProperties } from 'react'
 import AbilityIcon from './AbilityIcon'
 import { ABILITY_STAGES, GRID_MISSES, PHRASE_VOICE_AT } from '@nanda/game'
 import { ZOOM_LEVELS, levelAt } from './zoom'
@@ -124,6 +124,10 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
 
   const you = duel.you
   const rival = duel.rival
+  const squads = duel.squads ?? []
+  const myTeam = duel.youTeam ?? 0
+  const teamly = squads.length > 2 || (duel.per ?? 1) > 1
+  const squadWins = (team: number) => Math.max(0, ...(squads[team] ?? []).map((mate) => mate.wins))
   const inLobby = duel.status === 'lobby'
   const over = duel.status === 'finished'
   const link = `${window.location.origin}${href.duel(duel.code)}`
@@ -173,13 +177,25 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
       </button>
     ))
 
-  const settled = (you?.wins ?? 0) + (rival?.wins ?? 0) + (duel.draws ?? 0)
+  const myWins = teamly ? squadWins(myTeam) : you?.wins ?? 0
+  const foeWins = teamly
+    ? squads.reduce((sum, _line, team) => (team === myTeam ? sum : sum + squadWins(team)), 0)
+    : rival?.wins ?? 0
+  const settled = myWins + foeWins + (duel.draws ?? 0)
   const roundMark = (index: number) => {
-    if (index < (you?.wins ?? 0)) return 'won'
-    if (index < (you?.wins ?? 0) + (rival?.wins ?? 0)) return 'lost'
+    if (index < myWins) return 'won'
+    if (index < myWins + foeWins) return 'lost'
     if (index < settled) return 'drawn'
     return index === settled && !over ? 'now' : ''
   }
+
+  const mateNote = (mate: { solved: boolean; gaveUp: boolean; guessCount: number }) =>
+    [
+      duel.mode === 'grid' ? t('grid.misses', { count: mate.guessCount, max: GRID_MISSES }) : t('duel.guesses', { count: mate.guessCount }),
+      mate.solved ? t('duel.solved') : mate.gaveUp ? t('duel.gaveUp') : '',
+    ]
+      .filter(Boolean)
+      .join(' · ')
 
   return (
     <div className="duel">
@@ -187,13 +203,58 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
 
       {!inLobby && (
         <>
-      <header className="duel-hud card" style={{ '--tab-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
+      <header
+        className={`duel-hud card ${teamly ? 'is-teams' : ''}`}
+        style={{ '--tab-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}
+      >
         <span className="duel-hud-meta">
           {[duel.round > 0 ? t('duel.roundOf', { round: duel.round, best: duel.best }) : null, game ? l(game.label) : null, modeLabel]
             .filter(Boolean)
             .join(' · ')}
         </span>
 
+        {teamly && (
+          <>
+            <div className="duel-hud-clock" style={{ '--heat': heat } as CSSProperties}>
+              {ticking && (
+                <svg className="duel-hud-ring" viewBox="0 0 100 100" aria-hidden>
+                  <circle className="duel-hud-ring-bed" cx="50" cy="50" r="44" />
+                  <circle className="duel-hud-ring-line" cx="50" cy="50" r="44" style={{ strokeDashoffset: RING * (1 - share) }} />
+                </svg>
+              )}
+              <span>{ticking ? clock(left) : '—'}</span>
+            </div>
+
+            <ul className="duel-hud-squads" style={{ '--sides': squads.length } as CSSProperties}>
+              {squads.map((mates, team) => (
+                <li key={team} className={`duel-hud-squad ${team === myTeam ? 'is-you' : 'is-rival'}`}>
+                  <div className="duel-hud-squad-top">
+                    <b className="duel-hud-squad-name">{t('duel.teamNth', { number: team + 1 })}</b>
+                    <b className="duel-hud-score">{squadWins(team)}</b>
+                  </div>
+                  <ul className="duel-hud-mates">
+                    {mates.length === 0 && (
+                      <li className="duel-hud-mate is-empty">
+                        <span>{t('duel.teamWait')}</span>
+                      </li>
+                    )}
+                    {mates.map((mate) => (
+                      <li key={mate.id} className={`duel-hud-mate ${mate.solved ? 'is-solved' : ''} ${mate.gaveUp ? 'is-out' : ''}`}>
+                        <Avatar className="duel-hud-face" id={mate.id} name={mate.nickname} avatar={mate.avatar} />
+                        <span className="duel-hud-name">
+                          <b>{mate.nickname}</b>
+                          <small>{mate.you ? youNote : mateNote(mate)}</small>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+
+        {!teamly && (
         <div className="duel-hud-row">
           <div className="duel-hud-side is-you">
             {you && <Avatar className="duel-hud-face" id={you.id} name={you.nickname} avatar={you.avatar} />}
@@ -226,6 +287,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
           </div>
 
         </div>
+        )}
 
         {duel.best > 1 && (
           <ul className="duel-hud-dots" aria-hidden>
@@ -255,16 +317,37 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
             <span className="duel-final-mark" aria-hidden>
               {duel.youWon ? <TrophyIcon /> : <SwordsIcon />}
             </span>
-            <h2>{duel.winner ? (duel.youWon ? t('duel.matchWon') : t('duel.matchLost', { name: duel.winner })) : t('duel.matchDraw')}</h2>
+            <h2>
+              {duel.winner
+                ? duel.youWon
+                  ? t('duel.matchWon')
+                  : t('duel.matchLost', {
+                      name: teamly ? t('duel.teamNth', { number: (duel.winnerTeam ?? 0) + 1 }) : duel.winner,
+                    })
+                : t('duel.matchDraw')}
+            </h2>
             <p className="duel-final-score">
-              <b>{you?.wins ?? 0}</b>
-              <span>:</span>
-              <b>{rival?.wins ?? 0}</b>
+              {teamly ? (
+                squads.map((_mates, team) => (
+                  <Fragment key={team}>
+                    {team > 0 && <span>:</span>}
+                    <b className={team === myTeam ? 'is-you' : ''}>{squadWins(team)}</b>
+                  </Fragment>
+                ))
+              ) : (
+                <>
+                  <b>{you?.wins ?? 0}</b>
+                  <span>:</span>
+                  <b>{rival?.wins ?? 0}</b>
+                </>
+              )}
             </p>
             <p className="muted">
               {duel.mode === 'who' && duel.rivalSecret !== undefined
                 ? t('who.was', { name: name(byId.get(duel.rivalSecret) ?? { name: '?' }) })
-                : `${you?.nickname} · ${rival?.nickname ?? '?'}`}
+                : teamly
+                  ? squads.map((mates) => mates.map((mate) => mate.nickname).join(', ') || '—').join(' · ')
+                  : `${you?.nickname} · ${rival?.nickname ?? '?'}`}
             </p>
             <div className="duel-final-actions">
               <button

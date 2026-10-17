@@ -427,10 +427,18 @@ export const TEAM_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phr
 
 export const DUEL_TEAM_SIZES = [1, 2, 3] as const
 
+export const DUEL_TEAM_COUNTS = [2, 3] as const
+
 export const teamSize = (mode: unknown, value: unknown) => {
   const asked = Number(value)
   const fits = (DUEL_TEAM_SIZES as readonly number[]).includes(asked)
   return TEAM_MODES.includes(mode as ModeId) && fits ? asked : 1
+}
+
+export const teamCount = (mode: unknown, value: unknown) => {
+  const asked = Number(value)
+  const fits = (DUEL_TEAM_COUNTS as readonly number[]).includes(asked)
+  return TEAM_MODES.includes(mode as ModeId) && fits ? asked : 2
 }
 
 export const DUEL_ROUNDS = [3, 5, 7, 10] as const

@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useMemo, useState, type CSSProperties } from 'react'
-import { BOARD_DEFAULT, BOARD_SIZES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, DUEL_TEAM_SIZES, GRID_GAMES, TEAM_MODES } from '@nanda/game'
+import { Fragment, useEffect, useMemo, useState, type CSSProperties } from 'react'
+import { BOARD_DEFAULT, BOARD_SIZES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, DUEL_TEAM_COUNTS, DUEL_TEAM_SIZES, GRID_GAMES, TEAM_MODES } from '@nanda/game'
 import Avatar from './Avatar'
 import { UserIcon } from './icons'
 import Picker from './Picker'
@@ -30,7 +30,7 @@ type Props = {
   duel: DuelView
   busy: boolean
   link: string
-  onSetup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; per?: number; strict?: boolean }) => void
+  onSetup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; per?: number; teams?: number; strict?: boolean }) => void
   onTeam: () => void
   onInvite: (to: string) => void
   onReady: (want?: boolean) => void
@@ -119,11 +119,11 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
 
   const rival = duel.rival
   const per = duel.per ?? 1
+  const teams = duel.teams ?? 2
   const mineTeam = duel.youTeam ?? 0
-  const ours = duel.squads?.[mineTeam] ?? []
-  const theirs = duel.squads?.[mineTeam === 0 ? 1 : 0] ?? []
-  const canSwitch = per > 1 && theirs.length < per
-  const free = (duel.seats ?? 2) - (ours.length + theirs.length)
+  const taken = (duel.squads ?? []).reduce((sum, line) => sum + line.length, 0)
+  const canSwitch = teams > 1 && (duel.squads ?? []).some((line, team) => team !== mineTeam && line.length < per)
+  const free = (duel.seats ?? 2) - taken
 
   const waiting = duel.invited
   const suggested = [...found, ...mates.filter((one) => !found.some((f) => f.id === one.id))]
@@ -133,7 +133,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
     const set = line.length > 0 && line.every((one) => one.ready)
     return (
       <div className={`duel-corner ${team === 0 ? 'is-you' : 'is-rival'} ${team === mineTeam ? 'is-mine' : ''}`}>
-        <b className="duel-team-name">{t(team === 0 ? 'duel.teamA' : 'duel.teamB')}</b>
+        <b className="duel-team-name">{t('duel.teamNth', { number: team + 1 })}</b>
         <ul className="duel-team" style={{ '--seats': per } as CSSProperties}>
           {Array.from({ length: per }, (_, slot) => {
             const mate = line[slot]
@@ -257,6 +257,21 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
         <Picker
           rich
           disabled={!host || busy}
+          label={t('duel.teamsCount', { count: duel.teams ?? 2 })}
+          value={String(duel.teams ?? 2)}
+          onChange={(next) => onSetup({ teams: Number(next) })}
+          options={DUEL_TEAM_COUNTS.map((value) => ({
+            value: String(value),
+            label: t('duel.teamsCount', { count: value }),
+            hint: t('duel.teamsTitle').toUpperCase(),
+          }))}
+        />
+      )}
+
+      {TEAM_MODES.includes((duel.mode ?? 'classic') as never) && (
+        <Picker
+          rich
+          disabled={!host || busy}
           label={t(TEAM_LABEL[duel.per ?? 1])}
           value={String(duel.per ?? 1)}
           onChange={(next) => onSetup({ per: Number(next) })}
@@ -345,14 +360,17 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
         </div>
       </header>
 
-      <section className="duel-arena">
-        {side(0)}
-
-        <span className="duel-vs" aria-hidden>
-          VS
-        </span>
-
-        {side(1)}
+      <section className="duel-arena" style={{ '--sides': teams } as CSSProperties}>
+        {Array.from({ length: teams }, (_, team) => (
+          <Fragment key={team}>
+            {team > 0 && (
+              <span className="duel-vs" aria-hidden>
+                VS
+              </span>
+            )}
+            {side(team)}
+          </Fragment>
+        ))}
       </section>
 
       {canSwitch && (

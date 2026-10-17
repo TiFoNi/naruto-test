@@ -156,6 +156,116 @@
   transition: stroke-dashoffset 0.5s linear, stroke 0.5s linear;
 }
 
+.duel-hud.is-teams .duel-hud-clock {
+  width: 72px;
+  height: 72px;
+  font-size: 14px;
+}
+
+.duel-hud-squads {
+  display: grid;
+  grid-template-columns: repeat(var(--sides, 2), minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.duel-hud-squad {
+  --side: var(--rival);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px 12px 11px;
+  border: 1px solid color-mix(in srgb, var(--side) 26%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--side) 7%, transparent);
+}
+
+.duel-hud-squad.is-you {
+  --side: var(--you);
+}
+
+.duel-hud-squad-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.duel-hud-squad-name {
+  overflow: hidden;
+  color: color-mix(in srgb, var(--side) 55%, var(--text-2));
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.duel-hud-squad .duel-hud-score {
+  color: var(--side);
+  font-size: clamp(24px, 2.6vw, 34px);
+}
+
+.duel-hud-mates {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.duel-hud-mate {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.duel-hud-mate.is-empty {
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.duel-hud-mate.is-out {
+  opacity: 0.55;
+}
+
+.duel-hud-mate .duel-hud-face {
+  width: 38px;
+  height: 38px;
+  font-size: 16px;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--side) 55%, transparent);
+}
+
+.duel-hud-squad .duel-hud-name {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.duel-hud-squad .duel-hud-name b {
+  overflow: hidden;
+  max-width: 100%;
+  font-size: 14.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.duel-hud-squad .duel-hud-name small {
+  color: color-mix(in srgb, var(--side) 42%, var(--text-3));
+  font-size: 11.5px;
+}
+
+.duel-hud-mate.is-solved .duel-hud-name b {
+  color: var(--side);
+}
+
 .duel-quit {
   display: flex;
   margin-top: auto;
@@ -286,6 +396,82 @@
     grid-row: 1;
     justify-self: end;
     align-self: start;
+  }
+
+  .duel-hud-squads {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .duel-hud-mates {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+  }
+
+  .duel-hud-mate {
+    flex: 1 1 calc(50% - 14px);
+  }
+
+  .duel-hud-mate.is-empty {
+    flex: 1 1 100%;
+  }
+
+  .duel-hud-mate .duel-hud-face {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .duel-hud-squad .duel-hud-name b {
+    overflow: hidden;
+    font-size: 13px;
+    line-height: 1.25;
+    white-space: nowrap;
+  }
+
+  .duel-hud-squad .duel-hud-name small {
+    font-size: 10.5px;
+    line-height: 1.25;
+  }
+
+  .duel-hud.is-teams {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px 10px;
+    padding: 12px 12px 10px;
+  }
+
+  .duel-hud.is-teams .duel-hud-meta {
+    grid-column: 1;
+    grid-row: 1;
+    text-align: left;
+  }
+
+  .duel-hud.is-teams .duel-hud-clock {
+    grid-column: 2;
+    grid-row: 1;
+    width: 54px;
+    height: 54px;
+    font-size: 12px;
+  }
+
+  .duel-hud.is-teams .duel-hud-squads,
+  .duel-hud.is-teams .duel-hud-dots {
+    grid-column: 1 / -1;
+  }
+
+  .duel-hud.is-teams .duel-hud-dots {
+    justify-self: center;
+  }
+
+  .duel-hud-squad {
+    padding: 8px 10px 9px;
+  }
+
+  .duel-hud-mates {
+    gap: 6px 12px;
   }
 }
 
@@ -1071,6 +1257,10 @@
 
 .duel-final-score span {
   color: var(--text-3);
+}
+
+.duel-final-score b.is-you {
+  color: var(--accent);
 }
 
 .duel-final-actions {
@@ -2340,10 +2530,9 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .duel-arena {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  display: flex;
   align-items: stretch;
-  gap: 10px;
+  gap: 12px;
   min-height: 360px;
   padding: 34px 26px;
   border: 1px solid var(--line);
@@ -2355,13 +2544,13 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   overflow: hidden;
 }
 
-.duel-arena::after {
+.duel-arena .duel-vs::after {
   content: '';
   position: absolute;
-  top: -20%;
+  top: -120%;
   left: 50%;
   width: 1px;
-  height: 140%;
+  height: 340%;
   background: linear-gradient(
     180deg,
     transparent,
@@ -2376,6 +2565,9 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .duel-corner {
   display: flex;
+  min-width: 0;
+  flex: 1;
+  container-type: inline-size;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -2459,12 +2651,14 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 }
 
 .duel-arena .duel-vs {
+  position: relative;
   align-self: center;
+  margin: 0 18px;
   padding: 0;
   border: 0;
   border-radius: 0;
   font-family: var(--display);
-  font-size: clamp(42px, 7.5vw, 74px);
+  font-size: clamp(20px, calc(9vw / var(--sides, 2)), 74px);
   line-height: 1;
   background: linear-gradient(100deg, var(--you), var(--rival));
   -webkit-background-clip: text;
@@ -2661,12 +2855,26 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 @media (max-width: 760px) {
   .duel-arena {
-    grid-template-columns: minmax(0, 1fr);
+    flex-direction: column;
+    gap: 4px;
     padding: 16px;
   }
 
-  .duel-arena::after {
+  .duel-arena .duel-vs::after {
     display: none;
+  }
+
+  .duel-corner {
+    flex: none;
+    width: 100%;
+  }
+
+  .duel-team {
+    max-width: none;
+  }
+
+  .duel-team li {
+    max-width: calc(50% - 6px);
   }
 
   .duel-arena {
@@ -2677,8 +2885,9 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   }
 
   .duel-arena .duel-vs {
-    justify-self: center;
-    padding: 2px 0;
+    align-self: center;
+    padding: 0;
+    font-size: clamp(26px, 7vw, 40px);
   }
 
   .duel-corner {
@@ -2777,13 +2986,17 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   opacity: 0.35;
 }
 
-.duel-team-name {
+.duel-corner .duel-team-name {
+  overflow: hidden;
+  max-width: 100%;
   margin-bottom: 14px;
   color: var(--text-2);
   font-family: var(--display);
-  font-size: clamp(15px, 1.5vw, 20px);
+  font-size: clamp(11px, 10cqi, 20px);
   letter-spacing: 0.04em;
+  text-overflow: ellipsis;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .duel-corner.is-mine .duel-team {
@@ -2795,11 +3008,12 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 }
 
 .duel-team {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   width: 100%;
-  max-width: calc(var(--seats, 1) * 168px);
-  grid-template-columns: repeat(var(--seats, 1), minmax(0, 1fr));
-  gap: 10px;
+  max-width: calc(var(--seats, 1) * 168px + (var(--seats, 1) - 1) * 12px);
+  gap: 12px;
   margin: 0 auto 12px;
   padding: 0;
   list-style: none;
@@ -2807,12 +3021,16 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .duel-team li {
   display: flex;
+  flex: 1 1 140px;
+  min-width: 0;
+  max-width: 168px;
   height: 172px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 7px;
   padding: 12px 8px;
+  container-type: inline-size;
   border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
   border-radius: 18px;
   background: color-mix(in srgb, #0a0c10 45%, transparent);
@@ -2833,8 +3051,8 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .duel-hole {
   display: grid;
-  width: clamp(40px, calc(104px / var(--seats, 1)), 74px);
-  height: clamp(40px, calc(104px / var(--seats, 1)), 74px);
+  width: min(74px, 58cqi);
+  height: min(74px, 58cqi);
   place-items: center;
   border-radius: 50%;
   background: color-mix(in srgb, var(--text-3) 12%, transparent);
@@ -2847,8 +3065,8 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 }
 
 .duel-team .duel-face {
-  width: clamp(40px, calc(104px / var(--seats, 1)), 74px);
-  height: clamp(40px, calc(104px / var(--seats, 1)), 74px);
+  width: min(74px, 58cqi);
+  height: min(74px, 58cqi);
 }
 
 .duel-team li b {
