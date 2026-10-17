@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
-import { BOARD_DEFAULT, BOARD_SIZES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, GRID_GAMES } from '@nanda/game'
+import { BOARD_DEFAULT, BOARD_SIZES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, DUEL_TEAM_SIZES, GRID_GAMES, TEAM_MODES } from '@nanda/game'
 import Avatar from './Avatar'
+import { UserIcon } from './icons'
 import Picker from './Picker'
 import WorldMark from './WorldMark'
 import { api } from './api'
-import { useAuth } from './auth'
 import { GAMES, gameById } from './games'
 import type { Category, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
@@ -30,10 +30,17 @@ type Props = {
   duel: DuelView
   busy: boolean
   link: string
-  onSetup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; strict?: boolean }) => void
+  onSetup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; per?: number; strict?: boolean }) => void
+  onTeam: () => void
   onInvite: (to: string) => void
   onReady: (want?: boolean) => void
   onLeave: () => void
+}
+
+const TEAM_LABEL: Record<number, 'duel.teamSolo'> = {
+  1: 'duel.teamSolo',
+  2: 'duel.teamDuo' as 'duel.teamSolo',
+  3: 'duel.teamTrio' as 'duel.teamSolo',
 }
 
 const duelReady = (game: { modes: readonly string[] }) => game.modes.some((mode) => DUEL_MODES.includes(mode as never))
@@ -43,9 +50,8 @@ const duelMode = (game: { modes: readonly string[] }, current: string | null) =>
   return current && usable.includes(current as never) ? current : usable[0]
 }
 
-export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady, onLeave }: Props) {
+export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady, onTeam, onLeave }: Props) {
   const { t, l } = useI18n()
-  const { duels } = useAuth()
   const host = duel.host
   const game = gameById((duel.game ?? 'naruto') as GameId)
   const [category, setCategory] = useState<Category>(game.category)
@@ -112,11 +118,88 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
     value >= 120 && value % 60 === 0 ? t('duel.minutesShort', { count: value / 60 }) : t('duel.secondsShort', { count: value })
 
   const rival = duel.rival
-  const you = duel.you
+  const per = duel.per ?? 1
+  const mineTeam = duel.youTeam ?? 0
+  const ours = duel.squads?.[mineTeam] ?? []
+  const theirs = duel.squads?.[mineTeam === 0 ? 1 : 0] ?? []
+  const canSwitch = per > 1 && theirs.length < per
+  const free = (duel.seats ?? 2) - (ours.length + theirs.length)
+
   const waiting = duel.invited
-  const played = duels.played
-  const share = played ? Math.round((duels.wins / played) * 100) : 0
   const suggested = [...found, ...mates.filter((one) => !found.some((f) => f.id === one.id))]
+
+  const side = (team: number) => {
+    const line = duel.squads?.[team] ?? []
+    const set = line.length > 0 && line.every((one) => one.ready)
+    return (
+      <div className={`duel-corner ${team === 0 ? 'is-you' : 'is-rival'} ${team === mineTeam ? 'is-mine' : ''}`}>
+        <b className="duel-team-name">{t(team === 0 ? 'duel.teamA' : 'duel.teamB')}</b>
+        <ul className="duel-team" style={{ '--seats': per } as CSSProperties}>
+          {Array.from({ length: per }, (_, slot) => {
+            const mate = line[slot]
+            return (
+              <li key={slot} className={mate ? (mate.you ? 'is-you-card' : '') : 'empty'}>
+                {mate ? (
+                  <>
+                    <Avatar className="duel-face" id={mate.id} name={mate.nickname} avatar={mate.avatar} />
+                    <b>{mate.nickname}</b>
+                    <small className={mate.ready ? 'on' : ''}>
+                      {mate.you ? `${t('duel.youSide')} · ` : ''}
+                      {mate.ready ? t('duel.isReady') : t('duel.notReady')}
+                    </small>
+                  </>
+                ) : (
+                  <>
+                    <i className="duel-hole" aria-hidden>
+                      <UserIcon />
+                    </i>
+                    <span>{t('duel.teamWait')}</span>
+                  </>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+        <em className={set ? 'on' : ''}>{line.length ? (set ? t('duel.isReady') : t('duel.notReady')) : '\u00a0'}</em>
+      </div>
+    )
+  }
+
+  const callBox = (
+          <div className="duel-call">
+            <b>{t('duel.callTitle')}</b>
+            <p className="muted small">{waiting ? t('duel.waitingInvited', { name: waiting }) : t('duel.callLead')}</p>
+
+            <div className="duel-call-row">
+              <input value={query} placeholder={t('duel.invitePlaceholder')} onChange={(event) => setQuery(event.target.value)} />
+              <button
+                type="button"
+                className="ghost"
+                disabled={busy || !suggested.length}
+                onClick={() => suggested[0] && invite(suggested[0].id)}
+              >
+                {t('duel.callAction')}
+              </button>
+            </div>
+
+            {suggested.length > 0 && (
+              <ul className="duel-call-list">
+                {suggested.map((one) => (
+                  <li key={one.id}>
+                    <button type="button" disabled={busy} onClick={() => invite(one.id)}>
+                      <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
+                      <b>{one.nickname}</b>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {duel.declined && <em className="off">{t('duel.inviteDeclined')}</em>}
+            {duel.left && <em className="off">{t('duel.rivalLeft', { name: duel.left })}</em>}
+          </div>
+  )
+
 
   const picks = (
     <div className="duel-picks">
@@ -169,6 +252,21 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
           ),
         }))}
       />
+
+      {TEAM_MODES.includes((duel.mode ?? 'classic') as never) && (
+        <Picker
+          rich
+          disabled={!host || busy}
+          label={t(TEAM_LABEL[duel.per ?? 1])}
+          value={String(duel.per ?? 1)}
+          onChange={(next) => onSetup({ per: Number(next) })}
+          options={DUEL_TEAM_SIZES.map((value) => ({
+            value: String(value),
+            label: t(TEAM_LABEL[value]),
+            hint: t('duel.teamTitle').toUpperCase(),
+          }))}
+        />
+      )}
 
       <Picker
         rich
@@ -248,69 +346,24 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
       </header>
 
       <section className="duel-arena">
-        <div className="duel-corner is-you">
-          {you && <Avatar className="duel-face" id={you.id} name={you.nickname} avatar={you.avatar} />}
-          <b>{you?.nickname ?? t('duel.youSide')}</b>
-          <small>
-            {t('duel.youSide')} · {t(host ? 'duel.hostSide' : 'duel.guestSide')}
-          </small>
-          {played > 0 && (
-            <div className="duel-chips-row">
-              <span>{t('duel.wins', { count: share })}</span>
-              <span>{t('duel.played', { count: played })}</span>
-            </div>
-          )}
-          <em className={you?.ready ? 'on' : ''}>{you?.ready ? t('duel.isReady') : t('duel.notReady')}</em>
-        </div>
+        {side(0)}
 
         <span className="duel-vs" aria-hidden>
           VS
         </span>
 
-        <div className="duel-corner is-rival">
-          {rival ? (
-            <>
-              <Avatar className="duel-face" id={rival.id} name={rival.nickname} avatar={rival.avatar} />
-              <b>{rival.nickname}</b>
-              <small>{t('duel.rivalSide')}</small>
-              <em className={rival.ready ? 'on' : ''}>{rival.ready ? t('duel.isReady') : t('duel.notReady')}</em>
-            </>
-          ) : (
-            <div className="duel-call">
-              <b>{t('duel.callTitle')}</b>
-              <p className="muted small">{waiting ? t('duel.waitingInvited', { name: waiting }) : t('duel.callLead')}</p>
-
-              <div className="duel-call-row">
-                <input value={query} placeholder={t('duel.invitePlaceholder')} onChange={(event) => setQuery(event.target.value)} />
-                <button
-                  type="button"
-                  className="ghost"
-                  disabled={busy || !suggested.length}
-                  onClick={() => suggested[0] && invite(suggested[0].id)}
-                >
-                  {t('duel.callAction')}
-                </button>
-              </div>
-
-              {suggested.length > 0 && (
-                <ul className="duel-call-list">
-                  {suggested.map((one) => (
-                    <li key={one.id}>
-                      <button type="button" disabled={busy} onClick={() => invite(one.id)}>
-                        <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
-                        <b>{one.nickname}</b>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {duel.declined && <em className="off">{t('duel.inviteDeclined')}</em>}
-              {duel.left && <em className="off">{t('duel.rivalLeft', { name: duel.left })}</em>}
-            </div>
-          )}
-        </div>
+        {side(1)}
       </section>
+
+      {canSwitch && (
+        <div className="duel-under">
+          <button type="button" className="ghost small" disabled={busy} onClick={onTeam}>
+            {t('duel.teamSwitch')}
+          </button>
+        </div>
+      )}
+
+      {free > 0 && <section className="duel-call-wide">{callBox}</section>}
 
       {picks}
 

@@ -48,7 +48,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
   const { t, l, name, lang, error: errorText } = useI18n()
   const href = useHref()
   const navigate = useNavigate()
-  const { duel, error, busy, pending, serverNow, ready, setup, invite, next, toLobby, giveUp, guess, pick, pass, mark, strike, answer: markAnswer, refresh } = useDuel(code)
+  const { duel, error, busy, pending, serverNow, ready, setup, team, invite, next, toLobby, giveUp, guess, pick, pass, mark, strike, answer: markAnswer, refresh } = useDuel(code)
   const [, redraw] = useState(0)
   const [pageReady, setPageReady] = useState(false)
   const [showResult, setShowResult] = useState(true)
@@ -240,7 +240,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
       )}
 
       {inLobby && (
-        <DuelSetup duel={duel} busy={busy} link={link} onSetup={setup} onInvite={invite} onReady={ready} onLeave={() => void leave()} />
+        <DuelSetup duel={duel} busy={busy} link={link} onSetup={setup} onInvite={invite} onReady={ready} onTeam={team} onLeave={() => void leave()} />
       )}
 
       {duel.matchDone && over && showResult && (

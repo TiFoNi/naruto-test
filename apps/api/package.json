@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "dev": "npm run build && npm start",
+    "dev": "npm run build && node ../../scripts/free-port.mjs 4000 && npm start",
     "build": "nest build && tsc-alias -p tsconfig.json",
     "start": "node --env-file-if-exists=../../.env.local dist/apps/api/src/main.js",
     "typecheck": "tsc --noEmit"

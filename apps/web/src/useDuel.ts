@@ -7,9 +7,27 @@ import type { Judgement } from '@nanda/game'
 
 export type DuelSide = { id: string; nickname: string; avatar?: string | null; ready: boolean; wantsNext: boolean; wins: number; solved: boolean; gaveUp: boolean }
 
+export type DuelMate = {
+  id: string
+  nickname: string
+  avatar?: string | null
+  you: boolean
+  ready: boolean
+  wins: number
+  solved: boolean
+  gaveUp: boolean
+  guessCount: number
+}
+
 export type DuelView = {
   code: string
   bot?: boolean
+  per?: number
+  seats?: number
+  teamly?: boolean
+  youTeam?: number
+  winnerTeam?: number | null
+  squads?: DuelMate[][]
   game: string | null
   mode: string | null
   status: 'lobby' | 'playing' | 'finished'
@@ -161,7 +179,7 @@ export function useDuel(code: string) {
     pending,
     serverNow: () => Date.now() + offset.current,
     ready: (want = true) => send({ action: 'ready', ready: want }),
-    setup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; strict?: boolean }) =>
+    setup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; per?: number; strict?: boolean }) =>
       send({
         action: 'setup',
         game: patch.game ?? duel?.game ?? 'naruto',
@@ -169,8 +187,10 @@ export function useDuel(code: string) {
         best: patch.best ?? duel?.best,
         seconds: patch.seconds ?? duel?.seconds,
         size: patch.size ?? duel?.size,
+        per: patch.per ?? duel?.per,
         strict: patch.strict ?? duel?.strict,
       }),
+    team: () => send({ action: 'team' }),
     invite: (to: string) => send({ action: 'invite', to }),
     next: () => send({ action: 'next' }),
     toLobby: () => send({ action: 'lobby' }),

@@ -91,6 +91,7 @@ export type RoundDoc = {
 export type DuelPlayer = {
   userId: ObjectId
   nickname: string
+  team?: number
   avatar?: string | null
   secret?: number
   cards?: number[]
@@ -118,6 +119,7 @@ export type DuelDoc = {
   best?: number
   seconds?: number | null
   size?: number
+  per?: number
   strict?: boolean
   bot?: boolean
   firstId?: ObjectId | null
@@ -143,6 +145,7 @@ export type DuelDoc = {
   firstSolvedAt?: Date | null
   finishedAt?: Date | null
   winnerId?: ObjectId | null
+  winnerTeam?: number | null
 }
 
 export type EntityDoc = Record<string, unknown> & {

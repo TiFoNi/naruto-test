@@ -1,6 +1,6 @@
 import type { ObjectId } from 'mongodb'
 import { duels, type DuelDoc } from './db'
-import { duelShotKey, duelView, leaveDuel, scheduleBot, settle, sideOf } from './duels'
+import { duelShotKey, duelView, leaveDuel, scheduleBot, seatsOf, settle, sideOf } from './duels'
 import { friends, type FriendDoc } from './friends'
 
 export type Sender = (event: string, data: unknown) => void
@@ -39,7 +39,9 @@ const mark = (duel: DuelDoc) =>
     duel.invite,
     duel.left,
     duel.hostId,
+    duel.per,
     duel.players.map((side) => [
+      side.team,
       side.userId,
       side.nickname,
       side.ready,
@@ -112,7 +114,7 @@ async function startWatcher() {
       const doc = (change as { fullDocument?: DuelDoc }).fullDocument
       if (doc) {
         codes.set(String(doc._id), doc.code)
-        if (doc.invite && !doc.invite.declined && doc.players.length < 2) notifyBell(doc.invite.toId)
+        if (doc.invite && !doc.invite.declined && doc.players.length < seatsOf(doc)) notifyBell(doc.invite.toId)
         void pushRoom(doc.code, doc)
         return
       }

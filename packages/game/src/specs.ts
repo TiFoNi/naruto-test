@@ -423,6 +423,16 @@ export const GRID_MISSES = 3
 
 export const BOARD_SIZES = [4, 5, 6, 7] as const
 export const BOARD_DEFAULT = 5
+export const TEAM_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase']
+
+export const DUEL_TEAM_SIZES = [1, 2, 3] as const
+
+export const teamSize = (mode: unknown, value: unknown) => {
+  const asked = Number(value)
+  const fits = (DUEL_TEAM_SIZES as readonly number[]).includes(asked)
+  return TEAM_MODES.includes(mode as ModeId) && fits ? asked : 1
+}
+
 export const DUEL_ROUNDS = [3, 5, 7, 10] as const
 export const DUEL_SECONDS = [30, 60, 90, 600, 1800] as const
 export const DUEL_DEFAULT = { best: 5, seconds: 60 }

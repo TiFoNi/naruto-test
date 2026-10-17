@@ -20,6 +20,7 @@ import {
   pickSecret,
   recentRivals,
   setReady,
+  switchTeam,
   scheduleBot,
   settle,
   setupDuel,
@@ -107,6 +108,7 @@ export const POST = handle(async (request) => {
   if (action === 'next') return json({ duel: await duelView(await wantNext(live, userId), userId) })
   if (action === 'lobby') return json({ duel: await duelView(await backToLobby(live, userId), userId) })
   if (action === 'ready') return json({ duel: await duelView(await setReady(live, userId, body.ready !== false), userId) })
+  if (action === 'team') return json({ duel: await duelView(await switchTeam(live, userId), userId) })
   if (action === 'giveup') return json({ duel: await duelView(await giveUpDuel(live, userId), userId) })
 
   if (action === 'mark') {

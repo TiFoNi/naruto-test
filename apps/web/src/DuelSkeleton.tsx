@@ -1,5 +1,6 @@
 'use client'
 
+import type { CSSProperties } from 'react'
 import BackButton from './BackButton'
 import { useI18n } from './i18n'
 import { useHref } from './router'
@@ -25,16 +26,20 @@ export default function DuelSkeleton() {
 
         <section className="duel-arena">
           <div className="duel-corner is-you">
-            <span className="sk face" />
-            <span className="sk name" />
+            <span className="sk team-name" />
+            <ul className="duel-team" style={{ '--seats': 1 } as CSSProperties}>
+              <li className="sk slot" />
+            </ul>
             <span className="sk note" />
           </div>
           <span className="duel-vs" aria-hidden>
             VS
           </span>
           <div className="duel-corner is-rival">
-            <span className="sk face" />
-            <span className="sk name" />
+            <span className="sk team-name" />
+            <ul className="duel-team" style={{ '--seats': 1 } as CSSProperties}>
+              <li className="sk slot" />
+            </ul>
             <span className="sk note" />
           </div>
         </section>
