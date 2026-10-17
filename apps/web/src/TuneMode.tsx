@@ -72,7 +72,6 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
   const [run, setRun] = useState<Run | null>(null)
   const [grade, setGrade] = useState<TuneLevel>('easy')
   const [at, setAt] = useState(0)
-  const [from, setFrom] = useState(0)
   const [going, setGoing] = useState(false)
   const [busy, setBusy] = useState(false)
   const [held, setHeld] = useState(false)
@@ -113,7 +112,7 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
     const stop = () => setGoing(false)
     const rewind = () => {
       setGoing(false)
-      setFrom(0)
+      if (holding.current) return
       setAt(0)
       node.currentTime = 0
     }
@@ -130,7 +129,6 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
 
   useEffect(() => {
     setAt(0)
-    setFrom(0)
   }, [run?.clip])
 
   useEffect(() => {
@@ -260,10 +258,10 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
     if (going) return node.pause()
 
     const end = Number.isFinite(node.duration) ? node.duration : 0
-    const spot = end && at >= end - 0.05 ? from : at
+    const spot = end && at >= end - 0.05 ? 0 : at
     if (Number.isFinite(node.duration)) node.currentTime = Math.min(spot, node.duration)
     void node.play()
-  }, [release, going, at, from])
+  }, [release, going, at])
 
   useEffect(() => {
     if (!active) return
@@ -291,10 +289,9 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
     const asked = timeOf(share, run.full)
     const spot = Math.min(run.open, asked)
     setBumped(asked > run.open + 0.05)
-    setFrom(spot)
     setAt(spot)
     const audio = sound.current
-    if (audio) audio.currentTime = Number.isFinite(audio.duration) ? Math.min(spot, audio.duration) : spot
+    if (audio) audio.currentTime = Number.isFinite(audio.duration) ? Math.min(spot, audio.duration - 0.01) : spot
   }
 
   const roomy =
