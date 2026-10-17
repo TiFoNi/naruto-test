@@ -5052,31 +5052,39 @@ html:not([data-auth]) .play-actions .challenge-open {
   transform: rotate(180deg);
 }
 
-.picker.up .picker-list {
+.picker.up .picker-pop {
   top: auto;
   bottom: calc(100% + 6px);
 }
 
-.picker-list {
+.picker-pop {
   position: absolute;
   z-index: 30;
   top: calc(100% + 6px);
   left: 0;
+  display: flex;
   min-width: 100%;
   width: max-content;
   max-width: min(340px, 78vw);
-  margin: 0;
-  padding: 6px;
-  list-style: none;
   max-height: min(320px, 50vh);
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  flex-direction: column;
+  overflow: hidden;
   border-radius: 14px;
   border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
   background: var(--overlay);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
   animation: reveal 0.16s ease-out;
   backdrop-filter: blur(22px);
+}
+
+.picker-list {
+  min-height: 0;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 .picker-list li .icon {
@@ -8145,10 +8153,13 @@ html[data-auth] .guest-note {
   white-space: nowrap;
 }
 
-.picker.rich .picker-list {
+.picker.rich .picker-pop {
   max-width: none;
-  padding: 8px;
   border-radius: 18px;
+}
+
+.picker.rich .picker-list {
+  padding: 8px;
 }
 
 .picker.rich .picker-list li {
@@ -11134,3 +11145,73 @@ html[data-auth] .guest-note {
   }
 }
 
+
+.picker-find {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  margin: 8px 8px 2px;
+  padding: 0 12px;
+  border: 1px solid color-mix(in srgb, #ffffff 14%, transparent);
+  border-radius: 11px;
+  background: color-mix(in srgb, #ffffff 6%, transparent);
+  cursor: text;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.picker-find.on {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+}
+
+.picker-find.on .icon {
+  color: color-mix(in srgb, var(--accent) 70%, var(--text-3));
+}
+
+.picker-find .icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  color: var(--text-3);
+}
+
+.picker-find input {
+  min-width: 0;
+  width: auto;
+  height: 26px;
+  flex: 1 1 auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  caret-color: var(--accent);
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 26px;
+}
+
+.picker-find input:focus-visible {
+  outline: none;
+}
+
+.picker-empty {
+  padding: 12px 10px;
+  color: var(--text-3);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  cursor: default;
+}
+
+.picker .picker-pop .picker-list.picker-ruler {
+  flex: none;
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}

@@ -1,26 +1,55 @@
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
-import { ChevronIcon } from './icons'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { ChevronIcon, SearchIcon } from './icons'
+import { useI18n } from './i18n'
+import { normalize } from './util'
 
-export type Option = { value: string; label: ReactNode; accent?: string; media?: ReactNode; hint?: string }
+export type Option = { value: string; label: ReactNode; accent?: string; media?: ReactNode; hint?: string; search?: string }
+
+const FIND_FROM = 7
+
+const textOf = (option: Option) => option.search ?? (typeof option.label === 'string' ? option.label : '')
 
 type Props = { label: string; value: string; options: Option[]; onChange: (value: string) => void; rich?: boolean; disabled?: boolean }
 
 export default function Picker({ label, value, options, onChange, rich = false, disabled = false }: Props) {
+  const { t } = useI18n()
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(0)
+  const [query, setQuery] = useState('')
+  const [typing, setTyping] = useState(false)
   const [place, setPlace] = useState({ up: false, max: 320 })
   const root = useRef<HTMLDivElement>(null)
+  const find = useRef<HTMLInputElement>(null)
   const current = options.find((o) => o.value === value) ?? options[0]
+  const searchable = options.length >= FIND_FROM
+
+  const shown = useMemo(() => {
+    const want = normalize(query.trim())
+    if (!want || !searchable) return options
+    return options.filter((one) => normalize(textOf(one)).includes(want))
+  }, [options, query, searchable])
+
+  const seats = useRef({ options, value, searchable })
+  seats.current = { options, value, searchable }
 
   useEffect(() => {
-    if (!open) return
-    setActive(Math.max(0, options.findIndex((o) => o.value === value)))
+    if (!open) {
+      setTyping(false)
+      return setQuery('')
+    }
+    const { options: list, value: picked, searchable: findable } = seats.current
+    setActive(Math.max(0, list.findIndex((o) => o.value === picked)))
+    if (findable && matchMedia('(pointer: fine)').matches) find.current?.focus()
     const away = (e: MouseEvent) => {
       if (!root.current?.contains(e.target as Node)) setOpen(false)
     }
     document.addEventListener('mousedown', away)
     return () => document.removeEventListener('mousedown', away)
-  }, [open, options, value])
+  }, [open])
+
+  useEffect(() => {
+    setActive(0)
+  }, [query])
 
   useLayoutEffect(() => {
     if (!open) return
@@ -61,11 +90,11 @@ export default function Picker({ label, value, options, onChange, rich = false, 
           if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
             e.preventDefault()
             if (!open) return setOpen(true)
-            setActive((a) => Math.min(options.length - 1, Math.max(0, a + (e.key === 'ArrowDown' ? 1 : -1))))
+            setActive((a) => Math.min(shown.length - 1, Math.max(0, a + (e.key === 'ArrowDown' ? 1 : -1))))
           } else if (e.key === 'Enter' || e.key === ' ') {
             if (open) {
               e.preventDefault()
-              pick(options[active])
+              if (shown[active]) pick(shown[active])
             }
           } else if (e.key === 'Escape') {
             setOpen(false)
@@ -89,8 +118,46 @@ export default function Picker({ label, value, options, onChange, rich = false, 
         <ChevronIcon className="picker-caret" />
       </button>
       {open && (
-        <ul className="picker-list" role="listbox" style={{ maxHeight: place.max }}>
-          {options.map((option, i) => (
+        <div
+          className="picker-pop"
+          style={{ maxHeight: place.max }}
+          onMouseDown={(e) => {
+            if (!(e.target as HTMLElement).closest('.picker-find')) find.current?.blur()
+          }}
+        >
+          {searchable && (
+            <div className={`picker-find ${typing ? 'on' : ''}`} onMouseDown={(e) => e.stopPropagation()}>
+              <SearchIcon />
+              <input
+                ref={find}
+                size={1}
+                value={query}
+                placeholder={t('picker.find')}
+                onFocus={() => setTyping(true)}
+                onBlur={() => setTyping(false)}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    e.preventDefault()
+                    setActive((a) => Math.min(shown.length - 1, Math.max(0, a + (e.key === 'ArrowDown' ? 1 : -1))))
+                  } else if (e.key === 'Enter') {
+                    e.preventDefault()
+                    if (shown[active]) pick(shown[active])
+                  } else if (e.key === 'Escape') {
+                    e.preventDefault()
+                    setOpen(false)
+                  }
+                }}
+              />
+            </div>
+          )}
+          <ul className="picker-list" role="listbox">
+          {shown.length === 0 && (
+            <li className="picker-empty" role="presentation">
+              {t('picker.none')}
+            </li>
+          )}
+          {shown.map((option, i) => (
             <li
               key={option.value}
               role="option"
@@ -107,7 +174,6 @@ export default function Picker({ label, value, options, onChange, rich = false, 
                 <>
                   {option.media}
                   <span className="picker-text">
-                    <em>{option.hint}</em>
                     <span className="picker-value">{option.label}</span>
                   </span>
                 </>
@@ -119,7 +185,29 @@ export default function Picker({ label, value, options, onChange, rich = false, 
               )}
             </li>
           ))}
-        </ul>
+          </ul>
+          {searchable && (
+            <ul className="picker-list picker-ruler" aria-hidden>
+              {options.map((option) => (
+                <li key={option.value}>
+                  {rich ? (
+                    <>
+                      {option.media}
+                      <span className="picker-text">
+                        <span className="picker-value">{option.label}</span>
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      {option.accent && <span className="dot" />}
+                      {option.label}
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       )}
     </div>
   )

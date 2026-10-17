@@ -248,6 +248,8 @@ const ui = {
   'clue.focusOwn': { ru: 'Свои', uk: 'Свої', en: 'Ours' },
   'clue.focusFoe': { ru: 'Чужие', uk: 'Чужі', en: 'Theirs' },
   'clue.focusGrey': { ru: 'Серые', uk: 'Сірі', en: 'Neutral' },
+  'picker.find': { ru: 'Поиск…', uk: 'Пошук…', en: 'Search…' },
+  'picker.none': { ru: 'Ничего не нашлось', uk: 'Нічого не знайшлось', en: 'Nothing found' },
   'clue.youWon': { ru: 'Раунд ваш', uk: 'Раунд ваш', en: 'Round won' },
   'clue.youLost': { ru: 'Раунд за соперниками', uk: 'Раунд за суперниками', en: 'Round lost' },
   'clue.allFound': { ru: 'Все свои карточки открыты', uk: 'Усі свої картки відкриті', en: 'All own cards are open' },
