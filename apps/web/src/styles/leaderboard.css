@@ -1067,3 +1067,15 @@
   display: block;
   border-radius: inherit;
 }
+
+.season-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.season-scroll .season-table thead {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  backdrop-filter: blur(14px) saturate(1.4);
+}

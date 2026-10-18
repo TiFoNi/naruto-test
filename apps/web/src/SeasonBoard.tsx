@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { api } from './api'
 import BackButton from './BackButton'
@@ -20,6 +20,8 @@ type Board = {
   me: Row | null
   toTop: number
 }
+
+const SHOW_ROWS = 12
 
 const TONES = 8
 
@@ -84,6 +86,22 @@ export default function SeasonBoard() {
 
   const rows = board?.rows ?? []
   const peak = Math.max(1, ...rows.map((row) => row.xp))
+  const box = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const el = box.current
+    if (!el) return
+    const fit = () => {
+      const lines = el.querySelectorAll('tbody tr')
+      if (lines.length <= SHOW_ROWS) return el.style.removeProperty('max-height')
+      const edge = lines[SHOW_ROWS - 1].getBoundingClientRect().bottom
+      el.style.removeProperty('max-height')
+      el.style.maxHeight = `${Math.ceil(edge - el.getBoundingClientRect().top + 6)}px`
+    }
+    fit()
+    window.addEventListener('resize', fit)
+    return () => window.removeEventListener('resize', fit)
+  }, [rows.length])
 
   return (
     <div className="leaderboard season-board">
@@ -139,7 +157,7 @@ export default function SeasonBoard() {
             <div className="lb-state">{t('lb.seasonEmpty')}</div>
           ) : (
             <div className="lb-card">
-              <div className="lb-scroll">
+              <div className="lb-scroll season-scroll" ref={box}>
                 <table className="lb-table season-table">
                 <thead>
                   <tr>
