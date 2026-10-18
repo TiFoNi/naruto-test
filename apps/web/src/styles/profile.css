@@ -44,11 +44,12 @@
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: stretch;
+  align-items: start;
   gap: 14px;
 }
 
 .profile-slot {
+  position: relative;
   display: flex;
   min-width: 0;
   flex-direction: column;
@@ -57,6 +58,50 @@
 
 .profile-slot > .card {
   flex: 1 1 auto;
+  height: var(--slot-h, auto);
+  min-height: 0;
+}
+
+.profile-slot.is-tall > .card {
+  overflow: hidden;
+}
+
+.profile-slot.is-tall .activity,
+.profile-slot.is-tall .worlds {
+  min-height: 0;
+}
+
+.slot-grow {
+  position: absolute;
+  z-index: 3;
+  right: 12px;
+  bottom: -5px;
+  left: 12px;
+  height: 12px;
+  border-radius: 6px;
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+.slot-grow::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 46px;
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+  content: '';
+  translate: -50% -50%;
+  transition: background 0.15s;
+}
+
+.slot-grow:hover::after {
+  background: var(--accent);
+}
+
+.profile-slot.is-sized > .card {
+  outline-color: var(--accent);
 }
 
 .profile-grid.is-edit .profile-slot > .card {
@@ -154,14 +199,37 @@
   color: #ff8f99;
 }
 
-.profile-tune {
+.profile-top {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.profile-tune .on {
-  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+.profile-top .back {
+  margin: 0;
+}
+
+.profile-tune {
+  flex: none;
+  margin: 0;
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.profile-tune:hover {
   color: var(--text);
+}
+
+.profile-tune.on {
+  color: var(--accent);
 }
 
 .profile-add {

@@ -22,6 +22,12 @@ import { PROFILE_BLOCKS, PROFILE_BLOCKS_DEFAULT, type ProfileBlock } from '@nand
 
 type Held = { block: ProfileBlock; x: number; y: number; dx: number; dy: number; w: number; h: number }
 
+type Sized = { block: ProfileBlock; y: number; from: number; roof: number; floor: number; step: number; chrome: number; mates: number[] }
+
+const BLOCK_MIN = 180
+const BLOCK_ROOF = 520
+const BLOCK_MAGNET = 10
+
 type Named = { ru: string; uk: string; en: string }
 
 type Summary = {
@@ -47,6 +53,7 @@ type Summary = {
   frame?: string | null
   friend?: FriendState
   blocks?: string[]
+  blockSizes?: Record<string, number>
   gamePlaces: { game: GameId; mode: string; position: number }[]
   showcase: string[]
   streak: {
@@ -114,7 +121,37 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const [edit, setEdit] = useState(false)
   const [layout, setLayout] = useState<ProfileBlock[] | null>(null)
   const [held, setHeld] = useState<Held | null>(null)
+  const [sized, setSized] = useState<Sized | null>(null)
+  const [sizes, setSizes] = useState<Record<string, number> | null>(null)
+  const snapshot = useRef<{ blocks: ProfileBlock[]; sizes: Record<string, number> } | null>(null)
   const list = useRef<ProfileBlock[]>(PROFILE_BLOCKS_DEFAULT)
+  const tall = useRef<Record<string, number>>({})
+
+  useEffect(() => {
+    if (!sized) return
+    const move = (event: PointerEvent) => {
+      const asked = sized.from + event.clientY - sized.y
+      const mate = sized.mates.find((one) => Math.abs(one - asked) <= BLOCK_MAGNET)
+      const snapped = sized.step
+        ? sized.chrome + Math.round((asked - sized.chrome) / sized.step) * sized.step
+        : mate ?? asked
+      const next = Math.round(Math.min(Math.max(sized.roof, sized.floor), Math.max(sized.floor, snapped)))
+      tall.current = { ...tall.current, [sized.block]: next }
+      setSizes(tall.current)
+    }
+    const drop = () => {
+      setSized(null)
+      void api('profile', { action: 'blocks', blocks: list.current, sizes: tall.current })
+    }
+    window.addEventListener('pointermove', move)
+    window.addEventListener('pointerup', drop)
+    window.addEventListener('pointercancel', drop)
+    return () => {
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', drop)
+      window.removeEventListener('pointercancel', drop)
+    }
+  }, [sized])
 
   useEffect(() => {
     if (!held) return
@@ -133,7 +170,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     }
     const drop = () => {
       setHeld(null)
-      void api('profile', { action: 'blocks', blocks: list.current })
+      void api('profile', { action: 'blocks', blocks: list.current, sizes: tall.current })
     }
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', drop)
@@ -263,12 +300,67 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
   const keep = (next: ProfileBlock[]) => {
     setLayout(next)
-    void api('profile', { action: 'blocks', blocks: next })
+    void api('profile', { action: 'blocks', blocks: next, sizes: tall.current })
   }
 
   const hide = (block: ProfileBlock) => shown.length > 1 && keep(shown.filter((one) => one !== block))
 
+  const grown = sizes ?? summary?.blockSizes ?? {}
+  tall.current = grown
   list.current = shown
+
+  const cardOf = (block: ProfileBlock) =>
+    document.querySelector(`.profile-slot[data-block="${block}"] > .card`) as HTMLElement | null
+
+  const roofOf = () => {
+    const free = (['worlds', 'awards'] as ProfileBlock[])
+      .filter((one) => !grown[one])
+      .map((one) => cardOf(one)?.getBoundingClientRect().height ?? 0)
+    const tallest = Math.max(0, ...free)
+    return tallest > BLOCK_MIN ? Math.round(tallest) : BLOCK_ROOF
+  }
+
+  const rowsOf = (card: HTMLElement) => {
+    const list = card.querySelector('.world-shelf, .soon-badges') as HTMLElement | null
+    const first = list?.firstElementChild as HTMLElement | null
+    if (!list || !first) return null
+    const gap = Number.parseFloat(getComputedStyle(list).rowGap) || 0
+    const step = Math.round(first.getBoundingClientRect().height + gap)
+    const chrome = Math.round(card.getBoundingClientRect().height - list.getBoundingClientRect().height)
+    return { step, chrome, floor: chrome + step }
+  }
+
+  const naturalOf = (block: ProfileBlock) => {
+    const card = cardOf(block)
+    const slot = card?.parentElement as HTMLElement | null
+    if (!card || !slot) return 0
+    const held = slot.style.getPropertyValue('--slot-h')
+    if (held) slot.style.removeProperty('--slot-h')
+    const own = Math.round(card.getBoundingClientRect().height)
+    if (held) slot.style.setProperty('--slot-h', held)
+    return own
+  }
+
+  const floorOf = (block: ProfileBlock, card: HTMLElement) => {
+    const rows = rowsOf(card)
+    if (rows) return rows
+    const facts = shown.includes('facts') ? naturalOf('facts') : naturalOf(block)
+    return { step: 0, chrome: 0, floor: facts > 80 ? Math.round(facts) : BLOCK_MIN }
+  }
+
+  const stretch = (block: ProfileBlock) => (event: ReactPointerEvent<HTMLElement>) => {
+    if (!edit || event.button > 0) return
+    const node = (event.currentTarget.closest('.profile-slot') as HTMLElement | null)?.querySelector('.card') as HTMLElement | null
+    if (!node) return
+    event.preventDefault()
+    event.stopPropagation()
+    const { step, chrome, floor } = floorOf(block, node)
+    const mates = shown
+      .filter((one) => one !== block)
+      .map((one) => Math.round(cardOf(one)?.getBoundingClientRect().height ?? 0))
+      .filter((one) => one > 0)
+    setSized({ block, y: event.clientY, from: node.getBoundingClientRect().height, roof: roofOf(), floor, step, chrome, mates })
+  }
 
   const grab = (block: ProfileBlock) => (event: ReactPointerEvent<HTMLElement>) => {
     if (!edit || event.button > 0) return
@@ -280,6 +372,22 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   }
 
   const show = (block: ProfileBlock) => keep([...shown, block])
+
+  const tune = () => {
+    if (!edit) snapshot.current = { blocks: shown, sizes: grown }
+    setEdit((was) => !was)
+  }
+
+  const undo = () => {
+    const was = snapshot.current
+    if (!was) return setEdit(false)
+    list.current = was.blocks
+    tall.current = was.sizes
+    setLayout(was.blocks)
+    setSizes(was.sizes)
+    setEdit(false)
+    void api('profile', { action: 'blocks', blocks: was.blocks, sizes: was.sizes })
+  }
 
   const panels: Record<ProfileBlock, ReactNode> = {
     facts: (
@@ -501,17 +609,23 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
   return (
     <div className="profile">
-      <BackButton href="/" onClick={onBack}>
-        {t('profile.back')}
-      </BackButton>
+      <div className="profile-top">
+        {edit ? (
+          <button type="button" className="profile-tune" onClick={undo}>
+            {t('profile.tuneUndo')}
+          </button>
+        ) : (
+          <BackButton href="/" onClick={onBack}>
+            {t('profile.back')}
+          </BackButton>
+        )}
 
-      {own && (
-        <div className="profile-tune">
-          <button type="button" className={`ghost small ${edit ? 'on' : ''}`} onClick={() => setEdit((was) => !was)}>
+        {own && (
+          <button type="button" className={`profile-tune ${edit ? 'on' : ''}`} onClick={tune}>
             {t(edit ? 'profile.tuneDone' : 'profile.tune')}
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
       <section className="profile-hero">
         <div className="profile-hero-id">
@@ -629,9 +743,10 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
       <div className={`profile-grid ${edit ? 'is-edit' : ''}`}>
         {shown.map((block) => (
           <div
-            className={`profile-slot slot-${block} ${held?.block === block ? 'is-held' : ''}`}
+            className={`profile-slot slot-${block} ${held?.block === block ? 'is-held' : ''} ${sized?.block === block ? 'is-sized' : ''} ${grown[block] ? 'is-tall' : ''}`}
             key={block}
             data-block={block}
+            style={grown[block] ? ({ '--slot-h': `${grown[block]}px` } as CSSProperties) : undefined}
           >
             {edit && (
               <div className="slot-bar" onPointerDown={grab(block)}>
@@ -651,6 +766,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
               </div>
             )}
             {panels[block]}
+            {edit && <i className="slot-grow" onPointerDown={stretch(block)} aria-hidden />}
           </div>
         ))}
       </div>

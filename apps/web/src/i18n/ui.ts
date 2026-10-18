@@ -1150,6 +1150,7 @@ const ui = {
   'worlds.pin': { ru: 'На витрину', uk: 'На вітрину', en: 'Pin' },
   'profile.tune': { ru: 'Настроить профиль', uk: 'Налаштувати профіль', en: 'Customise profile' },
   'profile.tuneDone': { ru: 'Готово', uk: 'Готово', en: 'Done' },
+  'profile.tuneUndo': { ru: 'Сбросить', uk: 'Скинути', en: 'Reset' },
   'profile.blockUp': { ru: 'Выше', uk: 'Вище', en: 'Move up' },
   'profile.blockDown': { ru: 'Ниже', uk: 'Нижче', en: 'Move down' },
   'profile.blockHide': { ru: 'Убрать блок', uk: 'Прибрати блок', en: 'Remove block' },

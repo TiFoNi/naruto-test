@@ -5,6 +5,8 @@ import { isFrame } from '../frames'
 import { GAME_IDS, profileBlocks } from '@nanda/game'
 
 const SHOWCASE_MAX = 8
+const BLOCK_MIN = 180
+const BLOCK_MAX = 900
 
 export const POST = handle(async (request) => {
   const found = await currentUser(request)
@@ -62,7 +64,16 @@ export const POST = handle(async (request) => {
   if (body.action === 'blocks') {
     const picked = profileBlocks(body.blocks)
     if (!picked) return fail(400, 'bad_request')
-    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $set: { blocks: picked } }, { returnDocument: 'after' })
+    const sizes = Object.fromEntries(
+      Object.entries((body.sizes ?? {}) as Record<string, unknown>)
+        .filter(([block, size]) => picked.includes(block as never) && Number.isFinite(Number(size)))
+        .map(([block, size]) => [block, Math.round(Math.min(BLOCK_MAX, Math.max(BLOCK_MIN, Number(size))))]),
+    )
+    const doc = await found.collection.findOneAndUpdate(
+      { _id: found.doc._id },
+      { $set: { blocks: picked, blockSizes: sizes } },
+      { returnDocument: 'after' },
+    )
     return json(toProfile(doc ?? found.doc))
   }
 

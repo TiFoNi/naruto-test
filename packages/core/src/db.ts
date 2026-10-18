@@ -29,6 +29,7 @@ export type UserDoc = {
   pinned?: string[]
   showcase?: string[]
   blocks?: string[]
+  blockSizes?: Record<string, number>
   duelStats?: { played?: number; wins?: number; losses?: number; draws?: number; modes?: Record<string, { played?: number; wins?: number }> }
   duelLog?: DuelLogRow[]
   duelBestMs?: number
