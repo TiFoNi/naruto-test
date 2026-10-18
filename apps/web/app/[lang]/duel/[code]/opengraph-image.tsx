@@ -7,13 +7,14 @@ import { apiJson } from '@/src/games/meta.server'
 export const size = OG_SIZE
 export const contentType = 'image/jpeg'
 export const alt = 'NandaGuessr'
+export const revalidate = 0
 
 type Params = { params: Promise<{ lang: string; code: string }> }
 
 export default async function Image({ params }: Params) {
   const { lang, code } = await params
   const at = (['ru', 'uk', 'en'] as const).includes(lang as Lang) ? (lang as Lang) : 'en'
-  const doc = /^[A-Z0-9]{6}$/.test(code.toUpperCase()) ? await apiJson<{ game?: string; mode?: string }>(`meta?duel=${code.toUpperCase()}`, 60) : null
+  const doc = /^[A-Z0-9]{6}$/.test(code.toUpperCase()) ? await apiJson<{ game?: string; mode?: string }>(`meta?duel=${code.toUpperCase()}`, 0) : null
   const game = GAMES.find((one) => one.id === doc?.game)
   const mode = MODES.find((one) => one.id === doc?.mode)
 

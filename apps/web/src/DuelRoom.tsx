@@ -131,7 +131,8 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
   const squadWins = (team: number) => Math.max(0, ...(squads[team] ?? []).map((mate) => mate.wins))
   const inLobby = duel.status === 'lobby'
   const over = duel.status === 'finished'
-  const link = `${window.location.origin}${href.duel(duel.code)}`
+  const tagged = duel.game && duel.mode ? `?g=${duel.game}&m=${duel.mode}` : ''
+  const link = `${window.location.origin}${href.duel(duel.code)}${tagged}`
   const answer = duel.answerId !== undefined ? byId.get(duel.answerId) : undefined
   const youDone = Boolean(you?.solved || you?.gaveUp)
   const wrong = guesses.filter((g) => !g.pending).length - (you?.solved ? 1 : 0)
