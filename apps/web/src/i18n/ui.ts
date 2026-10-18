@@ -416,9 +416,9 @@ const ui = {
   },
   'mode.page': { ru: 'По странице', uk: 'За сторінкою', en: 'By page' },
   'mode.page.desc': {
-    ru: 'Страница из манги и три варианта ответа',
-    uk: 'Сторінка з манги і три варіанти відповіді',
-    en: 'A manga page and three answers',
+    ru: 'Страница из манги и три варианта ответа — попытка всего одна',
+    uk: 'Сторінка з манги і три варіанти відповіді — спроба лише одна',
+    en: 'A manga page and three answers — you get a single try',
   },
   'mode.odd': { ru: 'Кто лишний', uk: 'Хто зайвий', en: 'Odd one out' },
   'mode.odd.desc': {

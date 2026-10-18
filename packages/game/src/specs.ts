@@ -380,6 +380,10 @@ export const MODE_XP_AFTER: Record<ModeId, number> = {
   clue: 5,
 }
 
+export const ONE_TRY_GAMES: GameId[] = ['manga']
+
+export const oneTry = (game: unknown) => ONE_TRY_GAMES.includes(game as GameId)
+
 export const DAILY_XP_FACTOR = 3
 
 export const DAILY_XP_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd']

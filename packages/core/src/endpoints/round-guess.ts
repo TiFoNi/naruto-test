@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb'
 import { rounds, users } from '../db'
 import { gameData, isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
+import { oneTry } from '@nanda/game'
 import { rememberLang, roundOwner, touchVisit } from '../profile'
 import { finishRound, roundView } from '../rounds'
 
@@ -52,7 +53,11 @@ export const POST = handle(async (request) => {
     await touchVisit(people, userId)
     await rememberLang(people, userId, request)
   }
-  if (entityId !== updated.answerId) return json({ round: await roundView(updated, false) })
+  if (entityId !== updated.answerId) {
+    if (!oneTry(updated.game)) return json({ round: await roundView(updated, false) })
+    const missed = await finishRound(people, updated, false)
+    return json({ round: await roundView(missed.round, false), stats: missed.stats })
+  }
   const result = await finishRound(people, updated, true)
   return json({ round: await roundView(result.round, false), stats: result.stats, ...(result.xp ? { xp: result.xp } : {}) })
 })
