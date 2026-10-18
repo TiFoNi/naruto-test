@@ -14,9 +14,11 @@ const languages = (path: string) => ({
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date()
+  const games = await gameMeta()
   const paths = [
     { path: '', changeFrequency: 'daily' as const, priority: 1 },
-    ...(await gameMeta()).flatMap((game) =>
+    ...games.map((game) => ({ path: `/play/${game.id}`, changeFrequency: 'weekly' as const, priority: 0.8 })),
+    ...games.flatMap((game) =>
       game.modes.map((mode) => ({ path: `/play/${game.id}/${mode}`, changeFrequency: 'weekly' as const, priority: 0.7 })),
     ),
   ]
