@@ -526,48 +526,6 @@
   white-space: nowrap;
 }
 
-.lb-record {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  margin: 0;
-}
-
-.lb-record-icon {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  background: #2b2515;
-  color: #f5c451;
-  font-size: 23px;
-}
-
-.lb-record > span:last-child {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  min-width: 0;
-}
-
-.lb-record b {
-  font-family: var(--display);
-  font-size: 23px;
-  font-variant-numeric: tabular-nums;
-}
-
-.lb-record i {
-  overflow: hidden;
-  color: var(--text-2);
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 @media (max-width: 1080px) {
   .lb-filters {
     width: 100%;

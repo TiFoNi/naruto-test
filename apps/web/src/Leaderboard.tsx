@@ -12,7 +12,7 @@ import { avatarUrl } from './pics'
 import { useNavigate, useHref } from './router'
 import { keepPerUser } from './session-cache'
 import Picker from './Picker'
-import { ChevronIcon, CrownIcon, PlayIcon, ShieldIcon, TrophyIcon } from './icons'
+import { ChevronIcon, CrownIcon, ShieldIcon } from './icons'
 
 type Sort = 'best' | 'solved'
 
@@ -146,7 +146,6 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   const shown = listed.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
   const peak = Math.max(1, ...all.map((r) => active.raw(r)))
   const me = board?.me ?? null
-  const record = all.reduce<Row | null>((top, row) => (!top || (row.best ?? 0) > (top.best ?? 0) ? row : top), null)
   const onPodium = podium.some((row) => row?.me)
   const table = !board || !!error || all.length === 0 || listed.length > 0 || (!!me && !onPodium)
   const medals = ['gold', 'silver', 'bronze']
@@ -372,27 +371,9 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
               </li>
             </ol>
             <Link className="primary lb-cta" href={href.play(gameId, mode)} title={t('lb.playGame', { game: l(game.label) })}>
-              <PlayIcon />
               <span>{t('lb.play')}</span>
             </Link>
           </div>
-
-          {record && (
-            <div className="lb-side-card">
-              <span className="lb-side-title">{t('lb.record')}</span>
-              <p className="lb-record">
-                <span className="lb-record-icon">
-                  <TrophyIcon />
-                </span>
-                <span>
-                  <b>{record.best ?? 0}</b>
-                  <i>
-                    {t(columns[0].short)} · {record.nickname}
-                  </i>
-                </span>
-              </p>
-            </div>
-          )}
 
           <p className="lb-fair">
             <ShieldIcon />
