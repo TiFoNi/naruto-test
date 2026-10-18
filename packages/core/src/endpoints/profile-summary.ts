@@ -280,7 +280,7 @@ export const GET = handle(async (request) => {
         }
       }),
     showcase: doc.showcase ?? [],
-    blocks: doc.blocks ?? [],
+    blocks: doc.blocks ?? null,
     blockSizes: doc.blockSizes ?? {},
     blockSides: doc.blockSides ?? {},
     awards: earnedAwards(doc),

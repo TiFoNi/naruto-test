@@ -52,7 +52,7 @@ type Summary = {
   avatar?: string | null
   frame?: string | null
   friend?: FriendState
-  blocks?: string[]
+  blocks?: string[] | null
   blockSizes?: Record<string, number>
   blockSides?: Record<string, number>
   gamePlaces: { game: GameId; mode: string; position: number }[]
@@ -334,7 +334,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
   if (!summary && !failed) return <ProfileGhost own={own} />
 
-  const shown = layout ?? (summary?.blocks?.length ? (summary.blocks as ProfileBlock[]) : PROFILE_BLOCKS_DEFAULT)
+  const shown = layout ?? ((summary?.blocks as ProfileBlock[] | null | undefined) ?? PROFILE_BLOCKS_DEFAULT)
   const rest = PROFILE_BLOCKS.filter((block) => !shown.includes(block))
 
   const keep = (next: ProfileBlock[]) => {
@@ -342,7 +342,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     void api('profile', { action: 'blocks', blocks: next, sizes: tall.current, sides: side.current })
   }
 
-  const hide = (block: ProfileBlock) => shown.length > 1 && keep(shown.filter((one) => one !== block))
+  const hide = (block: ProfileBlock) => keep(shown.filter((one) => one !== block))
 
   const grown = sizes ?? summary?.blockSizes ?? {}
   const seated = spots ?? summary?.blockSides ?? {}

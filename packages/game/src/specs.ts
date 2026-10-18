@@ -388,10 +388,7 @@ export const PROFILE_BLOCKS_DEFAULT: ProfileBlock[] = ['worlds', 'awards']
 
 export const isBlock = (value: unknown): value is ProfileBlock => (PROFILE_BLOCKS as readonly string[]).includes(value as string)
 
-export const profileBlocks = (value: unknown) => {
-  const asked = Array.isArray(value) ? value.filter(isBlock) : []
-  return asked.length ? [...new Set(asked)] : null
-}
+export const profileBlocks = (value: unknown) => (Array.isArray(value) ? [...new Set(value.filter(isBlock))] : null)
 
 export const ONE_TRY_GAMES: GameId[] = ['manga']
 
