@@ -1070,7 +1070,6 @@
 
 .season-scroll {
   overflow-y: auto;
-  overscroll-behavior: contain;
 }
 
 .season-scroll .season-table thead {

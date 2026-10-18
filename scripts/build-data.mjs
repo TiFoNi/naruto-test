@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import sharp from 'sharp'
-import { keepNotable, pruneImages } from './lib.mjs'
+import { PUBLIC, keepNotable, pruneImages } from './lib.mjs'
 import { AFFILIATIONS, ARCS, CLASSIFICATIONS, JUTSU, KEKKEI_GENKAI, NAMES, NATURES, OTHER_SEX, SEX, transliterate } from './ru.mjs'
 import { dropDeleted, onlyAnswers } from './dropped.mjs'
 
@@ -97,7 +97,8 @@ function natures(c) {
 }
 
 function kekkeiGenkai(p) {
-  return uniq(canon(p.kekkeiGenkai).map(clean).map((k) => KEKKEI_GENKAI[k] ?? transliterate(k)))
+  const all = [...canon(p.kekkeiGenkai), ...canon(p['kekkeiTōta']), ...canon(p['kekkeiMōra'])]
+  return uniq(all.map(clean).map((k) => KEKKEI_GENKAI[k] ?? transliterate(k)))
 }
 
 function attributes(p) {
