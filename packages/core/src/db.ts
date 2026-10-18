@@ -30,6 +30,7 @@ export type UserDoc = {
   showcase?: string[]
   blocks?: string[]
   blockSizes?: Record<string, number>
+  blockSides?: Record<string, number>
   duelStats?: { played?: number; wins?: number; losses?: number; draws?: number; modes?: Record<string, { played?: number; wins?: number }> }
   duelLog?: DuelLogRow[]
   duelBestMs?: number

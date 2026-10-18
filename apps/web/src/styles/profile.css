@@ -48,6 +48,13 @@
   gap: 14px;
 }
 
+.profile-stack {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 14px;
+}
+
 .profile-slot {
   position: relative;
   display: flex;
@@ -58,7 +65,7 @@
 
 .profile-slot > .card {
   flex: 1 1 auto;
-  height: var(--slot-h, auto);
+  height: var(--slot-h, var(--mate-h, auto));
   min-height: 0;
 }
 
@@ -1296,6 +1303,7 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .profile-grid > .profile-stack,
   .profile-grid > .profile-column,
   .profile-grid > .profile-middle,
   .profile-middle > .profile-middle-cols,

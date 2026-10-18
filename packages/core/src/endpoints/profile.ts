@@ -69,9 +69,14 @@ export const POST = handle(async (request) => {
         .filter(([block, size]) => picked.includes(block as never) && Number.isFinite(Number(size)))
         .map(([block, size]) => [block, Math.round(Math.min(BLOCK_MAX, Math.max(BLOCK_MIN, Number(size))))]),
     )
+    const sides = Object.fromEntries(
+      Object.entries((body.sides ?? {}) as Record<string, unknown>)
+        .filter(([block, side]) => picked.includes(block as never) && (Number(side) === 0 || Number(side) === 1))
+        .map(([block, side]) => [block, Number(side)]),
+    )
     const doc = await found.collection.findOneAndUpdate(
       { _id: found.doc._id },
-      { $set: { blocks: picked, blockSizes: sizes } },
+      { $set: { blocks: picked, blockSizes: sizes, blockSides: sides } },
       { returnDocument: 'after' },
     )
     return json(toProfile(doc ?? found.doc))

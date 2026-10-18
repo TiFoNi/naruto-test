@@ -282,6 +282,7 @@ export const GET = handle(async (request) => {
     showcase: doc.showcase ?? [],
     blocks: doc.blocks ?? [],
     blockSizes: doc.blockSizes ?? {},
+    blockSides: doc.blockSides ?? {},
     awards: earnedAwards(doc),
     awardsTotal: LIFE_FAMILIES.size,
     level: { xp, level, into: xp % LEVEL_XP, need: LEVEL_XP, rank: rankOf(level).id, next: nextRank(level) },

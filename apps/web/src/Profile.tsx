@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import Link from 'next/link'
 import Avatar from './Avatar'
 import AvatarPicker from './AvatarPicker'
@@ -54,6 +54,7 @@ type Summary = {
   friend?: FriendState
   blocks?: string[]
   blockSizes?: Record<string, number>
+  blockSides?: Record<string, number>
   gamePlaces: { game: GameId; mode: string; position: number }[]
   showcase: string[]
   streak: {
@@ -123,9 +124,11 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const [held, setHeld] = useState<Held | null>(null)
   const [sized, setSized] = useState<Sized | null>(null)
   const [sizes, setSizes] = useState<Record<string, number> | null>(null)
-  const snapshot = useRef<{ blocks: ProfileBlock[]; sizes: Record<string, number> } | null>(null)
+  const [spots, setSpots] = useState<Record<string, number> | null>(null)
+  const snapshot = useRef<{ blocks: ProfileBlock[]; sizes: Record<string, number>; sides: Record<string, number> } | null>(null)
   const list = useRef<ProfileBlock[]>(PROFILE_BLOCKS_DEFAULT)
   const tall = useRef<Record<string, number>>({})
+  const side = useRef<Record<string, number>>({})
 
   useEffect(() => {
     if (!sized) return
@@ -145,7 +148,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     }
     const drop = () => {
       setSized(null)
-      void api('profile', { action: 'blocks', blocks: list.current, sizes: tall.current })
+      void api('profile', { action: 'blocks', blocks: list.current, sizes: tall.current, sides: side.current })
     }
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', drop)
@@ -161,20 +164,34 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     if (!held) return
     const move = (event: PointerEvent) => {
       setHeld((was) => (was ? { ...was, x: event.clientX, y: event.clientY } : was))
-      const under = document.elementFromPoint(event.clientX, event.clientY)?.closest('.profile-slot') as HTMLElement | null
-      const over = under?.dataset.block as ProfileBlock | undefined
-      if (!over || over === held.block) return
-      const from = list.current.indexOf(held.block)
-      const to = list.current.indexOf(over)
-      if (from < 0 || to < 0 || from === to) return
-      const next = [...list.current]
-      next.splice(to, 0, ...next.splice(from, 1))
+      const grid = document.querySelector('.profile-grid') as HTMLElement | null
+      if (!grid) return
+      const wide = getComputedStyle(grid).gridTemplateColumns.split(' ').length > 1
+      const box = grid.getBoundingClientRect()
+      const column = wide ? (event.clientX < box.left + box.width / 2 ? 0 : 1) : (side.current[held.block] ?? 0)
+      const rest = list.current.filter((one) => one !== held.block)
+      const mates = rest.filter((one) => (side.current[one] ?? 0) === column)
+      const spot = mates.findIndex((one) => {
+        const seat = document.querySelector(`.profile-slot[data-block="${one}"]`)?.getBoundingClientRect()
+        return seat ? event.clientY < seat.top + seat.height / 2 : false
+      })
+      const anchor = spot < 0 ? null : mates[spot]
+      const at = anchor
+        ? rest.indexOf(anchor)
+        : mates.length
+          ? rest.indexOf(mates[mates.length - 1]) + 1
+          : rest.length
+      const next = [...rest.slice(0, at), held.block, ...rest.slice(at)]
+      if (next.join() === list.current.join() && (side.current[held.block] ?? 0) === column) return
+      const seats = { ...side.current, [held.block]: column }
       list.current = next
+      side.current = seats
       setLayout(next)
+      setSpots(seats)
     }
     const drop = () => {
       setHeld(null)
-      void api('profile', { action: 'blocks', blocks: list.current, sizes: tall.current })
+      void api('profile', { action: 'blocks', blocks: list.current, sizes: tall.current, sides: side.current })
     }
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', drop)
@@ -185,6 +202,24 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
       window.removeEventListener('pointercancel', drop)
     }
   }, [held?.block])
+  useLayoutEffect(() => {
+    const even = () => {
+      const pair = (['worlds', 'awards'] as ProfileBlock[])
+        .map((block) => document.querySelector(`.profile-slot[data-block="${block}"]`) as HTMLElement | null)
+        .filter((slot): slot is HTMLElement => Boolean(slot))
+      for (const slot of pair) slot.style.removeProperty('--mate-h')
+      if (pair.length < 2 || pair.some((slot) => slot.style.getPropertyValue('--slot-h'))) return
+      const cards = pair.map((slot) => slot.querySelector('.card') as HTMLElement | null)
+      if (cards.some((card) => !card)) return
+      const highs = cards.map((card) => Math.round(card!.getBoundingClientRect().height))
+      const peak = Math.max(...highs)
+      highs.forEach((high, index) => high < peak && pair[index].style.setProperty('--mate-h', `${peak}px`))
+    }
+    even()
+    window.addEventListener('resize', even)
+    return () => window.removeEventListener('resize', even)
+  })
+
   const factsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -304,13 +339,17 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
   const keep = (next: ProfileBlock[]) => {
     setLayout(next)
-    void api('profile', { action: 'blocks', blocks: next, sizes: tall.current })
+    void api('profile', { action: 'blocks', blocks: next, sizes: tall.current, sides: side.current })
   }
 
   const hide = (block: ProfileBlock) => shown.length > 1 && keep(shown.filter((one) => one !== block))
 
   const grown = sizes ?? summary?.blockSizes ?? {}
+  const seated = spots ?? summary?.blockSides ?? {}
+  const sideOf = (block: ProfileBlock, index: number) => seated[block] ?? index % 2
+  const columns = [0, 1].map((column) => shown.map((block, index) => ({ block, index })).filter(({ block, index }) => sideOf(block, index) === column))
   tall.current = grown
+  side.current = Object.fromEntries(shown.map((block, index) => [block, sideOf(block, index)]))
   list.current = shown
 
   const cardOf = (block: ProfileBlock) =>
@@ -329,7 +368,9 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     const slot = card?.parentElement as HTMLElement | null
     if (!card || !slot) return null
     const kept = slot.style.getPropertyValue('--slot-h')
+    const mate = slot.style.getPropertyValue('--mate-h')
     if (kept) slot.style.removeProperty('--slot-h')
+    if (mate) slot.style.removeProperty('--mate-h')
     const own = Math.round(card.getBoundingClientRect().height)
     const list = card.querySelector('.world-shelf, .soon-badges') as HTMLElement | null
     const items = list ? ([...list.children] as HTMLElement[]) : []
@@ -342,6 +383,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
       if (line.length < items.length) steps.push(Math.round(chrome + Math.max(...line.map((one) => one.getBoundingClientRect().height))))
     }
     if (kept) slot.style.setProperty('--slot-h', kept)
+    if (mate) slot.style.setProperty('--mate-h', mate)
     return { own, steps: steps.filter((one) => one > 80 && one < own - 2) }
   }
 
@@ -350,9 +392,12 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     const slot = card?.parentElement as HTMLElement | null
     if (!card || !slot) return 0
     const held = slot.style.getPropertyValue('--slot-h')
+    const mate = slot.style.getPropertyValue('--mate-h')
     if (held) slot.style.removeProperty('--slot-h')
+    if (mate) slot.style.removeProperty('--mate-h')
     const own = Math.round(card.getBoundingClientRect().height)
     if (held) slot.style.setProperty('--slot-h', held)
+    if (mate) slot.style.setProperty('--mate-h', mate)
     return own
   }
 
@@ -398,7 +443,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const show = (block: ProfileBlock) => keep([...shown, block])
 
   const tune = () => {
-    if (!edit) snapshot.current = { blocks: shown, sizes: grown }
+    if (!edit) snapshot.current = { blocks: shown, sizes: grown, sides: side.current }
     setEdit((was) => !was)
   }
 
@@ -407,10 +452,12 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     if (!was) return setEdit(false)
     list.current = was.blocks
     tall.current = was.sizes
+    side.current = was.sides
     setLayout(was.blocks)
     setSizes(was.sizes)
+    setSpots(was.sides)
     setEdit(false)
-    void api('profile', { action: 'blocks', blocks: was.blocks, sizes: was.sizes })
+    void api('profile', { action: 'blocks', blocks: was.blocks, sizes: was.sizes, sides: was.sides })
   }
 
   const panels: Record<ProfileBlock, ReactNode> = {
@@ -765,32 +812,36 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
       </section>
 
       <div className={`profile-grid ${edit ? 'is-edit' : ''}`}>
-        {shown.map((block) => (
-          <div
-            className={`profile-slot slot-${block} ${held?.block === block ? 'is-held' : ''} ${sized?.block === block ? 'is-sized' : ''} ${grown[block] ? 'is-tall' : ''}`}
-            key={block}
-            data-block={block}
-            style={grown[block] ? ({ '--slot-h': `${grown[block]}px` } as CSSProperties) : undefined}
-          >
-            {edit && (
-              <div className="slot-bar" onPointerDown={grab(block)}>
-                <span className="slot-grip" aria-hidden>
-                  <GripIcon />
-                </span>
-                <b>{t(`profile.block.${block}` as UiKey)}</b>
-                <button
-                  type="button"
-                  className="slot-off"
-                  aria-label={t('profile.blockHide')}
-                  onPointerDown={(event) => event.stopPropagation()}
-                  onClick={() => hide(block)}
+        {columns.map((seats, column) => (
+          <div className="profile-stack" key={column}>
+            {seats.map(({ block, index }) => (
+                <div
+                  className={`profile-slot slot-${block} ${held?.block === block ? 'is-held' : ''} ${sized?.block === block ? 'is-sized' : ''} ${grown[block] ? 'is-tall' : ''}`}
+                  key={block}
+                  data-block={block}
+                  style={{ order: index, ...(grown[block] ? { '--slot-h': `${grown[block]}px` } : {}) } as CSSProperties}
                 >
-                  <CloseIcon />
-                </button>
-              </div>
-            )}
-            {panels[block]}
-            {edit && <i className="slot-grow" onPointerDown={stretch(block)} aria-hidden />}
+                  {edit && (
+                    <div className="slot-bar" onPointerDown={grab(block)}>
+                      <span className="slot-grip" aria-hidden>
+                        <GripIcon />
+                      </span>
+                      <b>{t(`profile.block.${block}` as UiKey)}</b>
+                      <button
+                        type="button"
+                        className="slot-off"
+                        aria-label={t('profile.blockHide')}
+                        onPointerDown={(event) => event.stopPropagation()}
+                        onClick={() => hide(block)}
+                      >
+                        <CloseIcon />
+                      </button>
+                    </div>
+                  )}
+                  {panels[block]}
+                  {edit && <i className="slot-grow" onPointerDown={stretch(block)} aria-hidden />}
+                </div>
+              ))}
           </div>
         ))}
       </div>
