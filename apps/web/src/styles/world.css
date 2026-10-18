@@ -919,12 +919,6 @@
   }
 }
 
-@media (max-width: 480px) {
-  .tune-acts .primary {
-    display: none;
-  }
-}
-
 .tune-acts {
   display: flex;
   align-items: center;
@@ -953,4 +947,11 @@
 
 .tune-acts .tune-swap > span.is-off {
   visibility: hidden;
+}
+
+@media (max-width: 480px) {
+  .tune-acts .primary,
+  .tune-acts .tune-swap {
+    display: none;
+  }
 }
