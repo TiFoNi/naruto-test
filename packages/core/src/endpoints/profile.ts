@@ -5,7 +5,7 @@ import { isFrame } from '../frames'
 import { GAME_IDS, profileBlocks } from '@nanda/game'
 
 const SHOWCASE_MAX = 8
-const BLOCK_MIN = 180
+const BLOCK_MIN = 60
 const BLOCK_MAX = 900
 
 export const POST = handle(async (request) => {

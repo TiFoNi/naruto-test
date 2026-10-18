@@ -22,7 +22,7 @@ import { PROFILE_BLOCKS, PROFILE_BLOCKS_DEFAULT, type ProfileBlock } from '@nand
 
 type Held = { block: ProfileBlock; x: number; y: number; dx: number; dy: number; w: number; h: number }
 
-type Sized = { block: ProfileBlock; y: number; from: number; roof: number; floor: number; step: number; chrome: number; mates: number[] }
+type Sized = { block: ProfileBlock; y: number; from: number; roof: number; floor: number; stops: number[] | null; mates: number[]; bare: number }
 
 const BLOCK_MIN = 180
 const BLOCK_ROOF = 520
@@ -131,13 +131,17 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     if (!sized) return
     const move = (event: PointerEvent) => {
       const asked = sized.from + event.clientY - sized.y
+      const stop = sized.stops?.reduce((best, one) => (Math.abs(one - asked) < Math.abs(best - asked) ? one : best))
       const mate = sized.mates.find((one) => Math.abs(one - asked) <= BLOCK_MAGNET)
-      const snapped = sized.step
-        ? sized.chrome + Math.round((asked - sized.chrome) / sized.step) * sized.step
-        : mate ?? asked
-      const next = Math.round(Math.min(Math.max(sized.roof, sized.floor), Math.max(sized.floor, snapped)))
-      tall.current = { ...tall.current, [sized.block]: next }
-      setSizes(tall.current)
+      const next = Math.round(
+        stop ?? Math.min(Math.max(sized.roof, sized.floor), Math.max(sized.floor, mate ?? asked)),
+      )
+      const whole = sized.stops ? next === sized.roof : sized.bare > 0 && Math.abs(next - sized.bare) <= BLOCK_MAGNET
+      const copy = { ...tall.current }
+      if (whole) delete copy[sized.block]
+      else copy[sized.block] = next
+      tall.current = copy
+      setSizes(copy)
     }
     const drop = () => {
       setSized(null)
@@ -320,14 +324,25 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     return tallest > BLOCK_MIN ? Math.round(tallest) : BLOCK_ROOF
   }
 
-  const rowsOf = (card: HTMLElement) => {
+  const ladderOf = (block: ProfileBlock) => {
+    const card = cardOf(block)
+    const slot = card?.parentElement as HTMLElement | null
+    if (!card || !slot) return null
+    const kept = slot.style.getPropertyValue('--slot-h')
+    if (kept) slot.style.removeProperty('--slot-h')
+    const own = Math.round(card.getBoundingClientRect().height)
     const list = card.querySelector('.world-shelf, .soon-badges') as HTMLElement | null
-    const first = list?.firstElementChild as HTMLElement | null
-    if (!list || !first) return null
-    const gap = Number.parseFloat(getComputedStyle(list).rowGap) || 0
-    const step = Math.round(first.getBoundingClientRect().height + gap)
-    const chrome = Math.round(card.getBoundingClientRect().height - list.getBoundingClientRect().height)
-    return { step, chrome, floor: chrome + step }
+    const items = list ? ([...list.children] as HTMLElement[]) : []
+    const box = list?.getBoundingClientRect()
+    const chrome = box ? own - box.height : 0
+    const steps: number[] = []
+    if (list && box && items.length > 1) {
+      const top = items[0].getBoundingClientRect().top
+      const line = items.filter((one) => Math.abs(one.getBoundingClientRect().top - top) < 2)
+      if (line.length < items.length) steps.push(Math.round(chrome + Math.max(...line.map((one) => one.getBoundingClientRect().height))))
+    }
+    if (kept) slot.style.setProperty('--slot-h', kept)
+    return { own, steps: steps.filter((one) => one > 80 && one < own - 2) }
   }
 
   const naturalOf = (block: ProfileBlock) => {
@@ -341,25 +356,34 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     return own
   }
 
-  const floorOf = (block: ProfileBlock, card: HTMLElement) => {
-    const rows = rowsOf(card)
-    if (rows) return rows
-    const facts = shown.includes('facts') ? naturalOf('facts') : naturalOf(block)
-    return { step: 0, chrome: 0, floor: facts > 80 ? Math.round(facts) : BLOCK_MIN }
-  }
+
 
   const stretch = (block: ProfileBlock) => (event: ReactPointerEvent<HTMLElement>) => {
     if (!edit || event.button > 0) return
-    const node = (event.currentTarget.closest('.profile-slot') as HTMLElement | null)?.querySelector('.card') as HTMLElement | null
-    if (!node) return
+    const card = cardOf(block)
+    if (!card) return
     event.preventDefault()
     event.stopPropagation()
-    const { step, chrome, floor } = floorOf(block, node)
-    const mates = shown
-      .filter((one) => one !== block)
-      .map((one) => Math.round(cardOf(one)?.getBoundingClientRect().height ?? 0))
-      .filter((one) => one > 0)
-    setSized({ block, y: event.clientY, from: node.getBoundingClientRect().height, roof: roofOf(), floor, step, chrome, mates })
+    const from = Math.round(card.getBoundingClientRect().height)
+    const ladder = ladderOf(block)
+    if (!ladder) return
+    const base = block !== 'facts' && shown.includes('facts') ? naturalOf('facts') : 0
+
+    if (ladder.steps.length) {
+      const fit = ladder.steps.filter((one) => one >= base)
+      const stops = [...(fit.length ? fit : ladder.steps.slice(-1)), ladder.own]
+      setSized({ block, y: event.clientY, from, stops, floor: stops[0], roof: ladder.own, mates: [], bare: ladder.own })
+      return
+    }
+
+    const floor = base > 80 ? base : ladder.own > 80 ? ladder.own : BLOCK_MIN
+    const mates = [
+      ...shown
+        .filter((one) => one !== block)
+        .map((one) => Math.round(cardOf(one)?.getBoundingClientRect().height ?? 0)),
+      ladder.own,
+    ].filter((one) => one > 0)
+    setSized({ block, y: event.clientY, from, stops: null, floor, roof: roofOf(), mates, bare: ladder.own })
   }
 
   const grab = (block: ProfileBlock) => (event: ReactPointerEvent<HTMLElement>) => {
