@@ -907,6 +907,22 @@
     padding: 11px 6px;
     font-size: 14px;
   }
+
+  .tune-acts {
+    min-width: 0;
+  }
+
+  .tune-acts button {
+    height: 42px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tune-acts .primary {
+    display: none;
+  }
 }
 
 .tune-acts {
@@ -924,4 +940,17 @@
   border-radius: 999px;
   font-size: 14.5px;
   font-weight: 700;
+}
+
+.tune-acts .tune-swap {
+  display: grid;
+  place-items: center;
+}
+
+.tune-acts .tune-swap > span {
+  grid-area: 1 / 1;
+}
+
+.tune-acts .tune-swap > span.is-off {
+  visibility: hidden;
 }

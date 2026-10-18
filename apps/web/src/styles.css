@@ -7334,6 +7334,10 @@ html[data-auth] .guest-note {
   justify-content: center;
 }
 
+.search.compact .send-label {
+  display: none;
+}
+
 @media (max-width: 1280px) {
   .shot-column {
     --shot: 420px;
@@ -11214,4 +11218,16 @@ html[data-auth] .guest-note {
   overflow: hidden;
   visibility: hidden;
   pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .search.compact .send {
+    width: 100%;
+    padding: 0 24px;
+    justify-content: center;
+  }
+
+  .search.compact .send-label {
+    display: inline;
+  }
 }

@@ -176,7 +176,8 @@ export default function CharacterSearch({
         disabled={!matches.length || busy}
         onClick={() => pick(matches[active])}
       >
-        {compact ? <ArrowIcon /> : <>{t('play.guess')} <ArrowIcon /></>}
+        <span className="send-label">{t('play.guess')}</span>
+        <ArrowIcon />
       </button>
       </div>
       {matches.length > 0 && (

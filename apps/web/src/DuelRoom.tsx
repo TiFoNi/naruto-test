@@ -593,7 +593,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
         </PlayBoard>
       )}
 
-      {!inLobby && quit && <div className="duel-quit is-narrow">{quit}</div>}
+      {!inLobby && quit && duel.mode !== 'grid' && duel.mode !== 'clue' && <div className="duel-quit is-narrow">{quit}</div>}
     </div>
   )
 }

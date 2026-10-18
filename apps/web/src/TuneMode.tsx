@@ -476,8 +476,9 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
 
               {!over && (
                 <div className="tune-acts">
-                  <button type="button" className="primary" disabled={!run.clip} onClick={toggle}>
-                    {going ? t('tune.pause') : t('tune.play')}
+                  <button type="button" className="primary tune-swap" disabled={!run.clip} onClick={toggle}>
+                    <span className={going ? 'is-off' : ''}>{t('tune.play')}</span>
+                    <span className={going ? '' : 'is-off'}>{t('tune.pause')}</span>
                   </button>
                   <button type="button" className="ghost" disabled={busy || run.step + 1 >= tries} onClick={() => void skip()}>
                     {t('tune.skip')}
