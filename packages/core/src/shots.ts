@@ -18,11 +18,26 @@ const picture = (key: string, level: number, variant: number) => `/api/shot/imag
 const opened = (key: string, level: number, variant: number[] = []) =>
   Array.from({ length: Math.min(level, LEVELS - 1) + 1 }, (_, step) => picture(key, step, variant[step] ?? 0))
 
-const nextVariant = (count: number, last?: number) => {
+const SHOWN_MAX = 150
+const SKIP_BACK = 2
+
+const freshVariant = (count: number, taken: number[]) => {
   if (count <= 1) return 0
-  const pick = Math.floor(Math.random() * (last === undefined ? count : count - 1))
-  return last === undefined || pick < last ? pick : pick + 1
+  const all = Array.from({ length: count }, (_, one) => one)
+  const away = (skip: number[]) => all.filter((one) => !skip.includes(one))
+  const pool = [away(taken), away(taken.slice(-1)), all].find((list) => list.length) ?? all
+  return pool[Math.floor(Math.random() * pool.length)]
 }
+
+const takenFor = (shown: ShotDoc['shown'], id: number, level: number) =>
+  (shown ?? [])
+    .filter((row) => row.id === id)
+    .slice(-SKIP_BACK)
+    .map((row) => row.variant?.[level])
+    .filter((one): one is number => typeof one === 'number')
+
+const remember = (shown: ShotDoc['shown'], id: number, variant: number[]) =>
+  [...(shown ?? []), { id, variant }].slice(-SHOWN_MAX)
 
 const framesOf = (title: Record<string, unknown> | undefined) =>
   Array.isArray(title?.frames) ? (title.frames as number[]) : []
@@ -32,7 +47,7 @@ const complete = (title: Record<string, unknown>) => {
   return Array.from({ length: LEVELS }, (_, level) => Number(counts[level]) || 0).every((count) => count > 0)
 }
 
-async function pickTitle(seen: number[], last?: number[]) {
+async function pickTitle(seen: number[], shown?: ShotDoc['shown']) {
   const pool = (await gameData(GAME)).pool.filter(complete)
   if (!pool.length) return null
   const window = Math.max(1, Math.floor(pool.length * 0.6))
@@ -42,8 +57,9 @@ async function pickTitle(seen: number[], last?: number[]) {
   if (!choices.length) return null
   const title = choices[Math.floor(Math.random() * choices.length)]
   const counts = framesOf(title)
-  const same = title.id === seen[seen.length - 1] ? last : undefined
-  const variant = Array.from({ length: LEVELS }, (_, level) => nextVariant(Math.max(1, counts[level] ?? 1), same?.[level]))
+  const variant = Array.from({ length: LEVELS }, (_, level) =>
+    freshVariant(Math.max(1, Number(counts[level]) || 1), takenFor(shown, title.id, level)),
+  )
   return { id: title.id, variant, key: Math.random().toString(36).slice(2, 10) }
 }
 
@@ -73,7 +89,7 @@ export async function shotRun(userId: ObjectId, guest: boolean, fresh = false) {
   if (!fresh && found?.status === 'playing' && found.answerId !== undefined) return view(found)
   if (!fresh && found?.status === 'over') return view(found)
 
-  const next = await pickTitle(found?.seen ?? [], found?.variant)
+  const next = await pickTitle(found?.seen ?? [], found?.shown)
   if (!next) return null
 
   const now = new Date()
@@ -89,6 +105,7 @@ export async function shotRun(userId: ObjectId, guest: boolean, fresh = false) {
     streak: 0,
     best: found?.best ?? 0,
     seen: [...(found?.seen ?? []), next.id].slice(-60),
+    shown: remember(found?.shown, next.id, next.variant),
     status: 'playing',
     createdAt: found?.createdAt ?? now,
     updatedAt: now,
@@ -177,12 +194,13 @@ async function endRun(doc: ShotDoc, revealed: number, status: 'lost' | 'skipped'
 }
 
 async function nextTitle(doc: ShotDoc, score: number, streak: number) {
-  const next = await pickTitle(doc.seen, doc.variant)
+  const next = await pickTitle(doc.seen, doc.shown)
   if (!next) return null
   const seen = [...doc.seen, next.id].slice(-60)
+  const shown = remember(doc.shown, next.id, next.variant)
   await (await shotRuns()).updateOne(
     { _id: doc._id },
-    { $set: { answerId: next.id, variant: next.variant, key: next.key, level: 0, misses: 0, score, streak, seen, updatedAt: new Date() }, $unset: { lastId: '' } },
+    { $set: { answerId: next.id, variant: next.variant, key: next.key, level: 0, misses: 0, score, streak, seen, shown, updatedAt: new Date() }, $unset: { lastId: '' } },
   )
   return { score, streak, level: 0, points: pointsAt(0), shots: opened(next.key, 0, next.variant) }
 }

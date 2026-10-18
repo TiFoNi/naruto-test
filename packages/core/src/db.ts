@@ -232,6 +232,7 @@ export type ShotDoc = {
   streak: number
   best: number
   seen: number[]
+  shown?: { id: number; variant: number[] }[]
   lastId?: number
   status: 'playing' | 'over'
   createdAt: Date
