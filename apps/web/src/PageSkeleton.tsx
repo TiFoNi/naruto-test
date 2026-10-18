@@ -93,9 +93,7 @@ export function ProfileGhost({ own }: { own: boolean }) {
       </section>
 
       <div className="profile-grid">
-        <div className="profile-middle">
-          <div className="profile-middle-cols">
-            <div className="profile-column">
+        <div className="profile-slot">
               <section className="card worlds-card">
                 <header>
                   <span className="sk title" />
@@ -109,9 +107,9 @@ export function ProfileGhost({ own }: { own: boolean }) {
                   ))}
                 </ul>
               </section>
-            </div>
+        </div>
 
-            <div className="profile-column">
+        <div className="profile-slot">
               <section className="card soon-card">
                 <header>
                   <span className="sk title" />
@@ -125,8 +123,6 @@ export function ProfileGhost({ own }: { own: boolean }) {
                   ))}
                 </ul>
               </section>
-            </div>
-          </div>
         </div>
       </div>
     </div>

@@ -380,6 +380,19 @@ export const MODE_XP_AFTER: Record<ModeId, number> = {
   clue: 5,
 }
 
+export const PROFILE_BLOCKS = ['worlds', 'awards', 'facts', 'activity'] as const
+
+export type ProfileBlock = (typeof PROFILE_BLOCKS)[number]
+
+export const PROFILE_BLOCKS_DEFAULT: ProfileBlock[] = ['worlds', 'awards']
+
+export const isBlock = (value: unknown): value is ProfileBlock => (PROFILE_BLOCKS as readonly string[]).includes(value as string)
+
+export const profileBlocks = (value: unknown) => {
+  const asked = Array.isArray(value) ? value.filter(isBlock) : []
+  return asked.length ? [...new Set(asked)] : null
+}
+
 export const ONE_TRY_GAMES: GameId[] = ['manga']
 
 export const oneTry = (game: unknown) => ONE_TRY_GAMES.includes(game as GameId)

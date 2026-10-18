@@ -197,8 +197,8 @@
   "arcIndex": 5,
   "answer": true,
   "nameEn": "White Zetsu",
-  "thumb": 7,
-  "nameUk": "Білий Зецу"
+  "nameUk": "Білий Зецу",
+  "thumb": 7
  },
  {
   "id": 259,
@@ -532,8 +532,8 @@
   "arcIndex": 7,
   "answer": true,
   "nameEn": "Demonic Statue of the Outer Path",
-  "thumb": 20,
-  "nameUk": "Демонічна Статуя Зовнішнього Шляху"
+  "nameUk": "Демонічна Статуя Зовнішнього Шляху",
+  "thumb": 20
  },
  {
   "id": 1,
@@ -542,10 +542,12 @@
   "affiliations": [],
   "jutsuTypes": [
    "Ниндзюцу",
-   "Сендзюцу"
+   "Сендзюцу",
+   "Додзюцу"
   ],
   "kekkeiGenkai": [
-   "Мокутон"
+   "Мокутон",
+   "Риннэ-Шаринган"
   ],
   "natureTypes": [
    "Катон",
@@ -564,8 +566,8 @@
   "arcIndex": 15,
   "answer": true,
   "nameEn": "Ten-Tails",
-  "thumb": 21,
-  "nameUk": "Десятихвостий"
+  "nameUk": "Десятихвостий",
+  "thumb": 21
  },
  {
   "id": 515,
@@ -3254,8 +3256,8 @@
   "arcIndex": 5,
   "answer": true,
   "nameEn": "Black Zetsu",
-  "thumb": 121,
-  "nameUk": "Чорний Зецу"
+  "nameUk": "Чорний Зецу",
+  "thumb": 121
  },
  {
   "id": 148,

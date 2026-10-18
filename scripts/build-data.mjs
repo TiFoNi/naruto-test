@@ -46,6 +46,7 @@ const OVERRIDES = {
   Kimimaro: { jutsuTypes: [JUTSU.taijutsu] },
   Orochimaru: { gender: SEX.Male },
   'Kaguya Ōtsutsuki': { kekkeiGenkai: ['Бьякуган', 'Риннэ-Шаринган'] },
+  'Ten-Tails': { kekkeiGenkai: ['Мокутон', 'Риннэ-Шаринган'] },
   'Hagoromo Ōtsutsuki': { kekkeiGenkai: ['Риннеган'] },
   'Hamura Ōtsutsuki': { kekkeiGenkai: ['Бьякуган', 'Тенсейган'] },
 }
@@ -94,6 +95,17 @@ function affiliations(p) {
 
 function natures(c) {
   return uniq(canon(c.natureType).map(clean).map((n) => NATURES[n]))
+}
+
+async function keepUkrainian(result) {
+  const known = await fs
+    .readFile(OUT_JSON, 'utf8')
+    .then((raw) => new Map(JSON.parse(raw).filter((one) => one.nameUk).map((one) => [one.id, one.nameUk])))
+    .catch(() => new Map())
+  for (const one of result) {
+    const uk = known.get(one.id)
+    if (uk && !one.nameUk) one.nameUk = uk
+  }
 }
 
 function kekkeiGenkai(p) {
@@ -330,6 +342,7 @@ async function main() {
   onlyAnswers(result)
   result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
 
+  await keepUkrainian(result)
   await writeAtlas(result)
   await pruneImages(path.join(OUT_IMG, 'full'), result)
   await fs.writeFile(OUT_JSON, JSON.stringify(result, null, 1))
