@@ -25,7 +25,7 @@ import { LANGS, useI18n, type UiKey } from './i18n'
 import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MenuIcon, PodiumIcon, ShopIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { api } from './api'
 import { openStream } from './stream'
-import { BOARD_START, gameById } from './games'
+import { gameById } from './games'
 import type { GameId } from './games/types'
 import { MODES } from './modes'
 import { useBeforePaint } from './paint'
@@ -102,7 +102,7 @@ function NavMenu({ user, section }: { user: boolean; section?: string }) {
               </span>
               {t('nav.duels')}
             </Link>
-            <Link className={onBoard ? 'active' : ''} href={href.leaderboard(BOARD_START.game, BOARD_START.mode)} onClick={() => setOpen(false)}>
+            <Link className={onBoard ? 'active' : ''} href={href.board} onClick={() => setOpen(false)}>
               <span className="topbar-nav-icon" aria-hidden>
                 <PodiumIcon />
               </span>

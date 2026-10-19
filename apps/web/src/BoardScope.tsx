@@ -12,6 +12,9 @@ export default function BoardScope({ scope, game, mode }: { scope: 'season' | 'g
 
   return (
     <div className="board-scope" role="tablist">
+      <Link role="tab" aria-selected={scope === 'season'} className={scope === 'season' ? 'active' : ''} href={href.board}>
+        <GlobeIcon /> {t('lb.scopeSeason')}
+      </Link>
       <Link
         role="tab"
         aria-selected={scope === 'game'}
@@ -19,9 +22,6 @@ export default function BoardScope({ scope, game, mode }: { scope: 'season' | 'g
         href={href.leaderboard((game ?? BOARD_START.game) as never, (mode ?? BOARD_START.mode) as never)}
       >
         <GamepadIcon /> {t('lb.scopeGame')}
-      </Link>
-      <Link role="tab" aria-selected={scope === 'season'} className={scope === 'season' ? 'active' : ''} href={href.board}>
-        <GlobeIcon /> {t('lb.scopeSeason')}
       </Link>
     </div>
   )

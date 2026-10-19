@@ -9,7 +9,7 @@ import { useI18n } from './i18n'
 import { avatarUrl } from './pics'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
-import { TrophyIcon } from './icons'
+import { CrownIcon, TrophyIcon } from './icons'
 
 type Row = { id: string; rank: number; nickname: string; avatar?: string | null; level: number; xp: number; solved: number; days: number; me: boolean }
 
@@ -86,6 +86,10 @@ export default function SeasonBoard() {
 
   const rows = board?.rows ?? []
   const peak = Math.max(1, ...rows.map((row) => row.xp))
+  const waiting = !board && !error
+  const podium = rows.length > 0 || waiting ? [rows[0] ?? null, rows[1] ?? null, rows[2] ?? null] : []
+  const medals = ['gold', 'silver', 'bronze']
+  const stand = [1, 0, 2]
   const box = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
@@ -151,6 +155,63 @@ export default function SeasonBoard() {
       <div className="lb-layout">
         <section className="lb-main">
           {board && <span className="lb-count season-count">{t('lb.players', { count: board.total })}</span>}
+          {podium.length > 0 && (
+            <ol className={`lb-podium ${waiting ? 'waiting' : ''}`}>
+              {stand.map((index) => {
+                const row = podium[index]
+                if (!row)
+                  return (
+                    <li key={`vacant-${index}`} className={`lb-step vacant ${medals[index]}`}>
+                      <span className="lb-step-face">
+                        <span className="lb-av big" aria-hidden>
+                          ?
+                        </span>
+                        <span className="lb-step-rank">{index + 1}</span>
+                      </span>
+                      <b className="lb-step-name">{t('lb.vacant')}</b>
+                      <span className="lb-step-main">
+                        <em>—</em>
+                      </span>
+                    </li>
+                  )
+                return (
+                  <li key={row.rank} className={`lb-step ${medals[index]}`}>
+                    {index === 0 && <CrownIcon className="lb-crown" />}
+                    <span className="lb-step-face">
+                      <span className={`lb-av big ${row.avatar ? 'has-pic' : ''}`} data-tone={toneOf(row.nickname)} aria-hidden>
+                        {row.nickname.charAt(0).toUpperCase()}
+                        {row.avatar && (
+                          <img
+                            src={avatarUrl(row.id, row.avatar)}
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                            onError={(event) => {
+                              event.currentTarget.hidden = true
+                            }}
+                          />
+                        )}
+                      </span>
+                      <span className="lb-step-rank">{row.rank}</span>
+                    </span>
+                    <b className="lb-step-name">{row.nickname}</b>
+                    <span className="lb-step-main">
+                      <em>{row.xp.toLocaleString(lang === 'en' ? 'en-GB' : 'uk-UA')}</em>
+                      {t('lb.colXp')}
+                    </span>
+                    <span className="lb-step-sub">
+                      <span>
+                        {row.solved} {t('lb.shortSolved')}
+                      </span>
+                      <span>
+                        {row.days} {t('lb.colDays')}
+                      </span>
+                    </span>
+                  </li>
+                )
+              })}
+            </ol>
+          )}
           {error ? (
             <div className="lb-state">{errorText(error)}</div>
           ) : board && rows.length === 0 ? (
