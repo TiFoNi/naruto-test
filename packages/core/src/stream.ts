@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { duels, type DuelDoc } from './db'
+import { coinLedger, duels, type DuelDoc } from './db'
 import { duelShotKey, duelView, leaveDuel, scheduleBot, seatsOf, settle, sideOf } from './duels'
 import { friends, type FriendDoc } from './friends'
 
@@ -21,6 +21,7 @@ const codes = new Map<string, string>()
 
 let watcher: Promise<void> | null = null
 let mates: Promise<void> | null = null
+let purse: Promise<void> | null = null
 
 const mark = (duel: DuelDoc) =>
   JSON.stringify([
@@ -200,6 +201,23 @@ export async function subscribeDuel(code: string, userId: ObjectId, send: Sender
   }
 }
 
+async function startPurse() {
+  purse ??= (async () => {
+    const stream = (await coinLedger()).watch([{ $match: { operationType: 'insert' } }], { fullDocument: 'updateLookup' })
+    stream.on('change', (change) => {
+      const doc = (change as { fullDocument?: { userId?: unknown; delta?: number } }).fullDocument
+      if (doc?.userId && (doc.delta ?? 0) > 0) notifyBell(doc.userId)
+    })
+    stream.on('error', () => {
+      purse = null
+      void stream.close().catch(() => undefined)
+    })
+  })().catch(() => {
+    purse = null
+  })
+  return purse
+}
+
 export function subscribeBell(userId: ObjectId, send: Sender) {
   const key = userId.toHexString()
   const set = bells.get(key) ?? new Set<Sender>()
@@ -207,6 +225,7 @@ export function subscribeBell(userId: ObjectId, send: Sender) {
   bells.set(key, set)
   void startWatcher()
   void startMates()
+  void startPurse()
   return () => {
     set.delete(send)
     if (!set.size) bells.delete(key)

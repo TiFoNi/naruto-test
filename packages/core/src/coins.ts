@@ -94,7 +94,10 @@ async function credit(purchaseId: ObjectId, userId: ObjectId, delta: number, rea
   }
 
   const people = await users()
-  await people.updateOne({ _id: userId }, { $inc: { coins: delta } })
+  await people.updateOne(
+    { _id: userId },
+    { $inc: { coins: delta }, ...(reason === 'purchase' && delta > 0 ? { $set: { coinsNews: { coins: delta, at: new Date() } } } : {}) },
+  )
   if (delta < 0) await people.updateOne({ _id: userId, coins: { $lt: 0 } }, { $set: { coins: 0 } })
   return true
 }

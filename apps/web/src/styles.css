@@ -592,6 +592,15 @@ a.bell.active {
   --tier: var(--accent);
 }
 
+.bell-item.is-coins {
+  --tier: #f0b73c;
+}
+
+.bell-item.is-coins b {
+  color: #f6c75c;
+  font-variant-numeric: tabular-nums;
+}
+
 .bell-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -9494,6 +9503,14 @@ html[data-auth] .guest-note {
 }
 
 .bell-frame {
+  border-color: transparent;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.bell-purse {
   border-color: transparent;
   background-color: transparent;
   background-position: center;

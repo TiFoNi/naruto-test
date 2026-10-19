@@ -16,7 +16,7 @@ import ChallengeSkeleton from './ChallengeSkeleton'
 import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
-import { dropFrames, dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type DuelInvite, type Feed } from './awards'
+import { dropCoins, dropFrames, dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
 import { FRAMES, frameUrl } from './frames'
 import { MODE_XP, MODE_XP_AFTER } from '@nanda/game'
 import { BRAND } from './brand'
@@ -293,12 +293,13 @@ function Bell() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const box = useDropdown(open, setOpen)
-  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [], frames: [] })
+  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [], frames: [], coins: null })
   const [hidden, setHidden] = useState<Set<string>>(() => new Set())
   const [busy, setBusy] = useState(false)
   const [toast, setToast] = useState<DuelInvite | null>(null)
   const known = useRef<Map<string, string> | null>(null)
   const since = useRef(Date.now())
+  const [purse, setPurse] = useState<CoinNews | null>(null)
 
   useEffect(() => {
     setHidden(readHidden())
@@ -332,6 +333,18 @@ function Bell() {
     const timer = window.setTimeout(() => setToast(null), TOAST_MS)
     return () => window.clearTimeout(timer)
   }, [toast])
+
+  useEffect(() => {
+    const news = feed.coins
+    if (!news) return setPurse(null)
+    if (new Date(news.at).getTime() >= since.current) setPurse(news)
+  }, [feed.coins])
+
+  useEffect(() => {
+    if (!purse) return
+    const timer = window.setTimeout(() => setPurse(null), TOAST_MS)
+    return () => window.clearTimeout(timer)
+  }, [purse])
 
   useEffect(() => {
     if (!toast) return
@@ -379,9 +392,15 @@ function Bell() {
     void api('profile', { action: 'seenFrames' }).catch(() => null)
   }
 
+  const seenCoins = () => {
+    setPurse(null)
+    dropCoins()
+    void api('profile', { action: 'seenCoins' }).catch(() => null)
+  }
+
   const awards = feed.awards.filter((award) => !hidden.has(award.id))
   const frames = feed.frames.map((id) => FRAMES.find((one) => one.id === id)).filter((one) => one !== undefined)
-  const count = awards.length + feed.invites.length + feed.requests.length + frames.length
+  const count = awards.length + feed.invites.length + feed.requests.length + frames.length + (feed.coins ? 1 : 0)
 
   return (
     <div ref={box} className={`bell-box ${open ? 'open' : ''}`}>
@@ -440,6 +459,32 @@ function Bell() {
         </div>
       )}
 
+      {purse && !toast && !open && (
+        <div className="bell-menu bell-pop" role="status" style={{ '--toast': `${TOAST_MS}ms` } as React.CSSProperties}>
+          <i className="bell-pop-tip" aria-hidden />
+          <div className="bell-item is-coins">
+            <Link
+              className="bell-card"
+              href={href.shop}
+              onClick={() => {
+                setOpen(false)
+                seenCoins()
+              }}
+              prefetch={false}
+            >
+              <small>{t('coins.news')}</small>
+              <span className="bell-main">
+                <span className="bell-mark bell-purse" aria-hidden style={{ backgroundImage: 'url(/shop/coins-big.webp)' }} />
+                <span className="bell-body">
+                  <b>{t('coins.added', { count: purse.coins })}</b>
+                  <span className="bell-hint">{t('coins.toShop')}</span>
+                </span>
+              </span>
+            </Link>
+          </div>
+        </div>
+      )}
+
       <div className="bell-menu">
         <div className="bell-head">
           <span>{t('nav.bell')}</span>
@@ -449,6 +494,31 @@ function Bell() {
           <p className="bell-empty">{t('nav.bellEmpty')}</p>
         ) : (
           <ul className="bell-list">
+            {feed.coins && (
+              <li className="bell-item is-coins">
+                <Link
+                  className="bell-card"
+                  href={href.shop}
+                  onClick={() => {
+                    setOpen(false)
+                    seenCoins()
+                  }}
+                  prefetch={false}
+                >
+                  <small>{t('coins.news')}</small>
+                  <span className="bell-main">
+                    <span className="bell-mark bell-purse" aria-hidden style={{ backgroundImage: 'url(/shop/coins-big.webp)' }} />
+                    <span className="bell-body">
+                      <b>{t('coins.added', { count: feed.coins.coins })}</b>
+                      <span className="bell-hint">{t('coins.toShop')}</span>
+                    </span>
+                  </span>
+                </Link>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={seenCoins}>
+                  <CloseIcon />
+                </button>
+              </li>
+            )}
             {feed.invites.map((invite) => {
               const game = invite.game ? gameById(invite.game as GameId) : null
               const mode = MODES.find((m) => m.id === invite.mode)

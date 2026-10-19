@@ -27,6 +27,6 @@ const ALL = [tunes, shots, naruto, onepiece, aot, bleach, kny, jjk, csm, tg, ber
 
 export const GAMES = ALL
 
-export const BOARD_START = { game: 'naruto', mode: 'classic' } as const
+export const BOARD_START = { game: 'shots', mode: 'shot' } as const
 
 export const gameById = (id: GameId) => GAMES.find((g) => g.id === id) ?? GAMES[0]

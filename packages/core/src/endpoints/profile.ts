@@ -82,6 +82,11 @@ export const POST = handle(async (request) => {
     return json(toProfile(doc ?? found.doc))
   }
 
+  if (body.action === 'seenCoins') {
+    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $unset: { coinsNews: '' } }, { returnDocument: 'after' })
+    return json(toProfile(doc ?? found.doc))
+  }
+
   if (body.action === 'seenFrames') {
     const owned = found.doc.frames ?? []
     if (!owned.length) return json(toProfile(found.doc))

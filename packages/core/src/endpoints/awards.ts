@@ -55,8 +55,8 @@ export const GET = handle(async (request) => {
   const owned = found.doc.frames ?? []
   if (!found.doc.framesSeen) {
     await (await users()).updateOne({ _id: found.doc._id }, { $set: { framesSeen: owned } })
-    return json({ awards, invites, requests, frames: [] })
+    return json({ awards, invites, requests, frames: [], coins: found.doc.coinsNews ?? null })
   }
   const frames = owned.filter((frame) => !found.doc.framesSeen!.includes(frame))
-  return json({ awards, invites, requests, frames })
+  return json({ awards, invites, requests, frames, coins: found.doc.coinsNews ?? null })
 })
