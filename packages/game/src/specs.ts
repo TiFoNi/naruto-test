@@ -358,7 +358,7 @@ export const MODE_XP: Record<ModeId, number> = {
   page: 5,
   odd: 8,
   pair: 0,
-  shot: 0,
+  shot: 12,
   tune: 0,
   who: 25,
   grid: 25,
@@ -373,7 +373,7 @@ export const MODE_XP_AFTER: Record<ModeId, number> = {
   page: 1,
   odd: 2,
   pair: 0,
-  shot: 0,
+  shot: 2,
   tune: 0,
   who: 5,
   grid: 5,
@@ -396,10 +396,10 @@ export const oneTry = (game: unknown) => ONE_TRY_GAMES.includes(game as GameId)
 
 export const DAILY_XP_FACTOR = 3
 
-export const DAILY_XP_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd']
+export const DAILY_XP_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd', 'shot']
 
 // режими-забіги: у них нема щоденного варіанта
-export const ENDLESS_MODES: ModeId[] = ['pair', 'shot', 'tune', 'grid']
+export const ENDLESS_MODES: ModeId[] = ['pair', 'tune', 'grid']
 
 export const hasDaily = (mode: ModeId) => !ENDLESS_MODES.includes(mode)
 
@@ -487,7 +487,7 @@ export const DUEL_MATCH_XP = 50
 
 export const duelWinsNeeded = (best: number) => Math.floor(best / 2) + 1
 
-export const SHOT_POINTS = [4, 3, 2, 1] as const
+export const SHOT_POINTS = [12, 10, 8, 6] as const
 export const SHOT_MISS = 1
 
 export type TuneLevel = 'easy' | 'normal' | 'hard'

@@ -7782,7 +7782,7 @@ html[data-auth] .guest-note {
 .footer-disclaimer {
   margin: 14px 0 0;
   max-width: 900px;
-  color: color-mix(in srgb, var(--text-3) 82%, transparent);
+  color: var(--text-3);
   font-size: 12px;
   line-height: 1.6;
 }
@@ -11230,4 +11230,15 @@ html[data-auth] .guest-note {
   .search.compact .send-label {
     display: inline;
   }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

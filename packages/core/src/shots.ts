@@ -1,9 +1,10 @@
 import type { ObjectId } from 'mongodb'
-import { SHOT_MISS, SHOT_POINTS } from '@nanda/game'
-import { rounds, shotRuns, users, type ShotDoc } from './db'
+import { DAILY_XP_FACTOR, SHOT_MISS, SHOT_POINTS, dailyKey } from '@nanda/game'
+import { rounds, shotDays, shotRuns, users, type ShotDayDoc, type ShotDoc } from './db'
 import { gameData } from './games'
-import { addXp } from './profile'
-import { today } from './daily'
+import { addXp, applyDailyResult } from './profile'
+import { dailyAnswer, nextReset, today } from './daily'
+import { shotVariant } from './extra'
 import { markSeasonPlay } from './season'
 import { grantWorldFrame } from './frames'
 
@@ -13,10 +14,13 @@ const LEVELS = SHOT_POINTS.length
 
 const pointsAt = (level: number) => SHOT_POINTS[Math.min(level, LEVELS - 1)]
 
-const picture = (key: string, level: number, variant: number) => `/api/shot/image?k=${key}&l=${level}&v=${variant}`
+const xpAt = pointsAt
 
-const opened = (key: string, level: number, variant: number[] = []) =>
-  Array.from({ length: Math.min(level, LEVELS - 1) + 1 }, (_, step) => picture(key, step, variant[step] ?? 0))
+const picture = (key: string, level: number, variant: number, day?: string) =>
+  `/api/shot/image?k=${key}&l=${level}&v=${variant}${day ? `&d=${day}` : ''}`
+
+const opened = (key: string, level: number, variant: number[] = [], day?: string) =>
+  Array.from({ length: Math.min(level, LEVELS - 1) + 1 }, (_, step) => picture(key, step, variant[step] ?? 0, day))
 
 const SHOWN_MAX = 150
 const SKIP_BACK = 2
@@ -155,13 +159,14 @@ async function markMiss(userId: ObjectId) {
   return pointsOf(doc)
 }
 
-async function logRound(doc: ShotDoc, answerId: number, status: 'won' | 'lost' | 'skipped', frames: number) {
+async function logRound(doc: { userId: ObjectId; guest?: boolean }, answerId: number, status: 'won' | 'lost' | 'skipped', frames: number, day?: string) {
   if (doc.guest) return
   const now = new Date()
   await (await rounds()).insertOne({
     userId: doc.userId,
     game: GAME,
     mode: MODE,
+    ...(day ? { daily: day } : {}),
     answerId,
     guesses: [],
     guessCount: frames,
@@ -181,7 +186,6 @@ async function endRun(doc: ShotDoc, revealed: number, status: 'lost' | 'skipped'
   )
   await logRound(doc, revealed, status, LEVELS)
   if (!doc.guest) await keepScore(doc.userId, doc.score, best)
-  if (doc.score > 0 && !doc.guest) await addXp(await users(), doc.userId, Math.min(doc.score, 25), 'endless')
   return {
     over: true as const,
     answerId: revealed,
@@ -226,7 +230,8 @@ export async function shotAnswer(userId: ObjectId, pick: number) {
     if (!next) return null
     await logRound(doc, doc.answerId, 'won', doc.level + 1)
     const total = doc.guest ? undefined : await markSolved(doc.userId, doc.level + 1, doc.streak + 1, gained)
-    return { right: true as const, answerId: doc.answerId, gained, best: doc.best, total, ...next }
+    const xp = doc.guest ? null : await addXp(await users(), doc.userId, xpAt(doc.level), 'endless', MODE)
+    return { right: true as const, answerId: doc.answerId, gained, best: doc.best, total, ...(xp ? { xp } : {}), ...next }
   }
 
   const score = Math.max(0, doc.score - SHOT_MISS)
@@ -248,12 +253,104 @@ export async function shotGiveUp(userId: ObjectId) {
   return doc ? { gaveUp: true as const, ...(await endRun(doc, doc.answerId!, 'skipped')) } : null
 }
 
-export async function shotShown(userId: ObjectId, want?: number) {
-  const doc = await (await shotRuns()).findOne({ userId })
+const dailyView = (doc: ShotDayDoc) => ({
+  daily: doc.day,
+  status: doc.status,
+  level: Math.min(doc.level, LEVELS - 1),
+  levels: LEVELS,
+  points: xpAt(doc.level) * DAILY_XP_FACTOR,
+  nextAt: nextReset(),
+  shots: opened(doc.key, doc.status === 'over' ? LEVELS - 1 : doc.level, doc.variant, doc.day),
+  ...(doc.status === 'over'
+    ? { over: true as const, answerId: doc.answerId, won: !!doc.won, guesses: doc.won ? doc.level + 1 : LEVELS, gained: doc.gained ?? 0 }
+    : {}),
+})
+
+export async function dailyShot(userId: ObjectId, guest: boolean) {
+  const collection = await shotDays()
+  const day = today()
+  const found = await collection.findOne({ userId, day })
+  if (found) return dailyView(found)
+
+  const { answerId, extra } = await dailyAnswer(GAME, MODE, day)
+  if (!(await gameData(GAME)).byId.has(answerId)) return null
+  const now = new Date()
+  const doc: ShotDayDoc = {
+    userId,
+    day,
+    ...(guest ? { guest: true } : {}),
+    answerId,
+    variant: shotVariant(extra),
+    key: `d${day.replace(/-/g, '')}`,
+    level: 0,
+    status: 'playing',
+    createdAt: now,
+    updatedAt: now,
+  }
+  await collection.updateOne({ userId, day }, { $setOnInsert: doc }, { upsert: true })
+  return dailyView((await collection.findOne({ userId, day })) ?? doc)
+}
+
+async function dailyPlaying(userId: ObjectId) {
+  const doc = await (await shotDays()).findOne({ userId, day: today() })
+  return doc && doc.status === 'playing' ? doc : null
+}
+
+async function endDaily(doc: ShotDayDoc, won: boolean) {
+  const level = Math.min(doc.level, LEVELS - 1)
+  const gained = won && !doc.guest ? xpAt(level) * DAILY_XP_FACTOR : 0
+  const over: ShotDayDoc = { ...doc, status: 'over', won, gained, level }
+  await (await shotDays()).updateOne({ _id: doc._id }, { $set: { status: 'over', won, gained, level, updatedAt: new Date() } })
+  await logRound(doc, doc.answerId, won ? 'won' : 'lost', won ? level + 1 : LEVELS, doc.day)
+  if (doc.guest) return { ...dailyView(over), xp: null }
+  const collection = await users()
+  const xp = won ? await addXp(collection, doc.userId, gained, 'daily', MODE) : null
+  const key = dailyKey(GAME, MODE)
+  const stats = await applyDailyResult(collection, doc.userId, key, doc.day, won ? level + 1 : LEVELS)
+  return { ...dailyView(over), ...(xp ? { xp } : {}), stats: { key, value: stats } }
+}
+
+export async function dailyShotAnswer(userId: ObjectId, pick: number) {
+  const doc = await dailyPlaying(userId)
   if (!doc) return null
-  const shown = doc.status === 'over' ? doc.lastId : doc.answerId
+  if (pick === doc.answerId) return { right: true as const, ...(await endDaily(doc, true)) }
+  if (doc.level + 1 >= LEVELS) return { right: false as const, ...(await endDaily(doc, false)) }
+  const level = doc.level + 1
+  await (await shotDays()).updateOne({ _id: doc._id }, { $set: { level, updatedAt: new Date() } })
+  return { right: false as const, ...dailyView({ ...doc, level }) }
+}
+
+export async function dailyShotSkip(userId: ObjectId) {
+  const doc = await dailyPlaying(userId)
+  if (!doc) return null
+  if (doc.level + 1 >= LEVELS) return { skipped: true as const, ...(await endDaily(doc, false)) }
+  const level = doc.level + 1
+  await (await shotDays()).updateOne({ _id: doc._id }, { $set: { level, updatedAt: new Date() } })
+  return { skipped: true as const, ...dailyView({ ...doc, level }) }
+}
+
+export async function dailyShotGiveUp(userId: ObjectId) {
+  const doc = await dailyPlaying(userId)
+  return doc ? { gaveUp: true as const, ...(await endDaily(doc, false)) } : null
+}
+
+async function seatShown(userId: ObjectId, day?: string) {
+  if (!day) {
+    const run = await (await shotRuns()).findOne({ userId })
+    if (!run) return null
+    return { answerId: run.status === 'over' ? run.lastId : run.answerId, open: run.status === 'over' ? LEVELS - 1 : Math.min(run.level, LEVELS - 1), variant: run.variant }
+  }
+  const doc = await (await shotDays()).findOne({ userId, day })
+  if (!doc) return null
+  return { answerId: doc.answerId, open: doc.status === 'over' ? LEVELS - 1 : Math.min(doc.level, LEVELS - 1), variant: doc.variant }
+}
+
+export async function shotShown(userId: ObjectId, want?: number, day?: string) {
+  const doc = await seatShown(userId, day)
+  if (!doc) return null
+  const shown = doc.answerId
   if (shown === undefined) return null
-  const open = doc.status === 'over' ? LEVELS - 1 : Math.min(doc.level, LEVELS - 1)
+  const open = doc.open
   const level = Number.isInteger(want) && want! >= 0 && want! <= open ? want! : open
   const title = (await gameData(GAME)).byId.get(shown)
   const count = Number(framesOf(title)[level]) || 0

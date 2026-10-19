@@ -242,6 +242,22 @@ export type ShotDoc = {
   updatedAt: Date
 }
 
+export type ShotDayDoc = {
+  _id?: ObjectId
+  userId: ObjectId
+  day: string
+  guest?: boolean
+  answerId: number
+  variant: number[]
+  key: string
+  level: number
+  status: 'playing' | 'over'
+  won?: boolean
+  gained?: number
+  createdAt: Date
+  updatedAt: Date
+}
+
 export type TuneDoc = {
   _id?: ObjectId
   userId: ObjectId
@@ -290,6 +306,7 @@ const cache = globalThis as typeof globalThis & {
   __seasonsIndexed?: Promise<unknown>
   __streaksIndexed?: Promise<unknown>
   __shotsIndexed?: Promise<unknown>
+  __shotDaysIndexed?: Promise<unknown>
   __tunesIndexed?: Promise<unknown>
   __purchasesIndexed?: Promise<unknown>
   __ledgerIndexed?: Promise<unknown>
@@ -331,6 +348,19 @@ export async function streaks(): Promise<Collection<StreakDoc>> {
     throw error
   })
   await cache.__streaksIndexed
+  return collection
+}
+
+export async function shotDays(): Promise<Collection<ShotDayDoc>> {
+  const collection = (await database()).collection<ShotDayDoc>('shotDays')
+  cache.__shotDaysIndexed ??= Promise.all([
+    collection.createIndex({ userId: 1, day: 1 }, { unique: true }),
+    collection.createIndex({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 30 }),
+  ]).catch((error) => {
+    cache.__shotDaysIndexed = undefined
+    throw error
+  })
+  await cache.__shotDaysIndexed
   return collection
 }
 

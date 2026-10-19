@@ -18,7 +18,7 @@ type Props = {
   playing: boolean
   busy?: boolean
   legend?: boolean
-  howto?: 'image' | 'page' | 'ability' | 'phrase' | 'odd'
+  howto?: 'image' | 'page' | 'ability' | 'phrase' | 'odd' | 'shot' | 'shotDaily'
   onGiveUp: () => void
 }
 
@@ -28,6 +28,8 @@ const STEPS = {
   ability: ['howtoAbility.step1', 'howtoAbility.step2', 'howtoAbility.step3'],
   phrase: ['howtoPhrase.step1', 'howtoPhrase.step2', 'howtoPhrase.step3'],
   odd: ['howtoOdd.step1', 'howtoOdd.step2', 'howtoOdd.step3', 'howtoOdd.step4'],
+  shot: ['howtoShot.step1', 'howtoShot.step2', 'howtoShot.step3', 'howtoShot.step4'],
+  shotDaily: ['howtoShotDaily.step1', 'howtoShotDaily.step2', 'howtoShotDaily.step3', 'howtoShotDaily.step4'],
 } as const
 
 const skipped = (game: Game) => {
@@ -92,28 +94,25 @@ export default function PlaySide({ game, mode, daily, stats, playing, busy, lege
   const { t } = useI18n()
   const href = useHref()
   const { user } = useAuth()
-  const cells = daily
-    ? [
-        { key: 'streak', label: t('daily.streak'), value: user?.streak ?? 0, hot: true },
-        { key: 'best', label: t('daily.best'), value: user?.bestStreak ?? 0 },
-      ]
-    : [
-        { key: 'solved', label: t('stats.solved'), value: stats.solved },
-        { key: 'streak', label: t('stats.streak'), value: stats.streak, hot: true },
-        { key: 'best', label: t('stats.best'), value: stats.best },
-        { key: 'avg', label: t('stats.avg'), value: average(stats) },
-      ]
+  const cells = [
+    { key: 'solved', label: t('stats.solved'), value: stats.solved },
+    { key: 'streak', label: t('stats.streak'), value: stats.streak, hot: true },
+    { key: 'best', label: t('stats.best'), value: stats.best },
+    { key: 'avg', label: t('stats.avg'), value: average(stats) },
+  ]
 
   return (
     <aside className="play-side">
-      <div className="play-card play-stats">
-        {cells.map((cell) => (
-          <div key={cell.key} className={cell.hot ? 'hot' : ''}>
-            <span>{cell.label}</span>
-            <b>{cell.value}</b>
-          </div>
-        ))}
-      </div>
+      {!daily && (
+        <div className="play-card play-stats">
+          {cells.map((cell) => (
+            <div key={cell.key} className={cell.hot ? 'hot' : ''}>
+              <span>{cell.label}</span>
+              <b>{cell.value}</b>
+            </div>
+          ))}
+        </div>
+      )}
 
       {legend && <Legend game={game} />}
       {howto && <HowTo kind={howto} game={game} />}

@@ -766,6 +766,11 @@ const ui = {
     uk: 'Назви тайтл за кадром. Не знаєш — покажемо простіший кадр, але очок буде менше',
     en: 'Name the title from the frame. Stuck? Get an easier frame, but score less',
   },
+  'shot.daily': {
+    ru: 'Один кадр на весь день: угадал с первого — больше опыта, каждый следующий кадр проще и дешевле',
+    uk: 'Один кадр на весь день: вгадав з першого — більше досвіду, кожен наступний кадр простіший і дешевший',
+    en: 'One frame for the whole day: nail the first one for more XP, each next frame is easier and worth less',
+  },
   'shot.search': { ru: 'Название аниме', uk: 'Назва аніме', en: 'Anime title' },
   'shot.open': { ru: 'Открыть кадр', uk: 'Відкрити кадр', en: 'Open the frame' },
   'shot.score': { ru: 'Очки', uk: 'Очки', en: 'Score' },
@@ -793,9 +798,29 @@ const ui = {
     en: 'The first frame is the hardest — name the title if you know it',
   },
   'howtoShot.step2': {
-    ru: 'Угадал с первого кадра — 4 очка, дальше 3, 2 и 1',
-    uk: 'Вгадав з першого кадру — 4 очки, далі 3, 2 і 1',
-    en: 'First frame scores 4, then 3, 2 and 1',
+    ru: 'Угадал с первого кадра — 12 очков, дальше 10, 8 и 6',
+    uk: 'Вгадав з першого кадру — 12 очок, далі 10, 8 і 6',
+    en: 'First frame scores 12, then 10, 8 and 6',
+  },
+  'howtoShotDaily.step1': {
+    ru: 'Один тайтл на весь день — первый кадр самый сложный',
+    uk: 'Один тайтл на весь день — перший кадр найскладніший',
+    en: 'One title for the whole day — the first frame is the hardest',
+  },
+  'howtoShotDaily.step2': {
+    ru: 'Угадал с первого кадра — 36 опыта, дальше 30, 24 и 18',
+    uk: 'Вгадав з першого кадру — 36 досвіду, далі 30, 24 і 18',
+    en: 'First frame gives 36 XP, then 30, 24 and 18',
+  },
+  'howtoShotDaily.step3': {
+    ru: 'Ошибся или попросил кадр попроще — опыта будет меньше',
+    uk: 'Помилився або попросив простіший кадр — досвіду буде менше',
+    en: 'A wrong answer or an easier frame means less XP',
+  },
+  'howtoShotDaily.step4': {
+    ru: 'Не узнал тайтл за четыре кадра — опыта за день не будет',
+    uk: 'Не впізнав тайтл за чотири кадри — досвіду за день не буде',
+    en: 'Miss all four frames and the day brings no XP',
   },
   'howtoShot.step3': {
     ru: 'Ошибся — минус очко и кадр попроще; пропуск бесплатный',

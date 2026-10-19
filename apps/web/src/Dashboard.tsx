@@ -80,6 +80,7 @@ function DailyCard({ games }: { games: GameMeta[] }) {
   const { stats } = useAuth()
   const [shown, setShown] = useState(0)
   const [turns, setTurns] = useState(0)
+  const [awake, setAwake] = useState(false)
   const swipe = useRef<{ x: number; y: number } | null>(null)
 
   const today = kyivToday()
@@ -127,13 +128,24 @@ function DailyCard({ games }: { games: GameMeta[] }) {
   const slide = slides[at]
 
   useEffect(() => {
-    if (count < 2) return
+    if (awake) return
+    const wake = () => setAwake(true)
+    const kinds = ['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart', 'scroll'] as const
+    for (const kind of kinds) window.addEventListener(kind, wake, { once: true, passive: true })
+    return () => {
+      for (const kind of kinds) window.removeEventListener(kind, wake)
+    }
+  }, [awake])
+
+  useEffect(() => {
+    if (count < 2 || !awake) return
     const timer = window.setInterval(() => {
+      if (document.visibilityState === 'hidden') return
       setShown((one) => (one + 1) % count)
       setTurns((one) => one + 1)
     }, SPIN)
     return () => window.clearInterval(timer)
-  }, [count, shown])
+  }, [awake, count, shown])
 
   if (!slide) return null
 

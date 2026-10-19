@@ -235,9 +235,9 @@ function AccountMenu({ nickname, level, section, id, avatar }: { nickname: strin
         type="button"
         className={`account-link ${inside ? 'active' : ''}`}
         aria-expanded={open}
-        aria-label={t('nav.profile')}
         onClick={() => setOpen(!open)}
       >
+        <span className="sr-only">{t('nav.profile')}: </span>
         <Avatar className="small" id={id} name={nickname} avatar={avatar} />
         <span className="account-name">{nickname}</span>
         <span className="account-level">{t('nav.level', { level })}</span>
@@ -578,7 +578,8 @@ function LangSwitch() {
 
   return (
     <div ref={box} className={`lang-switch ${open ? 'open' : ''}`}>
-      <button type="button" className="lang-toggle" aria-expanded={open} aria-label={t('nav.language')} onClick={() => setOpen(!open)}>
+      <button type="button" className="lang-toggle" aria-expanded={open} onClick={() => setOpen(!open)}>
+        <span className="sr-only">{t('nav.language')}: </span>
         {current.label}
         <span className="lang-caret" aria-hidden>
           <ChevronIcon />

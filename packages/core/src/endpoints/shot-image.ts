@@ -4,8 +4,10 @@ import { shotShown } from '../shots'
 
 export const GET = handle(async (request) => {
   const owner = await roundOwner(request)
-  const asked = Number(new URL(request.url).searchParams.get('l'))
-  const shown = await shotShown(owner.id, Number.isFinite(asked) ? asked : undefined)
+  const params = new URL(request.url).searchParams
+  const asked = Number(params.get('l'))
+  const day = params.get('d') ?? undefined
+  const shown = await shotShown(owner.id, Number.isFinite(asked) ? asked : undefined, day)
   if (!shown) return fail(404, 'not_found')
 
   const pics = process.env.PICS_URL?.replace(/\/+$/, '') ?? new URL(request.url).origin

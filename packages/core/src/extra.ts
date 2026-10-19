@@ -1,4 +1,4 @@
-import { GAME_SPECS, type GameId, type ModeId } from '@nanda/game'
+import { GAME_SPECS, SHOT_POINTS, type GameId, type ModeId } from '@nanda/game'
 import { abilitiesOf } from './abilities'
 import { phrasesOf } from './phrases'
 import { gameData } from './games'
@@ -115,6 +115,7 @@ export const oddTrait = (extra: string | undefined) => {
 }
 
 export async function roundExtra(game: GameId, mode: ModeId, answerId: number, roll = Math.random()) {
+  if (mode === 'shot') return shotExtra(game, answerId, roll)
   if (mode === 'page') return pageExtra(game, answerId, roll)
   if (mode === 'odd') return oddExtra(game, answerId, roll)
   if (mode === 'phrase') {
@@ -151,6 +152,22 @@ export function phraseAt(answerId: number, extra: string | undefined, step: numb
 
 export const phraseCount = (answerId: number) => phrasesOf(answerId).length
 
+export const shotFrames = (entity: Record<string, unknown> | undefined) =>
+  Array.from({ length: SHOT_POINTS.length }, (_, level) => Number((entity?.frames as number[] | undefined)?.[level]) || 0)
+
+export const shotReady = (entity: Record<string, unknown> | undefined) => shotFrames(entity).every((count) => count > 0)
+
+async function shotExtra(game: GameId, answerId: number, roll: number) {
+  const { byId } = await gameData(game)
+  const counts = shotFrames(byId.get(answerId) as Record<string, unknown> | undefined)
+  if (!counts.every((count) => count > 0)) return undefined
+  const random = seeded(roll)
+  return counts.map((count) => Math.floor(random() * count)).join(',')
+}
+
+export const shotVariant = (extra: string | undefined) =>
+  Array.from({ length: SHOT_POINTS.length }, (_, level) => Number(extra?.split(',')[level]) || 0)
+
 const CONTENT: Partial<Record<ModeId, (id: number) => boolean>> = {
   phrase: (id) => phrasesOf(id).length > 0,
   ability: (id) => abilitiesOf(id).length > 0,
@@ -158,5 +175,7 @@ const CONTENT: Partial<Record<ModeId, (id: number) => boolean>> = {
 
 export const modeFits = (mode: ModeId, id: number) => CONTENT[mode]?.(id) ?? true
 
-export const modePool = <T extends { id: number }>(pool: T[], mode: ModeId) =>
-  CONTENT[mode] ? pool.filter((entity) => modeFits(mode, entity.id)) : pool
+export const modePool = <T extends { id: number }>(pool: T[], mode: ModeId) => {
+  if (mode === 'shot') return pool.filter((entity) => shotReady(entity as Record<string, unknown>))
+  return CONTENT[mode] ? pool.filter((entity) => modeFits(mode, entity.id)) : pool
+}

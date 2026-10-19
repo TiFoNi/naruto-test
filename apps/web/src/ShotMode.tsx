@@ -7,8 +7,13 @@ import CharacterSearch from './CharacterSearch'
 import GiveUp from './GiveUp'
 import PlayBoard from './PlayBoard'
 import PlayPanel from './PlayPanel'
+import PlaySide from './PlaySide'
+import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
 import { api, apiSrc } from './api'
+import { useAuth, type XpToday } from './auth'
+import { refreshFeed } from './awards'
+import { emptyStats, type Stats } from './stats'
 import { BRAND } from './brand'
 import type { Entity, Game } from './games/types'
 import { useI18n } from './i18n'
@@ -41,6 +46,7 @@ type Answer = {
   points?: number
   shots?: string[]
   fresh?: boolean
+  xp?: { xp: number; level: number; today: XpToday }
 }
 
 type Over = { score: number; streak: number; best: number; total?: number; answerId?: number; fresh: boolean; shots?: string[] }
@@ -55,8 +61,29 @@ const LEVELS = [
 const CHEER = 3000
 const LABEL_ROOM = 16
 
-export default function ShotMode({ game, active }: { game: Game; active: boolean }) {
+type Daily = {
+  daily: string
+  status: 'playing' | 'over'
+  level: number
+  levels: number
+  points: number
+  nextAt: number
+  shots?: string[]
+  answerId?: number
+  won?: boolean
+  guesses?: number
+  gained?: number
+  xp?: { xp: number; level: number; today: XpToday }
+  stats?: { key: string; value: Stats }
+}
+
+export default function ShotMode({ game, active, daily = false, stats }: { game: Game; active: boolean; daily?: boolean; stats?: Stats }) {
+  return daily ? <ShotDaily game={game} active={active} stats={stats} /> : <ShotRun game={game} active={active} />
+}
+
+function ShotRun({ game, active }: { game: Game; active: boolean }) {
   const { t, name } = useI18n()
+  const { setXp } = useAuth()
   const href = useHref()
   const [run, setRun] = useState<Run | null>(null)
   const [over, setOver] = useState<Over | null>(null)
@@ -139,6 +166,10 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
     if (!ok) {
       setError(data.error ?? 'server')
       return null
+    }
+    if (data.xp) {
+      setXp(data.xp)
+      void refreshFeed()
     }
     if (data.over) {
       setRun(null)
@@ -291,6 +322,165 @@ export default function ShotMode({ game, active }: { game: Game; active: boolean
           </>
         )}
       </PlayPanel>
+
+
+      {big &&
+        mounted &&
+        createPortal(
+          <div className="shot-big" role="presentation" onClick={() => setBig(null)}>
+            <img src={big} alt="" draggable={false} />
+          </div>,
+          document.body,
+        )}
+    </PlayBoard>
+  )
+}
+
+function ShotDaily({ game, active, stats }: { game: Game; active: boolean; stats?: Stats }) {
+  const { t } = useI18n()
+  const { user, setStats, setXp } = useAuth()
+  const [state, setState] = useState<Daily | null>(null)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [soon, setSoon] = useState(false)
+  const [gained, setGained] = useState(0)
+  const [big, setBig] = useState<string | null>(null)
+  const [mounted, setMounted] = useState(false)
+  const xpNow = useRef(user?.xp ?? 0)
+  xpNow.current = user?.xp ?? xpNow.current
+  const byId = new Map(game.entities.map((one) => [one.id, one]))
+
+  const take = useCallback(
+    (data: Daily) => {
+      setState((was) => ({ ...(was ?? ({} as Daily)), ...data }))
+      if (data.stats) setStats(data.stats.key, data.stats.value)
+      if (data.xp) {
+        setGained(Math.max(0, data.xp.xp - xpNow.current))
+        setXp(data.xp)
+        void refreshFeed()
+      }
+    },
+    [setStats, setXp],
+  )
+
+  const load = useCallback(async () => {
+    setBusy(true)
+    setError(null)
+    const { ok, data } = await api<Daily & { error?: string }>('shot', { daily: true })
+    setBusy(false)
+    if (!ok) {
+      if (data.error === 'not_ready') return setSoon(true)
+      return setError(data.error ?? 'server')
+    }
+    take(data)
+  }, [take])
+
+  useEffect(() => {
+    if (!active || state || busy || soon || error) return
+    void load()
+  }, [active, state, busy, soon, error, load])
+
+  useEffect(() => setMounted(true), [])
+
+  const send = async (body: Record<string, unknown>) => {
+    if (busy || !state || state.status === 'over') return
+    setBusy(true)
+    const { ok, data } = await api<Daily & { error?: string }>('shot', { ...body, daily: true })
+    setBusy(false)
+    if (!ok) return setError(data.error ?? 'server')
+    take(data)
+  }
+
+  const over = state?.status === 'over'
+  const answer = state?.answerId !== undefined ? byId.get(state.answerId) : undefined
+
+  return (
+    <PlayBoard
+      side={
+        <PlaySide
+          game={game}
+          mode="shot"
+          daily
+          stats={stats ?? emptyStats}
+          playing={!!state && !over}
+          busy={busy}
+          howto="shotDaily"
+          onGiveUp={() => void send({ action: 'giveup' })}
+        />
+      }
+    >
+      <PlayPanel
+        title={t('shot.title')}
+        hint={t('shot.daily')}
+        media={
+          <span className="play-mystery" aria-hidden>
+            {state?.won ? <TrophyIcon /> : '?'}
+          </span>
+        }
+        aside={
+          state ? (
+            <span className="play-round">{t('shot.frame', { number: over ? STEPS.length : state.level + 1, total: STEPS.length })}</span>
+          ) : undefined
+        }
+      >
+        <RoundStatus error={error} onRetry={() => void load()} />
+
+        {soon && <p className="notice shot-soon">{t('shot.soon')}</p>}
+
+        {state && (
+          <>
+            <div className={`shot-grid ${over ? 'is-over' : ''}`}>
+              {Array.from({ length: STEPS.length }, (_, step) => (
+                <Cell
+                  key={step}
+                  src={apiSrc(state.shots?.[step])}
+                  step={step}
+                  onOpen={setBig}
+                  onReveal={!over && !busy && state.level < state.levels - 1 && step === state.level + 1 ? () => void send({ action: 'skip' }) : undefined}
+                />
+              ))}
+            </div>
+
+            {!over && (
+              <div className="shot-under">
+                <div className="shot-form">
+                  <CharacterSearch
+                    game={game}
+                    exclude={new Set()}
+                    busy={busy}
+                    plain
+                    placeholder={t('shot.search')}
+                    onPick={(entity) => void send({ action: 'answer', pick: entity.id })}
+                  />
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </PlayPanel>
+
+      {over && answer && state && (
+        <RoundResult
+          game={game}
+          mode="shot"
+          answer={answer}
+          guesses={state.guesses ?? STEPS.length}
+          won={!!state.won}
+          skipped={false}
+          stats={stats}
+          board={[
+            [
+              ...Array(Math.max(0, (state.guesses ?? STEPS.length) - (state.won ? 1 : 0))).fill('wrong'),
+              ...(state.won ? ['correct'] : []),
+            ],
+          ]}
+          gained={gained}
+          day={state.daily}
+          nextAt={state.nextAt}
+          onNext={() => {}}
+          compact
+        />
+      )}
 
       {big &&
         mounted &&
