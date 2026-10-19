@@ -1915,6 +1915,7 @@ const ui = {
   'challenge.gaveUp': { ru: 'сдался', uk: 'здався', en: 'gave up' },
   'challenge.summary': { ru: 'Попыток: {guesses} · в статистику не идёт', uk: 'Спроб: {guesses} · у статистику не йде', en: 'Guesses: {guesses} · not counted in stats' },
   'lb.page': { ru: '{page} из {pages}', uk: '{page} з {pages}', en: '{page} of {pages}' },
+  'lb.more': { ru: 'Показать ещё', uk: 'Показати ще', en: 'Show more' },
   'lb.prev': { ru: 'Назад', uk: 'Назад', en: 'Previous' },
   'lb.next': { ru: 'Вперёд', uk: 'Вперед', en: 'Next' },
   'lb.colBest': { ru: 'Самая длинная серия', uk: 'Найдовша серія', en: 'Longest streak' },

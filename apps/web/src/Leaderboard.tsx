@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import BackButton from './BackButton'
 import BoardScope from './BoardScope'
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { api } from './api'
 import { GAMES, gameById } from './games'
 import type { Category, GameId } from './games/types'
@@ -12,7 +12,7 @@ import { avatarUrl } from './pics'
 import { useNavigate, useHref } from './router'
 import { keepPerUser } from './session-cache'
 import Picker from './Picker'
-import { ChevronIcon, CrownIcon, ShieldIcon } from './icons'
+import { CrownIcon, ShieldIcon } from './icons'
 
 type Sort = 'best' | 'solved'
 
@@ -95,7 +95,8 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   const game = gameById(gameId)
   const sort: Sort = 'best'
   const navigate = useNavigate()
-  const [page, setPage] = useState(1)
+  const [size, setSize] = useState(PAGE_SIZE)
+  const more = useRef<HTMLDivElement>(null)
   const cacheKey = `${gameId}:${mode}:${sort}`
   const [board, setBoard] = useState<Board | null>(known.get(cacheKey) ?? null)
   const [error, setError] = useState<string | null>(null)
@@ -128,11 +129,19 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
     }
   }, [gameId, mode, sort])
 
-  useEffect(() => setPage(1), [gameId, mode])
+  useEffect(() => setSize(PAGE_SIZE), [gameId, mode])
 
   useEffect(() => {
     if (board) lastSize.set(`${gameId}:${mode}`, Math.min(board.rows.length, PAGE_SIZE))
   }, [board, gameId, mode])
+
+  useEffect(() => {
+    const node = more.current
+    if (!node) return
+    const watch = new IntersectionObserver((entries) => entries[0]?.isIntersecting && setSize((one) => one + PAGE_SIZE), { rootMargin: '200px' })
+    watch.observe(node)
+    return () => watch.disconnect()
+  }, [size, board])
 
   const boardKey = `${gameId}:${mode}`
   const columns = COLUMNS
@@ -142,11 +151,9 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   const standing = all.length > 0
   const podium = standing ? [all[0] ?? null, all[1] ?? null, all[2] ?? null] : waiting ? [null, null, null] : []
   const listed = all
-  const pages = Math.max(1, Math.ceil(listed.length / PAGE_SIZE))
-  const shown = listed.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const shown = listed.slice(0, size)
+  const left = listed.length - shown.length
   const peak = Math.max(1, ...all.map((r) => active.raw(r)))
-  const me = board?.me ?? null
-  const onPodium = podium.some((row) => row?.me)
   const table = !board || !!error || all.length === 0 || listed.length > 0
   const medals = ['gold', 'silver', 'bronze']
   const stand = [1, 0, 2]
@@ -286,13 +293,14 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                         </tr>
                       )}
                       {shown.map((row) => (
-                        <tr key={`${row.rank}-${row.nickname}`}>
+                        <tr key={`${row.rank}-${row.nickname}`} className={row.me ? 'me' : ''}>
                           <td className="lb-rank">#{row.rank}</td>
                           <td className="lb-name">
                             <Link className="lb-player" href={row.me || !row.id ? href.profile : href.player(row.id)} prefetch={false}>
                               <Avatar id={row.id} nickname={row.nickname} avatar={row.avatar} />
                               <span className="lb-nick">{row.nickname}</span>
                             </Link>
+                            {row.me && <span className="lb-you">{t('lb.you')}</span>}
                             {row.level ? <span className="lb-level">{t('nav.level', { level: row.level })}</span> : null}
                           </td>
                           {columns.map((c) => (
@@ -316,35 +324,14 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                         </tr>
                       ))}
                     </tbody>
-                    {me && !onPodium && (
-                      <tfoot>
-                        <tr className="me">
-                          <td className="lb-rank">#{me.rank}</td>
-                          <td className="lb-name">
-                            <Avatar id={me.id} nickname={me.nickname} avatar={me.avatar} />
-                            <span className="lb-nick">{me.nickname}</span>
-                            <span className="lb-you">{t('lb.you')}</span>
-                          </td>
-                          {columns.map((c) => (
-                            <td key={c.label} className={c === active ? 'sorted' : ''}>
-                              {c.value(me)}
-                            </td>
-                          ))}
-                        </tr>
-                      </tfoot>
-                    )}
                   </table>
                 </div>
               )}
 
-              {pages > 1 && (
-                <div className="lb-pager">
-                  <button type="button" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1} aria-label={t('lb.prev')}>
-                    <ChevronIcon className="left" />
-                  </button>
-                  <span>{t('lb.page', { page, pages })}</span>
-                  <button type="button" onClick={() => setPage((p) => Math.min(pages, p + 1))} disabled={page === pages} aria-label={t('lb.next')}>
-                    <ChevronIcon className="right" />
+              {left > 0 && (
+                <div className="lb-more" ref={more}>
+                  <button type="button" onClick={() => setSize((one) => one + PAGE_SIZE)}>
+                    {t('lb.more')}
                   </button>
                 </div>
               )}
