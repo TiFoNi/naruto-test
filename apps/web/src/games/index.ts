@@ -6,6 +6,7 @@ import { csm } from './csm'
 import { avatar } from './avatar'
 import { dn } from './dn'
 import { dota } from './dota'
+import { genshin } from './genshin'
 import { hxh } from './hxh'
 import { ff } from './ff'
 import { football } from './football'
@@ -23,7 +24,7 @@ import { tunes } from './tunes'
 import { tg } from './tg'
 import type { Entity, Game, GameId } from './types'
 
-const ALL = [tunes, shots, naruto, onepiece, aot, bleach, kny, jjk, csm, tg, berserk, hxh, bc, jojo, se, ff, dn, avatar, marvel, dota, mk, manga, football] as unknown as Game<Entity>[]
+const ALL = [tunes, shots, naruto, onepiece, aot, bleach, kny, jjk, csm, tg, berserk, hxh, bc, jojo, se, ff, dn, avatar, marvel, dota, genshin, mk, manga, football] as unknown as Game<Entity>[]
 
 export const GAMES = ALL
 

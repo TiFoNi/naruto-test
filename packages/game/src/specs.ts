@@ -1,4 +1,5 @@
 export type GameId =
+  | 'genshin'
   | 'marvel'
   | 'football'
   | 'naruto'
@@ -323,6 +324,20 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('status', 'exact'),
       col('height', 'order'),
       col('birth', 'order'),
+    ],
+  },
+  genshin: {
+    featured: ['Hu Tao', 'Raiden Shogun', 'Zhongli', 'Klee'],
+    data: 'genshin',
+    images: 'genshin',
+    modes: ['classic', 'image', 'odd', 'pair'],
+    columns: [
+      col('gender', 'exact'),
+      col('element', 'exact'),
+      col('weapon', 'exact'),
+      col('region', 'exact'),
+      col('rarity', 'order'),
+      col('year', 'order'),
     ],
   },
   dota: {
