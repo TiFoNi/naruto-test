@@ -3,7 +3,7 @@ import Thumb from './Thumb'
 import type { Entity, Game } from './games/types'
 import { ruToUk, useI18n } from './i18n'
 import { useAnimeOnly } from './anime'
-import { normalize } from './util'
+import { normalize, tight } from './util'
 import { ArrowIcon, SearchIcon } from './icons'
 
 type Props = {
@@ -42,22 +42,25 @@ export default function CharacterSearch({
 
   const index = useMemo(
     () =>
-      pool.map((e) => ({
-        e,
-        terms: [e.name, e.nameUk ?? ruToUk(e.name), e.nameEn, e.aliases].filter((s): s is string => !!s).map(normalize),
-      })),
+      pool.map((e) => {
+        const terms = [e.name, e.nameUk ?? ruToUk(e.name), e.nameEn, e.aliases].filter((s): s is string => !!s).map(normalize)
+        return { e, terms, tight: terms.map(tight) }
+      }),
     [game, pool],
   )
 
   const matches = useMemo(() => {
     const q = normalize(query.trim())
     if (!q) return []
-    const rank = ({ e, terms }: (typeof index)[number]) => {
+    const squeezed = tight(q)
+    const rank = ({ e, terms, tight: tights }: (typeof index)[number]) => {
       const tier = terms.some((term) => term.startsWith(q))
         ? 0
         : terms.some((term) => term.split(/[^\p{L}\p{N}]+/u).some((word) => word.startsWith(q)))
           ? 1
-          : -1
+          : squeezed && tights.some((term) => term.startsWith(squeezed))
+            ? 1
+            : -1
       return tier < 0 ? -1 : tier * 2 + (e.answer ? 0 : 1)
     }
     return index
