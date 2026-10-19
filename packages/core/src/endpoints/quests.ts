@@ -2,7 +2,7 @@ import { users } from '../db'
 import { fail, handle, json, readJson } from '../http'
 import { currentUser, touchVisit, unauthorized } from '../profile'
 import { claimQuest, questBoard } from '../quests'
-import { levelOf, nextRank, rankOf, LEVEL_XP } from '../quests'
+import { levelOf, LEVEL_XP } from '../quests'
 import { nextReset } from '../daily'
 
 const standing = (xp: number) => {
@@ -12,8 +12,6 @@ const standing = (xp: number) => {
     level,
     into: xp % LEVEL_XP,
     need: LEVEL_XP,
-    rank: rankOf(level).id,
-    next: nextRank(level),
   }
 }
 

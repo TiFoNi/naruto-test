@@ -5,18 +5,6 @@ import { addSeasonXp } from './season'
 
 export const LEVEL_XP = 500
 
-export const RANKS = [
-  { from: 1, id: 'rookie' },
-  { from: 5, id: 'apprentice' },
-  { from: 10, id: 'adept' },
-  { from: 15, id: 'explorer' },
-  { from: 20, id: 'expert' },
-  { from: 25, id: 'master' },
-  { from: 30, id: 'veteran' },
-  { from: 35, id: 'legend' },
-  { from: 40, id: 'myth' },
-] as const
-
 export const FREE_XP = 25
 export const BONUS_XP = 120
 // монети дають лише за повний набір щоденних завдань
@@ -52,10 +40,6 @@ export const POOL: Quest[] = [
 const byId = new Map(POOL.map((quest) => [quest.id, quest]))
 
 export const levelOf = (xp: number) => Math.floor(xp / LEVEL_XP) + 1
-
-export const rankOf = (level: number) => [...RANKS].reverse().find((rank) => level >= rank.from) ?? RANKS[0]
-
-export const nextRank = (level: number) => RANKS.find((rank) => rank.from > level) ?? null
 
 function seeded(seed: string) {
   let hash = 2166136261

@@ -1,4 +1,5 @@
 export type GameId =
+  | 'mha'
   | 'genshin'
   | 'marvel'
   | 'football'
@@ -324,6 +325,19 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('status', 'exact'),
       col('height', 'order'),
       col('birth', 'order'),
+    ],
+  },
+  mha: {
+    featured: ['Izuku Midoriya', 'Katsuki Bakugo', 'Shoto Todoroki', 'Toshinori Yagi'],
+    data: 'mha',
+    images: 'mha',
+    columns: [
+      col('gender', 'exact'),
+      col('quirkType', 'exact'),
+      col('side', 'exact'),
+      col('affiliations', 'list'),
+      col('height', 'order'),
+      col('arcIndex', 'order'),
     ],
   },
   genshin: {

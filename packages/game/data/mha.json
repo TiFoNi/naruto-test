@@ -1,0 +1,2028 @@
+[
+ {
+  "id": 2460,
+  "name": "Анан Куросе",
+  "nameEn": "Anan Kurose",
+  "aliases": "",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 180,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 0
+ },
+ {
+  "id": 8688,
+  "name": "Ацухиро Сако",
+  "nameEn": "Atsuhiro Sako",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Злодей",
+  "affiliations": [
+   "Лига злодеев",
+   "Фронт освобождения"
+  ],
+  "height": 181,
+  "arc": "Лагерь подготовки",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 1
+ },
+ {
+  "id": 74865,
+  "name": "Биг Ред Дот",
+  "nameEn": "Big Red Dot",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 215,
+  "arc": "Тёмный герой",
+  "arcIndex": 18,
+  "answer": true,
+  "thumb": 2
+ },
+ {
+  "id": 6139,
+  "name": "Все За Одного",
+  "nameEn": "All For One",
+  "aliases": "master",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Злодей",
+  "affiliations": [
+   "Лига злодеев",
+   "Фронт освобождения"
+  ],
+  "height": 225,
+  "arc": "Против Убийцы героев",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 3
+ },
+ {
+  "id": 2144,
+  "name": "Всемогущий",
+  "nameEn": "Toshinori Yagi",
+  "aliases": "всемогущий олл майт all might",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 220,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 4
+ },
+ {
+  "id": 8467,
+  "name": "Гото Имасуджи",
+  "nameEn": "Goto Imasuji",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Злодей",
+  "affiliations": [
+   "Лига злодеев",
+   "Фронт освобождения"
+  ],
+  "height": 200,
+  "arc": "Лагерь подготовки",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 5
+ },
+ {
+  "id": 5390,
+  "name": "Гран Торино",
+  "nameEn": "Sorahiko Torino",
+  "aliases": "gran torino",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 120,
+  "arc": "Против Убийцы героев",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 6
+ },
+ {
+  "id": 7216,
+  "name": "Даби",
+  "nameEn": "Dabi",
+  "aliases": "dabi",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Злодей",
+  "affiliations": [
+   "Лига злодеев",
+   "Фронт освобождения"
+  ],
+  "height": 176,
+  "arc": "Против Убийцы героев",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 7
+ },
+ {
+  "id": 24552,
+  "name": "Данджуро Тобита",
+  "nameEn": "Danjuro Tobita",
+  "aliases": "gentle criminal gentle",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Злодей",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 181,
+  "arc": "Фестиваль Ю-Эй",
+  "arcIndex": 12,
+  "answer": true,
+  "thumb": 8
+ },
+ {
+  "id": 2408,
+  "name": "Денки Каминари",
+  "nameEn": "Denki Kaminari",
+  "aliases": "stun gun hero: chargebolt",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 168,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 9
+ },
+ {
+  "id": 10055,
+  "name": "Джин Бубайгавара",
+  "nameEn": "Jin Bubaigawara",
+  "aliases": "twice",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Злодей",
+  "affiliations": [
+   "Лига злодеев",
+   "Фронт освобождения"
+  ],
+  "height": 178,
+  "arc": "Лагерь подготовки",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 10
+ },
+ {
+  "id": 3613,
+  "name": "Джузо Хоненуки",
+  "nameEn": "Juzo Honenuki",
+  "aliases": "mudman",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 174,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 11
+ },
+ {
+  "id": 10851,
+  "name": "Джурота Шишида",
+  "nameEn": "Jurota Shishida",
+  "aliases": "gevaudan",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 174,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 12
+ },
+ {
+  "id": 26570,
+  "name": "Дэвид Шилд",
+  "nameEn": "David Shield",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Гражданский",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 185,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 13
+ },
+ {
+  "id": 12129,
+  "name": "Дэт Армс",
+  "nameEn": "Death Arms",
+  "aliases": "punching hero: death arms",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 205,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 14
+ },
+ {
+  "id": 14412,
+  "name": "Ё Шиндо",
+  "nameEn": "Yo Shindo",
+  "aliases": "grand",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 176,
+  "arc": "Экзамен на лицензию",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 15
+ },
+ {
+  "id": 3614,
+  "name": "Ёсецу Авасе",
+  "nameEn": "Yosetsu Awase",
+  "aliases": "welder",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 172,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 16
+ },
+ {
+  "id": 3608,
+  "name": "Ибара Шиозаки",
+  "nameEn": "Ibara Shiozaki",
+  "aliases": "vine maria",
+  "gender": "Женский",
+  "quirkType": "Мутация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 167,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 17
+ },
+ {
+  "id": 2143,
+  "name": "Изуку Мидория",
+  "nameEn": "Izuku Midoriya",
+  "aliases": "деку deku one for all hero: deku",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 166,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 18
+ },
+ {
+  "id": 14317,
+  "name": "Инаса Ёараши",
+  "nameEn": "Inasa Yoarashi",
+  "aliases": "gale force",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 190,
+  "arc": "Экзамен на лицензию",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 19
+ },
+ {
+  "id": 2248,
+  "name": "Инко Мидория",
+  "nameEn": "Inko Midoriya",
+  "aliases": "",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Гражданский",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 160,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 2295,
+  "name": "Исцеляющая Девочка",
+  "nameEn": "Chiyo Shuzenji",
+  "aliases": "",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 115,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 21
+ },
+ {
+  "id": 34226,
+  "name": "Итеджиро Тотеки",
+  "nameEn": "Itejiro Toteki",
+  "aliases": "boomerang man",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 171,
+  "arc": "Экзамен на лицензию",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 22
+ },
+ {
+  "id": 5127,
+  "name": "Ицука Кендо",
+  "nameEn": "Itsuka Kendo",
+  "aliases": "battle fist",
+  "gender": "Женский",
+  "quirkType": "Трансформация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 166,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 15147,
+  "name": "Кай Чисаки",
+  "nameEn": "Kai Chisaki",
+  "aliases": "оверхол overhaul",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Злодей",
+  "affiliations": [
+   "Шиэ Хассайкай"
+  ],
+  "height": 179,
+  "arc": "Экзамен на лицензию",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 24
+ },
+ {
+  "id": 74063,
+  "name": "Кайна Цуцуми",
+  "nameEn": "Kaina Tsutsumi",
+  "aliases": "lady nagant",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Злодей",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 171,
+  "arc": "Война с Фронтом освобождения",
+  "arcIndex": 17,
+  "answer": true,
+  "thumb": 25
+ },
+ {
+  "id": 14770,
+  "name": "Камиэ Уцушими",
+  "nameEn": "Camie Utsushimi",
+  "aliases": "illus-o-camie",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 161,
+  "arc": "Экзамен на лицензию",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 26
+ },
+ {
+  "id": 2178,
+  "name": "Кацуки Бакуго",
+  "nameEn": "Katsuki Bakugo",
+  "aliases": "динамит граунд зиро каччан kacchan",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 172,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 51750,
+  "name": "Кацума Шимано",
+  "nameEn": "Katsuma Shimano",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Ю-Эй"
+  ],
+  "height": 98,
+  "arc": "Финальная война",
+  "arcIndex": 21,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 3135,
+  "name": "Кен Ишияма",
+  "nameEn": "Ken Ishiyama",
+  "aliases": "cementoss",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 185,
+  "arc": "Нападение на USJ",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 29
+ },
+ {
+  "id": 10850,
+  "name": "Киноко Комори",
+  "nameEn": "Kinoko Komori",
+  "aliases": "shemage",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 152,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 30
+ },
+ {
+  "id": 2448,
+  "name": "Коджи Кода",
+  "nameEn": "Koji Koda",
+  "aliases": "petting hero: anima",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 186,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 31
+ },
+ {
+  "id": 14488,
+  "name": "Коичи Хаимавари",
+  "nameEn": "Koichi Haimawari",
+  "aliases": "the skycrawler the crawler",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Виджиланте",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 172,
+  "arc": "Финальная война",
+  "arcIndex": 21,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 4153,
+  "name": "Косей Цубураба",
+  "nameEn": "Kosei Tsuburaba",
+  "aliases": "tsuburaba",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 170,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 7411,
+  "name": "Кота Изуми",
+  "nameEn": "Kota Izumi",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Ю-Эй"
+  ],
+  "height": 107,
+  "arc": "Лагерь подготовки",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 7701,
+  "name": "Кровавый Король",
+  "nameEn": "Sekijiro Kan",
+  "aliases": "blood hero: vlad king",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 194,
+  "arc": "Нападение на USJ",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 35
+ },
+ {
+  "id": 10041,
+  "name": "Куго Сакамата",
+  "nameEn": "Kugo Sakamata",
+  "aliases": "гэнг орка aqua hero: gang orca",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 202,
+  "arc": "Рейд на убежище",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 36
+ },
+ {
+  "id": 3025,
+  "name": "Курогири",
+  "nameEn": "Kurogiri",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Злодей",
+  "affiliations": [
+   "Лига злодеев"
+  ],
+  "height": 190,
+  "arc": "Тренировочный бой",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 2415,
+  "name": "Кьека Джиро",
+  "nameEn": "Kyoka Jiro",
+  "aliases": "hearing hero: earphone jack",
+  "gender": "Женский",
+  "quirkType": "Мутация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 154,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 38
+ },
+ {
+  "id": 76065,
+  "name": "Кэтлин Бейт",
+  "nameEn": "Cathleen Bate",
+  "aliases": "star and stripe cassie",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 193,
+  "arc": "Тёмный герой",
+  "arcIndex": 18,
+  "answer": true,
+  "thumb": 39
+ },
+ {
+  "id": 24553,
+  "name": "Манами Айба",
+  "nameEn": "Manami Aiba",
+  "aliases": "la brava",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Злодей",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 111,
+  "arc": "Фестиваль Ю-Эй",
+  "arcIndex": 12,
+  "answer": true,
+  "thumb": 40
+ },
+ {
+  "id": 10856,
+  "name": "Манга Фукидаши",
+  "nameEn": "Manga Fukidashi",
+  "aliases": "comicman",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 140,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 41
+ },
+ {
+  "id": 13388,
+  "name": "Масару Бакуго",
+  "nameEn": "Masaru Bakugo",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Гражданский",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 177,
+  "arc": "Рейд на убежище",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 42
+ },
+ {
+  "id": 2439,
+  "name": "Маширао Оджиро",
+  "nameEn": "Mashirao Ojiro",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 169,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 43
+ },
+ {
+  "id": 2444,
+  "name": "Мезо Шоджи",
+  "nameEn": "Mezo Shoji",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 187,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 44
+ },
+ {
+  "id": 3694,
+  "name": "Мей Хацуме",
+  "nameEn": "Mei Hatsume",
+  "aliases": "",
+  "gender": "Женский",
+  "quirkType": "Мутация",
+  "side": "Ученик",
+  "affiliations": [
+   "Ю-Эй"
+  ],
+  "height": 157,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 26568,
+  "name": "Мелисса Шилд",
+  "nameEn": "Melissa Shield",
+  "aliases": "",
+  "gender": "Женский",
+  "quirkType": "Без причуды",
+  "side": "Гражданский",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 169,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 2402,
+  "name": "Мина Ашидо",
+  "nameEn": "Mina Ashido",
+  "aliases": "ridley hero: pinky",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 159,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 47
+ },
+ {
+  "id": 2442,
+  "name": "Минору Минета",
+  "nameEn": "Minoru Mineta",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 108,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 15864,
+  "name": "Мирай Сасаки",
+  "nameEn": "Mirai Sasaki",
+  "aliases": "sir nighteye",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 200,
+  "arc": "Шиэ Хассайкай",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 49
+ },
+ {
+  "id": 15653,
+  "name": "Мирио Тогата",
+  "nameEn": "Mirio Togata",
+  "aliases": "луминьюс лемиллион comedy hero: lemillion",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 181,
+  "arc": "Экзамен на лицензию",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 50
+ },
+ {
+  "id": 2437,
+  "name": "Момо Яойорозу",
+  "nameEn": "Momo Yaoyorozu",
+  "aliases": "yaomomo",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 173,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 51
+ },
+ {
+  "id": 49393,
+  "name": "Найн",
+  "nameEn": "Nine",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Злодей",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 189,
+  "arc": "Армия освобождения мета",
+  "arcIndex": 15,
+  "answer": true,
+  "thumb": 52
+ },
+ {
+  "id": 15641,
+  "name": "Неджире Хадо",
+  "nameEn": "Nejire Hado",
+  "aliases": "нежире чан wonder hero: nejire chan",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 164,
+  "arc": "Шиэ Хассайкай",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 53
+ },
+ {
+  "id": 2878,
+  "name": "Незу",
+  "nameEn": "Nezu",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 85,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 54
+ },
+ {
+  "id": 3941,
+  "name": "Нейто Монома",
+  "nameEn": "Neito Monoma",
+  "aliases": "phantom thief",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 170,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 55
+ },
+ {
+  "id": 3323,
+  "name": "Немури Каяма",
+  "nameEn": "Nemuri Kayama",
+  "aliases": "миднайт полуночь r-rated hero: midnight",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 175,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 56
+ },
+ {
+  "id": 4373,
+  "name": "Ниренгеки Шода",
+  "nameEn": "Nirengeki Shoda",
+  "aliases": "mines",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 165,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 57
+ },
+ {
+  "id": 3027,
+  "name": "Ному",
+  "nameEn": "Nomu (U.S.J.)",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Злодей",
+  "affiliations": [
+   "Лига злодеев"
+  ],
+  "height": 195,
+  "arc": "Тренировочный бой",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 58
+ },
+ {
+  "id": 49653,
+  "name": "Оборо Ширакумо",
+  "nameEn": "Oboro Shirakumo",
+  "aliases": "loud cloud",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй"
+  ],
+  "height": 187,
+  "arc": "Война с Фронтом освобождения",
+  "arcIndex": 17,
+  "answer": true,
+  "thumb": 59
+ },
+ {
+  "id": 77007,
+  "name": "Обычная женщина",
+  "nameEn": "Ordinary Woman",
+  "aliases": "",
+  "gender": "Женский",
+  "quirkType": "Мутация",
+  "side": "Гражданский",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 300,
+  "arc": "Тёмный герой",
+  "arcIndex": 18,
+  "answer": true,
+  "thumb": 60
+ },
+ {
+  "id": 2196,
+  "name": "Очако Урарака",
+  "nameEn": "Ochaco Uraraka",
+  "aliases": "юравити гравитация",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 156,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 61
+ },
+ {
+  "id": 7871,
+  "name": "Пони Цунотори",
+  "nameEn": "Pony Tsunotori",
+  "aliases": "rocketti",
+  "gender": "Женский",
+  "quirkType": "Мутация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 155,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 62
+ },
+ {
+  "id": 15609,
+  "name": "Рё Инуи",
+  "nameEn": "Ryo Inui",
+  "aliases": "hound hero: hound dog",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 196,
+  "arc": "Нападение на USJ",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 63
+ },
+ {
+  "id": 10746,
+  "name": "Рейко Янаги",
+  "nameEn": "Reiko Yanagi",
+  "aliases": "emily",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 165,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 64
+ },
+ {
+  "id": 2446,
+  "name": "Рикидо Сато",
+  "nameEn": "Rikido Sato",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 185,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 65
+ },
+ {
+  "id": 74295,
+  "name": "Роди Соул",
+  "nameEn": "Rody Soul",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Гражданский",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 174,
+  "arc": "Финальная война",
+  "arcIndex": 21,
+  "answer": true,
+  "thumb": 66
+ },
+ {
+  "id": 30447,
+  "name": "Руми Усагияма",
+  "nameEn": "Rumi Usagiyama",
+  "aliases": "мируко rabbit hero: mirko tiger bunny",
+  "gender": "Женский",
+  "quirkType": "Мутация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 159,
+  "arc": "Профи-герои",
+  "arcIndex": 13,
+  "answer": true,
+  "thumb": 67
+ },
+ {
+  "id": 16170,
+  "name": "Рюко Тацума",
+  "nameEn": "Ryuko Tatsuma",
+  "aliases": "dragoon hero \"ryukyu\"",
+  "gender": "Женский",
+  "quirkType": "Трансформация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 166,
+  "arc": "Шиэ Хассайкай",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 68
+ },
+ {
+  "id": 7409,
+  "name": "Рюко Цучикава",
+  "nameEn": "Ryuko Tsuchikawa",
+  "aliases": "pixie-bob",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 167,
+  "arc": "Лагерь подготовки",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 69
+ },
+ {
+  "id": 74864,
+  "name": "Салаам",
+  "nameEn": "Salaam",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 190,
+  "arc": "Тёмный герой",
+  "arcIndex": 18,
+  "answer": true,
+  "thumb": 70
+ },
+ {
+  "id": 14631,
+  "name": "Сейджи Шишикура",
+  "nameEn": "Seiji Shishikura",
+  "aliases": "shishikross",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 172,
+  "arc": "Экзамен на лицензию",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 71
+ },
+ {
+  "id": 10808,
+  "name": "Сецуна Токаге",
+  "nameEn": "Setsuna Tokage",
+  "aliases": "lizardy",
+  "gender": "Женский",
+  "quirkType": "Трансформация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 158,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 72
+ },
+ {
+  "id": 6270,
+  "name": "Снайп",
+  "nameEn": "Snipe",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 182,
+  "arc": "Нападение на USJ",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 73
+ },
+ {
+  "id": 30454,
+  "name": "Сусугу Митарай",
+  "nameEn": "Susugu Mitarai",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 176,
+  "arc": "Профи-герои",
+  "arcIndex": 13,
+  "answer": true,
+  "thumb": 74
+ },
+ {
+  "id": 10847,
+  "name": "Сэн Каибара",
+  "nameEn": "Sen Kaibara",
+  "aliases": "spiral",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 172,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 75
+ },
+ {
+  "id": 16266,
+  "name": "Тайширо Тоёмицу",
+  "nameEn": "Taishiro Toyomitsu",
+  "aliases": "фэт гам",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 250,
+  "arc": "Шиэ Хассайкай",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 76
+ },
+ {
+  "id": 15647,
+  "name": "Тамаки Амаджики",
+  "nameEn": "Tamaki Amajiki",
+  "aliases": "саннитай",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 177,
+  "arc": "Шиэ Хассайкай",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 77
+ },
+ {
+  "id": 16480,
+  "name": "Татами Накагаме",
+  "nameEn": "Tatami Nakagame",
+  "aliases": "turtle neck",
+  "gender": "Женский",
+  "quirkType": "Трансформация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 155,
+  "arc": "Экзамен на лицензию",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 78
+ },
+ {
+  "id": 45397,
+  "name": "Тацуюки Токонаме",
+  "nameEn": "Tatsuyuki Tokoname",
+  "aliases": "slidin' go",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Злодей",
+  "affiliations": [
+   "Фронт освобождения",
+   "Армия освобождения мета",
+   "Профи-герои"
+  ],
+  "height": 187,
+  "arc": "Армия освобождения мета",
+  "arcIndex": 15,
+  "answer": true,
+  "thumb": 79
+ },
+ {
+  "id": 2726,
+  "name": "Тенсей Ида",
+  "nameEn": "Tensei Ida",
+  "aliases": "turbo hero: ingenium",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 183,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 80
+ },
+ {
+  "id": 2261,
+  "name": "Тенья Иида",
+  "nameEn": "Tenya Ida",
+  "aliases": "ингениум turbo hero: ingenium tenya",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 179,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 81
+ },
+ {
+  "id": 3375,
+  "name": "Тецутецу Тецутецу",
+  "nameEn": "Tetsutetsu Tetsutetsu",
+  "aliases": "real steel",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 174,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 82
+ },
+ {
+  "id": 2399,
+  "name": "Томура Шигараки",
+  "nameEn": "Tomura Shigaraki",
+  "aliases": "шигараки томура",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Злодей",
+  "affiliations": [
+   "Лига злодеев",
+   "Фронт освобождения"
+  ],
+  "height": 175,
+  "arc": "Тренировочный бой",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 83
+ },
+ {
+  "id": 2454,
+  "name": "Тору Хагакуре",
+  "nameEn": "Toru Hagakure",
+  "aliases": "stealth hero: invisible girl",
+  "gender": "Женский",
+  "quirkType": "Мутация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 152,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 84
+ },
+ {
+  "id": 5569,
+  "name": "Увабами",
+  "nameEn": "Uwabami",
+  "aliases": "snake hero: uwabami",
+  "gender": "Женский",
+  "quirkType": "Мутация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 170,
+  "arc": "Против Убийцы героев",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 85
+ },
+ {
+  "id": 2452,
+  "name": "Фумикаге Токоями",
+  "nameEn": "Fumikage Tokoyami",
+  "aliases": "цукуёми",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 158,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 86
+ },
+ {
+  "id": 5225,
+  "name": "Фуюми Тодороки",
+  "nameEn": "Fuyumi Todoroki",
+  "aliases": "",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Гражданский",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 160,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 87
+ },
+ {
+  "id": 2450,
+  "name": "Ханта Серо",
+  "nameEn": "Hanta Sero",
+  "aliases": "taping hero: cellophane",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 177,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 88
+ },
+ {
+  "id": 6252,
+  "name": "Хигари Майджима",
+  "nameEn": "Higari Maijima",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 155,
+  "arc": "Нападение на USJ",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 89
+ },
+ {
+  "id": 2193,
+  "name": "Хизаши Ямада",
+  "nameEn": "Hizashi Yamada",
+  "aliases": "презент майк voice hero: present mic",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 185,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 90
+ },
+ {
+  "id": 7211,
+  "name": "Химико Тога",
+  "nameEn": "Himiko Toga",
+  "aliases": "himiko toga yakuza toga",
+  "gender": "Женский",
+  "quirkType": "Трансформация",
+  "side": "Злодей",
+  "affiliations": [
+   "Лига злодеев",
+   "Фронт освобождения"
+  ],
+  "height": 157,
+  "arc": "Против Убийцы героев",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 91
+ },
+ {
+  "id": 7858,
+  "name": "Хирю Рин",
+  "nameEn": "Hiryu Rin",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 170,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 92
+ },
+ {
+  "id": 4358,
+  "name": "Хитоши Шинсо",
+  "nameEn": "Hitoshi Shinso",
+  "aliases": "hypnosis hero: nighthide",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 177,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 93
+ },
+ {
+  "id": 5202,
+  "name": "Цунагу Хакамада",
+  "nameEn": "Tsunagu Hakamada",
+  "aliases": "fiber hero: best jeanist",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 190,
+  "arc": "Против Убийцы героев",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 94
+ },
+ {
+  "id": 2299,
+  "name": "Цую Асуи",
+  "nameEn": "Tsuyu Asui",
+  "aliases": "фроппи цую",
+  "gender": "Женский",
+  "quirkType": "Мутация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 150,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 95
+ },
+ {
+  "id": 5027,
+  "name": "Чизоме Акагуро",
+  "nameEn": "Chizome Akaguro",
+  "aliases": "стейн убийца героев stendhal",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Злодей",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 182,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 96
+ },
+ {
+  "id": 16498,
+  "name": "Шиккуи Макабе",
+  "nameEn": "Shikkui Makabe",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 180,
+  "arc": "Экзамен на лицензию",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 97
+ },
+ {
+  "id": 2254,
+  "name": "Шинджи Нишия",
+  "nameEn": "Shinji Nishiya",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 168,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 98
+ },
+ {
+  "id": 7554,
+  "name": "Шино Сосаки",
+  "nameEn": "Shino Sosaki",
+  "aliases": "mandalay",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 168,
+  "arc": "Лагерь подготовки",
+  "arcIndex": 7,
+  "answer": true,
+  "thumb": 99
+ },
+ {
+  "id": 9058,
+  "name": "Шинья Камихара",
+  "nameEn": "Shinya Kamihara",
+  "aliases": "ninja hero: edgeshot",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 170,
+  "arc": "Рейд на убежище",
+  "arcIndex": 8,
+  "answer": true,
+  "thumb": 100
+ },
+ {
+  "id": 10855,
+  "name": "Шихай Куройро",
+  "nameEn": "Shihai Kuroiro",
+  "aliases": "scheming hero: vantablack",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 176,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 101
+ },
+ {
+  "id": 2250,
+  "name": "Шота Аизава",
+  "nameEn": "Shota Aizawa",
+  "aliases": "эрейзерхед стиратель erasure hero: eraser head",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 183,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 102
+ },
+ {
+  "id": 2405,
+  "name": "Шото Тодороки",
+  "nameEn": "Shoto Todoroki",
+  "aliases": "шото a.c. hero: shoto",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 176,
+  "arc": "Тест на причуды",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 103
+ },
+ {
+  "id": 8039,
+  "name": "Шуичи Игучи",
+  "nameEn": "Shuichi Iguchi",
+  "aliases": "spinner",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Злодей",
+  "affiliations": [
+   "Лига злодеев",
+   "Фронт освобождения"
+  ],
+  "height": 174,
+  "arc": "Против Убийцы героев",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 104
+ },
+ {
+  "id": 2396,
+  "name": "Эйджиро Киришима",
+  "nameEn": "Eijiro Kirishima",
+  "aliases": "красный бунтарь ред райот",
+  "gender": "Мужской",
+  "quirkType": "Трансформация",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй"
+  ],
+  "height": 170,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 105
+ },
+ {
+  "id": 6246,
+  "name": "Эктопласм",
+  "nameEn": "Ectoplasm",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 180,
+  "arc": "Нападение на USJ",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 106
+ },
+ {
+  "id": 14402,
+  "name": "Эми Фукукадо",
+  "nameEn": "Emi Fukukado",
+  "aliases": "",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 166,
+  "arc": "Экзамен на лицензию",
+  "arcIndex": 9,
+  "answer": true,
+  "thumb": 107
+ },
+ {
+  "id": 3381,
+  "name": "Энджи Тодороки",
+  "nameEn": "Enji Todoroki",
+  "aliases": "индевор flame hero: endeavor",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 195,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 108
+ },
+ {
+  "id": 67314,
+  "name": "Энма Каннаги",
+  "nameEn": "Enma Kannagi",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 183,
+  "arc": "Война с Фронтом освобождения",
+  "arcIndex": 17,
+  "answer": true,
+  "thumb": 109
+ },
+ {
+  "id": 16070,
+  "name": "Эри",
+  "nameEn": "Eri",
+  "aliases": "",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Гражданский",
+  "affiliations": [
+   "Без фракции"
+  ],
+  "height": 110,
+  "arc": "Шиэ Хассайкай",
+  "arcIndex": 10,
+  "answer": true,
+  "thumb": 110
+ },
+ {
+  "id": 2239,
+  "name": "Ю Такеяма",
+  "nameEn": "Yu Takeyama",
+  "aliases": "маунт леди",
+  "gender": "Женский",
+  "quirkType": "Трансформация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 162,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 111
+ },
+ {
+  "id": 2203,
+  "name": "Юга Аояма",
+  "nameEn": "Yuga Aoyama",
+  "aliases": "",
+  "gender": "Мужской",
+  "quirkType": "Эмиттер",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Класс 1-A",
+   "Ю-Эй",
+   "Профи-герои"
+  ],
+  "height": 168,
+  "arc": "Вступительный экзамен",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 112
+ },
+ {
+  "id": 7828,
+  "name": "Юи Кодай",
+  "nameEn": "Yui Kodai",
+  "aliases": "rule",
+  "gender": "Женский",
+  "quirkType": "Эмиттер",
+  "side": "Ученик",
+  "affiliations": [
+   "Класс 1-B",
+   "Ю-Эй"
+  ],
+  "height": 160,
+  "arc": "Спортивный фестиваль",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 113
+ },
+ {
+  "id": 30441,
+  "name": "Ястреб",
+  "nameEn": "Keigo Takami",
+  "aliases": "хоукс ястреб wing hero: hawks",
+  "gender": "Мужской",
+  "quirkType": "Мутация",
+  "side": "Профи-герой",
+  "affiliations": [
+   "Профи-герои"
+  ],
+  "height": 172,
+  "arc": "Профи-герои",
+  "arcIndex": 13,
+  "answer": true,
+  "thumb": 114
+ }
+]

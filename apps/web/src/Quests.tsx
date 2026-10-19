@@ -9,7 +9,7 @@ import { CalendarIcon, CheckIcon, GiftIcon, GlobeIcon, GridIcon, MedalIcon, Page
 import { keepPerUser } from './session-cache'
 import Ticker from './Ticker'
 
-export type Level = { xp: number; level: number; into: number; need: number; rank: string; next: { from: number; id: string } | null }
+export type Level = { xp: number; level: number; into: number; need: number }
 
 export type Board = {
   day: string
