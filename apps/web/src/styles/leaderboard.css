@@ -41,24 +41,22 @@
 .lb-more {
   display: flex;
   justify-content: center;
-  padding: 12px 0 2px;
+  padding: 7px 14px 9px;
 }
 
 .lb-more button {
-  height: 38px;
-  padding: 0 18px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--card);
+  padding: 5px 12px;
+  border: 0;
+  background: none;
   color: var(--text-2);
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
+  transition: color 0.16s ease;
 }
 
 .lb-more button:hover {
   color: var(--text);
-  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
 }
 
 .lb-pager {
@@ -919,6 +917,13 @@
   margin-bottom: -4px;
 }
 
+.season-gap {
+  margin: 0;
+  color: var(--text-3);
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .season-me .season-place {
   display: flex;
   align-items: baseline;
@@ -1111,12 +1116,5 @@
 }
 
 .season-scroll {
-  overflow-y: auto;
-}
-
-.season-scroll .season-table thead {
-  position: sticky;
-  z-index: 2;
-  top: 0;
-  backdrop-filter: blur(14px) saturate(1.4);
+  overflow: visible;
 }

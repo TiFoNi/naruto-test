@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { api } from './api'
 import BackButton from './BackButton'
@@ -21,7 +21,8 @@ type Board = {
   toTop: number
 }
 
-const SHOW_ROWS = 12
+const PAGE = 15
+const TOP = 100
 
 const TONES = 8
 
@@ -54,6 +55,7 @@ export default function SeasonBoard() {
   const [board, setBoard] = useState<Board | null>(known)
   const [error, setError] = useState<string | null>(null)
   const [now, setNow] = useState(() => Date.now())
+  const [size, setSize] = useState(PAGE)
 
   useEffect(() => {
     let cancelled = false
@@ -90,22 +92,10 @@ export default function SeasonBoard() {
   const podium = rows.length > 0 || waiting ? [rows[0] ?? null, rows[1] ?? null, rows[2] ?? null] : []
   const medals = ['gold', 'silver', 'bronze']
   const stand = [1, 0, 2]
-  const box = useRef<HTMLDivElement>(null)
-
-  useLayoutEffect(() => {
-    const el = box.current
-    if (!el) return
-    const fit = () => {
-      const lines = el.querySelectorAll('tbody tr')
-      if (lines.length <= SHOW_ROWS) return el.style.removeProperty('max-height')
-      const edge = lines[SHOW_ROWS - 1].getBoundingClientRect().bottom
-      el.style.removeProperty('max-height')
-      el.style.maxHeight = `${Math.ceil(edge - el.getBoundingClientRect().top + 6)}px`
-    }
-    fit()
-    window.addEventListener('resize', fit)
-    return () => window.removeEventListener('resize', fit)
-  }, [rows.length])
+  const ranked = rows.slice(0, TOP)
+  const shown = ranked.slice(0, size)
+  const left = ranked.length - shown.length
+  const outside = board?.me && board.me.rank > TOP ? board.me : null
 
   return (
     <div className="leaderboard season-board">
@@ -218,7 +208,7 @@ export default function SeasonBoard() {
             <div className="lb-state">{t('lb.seasonEmpty')}</div>
           ) : (
             <div className="lb-card">
-              <div className="lb-scroll season-scroll" ref={box}>
+              <div className="lb-scroll season-scroll">
                 <table className="lb-table season-table">
                 <thead>
                   <tr>
@@ -230,7 +220,7 @@ export default function SeasonBoard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {(board ? rows : Array.from({ length: 10 }, () => null)).map((row, index) =>
+                  {(board ? shown : Array.from({ length: PAGE }, () => null)).map((row, index) =>
                     row ? (
                       <tr key={row.rank} className={row.me ? 'me' : ''}>
                         <td className="lb-rank">
@@ -281,11 +271,36 @@ export default function SeasonBoard() {
                   </tbody>
                 </table>
               </div>
+
+              {left > 0 && (
+                <div className="lb-more">
+                  <button type="button" onClick={() => setSize((one) => one + PAGE)}>
+                    {t('lb.more')}
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </section>
 
         <aside className="lb-side">
+          {outside && (
+            <section className="card season-me">
+              <span className="play-card-title">{t('lb.myPlace')}</span>
+              <p className="season-place">
+                <b>#{outside.rank}</b>
+                <span>
+                  {outside.xp.toLocaleString(lang === 'en' ? 'en-GB' : 'uk-UA')} {t('lb.colXp')}
+                </span>
+              </p>
+              {board!.toTop > 0 && (
+                <p className="season-gap">
+                  {t('lb.toTop100')} — {t('lb.moreXp', { xp: board!.toTop.toLocaleString(lang === 'en' ? 'en-GB' : 'uk-UA') })}
+                </p>
+              )}
+            </section>
+          )}
+
           <section className="card season-how">
             <span className="play-card-title">{t('lb.howTitle')}</span>
             <ol>
