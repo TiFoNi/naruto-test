@@ -591,6 +591,25 @@
     text-align: center;
   }
 
+  .season-board .lb-step-sub {
+    display: none;
+  }
+
+  .season-board .lb-step-main {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    text-align: center;
+  }
+
+  .season-board .lb-step-main em {
+    font-size: 26px;
+  }
+
+  .season-board .lb-step.gold .lb-step-main em {
+    font-size: 30px;
+  }
+
   .lb-table .lb-bar {
     display: none;
   }
