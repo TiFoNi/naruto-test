@@ -446,6 +446,7 @@ export const GRID_GAMES: GameId[] = [
   'marvel',
   'football',
   'dota',
+  'genshin',
 ]
 
 export const GRID_SIDE = 3
