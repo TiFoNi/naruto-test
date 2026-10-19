@@ -141,13 +141,13 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   const waiting = !board && !error
   const standing = all.length > 0
   const podium = standing ? [all[0] ?? null, all[1] ?? null, all[2] ?? null] : waiting ? [null, null, null] : []
-  const listed = all.slice(standing ? 3 : 0)
+  const listed = all
   const pages = Math.max(1, Math.ceil(listed.length / PAGE_SIZE))
   const shown = listed.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
   const peak = Math.max(1, ...all.map((r) => active.raw(r)))
   const me = board?.me ?? null
   const onPodium = podium.some((row) => row?.me)
-  const table = !board || !!error || all.length === 0 || listed.length > 0 || (!!me && !onPodium)
+  const table = !board || !!error || all.length === 0 || listed.length > 0
   const medals = ['gold', 'silver', 'bronze']
   const stand = [1, 0, 2]
 
@@ -316,7 +316,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                         </tr>
                       ))}
                     </tbody>
-                    {me && (
+                    {me && !onPodium && (
                       <tfoot>
                         <tr className="me">
                           <td className="lb-rank">#{me.rank}</td>

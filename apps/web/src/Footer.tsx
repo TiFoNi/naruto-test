@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { BRAND } from './brand'
 import { CONTACT, SOCIALS } from './contacts'
+import { BOARD_START } from './games'
 import { useI18n } from './i18n'
 import { useHref } from './router'
 import SocialGlyph from './SocialGlyph'
@@ -41,7 +42,7 @@ export default function Footer() {
           <h2>{t('footer.nav')}</h2>
           <Link href={href.home}>{t('footer.home')}</Link>
           <Link href={href.worlds}>{t('worlds.title')}</Link>
-          <Link href={href.board}>{t('nav.leaderboard')}</Link>
+          <Link href={href.leaderboard(BOARD_START.game, BOARD_START.mode)}>{t('nav.leaderboard')}</Link>
           <Link href={href.duels}>{t('nav.duels')}</Link>
           <Link href={href.achievements}>{t('ach.title')}</Link>
           <Link href={href.shop}>{t('nav.shop')}</Link>
