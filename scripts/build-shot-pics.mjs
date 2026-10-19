@@ -6,7 +6,13 @@ import { PUBLIC, ROOT } from './lib.mjs'
 const DATA = path.join(ROOT, 'packages', 'game', 'data', 'shots.json')
 const SEEDS = path.join(ROOT, 'seeds', 'shots')
 const OUT = path.join(PUBLIC, 'shots')
-const SIZE = { width: 1280, height: 720 }
+const SIZE = { width: 1920, height: 1080 }
+const SIZE_MIN = 1280
+
+const box = (width) => {
+  const side = Math.min(SIZE.width, Math.max(SIZE_MIN, width))
+  return { width: side, height: Math.round((side * 9) / 16) }
+}
 const CARD = { width: 288, height: 384 }
 const KINDS = ['.jpg', '.jpeg', '.png', '.webp', '.avif']
 
@@ -98,9 +104,9 @@ for (const folder of folders) {
     for (const [index, file] of files.entries()) {
       const source = await trimmed(file)
       const { width = 0 } = await sharp(source).metadata()
-      const stretched = width < SIZE.width
+      const stretched = width < SIZE_MIN
       await sharp(source)
-        .resize({ ...SIZE, fit: 'cover', position: 'attention', kernel: 'lanczos3' })
+        .resize({ ...box(width), fit: 'cover', position: 'attention', kernel: 'lanczos3' })
         // дрібні джерела доводиться розтягувати — трохи повертаємо різкість
         .sharpen(stretched ? { sigma: 1.1, m1: 0.6, m2: 2 } : { sigma: 0.5 })
         .webp({ quality: 88 })

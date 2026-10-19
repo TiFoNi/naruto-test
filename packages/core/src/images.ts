@@ -134,7 +134,13 @@ export async function dropPages(game: GameId, id: number, from: number, to: numb
   }
 }
 
-const FRAME = { width: 1280, height: 720 }
+const FRAME = { width: 1920, height: 1080 }
+const FRAME_MIN = 1280
+
+const frameBox = (width: number) => {
+  const side = Math.min(FRAME.width, Math.max(FRAME_MIN, width))
+  return { width: side, height: Math.round((side * 9) / 16) }
+}
 const SHOT_CARD = { width: 288, height: 384 }
 const SHOTS = 'shots'
 
@@ -155,9 +161,9 @@ export async function uploadFrames(id: number, level: number, sources: Buffer[],
   for (const [step, source] of sources.entries()) {
     const plain = await unbarred(source)
     const { width = 0 } = await sharp(plain).metadata()
-    const stretched = width < FRAME.width
+    const stretched = width < FRAME_MIN
     const frame = await sharp(plain)
-      .resize({ ...FRAME, fit: 'cover', position: 'attention', kernel: 'lanczos3' })
+      .resize({ ...frameBox(width), fit: 'cover', position: 'attention', kernel: 'lanczos3' })
       .sharpen(stretched ? { sigma: 1.1, m1: 0.6, m2: 2 } : { sigma: 0.5 })
       .webp({ quality: 88 })
       .toBuffer()
