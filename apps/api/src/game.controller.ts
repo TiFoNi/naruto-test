@@ -5,6 +5,7 @@ import * as me from '@nanda/core/endpoints/me'
 import * as admin from '@nanda/core/endpoints/admin'
 import * as summary from '@nanda/core/endpoints/profile-summary'
 import * as quests from '@nanda/core/endpoints/quests'
+import * as levels from '@nanda/core/endpoints/levels'
 import * as shop from '@nanda/core/endpoints/shop'
 import * as shopWebhook from '@nanda/core/endpoints/shop-webhook'
 import * as shopStars from '@nanda/core/endpoints/shop-telegram'
@@ -145,6 +146,16 @@ export class GameController {
   @Post('quests/claim')
   questClaim(@Req() req: Request, @Res() res: Response) {
     return bridge(quests.POST, req, res)
+  }
+
+  @Get('levels')
+  levelBoard(@Req() req: Request, @Res() res: Response) {
+    return bridge(levels.GET, req, res)
+  }
+
+  @Post('levels/claim')
+  levelClaim(@Req() req: Request, @Res() res: Response) {
+    return bridge(levels.POST, req, res)
   }
 
   @Get('profile/summary')

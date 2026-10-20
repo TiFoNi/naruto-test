@@ -32,6 +32,7 @@ import {
 import { abilityByKey } from './abilities'
 import { duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type UserDoc } from './db'
 import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
+import { twinsOf } from './twins'
 import { gameData, isGame, isMode } from './games'
 import { matchesFacet, planGrid } from './grid'
 import { BLACK, GREY, cleanCount, cleanWord, clueBoard, clueSizes, clueWinner, kindFor, sideLeft, teamKey } from './clue'
@@ -1366,6 +1367,10 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
             .filter((id) => byId.has(id))
             .map((id) => ({ id, judgement: duel.mode === 'classic' && answer ? judgeAll(game!, byId.get(id)!, answer) : undefined }))
         : [],
+      twins:
+        playing && duel.mode === 'classic' && data && answer && !you.solvedAt && !you.gaveUp
+          ? twinsOf(game!, data.list, data.byId, duel.answerId!, you.guesses)
+          : [],
     },
     rival: rival && {
       id: rival.userId.toHexString(),

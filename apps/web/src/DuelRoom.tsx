@@ -107,6 +107,11 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
     return pending && !done.some((g) => g.entity.id === pending.id) ? [{ entity: pending, pending: true }, ...done] : done
   }, [duel, byId, pending])
 
+  const picked = useMemo(
+    () => new Set([...guesses.map((g) => g.entity.id), ...(duel?.you?.twins ?? [])]),
+    [guesses, duel?.you?.twins],
+  )
+
   if (error && !duel) {
     return (
       <div className="duel">
@@ -486,7 +491,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
                 title={t('play.classicTitle')}
                 hint={t('duel.hurry')}
               >
-                <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} />
+                <CharacterSearch game={game} exclude={picked} busy={busy} onPick={guess} />
               </PlayPanel>
             ) : duel.mode === 'page' ? (
               <>
@@ -508,7 +513,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
                   title={t(duel.mode === 'ability' ? 'play.abilityTitle' : duel.mode === 'phrase' ? 'play.phraseTitle' : 'play.imageTitle')}
                   hint={t('duel.hurry')}
                 />
-                <CharacterSearch game={game} exclude={new Set(guesses.map((g) => g.entity.id))} busy={busy} onPick={guess} compact />
+                <CharacterSearch game={game} exclude={picked} busy={busy} onPick={guess} compact />
               </>
             ))}
 

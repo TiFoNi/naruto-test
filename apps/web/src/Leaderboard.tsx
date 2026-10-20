@@ -235,7 +235,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                     </span>
                     <b className="lb-step-name">{row.nickname}</b>
                     <span className="lb-step-main">
-                      <em>{active.value(row)}</em>
+                      <em style={{ '--len': String(active.value(row)).length } as CSSProperties}>{active.value(row)}</em>
                       {t(active.short)}
                     </span>
                     <span className="lb-step-sub">

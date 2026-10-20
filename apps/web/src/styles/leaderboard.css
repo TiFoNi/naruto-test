@@ -223,6 +223,7 @@
 }
 
 .lb-step {
+  container-type: inline-size;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -328,7 +329,8 @@
 
 .lb-step-main em {
   font-family: var(--display);
-  font-size: 28px;
+  font-size: min(28px, calc((100cqi - 6px) / (var(--len, 5) * 0.72)));
+  white-space: nowrap;
   font-style: normal;
   font-weight: 700;
   color: var(--text);
@@ -336,7 +338,7 @@
 }
 
 .lb-step.gold .lb-step-main em {
-  font-size: 34px;
+  font-size: min(34px, calc((100cqi - 6px) / (var(--len, 5) * 0.72)));
   color: #f5c451;
 }
 
@@ -601,11 +603,11 @@
   }
 
   .season-board .lb-step-main em {
-    font-size: 26px;
+    font-size: min(26px, calc((100cqi - 6px) / (var(--len, 5) * 0.72)));
   }
 
   .season-board .lb-step.gold .lb-step-main em {
-    font-size: 30px;
+    font-size: min(30px, calc((100cqi - 6px) / (var(--len, 5) * 0.72)));
   }
 
   .lb-table .lb-bar {
@@ -1116,5 +1118,6 @@
 }
 
 .season-scroll {
-  overflow: visible;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
 }

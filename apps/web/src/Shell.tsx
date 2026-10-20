@@ -22,7 +22,7 @@ import { MODE_XP, MODE_XP_AFTER } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
-import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MenuIcon, PodiumIcon, ShopIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
+import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MedalIcon, MenuIcon, PodiumIcon, ShopIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { api } from './api'
 import { openStream } from './stream'
 import { gameById } from './games'
@@ -248,6 +248,10 @@ function AccountMenu({ nickname, level, section, id, avatar }: { nickname: strin
         <Link href={href.profile} onClick={() => setOpen(false)} prefetch={false}>
           <UserIcon />
           {t('nav.profile')}
+        </Link>
+        <Link href={href.levels} onClick={() => setOpen(false)} prefetch={false}>
+          <MedalIcon />
+          {t('nav.levels')}
         </Link>
         <Link href={href.friends} onClick={() => setOpen(false)} prefetch={false}>
           <UsersIcon />

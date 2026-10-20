@@ -1085,11 +1085,12 @@ const ui = {
   'level.xp': { ru: '{into} / {need} XP', uk: '{into} / {need} XP', en: '{into} / {need} XP' },
   'level.toNext': { ru: 'до {level} уровня: {xp} XP', uk: 'до {level} рівня: {xp} XP', en: 'to level {level}: {xp} XP' },
   'levels.title': { ru: 'Уровни', uk: 'Рівні', en: 'Levels' },
-  'levels.lead': {
-    ru: 'Путь по уровням: каждый пятый и каждый десятый — заметные вехи.',
-    uk: 'Шлях по рівнях: кожен п\'ятий і кожен десятий — помітні віхи.',
-    en: 'Your level path: every fifth and every tenth is a milestone.',
-  },
+  'levels.rewards': { ru: 'Награды за уровни', uk: 'Нагороди за рівні', en: 'Level rewards' },
+  'levels.toNext': { ru: '{into} / {need} XP до {level} уровня', uk: '{into} / {need} XP до {level} рівня', en: '{into} / {need} XP to level {level}' },
+  'levels.here': { ru: 'ты здесь', uk: 'ти тут', en: 'you are here' },
+  'levels.take': { ru: 'Забрать', uk: 'Забрати', en: 'Claim' },
+  'levels.taken': { ru: 'Получено', uk: 'Отримано', en: 'Claimed' },
+  'levels.locked': { ru: 'Откроется на {level} уровне', uk: 'Відкриється на {level} рівні', en: 'Unlocks at level {level}' },
   'nav.levels': { ru: 'Уровни', uk: 'Рівні', en: 'Levels' },
   'level.hint': {
     ru: 'Опыт даётся только за ежедневные задания.',

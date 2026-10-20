@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
 import { api } from './api'
 import BackButton from './BackButton'
@@ -186,7 +186,10 @@ export default function SeasonBoard() {
                     </span>
                     <b className="lb-step-name">{row.nickname}</b>
                     <span className="lb-step-main">
-                      <em>{row.xp.toLocaleString(lang === 'en' ? 'en-GB' : 'uk-UA')}</em>
+                      {(() => {
+                        const shownXp = row.xp.toLocaleString(lang === 'en' ? 'en-GB' : 'uk-UA')
+                        return <em style={{ '--len': shownXp.length } as CSSProperties}>{shownXp}</em>
+                      })()}
                       {t('lb.colXp')}
                     </span>
                     <span className="lb-step-sub">

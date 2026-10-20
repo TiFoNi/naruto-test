@@ -707,7 +707,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
               {tag && <i className="player-tag">#{tag}</i>}
               <span className="profile-hero-level">{t('nav.level', { level: summary?.level.level ?? 1 })}</span>
             </div>
-            <div className="level-panel">
+            <Link className="level-panel is-link" href={href.levels} prefetch={false}>
               <div className="level-bar">
                 <i style={{ width: `${Math.round(((summary?.level.into ?? 0) / (summary?.level.need ?? 1)) * 100)}%` }} />
               </div>
@@ -722,7 +722,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                   })}
                 </small>
               </div>
-            </div>
+            </Link>
             {!own && id && (
               <div className="profile-hero-acts">
                 <button type="button" className="primary profile-duel" disabled={calling} onClick={() => void challenge(id)}>

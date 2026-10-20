@@ -3,6 +3,7 @@ import { ABILITY_HINT_AT, ABILITY_STAGES, PHRASE_EVERY, PHRASE_VOICE_AT, ZOOM_LE
 import { dailyAnswer, nextReset, pastAnswer, shiftDay, today } from './daily'
 import { rounds, type RoundDoc, type UserDoc } from './db'
 import { gameData, isGame, isMode, knows } from './games'
+import { twinsOf } from './twins'
 import { applyDailyResult, applyResult, awardSolveXp, defaultNickname } from './profile'
 import { abilityByKey } from './abilities'
 import { modeFits, modePool, oddOptions, oddTrait, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
@@ -144,7 +145,7 @@ async function shotOf(round: RoundDoc, game: GameId) {
 
 export async function roundView(round: RoundDoc, full = true) {
   const game = round.game as GameId
-  const { byId } = await gameData(game)
+  const { byId, list } = await gameData(game)
   const answer = byId.get(round.answerId)!
   const id = round._id!.toHexString()
   return {
@@ -161,6 +162,9 @@ export async function roundView(round: RoundDoc, full = true) {
         id: guessId,
         judgement: round.mode === 'classic' ? judgeAll(game, byId.get(guessId)!, answer) : undefined,
       })),
+    ...(round.mode === 'classic' && round.status === 'active'
+      ? { twins: twinsOf(game, list, byId, round.answerId, round.guesses) }
+      : {}),
     answerId: round.status === 'active' ? undefined : round.answerId,
     image: round.mode === 'image' || round.mode === 'ability' || round.mode === 'page' ? `/api/round/image?id=${id}` : undefined,
     ...(round.mode === 'image' ? await shotOf(round, game) : {}),
