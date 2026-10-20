@@ -405,25 +405,32 @@ body:has(.chat-panel) .duel-dock {
 .chat-send {
   display: flex;
   flex: none;
-  align-items: center;
+  align-items: flex-end;
   gap: 8px;
   padding: 12px;
   border-top: 1px solid var(--line);
 }
 
-.chat-send input {
+.chat-send textarea {
   min-width: 0;
   height: 46px;
+  max-height: 132px;
   flex: 1 1 auto;
-  padding: 0 15px;
+  padding: 12px 15px;
   border: 1px solid var(--line);
   border-radius: 13px;
   background: var(--card-solid);
   color: var(--text);
+  font-family: inherit;
   font-size: 15px;
+  line-height: 1.35;
+  resize: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--card-2) transparent;
 }
 
-.chat-send input:focus {
+.chat-send textarea:focus {
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
   outline: none;
 }

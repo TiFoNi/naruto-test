@@ -79,6 +79,14 @@ export default function Chat() {
   const [fresh, setFresh] = useState(false)
   const feed = useRef<HTMLDivElement>(null)
   const nearEnd = useRef(true)
+  const field = useRef<HTMLTextAreaElement>(null)
+
+  const grow = useCallback(() => {
+    const box = field.current
+    if (!box) return
+    box.style.height = 'auto'
+    box.style.height = `${Math.min(box.scrollHeight, 132)}px`
+  }, [])
 
   const say = useCallback((text: string, bad = false) => setNote({ text, bad }), [])
 
@@ -210,6 +218,7 @@ export default function Chat() {
     setSending(false)
     if (ok && data.line) {
       setText('')
+      requestAnimationFrame(grow)
       nearEnd.current = true
       setLines((kept) => (kept.some((one) => one.id === data.line!.id) ? kept : [...kept, data.line!]))
       return
@@ -335,11 +344,21 @@ export default function Chat() {
                 void send()
               }}
             >
-              <input
+              <textarea
+                ref={field}
                 value={text}
+                rows={1}
                 maxLength={300}
                 placeholder={t('chat.placeholder')}
-                onChange={(event) => setText(event.target.value)}
+                onChange={(event) => {
+                  setText(event.target.value)
+                  grow()
+                }}
+                onKeyDown={(event) => {
+                  if (event.key !== 'Enter' || event.shiftKey) return
+                  event.preventDefault()
+                  void send()
+                }}
                 disabled={sending}
               />
               <button type="submit" className="primary chat-go" disabled={sending || !text.trim()} title={t('chat.send')} aria-label={t('chat.send')}>
