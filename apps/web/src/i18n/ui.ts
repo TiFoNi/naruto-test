@@ -1088,7 +1088,7 @@ const ui = {
   'chat.close': { ru: 'Закрыть чат', uk: 'Закрити чат', en: 'Close chat' },
   'chat.empty': { ru: 'Пока тихо. Напиши первым', uk: 'Поки тихо. Напиши першим', en: 'Quiet here. Say hi first' },
   'chat.earlier': { ru: 'Показать раньше', uk: 'Показати раніше', en: 'Show earlier' },
-  'chat.placeholder': { ru: 'Сообщение', uk: 'Повідомлення', en: 'Message' },
+  'chat.placeholder': { ru: 'Напиши что-нибудь…', uk: 'Напиши щось…', en: 'Say something…' },
   'chat.send': { ru: 'Отправить', uk: 'Надіслати', en: 'Send' },
   'chat.join': { ru: 'Войти, чтобы писать', uk: 'Увійти, щоб писати', en: 'Sign in to chat' },
   'chat.slow': { ru: 'Слишком часто, подожди немного', uk: 'Занадто часто, зачекай трохи', en: 'Too fast, wait a moment' },

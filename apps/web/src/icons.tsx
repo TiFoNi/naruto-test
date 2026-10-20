@@ -679,9 +679,7 @@ export function ClockIcon({ className }: IconProps) {
 export function ChatIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>
-      <path d="M7.1 4.5h9.8a3.6 3.6 0 0 1 3.6 3.6v4.8a3.6 3.6 0 0 1-3.6 3.6h-6.2L6.4 20.2v-3.7a3.6 3.6 0 0 1-2.9-3.6V8.1a3.6 3.6 0 0 1 3.6-3.6z" />
-      <path d="M8.4 8.9h7.2" />
-      <path d="M8.4 12.1h4.8" />
+      <path d="M12 4.3h4.9A3.8 3.8 0 0 1 20.7 8v5a3.8 3.8 0 0 1-3.8 3.8h-5.8l-4.3 3.4v-3.5A3.8 3.8 0 0 1 3.3 13V8a3.8 3.8 0 0 1 3.8-3.7z" />
     </svg>
   )
 }

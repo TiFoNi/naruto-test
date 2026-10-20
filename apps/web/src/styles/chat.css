@@ -4,11 +4,11 @@
   bottom: 18px;
   z-index: 44;
   display: grid;
-  width: 52px;
-  height: 52px;
+  width: 60px;
+  height: 60px;
   place-items: center;
   border: 0;
-  border-radius: 17px;
+  border-radius: 20px;
   background: var(--card-solid);
   color: var(--accent);
   cursor: pointer;
@@ -26,8 +26,8 @@
 }
 
 .chat-bubble svg {
-  width: 27px;
-  height: 27px;
+  width: 31px;
+  height: 31px;
 }
 
 .chat-bubble em {
@@ -198,8 +198,8 @@ body:has(.chat-panel) .duel-dock {
 .chat-line {
   display: flex;
   align-items: flex-start;
-  gap: 9px;
-  padding: 3px 0;
+  gap: 11px;
+  padding: 4px 0;
 }
 
 .chat-line.is-glued {
@@ -207,14 +207,14 @@ body:has(.chat-panel) .duel-dock {
 }
 
 .chat-av {
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   flex: none;
-  font-size: 13px;
+  font-size: 17px;
 }
 
 .chat-gap {
-  width: 32px;
+  width: 44px;
   flex: none;
 }
 
@@ -232,7 +232,7 @@ body:has(.chat-panel) .duel-dock {
 .chat-body header b {
   overflow: hidden;
   color: var(--text);
-  font-size: 13px;
+  font-size: 15.5px;
   font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -245,15 +245,15 @@ body:has(.chat-panel) .duel-dock {
 .chat-body header time {
   flex: none;
   color: var(--text-3);
-  font-size: 11px;
+  font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
 
 .chat-body p {
-  margin: 1px 0 0;
+  margin: 2px 0 0;
   color: var(--text-2);
-  font-size: 13.5px;
-  line-height: 1.4;
+  font-size: 16px;
+  line-height: 1.45;
   overflow-wrap: break-word;
   white-space: pre-wrap;
 }
@@ -299,14 +299,14 @@ body:has(.chat-panel) .duel-dock {
 
 .chat-send input {
   min-width: 0;
-  height: 42px;
+  height: 46px;
   flex: 1 1 auto;
-  padding: 0 14px;
+  padding: 0 15px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 13px;
   background: var(--card-solid);
   color: var(--text);
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .chat-send input:focus {
@@ -316,8 +316,8 @@ body:has(.chat-panel) .duel-dock {
 
 .chat-send .chat-go {
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   flex: none;
   margin: 0;
   padding: 0;
