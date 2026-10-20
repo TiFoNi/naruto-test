@@ -8,15 +8,15 @@ export const DROPPED = {
   onepiece: [],
   mk: [],
   hxh: [],
-  bc: [],
+  bc: [5988],
   jojo: [],
   se: [18647, 18648, 2738, 5448, 2128, 7087],
   ff: [4094, 3922, 3920, 3667, 2997, 4524, 5147, 2827],
   dn: [],
   avatar: [],
   manga: [],
-  jjk: [],
-  csm: [],
+  jjk: [4775],
+  csm: [2573],
 }
 
 export function onlyAnswers(list) {

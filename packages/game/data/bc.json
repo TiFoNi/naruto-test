@@ -699,24 +699,6 @@
   "anime": true
  },
  {
-  "id": 5988,
-  "name": "Патри",
-  "nameEn": "Patolli",
-  "gender": "Мужской",
-  "species": "Эльф",
-  "magic": [
-   "Свет"
-  ],
-  "squad": "Глаз полуночного солнца",
-  "country": "Неизвестно",
-  "status": "Жив",
-  "arc": "Вступление в Рыцари",
-  "arcIndex": 0,
-  "answer": true,
-  "thumb": 38,
-  "anime": true
- },
- {
   "id": 3246,
   "name": "Радес Спирито",
   "nameEn": "Rades Spirito",

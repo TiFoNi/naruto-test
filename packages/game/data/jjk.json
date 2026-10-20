@@ -1037,28 +1037,6 @@
   "anime": true
  },
  {
-  "id": 4775,
-  "name": "Хана Курусу",
-  "nameEn": "Hana Kurusu",
-  "gender": "Женский",
-  "species": [
-   "Человек"
-  ],
-  "grade": "Нет",
-  "roles": [
-   "Маг",
-   "Игрок Игры на выбывание"
-  ],
-  "affiliations": [
-   "Без фракции"
-  ],
-  "arc": "Игра на выбывание",
-  "arcIndex": 7,
-  "answer": true,
-  "thumb": 47,
-  "anime": true
- },
- {
   "id": 285,
   "name": "Ханами",
   "nameEn": "Hanami",
