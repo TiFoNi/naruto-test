@@ -1,7 +1,8 @@
 import type { ObjectId } from 'mongodb'
-import { coinLedger, duels, type DuelDoc } from './db'
+import { chatRoom, coinLedger, duels, type ChatDoc, type DuelDoc } from './db'
 import { duelShotKey, duelView, leaveDuel, scheduleBot, seatsOf, settle, sideOf } from './duels'
 import { friends, type FriendDoc } from './friends'
+import { lineOf } from './chat'
 
 export type Sender = (event: string, data: unknown) => void
 
@@ -19,7 +20,10 @@ const safety = new Map<string, ReturnType<typeof setInterval>>()
 const drops = new Map<string, ReturnType<typeof setTimeout>>()
 const codes = new Map<string, string>()
 
+const chatters = new Set<Sender>()
+
 let watcher: Promise<void> | null = null
+let talk: Promise<void> | null = null
 let mates: Promise<void> | null = null
 let purse: Promise<void> | null = null
 
@@ -216,6 +220,38 @@ async function startPurse() {
     purse = null
   })
   return purse
+}
+
+async function startTalk() {
+  talk ??= (async () => {
+    const stream = (await chatRoom()).watch([{ $match: { operationType: { $in: ['insert', 'update'] } } }], { fullDocument: 'updateLookup' })
+    stream.on('change', (change) => {
+      const doc = (change as { fullDocument?: ChatDoc }).fullDocument
+      if (!doc?._id) return
+      if (doc.hidden) {
+        for (const send of chatters) send('drop', { id: doc._id.toHexString() })
+        return
+      }
+      if ((change as { operationType?: string }).operationType !== 'insert') return
+      const line = lineOf(doc)
+      for (const send of chatters) send('chat', line)
+    })
+    stream.on('error', () => {
+      talk = null
+      void stream.close().catch(() => undefined)
+    })
+  })().catch(() => {
+    talk = null
+  })
+  return talk
+}
+
+export function subscribeChat(send: Sender) {
+  chatters.add(send)
+  void startTalk()
+  return () => {
+    chatters.delete(send)
+  }
 }
 
 export function subscribeBell(userId: ObjectId, send: Sender) {

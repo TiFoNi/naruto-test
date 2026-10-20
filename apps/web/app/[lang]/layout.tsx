@@ -13,6 +13,7 @@ import '@/src/styles/leaderboard.css'
 import '@/src/styles/friends.css'
 import '@/src/styles/duel.css'
 import '@/src/styles/challenge.css'
+import '@/src/styles/chat.css'
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],

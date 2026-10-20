@@ -676,6 +676,24 @@ export function ClockIcon({ className }: IconProps) {
   )
 }
 
+export function ChatIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M7.1 4.5h9.8a3.6 3.6 0 0 1 3.6 3.6v4.8a3.6 3.6 0 0 1-3.6 3.6h-6.2L6.4 20.2v-3.7a3.6 3.6 0 0 1-2.9-3.6V8.1a3.6 3.6 0 0 1 3.6-3.6z" />
+      <path d="M8.4 8.9h7.2" />
+      <path d="M8.4 12.1h4.8" />
+    </svg>
+  )
+}
+
+export function SendIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M4 11.5 20 4l-7.5 16-2-6.5-6.5-2z" />
+    </svg>
+  )
+}
+
 export function SpeechIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

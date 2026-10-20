@@ -13,6 +13,7 @@ import * as push from '@nanda/core/endpoints/push'
 import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as adminShots from '@nanda/core/endpoints/admin-shots'
 import * as adminZoom from '@nanda/core/endpoints/admin-zoom'
+import * as chat from '@nanda/core/endpoints/chat'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
@@ -36,7 +37,7 @@ import * as roundImage from '@nanda/core/endpoints/round-image'
 import * as roundVoice from '@nanda/core/endpoints/round-voice'
 import { bridge, toWebRequest } from './web-bridge'
 import { currentUser } from '@nanda/core/profile'
-import { subscribeBell, subscribeDuel, type Sender } from '@nanda/core/stream'
+import { subscribeBell, subscribeChat, subscribeDuel, type Sender } from '@nanda/core/stream'
 
 const KEEP_ALIVE_MS = 25_000
 
@@ -282,6 +283,28 @@ export class GameController {
   @Get('tune/audio')
   tuneSound(@Req() req: Request, @Res() res: Response) {
     return bridge(tuneAudio.GET, req, res)
+  }
+
+  @Get('chat')
+  chatHistory(@Req() req: Request, @Res() res: Response) {
+    return bridge(chat.GET, req, res)
+  }
+
+  @Post('chat')
+  chatSend(@Req() req: Request, @Res() res: Response) {
+    return bridge(chat.POST, req, res)
+  }
+
+  @Post('admin/chat')
+  chatModerate(@Req() req: Request, @Res() res: Response) {
+    return bridge(chat.ADMIN, req, res)
+  }
+
+  @Get('stream/chat')
+  chatStream(@Req() req: Request, @Res() res: Response) {
+    const send = openStream(req, res)
+    const stop = subscribeChat(send)
+    req.on('close', stop)
   }
 
   @Get('stream/duel')

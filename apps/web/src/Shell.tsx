@@ -13,6 +13,7 @@ import DuelSkeleton from './DuelSkeleton'
 import PageSkeleton from './PageSkeleton'
 import { repairPush, watchPushRenew } from './push'
 import ChallengeSkeleton from './ChallengeSkeleton'
+import Chat from './Chat'
 import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
@@ -825,6 +826,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
 
       {!bare && <Footer />}
       {!bare && <InstallBanner />}
+      {!bare && <Chat />}
       {user && <DuelDock />}
     </div>
   )

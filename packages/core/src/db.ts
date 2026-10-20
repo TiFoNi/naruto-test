@@ -16,6 +16,7 @@ export type UserDoc = {
   coins?: number
   coinsNews?: { coins: number; at: Date }
   levelsTaken?: number[]
+  chatMutedUntil?: Date | null
   xpToday?: { day: string; daily: number; endless: number; duel?: number }
   stats?: Record<string, Partial<Stats>>
   solvedTotal?: number
@@ -312,6 +313,7 @@ const cache = globalThis as typeof globalThis & {
   __tunesIndexed?: Promise<unknown>
   __purchasesIndexed?: Promise<unknown>
   __ledgerIndexed?: Promise<unknown>
+  __chatIndexed?: Promise<unknown>
 }
 
 export const database = async () => (await client()).db(process.env.MONGODB_DB || 'nandaguessr')
@@ -391,6 +393,32 @@ export async function tuneRuns(): Promise<Collection<TuneDoc>> {
     throw error
   })
   await cache.__tunesIndexed
+  return collection
+}
+
+export type ChatDoc = {
+  _id?: ObjectId
+  userId: ObjectId
+  nickname: string
+  tag?: string
+  avatar?: string | null
+  frame?: string | null
+  text: string
+  at: Date
+  hidden?: boolean
+}
+
+export async function chatRoom(): Promise<Collection<ChatDoc>> {
+  const collection = (await database()).collection<ChatDoc>('chat')
+  cache.__chatIndexed ??= Promise.all([
+    collection.createIndex({ at: -1 }),
+    collection.createIndex({ userId: 1, at: -1 }),
+    collection.createIndex({ at: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 7 }),
+  ]).catch((error) => {
+    cache.__chatIndexed = undefined
+    throw error
+  })
+  await cache.__chatIndexed
   return collection
 }
 
