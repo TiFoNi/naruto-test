@@ -11535,6 +11535,7 @@ html[data-auth] .guest-note {
   justify-content: center;
   gap: 2px;
   margin-top: 16px;
+  padding: 0 5px;
   border: 1px dashed color-mix(in srgb, var(--line) 90%, transparent);
   border-radius: 16px;
   background: color-mix(in srgb, #ffffff 2%, transparent);
@@ -11598,8 +11599,10 @@ button.levels-slot {
 }
 
 .levels-slot.is-ready em {
+  max-width: 100%;
   font-family: var(--display);
   font-size: 10px;
+  white-space: nowrap;
   font-style: normal;
   font-weight: 700;
   color: color-mix(in srgb, #ffffff 88%, var(--tone, var(--accent)));
@@ -11672,28 +11675,47 @@ button.levels-slot {
   }
 
   .levels-slot {
-    width: 64px;
-    height: 74px;
+    width: 72px;
+    height: 82px;
     margin-top: 12px;
   }
 
   .levels-step.is-big .levels-slot {
-    width: 84px;
-    height: 96px;
+    width: 92px;
+    height: 104px;
   }
 
   .levels-coin {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
   }
 
   .levels-step.is-big .levels-coin {
-    width: 54px;
-    height: 54px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .levels-slot.is-ready .levels-coin {
+    width: 28px;
+    height: 28px;
+  }
+
+  .levels-step.is-big .levels-slot.is-ready .levels-coin {
+    width: 40px;
+    height: 40px;
+  }
+
+  .levels-slot.is-ready em {
+    font-size: 9px;
+    letter-spacing: 0;
+  }
+
+  .levels-step.is-mid {
+    min-width: 82px;
   }
 
   .levels-step.is-big {
-    min-width: 96px;
+    min-width: 104px;
   }
 }
 
