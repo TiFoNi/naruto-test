@@ -213,6 +213,7 @@ body:has(.chat-panel) .duel-dock {
 }
 
 .chat-line {
+  position: relative;
   display: flex;
   align-items: flex-start;
   gap: 11px;
@@ -237,7 +238,7 @@ body:has(.chat-panel) .duel-dock {
 
 .chat-body {
   min-width: 0;
-  max-width: 78%;
+  max-width: 74%;
   flex: 0 1 auto;
 }
 
@@ -362,15 +363,24 @@ body:has(.chat-panel) .duel-dock {
 }
 
 .chat-tools {
-  display: none;
-  flex: none;
+  position: absolute;
+  top: 14px;
+  right: 0;
+  display: flex;
   gap: 2px;
-  align-self: flex-start;
-  margin-top: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.14s ease;
+}
+
+.chat-line.is-mine .chat-tools {
+  right: auto;
+  left: 0;
 }
 
 .chat-line:hover .chat-tools {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
 }
 
 .chat-tools button {
