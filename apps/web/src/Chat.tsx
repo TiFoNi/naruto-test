@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Avatar from './Avatar'
 import { api } from './api'
+import { watchFeed } from './awards'
 import { useAuth } from './auth'
 import { useI18n } from './i18n'
 import { ChatIcon, CloseIcon, MuteIcon, SendIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
@@ -55,9 +56,10 @@ export default function Chat() {
   const [more, setMore] = useState(false)
   const [loading, setLoading] = useState(false)
   const [text, setText] = useState('')
-  const [note, setNote] = useState('')
+  const [note, setNote] = useState<{ text: string; bad?: boolean } | null>(null)
+  const [mates, setMates] = useState<{ friends: string[]; sent: string[]; asked: string[] }>({ friends: [], sent: [], asked: [] })
   const [sending, setSending] = useState(false)
-  const [asking, setAsking] = useState<{ kind: 'drop' | 'mute'; line: Line } | null>(null)
+  const [asking, setAsking] = useState<{ kind: 'drop' | 'mute' | 'unfriend'; line: Line } | null>(null)
   const [menu, setMenu] = useState<{ line: Line; x: number; y: number } | null>(null)
   const [unread, setUnread] = useState(0)
   const [online, setOnline] = useState(0)
@@ -67,6 +69,18 @@ export default function Chat() {
 
   useEffect(() => {
     seen.current = readSeen()
+  }, [])
+
+  const say = useCallback((text: string, bad = false) => setNote({ text, bad }), [])
+
+  const loadMates = useCallback(async () => {
+    const { ok, data } = await api<{ friends?: { id: string }[]; requests?: { id: string }[]; sent?: { id: string }[] }>('friends')
+    if (!ok) return
+    setMates({
+      friends: (data.friends ?? []).map((one) => one.id),
+      sent: (data.sent ?? []).map((one) => one.id),
+      asked: (data.requests ?? []).map((one) => one.id),
+    })
   }, [])
 
   const close = useCallback(() => {
@@ -139,8 +153,17 @@ export default function Chat() {
   }, [open])
 
   useEffect(() => {
+    if (!open || !user) return
+    void loadMates()
+    const stop = watchFeed(() => void loadMates())
+    return () => {
+      stop()
+    }
+  }, [open, user, loadMates])
+
+  useEffect(() => {
     if (!note) return
-    const timer = setTimeout(() => setNote(''), 2600)
+    const timer = setTimeout(() => setNote(null), 2600)
     return () => clearTimeout(timer)
   }, [note])
 
@@ -167,27 +190,29 @@ export default function Chat() {
       setLines((kept) => (kept.some((one) => one.id === data.line!.id) ? kept : [...kept, data.line!]))
       return
     }
-    setNote(status === 429 ? t('chat.slow') : status === 403 ? t('chat.muted') : t('chat.failed'))
+    say(status === 429 ? t('chat.slow') : status === 403 ? t('chat.muted') : t('chat.failed'), true)
   }
 
   const moderate = async (body: Record<string, unknown>, done: () => void) => {
     setAsking(null)
     const { ok } = await api('admin/chat', body)
-    if (!ok) return setNote(t('chat.failed'))
+    if (!ok) return say(t('chat.failed'), true)
     done()
   }
 
-  const befriend = async (line: Line) => {
+  const mate = async (line: Line, action: 'ask' | 'remove' | 'accept') => {
     setMenu(null)
-    const { ok } = await api('friends', { action: 'ask', id: line.userId })
-    setNote(ok ? t('chat.asked') : t('chat.failed'))
+    const { ok } = await api('friends', { action, id: line.userId })
+    if (!ok) return say(t('chat.failed'), true)
+    await loadMates()
+    say(t(action === 'ask' ? 'chat.asked' : action === 'accept' ? 'chat.accepted' : 'chat.unfriended'))
   }
 
   const toDuel = async (line: Line) => {
     setMenu(null)
     const { ok, data } = await api<{ duel?: { code: string } }>('duel', { action: 'challenge', to: line.userId })
     if (ok && data.duel) return navigate(href.duel(data.duel.code))
-    setNote(t('chat.failed'))
+    say(t('chat.failed'), true)
   }
 
   const watch = () => {
@@ -244,6 +269,7 @@ export default function Chat() {
                         const box = event.currentTarget.getBoundingClientRect()
                         const x = Math.min(Math.max(box.left + box.width / 2, 96), window.innerWidth - 96)
                         setMenu((was) => (was?.line.id === line.id ? null : { line, x, y: box.bottom + 6 }))
+                        if (user) void loadMates()
                       }}
                     >
                       <Avatar id={line.userId} name={line.nickname} avatar={line.avatar} frame={line.frame} className="chat-av" />
@@ -302,7 +328,7 @@ export default function Chat() {
             </Link>
           )}
 
-          <span className={`chat-note ${note ? 'on' : ''}`}>{note}</span>
+          {note && <span className={`chat-note ${note.bad ? 'is-bad' : ''}`}>{note.text}</span>}
         </section>
       )}
 
@@ -321,10 +347,35 @@ export default function Chat() {
             </Link>
             {user && menu.line.userId !== user.id && (
               <>
-                <button type="button" className="chat-menu-item" onClick={() => void befriend(menu.line)}>
-                  <UsersIcon />
-                  {t('chat.befriend')}
-                </button>
+                {mates.friends.includes(menu.line.userId) ? (
+                  <button
+                    type="button"
+                    className="chat-menu-item"
+                    onClick={() => {
+                      const line = menu.line
+                      setMenu(null)
+                      setAsking({ kind: 'unfriend', line })
+                    }}
+                  >
+                    <UsersIcon />
+                    {t('chat.unfriend')}
+                  </button>
+                ) : mates.asked.includes(menu.line.userId) ? (
+                  <button type="button" className="chat-menu-item" onClick={() => void mate(menu.line, 'accept')}>
+                    <UsersIcon />
+                    {t('chat.accept')}
+                  </button>
+                ) : mates.sent.includes(menu.line.userId) ? (
+                  <button type="button" className="chat-menu-item" onClick={() => void mate(menu.line, 'remove')}>
+                    <UsersIcon />
+                    {t('chat.cancelAsk')}
+                  </button>
+                ) : (
+                  <button type="button" className="chat-menu-item" onClick={() => void mate(menu.line, 'ask')}>
+                    <UsersIcon />
+                    {t('chat.befriend')}
+                  </button>
+                )}
                 <button type="button" className="chat-menu-item" onClick={() => void toDuel(menu.line)}>
                   <SwordsIcon />
                   {t('chat.duel')}
@@ -341,18 +392,49 @@ export default function Chat() {
             className="card modal chat-ask"
             role="dialog"
             aria-modal="true"
-            aria-label={asking.kind === 'drop' ? t('chat.dropTitle') : t('chat.muteTitle', { name: asking.line.nickname })}
+            aria-label={
+              asking.kind === 'drop'
+                ? t('chat.dropTitle')
+                : asking.kind === 'unfriend'
+                  ? t('friends.removeSure', { name: asking.line.nickname })
+                  : t('chat.muteTitle', { name: asking.line.nickname })
+            }
             onClick={(event) => event.stopPropagation()}
           >
             <button type="button" className="modal-close" aria-label={t('chat.cancel')} onClick={() => setAsking(null)}>
               <CloseIcon />
             </button>
 
-            <h2>{asking.kind === 'drop' ? t('chat.dropTitle') : t('chat.muteTitle', { name: asking.line.nickname })}</h2>
-            <p className="muted">{asking.kind === 'drop' ? t('chat.dropHint') : t('chat.muteHint')}</p>
-            <blockquote className="chat-quote">{asking.line.text}</blockquote>
+            <h2>
+              {asking.kind === 'drop'
+                ? t('chat.dropTitle')
+                : asking.kind === 'unfriend'
+                  ? t('friends.removeSure', { name: asking.line.nickname })
+                  : t('chat.muteTitle', { name: asking.line.nickname })}
+            </h2>
+            <p className="muted">
+              {asking.kind === 'drop' ? t('chat.dropHint') : asking.kind === 'unfriend' ? t('friends.removeHint') : t('chat.muteHint')}
+            </p>
+            {asking.kind !== 'unfriend' && <blockquote className="chat-quote">{asking.line.text}</blockquote>}
 
-            {asking.kind === 'drop' ? (
+            {asking.kind === 'unfriend' ? (
+              <div className="chat-ask-row">
+                <button type="button" className="ghost" onClick={() => setAsking(null)}>
+                  {t('profile.cancel')}
+                </button>
+                <button
+                  type="button"
+                  className="primary"
+                  onClick={() => {
+                    const line = asking.line
+                    setAsking(null)
+                    void mate(line, 'remove')
+                  }}
+                >
+                  {t('friends.remove')}
+                </button>
+              </div>
+            ) : asking.kind === 'drop' ? (
               <div className="chat-ask-row">
                 <button type="button" className="ghost" onClick={() => setAsking(null)}>
                   {t('chat.cancel')}
@@ -381,7 +463,7 @@ export default function Chat() {
                     className={minutes ? 'ghost' : 'ghost is-off'}
                     onClick={() =>
                       void moderate({ mute: asking.line.userId, minutes }, () =>
-                        setNote(t(minutes ? 'chat.muteDone' : 'chat.unmuteDone', { name: asking.line.nickname })),
+                        say(t(minutes ? 'chat.muteDone' : 'chat.unmuteDone', { name: asking.line.nickname })),
                       )
                     }
                   >
