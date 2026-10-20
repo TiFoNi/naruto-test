@@ -180,6 +180,9 @@ export default function Admin() {
           <Link className="admin-more" href={href.adminShots}>
             Кадры аниме
           </Link>
+          <Link className="admin-more" href={href.adminZoom}>
+            Точка зума
+          </Link>
           <label className="admin-date" title="Дата, на которую актуальны данные — показывается в игре">
             данные на
             <input type="date" value={updated} onChange={(e) => void saveUpdated(e.target.value)} />

@@ -22,6 +22,7 @@ export function hrefs(lang: Lang) {
     shop: at('/shop'),
     admin: at('/admin'),
     adminShots: at('/admin/shots'),
+    adminZoom: at('/admin/zoom'),
     duels: at('/duels'),
     privacy: at('/privacy'),
     terms: at('/terms'),

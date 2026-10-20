@@ -1,0 +1,217 @@
+.zoom-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.zoom-card {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 0.18s,
+    transform 0.18s;
+}
+
+.zoom-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  transform: translateY(-2px);
+}
+
+.zoom-card.is-set {
+  border-color: color-mix(in srgb, var(--correct) 55%, transparent);
+}
+
+.zoom-card b {
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zoom-card small {
+  color: var(--text-3);
+  font-size: 11px;
+}
+
+.zoom-card.is-set small {
+  color: color-mix(in srgb, var(--correct) 70%, #ffffff);
+}
+
+.zoom-shot {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--card-2);
+}
+
+.zoom-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.zoom-frame {
+  position: absolute;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+}
+
+.zoom-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  padding: 20px;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.72);
+  overflow-y: auto;
+}
+
+.zoom-sheet-box {
+  display: flex;
+  width: min(100%, 560px);
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--card-solid, var(--card));
+}
+
+.zoom-sheet-box header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.zoom-sheet-box header b {
+  font-size: 17px;
+}
+
+.zoom-sheet-box header .muted {
+  font-size: 12px;
+}
+
+.zoom-close {
+  margin-left: auto;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.zoom-stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--card-2);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.zoom-stage img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+}
+
+.zoom-ring {
+  position: absolute;
+  border: 1px dashed rgba(255, 255, 255, 0.45);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.zoom-ring em {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.zoom-ring.is-first {
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
+}
+
+.zoom-ring.is-first em {
+  color: var(--accent);
+}
+
+.zoom-hint {
+  margin: 0;
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.zoom-steps {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.zoom-steps li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.zoom-step {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background-color: var(--card-2);
+  background-repeat: no-repeat;
+}
+
+.zoom-steps em {
+  color: var(--text-3);
+  font-size: 10px;
+  font-style: normal;
+}
+
+.zoom-sheet-box footer {
+  display: flex;
+  gap: 8px;
+}
+
+.zoom-sheet-box footer .ghost {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.zoom-sheet-box footer .ghost:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

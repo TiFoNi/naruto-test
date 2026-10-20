@@ -83,6 +83,9 @@ export default function ShotsAdmin() {
           <Link className="admin-more" href={href.admin}>
             Персонажи
           </Link>
+          <Link className="admin-more" href={href.adminZoom}>
+            Точка зума
+          </Link>
           <label className="admin-search">
             <svg viewBox="0 0 24 24" aria-hidden>
               <circle cx="11" cy="11" r="6.5" />

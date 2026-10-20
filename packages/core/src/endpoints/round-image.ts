@@ -5,7 +5,7 @@ import { fail, handle } from '../http'
 import { roundOwner } from '../profile'
 import { abilityStageOf, findDuel, sideOf, wrongCount } from '../duels'
 import { abilityStage, ownedRound, zoomStep } from '../rounds'
-import { duelSeed, maskStage, roundSeed } from '../crop'
+import { duelSeed, maskStage, pinnedFocus, roundSeed } from '../crop'
 import { pageOf } from '../extra'
 
 async function duelSource(code: string, userId: ObjectId) {
@@ -53,7 +53,7 @@ export const GET = handle(async (request) => {
 
   const step = 'step' in round ? round.step : zoomStep(round)
   const seed = 'seed' in round ? round.seed : roundSeed(round)
-  return new Response(await maskStage(full, seed, step), {
+  return new Response(await maskStage(full, seed, step, await pinnedFocus(round.game as GameId, round.answerId)), {
     headers: { 'content-type': 'image/webp', 'cache-control': 'private, no-store' },
   })
 })

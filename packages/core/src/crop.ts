@@ -82,6 +82,17 @@ async function busiest(source: Buffer) {
   return { x: best.x, y: best.y }
 }
 
+export function forgetCrops() {
+  points.clear()
+  shots.clear()
+}
+
+export async function pinnedFocus(game: GameId, answerId: number) {
+  const spot = (await gameData(game)).byId.get(answerId)?.focus as { x?: unknown; y?: unknown } | undefined
+  if (!spot || typeof spot.x !== 'number' || typeof spot.y !== 'number') return null
+  return { x: clamp(spot.x, 0, 1), y: clamp(spot.y, 0, 1) }
+}
+
 export async function focusOf(source: Buffer, seed: string) {
   const known = points.get(seed)
   if (known) return known
@@ -94,6 +105,8 @@ export async function focusOf(source: Buffer, seed: string) {
 }
 
 export async function focusFor(game: GameId, answerId: number, seed: string) {
+  const pin = await pinnedFocus(game, answerId)
+  if (pin) return pin
   const known = points.get(seed)
   if (known) return known
   const source = await imageBuffer(game, answerId)
@@ -118,7 +131,7 @@ export async function shotFor(game: GameId, answerId: number, seed: string, step
     const pending = (async () => {
       const source = await imageBuffer(game, answerId)
       if (!source) return null
-      const masked = await maskStage(source, seed, step)
+      const masked = await maskStage(source, seed, step, await pinnedFocus(game, answerId))
       return `data:image/webp;base64,${masked.toString('base64')}`
     })()
     keep(shots, key, pending, CACHE_MAX)
@@ -131,14 +144,14 @@ export async function shotFor(game: GameId, answerId: number, seed: string, step
   return shot
 }
 
-export async function maskStage(source: Buffer, seed: string, step: number) {
+export async function maskStage(source: Buffer, seed: string, step: number, pin?: { x: number; y: number } | null) {
   const zoom = ZOOM_LEVELS[clamp(step, 0, ZOOM_LEVELS.length - 1)]
   if (zoom <= 1) return source
 
   const { width = 0, height = 0 } = await sharp(source).metadata()
   if (!width || !height) return source
 
-  const focus = await focusOf(source, seed)
+  const focus = pin ?? (await focusOf(source, seed))
   const box = windowAt(width, height, focus, zoom)
 
   const [hidden, shown] = await Promise.all([
