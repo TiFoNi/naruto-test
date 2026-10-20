@@ -17,6 +17,7 @@ export type UserDoc = {
   coinsNews?: { coins: number; at: Date }
   levelsTaken?: number[]
   chatMutedUntil?: Date | null
+  named?: boolean
   xpToday?: { day: string; daily: number; endless: number; duel?: number }
   stats?: Record<string, Partial<Stats>>
   solvedTotal?: number

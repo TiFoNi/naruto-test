@@ -14,6 +14,7 @@ import PageSkeleton from './PageSkeleton'
 import { repairPush, watchPushRenew } from './push'
 import ChallengeSkeleton from './ChallengeSkeleton'
 import Chat from './Chat'
+import PickName from './PickName'
 import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
@@ -214,7 +215,21 @@ function XpToday() {
   )
 }
 
-function AccountMenu({ nickname, level, section, id, avatar }: { nickname: string; level: number; section?: string; id?: string; avatar?: string | null }) {
+function AccountMenu({
+  nickname,
+  level,
+  section,
+  id,
+  avatar,
+  naming,
+}: {
+  nickname: string
+  level: number
+  section?: string
+  id?: string
+  avatar?: string | null
+  naming?: boolean
+}) {
   const { t } = useI18n()
   const { logout } = useAuth()
   const href = useHref()
@@ -231,7 +246,8 @@ function AccountMenu({ nickname, level, section, id, avatar }: { nickname: strin
   }, [])
 
   return (
-    <div ref={box} className={`account ${open ? 'open' : ''}`}>
+    <div ref={box} className={`account ${open ? 'open' : ''} ${naming ? 'is-naming' : ''}`}>
+      {naming && <PickName />}
       <button
         type="button"
         className={`account-link ${inside ? 'active' : ''}`}
@@ -719,6 +735,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const [, , section, gameId, modeId] = pathname.split('/')
   const open = PUBLIC.has(section ?? '') || !SECTIONS.has(section ?? '')
   const gated = !user && !loading && !open
+  const naming = Boolean(user && user.named === false)
   const bare = section === 'login' || gated
   const game = section === 'play' ? metaById(games, gameId as never) : null
   useBeforePaint(() => {
@@ -799,7 +816,14 @@ export default function Shell({ children, games }: { children: ReactNode; games:
                       <ShopIcon />
                     </Link>
                     <Bell />
-                    <AccountMenu nickname={user.nickname} level={user.level} section={section} id={user.id} avatar={user.avatar} />
+                    <AccountMenu
+                      nickname={user.nickname}
+                      level={user.level}
+                      section={section}
+                      id={user.id}
+                      avatar={user.avatar}
+                      naming={naming}
+                    />
                   </>
                 )}
               </div>
@@ -826,7 +850,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
 
       {!bare && <Footer />}
       {!bare && <InstallBanner />}
-      {!bare && <Chat />}
+      {!bare && !naming && <Chat />}
       {user && <DuelDock />}
     </div>
   )

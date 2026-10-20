@@ -35,7 +35,11 @@ export const POST = handle(async (request) => {
     const nickname = parseNickname(body.nickname)
     if (!nickname) return fail(400, 'invalid_nickname')
     const lower = lowerNickname(nickname)
-    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $set: { nickname, nicknameLower: lower } }, { returnDocument: 'after' })
+    const doc = await found.collection.findOneAndUpdate(
+      { _id: found.doc._id },
+      { $set: { nickname, nicknameLower: lower, named: true } },
+      { returnDocument: 'after' },
+    )
     const tag = await claimTag(found.collection, found.doc._id!, lower, doc?.tag ?? found.doc.tag)
     return json(toProfile({ ...(doc ?? found.doc), tag: tag ?? undefined }))
   }

@@ -11729,3 +11729,100 @@ button.levels-slot {
 .level-panel.is-link:hover {
   opacity: 0.85;
 }
+
+.pick-pop {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 60;
+  width: min(330px, calc(100vw - 24px));
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, #ffffff 10%);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--card-solid) 93%, transparent);
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  animation: fade-in 0.16s ease;
+}
+
+.pick-pop::before {
+  position: absolute;
+  top: -5px;
+  right: 26px;
+  width: 9px;
+  height: 9px;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 35%, #ffffff 10%);
+  border-left: 1px solid color-mix(in srgb, var(--accent) 35%, #ffffff 10%);
+  background: var(--card-solid);
+  content: '';
+  transform: rotate(45deg);
+}
+
+.pick-pop h1 {
+  margin: 0 0 6px;
+  font-size: 19px;
+}
+
+.pick-pop .muted {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.pick-pop form {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.pick-field {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.pick-tag {
+  flex: none;
+  color: var(--text-3);
+  font-family: var(--display);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pick-rules {
+  margin: 0;
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.pick-pop input {
+  height: 44px;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card-2-solid);
+  color: var(--text);
+  font-size: 16px;
+  text-align: center;
+}
+
+.pick-pop input:focus {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  outline: none;
+}
+
+.pick-pop .primary {
+  margin: 4px 0 0;
+  padding: 11px 16px;
+  font-size: 14px;
+}
+
+.pick-error {
+  margin: 12px 0 0;
+  color: color-mix(in srgb, #e5483b 75%, #ffffff);
+  font-size: 13.5px;
+}
+

@@ -89,9 +89,12 @@ export async function searchPlayers(userId: ObjectId, asked: unknown, limit = 6)
   }))
 }
 
+const RESERVED = new Set(['admin', 'administrator', 'moderator', 'mod', 'support', 'system', 'nandaguessr', 'root'])
+
 export function parseNickname(value: unknown): string | null {
   const nickname = typeof value === 'string' ? value.trim().replace(/\s+/g, ' ') : ''
-  return NICKNAME.test(nickname) ? nickname : null
+  if (!NICKNAME.test(nickname)) return null
+  return RESERVED.has(nickname.toLowerCase().replace(/[ _.\-]/g, '')) ? null : nickname
 }
 
 const number = (value: unknown) => (typeof value === 'number' && Number.isFinite(value) ? value : 0)
@@ -214,6 +217,7 @@ export function toProfile(doc: UserDoc) {
       today: todayXp(doc),
       streak: alive(doc.visit) ? (doc.visit?.streak ?? 0) : 0,
       bestStreak: doc.visit?.best ?? 0,
+      named: doc.named !== false,
     },
     stats: Object.fromEntries([
       ...STAT_KEYS.map((key) => [key, normalizeStats(doc.stats?.[key])]),
@@ -249,6 +253,7 @@ export async function currentUser(request: Request) {
     nickname: name,
     nicknameLower: lowerNickname(name),
     tag: makeTag(),
+    named: false,
     createdAt: new Date(),
   }
   await collection.insertOne(doc)

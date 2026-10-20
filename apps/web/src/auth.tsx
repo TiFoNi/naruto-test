@@ -22,6 +22,7 @@ export type User = {
   streak: number
   bestStreak: number
   admin?: boolean
+  named?: boolean
 }
 
 export type DuelRecord = { played: number; wins: number; losses: number; draws: number }
