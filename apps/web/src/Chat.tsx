@@ -6,8 +6,8 @@ import Avatar from './Avatar'
 import { api } from './api'
 import { useAuth } from './auth'
 import { useI18n } from './i18n'
-import { ChatIcon, CloseIcon, MuteIcon, SendIcon } from './icons'
-import { useHref } from './router'
+import { ChatIcon, CloseIcon, MuteIcon, SendIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
+import { useHref, useNavigate } from './router'
 import { openStream } from './stream'
 
 type Line = {
@@ -47,6 +47,7 @@ const clock = (at: number) =>
 export default function Chat() {
   const { t } = useI18n()
   const href = useHref()
+  const navigate = useNavigate()
   const { user } = useAuth()
   const [open, setOpen] = useState(false)
   const [leaving, setLeaving] = useState(false)
@@ -57,6 +58,7 @@ export default function Chat() {
   const [note, setNote] = useState('')
   const [sending, setSending] = useState(false)
   const [asking, setAsking] = useState<{ kind: 'drop' | 'mute'; line: Line } | null>(null)
+  const [menu, setMenu] = useState<{ line: Line; x: number; y: number } | null>(null)
   const [unread, setUnread] = useState(0)
   const [online, setOnline] = useState(0)
   const seen = useRef(0)
@@ -68,6 +70,7 @@ export default function Chat() {
   }, [])
 
   const close = useCallback(() => {
+    setMenu(null)
     setLeaving((was) => {
       if (was) return was
       setTimeout(() => {
@@ -143,10 +146,14 @@ export default function Chat() {
 
   useEffect(() => {
     if (!open) return
-    const keys = (event: KeyboardEvent) => event.key === 'Escape' && close()
+    const keys = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      if (menu) return setMenu(null)
+      close()
+    }
     window.addEventListener('keydown', keys)
     return () => window.removeEventListener('keydown', keys)
-  }, [open, close])
+  }, [open, close, menu])
 
   const send = async () => {
     const body = text.trim()
@@ -170,10 +177,24 @@ export default function Chat() {
     done()
   }
 
+  const befriend = async (line: Line) => {
+    setMenu(null)
+    const { ok } = await api('friends', { action: 'ask', id: line.userId })
+    setNote(ok ? t('chat.asked') : t('chat.failed'))
+  }
+
+  const toDuel = async (line: Line) => {
+    setMenu(null)
+    const { ok, data } = await api<{ duel?: { code: string } }>('duel', { action: 'challenge', to: line.userId })
+    if (ok && data.duel) return navigate(href.duel(data.duel.code))
+    setNote(t('chat.failed'))
+  }
+
   const watch = () => {
     const box = feed.current
     if (!box) return
     nearEnd.current = box.scrollHeight - box.scrollTop - box.clientHeight < 80
+    setMenu(null)
   }
 
   return (
@@ -215,12 +236,25 @@ export default function Chat() {
                   {glued ? (
                     <span className="chat-gap" aria-hidden />
                   ) : (
-                    <Avatar id={line.userId} name={line.nickname} avatar={line.avatar} frame={line.frame} className="chat-av" />
+                    <button
+                      type="button"
+                      className="chat-face"
+                      aria-label={line.nickname}
+                      onClick={(event) => {
+                        const box = event.currentTarget.getBoundingClientRect()
+                        const x = Math.min(Math.max(box.left + box.width / 2, 96), window.innerWidth - 96)
+                        setMenu((was) => (was?.line.id === line.id ? null : { line, x, y: box.bottom + 6 }))
+                      }}
+                    >
+                      <Avatar id={line.userId} name={line.nickname} avatar={line.avatar} frame={line.frame} className="chat-av" />
+                    </button>
                   )}
                   <div className="chat-body">
                     {!glued && (
                       <header>
-                        <b>{line.nickname}</b>
+                        <Link className="chat-nick" href={line.userId === user?.id ? href.profile : href.player(line.userId)} prefetch={false}>
+                          {line.nickname}
+                        </Link>
                         <time dateTime={new Date(line.at).toISOString()}>{clock(line.at)}</time>
                       </header>
                     )}
@@ -270,6 +304,35 @@ export default function Chat() {
 
           <span className={`chat-note ${note ? 'on' : ''}`}>{note}</span>
         </section>
+      )}
+
+      {menu && (
+        <>
+          <div className="chat-menu-away" role="presentation" onClick={() => setMenu(null)} />
+          <div className="chat-menu" style={{ left: menu.x, top: menu.y }} role="menu">
+            <Link
+              className="chat-menu-item"
+              href={menu.line.userId === user?.id ? href.profile : href.player(menu.line.userId)}
+              prefetch={false}
+              onClick={() => setMenu(null)}
+            >
+              <UserIcon />
+              {t('chat.profile')}
+            </Link>
+            {user && menu.line.userId !== user.id && (
+              <>
+                <button type="button" className="chat-menu-item" onClick={() => void befriend(menu.line)}>
+                  <UsersIcon />
+                  {t('chat.befriend')}
+                </button>
+                <button type="button" className="chat-menu-item" onClick={() => void toDuel(menu.line)}>
+                  <SwordsIcon />
+                  {t('chat.duel')}
+                </button>
+              </>
+            )}
+          </div>
+        </>
       )}
 
       {asking && (

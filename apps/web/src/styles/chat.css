@@ -247,13 +247,82 @@ body:has(.chat-panel) .duel-dock {
   gap: 7px;
 }
 
-.chat-body header b {
+.chat-nick {
   overflow: hidden;
   color: var(--text);
   font-size: 15.5px;
   font-weight: 700;
+  text-decoration: none;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.chat-nick:hover {
+  color: var(--accent);
+}
+
+.chat-face {
+  display: block;
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.chat-menu-away {
+  position: fixed;
+  inset: 0;
+  z-index: 47;
+}
+
+.chat-menu {
+  position: fixed;
+  z-index: 48;
+  display: flex;
+  min-width: 170px;
+  flex-direction: column;
+  padding: 6px;
+  border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--card-solid) 72%, transparent);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(16px);
+  transform: translateX(-50%);
+  animation: chat-fade 0.14s ease-out;
+}
+
+.chat-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+}
+
+.chat-menu-item:hover {
+  background: color-mix(in srgb, #ffffff 8%, transparent);
+  color: var(--text);
+}
+
+.chat-menu-item svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  color: var(--text-3);
+}
+
+.chat-menu-item:hover svg {
+  color: var(--accent);
 }
 
 .chat-line.is-mine {
@@ -272,7 +341,7 @@ body:has(.chat-panel) .duel-dock {
   text-align: right;
 }
 
-.chat-line.is-mine .chat-body header b {
+.chat-line.is-mine .chat-nick {
   color: var(--accent);
 }
 
