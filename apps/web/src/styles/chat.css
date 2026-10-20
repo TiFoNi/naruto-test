@@ -237,7 +237,8 @@ body:has(.chat-panel) .duel-dock {
 
 .chat-body {
   min-width: 0;
-  flex: 1 1 auto;
+  max-width: 78%;
+  flex: 0 1 auto;
 }
 
 .chat-body header {
@@ -296,6 +297,7 @@ body:has(.chat-panel) .duel-dock {
   flex: none;
   gap: 2px;
   align-self: flex-start;
+  margin-top: 10px;
 }
 
 .chat-line:hover .chat-tools {
