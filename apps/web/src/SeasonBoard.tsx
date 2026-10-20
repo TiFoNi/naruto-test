@@ -144,7 +144,6 @@ export default function SeasonBoard() {
 
       <div className="lb-layout">
         <section className="lb-main">
-          {board && <span className="lb-count season-count">{t('lb.players', { count: board.total })}</span>}
           {podium.length > 0 && (
             <ol className={`lb-podium ${waiting ? 'waiting' : ''}`}>
               {stand.map((index) => {

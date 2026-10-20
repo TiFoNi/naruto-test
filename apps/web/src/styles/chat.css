@@ -30,20 +30,15 @@
   height: 31px;
 }
 
-.chat-bubble em {
+.chat-dot {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  min-width: 20px;
-  padding: 2px 5px;
-  border-radius: 999px;
+  top: 3px;
+  right: 3px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
   background: var(--accent);
-  color: #11131a;
-  font-family: var(--display);
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 3px var(--card-solid);
 }
 
 body:has(.duel-dock) .chat-bubble {
@@ -130,7 +125,7 @@ body:has(.chat-panel) .duel-dock {
 .chat-head {
   display: flex;
   flex: none;
-  align-items: center;
+  align-items: baseline;
   gap: 10px;
   padding: 14px 16px;
   border-bottom: 1px solid var(--line);
@@ -141,11 +136,33 @@ body:has(.chat-panel) .duel-dock {
   font-size: 15px;
 }
 
+.chat-online {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  line-height: 1;
+  color: var(--text-3);
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.chat-online::before {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--correct);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--correct) 16%, transparent);
+  content: '';
+}
+
 .chat-x {
   display: grid;
   width: 28px;
   height: 28px;
   margin-left: auto;
+  align-self: center;
   place-items: center;
   border: 0;
   border-radius: 9px;
@@ -236,6 +253,22 @@ body:has(.chat-panel) .duel-dock {
   font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.chat-line.is-mine {
+  flex-direction: row-reverse;
+}
+
+.chat-line.is-mine .chat-body header {
+  flex-direction: row-reverse;
+}
+
+.chat-line.is-mine .chat-body header time {
+  display: none;
+}
+
+.chat-line.is-mine .chat-body p {
+  text-align: right;
 }
 
 .chat-line.is-mine .chat-body header b {

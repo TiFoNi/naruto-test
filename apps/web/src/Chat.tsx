@@ -58,6 +58,7 @@ export default function Chat() {
   const [sending, setSending] = useState(false)
   const [asking, setAsking] = useState<{ kind: 'drop' | 'mute'; line: Line } | null>(null)
   const [unread, setUnread] = useState(0)
+  const [online, setOnline] = useState(0)
   const seen = useRef(0)
   const feed = useRef<HTMLDivElement>(null)
   const nearEnd = useRef(true)
@@ -79,9 +80,10 @@ export default function Chat() {
 
   const load = useCallback(async (before?: string) => {
     setLoading(true)
-    const { ok, data } = await api<{ lines?: Line[]; more?: boolean }>(`chat${before ? `?before=${before}` : ''}`)
+    const { ok, data } = await api<{ lines?: Line[]; more?: boolean; online?: number }>(`chat${before ? `?before=${before}` : ''}`)
     setLoading(false)
     if (!ok || !data.lines) return
+    if (typeof data.online === 'number') setOnline(data.online)
     setMore(Boolean(data.more))
     setLines((kept) => {
       const known = new Set(kept.map((line) => line.id))
@@ -97,6 +99,10 @@ export default function Chat() {
         const line = data as Line | null
         if (!line?.id) return
         setLines((kept) => (kept.some((one) => one.id === line.id) ? kept : [...kept, line].slice(-KEEP)))
+      },
+      online: (data) => {
+        const live = (data as { online?: number } | null)?.online
+        if (typeof live === 'number') setOnline(live)
       },
       drop: (data) => {
         const gone = (data as { id?: string } | null)?.id
@@ -179,7 +185,7 @@ export default function Chat() {
         onClick={() => (open ? close() : setOpen(true))}
       >
         {open ? <CloseIcon /> : <ChatIcon />}
-        {!open && unread > 0 && <em>{unread > 99 ? '99+' : unread}</em>}
+        {!open && unread > 0 && <em className="chat-dot" aria-label={t('chat.fresh')} />}
       </button>
 
       {open && <div className={`chat-shade ${leaving ? 'is-leaving' : ''}`} role="presentation" onClick={close} />}
@@ -188,6 +194,7 @@ export default function Chat() {
         <section className={`chat-panel ${leaving ? 'is-leaving' : ''}`} aria-label={t('chat.title')}>
           <header className="chat-head">
             <b>{t('chat.title')}</b>
+            {online > 0 && <em className="chat-online">{t('chat.online', { count: online })}</em>}
             <button type="button" className="chat-x" aria-label={t('chat.close')} onClick={close}>
               <CloseIcon />
             </button>

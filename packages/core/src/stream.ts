@@ -20,7 +20,7 @@ const safety = new Map<string, ReturnType<typeof setInterval>>()
 const drops = new Map<string, ReturnType<typeof setTimeout>>()
 const codes = new Map<string, string>()
 
-const chatters = new Set<Sender>()
+const chatters = new Map<Sender, string>()
 
 let watcher: Promise<void> | null = null
 let talk: Promise<void> | null = null
@@ -229,12 +229,12 @@ async function startTalk() {
       const doc = (change as { fullDocument?: ChatDoc }).fullDocument
       if (!doc?._id) return
       if (doc.hidden) {
-        for (const send of chatters) send('drop', { id: doc._id.toHexString() })
+        for (const send of chatters.keys()) send('drop', { id: doc._id.toHexString() })
         return
       }
       if ((change as { operationType?: string }).operationType !== 'insert') return
       const line = lineOf(doc)
-      for (const send of chatters) send('chat', line)
+      for (const send of chatters.keys()) send('chat', line)
     })
     stream.on('error', () => {
       talk = null
@@ -246,11 +246,20 @@ async function startTalk() {
   return talk
 }
 
-export function subscribeChat(send: Sender) {
-  chatters.add(send)
+export const chatOnline = () => new Set(chatters.values()).size
+
+function pushOnline() {
+  const online = chatOnline()
+  for (const send of chatters.keys()) send('online', { online })
+}
+
+export function subscribeChat(send: Sender, who: string) {
+  chatters.set(send, who)
   void startTalk()
+  pushOnline()
   return () => {
     chatters.delete(send)
+    pushOnline()
   }
 }
 

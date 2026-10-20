@@ -14,6 +14,7 @@ import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as adminShots from '@nanda/core/endpoints/admin-shots'
 import * as adminZoom from '@nanda/core/endpoints/admin-zoom'
 import * as chat from '@nanda/core/endpoints/chat'
+import { watcherKey } from '@nanda/core/chat'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
@@ -301,9 +302,10 @@ export class GameController {
   }
 
   @Get('stream/chat')
-  chatStream(@Req() req: Request, @Res() res: Response) {
+  async chatStream(@Req() req: Request, @Res() res: Response) {
+    const who = await watcherKey(toWebRequest(req))
     const send = openStream(req, res)
-    const stop = subscribeChat(send)
+    const stop = subscribeChat(send, who)
     req.on('close', stop)
   }
 

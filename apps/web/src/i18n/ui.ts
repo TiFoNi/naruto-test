@@ -1085,6 +1085,8 @@ const ui = {
   'level.xp': { ru: '{into} / {need} XP', uk: '{into} / {need} XP', en: '{into} / {need} XP' },
   'level.toNext': { ru: 'до {level} уровня: {xp} XP', uk: 'до {level} рівня: {xp} XP', en: 'to level {level}: {xp} XP' },
   'chat.title': { ru: 'Общий чат', uk: 'Загальний чат', en: 'Global chat' },
+  'chat.fresh': { ru: 'Есть новые сообщения', uk: 'Є нові повідомлення', en: 'New messages' },
+  'chat.online': { ru: 'онлайн: {count}', uk: 'онлайн: {count}', en: '{count} online' },
   'chat.close': { ru: 'Закрыть чат', uk: 'Закрити чат', en: 'Close chat' },
   'chat.empty': { ru: 'Пока тихо. Напиши первым', uk: 'Поки тихо. Напиши першим', en: 'Quiet here. Say hi first' },
   'chat.earlier': { ru: 'Показать раньше', uk: 'Показати раніше', en: 'Show earlier' },

@@ -1,5 +1,8 @@
+import { randomUUID } from 'node:crypto'
 import { ObjectId } from 'mongodb'
+import { authSession } from './auth'
 import { chatRoom, users, type ChatDoc, type UserDoc } from './db'
+import { readGuest } from './session'
 
 export const CHAT_MAX = 300
 const GAP_MS = 3000
@@ -38,6 +41,13 @@ const tidy = (text: unknown) =>
         .trim()
         .slice(0, CHAT_MAX)
     : ''
+
+export async function watcherKey(request: Request) {
+  const session = await authSession(request).catch(() => null)
+  if (session?.id) return `u:${session.id}`
+  const guest = await readGuest(request).catch(() => null)
+  return guest ? `g:${guest}` : `x:${randomUUID()}`
+}
 
 export async function chatPage(before?: string, limit = PAGE) {
   const room = await chatRoom()
