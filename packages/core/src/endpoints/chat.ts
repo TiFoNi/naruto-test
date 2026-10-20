@@ -3,14 +3,13 @@ import { fail, handle, json, readJson } from '../http'
 import { currentUser, touchVisit, unauthorized } from '../profile'
 import { adminSession } from '../admin'
 import { CHAT_MAX, chatPage, dropChat, muteChat, sendChat } from '../chat'
-import { chatOnline } from '../stream'
 
 export const GET = handle(async (request) => {
   const url = new URL(request.url)
   const before = url.searchParams.get('before') ?? undefined
   const limit = Number(url.searchParams.get('limit')) || undefined
   const page = await chatPage(before, limit)
-  return json({ ...page, max: CHAT_MAX, online: chatOnline() })
+  return json({ ...page, max: CHAT_MAX })
 })
 
 export const POST = handle(async (request) => {

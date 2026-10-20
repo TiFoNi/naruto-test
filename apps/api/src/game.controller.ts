@@ -14,7 +14,7 @@ import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as adminShots from '@nanda/core/endpoints/admin-shots'
 import * as adminZoom from '@nanda/core/endpoints/admin-zoom'
 import * as chat from '@nanda/core/endpoints/chat'
-import { watcherKey } from '@nanda/core/chat'
+import * as pulse from '@nanda/core/endpoints/pulse'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
@@ -286,6 +286,11 @@ export class GameController {
     return bridge(tuneAudio.GET, req, res)
   }
 
+  @Get('pulse')
+  pulseBeat(@Req() req: Request, @Res() res: Response) {
+    return bridge(pulse.GET, req, res)
+  }
+
   @Get('chat')
   chatHistory(@Req() req: Request, @Res() res: Response) {
     return bridge(chat.GET, req, res)
@@ -302,10 +307,9 @@ export class GameController {
   }
 
   @Get('stream/chat')
-  async chatStream(@Req() req: Request, @Res() res: Response) {
-    const who = await watcherKey(toWebRequest(req))
+  chatStream(@Req() req: Request, @Res() res: Response) {
     const send = openStream(req, res)
-    const stop = subscribeChat(send, who)
+    const stop = subscribeChat(send)
     req.on('close', stop)
   }
 

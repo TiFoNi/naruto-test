@@ -22,25 +22,39 @@ type Line = {
   at: number
 }
 
-const SEEN_KEY = 'chat:seen'
 const GROUP_MS = 5 * 60_000
-const KEEP = 300
+const PULSE_MS = 45_000
+const SEEN_KEY = 'chat:seen'
+const WHO_KEY = 'chat:who'
 
-const readSeen = () => {
+const lastSeen = () => {
   try {
-    return Number(localStorage.getItem(SEEN_KEY)) || 0
+    return localStorage.getItem(SEEN_KEY) ?? ''
   } catch {
-    return 0
+    return ''
   }
 }
 
-const markSeen = (at: number) => {
+const whoAmI = () => {
   try {
-    localStorage.setItem(SEEN_KEY, String(at))
+    const known = localStorage.getItem(WHO_KEY)
+    if (known) return known
+    const made = crypto.randomUUID()
+    localStorage.setItem(WHO_KEY, made)
+    return made
+  } catch {
+    return ''
+  }
+}
+
+const keepSeen = (id: string) => {
+  try {
+    localStorage.setItem(SEEN_KEY, id)
   } catch {
     /* приватний режим */
   }
 }
+const KEEP = 300
 
 const clock = (at: number) =>
   new Date(at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -61,17 +75,24 @@ export default function Chat() {
   const [sending, setSending] = useState(false)
   const [asking, setAsking] = useState<{ kind: 'drop' | 'mute' | 'unfriend'; line: Line } | null>(null)
   const [menu, setMenu] = useState<{ line: Line; x: number; y: number } | null>(null)
-  const [unread, setUnread] = useState(0)
   const [online, setOnline] = useState(0)
-  const seen = useRef(0)
+  const [fresh, setFresh] = useState(false)
   const feed = useRef<HTMLDivElement>(null)
   const nearEnd = useRef(true)
 
-  useEffect(() => {
-    seen.current = readSeen()
-  }, [])
-
   const say = useCallback((text: string, bad = false) => setNote({ text, bad }), [])
+
+  const beat = useCallback(async () => {
+    const ask = new URLSearchParams()
+    const seen = lastSeen()
+    if (seen) ask.set('seen', seen)
+    const who = whoAmI()
+    if (who) ask.set('who', who)
+    const { ok, data } = await api<{ online?: number; fresh?: boolean }>(`pulse?${ask.toString()}`)
+    if (!ok) return
+    if (typeof data.online === 'number') setOnline(data.online)
+    setFresh(Boolean(data.fresh))
+  }, [])
 
   const loadMates = useCallback(async () => {
     const { ok, data } = await api<{ friends?: { id: string }[]; requests?: { id: string }[]; sent?: { id: string }[] }>('friends')
@@ -102,14 +123,33 @@ export default function Chat() {
     if (!ok || !data.lines) return
     if (typeof data.online === 'number') setOnline(data.online)
     setMore(Boolean(data.more))
+    if (!before) return setLines(data.lines.slice(-KEEP))
     setLines((kept) => {
       const known = new Set(kept.map((line) => line.id))
-      const fresh = data.lines!.filter((line) => !known.has(line.id))
-      return before ? [...fresh, ...kept] : [...kept, ...fresh].slice(-KEEP)
+      return [...data.lines!.filter((line) => !known.has(line.id)), ...kept]
     })
   }, [])
 
   useEffect(() => {
+    void beat()
+    const timer = setInterval(() => document.visibilityState === 'visible' && void beat(), PULSE_MS)
+    const wake = () => document.visibilityState === 'visible' && void beat()
+    document.addEventListener('visibilitychange', wake)
+    return () => {
+      clearInterval(timer)
+      document.removeEventListener('visibilitychange', wake)
+    }
+  }, [beat])
+
+  useEffect(() => {
+    const last = lines[lines.length - 1]
+    if (!open || !last) return
+    keepSeen(last.id)
+    setFresh(false)
+  }, [open, lines])
+
+  useEffect(() => {
+    if (!open) return
     void load()
     return openStream('stream/chat', {
       chat: (data) => {
@@ -117,28 +157,12 @@ export default function Chat() {
         if (!line?.id) return
         setLines((kept) => (kept.some((one) => one.id === line.id) ? kept : [...kept, line].slice(-KEEP)))
       },
-      online: (data) => {
-        const live = (data as { online?: number } | null)?.online
-        if (typeof live === 'number') setOnline(live)
-      },
       drop: (data) => {
         const gone = (data as { id?: string } | null)?.id
         if (gone) setLines((kept) => kept.filter((line) => line.id !== gone))
       },
     })
-  }, [load])
-
-  useEffect(() => {
-    const last = lines[lines.length - 1]
-    if (!last) return
-    if (open) {
-      seen.current = last.at
-      markSeen(last.at)
-      setUnread(0)
-      return
-    }
-    setUnread(lines.filter((line) => line.at > seen.current).length)
-  }, [lines, open])
+  }, [load, open])
 
   useEffect(() => {
     if (!open) return
@@ -231,7 +255,7 @@ export default function Chat() {
         onClick={() => (open ? close() : setOpen(true))}
       >
         {open ? <CloseIcon /> : <ChatIcon />}
-        {!open && unread > 0 && <em className="chat-dot" aria-label={t('chat.fresh')} />}
+        {!open && fresh && <em className="chat-dot" aria-label={t('chat.fresh')} />}
       </button>
 
       {open && <div className={`chat-shade ${leaving ? 'is-leaving' : ''}`} role="presentation" onClick={close} />}

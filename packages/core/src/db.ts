@@ -314,6 +314,7 @@ const cache = globalThis as typeof globalThis & {
   __purchasesIndexed?: Promise<unknown>
   __ledgerIndexed?: Promise<unknown>
   __chatIndexed?: Promise<unknown>
+  __pulseIndexed?: Promise<unknown>
 }
 
 export const database = async () => (await client()).db(process.env.MONGODB_DB || 'nandaguessr')
@@ -419,6 +420,20 @@ export async function chatRoom(): Promise<Collection<ChatDoc>> {
     throw error
   })
   await cache.__chatIndexed
+  return collection
+}
+
+export type PulseDoc = { _id: string; at: Date }
+
+export async function pulse(): Promise<Collection<PulseDoc>> {
+  const collection = (await database()).collection<PulseDoc>('pulse')
+  cache.__pulseIndexed ??= collection
+    .createIndex({ at: 1 }, { expireAfterSeconds: 120 })
+    .catch((error) => {
+      cache.__pulseIndexed = undefined
+      throw error
+    })
+  await cache.__pulseIndexed
   return collection
 }
 

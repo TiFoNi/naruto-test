@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { ObjectId } from 'mongodb'
 import { authSession } from './auth'
-import { chatRoom, users, type ChatDoc, type UserDoc } from './db'
+import { chatRoom, pulse, users, type ChatDoc, type UserDoc } from './db'
 import { readGuest } from './session'
 
 export const CHAT_MAX = 300
@@ -46,7 +46,26 @@ export async function watcherKey(request: Request) {
   const session = await authSession(request).catch(() => null)
   if (session?.id) return `u:${session.id}`
   const guest = await readGuest(request).catch(() => null)
-  return guest ? `g:${guest}` : `x:${randomUUID()}`
+  if (guest) return `g:${guest}`
+  const own = new URL(request.url).searchParams.get('who')
+  return own && /^[A-Za-z0-9-]{8,64}$/.test(own) ? `w:${own}` : `x:${randomUUID()}`
+}
+
+const ALIVE_MS = 90_000
+
+export async function touchPulse(key: string) {
+  const beats = await pulse()
+  await beats.updateOne({ _id: key }, { $set: { at: new Date() } }, { upsert: true })
+  return beats.countDocuments({ at: { $gt: new Date(Date.now() - ALIVE_MS) } })
+}
+
+export async function freshSince(seen: unknown) {
+  if (typeof seen !== 'string' || !ObjectId.isValid(seen)) return false
+  const found = await (await chatRoom()).findOne(
+    { hidden: { $ne: true }, _id: { $gt: new ObjectId(seen) } },
+    { projection: { _id: 1 } },
+  )
+  return Boolean(found)
 }
 
 export async function chatPage(before?: string, limit = PAGE) {
