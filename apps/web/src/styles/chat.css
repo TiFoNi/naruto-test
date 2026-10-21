@@ -41,10 +41,6 @@
   height: 31px;
 }
 
-body:has(.duel-dock) .chat-bubble {
-  bottom: 88px;
-}
-
 .chat-shade {
   position: fixed;
   inset: 0;
@@ -116,6 +112,10 @@ body:has(.duel-dock) .chat-bubble {
 
 body:has(.chat-panel) .chat-bubble {
   display: none;
+}
+
+body:has(.chat-bubble) .duel-dock {
+  right: 90px;
 }
 
 body:has(.chat-panel) .duel-dock {
@@ -489,6 +489,11 @@ body:has(.chat-panel) .duel-dock {
 
   .chat-bubble {
     right: 14px;
+    bottom: 14px;
+  }
+
+  body:has(.chat-bubble) .duel-dock {
+    right: 86px;
     bottom: 14px;
   }
 }
