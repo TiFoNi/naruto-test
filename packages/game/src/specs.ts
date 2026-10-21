@@ -623,6 +623,33 @@ export type PayWay = 'crypto' | 'stars'
 
 export const wayOf = (value: unknown): PayWay | null => (value === 'crypto' || value === 'stars' ? value : null)
 
+export const LEVEL_FIRST = 100
+export const LEVEL_STEP = 15
+export const LEVEL_CAP = 1500
+
+export const levelCost = (level: number) => Math.min(LEVEL_FIRST + LEVEL_STEP * (level - 1), LEVEL_CAP)
+
+const LADDER = (() => {
+  const steps: number[] = [0]
+  for (let level = 1; level < 300; level++) steps.push(steps[level - 1]! + levelCost(level))
+  return steps
+})()
+
+export const levelTotal = (level: number) => LADDER[Math.min(Math.max(level, 1), LADDER.length) - 1]!
+
+export function levelAt(xp: number) {
+  const total = Math.max(0, Math.floor(xp) || 0)
+  let low = 1
+  let high = LADDER.length
+  while (low < high) {
+    const mid = Math.floor((low + high) / 2) + 1
+    if (LADDER[mid - 1]! <= total) low = mid
+    else high = mid - 1
+  }
+  const level = low
+  return { level, into: total - LADDER[level - 1]!, need: levelCost(level), xp: total }
+}
+
 export const LEVEL_BIG = 10
 export const LEVEL_MID = 5
 export const LEVEL_LAST = 300

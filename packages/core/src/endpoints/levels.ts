@@ -1,10 +1,10 @@
 import { users } from '../db'
 import { fail, handle, json, readJson } from '../http'
 import { currentUser, touchVisit, unauthorized } from '../profile'
-import { claimLevel } from '../levels'
-import { levelOf, LEVEL_XP } from '../quests'
+import { claimAll, claimLevel } from '../levels'
+import { levelAt } from '@nanda/game'
 
-const standing = (xp: number) => ({ xp, level: levelOf(xp), into: xp % LEVEL_XP, need: LEVEL_XP })
+const standing = (xp: number) => levelAt(xp)
 
 export const GET = handle(async (request) => {
   const found = await currentUser(request)
@@ -21,8 +21,8 @@ export const POST = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
 
-  const { level } = (await readJson(request)) as { level?: unknown }
-  const paid = await claimLevel(found.doc._id!, level)
+  const { level, all } = (await readJson(request)) as { level?: unknown; all?: unknown }
+  const paid = all === true ? await claimAll(found.doc._id!) : await claimLevel(found.doc._id!, level)
   if (!paid) return fail(409, 'not_ready')
   await touchVisit(await users(), found.doc._id!)
 

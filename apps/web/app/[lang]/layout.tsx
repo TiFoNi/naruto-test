@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Manrope, Unbounded } from 'next/font/google'
+import { Archivo, Manrope, Unbounded } from 'next/font/google'
 import Providers from './providers'
 import { SITE } from '@/src/brand'
 import { LANGS, dictionary, type Lang } from '@/src/i18n/ui'
@@ -19,6 +19,13 @@ const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
   weight: ['500', '600', '700', '800'],
   variable: '--font-body',
+  display: 'swap',
+})
+
+const mileFont = Archivo({
+  subsets: ['latin'],
+  axes: ['wdth'],
+  variable: '--font-mile',
   display: 'swap',
 })
 
@@ -71,7 +78,7 @@ export default async function RootLayout({ children, params }: { children: React
   const safe = (LANGS.some((l) => l.id === lang) ? lang : 'ru') as Lang
 
   return (
-    <html lang={safe} className={`${manrope.variable} ${unbounded.variable}`} suppressHydrationWarning>
+    <html lang={safe} className={`${manrope.variable} ${unbounded.variable} ${mileFont.variable}`} suppressHydrationWarning>
       <head>
         {API && <link rel="preconnect" href={API} crossOrigin="use-credentials" />}
         <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />

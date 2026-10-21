@@ -2,18 +2,10 @@ import { users } from '../db'
 import { fail, handle, json, readJson } from '../http'
 import { currentUser, touchVisit, unauthorized } from '../profile'
 import { claimQuest, questBoard } from '../quests'
-import { levelOf, LEVEL_XP } from '../quests'
+import { levelAt } from '@nanda/game'
 import { nextReset } from '../daily'
 
-const standing = (xp: number) => {
-  const level = levelOf(xp)
-  return {
-    xp,
-    level,
-    into: xp % LEVEL_XP,
-    need: LEVEL_XP,
-  }
-}
+const standing = (xp: number) => levelAt(xp)
 
 export const GET = handle(async (request) => {
   const found = await currentUser(request)

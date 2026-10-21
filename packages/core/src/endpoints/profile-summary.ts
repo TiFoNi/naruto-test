@@ -7,7 +7,8 @@ import { gameData } from '../games'
 import { fail, handle, json } from '../http'
 import { currentUser, defaultNickname, ensureTag, unauthorized } from '../profile'
 import { friendState } from '../friends'
-import { LEVEL_XP, levelOf } from '../quests'
+import { levelAt } from '@nanda/game'
+import { levelOf } from '../quests'
 import { shiftDay, today } from '../daily'
 import { seasonAt } from '../season'
 
@@ -285,7 +286,7 @@ export const GET = handle(async (request) => {
     blockSides: doc.blockSides ?? {},
     awards: earnedAwards(doc),
     awardsTotal: LIFE_FAMILIES.size,
-    level: { xp, level, into: xp % LEVEL_XP, need: LEVEL_XP },
+    level: levelAt(xp),
     totals: {
       solved: totals.won,
       played: totals.played,

@@ -1,9 +1,9 @@
 import type { ObjectId } from 'mongodb'
+import { levelAt } from '@nanda/game'
 import { quests, rounds, users } from './db'
 import { dayOf, today } from './daily'
 import { addSeasonXp } from './season'
 
-export const LEVEL_XP = 500
 
 export const FREE_XP = 25
 export const BONUS_XP = 120
@@ -39,7 +39,7 @@ export const POOL: Quest[] = [
 
 const byId = new Map(POOL.map((quest) => [quest.id, quest]))
 
-export const levelOf = (xp: number) => Math.floor(xp / LEVEL_XP) + 1
+export const levelOf = (xp: number) => levelAt(xp).level
 
 function seeded(seed: string) {
   let hash = 2166136261

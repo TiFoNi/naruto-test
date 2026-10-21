@@ -43,6 +43,7 @@ const SECTIONS = new Set([
   'duels',
   'friends',
   'leaderboard',
+  'levels',
   'login',
   'play',
   'privacy',

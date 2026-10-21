@@ -1,61 +1,80 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
-import { LEVEL_BIG, LEVEL_LAST, LEVEL_MID, levelCoins } from '@nanda/game'
+import { useCallback, useEffect, useState, type CSSProperties } from 'react'
+import { LEVEL_BIG, LEVEL_LAST, LEVEL_MID, levelAt, levelCoins, levelTotal } from '@nanda/game'
 import { api } from './api'
 import BackButton from './BackButton'
 import { useAuth } from './auth'
-import { useI18n } from './i18n'
-import { CheckIcon } from './icons'
+import { useI18n, type UiKey } from './i18n'
 import { useHref } from './router'
 
 const AHEAD = 20
-const LEVEL_XP = 500
+const STEP = 20
+const BEFORE = 2
+const AFTER = 5
 
-const sizeOf = (level: number) => (level % LEVEL_BIG === 0 ? 'big' : level % LEVEL_MID === 0 ? 'mid' : 'small')
+// кольори рідкостей наших ачівок: бронза, срібло, золото, легенда, міф + секретний на фіналі
+const TIERS = ['#d98a4e', '#c9d1dc', '#f5c451', '#a78bfa', '#f1476b'] as const
+const NAMES = ['bronze', 'silver', 'gold', 'legend', 'mythic'] as const
+const SECRET = '#6ec06e'
 
-// кольори рідкостей наших ачівок: бронза → срібло → золото → легенда → міф
-const TONES = [
-  [217, 138, 78],
-  [201, 209, 220],
-  [245, 196, 81],
-  [167, 139, 250],
-  [241, 71, 107],
-] as const
+const spotOf = (level: number, last: number) => ((level - 1) / (last - 1)) * (TIERS.length - 1)
 
-const toneAt = (share: number) => {
-  const spot = Math.min(Math.max(share, 0), 1) * (TONES.length - 1)
-  const step = Math.min(Math.floor(spot), TONES.length - 2)
-  const mix = spot - step
-  const [from, to] = [TONES[step], TONES[step + 1]]
-  const channel = (index: number) => Math.round(from[index] + (to[index] - from[index]) * mix)
-  return `rgb(${channel(0)}, ${channel(1)}, ${channel(2)})`
+const toneOf = (level: number, last: number) => {
+  if (level >= last) return SECRET
+  const spot = spotOf(level, last)
+  const step = Math.min(Math.floor(spot), TIERS.length - 2)
+  const mix = Math.round((spot - step) * 100)
+  return mix === 0 ? TIERS[step]! : `color-mix(in oklch, ${TIERS[step]}, ${TIERS[step + 1]} ${mix}%)`
 }
+
+const tierOf = (level: number, last: number) =>
+  level >= last ? 'secret' : NAMES[Math.min(Math.round(spotOf(level, last)), NAMES.length - 1)]!
 
 export default function Levels() {
   const { t } = useI18n()
   const href = useHref()
   const { user, refresh } = useAuth()
-  const level = user?.level ?? 1
-  const into = (user?.xp ?? 0) % LEVEL_XP
-  const share = Math.round((into / LEVEL_XP) * 100)
-  const track = useRef<HTMLDivElement>(null)
-  const road = useRef<HTMLOListElement>(null)
-  const here = useRef<HTMLLIElement>(null)
+  const stand = levelAt(user?.xp ?? 0)
+  const level = stand.level
+  const share = Math.round((stand.into / stand.need) * 100)
   const [taken, setTaken] = useState<number[]>([])
+  const [known, setKnown] = useState(false)
   const [claiming, setClaiming] = useState(0)
+  const [older, setOlder] = useState(0)
+  const [newer, setNewer] = useState(0)
 
   const last = Math.max(LEVEL_LAST, Math.ceil((level + AHEAD) / LEVEL_BIG) * LEVEL_BIG)
-  const levels = Array.from({ length: last }, (_, index) => index + 1)
+  const marks = Array.from({ length: Math.floor(last / LEVEL_MID) }, (_, index) => (index + 1) * LEVEL_MID)
+  const next = marks.find((one) => one > level) ?? marks[marks.length - 1]!
+  const place = marks.indexOf(next)
+
+  const from = Math.max(0, place - BEFORE - older * STEP)
+  const till = Math.min(marks.length, place + AFTER + newer * STEP)
+  const shown = marks.slice(from, till)
+  const rest = marks.length - till
 
   const load = useCallback(async () => {
     const { ok, data } = await api<{ taken: number[] }>('levels')
     if (ok && Array.isArray(data.taken)) setTaken(data.taken)
+    setKnown(true)
   }, [])
 
   useEffect(() => {
     if (user) void load()
   }, [user, load])
+
+  const pending = known ? marks.filter((one) => levelCoins(one) > 0 && one <= level && !taken.includes(one)) : []
+
+  const takeAll = async () => {
+    if (!pending.length || claiming) return
+    setClaiming(-1)
+    const { ok, data } = await api<{ taken: number[]; award?: number }>('levels/claim', { all: true })
+    setClaiming(0)
+    if (!ok || !Array.isArray(data.taken)) return
+    setTaken(data.taken)
+    if (data.award) void refresh()
+  }
 
   const take = async (one: number) => {
     setClaiming(one)
@@ -66,92 +85,108 @@ export default function Levels() {
     if (data.award) void refresh()
   }
 
-  useEffect(() => {
-    const node = here.current
-    const box = track.current
-    const line = road.current
-    if (!node || !box || !line) return
-    box.scrollLeft = Math.max(0, node.offsetLeft - box.clientWidth / 2 + node.clientWidth / 2)
-    line.style.setProperty('--done', `${node.offsetLeft + node.offsetWidth / 2}px`)
-    line.style.setProperty('--full', `${line.scrollWidth}px`)
-  }, [level, last])
-
   return (
     <div className="levels">
       <div className="levels-top">
         <BackButton href={href.profile}>{t('nav.profile')}</BackButton>
       </div>
 
-      <section className="levels-hero">
-        <span className="levels-ring" style={{ '--share': share } as CSSProperties} aria-hidden>
-          <svg viewBox="0 0 120 120">
-            <circle className="levels-ring-base" cx="60" cy="60" r="54" />
-            <circle className="levels-ring-fill" cx="60" cy="60" r="54" strokeDasharray={`${(share / 100) * 339} 339`} />
-          </svg>
-          <b>{level}</b>
-          <em>{share}%</em>
-        </span>
+      <div className="levels-split">
+        <aside className="levels-card">
+          <div className="levels-id">
+            <span className="levels-kicker">{t('levels.mine')}</span>
+            <b className="levels-num">{level}</b>
+          </div>
 
-        <div className="levels-hero-body">
-          <h1>{t('nav.level', { level })}</h1>
-          <p className="levels-total">{t('levels.toNext', { into, need: LEVEL_XP, level: level + 1 })}</p>
+          <div className="levels-meter">
+            <div className="levels-meter-head">
+              <span>
+                {stand.into} / {stand.need} XP
+              </span>
+              <em>{share}%</em>
+            </div>
+            <div className="level-bar levels-line" aria-hidden>
+              <i style={{ width: `${share}%` }} />
+            </div>
+            <p className="levels-rest">{t('levels.rest', { xp: stand.need - stand.into, level: level + 1 })}</p>
+          </div>
 
-        </div>
-      </section>
+          {user && pending.length > 0 && (
+            <button type="button" className="levels-take-all" disabled={claiming !== 0} onClick={() => void takeAll()}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+              {t('levels.takeAll')}
+            </button>
+          )}
+        </aside>
 
-      <section className="levels-road-card">
-        <header className="levels-road-head">
-          <h2>{t('levels.rewards')}</h2>
-        </header>
+        <section className="levels-list-card">
+          {from > 0 && (
+            <button type="button" className="levels-more" onClick={() => setOlder((one) => one + 1)}>
+              {t('levels.earlier')}
+            </button>
+          )}
 
-        <div className="levels-track" ref={track}>
-          <ol className="levels-road" ref={road}>
-            {levels.map((one) => {
-              const state = one < level ? 'done' : one === level ? 'here' : 'locked'
+          <ol className="levels-list">
+            {shown.map((one) => {
               const prize = levelCoins(one)
               const got = taken.includes(one)
-              const ready = prize > 0 && !got && one <= level && Boolean(user)
+              const reached = one <= level
+              const ready = known && !got && reached && Boolean(user)
+              const left = levelTotal(one) - (user?.xp ?? 0)
               return (
                 <li
                   key={one}
-                  className={`levels-step is-${sizeOf(one)} is-${state}`}
-                  style={{ '--tone': toneAt((one - 1) / Math.max(1, last - 1)) } as CSSProperties}
-                  ref={one === level ? here : undefined}
+                  className={`rung ${reached ? 'is-done' : ''} ${ready ? 'is-ready' : ''} ${got ? 'is-got' : ''}`}
+                  style={{ '--tone': toneOf(one, last) } as CSSProperties}
                 >
-                  <span className="levels-mark">
-                    <b>{one}</b>
+                  <span className="rung-rail" aria-hidden>
+                    <i />
                   </span>
-                  {state === 'here' && <em className="levels-here">{t('levels.here')}</em>}
-                  {prize > 0 &&
-                    (ready ? (
-                      <button
-                        type="button"
-                        className="levels-slot is-ready"
-                        disabled={claiming === one}
-                        title={t('levels.take')}
-                        onClick={() => take(one)}
-                      >
-                        <i className="levels-coin" style={{ backgroundImage: 'url(/shop/coins-big.webp)' }} aria-hidden />
-                        <b>{prize}</b>
-                        <em>{t('levels.take')}</em>
+
+                  <div className="rung-card">
+                    <b className="rung-num">{one}</b>
+                    <i className="rung-coin" style={{ backgroundImage: 'url(/shop/coins-big.webp)' }} aria-hidden />
+
+                    <div className="rung-what">
+                      <b>{t('levels.coins', { count: prize })}</b>
+                      <span>{t(`achTier.${tierOf(one, last)}` as UiKey)}</span>
+                    </div>
+
+                    {ready ? (
+                      <button type="button" className="rung-take" disabled={claiming === one} onClick={() => void take(one)}>
+                        {t('levels.take')}
                       </button>
-                    ) : (
-                      <span className={`levels-slot ${got ? 'is-taken' : ''}`} title={got ? t('levels.taken') : t('levels.locked', { level: one })}>
-                        <i className="levels-coin" style={{ backgroundImage: 'url(/shop/coins-big.webp)' }} aria-hidden />
-                        <b>{prize}</b>
-                        {got && (
-                          <em className="levels-got" aria-label={t('levels.taken')}>
-                            <CheckIcon />
-                          </em>
-                        )}
+                    ) : got ? (
+                      <span className="rung-got">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                        {t('levels.gotIt')}
                       </span>
-                    ))}
+                    ) : !reached ? (
+                      <span className="rung-wait">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                          <rect x="4" y="11" width="16" height="9" rx="2" />
+                          <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+                        </svg>
+                        {t('levels.away', { xp: left })}
+                      </span>
+                    ) : null}
+                  </div>
                 </li>
               )
             })}
           </ol>
-        </div>
-      </section>
+
+          {rest > 0 && (
+            <button type="button" className="levels-more" onClick={() => setNewer((one) => one + 1)}>
+              {t('levels.more', { count: rest })}
+            </button>
+          )}
+        </section>
+      </div>
     </div>
   )
 }
