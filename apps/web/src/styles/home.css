@@ -45,6 +45,13 @@
   mask-image: radial-gradient(72% 82% at 72% 44%, #000 26%, rgba(0, 0, 0, 0.45) 62%, transparent 100%);
 }
 
+.hero-daily-art.is-flat {
+  height: 88%;
+  opacity: 0.5;
+  -webkit-mask-image: radial-gradient(66% 80% at 82% 46%, #000 28%, rgba(0, 0, 0, 0.4) 64%, transparent 100%);
+  mask-image: radial-gradient(66% 80% at 82% 46%, #000 28%, rgba(0, 0, 0, 0.4) 64%, transparent 100%);
+}
+
 .hero-daily-copy {
   display: flex;
   flex: 1 1 auto;

@@ -70,9 +70,22 @@ const favourite = (games: GameMeta[], stats: Record<string, Stats>) => {
     .sort((one, two) => (score.get(two.id) ?? 0) - (score.get(one.id) ?? 0) || two.plays - one.plays)[0]
 }
 
-type Slide = { id: string; accent: string; art: string; kicker: string; done?: boolean; title: string; lead: string; cta: string; href: string }
+type Slide = {
+  id: string
+  accent: string
+  art: string
+  flat?: boolean
+  kicker: string
+  done?: boolean
+  title: string
+  lead: string
+  cta: string
+  href: string
+  out?: boolean
+}
 
 const SPIN = 7000
+const TELEGRAM = 'https://t.me/nandaguessr'
 
 function DailyCard({ games }: { games: GameMeta[] }) {
   const { t, l } = useI18n()
@@ -86,11 +99,6 @@ function DailyCard({ games }: { games: GameMeta[] }) {
   const today = kyivToday()
   const loved = useMemo(() => favourite(games, stats), [games, stats])
   const shots = games.find((one) => one.id === 'shots')
-  const hot = useMemo(() => {
-    const rank = [...games].filter((one) => one.modes.some((mode) => DAILY_XP_MODES.includes(mode))).sort((one, two) => two.plays - one.plays)
-    const second = rank[1]
-    return second && second.id !== loved?.id ? second : rank.find((one) => one.id !== loved?.id)
-  }, [games, loved])
 
   const daily = (game: GameMeta, kicker: string): Slide => {
     const mode = (game.modes.find((one) => DAILY_XP_MODES.includes(one)) ?? 'classic') as ModeId
@@ -121,7 +129,18 @@ function DailyCard({ games }: { games: GameMeta[] }) {
       cta: t('dash.tryMode'),
       href: href.play(shots.id, 'shot'),
     })
-  if (hot) slides.push(daily(hot, t('dash.hotWorld')))
+  slides.push({
+    id: 'telegram',
+    accent: '#2aabee',
+    art: '/promo/telegram.svg',
+    flat: true,
+    kicker: t('dash.tgKicker'),
+    title: t('dash.tgTitle'),
+    lead: t('dash.tgLead'),
+    cta: t('dash.tgCta'),
+    href: TELEGRAM,
+    out: true,
+  })
 
   const count = slides.length
   const at = count ? shown % count : 0
@@ -171,7 +190,15 @@ function DailyCard({ games }: { games: GameMeta[] }) {
       onPointerUp={end}
       onPointerCancel={() => (swipe.current = null)}
     >
-      <img key={slide.art} className={`hero-daily-art ${turns ? 'is-swap' : ''}`} src={slide.art} alt="" aria-hidden width={448} height={448} />
+      <img
+        key={slide.art}
+        className={`hero-daily-art ${slide.flat ? 'is-flat' : ''} ${turns ? 'is-swap' : ''}`}
+        src={slide.art}
+        alt=""
+        aria-hidden
+        width={448}
+        height={448}
+      />
 
       <div key={slide.id} className={`hero-daily-copy ${turns ? 'is-swap' : ''}`}>
         <span className="hero-daily-kicker">
@@ -189,9 +216,15 @@ function DailyCard({ games }: { games: GameMeta[] }) {
         <p>{slide.lead}</p>
 
         <div className="hero-daily-actions">
-          <Link className="primary" href={slide.href} prefetch={false}>
-            {slide.cta}
-          </Link>
+          {slide.out ? (
+            <a className="primary" href={slide.href} target="_blank" rel="noreferrer">
+              {slide.cta}
+            </a>
+          ) : (
+            <Link className="primary" href={slide.href} prefetch={false}>
+              {slide.cta}
+            </Link>
+          )}
         </div>
       </div>
 
