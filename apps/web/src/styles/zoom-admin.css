@@ -215,3 +215,33 @@
   opacity: 0.5;
   cursor: default;
 }
+
+.admin-bar-games {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.admin-bar-games button {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card-2);
+  color: var(--text-2);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.admin-bar-games button:hover {
+  border-color: var(--text-3);
+  color: var(--text);
+}
+
+.admin-bar-games button.on {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--text);
+}

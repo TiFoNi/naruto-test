@@ -2,11 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react'
 import Link from 'next/link'
-import { ZOOM_LEVELS } from '@nanda/game'
+import { ZOOM_LEVELS, hasMode } from '@nanda/game'
 import { api } from './api'
+import { GAMES } from './games'
+import type { GameId } from './games/types'
+import { useI18n } from './i18n'
 import { useHref } from './router'
 
-const GAME = 'genshin'
+const ZOOM_GAMES = GAMES.filter((one) => hasMode(one.id, 'image'))
 
 type Spot = { x: number; y: number }
 
@@ -47,9 +50,11 @@ const cropStyle = (url: string, box: { left: number; top: number; width: number;
 
 export default function ZoomAdmin() {
   const href = useHref()
+  const { l } = useI18n()
+  const [game, setGame] = useState<GameId>(ZOOM_GAMES[0]?.id ?? 'genshin')
   const [rows, setRows] = useState<Row[] | null>(null)
   const [pics, setPics] = useState('')
-  const [folder, setFolder] = useState(GAME)
+  const [folder, setFolder] = useState<string>(game)
   const [denied, setDenied] = useState(false)
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState<Filter>('all')
@@ -62,13 +67,16 @@ export default function ZoomAdmin() {
   const dragging = useRef(false)
 
   const load = useCallback(async () => {
-    const { ok, status, data } = await api<{ list?: Row[]; pics?: string; folder?: string }>(`admin/zoom?game=${GAME}`)
+    setRows(null)
+    setOpenId(null)
+    setDraft(null)
+    const { ok, status, data } = await api<{ list?: Row[]; pics?: string; folder?: string }>(`admin/zoom?game=${game}`)
     if (status === 404) return setDenied(true)
     if (!ok) return setRows([])
     setRows(data.list ?? [])
     setPics(data.pics ?? '')
-    setFolder(data.folder ?? GAME)
-  }, [])
+    setFolder(data.folder ?? game)
+  }, [game])
 
   useEffect(() => {
     void load()
@@ -127,7 +135,7 @@ export default function ZoomAdmin() {
   const keep = async (point: Spot | null) => {
     if (openId === null) return
     setBusy(true)
-    const { ok } = await api<{ focus?: Spot | null }>('admin/zoom', { game: GAME, id: openId, focus: point })
+    const { ok } = await api<{ focus?: Spot | null }>('admin/zoom', { game, id: openId, focus: point })
     setBusy(false)
     if (!ok) return setNote('не сохранилось')
     setRows((kept) => (kept ? kept.map((row) => (row.id === openId ? { ...row, focus: point } : row)) : kept))
@@ -165,7 +173,7 @@ export default function ZoomAdmin() {
     <main className="admin zoom-admin">
       <header className="admin-bar">
         <div className="admin-bar-main">
-          <h1>Точка зума · Genshin</h1>
+          <h1>Точка зума</h1>
           <Link className="admin-more" href={href.admin}>
             Персонажи
           </Link>
@@ -180,6 +188,14 @@ export default function ZoomAdmin() {
             <input placeholder="Поиск по имени" value={query} onChange={(event) => setQuery(event.target.value)} />
           </label>
           <span className={`admin-note ${note ? 'on' : ''}`}>{note}</span>
+        </div>
+
+        <div className="admin-bar-games">
+          {ZOOM_GAMES.map((one) => (
+            <button key={one.id} type="button" className={game === one.id ? 'on' : ''} onClick={() => setGame(one.id)}>
+              {l(one.label)}
+            </button>
+          ))}
         </div>
 
         <div className="admin-bar-filters">

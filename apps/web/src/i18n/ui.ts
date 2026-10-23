@@ -1287,7 +1287,6 @@ const ui = {
   'banner.kny': { ru: 'Лунная тропа', uk: 'Місячна стежка', en: 'Moonlit path' },
   'banner.tg': { ru: 'Цветочное поле', uk: 'Квіткове поле', en: 'Flower field' },
   'banner.dn': { ru: 'Полная луна', uk: 'Повний місяць', en: 'Full moon' },
-  'profile.bannerLocked': { ru: 'Пока ни одного мира не пройдено до конца', uk: 'Поки жодного світу не пройдено до кінця', en: 'No world finished yet' },
   'profile.blockAll': { ru: 'Все блоки уже на месте', uk: 'Усі блоки вже на місці', en: 'Every block is already here' },
   'profile.block.worlds': { ru: 'Любимые вселенные', uk: 'Улюблені всесвіти', en: 'Favourite worlds' },
   'profile.block.awards': { ru: 'Достижения', uk: 'Досягнення', en: 'Achievements' },

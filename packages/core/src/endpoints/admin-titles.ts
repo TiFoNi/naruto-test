@@ -14,10 +14,15 @@ export const GET = handle(async (request) => {
   const [namePart, tagPart] = raw.split('#')
   const name = namePart.trim().toLowerCase()
   const tag = tagPart === undefined ? parseTag(namePart) : parseTag(tagPart)
+  const loose = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-  const or = []
-  if (name.length >= 2) or.push({ nicknameLower: { $gte: name, $lt: `${name}￿` } })
+  const or: Record<string, unknown>[] = []
+  if (name) {
+    or.push({ nicknameLower: { $regex: loose } })
+    or.push({ username: { $regex: loose, $options: 'i' } })
+  }
   if (tag) or.push({ tag })
+  if (ObjectId.isValid(raw)) or.push({ _id: new ObjectId(raw) })
 
   const list = or.length
     ? await (await users())
@@ -25,7 +30,7 @@ export const GET = handle(async (request) => {
           or.length === 1 ? or[0] : { $or: or },
           { projection: { nickname: 1, username: 1, tag: 1, avatar: 1, frame: 1, titles: 1, title: 1 }, sort: { nicknameLower: 1 } },
         )
-        .limit(12)
+        .limit(24)
         .toArray()
     : []
 

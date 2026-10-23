@@ -385,6 +385,13 @@ body:has(.chat-panel) .duel-dock {
   visibility: visible;
 }
 
+@media (hover: none), (max-width: 760px) {
+  .chat-tools {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
 .chat-tools button {
   display: grid;
   width: 24px;

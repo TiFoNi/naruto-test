@@ -367,6 +367,7 @@ export default function Chat() {
                           href={line.userId === user?.id ? href.profile : href.player(line.userId)}
                           style={toneOf(line.nickTone)}
                           prefetch={false}
+                          onClick={close}
                         >
                           {line.nickname}
                         </Link>
@@ -452,7 +453,10 @@ export default function Chat() {
               className="chat-menu-item"
               href={menu.line.userId === user?.id ? href.profile : href.player(menu.line.userId)}
               prefetch={false}
-              onClick={() => setMenu(null)}
+              onClick={() => {
+                setMenu(null)
+                close()
+              }}
             >
               <UserIcon />
               {t('chat.profile')}

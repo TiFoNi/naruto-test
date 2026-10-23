@@ -1153,7 +1153,8 @@
 
 .duel-quit.is-narrow {
   display: none;
-  margin-top: 14px;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 @media (max-width: 1080px) {
@@ -1161,8 +1162,13 @@
     display: block;
   }
 
+  .duel-quit.is-narrow + .duel-quit.is-narrow {
+    margin-top: -6px;
+  }
+
   .duel-quit.is-narrow .give-up {
     width: 100%;
+    height: 46px;
   }
 }
 

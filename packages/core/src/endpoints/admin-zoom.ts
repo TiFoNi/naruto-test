@@ -1,4 +1,4 @@
-import { GAME_SPECS } from '@nanda/game'
+import { GAME_SPECS, hasMode } from '@nanda/game'
 import { entities } from '../db'
 import { forget, isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
@@ -14,8 +14,8 @@ export const GET = handle(async (request) => {
 
   const game = new URL(request.url).searchParams.get('game')
   if (!isGame(game)) return fail(400, 'bad_request')
+  if (!hasMode(game, 'image')) return fail(400, 'bad_request')
   const spec = GAME_SPECS[game]
-  if (!spec?.modes?.includes('image')) return fail(400, 'bad_request')
 
   const list = await (await entities())
     .find({ game, hidden: { $ne: true } }, { projection: { _id: 0, id: 1, name: 1, nameEn: 1, image: 1, focus: 1 }, sort: { id: 1 } })

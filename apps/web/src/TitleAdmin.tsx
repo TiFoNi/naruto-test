@@ -23,39 +23,57 @@ export default function TitleAdmin() {
   const [query, setQuery] = useState('')
   const [titles, setTitles] = useState<string[]>([])
   const [players, setPlayers] = useState<Player[]>([])
+  const [loading, setLoading] = useState(false)
   const [busy, setBusy] = useState('')
 
   const load = useCallback(async (ask: string) => {
+    setLoading(!!ask)
     const { ok, data } = await api<{ titles: string[]; players: Player[] }>(`admin/titles?q=${encodeURIComponent(ask)}`)
+    setLoading(false)
     if (!ok) return
     setTitles(data.titles ?? [])
     setPlayers(data.players ?? [])
   }, [])
 
   useEffect(() => {
-    const timer = setTimeout(() => void load(query.trim()), query.trim() ? 300 : 0)
+    const timer = setTimeout(() => void load(query.trim()), query.trim() ? 250 : 0)
     return () => clearTimeout(timer)
   }, [query, load])
 
   const flip = async (one: Player, title: string) => {
     const give = !one.titles.includes(title)
     setBusy(`${one.id}:${title}`)
-    const { ok, data } = await api<{ titles: string[] }>('admin/titles', { id: one.id, title, give })
+    const { ok, data } = await api<{ titles: string[]; title: string | null }>('admin/titles', { id: one.id, title, give })
     setBusy('')
-    if (ok) setPlayers((now) => now.map((row) => (row.id === one.id ? { ...row, titles: data.titles ?? [] } : row)))
+    if (ok) setPlayers((now) => now.map((row) => (row.id === one.id ? { ...row, titles: data.titles ?? [], title: data.title ?? null } : row)))
   }
 
+  const chip = (title: string, slim = false) => (
+    <i className={`player-title ${slim ? 'is-slim' : ''} is-${title}`}>{t(`title.${title}` as UiKey)}</i>
+  )
+
   return (
-    <div className="admin">
+    <div className="admin title-admin">
       <header className="admin-head">
         <h1>Титулы</h1>
-        <p className="muted">Найди игрока по нику или #тегу и выдай титул. Снять — повторный клик.</p>
+        <p className="muted">Ищи по нику, части ника, #тегу или id. Клик по титулу выдаёт, повторный — снимает.</p>
         <Link className="admin-more" href={href.admin}>
           Персонажи
         </Link>
       </header>
 
-      <input className="admin-find" value={query} placeholder="ник или #TAG" onChange={(event) => setQuery(event.target.value)} />
+      {!!titles.length && (
+        <div className="title-admin-deck">
+          <span className="title-admin-deck-label">все титулы</span>
+          <div className="title-admin-deck-row">{titles.map((title) => <span key={title}>{chip(title)}</span>)}</div>
+        </div>
+      )}
+
+      <input className="admin-find" value={query} placeholder="ник, #TAG или id" onChange={(event) => setQuery(event.target.value)} />
+
+      {loading && <p className="muted title-admin-state">Ищем…</p>}
+      {!loading && !!query.trim() && !players.length && <p className="muted title-admin-state">Никого не нашли</p>}
+      {!loading && !query.trim() && <p className="muted title-admin-state">Начни вводить ник</p>}
 
       <ul className="title-admin-list">
         {players.map((one) => (
@@ -64,19 +82,24 @@ export default function TitleAdmin() {
             <span className="title-admin-who">
               <b>{one.nickname}</b>
               {one.tag && <em>#{one.tag}</em>}
+              {one.title ? <span className="title-admin-worn">носит {chip(one.title, true)}</span> : <em className="title-admin-none">без титула</em>}
             </span>
             <span className="title-admin-pins">
-              {titles.map((title) => (
-                <button
-                  key={title}
-                  type="button"
-                  className={`title-pick ${one.titles.includes(title) ? 'on' : ''}`}
-                  disabled={busy === `${one.id}:${title}`}
-                  onClick={() => void flip(one, title)}
-                >
-                  {t(`title.${title}` as UiKey)}
-                </button>
-              ))}
+              {titles.map((title) => {
+                const has = one.titles.includes(title)
+                return (
+                  <button
+                    key={title}
+                    type="button"
+                    className={`title-admin-pin ${has ? 'on' : ''}`}
+                    disabled={busy === `${one.id}:${title}`}
+                    title={has ? 'снять титул' : 'выдать титул'}
+                    onClick={() => void flip(one, title)}
+                  >
+                    {chip(title, true)}
+                  </button>
+                )
+              })}
             </span>
           </li>
         ))}

@@ -1011,7 +1011,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                           </button>
                         </li>
                       ))}
-                      {!owned.length && <li className="banner-empty">{t('profile.bannerLocked')}</li>}
                     </ul>
                   </div>
                 )}
