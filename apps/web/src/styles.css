@@ -3604,10 +3604,10 @@ button.ghost.small {
   display: flex;
   min-width: 0;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 18px;
-  margin-top: -72px;
-  padding: 0 24px 22px;
+  align-items: flex-end;
+  gap: 22px;
+  margin-top: -96px;
+  padding: 0 30px 26px;
 }
 
 .profile.sk-profile .profile-hero-id {
@@ -3621,10 +3621,11 @@ button.ghost.small {
 
 .profile.sk-profile .profile-hero-id .sk.ava {
   flex: none;
-  width: 132px;
-  height: 132px;
-  margin: 0;
+  width: 172px;
+  height: 172px;
+  margin: 23px;
   border-radius: 50%;
+  align-self: center;
 }
 
 .profile.sk-profile .profile-hero-main {
@@ -7737,6 +7738,8 @@ html[data-auth] .guest-note {
 }
 
 .footer-support {
+  --social: var(--accent);
+
   display: flex;
   color: inherit;
   text-decoration: none;

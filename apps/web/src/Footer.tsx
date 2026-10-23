@@ -26,7 +26,7 @@ export default function Footer() {
           </span>
           <p>{t('footer.tagline')}</p>
 
-          <Link className="footer-support" href={href.support} style={{ '--social': '#ff9a3d' } as React.CSSProperties}>
+          <Link className="footer-support" href={href.support}>
             <i aria-hidden>
               <SocialGlyph id="support" />
             </i>

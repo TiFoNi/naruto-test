@@ -7,6 +7,8 @@ import { defaultNickname, parseTag } from '../profile'
 
 const missing = () => fail(404, 'not_found')
 
+const TITLE_BANNER: Record<string, string> = { tester: 'tester' }
+
 export const GET = handle(async (request) => {
   if (!(await adminSession(request))) return missing()
 
@@ -64,10 +66,15 @@ export const POST = handle(async (request) => {
 
   const titles = [...owned]
   const worn = doc.title && titles.includes(doc.title as never) ? doc.title : null
+  const perk = TITLE_BANNER[title]
 
   await collection.updateOne(
     { _id: doc._id },
-    worn ? { $set: { titles, title: worn } } : { $set: { titles }, $unset: { title: '' } },
+    {
+      ...(worn ? { $set: { titles, title: worn } } : { $set: { titles } }),
+      ...(worn ? {} : { $unset: { title: '' } }),
+      ...(perk && give !== false ? { $addToSet: { banners: perk } } : {}),
+    },
   )
 
   return json({ id, titles, title: worn })

@@ -425,7 +425,7 @@ export const isBlock = (value: unknown): value is ProfileBlock => (PROFILE_BLOCK
 
 export const profileBlocks = (value: unknown) => (Array.isArray(value) ? [...new Set(value.filter(isBlock))] : null)
 
-export const BANNERS = ['frog', 'night', 'sharingan', 'blossom', 'crows', 'fireflies', 'aot', 'kny', 'tg', 'dn'] as const
+export const BANNERS = ['frog', 'night', 'sharingan', 'blossom', 'crows', 'fireflies', 'aot', 'kny', 'tg', 'dn', 'tester'] as const
 
 export type Banner = (typeof BANNERS)[number]
 

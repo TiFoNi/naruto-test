@@ -429,7 +429,28 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 28%;
+  object-position: 50% 28%;
+}
+
+@media (max-width: 1100px) {
+  .profile-art img,
+  .profile-art video {
+    object-position: 56% 28%;
+  }
+}
+
+@media (max-width: 760px) {
+  .profile-art img,
+  .profile-art video {
+    object-position: 62% 28%;
+  }
+}
+
+@media (max-width: 520px) {
+  .profile-art img,
+  .profile-art video {
+    object-position: 66% 28%;
+  }
 }
 
 .banner-pick {
@@ -578,11 +599,30 @@
 
 .banner-shop {
   display: grid;
-  flex: none;
+  min-height: 0;
+  flex: 1;
   gap: 8px;
   margin: 0;
-  padding: 0;
+  padding: 0 12px 0 0;
   list-style: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.modes-pop .banner-shop::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modes-pop .banner-shop::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modes-pop .banner-shop::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--text) 26%, transparent);
+  background-clip: content-box;
 }
 
 .banner-face {
@@ -2243,10 +2283,31 @@ button.fact-rank:hover {
 
 @media (max-width: 800px) {
   .hero-tile.is-modes.is-open,
-  .profile-hero-body .profile-hero-tiles > .hero-tile.is-open:not(.is-add) {
+  .profile-hero-body .profile-hero-tiles > .hero-tile.is-open {
     transform: none;
     backdrop-filter: none;
     background: color-mix(in srgb, #0d0f12 78%, transparent);
+  }
+
+  .profile-hero-body .profile-hero-tiles > .hero-tile.is-add.is-open,
+  .profile-hero-body .profile-hero-tiles.is-edit > .hero-tile.is-add.is-open {
+    position: static;
+    backdrop-filter: none;
+    transform: none;
+    transition: none;
+  }
+
+  .profile-hero-body .profile-hero-tiles > .hero-tile.is-add .modes-pop {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    bottom: auto;
+    left: 0;
+    z-index: 30;
+    width: auto;
+    min-width: min(320px, calc(100vw - 24px));
+    max-width: none;
+    max-height: min(60vh, 460px);
   }
 
   .profile-hero-tiles > .hero-tile .modes-pop,
@@ -2296,7 +2357,7 @@ button.fact-rank:hover {
   }
 
   .profile-hero-id {
-    gap: 14px;
+    gap: 2px;
   }
 
   .profile-hero-id .avatar,
@@ -2309,7 +2370,7 @@ button.fact-rank:hover {
 
   .profile-hero-id > .avatar,
   .profile-hero-id > .ava-trigger {
-    margin: 18px;
+    margin: 18px 6px 18px 18px;
   }
 
   .profile-hero-id .avatar.has-frame,
@@ -2321,7 +2382,7 @@ button.fact-rank:hover {
 
   .profile-hero-id > .avatar.has-frame,
   .profile-hero-id > .ava-trigger:has(.avatar.has-frame) {
-    margin: 24px;
+    margin: 24px 10px 24px 24px;
   }
 
   .profile-hero-id > .avatar,
@@ -2407,7 +2468,13 @@ button.fact-rank:hover {
     letter-spacing: 0.04em;
   }
 
+  .profile-hero-body .profile-hero-tiles.is-under > .hero-tile {
+    align-items: center;
+    text-align: center;
+  }
+
   .profile-hero-body .profile-hero-tiles.is-under > .hero-tile b {
+    justify-content: center;
     gap: 0.3em;
     font-size: clamp(15px, 12vw - 21px, 26px);
   }
@@ -3045,4 +3112,25 @@ a.world-blank:hover .world-pic.is-empty {
   min-width: 0;
   max-width: none;
   translate: none;
+}
+
+@media (max-width: 800px) {
+  .hero-acts .banner-pick .modes-pop {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    bottom: auto;
+    left: auto;
+    z-index: 30;
+    width: min(86vw, 360px);
+    min-width: 0;
+    max-width: none;
+    max-height: min(58vh, 420px);
+  }
+}
+
+@media (hover: none) {
+  .profile-hero-tiles > .hero-tile.is-add:hover:not(.is-open) {
+    transform: none;
+  }
 }
