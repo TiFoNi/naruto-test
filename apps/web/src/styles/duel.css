@@ -3124,7 +3124,15 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   }
 
   .duel-team li > .duel-seat-text {
-    align-items: center;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .duel-team li > .duel-seat-text > b,
+  .duel-team li > .duel-seat-text > small,
+  .duel-team li > .duel-seat-text > .player-title {
+    align-self: flex-start;
+    text-align: left;
   }
 
   .duel-seat {
@@ -3696,6 +3704,7 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 .duel-format-bar .duel-format-pick .primary.big {
   min-width: 0;
   height: 46px;
+  flex: none;
   margin: 0 0 0 auto;
   align-self: center;
   padding: 0 28px;
@@ -3713,6 +3722,7 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 .duel-format-pick > span {
   display: flex;
   min-width: 0;
+  flex: 1 1 auto;
   flex-direction: column;
 }
 
@@ -3754,6 +3764,7 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   .duel-format-pick {
     flex: 1 1 200px;
   }
+
 }
 
 .duel-pips {
@@ -4091,4 +4102,22 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   .duel-arena.is-trio .duel-corner .duel-team {
     max-width: none;
   }
+}
+
+@media (max-width: 620px) {
+  .duel-format-pick {
+    flex-wrap: wrap;
+    padding: 14px 16px;
+  }
+
+  .duel-format-bar .duel-format-pick .primary.big {
+    width: 100%;
+    margin: 10px 0 0;
+    order: 3;
+  }
+}
+
+.duel-seat-text .player-title {
+  align-self: flex-start;
+  margin: 2px 0 1px;
 }

@@ -1,12 +1,11 @@
 'use client'
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type FormEvent } from 'react'
-import AvatarPicker from './AvatarPicker'
 import BackButton from './BackButton'
 import Rail from './Rail'
 import { useAuth } from './auth'
 import { authClient } from './authClient'
-import { useI18n, type UiKey } from './i18n'
+import { LANGS, useI18n, type UiKey } from './i18n'
 import { BellIcon, CloseIcon, KeyIcon, MailIcon, ShieldIcon, UserIcon } from './icons'
 import { already, useInstall } from './install'
 import { useHref } from './router'
@@ -36,7 +35,7 @@ keepPerUser(() => {
 
 export default function Settings() {
   const { user, setNickname, resetStats, logout } = useAuth()
-  const { t, error: errorText } = useI18n()
+  const { t, lang, setLang, error: errorText } = useI18n()
   const href = useHref()
 
   const [tab, setTab] = useState<Tab>(lastTab)
@@ -144,14 +143,6 @@ export default function Settings() {
           {tab === 'profile' && (
             <section className="settings-block">
               <span className="settings-eyebrow">{t('settings.profile')}</span>
-              <div className="settings-who">
-                <AvatarPicker />
-                <div className="settings-name">
-                  <b>{current}</b>
-                  {user?.tag && <i className="player-tag">#{user.tag}</i>}
-                </div>
-              </div>
-
               <form onSubmit={save}>
                 <label htmlFor="nickname">{t('profile.nickname')}</label>
                 <p className="muted">{t('profile.nicknameHint')}</p>
@@ -171,6 +162,26 @@ export default function Settings() {
                 </div>
                 {message && <div className={message.ok ? 'notice ok' : 'notice error'}>{message.text}</div>}
               </form>
+
+              <div className="settings-row">
+                <div>
+                  <label>{t('nav.language')}</label>
+                  <p className="muted">{t('settings.langHint')}</p>
+                </div>
+                <div className="settings-actions settings-langs">
+                  {LANGS.map((one) => (
+                    <button
+                      key={one.id}
+                      type="button"
+                      className={lang === one.id ? 'on' : ''}
+                      aria-pressed={lang === one.id}
+                      onClick={() => setLang(one.id)}
+                    >
+                      {one.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </section>
           )}
 

@@ -56,6 +56,7 @@ const player = (doc: UserDoc): DuelPlayer => ({
   avatar: doc.avatar ?? null,
   frame: doc.frame ?? null,
   banner: doc.banner ?? null,
+  title: doc.title ?? null,
   seenAt: new Date(),
   ready: false,
   wantsNext: false,
@@ -554,13 +555,18 @@ export async function leaveDuel(duel: DuelDoc, userId: ObjectId) {
   return true
 }
 
-export async function touchSide(duel: DuelDoc, userId: ObjectId, look?: { frame?: string | null; banner?: string | null }) {
+export async function touchSide(duel: DuelDoc, userId: ObjectId, look?: { frame?: string | null; banner?: string | null; title?: string | null }) {
   const index = duel.players.findIndex((side) => side.userId.equals(userId))
   if (index < 0) return duel
   const side = duel.players[index]!
   const fresh =
-    look && (side.frame !== (look.frame ?? null) || side.banner !== (look.banner ?? null))
-      ? { [`players.${index}.frame`]: look.frame ?? null, [`players.${index}.banner`]: look.banner ?? null }
+    look &&
+    (side.frame !== (look.frame ?? null) || side.banner !== (look.banner ?? null) || side.title !== (look.title ?? null))
+      ? {
+          [`players.${index}.frame`]: look.frame ?? null,
+          [`players.${index}.banner`]: look.banner ?? null,
+          [`players.${index}.title`]: look.title ?? null,
+        }
       : {}
   const updated = await (await duels()).findOneAndUpdate(
     { _id: duel._id },
@@ -1279,6 +1285,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
         avatar: side.avatar ?? null,
         frame: side.frame ?? null,
         banner: side.banner ?? null,
+        title: side.title ?? null,
         you: side.userId.equals(userId),
         lead: Boolean(side.lead),
         ready: side.ready,

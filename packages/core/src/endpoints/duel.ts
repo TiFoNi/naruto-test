@@ -94,7 +94,7 @@ export const POST = handle(async (request) => {
   if (!sideOf(duel, userId)) return fail(403, 'forbidden')
 
   const live = await dropIdle(
-    await touchSide(duel, userId, { frame: found.doc.frame ?? null, banner: found.doc.banner ?? null }),
+    await touchSide(duel, userId, { frame: found.doc.frame ?? null, banner: found.doc.banner ?? null, title: found.doc.title ?? null }),
     userId,
   )
 

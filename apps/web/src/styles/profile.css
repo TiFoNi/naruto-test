@@ -1116,10 +1116,15 @@
 .hero-nick-line {
   display: flex;
   min-width: 0;
-  align-items: center;
+  align-items: baseline;
   align-self: stretch;
-  flex-wrap: wrap-reverse;
+  flex-wrap: nowrap;
   gap: 8px 12px;
+}
+
+.profile-hero-name > .player-title.is-under {
+  align-self: flex-start;
+  margin-top: 4px;
 }
 
 .hero-nick-who {
@@ -1135,8 +1140,10 @@
 }
 
 .profile-hero-name .player-title {
-  align-self: center;
-  margin-top: 2px;
+  margin-top: 0;
+  padding: 0.18em 0.78em;
+  border-width: 0.12em;
+  font-size: clamp(10.5px, 0.95vw, 13px);
   text-shadow: none;
 }
 
@@ -2263,13 +2270,7 @@ button.fact-rank:hover {
   }
 
   .hero-nick-line {
-    align-items: flex-start;
     gap: 6px 12px;
-  }
-
-  .hero-nick-line .player-title {
-    align-self: flex-start;
-    margin-top: 0;
   }
 
   .profile-hero-name {

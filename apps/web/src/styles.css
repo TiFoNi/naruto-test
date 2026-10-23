@@ -9210,8 +9210,8 @@ html[data-auth] .guest-note {
   --t-hi: #fff3d6;
 
   flex: none;
-  padding: 3px 10px;
-  border: 2px solid transparent;
+  padding: 1px 8px;
+  border: 1.25px solid transparent;
   border-radius: 999px;
   background:
     linear-gradient(var(--t-bg), var(--t-bg)) padding-box,
@@ -9219,7 +9219,7 @@ html[data-auth] .guest-note {
   background-size: auto, 300% 100%;
   color: var(--t-ink);
   font-family: var(--display);
-  font-size: 11.5px;
+  font-size: 9.5px;
   font-style: normal;
   font-weight: 700;
   letter-spacing: 0.03em;
@@ -9293,9 +9293,9 @@ html[data-auth] .guest-note {
 }
 
 .player-title.is-slim {
-  padding: 2px 9px;
-  border-width: 1.5px;
-  font-size: 10px;
+  padding: 1px 7px;
+  border-width: 1px;
+  font-size: 8.5px;
 }
 
 @keyframes title-sheen {
@@ -12234,3 +12234,42 @@ html[data-auth] .guest-note {
   font-size: 13.5px;
 }
 
+
+.settings-row .settings-langs {
+  display: flex;
+  width: auto;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  margin-left: auto;
+  gap: 8px;
+}
+
+.settings-langs button {
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card-2);
+  color: var(--text-2);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.settings-langs button:hover {
+  border-color: var(--text-3);
+  color: var(--text);
+}
+
+.settings-langs button.on {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--text);
+}
+
+@media (max-width: 760px) {
+  .topbar-right .lang-switch {
+    display: none;
+  }
+}

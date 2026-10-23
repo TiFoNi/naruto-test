@@ -185,6 +185,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                     <Avatar className="duel-face" id={mate.id} name={mate.nickname} avatar={mate.avatar} frame={mate.frame} />
                     <span className="duel-seat-text">
                       <b>{mate.nickname}</b>
+                      {mate.title && <i className={`player-title is-slim is-${mate.title}`}>{t(`title.${mate.title}` as UiKey)}</i>}
                       <small className={mate.ready ? 'on' : ''}>
                         {mate.you ? `${t('duel.youSide')} · ` : ''}
                         {mate.ready ? t('duel.isReady') : t('duel.notReady')}

@@ -113,6 +113,7 @@ export type DuelPlayer = {
   avatar?: string | null
   frame?: string | null
   banner?: string | null
+  title?: string | null
   secret?: number
   cards?: number[]
   struck?: number[]

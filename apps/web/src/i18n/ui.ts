@@ -393,6 +393,7 @@ const ui = {
   'brand.title': { ru: 'угадай аниме, мангу и игры', uk: 'вгадай аніме, манґу та ігри', en: 'guess anime, manga and games' },
   'nav.games': { ru: 'Игры', uk: 'Ігри', en: 'Games' },
   'nav.language': { ru: 'Язык', uk: 'Мова', en: 'Language' },
+  'settings.langHint': { ru: 'Язык интерфейса на этом устройстве.', uk: 'Мова інтерфейсу на цьому пристрої.', en: 'Interface language on this device.' },
   loading: { ru: 'Загрузка…', uk: 'Завантаження…', en: 'Loading…' },
   'footer.disclaimer': {
     ru: 'Неофициальный фанатский проект. Все персонажи и изображения принадлежат их правообладателям.',

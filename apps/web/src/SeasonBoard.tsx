@@ -261,9 +261,11 @@ export default function SeasonBoard() {
                         <td className="lb-name">
                           <Link className="lb-player" href={row.me ? href.profile : href.player(row.id)} prefetch={false}>
                             <BoardFace id={row.id} nickname={row.nickname} avatar={row.avatar} frame={row.frame} />
-                            <span className="lb-nick">{row.nickname}</span>
+                            <span className="lb-who">
+                              <span className="lb-nick">{row.nickname}</span>
+                              {row.title && <i className={`player-title is-slim is-${row.title}`}>{t(`title.${row.title}` as UiKey)}</i>}
+                            </span>
                           </Link>
-                          {row.title && <i className={`player-title is-slim is-${row.title}`}>{t(`title.${row.title}` as UiKey)}</i>}
                         </td>
                         <td className="season-xp-col">
                           <span className="season-xp">

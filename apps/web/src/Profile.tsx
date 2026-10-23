@@ -1108,9 +1108,9 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                     </button>
                   )}
                 </span>
-                {title && <i className={`player-title is-${title}`}>{t(`title.${title}` as UiKey)}</i>}
               </span>
               {tag && <i className="player-tag">#{tag}</i>}
+              {title && <i className={`player-title is-${title} is-under`}>{t(`title.${title}` as UiKey)}</i>}
               {edit && dye && (
                 <TilePop at={dyeAt} wide={286} onClose={() => setDye(false)}>
                   <header>

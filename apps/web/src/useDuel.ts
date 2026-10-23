@@ -13,6 +13,7 @@ export type DuelMate = {
   avatar?: string | null
   frame?: string | null
   banner?: string | null
+  title?: string | null
   you: boolean
   lead?: boolean
   ready: boolean
