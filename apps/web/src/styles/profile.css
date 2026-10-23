@@ -261,12 +261,30 @@
 }
 
 .profile-tune.is-gear {
-  display: grid;
-  width: 30px;
+  display: inline-flex;
   height: 30px;
-  place-items: center;
-  padding: 0;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px 0 12px;
   color: #ffffff;
+}
+
+.profile-tune.is-gear span {
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (max-width: 400px) {
+  .profile-tune.is-gear {
+    width: 30px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .profile-tune.is-gear span {
+    display: none;
+  }
 }
 
 .profile-tune.is-gear svg {
@@ -660,6 +678,46 @@
   line-height: 1;
   transform: translate(-50%, -50%);
   user-select: none;
+}
+
+.hero-acts {
+  position: absolute;
+  z-index: 4;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.hero-act {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 0;
+  border-radius: 14px;
+  background: color-mix(in srgb, #0d0f12 52%, transparent);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 20px;
+  backdrop-filter: blur(10px);
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.hero-act:hover {
+  background: color-mix(in srgb, #0d0f12 68%, transparent);
+}
+
+.hero-acts .banner-pick.is-open .hero-act {
+  color: var(--accent);
+  background: color-mix(in srgb, #0d0f12 68%, transparent);
+}
+
+.hero-acts .modes-pop {
+  right: 0;
+  left: auto;
 }
 
 .profile-banner-acts {
@@ -2205,6 +2263,21 @@ button.fact-rank:hover {
     translate: none;
   }
 
+  .hero-nick-line {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .hero-nick-line .player-title {
+    align-self: flex-start;
+    margin-top: 0;
+  }
+
+  .profile-hero-name {
+    translate: 0 8px;
+  }
+
   .profile-banner {
     height: 138px;
   }
@@ -2331,6 +2404,25 @@ button.fact-rank:hover {
 
   .hero-tile b {
     font-size: 26px;
+  }
+
+  .profile-hero-body .profile-hero-tiles.is-under > .hero-tile > span,
+  .profile-hero-body .profile-hero-tiles.is-under > .hero-tile .hero-tile-open > span {
+    font-size: clamp(8px, 4.6vw - 6.6px, 11px);
+    letter-spacing: 0.04em;
+  }
+
+  .profile-hero-body .profile-hero-tiles.is-under > .hero-tile b {
+    gap: 0.3em;
+    font-size: clamp(15px, 12vw - 21px, 26px);
+  }
+
+  .profile-hero-body .profile-hero-tiles.is-under > .hero-tile b i {
+    font-size: 0.46em;
+  }
+
+  .profile-hero-body .profile-hero-tiles.is-under > .hero-tile small {
+    font-size: clamp(10px, 3.6vw - 1.5px, 12.5px);
   }
 }
 
@@ -2848,9 +2940,6 @@ a.world-blank:hover .world-pic.is-empty {
   transform: translateY(-3px);
 }
 
-.world-blank .world-line {
-  min-height: 1.3em;
-}
 
 .world-blank .world-bar {
   background: none;

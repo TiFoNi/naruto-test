@@ -14,7 +14,7 @@ import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
 import { ProfileGhost } from './PageSkeleton'
 import Rail from './Rail'
-import { ArrowIcon, CloseIcon, GearIcon, GripIcon, PlusIcon, TrophyIcon } from './icons'
+import { ArrowIcon, CloseIcon, GearIcon, GripIcon, PaletteIcon, PictureIcon, PlusIcon, TrophyIcon } from './icons'
 import AwardIcon from './awardIcons'
 import { useHref } from './router'
 import { SHOWCASE_MAX } from './showcase'
@@ -160,7 +160,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const [sized, setSized] = useState<Sized | null>(null)
   const [sizes, setSizes] = useState<Record<string, number> | null>(null)
   const [spots, setSpots] = useState<Record<string, number> | null>(null)
-  const snapshot = useRef<{ blocks: ProfileBlock[]; sizes: Record<string, number>; sides: Record<string, number>; seen: Record<string, number>; tiles: (HeroTile | null)[]; tone: string | null; nickTone: string | null } | null>(null)
   const list = useRef<ProfileBlock[]>(PROFILE_BLOCKS_DEFAULT)
   const tall = useRef<Record<string, number>>({})
   const side = useRef<Record<string, number>>({})
@@ -288,13 +287,14 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const [dyeAt, setDyeAt] = useState<HTMLElement | null>(null)
   const [skin, setSkin] = useState<Banner | null | undefined>(undefined)
   const [skins, setSkins] = useState(false)
+  const [tones, setTones] = useState(false)
+  const tonesRef = useRef<HTMLDivElement>(null)
   const skinsRef = useRef<HTMLDivElement>(null)
   const dyes = useRef<HTMLDivElement>(null)
   const [grabbed, setGrabbed] = useState<number | null>(null)
   const [lift, setLift] = useState<{ one: HeroTile; w: number; h: number } | null>(null)
   const liftAt = useRef({ x: 0, y: 0 })
   const liftBox = useRef<HTMLSpanElement | null>(null)
-  const leaving = useRef<() => void>(() => undefined)
   const snapper = useRef<() => void>(() => undefined)
   const pads = useRef<HTMLDivElement>(null)
   const [spot, setSpot] = useState<'row' | 'column' | 'under'>('row')
@@ -302,18 +302,23 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const eyed = useRef<Record<string, number>>({})
 
   useEffect(() => {
-    if (!skins) return
+    if (!skins && !tones) return
     const away = (event: MouseEvent) => {
       if (!skinsRef.current?.contains(event.target as Node)) setSkins(false)
+      if (!tonesRef.current?.contains(event.target as Node)) setTones(false)
     }
-    const escape = (event: KeyboardEvent) => event.key === 'Escape' && setSkins(false)
+    const escape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+      setSkins(false)
+      setTones(false)
+    }
     document.addEventListener('mousedown', away)
     document.addEventListener('keydown', escape)
     return () => {
       document.removeEventListener('mousedown', away)
       document.removeEventListener('keydown', escape)
     }
-  }, [skins])
+  }, [skins, tones])
 
   useEffect(() => {
     if (shop === null) return
@@ -394,18 +399,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     showTone(tone)
     return () => showTone(null)
   }, [tone])
-
-  useEffect(() => {
-    leaving.current = () => {
-      const was = snapshot.current
-      if (!edit || !was) return
-      void api('profile', { action: 'blocks', blocks: was.blocks, sizes: was.sizes, sides: was.sides, seen: was.seen })
-      void api('profile', { action: 'tiles', tiles: was.tiles })
-      void api('profile', { action: 'tone', tone: was.tone })
-    }
-  })
-
-  useEffect(() => () => leaving.current(), [])
 
   useEffect(() => {
     const grid = pads.current
@@ -497,7 +490,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
   const keepNick = (next: string | null) => {
     setInk(next)
-    if (!edit) void api('profile', { action: 'nickTone', nickTone: next }).then(() => refresh())
+    void api('profile', { action: 'nickTone', nickTone: next }).then(() => refresh())
   }
 
   const keepTitle = (next: string | null) => {
@@ -713,37 +706,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
   const show = (block: ProfileBlock) => keep([...shown, block])
 
-  const tune = () => {
-    if (!edit) {
-      snapshot.current = { blocks: shown, sizes: grown, sides: side.current, seen: { ...eyed.current }, tiles: seats, tone, nickTone }
-      return setEdit(true)
-    }
-
-    if (nickTone !== (snapshot.current?.nickTone ?? null)) {
-      void api('profile', { action: 'nickTone', nickTone }).then(() => refresh())
-    }
-    setEdit(false)
-  }
-
-  const undo = () => {
-    const was = snapshot.current
-    if (!was) return setEdit(false)
-    list.current = was.blocks
-    tall.current = was.sizes
-    side.current = was.sides
-    eyed.current = { ...was.seen }
-    setLayout(was.blocks)
-    setSizes(was.sizes)
-    setSpots(was.sides)
-    setMix(was.tiles)
-    setPaint(was.tone)
-    setInk(was.nickTone)
-    setShop(null)
-    setEdit(false)
-    void api('profile', { action: 'blocks', blocks: was.blocks, sizes: was.sizes, sides: was.sides, seen: was.seen })
-    void api('profile', { action: 'tiles', tiles: was.tiles })
-    void api('profile', { action: 'tone', tone: was.tone })
-  }
+  const tune = () => setEdit((was) => !was)
 
   const panels: Record<ProfileBlock, ReactNode> = {
     facts: (
@@ -889,12 +852,10 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                     <span className="world-pic is-empty">
                       <PlusIcon />
                     </span>
-                    <span className="world-line" aria-hidden />
                   </Link>
                 ) : (
                   <span className="world-blank" aria-hidden>
                     <span className="world-pic is-empty" />
-                    <span className="world-line" />
                   </span>
                 )}
               </li>
@@ -932,13 +893,9 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                       <span className="soon-mark" aria-hidden>
                         <PlusIcon />
                       </span>
-                      <b aria-hidden />
                     </Link>
                   ) : (
-                    <>
-                      <span className="soon-mark" aria-hidden />
-                      <b aria-hidden />
-                    </>
+                    <span className="soon-mark" aria-hidden />
                   )}
                 </li>
               )
@@ -976,77 +933,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
         </BackButton>
         {own && (
         <div className="profile-banner-acts">
-        {edit && (
-          <div className={`banner-pick ${skins ? 'is-open' : ''}`} ref={skinsRef}>
-            <button type="button" className="profile-tune is-chip" onClick={() => setSkins(!skins)}>
-              {t('profile.banner')}
-            </button>
-            {skins && (
-              <div className="modes-pop" role="dialog">
-                <header>
-                  <h2>{t('profile.banner')}</h2>
-                </header>
-                <p className="tone-what">{t('profile.toneTheme')}</p>
-                <Rail className="tone-rail" trackClass="tone-track" innerRef={dyes}>
-                  <ul className="tone-shop">
-                    {dyeList.map((game) => (
-                      <li key={game.id}>
-                        <button
-                          type="button"
-                          className={`tone-dot ${tone === game.id ? 'on' : ''}`}
-                          style={{ '--dot': game.accent } as CSSProperties}
-                          aria-label={l(game.label)}
-                          title={l(game.label)}
-                          onClick={() => keepTone(tone === game.id ? null : game.id)}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </Rail>
-
-
-                <ul className="banner-shop">
-                  <li>
-                    <button type="button" className={`banner-face is-none ${banner ? '' : 'on'}`} onClick={() => keepBanner(null)}>
-                      <i aria-hidden>
-                        {MARKS.map((mark) => (
-                          <em
-                            key={mark.left}
-                            style={
-                              {
-                                left: mark.left,
-                                top: mark.top,
-                                fontSize: Math.round(mark.size * 0.3),
-                                transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
-                              } as CSSProperties
-                            }
-                          >
-                            ?!
-                          </em>
-                        ))}
-                      </i>
-                      <span>{t('profile.bannerNone')}</span>
-                    </button>
-                  </li>
-                  {owned.map((one) => (
-                    <li key={one}>
-                      <button type="button" className={`banner-face ${banner === one ? 'on' : ''}`} onClick={() => keepBanner(one)}>
-                        <img src={bannerPic(one)} alt="" />
-                        <span>{t(`banner.${one}` as UiKey)}</span>
-                      </button>
-                    </li>
-                  ))}
-                  {!owned.length && <li className="banner-empty">{t('profile.bannerLocked')}</li>}
-                </ul>
-              </div>
-            )}
-          </div>
-        )}
-        {edit && (
-          <button type="button" className="profile-tune" onClick={undo}>
-            {t('profile.tuneUndo')}
-          </button>
-        )}
         <button
           type="button"
           className={`profile-tune is-chip ${edit ? 'on' : 'is-gear'}`}
@@ -1054,13 +940,109 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
           title={t(edit ? 'profile.tuneDone' : 'profile.tune')}
           onClick={tune}
         >
-          {edit ? t('profile.tuneDone') : <GearIcon />}
+          {edit ? (
+            t('profile.tuneDone')
+          ) : (
+            <>
+              <span>{t('profile.tune')}</span>
+              <GearIcon />
+            </>
+          )}
         </button>
         </div>
       )}
       </div>
 
       <section className="profile-hero">
+        {own && edit && (
+          <div className="hero-acts">
+            <div className={`banner-pick ${skins ? 'is-open' : ''}`} ref={skinsRef}>
+                <button
+                  type="button"
+                  className="hero-act"
+                  aria-label={t('profile.banner')}
+                  title={t('profile.banner')}
+                  onClick={() => setSkins(!skins)}
+                >
+                  <PictureIcon />
+                </button>
+                {skins && (
+                  <div className="modes-pop" role="dialog">
+                    <header>
+                      <h2>{t('profile.banner')}</h2>
+                    </header>
+                    <ul className="banner-shop">
+                      <li>
+                        <button type="button" className={`banner-face is-none ${banner ? '' : 'on'}`} onClick={() => keepBanner(null)}>
+                          <i aria-hidden>
+                            {MARKS.map((mark) => (
+                              <em
+                                key={mark.left}
+                                style={
+                                  {
+                                    left: mark.left,
+                                    top: mark.top,
+                                    fontSize: Math.round(mark.size * 0.3),
+                                    transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
+                                  } as CSSProperties
+                                }
+                              >
+                                ?!
+                              </em>
+                            ))}
+                          </i>
+                          <span>{t('profile.bannerNone')}</span>
+                        </button>
+                      </li>
+                      {owned.map((one) => (
+                        <li key={one}>
+                          <button type="button" className={`banner-face ${banner === one ? 'on' : ''}`} onClick={() => keepBanner(one)}>
+                            <img src={bannerPic(one)} alt="" />
+                            <span>{t(`banner.${one}` as UiKey)}</span>
+                          </button>
+                        </li>
+                      ))}
+                      {!owned.length && <li className="banner-empty">{t('profile.bannerLocked')}</li>}
+                    </ul>
+                  </div>
+                )}
+            </div>
+            <div className={`banner-pick tone-pick ${tones ? 'is-open' : ''}`} ref={tonesRef}>
+                <button
+                  type="button"
+                  className="hero-act"
+                  aria-label={t('profile.toneTheme')}
+                  title={t('profile.toneTheme')}
+                  onClick={() => setTones(!tones)}
+                >
+                  <PaletteIcon />
+                </button>
+                {tones && (
+                  <div className="modes-pop" role="dialog">
+                    <header>
+                      <h2>{t('profile.toneTheme')}</h2>
+                    </header>
+                    <Rail className="tone-rail" trackClass="tone-track" innerRef={dyes}>
+                      <ul className="tone-shop">
+                        {dyeList.map((game) => (
+                          <li key={game.id}>
+                            <button
+                              type="button"
+                              className={`tone-dot ${tone === game.id ? 'on' : ''}`}
+                              style={{ '--dot': game.accent } as CSSProperties}
+                              aria-label={l(game.label)}
+                              title={l(game.label)}
+                              onClick={() => keepTone(tone === game.id ? null : game.id)}
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                    </Rail>
+                  </div>
+                )}
+            </div>
+          </div>
+        )}
         {!!banner && (
           <span className="profile-art" aria-hidden>
             {isLive(banner) ? (

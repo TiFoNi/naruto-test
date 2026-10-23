@@ -432,10 +432,11 @@ export function ShopIcon({ className }: IconProps) {
 export function PaletteIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>
-      <path d="M12 3.2a8.8 8.8 0 1 0 0 17.6c1.1 0 1.9-.8 1.9-1.8 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-1 .8-1.8 1.9-1.8h1.4a4.6 4.6 0 0 0 4.6-4.6c0-4-3.9-7-8.8-7Z" />
-      <circle cx="7.6" cy="12.6" r="1.1" />
-      <circle cx="9.5" cy="8.4" r="1.1" />
-      <circle cx="14.2" cy="7.9" r="1.1" />
+      <path d="M12 3a9 9 0 0 0 0 18c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1a1.5 1.5 0 0 1 1.09-2.5H16a5 5 0 0 0 5-5c0-4.42-4.03-8-9-8Z" />
+      <circle cx="7.5" cy="12" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="9.8" cy="7.8" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="14.6" cy="7.6" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="17.6" cy="10.8" r="1.2" fill="currentColor" stroke="none" />
     </svg>
   )
 }

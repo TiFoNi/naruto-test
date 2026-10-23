@@ -27,7 +27,7 @@ import { MODE_XP, MODE_XP_AFTER, TONE_HEX, levelAt } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
-import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MedalIcon, MenuIcon, PodiumIcon, ShopIcon, TrophyIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
+import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MedalIcon, PodiumIcon, ShopIcon, TrophyIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { api } from './api'
 import { openStream } from './stream'
 import { GAMES, gameById } from './games'
@@ -82,39 +82,25 @@ function useDropdown(open: boolean, setOpen: (open: boolean) => void) {
 function NavMenu({ user, section }: { user: boolean; section?: string }) {
   const { t } = useI18n()
   const href = useHref()
-  const [open, setOpen] = useState(false)
-  const box = useDropdown(open, setOpen)
   const onDuels = section === 'duels' || section === 'duel'
   const onBoard = section === 'leaderboard'
 
   return (
-    <div ref={box} className={`topbar-menu ${open ? 'open' : ''} ${onDuels || onBoard ? 'is-active' : ''}`}>
-      {user && (
-        <button
-          type="button"
-          className="topbar-menu-toggle"
-          aria-expanded={open}
-          aria-label={t('nav.menu')}
-          title={t('nav.menu')}
-          onClick={() => setOpen(!open)}
-        >
-          <MenuIcon />
-        </button>
-      )}
+    <div className={`topbar-menu ${onDuels || onBoard ? 'is-active' : ''}`}>
       <nav className="topbar-nav">
         {user && (
           <>
-            <Link className={onDuels ? 'active' : ''} href={href.duels} onClick={() => setOpen(false)}>
+            <Link className={onDuels ? 'active' : ''} href={href.duels} title={t('nav.duels')}>
               <span className="topbar-nav-icon" aria-hidden>
                 <SwordsIcon />
               </span>
-              {t('nav.duels')}
+              <span className="topbar-nav-word">{t('nav.duels')}</span>
             </Link>
-            <Link className={onBoard ? 'active' : ''} href={href.board} onClick={() => setOpen(false)}>
+            <Link className={onBoard ? 'active' : ''} href={href.board} title={t('nav.leaderboard')}>
               <span className="topbar-nav-icon" aria-hidden>
                 <PodiumIcon />
               </span>
-              {t('nav.leaderboard')}
+              <span className="topbar-nav-word">{t('nav.leaderboard')}</span>
             </Link>
           </>
         )}
