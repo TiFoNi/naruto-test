@@ -438,10 +438,10 @@ export const RARITIES = ['common', 'rare', 'epic', 'legend'] as const
 export type Rarity = (typeof RARITIES)[number]
 
 export const RARITY_PRICE: Record<Rarity, { frame: number; banner: number; bundle: number }> = {
-  common: { frame: 200, banner: 160, bundle: 300 },
-  rare: { frame: 400, banner: 320, bundle: 600 },
-  epic: { frame: 700, banner: 560, bundle: 1050 },
-  legend: { frame: 1200, banner: 960, bundle: 1800 },
+  common: { frame: 280, banner: 200, bundle: 400 },
+  rare: { frame: 480, banner: 360, bundle: 700 },
+  epic: { frame: 800, banner: 640, bundle: 1200 },
+  legend: { frame: 1400, banner: 1000, bundle: 2000 },
 }
 
 export const FRAME_RARITY: Record<string, Rarity> = {

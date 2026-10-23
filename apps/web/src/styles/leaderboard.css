@@ -1023,10 +1023,16 @@
 }
 
 @media (max-width: 620px) {
+  .season-prize-face {
+    width: 34px;
+    height: 34px;
+    margin: 0 11px 0 2px;
+  }
+
   .season-rewards li {
     flex: 1 1 0;
-    gap: 10px;
-    padding: 10px;
+    gap: 2px;
+    padding: 10px 8px;
   }
 
   .season-prize-what b {
