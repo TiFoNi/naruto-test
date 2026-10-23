@@ -7015,6 +7015,17 @@ html[data-auth] .guest-note {
   transition: background 0.18s, color 0.18s;
 }
 
+.give-up.is-quiet {
+  border-color: color-mix(in srgb, var(--text-3) 50%, transparent);
+  color: var(--text-2);
+}
+
+.give-up.is-quiet:hover:not(:disabled) {
+  border-color: var(--text-3);
+  background: color-mix(in srgb, #ffffff 7%, transparent);
+  color: var(--text);
+}
+
 .give-up:hover:not(:disabled) {
   background: color-mix(in srgb, var(--wrong) 28%, transparent);
   color: var(--wrong-text);

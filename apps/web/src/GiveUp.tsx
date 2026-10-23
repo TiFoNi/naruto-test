@@ -6,7 +6,7 @@ import { CloseIcon } from './icons'
 
 type Props = { className?: string; disabled?: boolean; hint?: UiKey; children: ReactNode; onConfirm: () => void }
 
-export default function GiveUp({ className = 'give-up', disabled, hint, children, onConfirm }: Props) {
+export default function GiveUp({ className = 'give-up is-quiet', disabled, hint, children, onConfirm }: Props) {
   const { t } = useI18n()
   const [asking, setAsking] = useState(false)
 
