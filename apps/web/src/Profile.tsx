@@ -14,7 +14,7 @@ import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
 import { ProfileGhost } from './PageSkeleton'
 import Rail from './Rail'
-import { ArrowIcon, CloseIcon, GearIcon, GripIcon, PaletteIcon, PictureIcon, PlusIcon, TrophyIcon } from './icons'
+import { ArrowIcon, CloseIcon, GearIcon, GripIcon, PaletteIcon, PencilIcon, PictureIcon, PlusIcon, TrophyIcon } from './icons'
 import AwardIcon from './awardIcons'
 import { useHref } from './router'
 import { SHOWCASE_MAX } from './showcase'
@@ -255,12 +255,10 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     return () => window.removeEventListener('resize', even)
   })
 
-  const factsRef = useRef<HTMLDivElement>(null)
-
   useEffect(() => {
     if (!places) return
     const away = (event: MouseEvent) => {
-      if (!factsRef.current?.contains(event.target as Node)) setPlaces(false)
+      if (!(event.target as Element | null)?.closest?.('.profile-facts')) setPlaces(false)
     }
     const escape = (event: KeyboardEvent) => event.key === 'Escape' && setPlaces(false)
     document.addEventListener('mousedown', away)
@@ -408,12 +406,12 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
       const wide = grid.parentElement?.getBoundingClientRect().width ?? 0
       const room = wide - 60
       const seats = HERO_TILES_MAX
-      const area = 440 + Math.max(0, (room - 802) / 2)
-      const slot = Math.max(150, Math.round((area - (seats - 1) * 10) / seats))
+      const area = (440 + Math.max(0, (room - 802) / 2)) * 0.8
+      const slot = Math.max(120, Math.round((area - (seats - 1) * 10) / seats))
       grid.style.setProperty('--slot', `${slot}px`)
       const cell = grid.firstElementChild?.getBoundingClientRect()
-      setSpot(wide <= 800 || room < 594 ? 'under' : slot >= 180 ? 'row' : 'column')
-      setTight(!!cell && cell.width < 150)
+      setSpot(wide <= 800 || room < 594 ? 'under' : slot >= 144 ? 'row' : 'column')
+      setTight(!!cell && cell.width < 120)
     }
     check()
     const watcher = new ResizeObserver(check)
@@ -672,6 +670,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     if (!edit || event.button > 0) return
     const card = cardOf(block)
     if (!card) return
+    shutPops()
     event.preventDefault()
     event.stopPropagation()
     const from = Math.round(card.getBoundingClientRect().height)
@@ -696,10 +695,18 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     setSized({ block, y: event.clientY, from, stops: null, floor, roof: roofOf(), mates, bare: ladder.own })
   }
 
+  const shutPops = () => {
+    setPlaces(false)
+    setTip(false)
+    setWeek(false)
+    setShop(null)
+  }
+
   const grab = (block: ProfileBlock) => (event: ReactPointerEvent<HTMLElement>) => {
     if (!edit || event.button > 0) return
     const node = (event.currentTarget.closest('.profile-slot') as HTMLElement | null) ?? null
     if (!node) return
+    shutPops()
     const card = (node.querySelector(':scope > .card') as HTMLElement | null) ?? node
     const box = card.getBoundingClientRect()
     event.preventDefault()
@@ -713,13 +720,13 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const panels: Record<ProfileBlock, ReactNode> = {
     facts: (
       <section className="card profile-card">
-        <div className="profile-facts" ref={factsRef}>
+        <div className="profile-facts">
           {best ? (
             <button
               type="button"
               className={`fact fact-rank ${medal(best.position)} ${places ? 'open' : ''}`}
               aria-expanded={places}
-              onClick={() => setPlaces(!places)}
+              onClick={() => setPlaces((was) => !was)}
             >
               <span>{t('profile.bestGame')}</span>
               <p className="fact-place">
@@ -1085,21 +1092,23 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
           <div className="profile-hero-main">
             <div className="profile-hero-name" style={(nickHex ? { '--nick': nickHex } : {}) as CSSProperties}>
               <span className="hero-nick-line">
-                {edit ? (
-                  <button
-                    type="button"
-                    className={`nick-dye ${dye ? 'is-open' : ''}`}
-                    title={t('profile.toneNick')}
-                    onClick={(event) => {
-                      setDyeAt(event.currentTarget)
-                      setDye(!dye)
-                    }}
-                  >
-                    <h1>{nickname}</h1>
-                  </button>
-                ) : (
+                <span className="hero-nick-who">
                   <h1>{nickname}</h1>
-                )}
+                  {edit && (
+                    <button
+                      type="button"
+                      className={`nick-dye ${dye ? 'is-open' : ''}`}
+                      title={t('profile.toneNick')}
+                      aria-label={t('profile.toneNick')}
+                      onClick={(event) => {
+                        setDyeAt(event.currentTarget)
+                        setDye((was) => !was)
+                      }}
+                    >
+                      <PencilIcon />
+                    </button>
+                  )}
+                </span>
                 {title && <i className={`player-title is-${title}`}>{t(`title.${title}` as UiKey)}</i>}
               </span>
               {tag && <i className="player-tag">#{tag}</i>}
@@ -1244,7 +1253,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                     aria-expanded={tip}
                     onClick={(event) => {
                       setTipAt(event.currentTarget.closest<HTMLElement>('.hero-tile'))
-                      setTip(!tip)
+                      setTip((was) => !was)
                     }}
                   >
                     <span>{tileName('profile.characters', 'profile.charactersShort')}</span>
@@ -1293,7 +1302,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                     aria-expanded={week}
                     onClick={(event) => {
                       setWeekAt(event.currentTarget.closest<HTMLElement>('.hero-tile'))
-                      setWeek(!week)
+                      setWeek((was) => !was)
                     }}
                   >
                     <span>{tileName('profile.streakTitle', 'profile.streakShort')}</span>

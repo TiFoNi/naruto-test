@@ -429,6 +429,15 @@ export function ShopIcon({ className }: IconProps) {
   )
 }
 
+export function PencilIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M4 20.2h4l10-10a2.4 2.4 0 0 0-3.4-3.4l-10 10v3.4Z" />
+      <path d="m13.6 7.4 3.4 3.4" />
+    </svg>
+  )
+}
+
 export function PaletteIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

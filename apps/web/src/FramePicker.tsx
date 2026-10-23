@@ -10,7 +10,7 @@ import { FRAME_RARITY, RARITIES } from '@nanda/game'
 
 const rank = (id: string) => {
   const spot = RARITIES.indexOf(FRAME_RARITY[id])
-  return spot < 0 ? RARITIES.length : spot
+  return spot < 0 ? -1 : RARITIES.length - spot
 }
 
 export default function FramePicker() {
@@ -28,6 +28,8 @@ export default function FramePicker() {
     setBusy(false)
   }
 
+  const bare = l({ ru: 'Без рамки', uk: 'Без рамки', en: 'No frame' })
+
   return (
     <section className="ava-sec frame-sec">
       <h3>{l({ ru: 'Рамка', uk: 'Рамка', en: 'Frame' })}</h3>
@@ -37,8 +39,8 @@ export default function FramePicker() {
             type="button"
             className={`frame-card ${user.frame ? '' : 'on'}`}
             disabled={busy}
-            title={l({ ru: 'Без рамки', uk: 'Без рамки', en: 'No frame' })}
-            aria-label={l({ ru: 'Без рамки', uk: 'Без рамки', en: 'No frame' })}
+            title={bare}
+            aria-label={bare}
             onClick={() => void pick(null)}
           >
             <Avatar id={user.id} name={user.nickname} avatar={user.avatar} />
@@ -47,7 +49,7 @@ export default function FramePicker() {
             <button
               key={one.id}
               type="button"
-              className={`frame-card is-${FRAME_RARITY[one.id] ?? 'award'} ${user.frame === one.id ? 'on' : ''}`}
+              className={`frame-card ${user.frame === one.id ? 'on' : ''}`}
               disabled={busy}
               title={l(one.label)}
               aria-label={l(one.label)}

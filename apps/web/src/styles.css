@@ -9530,13 +9530,13 @@ html[data-auth] .guest-note {
   margin-top: 18px;
 }
 
-.frame-group h3 {
+.frame-group h4 {
   margin: 0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.055em;
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-2);
 }
 
 .frame-modal h2 {
@@ -9547,7 +9547,7 @@ html[data-auth] .guest-note {
 
 .frame-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));
   gap: 10px;
 }
 
@@ -9564,6 +9564,12 @@ html[data-auth] .guest-note {
   font-size: 12.5px;
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
+}
+
+.frame-card .avatar {
+  width: 86px;
+  height: 86px;
+  font-size: 34px;
 }
 
 .frame-card:hover {
@@ -9963,6 +9969,14 @@ html[data-auth] .guest-note {
 
   .ava-modal.is-wide > h2 {
     padding: 0;
+  }
+
+  .ava-modal.is-wide > .ava-sec:not(.frame-sec) {
+    align-self: stretch;
+  }
+
+  .ava-modal.is-wide .ava-drop-pic {
+    margin-top: auto;
   }
 
   .ava-modal.is-wide .frame-sec-body {

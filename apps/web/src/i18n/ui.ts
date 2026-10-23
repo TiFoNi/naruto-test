@@ -55,6 +55,7 @@ const ui = {
   'shop.rarity.rare': { ru: 'Редкий', uk: 'Рідкісний', en: 'Rare' },
   'shop.rarity.epic': { ru: 'Эпический', uk: 'Епічний', en: 'Epic' },
   'shop.rarity.legend': { ru: 'Легендарный', uk: 'Легендарний', en: 'Legendary' },
+  'shop.rarity.award': { ru: 'Награда', uk: 'Нагорода', en: 'Award' },
   'shop.poor': { ru: 'Не хватает монет', uk: 'Не вистачає монет', en: 'Not enough coins' },
   'shop.failed': { ru: 'Не вышло, попробуй ещё раз', uk: 'Не вийшло, спробуй ще раз', en: 'It did not go through, try again' },
   'shop.guest': { ru: 'Гость', uk: 'Гість', en: 'Guest' },
