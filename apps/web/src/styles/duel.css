@@ -276,6 +276,11 @@
   width: 100%;
 }
 
+.duel-quit + .duel-quit {
+  margin-top: 8px;
+  padding-top: 0;
+}
+
 .duel-quit.is-wide {
   justify-content: center;
 }
@@ -3537,15 +3542,6 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   .duel-format-row {
     grid-template-columns: minmax(0, 1fr);
   }
-}
-
-.duel-giveup {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.duel-giveup .give-up {
-  padding: 0 18px;
 }
 
 .duel-format-hint {

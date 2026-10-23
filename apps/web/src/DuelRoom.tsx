@@ -416,6 +416,13 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
           side={
             <aside className="play-side duel-side">
               {duel.mode === 'classic' && duel.rival && <RivalBoard game={game} rows={duel.rival.board ?? []} total={duel.rival.guessCount} />}
+              {!solo && !over && !youDone && (
+                <div className="duel-quit">
+                  <GiveUp disabled={busy} onConfirm={giveUp}>
+                    {t('play.giveUp')}
+                  </GiveUp>
+                </div>
+              )}
               {quit && <div className="duel-quit">{quit}</div>}
             </aside>
           }
@@ -521,14 +528,6 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
             <p className="ability-hint">
               {t(revealed ? 'ability.was' : 'ability.hint')} <b>{duel.ability[lang]}</b>
             </p>
-          )}
-
-          {!over && !youDone && (
-            <div className="duel-giveup">
-              <GiveUp disabled={busy} onConfirm={giveUp}>
-                {t('play.giveUp')}
-              </GiveUp>
-            </div>
           )}
 
           {(over || youDone) && answer && (
