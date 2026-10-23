@@ -244,9 +244,16 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                       {!board &&
                         Array.from({ length: lastSize.get(boardKey) ?? SKELETON_ROWS }, (_, i) => (
                           <tr key={`skeleton-${i}`} className="lb-skeleton-row">
-                            {Array.from({ length: columns.length + 2 }, (_, c) => (
-                              <td key={c}>
-                                <span className="lb-skeleton" />
+                            <td>
+                              <span className="lb-skeleton is-rank" />
+                            </td>
+                            <td className="lb-name">
+                              <span className="lb-skeleton is-face" />
+                              <span className="lb-skeleton is-nick" />
+                            </td>
+                            {columns.map((column) => (
+                              <td key={column.label}>
+                                <span className="lb-skeleton is-num" />
                               </td>
                             ))}
                           </tr>

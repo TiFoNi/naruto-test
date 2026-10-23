@@ -610,10 +610,10 @@ const TROPHIES: { id: string; places: number }[] = [
   { id: 'seasonTop100', places: 100 },
 ]
 
-const SEASON_TITLES: { id: string; places: number }[] = [
-  { id: 'champion', places: 1 },
-  { id: 'runner', places: 10 },
-  { id: 'hundred', places: 100 },
+const SEASON_TITLES: { id: string; from: number; to: number }[] = [
+  { id: 'champion', from: 1, to: 1 },
+  { id: 'runner', from: 2, to: 10 },
+  { id: 'hundred', from: 11, to: 100 },
 ]
 
 export async function grantSeasonTrophies(standing: { userId: ObjectId }[]) {
@@ -623,7 +623,7 @@ export async function grantSeasonTrophies(standing: { userId: ObjectId }[]) {
     const place = index + 1
     const won = TROPHIES.filter((trophy) => place <= trophy.places)
     if (!won.length) continue
-    const titles = SEASON_TITLES.filter((title) => place <= title.places).map((title) => title.id)
+    const titles = SEASON_TITLES.filter((title) => place >= title.from && place <= title.to).map((title) => title.id)
     const given = [
       ...(place <= TOP_PLACES ? [{ frames: PLACE_FRAMES[place - 1] }] : []),
       ...(titles.length ? [{ titles: { $each: titles } }] : []),

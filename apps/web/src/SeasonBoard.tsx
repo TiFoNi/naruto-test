@@ -39,7 +39,7 @@ type Board = {
 
 const PRIZES = [
   { place: 'lb.reward1' as UiKey, title: 'champion', frame: 'top1', tone: 'gold' },
-  { place: 'lb.reward23' as UiKey, title: 'runner', frame: null, tone: 'silver' },
+  { place: 'lb.reward10' as UiKey, title: 'runner', frame: null, tone: 'silver' },
   { place: 'lb.reward100' as UiKey, title: 'hundred', frame: null, tone: 'bronze' },
 ]
 
@@ -199,22 +199,31 @@ export default function SeasonBoard() {
                         </i>
                       )}
                     </span>
+                    <Link
+                      className="lb-step-open"
+                      href={row.me ? href.profile : href.player(row.id)}
+                      aria-label={row.nickname}
+                      prefetch={false}
+                    />
                     <span className="lb-step-face">
                       <BoardFace id={row.id} nickname={row.nickname} avatar={row.avatar} frame={row.frame} big />
                     </span>
                     <span className="lb-step-text">
-                      <b className="lb-step-name">{row.nickname}</b>
-                      <span className="lb-step-main">
-                        {(() => {
-                          const shownXp = row.xp.toLocaleString(lang === 'en' ? 'en-GB' : 'uk-UA')
-                          return <em style={{ '--len': shownXp.length } as CSSProperties}>{shownXp}</em>
-                        })()}
-                        <i className="lb-step-unit">{t('lb.colXp')}</i>
+                      <span className="lb-step-who">
+                        <b className="lb-step-name">{row.nickname}</b>
+                        {row.title && <i className={`player-title is-slim is-${row.title}`}>{t(`title.${row.title}` as UiKey)}</i>}
                       </span>
                       <span className="lb-step-sub">
                         {row.solved} <i className="lb-step-unit">{t('lb.shortSolved')}</i> · {row.days}/{length}{' '}
                         <i className="lb-step-unit">{t('lb.colDays')}</i>
                       </span>
+                    </span>
+                    <span className="lb-step-main">
+                      {(() => {
+                        const shownXp = row.xp.toLocaleString(lang === 'en' ? 'en-GB' : 'uk-UA')
+                        return <em style={{ '--len': shownXp.length } as CSSProperties}>{shownXp}</em>
+                      })()}
+                      <i className="lb-step-unit">{t('lb.colXp')}</i>
                     </span>
                     <span className="lb-step-rank">
                       <i className="lb-step-top">{t('lb.topWord')} </i>
@@ -272,8 +281,21 @@ export default function SeasonBoard() {
                       </tr>
                     ) : (
                       <tr key={`skeleton-${index}`} className="lb-skeleton-row">
-                        <td colSpan={5}>
-                          <span className="lb-skeleton" />
+                        <td>
+                          <span className="lb-skeleton is-rank" />
+                        </td>
+                        <td className="lb-name">
+                          <span className="lb-skeleton is-face" />
+                          <span className="lb-skeleton is-nick" />
+                        </td>
+                        <td className="season-xp-col">
+                          <span className="lb-skeleton is-xp" />
+                        </td>
+                        <td className="lb-num">
+                          <span className="lb-skeleton is-num" />
+                        </td>
+                        <td className="lb-num">
+                          <span className="lb-skeleton is-num" />
                         </td>
                       </tr>
                     ),

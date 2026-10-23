@@ -11,8 +11,6 @@ export type Frame = { id: string; kind: FrameKind; label: L10n }
 
 const AWARD_LABELS: Record<string, L10n> = {
   top1: l10n('1-е место', '1-ше місце', '1st place'),
-  top2: l10n('2-е место', '2-ге місце', '2nd place'),
-  top3: l10n('3-е место', '3-тє місце', '3rd place'),
 }
 
 const NATURE_LABELS: Record<string, L10n> = {

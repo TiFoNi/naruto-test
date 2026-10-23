@@ -2074,7 +2074,7 @@ const ui = {
   'lb.seasonOver': { ru: 'сезон завершается', uk: 'сезон завершується', en: 'season is ending' },
   'lb.reward1': { ru: 'Топ-1', uk: 'Топ-1', en: 'Top 1' },
   'lb.reward1sub': { ru: 'рамка сезона и титул', uk: 'рамка сезону і титул', en: 'season frame and title' },
-  'lb.reward23': { ru: 'Топ-2–3', uk: 'Топ-2–3', en: 'Top 2–3' },
+  'lb.reward10': { ru: 'Топ-10', uk: 'Топ-10', en: 'Top 10' },
   'lb.rewardFrame': { ru: 'рамка сезона', uk: 'рамка сезону', en: 'season frame' },
   'lb.rewardFrameSlim': { ru: 'рамка', uk: 'рамка', en: 'frame' },
   'lb.reward1subSlim': { ru: 'рамка и титул', uk: 'рамка і титул', en: 'frame and title' },

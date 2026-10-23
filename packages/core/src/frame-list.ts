@@ -1,4 +1,4 @@
-export const PLACE_FRAMES = ['top1', 'top2', 'top3'] as const
+export const PLACE_FRAMES = ['top1'] as const
 
 export const TOP_PLACES = PLACE_FRAMES.length
 
