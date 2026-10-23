@@ -699,7 +699,8 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     if (!edit || event.button > 0) return
     const node = (event.currentTarget.closest('.profile-slot') as HTMLElement | null) ?? null
     if (!node) return
-    const box = node.getBoundingClientRect()
+    const card = (node.querySelector(':scope > .card') as HTMLElement | null) ?? node
+    const box = card.getBoundingClientRect()
     event.preventDefault()
     setHeld({ block, x: event.clientX, y: event.clientY, dx: event.clientX - box.left, dy: event.clientY - box.top, w: box.width, h: box.height })
   }
@@ -1396,7 +1397,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
       {held && (
         <div
-          className="profile-ghost"
+          className={`profile-ghost ${grown[held.block] ? 'is-tall' : ''}`}
           style={{ left: held.x - held.dx, top: held.y - held.dy, width: held.w, height: held.h }}
           aria-hidden
         >

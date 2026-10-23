@@ -69,24 +69,30 @@
   min-height: 0;
 }
 
-.profile-slot.is-tall > .card {
+.profile-slot.is-tall > .card,
+.profile-ghost.is-tall > .card {
   overflow: hidden;
 }
 
 .profile-slot.is-tall .activity,
-.profile-slot.is-tall .worlds {
+.profile-slot.is-tall .worlds,
+.profile-ghost.is-tall .activity,
+.profile-ghost.is-tall .worlds {
   flex: 1 1 0;
   height: auto;
   min-height: 0;
 }
 
 .profile-slot.is-tall .world-shelf,
-.profile-slot.is-tall .soon-badges {
+.profile-slot.is-tall .soon-badges,
+.profile-ghost.is-tall .world-shelf,
+.profile-ghost.is-tall .soon-badges {
   flex: 1 1 auto;
   min-height: 0;
   margin-top: -6px;
   padding-top: 6px;
   overflow: hidden;
+  align-content: start;
 }
 
 .slot-grow {
@@ -2627,8 +2633,10 @@ button.fact-rank:hover {
 
 .world-line b {
   overflow: hidden;
+  min-height: 18px;
   font-size: 14.5px;
   font-weight: 800;
+  line-height: 1.24;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

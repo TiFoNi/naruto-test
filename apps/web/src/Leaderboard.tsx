@@ -11,8 +11,10 @@ import { MODES, type ModeId } from './modes'
 import { useNavigate, useHref } from './router'
 import { keepPerUser } from './session-cache'
 import Picker from './Picker'
-import { CrownIcon, ShieldIcon } from './icons'
+import { ShieldIcon } from './icons'
 import BoardFace from './BoardFace'
+import { MARKS } from './Profile'
+import { bannerPic, bannerSpot } from './banners'
 
 type Sort = 'best' | 'solved'
 
@@ -22,6 +24,7 @@ type Row = {
   nickname: string
   avatar?: string | null
   frame?: string | null
+  banner?: string | null
   title?: string | null
   me: boolean
   level?: number
@@ -129,7 +132,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   const peak = Math.max(1, ...all.map((r) => active.raw(r)))
   const table = !board || !!error || all.length === 0 || listed.length > 0
   const medals = ['gold', 'silver', 'bronze']
-  const stand = [1, 0, 2]
+  const stand = [0, 1, 2]
 
   return (
     <div className="leaderboard">
@@ -180,7 +183,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
       <div className="lb-layout">
         <section className="lb-main">
           {podium.length > 0 && (
-            <ol className={`lb-podium ${waiting ? 'waiting' : ''}`}>
+            <ol className={`lb-podium is-cards ${waiting ? 'waiting' : ''}`}>
               {stand.map((index) => {
                 const row = podium[index]
                 const rest = columns.filter((c) => c !== active)
@@ -192,29 +195,75 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                           ?
                         </span>
                       </span>
-                      <b className="lb-step-name">{t('lb.vacant')}</b>
-                      <span className="lb-step-main">
-                        <em>—</em>
+                      <span className="lb-step-text">
+                        <b className="lb-step-name">{t('lb.vacant')}</b>
+                        <span className="lb-step-main">
+                          <em>—</em>
+                        </span>
+                      </span>
+                      <span className="lb-step-rank">
+                        <i className="lb-step-top">{t('lb.topWord')} </i>
+                        {index + 1}
                       </span>
                     </li>
                   )
                 return (
-                  <li key={row.rank} className={`lb-step ${medals[index]}`}>
-                    {index === 0 && <CrownIcon className="lb-crown" />}
+                  <li key={row.rank} className={`lb-step ${medals[index]} has-art`}>
+                    <span className="lb-step-art" aria-hidden>
+                      {row.banner ? (
+                        <img src={bannerPic(row.banner)} alt="" style={{ objectPosition: bannerSpot(row.banner) }} />
+                      ) : (
+                        <i className="mini-me-marks lb-step-marks">
+                          {MARKS.map((mark) => (
+                            <em
+                              key={mark.left}
+                              style={
+                                {
+                                  left: mark.left,
+                                  top: mark.top,
+                                  fontSize: Math.round(mark.size * 0.34),
+                                  transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
+                                } as CSSProperties
+                              }
+                            >
+                              ?!
+                            </em>
+                          ))}
+                        </i>
+                      )}
+                    </span>
+                    {row.id && (
+                      <Link
+                        className="lb-step-open"
+                        href={row.me ? href.profile : href.player(row.id)}
+                        aria-label={row.nickname}
+                        prefetch={false}
+                      />
+                    )}
                     <span className="lb-step-face">
                       <BoardFace id={row.id} nickname={row.nickname} avatar={row.avatar} frame={row.frame} big />
                     </span>
-                    <b className="lb-step-name">{row.nickname}</b>
+                    <span className="lb-step-text">
+                      <span className="lb-step-who">
+                        <b className="lb-step-name">{row.nickname}</b>
+                        {row.title && <i className={`player-title is-slim is-${row.title}`}>{t(`title.${row.title}` as UiKey)}</i>}
+                      </span>
+                      <span className="lb-step-sub">
+                        {rest.map((c, spot) => (
+                          <span key={c.label}>
+                            {spot > 0 ? ' · ' : ''}
+                            {c.value(row)} <i className="lb-step-unit">{t(c.short)}</i>
+                          </span>
+                        ))}
+                      </span>
+                    </span>
                     <span className="lb-step-main">
                       <em style={{ '--len': String(active.value(row)).length } as CSSProperties}>{active.value(row)}</em>
-                      {t(active.short)}
+                      <i className="lb-step-unit">{t(active.short)}</i>
                     </span>
-                    <span className="lb-step-sub">
-                      {rest.map((c) => (
-                        <span key={c.label}>
-                          {c.value(row)} {t(c.short)}
-                        </span>
-                      ))}
+                    <span className="lb-step-rank">
+                      <i className="lb-step-top">{t('lb.topWord')} </i>
+                      {row.rank}
                     </span>
                   </li>
                 )

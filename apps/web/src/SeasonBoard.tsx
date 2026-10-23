@@ -151,7 +151,7 @@ export default function SeasonBoard() {
       <div className="lb-layout">
         <section className="lb-main">
           {podium.length > 0 && (
-            <ol className={`lb-podium ${waiting ? 'waiting' : ''}`}>
+            <ol className={`lb-podium is-cards ${waiting ? 'waiting' : ''}`}>
               {stand.map((index) => {
                 const row = podium[index]
                 if (!row)
