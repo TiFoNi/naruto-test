@@ -524,9 +524,11 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
           )}
 
           {!over && !youDone && (
-            <GiveUp className="link-button" disabled={busy} onConfirm={giveUp}>
-              {t('play.giveUp')}
-            </GiveUp>
+            <div className="duel-giveup">
+              <GiveUp disabled={busy} onConfirm={giveUp}>
+                {t('play.giveUp')}
+              </GiveUp>
+            </div>
           )}
 
           {(over || youDone) && answer && (
