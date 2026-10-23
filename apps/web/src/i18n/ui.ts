@@ -78,10 +78,10 @@ const ui = {
   'quest.coins': { ru: '+{count} монет', uk: '+{count} монет', en: '+{count} coins' },
   'nav.bell': { ru: 'Уведомления', uk: 'Сповіщення', en: 'Notifications' },
   'frame.fresh': { ru: 'Новая рамка', uk: 'Нова рамка', en: 'New frame' },
-  'frame.freshWorld': {
-    ru: 'Открыта за полное прохождение вселенной — выбери её в настройках',
-    uk: 'Відкрита за повне проходження всесвіту — обери її в налаштуваннях',
-    en: 'Unlocked for completing a world — pick it in settings',
+  'frame.freshPick': {
+    ru: 'Выбери её в настройках профиля',
+    uk: 'Обери її в налаштуваннях профілю',
+    en: 'Pick it in your profile settings',
   },
   'frame.freshAward': {
     ru: 'Награда за место в сезоне — выбери её в настройках',
