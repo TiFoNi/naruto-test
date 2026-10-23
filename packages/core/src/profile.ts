@@ -214,6 +214,7 @@ export function toProfile(doc: UserDoc) {
       nickname: doc.nickname ?? defaultNickname(doc.username),
       tag: doc.tag ?? null,
       avatar: doc.avatar ?? null,
+      avatarPreset: doc.avatarPreset ?? null,
       frame: doc.frame ?? null,
       frames: doc.frames ?? [],
       banner: doc.banner ?? null,

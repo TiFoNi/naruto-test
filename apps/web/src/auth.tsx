@@ -13,6 +13,7 @@ export type User = {
   nickname: string
   tag: string | null
   avatar: string | null
+  avatarPreset?: string | null
   frame: string | null
   frames: string[]
   banner: string | null

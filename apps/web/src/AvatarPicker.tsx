@@ -41,7 +41,7 @@ const PRESETS = ["frog", "fox"];
 
 const presetUrl = (one: string) => `/avatars/${one}.webp?v=1`;
 
-export default function AvatarPicker() {
+export default function AvatarPicker({ edit = true }: { edit?: boolean }) {
   const { t } = useI18n();
   const { user, refresh } = useAuth();
   const file = useRef<HTMLInputElement>(null);
@@ -284,10 +284,7 @@ export default function AvatarPicker() {
 
     const body = new FormData();
     body.append("file", blob, "avatar.webp");
-    if (await send(body)) {
-      setShot(null);
-      setOpen(false);
-    }
+    if (await send(body)) setShot(null);
   };
 
   const wear = async (one: string) => {
@@ -299,42 +296,54 @@ export default function AvatarPicker() {
     if (!picked) return setError(t("avatar.failed"));
     const body = new FormData();
     body.append("file", picked, `${one}.webp`);
-    if (await send(body)) setOpen(false);
+    body.append("preset", one);
+    await send(body);
   };
 
   const remove = async () => {
     const body = new FormData();
     body.append("action", "remove");
-    if (await send(body)) setOpen(false);
+    await send(body);
   };
 
   return (
     <>
-      <button
-        type="button"
-        className="ava-trigger"
-        onClick={() => setOpen(true)}
-        aria-label={t("avatar.change")}
-      >
-        <Avatar
-          id={user?.id}
-          name={user?.nickname ?? "?"}
-          avatar={user?.avatar}
-          frame={user?.frame}
-          hint={
-            <span className="ava-hover" aria-hidden>
-              <PictureIcon />
-            </span>
-          }
-        />
-      </button>
+      {edit ? (
+        <button
+          type="button"
+          className="ava-trigger is-live"
+          onClick={() => setOpen(true)}
+          aria-label={t("avatar.change")}
+        >
+          <Avatar
+            id={user?.id}
+            name={user?.nickname ?? "?"}
+            avatar={user?.avatar}
+            frame={user?.frame}
+            hint={
+              <span className="ava-hover" aria-hidden>
+                <PictureIcon />
+              </span>
+            }
+          />
+        </button>
+      ) : (
+        <span className="ava-trigger is-still">
+          <Avatar
+            id={user?.id}
+            name={user?.nickname ?? "?"}
+            avatar={user?.avatar}
+            frame={user?.frame}
+          />
+        </span>
+      )}
 
       {open &&
         mounted &&
         createPortal(
           <div className="modal-backdrop" onClick={close} role="presentation">
             <section
-              className="card modal ava-modal"
+              className={`card modal ava-modal ${shot ? "" : "is-wide"}`}
               role="dialog"
               aria-modal="true"
               aria-label={t("avatar.title")}
@@ -386,12 +395,14 @@ export default function AvatarPicker() {
               ) : (
                 <>
                   <p className="muted ava-lead">{t("avatar.hint")}</p>
+                  <section className="ava-sec">
+                  <h3>{t("avatar.secFace")}</h3>
                   <div className="ava-presets">
                     {PRESETS.map((one) => (
                       <button
                         key={one}
                         type="button"
-                        className="ava-preset"
+                        className={`ava-preset ${user?.avatarPreset === one ? "on" : ""}`}
                         disabled={busy}
                         aria-label={t(`avatar.preset.${one}` as never)}
                         title={t(`avatar.preset.${one}` as never)}
@@ -429,6 +440,7 @@ export default function AvatarPicker() {
                       {t("avatar.remove")}
                     </button>
                   )}
+                  </section>
                   <FramePicker />
                 </>
               )}

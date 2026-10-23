@@ -34,6 +34,7 @@ export type UserDoc = {
   pinned?: string[]
   showcase?: string[]
   tiles?: (string | null)[]
+  avatarPreset?: string | null
   banner?: string
   banners?: string[]
   tone?: string

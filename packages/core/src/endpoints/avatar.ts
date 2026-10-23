@@ -5,6 +5,7 @@ import { currentUser, unauthorized } from '../profile'
 
 const LIMIT = 6 * 1024 * 1024
 const KINDS = ['image/webp', 'image/jpeg', 'image/png', 'image/gif', 'image/avif']
+const PRESETS = ['frog', 'fox']
 
 type Upload = { size: number; type: string; arrayBuffer: () => Promise<ArrayBuffer> }
 
@@ -21,7 +22,7 @@ export const POST = handle(async (request) => {
 
   if (form.get('action') === 'remove') {
     if (found.doc.avatar) await dropAvatar(id).catch(() => undefined)
-    await collection.updateOne({ _id: userId }, { $set: { avatar: null } })
+    await collection.updateOne({ _id: userId }, { $set: { avatar: null, avatarPreset: null } })
     return json({ avatar: null })
   }
 
@@ -30,7 +31,9 @@ export const POST = handle(async (request) => {
   if (file.size > LIMIT) return fail(413, 'too_large')
   if (file.type && !KINDS.includes(file.type)) return fail(415, 'bad_kind')
 
+  const asked = form.get('preset')
+  const preset = typeof asked === 'string' && PRESETS.includes(asked) ? asked : null
   const avatar = await uploadAvatar(id, Buffer.from(await file.arrayBuffer()))
-  await collection.updateOne({ _id: userId }, { $set: { avatar } })
-  return json({ avatar })
+  await collection.updateOne({ _id: userId }, { $set: { avatar, avatarPreset: preset } })
+  return json({ avatar, avatarPreset: preset })
 })

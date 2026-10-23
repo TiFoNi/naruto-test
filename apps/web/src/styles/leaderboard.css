@@ -147,6 +147,11 @@
   color: var(--text);
 }
 
+.lb-table .lb-num em {
+  color: var(--text-3);
+  font-style: normal;
+}
+
 .lb-name {
   color: var(--text) !important;
   font-weight: 800 !important;

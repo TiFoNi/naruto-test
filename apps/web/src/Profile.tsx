@@ -345,7 +345,8 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
   useEffect(() => {
     void load()
-  }, [load])
+    if (own) void refresh()
+  }, [load, own, refresh])
 
   const nickname = (own ? user?.nickname : summary?.nickname) ?? ''
   const tag = (own ? user?.tag : summary?.tag) ?? null
@@ -1080,7 +1081,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
         <div className={`profile-hero-body ${spot === 'under' ? 'is-under' : ''} ${spot === 'column' ? 'is-stack' : ''}`}>
         <div className="profile-hero-id">
-          {own ? <AvatarPicker /> : <Avatar id={id} name={nickname} avatar={summary?.avatar} frame={summary?.frame} />}
+          {own ? <AvatarPicker edit={edit} /> : <Avatar id={id} name={nickname} avatar={summary?.avatar} frame={summary?.frame} />}
           <div className="profile-hero-main">
             <div className="profile-hero-name" style={(nickHex ? { '--nick': nickHex } : {}) as CSSProperties}>
               <span className="hero-nick-line">
