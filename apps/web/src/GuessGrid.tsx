@@ -106,7 +106,9 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
   useEffect(() => {
     if (!tip && !facet) return
     const follow = () => place()
-    const away = () => {
+    const away = (event?: MouseEvent) => {
+      const target = event?.target as HTMLElement | null
+      if (target?.closest?.('.cell, .head-pick, .cell-tip, .facet-tip')) return
       setTip(null)
       setFacet(null)
     }

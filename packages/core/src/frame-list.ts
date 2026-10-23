@@ -15,11 +15,12 @@ export const WORLD_FRAMES = [
   'jjk',
   'csm',
   'tg',
+  'dn',
   'hxh',
   'jojo',
 ] as const
 
-export const NATURE_FRAMES = ['sakura', 'frost', 'leaf', 'dusk', 'abyss'] as const
+export const NATURE_FRAMES = ['pond', 'maple', 'crows', 'blossom', 'fireflies'] as const
 
 export const OTHER_FRAMES = ['top10'] as const
 

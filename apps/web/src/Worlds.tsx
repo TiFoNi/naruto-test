@@ -72,13 +72,23 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     setPending(false)
   }
 
+  const pack = (seats: string[], spare: string[]) => {
+    const fit = seats.filter(Boolean)
+    const shown = fit.slice(0, SHOWCASE_MAX)
+    const over = fit.slice(SHOWCASE_MAX)
+    const gaps = Array.from({ length: SHOWCASE_MAX - shown.length }, () => '')
+    return [...shown, ...gaps, ...over, ...spare.filter(Boolean)]
+  }
+
+  const tidy = (list: string[]) => pack(list.slice(0, SHOWCASE_MAX), list.slice(SHOWCASE_MAX))
+
   const fill = (slot: number, game: string) => {
     const from = order.indexOf(game)
     if (from < 0 || slot >= SHOWCASE_MAX) return
-    const next = [...order]
-    if (from < SHOWCASE_MAX) next[from] = ''
-    else next.splice(from, 1)
-    next[slot] = game
+    const spare = order.slice(SHOWCASE_MAX).filter((one) => one !== game)
+    const kept = order.slice(0, SHOWCASE_MAX).filter((one) => one && one !== game)
+    const at = Math.min(slot, kept.length)
+    const next = pack([...kept.slice(0, at), game, ...kept.slice(at)], spare)
     pop.current = game
     setAim(null)
     setOrder(next)
@@ -86,11 +96,12 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
   }
 
   const free = (slot: number) => {
-    const next = [...order]
-    const game = next[slot]
+    const game = order[slot]
     if (!game) return
-    next[slot] = ''
-    next.push(game)
+    const next = pack(
+      order.slice(0, SHOWCASE_MAX).filter((one) => one !== game),
+      [...order.slice(SHOWCASE_MAX), game],
+    )
     setAim(null)
     setOrder(next)
     setPending(next.slice(0, SHOWCASE_MAX).join() !== saved.slice(0, SHOWCASE_MAX).join())
@@ -160,19 +171,20 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
 
     if (swap) {
       const next = [...home]
-      if (slot < SHOWCASE_MAX && from >= SHOWCASE_MAX && !home[slot]) {
-        next.splice(from, 1)
-        next[slot] = game
-        return next
+      if (slot < SHOWCASE_MAX && !home[slot]) {
+        const seats = home.slice(0, SHOWCASE_MAX).filter((one) => one && one !== game)
+        const spare = home.slice(SHOWCASE_MAX).filter((one) => one !== game)
+        const at = Math.min(slot, seats.length)
+        return pack([...seats.slice(0, at), game, ...seats.slice(at)], spare)
       }
       next[from] = home[slot]
       next[slot] = game
-      return next
+      return tidy(next)
     }
 
     const base = home.filter((one) => one !== game)
     const next = [...base.slice(0, slot), game, ...base.slice(slot)]
-    return [...next.slice(0, SHOWCASE_MAX), ...next.slice(SHOWCASE_MAX).filter(Boolean)]
+    return tidy([...next.slice(0, SHOWCASE_MAX), ...next.slice(SHOWCASE_MAX).filter(Boolean)])
   }
 
   const grab = (row: Row) => (event: ReactPointer<HTMLButtonElement>) => {
@@ -347,6 +359,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     )
   }
 
+  const nextFree = order.slice(0, SHOWCASE_MAX).findIndex((one) => !one)
   const lifted = drag ? rows?.get(drag.game) : undefined
   const dirty = pending
 
@@ -393,8 +406,12 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
             game ? (
               Tile(game, index)
             ) : (
-              <li key={`seat-${index}`} data-game={`seat-${index}`} className={`is-seat ${aim === index ? 'is-aim' : ''}`}>
-                {id ? (
+              <li
+                key={`seat-${index}`}
+                data-game={`seat-${index}`}
+                className={`is-seat ${aim === index ? 'is-aim' : ''} ${index === nextFree ? 'is-next' : 'is-quiet'}`}
+              >
+                {id || index !== nextFree ? (
                   <span className="world-pic is-empty">
                     <PlusIcon />
                   </span>

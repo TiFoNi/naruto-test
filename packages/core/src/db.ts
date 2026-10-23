@@ -15,6 +15,7 @@ export type UserDoc = {
   xp?: number
   coins?: number
   coinsNews?: { coins: number; at: Date }
+  bonusDay?: string
   levelsTaken?: number[]
   chatMutedUntil?: Date | null
   named?: boolean
@@ -32,9 +33,17 @@ export type UserDoc = {
   resetAt?: Date
   pinned?: string[]
   showcase?: string[]
+  tiles?: (string | null)[]
+  banner?: string
+  banners?: string[]
+  tone?: string
+  nickTone?: string
+  title?: string | null
+  titles?: string[]
   blocks?: string[]
   blockSizes?: Record<string, number>
   blockSides?: Record<string, number>
+  blockSeen?: Record<string, number>
   duelStats?: { played?: number; wins?: number; losses?: number; draws?: number; modes?: Record<string, { played?: number; wins?: number }> }
   duelLog?: DuelLogRow[]
   duelBestMs?: number
@@ -101,6 +110,8 @@ export type DuelPlayer = {
   team?: number
   lead?: boolean
   avatar?: string | null
+  frame?: string | null
+  banner?: string | null
   secret?: number
   cards?: number[]
   struck?: number[]
@@ -405,6 +416,8 @@ export type ChatDoc = {
   tag?: string
   avatar?: string | null
   frame?: string | null
+  title?: string | null
+  nickTone?: string | null
   text: string
   at: Date
   hidden?: boolean

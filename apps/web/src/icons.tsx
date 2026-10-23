@@ -113,28 +113,34 @@ export function GiftIcon({ className }: IconProps) {
   )
 }
 
+const blade = <path d="M24 3.4 26.9 10 V28.6 H21.1 V10 Z" />
+
+const sword = (
+  <g>
+    {blade}
+    <rect x="15.8" y="28.8" width="16.4" height="3.4" rx="1.7" />
+    <rect x="22.3" y="32.2" width="3.4" height="4.6" rx="1.1" />
+    <circle cx="24" cy="39" r="2.6" />
+  </g>
+)
+
 export function SwordsIcon({ className }: IconProps) {
   return (
-    <svg {...base} className={`icon ${className ?? ''}`}>
-      <path d="M4 4 14.5 14.5" />
-      <path d="M20 4 9.5 14.5" />
-      <path d="M12.5 17.5 17.5 12.5" />
-      <path d="M6.5 12.5 11.5 17.5" />
-      <path d="M15.6 15.6 19 19" />
-      <path d="M8.4 15.6 5 19" />
-      <circle cx="19.9" cy="19.9" r="1.1" fill="currentColor" stroke="none" />
-      <circle cx="4.1" cy="19.9" r="1.1" fill="currentColor" stroke="none" />
+    <svg {...base} className={`icon ${className ?? ''}`} viewBox="0 0 48 48" fill="currentColor" stroke="none">
+      <g transform="translate(24 24) scale(1.5) translate(-23.95 -21.85)">
+        <g transform="rotate(45 24 24) translate(-2 0)">{sword}</g>
+        <g transform="rotate(-45 24 24) translate(2 0)">{sword}</g>
+      </g>
     </svg>
   )
 }
 
 export function PodiumIcon({ className }: IconProps) {
   return (
-    <svg {...base} className={`icon ${className ?? ''}`}>
-      <path d="M3 21h18" />
-      <path d="M9 21V8h6v13" />
-      <path d="M3 21v-7h6" />
-      <path d="M15 17h6v4" />
+    <svg {...base} className={`icon ${className ?? ''}`} fill="currentColor" stroke="none">
+      <rect x="8.9" y="2.6" width="6.2" height="18.8" rx="1.5" />
+      <rect x="1.3" y="9" width="6.2" height="12.4" rx="1.5" />
+      <rect x="16.5" y="12.8" width="6.2" height="8.6" rx="1.5" />
     </svg>
   )
 }

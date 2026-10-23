@@ -9,7 +9,6 @@ import { abilityByKey } from './abilities'
 import { modeFits, modePool, oddOptions, oddTrait, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { findChallenge, recordSolve } from './challenges'
 import { markSeasonPlay } from './season'
-import { grantWorldFrame } from './frames'
 import { focusFor, roundSeed, shotFor } from './crop'
 
 import type { Collection } from 'mongodb'
@@ -245,7 +244,6 @@ export async function finishRound(users: Collection<UserDoc>, round: RoundDoc, w
     return { round: updated, stats: null }
   }
   await markSeasonPlay(round.userId, won, today())
-  if (won) await grantWorldFrame(users, round.userId, round.game)
   const xp = won ? await awardSolveXp(users, round.userId, round.mode as ModeId, round.daily ? 'daily' : 'endless') : null
 
   if (round.daily) {

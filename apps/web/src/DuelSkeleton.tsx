@@ -7,13 +7,44 @@ import { useHref } from './router'
 
 const PICKS = [0, 1, 2, 3, 4]
 
-export default function DuelSkeleton() {
+const FORMATS = [0, 1, 2, 3, 4, 5]
+
+export default function DuelSkeleton({ kind = 'duel' }: { kind?: 'duel' | 'format' } = {}) {
   const { t } = useI18n()
   const href = useHref()
 
+  if (kind === 'format')
+    return (
+      <div className="duel-ghosts duel-format">
+        <header className="duel-top">
+          <div className="duel-top-name">
+            <BackButton href={href.home} fixed>
+              {t('play.back')}
+            </BackButton>
+            <h1>{t('duel.sizeTitle')}</h1>
+          </div>
+        </header>
+
+        <div className="duel-format-row">
+          {FORMATS.map((one) => (
+            <div key={one} className="duel-format-card">
+              <span className="sk format-name" />
+              <span className="sk format-box" />
+            </div>
+          ))}
+        </div>
+
+        <footer className="duel-bar">
+          <span className="sk go" />
+        </footer>
+      </div>
+    )
+
   return (
     <div className="duel duel-ghosts">
-      <BackButton href={href.home}>{t('play.back')}</BackButton>
+      <BackButton href={href.home} fixed>
+              {t('play.back')}
+            </BackButton>
 
       <div className="duel-setup sk-lobby">
         <header className="duel-top">
@@ -30,7 +61,7 @@ export default function DuelSkeleton() {
             <ul className="duel-team" style={{ '--seats': 1 } as CSSProperties}>
               <li className="sk slot" />
             </ul>
-            <span className="sk note" />
+
           </div>
           <span className="duel-vs" aria-hidden>
             VS
@@ -40,7 +71,7 @@ export default function DuelSkeleton() {
             <ul className="duel-team" style={{ '--seats': 1 } as CSSProperties}>
               <li className="sk slot" />
             </ul>
-            <span className="sk note" />
+
           </div>
         </section>
 

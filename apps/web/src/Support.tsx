@@ -139,7 +139,9 @@ export default function Support() {
   const locale = lang === 'en' ? 'en-GB' : lang === 'uk' ? 'uk-UA' : 'ru-RU'
   const nice = (count: number) => count.toLocaleString(locale)
   const pack = PACKS.find((one) => one.id === picked) ?? PACKS[1]
-  const short = (one: (typeof PACKS)[number]) => way === 'crypto' && floor !== null && (charges[one.id]?.charge ?? one.usd) < floor
+  const onlyStars = (one: (typeof PACKS)[number]) => one.starsOnly === true
+  const short = (one: (typeof PACKS)[number]) =>
+    way === 'crypto' && (onlyStars(one) || (floor !== null && (charges[one.id]?.charge ?? one.usd) < floor))
   const bill = charges[pack.id]
   const barred = (one: CoinRow) => typeof one.least === 'number' && (bill?.charge ?? pack.usd) < one.least
   const fine = coins.find((one) => !barred(one))
@@ -167,6 +169,7 @@ export default function Support() {
                 className={`support-pack ${picked === one.id ? 'active' : ''} ${short(one) ? 'is-shut' : ''}`}
                 onClick={() => {
                   setPicked(one.id)
+                  if (onlyStars(one) && stars) setWay('stars')
                   setError(null)
                 }}
               >
@@ -188,7 +191,7 @@ export default function Support() {
                   <em className="support-bonus">{t('support.bonusChip', { count: nice(one.bonus) })}</em>
                 </span>
                 <span className="support-price">
-                  {short(one) ? t('support.soonShort') : way === 'stars' ? t('support.starsCount', { count: nice(one.stars) }) : money(one.usd)}
+                  {onlyStars(one) || way === 'stars' ? t('support.starsCount', { count: nice(one.stars) }) : money(one.usd)}
                 </span>
               </button>
             ))}
@@ -241,15 +244,17 @@ export default function Support() {
               </button>
             )}
 
-            <button type="button" className={`pay-way ${way === 'crypto' ? 'is-live' : ''}`} onClick={() => setWay('crypto')} disabled={!stars}>
-              <i aria-hidden>
-                <CoinIcon />
-              </i>
-              <span>
-                <b>{t('support.wayCrypto')}</b>
-                <small>{coins.map((one) => one.label).join(' · ') || 'USDT · TRX · LTC'}</small>
-              </span>
-            </button>
+            {!onlyStars(pack) && (
+              <button type="button" className={`pay-way ${way === 'crypto' ? 'is-live' : ''}`} onClick={() => setWay('crypto')} disabled={!stars}>
+                <i aria-hidden>
+                  <CoinIcon />
+                </i>
+                <span>
+                  <b>{t('support.wayCrypto')}</b>
+                  <small>{coins.map((one) => one.label).join(' · ') || 'USDT · TRX · LTC'}</small>
+                </span>
+              </button>
+            )}
 
             <div className="pay-slot">
               {way === 'crypto' && coins.length > 0 && (

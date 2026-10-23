@@ -36,7 +36,7 @@ export type Game<T extends Entity = Entity> = {
   columns: Column<T>[]
   atlas: { cols: number; rows: number; version?: string }
   wideImages: boolean
-  legend: 'debut' | 'order'
+  legend: 'debut' | 'order' | null
 }
 
 export const EMPTY = 'Нет'

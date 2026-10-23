@@ -23,8 +23,8 @@ const columns: Column<Hero>[] = [
   { title: l10n('Способности', 'Здібності', 'Powers'), ...list('powers') },
   {
     title: l10n('Первое появление', 'Перша поява', 'First appearance'),
-    key: 'debutIndex',
-    text: (hero) => (hero.debutWork ? `${hero.debut} · ${hero.debutWork}` : hero.debut),
+    key: 'debutWork',
+    text: (hero) => hero.debutWork ?? '—',
   },
 ]
 
@@ -45,5 +45,5 @@ export const marvel: Game<Hero> = {
   columns,
   atlas,
   wideImages: false,
-  legend: 'debut',
+  legend: null,
 }

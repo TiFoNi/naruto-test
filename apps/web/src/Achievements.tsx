@@ -325,7 +325,11 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
   const { refresh } = useAuth()
   const [board, setBoard] = useState<Board | null>(id ? null : known)
   const [error, setError] = useState(false)
-  const [filter, setFilter] = useState<Filter>('all')
+  const [filter, setFilter] = useState<Filter>(() => {
+    if (typeof window === 'undefined') return 'all'
+    const asked = new URLSearchParams(window.location.search).get('filter')
+    return FILTERS.some((one) => one.id === asked) ? (asked as Filter) : 'all'
+  })
   const [ink, setInk] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
   const [held, setHeld] = useState<string | null>(null)
   const [lift, setLift] = useState<{ id: string; size: number } | null>(null)

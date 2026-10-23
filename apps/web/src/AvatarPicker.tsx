@@ -37,6 +37,10 @@ type Spot = { x: number; y: number };
 const clamp = (value: number, low: number, high: number) =>
   Math.min(high, Math.max(low, value));
 
+const PRESETS = ["frog", "fox"];
+
+const presetUrl = (one: string) => `/avatars/${one}.webp?v=1`;
+
 export default function AvatarPicker() {
   const { t } = useI18n();
   const { user, refresh } = useAuth();
@@ -286,6 +290,18 @@ export default function AvatarPicker() {
     }
   };
 
+  const wear = async (one: string) => {
+    setBusy(true);
+    const picked = await fetch(presetUrl(one))
+      .then((res) => (res.ok ? res.blob() : null))
+      .catch(() => null);
+    setBusy(false);
+    if (!picked) return setError(t("avatar.failed"));
+    const body = new FormData();
+    body.append("file", picked, `${one}.webp`);
+    if (await send(body)) setOpen(false);
+  };
+
   const remove = async () => {
     const body = new FormData();
     body.append("action", "remove");
@@ -370,6 +386,21 @@ export default function AvatarPicker() {
               ) : (
                 <>
                   <p className="muted ava-lead">{t("avatar.hint")}</p>
+                  <div className="ava-presets">
+                    {PRESETS.map((one) => (
+                      <button
+                        key={one}
+                        type="button"
+                        className="ava-preset"
+                        disabled={busy}
+                        aria-label={t(`avatar.preset.${one}` as never)}
+                        title={t(`avatar.preset.${one}` as never)}
+                        onClick={() => void wear(one)}
+                      >
+                        <img src={presetUrl(one)} alt="" loading="lazy" decoding="async" />
+                      </button>
+                    ))}
+                  </div>
                   <div
                     className={`ava-drop ${over ? "over" : ""}`}
                     onDragOver={(event) => {

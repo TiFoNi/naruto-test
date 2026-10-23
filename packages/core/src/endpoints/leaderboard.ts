@@ -4,6 +4,7 @@ import { fail, handle, json } from '../http'
 import { currentUser, defaultNickname, unauthorized } from '../profile'
 import { today } from '../daily'
 import { levelOf } from '../quests'
+import { isFrame } from '../frame-list'
 
 const LIMIT = 200
 const SORTS = {
@@ -12,7 +13,18 @@ const SORTS = {
 } as const
 
 type Sort = keyof typeof SORTS
-type Row = { _id: unknown; username: string; nickname?: string; avatar?: string | null; xp?: number; solved: number; best: number; avg: number }
+type Row = {
+  _id: unknown
+  username: string
+  nickname?: string
+  avatar?: string | null
+  frame?: string | null
+  title?: string | null
+  xp?: number
+  solved: number
+  best: number
+  avg: number
+}
 
 type Page = { top: Row[]; size: { value: number }[]; ahead?: { value: number }[] }
 
@@ -49,6 +61,8 @@ export const GET = handle(async (request) => {
         username: found.doc.username,
         nickname: found.doc.nickname,
         avatar: found.doc.avatar ?? null,
+        frame: found.doc.frame ?? null,
+        title: found.doc.title ?? null,
         xp: found.doc.xp,
         solved: stats?.solved ?? 0,
         best: day ? (stats?.dayBest ?? 0) : (stats?.[field] ?? 0),
@@ -69,6 +83,8 @@ export const GET = handle(async (request) => {
           username: 1,
           nickname: 1,
           avatar: 1,
+          frame: 1,
+          title: 1,
           xp: 1,
           solved: { $ifNull: [`${path}.solved`, 0] },
           best: { $ifNull: [day ? `${path}.dayBest` : `${path}.${field}`, 0] },
@@ -91,6 +107,8 @@ export const GET = handle(async (request) => {
     rank: index + 1,
     nickname: row.nickname ?? defaultNickname(row.username),
     avatar: row.avatar ?? null,
+    frame: isFrame(row.frame) ? row.frame : null,
+    title: row.title ?? null,
     level: levelOf(row.xp ?? 0),
     solved: row.solved,
     best: row.best,

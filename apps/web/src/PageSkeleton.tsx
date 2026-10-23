@@ -1,9 +1,11 @@
 'use client'
 
+import type { CSSProperties, ReactNode } from 'react'
 import BackButton from './BackButton'
 import { useI18n } from './i18n'
 import { useHref } from './router'
-import { hasDaily, type ModeId } from '@nanda/game'
+import { HERO_TILES_MAX, PROFILE_BLOCKS_DEFAULT, hasDaily, type ModeId, type ProfileBlock } from '@nanda/game'
+
 
 function Head({ withMark }: { withMark?: boolean }) {
   return (
@@ -50,80 +52,118 @@ function PlayGhost({ mode }: { mode?: string }) {
   )
 }
 
-export function ProfileGhost({ own }: { own: boolean }) {
+export function ProfileGhost() {
   const { t } = useI18n()
   const href = useHref()
+  const plan = { blocks: PROFILE_BLOCKS_DEFAULT, sides: {} as Record<string, number>, sizes: {} as Record<string, number>, tiles: HERO_TILES_MAX }
+  const cards: Record<ProfileBlock, ReactNode> = {
+    worlds: (
+      <section className="card worlds-card">
+        <header>
+          <span className="sk title" />
+          <span className="sk chip" />
+        </header>
+        <ul className="world-shelf">
+          {Array.from({ length: 4 }, (_, index) => (
+            <li key={index}>
+              <span className="sk world-pic" />
+            </li>
+          ))}
+        </ul>
+      </section>
+    ),
+    awards: (
+      <section className="card soon-card">
+        <header>
+          <span className="sk title" />
+          <span className="sk chip" />
+        </header>
+        <ul className="soon-badges">
+          {Array.from({ length: 4 }, (_, index) => (
+            <li key={index}>
+              <span className="sk soon-mark" />
+            </li>
+          ))}
+        </ul>
+      </section>
+    ),
+    facts: (
+      <section className="card profile-card">
+        <div className="profile-facts">
+          <span className="sk fact" />
+          <span className="sk fact" />
+        </div>
+      </section>
+    ),
+    activity: (
+      <section className="card activity-card">
+        <header>
+          <span className="sk title" />
+        </header>
+        <ul className="activity">
+          {Array.from({ length: 5 }, (_, index) => (
+            <li key={index}>
+              <span className="sk dot" />
+              <span className="sk row" />
+              <span className="sk when" />
+            </li>
+          ))}
+        </ul>
+      </section>
+    ),
+  }
+
+  const seats = plan.blocks.map((block, index) => ({ block, index, side: plan.sides[block] ?? index % 2 }))
 
   return (
     <div className="profile sk-profile">
       <BackButton href={href.home}>{t('profile.back')}</BackButton>
       <section className="profile-hero">
-        <div className="profile-hero-id">
-          <span className="sk ava" />
-          <div className="profile-hero-main">
-            <div className="profile-hero-name">
-              <span className="sk nick" />
-              <span className="sk tag" />
-              <span className="sk chip lvl" />
-            </div>
-            <div className="level-panel">
-              <span className="sk bar" />
-              <div className="level-line">
-                <span className="sk chip" />
-                <span className="sk chip wide" />
+        <div className="profile-banner" aria-hidden />
+        <div className="profile-hero-body">
+          <div className="profile-hero-id">
+            <span className="sk ava" />
+            <div className="profile-hero-main">
+              <div className="profile-hero-name">
+                <span className="sk nick" />
+                <span className="sk tag" />
+              </div>
+              <div className="level-panel">
+                <div className="level-line">
+                  <span className="sk chip wide" />
+                  <span className="sk chip lvl" />
+                </div>
+                <span className="sk bar" />
               </div>
             </div>
-            {!own && (
-              <div className="profile-hero-acts">
-                <span className="sk act" />
-                <span className="sk act" />
-              </div>
-            )}
           </div>
-        </div>
-        <div className="profile-hero-tiles">
-          {Array.from({ length: 4 }, (_, index) => (
-            <div key={index} className="hero-tile">
-              <span className="sk chip" />
-              <span className="sk big" />
-              <span className="sk chip" />
-            </div>
-          ))}
+          <div className="profile-hero-tiles">
+            {Array.from({ length: plan.tiles }, (_, index) => (
+              <div key={index} className="hero-tile">
+                <span className="sk chip" />
+                <span className="sk big" />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       <div className="profile-grid">
-        <div className="profile-slot">
-              <section className="card worlds-card">
-                <header>
-                  <span className="sk title" />
-                  <span className="sk chip" />
-                </header>
-                <ul className="world-shelf">
-                  {Array.from({ length: 8 }, (_, index) => (
-                    <li key={index}>
-                      <span className="sk world-pic" />
-                    </li>
-                  ))}
-                </ul>
-              </section>
-        </div>
-
-        <div className="profile-slot">
-              <section className="card soon-card">
-                <header>
-                  <span className="sk title" />
-                  <span className="sk chip" />
-                </header>
-                <ul className="soon-badges">
-                  {Array.from({ length: 8 }, (_, index) => (
-                    <li key={index}>
-                      <span className="sk soon-mark" />
-                    </li>
-                  ))}
-                </ul>
-              </section>
-        </div>
+        {[0, 1].map((column) => (
+          <div className="profile-stack" key={column}>
+            {seats
+              .filter((seat) => seat.side === column)
+              .map(({ block, index }) => (
+                <div
+                  className={`profile-slot slot-${block}`}
+                  key={block}
+                  style={{ order: index, ...(plan.sizes[block] ? { '--slot-h': `${plan.sizes[block]}px` } : {}) } as CSSProperties}
+                >
+                  {cards[block]}
+                </div>
+              ))}
+          </div>
+        ))}
       </div>
     </div>
   )
@@ -235,7 +275,7 @@ function MatesGhost() {
 
 export default function PageSkeleton({ section, mode }: { section?: string; mode?: string }) {
   if (section === 'play') return <PlayGhost mode={mode} />
-  if (section === 'profile' || section === 'u') return <ProfileGhost own={section === 'profile'} />
+  if (section === 'profile' || section === 'u') return <ProfileGhost />
   if (section === 'leaderboard') return <BoardGhost />
   if (section === 'achievements') return <AwardsGhost />
   if (section === 'settings') return <SettingsGhost />

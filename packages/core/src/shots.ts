@@ -6,7 +6,6 @@ import { addXp, applyDailyResult } from './profile'
 import { dailyAnswer, nextReset, today } from './daily'
 import { shotVariant } from './extra'
 import { markSeasonPlay } from './season'
-import { grantWorldFrame } from './frames'
 
 const GAME = 'shots'
 const MODE = 'shot'
@@ -175,7 +174,6 @@ async function logRound(doc: { userId: ObjectId; guest?: boolean }, answerId: nu
     finishedAt: now,
   })
   await markSeasonPlay(doc.userId, status === 'won', today())
-  if (status === 'won') await grantWorldFrame(await users(), doc.userId, GAME)
 }
 
 async function endRun(doc: ShotDoc, revealed: number, status: 'lost' | 'skipped') {

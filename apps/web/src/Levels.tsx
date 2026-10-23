@@ -14,7 +14,7 @@ const BEFORE = 2
 const AFTER = 5
 
 // кольори рідкостей наших ачівок: бронза, срібло, золото, легенда, міф + секретний на фіналі
-const TIERS = ['#d98a4e', '#c9d1dc', '#f5c451', '#a78bfa', '#f1476b'] as const
+const TIERS = ['#d98a4e', '#c9d1dc', '#f5c451', '#a78bfa', '#ef3f4e'] as const
 const NAMES = ['bronze', 'silver', 'gold', 'legend', 'mythic'] as const
 const SECRET = '#6ec06e'
 
@@ -35,9 +35,7 @@ export default function Levels() {
   const { t } = useI18n()
   const href = useHref()
   const { user, refresh } = useAuth()
-  const stand = levelAt(user?.xp ?? 0)
-  const level = stand.level
-  const share = Math.round((stand.into / stand.need) * 100)
+  const level = levelAt(user?.xp ?? 0).level
   const [taken, setTaken] = useState<number[]>([])
   const [known, setKnown] = useState(false)
   const [claiming, setClaiming] = useState(0)
@@ -92,25 +90,7 @@ export default function Levels() {
       </div>
 
       <div className="levels-split">
-        <aside className="levels-card">
-          <div className="levels-id">
-            <span className="levels-kicker">{t('levels.mine')}</span>
-            <b className="levels-num">{level}</b>
-          </div>
-
-          <div className="levels-meter">
-            <div className="levels-meter-head">
-              <span>
-                {stand.into} / {stand.need} XP
-              </span>
-              <em>{share}%</em>
-            </div>
-            <div className="level-bar levels-line" aria-hidden>
-              <i style={{ width: `${share}%` }} />
-            </div>
-            <p className="levels-rest">{t('levels.rest', { xp: stand.need - stand.into, level: level + 1 })}</p>
-          </div>
-
+        <section className="levels-list-card">
           {user && pending.length > 0 && (
             <button type="button" className="levels-take-all" disabled={claiming !== 0} onClick={() => void takeAll()}>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -119,9 +99,7 @@ export default function Levels() {
               {t('levels.takeAll')}
             </button>
           )}
-        </aside>
 
-        <section className="levels-list-card">
           {from > 0 && (
             <button type="button" className="levels-more" onClick={() => setOlder((one) => one + 1)}>
               {t('levels.earlier')}
@@ -135,11 +113,15 @@ export default function Levels() {
               const reached = one <= level
               const ready = known && !got && reached && Boolean(user)
               const left = levelTotal(one) - (user?.xp ?? 0)
+              const spot = marks.indexOf(one)
+              const base = spot > 0 ? levelTotal(marks[spot - 1]!) : 0
+              const span = Math.max(1, levelTotal(one) - base)
+              const fill = reached ? 100 : Math.max(0, Math.min(100, Math.round((((user?.xp ?? 0) - base) / span) * 100)))
               return (
                 <li
                   key={one}
                   className={`rung ${reached ? 'is-done' : ''} ${ready ? 'is-ready' : ''} ${got ? 'is-got' : ''}`}
-                  style={{ '--tone': toneOf(one, last) } as CSSProperties}
+                  style={{ '--tone': toneOf(one, last), '--fill': fill } as CSSProperties}
                 >
                   <span className="rung-rail" aria-hidden>
                     <i />

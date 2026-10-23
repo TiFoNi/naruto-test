@@ -13,6 +13,7 @@ import * as push from '@nanda/core/endpoints/push'
 import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as adminShots from '@nanda/core/endpoints/admin-shots'
 import * as adminZoom from '@nanda/core/endpoints/admin-zoom'
+import * as adminTitles from '@nanda/core/endpoints/admin-titles'
 import * as chat from '@nanda/core/endpoints/chat'
 import * as pulse from '@nanda/core/endpoints/pulse'
 import * as challenge from '@nanda/core/endpoints/challenge'
@@ -114,6 +115,16 @@ export class GameController {
   @Post('admin/zoom')
   adminZoomSave(@Req() req: Request, @Res() res: Response) {
     return bridge(adminZoom.POST, req, res)
+  }
+
+  @Get('admin/titles')
+  adminTitlesList(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminTitles.GET, req, res)
+  }
+
+  @Post('admin/titles')
+  adminTitlesSave(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminTitles.POST, req, res)
   }
 
   @Get('admin/shots')
@@ -299,6 +310,11 @@ export class GameController {
   @Post('chat')
   chatSend(@Req() req: Request, @Res() res: Response) {
     return bridge(chat.POST, req, res)
+  }
+
+  @Post('chat/typing')
+  chatTyping(@Req() req: Request, @Res() res: Response) {
+    return bridge(chat.TYPING, req, res)
   }
 
   @Post('admin/chat')

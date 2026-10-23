@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import DuelFormat from './DuelFormat'
 import DuelSkeleton from './DuelSkeleton'
 import { activeDuel, setActiveDuel } from './activeDuel'
 import { api } from './api'
@@ -12,6 +13,7 @@ export default function DuelLobby() {
   const href = useHref()
   const { error: errorText } = useI18n()
   const [error, setError] = useState<string | null>(null)
+  const [fresh, setFresh] = useState(false)
 
   useEffect(() => {
     let alive = true
@@ -25,10 +27,7 @@ export default function DuelLobby() {
         setActiveDuel(null)
       }
 
-      const { ok, data } = await api<{ duel?: { code: string }; error?: string }>('duel', { action: 'create' })
-      if (!alive) return
-      if (ok && data.duel) navigate.replace(href.duel(data.duel.code))
-      else setError(data.error ?? 'server')
+      setFresh(true)
     }
 
     open().catch(() => alive && setError('network'))
@@ -38,6 +37,7 @@ export default function DuelLobby() {
   }, [href, navigate])
 
   if (error) return <div className="card center muted page-loading">{errorText(error)}</div>
+  if (fresh) return <DuelFormat />
 
-  return <DuelSkeleton />
+  return <DuelSkeleton kind="format" />
 }

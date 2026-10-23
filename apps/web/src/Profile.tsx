@@ -1,24 +1,42 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import Link from 'next/link'
 import Avatar from './Avatar'
+import TilePop from './TilePop'
 import AvatarPicker from './AvatarPicker'
 import BackButton from './BackButton'
 import { useAuth } from './auth'
 import { api } from './api'
 import { GAMES } from './games'
-import type { GameId } from './games/types'
+import { l10n, type GameId } from './games/types'
 import { useI18n } from './i18n'
 import { type Level } from './Quests'
 import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
 import { ProfileGhost } from './PageSkeleton'
-import { ArrowIcon, CloseIcon, GripIcon, PlusIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
+import Rail from './Rail'
+import { ArrowIcon, CloseIcon, GearIcon, GripIcon, PlusIcon, TrophyIcon } from './icons'
 import AwardIcon from './awardIcons'
-import { useHref, useNavigate } from './router'
+import { useHref } from './router'
 import { SHOWCASE_MAX } from './showcase'
 import { keepPerUser } from './session-cache'
-import { refreshFeed } from './awards'
-import { PROFILE_BLOCKS, PROFILE_BLOCKS_DEFAULT, type ProfileBlock } from '@nanda/game'
+import { showTone } from './tone'
+import { bannerClips, bannerPic, bannerSpot, isLive } from './banners'
+import {
+  HERO_TILES,
+  HERO_TILES_DEFAULT,
+  HERO_TILES_MAX,
+  BANNERS,
+  PROFILE_BLOCKS,
+  PROFILE_BLOCKS_DEFAULT,
+  TONES,
+  TONE_HEX,
+  isBanner,
+  isHeroTile,
+  isTone,
+  type Banner,
+  type HeroTile,
+  type ProfileBlock,
+} from '@nanda/game'
 
 type Held = { block: ProfileBlock; x: number; y: number; dx: number; dy: number; w: number; h: number }
 
@@ -55,8 +73,15 @@ type Summary = {
   blocks?: string[] | null
   blockSizes?: Record<string, number>
   blockSides?: Record<string, number>
+  blockSeen?: Record<string, number>
   gamePlaces: { game: GameId; mode: string; position: number }[]
   showcase: string[]
+  tiles?: (string | null)[] | null
+  banner?: string | null
+  banners?: string[]
+  tone?: string | null
+  nickTone?: string | null
+  title?: string | null
   streak: {
     current: number
     best: number
@@ -111,8 +136,18 @@ keepPerUser(() => {
   knownSummary = null
 })
 
+export const MARKS = [
+  { left: '7%', top: '28%', size: 76, tilt: -9 },
+  { left: '20%', top: '66%', size: 28, tilt: 6 },
+  { left: '33%', top: '16%', size: 42, tilt: -4 },
+  { left: '51%', top: '60%', size: 98, tilt: -11 },
+  { left: '64%', top: '21%', size: 34, tilt: 7 },
+  { left: '78%', top: '64%', size: 56, tilt: -6 },
+  { left: '93%', top: '32%', size: 24, tilt: 5 },
+]
+
 export default function Profile({ onBack, id }: { onBack: () => void; id?: string }) {
-  const { user } = useAuth()
+  const { user, refresh } = useAuth()
   const own = !id
   const { t, l, lang } = useI18n()
   const href = useHref()
@@ -125,7 +160,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const [sized, setSized] = useState<Sized | null>(null)
   const [sizes, setSizes] = useState<Record<string, number> | null>(null)
   const [spots, setSpots] = useState<Record<string, number> | null>(null)
-  const snapshot = useRef<{ blocks: ProfileBlock[]; sizes: Record<string, number>; sides: Record<string, number> } | null>(null)
+  const snapshot = useRef<{ blocks: ProfileBlock[]; sizes: Record<string, number>; sides: Record<string, number>; seen: Record<string, number>; tiles: (HeroTile | null)[]; tone: string | null; nickTone: string | null } | null>(null)
   const list = useRef<ProfileBlock[]>(PROFILE_BLOCKS_DEFAULT)
   const tall = useRef<Record<string, number>>({})
   const side = useRef<Record<string, number>>({})
@@ -141,6 +176,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
       )
       const whole = sized.stops ? next === sized.roof : sized.bare > 0 && Math.abs(next - sized.bare) <= BLOCK_MAGNET
       const copy = { ...tall.current }
+      delete eyed.current[sized.block]
       if (whole) delete copy[sized.block]
       else copy[sized.block] = next
       tall.current = copy
@@ -148,7 +184,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     }
     const drop = () => {
       setSized(null)
-      void api('profile', { action: 'blocks', blocks: list.current, sizes: tall.current, sides: side.current })
+      void api('profile', { action: 'blocks', blocks: list.current, sizes: tall.current, sides: side.current, seen: eyed.current })
     }
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', drop)
@@ -191,7 +227,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     }
     const drop = () => {
       setHeld(null)
-      void api('profile', { action: 'blocks', blocks: list.current, sizes: tall.current, sides: side.current })
+      void api('profile', { action: 'blocks', blocks: list.current, sizes: tall.current, sides: side.current, seen: eyed.current })
     }
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', drop)
@@ -238,22 +274,60 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
   const [tip, setTip] = useState(false)
   const modesRef = useRef<HTMLDivElement>(null)
+  const [tipAt, setTipAt] = useState<HTMLElement | null>(null)
+  const [weekAt, setWeekAt] = useState<HTMLElement | null>(null)
+  const [week, setWeek] = useState(false)
+  const weekRef = useRef<HTMLDivElement>(null)
+  const [shop, setShop] = useState<number | null>(null)
+  const shopRef = useRef<HTMLDivElement>(null)
+  const [mix, setMix] = useState<(HeroTile | null)[] | null>(null)
+  const [paint, setPaint] = useState<string | null | undefined>(undefined)
+  const [ink, setInk] = useState<string | null | undefined>(undefined)
+  const [badge, setBadge] = useState<string | null | undefined>(undefined)
+  const [dye, setDye] = useState(false)
+  const [dyeAt, setDyeAt] = useState<HTMLElement | null>(null)
+  const [skin, setSkin] = useState<Banner | null | undefined>(undefined)
+  const [skins, setSkins] = useState(false)
+  const skinsRef = useRef<HTMLDivElement>(null)
+  const dyes = useRef<HTMLDivElement>(null)
+  const [grabbed, setGrabbed] = useState<number | null>(null)
+  const [lift, setLift] = useState<{ one: HeroTile; w: number; h: number } | null>(null)
+  const liftAt = useRef({ x: 0, y: 0 })
+  const liftBox = useRef<HTMLSpanElement | null>(null)
+  const leaving = useRef<() => void>(() => undefined)
+  const snapper = useRef<() => void>(() => undefined)
+  const pads = useRef<HTMLDivElement>(null)
+  const [spot, setSpot] = useState<'row' | 'column' | 'under'>('row')
+  const [tight, setTight] = useState(false)
+  const eyed = useRef<Record<string, number>>({})
 
   useEffect(() => {
-    if (!tip) return
+    if (!skins) return
     const away = (event: MouseEvent) => {
-      if (!modesRef.current?.contains(event.target as Node)) setTip(false)
+      if (!skinsRef.current?.contains(event.target as Node)) setSkins(false)
     }
-    const escape = (event: KeyboardEvent) => event.key === 'Escape' && setTip(false)
+    const escape = (event: KeyboardEvent) => event.key === 'Escape' && setSkins(false)
     document.addEventListener('mousedown', away)
     document.addEventListener('keydown', escape)
     return () => {
       document.removeEventListener('mousedown', away)
       document.removeEventListener('keydown', escape)
     }
-  }, [tip])
+  }, [skins])
 
-  const [friend, setFriend] = useState<FriendState>('none')
+  useEffect(() => {
+    if (shop === null) return
+    const away = (event: MouseEvent) => {
+      if (!shopRef.current?.contains(event.target as Node)) setShop(null)
+    }
+    const escape = (event: KeyboardEvent) => event.key === 'Escape' && setShop(null)
+    document.addEventListener('mousedown', away)
+    document.addEventListener('keydown', escape)
+    return () => {
+      document.removeEventListener('mousedown', away)
+      document.removeEventListener('keydown', escape)
+    }
+  }, [shop])
 
   const [failed, setFailed] = useState(false)
 
@@ -268,28 +342,10 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     void load()
   }, [load])
 
-  useEffect(() => {
-    setFriend(summary?.friend ?? 'none')
-  }, [summary?.friend])
-
-  const askFriend = async (target: string) => {
-    const { ok, data } = await api<{ state?: FriendState }>('friends', { action: 'ask', id: target })
-    if (ok) setFriend(data.state ?? 'out')
-  }
-
-  const answerFriend = async (target: string, accept: boolean) => {
-    const { ok, data } = await api<{ state?: FriendState }>('friends', { action: accept ? 'accept' : 'decline', id: target })
-    if (ok) setFriend(data.state ?? 'none')
-    void refreshFeed()
-  }
-
-  const removeFriend = async (target: string) => {
-    const { ok } = await api('friends', { action: 'remove', id: target })
-    if (ok) setFriend('none')
-  }
-
   const nickname = (own ? user?.nickname : summary?.nickname) ?? ''
   const tag = (own ? user?.tag : summary?.tag) ?? null
+  const mine = user?.titles ?? []
+  const title = (own ? (badge === undefined ? (user?.title ?? null) : badge) : (summary?.title ?? null)) ?? null
 
   const pinned = summary?.pinned ?? []
   const best = summary?.gamePlaces?.[0] ?? null
@@ -321,28 +377,210 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
 
   const gameLabel = (id: string) => GAMES.find((g) => g.id === id)?.label
   const modeLabel = (id: string) => MODES.find((m) => m.id === id)?.label ?? 'mode.classic'
-  const navigate = useNavigate()
-  const [calling, setCalling] = useState(false)
 
+  const saidTone = summary?.tone
+  const tone = paint === undefined ? (isTone(saidTone) ? saidTone : null) : paint
+  const toneHex = GAMES.find((game) => game.id === tone)?.accent ?? (tone && TONE_HEX.test(tone) ? tone : undefined)
+  const saidNick = summary?.nickTone
+  const nickTone = ink === undefined ? (isTone(saidNick) ? saidNick : null) : ink
+  const nickHex = GAMES.find((game) => game.id === nickTone)?.accent ?? (nickTone && TONE_HEX.test(nickTone) ? nickTone : undefined)
+  const dyeList = [
+    ...TONES.map((id) => GAMES.find((game) => game.id === id)).filter((game) => !!game),
+    { id: '#f2f4f8', accent: '#f2f4f8', label: l10n('Белый', 'Білий', 'White') },
+    { id: '#2b3038', accent: '#2b3038', label: l10n('Чёрный', 'Чорний', 'Black') },
+  ]
 
-  const challenge = async (target: string) => {
-    setCalling(true)
-    const { ok, data } = await api<{ duel?: { code: string } }>('duel', { action: 'challenge', to: target })
-    setCalling(false)
-    if (ok && data.duel) navigate(href.duel(data.duel.code))
-  }
+  useLayoutEffect(() => {
+    showTone(tone)
+    return () => showTone(null)
+  }, [tone])
 
-  if (!summary && !failed) return <ProfileGhost own={own} />
+  useEffect(() => {
+    leaving.current = () => {
+      const was = snapshot.current
+      if (!edit || !was) return
+      void api('profile', { action: 'blocks', blocks: was.blocks, sizes: was.sizes, sides: was.sides, seen: was.seen })
+      void api('profile', { action: 'tiles', tiles: was.tiles })
+      void api('profile', { action: 'tone', tone: was.tone })
+    }
+  })
+
+  useEffect(() => () => leaving.current(), [])
+
+  useEffect(() => {
+    const grid = pads.current
+    if (!grid || typeof ResizeObserver === 'undefined') return
+    const check = () => {
+      const wide = grid.parentElement?.getBoundingClientRect().width ?? 0
+      const room = wide - 60
+      const seats = HERO_TILES_MAX
+      const area = 440 + Math.max(0, (room - 802) / 2)
+      const slot = Math.max(150, Math.round((area - (seats - 1) * 10) / seats))
+      grid.style.setProperty('--slot', `${slot}px`)
+      const cell = grid.firstElementChild?.getBoundingClientRect()
+      setSpot(wide <= 800 || room < 594 ? 'under' : slot >= 180 ? 'row' : 'column')
+      setTight(!!cell && cell.width < 150)
+    }
+    check()
+    const watcher = new ResizeObserver(check)
+    watcher.observe(grid)
+    window.addEventListener('resize', check)
+    return () => {
+      watcher.disconnect()
+      window.removeEventListener('resize', check)
+    }
+  })
+
+  useEffect(() => {
+    const snap = () => snapper.current()
+    snap()
+    window.addEventListener('resize', snap)
+    return () => window.removeEventListener('resize', snap)
+  })
+
+  useEffect(() => {
+    const strip = dyes.current
+    if (!strip) return
+    const roll = (event: WheelEvent) => {
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return
+      event.preventDefault()
+      strip.scrollLeft += event.deltaY
+    }
+    strip.addEventListener('wheel', roll, { passive: false })
+    return () => strip.removeEventListener('wheel', roll)
+  }, [skins])
+
+  if (!summary && !failed) return <ProfileGhost />
 
   const shown = layout ?? ((summary?.blocks as ProfileBlock[] | null | undefined) ?? PROFILE_BLOCKS_DEFAULT)
   const rest = PROFILE_BLOCKS.filter((block) => !shown.includes(block))
 
   const keep = (next: ProfileBlock[]) => {
     setLayout(next)
-    void api('profile', { action: 'blocks', blocks: next, sizes: tall.current, sides: side.current })
+    void api('profile', { action: 'blocks', blocks: next, sizes: tall.current, sides: side.current, seen: eyed.current })
   }
 
   const hide = (block: ProfileBlock) => keep(shown.filter((one) => one !== block))
+
+  const saved = mix ?? (summary?.tiles as (HeroTile | null)[] | null | undefined) ?? HERO_TILES_DEFAULT
+  const seats: (HeroTile | null)[] = Array.from({ length: HERO_TILES_MAX }, (_, spot) => (isHeroTile(saved[spot]) ? saved[spot] : null))
+  const slots = seats.filter(isHeroTile)
+  const spare = HERO_TILES.filter((one) => !slots.includes(one))
+  const holes: null[] = slots.length < HERO_TILES_MAX ? [null] : []
+  const cells: (HeroTile | null)[] = !own || !edit ? slots : [...holes, ...slots]
+
+  const keepTiles = (next: (HeroTile | null)[]) => {
+    setMix(next)
+    void api('profile', { action: 'tiles', tiles: next })
+  }
+
+  const putTile = (spot: number, one: HeroTile) => {
+    const next = cells.map((item) => (item === one ? null : item))
+    next[spot] = one
+    keepTiles(next)
+  }
+
+  const dropTile = (spot: number) => keepTiles(cells.map((item, index) => (index === spot ? null : item)))
+
+  const banner = skin === undefined ? (isBanner(summary?.banner) ? summary.banner : null) : skin
+  const owned = BANNERS.filter((one) => (summary?.banners ?? []).includes(one))
+
+  const keepBanner = (next: Banner | null) => {
+    setSkin(next)
+    void api('profile', { action: 'banner', banner: next }).then(() => refresh())
+  }
+
+  const keepTone = (next: string | null) => {
+    setPaint(next)
+    void api('profile', { action: 'tone', tone: next }).then(() => refresh())
+  }
+
+  const keepNick = (next: string | null) => {
+    setInk(next)
+    if (!edit) void api('profile', { action: 'nickTone', nickTone: next }).then(() => refresh())
+  }
+
+  const keepTitle = (next: string | null) => {
+    setBadge(next)
+    void api('profile', { action: 'title', title: next }).then(() => refresh())
+  }
+
+  const grabTile = (spot: number) => (event: ReactPointerEvent<HTMLElement>) => {
+    if (!edit || event.button !== 0) return
+    if ((event.target as HTMLElement).closest('.tile-off')) return
+    const one = cells[spot]
+    if (!one) return
+
+    const cell = event.currentTarget
+    const row = cell.parentElement
+    const box = cell.getBoundingClientRect()
+    const grip = { x: event.clientX - box.left, y: event.clientY - box.top }
+    const start = { x: event.clientX, y: event.clientY }
+    const base = cells.slice()
+    let order = base.slice()
+    let at = spot
+    let moved = false
+
+    const seatAt = (x: number, y: number) =>
+      [...(row?.querySelectorAll<HTMLElement>(':scope > .hero-tile') ?? [])].findIndex((node) => {
+        const seat = node.getBoundingClientRect()
+        return x >= seat.left && x <= seat.right && y >= seat.top && y <= seat.bottom
+      })
+
+    const place = (step: PointerEvent) => {
+      liftAt.current = { x: step.clientX - grip.x, y: step.clientY - grip.y }
+      const node = liftBox.current
+      if (node) node.style.transform = `translate3d(${liftAt.current.x}px, ${liftAt.current.y}px, 0)`
+    }
+
+    const move = (step: PointerEvent) => {
+      if (!moved && Math.abs(step.clientX - start.x) < 5 && Math.abs(step.clientY - start.y) < 5) return
+      if (!moved) {
+        moved = true
+        setGrabbed(spot)
+        setLift({ one, w: box.width, h: box.height })
+      }
+
+      place(step)
+
+      const seat = seatAt(step.clientX, step.clientY)
+      if (seat < 0 || seat === at || seat >= base.length) return
+      const next = base.slice()
+      next[spot] = base[seat]
+      next[seat] = one
+      order = next
+      at = seat
+      setGrabbed(seat)
+      setMix(next)
+    }
+
+    const drop = () => {
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', drop)
+      window.removeEventListener('pointercancel', drop)
+      setGrabbed(null)
+      setLift(null)
+      if (moved) keepTiles(order)
+    }
+
+    window.addEventListener('pointermove', move)
+    window.addEventListener('pointerup', drop)
+    window.addEventListener('pointercancel', drop)
+  }
+
+  const tileName = (wide: UiKey, slim: UiKey) => t(tight ? slim : wide)
+
+  const tileFace = (one: HeroTile) => {
+    if (one === 'duels')
+      return { label: t('profile.duelsTitle'), value: summary?.duels.played ? `${percent(summary.duels.wins, summary.duels.played)}%` : '—' }
+    if (one === 'rank') return { label: tileName('profile.rank', 'profile.rankShort'), value: summary?.rank ? `#${summary.rank.position}` : '—' }
+    if (one === 'awards')
+      return { label: tileName('profile.block.awards', 'profile.awardsShort'), value: `${summary?.awards ?? 0}`, tail: `/ ${summary?.awardsTotal ?? 0}` }
+    if (one === 'challenges')
+      return { label: tileName('profile.challengeSolved', 'profile.challengeShort'), value: `${summary?.challenges.solved ?? 0}` }
+    if (one === 'streak') return { label: tileName('profile.streakTitle', 'profile.streakShort'), value: `${summary?.streak.current ?? 0}` }
+    return { label: tileName('profile.characters', 'profile.charactersShort'), value: `${summary?.totals.solved ?? 0}` }
+  }
 
   const grown = sizes ?? summary?.blockSizes ?? {}
   const seated = spots ?? summary?.blockSides ?? {}
@@ -375,12 +613,13 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     const list = card.querySelector('.world-shelf, .soon-badges') as HTMLElement | null
     const items = list ? ([...list.children] as HTMLElement[]) : []
     const box = list?.getBoundingClientRect()
+    const pad = list ? Math.round(parseFloat(getComputedStyle(list).paddingTop)) || 0 : 0
     const chrome = box ? own - box.height : 0
     const steps: number[] = []
     if (list && box && items.length > 1) {
       const top = items[0].getBoundingClientRect().top
       const line = items.filter((one) => Math.abs(one.getBoundingClientRect().top - top) < 2)
-      if (line.length < items.length) steps.push(Math.round(chrome + Math.max(...line.map((one) => one.getBoundingClientRect().height))))
+      if (line.length < items.length) steps.push(Math.round(chrome + pad + Math.max(...line.map((one) => one.getBoundingClientRect().height))))
     }
     if (kept) slot.style.setProperty('--slot-h', kept)
     if (mate) slot.style.setProperty('--mate-h', mate)
@@ -402,6 +641,38 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   }
 
 
+
+  snapper.current = () => {
+    for (const [block, kept] of Object.entries(grown)) {
+      const card = cardOf(block as ProfileBlock)
+      const slot = card?.parentElement as HTMLElement | null
+      const shelf = card?.querySelector('.world-shelf, .soon-badges') as HTMLElement | null
+      if (!card || !slot || !shelf) continue
+      const held = slot.style.getPropertyValue('--slot-h')
+      const mate = slot.style.getPropertyValue('--mate-h')
+      if (held) slot.style.removeProperty('--slot-h')
+      if (mate) slot.style.removeProperty('--mate-h')
+      const full = Math.round(card.getBoundingClientRect().height)
+      const box = shelf.getBoundingClientRect()
+      const items = [...shelf.children] as HTMLElement[]
+      const top = items[0]?.getBoundingClientRect()
+      const cols = top ? items.filter((one) => Math.abs(one.getBoundingClientRect().top - top.top) < 2).length : 0
+      const row = top ? Math.round(top.height) : 0
+      const gap = Math.round(parseFloat(getComputedStyle(shelf).rowGap)) || 0
+      const pad = Math.round(parseFloat(getComputedStyle(shelf).paddingTop)) || 0
+      const chrome = Math.round(full - box.height)
+      if (mate) slot.style.setProperty('--mate-h', mate)
+      if (!cols || !row) {
+        if (held) slot.style.setProperty('--slot-h', held)
+        continue
+      }
+      const seen = eyed.current[block] ?? summary?.blockSeen?.[block] ?? Math.max(1, Math.round((kept - chrome + gap) / (row + gap))) * cols
+      eyed.current[block] = seen
+      const rows = Math.max(1, Math.ceil(seen / cols))
+      const want = Math.min(full, Math.round(chrome + pad + rows * row + (rows - 1) * gap))
+      slot.style.setProperty('--slot-h', `${want}px`)
+    }
+  }
 
   const stretch = (block: ProfileBlock) => (event: ReactPointerEvent<HTMLElement>) => {
     if (!edit || event.button > 0) return
@@ -443,8 +714,15 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const show = (block: ProfileBlock) => keep([...shown, block])
 
   const tune = () => {
-    if (!edit) snapshot.current = { blocks: shown, sizes: grown, sides: side.current }
-    setEdit((was) => !was)
+    if (!edit) {
+      snapshot.current = { blocks: shown, sizes: grown, sides: side.current, seen: { ...eyed.current }, tiles: seats, tone, nickTone }
+      return setEdit(true)
+    }
+
+    if (nickTone !== (snapshot.current?.nickTone ?? null)) {
+      void api('profile', { action: 'nickTone', nickTone }).then(() => refresh())
+    }
+    setEdit(false)
   }
 
   const undo = () => {
@@ -453,32 +731,42 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     list.current = was.blocks
     tall.current = was.sizes
     side.current = was.sides
+    eyed.current = { ...was.seen }
     setLayout(was.blocks)
     setSizes(was.sizes)
     setSpots(was.sides)
+    setMix(was.tiles)
+    setPaint(was.tone)
+    setInk(was.nickTone)
+    setShop(null)
     setEdit(false)
-    void api('profile', { action: 'blocks', blocks: was.blocks, sizes: was.sizes, sides: was.sides })
+    void api('profile', { action: 'blocks', blocks: was.blocks, sizes: was.sizes, sides: was.sides, seen: was.seen })
+    void api('profile', { action: 'tiles', tiles: was.tiles })
+    void api('profile', { action: 'tone', tone: was.tone })
   }
 
   const panels: Record<ProfileBlock, ReactNode> = {
     facts: (
       <section className="card profile-card">
         <div className="profile-facts" ref={factsRef}>
-          <div className={`fact fact-rank ${best ? medal(best.position) : ''} ${places ? 'open' : ''}`}>
-            <span>{t('profile.bestGame')}</span>
-            {best ? (
-              <>
-                <p className="fact-place">
-                  <b>#{best.position}</b>
-                </p>
-                <button type="button" className="fact-more" aria-expanded={places} onClick={() => setPlaces(!places)}>
-                  {t('profile.placesMore')}
-                </button>
-              </>
-            ) : (
+          {best ? (
+            <button
+              type="button"
+              className={`fact fact-rank ${medal(best.position)} ${places ? 'open' : ''}`}
+              aria-expanded={places}
+              onClick={() => setPlaces(!places)}
+            >
+              <span>{t('profile.bestGame')}</span>
+              <p className="fact-place">
+                <b>#{best.position}</b>
+              </p>
+            </button>
+          ) : (
+            <div className="fact fact-rank">
+              <span>{t('profile.bestGame')}</span>
               <b className="empty">—</b>
-            )}
-          </div>
+            </div>
+          )}
 
           {places && summary && (
             <div className="places-pop" role="dialog" aria-label={t('profile.placesTitle')}>
@@ -488,7 +776,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                   <li key={`${row.game}_${row.mode}`} className={medal(row.position)}>
                     <b>#{row.position}</b>
                     <span>
-                      {l(gameLabel(row.game)!)}
+                      <i title={l(gameLabel(row.game)!)}>{l(gameLabel(row.game)!)}</i>
                       <small>{t(modeLabel(row.mode))}</small>
                     </span>
                   </li>
@@ -521,9 +809,11 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
               <li key={`${round.game}-${round.answerId}-${index}`}>
                 <span className={`activity-dot ${round.status}`} aria-hidden />
                 <span className="activity-text">
-                  {t(round.status === 'won' ? 'profile.won' : round.status === 'skipped' ? 'profile.gaveUp' : 'profile.lost', {
-                    name: round.name ? round.name[lang] : round.hidden ? t('profile.secret') : `#${round.answerId}`,
-                  })}
+                  <i>
+                    {t(round.status === 'won' ? 'profile.won' : round.status === 'skipped' ? 'profile.gaveUp' : 'profile.lost', {
+                      name: round.name ? round.name[lang] : round.hidden ? t('profile.secret') : `#${round.answerId}`,
+                    })}
+                  </i>
                   <small>
                     {gameLabel(round.game) ? l(gameLabel(round.game)!) : round.game} · {t(modeLabel(round.mode))}
                     {round.challenge ? ` · ${t('profile.fromFriend')}` : ''}
@@ -656,7 +946,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
             return (
               <li key={award.id ?? `secret-${index}`} className={`on tier-${award.tier}`}>
                 {user ? (
-                  <Link href={own || !id ? href.achievements : href.playerAwards(id)} prefetch={false}>
+                  <Link href={own || !id ? `${href.achievements}?filter=done` : href.playerAwards(id)} prefetch={false}>
                     <span className="soon-mark" aria-hidden>
                       {award.family ? <AwardIcon family={award.family} award={award.id} /> : <TrophyIcon />}
                     </span>
@@ -679,137 +969,413 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   }
 
   return (
-    <div className="profile">
+    <div className="profile" style={(toneHex ? { '--accent': toneHex } : {}) as CSSProperties}>
       <div className="profile-top">
-        {edit ? (
-          <button type="button" className="profile-tune" onClick={undo}>
-            {t('profile.tuneUndo')}
-          </button>
-        ) : (
-          <BackButton href="/" onClick={onBack}>
-            {t('profile.back')}
-          </BackButton>
-        )}
-
+        <BackButton href="/" onClick={onBack}>
+          {t('profile.back')}
+        </BackButton>
         {own && (
-          <button type="button" className={`profile-tune ${edit ? 'on' : ''}`} onClick={tune}>
-            {t(edit ? 'profile.tuneDone' : 'profile.tune')}
-          </button>
-        )}
-      </div>
-
-      <section className="profile-hero">
-        <div className="profile-hero-id">
-          {own ? <AvatarPicker /> : <Avatar id={id} name={nickname} avatar={summary?.avatar} frame={summary?.frame} />}
-          <div className="profile-hero-main">
-            <div className="profile-hero-name">
-              <h1>{nickname}</h1>
-              {tag && <i className="player-tag">#{tag}</i>}
-              <span className="profile-hero-level">{t('nav.level', { level: summary?.level.level ?? 1 })}</span>
-            </div>
-            <Link className="level-panel is-link" href={href.levels} prefetch={false}>
-              <div className="level-bar">
-                <i style={{ width: `${Math.round(((summary?.level.into ?? 0) / (summary?.level.need ?? 1)) * 100)}%` }} />
-              </div>
-              <div className="level-line">
-                <span className="level-xp">
-                  <b>{summary?.level.into ?? 0}</b> / {summary?.level.need ?? 0} XP
-                </span>
-                <small className="muted">
-                  {t('level.toNext', {
-                    level: (summary?.level.level ?? 1) + 1,
-                    xp: (summary?.level.need ?? 0) - (summary?.level.into ?? 0),
-                  })}
-                </small>
-              </div>
-            </Link>
-            {!own && id && (
-              <div className="profile-hero-acts">
-                <button type="button" className="primary profile-duel" disabled={calling} onClick={() => void challenge(id)}>
-                  <SwordsIcon />
-                  {t('duel.challenge')}
-                </button>
-                {friend === 'in' ? (
-                  <div className="profile-friend-ask">
-                    <button type="button" className="ghost" onClick={() => void answerFriend(id, true)}>
-                      {t('friends.accept')}
-                    </button>
-                    <button type="button" className="ghost" onClick={() => void answerFriend(id, false)}>
-                      {t('friends.decline')}
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    type="button"
-                    className="ghost profile-friend"
-                    onClick={() => void (friend === 'none' ? askFriend(id) : removeFriend(id))}
-                  >
-                    <UserIcon />
-                    {t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="profile-hero-tiles">
-          <div className={`hero-tile is-modes ${tip ? 'is-open' : ''}`} ref={modesRef}>
-            <button type="button" className="hero-tile-open" aria-expanded={tip} onClick={() => setTip(!tip)}>
-              <span>{t('profile.characters')}</span>
-              <b>{summary?.totals.solved ?? 0}</b>
+        <div className="profile-banner-acts">
+        {edit && (
+          <div className={`banner-pick ${skins ? 'is-open' : ''}`} ref={skinsRef}>
+            <button type="button" className="profile-tune is-chip" onClick={() => setSkins(!skins)}>
+              {t('profile.banner')}
             </button>
-            {tip && (
+            {skins && (
               <div className="modes-pop" role="dialog">
                 <header>
-                  <h2>{t('profile.modes')}</h2>
-                  <span className="muted">{t('profile.accuracy')}</span>
+                  <h2>{t('profile.banner')}</h2>
                 </header>
-                <ul className="modes-list">
-                  {MODES.map((mode) => {
-                    const row = summary?.modes.find((item) => item.mode === mode.id)
-                    const played = row?.played ?? 0
-                    const share = percent(row?.won ?? 0, played)
-                    return (
-                      <li key={mode.id} className={played ? '' : 'is-empty'}>
-                        <span className="mode-name">{t(mode.label)}</span>
-                        <span className="mode-count muted">
-                          {played} {pluralOf(played, lang)}
-                        </span>
-                        <b>{share}%</b>
-                        <span className="mode-bar">{!!played && <i style={{ width: `${Math.max(share, 2)}%` }} />}</span>
+                <p className="tone-what">{t('profile.toneTheme')}</p>
+                <Rail className="tone-rail" trackClass="tone-track" innerRef={dyes}>
+                  <ul className="tone-shop">
+                    {dyeList.map((game) => (
+                      <li key={game.id}>
+                        <button
+                          type="button"
+                          className={`tone-dot ${tone === game.id ? 'on' : ''}`}
+                          style={{ '--dot': game.accent } as CSSProperties}
+                          aria-label={l(game.label)}
+                          title={l(game.label)}
+                          onClick={() => keepTone(tone === game.id ? null : game.id)}
+                        />
                       </li>
-                    )
-                  })}
+                    ))}
+                  </ul>
+                </Rail>
+
+
+                <ul className="banner-shop">
+                  <li>
+                    <button type="button" className={`banner-face is-none ${banner ? '' : 'on'}`} onClick={() => keepBanner(null)}>
+                      <i aria-hidden>
+                        {MARKS.map((mark) => (
+                          <em
+                            key={mark.left}
+                            style={
+                              {
+                                left: mark.left,
+                                top: mark.top,
+                                fontSize: Math.round(mark.size * 0.3),
+                                transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
+                              } as CSSProperties
+                            }
+                          >
+                            ?!
+                          </em>
+                        ))}
+                      </i>
+                      <span>{t('profile.bannerNone')}</span>
+                    </button>
+                  </li>
+                  {owned.map((one) => (
+                    <li key={one}>
+                      <button type="button" className={`banner-face ${banner === one ? 'on' : ''}`} onClick={() => keepBanner(one)}>
+                        <img src={bannerPic(one)} alt="" />
+                        <span>{t(`banner.${one}` as UiKey)}</span>
+                      </button>
+                    </li>
+                  ))}
+                  {!owned.length && <li className="banner-empty">{t('profile.bannerLocked')}</li>}
                 </ul>
               </div>
             )}
           </div>
-          <div className="hero-tile">
-            <span>{t('profile.duelsTitle')}</span>
-            <b>{summary?.duels.played ? `${percent(summary.duels.wins, summary.duels.played)}%` : '—'}</b>
-            <small>{t('profile.duelScore', { wins: summary?.duels.wins ?? 0, losses: summary?.duels.losses ?? 0 })}</small>
-          </div>
-          {summary?.rank ? (
-            <Link className={`hero-tile is-link ${medal(summary.rank.position)}`} href={href.board}>
-              <span>{t('profile.rank')}</span>
-              <b>#{summary.rank.position}</b>
-              <small>{t('lb.outOf', { total: summary.rank.players })}</small>
-            </Link>
-          ) : (
-            <div className="hero-tile">
-              <span>{t('profile.rank')}</span>
-              <b>—</b>
-              <small> </small>
+        )}
+        {edit && (
+          <button type="button" className="profile-tune" onClick={undo}>
+            {t('profile.tuneUndo')}
+          </button>
+        )}
+        <button
+          type="button"
+          className={`profile-tune is-chip ${edit ? 'on' : 'is-gear'}`}
+          aria-label={t(edit ? 'profile.tuneDone' : 'profile.tune')}
+          title={t(edit ? 'profile.tuneDone' : 'profile.tune')}
+          onClick={tune}
+        >
+          {edit ? t('profile.tuneDone') : <GearIcon />}
+        </button>
+        </div>
+      )}
+      </div>
+
+      <section className="profile-hero">
+        {!!banner && (
+          <span className="profile-art" aria-hidden>
+            {isLive(banner) ? (
+              <video autoPlay loop muted playsInline preload="auto" poster={bannerPic(banner)} style={{ objectPosition: bannerSpot(banner) }}>
+                {bannerClips(banner).map((clip) => (
+                  <source key={clip.type} src={clip.src} type={clip.type} />
+                ))}
+              </video>
+            ) : (
+              <img src={bannerPic(banner)} alt="" style={{ objectPosition: bannerSpot(banner) }} />
+            )}
+          </span>
+        )}
+
+        <div className="profile-banner" aria-hidden>
+          {!banner &&
+            MARKS.map((mark) => (
+            <em
+              key={mark.left}
+              style={
+                {
+                  left: mark.left,
+                  top: mark.top,
+                  fontSize: mark.size,
+                  transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
+                } as CSSProperties
+              }
+            >
+                ?!
+              </em>
+            ))}
+        </div>
+
+
+        <div className={`profile-hero-body ${spot === 'under' ? 'is-under' : ''} ${spot === 'column' ? 'is-stack' : ''}`}>
+        <div className="profile-hero-id">
+          {own ? <AvatarPicker /> : <Avatar id={id} name={nickname} avatar={summary?.avatar} frame={summary?.frame} />}
+          <div className="profile-hero-main">
+            <div className="profile-hero-name" style={(nickHex ? { '--nick': nickHex } : {}) as CSSProperties}>
+              <span className="hero-nick-line">
+                {edit ? (
+                  <button
+                    type="button"
+                    className={`nick-dye ${dye ? 'is-open' : ''}`}
+                    title={t('profile.toneNick')}
+                    onClick={(event) => {
+                      setDyeAt(event.currentTarget)
+                      setDye(!dye)
+                    }}
+                  >
+                    <h1>{nickname}</h1>
+                  </button>
+                ) : (
+                  <h1>{nickname}</h1>
+                )}
+                {title && <i className={`player-title is-${title}`}>{t(`title.${title}` as UiKey)}</i>}
+              </span>
+              {tag && <i className="player-tag">#{tag}</i>}
+              {edit && dye && (
+                <TilePop at={dyeAt} wide={286} onClose={() => setDye(false)}>
+                  <header>
+                    <h2>{t('profile.toneNick')}</h2>
+                  </header>
+                  <ul className="tone-shop is-wrap">
+                    <li>
+                      <button
+                        type="button"
+                        className={`tone-dot is-plain ${nickTone ? '' : 'on'}`}
+                        style={{ '--dot': '#ffffff' } as CSSProperties}
+                        aria-label={t('profile.toneNickPlain')}
+                        title={t('profile.toneNickPlain')}
+                        onClick={() => keepNick(null)}
+                      />
+                    </li>
+                    {dyeList.map((game) => (
+                      <li key={game.id}>
+                        <button
+                          type="button"
+                          className={`tone-dot ${nickTone === game.id ? 'on' : ''}`}
+                          style={{ '--dot': game.accent } as CSSProperties}
+                          aria-label={l(game.label)}
+                          title={l(game.label)}
+                          onClick={() => keepNick(nickTone === game.id ? null : game.id)}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+
+                  {mine.length > 0 && (
+                    <>
+                      <header>
+                        <h2>{t('profile.titlePick')}</h2>
+                      </header>
+                      <ul className="title-shop">
+                        <li>
+                          <button type="button" className={`title-pick ${title ? '' : 'on'}`} onClick={() => keepTitle(null)}>
+                            {t('profile.titleNone')}
+                          </button>
+                        </li>
+                        {mine.map((one) => (
+                          <li key={one}>
+                            <button
+                              type="button"
+                              className={`title-pick ${title === one ? 'on' : ''}`}
+                              onClick={() => keepTitle(title === one ? null : one)}
+                            >
+                              {t(`title.${one}` as UiKey)}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                </TilePop>
+              )}
             </div>
-          )}
-          <div className="hero-tile is-streak">
-            <span>{t('profile.streakTitle')}</span>
-            <b>{summary?.streak.current ?? 0}</b>
-            <small>{t('profile.streakRecord', { days: summary?.streak.best ?? 0 })}</small>
+
+            <Link className="level-panel is-link" href={href.levels} prefetch={false}>
+              <div className="level-line">
+                <span className="level-xp">
+                  <b>{summary?.level.into ?? 0}</b> / {summary?.level.need ?? 0} XP
+                </span>
+                <span className="profile-hero-level">{t('nav.level', { level: summary?.level.level ?? 1 })}</span>
+              </div>
+              <div className="level-bar">
+                <i style={{ width: `${Math.round(((summary?.level.into ?? 0) / (summary?.level.need ?? 1)) * 100)}%` }} />
+              </div>
+            </Link>
           </div>
         </div>
+
+        {cells.length > 0 && (
+        <div className={`profile-hero-tiles ${edit ? 'is-edit' : ''} ${spot === 'column' ? 'is-stack' : ''} ${spot === 'under' ? 'is-under' : ''}`} ref={pads}>
+          {cells.map((one, spot) => {
+            if (!one)
+              return (
+                <div
+                  key={`free-${spot}`}
+                  className={`hero-tile is-add ${shop === spot ? 'is-open' : ''} ${edit ? '' : 'is-hole'} ${grabbed === spot ? 'is-held' : ''}`}
+                  ref={shop === spot ? shopRef : undefined}
+                >
+                  {edit && (
+                    <button type="button" className="hero-tile-open" aria-label={t('profile.tileAdd')} onClick={() => setShop(shop === spot ? null : spot)}>
+                      <PlusIcon />
+                    </button>
+                  )}
+                  {shop === spot && (
+                    <div className="modes-pop" role="dialog">
+                      <header>
+                        <h2>{t('profile.tileAdd')}</h2>
+                      </header>
+                      <ul className="tile-shop">
+                        {spare.map((free) => (
+                          <li key={free}>
+                            <button
+                              type="button"
+                              className="hero-tile"
+                              onClick={() => {
+                                putTile(spot, free)
+                                setShop(null)
+                              }}
+                            >
+                              <span>{tileFace(free).label}</span>
+                              <b>
+                                {tileFace(free).value}
+                                {(() => {
+                                  const face = tileFace(free)
+                                  return 'tail' in face && face.tail ? <i>{face.tail}</i> : null
+                                })()}
+                              </b>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )
+
+            const off = edit && (
+              <button type="button" className="tile-off" aria-label={t('profile.tileHide')} onClick={() => dropTile(spot)}>
+                <CloseIcon />
+              </button>
+            )
+
+            if (one === 'solved')
+              return (
+                <div
+                  key={one}
+                  className={`hero-tile is-modes ${tip ? 'is-open' : ''} ${grabbed === spot ? 'is-held' : ''}`}
+                  onPointerDown={grabTile(spot)}
+                  ref={modesRef}
+                >
+                  <button
+                    type="button"
+                    className="hero-tile-open"
+                    aria-expanded={tip}
+                    onClick={(event) => {
+                      setTipAt(event.currentTarget.closest<HTMLElement>('.hero-tile'))
+                      setTip(!tip)
+                    }}
+                  >
+                    <span>{tileName('profile.characters', 'profile.charactersShort')}</span>
+                    <b>{summary?.totals.solved ?? 0}</b>
+                  </button>
+                  {off}
+                  {tip && (
+                    <TilePop at={tipAt} onClose={() => setTip(false)}>
+                      <header>
+                        <h2>{t('profile.modes')}</h2>
+                        <span className="muted">{t('profile.accuracy')}</span>
+                      </header>
+                      <ul className="modes-list">
+                        {MODES.map((mode) => {
+                          const row = summary?.modes.find((item) => item.mode === mode.id)
+                          const played = row?.played ?? 0
+                          const share = percent(row?.won ?? 0, played)
+                          return (
+                            <li key={mode.id} className={played ? '' : 'is-empty'}>
+                              <span className="mode-name">{t(mode.label)}</span>
+                              <span className="mode-count muted">
+                                {played} {pluralOf(played, lang)}
+                              </span>
+                              <b>{share}%</b>
+                              <span className="mode-bar">{!!played && <i style={{ width: `${Math.max(share, 2)}%` }} />}</span>
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    </TilePop>
+                  )}
+                </div>
+              )
+
+            if (one === 'streak')
+              return (
+                <div
+                  key={one}
+                  className={`hero-tile is-modes is-streak ${week ? 'is-open' : ''} ${grabbed === spot ? 'is-held' : ''}`}
+                  onPointerDown={grabTile(spot)}
+                  ref={weekRef}
+                >
+                  <button
+                    type="button"
+                    className="hero-tile-open"
+                    aria-expanded={week}
+                    onClick={(event) => {
+                      setWeekAt(event.currentTarget.closest<HTMLElement>('.hero-tile'))
+                      setWeek(!week)
+                    }}
+                  >
+                    <span>{tileName('profile.streakTitle', 'profile.streakShort')}</span>
+                    <b>{summary?.streak.current ?? 0}</b>
+                  </button>
+                  {off}
+                  {week && (
+                    <TilePop at={weekAt} onClose={() => setWeek(false)}>
+                      <header>
+                        <h2>{t('profile.streakTitle')}</h2>
+                        <span className="muted">{t('profile.streakRecord', { days: summary?.streak.best ?? 0 })}</span>
+                      </header>
+                      <ul className="streak-days">
+                        {(summary?.streak.week ?? []).map((day) => (
+                          <li key={day.day} className={day.played ? 'is-on' : ''}>
+                            <span />
+                            <small>{new Date(day.day).toLocaleDateString(lang, { weekday: 'short' })}</small>
+                          </li>
+                        ))}
+                      </ul>
+                    </TilePop>
+                  )}
+                </div>
+              )
+
+            const face = tileFace(one)
+            return (
+              <div
+                key={one}
+                className={`hero-tile ${one === 'rank' && summary?.rank ? medal(summary.rank.position) : ''} ${grabbed === spot ? 'is-held' : ''}`}
+                onPointerDown={grabTile(spot)}
+              >
+                <span>{face.label}</span>
+                <b>
+                  {face.value}
+                  {'tail' in face && face.tail ? <i>{face.tail}</i> : null}
+                </b>
+                {off}
+              </div>
+            )
+          })}
+        </div>
+        )}
+        </div>
       </section>
+
+      {!!lift && (
+        <span
+          className="hero-tile tile-lift"
+          aria-hidden
+          ref={(node) => {
+            liftBox.current = node
+            if (node) node.style.transform = `translate3d(${liftAt.current.x}px, ${liftAt.current.y}px, 0)`
+          }}
+          style={{ width: lift.w, height: lift.h }}
+        >
+          <span>{tileFace(lift.one).label}</span>
+          <b>
+            {tileFace(lift.one).value}
+            {(() => {
+              const face = tileFace(lift.one)
+              return 'tail' in face && face.tail ? <i>{face.tail}</i> : null
+            })()}
+          </b>
+        </span>
+      )}
 
       <div className={`profile-grid ${edit ? 'is-edit' : ''}`}>
         {columns.map((seats, column) => (

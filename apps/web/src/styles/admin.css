@@ -622,3 +622,60 @@
 .card.modal.details {
   width: min(100%, 960px);
 }
+
+.admin-find {
+  width: min(360px, 100%);
+  margin-top: 14px;
+  padding: 11px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+
+.title-admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.title-admin-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card);
+}
+
+.title-admin-list .avatar {
+  width: 48px;
+  height: 48px;
+}
+
+.title-admin-who {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.title-admin-who em {
+  color: var(--text-3);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.title-admin-pins {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-left: auto;
+}

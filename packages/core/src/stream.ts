@@ -21,6 +21,39 @@ const drops = new Map<string, ReturnType<typeof setTimeout>>()
 const codes = new Map<string, string>()
 
 const chatters = new Set<Sender>()
+const typing = new Map<string, { nickname: string; until: number }>()
+let sweep: ReturnType<typeof setInterval> | null = null
+
+const typingList = () => [...typing].map(([id, one]) => ({ id, nickname: one.nickname }))
+
+const TYPING_MS = 6_000
+
+function pushTyping() {
+  const people = typingList()
+  for (const send of chatters) send('typing', { people })
+}
+
+function pruneTyping() {
+  const now = Date.now()
+  let changed = false
+  for (const [id, one] of typing) if (one.until <= now) changed = typing.delete(id) || changed
+  if (changed) pushTyping()
+  if (!typing.size && sweep) {
+    clearInterval(sweep)
+    sweep = null
+  }
+}
+
+export function markTyping(userId: string, nickname: string, on: boolean) {
+  if (!on) {
+    if (typing.delete(userId)) pushTyping()
+    return
+  }
+  const known = typing.get(userId)
+  typing.set(userId, { nickname, until: Date.now() + TYPING_MS })
+  sweep ??= setInterval(pruneTyping, 1_000)
+  if (!known || known.nickname !== nickname) pushTyping()
+}
 
 let watcher: Promise<void> | null = null
 let talk: Promise<void> | null = null
@@ -249,6 +282,7 @@ async function startTalk() {
 export function subscribeChat(send: Sender) {
   chatters.add(send)
   void startTalk()
+  if (typing.size) send('typing', { people: typingList() })
   return () => {
     chatters.delete(send)
   }

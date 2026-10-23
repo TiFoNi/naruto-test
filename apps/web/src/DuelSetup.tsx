@@ -1,9 +1,10 @@
 'use client'
 
-import { Fragment, useEffect, useMemo, useState, type CSSProperties } from 'react'
-import { BOARD_DEFAULT, BOARD_SIZES, CLUE_DEFAULT, CLUE_SIZES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, DUEL_TEAM_COUNTS, DUEL_TEAM_SIZES, GRID_GAMES, TEAM_MODES } from '@nanda/game'
+import { Fragment, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { BOARD_DEFAULT, BOARD_SIZES, CLUE_DEFAULT, CLUE_SIZES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, GRID_GAMES, TEAM_MODES } from '@nanda/game'
 import Avatar from './Avatar'
-import { UserIcon } from './icons'
+import { bannerPic, bannerSpot } from './banners'
+import { ChevronIcon, UserIcon } from './icons'
 import Picker from './Picker'
 import WorldMark from './WorldMark'
 import { api } from './api'
@@ -23,8 +24,8 @@ const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'sport', title: 'dash.sport' },
 ]
 
-type Found = { id: string; nickname: string; tag?: string | null; avatar?: string | null }
-type Mate = { id: string; nickname: string; tag: string | null; avatar?: string | null }
+type Found = { id: string; nickname: string; tag?: string | null; avatar?: string | null; frame?: string | null; banner?: string | null }
+type Mate = { id: string; nickname: string; tag: string | null; avatar?: string | null; frame?: string | null; banner?: string | null }
 
 type Props = {
   duel: DuelView
@@ -37,11 +38,6 @@ type Props = {
   onLeave: () => void
 }
 
-const TEAM_LABEL: Record<number, 'duel.teamSolo'> = {
-  1: 'duel.teamSolo',
-  2: 'duel.teamDuo' as 'duel.teamSolo',
-  3: 'duel.teamTrio' as 'duel.teamSolo',
-}
 
 const duelReady = (game: { modes: readonly string[] }) => game.modes.some((mode) => DUEL_MODES.includes(mode as never))
 
@@ -59,6 +55,8 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
   const [found, setFound] = useState<Found[]>([])
   const [mates, setMates] = useState<Mate[]>([])
   const [copied, setCopied] = useState(false)
+  const [picking, setPicking] = useState(false)
+  const matesRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setCategory(gameById((duel.game ?? 'naruto') as GameId).category)
@@ -90,9 +88,29 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
 
   const worlds = useMemo(() => GAMES.filter((one) => one.category === category && duelReady(one)), [category])
   const modes = useMemo(
-    () => MODES.filter((one) => DUEL_MODES.includes(one.id as never) && (one.id === 'who' || one.id === 'clue' || game.modes.includes(one.id) || (one.id === 'grid' && GRID_GAMES.includes(game.id)))),
-    [game],
+    () =>
+      MODES.filter(
+        (one) =>
+          DUEL_MODES.includes(one.id as never) &&
+          (one.id === 'who' || one.id === 'clue' || game.modes.includes(one.id) || (one.id === 'grid' && GRID_GAMES.includes(game.id))) &&
+          ((duel.per ?? 1) < 2 || TEAM_MODES.includes(one.id as never)),
+      ),
+    [game, duel.per],
   )
+
+  useEffect(() => {
+    if (!picking) return
+    const away = (event: MouseEvent) => {
+      if (!matesRef.current?.contains(event.target as Node)) setPicking(false)
+    }
+    const escape = (event: KeyboardEvent) => event.key === 'Escape' && setPicking(false)
+    document.addEventListener('mousedown', away)
+    document.addEventListener('keydown', escape)
+    return () => {
+      document.removeEventListener('mousedown', away)
+      document.removeEventListener('keydown', escape)
+    }
+  }, [picking])
 
   const copy = () => {
     const invitation = `${t('share.duel', {
@@ -125,13 +143,23 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
   const free = (duel.seats ?? 2) - taken
 
   const waiting = duel.invited
-  const suggested = [...found, ...mates.filter((one) => !found.some((f) => f.id === one.id))]
+  const asked = query.trim().toLowerCase()
+  const hits: Found[] = asked
+    ? [
+        ...found,
+        ...mates.filter(
+          (one) =>
+            !found.some((other) => other.id === one.id) &&
+            (one.nickname.toLowerCase().includes(asked) || (one.tag ?? '').toLowerCase().includes(asked.replace('#', ''))),
+        ),
+      ]
+    : mates
+  const open = hits.length > 0 && (asked ? asked.length >= 2 : picking)
 
   const chief = duel.mode === 'clue'
 
   const side = (team: number) => {
     const line = duel.squads?.[team] ?? []
-    const set = line.length > 0 && line.every((one) => one.ready)
     const boss = chief ? line.find((one) => one.lead) : undefined
     const crew = chief ? line.filter((one) => !one.lead) : line
     const seats = chief
@@ -148,13 +176,20 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
               <li key={slot} className={`${mate ? (mate.you ? 'is-you-card' : '') : 'empty'} ${spot.lead ? 'is-lead' : ''}`}>
                 {mate ? (
                   <>
+                    {mate.banner && (
+                      <span className="duel-seat-art" aria-hidden>
+                        <img src={bannerPic(mate.banner)} alt="" style={{ objectPosition: bannerSpot(mate.banner) }} />
+                      </span>
+                    )}
                     {spot.lead && <em className="duel-seat-tag">{t('clue.lead')}</em>}
-                    <Avatar className="duel-face" id={mate.id} name={mate.nickname} avatar={mate.avatar} />
-                    <b>{mate.nickname}</b>
-                    <small className={mate.ready ? 'on' : ''}>
-                      {mate.you ? `${t('duel.youSide')} · ` : ''}
-                      {mate.ready ? t('duel.isReady') : t('duel.notReady')}
-                    </small>
+                    <Avatar className="duel-face" id={mate.id} name={mate.nickname} avatar={mate.avatar} frame={mate.frame} />
+                    <span className="duel-seat-text">
+                      <b>{mate.nickname}</b>
+                      <small className={mate.ready ? 'on' : ''}>
+                        {mate.you ? `${t('duel.youSide')} · ` : ''}
+                        {mate.ready ? t('duel.isReady') : t('duel.notReady')}
+                      </small>
+                    </span>
                   </>
                 ) : (
                   <button type="button" className="duel-seat" disabled={busy} onClick={() => onSeat(team, spot.lead)}>
@@ -169,7 +204,6 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
             )
           })}
         </ul>
-        <em className={set ? 'on' : ''}>{line.length ? (set ? t('duel.isReady') : t('duel.notReady')) : '\u00a0'}</em>
       </div>
     )
   }
@@ -179,30 +213,52 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
             <b>{t('duel.callTitle')}</b>
             <p className="muted small">{waiting ? t('duel.waitingInvited', { name: waiting }) : t('duel.callLead')}</p>
 
-            <div className="duel-call-row">
-              <input value={query} placeholder={t('duel.invitePlaceholder')} onChange={(event) => setQuery(event.target.value)} />
-              <button
-                type="button"
-                className="ghost"
-                disabled={busy || !suggested.length}
-                onClick={() => suggested[0] && invite(suggested[0].id)}
-              >
-                {t('duel.callAction')}
-              </button>
-            </div>
+            <div className={`duel-call-row duel-mates ${open ? 'is-open' : ''}`} ref={matesRef}>
+              <input
+                value={query}
+                placeholder={t('duel.invitePlaceholder')}
+                onChange={(event) => setQuery(event.target.value)}
+              />
 
-            {suggested.length > 0 && (
-              <ul className="duel-call-list">
-                {suggested.map((one) => (
-                  <li key={one.id}>
-                    <button type="button" disabled={busy} onClick={() => invite(one.id)}>
-                      <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
-                      <b>{one.nickname}</b>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
+              {query ? (
+                <button type="button" className="ghost" disabled={busy || !hits.length} onClick={() => hits[0] && invite(hits[0].id)}>
+                  {t('duel.callAction')}
+                </button>
+              ) : (
+                <button type="button" className="ghost" disabled={busy || !mates.length} onClick={() => setPicking(!picking)}>
+                  {t('duel.mates')}
+                  <ChevronIcon />
+                </button>
+              )}
+
+              {open && (
+                <ul className="duel-mates-pop">
+                  {hits.map((one) => (
+                    <li key={one.id}>
+                      <button
+                        type="button"
+                        disabled={busy}
+                        onClick={() => {
+                          setPicking(false)
+                          void invite(one.id)
+                        }}
+                      >
+                        {one.banner && (
+                          <span className="duel-mate-art" aria-hidden>
+                            <img src={bannerPic(one.banner)} alt="" style={{ objectPosition: bannerSpot(one.banner) }} />
+                          </span>
+                        )}
+                        <Avatar className="duel-mate-face" id={one.id} name={one.nickname} avatar={one.avatar} frame={one.frame} />
+                        <span className="duel-mate-text">
+                          <b>{one.nickname}</b>
+                          {one.tag && <em>#{one.tag}</em>}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
 
             {duel.declined && <em className="off">{t('duel.inviteDeclined')}</em>}
             {duel.left && <em className="off">{t('duel.rivalLeft', { name: duel.left })}</em>}
@@ -261,36 +317,6 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
           ),
         }))}
       />
-
-      {TEAM_MODES.includes((duel.mode ?? 'classic') as never) && duel.mode !== 'clue' && (
-        <Picker
-          rich
-          disabled={!host || busy}
-          label={t('duel.teamsCount', { count: duel.teams ?? 2 })}
-          value={String(duel.teams ?? 2)}
-          onChange={(next) => onSetup({ teams: Number(next) })}
-          options={DUEL_TEAM_COUNTS.map((value) => ({
-            value: String(value),
-            label: t('duel.teamsCount', { count: value }),
-            hint: t('duel.teamsTitle').toUpperCase(),
-          }))}
-        />
-      )}
-
-      {TEAM_MODES.includes((duel.mode ?? 'classic') as never) && (
-        <Picker
-          rich
-          disabled={!host || busy}
-          label={t(TEAM_LABEL[duel.per ?? 1])}
-          value={String(duel.per ?? 1)}
-          onChange={(next) => onSetup({ per: Number(next) })}
-          options={DUEL_TEAM_SIZES.filter((value) => duel.mode !== 'clue' || value > 1).map((value) => ({
-            value: String(value),
-            label: t(TEAM_LABEL[value]),
-            hint: t('duel.teamTitle').toUpperCase(),
-          }))}
-        />
-      )}
 
       <Picker
         rich
@@ -384,7 +410,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
         </div>
       </header>
 
-      <section className="duel-arena" style={{ '--sides': teams } as CSSProperties}>
+      <section className={`duel-arena ${teams > 2 ? 'is-trio' : ''}`} style={{ '--sides': teams } as CSSProperties}>
         {Array.from({ length: teams }, (_, team) => (
           <Fragment key={team}>
             {team > 0 && (

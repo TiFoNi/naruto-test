@@ -3,11 +3,24 @@ import { handle, json } from '../http'
 import { currentUser, defaultNickname, unauthorized } from '../profile'
 import { levelOf } from '../quests'
 import { seasonAt } from '../season'
+import { isFrame } from '../frame-list'
+import { isBanner } from '@nanda/game'
 
-const LIMIT = 200
 const TOP = 100
 
-type Entry = { userId: unknown; xp: number; solved: number; days: number; nickname?: string; avatar?: string | null; username: string; total: number }
+type Entry = {
+  userId: unknown
+  xp: number
+  solved: number
+  days: number
+  nickname?: string
+  avatar?: string | null
+  frame?: string | null
+  banner?: string | null
+  title?: string | null
+  username: string
+  total: number
+}
 
 export const GET = handle(async (request) => {
   const found = await currentUser(request)
@@ -28,6 +41,9 @@ export const GET = handle(async (request) => {
           days: { $size: { $ifNull: ['$days', []] } },
           nickname: '$player.nickname',
           avatar: '$player.avatar',
+          frame: '$player.frame',
+          banner: '$player.banner',
+          title: '$player.title',
           username: '$player.username',
           total: { $ifNull: ['$player.xp', 0] },
         },
@@ -41,6 +57,9 @@ export const GET = handle(async (request) => {
     rank: index + 1,
     nickname: entry.nickname ?? defaultNickname(entry.username),
     avatar: entry.avatar ?? null,
+    frame: isFrame(entry.frame) ? entry.frame : null,
+    banner: isBanner(entry.banner) ? entry.banner : null,
+    title: entry.title ?? null,
     level: levelOf(entry.total),
     xp: entry.xp,
     solved: entry.solved,
@@ -55,7 +74,7 @@ export const GET = handle(async (request) => {
   return json({
     season: { number: season.number, from: season.from, to: season.to },
     total: all.length,
-    rows: all.slice(0, LIMIT),
+    rows: all.slice(0, TOP),
     me,
     toTop: me && me.rank > TOP ? Math.max(1, cutoff - me.xp) : 0,
   })

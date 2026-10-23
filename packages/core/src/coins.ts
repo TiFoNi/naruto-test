@@ -20,6 +20,7 @@ export async function startPurchase(userId: ObjectId, packId: unknown, coinId: u
   const pack = packOf(packId)
   const way = wayOf(wayId)
   if (!pack || !way) return 'bad_pack'
+  if (pack.starsOnly && way !== 'stars') return 'bad_pack'
 
   const orderId = `ng_${randomUUID().replace(/-/g, '').slice(0, 20)}`
   const book = await purchases()

@@ -80,12 +80,14 @@ export function Legend({ game }: { game: Game }) {
         </i>
         {t('legend.wrong')}
       </span>
-      <span className="is-order">
-        <i className="legend-badge arrow">
-          <UpIcon />
-        </i>
-        {t(order)}
-      </span>
+      {!!game.legend && (
+        <span className="is-order">
+          <i className="legend-badge arrow">
+            <UpIcon />
+          </i>
+          {t(order)}
+        </span>
+      )}
     </div>
   )
 }

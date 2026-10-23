@@ -54,6 +54,8 @@ const player = (doc: UserDoc): DuelPlayer => ({
   userId: doc._id!,
   nickname: nameOf(doc),
   avatar: doc.avatar ?? null,
+  frame: doc.frame ?? null,
+  banner: doc.banner ?? null,
   seenAt: new Date(),
   ready: false,
   wantsNext: false,
@@ -552,12 +554,17 @@ export async function leaveDuel(duel: DuelDoc, userId: ObjectId) {
   return true
 }
 
-export async function touchSide(duel: DuelDoc, userId: ObjectId) {
+export async function touchSide(duel: DuelDoc, userId: ObjectId, look?: { frame?: string | null; banner?: string | null }) {
   const index = duel.players.findIndex((side) => side.userId.equals(userId))
   if (index < 0) return duel
+  const side = duel.players[index]!
+  const fresh =
+    look && (side.frame !== (look.frame ?? null) || side.banner !== (look.banner ?? null))
+      ? { [`players.${index}.frame`]: look.frame ?? null, [`players.${index}.banner`]: look.banner ?? null }
+      : {}
   const updated = await (await duels()).findOneAndUpdate(
     { _id: duel._id },
-    { $set: { [`players.${index}.seenAt`]: new Date() } },
+    { $set: { [`players.${index}.seenAt`]: new Date(), ...fresh } },
     { returnDocument: 'after' },
   )
   return updated ?? duel
@@ -1270,6 +1277,8 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
         id: side.userId.toHexString(),
         nickname: side.nickname,
         avatar: side.avatar ?? null,
+        frame: side.frame ?? null,
+        banner: side.banner ?? null,
         you: side.userId.equals(userId),
         lead: Boolean(side.lead),
         ready: side.ready,

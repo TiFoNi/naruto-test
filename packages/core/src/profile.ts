@@ -8,6 +8,7 @@ import {
   MODE_XP_AFTER,
   STAT_KEYS,
   XP_CAPS,
+  isTitle,
   type ModeId,
   type XpSource,
 } from '@nanda/game'
@@ -76,7 +77,7 @@ export async function searchPlayers(userId: ObjectId, asked: unknown, limit = 6)
   const list = await (await users())
     .find(
       { _id: { $ne: userId }, ...(or.length === 1 ? or[0] : { $or: or }) },
-      { projection: { nickname: 1, username: 1, tag: 1, avatar: 1 }, sort: { nicknameLower: 1 } },
+      { projection: { nickname: 1, username: 1, tag: 1, avatar: 1, frame: 1, banner: 1 }, sort: { nicknameLower: 1 } },
     )
     .limit(limit)
     .toArray()
@@ -86,6 +87,8 @@ export async function searchPlayers(userId: ObjectId, asked: unknown, limit = 6)
     nickname: doc.nickname ?? defaultNickname(doc.username),
     tag: doc.tag ?? null,
     avatar: doc.avatar ?? null,
+    frame: doc.frame ?? null,
+    banner: doc.banner ?? null,
   }))
 }
 
@@ -199,6 +202,8 @@ export async function touchVisit(collection: Collection<UserDoc>, userId: Object
   return visit
 }
 
+export const ownedTitles = (doc: UserDoc) => [...new Set(doc.titles ?? [])].filter(isTitle)
+
 export function toProfile(doc: UserDoc) {
   const xp = number(doc.xp)
 
@@ -211,6 +216,12 @@ export function toProfile(doc: UserDoc) {
       avatar: doc.avatar ?? null,
       frame: doc.frame ?? null,
       frames: doc.frames ?? [],
+      banner: doc.banner ?? null,
+      banners: doc.banners ?? [],
+      tone: doc.tone ?? null,
+      nickTone: doc.nickTone ?? null,
+      title: ownedTitles(doc).includes(doc.title as never) ? doc.title! : null,
+      titles: ownedTitles(doc),
       level: levelOf(xp),
       xp,
       coins: number(doc.coins),

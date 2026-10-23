@@ -1,8 +1,8 @@
 import { fail, handle, json, readJson } from '../http'
-import { quests, rounds, seasons } from '../db'
-import { claimTag, currentUser, lowerNickname, parseNickname, toProfile, unauthorized } from '../profile'
+import { quests, rounds, seasons, shotDays, shotRuns, streaks, tuneRuns } from '../db'
+import { claimTag, currentUser, lowerNickname, ownedTitles, parseNickname, toProfile, unauthorized } from '../profile'
 import { isFrame } from '../frames'
-import { GAME_IDS, profileBlocks } from '@nanda/game'
+import { GAME_IDS, bannerCost, bundleOf, frameCost, heroTiles, isBanner, isTitle, isTone, profileBlocks } from '@nanda/game'
 
 const SHOWCASE_MAX = 8
 const BLOCK_MIN = 60
@@ -19,11 +19,15 @@ export const POST = handle(async (request) => {
       (await quests()).deleteMany({ userId }),
       (await rounds()).deleteMany({ userId }),
       (await seasons()).deleteMany({ userId }),
+      (await streaks()).deleteMany({ userId }),
+      (await shotRuns()).deleteMany({ userId }),
+      (await shotDays()).deleteMany({ userId }),
+      (await tuneRuns()).deleteMany({ userId }),
     ])
     const doc = await found.collection.findOneAndUpdate(
       { _id: userId },
       {
-        $unset: { stats: '', solvedTotal: '', duelStats: '', challengeStats: '', xp: '', xpToday: '', xpGain: '', awards: '', awardsSolved: '', awardsAt: '', claimed: '', pinned: '', visit: '', tally: '' },
+        $unset: { stats: '', solvedTotal: '', duelStats: '', duelLog: '', duelBestMs: '', duelComeback: '', challengeStats: '', xp: '', xpToday: '', xpGain: '', awards: '', awardsSolved: '', awardsAt: '', claimed: '', pinned: '', visit: '', tally: '', langs: '' },
         $set: { resetAt: new Date() },
       },
       { returnDocument: 'after' },
@@ -65,6 +69,88 @@ export const POST = handle(async (request) => {
     return json(toProfile(doc ?? found.doc))
   }
 
+  if (body.action === 'title') {
+    const asked = body.title
+    if (asked !== null && !isTitle(asked)) return fail(400, 'bad_request')
+    if (asked !== null && !ownedTitles(found.doc).includes(asked)) return fail(403, 'not_yours')
+
+    const doc = await found.collection.findOneAndUpdate(
+      { _id: found.doc._id },
+      asked === null ? { $unset: { title: '' } } : { $set: { title: asked } },
+      { returnDocument: 'after' },
+    )
+    return json(toProfile(doc ?? found.doc))
+  }
+
+  if (body.action === 'nickTone') {
+    const asked = body.nickTone
+    if (asked !== null && !isTone(asked)) return fail(400, 'bad_request')
+
+    const doc = await found.collection.findOneAndUpdate(
+      { _id: found.doc._id },
+      asked === null ? { $unset: { nickTone: '' } } : { $set: { nickTone: asked } },
+      { returnDocument: 'after' },
+    )
+    return json(toProfile(doc ?? found.doc))
+  }
+
+  if (body.action === 'tone') {
+    const asked = body.tone
+    if (asked !== null && !isTone(asked)) return fail(400, 'bad_request')
+
+    const doc = await found.collection.findOneAndUpdate(
+      { _id: found.doc._id },
+      asked === null ? { $unset: { tone: '' } } : { $set: { tone: asked } },
+      { returnDocument: 'after' },
+    )
+    return json(toProfile(doc ?? found.doc))
+  }
+
+  if (body.action === 'banner') {
+    const asked = body.banner
+    if (asked !== null && !isBanner(asked)) return fail(400, 'bad_request')
+    if (asked !== null && !(found.doc.banners ?? []).includes(asked)) return fail(403, 'locked')
+
+    const doc = await found.collection.findOneAndUpdate(
+      { _id: found.doc._id },
+      asked === null ? { $unset: { banner: '' } } : { $set: { banner: asked } },
+      { returnDocument: 'after' },
+    )
+    return json(toProfile(doc ?? found.doc))
+  }
+
+  if (body.action === 'buy') {
+    const mineFrames = found.doc.frames ?? []
+    const mineBanners = found.doc.banners ?? []
+    const bundle = body.kind === 'bundle' ? bundleOf(body.id) : null
+    const frame = body.kind === 'frame' ? (typeof body.id === 'string' ? body.id : null) : (bundle?.frame ?? null)
+    const banner = body.kind === 'banner' ? (typeof body.id === 'string' ? body.id : null) : (bundle?.banner ?? null)
+
+    const cost = bundle ? bundle.cost : body.kind === 'frame' ? frameCost(frame) : body.kind === 'banner' ? bannerCost(banner) : null
+    if (!cost) return fail(400, 'bad_request')
+    if ((frame && mineFrames.includes(frame)) || (banner && mineBanners.includes(banner))) return fail(409, 'owned')
+
+    const doc = await found.collection.findOneAndUpdate(
+      { _id: found.doc._id, coins: { $gte: cost } },
+      {
+        $inc: { coins: -cost },
+        ...(frame || banner
+          ? { $addToSet: { ...(frame ? { frames: frame } : {}), ...(banner ? { banners: banner } : {}) } }
+          : {}),
+      },
+      { returnDocument: 'after' },
+    )
+    if (!doc) return fail(409, 'no_coins')
+    return json(toProfile(doc))
+  }
+
+  if (body.action === 'tiles') {
+    const picked = heroTiles(body.tiles)
+    if (!picked) return fail(400, 'bad_request')
+    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $set: { tiles: picked } }, { returnDocument: 'after' })
+    return json(toProfile(doc ?? found.doc))
+  }
+
   if (body.action === 'blocks') {
     const picked = profileBlocks(body.blocks)
     if (!picked) return fail(400, 'bad_request')
@@ -78,9 +164,14 @@ export const POST = handle(async (request) => {
         .filter(([block, side]) => picked.includes(block as never) && (Number(side) === 0 || Number(side) === 1))
         .map(([block, side]) => [block, Number(side)]),
     )
+    const seen = Object.fromEntries(
+      Object.entries((body.seen ?? {}) as Record<string, unknown>)
+        .filter(([block, count]) => picked.includes(block as never) && Number.isFinite(Number(count)) && Number(count) > 0)
+        .map(([block, count]) => [block, Math.round(Math.min(64, Number(count)))]),
+    )
     const doc = await found.collection.findOneAndUpdate(
       { _id: found.doc._id },
-      { $set: { blocks: picked, blockSizes: sizes, blockSides: sides } },
+      { $set: { blocks: picked, blockSizes: sizes, blockSides: sides, blockSeen: seen } },
       { returnDocument: 'after' },
     )
     return json(toProfile(doc ?? found.doc))

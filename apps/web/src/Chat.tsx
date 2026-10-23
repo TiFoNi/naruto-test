@@ -1,12 +1,14 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
+import { TONE_HEX } from '@nanda/game'
 import Avatar from './Avatar'
+import { GAMES } from './games'
 import { api } from './api'
 import { watchFeed } from './awards'
 import { useAuth } from './auth'
-import { useI18n } from './i18n'
+import { useI18n, type UiKey } from './i18n'
 import { ChatIcon, CloseIcon, MuteIcon, SendIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { useHref, useNavigate } from './router'
 import { openStream } from './stream'
@@ -18,11 +20,19 @@ type Line = {
   tag?: string
   avatar?: string | null
   frame?: string | null
+  title?: string | null
+  nickTone?: string | null
   text: string
   at: number
 }
 
+const toneOf = (tone?: string | null): CSSProperties | undefined => {
+  const hex = GAMES.find((game) => game.id === tone)?.accent ?? (tone && TONE_HEX.test(tone) ? tone : null)
+  return hex ? { color: hex } : undefined
+}
+
 const GROUP_MS = 5 * 60_000
+const TYPE_GAP_MS = 3500
 const PULSE_MS = 45_000
 const SEEN_KEY = 'chat:seen'
 const WHO_KEY = 'chat:who'
@@ -76,6 +86,8 @@ export default function Chat() {
   const [asking, setAsking] = useState<{ kind: 'drop' | 'mute' | 'unfriend'; line: Line } | null>(null)
   const [menu, setMenu] = useState<{ line: Line; x: number; y: number } | null>(null)
   const [online, setOnline] = useState(0)
+  const [typers, setTypers] = useState<{ id: string; nickname: string }[]>([])
+  const typedAt = useRef(0)
   const [fresh, setFresh] = useState(false)
   const feed = useRef<HTMLDivElement>(null)
   const nearEnd = useRef(true)
@@ -169,6 +181,10 @@ export default function Chat() {
         const gone = (data as { id?: string } | null)?.id
         if (gone) setLines((kept) => kept.filter((line) => line.id !== gone))
       },
+      typing: (data) => {
+        const people = (data as { people?: { id: string; nickname: string }[] } | null)?.people
+        setTypers(people ?? [])
+      },
     })
   }, [load, open])
 
@@ -210,6 +226,30 @@ export default function Chat() {
     return () => window.removeEventListener('keydown', keys)
   }, [open, close, menu])
 
+  const typeBeat = useCallback(
+    (on: boolean) => {
+      if (!user) return
+      const now = Date.now()
+      if (on ? now - typedAt.current < TYPE_GAP_MS : !typedAt.current) return
+      typedAt.current = on ? now : 0
+      void api('chat/typing', { on })
+    },
+    [user],
+  )
+
+  useEffect(() => {
+    if (open) return
+    typedAt.current = 0
+    setTypers([])
+  }, [open])
+
+  useEffect(
+    () => () => {
+      if (typedAt.current) void api('chat/typing', { on: false })
+    },
+    [],
+  )
+
   const send = async () => {
     const body = text.trim()
     if (!body || sending) return
@@ -217,6 +257,7 @@ export default function Chat() {
     const { ok, status, data } = await api<{ line?: Line }>('chat', { text: body })
     setSending(false)
     if (ok && data.line) {
+      typedAt.current = 0
       setText('')
       requestAnimationFrame(grow)
       nearEnd.current = true
@@ -247,6 +288,16 @@ export default function Chat() {
     if (ok && data.duel) return navigate(href.duel(data.duel.code))
     say(t('chat.failed'), true)
   }
+
+  const said = typers.filter((one) => one.id !== user?.id)
+  const typingText =
+    said.length === 1
+      ? t('chat.typingOne', { name: said[0].nickname })
+      : said.length === 2
+        ? t('chat.typingTwo', { one: said[0].nickname, two: said[1].nickname })
+        : said.length > 2
+          ? t('chat.typingMany', { one: said[0].nickname, two: said[1].nickname, count: said.length - 2 })
+          : ''
 
   const watch = () => {
     const box = feed.current
@@ -311,9 +362,15 @@ export default function Chat() {
                   <div className="chat-body">
                     {!glued && (
                       <header>
-                        <Link className="chat-nick" href={line.userId === user?.id ? href.profile : href.player(line.userId)} prefetch={false}>
+                        <Link
+                          className="chat-nick"
+                          href={line.userId === user?.id ? href.profile : href.player(line.userId)}
+                          style={toneOf(line.nickTone)}
+                          prefetch={false}
+                        >
                           {line.nickname}
                         </Link>
+                        {line.title && <i className={`player-title is-slim is-${line.title}`}>{t(`title.${line.title}` as UiKey)}</i>}
                         <time dateTime={new Date(line.at).toISOString()}>{clock(line.at)}</time>
                       </header>
                     )}
@@ -336,6 +393,17 @@ export default function Chat() {
             })}
           </div>
 
+          {said.length > 0 && (
+            <p className="chat-typing">
+              <i aria-hidden>
+                <em />
+                <em />
+                <em />
+              </i>
+              <span>{typingText}</span>
+            </p>
+          )}
+
           {user ? (
             <form
               className="chat-send"
@@ -353,6 +421,7 @@ export default function Chat() {
                 onChange={(event) => {
                   setText(event.target.value)
                   grow()
+                  typeBeat(Boolean(event.target.value.trim()))
                 }}
                 onKeyDown={(event) => {
                   if (event.key !== 'Enter' || event.shiftKey) return

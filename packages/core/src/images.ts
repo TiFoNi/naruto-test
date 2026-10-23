@@ -35,7 +35,7 @@ async function put(key: string, body: Buffer) {
 
 export const version = (buffer: Buffer) => createHash('sha1').update(buffer).digest('hex').slice(0, 8)
 
-const AVATAR = 256
+const AVATAR = 384
 
 export const avatarKey = (userId: string) => `avatars/${userId}.webp`
 
@@ -43,7 +43,7 @@ export async function uploadAvatar(userId: string, source: Buffer) {
   const image = await sharp(source)
     .rotate()
     .resize(AVATAR, AVATAR, { fit: 'cover', position: 'centre' })
-    .webp({ quality: 84 })
+    .webp({ quality: 92 })
     .toBuffer()
 
   await put(avatarKey(userId), image)

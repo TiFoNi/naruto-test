@@ -6,9 +6,9 @@ import { useI18n } from './i18n'
 import { BackIcon } from './icons'
 import { canGoBack, useNavigate } from './router'
 
-type Props = { href: string; children: ReactNode; onClick?: () => void }
+type Props = { href: string; children: ReactNode; onClick?: () => void; fixed?: boolean }
 
-export default function BackButton({ href, children, onClick }: Props) {
+export default function BackButton({ href, children, onClick, fixed }: Props) {
   const navigate = useNavigate()
   const { t } = useI18n()
   const [returning, setReturning] = useState(false)
@@ -29,7 +29,7 @@ export default function BackButton({ href, children, onClick }: Props) {
   return (
     <Link className="back" href={href} onClick={handle}>
       <BackIcon />
-      {returning ? t('common.back') : children}
+      {returning && !fixed ? t('common.back') : children}
     </Link>
   )
 }

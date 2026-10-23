@@ -610,6 +610,12 @@ const TROPHIES: { id: string; places: number }[] = [
   { id: 'seasonTop100', places: 100 },
 ]
 
+const SEASON_TITLES: { id: string; places: number }[] = [
+  { id: 'champion', places: 1 },
+  { id: 'runner', places: 10 },
+  { id: 'hundred', places: 100 },
+]
+
 export async function grantSeasonTrophies(standing: { userId: ObjectId }[]) {
   const collection = await users()
   const now = new Date()
@@ -617,11 +623,17 @@ export async function grantSeasonTrophies(standing: { userId: ObjectId }[]) {
     const place = index + 1
     const won = TROPHIES.filter((trophy) => place <= trophy.places)
     if (!won.length) continue
+    const titles = SEASON_TITLES.filter((title) => place <= title.places).map((title) => title.id)
+    const given = [
+      ...(place <= TOP_PLACES ? [{ frames: PLACE_FRAMES[place - 1] }] : []),
+      ...(titles.length ? [{ titles: { $each: titles } }] : []),
+    ]
+
     await collection.updateOne(
       { _id: row.userId },
       {
         $set: Object.fromEntries(won.map((trophy) => [`awards.${trophy.id}`, now])),
-        ...(place <= TOP_PLACES ? { $addToSet: { frames: PLACE_FRAMES[place - 1] } } : {}),
+        ...(given.length ? { $addToSet: Object.assign({}, ...given) } : {}),
       },
     )
   }

@@ -17,6 +17,8 @@ export type ChatLine = {
   tag?: string
   avatar?: string | null
   frame?: string | null
+  title?: string | null
+  nickTone?: string | null
   text: string
   at: number
 }
@@ -28,6 +30,8 @@ export const lineOf = (doc: ChatDoc): ChatLine => ({
   ...(doc.tag ? { tag: doc.tag } : {}),
   avatar: doc.avatar ?? null,
   frame: doc.frame ?? null,
+  title: doc.title ?? null,
+  nickTone: doc.nickTone ?? null,
   text: doc.text,
   at: doc.at.getTime(),
 })
@@ -68,6 +72,15 @@ export async function freshSince(seen: unknown) {
   return Boolean(found)
 }
 
+const freshFaces = async (docs: ChatDoc[]) => {
+  const ids = [...new Set(docs.map((one) => one.userId.toHexString()))].map((id) => new ObjectId(id))
+  if (!ids.length) return new Map<string, Pick<UserDoc, 'nickname' | 'tag' | 'avatar' | 'frame' | 'title' | 'nickTone'>>()
+  const found = await (await users())
+    .find({ _id: { $in: ids } }, { projection: { nickname: 1, tag: 1, avatar: 1, frame: 1, title: 1, nickTone: 1 } })
+    .toArray()
+  return new Map(found.map((one) => [one._id!.toHexString(), one]))
+}
+
 export async function chatPage(before?: string, limit = PAGE) {
   const room = await chatRoom()
   const size = Math.min(Math.max(Math.trunc(limit) || PAGE, 1), PAGE_MAX)
@@ -76,7 +89,14 @@ export async function chatPage(before?: string, limit = PAGE) {
     .find({ hidden: { $ne: true }, ...older }, { sort: { _id: -1 }, limit: size + 1 })
     .toArray()
   const page = found.slice(0, size)
-  return { lines: page.reverse().map(lineOf), more: found.length > size }
+  const faces = await freshFaces(page)
+  const fresh = (doc: ChatDoc): ChatDoc => {
+    const now = faces.get(doc.userId.toHexString())
+    return now
+      ? { ...doc, nickname: now.nickname ?? doc.nickname, tag: now.tag ?? doc.tag, avatar: now.avatar ?? null, frame: now.frame ?? null, title: now.title ?? null, nickTone: now.nickTone ?? null }
+      : doc
+  }
+  return { lines: page.reverse().map((doc) => lineOf(fresh(doc))), more: found.length > size }
 }
 
 export type ChatFail = 'empty' | 'muted' | 'too_fast'
@@ -102,6 +122,8 @@ export async function sendChat(doc: UserDoc, raw: unknown): Promise<ChatLine | C
     ...(doc.tag ? { tag: doc.tag } : {}),
     avatar: doc.avatar ?? null,
     frame: doc.frame ?? null,
+    title: doc.title ?? null,
+    nickTone: doc.nickTone ?? null,
     text,
     at: new Date(),
   }

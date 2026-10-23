@@ -188,6 +188,7 @@ body:has(.chat-panel) .duel-dock {
   flex-direction: column;
   gap: 2px;
   padding: 12px 12px 14px;
+  overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
@@ -246,6 +247,11 @@ body:has(.chat-panel) .duel-dock {
   display: flex;
   align-items: baseline;
   gap: 7px;
+}
+
+.chat-body header .player-title {
+  flex: none;
+  align-self: center;
 }
 
 .chat-nick {
@@ -342,10 +348,6 @@ body:has(.chat-panel) .duel-dock {
   text-align: right;
 }
 
-.chat-line.is-mine .chat-nick {
-  color: var(--accent);
-}
-
 .chat-body header time {
   flex: none;
   color: var(--text-3);
@@ -400,6 +402,66 @@ body:has(.chat-panel) .duel-dock {
 .chat-tools button:hover {
   background: color-mix(in srgb, #e5483b 25%, transparent);
   color: #ffffff;
+}
+
+.chat-typing {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 7px 14px 0;
+  color: var(--text-3);
+  font-size: 12.5px;
+  animation: fade-in 0.16s ease;
+}
+
+.chat-typing span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-typing i {
+  display: flex;
+  flex: none;
+  gap: 3px;
+}
+
+.chat-typing em {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 75%, transparent);
+  animation: chat-typing-dot 1.05s ease-in-out infinite;
+}
+
+.chat-typing em:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.chat-typing em:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes chat-typing-dot {
+  0%,
+  70%,
+  100% {
+    opacity: 0.35;
+    translate: 0 0;
+  }
+
+  35% {
+    opacity: 1;
+    translate: 0 -3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-typing em {
+    animation: none;
+  }
 }
 
 .chat-send {

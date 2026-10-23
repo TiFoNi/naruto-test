@@ -5,13 +5,29 @@ import Link from 'next/link'
 import { api } from './api'
 import BackButton from './BackButton'
 import BoardScope from './BoardScope'
-import { useI18n } from './i18n'
-import { avatarUrl } from './pics'
+import { useI18n, type UiKey } from './i18n'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
-import { CrownIcon, TrophyIcon } from './icons'
+import Avatar from './Avatar'
+import BoardFace from './BoardFace'
+import { useAuth } from './auth'
+import { MARKS } from './Profile'
+import { bannerPic, bannerSpot } from './banners'
 
-type Row = { id: string; rank: number; nickname: string; avatar?: string | null; level: number; xp: number; solved: number; days: number; me: boolean }
+type Row = {
+  id: string
+  rank: number
+  nickname: string
+  avatar?: string | null
+  frame?: string | null
+  banner?: string | null
+  title?: string | null
+  level: number
+  xp: number
+  solved: number
+  days: number
+  me: boolean
+}
 
 type Board = {
   season: { number: number; from: string; to: string }
@@ -21,27 +37,14 @@ type Board = {
   toTop: number
 }
 
+const PRIZES = [
+  { place: 'lb.reward1' as UiKey, title: 'champion', frame: 'top1', tone: 'gold' },
+  { place: 'lb.reward23' as UiKey, title: 'runner', frame: null, tone: 'silver' },
+  { place: 'lb.reward100' as UiKey, title: 'hundred', frame: null, tone: 'bronze' },
+]
+
 const PAGE = 15
 const TOP = 100
-
-const TONES = 8
-
-const toneOf = (nickname: string) => {
-  let hash = 0
-  for (let i = 0; i < nickname.length; i++) hash = (hash * 31 + nickname.charCodeAt(i)) % 9973
-  return hash % TONES
-}
-
-const pad = (value: number) => String(value).padStart(2, '0')
-
-const countdown = (to: number, now: number) => {
-  const left = Math.max(0, to - now)
-  const days = Math.floor(left / 86_400_000)
-  const hours = Math.floor((left % 86_400_000) / 3_600_000)
-  const minutes = Math.floor((left % 3_600_000) / 60_000)
-  const seconds = Math.floor((left % 60_000) / 1000)
-  return days > 0 ? `${days} д ${pad(hours)}:${pad(minutes)}:${pad(seconds)}` : `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
-}
 
 let known: Board | null = null
 
@@ -51,6 +54,7 @@ keepPerUser(() => {
 
 export default function SeasonBoard() {
   const { t, lang, error: errorText } = useI18n()
+  const { user } = useAuth()
   const href = useHref()
   const [board, setBoard] = useState<Board | null>(known)
   const [error, setError] = useState<string | null>(null)
@@ -74,7 +78,7 @@ export default function SeasonBoard() {
   }, [])
 
   useEffect(() => {
-    const timer = setInterval(() => setNow(Date.now()), 1000)
+    const timer = setInterval(() => setNow(Date.now()), 60_000)
     return () => clearInterval(timer)
   }, [])
 
@@ -85,16 +89,21 @@ export default function SeasonBoard() {
   const span = from && to ? Math.max(1, to.getTime() - from.getTime()) : 1
   const length = Math.round(span / 86_400_000)
   const gone = from ? Math.min(1, Math.max(0, (now - from.getTime()) / span)) : 0
+  const parts = Math.min(14, Math.max(2, length))
+  const done = Math.min(parts, Math.max(1, Math.ceil(gone * parts)))
+
 
   const rows = board?.rows ?? []
   const peak = Math.max(1, ...rows.map((row) => row.xp))
   const waiting = !board && !error
   const podium = rows.length > 0 || waiting ? [rows[0] ?? null, rows[1] ?? null, rows[2] ?? null] : []
   const medals = ['gold', 'silver', 'bronze']
-  const stand = [1, 0, 2]
+  const stand = [0, 1, 2]
+  const count = (value: number) => value.toLocaleString(lang === 'en' ? 'en-GB' : 'uk-UA')
   const ranked = rows.slice(0, TOP)
-  const shown = ranked.slice(0, size)
-  const left = ranked.length - shown.length
+  const rest = ranked.slice(podium.length ? 3 : 0)
+  const shown = rest.slice(0, size)
+  const left = rest.length - shown.length
   const outside = board?.me && board.me.rank > TOP ? board.me : null
 
   return (
@@ -109,37 +118,34 @@ export default function SeasonBoard() {
       </div>
 
       <section className="season-card">
-        <span className="season-mark" aria-hidden>
-          <TrophyIcon />
-        </span>
-        <div className="season-copy">
-          <b>{season ? t('lb.seasonNo', { number: season.number }) : ' '}</b>
-          <p>{t('lb.seasonAbout')}</p>
+        <div className="season-left">
+          <div className="season-head">
+            <div className="season-copy">
+              <b>{season ? t('lb.seasonNo', { number: season.number }) : ' '}</b>
+              <p>{from && to ? `${day(from)} — ${day(new Date(to.getTime() - 86_400_000))}` : ''}</p>
+            </div>
+          </div>
         </div>
-        <div className="season-time">
-          <span className="season-time-head">
-            <em>{from ? day(from) : ''}</em>
-            <b>{to ? t('lb.seasonLeft', { time: countdown(to.getTime(), now) }) : ' '}</b>
-            <em>{to ? day(new Date(to.getTime() - 86_400_000)) : ''}</em>
-          </span>
-          <span className="season-line">
-            <i style={{ width: `${Math.round(gone * 100)}%` }} />
-          </span>
-        </div>
+
         <ul className="season-rewards">
-          <li className="gold">
-            <b>{t('lb.reward1')}</b>
-            <small>{t('lb.reward1sub')}</small>
-          </li>
-          <li className="silver">
-            <b>{t('lb.reward10')}</b>
-            <small>{t('lb.rewardBadge')}</small>
-          </li>
-          <li className="bronze">
-            <b>{t('lb.reward100')}</b>
-            <small>{t('lb.rewardBadge')}</small>
-          </li>
+          {PRIZES.map((prize) => (
+            <li key={prize.title} className={prize.tone}>
+              {prize.frame && (
+                <Avatar className="season-prize-face" id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={prize.frame} />
+              )}
+              <span className="season-prize-what">
+                <b>{t(prize.place)}</b>
+                <i className={`player-title is-slim is-${prize.title}`}>{t(`title.${prize.title}` as UiKey)}</i>
+              </span>
+            </li>
+          ))}
         </ul>
+
+        <div className="season-sticks" aria-hidden>
+          {Array.from({ length: parts }, (_, index) => (
+            <i key={index} className={index < done - 1 ? 'is-done' : index === done - 1 ? 'is-now' : ''} />
+          ))}
+        </div>
       </section>
 
       <div className="lb-layout">
@@ -155,49 +161,64 @@ export default function SeasonBoard() {
                         <span className="lb-av big" aria-hidden>
                           ?
                         </span>
-                        <span className="lb-step-rank">{index + 1}</span>
                       </span>
-                      <b className="lb-step-name">{t('lb.vacant')}</b>
-                      <span className="lb-step-main">
-                        <em>—</em>
+                      <span className="lb-step-text">
+                        <b className="lb-step-name">{t('lb.vacant')}</b>
+                        <span className="lb-step-main">
+                          <em>—</em>
+                        </span>
+                      </span>
+                      <span className="lb-step-rank">
+                        <i className="lb-step-top">{t('lb.topWord')} </i>
+                        {index + 1}
                       </span>
                     </li>
                   )
                 return (
-                  <li key={row.rank} className={`lb-step ${medals[index]}`}>
-                    {index === 0 && <CrownIcon className="lb-crown" />}
+                  <li key={row.rank} className={`lb-step ${medals[index]} has-art`}>
+                    <span className="lb-step-art" aria-hidden>
+                      {row.banner ? (
+                        <img src={bannerPic(row.banner)} alt="" style={{ objectPosition: bannerSpot(row.banner) }} />
+                      ) : (
+                        <i className="mini-me-marks lb-step-marks">
+                          {MARKS.map((mark) => (
+                            <em
+                              key={mark.left}
+                              style={
+                                {
+                                  left: mark.left,
+                                  top: mark.top,
+                                  fontSize: Math.round(mark.size * 0.34),
+                                  transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
+                                } as CSSProperties
+                              }
+                            >
+                              ?!
+                            </em>
+                          ))}
+                        </i>
+                      )}
+                    </span>
                     <span className="lb-step-face">
-                      <span className={`lb-av big ${row.avatar ? 'has-pic' : ''}`} data-tone={toneOf(row.nickname)} aria-hidden>
-                        {row.nickname.charAt(0).toUpperCase()}
-                        {row.avatar && (
-                          <img
-                            src={avatarUrl(row.id, row.avatar)}
-                            alt=""
-                            loading="lazy"
-                            decoding="async"
-                            onError={(event) => {
-                              event.currentTarget.hidden = true
-                            }}
-                          />
-                        )}
-                      </span>
-                      <span className="lb-step-rank">{row.rank}</span>
+                      <BoardFace id={row.id} nickname={row.nickname} avatar={row.avatar} frame={row.frame} big />
                     </span>
-                    <b className="lb-step-name">{row.nickname}</b>
-                    <span className="lb-step-main">
-                      {(() => {
-                        const shownXp = row.xp.toLocaleString(lang === 'en' ? 'en-GB' : 'uk-UA')
-                        return <em style={{ '--len': shownXp.length } as CSSProperties}>{shownXp}</em>
-                      })()}
-                      {t('lb.colXp')}
+                    <span className="lb-step-text">
+                      <b className="lb-step-name">{row.nickname}</b>
+                      <span className="lb-step-main">
+                        {(() => {
+                          const shownXp = row.xp.toLocaleString(lang === 'en' ? 'en-GB' : 'uk-UA')
+                          return <em style={{ '--len': shownXp.length } as CSSProperties}>{shownXp}</em>
+                        })()}
+                        <i className="lb-step-unit">{t('lb.colXp')}</i>
+                      </span>
+                      <span className="lb-step-sub">
+                        {row.solved} <i className="lb-step-unit">{t('lb.shortSolved')}</i> · {row.days}/{length}{' '}
+                        <i className="lb-step-unit">{t('lb.colDays')}</i>
+                      </span>
                     </span>
-                    <span className="lb-step-sub">
-                      <span>
-                        {row.solved} {t('lb.shortSolved')}
-                      </span>
-                      <span>
-                        {row.days} {t('lb.colDays')}
-                      </span>
+                    <span className="lb-step-rank">
+                      <i className="lb-step-top">{t('lb.topWord')} </i>
+                      {row.rank}
                     </span>
                   </li>
                 )
@@ -230,23 +251,10 @@ export default function SeasonBoard() {
                         </td>
                         <td className="lb-name">
                           <Link className="lb-player" href={row.me ? href.profile : href.player(row.id)} prefetch={false}>
-                            <span className={`lb-av ${row.avatar ? 'has-pic' : ''}`} data-tone={toneOf(row.nickname)} aria-hidden>
-                              {row.nickname.charAt(0).toUpperCase()}
-                              {row.avatar && (
-                                <img
-                                  src={avatarUrl(row.id, row.avatar)}
-                                  alt=""
-                                  loading="lazy"
-                                  decoding="async"
-                                  onError={(event) => {
-                                    event.currentTarget.hidden = true
-                                  }}
-                                />
-                              )}
-                            </span>
+                            <BoardFace id={row.id} nickname={row.nickname} avatar={row.avatar} frame={row.frame} />
                             <span className="lb-nick">{row.nickname}</span>
                           </Link>
-                          {row.me && <span className="lb-you">{t('lb.you')}</span>}
+                          {row.title && <i className={`player-title is-slim is-${row.title}`}>{t(`title.${row.title}` as UiKey)}</i>}
                         </td>
                         <td className="season-xp-col">
                           <span className="season-xp">
@@ -286,19 +294,29 @@ export default function SeasonBoard() {
         </section>
 
         <aside className="lb-side">
-          {outside && (
+          {!!board && (
             <section className="card season-me">
               <span className="play-card-title">{t('lb.myPlace')}</span>
-              <p className="season-place">
-                <b>#{outside.rank}</b>
-                <span>
-                  {outside.xp.toLocaleString(lang === 'en' ? 'en-GB' : 'uk-UA')} {t('lb.colXp')}
-                </span>
-              </p>
-              {board!.toTop > 0 && (
-                <p className="season-gap">
-                  {t('lb.toTop100')} — {t('lb.moreXp', { xp: board!.toTop.toLocaleString(lang === 'en' ? 'en-GB' : 'uk-UA') })}
-                </p>
+              {board.me ? (
+                <>
+                  <p className="season-place">
+                    <b>#{board.me.rank}</b>
+                    <em>{t('lb.ofPlayers', { total: count(board.total) })}</em>
+                  </p>
+                  {outside && board.toTop > 0 && (
+                    <p className="season-gap">
+                      {t('lb.toTop100')} — {t('lb.moreXp', { xp: count(board.toTop) })}
+                    </p>
+                  )}
+                </>
+              ) : (
+                <>
+                  <p className="season-place is-none">
+                    <b>—</b>
+                    <em>{t('lb.ofPlayers', { total: count(board.total) })}</em>
+                  </p>
+                  <p className="season-gap">{t('lb.noPlace')}</p>
+                </>
               )}
             </section>
           )}

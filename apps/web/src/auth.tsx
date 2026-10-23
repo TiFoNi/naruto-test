@@ -15,6 +15,12 @@ export type User = {
   avatar: string | null
   frame: string | null
   frames: string[]
+  banner: string | null
+  banners: string[]
+  tone: string | null
+  nickTone: string | null
+  title?: string | null
+  titles?: string[]
   level: number
   xp: number
   coins: number
@@ -66,7 +72,6 @@ const early = (): Promise<Answer> => {
 }
 
 const SESSION = 'nanda.session'
-
 export const hadSession = () => {
   try {
     return localStorage.getItem(SESSION) === '1'

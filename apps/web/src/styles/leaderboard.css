@@ -126,15 +126,6 @@
   white-space: normal;
 }
 
-.lb-you {
-  margin-left: 8px;
-  padding: 1px 7px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #0d0f12;
-  font-size: 11px;
-  font-weight: 800;
-}
 
 .lb-blank-inner {
   display: flex;
@@ -222,9 +213,172 @@
   list-style: none;
 }
 
+.season-board .lb-podium {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 12px;
+}
+
+@media (max-width: 560px) {
+  .season-board .lb-podium {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.season-board .lb-step {
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.season-board .lb-step.gold {
+  grid-column: 1 / -1;
+  padding: 12px 16px;
+}
+
+.season-board .lb-step-text {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+
+
+.season-board .lb-av.big {
+  width: 48px;
+  height: 48px;
+  font-size: 19px;
+}
+
+
+.season-board .lb-step-name {
+  margin-top: 0;
+  font-size: 14px;
+}
+
+
+.season-board .lb-step-main {
+  font-size: 11px;
+}
+
+.season-board .lb-step-main em,
+.season-board .lb-step.gold .lb-step-main em {
+  font-size: 21px;
+}
+
+
+.season-board .lb-step-rank {
+  flex: none;
+  align-self: flex-start;
+  padding: 4px 10px;
+  border: 1px solid color-mix(in srgb, var(--medal) 45%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--medal) 14%, transparent);
+  color: var(--medal);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.season-board .lb-step-sub {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-2);
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.lb-step-marks {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, color-mix(in srgb, #ffffff 6%, transparent), transparent);
+}
+
+.season-board .lb-step-main {
+  display: flex;
+  max-width: 100%;
+  height: 28px;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.season-board .lb-step-name {
+  height: 19px;
+  line-height: 19px;
+}
+
+.season-board .lb-step-sub {
+  height: 16px;
+  line-height: 16px;
+}
+
+.lb-step-unit {
+  font-style: normal;
+}
+
+@container (max-width: 430px) {
+  .lb-step-unit {
+    display: none;
+  }
+}
+
+.lb-step-top {
+  font-style: normal;
+}
+
+.season-board .lb-step-text {
+  align-items: flex-start;
+  text-align: left;
+}
+
+
+
+.lb-step-art {
+  position: absolute;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lb-step-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.78;
+}
+
+.lb-step-art::after {
+  position: absolute;
+  background: linear-gradient(180deg, rgb(13 15 18 / 24%), rgb(13 15 18 / 52%) 62%, rgb(13 15 18 / 66%));
+  content: '';
+  inset: 0;
+}
+
+.lb-step.has-art > *:not(.lb-step-art) {
+  position: relative;
+  z-index: 1;
+}
+
 .lb-step {
   container-type: inline-size;
   position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -286,27 +440,6 @@
   position: relative;
 }
 
-.lb-step .lb-av {
-  border: 3px solid var(--medal);
-}
-
-.lb-step-rank {
-  position: absolute;
-  left: 50%;
-  bottom: -10px;
-  transform: translateX(-50%);
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--medal);
-  color: #16191e;
-  font-family: var(--display);
-  font-size: 12px;
-  font-weight: 700;
-  box-shadow: 0 0 0 3px var(--card);
-}
 
 .lb-step-name {
   max-width: 100%;
@@ -360,7 +493,7 @@
 
 .lb-table tbody td,
 .lb-table tfoot td {
-  height: 56px;
+  height: 70px;
   padding: 0 18px;
   border-radius: 0;
   border-bottom: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
@@ -405,7 +538,7 @@
 .lb-player {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
   min-width: 0;
   color: inherit;
   text-decoration: none;
@@ -437,18 +570,17 @@
 
 .lb-meter {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
 }
 
 .lb-meter em {
-  min-width: 34px;
   font-style: normal;
   font-size: 16px;
   font-weight: 700;
   color: var(--text);
-  text-align: right;
+  text-align: left;
 }
 
 .lb-table tfoot td {
@@ -591,23 +723,11 @@
     text-align: center;
   }
 
-  .season-board .lb-step-sub {
-    display: none;
-  }
-
   .season-board .lb-step-main {
     flex-direction: column;
     align-items: center;
     gap: 0;
     text-align: center;
-  }
-
-  .season-board .lb-step-main em {
-    font-size: min(26px, calc((100cqi - 6px) / (var(--len, 5) * 0.72)));
-  }
-
-  .season-board .lb-step.gold .lb-step-main em {
-    font-size: min(30px, calc((100cqi - 6px) / (var(--len, 5) * 0.72)));
   }
 
   .lb-table .lb-bar {
@@ -634,10 +754,6 @@
   border-color: var(--line);
 }
 
-.lb-step.vacant .lb-step-rank {
-  background: var(--card-2);
-  color: var(--text-3);
-}
 
 .lb-step.vacant .lb-step-name {
   color: var(--text-3);
@@ -698,13 +814,49 @@
 
 .season-card {
   display: grid;
-  grid-template-columns: auto minmax(200px, 1fr) minmax(220px, 1fr) auto;
+  grid-template-columns: minmax(220px, 1fr) minmax(0, auto);
   align-items: center;
-  gap: 22px;
+  gap: 20px 26px;
   padding: 18px 20px;
   border-radius: 20px;
   border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
   background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 10%, var(--card)), var(--card) 60%);
+}
+
+.season-left {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.season-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.season-sticks {
+  display: flex;
+  gap: 5px;
+  grid-column: 1 / -1;
+}
+
+.season-sticks i {
+  height: 6px;
+  flex: 1 1 0;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--text-3) 24%, transparent);
+}
+
+.season-sticks i.is-done {
+  background: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.season-sticks i.is-now {
+  background: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 .season-mark {
@@ -727,7 +879,15 @@
 
 .season-copy b {
   font-family: var(--display);
-  font-size: 19px;
+  font-size: 22px;
+}
+
+.season-copy p em {
+  color: var(--accent);
+  white-space: nowrap;
+  font-style: normal;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .season-copy p {
@@ -765,21 +925,28 @@
 .season-line {
   display: block;
   overflow: hidden;
-  height: 6px;
-  border-radius: 999px;
+  height: 7px;
+  border-radius: 0;
   background: var(--card-2);
+  clip-path: polygon(min(4px, 100%) 0, 100% 0, calc(100% - min(10px, 100%)) 100%, 0 100%);
+  filter: drop-shadow(0 1px 3px rgb(0 0 0 / 45%));
 }
 
 .season-line i {
   display: block;
   height: 100%;
-  border-radius: 999px;
+  border-radius: 0;
   background: var(--accent);
 }
 
 .season-rewards {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: flex-end;
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -787,125 +954,89 @@
 
 .season-rewards li {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2px;
   min-width: 0;
-  padding: 10px;
-  text-align: center;
-}
-
-.season-rewards li + li {
-  border-left: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
-}
-
-.season-rewards b {
-  font-size: 13.5px;
-}
-
-.season-rewards small {
-  color: var(--text-3);
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.season-rewards .gold b {
-  color: #f5c451;
-}
-
-.season-rewards .silver b {
-  color: #c9d1dc;
-}
-
-.season-rewards .bronze b {
-  color: #d98a4e;
-}
-
-.season-count {
-  align-self: stretch;
-  justify-content: flex-end;
-  margin-left: 0;
-}
-
-.season-table td {
-  vertical-align: middle;
-}
-
-.season-rank {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: var(--card-2);
-  color: var(--text-2);
-  font-family: var(--display);
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.season-rank.gold {
-  background: linear-gradient(160deg, #ffdd7a, #f0b73c);
-  color: #1a1206;
-}
-
-.season-rank.silver {
-  background: linear-gradient(160deg, #e4e9f1, #c2ccda);
-  color: #171b22;
-}
-
-.season-rank.bronze {
-  background: linear-gradient(160deg, #eaa268, #cf7d3e);
-  color: #1d1108;
-}
-
-.season-table {
-  min-width: 600px;
-}
-
-.season-table .season-xp-col {
-  width: 28%;
-}
-
-.season-table .lb-num {
-  width: 120px;
-}
-
-.season-table .lb-num em {
-  color: var(--text-3);
-  font-style: normal;
-}
-
-.season-xp {
-  display: flex;
+  flex: 0 1 auto;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border: 1px solid color-mix(in srgb, var(--medal, var(--line)) 30%, transparent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--medal, #ffffff) 7%, transparent);
+}
+
+.season-rewards li.gold {
+  --medal: #f5c451;
+}
+
+.season-rewards li.silver {
+  --medal: #c9d1dc;
+}
+
+.season-rewards li.bronze {
+  --medal: #d9a066;
+}
+
+.season-prize-face {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  margin: 0 6px;
+}
+
+.season-rewards li:has(.season-prize-face) {
+  flex-grow: 1.7;
+}
+
+.season-prize-what {
+  display: flex;
   min-width: 0;
-}
-
-.season-xp b {
-  min-width: 68px;
-  font-family: var(--display);
-  font-size: 15px;
-  font-variant-numeric: tabular-nums;
-}
-
-.season-bar {
-  display: block;
   flex: 1 1 auto;
-  min-width: 70px;
-  max-width: 180px;
-  overflow: hidden;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--card-2);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 }
 
-.season-bar i {
-  display: block;
-  height: 100%;
-  border-radius: 999px;
-  background: var(--accent);
+.season-prize-what b {
+  overflow: hidden;
+  color: var(--medal, var(--text));
+  font-size: 13.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .season-rewards {
+    gap: 6px;
+  }
+
+  .season-rewards li {
+    flex: 1 1 0;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .season-prize-what b {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 620px) {
+  .season-rewards li {
+    flex: 1 1 0;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .season-prize-what b {
+    font-size: 11.5px;
+  }
+
+  .season-rewards .player-title.is-slim {
+    padding: 2px 7px;
+    font-size: 9px;
+  }
 }
 
 .season-me {
@@ -928,9 +1059,26 @@
 
 .season-me .season-place {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 10px;
+  gap: 2px 10px;
   margin: 0;
+}
+
+.season-place em {
+  color: var(--text-2);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.season-place span {
+  white-space: nowrap;
+}
+
+.season-place.is-none b {
+  color: var(--text-3);
 }
 
 .season-place b {
@@ -1055,19 +1203,10 @@
   font-weight: 800;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 760px) {
   .season-card {
-    grid-template-columns: auto minmax(0, 1fr);
-  }
-
-  .season-time,
-  .season-rewards {
-    grid-column: 1 / -1;
-  }
-
-  .season-rewards {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    padding-top: 4px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
   }
 }
 
@@ -1080,31 +1219,10 @@
   }
 }
 
-@media (max-width: 620px) {
-  .season-rewards {
-    flex-wrap: wrap;
-  }
-
-  .season-rewards li {
-    flex: 1 1 100px;
-  }
-
-}
-
-
 .lb-av.has-pic {
   position: relative;
   overflow: hidden;
   background: var(--card-2-solid);
-}
-
-.lb-av.has-pic::after {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
-  content: '';
-  pointer-events: none;
 }
 
 .lb-av img {

@@ -62,9 +62,9 @@ export default function AwardFilters() {
           <feFuncB type="linear" slope="1.62" intercept="-0.58" />
         </feComponentTransfer>
         <feComponentTransfer>
-          <feFuncR type="table" tableValues="0.180 0.584 0.867 1.000" />
-          <feFuncG type="table" tableValues="0.027 0.133 0.290 0.776" />
-          <feFuncB type="table" tableValues="0.067 0.235 0.408 0.812" />
+          <feFuncR type="table" tableValues="0.165 0.541 0.831 0.949" />
+          <feFuncG type="table" tableValues="0.020 0.094 0.204 0.690" />
+          <feFuncB type="table" tableValues="0.031 0.110 0.231 0.702" />
         </feComponentTransfer>
       </filter>
       <filter id="tint-secret" colorInterpolationFilters="sRGB">

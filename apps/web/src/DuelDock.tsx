@@ -51,6 +51,8 @@ export default function DuelDock() {
   if (!code || inRoom || !duel) return null
 
   const left = duel.endsAt ? duel.endsAt - Date.now() : 0
+  const title =
+    duel.status === 'playing' ? t('duel.dockTitle') : duel.status === 'finished' ? t('duel.dockPause') : t('duel.dockOpen')
   const note =
     duel.status === 'playing'
       ? `${duel.rival?.nickname ?? ''} · ${clock(left)}`
@@ -70,7 +72,7 @@ export default function DuelDock() {
           <SwordsIcon />
         </span>
         <span className="duel-dock-text">
-          <b>{t('duel.dockTitle')}</b>
+          <b>{title}</b>
           <small>{note}</small>
         </span>
       </button>

@@ -309,7 +309,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('side', 'exact'),
       col('teams', 'list'),
       col('powers', 'list'),
-      col('debutIndex', 'order'),
+      col('debutWork', 'exact'),
     ],
   },
   football: {
@@ -409,6 +409,12 @@ export const MODE_XP_AFTER: Record<ModeId, number> = {
   clue: 5,
 }
 
+export const TITLES = ['admin', 'champion', 'runner', 'hundred'] as const
+
+export type TitleId = (typeof TITLES)[number]
+
+export const isTitle = (value: unknown): value is TitleId => (TITLES as readonly string[]).includes(value as string)
+
 export const PROFILE_BLOCKS = ['worlds', 'awards', 'facts', 'activity'] as const
 
 export type ProfileBlock = (typeof PROFILE_BLOCKS)[number]
@@ -418,6 +424,121 @@ export const PROFILE_BLOCKS_DEFAULT: ProfileBlock[] = ['worlds', 'awards']
 export const isBlock = (value: unknown): value is ProfileBlock => (PROFILE_BLOCKS as readonly string[]).includes(value as string)
 
 export const profileBlocks = (value: unknown) => (Array.isArray(value) ? [...new Set(value.filter(isBlock))] : null)
+
+export const BANNERS = ['frog', 'night', 'sharingan', 'blossom', 'crows', 'fireflies', 'aot', 'kny', 'tg', 'dn'] as const
+
+export type Banner = (typeof BANNERS)[number]
+
+export const isBanner = (value: unknown): value is Banner => (BANNERS as readonly string[]).includes(value as string)
+
+export const bannerList = (value: unknown) => (Array.isArray(value) ? [...new Set(value.filter(isBanner))] : null)
+
+export const RARITIES = ['common', 'rare', 'epic', 'legend'] as const
+
+export type Rarity = (typeof RARITIES)[number]
+
+export const RARITY_PRICE: Record<Rarity, { frame: number; banner: number; bundle: number }> = {
+  common: { frame: 200, banner: 160, bundle: 300 },
+  rare: { frame: 400, banner: 320, bundle: 600 },
+  epic: { frame: 700, banner: 560, bundle: 1050 },
+  legend: { frame: 1200, banner: 960, bundle: 1800 },
+}
+
+export const FRAME_RARITY: Record<string, Rarity> = {
+  pond: 'common',
+  maple: 'common',
+  crows: 'common',
+  blossom: 'common',
+  fireflies: 'common',
+  aot: 'rare',
+  kny: 'rare',
+  tg: 'rare',
+  dn: 'rare',
+}
+
+export const BANNER_RARITY: Record<string, Rarity> = {
+  frog: 'common',
+  night: 'common',
+  crows: 'common',
+  blossom: 'common',
+  fireflies: 'common',
+  aot: 'rare',
+  kny: 'rare',
+  tg: 'rare',
+  dn: 'rare',
+  sharingan: 'legend',
+}
+
+const priced = <T extends Record<string, Rarity>>(rarity: T, kind: 'frame' | 'banner') =>
+  Object.fromEntries(Object.entries(rarity).map(([id, tier]) => [id, RARITY_PRICE[tier][kind]])) as Record<string, number>
+
+export const FRAME_COSTS: Record<string, number> = priced(FRAME_RARITY, 'frame')
+
+export const BANNER_COSTS: Record<string, number> = priced(BANNER_RARITY, 'banner')
+
+const RANK: Record<Rarity, number> = { common: 0, rare: 1, epic: 2, legend: 3 }
+
+const pair = (frame: string, banner: string) => {
+  const tier = RANK[FRAME_RARITY[frame]] >= RANK[BANNER_RARITY[banner]] ? FRAME_RARITY[frame] : BANNER_RARITY[banner]
+  return { frame, banner, rarity: tier, cost: RARITY_PRICE[tier].bundle }
+}
+
+export const BUNDLES = [
+  { id: 'pond', ...pair('pond', 'frog') },
+  { id: 'maple', ...pair('maple', 'night') },
+  { id: 'crows', ...pair('crows', 'crows') },
+  { id: 'blossom', ...pair('blossom', 'blossom') },
+  { id: 'fireflies', ...pair('fireflies', 'fireflies') },
+  { id: 'aot', ...pair('aot', 'aot') },
+  { id: 'kny', ...pair('kny', 'kny') },
+  { id: 'tg', ...pair('tg', 'tg') },
+  { id: 'dn', ...pair('dn', 'dn') },
+]
+
+export type Bundle = (typeof BUNDLES)[number]
+
+export const bundleOf = (id: unknown) => BUNDLES.find((one) => one.id === id) ?? null
+
+export const frameRarity = (id: unknown) => (typeof id === 'string' ? (FRAME_RARITY[id] ?? null) : null)
+
+export const bannerRarity = (id: unknown) => (typeof id === 'string' ? (BANNER_RARITY[id] ?? null) : null)
+
+export const frameCost = (id: unknown) => (typeof id === 'string' ? (FRAME_COSTS[id] ?? null) : null)
+
+export const bannerCost = (id: unknown) => (typeof id === 'string' ? (BANNER_COSTS[id] ?? null) : null)
+
+export const bundleFull = (one: Bundle) => (frameCost(one.frame) ?? 0) + (bannerCost(one.banner) ?? 0)
+
+export const TONES = ['naruto', 'onepiece', 'se', 'bc', 'genshin', 'jjk', 'manga', 'hxh', 'jojo', 'kny', 'marvel'] as const
+
+export const TONE_HEX = /^#[0-9a-f]{6}$/i
+
+export const isTone = (value: unknown): value is string =>
+  typeof value === 'string' && ((TONES as readonly string[]).includes(value) || TONE_HEX.test(value))
+
+export const HERO_TILES = ['solved', 'duels', 'streak', 'rank', 'awards', 'challenges'] as const
+
+export type HeroTile = (typeof HERO_TILES)[number]
+
+export const HERO_TILES_DEFAULT: (HeroTile | null)[] = ['solved', 'duels', 'streak']
+
+export const HERO_TILES_MAX = 3
+
+export const isHeroTile = (value: unknown): value is HeroTile => (HERO_TILES as readonly string[]).includes(value as string)
+
+export const heroTiles = (value: unknown) => {
+  if (!Array.isArray(value)) return null
+  const seen = new Set<string>()
+  const slots: (HeroTile | null)[] = []
+  for (let spot = 0; spot < HERO_TILES_MAX; spot++) {
+    const one = value[spot]
+    if (isHeroTile(one) && !seen.has(one)) {
+      seen.add(one)
+      slots.push(one)
+    } else slots.push(null)
+  }
+  return slots
+}
 
 export const ONE_TRY_GAMES: GameId[] = ['manga']
 
@@ -597,12 +718,12 @@ export function judgeAll(game: GameId, guess: Record<string, unknown>, answer: R
   return Object.fromEntries(GAME_SPECS[game].columns.map((spec) => [spec.key, judge(spec, guess, answer)]))
 }
 
-export type CoinPack = { id: string; usd: number; stars: number; base: number; bonus: number; art: string; grow: number }
+export type CoinPack = { id: string; usd: number; stars: number; base: number; bonus: number; art: string; grow: number; starsOnly?: boolean }
 
 export const COIN_PACKS: CoinPack[] = [
-  { id: 'small', usd: 1.99, stars: 80, base: 250, bonus: 50, art: 'coins-big', grow: 0.78 },
-  { id: 'mid', usd: 5.99, stars: 250, base: 1000, bonus: 150, art: 'coins-big', grow: 1 },
-  { id: 'big', usd: 17.99, stars: 750, base: 3000, bonus: 500, art: 'coins-big', grow: 1.22 },
+  { id: 'small', usd: 1.5, stars: 120, base: 300, bonus: 0, art: 'coins-big', grow: 0.78, starsOnly: true },
+  { id: 'mid', usd: 4.5, stars: 350, base: 900, bonus: 150, art: 'coins-big', grow: 1 },
+  { id: 'big', usd: 12.5, stars: 950, base: 3000, bonus: 600, art: 'coins-big', grow: 1.22 },
 ]
 
 export const packOf = (id: unknown): CoinPack | null => COIN_PACKS.find((one) => one.id === id) ?? null
@@ -651,11 +772,9 @@ export function levelAt(xp: number) {
 }
 
 export const LEVEL_BIG = 10
-export const LEVEL_MID = 5
+export const LEVEL_MID = 1
 export const LEVEL_LAST = 300
+export const LEVEL_COINS = 25
 
-export const levelCoins = (level: number) => {
-  if (!Number.isInteger(level) || level < 1 || level > LEVEL_LAST) return 0
-  const step = level <= 100 ? 100 : level <= 200 ? 200 : 300
-  return level % LEVEL_BIG === 0 ? step : level % LEVEL_MID === 0 ? step / 4 : 0
-}
+export const levelCoins = (level: number) =>
+  Number.isInteger(level) && level >= 1 && level <= LEVEL_LAST ? LEVEL_COINS : 0

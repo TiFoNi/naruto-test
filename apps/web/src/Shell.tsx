@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Avatar from './Avatar'
@@ -18,16 +18,19 @@ import PickName from './PickName'
 import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
+import { bannerClips, bannerPic, bannerSpot, isLive } from './banners'
+import { MARKS } from './Profile'
+import { shownTone, watchTone } from './tone'
 import { dropCoins, dropFrames, dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
 import { FRAMES, frameUrl } from './frames'
-import { MODE_XP, MODE_XP_AFTER } from '@nanda/game'
+import { MODE_XP, MODE_XP_AFTER, TONE_HEX, levelAt } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
-import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MedalIcon, MenuIcon, PodiumIcon, ShopIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
+import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MedalIcon, MenuIcon, PodiumIcon, ShopIcon, TrophyIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { api } from './api'
 import { openStream } from './stream'
-import { gameById } from './games'
+import { GAMES, gameById } from './games'
 import type { GameId } from './games/types'
 import { MODES } from './modes'
 import { useBeforePaint } from './paint'
@@ -49,6 +52,8 @@ const SECTIONS = new Set([
   'privacy',
   'profile',
   'settings',
+  'shop',
+  'support',
   'terms',
   'u',
   'worlds',
@@ -130,6 +135,63 @@ const untilMidnight = () => {
   }).formatToParts(new Date())
   const at = (type: string) => Number(parts.find((part) => part.type === type)?.value ?? 0)
   return 86_400 - ((at('hour') % 24) * 3600 + at('minute') * 60 + at('second'))
+}
+
+const toneHex = (tone?: string | null) =>
+  GAMES.find((one) => one.id === tone)?.accent ?? (tone && TONE_HEX.test(tone) ? tone : null)
+
+function MiniMe() {
+  const { t } = useI18n()
+  const { user } = useAuth()
+  if (!user) return null
+
+  const stand = levelAt(user.xp)
+  const share = Math.round((stand.into / stand.need) * 100)
+  const hue = GAMES.find((one) => one.id === user.tone)?.accent ?? (user.tone && TONE_HEX.test(user.tone) ? user.tone : null)
+
+  return (
+    <div className="mini-me" style={(hue ? { '--accent': hue } : {}) as React.CSSProperties}>
+      <span className="mini-me-art" aria-hidden>
+        {user.banner && isLive(user.banner) ? (
+          <video autoPlay loop muted playsInline preload="auto" poster={bannerPic(user.banner)} style={{ objectPosition: bannerSpot(user.banner) }}>
+            {bannerClips(user.banner).map((clip) => (
+              <source key={clip.type} src={clip.src} type={clip.type} />
+            ))}
+          </video>
+        ) : user.banner ? (
+          <img src={bannerPic(user.banner)} alt="" style={{ objectPosition: bannerSpot(user.banner) }} />
+        ) : (
+          <i className="mini-me-marks">
+            {MARKS.map((mark) => (
+              <em
+                key={mark.left}
+                style={
+                  {
+                    left: mark.left,
+                    top: mark.top,
+                    fontSize: Math.round(mark.size * 0.42),
+                    transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
+                  } as React.CSSProperties
+                }
+              >
+                ?!
+              </em>
+            ))}
+          </i>
+        )}
+      </span>
+      <div className="mini-me-body" aria-hidden />
+      <div className="mini-me-level">
+        <span>{t('nav.level', { level: stand.level })}</span>
+        <em>
+          {stand.into} / {stand.need} XP
+        </em>
+      </div>
+      <div className="level-bar" aria-hidden>
+        <i style={{ width: `${share}%` }} />
+      </div>
+    </div>
+  )
 }
 
 function XpToday() {
@@ -218,21 +280,21 @@ function XpToday() {
 
 function AccountMenu({
   nickname,
-  level,
   section,
   id,
   avatar,
+  frame,
   naming,
 }: {
   nickname: string
-  level: number
   section?: string
   id?: string
   avatar?: string | null
+  frame?: string | null
   naming?: boolean
 }) {
   const { t } = useI18n()
-  const { logout } = useAuth()
+  const { user, logout } = useAuth()
   const href = useHref()
   const [open, setOpen] = useState(false)
   const box = useDropdown(open, setOpen)
@@ -256,12 +318,12 @@ function AccountMenu({
         onClick={() => setOpen(!open)}
       >
         <span className="sr-only">{t('nav.profile')}: </span>
-        <Avatar className="small" id={id} name={nickname} avatar={avatar} />
         <span className="account-name">{nickname}</span>
-        <span className="account-level">{t('nav.level', { level })}</span>
+        <Avatar className="small" id={id} name={nickname} avatar={avatar} frame={frame} />
       </button>
 
-      <div className="account-menu">
+      <div className="account-menu" style={(toneHex(user?.tone) ? { '--accent': toneHex(user?.tone) } : {}) as React.CSSProperties}>
+        {open && <MiniMe />}
         {open && <XpToday />}
         <Link href={href.profile} onClick={() => setOpen(false)} prefetch={false}>
           <UserIcon />
@@ -270,6 +332,10 @@ function AccountMenu({
         <Link href={href.levels} onClick={() => setOpen(false)} prefetch={false}>
           <MedalIcon />
           {t('nav.levels')}
+        </Link>
+        <Link href={href.achievements} onClick={() => setOpen(false)} prefetch={false}>
+          <TrophyIcon />
+          {t('ach.title')}
         </Link>
         <Link href={href.friends} onClick={() => setOpen(false)} prefetch={false}>
           <UsersIcon />
@@ -739,11 +805,13 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const naming = Boolean(user && user.named === false)
   const bare = section === 'login' || gated
   const game = section === 'play' ? metaById(games, gameId as never) : null
+  const tone = useSyncExternalStore(watchTone, shownTone, () => null)
   useBeforePaint(() => {
     const root = document.documentElement
     const signed = user ? true : loading && root.dataset.auth === '1'
-    root.style.setProperty('--accent', signed && game ? game.accent : BRAND.accent)
-  }, [user, loading, game?.accent])
+    const shown = games.find((one) => one.id === tone)?.accent ?? (tone && TONE_HEX.test(tone) ? tone : BRAND.accent)
+    root.style.setProperty('--accent', signed && game ? game.accent : shown)
+  }, [user, loading, game?.accent, games, tone])
 
   useEffect(() => {
     if (!user) return
@@ -819,10 +887,10 @@ export default function Shell({ children, games }: { children: ReactNode; games:
                     <Bell />
                     <AccountMenu
                       nickname={user.nickname}
-                      level={user.level}
                       section={section}
                       id={user.id}
                       avatar={user.avatar}
+                      frame={user.frame}
                       naming={naming}
                     />
                   </>
@@ -838,7 +906,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
           children
         ) : loading ? (
           section === 'duel' || section === 'duels' ? (
-            <DuelSkeleton />
+            <DuelSkeleton kind={section === 'duels' ? 'format' : 'duel'} />
           ) : section === 'c' ? (
             <ChallengeSkeleton />
           ) : (

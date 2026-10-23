@@ -1,0 +1,127 @@
+.frame-admin-body {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.frame-admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.frame-admin-pick {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card-2);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.frame-admin-pick span {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.frame-admin-pick.on {
+  border-color: var(--accent);
+}
+
+.frame-admin-main {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.frame-admin-stage {
+  display: flex;
+  align-items: flex-end;
+  gap: 40px;
+  padding: 28px 24px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card-2);
+}
+
+.frame-admin-cell {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+.frame-admin-cell > span {
+  display: grid;
+  place-items: center;
+}
+
+.frame-admin-cell .avatar {
+  width: var(--face);
+  height: var(--face);
+}
+
+.frame-admin-cell small {
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.frame-admin-knobs {
+  display: grid;
+  gap: 14px;
+  max-width: 420px;
+}
+
+.frame-admin-knobs label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.frame-admin-knobs label span {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-2);
+}
+
+.frame-admin-knobs label b {
+  color: var(--accent);
+}
+
+.frame-admin-knobs input {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.frame-admin-out {
+  width: 100%;
+  max-width: 420px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card-2);
+  color: var(--text-2);
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  resize: vertical;
+}
+
+.frame-admin-acts {
+  display: flex;
+  gap: 10px;
+}
+
+.frame-admin-acts button {
+  flex: 1 1 0;
+}
