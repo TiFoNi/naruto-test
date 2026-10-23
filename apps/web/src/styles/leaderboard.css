@@ -314,7 +314,7 @@
 
 .lb-podium.is-cards .lb-step-name {
   margin-top: 0;
-  font-size: 14px;
+  font-size: 20px;
 }
 
 
@@ -387,8 +387,8 @@
 }
 
 .lb-podium.is-cards .lb-step-name {
-  height: 19px;
-  line-height: 19px;
+  height: 26px;
+  line-height: 26px;
 }
 
 .lb-podium.is-cards .lb-step-sub {
@@ -618,7 +618,7 @@
 
 .lb-nick {
   flex: none;
-  font-size: 15px;
+  font-size: 17px;
   white-space: nowrap;
 }
 

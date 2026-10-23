@@ -3539,6 +3539,212 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   }
 }
 
+.duel-format-hint {
+  margin: 4px 0 0;
+  color: var(--text-3);
+  font-size: 13.5px;
+}
+
+.duel-matrix {
+  display: grid;
+  align-items: stretch;
+  gap: 10px 14px;
+  grid-template-columns: auto repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto repeat(2, minmax(0, 1fr));
+}
+
+.duel-matrix-col {
+  align-self: end;
+  padding: 0 2px 2px;
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.duel-matrix-side {
+  display: flex;
+  min-width: 112px;
+  max-width: 150px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding-right: 6px;
+}
+
+.duel-matrix-side b {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.duel-matrix-side em {
+  color: var(--text-3);
+  font-size: 12px;
+  font-style: normal;
+}
+
+.duel-matrix .duel-format-card {
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+}
+
+.duel-matrix .duel-format-card .duel-pips {
+  border: 0;
+  background: none;
+  flex: 1 1 auto;
+  padding: 0;
+  gap: 10px;
+}
+
+.duel-matrix .duel-pip-vs {
+  font-size: 13px;
+}
+
+.duel-matrix .duel-format-card.on {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  background: color-mix(in srgb, var(--accent) 10%, var(--card));
+}
+
+.duel-matrix .duel-format-card.on .duel-pips {
+  border: 0;
+  background: none;
+}
+
+.duel-matrix .duel-format-card b {
+  font-size: 19px;
+}
+
+.duel-matrix .duel-format-card em {
+  font-size: 12px;
+}
+
+.duel-matrix .duel-format-name {
+  justify-content: space-between;
+  padding: 0;
+}
+
+.duel-matrix .duel-format-card {
+  container-type: inline-size;
+  --pip: clamp(
+    22px,
+    calc((100cqi - 6px - (var(--sides) - 1) * 48px - (var(--cols) - var(--sides)) * 5px) / var(--cols)),
+    52px
+  );
+}
+
+.duel-matrix .duel-pips i {
+  width: var(--pip);
+  height: auto;
+  flex: none;
+  aspect-ratio: 1;
+}
+
+.duel-matrix .duel-pip-set {
+  justify-content: center;
+}
+
+.duel-matrix .duel-pip-vs {
+  flex: none;
+}
+
+.duel-matrix .duel-pip-set.is-3 {
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(2, var(--pip));
+  justify-content: center;
+}
+
+.duel-matrix .duel-pip-set.is-3 > i:last-child {
+  grid-column: 1 / -1;
+  justify-self: center;
+}
+
+.duel-format-bar {
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.duel-format-pick {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 14px 14px 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card);
+}
+
+.duel-format-bar .duel-format-pick .primary.big {
+  min-width: 0;
+  height: 46px;
+  margin: 0 0 0 auto;
+  align-self: center;
+  padding: 0 28px;
+  border-radius: 13px;
+}
+
+.duel-format-pick > b {
+  flex: none;
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.duel-format-pick > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.duel-format-pick strong {
+  font-size: 13.5px;
+  font-weight: 800;
+}
+
+.duel-format-pick em {
+  color: var(--text-3);
+  font-size: 12px;
+  font-style: normal;
+}
+
+@media (max-width: 1140px) {
+  .duel-matrix {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+
+  .duel-matrix-corner,
+  .duel-matrix-col {
+    display: none;
+  }
+
+  .duel-matrix-side {
+    max-width: none;
+    margin-top: 8px;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .duel-format-bar {
+    flex-wrap: wrap;
+  }
+
+  .duel-format-pick {
+    flex: 1 1 200px;
+  }
+}
+
 .duel-pips {
   position: relative;
   display: flex;
@@ -3562,8 +3768,8 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .duel-pip-set {
   display: flex;
-  flex-direction: column;
-  gap: clamp(6px, 0.9vw, 9px);
+  align-items: center;
+  gap: 5px;
 }
 
 .duel-pip-vs {

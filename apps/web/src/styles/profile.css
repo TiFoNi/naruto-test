@@ -1579,7 +1579,7 @@
 }
 
 .profile-facts .fact-rank {
-  --place: var(--accent);
+  --place: var(--text);
 }
 
 .profile-facts .fact-rank span {
@@ -1602,7 +1602,7 @@
 }
 
 .profile-facts .fact-rank {
-  background: color-mix(in srgb, var(--accent) 13%, var(--card-2));
+  background: var(--card-2);
 }
 
 button.fact-rank {
