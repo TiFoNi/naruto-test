@@ -1,5 +1,6 @@
 import { AWARD_FRAMES, NATURE_FRAMES, OTHER_FRAMES, WORLD_FRAMES } from '@nanda/core/frame-list'
 import tune from './frames-tune.json'
+import { api } from './api'
 import { GAMES } from './games'
 import { l10n } from './games/types'
 import type { L10n } from './i18n/langs'
@@ -41,28 +42,63 @@ export type FrameTune = { scale: number; x: number; y: number; cut: number; cx: 
 
 export const TUNE_DEFAULT: FrameTune = { scale: 1.22, x: 0, y: 0, cut: 100, cx: 0, cy: 0 }
 
-const TUNE_KEY = 'nanda.frame-tune'
+const LEGACY_KEY = 'nanda.frame-tune'
 
-const saved = (): Record<string, FrameTune> => {
+export const legacyTune = (): Record<string, Partial<FrameTune>> => {
   try {
-    return JSON.parse(localStorage.getItem(TUNE_KEY) ?? '{}') as Record<string, FrameTune>
+    return JSON.parse(localStorage.getItem(LEGACY_KEY) ?? '{}') as Record<string, Partial<FrameTune>>
   } catch {
     return {}
   }
 }
 
-export const keepTune = (next: Record<string, FrameTune>) => {
+export const dropLegacy = () => {
   try {
-    localStorage.setItem(TUNE_KEY, JSON.stringify(next))
+    localStorage.removeItem(LEGACY_KEY)
   } catch {
     /* приватний режим */
   }
 }
 
+let live: Record<string, Partial<FrameTune>> = {}
+
+let stamp = 0
+
+export const tuneStamp = () => stamp
+
+const watchers = new Set<() => void>()
+
+export const watchTune = (fn: () => void) => {
+  watchers.add(fn)
+  return () => {
+    watchers.delete(fn)
+  }
+}
+
+export const setTune = (next: Record<string, Partial<FrameTune>>) => {
+  live = next
+  stamp += 1
+  for (const fn of watchers) fn()
+}
+
+let asked = false
+
+export const loadTune = async () => {
+  if (asked) return
+  asked = true
+  const { ok, data } = await api<{ tune?: Record<string, Partial<FrameTune>> }>('frames/tune')
+  if (ok && data.tune) setTune(data.tune)
+}
+
+export const keepTune = async (next: Record<string, FrameTune>) => {
+  setTune(next)
+  return api('admin/frames/tune', { tune: next })
+}
+
 export const tuneOf = (id: string): FrameTune => ({
   ...TUNE_DEFAULT,
   ...((tune as Record<string, Partial<FrameTune>>)[id] ?? {}),
-  ...(typeof window === 'undefined' ? {} : (saved()[id] ?? {})),
+  ...(live[id] ?? {}),
 })
 
 export const frameStyle = (id: string) => {

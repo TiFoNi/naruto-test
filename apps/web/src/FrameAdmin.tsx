@@ -3,7 +3,7 @@
 import { useEffect, useState, type CSSProperties } from 'react'
 import Avatar from './Avatar'
 import { useAuth } from './auth'
-import { FRAMES, TUNE_DEFAULT, frameUrl, keepTune, tuneOf, type FrameTune } from './frames'
+import { FRAMES, TUNE_DEFAULT, dropLegacy, frameUrl, keepTune, legacyTune, loadTune, setTune, tuneOf, type FrameTune } from './frames'
 
 const SIZES = [148, 92, 44]
 
@@ -20,10 +20,14 @@ export default function FrameAdmin() {
   const { user } = useAuth()
   const [picked, setPicked] = useState(FRAMES[0]?.id ?? '')
   const [all, setAll] = useState<Record<string, FrameTune>>({})
-  const [took, setTook] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [kept, setSaved] = useState(false)
 
   useEffect(() => {
-    setAll(Object.fromEntries(FRAMES.map((one) => [one.id, tuneOf(one.id)])))
+    void loadTune().then(() => {
+      const mine = legacyTune()
+      setAll(Object.fromEntries(FRAMES.map((one) => [one.id, { ...tuneOf(one.id), ...(mine[one.id] ?? {}) }])))
+    })
   }, [])
 
   const one = all[picked] ?? TUNE_DEFAULT
@@ -31,13 +35,25 @@ export default function FrameAdmin() {
   const set = (key: keyof FrameTune, value: number) => {
     const next = { ...all, [picked]: { ...one, [key]: value } }
     setAll(next)
-    keepTune(next)
+    setTune(next)
+    setSaved(false)
   }
 
   const reset = () => {
     const next = { ...all, [picked]: TUNE_DEFAULT }
     setAll(next)
-    keepTune(next)
+    setTune(next)
+    setSaved(false)
+  }
+
+  const save = async () => {
+    setBusy(true)
+    const { ok } = await keepTune(Object.fromEntries(FRAMES.map((frame) => [frame.id, all[frame.id] ?? TUNE_DEFAULT])))
+    setBusy(false)
+    if (!ok) return
+    dropLegacy()
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
   }
 
   const text = JSON.stringify(
@@ -50,7 +66,7 @@ export default function FrameAdmin() {
     <div className="admin frame-admin">
       <header className="admin-head">
         <h1>Посадка рамок</h1>
-        <p className="muted">Крути ползунки — аватарка меняется сразу по всему сайту. Потом скопируй JSON и отдай его мне.</p>
+        <p className="muted">Крути ползунки — превью меняется сразу. «Сохранить для всех» кладёт значения на сервер, и их видят все игроки.</p>
       </header>
 
       <div className="frame-admin-body">
@@ -101,15 +117,8 @@ export default function FrameAdmin() {
               </label>
             ))}
             <div className="frame-admin-acts">
-              <button
-                type="button"
-                onClick={() => {
-                  void navigator.clipboard.writeText(text)
-                  setTook(true)
-                  setTimeout(() => setTook(false), 1600)
-                }}
-              >
-                {took ? 'Скопировано' : 'Сохранить'}
+              <button type="button" disabled={busy} onClick={() => void save()}>
+                {busy ? 'Сохраняю…' : kept ? 'Сохранено для всех' : 'Сохранить для всех'}
               </button>
               <button type="button" className="ghost" onClick={reset}>
                 Сбросить

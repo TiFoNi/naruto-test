@@ -22,7 +22,7 @@ import { bannerClips, bannerPic, bannerSpot, isLive } from './banners'
 import { MARKS } from './Profile'
 import { shownTone, watchTone } from './tone'
 import { dropCoins, dropFrames, dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
-import { FRAMES, frameUrl } from './frames'
+import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
 import { MODE_XP, MODE_XP_AFTER, TONE_HEX, levelAt } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
@@ -806,6 +806,12 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const bare = section === 'login' || gated
   const game = section === 'play' ? metaById(games, gameId as never) : null
   const tone = useSyncExternalStore(watchTone, shownTone, () => null)
+  useSyncExternalStore(watchTune, tuneStamp, () => 0)
+
+  useEffect(() => {
+    void loadTune()
+  }, [])
+
   useBeforePaint(() => {
     const root = document.documentElement
     const signed = user ? true : loading && root.dataset.auth === '1'

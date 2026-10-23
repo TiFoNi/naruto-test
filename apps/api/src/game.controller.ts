@@ -14,6 +14,7 @@ import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as adminShots from '@nanda/core/endpoints/admin-shots'
 import * as adminZoom from '@nanda/core/endpoints/admin-zoom'
 import * as adminTitles from '@nanda/core/endpoints/admin-titles'
+import * as framesTune from '@nanda/core/endpoints/frames-tune'
 import * as chat from '@nanda/core/endpoints/chat'
 import * as pulse from '@nanda/core/endpoints/pulse'
 import * as challenge from '@nanda/core/endpoints/challenge'
@@ -115,6 +116,16 @@ export class GameController {
   @Post('admin/zoom')
   adminZoomSave(@Req() req: Request, @Res() res: Response) {
     return bridge(adminZoom.POST, req, res)
+  }
+
+  @Get('frames/tune')
+  framesTune(@Req() req: Request, @Res() res: Response) {
+    return bridge(framesTune.GET, req, res)
+  }
+
+  @Post('admin/frames/tune')
+  framesTuneSave(@Req() req: Request, @Res() res: Response) {
+    return bridge(framesTune.POST, req, res)
   }
 
   @Get('admin/titles')
