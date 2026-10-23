@@ -135,7 +135,12 @@ export const POST = handle(async (request) => {
       {
         $inc: { coins: -cost },
         ...(frame || banner
-          ? { $addToSet: { ...(frame ? { frames: frame } : {}), ...(banner ? { banners: banner } : {}) } }
+          ? {
+              $addToSet: {
+                ...(frame ? { frames: frame, framesSeen: frame } : {}),
+                ...(banner ? { banners: banner } : {}),
+              },
+            }
           : {}),
       },
       { returnDocument: 'after' },
