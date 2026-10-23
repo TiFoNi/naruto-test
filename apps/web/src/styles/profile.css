@@ -2468,12 +2468,14 @@ button.fact-rank:hover {
     letter-spacing: 0.04em;
   }
 
-  .profile-hero-body .profile-hero-tiles.is-under > .hero-tile {
+  .profile-hero-body .profile-hero-tiles.is-under > .hero-tile,
+  .profile-hero-body .profile-hero-tiles.is-under > .hero-tile .hero-tile-open {
     align-items: center;
     text-align: center;
   }
 
-  .profile-hero-body .profile-hero-tiles.is-under > .hero-tile b {
+  .profile-hero-body .profile-hero-tiles.is-under > .hero-tile b,
+  .profile-hero-body .profile-hero-tiles.is-under > .hero-tile .hero-tile-open b {
     justify-content: center;
     gap: 0.3em;
     font-size: clamp(15px, 12vw - 21px, 26px);
