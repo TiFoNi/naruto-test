@@ -94,7 +94,7 @@ export function UserIcon({ className }: IconProps) {
 
 export function BellIcon({ className }: IconProps) {
   return (
-    <svg {...base} className={`icon ${className ?? ''}`} fill="currentColor" stroke="none">
+    <svg {...base} className={`icon ${className ?? ''}`} viewBox="0.15 -0.25 23.6 23.6" fill="currentColor" stroke="none">
       <path d="M12 2.1c.7 0 1.3.6 1.3 1.3v.5a6.2 6.2 0 0 1 4.9 6v2.4c0 1.2.4 2.3 1.2 3.2.6.7.1 1.8-.8 1.8H5.4c-.9 0-1.4-1.1-.8-1.8.8-.9 1.2-2 1.2-3.2V9.9a6.2 6.2 0 0 1 4.9-6v-.5c0-.7.6-1.3 1.3-1.3Z" />
       <path d="M9.6 18.6h4.8a2.4 2.4 0 0 1-4.8 0Z" />
     </svg>
@@ -126,7 +126,7 @@ const sword = (
 
 export function SwordsIcon({ className }: IconProps) {
   return (
-    <svg {...base} className={`icon ${className ?? ''}`} viewBox="0 0 48 48" fill="currentColor" stroke="none">
+    <svg {...base} className={`icon ${className ?? ''}`} viewBox="-1.2 -1.2 50.4 50.4" fill="currentColor" stroke="none">
       <g transform="translate(24 24) scale(1.5) translate(-23.95 -21.85)">
         <g transform="rotate(45 24 24) translate(-2 0)">{sword}</g>
         <g transform="rotate(-45 24 24) translate(2 0)">{sword}</g>
@@ -137,7 +137,7 @@ export function SwordsIcon({ className }: IconProps) {
 
 export function PodiumIcon({ className }: IconProps) {
   return (
-    <svg {...base} className={`icon ${className ?? ''}`} fill="currentColor" stroke="none">
+    <svg {...base} className={`icon ${className ?? ''}`} viewBox="0.25 0.25 23.5 23.5" fill="currentColor" stroke="none">
       <rect x="8.9" y="2.6" width="6.2" height="18.8" rx="1.5" />
       <rect x="1.3" y="9" width="6.2" height="12.4" rx="1.5" />
       <rect x="16.5" y="12.8" width="6.2" height="8.6" rx="1.5" />
@@ -420,7 +420,7 @@ export function CoinIcon({ className }: IconProps) {
 
 export function ShopIcon({ className }: IconProps) {
   return (
-    <svg {...base} className={`icon ${className ?? ''}`} fill="currentColor" stroke="none">
+    <svg {...base} className={`icon ${className ?? ''}`} viewBox="1.75 1.95 20.6 20.6" fill="currentColor" stroke="none">
       <path d="M4.7 4.9a1.3 1.3 0 0 1 1.2-.9h12.2c.6 0 1.1.4 1.2.9l1.6 4.7c.2.6-.3 1.2-.9 1.2H4a1 1 0 0 1-.9-1.2Z" />
       <path
         fillRule="evenodd"
