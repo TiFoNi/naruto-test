@@ -3764,6 +3764,22 @@ button.ghost.small {
 }
 
 @media (max-width: 560px) {
+  .profile.sk-profile .level-line .sk.chip.wide {
+    display: none;
+  }
+
+  .profile.sk-profile .level-line .sk.chip.lvl {
+    margin-left: 0;
+  }
+
+  .profile.sk-profile .profile-banner {
+    height: 164px;
+  }
+
+  .profile.sk-profile .profile-hero-body {
+    margin-top: -143px;
+  }
+
   .profile.sk-profile .profile-hero-body {
     margin-top: -56px;
     gap: 14px;
@@ -3776,8 +3792,8 @@ button.ghost.small {
   }
 
   .profile.sk-profile .profile-hero-id .sk.ava {
-    width: 116px;
-    height: 116px;
+    width: 108px;
+    height: 108px;
   }
 
   .profile.sk-profile .profile-hero-name .sk.nick {
@@ -12314,6 +12330,18 @@ html[data-auth] .guest-note {
     margin-bottom: 100px;
   }
 
+  .profile.sk-profile .profile-banner {
+    height: 167px;
+  }
+
+  .profile.sk-profile .profile-hero-body {
+    margin-top: -142px;
+  }
+
+  .profile.sk-profile .profile-hero-id {
+    translate: none;
+  }
+
   .profile.sk-profile .profile-hero-tiles {
     position: absolute;
     top: calc(100% + 14px);
@@ -12326,4 +12354,6 @@ html[data-auth] .guest-note {
   .profile.sk-profile .profile-hero-tiles .hero-tile:nth-child(n + 4) {
     display: none;
   }
+
+
 }

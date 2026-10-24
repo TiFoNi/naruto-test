@@ -1182,7 +1182,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
             <Link className="level-panel is-link" href={href.levels} prefetch={false}>
               <div className="level-line">
                 <span className="level-xp">
-                  <b>{summary?.level.into ?? 0}</b> / {summary?.level.need ?? 0} XP
+                  <b>{summary?.level.into ?? 0}</b> <small>/ {summary?.level.need ?? 0} XP</small>
                 </span>
                 <span className="profile-hero-level">{t('nav.level', { level: summary?.level.level ?? 1 })}</span>
               </div>

@@ -1190,7 +1190,7 @@
 
 .profile-hero-name .player-tag {
   margin-left: 0;
-  font-size: 16px;
+  font-size: clamp(12.5px, 1.25vw, 16px);
   color: color-mix(in srgb, var(--nick, #c9d1dd) 72%, #0d0f12);
   text-shadow: 0 1px 3px rgb(0 0 0 / 45%);
 }
@@ -1239,12 +1239,6 @@
 
 .profile-hero .level-xp {
   white-space: nowrap;
-}
-
-@container (max-width: 340px) {
-  .profile-hero .level-line small {
-    display: none;
-  }
 }
 
 .profile-hero .level-xp b {
@@ -2363,10 +2357,10 @@ button.fact-rank:hover {
 
   .profile-hero-id .avatar,
   .profile-hero-id .ava-trigger .avatar {
-    width: 130px;
-    height: 130px;
+    width: 122px;
+    height: 122px;
     border-radius: 50%;
-    font-size: 46px;
+    font-size: 43px;
   }
 
   .profile-hero-id > .avatar,
@@ -2376,9 +2370,9 @@ button.fact-rank:hover {
 
   .profile-hero-id .avatar.has-frame,
   .profile-hero-id .ava-trigger .avatar.has-frame {
-    width: 116px;
-    height: 116px;
-    font-size: 42px;
+    width: 108px;
+    height: 108px;
+    font-size: 39px;
   }
 
   .profile-hero-id > .avatar.has-frame,
@@ -3145,6 +3139,17 @@ a.world-blank:hover .world-pic.is-empty {
 
 .profile-hero-body.is-deck {
   position: static;
+  margin-top: -142px;
+}
+
+.profile-hero-body.is-deck .profile-hero-id {
+  translate: none;
+}
+
+@media (max-width: 560px) {
+  .profile-hero-body.is-deck {
+    margin-top: -143px;
+  }
 }
 
 .profile-hero-body .profile-hero-tiles.is-deck {
@@ -3164,6 +3169,22 @@ a.world-blank:hover .world-pic.is-empty {
 
 .profile-hero-body.is-deck .level-panel {
   text-decoration: none;
+}
+
+@media (max-width: 560px) {
+  .profile-hero-body.is-deck .level-xp {
+    display: none;
+  }
+}
+
+.profile-hero:has(.profile-hero-body.is-deck) .profile-banner {
+  height: 167px;
+}
+
+@media (max-width: 560px) {
+  .profile-hero:has(.profile-hero-body.is-deck) .profile-banner {
+    height: 164px;
+  }
 }
 
 /* column layout: the tile menu opens to the left of the stack, never off-screen */
