@@ -12164,6 +12164,7 @@ html[data-auth] .guest-note {
 .level-panel.is-link {
   display: block;
   border-radius: 14px;
+  text-decoration: none;
   transition: opacity 0.16s ease;
 }
 

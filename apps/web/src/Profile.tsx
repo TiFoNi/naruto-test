@@ -296,6 +296,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const snapper = useRef<() => void>(() => undefined)
   const pads = useRef<HTMLDivElement>(null)
   const [spot, setSpot] = useState<'row' | 'column' | 'under'>('row')
+  const [deck, setDeck] = useState(false)
   const [tight, setTight] = useState(false)
   const eyed = useRef<Record<string, number>>({})
 
@@ -410,7 +411,10 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
       const slot = Math.max(120, Math.round((area - (seats - 1) * 10) / seats))
       grid.style.setProperty('--slot', `${slot}px`)
       const cell = grid.firstElementChild?.getBoundingClientRect()
-      setSpot(wide <= 800 || room < 594 ? 'under' : slot >= 144 ? 'row' : 'column')
+      const screen = typeof window === 'undefined' ? wide : window.innerWidth
+      const narrow = screen <= 750
+      setDeck(narrow)
+      setSpot(narrow ? 'under' : slot >= 144 ? 'row' : 'column')
       setTight(!!cell && cell.width < 120)
     }
     check()
@@ -1085,7 +1089,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
         </div>
 
 
-        <div className={`profile-hero-body ${spot === 'under' ? 'is-under' : ''} ${spot === 'column' ? 'is-stack' : ''}`}>
+        <div className={`profile-hero-body ${spot === 'under' ? 'is-under' : ''} ${spot === 'column' ? 'is-stack' : ''} ${deck ? 'is-deck' : ''}`}>
         <div className="profile-hero-id">
           {own ? <AvatarPicker edit={edit} /> : <Avatar id={id} name={nickname} avatar={summary?.avatar} frame={summary?.frame} />}
           <div className="profile-hero-main">
@@ -1185,7 +1189,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
         </div>
 
         {cells.length > 0 && (
-        <div className={`profile-hero-tiles ${edit ? 'is-edit' : ''} ${spot === 'column' ? 'is-stack' : ''} ${spot === 'under' ? 'is-under' : ''}`} ref={pads}>
+        <div className={`profile-hero-tiles ${edit ? 'is-edit' : ''} ${spot === 'column' ? 'is-stack' : ''} ${spot === 'under' ? 'is-under' : ''} ${deck ? 'is-deck' : ''}`} ref={pads}>
           {cells.map((one, spot) => {
             if (!one)
               return (

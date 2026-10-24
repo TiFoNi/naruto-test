@@ -3137,3 +3137,187 @@ a.world-blank:hover .world-pic.is-empty {
     transform: none;
   }
 }
+
+/* narrow hero: avatar sits on the banner edge, everything stacks under it */
+.profile-hero-body.is-deck {
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: -86px;
+  padding-bottom: 0;
+  text-align: center;
+}
+
+.profile-hero-body.is-deck:has(.avatar.has-frame) {
+  margin-top: -76px;
+}
+
+.profile-hero-body.is-deck .profile-hero-id {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  translate: none;
+}
+
+.profile-hero-body.is-deck .profile-hero-id > .avatar,
+.profile-hero-body.is-deck .profile-hero-id > .ava-trigger {
+  margin: 0;
+  translate: none;
+  align-self: center;
+  grid-row: auto;
+  grid-column: auto;
+}
+
+.profile-hero-body.is-deck .profile-hero-main {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-hero-body.is-deck .profile-hero-name {
+  align-items: center;
+  align-self: center;
+  translate: none;
+}
+
+.profile-hero-body.is-deck .hero-nick-line,
+.profile-hero-body.is-deck .hero-nick-who {
+  justify-content: center;
+}
+
+.profile-hero-body.is-deck .profile-hero-name > .player-title.is-under {
+  align-self: center;
+}
+
+.profile-hero-body.is-deck .level-panel {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.profile-hero-body.is-deck .level-line {
+  margin: 0;
+  align-self: stretch;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.profile-hero-body.is-deck .level-bar {
+  margin: 0;
+}
+
+.profile-hero-body.is-deck .profile-hero-acts {
+  width: 100%;
+  justify-content: center;
+  margin-top: 0;
+}
+
+.profile-hero-body .profile-hero-tiles.is-deck {
+  width: 100%;
+  justify-content: center;
+}
+
+.profile-hero-body.is-deck .profile-hero-id .avatar,
+.profile-hero-body.is-deck .profile-hero-id .ava-trigger .avatar {
+  width: 172px;
+  height: 172px;
+  font-size: 72px;
+}
+
+.profile-hero-body.is-deck .profile-hero-id .avatar.has-frame,
+.profile-hero-body.is-deck .profile-hero-id .ava-trigger .avatar.has-frame {
+  width: 152px;
+  height: 152px;
+  font-size: 64px;
+}
+
+@media (max-width: 560px) {
+  .profile-hero-body.is-deck {
+    gap: 12px;
+  }
+}
+
+/* narrow: the card holds only the banner, everything else lives under it */
+.profile-hero:has(.profile-hero-body.is-deck) {
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.profile-hero:has(.profile-hero-body.is-deck) .profile-banner {
+  height: 277px;
+  border: 1px solid color-mix(in srgb, #ffffff 8%, transparent);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, #ffffff 5%, transparent), transparent),
+    var(--card);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 5%),
+    0 18px 38px rgb(0 0 0 / 22%);
+}
+
+.profile-hero:has(.profile-hero-body.is-deck) .profile-art {
+  z-index: 2;
+  height: 277px;
+  bottom: auto;
+  border-radius: 24px;
+}
+
+.profile-hero:has(.profile-hero-body.is-deck) .profile-art::before {
+  background: linear-gradient(180deg, rgb(13 15 18 / 30%), rgb(13 15 18 / 8%) 45%, rgb(13 15 18 / 40%));
+  border-radius: 24px;
+}
+
+.profile-hero:has(.profile-hero-body.is-deck) .profile-art::after {
+  border-radius: 0 0 23px 23px;
+}
+
+.profile-hero-body.is-deck {
+  z-index: 3;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.profile-hero-body .profile-hero-tiles.is-deck > .hero-tile:not(.is-add) {
+  background: var(--card-2);
+  backdrop-filter: none;
+}
+
+/* column layout: the tile menu opens to the left of the stack, never off-screen */
+.profile-hero-body .profile-hero-tiles.is-stack {
+  z-index: 21;
+}
+
+.profile-hero-body .profile-hero-tiles.is-stack > .hero-tile.is-add.is-open,
+.profile-hero-body .profile-hero-tiles.is-stack > .hero-tile.is-open {
+  position: relative;
+}
+
+.profile-hero-body .profile-hero-tiles.is-stack > .hero-tile .modes-pop,
+.profile-hero-body .profile-hero-tiles.is-stack > .hero-tile.is-add .modes-pop {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  bottom: auto;
+  left: auto;
+  width: min(360px, calc(100vw - 24px));
+  min-width: 0;
+  max-width: none;
+  max-height: min(70vh, 480px);
+}
+
+@media (min-width: 801px) {
+  .profile-hero-body .profile-hero-tiles > .hero-tile .modes-pop {
+    right: 0;
+    left: auto;
+  }
+}
