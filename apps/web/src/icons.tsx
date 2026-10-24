@@ -94,9 +94,9 @@ export function UserIcon({ className }: IconProps) {
 
 export function BellIcon({ className }: IconProps) {
   return (
-    <svg {...base} className={`icon ${className ?? ''}`}>
-      <path d="M18 9a6 6 0 0 0-12 0c0 5-2 6-2 6h16s-2-1-2-6" />
-      <path d="M10.3 19a2 2 0 0 0 3.4 0" />
+    <svg {...base} className={`icon ${className ?? ''}`} fill="currentColor" stroke="none">
+      <path d="M12 2.1c.7 0 1.3.6 1.3 1.3v.5a6.2 6.2 0 0 1 4.9 6v2.4c0 1.2.4 2.3 1.2 3.2.6.7.1 1.8-.8 1.8H5.4c-.9 0-1.4-1.1-.8-1.8.8-.9 1.2-2 1.2-3.2V9.9a6.2 6.2 0 0 1 4.9-6v-.5c0-.7.6-1.3 1.3-1.3Z" />
+      <path d="M9.6 18.6h4.8a2.4 2.4 0 0 1-4.8 0Z" />
     </svg>
   )
 }
@@ -420,11 +420,13 @@ export function CoinIcon({ className }: IconProps) {
 
 export function ShopIcon({ className }: IconProps) {
   return (
-    <svg {...base} className={`icon ${className ?? ''}`}>
-      <path d="M5 10.4v8.2a1.4 1.4 0 0 0 1.4 1.4h11.2a1.4 1.4 0 0 0 1.4-1.4v-8.2" />
-      <path d="M3.1 9.6 4.7 4.9a1.3 1.3 0 0 1 1.2-.9h12.2a1.3 1.3 0 0 1 1.2.9l1.6 4.7" />
-      <path d="M3.1 9.6a2.3 2.3 0 0 0 4.5 0 2.3 2.3 0 0 0 4.4 0 2.3 2.3 0 0 0 4.4 0 2.3 2.3 0 0 0 4.5 0" />
-      <path d="M9.6 20v-5.1h4.8V20" />
+    <svg {...base} className={`icon ${className ?? ''}`} fill="currentColor" stroke="none">
+      <path d="M4.7 4.9a1.3 1.3 0 0 1 1.2-.9h12.2c.6 0 1.1.4 1.2.9l1.6 4.7c.2.6-.3 1.2-.9 1.2H4a1 1 0 0 1-.9-1.2Z" />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M5.3 12.3h13.4v6.3a1.9 1.9 0 0 1-1.9 1.9H7.2a1.9 1.9 0 0 1-1.9-1.9Zm4.3 3.4v4.8h4.8v-4.8a.9.9 0 0 0-.9-.9h-3a.9.9 0 0 0-.9.9Z"
+      />
     </svg>
   )
 }

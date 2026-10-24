@@ -413,6 +413,11 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
       const cell = grid.firstElementChild?.getBoundingClientRect()
       const screen = typeof window === 'undefined' ? wide : window.innerWidth
       const narrow = screen <= 750
+      const hero = grid.closest('.profile-hero') as HTMLElement | null
+      if (hero) {
+        if (narrow) hero.style.setProperty('--deck-tiles', `${Math.round(grid.offsetHeight)}px`)
+        else hero.style.removeProperty('--deck-tiles')
+      }
       setDeck(narrow)
       setSpot(narrow ? 'under' : slot >= 144 ? 'row' : 'column')
       setTight(!!cell && cell.width < 120)
