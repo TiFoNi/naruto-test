@@ -3137,6 +3137,10 @@ a.world-blank:hover .world-pic.is-empty {
   margin-bottom: calc(var(--deck-tiles, 86px) + 14px);
 }
 
+.profile-hero.shop-mock:has(.profile-hero-body.is-deck) {
+  margin-bottom: 0;
+}
+
 .profile-hero-body.is-deck {
   position: static;
   margin-top: -142px;

@@ -30,25 +30,31 @@ const medal = (place: number) => (place === 1 ? 'gold' : place === 2 ? 'silver' 
 export default function HeroPeek({ user, stats, banner, frame }: Props) {
   const { t } = useI18n()
   const pads = useRef<HTMLDivElement>(null)
+  const box = useRef<HTMLDivElement>(null)
   const [spot, setSpot] = useState<'row' | 'column' | 'under'>('row')
+  const [deck, setDeck] = useState(false)
   const [tight, setTight] = useState(false)
 
   useEffect(() => {
-    const grid = pads.current
-    if (!grid || typeof ResizeObserver === 'undefined') return
+    const body = box.current
+    if (!body || typeof ResizeObserver === 'undefined') return
     const check = () => {
-      const wide = grid.parentElement?.getBoundingClientRect().width ?? 0
+      const wide = body.getBoundingClientRect().width
       const room = wide - 60
       const area = 440 + Math.max(0, (room - 802) / 2)
       const slot = Math.max(150, Math.round((area - (HERO_TILES_MAX - 1) * 10) / HERO_TILES_MAX))
-      grid.style.setProperty('--slot', `${slot}px`)
-      const cell = grid.firstElementChild?.getBoundingClientRect()
-      setSpot(wide <= 800 || room < 594 ? 'under' : slot >= 180 ? 'row' : 'column')
-      setTight(!!cell && cell.width < 150)
+      const grid = pads.current
+      grid?.style.setProperty('--slot', `${Math.round(slot * 0.85)}px`)
+      const cell = grid?.firstElementChild?.getBoundingClientRect()
+      const screen = typeof window === 'undefined' ? wide : window.innerWidth
+      const narrow = screen <= 750
+      setDeck(narrow)
+      setSpot(narrow ? 'under' : slot >= 180 ? 'row' : 'column')
+      setTight(!!cell && cell.width < 200)
     }
     check()
     const watcher = new ResizeObserver(check)
-    watcher.observe(grid)
+    watcher.observe(body)
     window.addEventListener('resize', check)
     return () => {
       watcher.disconnect()
@@ -104,7 +110,10 @@ export default function HeroPeek({ user, stats, banner, frame }: Props) {
       )}
       <div className="profile-banner" aria-hidden />
 
-      <div className={`profile-hero-body ${spot === 'under' ? 'is-under' : ''} ${spot === 'column' ? 'is-stack' : ''}`}>
+      <div
+        className={`profile-hero-body ${spot === 'under' ? 'is-under' : ''} ${spot === 'column' ? 'is-stack' : ''} ${deck ? 'is-deck' : ''}`}
+        ref={box}
+      >
         <div className="profile-hero-id">
           <Avatar id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={frame} />
           <div className="profile-hero-main">
@@ -132,7 +141,7 @@ export default function HeroPeek({ user, stats, banner, frame }: Props) {
           </div>
         </div>
 
-        {slots.length > 0 && (
+        {slots.length > 0 && !deck && (
           <div
             className={`profile-hero-tiles ${spot === 'column' ? 'is-stack' : ''} ${spot === 'under' ? 'is-under' : ''}`}
             ref={pads}
