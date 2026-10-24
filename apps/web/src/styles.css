@@ -3772,12 +3772,8 @@ button.ghost.small {
     margin-left: 0;
   }
 
-  .profile.sk-profile .profile-banner {
-    height: 118px;
-  }
-
   .profile.sk-profile .profile-hero-body {
-    margin-top: -97px;
+    padding: 16px;
   }
 
   .profile.sk-profile .profile-hero-body {
@@ -3792,8 +3788,8 @@ button.ghost.small {
   }
 
   .profile.sk-profile .profile-hero-id .sk.ava {
-    width: 100px;
-    height: 100px;
+    width: 64px;
+    height: 64px;
   }
 
   .profile.sk-profile .profile-hero-name .sk.nick {
@@ -12331,11 +12327,26 @@ html[data-auth] .guest-note {
   }
 
   .profile.sk-profile .profile-banner {
-    height: 167px;
+    position: absolute;
+    height: auto;
+    border-radius: 23px;
+    inset: 0;
   }
 
   .profile.sk-profile .profile-hero-body {
-    margin-top: -142px;
+    margin-top: 0;
+    padding: 16px 18px;
+  }
+
+  .profile.sk-profile .profile-hero-id .sk.ava {
+    margin: 0 0 0 4px;
+    width: 72px;
+    height: 72px;
+  }
+
+  .profile.sk-profile .profile-hero-name .sk.nick {
+    width: 130px;
+    height: 20px;
   }
 
   .profile.sk-profile .profile-hero-id {

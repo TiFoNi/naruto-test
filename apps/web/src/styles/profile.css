@@ -3143,16 +3143,81 @@ a.world-blank:hover .world-pic.is-empty {
 
 .profile-hero-body.is-deck {
   position: static;
-  margin-top: -142px;
+  margin-top: 0;
+  padding: 16px 18px;
 }
 
 .profile-hero-body.is-deck .profile-hero-id {
   translate: none;
+  column-gap: 16px;
+  row-gap: 6px;
+}
+
+.profile-hero-body.is-deck .profile-hero-id > .avatar,
+.profile-hero-body.is-deck .profile-hero-id > .ava-trigger {
+  margin: 0 0 0 4px;
+}
+
+.profile-hero-body.is-deck .profile-hero-id .avatar,
+.profile-hero-body.is-deck .profile-hero-id .ava-trigger .avatar {
+  width: 72px;
+  height: 72px;
+  font-size: 28px;
+}
+
+.profile-hero-body.is-deck .profile-hero-id .avatar.has-frame,
+.profile-hero-body.is-deck .profile-hero-id .ava-trigger .avatar.has-frame {
+  width: 72px;
+  height: 72px;
+  font-size: 28px;
+}
+
+.profile-hero-body.is-deck .profile-hero-name {
+  gap: 3px;
+}
+
+.profile-hero-body.is-deck .profile-hero-main {
+  min-height: 0;
+  row-gap: 6px;
+}
+
+.profile-hero:has(.profile-hero-body.is-deck) {
+  min-height: 112px;
+}
+
+.profile-hero-body.is-deck .profile-hero-name h1 {
+  font-size: 20px;
+}
+
+.profile-hero-body.is-deck .profile-hero-name .player-tag {
+  font-size: 12px;
+}
+
+.profile-hero-body.is-deck .profile-hero-name .player-title {
+  font-size: 10.5px;
+}
+
+.profile-hero-body.is-deck .level-line,
+.profile-hero-body.is-deck .level-xp,
+.profile-hero-body.is-deck .profile-hero-level {
+  font-size: 12px;
+}
+
+.profile-hero-body.is-deck .level-xp b {
+  font-size: 14px;
+}
+
+.profile-hero:has(.profile-hero-body.is-deck) .profile-banner {
+  position: absolute;
+  z-index: 0;
+  height: auto;
+  border-radius: 23px;
+  inset: 0;
 }
 
 @media (max-width: 560px) {
   .profile-hero-body.is-deck {
-    margin-top: -97px;
+    padding: 16px;
   }
 }
 
@@ -3188,15 +3253,7 @@ a.world-blank:hover .world-pic.is-empty {
   }
 }
 
-.profile-hero:has(.profile-hero-body.is-deck) .profile-banner {
-  height: 167px;
-}
 
-@media (max-width: 560px) {
-  .profile-hero:has(.profile-hero-body.is-deck) .profile-banner {
-    height: 118px;
-  }
-}
 
 /* column layout: the tile menu opens to the left of the stack, never off-screen */
 .profile-hero-body .profile-hero-tiles.is-stack {
