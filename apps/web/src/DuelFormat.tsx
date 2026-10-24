@@ -22,13 +22,15 @@ export default function DuelFormat() {
   const { t, error: errorText } = useI18n()
   const href = useHref()
   const navigate = useNavigate()
-  const [per, setPer] = useState(1)
-  const [teams, setTeams] = useState(2)
+  const [per, setPer] = useState(0)
+  const [teams, setTeams] = useState(0)
   const [busy, setBusy] = useState(false)
   const [slip, setSlip] = useState<string | null>(null)
 
-  const go = async () => {
+  const go = async (size: number, count: number) => {
     if (busy) return
+    setPer(size)
+    setTeams(count)
     setBusy(true)
     setSlip(null)
     const { ok, data } = await api<{ duel?: { code: string }; error?: string }>('duel', { action: 'create' })
@@ -43,8 +45,8 @@ export default function DuelFormat() {
     const state = await api<{ duel?: { game?: string | null; mode?: string | null } }>('duel', { code, action: 'state' }).catch(() => null)
     const game = state?.data.duel?.game ?? 'naruto'
     const was = state?.data.duel?.mode ?? 'classic'
-    const mode = per > 1 && !TEAM_MODES.includes(was as never) ? 'who' : was
-    await api('duel', { code, action: 'setup', game, mode, per, teams }).catch(() => null)
+    const mode = size > 1 && !TEAM_MODES.includes(was as never) ? 'who' : was
+    await api('duel', { code, action: 'setup', game, mode, per: size, teams: count }).catch(() => null)
 
     navigate.replace(href.duel(code))
   }
@@ -82,10 +84,7 @@ export default function DuelFormat() {
                 className={`duel-format-card ${per === size && teams === count ? 'on' : ''}`}
                 style={{ '--cols': count * (size === 3 ? 2 : size), '--sides': count } as CSSProperties}
                 disabled={busy}
-                onClick={() => {
-                  setPer(size)
-                  setTeams(count)
-                }}
+                onClick={() => void go(size, count)}
               >
                 <span className="duel-format-name">
                   <b>{Array.from({ length: count }, () => size).join(' × ')}</b>
@@ -106,19 +105,6 @@ export default function DuelFormat() {
       </div>
 
       {slip && <p className="duel-format-slip">{errorText(slip)}</p>}
-
-      <footer className="duel-bar duel-format-bar">
-        <span className="duel-format-pick">
-          <b>{Array.from({ length: teams }, () => per).join(' × ')}</b>
-          <span>
-            <strong>{t('duel.sizeTotal', { count: per * teams })}</strong>
-            <em>{t('duel.sizeSum', { sides: teams, per })}</em>
-          </span>
-          <button type="button" className="primary big" disabled={busy} onClick={() => void go()}>
-            {t('duel.sizeGo')}
-          </button>
-        </span>
-      </footer>
     </div>
   )
 }

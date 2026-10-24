@@ -75,12 +75,18 @@ export default function TilePop({ at, onClose, wide = WIDE, children }: Props) {
   if (!at || !spot) return null
 
   return createPortal(
-    <div className="tile-sheet" onPointerDown={onClose} role="presentation">
+    <div
+      className="tile-sheet"
+      role="presentation"
+      onPointerDown={(event) => event.preventDefault()}
+      onClick={onClose}
+    >
       <div
         className="modes-pop"
         role="dialog"
         style={spot as CSSProperties}
         onPointerDown={(event) => event.stopPropagation()}
+        onClick={(event) => event.stopPropagation()}
       >
         {children}
       </div>

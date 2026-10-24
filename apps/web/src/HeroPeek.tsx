@@ -110,10 +110,12 @@ export default function HeroPeek({ user, stats, banner, frame }: Props) {
           <div className="profile-hero-main">
             <div className="profile-hero-name" style={(nickHex ? { '--nick': nickHex } : {}) as CSSProperties}>
               <span className="hero-nick-line">
-                <h1>{user?.nickname ?? '—'}</h1>
-                {worn && <i className={`player-title is-${worn}`}>{t(`title.${worn}` as UiKey)}</i>}
+                <span className="hero-nick-who">
+                  <h1>{user?.nickname ?? '—'}</h1>
+                </span>
               </span>
               {user?.tag && <i className="player-tag">#{user.tag}</i>}
+              {worn && <i className={`player-title is-${worn} is-under`}>{t(`title.${worn}` as UiKey)}</i>}
             </div>
 
             <div className="level-panel">
