@@ -7257,6 +7257,23 @@ html[data-auth] .guest-note {
   font-size: 1.05em;
 }
 
+@media (max-width: 600px) {
+  .game-switches:has(.variant-tabs) {
+    flex: 1 1 100%;
+  }
+
+  .variant-tabs {
+    width: 100%;
+  }
+
+  .variant-tabs a,
+  .variant-tabs button {
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: center;
+  }
+}
+
 .shot-layout {
   grid-template-columns: auto minmax(0, 1fr) 300px;
 }
