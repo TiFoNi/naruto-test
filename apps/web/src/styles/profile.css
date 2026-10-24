@@ -3284,3 +3284,24 @@ a.world-blank:hover .world-pic.is-empty {
     left: auto;
   }
 }
+
+@media (max-width: 560px) {
+  .nick-dye {
+    width: 34px;
+    height: 34px;
+    margin-block: -17px;
+    font-size: 20px;
+  }
+
+  .hero-act {
+    width: 34px;
+    height: 34px;
+    font-size: 20px;
+  }
+
+  .hero-acts {
+    top: 10px;
+    right: 10px;
+    gap: 6px;
+  }
+}
