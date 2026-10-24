@@ -52,6 +52,15 @@ export default function PageMode({ game, active, stats, daily = false, challenge
     guess(option)
   }
 
+  const jump = useRef(next)
+  jump.current = next
+
+  useEffect(() => {
+    if (!active || !over || !won || scored || !round?.id) return
+    const timer = window.setTimeout(() => jump.current(), 1500)
+    return () => window.clearTimeout(timer)
+  }, [active, over, won, scored, round?.id])
+
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.repeat || event.metaKey || event.ctrlKey || event.altKey) return

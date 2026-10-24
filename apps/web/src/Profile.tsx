@@ -399,7 +399,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     return () => showTone(null)
   }, [tone])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const grid = pads.current
     if (!grid || typeof ResizeObserver === 'undefined') return
     const check = () => {
@@ -459,7 +459,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const slots = seats.filter(isHeroTile)
   const spare = HERO_TILES.filter((one) => !slots.includes(one))
   const holes: null[] = slots.length < HERO_TILES_MAX ? [null] : []
-  const cells: (HeroTile | null)[] = !own || !edit ? slots : [...holes, ...slots]
+  const cells: (HeroTile | null)[] = !own || !edit ? slots : [...slots, ...holes]
 
   const keepTiles = (next: (HeroTile | null)[]) => {
     setMix(next)
