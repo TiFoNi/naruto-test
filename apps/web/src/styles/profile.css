@@ -2357,10 +2357,10 @@ button.fact-rank:hover {
 
   .profile-hero-id .avatar,
   .profile-hero-id .ava-trigger .avatar {
-    width: 122px;
-    height: 122px;
+    width: 112px;
+    height: 112px;
     border-radius: 50%;
-    font-size: 43px;
+    font-size: 40px;
   }
 
   .profile-hero-id > .avatar,
@@ -2370,9 +2370,9 @@ button.fact-rank:hover {
 
   .profile-hero-id .avatar.has-frame,
   .profile-hero-id .ava-trigger .avatar.has-frame {
-    width: 108px;
-    height: 108px;
-    font-size: 39px;
+    width: 100px;
+    height: 100px;
+    font-size: 36px;
   }
 
   .profile-hero-id > .avatar.has-frame,
@@ -3152,7 +3152,7 @@ a.world-blank:hover .world-pic.is-empty {
 
 @media (max-width: 560px) {
   .profile-hero-body.is-deck {
-    margin-top: -127px;
+    margin-top: -97px;
   }
 }
 
@@ -3194,7 +3194,7 @@ a.world-blank:hover .world-pic.is-empty {
 
 @media (max-width: 560px) {
   .profile-hero:has(.profile-hero-body.is-deck) .profile-banner {
-    height: 148px;
+    height: 118px;
   }
 }
 
