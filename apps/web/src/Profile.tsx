@@ -409,7 +409,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
       const seats = HERO_TILES_MAX
       const area = (440 + Math.max(0, (room - 802) / 2)) * 0.8
       const slot = Math.max(120, Math.round((area - (seats - 1) * 10) / seats))
-      grid.style.setProperty('--slot', `${slot}px`)
+      grid.style.setProperty('--slot', `${Math.round(slot * 0.85)}px`)
       const cell = grid.firstElementChild?.getBoundingClientRect()
       const screen = typeof window === 'undefined' ? wide : window.innerWidth
       const narrow = screen <= 750
@@ -420,7 +420,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
       }
       setDeck(narrow)
       setSpot(narrow ? 'under' : slot >= 144 ? 'row' : 'column')
-      setTight(!!cell && cell.width < 120)
+      setTight(!!cell && cell.width < 200)
     }
     check()
     const watcher = new ResizeObserver(check)

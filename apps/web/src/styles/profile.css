@@ -797,7 +797,7 @@
 }
 
 .profile-hero-body.is-stack {
-  padding-right: 228px;
+  padding-right: 198px;
 }
 
 @media (min-width: 561px) {
@@ -811,7 +811,7 @@
   position: absolute;
   right: 30px;
   bottom: 26px;
-  width: 186px;
+  width: 158px;
   grid-auto-flow: row;
   grid-template-columns: minmax(0, 1fr);
 }
@@ -2465,13 +2465,13 @@ button.fact-rank:hover {
 
   .profile-hero-body .profile-hero-tiles.is-under > .hero-tile,
   .profile-hero-body .profile-hero-tiles.is-under > .hero-tile .hero-tile-open {
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
   }
 
   .profile-hero-body .profile-hero-tiles.is-under > .hero-tile b,
   .profile-hero-body .profile-hero-tiles.is-under > .hero-tile .hero-tile-open b {
-    justify-content: center;
+    justify-content: flex-start;
     gap: 0.3em;
     font-size: clamp(15px, 12vw - 21px, 26px);
   }
@@ -3165,6 +3165,13 @@ a.world-blank:hover .world-pic.is-empty {
 .profile-hero-body .profile-hero-tiles.is-deck > .hero-tile:not(.is-add) {
   background: var(--card-2);
   backdrop-filter: none;
+}
+
+.profile-hero-body .profile-hero-tiles > .hero-tile > span,
+.profile-hero-body .profile-hero-tiles > .hero-tile .hero-tile-open > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .profile-hero-body.is-deck .level-panel {
