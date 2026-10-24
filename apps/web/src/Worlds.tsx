@@ -44,7 +44,8 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     const games = data.games ?? []
     const showcase = (data.showcase ?? []).filter((one) => games.some((row) => row.game === one)).slice(0, SHOWCASE_MAX)
     const seats = Array.from({ length: SHOWCASE_MAX }, (_, index) => showcase[index] ?? '')
-    const list = [...seats, ...games.map((row) => row.game).filter((one) => !showcase.includes(one))]
+    const rest = games.map((row) => row.game).filter((one) => !showcase.includes(one))
+    const list = id ? [...showcase, ...rest] : [...seats, ...rest]
     setRows(new Map(games.map((row) => [row.game, row])))
     setOrder(list)
     setSaved(list)
@@ -137,7 +138,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     const node = grid.current
     if (!node) return
     const fit = () => {
-      if (held.current) return
+      if (held.current || id) return
       const tiles = node.querySelectorAll<HTMLElement>('li[data-game]')
       const last = tiles[Math.min(SHOWCASE_MAX, tiles.length) - 1]
       if (last) node.style.setProperty('--seats', `${last.offsetTop + last.offsetHeight}px`)
@@ -147,7 +148,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
     const watcher = new ResizeObserver(fit)
     watcher.observe(node)
     return () => watcher.disconnect()
-  }, [rows, order.length])
+  }, [rows, order.length, id])
 
   const slotAt = (x: number, y: number) => {
     const node = grid.current
@@ -321,7 +322,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       <li
         key={game}
         data-game={game}
-        className={`${held ? 'is-held' : ''} ${index < SHOWCASE_MAX ? 'is-shown' : ''}`}
+        className={`${held ? 'is-held' : ''} ${index < SHOWCASE_MAX && !id ? 'is-shown' : ''}`}
         style={{ '--world-accent': meta?.accent ?? 'var(--accent)' } as CSSProperties}
       >
         <button type="button" className="world-flip" aria-label={meta ? l(meta.label) : game} onPointerDown={grab(row)}>
@@ -392,7 +393,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
       ) : !rows ? (
         <ul className={`world-shelf is-all is-board is-ghost ${id ? 'is-plain' : ''}`} ref={grid}>
           {Array.from({ length: 24 }, (_, index) => (
-            <li key={`ghost-${index}`} data-game={`ghost-${index}`} className={index < SHOWCASE_MAX ? 'is-shown' : ''}>
+            <li key={`ghost-${index}`} data-game={`ghost-${index}`} className={index < SHOWCASE_MAX && !id ? 'is-shown' : ''}>
               <span className="sk world-pic" />
               <span className="world-line">
                 <span className="sk world-word" />
