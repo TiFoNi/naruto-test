@@ -20,6 +20,17 @@ const LIFE_FAMILIES = LIFE.reduce((map, achievement) => {
   return map.set(family, [...(map.get(family) ?? []), achievement.id])
 }, new Map<string, string[]>())
 const SECRETS = new Set(ACHIEVEMENTS.filter((achievement) => achievement.secret).map((achievement) => achievement.id))
+const AWARD_ORDER = ACHIEVEMENTS.map((achievement) => achievement.id)
+
+const RANK = ['mythic', 'legend', 'gold', 'silver', 'bronze']
+
+const shown = (doc: UserDoc) => {
+  const picked = (doc.pinned ?? []).filter((award) => doc.claimed?.[award] && TIERS.has(award))
+  if (picked.length) return picked.slice(0, PINNED_MAX)
+  return AWARD_ORDER.filter((award) => doc.claimed?.[award] && !SECRETS.has(award))
+    .sort((a, b) => RANK.indexOf(TIERS.get(a)!) - RANK.indexOf(TIERS.get(b)!))
+    .slice(0, PINNED_MAX)
+}
 
 type Counted = { _id: string; played: number; won: number; guesses: number }
 
@@ -267,19 +278,16 @@ export const GET = handle(async (request) => {
     frame: doc.frame ?? null,
     friend,
     since: doc.createdAt,
-    pinned: (doc.pinned ?? [])
-      .filter((award) => doc.claimed?.[award] && TIERS.has(award))
-      .slice(0, PINNED_MAX)
-      .map((id) => {
-        const veiled = other && SECRETS.has(id) && !found.doc.awards?.[id]
-        return {
-          id: veiled ? null : id,
-          family: familyOf(id),
-          tier: TIERS.get(id)!,
-          at: veiled ? null : doc.awards![id],
-          hidden: veiled,
-        }
-      }),
+    pinned: shown(doc).map((id) => {
+      const veiled = other && SECRETS.has(id) && !found.doc.awards?.[id]
+      return {
+        id: veiled ? null : id,
+        family: familyOf(id),
+        tier: TIERS.get(id)!,
+        at: veiled ? null : (doc.awards?.[id] ?? null),
+        hidden: veiled,
+      }
+    }),
     showcase: doc.showcase ?? [],
     tiles: doc.tiles ?? null,
     banner: doc.banner ?? null,
