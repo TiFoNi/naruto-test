@@ -2684,6 +2684,14 @@ button.fact-rank:hover {
   min-width: 0;
 }
 
+.worlds-card .world-line {
+  justify-content: center;
+}
+
+.worlds-card .world-line b {
+  text-align: center;
+}
+
 .world-line b {
   overflow: hidden;
   min-height: 18px;
@@ -3303,5 +3311,12 @@ a.world-blank:hover .world-pic.is-empty {
     top: 10px;
     right: 10px;
     gap: 6px;
+  }
+}
+
+@media (max-width: 750px) {
+  .worlds-card .world-line,
+  .soon-card .soon-badges li b {
+    display: none;
   }
 }
