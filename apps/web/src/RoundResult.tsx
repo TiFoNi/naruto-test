@@ -70,7 +70,7 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
         {t('play.back')}
       </Link>
       <Link className="primary" href={href.play(game.id, mode)}>
-        {t('daily.playEndless')}
+        {t('daily.endless')}
       </Link>
     </div>
   ) : challenge ? (

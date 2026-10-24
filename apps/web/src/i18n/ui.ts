@@ -982,7 +982,6 @@ const ui = {
   'seo.ogDaily': { ru: 'Одна загадка в день', uk: 'Одна загадка на день', en: 'One puzzle a day' },
   'daily.ogNote': { ru: 'Одна загадка в день — успей разгадать', uk: 'Одна загадка на день — встигни розгадати', en: 'One puzzle a day — solve it before midnight' },
   'daily.nextIn': { ru: 'Новая загадка через', uk: 'Нова загадка через', en: 'Next puzzle in' },
-  'daily.playEndless': { ru: 'Бесконечный режим', uk: 'Нескінченний режим', en: 'Endless mode' },
   'daily.yesterday': { ru: 'Вчера был:', uk: 'Учора був:', en: 'Yesterday:' },
   'daily.streak': { ru: 'Дней подряд', uk: 'Днів поспіль', en: 'Day streak' },
   'daily.best': { ru: 'Рекорд дней', uk: 'Рекорд днів', en: 'Best days' },
