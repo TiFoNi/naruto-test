@@ -2365,7 +2365,7 @@ button.fact-rank:hover {
 
   .profile-hero-id > .avatar,
   .profile-hero-id > .ava-trigger {
-    margin: 18px 6px 18px 18px;
+    margin: 18px 6px 18px 10px;
   }
 
   .profile-hero-id .avatar.has-frame,
@@ -2377,7 +2377,7 @@ button.fact-rank:hover {
 
   .profile-hero-id > .avatar.has-frame,
   .profile-hero-id > .ava-trigger:has(.avatar.has-frame) {
-    margin: 24px 10px 24px 24px;
+    margin: 24px 10px 24px 14px;
   }
 
   .profile-hero-id > .avatar,
@@ -3152,7 +3152,7 @@ a.world-blank:hover .world-pic.is-empty {
 
 @media (max-width: 560px) {
   .profile-hero-body.is-deck {
-    margin-top: -143px;
+    margin-top: -127px;
   }
 }
 
@@ -3194,7 +3194,7 @@ a.world-blank:hover .world-pic.is-empty {
 
 @media (max-width: 560px) {
   .profile-hero:has(.profile-hero-body.is-deck) .profile-banner {
-    height: 164px;
+    height: 148px;
   }
 }
 
