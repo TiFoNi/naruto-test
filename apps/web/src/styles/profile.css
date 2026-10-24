@@ -3254,7 +3254,7 @@ a.world-blank:hover .world-pic.is-empty {
 }
 
 .profile-hero:has(.profile-hero-body.is-deck) .profile-banner {
-  height: 277px;
+  height: 249px;
   border: 1px solid color-mix(in srgb, #ffffff 8%, transparent);
   border-radius: 24px;
   background:
@@ -3267,7 +3267,7 @@ a.world-blank:hover .world-pic.is-empty {
 
 .profile-hero:has(.profile-hero-body.is-deck) .profile-art {
   z-index: 2;
-  height: 277px;
+  height: 249px;
   bottom: auto;
   border-radius: 24px;
 }
