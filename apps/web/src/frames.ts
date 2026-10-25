@@ -11,6 +11,7 @@ export type Frame = { id: string; kind: FrameKind; label: L10n }
 
 const AWARD_LABELS: Record<string, L10n> = {
   top1: l10n('1-е место', '1-ше місце', '1st place'),
+  cosmos: l10n('Космос', 'Космос', 'Cosmos'),
 }
 
 const NATURE_LABELS: Record<string, L10n> = {
@@ -21,7 +22,7 @@ const NATURE_LABELS: Record<string, L10n> = {
   fireflies: l10n('Светлячки', 'Світляки', 'Fireflies'),
 }
 
-const DRAWN = new Set<string>([...NATURE_FRAMES, 'aot', 'kny', 'tg', 'dn', 'top1'])
+const DRAWN = new Set<string>([...NATURE_FRAMES, 'aot', 'kny', 'tg', 'dn', 'top1', 'cosmos'])
 
 const ALL: Frame[] = [
   ...AWARD_FRAMES.map((id) => ({ id, kind: 'award' as const, label: AWARD_LABELS[id] })),
@@ -32,7 +33,7 @@ const ALL: Frame[] = [
 
 export const FRAMES: Frame[] = ALL.filter((one) => DRAWN.has(one.id))
 
-const ART = '25'
+const ART = '26'
 
 export const frameUrl = (id: string, small?: boolean) => `/frames/${id}${small ? '-sm' : ''}.webp?v=${ART}`
 

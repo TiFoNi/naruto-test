@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb'
 import { rounds, seasons, users, type UserDoc } from './db'
 import { gameData } from './games'
 import { addSeasonXp, previousSeason, seasonAt, seasonStanding, takeSeasonClose } from './season'
-import { PLACE_FRAMES, TOP_PLACES } from './frame-list'
+import { championFrame } from './frame-list'
 
 export type Tier = 'bronze' | 'silver' | 'gold' | 'legend' | 'mythic' | 'secret'
 export type Kind = 'life' | 'season'
@@ -600,7 +600,7 @@ export async function closeFinishedSeason(now = new Date()) {
   const taken = await takeSeasonClose(past)
   if (!taken) return null
   const standing = await seasonStanding(past.id, 100)
-  await grantSeasonTrophies(standing)
+  await grantSeasonTrophies(standing, past.number)
   return { season: past.id, players: standing.length }
 }
 
@@ -616,7 +616,7 @@ const SEASON_TITLES: { id: string; from: number; to: number }[] = [
   { id: 'hundred', from: 11, to: 100 },
 ]
 
-export async function grantSeasonTrophies(standing: { userId: ObjectId }[]) {
+export async function grantSeasonTrophies(standing: { userId: ObjectId }[], season: number) {
   const collection = await users()
   const now = new Date()
   for (const [index, row] of standing.entries()) {
@@ -625,7 +625,7 @@ export async function grantSeasonTrophies(standing: { userId: ObjectId }[]) {
     if (!won.length) continue
     const titles = SEASON_TITLES.filter((title) => place >= title.from && place <= title.to).map((title) => title.id)
     const given = [
-      ...(place <= TOP_PLACES ? [{ frames: PLACE_FRAMES[place - 1] }] : []),
+      ...(place === 1 ? [{ frames: championFrame(season) }] : []),
       ...(titles.length ? [{ titles: { $each: titles } }] : []),
     ]
 
