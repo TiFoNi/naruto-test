@@ -54,7 +54,7 @@ export const POST = handle(async (request) => {
     await rememberLang(people, userId, request)
   }
   if (entityId !== updated.answerId) {
-    if (!oneTry(updated.game)) return json({ round: await roundView(updated, false) })
+    if (!oneTry(updated.game, updated.mode)) return json({ round: await roundView(updated, false) })
     const missed = await finishRound(people, updated, false)
     return json({ round: await roundView(missed.round, false), stats: missed.stats })
   }

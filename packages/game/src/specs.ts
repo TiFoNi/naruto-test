@@ -395,14 +395,14 @@ export const MODE_XP: Record<ModeId, number> = {
 }
 
 export const MODE_XP_AFTER: Record<ModeId, number> = {
-  classic: 12,
-  phrase: 4,
+  classic: 15,
+  phrase: 1,
   image: 1,
   ability: 1,
   page: 1,
-  odd: 2,
+  odd: 1,
   pair: 0,
-  shot: 2,
+  shot: 1,
   tune: 0,
   who: 5,
   grid: 5,
@@ -542,7 +542,9 @@ export const heroTiles = (value: unknown) => {
 
 export const ONE_TRY_GAMES: GameId[] = ['manga']
 
-export const oneTry = (game: unknown) => ONE_TRY_GAMES.includes(game as GameId)
+export const ONE_TRY_MODES: ModeId[] = ['odd']
+
+export const oneTry = (game: unknown, mode?: unknown) => ONE_TRY_GAMES.includes(game as GameId) || ONE_TRY_MODES.includes(mode as ModeId)
 
 export const DAILY_XP_FACTOR = 3
 
