@@ -11,7 +11,6 @@ export type RoundView = {
   id: string
   status: 'active' | 'won' | 'lost' | 'skipped'
   guesses: { id: number; judgement?: Record<string, Judgement> }[]
-  twins?: number[]
   answerId?: number
   image?: string
   focus?: { x: number; y: number }
@@ -117,7 +116,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
       .reverse()
     return pending && !done.some((g) => g.entity.id === pending.id) ? [{ entity: pending, pending: true }, ...done] : done
   }, [round, byId, pending])
-  const exclude = useMemo(() => new Set([...guesses.map((g) => g.entity.id), ...(round?.twins ?? [])]), [guesses, round?.twins])
+  const exclude = useMemo(() => new Set(guesses.map((g) => g.entity.id)), [guesses])
   const over = round ? round.status !== 'active' : false
   const won = round?.status === 'won'
   const skipped = round?.status === 'skipped'

@@ -100,7 +100,7 @@ export type DuelView = {
   answerId?: number
   winner?: string | null
   youWon?: boolean
-  you?: DuelSide & { guesses: { id: number; judgement?: Record<string, Judgement> }[]; twins?: number[] }
+  you?: DuelSide & { guesses: { id: number; judgement?: Record<string, Judgement> }[] }
   rival?: DuelSide & { guessCount: number; board?: Record<string, string>[] }
 }
 

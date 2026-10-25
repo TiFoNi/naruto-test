@@ -32,7 +32,6 @@ import {
 import { abilityByKey } from './abilities'
 import { duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type UserDoc } from './db'
 import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
-import { twinsOf } from './twins'
 import { gameData, isGame, isMode } from './games'
 import { matchesFacet, planGrid } from './grid'
 import { BLACK, GREY, cleanCount, cleanWord, clueBoard, clueSizes, clueWinner, kindFor, sideLeft, teamKey } from './clue'
@@ -42,6 +41,7 @@ import { duelSeed, focusFor, shotFor } from './crop'
 import { markSeasonDuel } from './season'
 
 export const MIN_GAP_MS = 800
+export const RUSH_PER_TRY_MS = 10_000
 export const DUEL_LOG_MAX = 10
 const BOARD_ROWS = 10
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
@@ -872,7 +872,11 @@ export async function duelGuess(duel: DuelDoc, userId: ObjectId, entityId: numbe
   const solved = entityId === duel.answerId
   const set: Record<string, unknown> = { [`players.${index}.lastGuessAt`]: now }
   if (solved) set[`players.${index}.solvedAt`] = now
-  if (solved && !duel.firstSolvedAt) set.firstSolvedAt = now
+  if (solved && !duel.firstSolvedAt) {
+    set.firstSolvedAt = now
+    const rush = new Date(now.getTime() + (side.guesses.length + 1) * RUSH_PER_TRY_MS)
+    if (!turnMode(duel) && (!duel.endsAt || rush < duel.endsAt)) set.endsAt = rush
+  }
   const updated = await (await duels()).findOneAndUpdate(
     {
       _id: duel._id,
@@ -1383,10 +1387,6 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
             .filter((id) => byId.has(id))
             .map((id) => ({ id, judgement: duel.mode === 'classic' && answer ? judgeAll(game!, byId.get(id)!, answer) : undefined }))
         : [],
-      twins:
-        playing && duel.mode === 'classic' && data && answer && !you.solvedAt && !you.gaveUp
-          ? twinsOf(game!, data.list, data.byId, duel.answerId!, you.guesses)
-          : [],
     },
     rival: rival && {
       id: rival.userId.toHexString(),

@@ -107,10 +107,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
     return pending && !done.some((g) => g.entity.id === pending.id) ? [{ entity: pending, pending: true }, ...done] : done
   }, [duel, byId, pending])
 
-  const picked = useMemo(
-    () => new Set([...guesses.map((g) => g.entity.id), ...(duel?.you?.twins ?? [])]),
-    [guesses, duel?.you?.twins],
-  )
+  const picked = useMemo(() => new Set(guesses.map((g) => g.entity.id)), [guesses])
 
   if (error && !duel) {
     return (
