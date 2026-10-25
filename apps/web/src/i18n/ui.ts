@@ -608,6 +608,12 @@ const ui = {
     uk: 'З третьої репліки можна слухати будь-яку з них',
     en: 'From the third line you can listen to any of them',
   },
+  'lock.elsewhere': {
+    ru: 'У тебя уже идёт угадывание в другой вкладке:',
+    uk: 'У тебе вже йде вгадування в іншій вкладці:',
+    en: 'You are already playing in another tab:',
+  },
+  'lock.take': { ru: 'Играть здесь', uk: 'Грати тут', en: 'Play here' },
   'play.zoomFull': { ru: 'полный кадр', uk: 'повний кадр', en: 'full frame' },
   'play.zoomLast': { ru: 'последнее приближение', uk: 'останнє наближення', en: 'last zoom level' },
   'play.tries': { ru: 'Твои попытки', uk: 'Твої спроби', en: 'Your guesses' },
