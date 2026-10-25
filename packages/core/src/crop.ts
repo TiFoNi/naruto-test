@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import sharp from 'sharp'
-import { GAME_SPECS, ZOOM_LEVELS, type GameId } from '@nanda/game'
+import { GAME_SPECS, ZOOM_LEVELS, zoomAt, type GameId } from '@nanda/game'
 import type { DuelDoc, RoundDoc } from './db'
 import { gameData } from './games'
 
@@ -145,7 +145,7 @@ export async function shotFor(game: GameId, answerId: number, seed: string, step
 }
 
 export async function maskStage(source: Buffer, seed: string, step: number, pin?: { x: number; y: number } | null) {
-  const zoom = ZOOM_LEVELS[clamp(step, 0, ZOOM_LEVELS.length - 1)]
+  const zoom = zoomAt(step)
   if (zoom <= 1) return source
 
   const { width = 0, height = 0 } = await sharp(source).metadata()

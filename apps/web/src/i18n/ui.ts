@@ -609,6 +609,7 @@ const ui = {
     en: 'From the third line you can listen to any of them',
   },
   'play.zoomFull': { ru: 'полный кадр', uk: 'повний кадр', en: 'full frame' },
+  'play.zoomLast': { ru: 'последнее приближение', uk: 'останнє наближення', en: 'last zoom level' },
   'play.tries': { ru: 'Твои попытки', uk: 'Твої спроби', en: 'Your guesses' },
   'play.noTries': { ru: 'Ещё ни одной попытки', uk: 'Ще жодної спроби', en: 'No guesses yet' },
   'play.noTriesOver': { ru: 'Ты даже не попытался', uk: 'Ти навіть не спробував', en: 'You did not even try' },

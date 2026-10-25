@@ -20,6 +20,8 @@ import {
   PHRASE_EVERY,
   PHRASE_VOICE_AT,
   ZOOM_LEVELS,
+  ZOOM_REVEAL,
+  zoomAt,
   duelWinsNeeded,
   hasMode,
   judgeAll,
@@ -1227,7 +1229,7 @@ function phraseLines(duel: DuelDoc, side: DuelPlayer) {
 
 function duelStep(duel: DuelDoc, side: DuelPlayer) {
   const revealed = duel.status === 'finished' || Boolean(side.solvedAt) || Boolean(side.gaveUp)
-  return revealed ? ZOOM_LEVELS.length - 1 : Math.min(wrongCount(duel, side), ZOOM_LEVELS.length - 1)
+  return revealed ? ZOOM_REVEAL : Math.min(wrongCount(duel, side), ZOOM_LEVELS.length - 1)
 }
 
 export function duelShotKey(duel: DuelDoc, userId: ObjectId) {
@@ -1244,7 +1246,7 @@ async function duelShot(duel: DuelDoc, side: DuelPlayer, known: boolean) {
     focusFor(game, duel.answerId!, seed),
     known ? Promise.resolve(undefined) : shotFor(game, duel.answerId!, seed, step),
   ])
-  return { focus, zoom: ZOOM_LEVELS[step], ...(shot ? { shot } : {}) }
+  return { focus, zoom: zoomAt(step), ...(shot ? { shot } : {}) }
 }
 
 export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {

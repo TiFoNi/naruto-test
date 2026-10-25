@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { GAME_SPECS, ZOOM_LEVELS, type GameId } from '@nanda/game'
+import { GAME_SPECS, ZOOM_LEVELS, ZOOM_REVEAL, type GameId } from '@nanda/game'
 import { gameData } from '../games'
 import { fail, handle } from '../http'
 import { roundOwner } from '../profile'
@@ -19,7 +19,7 @@ async function duelSource(code: string, userId: ObjectId) {
     answerId: duel.answerId,
     extra: duel.extra ?? undefined,
     stage: abilityStageOf(duel, side),
-    step: revealed ? ZOOM_LEVELS.length - 1 : Math.min(wrongCount(duel, side), ZOOM_LEVELS.length - 1),
+    step: revealed ? ZOOM_REVEAL : Math.min(wrongCount(duel, side), ZOOM_LEVELS.length - 1),
     seed: duelSeed(duel),
   }
 }

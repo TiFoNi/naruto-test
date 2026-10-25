@@ -553,7 +553,9 @@ export const ENDLESS_MODES: ModeId[] = ['pair', 'tune', 'grid']
 
 export const hasDaily = (mode: ModeId) => !ENDLESS_MODES.includes(mode)
 
-export const ZOOM_LEVELS = [7, 5.1, 3.7, 2.6, 1.9, 1.4, 1] as const
+export const ZOOM_LEVELS = [5.1, 3.7, 2.6, 1.9] as const
+export const ZOOM_REVEAL = ZOOM_LEVELS.length
+export const zoomAt = (step: number) => (step >= ZOOM_LEVELS.length ? 1 : ZOOM_LEVELS[Math.max(0, step)])
 
 export const XP_CAPS = { daily: 400, endless: 300, duel: 200 } as const
 

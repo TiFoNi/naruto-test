@@ -32,7 +32,7 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
   const playing = !!round && !over
   const zoomText = (value: number) => (lang === 'en' ? value.toFixed(1) : value.toFixed(1).replace('.', ','))
   const nextLevel = step < ZOOM_LEVELS.length - 1 ? ZOOM_LEVELS[step + 1] : null
-  const shownStep = over ? ZOOM_LEVELS.length - 1 : step
+  const shownStep = over ? ZOOM_LEVELS.length : step
 
   return (
     <PlayBoard
@@ -45,7 +45,7 @@ export default function ImageMode({ game, active, stats, daily = false, challeng
 
           <ZoomScale
             title={t('play.zoomTitle')}
-            note={playing && nextLevel ? t('play.zoomNext', { zoom: zoomText(nextLevel) }) : t('play.zoomFull')}
+            note={!playing ? t('play.zoomFull') : nextLevel ? t('play.zoomNext', { zoom: zoomText(nextLevel) }) : t('play.zoomLast')}
             labels={ZOOM_LEVELS.map((level) => `×${zoomText(level)}`)}
             current={shownStep}
           />
