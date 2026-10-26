@@ -12,7 +12,7 @@ export const lookStyle = (id: string, look?: BannerLook | null): CSSProperties =
     : { objectPosition: bannerSpot(id) }
 
 export default function BannerArt({ id, look, place }: { id: string; look?: BannerLooks | null; place: LookPlace | 'profile' }) {
-  const style = lookStyle(id, look?.[place === 'profile' ? 'desktop' : place])
+  const style = lookStyle(id, place === 'profile' ? look?.desktop : (look?.[place] ?? look?.desktop))
   if (!isLive(id)) return <img src={bannerPic(id)} alt="" style={style} />
 
   return (

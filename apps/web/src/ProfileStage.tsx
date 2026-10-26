@@ -16,17 +16,17 @@ const PHONE_MAX = 620
 
 const gutter = (screen: number) => Math.min(34, Math.max(20, screen * 0.034))
 
-const ratioOn = (screen: number) => (screen - gutter(screen) * 2) / STAGE_MIN
+const ratioOn = (screen: number, low: number) => (screen - gutter(screen) * 2) / low
 
-export function usePhoneRatio() {
-  const [ratio, setRatio] = useState(() => ratioOn(PHONE_SCREEN))
+export function usePhoneRatio(low: number) {
+  const [ratio, setRatio] = useState(() => ratioOn(PHONE_SCREEN, low))
 
   useEffect(() => {
-    const sync = () => setRatio(ratioOn(window.innerWidth <= PHONE_MAX ? window.innerWidth : PHONE_SCREEN))
+    const sync = () => setRatio(ratioOn(window.innerWidth <= PHONE_MAX ? window.innerWidth : PHONE_SCREEN, low))
     sync()
     window.addEventListener('resize', sync)
     return () => window.removeEventListener('resize', sync)
-  }, [])
+  }, [low])
 
   return ratio
 }

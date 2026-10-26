@@ -436,6 +436,8 @@
 .profile-stage {
   position: relative;
   z-index: 1;
+  width: 100%;
+  min-width: 0;
   min-height: 145px;
   aspect-ratio: 3.85;
 }

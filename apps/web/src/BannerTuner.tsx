@@ -9,13 +9,13 @@ import { bannerPic } from './banners'
 import { useI18n } from './i18n'
 import type { L10n } from './i18n/langs'
 import { CheckIcon, CloseIcon } from './icons'
-import { STAGE_RATIO, usePhoneRatio } from './ProfileStage'
+import { STAGE_MIN, STAGE_RATIO, usePhoneRatio } from './ProfileStage'
 
 type Place = { key: LookPlace; aspect: number; start: BannerLook; label: L10n }
 
 const PLACES: Place[] = [
   { key: 'desktop', aspect: STAGE_RATIO, start: { x: 50, y: 28, z: 1 }, label: { ru: 'Профиль', uk: 'Профіль', en: 'Profile' } },
-  { key: 'board', aspect: 488 / 111, start: { x: 50, y: 50, z: 1 }, label: { ru: 'Лидеры', uk: 'Лідери', en: 'Leaderboard' } },
+  { key: 'board', aspect: STAGE_RATIO, start: { x: 50, y: 28, z: 1 }, label: { ru: 'Лидеры', uk: 'Лідери', en: 'Leaderboard' } },
 ]
 
 
@@ -24,7 +24,6 @@ const clamp = (value: number) => Math.min(100, Math.max(0, value))
 export default function BannerTuner({ banner, looks, onClose }: { banner: string; looks: BannerLooks | null; onClose: () => void }) {
   const { l } = useI18n()
   const { refresh } = useAuth()
-  const phoneRatio = usePhoneRatio()
   const [draft, setDraft] = useState<BannerLooks>(looks ?? {})
   const [current, setCurrent] = useState<LookPlace>('desktop')
   const [busy, setBusy] = useState(false)
@@ -34,9 +33,10 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
 
   const placeOf = (key: LookPlace) => PLACES.find((one) => one.key === key)!
   const aspectOf = (key: LookPlace) => placeOf(key).aspect
-  const lookAt = (key: LookPlace) => draft[key] ?? placeOf(key).start
+  const lookAt = (key: LookPlace) => draft[key] ?? (key === 'board' ? draft.desktop : undefined) ?? placeOf(key).start
   const look = lookAt(current)
   const aspect = aspectOf(current)
+  const phoneRatio = usePhoneRatio(STAGE_MIN)
 
   const setLook = (next: BannerLook) => setDraft((was) => ({ ...was, [current]: next }))
 
@@ -131,7 +131,7 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
           ))}
         </div>
 
-        <div className={`look-row ${current === 'desktop' ? 'has-phone' : ''}`}>
+        <div className="look-row has-phone">
           <figure className="look-card">
             <div
               className="look-stage"
@@ -151,25 +151,23 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
                 onLoad={(event) => measure(event.currentTarget)}
               />
             </div>
-            <figcaption>{current === 'desktop' ? l({ ru: 'Компьютер', uk: 'Комп’ютер', en: 'Desktop' }) : l(placeOf(current).label)}</figcaption>
+            <figcaption>{l({ ru: 'Компьютер', uk: 'Комп’ютер', en: 'Desktop' })}</figcaption>
           </figure>
 
-          {current === 'desktop' && (
-            <figure className="look-card look-phone">
-              <span
-                className="look-frame look-drag"
-                style={{ aspectRatio: String(phoneRatio) }}
-                onPointerDown={press}
-                onPointerMove={move}
-                onPointerUp={release}
-                onPointerCancel={release}
-                role="presentation"
-              >
-                <img src={bannerPic(banner)} alt="" draggable={false} style={lookStyle(banner, look)} />
-              </span>
-              <figcaption>{l({ ru: 'Телефон', uk: 'Телефон', en: 'Phone' })}</figcaption>
-            </figure>
-          )}
+          <figure className="look-card look-phone">
+            <span
+              className="look-frame look-drag"
+              style={{ aspectRatio: String(phoneRatio) }}
+              onPointerDown={press}
+              onPointerMove={move}
+              onPointerUp={release}
+              onPointerCancel={release}
+              role="presentation"
+            >
+              <img src={bannerPic(banner)} alt="" draggable={false} style={lookStyle(banner, look)} />
+            </span>
+            <figcaption>{l({ ru: 'Телефон', uk: 'Телефон', en: 'Phone' })}</figcaption>
+          </figure>
         </div>
 
         <label className="look-zoom">
