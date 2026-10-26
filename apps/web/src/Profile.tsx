@@ -1151,13 +1151,14 @@ export default function Profile({ id }: { id?: string }) {
                       {banner && (
                         <button
                           type="button"
-                          className="ghost look-open"
+                          className="look-open"
                           onClick={() => {
                             setSkins(false)
                             setTuning(true)
                           }}
                         >
                           {t('profile.bannerTune')}
+                          <PencilIcon />
                         </button>
                       )}
                     </header>

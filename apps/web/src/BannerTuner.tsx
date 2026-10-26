@@ -8,7 +8,7 @@ import { useAuth } from './auth'
 import { bannerPic } from './banners'
 import { useI18n } from './i18n'
 import type { L10n } from './i18n/langs'
-import { CheckIcon, CloseIcon } from './icons'
+import { CheckIcon, CloseIcon, RefreshIcon, ZoomInIcon, ZoomOutIcon } from './icons'
 import { BOARD_MIN, STAGE_MIN, STAGE_RATIO, usePhoneRatio } from './ProfileStage'
 
 type Place = { key: LookPlace; aspect: number; start: BannerLook; label: L10n }
@@ -20,6 +20,8 @@ const PLACES: Place[] = [
 
 
 const clamp = (value: number) => Math.min(100, Math.max(0, value))
+
+const ZOOM_STEP = 0.25
 
 export default function BannerTuner({ banner, looks, onClose }: { banner: string; looks: BannerLooks | null; onClose: () => void }) {
   const { l } = useI18n()
@@ -39,6 +41,8 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
   const phoneRatio = usePhoneRatio(current === 'board' ? BOARD_MIN : STAGE_MIN)
 
   const setLook = (next: BannerLook) => setDraft((was) => ({ ...was, [current]: next }))
+
+  const zoomBy = (delta: number) => setLook({ ...look, z: Math.min(BANNER_ZOOM_MAX, Math.max(1, Math.round((look.z + delta) * 100) / 100)) })
 
   const measure = (node: HTMLImageElement | null) => {
     if (node?.complete && node.naturalWidth) setNatural({ w: node.naturalWidth, h: node.naturalHeight })
@@ -170,23 +174,42 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
           </figure>
         </div>
 
-        <label className="look-zoom">
-          <span>{l({ ru: 'Приближение', uk: 'Наближення', en: 'Zoom' })}</span>
+        <div className="look-zoom">
+          <button
+            type="button"
+            className="look-step"
+            aria-label={l({ ru: 'Отдалить', uk: 'Віддалити', en: 'Zoom out' })}
+            disabled={look.z <= 1}
+            onClick={() => zoomBy(-ZOOM_STEP)}
+          >
+            <ZoomOutIcon />
+          </button>
           <input
             type="range"
             min={1}
             max={BANNER_ZOOM_MAX}
             step={0.05}
             value={look.z}
+            aria-label={l({ ru: 'Приближение', uk: 'Наближення', en: 'Zoom' })}
             style={{ '--fill': `${((look.z - 1) / (BANNER_ZOOM_MAX - 1)) * 100}%` } as CSSProperties}
             onChange={(event) => setLook({ ...look, z: Number(event.target.value) })}
           />
+          <button
+            type="button"
+            className="look-step"
+            aria-label={l({ ru: 'Приблизить', uk: 'Наблизити', en: 'Zoom in' })}
+            disabled={look.z >= BANNER_ZOOM_MAX}
+            onClick={() => zoomBy(ZOOM_STEP)}
+          >
+            <ZoomInIcon />
+          </button>
           <b>×{look.z.toFixed(2).replace(/\.?0+$/, '')}</b>
-        </label>
+        </div>
 
         <div className="look-actions">
-          <button type="button" className="ghost" disabled={busy || !draft[current]} onClick={reset}>
-            {l({ ru: 'Сбросить', uk: 'Скинути', en: 'Reset' })}
+          <button type="button" className="look-reset" disabled={busy || !draft[current]} onClick={reset}>
+            <RefreshIcon />
+            <span>{l({ ru: 'Сбросить', uk: 'Скинути', en: 'Reset' })}</span>
           </button>
           <span />
           <button

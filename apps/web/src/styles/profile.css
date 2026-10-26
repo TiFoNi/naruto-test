@@ -662,8 +662,20 @@
   scrollbar-gutter: stable;
 }
 
+.modes-pop .banner-shop {
+  margin-right: -13px;
+  padding-right: 7px;
+}
+
+@supports (-moz-appearance: none) {
+  .modes-pop .banner-shop {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--text) 26%, transparent) transparent;
+  }
+}
+
 .modes-pop .banner-shop::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 .modes-pop .banner-shop::-webkit-scrollbar-track {
@@ -671,7 +683,7 @@
 }
 
 .modes-pop .banner-shop::-webkit-scrollbar-thumb {
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   border-radius: 8px;
   background: color-mix(in srgb, var(--text) 26%, transparent);
   background-clip: content-box;
@@ -3382,12 +3394,33 @@ a.world-blank:hover .world-pic.is-empty {
 }
 
 .modes-pop header .look-open {
-  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
   margin-left: auto;
-  padding: 0 14px;
+  padding: 0 10px 0 12px;
+  border: 0;
   border-radius: 10px;
+  background: none;
+  color: var(--text-2);
+  font: inherit;
   font-size: 13px;
   font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.modes-pop header .look-open svg {
+  width: 17px;
+  height: 17px;
+}
+
+.modes-pop header .look-open:hover {
+  background: color-mix(in srgb, #ffffff 6%, transparent);
+  color: var(--text);
 }
 
 
