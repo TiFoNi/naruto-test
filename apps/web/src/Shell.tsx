@@ -305,7 +305,7 @@ function AccountMenu({
       >
         <span className="sr-only">{t('nav.profile')}: </span>
         <span className="account-name">{nickname}</span>
-        <Avatar className="small" id={id} name={nickname} avatar={avatar} frame={frame} />
+        <Avatar className="small" id={id} name={nickname} avatar={avatar} frame={frame} small />
       </button>
 
       <div className="account-menu" style={(toneHex(user?.tone) ? { '--accent': toneHex(user?.tone) } : {}) as React.CSSProperties}>

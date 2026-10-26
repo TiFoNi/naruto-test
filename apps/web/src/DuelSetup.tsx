@@ -249,7 +249,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                             <img src={bannerPic(one.banner)} alt="" style={{ objectPosition: bannerSpot(one.banner) }} />
                           </span>
                         )}
-                        <Avatar className="duel-mate-face" id={one.id} name={one.nickname} avatar={one.avatar} frame={one.frame} />
+                        <Avatar className="duel-mate-face" id={one.id} name={one.nickname} avatar={one.avatar} frame={one.frame} small />
                         <span className="duel-mate-text">
                           <b>{one.nickname}</b>
                           {one.tag && <em>#{one.tag}</em>}

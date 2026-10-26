@@ -4,9 +4,9 @@ import type { CSSProperties, ReactNode } from 'react'
 import { avatarUrl } from './pics'
 import { faceStyle, frameOf, frameStyle, frameUrl } from './frames'
 
-type Props = { id?: string | null; name: string; avatar?: string | null; frame?: string | null; className?: string; hint?: ReactNode }
+type Props = { id?: string | null; name: string; avatar?: string | null; frame?: string | null; className?: string; hint?: ReactNode; small?: boolean }
 
-export default function Avatar({ id, name, avatar, frame, className, hint }: Props) {
+export default function Avatar({ id, name, avatar, frame, className, hint, small = false }: Props) {
   const src = id && avatar ? avatarUrl(id, avatar) : null
   const worn = frameOf(frame)
 
@@ -30,7 +30,7 @@ export default function Avatar({ id, name, avatar, frame, className, hint }: Pro
       )}
       {hint}
       {worn && (
-        <i className="avatar-frame" style={{ backgroundImage: `url(${frameUrl(worn.id)})`, ...frameStyle(worn.id) } as CSSProperties} />
+        <i className="avatar-frame" style={{ backgroundImage: `url(${frameUrl(worn.id, small)})`, ...frameStyle(worn.id) } as CSSProperties} />
       )}
     </span>
   )

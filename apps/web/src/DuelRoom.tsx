@@ -45,19 +45,40 @@ const clock = (ms: number) => {
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`
 }
 
+function DuelClock({ endsAt, seconds, serverNow }: { endsAt?: number; seconds: number; serverNow: () => number }) {
+  const [, redraw] = useState(0)
+
+  useEffect(() => {
+    if (!seconds || !endsAt) return
+    const timer = setInterval(() => redraw((n) => n + 1), 500)
+    return () => clearInterval(timer)
+  }, [seconds, endsAt])
+
+  const ticking = seconds > 0 && !!endsAt
+  const left = endsAt ? endsAt - serverNow() : 0
+  const share = ticking ? Math.max(0, Math.min(1, left / (seconds * 1000))) : 0
+  const heat = ticking ? Math.round(Math.max(0, 1 - share / 0.2) * 100) : 0
+
+  return (
+    <div className="duel-hud-clock" style={{ '--heat': heat } as CSSProperties}>
+      {ticking && (
+        <svg className="duel-hud-ring" viewBox="0 0 100 100" aria-hidden>
+          <circle className="duel-hud-ring-bed" cx="50" cy="50" r="44" />
+          <circle className="duel-hud-ring-line" cx="50" cy="50" r="44" style={{ strokeDashoffset: RING * (1 - share) }} />
+        </svg>
+      )}
+      <span>{ticking ? clock(left) : '—'}</span>
+    </div>
+  )
+}
+
 export default function DuelRoom({ code, onRestart }: { code: string; onRestart?: () => void }) {
   const { t, l, name, lang, error: errorText } = useI18n()
   const href = useHref()
   const navigate = useNavigate()
   const { duel, error, busy, pending, serverNow, ready, setup, seat, clue, open, skip, invite, next, toLobby, giveUp, guess, pick, pass, mark, strike, answer: markAnswer, refresh } = useDuel(code)
-  const [, redraw] = useState(0)
   const [pageReady, setPageReady] = useState(false)
   const [showResult, setShowResult] = useState(true)
-
-  useEffect(() => {
-    const timer = setInterval(() => redraw((n) => n + 1), 500)
-    return () => clearInterval(timer)
-  }, [])
 
   useEffect(() => {
     if (duel?.matchDone) setShowResult(true)
@@ -144,11 +165,8 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
   const nextZoom = shownStep < ZOOM_LEVELS.length - 1 ? ZOOM_LEVELS[shownStep + 1] : null
   const zoomText = (value: number) => (lang === 'en' ? value.toFixed(1) : value.toFixed(1).replace('.', ','))
   const clarityStep = revealed ? ABILITY_STAGES : Math.min(wrong, ABILITY_STAGES)
-  const left = duel.endsAt ? duel.endsAt - serverNow() : 0
   const modeLabel = duel.mode ? t(MODES.find((m) => m.id === duel.mode)?.label ?? 'mode.classic') : null
   const ticking = duel.status === 'playing' && duel.seconds > 0 && !!duel.endsAt
-  const share = ticking ? Math.max(0, Math.min(1, left / (duel.seconds * 1000))) : 0
-  const heat = ticking ? Math.round(Math.max(0, 1 - share / 0.2) * 100) : 0
 
   const sideNote = (side: { ready?: boolean; solved?: boolean; gaveUp?: boolean } | undefined, count: number, cardsLeft: number) =>
     inLobby
@@ -219,15 +237,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
 
         {teamly && (
           <>
-            <div className="duel-hud-clock" style={{ '--heat': heat } as CSSProperties}>
-              {ticking && (
-                <svg className="duel-hud-ring" viewBox="0 0 100 100" aria-hidden>
-                  <circle className="duel-hud-ring-bed" cx="50" cy="50" r="44" />
-                  <circle className="duel-hud-ring-line" cx="50" cy="50" r="44" style={{ strokeDashoffset: RING * (1 - share) }} />
-                </svg>
-              )}
-              <span>{ticking ? clock(left) : '—'}</span>
-            </div>
+            <DuelClock endsAt={duel.endsAt} seconds={ticking ? duel.seconds : 0} serverNow={serverNow} />
 
             <ul className="duel-hud-squads" style={{ '--sides': squads.length } as CSSProperties}>
               {squads.map((mates, team) => (
@@ -270,15 +280,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
 
           <b className="duel-hud-score is-you">{you?.wins ?? 0}</b>
 
-          <div className="duel-hud-clock" style={{ '--heat': heat } as CSSProperties}>
-            {ticking && (
-              <svg className="duel-hud-ring" viewBox="0 0 100 100" aria-hidden>
-                <circle className="duel-hud-ring-bed" cx="50" cy="50" r="44" />
-                <circle className="duel-hud-ring-line" cx="50" cy="50" r="44" style={{ strokeDashoffset: RING * (1 - share) }} />
-              </svg>
-            )}
-            <span>{ticking ? clock(left) : '—'}</span>
-          </div>
+          <DuelClock endsAt={duel.endsAt} seconds={ticking ? duel.seconds : 0} serverNow={serverNow} />
 
           <b className="duel-hud-score is-rival">{rival?.wins ?? 0}</b>
 

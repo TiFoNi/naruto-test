@@ -356,7 +356,7 @@ export default function Chat() {
                         if (user) void loadMates()
                       }}
                     >
-                      <Avatar id={line.userId} name={line.nickname} avatar={line.avatar} frame={line.frame} className="chat-av" />
+                      <Avatar id={line.userId} name={line.nickname} avatar={line.avatar} frame={line.frame} className="chat-av" small />
                     </button>
                   )}
                   <div className="chat-body">
