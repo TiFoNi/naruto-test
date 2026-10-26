@@ -28,9 +28,8 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
   const [current, setCurrent] = useState<LookPlace>('desktop')
   const [busy, setBusy] = useState(false)
   const [natural, setNatural] = useState<{ w: number; h: number } | null>(null)
-  const stage = useRef<HTMLDivElement>(null)
   const picture = useRef<HTMLImageElement>(null)
-  const grab = useRef<{ x: number; y: number; from: BannerLook } | null>(null)
+  const grab = useRef<{ x: number; y: number; from: BannerLook; node: HTMLElement } | null>(null)
 
   const placeOf = (key: LookPlace) => PLACES.find((one) => one.key === key)!
   const aspectOf = (key: LookPlace) => placeOf(key).aspect
@@ -46,15 +45,15 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
 
   useEffect(() => measure(picture.current), [])
 
-  const overflow = () => {
-    const box = stage.current?.getBoundingClientRect()
-    if (!box || !natural) return { x: 0, y: 0 }
+  const overflow = (node: HTMLElement) => {
+    const box = node.getBoundingClientRect()
+    if (!natural) return { x: 0, y: 0 }
     const cover = Math.max(box.width / natural.w, box.height / natural.h)
     return { x: natural.w * cover * look.z - box.width, y: natural.h * cover * look.z - box.height }
   }
 
-  const press = (event: PointerEvent<HTMLDivElement>) => {
-    grab.current = { x: event.clientX, y: event.clientY, from: look }
+  const press = (event: PointerEvent<HTMLElement>) => {
+    grab.current = { x: event.clientX, y: event.clientY, from: look, node: event.currentTarget }
     try {
       event.currentTarget.setPointerCapture(event.pointerId)
     } catch {
@@ -62,10 +61,10 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
     }
   }
 
-  const move = (event: PointerEvent<HTMLDivElement>) => {
+  const move = (event: PointerEvent<HTMLElement>) => {
     const start = grab.current
     if (!start) return
-    const room = overflow()
+    const room = overflow(start.node)
     const dx = event.clientX - start.x
     const dy = event.clientY - start.y
     setLook({
@@ -134,7 +133,6 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
         <div className={`look-row ${current === 'desktop' ? 'has-phone' : ''}`}>
           <figure className="look-card">
             <div
-              ref={stage}
               className="look-stage"
               style={{ aspectRatio: String(aspect) }}
               onPointerDown={press}
@@ -157,7 +155,15 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
 
           {current === 'desktop' && (
             <figure className="look-card look-phone">
-              <span className="look-frame" style={{ aspectRatio: String(PHONE_RATIO) }}>
+              <span
+                className="look-frame look-drag"
+                style={{ aspectRatio: String(PHONE_RATIO) }}
+                onPointerDown={press}
+                onPointerMove={move}
+                onPointerUp={release}
+                onPointerCancel={release}
+                role="presentation"
+              >
                 <img src={bannerPic(banner)} alt="" draggable={false} style={lookStyle(banner, look)} />
               </span>
               <figcaption>{l({ ru: 'Телефон', uk: 'Телефон', en: 'Phone' })}</figcaption>

@@ -12471,8 +12471,15 @@ html[data-auth] .guest-note {
   user-select: none;
 }
 
-.look-stage:active {
+.look-stage:active,
+.look-drag:active {
   cursor: grabbing;
+}
+
+.look-drag {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
 }
 
 .look-stage img,
