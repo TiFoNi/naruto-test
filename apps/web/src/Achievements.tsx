@@ -9,7 +9,7 @@ import { CheckIcon, CloseIcon, GiftIcon, PinIcon } from './icons'
 import Rail from './Rail'
 import AwardIcon from './awardIcons'
 import { useAuth } from './auth'
-import { putAwards } from './awards'
+import { AWARDS_FILTER, putAwards } from './awards'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
 
@@ -330,6 +330,15 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
     const asked = new URLSearchParams(window.location.search).get('filter')
     return FILTERS.some((one) => one.id === asked) ? (asked as Filter) : 'all'
   })
+
+  useEffect(() => {
+    const pick = (event: Event) => {
+      const asked = (event as CustomEvent<string>).detail
+      if (FILTERS.some((one) => one.id === asked)) setFilter(asked as Filter)
+    }
+    window.addEventListener(AWARDS_FILTER, pick)
+    return () => window.removeEventListener(AWARDS_FILTER, pick)
+  }, [])
   const [ink, setInk] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
   const [held, setHeld] = useState<string | null>(null)
   const [lift, setLift] = useState<{ id: string; size: number } | null>(null)

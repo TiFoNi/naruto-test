@@ -3,6 +3,8 @@
 import { api } from './api'
 import { keepPerUser } from './session-cache'
 
+export const AWARDS_FILTER = 'nanda-awards-filter'
+
 export type AwardRow = { id: string; tier: string; family?: string | null; kind?: string; done: boolean; claimed: boolean }
 export type FreshAward = { id: string; tier: string; family?: string | null; kind?: string }
 export type DuelInvite = { code: string; from: string; game: string | null; mode: string | null; best: number; seconds: number; at: string }

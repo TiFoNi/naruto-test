@@ -21,7 +21,7 @@ import { hadSession, useAuth } from './auth'
 import BannerArt from './BannerArt'
 import { MARKS } from './Profile'
 import { shownTone, watchTone } from './tone'
-import { dropCoins, dropFrames, dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
+import { AWARDS_FILTER, dropCoins, dropFrames, dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
 import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
 import { MODE_XP, MODE_XP_AFTER, TONE_HEX, levelAt } from '@nanda/game'
 import { BRAND } from './brand'
@@ -679,7 +679,15 @@ function Bell() {
             ))}
             {awards.map((award) => (
               <li key={award.id} className={`bell-item ${award.kind === 'season' ? 'is-season' : `tier-${award.tier}`}`}>
-                <Link className="bell-card" href={href.achievements} onClick={() => setOpen(false)} prefetch={false}>
+                <Link
+                  className="bell-card"
+                  href={`${href.achievements}?filter=ready`}
+                  onClick={() => {
+                    setOpen(false)
+                    window.dispatchEvent(new CustomEvent(AWARDS_FILTER, { detail: 'ready' }))
+                  }}
+                  prefetch={false}
+                >
                   <small>{t('ach.fresh')}</small>
                   <span className="bell-main">
                     <span className="bell-mark" aria-hidden>

@@ -3391,3 +3391,9 @@ a.world-blank:hover .world-pic.is-empty {
 }
 
 
+
+.profile-hero-body .profile-hero-tiles > .hero-tile.is-add,
+.profile-hero-body .profile-hero-tiles > .hero-tile.is-add .hero-tile-open {
+  align-items: center;
+  text-align: center;
+}
