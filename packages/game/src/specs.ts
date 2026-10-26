@@ -402,8 +402,8 @@ export const MODE_XP_AFTER: Record<ModeId, number> = {
   page: 1,
   odd: 1,
   pair: 1,
-  shot: 1,
-  tune: 1,
+  shot: 3,
+  tune: 3,
   who: 5,
   grid: 5,
   clue: 5,
@@ -425,7 +425,7 @@ export const isBlock = (value: unknown): value is ProfileBlock => (PROFILE_BLOCK
 
 export const profileBlocks = (value: unknown) => (Array.isArray(value) ? [...new Set(value.filter(isBlock))] : null)
 
-export const BANNERS = ['frog', 'night', 'sharingan', 'blossom', 'crows', 'fireflies', 'aot', 'kny', 'tg', 'dn', 'tester'] as const
+export const BANNERS = ['frog', 'night', 'sharingan', 'blossom', 'crows', 'fireflies', 'aot', 'kny', 'tg', 'dn', 'tester', 'castle', 'poppies', 'pain', 'levelup', 'snakes'] as const
 
 export type Banner = (typeof BANNERS)[number]
 
@@ -467,6 +467,11 @@ export const BANNER_RARITY: Record<string, Rarity> = {
   tg: 'rare',
   dn: 'rare',
   sharingan: 'legend',
+  castle: 'rare',
+  poppies: 'rare',
+  pain: 'epic',
+  levelup: 'common',
+  snakes: 'epic',
 }
 
 const priced = <T extends Record<string, Rarity>>(rarity: T, kind: 'frame' | 'banner') =>

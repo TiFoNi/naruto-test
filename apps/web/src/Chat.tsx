@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
 import { TONE_HEX } from '@nanda/game'
 import Avatar from './Avatar'
@@ -31,6 +31,7 @@ const toneOf = (tone?: string | null): CSSProperties | undefined => {
   return hex ? { color: hex } : undefined
 }
 
+const MENU_EDGE = 8
 const GROUP_MS = 5 * 60_000
 const TYPE_GAP_MS = 3500
 const PULSE_MS = 45_000
@@ -84,7 +85,17 @@ export default function Chat() {
   const [mates, setMates] = useState<{ friends: string[]; sent: string[]; asked: string[] }>({ friends: [], sent: [], asked: [] })
   const [sending, setSending] = useState(false)
   const [asking, setAsking] = useState<{ kind: 'drop' | 'mute' | 'unfriend'; line: Line } | null>(null)
-  const [menu, setMenu] = useState<{ line: Line; x: number; y: number } | null>(null)
+  const [menu, setMenu] = useState<{ line: Line; x: number; y: number; above: number } | null>(null)
+  const menuBox = useRef<HTMLDivElement>(null)
+  const [menuTop, setMenuTop] = useState<number | null>(null)
+
+  useLayoutEffect(() => {
+    const node = menuBox.current
+    if (!menu || !node) return setMenuTop(null)
+    const height = node.offsetHeight
+    const fits = menu.y + height <= window.innerHeight - MENU_EDGE
+    setMenuTop(fits ? menu.y : Math.max(MENU_EDGE, menu.above - height))
+  }, [menu, mates])
   const [online, setOnline] = useState(0)
   const [typers, setTypers] = useState<{ id: string; nickname: string }[]>([])
   const typedAt = useRef(0)
@@ -352,7 +363,7 @@ export default function Chat() {
                       onClick={(event) => {
                         const box = event.currentTarget.getBoundingClientRect()
                         const x = Math.min(Math.max(box.left + box.width / 2, 96), window.innerWidth - 96)
-                        setMenu((was) => (was?.line.id === line.id ? null : { line, x, y: box.bottom + 6 }))
+                        setMenu((was) => (was?.line.id === line.id ? null : { line, x, y: box.bottom + 6, above: box.top - 6 }))
                         if (user) void loadMates()
                       }}
                     >
@@ -448,7 +459,7 @@ export default function Chat() {
       {menu && (
         <>
           <div className="chat-menu-away" role="presentation" onClick={() => setMenu(null)} />
-          <div className="chat-menu" style={{ left: menu.x, top: menu.y }} role="menu">
+          <div ref={menuBox} className="chat-menu" style={{ left: menu.x, top: menuTop ?? menu.y, visibility: menuTop === null ? 'hidden' : undefined }} role="menu">
             <Link
               className="chat-menu-item"
               href={menu.line.userId === user?.id ? href.profile : href.player(menu.line.userId)}
