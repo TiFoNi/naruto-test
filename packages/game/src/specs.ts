@@ -386,9 +386,9 @@ export const MODE_XP: Record<ModeId, number> = {
   ability: 5,
   page: 5,
   odd: 8,
-  pair: 0,
+  pair: 8,
   shot: 12,
-  tune: 0,
+  tune: 12,
   who: 25,
   grid: 25,
   clue: 25,
@@ -401,9 +401,9 @@ export const MODE_XP_AFTER: Record<ModeId, number> = {
   ability: 1,
   page: 1,
   odd: 1,
-  pair: 0,
+  pair: 1,
   shot: 1,
-  tune: 0,
+  tune: 1,
   who: 5,
   grid: 5,
   clue: 5,
@@ -548,10 +548,10 @@ export const oneTry = (game: unknown, mode?: unknown) => ONE_TRY_GAMES.includes(
 
 export const DAILY_XP_FACTOR = 3
 
-export const DAILY_XP_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd', 'shot']
+export const DAILY_XP_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd', 'shot', 'tune']
 
 // режими-забіги: у них нема щоденного варіанта
-export const ENDLESS_MODES: ModeId[] = ['pair', 'tune', 'grid']
+export const ENDLESS_MODES: ModeId[] = ['pair', 'grid']
 
 export const hasDaily = (mode: ModeId) => !ENDLESS_MODES.includes(mode)
 

@@ -1,13 +1,13 @@
 import type { ObjectId } from 'mongodb'
-import { TUNE_FULL, TUNE_MISS, TUNE_POINTS, TUNE_STEPS, tuneLevel, type TuneLevel } from '@nanda/game'
-import { rounds, tuneRuns, users, type TuneDoc } from './db'
+import { DAILY_XP_FACTOR, MODE_XP, TUNE_FULL, TUNE_MISS, TUNE_POINTS, TUNE_STEPS, dailyKey, tuneLevel, type TuneLevel } from '@nanda/game'
+import { rounds, tuneDays, tuneRuns, users, type TuneDayDoc, type TuneDoc } from './db'
 import { gameData } from './games'
-import { addXp } from './profile'
-import { today } from './daily'
+import { addXp, applyDailyResult } from './profile'
+import { dailyAnswer, nextReset, today } from './daily'
 import { markSeasonPlay } from './season'
 
 const GAME = 'tunes'
-const MODE = 'tune'
+const MODE = 'tune' as const
 
 const stepsOf = (grade: TuneLevel) => TUNE_STEPS[grade]
 
@@ -107,12 +107,13 @@ export async function tunePoints(userId: ObjectId) {
   return pointsOf(await (await users()).findOne({ _id: userId }, { projection: { [`${PATH}.points`]: 1 } }))
 }
 
-async function logRound(doc: TuneDoc, answerId: number, status: 'won' | 'lost' | 'skipped') {
+async function logRound(doc: { userId: ObjectId; guest?: boolean; updatedAt: Date }, answerId: number, status: 'won' | 'lost' | 'skipped', day?: string) {
   if (doc.guest) return
   await (await rounds()).insertOne({
     userId: doc.userId,
     game: GAME,
     mode: MODE,
+    ...(day ? { daily: day } : {}),
     answerId,
     status,
     guesses: [],
@@ -151,7 +152,7 @@ export async function tuneAnswer(userId: ObjectId, pick: number, guest = false) 
           $max: { [`${PATH}.bestStreak`]: streak },
         },
       )
-      await addXp(await users(), userId, Math.min(gained, 25), 'endless')
+      await addXp(await users(), userId, MODE_XP.tune, 'endless', MODE)
     }
     return { ...(await view({ ...doc, ...next } as TuneDoc)), right: true, answerId: doc.answerId, gained }
   }
@@ -203,6 +204,12 @@ export async function tuneGiveUp(userId: ObjectId, guest = false) {
 }
 
 export async function tuneClip(userId: ObjectId, key: string, seconds: number) {
+  const day = await (await tuneDays()).findOne({ userId, key })
+  if (day) {
+    const open = day.status === 'over' ? TUNE_FULL : openedFor(DAILY_GRADE, day.step)
+    return seconds > open ? null : { id: day.answerId, seconds }
+  }
+
   const doc = await (await tuneRuns()).findOne({ userId })
   if (!doc || doc.key !== key) return null
 
@@ -212,4 +219,100 @@ export async function tuneClip(userId: ObjectId, key: string, seconds: number) {
 
   const id = doc.status === 'over' ? doc.lastId : doc.answerId
   return id === undefined ? null : { id, seconds }
+}
+
+const DAILY_GRADE: TuneLevel = 'normal'
+
+const DAILY_POINTS = MODE_XP.tune * DAILY_XP_FACTOR
+
+async function dailyView(doc: TuneDayDoc) {
+  const over = doc.status === 'over'
+  const open = over ? TUNE_FULL : openedFor(DAILY_GRADE, doc.step)
+  return {
+    grade: DAILY_GRADE,
+    step: doc.step,
+    steps: stepsOf(DAILY_GRADE),
+    open,
+    full: TUNE_FULL,
+    points: DAILY_POINTS,
+    status: doc.status,
+    streak: 0,
+    best: 0,
+    score: 0,
+    misses: doc.step,
+    daily: doc.day,
+    nextAt: nextReset(),
+    lastId: over ? doc.answerId : undefined,
+    right: over ? !!doc.won : undefined,
+    gained: over ? (doc.gained ?? 0) : undefined,
+    guesses: over ? (doc.won ? doc.step + 1 : stepsOf(DAILY_GRADE).length) : undefined,
+    peaks: await peaksOf(doc.answerId),
+    clip: clip(doc.key, open),
+  }
+}
+
+export async function dailyTune(userId: ObjectId, guest: boolean) {
+  const collection = await tuneDays()
+  const day = today()
+  const found = await collection.findOne({ userId, day })
+  if (found && (await stillThere(found.answerId))) return dailyView(found)
+
+  const { answerId } = await dailyAnswer(GAME, MODE, day)
+  if (!(await stillThere(answerId))) return null
+  const now = new Date()
+  const doc: TuneDayDoc = {
+    userId,
+    day,
+    ...(guest ? { guest: true } : {}),
+    answerId,
+    key: `d${day.replace(/-/g, '')}`,
+    step: 0,
+    status: 'playing',
+    createdAt: now,
+    updatedAt: now,
+  }
+  await collection.updateOne({ userId, day }, { $setOnInsert: doc }, { upsert: true })
+  return dailyView((await collection.findOne({ userId, day })) ?? doc)
+}
+
+async function dailyPlaying(userId: ObjectId) {
+  const doc = await (await tuneDays()).findOne({ userId, day: today() })
+  return doc && doc.status === 'playing' ? doc : null
+}
+
+async function endDaily(doc: TuneDayDoc, won: boolean) {
+  const gained = won && !doc.guest ? DAILY_POINTS : 0
+  const over: TuneDayDoc = { ...doc, status: 'over', won, gained }
+  await (await tuneDays()).updateOne({ _id: doc._id }, { $set: { status: 'over', won, gained, updatedAt: new Date() } })
+  await logRound(doc, doc.answerId, won ? 'won' : 'lost', doc.day)
+  if (doc.guest) return { ...(await dailyView(over)), xp: null }
+  const collection = await users()
+  const xp = won ? await addXp(collection, doc.userId, gained, 'daily', MODE, MODE_XP.tune) : null
+  const key = dailyKey(GAME, MODE)
+  const stats = await applyDailyResult(collection, doc.userId, key, doc.day, won ? doc.step + 1 : stepsOf(DAILY_GRADE).length)
+  return { ...(await dailyView(over)), ...(xp ? { xp } : {}), stats: { key, value: stats } }
+}
+
+export async function dailyTuneAnswer(userId: ObjectId, pick: number) {
+  const doc = await dailyPlaying(userId)
+  if (!doc) return null
+  if (pick === doc.answerId) return endDaily(doc, true)
+  if (doc.step >= lastStep(DAILY_GRADE)) return endDaily(doc, false)
+  const step = doc.step + 1
+  await (await tuneDays()).updateOne({ _id: doc._id }, { $set: { step, updatedAt: new Date() } })
+  return dailyView({ ...doc, step })
+}
+
+export async function dailyTuneSkip(userId: ObjectId) {
+  const doc = await dailyPlaying(userId)
+  if (!doc) return null
+  if (doc.step >= lastStep(DAILY_GRADE)) return endDaily(doc, false)
+  const step = doc.step + 1
+  await (await tuneDays()).updateOne({ _id: doc._id }, { $set: { step, updatedAt: new Date() } })
+  return dailyView({ ...doc, step })
+}
+
+export async function dailyTuneGiveUp(userId: ObjectId) {
+  const doc = await dailyPlaying(userId)
+  return doc ? endDaily(doc, false) : null
 }

@@ -8,7 +8,11 @@ import GiveUp from './GiveUp'
 import PlayBoard from './PlayBoard'
 import { BRAND } from './brand'
 import { api } from './api'
-import { useAuth } from './auth'
+import { useAuth, type XpToday } from './auth'
+import { refreshFeed } from './awards'
+import PlaySide from './PlaySide'
+import RoundResult from './RoundResult'
+import { emptyStats, type Stats } from './stats'
 import { useI18n } from './i18n'
 import type { UiKey } from './i18n/ui'
 import type { Entity, Game } from './games/types'
@@ -31,6 +35,12 @@ type Run = {
   answerId?: number
   total?: number
   guest?: boolean
+  daily?: string
+  nextAt?: number
+  gained?: number
+  guesses?: number
+  xp?: { xp: number; level: number; today: XpToday }
+  stats?: { key: string; value: Stats }
 }
 
 const EMPTY = new Set<number>()
@@ -63,9 +73,12 @@ const timeOf = (share: number, full: number, flat = false) => (flat ? share * fu
 
 const tick = (seconds: number) => (seconds >= 10 ? `${Math.round(seconds)} с` : `${seconds.toFixed(1).replace('.', ',')} с`)
 
-export default function TuneMode({ game, active }: { game: Game; active: boolean }) {
+export default function TuneMode({ game, active, daily = false, stats }: { game: Game; active: boolean; daily?: boolean; stats?: Stats }) {
   const { t, name } = useI18n()
-  const { user } = useAuth()
+  const { user, setStats, setXp } = useAuth()
+  const [gained, setGained] = useState(0)
+  const xpNow = useRef(user?.xp ?? 0)
+  xpNow.current = user?.xp ?? xpNow.current
   const sound = useRef<HTMLAudioElement>(null)
   const track = useRef<HTMLDivElement>(null)
   const fanfare = useRef(false)
@@ -99,18 +112,28 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
     })
   }, [])
 
-  const send = useCallback(async (body: Record<string, unknown>) => {
-    setBusy(true)
-    const { ok, data } = await api<Run>('tune', body)
-    setBusy(false)
-    if (ok) setRun(data)
-    return ok ? data : null
-  }, [])
+  const send = useCallback(
+    async (body: Record<string, unknown>) => {
+      setBusy(true)
+      const { ok, data } = await api<Run>('tune', daily ? { ...body, daily: true } : body)
+      setBusy(false)
+      if (!ok) return null
+      setRun(data)
+      if (data.stats) setStats(data.stats.key, data.stats.value)
+      if (data.xp) {
+        setGained(Math.max(0, data.xp.xp - xpNow.current))
+        setXp(data.xp)
+        void refreshFeed()
+      }
+      return data
+    },
+    [daily, setStats, setXp],
+  )
 
   useEffect(() => {
     if (!active || run) return
-    void send({ grade })
-  }, [active, run, grade, send])
+    void send(daily ? {} : { grade })
+  }, [active, run, grade, daily, send])
 
   useEffect(() => {
     const node = sound.current
@@ -380,7 +403,18 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
   const played = spotOf(at, run.full, over)
   const tries = run.steps.length
 
-  const side = (
+  const side = daily ? (
+    <PlaySide
+      game={game}
+      mode="tune"
+      daily
+      stats={stats ?? emptyStats}
+      playing={!over}
+      busy={busy}
+      howto="tuneDaily"
+      onGiveUp={() => void quit()}
+    />
+  ) : (
     <aside className="play-side">
       <div className="play-card play-stats">
         <div className="hot">
@@ -420,7 +454,7 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
   return (
     <PlayBoard side={side}>
       <div className="tune-wrap">
-        <div className="tune-grades" role="radiogroup" aria-label={t('tune.grade')}>
+        {!daily && <div className="tune-grades" role="radiogroup" aria-label={t('tune.grade')}>
           {TUNE_LEVELS.map((one) => {
             const here = run.grade === one
             const style = `tune-grade is-${one} ${here ? 'on' : ''}`
@@ -442,7 +476,7 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
               </button>
             )
           })}
-        </div>
+        </div>}
 
         <div className={`play-card tune-board ${over ? 'is-done' : ''}`}>
           <header className="tune-head">
@@ -550,14 +584,34 @@ export default function TuneMode({ game, active }: { game: Game; active: boolean
 
           <div className="tune-foot">
             {over ? (
-              <button type="button" className="primary tune-next" onClick={() => void again()} disabled={busy}>
-                {t('shot.next')}
-              </button>
+              !daily && (
+                <button type="button" className="primary tune-next" onClick={() => void again()} disabled={busy}>
+                  {t('shot.next')}
+                </button>
+              )
             ) : (
               <CharacterSearch game={game} exclude={EMPTY} busy={busy} noThumbs placeholder={t('tune.search')} onPick={(entity) => void answer(entity)} />
             )}
           </div>
         </div>
+
+        {daily && over && answered && (
+          <RoundResult
+            game={game}
+            mode="tune"
+            answer={answered}
+            guesses={run.guesses ?? tries}
+            won={!!run.right}
+            skipped={false}
+            stats={stats}
+            board={[[...Array(Math.max(0, (run.guesses ?? tries) - (run.right ? 1 : 0))).fill('wrong'), ...(run.right ? ['correct'] : [])]]}
+            gained={gained}
+            day={run.daily}
+            nextAt={run.nextAt}
+            onNext={() => {}}
+            compact
+          />
+        )}
 
         {run.clip && <audio ref={sound} src={run.clip} preload="auto" />}
         {!user && <p className="notice tune-guest">{t('guest.note')}</p>}

@@ -18,7 +18,7 @@ type Props = {
   playing: boolean
   busy?: boolean
   legend?: boolean
-  howto?: 'image' | 'page' | 'ability' | 'phrase' | 'odd' | 'shot' | 'shotDaily'
+  howto?: 'image' | 'page' | 'ability' | 'phrase' | 'odd' | 'shot' | 'shotDaily' | 'tuneDaily'
   onGiveUp: () => void
 }
 
@@ -30,6 +30,7 @@ const STEPS = {
   odd: ['howtoOdd.step1', 'howtoOdd.step2', 'howtoOdd.step3', 'howtoOdd.step4'],
   shot: ['howtoShot.step1', 'howtoShot.step2', 'howtoShot.step3', 'howtoShot.step4'],
   shotDaily: ['howtoShotDaily.step1', 'howtoShotDaily.step2', 'howtoShotDaily.step3', 'howtoShotDaily.step4'],
+  tuneDaily: ['howtoTuneDaily.step1', 'howtoTuneDaily.step2', 'howtoTuneDaily.step3', 'howtoTuneDaily.step4'],
 } as const
 
 const skipped = (game: Game) => {

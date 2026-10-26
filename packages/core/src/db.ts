@@ -277,6 +277,21 @@ export type ShotDayDoc = {
   updatedAt: Date
 }
 
+export type TuneDayDoc = {
+  _id?: ObjectId
+  userId: ObjectId
+  day: string
+  guest?: boolean
+  answerId: number
+  key: string
+  step: number
+  status: 'playing' | 'over'
+  won?: boolean
+  gained?: number
+  createdAt: Date
+  updatedAt: Date
+}
+
 export type TuneDoc = {
   _id?: ObjectId
   userId: ObjectId
@@ -327,6 +342,7 @@ const cache = globalThis as typeof globalThis & {
   __shotsIndexed?: Promise<unknown>
   __shotDaysIndexed?: Promise<unknown>
   __tunesIndexed?: Promise<unknown>
+  __tuneDaysIndexed?: Promise<unknown>
   __purchasesIndexed?: Promise<unknown>
   __ledgerIndexed?: Promise<unknown>
   __chatIndexed?: Promise<unknown>
@@ -396,6 +412,19 @@ export async function shotRuns(): Promise<Collection<ShotDoc>> {
     throw error
   })
   await cache.__shotsIndexed
+  return collection
+}
+
+export async function tuneDays(): Promise<Collection<TuneDayDoc>> {
+  const collection = (await database()).collection<TuneDayDoc>('tuneDays')
+  cache.__tuneDaysIndexed ??= Promise.all([
+    collection.createIndex({ userId: 1, day: 1 }, { unique: true }),
+    collection.createIndex({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 30 }),
+  ]).catch((error) => {
+    cache.__tuneDaysIndexed = undefined
+    throw error
+  })
+  await cache.__tuneDaysIndexed
   return collection
 }
 

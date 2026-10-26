@@ -132,7 +132,7 @@ export async function applyDailyResult(collection: Collection<UserDoc>, userId: 
 
 export async function awardSolveXp(collection: Collection<UserDoc>, userId: ObjectId, mode: ModeId, source: XpSource) {
   const extra = source === 'daily' && DAILY_XP_MODES.includes(mode) ? DAILY_XP_FACTOR : 1
-  return addXp(collection, userId, MODE_XP[mode] * extra, source, mode)
+  return addXp(collection, userId, MODE_XP[mode] * extra, source, mode, source === 'daily' ? MODE_XP[mode] : undefined)
 }
 
 export async function addXp(
@@ -141,11 +141,12 @@ export async function addXp(
   amount: number,
   source: XpSource,
   mode?: ModeId,
+  capped?: number,
 ) {
   if (amount <= 0) return null
   const day = today()
   const carry = (field: XpSource) => ({ $cond: [{ $eq: ['$xpToday.day', day] }, orZero(`xpToday.${field}`), 0] })
-  const after = mode ? MODE_XP_AFTER[mode] : 1
+  const after = capped ?? (mode ? MODE_XP_AFTER[mode] : 1)
 
   const doc = await collection.findOneAndUpdate(
     { _id: userId },

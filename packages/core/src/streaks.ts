@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import type { GameId } from '@nanda/game'
+import { MODE_XP, type GameId } from '@nanda/game'
 import { rounds, streaks, users, type StreakDoc } from './db'
 import { addXp } from './profile'
 import { pairRound, type PairSide } from './pairs'
@@ -97,9 +97,10 @@ export async function pairAnswer(userId: ObjectId, game: GameId, pick: PairSide)
       { _id: found._id },
       { $set: { status: 'over', best, updatedAt: now }, $unset: { ask: '', left: '', right: '', answer: '' } },
     )
-    if (found.streak > 0 && !found.guest) await addXp(await users(), userId, Math.min(found.streak, 25), 'endless')
     return { right: false, answer: found.answer as PairSide, streak: found.streak, best, over: true }
   }
+
+  if (!found.guest) await addXp(await users(), userId, MODE_XP.pair, 'endless', 'pair')
 
   const next = await ask(game, streak, found)
   if (!next) return null

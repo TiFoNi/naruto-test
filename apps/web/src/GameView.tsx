@@ -81,9 +81,9 @@ export default function GameView({ game, mode, daily }: { game: Game; mode: Mode
               <ShotMode game={game} active={daily === d && mode === 'shot'} daily={d} stats={statsFor('shot', d)} />
             </div>
           )}
-          {game.modes.includes('tune') && !d && (
+          {game.modes.includes('tune') && (
             <div hidden={mode !== 'tune'}>
-              <TuneMode game={game} active={!daily && mode === 'tune'} />
+              <TuneMode game={game} active={daily === d && mode === 'tune'} daily={d} stats={statsFor('tune', d)} />
             </div>
           )}
           {game.modes.includes('image') && (

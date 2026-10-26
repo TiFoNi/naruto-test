@@ -802,6 +802,26 @@ const ui = {
     uk: 'Складність задає перший шматок: 2 секунди на легкій, 0,5 на складній',
     en: 'Difficulty sets the first piece: 2 seconds on easy, 0.5 on hard',
   },
+  'howtoTuneDaily.step1': {
+    ru: 'Один опенинг на весь день — сначала звучат первые секунды',
+    uk: 'Один опенінг на весь день — спершу звучать перші секунди',
+    en: 'One opening for the whole day — you start with the first seconds',
+  },
+  'howtoTuneDaily.step2': {
+    ru: 'Угадал — 36 опыта за день',
+    uk: 'Вгадав — 36 досвіду за день',
+    en: 'Guess it for 36 XP',
+  },
+  'howtoTuneDaily.step3': {
+    ru: 'Ошибся или пропустил — откроется кусок подлиннее',
+    uk: 'Помилився або пропустив — відкриється довший шматок',
+    en: 'A miss or a skip opens a longer piece',
+  },
+  'howtoTuneDaily.step4': {
+    ru: 'Не угадал за все попытки — опыта за день не будет',
+    uk: 'Не вгадав за всі спроби — досвіду за день не буде',
+    en: 'Miss every try and the day brings no XP',
+  },
   'tune.solved': { ru: 'Угадано опенингов', uk: 'Вгадано опенінгів', en: 'Openings guessed' },
   'tune.avg': { ru: 'Среднее время', uk: 'Середній час', en: 'Average time' },
   'tune.volume': { ru: 'Громкость', uk: 'Гучність', en: 'Volume' },

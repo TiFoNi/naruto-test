@@ -2,13 +2,29 @@ import { tuneLevel } from '@nanda/game'
 import { fail, handle, json, readJson } from '../http'
 import { gameData } from '../games'
 import { roundOwner } from '../profile'
-import { tuneAnswer, tuneGiveUp, tunePoints, tuneRun, tuneSkip } from '../tunes'
+import { dailyTune, dailyTuneAnswer, dailyTuneGiveUp, dailyTuneSkip, tuneAnswer, tuneGiveUp, tunePoints, tuneRun, tuneSkip } from '../tunes'
 
 export const POST = handle(async (request) => {
   const owner = await roundOwner(request)
   const body = await readJson(request)
 
   if (!(await gameData('tunes')).pool.length) return fail(503, 'not_ready')
+
+  if (body.daily) {
+    if (body.action === 'answer') {
+      if (typeof body.pick !== 'number') return fail(400, 'bad_request')
+      const result = await dailyTuneAnswer(owner.id, body.pick)
+      return result ? json(result, 200, owner.cookie) : fail(409, 'no_round')
+    }
+
+    if (body.action === 'skip' || body.action === 'giveup') {
+      const result = body.action === 'skip' ? await dailyTuneSkip(owner.id) : await dailyTuneGiveUp(owner.id)
+      return result ? json(result, 200, owner.cookie) : fail(409, 'no_round')
+    }
+
+    const run = await dailyTune(owner.id, owner.guest)
+    return run ? json({ ...run, guest: owner.guest }, 200, owner.cookie) : fail(503, 'not_ready')
+  }
 
   if (body.action === 'answer') {
     if (typeof body.pick !== 'number') return fail(400, 'bad_request')

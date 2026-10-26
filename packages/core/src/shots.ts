@@ -302,7 +302,7 @@ async function endDaily(doc: ShotDayDoc, won: boolean) {
   await logRound(doc, doc.answerId, won ? 'won' : 'lost', won ? level + 1 : LEVELS, doc.day)
   if (doc.guest) return { ...dailyView(over), xp: null }
   const collection = await users()
-  const xp = won ? await addXp(collection, doc.userId, gained, 'daily', MODE) : null
+  const xp = won ? await addXp(collection, doc.userId, gained, 'daily', MODE, xpAt(level)) : null
   const key = dailyKey(GAME, MODE)
   const stats = await applyDailyResult(collection, doc.userId, key, doc.day, won ? level + 1 : LEVELS)
   return { ...dailyView(over), ...(xp ? { xp } : {}), stats: { key, value: stats } }
