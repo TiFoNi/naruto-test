@@ -9,13 +9,13 @@ import { bannerPic } from './banners'
 import { useI18n } from './i18n'
 import type { L10n } from './i18n/langs'
 import { CheckIcon, CloseIcon } from './icons'
-import { BOARD_RATIO, STAGE_MIN, STAGE_RATIO, usePhoneRatio } from './ProfileStage'
+import { BOARD_MIN, STAGE_MIN, STAGE_RATIO, usePhoneRatio } from './ProfileStage'
 
 type Place = { key: LookPlace; aspect: number; start: BannerLook; label: L10n }
 
 const PLACES: Place[] = [
   { key: 'desktop', aspect: STAGE_RATIO, start: { x: 50, y: 28, z: 1 }, label: { ru: 'Профиль', uk: 'Профіль', en: 'Profile' } },
-  { key: 'board', aspect: BOARD_RATIO, start: { x: 50, y: 28, z: 1 }, label: { ru: 'Лидеры', uk: 'Лідери', en: 'Leaderboard' } },
+  { key: 'board', aspect: STAGE_RATIO, start: { x: 50, y: 28, z: 1 }, label: { ru: 'Лидеры', uk: 'Лідери', en: 'Leaderboard' } },
 ]
 
 
@@ -36,8 +36,7 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
   const lookAt = (key: LookPlace) => draft[key] ?? (key === 'board' ? draft.desktop : undefined) ?? placeOf(key).start
   const look = lookAt(current)
   const aspect = aspectOf(current)
-  const phoneRatio = usePhoneRatio(STAGE_MIN)
-  const solo = current === 'board'
+  const phoneRatio = usePhoneRatio(current === 'board' ? BOARD_MIN : STAGE_MIN)
 
   const setLook = (next: BannerLook) => setDraft((was) => ({ ...was, [current]: next }))
 
@@ -132,7 +131,7 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
           ))}
         </div>
 
-        <div className={`look-row ${solo ? '' : 'has-phone'}`}>
+        <div className="look-row has-phone">
           <figure className="look-card">
             <div
               className="look-stage"
@@ -152,25 +151,23 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
                 onLoad={(event) => measure(event.currentTarget)}
               />
             </div>
-            {!solo && <figcaption>{l({ ru: 'Компьютер', uk: 'Комп’ютер', en: 'Desktop' })}</figcaption>}
+            <figcaption>{l({ ru: 'Компьютер', uk: 'Комп’ютер', en: 'Desktop' })}</figcaption>
           </figure>
 
-          {!solo && (
-            <figure className="look-card look-phone">
-              <span
-                className="look-frame look-drag"
-                style={{ aspectRatio: String(phoneRatio) }}
-                onPointerDown={press}
-                onPointerMove={move}
-                onPointerUp={release}
-                onPointerCancel={release}
-                role="presentation"
-              >
-                <img src={bannerPic(banner)} alt="" draggable={false} style={lookStyle(banner, look)} />
-              </span>
-              <figcaption>{l({ ru: 'Телефон', uk: 'Телефон', en: 'Phone' })}</figcaption>
-            </figure>
-          )}
+          <figure className="look-card look-phone">
+            <span
+              className="look-frame look-drag"
+              style={{ aspectRatio: String(phoneRatio) }}
+              onPointerDown={press}
+              onPointerMove={move}
+              onPointerUp={release}
+              onPointerCancel={release}
+              role="presentation"
+            >
+              <img src={bannerPic(banner)} alt="" draggable={false} style={lookStyle(banner, look)} />
+            </span>
+            <figcaption>{l({ ru: 'Телефон', uk: 'Телефон', en: 'Phone' })}</figcaption>
+          </figure>
         </div>
 
         <label className="look-zoom">

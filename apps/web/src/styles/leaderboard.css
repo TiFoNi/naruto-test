@@ -247,6 +247,7 @@
 
 .lb-podium.is-cards {
   container-type: inline-size;
+  width: 100%;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: stretch;
   gap: 12px;
@@ -270,16 +271,19 @@
 }
 
 .lb-podium.is-cards .lb-step {
+  justify-self: stretch;
+  width: 100%;
   flex-direction: row;
   align-items: center;
   gap: 16px;
-  aspect-ratio: 3;
+  height: max(112px, calc((100cqw - 12px) / 2 / 3.85));
   padding: 16px 18px;
   text-align: left;
 }
 
 .lb-podium.is-cards .lb-step.gold {
   grid-column: 1 / -1;
+  height: max(145px, calc(100cqw / 3.85));
   padding-top: 16px;
 }
 
@@ -1435,5 +1439,12 @@
 
   .lb-podium.is-cards .lb-step.gold .lb-step-rank {
     font-size: 13px;
+  }
+}
+
+@media (max-width: 560px) {
+  .lb-podium.is-cards .lb-step,
+  .lb-podium.is-cards .lb-step.gold {
+    height: max(112px, calc(100cqw / 3.85));
   }
 }

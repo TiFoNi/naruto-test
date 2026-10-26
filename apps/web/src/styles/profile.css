@@ -449,7 +449,7 @@
   zoom: var(--stage-scale, 1);
 }
 
-.profile-canvas .profile-hero-tiles {
+.profile-canvas .profile-hero-body .profile-hero-tiles {
   grid-auto-columns: 172px;
 }
 
