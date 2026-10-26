@@ -12373,3 +12373,22 @@ html[data-auth] .guest-note {
 .tune-wrap > .card {
   width: 100%;
 }
+
+.frame-sec.is-empty {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+.frame-empty {
+  display: grid;
+  flex: 1;
+  min-height: 160px;
+  margin: 0;
+  padding: 0 24px;
+  place-items: center;
+  color: var(--text-3);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}

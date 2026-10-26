@@ -19,7 +19,21 @@ export default function FramePicker() {
   const [busy, setBusy] = useState(false)
 
   const owned = FRAMES.filter((one) => user?.frames.includes(one.id)).sort((a, b) => rank(a.id) - rank(b.id))
-  if (!user || !owned.length) return null
+  if (!user) return null
+
+  if (!owned.length)
+    return (
+      <section className="ava-sec frame-sec is-empty">
+        <h3>{l({ ru: 'Рамка', uk: 'Рамка', en: 'Frame' })}</h3>
+        <p className="frame-empty">
+          {l({
+            ru: 'У тебя пока нет рамок. Их можно купить в магазине или получить за награды сезона.',
+            uk: 'У тебе поки немає рамок. Їх можна купити в магазині або отримати за нагороди сезону.',
+            en: 'You have no frames yet. Buy them in the shop or win them in a season.',
+          })}
+        </p>
+      </section>
+    )
 
   const pick = async (frame: string | null) => {
     setBusy(true)
