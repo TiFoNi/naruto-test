@@ -12464,7 +12464,7 @@ html[data-auth] .guest-note {
 .look-stage {
   position: relative;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 16px;
   background: var(--card-2);
   cursor: grab;
   touch-action: none;
@@ -12497,10 +12497,6 @@ html[data-auth] .guest-note {
   justify-content: center;
   gap: 8px;
   margin: 0;
-  padding: 10px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: var(--card-2);
 }
 
 .look-card figcaption {
@@ -12515,7 +12511,7 @@ html[data-auth] .guest-note {
   display: block;
   overflow: hidden;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 16px;
 }
 
 

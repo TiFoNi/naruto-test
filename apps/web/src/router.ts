@@ -41,25 +41,30 @@ export function hrefs(lang: Lang) {
 
 export const useHref = () => hrefs(useI18n().lang)
 
-let visited = 0
-let lastPath: string | null = null
+const trail: string[] = []
+
+const bare = (path: string) => path.split(/[?#]/)[0].replace(/^\/[a-z]{2}(?=\/|$)/, '').replace(/\/+$/, '') || '/'
 
 export function useVisitTracker() {
   const pathname = usePathname()
-  if (pathname !== lastPath) {
-    lastPath = pathname
-    visited += 1
-  }
+  if (pathname === trail[trail.length - 1]) return
+  if (trail.length > 1 && trail[trail.length - 2] === pathname) trail.pop()
+  else trail.push(pathname)
 }
 
-export const canGoBack = () => visited > 1
+export const previousPath = () => trail[trail.length - 2] ?? null
+
+export const cameFrom = (href: string) => {
+  const previous = previousPath()
+  return previous !== null && bare(previous) === bare(href)
+}
 
 export function useNavigate() {
   const router = useRouter()
   const go = (to: string) => router.push(to)
   go.back = () => router.back()
   go.replace = (to: string) => {
-    visited = Math.max(0, visited - 1)
+    trail.pop()
     router.replace(to)
   }
   return go

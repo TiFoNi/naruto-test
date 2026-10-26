@@ -150,7 +150,7 @@ export const MARKS = [
   { left: '93%', top: '32%', size: 24, tilt: 5 },
 ]
 
-export default function Profile({ onBack, id }: { onBack: () => void; id?: string }) {
+export default function Profile({ id }: { id?: string }) {
   const { user, refresh } = useAuth()
   const own = !id
   const { t, l, lang } = useI18n()
@@ -1104,8 +1104,8 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   return (
     <div className="profile" style={(toneHex ? { '--accent': toneHex } : {}) as CSSProperties}>
       <div className="profile-top">
-        <BackButton href="/" onClick={onBack}>
-          {t('profile.back')}
+        <BackButton href={id ? href.board : href.home} anywhere={!!id}>
+          {t(id ? 'nav.leaderboard' : 'play.back')}
         </BackButton>
         {own && (
         <div className="profile-banner-acts">

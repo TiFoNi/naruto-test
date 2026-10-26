@@ -4,16 +4,16 @@ import Link from 'next/link'
 import { useEffect, useState, type MouseEvent, type ReactNode } from 'react'
 import { useI18n } from './i18n'
 import { BackIcon } from './icons'
-import { canGoBack, useNavigate } from './router'
+import { cameFrom, previousPath, useNavigate } from './router'
 
-type Props = { href: string; children: ReactNode; onClick?: () => void; fixed?: boolean }
+type Props = { href: string; children: ReactNode; onClick?: () => void; fixed?: boolean; anywhere?: boolean }
 
-export default function BackButton({ href, children, onClick, fixed }: Props) {
+export default function BackButton({ href, children, onClick, fixed, anywhere = false }: Props) {
   const navigate = useNavigate()
   const { t } = useI18n()
   const [returning, setReturning] = useState(false)
 
-  useEffect(() => setReturning(!onClick && canGoBack()), [onClick])
+  useEffect(() => setReturning(!onClick && (anywhere ? previousPath() !== null : cameFrom(href))), [onClick, anywhere, href])
 
   const handle = (event: MouseEvent<HTMLAnchorElement>) => {
     if (onClick) {
@@ -29,7 +29,7 @@ export default function BackButton({ href, children, onClick, fixed }: Props) {
   return (
     <Link className="back" href={href} onClick={handle}>
       <BackIcon />
-      {returning && !fixed ? t('common.back') : children}
+      {returning && anywhere && !fixed ? t('common.back') : children}
     </Link>
   )
 }
