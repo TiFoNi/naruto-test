@@ -1320,6 +1320,7 @@ const ui = {
   'banner.pain': { ru: 'Чернильная буря', uk: 'Чорнильна буря', en: 'Ink storm' },
   'banner.levelup': { ru: 'Новый уровень', uk: 'Новий рівень', en: 'Level up' },
   'banner.snakes': { ru: 'Змеиное гнездо', uk: 'Зміїне гніздо', en: 'Snake nest' },
+  'banner.touch': { ru: 'Сотворение', uk: 'Створення', en: 'Creation' },
   'profile.blockAll': { ru: 'Все блоки уже на месте', uk: 'Усі блоки вже на місці', en: 'Every block is already here' },
   'profile.block.worlds': { ru: 'Любимые вселенные', uk: 'Улюблені всесвіти', en: 'Favourite worlds' },
   'profile.block.awards': { ru: 'Достижения', uk: 'Досягнення', en: 'Achievements' },
