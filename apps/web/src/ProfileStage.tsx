@@ -10,7 +10,26 @@ export const STAGE_HEIGHT = STAGE_WIDTH / STAGE_RATIO
 
 export const STAGE_MIN = 145
 
-export const PHONE_RATIO = 343 / STAGE_MIN
+const PHONE_SCREEN = 390
+
+const PHONE_MAX = 620
+
+const gutter = (screen: number) => Math.min(34, Math.max(20, screen * 0.034))
+
+const ratioOn = (screen: number) => (screen - gutter(screen) * 2) / STAGE_MIN
+
+export function usePhoneRatio() {
+  const [ratio, setRatio] = useState(() => ratioOn(PHONE_SCREEN))
+
+  useEffect(() => {
+    const sync = () => setRatio(ratioOn(window.innerWidth <= PHONE_MAX ? window.innerWidth : PHONE_SCREEN))
+    sync()
+    window.addEventListener('resize', sync)
+    return () => window.removeEventListener('resize', sync)
+  }, [])
+
+  return ratio
+}
 
 const BOOST_MAX = 1.1
 

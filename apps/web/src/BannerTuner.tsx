@@ -9,7 +9,7 @@ import { bannerPic } from './banners'
 import { useI18n } from './i18n'
 import type { L10n } from './i18n/langs'
 import { CheckIcon, CloseIcon } from './icons'
-import { PHONE_RATIO, STAGE_RATIO } from './ProfileStage'
+import { STAGE_RATIO, usePhoneRatio } from './ProfileStage'
 
 type Place = { key: LookPlace; aspect: number; start: BannerLook; label: L10n }
 
@@ -24,6 +24,7 @@ const clamp = (value: number) => Math.min(100, Math.max(0, value))
 export default function BannerTuner({ banner, looks, onClose }: { banner: string; looks: BannerLooks | null; onClose: () => void }) {
   const { l } = useI18n()
   const { refresh } = useAuth()
+  const phoneRatio = usePhoneRatio()
   const [draft, setDraft] = useState<BannerLooks>(looks ?? {})
   const [current, setCurrent] = useState<LookPlace>('desktop')
   const [busy, setBusy] = useState(false)
@@ -157,7 +158,7 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
             <figure className="look-card look-phone">
               <span
                 className="look-frame look-drag"
-                style={{ aspectRatio: String(PHONE_RATIO) }}
+                style={{ aspectRatio: String(phoneRatio) }}
                 onPointerDown={press}
                 onPointerMove={move}
                 onPointerUp={release}

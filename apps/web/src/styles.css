@@ -12550,8 +12550,17 @@ html[data-auth] .guest-note {
     align-items: center;
   }
 
-  .look-phone .look-frame {
-    max-width: 320px;
+  .modal-backdrop:has(> .look-modal) {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .card.modal.look-modal {
+    width: 100%;
+    max-height: 94dvh;
+    margin-bottom: 0;
+    padding: 20px var(--gutter) 22px;
+    border-radius: 22px 22px 0 0;
   }
 
   .look-actions > .look-icon {
