@@ -1354,7 +1354,8 @@
 }
 
 @media (max-width: 560px) {
-  .lb-podium.is-cards .lb-step:not(.gold) {
+  .lb-podium.is-cards .lb-step,
+  .lb-podium.is-cards .lb-step.gold {
     height: max(112px, calc(100cqw / 3.85));
   }
 }
