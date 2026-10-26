@@ -14,7 +14,7 @@ import Picker from './Picker'
 import { ShieldIcon } from './icons'
 import BoardFace from './BoardFace'
 import { MARKS } from './Profile'
-import { bannerPic, bannerSpot } from './banners'
+import BannerArt from './BannerArt'
 
 type Sort = 'best' | 'solved'
 
@@ -211,7 +211,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                   <li key={row.rank} className={`lb-step ${medals[index]} has-art`}>
                     <span className="lb-step-art" aria-hidden>
                       {row.banner ? (
-                        <img src={bannerPic(row.banner)} alt="" style={{ objectPosition: bannerSpot(row.banner) }} />
+                        <BannerArt id={row.banner} />
                       ) : (
                         <i className="mini-me-marks lb-step-marks">
                           {MARKS.map((mark) => (

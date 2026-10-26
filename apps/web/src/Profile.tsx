@@ -20,7 +20,8 @@ import { useHref } from './router'
 import { SHOWCASE_MAX } from './showcase'
 import { keepPerUser } from './session-cache'
 import { showTone } from './tone'
-import { bannerClips, bannerPic, bannerSpot, isLive } from './banners'
+import BannerArt from './BannerArt'
+import { bannerPic } from './banners'
 import {
   HERO_TILES,
   HERO_TILES_DEFAULT,
@@ -1062,15 +1063,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
         )}
         {!!banner && (
           <span className="profile-art" aria-hidden>
-            {isLive(banner) ? (
-              <video autoPlay loop muted playsInline preload="auto" poster={bannerPic(banner)} style={{ objectPosition: bannerSpot(banner) }}>
-                {bannerClips(banner).map((clip) => (
-                  <source key={clip.type} src={clip.src} type={clip.type} />
-                ))}
-              </video>
-            ) : (
-              <img src={bannerPic(banner)} alt="" style={{ objectPosition: bannerSpot(banner) }} />
-            )}
+            <BannerArt id={banner} />
           </span>
         )}
 

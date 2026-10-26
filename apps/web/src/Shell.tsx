@@ -18,7 +18,7 @@ import PickName from './PickName'
 import Footer from './Footer'
 import Landing from './Landing'
 import { hadSession, useAuth } from './auth'
-import { bannerClips, bannerPic, bannerSpot, isLive } from './banners'
+import BannerArt from './BannerArt'
 import { MARKS } from './Profile'
 import { shownTone, watchTone } from './tone'
 import { dropCoins, dropFrames, dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
@@ -138,14 +138,8 @@ function MiniMe() {
   return (
     <div className="mini-me" style={(hue ? { '--accent': hue } : {}) as React.CSSProperties}>
       <span className="mini-me-art" aria-hidden>
-        {user.banner && isLive(user.banner) ? (
-          <video autoPlay loop muted playsInline preload="auto" poster={bannerPic(user.banner)} style={{ objectPosition: bannerSpot(user.banner) }}>
-            {bannerClips(user.banner).map((clip) => (
-              <source key={clip.type} src={clip.src} type={clip.type} />
-            ))}
-          </video>
-        ) : user.banner ? (
-          <img src={bannerPic(user.banner)} alt="" style={{ objectPosition: bannerSpot(user.banner) }} />
+        {user.banner ? (
+          <BannerArt id={user.banner} />
         ) : (
           <i className="mini-me-marks">
             {MARKS.map((mark) => (

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { HERO_TILES_MAX, TONE_HEX, isHeroTile, levelAt, type HeroTile } from '@nanda/game'
 import Avatar from './Avatar'
 import { GAMES } from './games'
-import { bannerClips, bannerPic, bannerSpot, isLive } from './banners'
+import BannerArt from './BannerArt'
 import { useI18n, type UiKey } from './i18n'
 import type { User } from './auth'
 
@@ -97,15 +97,7 @@ export default function HeroPeek({ user, stats, banner, frame }: Props) {
     <section className="profile-hero shop-mock">
       {!!banner && (
         <span className="profile-art" aria-hidden>
-          {isLive(banner) ? (
-            <video autoPlay loop muted playsInline preload="auto" poster={bannerPic(banner)} style={{ objectPosition: bannerSpot(banner) }}>
-              {bannerClips(banner).map((clip) => (
-                <source key={clip.type} src={clip.src} type={clip.type} />
-              ))}
-            </video>
-          ) : (
-            <img src={bannerPic(banner)} alt="" style={{ objectPosition: bannerSpot(banner) }} />
-          )}
+          <BannerArt id={banner} />
         </span>
       )}
       <div className="profile-banner" aria-hidden />

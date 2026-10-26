@@ -427,7 +427,8 @@
   pointer-events: none;
 }
 
-.lb-step-art img {
+.lb-step-art img,
+.lb-step-art video {
   width: 100%;
   height: 100%;
   object-fit: cover;
