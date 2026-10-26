@@ -108,6 +108,10 @@ const KEEP_ONLY = new Set([
   'Lind L. Tailor',
 ])
 
+const ALIASES = {
+  'L (character)': 'Л Эл Ел Лоулайт Ryuzaki Рюдзаки Рюдзакі Lawliet',
+}
+
 const NAMES = {
   'John McEnroe': 'Джон Макинрой',
   'Zakk Irius': 'Закк Ириус',
@@ -254,6 +258,7 @@ async function main() {
       id,
       name: NAMES[name] ?? ruName(clean, ru, transliterate),
       nameEn: clean,
+      aliases: ALIASES[name],
       gender: cats.includes('Category:Female characters') ? 'Женский' : cats.includes('Category:Male characters') ? 'Мужской' : 'Другое',
       species: shinigami ? 'Синигами' : 'Человек',
       orgs: matchRules(ORGS, cats).length ? matchRules(ORGS, cats) : ['Вне организаций'],
