@@ -37,6 +37,7 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
   const look = lookAt(current)
   const aspect = aspectOf(current)
   const phoneRatio = usePhoneRatio(STAGE_MIN)
+  const solo = current === 'board'
 
   const setLook = (next: BannerLook) => setDraft((was) => ({ ...was, [current]: next }))
 
@@ -131,7 +132,7 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
           ))}
         </div>
 
-        <div className="look-row has-phone">
+        <div className={`look-row ${solo ? '' : 'has-phone'}`}>
           <figure className="look-card">
             <div
               className="look-stage"
@@ -151,23 +152,25 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
                 onLoad={(event) => measure(event.currentTarget)}
               />
             </div>
-            <figcaption>{l({ ru: 'Компьютер', uk: 'Комп’ютер', en: 'Desktop' })}</figcaption>
+            {!solo && <figcaption>{l({ ru: 'Компьютер', uk: 'Комп’ютер', en: 'Desktop' })}</figcaption>}
           </figure>
 
-          <figure className="look-card look-phone">
-            <span
-              className="look-frame look-drag"
-              style={{ aspectRatio: String(phoneRatio) }}
-              onPointerDown={press}
-              onPointerMove={move}
-              onPointerUp={release}
-              onPointerCancel={release}
-              role="presentation"
-            >
-              <img src={bannerPic(banner)} alt="" draggable={false} style={lookStyle(banner, look)} />
-            </span>
-            <figcaption>{l({ ru: 'Телефон', uk: 'Телефон', en: 'Phone' })}</figcaption>
-          </figure>
+          {!solo && (
+            <figure className="look-card look-phone">
+              <span
+                className="look-frame look-drag"
+                style={{ aspectRatio: String(phoneRatio) }}
+                onPointerDown={press}
+                onPointerMove={move}
+                onPointerUp={release}
+                onPointerCancel={release}
+                role="presentation"
+              >
+                <img src={bannerPic(banner)} alt="" draggable={false} style={lookStyle(banner, look)} />
+              </span>
+              <figcaption>{l({ ru: 'Телефон', uk: 'Телефон', en: 'Phone' })}</figcaption>
+            </figure>
+          )}
         </div>
 
         <label className="look-zoom">
