@@ -451,7 +451,8 @@
 }
 
 .profile-canvas .profile-art,
-.profile-canvas .profile-art::before {
+.profile-canvas .profile-art::before,
+.profile-canvas .profile-banner {
   border-radius: calc(23px / var(--stage-scale, 1));
 }
 
@@ -467,7 +468,6 @@
   position: absolute;
   inset: 0;
   height: auto;
-  border-radius: 0;
 }
 
 .profile-canvas > .profile-hero-body {
