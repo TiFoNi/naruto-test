@@ -436,7 +436,7 @@
 .profile-stage {
   position: relative;
   z-index: 1;
-  min-height: 170px;
+  min-height: 145px;
   aspect-ratio: 3.85;
 }
 
@@ -803,6 +803,10 @@
 .hero-acts .modes-pop {
   right: 0;
   left: auto;
+}
+
+.hero-acts > .banner-pick {
+  position: static;
 }
 
 .profile-banner-acts {

@@ -8,7 +8,7 @@ import { useAuth } from './auth'
 import { bannerPic } from './banners'
 import { useI18n } from './i18n'
 import type { L10n } from './i18n/langs'
-import { CloseIcon } from './icons'
+import { CheckIcon, CloseIcon } from './icons'
 import { PHONE_RATIO, STAGE_RATIO } from './ProfileStage'
 
 type Place = { key: LookPlace; aspect: number; start: BannerLook; label: L10n }
@@ -132,28 +132,31 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
         </div>
 
         <div className={`look-row ${current === 'desktop' ? 'has-phone' : ''}`}>
-          <div
-            ref={stage}
-            className="look-stage"
-            style={{ aspectRatio: String(aspect) }}
-            onPointerDown={press}
-            onPointerMove={move}
-            onPointerUp={release}
-            onPointerCancel={release}
-            role="presentation"
-          >
-            <img
-              ref={picture}
-              src={bannerPic(banner)}
-              alt=""
-              draggable={false}
-              style={lookStyle(banner, look)}
-              onLoad={(event) => measure(event.currentTarget)}
-            />
-          </div>
+          <figure className="look-card">
+            <div
+              ref={stage}
+              className="look-stage"
+              style={{ aspectRatio: String(aspect) }}
+              onPointerDown={press}
+              onPointerMove={move}
+              onPointerUp={release}
+              onPointerCancel={release}
+              role="presentation"
+            >
+              <img
+                ref={picture}
+                src={bannerPic(banner)}
+                alt=""
+                draggable={false}
+                style={lookStyle(banner, look)}
+                onLoad={(event) => measure(event.currentTarget)}
+              />
+            </div>
+            <figcaption>{current === 'desktop' ? l({ ru: 'Компьютер', uk: 'Комп’ютер', en: 'Desktop' }) : l(placeOf(current).label)}</figcaption>
+          </figure>
 
           {current === 'desktop' && (
-            <figure className="look-phone">
+            <figure className="look-card look-phone">
               <span className="look-frame" style={{ aspectRatio: String(PHONE_RATIO) }}>
                 <img src={bannerPic(banner)} alt="" draggable={false} style={lookStyle(banner, look)} />
               </span>
@@ -181,11 +184,25 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
             {l({ ru: 'Сбросить', uk: 'Скинути', en: 'Reset' })}
           </button>
           <span />
-          <button type="button" className="ghost" disabled={busy} onClick={onClose}>
-            {l({ ru: 'Отмена', uk: 'Скасувати', en: 'Cancel' })}
+          <button
+            type="button"
+            className="ghost look-icon"
+            disabled={busy}
+            aria-label={l({ ru: 'Отмена', uk: 'Скасувати', en: 'Cancel' })}
+            onClick={onClose}
+          >
+            <CloseIcon />
+            <span>{l({ ru: 'Отмена', uk: 'Скасувати', en: 'Cancel' })}</span>
           </button>
-          <button type="button" className="primary" disabled={busy} onClick={() => void save()}>
-            {l({ ru: 'Сохранить', uk: 'Зберегти', en: 'Save' })}
+          <button
+            type="button"
+            className="primary look-icon"
+            disabled={busy}
+            aria-label={l({ ru: 'Сохранить', uk: 'Зберегти', en: 'Save' })}
+            onClick={() => void save()}
+          >
+            <CheckIcon />
+            <span>{l({ ru: 'Сохранить', uk: 'Зберегти', en: 'Save' })}</span>
           </button>
         </div>
       </section>
