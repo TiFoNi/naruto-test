@@ -596,21 +596,21 @@ export default function TuneMode({ game, active, daily = false, stats }: { game:
         </div>
 
         {daily && over && answered && (
-          <RoundResult
-            game={game}
-            mode="tune"
-            answer={answered}
-            guesses={run.guesses ?? tries}
-            won={!!run.right}
-            skipped={false}
-            stats={stats}
-            board={[[...Array(Math.max(0, (run.guesses ?? tries) - (run.right ? 1 : 0))).fill('wrong'), ...(run.right ? ['correct'] : [])]]}
-            gained={gained}
-            day={run.daily}
-            nextAt={run.nextAt}
-            onNext={() => {}}
-            compact
-          />
+        <RoundResult
+          game={game}
+          mode="tune"
+          answer={answered}
+          guesses={run.guesses ?? tries}
+          won={!!run.right}
+          skipped={false}
+          stats={stats}
+          board={[[...Array(Math.max(0, (run.guesses ?? tries) - (run.right ? 1 : 0))).fill('wrong'), ...(run.right ? ['correct'] : [])]]}
+          gained={gained}
+          day={run.daily}
+          nextAt={run.nextAt}
+          onNext={() => {}}
+          compact
+        />
         )}
 
         {run.clip && <audio ref={sound} src={run.clip} preload="auto" />}
