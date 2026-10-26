@@ -10,6 +10,8 @@ export const STAGE_HEIGHT = STAGE_WIDTH / STAGE_RATIO
 
 export const STAGE_MIN = 145
 
+export const BOARD_RATIO = 3
+
 const PHONE_SCREEN = 390
 
 const PHONE_MAX = 620

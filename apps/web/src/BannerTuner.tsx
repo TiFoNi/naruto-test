@@ -9,13 +9,13 @@ import { bannerPic } from './banners'
 import { useI18n } from './i18n'
 import type { L10n } from './i18n/langs'
 import { CheckIcon, CloseIcon } from './icons'
-import { STAGE_MIN, STAGE_RATIO, usePhoneRatio } from './ProfileStage'
+import { BOARD_RATIO, STAGE_MIN, STAGE_RATIO, usePhoneRatio } from './ProfileStage'
 
 type Place = { key: LookPlace; aspect: number; start: BannerLook; label: L10n }
 
 const PLACES: Place[] = [
   { key: 'desktop', aspect: STAGE_RATIO, start: { x: 50, y: 28, z: 1 }, label: { ru: 'Профиль', uk: 'Профіль', en: 'Profile' } },
-  { key: 'board', aspect: STAGE_RATIO, start: { x: 50, y: 28, z: 1 }, label: { ru: 'Лидеры', uk: 'Лідери', en: 'Leaderboard' } },
+  { key: 'board', aspect: BOARD_RATIO, start: { x: 50, y: 28, z: 1 }, label: { ru: 'Лидеры', uk: 'Лідери', en: 'Leaderboard' } },
 ]
 
 
