@@ -436,12 +436,13 @@
 .profile-stage {
   position: relative;
   z-index: 1;
+  min-height: 170px;
   aspect-ratio: 3.85;
 }
 
 .profile-canvas {
   position: relative;
-  width: 1120px;
+  width: var(--stage-width, 1120px);
   height: 291px;
   zoom: var(--stage-scale, 1);
 }

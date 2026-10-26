@@ -9,7 +9,7 @@ import { bannerPic } from './banners'
 import { useI18n } from './i18n'
 import type { L10n } from './i18n/langs'
 import { CloseIcon } from './icons'
-import { STAGE_RATIO } from './ProfileStage'
+import { PHONE_RATIO, STAGE_RATIO } from './ProfileStage'
 
 type Place = { key: LookPlace; aspect: number; start: BannerLook; label: L10n }
 
@@ -18,9 +18,6 @@ const PLACES: Place[] = [
   { key: 'board', aspect: 488 / 111, start: { x: 50, y: 50, z: 1 }, label: { ru: 'Лидеры', uk: 'Лідери', en: 'Leaderboard' } },
 ]
 
-const STAGE_HEIGHT = 380
-const THUMB_HEIGHT = 84
-const THUMB_WIDTH = 180
 
 const clamp = (value: number) => Math.min(100, Math.max(0, value))
 
@@ -111,19 +108,34 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
         </button>
 
         <h2>{l({ ru: 'Настройка фона', uk: 'Налаштування фону', en: 'Background setup' })}</h2>
-        <p className="muted look-lead">
+        <p className="look-lead">
           {l({
-            ru: 'Выбери место снизу, перетащи картинку и приблизь ползунком. Профиль выглядит одинаково на любом экране.',
-            uk: 'Обери місце знизу, перетягни картинку й наблизь повзунком. Профіль виглядає однаково на будь-якому екрані.',
-            en: 'Pick a place below, drag the picture and zoom with the slider. The profile looks the same on any screen.',
+            ru: 'Перетащи картинку, чтобы выбрать, что останется в кадре.',
+            uk: 'Перетягни картинку, щоб вибрати, що лишиться в кадрі.',
+            en: 'Drag the picture to choose what stays in view.',
           })}
         </p>
 
-        <div className="look-stage-wrap">
+        <div className="look-tabs" role="tablist">
+          {PLACES.map((place) => (
+            <button
+              key={place.key}
+              type="button"
+              role="tab"
+              aria-selected={current === place.key}
+              className={current === place.key ? 'on' : ''}
+              onClick={() => setCurrent(place.key)}
+            >
+              {l(place.label)}
+            </button>
+          ))}
+        </div>
+
+        <div className={`look-row ${current === 'desktop' ? 'has-phone' : ''}`}>
           <div
             ref={stage}
             className="look-stage"
-            style={{ aspectRatio: String(aspect), width: `min(100%, ${Math.round(STAGE_HEIGHT * aspect)}px)` }}
+            style={{ aspectRatio: String(aspect) }}
             onPointerDown={press}
             onPointerMove={move}
             onPointerUp={release}
@@ -139,6 +151,15 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
               onLoad={(event) => measure(event.currentTarget)}
             />
           </div>
+
+          {current === 'desktop' && (
+            <figure className="look-phone">
+              <span className="look-frame" style={{ aspectRatio: String(PHONE_RATIO) }}>
+                <img src={bannerPic(banner)} alt="" draggable={false} style={lookStyle(banner, look)} />
+              </span>
+              <figcaption>{l({ ru: 'Телефон', uk: 'Телефон', en: 'Phone' })}</figcaption>
+            </figure>
+          )}
         </div>
 
         <label className="look-zoom">
@@ -154,24 +175,6 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
           />
           <b>×{look.z.toFixed(2).replace(/\.?0+$/, '')}</b>
         </label>
-
-        <div className="look-places" role="tablist">
-          {PLACES.map((place) => (
-            <button
-              key={place.key}
-              type="button"
-              role="tab"
-              aria-selected={current === place.key}
-              className={`look-place ${current === place.key ? 'on' : ''}`}
-              onClick={() => setCurrent(place.key)}
-            >
-              <span className="look-frame" style={{ aspectRatio: String(aspectOf(place.key)), height: Math.min(THUMB_HEIGHT, THUMB_WIDTH / aspectOf(place.key)) }}>
-                <img src={bannerPic(banner)} alt="" draggable={false} style={lookStyle(banner, lookAt(place.key))} />
-              </span>
-              <b>{l(place.label)}</b>
-            </button>
-          ))}
-        </div>
 
         <div className="look-actions">
           <button type="button" className="ghost" disabled={busy || !draft[current]} onClick={reset}>

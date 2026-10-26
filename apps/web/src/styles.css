@@ -12395,11 +12395,11 @@ html[data-auth] .guest-note {
 
 .card.modal.look-modal {
   display: flex;
-  width: min(100%, 980px);
-  max-height: min(92vh, 900px);
+  width: min(100%, 900px);
+  max-height: min(92vh, 860px);
   flex-direction: column;
-  gap: 14px;
-  padding: 22px;
+  gap: 16px;
+  padding: 24px;
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -12412,21 +12412,61 @@ html[data-auth] .guest-note {
 }
 
 .look-lead {
-  margin: 0;
-  font-size: 13.5px;
-  line-height: 1.45;
+  margin: -8px 0 0;
+  color: var(--text-3);
+  font-size: 13px;
 }
 
-.look-stage-wrap {
-  display: flex;
-  justify-content: center;
+.look-tabs {
+  display: inline-flex;
+  align-self: flex-start;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card-2);
+}
+
+.look-tabs button {
+  height: 32px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  color: var(--text-3);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.look-tabs button:hover {
+  color: var(--text);
+}
+
+.look-tabs button.on {
+  background: var(--card);
+  color: var(--text);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 6%), 0 4px 12px rgb(0 0 0 / 25%);
+}
+
+.look-row {
+  display: grid;
+  align-items: stretch;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.look-row.has-phone {
+  grid-template-columns: minmax(0, 1fr) 150px;
 }
 
 .look-stage {
   position: relative;
   overflow: hidden;
+  align-self: center;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 16px;
   background: var(--card-2);
   cursor: grab;
   touch-action: none;
@@ -12437,19 +12477,52 @@ html[data-auth] .guest-note {
   cursor: grabbing;
 }
 
-.look-stage img {
+.look-stage img,
+.look-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   pointer-events: none;
 }
 
+.look-phone {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--card-2);
+}
+
+.look-frame {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.look-phone figcaption {
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
 .look-zoom {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card-2);
   color: var(--text-3);
   font-size: 13px;
+  font-weight: 700;
 }
 
 .look-zoom input {
@@ -12458,62 +12531,21 @@ html[data-auth] .guest-note {
 }
 
 .look-zoom b {
-  min-width: 44px;
+  min-width: 40px;
   color: var(--text);
   font-family: var(--display);
   text-align: right;
 }
 
-.look-places {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
+@media (max-width: 620px) {
+  .look-row.has-phone {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
-.look-place {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 8px;
-  border: 1px solid transparent;
-  border-radius: 14px;
-  background: none;
-  color: var(--text-3);
-  font: inherit;
-  cursor: pointer;
-}
-
-.look-place:hover {
-  background: var(--card-2);
-}
-
-.look-place.on {
-  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
-  color: var(--text);
-}
-
-.look-frame {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--card-2);
-}
-
-.look-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.look-place b {
-  font-size: 12.5px;
-  font-weight: 700;
+  .look-phone {
+    width: 170px;
+    justify-self: center;
+  }
 }
 
 .look-actions {
@@ -12534,3 +12566,4 @@ html[data-auth] .guest-note {
   font-size: 14px;
   font-weight: 700;
 }
+

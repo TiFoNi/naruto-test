@@ -6,6 +6,12 @@ export const STAGE_WIDTH = 1120
 
 export const STAGE_RATIO = 3.85
 
+export const STAGE_HEIGHT = STAGE_WIDTH / STAGE_RATIO
+
+export const STAGE_MIN = 170
+
+export const PHONE_RATIO = 343 / STAGE_MIN
+
 const BOOST_MAX = 1.1
 
 const TEXT_MAX = 1.68
@@ -17,8 +23,10 @@ export default function ProfileStage({ art, children }: { art: ReactNode; childr
     const node = box.current
     if (!node || typeof ResizeObserver === 'undefined') return
     const fit = () => {
-      const scale = node.clientWidth / STAGE_WIDTH
+      const wide = node.clientWidth
+      const scale = Math.max(wide / STAGE_RATIO, STAGE_MIN) / STAGE_HEIGHT
       node.style.setProperty('--stage-scale', String(scale))
+      node.style.setProperty('--stage-width', `${wide / scale}px`)
       const boost = Math.min(BOOST_MAX, scale < 1 ? scale ** -0.35 : 1)
       const text = Math.min(TEXT_MAX, scale < 1 ? scale ** -0.7 : 1)
       node.style.setProperty('--stage-boost', String(boost))
