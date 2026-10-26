@@ -21,6 +21,8 @@ import { SHOWCASE_MAX } from './showcase'
 import { keepPerUser } from './session-cache'
 import { showTone } from './tone'
 import BannerArt from './BannerArt'
+import BannerTuner from './BannerTuner'
+import ProfileStage, { useNarrow } from './ProfileStage'
 import { bannerPic } from './banners'
 import {
   HERO_TILES,
@@ -79,6 +81,7 @@ type Summary = {
   showcase: string[]
   tiles?: (string | null)[] | null
   banner?: string | null
+  bannerLook?: Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>> | null
   banners?: string[]
   tone?: string | null
   nickTone?: string | null
@@ -286,6 +289,7 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const [dyeAt, setDyeAt] = useState<HTMLElement | null>(null)
   const [skin, setSkin] = useState<Banner | null | undefined>(undefined)
   const [skins, setSkins] = useState(false)
+  const [tuning, setTuning] = useState(false)
   const [tones, setTones] = useState(false)
   const tonesRef = useRef<HTMLDivElement>(null)
   const skinsRef = useRef<HTMLDivElement>(null)
@@ -296,9 +300,8 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
   const liftBox = useRef<HTMLSpanElement | null>(null)
   const snapper = useRef<() => void>(() => undefined)
   const pads = useRef<HTMLDivElement>(null)
-  const [spot, setSpot] = useState<'row' | 'column' | 'under'>('row')
-  const [deck, setDeck] = useState(false)
   const [tight, setTight] = useState(false)
+  const narrow = useNarrow()
   const eyed = useRef<Record<string, number>>({})
 
   useEffect(() => {
@@ -412,15 +415,6 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
       const slot = Math.max(120, Math.round((area - (seats - 1) * 10) / seats))
       grid.style.setProperty('--slot', `${Math.round(slot * 0.85)}px`)
       const cell = grid.firstElementChild?.getBoundingClientRect()
-      const screen = typeof window === 'undefined' ? wide : window.innerWidth
-      const narrow = screen <= 750
-      const hero = grid.closest('.profile-hero') as HTMLElement | null
-      if (hero) {
-        if (narrow) hero.style.setProperty('--deck-tiles', `${Math.round(grid.offsetHeight)}px`)
-        else hero.style.removeProperty('--deck-tiles')
-      }
-      setDeck(narrow)
-      setSpot(narrow ? 'under' : slot >= 144 ? 'row' : 'column')
       setTight(!!cell && cell.width < 200)
     }
     check()
@@ -944,6 +938,169 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
     ),
   }
 
+  const tilesBlock =
+    cells.length > 0 ? (
+      <div className={`profile-hero-tiles ${narrow ? 'is-under' : ''} ${edit ? 'is-edit' : ''}`} ref={pads}>
+        {cells.map((one, spot) => {
+          if (!one)
+            return (
+              <div
+                key={`free-${spot}`}
+                className={`hero-tile is-add ${shop === spot ? 'is-open' : ''} ${edit ? '' : 'is-hole'} ${grabbed === spot ? 'is-held' : ''}`}
+                ref={shop === spot ? shopRef : undefined}
+              >
+                {edit && (
+                  <button type="button" className="hero-tile-open" aria-label={t('profile.tileAdd')} onClick={() => setShop(shop === spot ? null : spot)}>
+                    <PlusIcon />
+                  </button>
+                )}
+                {shop === spot && (
+                  <div className="modes-pop" role="dialog">
+                    <header>
+                      <h2>{t('profile.tileAdd')}</h2>
+                    </header>
+                    <ul className="tile-shop">
+                      {spare.map((free) => (
+                        <li key={free}>
+                          <button
+                            type="button"
+                            className="hero-tile"
+                            onClick={() => {
+                              putTile(spot, free)
+                              setShop(null)
+                            }}
+                          >
+                            <span>{tileFace(free).label}</span>
+                            <b>
+                              {tileFace(free).value}
+                              {(() => {
+                                const face = tileFace(free)
+                                return 'tail' in face && face.tail ? <i>{face.tail}</i> : null
+                              })()}
+                            </b>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )
+  
+          const off = edit && (
+            <button type="button" className="tile-off" aria-label={t('profile.tileHide')} onClick={() => dropTile(spot)}>
+              <CloseIcon />
+            </button>
+          )
+  
+          if (one === 'solved')
+            return (
+              <div
+                key={one}
+                className={`hero-tile is-modes ${tip ? 'is-open' : ''} ${grabbed === spot ? 'is-held' : ''}`}
+                onPointerDown={grabTile(spot)}
+                ref={modesRef}
+              >
+                <button
+                  type="button"
+                  className="hero-tile-open"
+                  aria-expanded={tip}
+                  onClick={(event) => {
+                    setTipAt(event.currentTarget.closest<HTMLElement>('.hero-tile'))
+                    setTip((was) => !was)
+                  }}
+                >
+                  <span>{tileName('profile.characters', 'profile.charactersShort')}</span>
+                  <b>{summary?.totals.solved ?? 0}</b>
+                </button>
+                {off}
+                {tip && (
+                  <TilePop at={tipAt} onClose={() => setTip(false)}>
+                    <header>
+                      <h2>{t('profile.modes')}</h2>
+                      <span className="muted">{t('profile.accuracy')}</span>
+                    </header>
+                    <ul className="modes-list">
+                      {MODES.map((mode) => {
+                        const row = summary?.modes.find((item) => item.mode === mode.id)
+                        const played = row?.played ?? 0
+                        const share = percent(row?.won ?? 0, played)
+                        return (
+                          <li key={mode.id} className={played ? '' : 'is-empty'}>
+                            <span className="mode-name">{t(mode.label)}</span>
+                            <span className="mode-count muted">
+                              {played} {pluralOf(played, lang)}
+                            </span>
+                            <b>{share}%</b>
+                            <span className="mode-bar">{!!played && <i style={{ width: `${Math.max(share, 2)}%` }} />}</span>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </TilePop>
+                )}
+              </div>
+            )
+  
+          if (one === 'streak')
+            return (
+              <div
+                key={one}
+                className={`hero-tile is-modes is-streak ${week ? 'is-open' : ''} ${grabbed === spot ? 'is-held' : ''}`}
+                onPointerDown={grabTile(spot)}
+                ref={weekRef}
+              >
+                <button
+                  type="button"
+                  className="hero-tile-open"
+                  aria-expanded={week}
+                  onClick={(event) => {
+                    setWeekAt(event.currentTarget.closest<HTMLElement>('.hero-tile'))
+                    setWeek((was) => !was)
+                  }}
+                >
+                  <span>{tileName('profile.streakTitle', 'profile.streakShort')}</span>
+                  <b>{summary?.streak.current ?? 0}</b>
+                </button>
+                {off}
+                {week && (
+                  <TilePop at={weekAt} onClose={() => setWeek(false)}>
+                    <header>
+                      <h2>{t('profile.streakTitle')}</h2>
+                      <span className="muted">{t('profile.streakRecord', { days: summary?.streak.best ?? 0 })}</span>
+                    </header>
+                    <ul className="streak-days">
+                      {(summary?.streak.week ?? []).map((day) => (
+                        <li key={day.day} className={day.played ? 'is-on' : ''}>
+                          <span />
+                          <small>{new Date(day.day).toLocaleDateString(lang, { weekday: 'short' })}</small>
+                        </li>
+                      ))}
+                    </ul>
+                  </TilePop>
+                )}
+              </div>
+            )
+  
+          const face = tileFace(one)
+          return (
+            <div
+              key={one}
+              className={`hero-tile ${one === 'rank' && summary?.rank ? medal(summary.rank.position) : ''} ${grabbed === spot ? 'is-held' : ''}`}
+              onPointerDown={grabTile(spot)}
+            >
+              <span>{face.label}</span>
+              <b>
+                {face.value}
+                {'tail' in face && face.tail ? <i>{face.tail}</i> : null}
+              </b>
+              {off}
+            </div>
+          )
+        })}
+      </div>
+    ) : null
+
   return (
     <div className="profile" style={(toneHex ? { '--accent': toneHex } : {}) as CSSProperties}>
       <div className="profile-top">
@@ -972,6 +1129,8 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
       )}
       </div>
 
+      {tuning && banner && <BannerTuner banner={banner} looks={user?.bannerLooks?.[banner] ?? null} onClose={() => setTuning(false)} />}
+
       <section className="profile-hero">
         {own && edit && (
           <div className="hero-acts">
@@ -989,6 +1148,18 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
                   <div className="modes-pop" role="dialog">
                     <header>
                       <h2>{t('profile.banner')}</h2>
+                      {banner && (
+                        <button
+                          type="button"
+                          className="ghost look-open"
+                          onClick={() => {
+                            setSkins(false)
+                            setTuning(true)
+                          }}
+                        >
+                          {t('profile.bannerTune')}
+                        </button>
+                      )}
                     </header>
                     <ul className="banner-shop">
                       <li>
@@ -1061,294 +1232,138 @@ export default function Profile({ onBack, id }: { onBack: () => void; id?: strin
             </div>
           </div>
         )}
-        {!!banner && (
-          <span className="profile-art" aria-hidden>
-            <BannerArt id={banner} />
-          </span>
-        )}
-
-        <div className="profile-banner" aria-hidden>
-          {!banner &&
-            MARKS.map((mark) => (
-            <em
-              key={mark.left}
-              style={
-                {
-                  left: mark.left,
-                  top: mark.top,
-                  fontSize: mark.size,
-                  transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
-                } as CSSProperties
-              }
-            >
-                ?!
-              </em>
-            ))}
-        </div>
-
-
-        <div className={`profile-hero-body ${spot === 'under' ? 'is-under' : ''} ${spot === 'column' ? 'is-stack' : ''} ${deck ? 'is-deck' : ''}`}>
-        <div className="profile-hero-id">
-          {own ? <AvatarPicker edit={edit} /> : <Avatar id={id} name={nickname} avatar={summary?.avatar} frame={summary?.frame} />}
-          <div className="profile-hero-main">
-            <div className="profile-hero-name" style={(nickHex ? { '--nick': nickHex } : {}) as CSSProperties}>
-              <span className="hero-nick-line">
-                <span className="hero-nick-who">
-                  <h1>{nickname}</h1>
-                  {edit && (
-                    <button
-                      type="button"
-                      className={`nick-dye ${dye ? 'is-open' : ''}`}
-                      title={t('profile.toneNick')}
-                      aria-label={t('profile.toneNick')}
-                      onClick={(event) => {
-                        setDyeAt(event.currentTarget)
-                        setDye((was) => !was)
-                      }}
-                    >
-                      <PencilIcon />
-                    </button>
-                  )}
+        <ProfileStage
+          art={
+            <>
+              {!!banner && (
+                <span className="profile-art" aria-hidden>
+                  <BannerArt id={banner} look={own ? user?.bannerLooks?.[banner] : summary?.bannerLook} place="profile" />
                 </span>
-              </span>
-              {tag && <i className="player-tag">#{tag}</i>}
-              {title && <i className={`player-title is-${title} is-under`}>{t(`title.${title}` as UiKey)}</i>}
-              {edit && dye && (
-                <TilePop at={dyeAt} wide={286} onClose={() => setDye(false)}>
-                  <header>
-                    <h2>{t('profile.toneNick')}</h2>
-                  </header>
-                  <ul className="tone-shop is-wrap">
-                    <li>
+              )}
+      
+              <div className="profile-banner" aria-hidden>
+                {!banner &&
+                  MARKS.map((mark) => (
+                  <em
+                    key={mark.left}
+                    style={
+                      {
+                        left: mark.left,
+                        top: mark.top,
+                        fontSize: mark.size,
+                        transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
+                      } as CSSProperties
+                    }
+                  >
+                      ?!
+                    </em>
+                  ))}
+              </div>
+            </>
+          }
+        >
+          <div className="profile-hero-id">
+            {own ? <AvatarPicker edit={edit} /> : <Avatar id={id} name={nickname} avatar={summary?.avatar} frame={summary?.frame} />}
+            <div className="profile-hero-main">
+              <div className="profile-hero-name" style={(nickHex ? { '--nick': nickHex } : {}) as CSSProperties}>
+                <span className="hero-nick-line">
+                  <span className="hero-nick-who">
+                    <h1>{nickname}</h1>
+                    {edit && (
                       <button
                         type="button"
-                        className={`tone-dot is-plain ${nickTone ? '' : 'on'}`}
-                        style={{ '--dot': '#ffffff' } as CSSProperties}
-                        aria-label={t('profile.toneNickPlain')}
-                        title={t('profile.toneNickPlain')}
-                        onClick={() => keepNick(null)}
-                      />
-                    </li>
-                    {dyeList.map((game) => (
-                      <li key={game.id}>
+                        className={`nick-dye ${dye ? 'is-open' : ''}`}
+                        title={t('profile.toneNick')}
+                        aria-label={t('profile.toneNick')}
+                        onClick={(event) => {
+                          setDyeAt(event.currentTarget)
+                          setDye((was) => !was)
+                        }}
+                      >
+                        <PencilIcon />
+                      </button>
+                    )}
+                  </span>
+                </span>
+                {tag && <i className="player-tag">#{tag}</i>}
+                {title && <i className={`player-title is-${title} is-under`}>{t(`title.${title}` as UiKey)}</i>}
+                {edit && dye && (
+                  <TilePop at={dyeAt} wide={286} onClose={() => setDye(false)}>
+                    <header>
+                      <h2>{t('profile.toneNick')}</h2>
+                    </header>
+                    <ul className="tone-shop is-wrap">
+                      <li>
                         <button
                           type="button"
-                          className={`tone-dot ${nickTone === game.id ? 'on' : ''}`}
-                          style={{ '--dot': game.accent } as CSSProperties}
-                          aria-label={l(game.label)}
-                          title={l(game.label)}
-                          onClick={() => keepNick(nickTone === game.id ? null : game.id)}
+                          className={`tone-dot is-plain ${nickTone ? '' : 'on'}`}
+                          style={{ '--dot': '#ffffff' } as CSSProperties}
+                          aria-label={t('profile.toneNickPlain')}
+                          title={t('profile.toneNickPlain')}
+                          onClick={() => keepNick(null)}
                         />
                       </li>
-                    ))}
-                  </ul>
-
-                  {mine.length > 0 && (
-                    <>
-                      <header>
-                        <h2>{t('profile.titlePick')}</h2>
-                      </header>
-                      <ul className="title-shop">
-                        <li>
-                          <button type="button" className={`title-pick ${title ? '' : 'on'}`} onClick={() => keepTitle(null)}>
-                            {t('profile.titleNone')}
-                          </button>
+                      {dyeList.map((game) => (
+                        <li key={game.id}>
+                          <button
+                            type="button"
+                            className={`tone-dot ${nickTone === game.id ? 'on' : ''}`}
+                            style={{ '--dot': game.accent } as CSSProperties}
+                            aria-label={l(game.label)}
+                            title={l(game.label)}
+                            onClick={() => keepNick(nickTone === game.id ? null : game.id)}
+                          />
                         </li>
-                        {mine.map((one) => (
-                          <li key={one}>
-                            <button
-                              type="button"
-                              className={`title-pick ${title === one ? 'on' : ''}`}
-                              onClick={() => keepTitle(title === one ? null : one)}
-                            >
-                              {t(`title.${one}` as UiKey)}
+                      ))}
+                    </ul>
+  
+                    {mine.length > 0 && (
+                      <>
+                        <header>
+                          <h2>{t('profile.titlePick')}</h2>
+                        </header>
+                        <ul className="title-shop">
+                          <li>
+                            <button type="button" className={`title-pick ${title ? '' : 'on'}`} onClick={() => keepTitle(null)}>
+                              {t('profile.titleNone')}
                             </button>
                           </li>
-                        ))}
-                      </ul>
-                    </>
-                  )}
-                </TilePop>
-              )}
-            </div>
-
-            <Link className="level-panel is-link" href={href.levels} prefetch={false}>
-              <div className="level-line">
-                <span className="level-xp">
-                  <b>{summary?.level.into ?? 0}</b> <small>/ {summary?.level.need ?? 0} XP</small>
-                </span>
-                <span className="profile-hero-level">{t('nav.level', { level: summary?.level.level ?? 1 })}</span>
-              </div>
-              <div className="level-bar">
-                <i style={{ width: `${Math.round(((summary?.level.into ?? 0) / (summary?.level.need ?? 1)) * 100)}%` }} />
-              </div>
-            </Link>
-          </div>
-        </div>
-
-        {cells.length > 0 && (
-        <div className={`profile-hero-tiles ${edit ? 'is-edit' : ''} ${spot === 'column' ? 'is-stack' : ''} ${spot === 'under' ? 'is-under' : ''} ${deck ? 'is-deck' : ''}`} ref={pads}>
-          {cells.map((one, spot) => {
-            if (!one)
-              return (
-                <div
-                  key={`free-${spot}`}
-                  className={`hero-tile is-add ${shop === spot ? 'is-open' : ''} ${edit ? '' : 'is-hole'} ${grabbed === spot ? 'is-held' : ''}`}
-                  ref={shop === spot ? shopRef : undefined}
-                >
-                  {edit && (
-                    <button type="button" className="hero-tile-open" aria-label={t('profile.tileAdd')} onClick={() => setShop(shop === spot ? null : spot)}>
-                      <PlusIcon />
-                    </button>
-                  )}
-                  {shop === spot && (
-                    <div className="modes-pop" role="dialog">
-                      <header>
-                        <h2>{t('profile.tileAdd')}</h2>
-                      </header>
-                      <ul className="tile-shop">
-                        {spare.map((free) => (
-                          <li key={free}>
-                            <button
-                              type="button"
-                              className="hero-tile"
-                              onClick={() => {
-                                putTile(spot, free)
-                                setShop(null)
-                              }}
-                            >
-                              <span>{tileFace(free).label}</span>
-                              <b>
-                                {tileFace(free).value}
-                                {(() => {
-                                  const face = tileFace(free)
-                                  return 'tail' in face && face.tail ? <i>{face.tail}</i> : null
-                                })()}
-                              </b>
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              )
-
-            const off = edit && (
-              <button type="button" className="tile-off" aria-label={t('profile.tileHide')} onClick={() => dropTile(spot)}>
-                <CloseIcon />
-              </button>
-            )
-
-            if (one === 'solved')
-              return (
-                <div
-                  key={one}
-                  className={`hero-tile is-modes ${tip ? 'is-open' : ''} ${grabbed === spot ? 'is-held' : ''}`}
-                  onPointerDown={grabTile(spot)}
-                  ref={modesRef}
-                >
-                  <button
-                    type="button"
-                    className="hero-tile-open"
-                    aria-expanded={tip}
-                    onClick={(event) => {
-                      setTipAt(event.currentTarget.closest<HTMLElement>('.hero-tile'))
-                      setTip((was) => !was)
-                    }}
-                  >
-                    <span>{tileName('profile.characters', 'profile.charactersShort')}</span>
-                    <b>{summary?.totals.solved ?? 0}</b>
-                  </button>
-                  {off}
-                  {tip && (
-                    <TilePop at={tipAt} onClose={() => setTip(false)}>
-                      <header>
-                        <h2>{t('profile.modes')}</h2>
-                        <span className="muted">{t('profile.accuracy')}</span>
-                      </header>
-                      <ul className="modes-list">
-                        {MODES.map((mode) => {
-                          const row = summary?.modes.find((item) => item.mode === mode.id)
-                          const played = row?.played ?? 0
-                          const share = percent(row?.won ?? 0, played)
-                          return (
-                            <li key={mode.id} className={played ? '' : 'is-empty'}>
-                              <span className="mode-name">{t(mode.label)}</span>
-                              <span className="mode-count muted">
-                                {played} {pluralOf(played, lang)}
-                              </span>
-                              <b>{share}%</b>
-                              <span className="mode-bar">{!!played && <i style={{ width: `${Math.max(share, 2)}%` }} />}</span>
+                          {mine.map((one) => (
+                            <li key={one}>
+                              <button
+                                type="button"
+                                className={`title-pick ${title === one ? 'on' : ''}`}
+                                onClick={() => keepTitle(title === one ? null : one)}
+                              >
+                                {t(`title.${one}` as UiKey)}
+                              </button>
                             </li>
-                          )
-                        })}
-                      </ul>
-                    </TilePop>
-                  )}
-                </div>
-              )
-
-            if (one === 'streak')
-              return (
-                <div
-                  key={one}
-                  className={`hero-tile is-modes is-streak ${week ? 'is-open' : ''} ${grabbed === spot ? 'is-held' : ''}`}
-                  onPointerDown={grabTile(spot)}
-                  ref={weekRef}
-                >
-                  <button
-                    type="button"
-                    className="hero-tile-open"
-                    aria-expanded={week}
-                    onClick={(event) => {
-                      setWeekAt(event.currentTarget.closest<HTMLElement>('.hero-tile'))
-                      setWeek((was) => !was)
-                    }}
-                  >
-                    <span>{tileName('profile.streakTitle', 'profile.streakShort')}</span>
-                    <b>{summary?.streak.current ?? 0}</b>
-                  </button>
-                  {off}
-                  {week && (
-                    <TilePop at={weekAt} onClose={() => setWeek(false)}>
-                      <header>
-                        <h2>{t('profile.streakTitle')}</h2>
-                        <span className="muted">{t('profile.streakRecord', { days: summary?.streak.best ?? 0 })}</span>
-                      </header>
-                      <ul className="streak-days">
-                        {(summary?.streak.week ?? []).map((day) => (
-                          <li key={day.day} className={day.played ? 'is-on' : ''}>
-                            <span />
-                            <small>{new Date(day.day).toLocaleDateString(lang, { weekday: 'short' })}</small>
-                          </li>
-                        ))}
-                      </ul>
-                    </TilePop>
-                  )}
-                </div>
-              )
-
-            const face = tileFace(one)
-            return (
-              <div
-                key={one}
-                className={`hero-tile ${one === 'rank' && summary?.rank ? medal(summary.rank.position) : ''} ${grabbed === spot ? 'is-held' : ''}`}
-                onPointerDown={grabTile(spot)}
-              >
-                <span>{face.label}</span>
-                <b>
-                  {face.value}
-                  {'tail' in face && face.tail ? <i>{face.tail}</i> : null}
-                </b>
-                {off}
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                  </TilePop>
+                )}
               </div>
-            )
-          })}
-        </div>
-        )}
-        </div>
+  
+              <Link className="level-panel is-link" href={href.levels} prefetch={false}>
+                <div className="level-line">
+                  <span className="level-xp">
+                    <b>{summary?.level.into ?? 0}</b> <small>/ {summary?.level.need ?? 0} XP</small>
+                  </span>
+                  <span className="profile-hero-level">{t('nav.level', { level: summary?.level.level ?? 1 })}</span>
+                </div>
+                <div className="level-bar">
+                  <i style={{ width: `${Math.round(((summary?.level.into ?? 0) / (summary?.level.need ?? 1)) * 100)}%` }} />
+                </div>
+              </Link>
+            </div>
+          </div>
+          {!narrow && tilesBlock}
+        </ProfileStage>
       </section>
+
+      {narrow && tilesBlock && <div className="profile-hero-body is-under profile-tiles-out">{tilesBlock}</div>}
 
       {!!lift && (
         <span

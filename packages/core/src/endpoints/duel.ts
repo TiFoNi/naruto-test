@@ -1,3 +1,4 @@
+import { lookOf } from '@nanda/game'
 import { fail, handle, json, readJson } from '../http'
 import { currentUser, searchPlayers, unauthorized } from '../profile'
 import {
@@ -94,7 +95,12 @@ export const POST = handle(async (request) => {
   if (!sideOf(duel, userId)) return fail(403, 'forbidden')
 
   const live = await dropIdle(
-    await touchSide(duel, userId, { frame: found.doc.frame ?? null, banner: found.doc.banner ?? null, title: found.doc.title ?? null }),
+    await touchSide(duel, userId, {
+      frame: found.doc.frame ?? null,
+      banner: found.doc.banner ?? null,
+      bannerLook: lookOf(found.doc),
+      title: found.doc.title ?? null,
+    }),
     userId,
   )
 

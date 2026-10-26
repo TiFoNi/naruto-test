@@ -12392,3 +12392,145 @@ html[data-auth] .guest-note {
   line-height: 1.5;
   text-align: center;
 }
+
+.card.modal.look-modal {
+  display: flex;
+  width: min(100%, 980px);
+  max-height: min(92vh, 900px);
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.look-modal h2 {
+  margin: 0;
+  padding-right: 36px;
+  font-family: var(--display);
+  font-size: 22px;
+}
+
+.look-lead {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.look-stage-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.look-stage {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card-2);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.look-stage:active {
+  cursor: grabbing;
+}
+
+.look-stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.look-zoom {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+.look-zoom input {
+  flex: 1;
+  accent-color: var(--accent);
+}
+
+.look-zoom b {
+  min-width: 44px;
+  color: var(--text);
+  font-family: var(--display);
+  text-align: right;
+}
+
+.look-places {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.look-place {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: none;
+  color: var(--text-3);
+  font: inherit;
+  cursor: pointer;
+}
+
+.look-place:hover {
+  background: var(--card-2);
+}
+
+.look-place.on {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--text);
+}
+
+.look-frame {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card-2);
+}
+
+.look-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.look-place b {
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.look-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.look-actions > span {
+  flex: 1;
+}
+
+.look-actions > button {
+  height: 42px;
+  margin: 0;
+  padding: 0 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+}

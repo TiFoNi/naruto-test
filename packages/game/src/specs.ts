@@ -431,6 +431,41 @@ export type Banner = (typeof BANNERS)[number]
 
 export const isBanner = (value: unknown): value is Banner => (BANNERS as readonly string[]).includes(value as string)
 
+export type BannerLook = { x: number; y: number; z: number }
+
+export const BANNER_ZOOM_MAX = 2.5
+
+const within = (value: unknown, low: number, high: number) =>
+  typeof value === 'number' && Number.isFinite(value) ? Math.min(high, Math.max(low, value)) : null
+
+export const LOOK_PLACES = ['desktop', 'tablet', 'phone', 'board'] as const
+
+export type LookPlace = (typeof LOOK_PLACES)[number]
+
+export type BannerLooks = Partial<Record<LookPlace, BannerLook>>
+
+export const bannerLook = (value: unknown): BannerLook | null => {
+  if (!value || typeof value !== 'object') return null
+  const one = value as Record<string, unknown>
+  const x = within(one.x, 0, 100)
+  const y = within(one.y, 0, 100)
+  const z = within(one.z, 1, BANNER_ZOOM_MAX)
+  if (x === null || y === null || z === null) return null
+  return { x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10, z: Math.round(z * 100) / 100 }
+}
+
+export const bannerLooks = (value: unknown): BannerLooks | null => {
+  if (!value || typeof value !== 'object') return null
+  const all = value as Record<string, unknown>
+  const found = Object.fromEntries(
+    LOOK_PLACES.map((place) => [place, bannerLook(all[place])] as const).filter((pair): pair is [LookPlace, BannerLook] => pair[1] !== null),
+  ) as BannerLooks
+  return Object.keys(found).length ? found : null
+}
+
+export const lookOf = (doc: { banner?: string | null; bannerLooks?: Record<string, unknown> | null }) =>
+  doc.banner ? bannerLooks(doc.bannerLooks?.[doc.banner]) : null
+
 export const bannerList = (value: unknown) => (Array.isArray(value) ? [...new Set(value.filter(isBanner))] : null)
 
 export const RARITIES = ['common', 'rare', 'epic', 'legend'] as const

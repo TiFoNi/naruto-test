@@ -1,4 +1,5 @@
 import { ObjectId, type Collection } from 'mongodb'
+import { lookOf } from '@nanda/game'
 import { database, users } from './db'
 import { defaultNickname } from './profile'
 import { sendPush, type PushLang } from './push'
@@ -22,6 +23,7 @@ export type FriendPerson = {
   avatar: string | null
   frame: string | null
   banner: string | null
+  bannerLook: ReturnType<typeof lookOf>
   at: string
 }
 
@@ -57,7 +59,7 @@ const nameOf = async (userId: ObjectId) => {
 async function cards(ids: ObjectId[], when: Map<string, Date>): Promise<FriendPerson[]> {
   if (!ids.length) return []
   const list = await (await users())
-    .find({ _id: { $in: ids } }, { projection: { nickname: 1, username: 1, tag: 1, avatar: 1, frame: 1, banner: 1 } })
+    .find({ _id: { $in: ids } }, { projection: { nickname: 1, username: 1, tag: 1, avatar: 1, frame: 1, banner: 1, bannerLooks: 1 } })
     .toArray()
 
   return list
@@ -70,6 +72,7 @@ async function cards(ids: ObjectId[], when: Map<string, Date>): Promise<FriendPe
         avatar: doc.avatar ?? null,
         frame: doc.frame ?? null,
         banner: doc.banner ?? null,
+        bannerLook: lookOf(doc),
         at: (when.get(id) ?? new Date()).toISOString(),
       }
     })

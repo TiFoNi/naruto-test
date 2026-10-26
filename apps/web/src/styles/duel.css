@@ -3043,7 +3043,8 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   inset: 0;
 }
 
-.duel-seat-art img {
+.duel-seat-art img,
+.duel-seat-art video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -4029,7 +4030,8 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   inset: 0;
 }
 
-.duel-mate-art img {
+.duel-mate-art img,
+.duel-mate-art video {
   width: 100%;
   height: 100%;
   object-fit: cover;

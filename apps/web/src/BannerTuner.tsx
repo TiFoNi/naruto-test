@@ -1,0 +1,191 @@
+'use client'
+
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react'
+import { BANNER_ZOOM_MAX, type BannerLook, type BannerLooks, type LookPlace } from '@nanda/game'
+import { lookStyle } from './BannerArt'
+import { api } from './api'
+import { useAuth } from './auth'
+import { bannerPic } from './banners'
+import { useI18n } from './i18n'
+import type { L10n } from './i18n/langs'
+import { CloseIcon } from './icons'
+import { STAGE_RATIO } from './ProfileStage'
+
+type Place = { key: LookPlace; aspect: number; start: BannerLook; label: L10n }
+
+const PLACES: Place[] = [
+  { key: 'desktop', aspect: STAGE_RATIO, start: { x: 50, y: 28, z: 1 }, label: { ru: 'Профиль', uk: 'Профіль', en: 'Profile' } },
+  { key: 'board', aspect: 488 / 111, start: { x: 50, y: 50, z: 1 }, label: { ru: 'Лидеры', uk: 'Лідери', en: 'Leaderboard' } },
+]
+
+const STAGE_HEIGHT = 380
+const THUMB_HEIGHT = 84
+const THUMB_WIDTH = 180
+
+const clamp = (value: number) => Math.min(100, Math.max(0, value))
+
+export default function BannerTuner({ banner, looks, onClose }: { banner: string; looks: BannerLooks | null; onClose: () => void }) {
+  const { l } = useI18n()
+  const { refresh } = useAuth()
+  const [draft, setDraft] = useState<BannerLooks>(looks ?? {})
+  const [current, setCurrent] = useState<LookPlace>('desktop')
+  const [busy, setBusy] = useState(false)
+  const [natural, setNatural] = useState<{ w: number; h: number } | null>(null)
+  const stage = useRef<HTMLDivElement>(null)
+  const picture = useRef<HTMLImageElement>(null)
+  const grab = useRef<{ x: number; y: number; from: BannerLook } | null>(null)
+
+  const placeOf = (key: LookPlace) => PLACES.find((one) => one.key === key)!
+  const aspectOf = (key: LookPlace) => placeOf(key).aspect
+  const lookAt = (key: LookPlace) => draft[key] ?? placeOf(key).start
+  const look = lookAt(current)
+  const aspect = aspectOf(current)
+
+  const setLook = (next: BannerLook) => setDraft((was) => ({ ...was, [current]: next }))
+
+  const measure = (node: HTMLImageElement | null) => {
+    if (node?.complete && node.naturalWidth) setNatural({ w: node.naturalWidth, h: node.naturalHeight })
+  }
+
+  useEffect(() => measure(picture.current), [])
+
+  const overflow = () => {
+    const box = stage.current?.getBoundingClientRect()
+    if (!box || !natural) return { x: 0, y: 0 }
+    const cover = Math.max(box.width / natural.w, box.height / natural.h)
+    return { x: natural.w * cover * look.z - box.width, y: natural.h * cover * look.z - box.height }
+  }
+
+  const press = (event: PointerEvent<HTMLDivElement>) => {
+    grab.current = { x: event.clientX, y: event.clientY, from: look }
+    try {
+      event.currentTarget.setPointerCapture(event.pointerId)
+    } catch {
+      grab.current = null
+    }
+  }
+
+  const move = (event: PointerEvent<HTMLDivElement>) => {
+    const start = grab.current
+    if (!start) return
+    const room = overflow()
+    const dx = event.clientX - start.x
+    const dy = event.clientY - start.y
+    setLook({
+      ...start.from,
+      x: room.x > 1 ? clamp(start.from.x - (dx / room.x) * 100) : start.from.x,
+      y: room.y > 1 ? clamp(start.from.y - (dy / room.y) * 100) : start.from.y,
+    })
+  }
+
+  const release = () => {
+    grab.current = null
+  }
+
+  const reset = () =>
+    setDraft((was) => {
+      const next = { ...was }
+      delete next[current]
+      return next
+    })
+
+  const save = async () => {
+    setBusy(true)
+    const { ok } = await api('profile', { action: 'bannerLook', banner, look: Object.keys(draft).length ? draft : null })
+    if (ok) await refresh()
+    setBusy(false)
+    if (ok) onClose()
+  }
+
+  return (
+    <div className="modal-backdrop" onClick={onClose} role="presentation">
+      <section
+        className="card modal look-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-label={l({ ru: 'Настройка фона', uk: 'Налаштування фону', en: 'Background setup' })}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button type="button" className="modal-close" aria-label={l({ ru: 'Закрыть', uk: 'Закрити', en: 'Close' })} onClick={onClose}>
+          <CloseIcon />
+        </button>
+
+        <h2>{l({ ru: 'Настройка фона', uk: 'Налаштування фону', en: 'Background setup' })}</h2>
+        <p className="muted look-lead">
+          {l({
+            ru: 'Выбери место снизу, перетащи картинку и приблизь ползунком. Профиль выглядит одинаково на любом экране.',
+            uk: 'Обери місце знизу, перетягни картинку й наблизь повзунком. Профіль виглядає однаково на будь-якому екрані.',
+            en: 'Pick a place below, drag the picture and zoom with the slider. The profile looks the same on any screen.',
+          })}
+        </p>
+
+        <div className="look-stage-wrap">
+          <div
+            ref={stage}
+            className="look-stage"
+            style={{ aspectRatio: String(aspect), width: `min(100%, ${Math.round(STAGE_HEIGHT * aspect)}px)` }}
+            onPointerDown={press}
+            onPointerMove={move}
+            onPointerUp={release}
+            onPointerCancel={release}
+            role="presentation"
+          >
+            <img
+              ref={picture}
+              src={bannerPic(banner)}
+              alt=""
+              draggable={false}
+              style={lookStyle(banner, look)}
+              onLoad={(event) => measure(event.currentTarget)}
+            />
+          </div>
+        </div>
+
+        <label className="look-zoom">
+          <span>{l({ ru: 'Приближение', uk: 'Наближення', en: 'Zoom' })}</span>
+          <input
+            type="range"
+            min={1}
+            max={BANNER_ZOOM_MAX}
+            step={0.05}
+            value={look.z}
+            style={{ '--fill': `${((look.z - 1) / (BANNER_ZOOM_MAX - 1)) * 100}%` } as CSSProperties}
+            onChange={(event) => setLook({ ...look, z: Number(event.target.value) })}
+          />
+          <b>×{look.z.toFixed(2).replace(/\.?0+$/, '')}</b>
+        </label>
+
+        <div className="look-places" role="tablist">
+          {PLACES.map((place) => (
+            <button
+              key={place.key}
+              type="button"
+              role="tab"
+              aria-selected={current === place.key}
+              className={`look-place ${current === place.key ? 'on' : ''}`}
+              onClick={() => setCurrent(place.key)}
+            >
+              <span className="look-frame" style={{ aspectRatio: String(aspectOf(place.key)), height: Math.min(THUMB_HEIGHT, THUMB_WIDTH / aspectOf(place.key)) }}>
+                <img src={bannerPic(banner)} alt="" draggable={false} style={lookStyle(banner, lookAt(place.key))} />
+              </span>
+              <b>{l(place.label)}</b>
+            </button>
+          ))}
+        </div>
+
+        <div className="look-actions">
+          <button type="button" className="ghost" disabled={busy || !draft[current]} onClick={reset}>
+            {l({ ru: 'Сбросить', uk: 'Скинути', en: 'Reset' })}
+          </button>
+          <span />
+          <button type="button" className="ghost" disabled={busy} onClick={onClose}>
+            {l({ ru: 'Отмена', uk: 'Скасувати', en: 'Cancel' })}
+          </button>
+          <button type="button" className="primary" disabled={busy} onClick={() => void save()}>
+            {l({ ru: 'Сохранить', uk: 'Зберегти', en: 'Save' })}
+          </button>
+        </div>
+      </section>
+    </div>
+  )
+}

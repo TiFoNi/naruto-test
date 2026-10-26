@@ -13,6 +13,7 @@ export type DuelMate = {
   avatar?: string | null
   frame?: string | null
   banner?: string | null
+  bannerLook?: Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>> | null
   title?: string | null
   you: boolean
   lead?: boolean

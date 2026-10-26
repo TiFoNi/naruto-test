@@ -4,7 +4,7 @@ import { currentUser, defaultNickname, unauthorized } from '../profile'
 import { levelOf } from '../quests'
 import { seasonAt } from '../season'
 import { isFrame } from '../frame-list'
-import { isBanner } from '@nanda/game'
+import { isBanner, lookOf } from '@nanda/game'
 
 const TOP = 100
 
@@ -17,6 +17,7 @@ type Entry = {
   avatar?: string | null
   frame?: string | null
   banner?: string | null
+  bannerLooks?: Record<string, unknown> | null
   title?: string | null
   username: string
   total: number
@@ -43,6 +44,7 @@ export const GET = handle(async (request) => {
           avatar: '$player.avatar',
           frame: '$player.frame',
           banner: '$player.banner',
+          bannerLooks: '$player.bannerLooks',
           title: '$player.title',
           username: '$player.username',
           total: { $ifNull: ['$player.xp', 0] },
@@ -59,6 +61,7 @@ export const GET = handle(async (request) => {
     avatar: entry.avatar ?? null,
     frame: isFrame(entry.frame) ? entry.frame : null,
     banner: isBanner(entry.banner) ? entry.banner : null,
+    bannerLook: isBanner(entry.banner) ? lookOf(entry) : null,
     title: entry.title ?? null,
     level: levelOf(entry.total),
     xp: entry.xp,

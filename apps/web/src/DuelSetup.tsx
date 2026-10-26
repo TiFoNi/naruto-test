@@ -3,7 +3,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { BOARD_DEFAULT, BOARD_SIZES, CLUE_DEFAULT, CLUE_SIZES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, GRID_GAMES, TEAM_MODES } from '@nanda/game'
 import Avatar from './Avatar'
-import { bannerPic, bannerSpot } from './banners'
+import BannerArt from './BannerArt'
 import { ChevronIcon, UserIcon } from './icons'
 import Picker from './Picker'
 import WorldMark from './WorldMark'
@@ -24,8 +24,8 @@ const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'sport', title: 'dash.sport' },
 ]
 
-type Found = { id: string; nickname: string; tag?: string | null; avatar?: string | null; frame?: string | null; banner?: string | null }
-type Mate = { id: string; nickname: string; tag: string | null; avatar?: string | null; frame?: string | null; banner?: string | null }
+type Found = { id: string; nickname: string; tag?: string | null; avatar?: string | null; frame?: string | null; banner?: string | null; bannerLook?: Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>> | null }
+type Mate = { id: string; nickname: string; tag: string | null; avatar?: string | null; frame?: string | null; banner?: string | null; bannerLook?: Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>> | null }
 
 type Props = {
   duel: DuelView
@@ -178,7 +178,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                   <>
                     {mate.banner && (
                       <span className="duel-seat-art" aria-hidden>
-                        <img src={bannerPic(mate.banner)} alt="" style={{ objectPosition: bannerSpot(mate.banner) }} />
+                        <BannerArt id={mate.banner} look={mate.bannerLook} place="board" />
                       </span>
                     )}
                     {spot.lead && <em className="duel-seat-tag">{t('clue.lead')}</em>}
@@ -246,7 +246,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                       >
                         {one.banner && (
                           <span className="duel-mate-art" aria-hidden>
-                            <img src={bannerPic(one.banner)} alt="" style={{ objectPosition: bannerSpot(one.banner) }} />
+                            <BannerArt id={one.banner} look={one.bannerLook} place="board" />
                           </span>
                         )}
                         <Avatar className="duel-mate-face" id={one.id} name={one.nickname} avatar={one.avatar} frame={one.frame} small />

@@ -139,7 +139,7 @@ function MiniMe() {
     <div className="mini-me" style={(hue ? { '--accent': hue } : {}) as React.CSSProperties}>
       <span className="mini-me-art" aria-hidden>
         {user.banner ? (
-          <BannerArt id={user.banner} />
+          <BannerArt id={user.banner} look={user.bannerLooks?.[user.banner]} place="profile" />
         ) : (
           <i className="mini-me-marks">
             {MARKS.map((mark) => (

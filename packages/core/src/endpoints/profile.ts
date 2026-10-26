@@ -2,7 +2,7 @@ import { fail, handle, json, readJson } from '../http'
 import { quests, rounds, seasons, shotDays, shotRuns, streaks, tuneRuns } from '../db'
 import { claimTag, currentUser, lowerNickname, ownedTitles, parseNickname, toProfile, unauthorized } from '../profile'
 import { isFrame } from '../frames'
-import { GAME_IDS, bannerCost, bundleOf, frameCost, heroTiles, isBanner, isTitle, isTone, profileBlocks } from '@nanda/game'
+import { GAME_IDS, bannerCost, bannerLooks, bundleOf, frameCost, heroTiles, isBanner, isTitle, isTone, profileBlocks } from '@nanda/game'
 
 const SHOWCASE_MAX = 8
 const BLOCK_MIN = 60
@@ -114,6 +114,20 @@ export const POST = handle(async (request) => {
     const doc = await found.collection.findOneAndUpdate(
       { _id: found.doc._id },
       asked === null ? { $unset: { banner: '' } } : { $set: { banner: asked } },
+      { returnDocument: 'after' },
+    )
+    return json(toProfile(doc ?? found.doc))
+  }
+
+  if (body.action === 'bannerLook') {
+    const id = body.banner
+    if (!isBanner(id) || !(found.doc.banners ?? []).includes(id)) return fail(403, 'locked')
+    const look = body.look === null ? null : bannerLooks(body.look)
+    if (body.look !== null && typeof body.look !== 'object') return fail(400, 'bad_request')
+
+    const doc = await found.collection.findOneAndUpdate(
+      { _id: found.doc._id },
+      look ? { $set: { [`bannerLooks.${id}`]: look } } : { $unset: { [`bannerLooks.${id}`]: '' } },
       { returnDocument: 'after' },
     )
     return json(toProfile(doc ?? found.doc))

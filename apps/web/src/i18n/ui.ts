@@ -1304,6 +1304,7 @@ const ui = {
   'profile.tileHide': { ru: 'Убрать плитку', uk: 'Прибрати плитку', en: 'Remove tile' },
   'profile.banner': { ru: 'Фон', uk: 'Фон', en: 'Banner' },
   'profile.bannerNone': { ru: 'Без фона', uk: 'Без фону', en: 'No banner' },
+  'profile.bannerTune': { ru: 'Настроить', uk: 'Налаштувати', en: 'Adjust' },
   'banner.frog': { ru: 'Пруд с лягушками', uk: 'Ставок із жабами', en: 'Frog pond' },
   'banner.night': { ru: 'Ночь под клёном', uk: 'Ніч під кленом', en: 'Night under the maple' },
   'banner.sharingan': { ru: 'Шаринган', uk: 'Шаринган', en: 'Sharingan' },

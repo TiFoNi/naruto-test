@@ -5,6 +5,7 @@ import { HERO_TILES_MAX, TONE_HEX, isHeroTile, levelAt, type HeroTile } from '@n
 import Avatar from './Avatar'
 import { GAMES } from './games'
 import BannerArt from './BannerArt'
+import ProfileStage, { useNarrow } from './ProfileStage'
 import { useI18n, type UiKey } from './i18n'
 import type { User } from './auth'
 
@@ -30,36 +31,20 @@ const medal = (place: number) => (place === 1 ? 'gold' : place === 2 ? 'silver' 
 export default function HeroPeek({ user, stats, banner, frame }: Props) {
   const { t } = useI18n()
   const pads = useRef<HTMLDivElement>(null)
-  const box = useRef<HTMLDivElement>(null)
-  const [spot, setSpot] = useState<'row' | 'column' | 'under'>('row')
-  const [deck, setDeck] = useState(false)
   const [tight, setTight] = useState(false)
+  const narrow = useNarrow()
 
   useEffect(() => {
-    const body = box.current
-    if (!body || typeof ResizeObserver === 'undefined') return
+    const grid = pads.current
+    if (!grid || typeof ResizeObserver === 'undefined') return
     const check = () => {
-      const wide = body.getBoundingClientRect().width
-      const room = wide - 60
-      const area = 440 + Math.max(0, (room - 802) / 2)
-      const slot = Math.max(150, Math.round((area - (HERO_TILES_MAX - 1) * 10) / HERO_TILES_MAX))
-      const grid = pads.current
-      grid?.style.setProperty('--slot', `${Math.round(slot * 0.85)}px`)
-      const cell = grid?.firstElementChild?.getBoundingClientRect()
-      const screen = typeof window === 'undefined' ? wide : window.innerWidth
-      const narrow = screen <= 750
-      setDeck(narrow)
-      setSpot(narrow ? 'under' : slot >= 180 ? 'row' : 'column')
+      const cell = grid.firstElementChild?.getBoundingClientRect()
       setTight(!!cell && cell.width < 200)
     }
     check()
     const watcher = new ResizeObserver(check)
-    watcher.observe(body)
-    window.addEventListener('resize', check)
-    return () => {
-      watcher.disconnect()
-      window.removeEventListener('resize', check)
-    }
+    watcher.observe(grid)
+    return () => watcher.disconnect()
   })
 
   const stand = levelAt(user?.xp ?? 0)
@@ -93,70 +78,77 @@ export default function HeroPeek({ user, stats, banner, frame }: Props) {
 
   const nickHex = GAMES.find((game) => game.id === user?.nickTone)?.accent ?? (user?.nickTone && TONE_HEX.test(user.nickTone) ? user.nickTone : undefined)
 
-  return (
-    <section className="profile-hero shop-mock">
-      {!!banner && (
-        <span className="profile-art" aria-hidden>
-          <BannerArt id={banner} />
-        </span>
-      )}
-      <div className="profile-banner" aria-hidden />
-
+  const tilesBlock =
+    slots.length > 0 ? (
       <div
-        className={`profile-hero-body ${spot === 'under' ? 'is-under' : ''} ${spot === 'column' ? 'is-stack' : ''} ${deck ? 'is-deck' : ''}`}
-        ref={box}
+        className={`profile-hero-tiles ${narrow ? 'is-under' : ''}`}
+        ref={pads}
       >
-        <div className="profile-hero-id">
-          <Avatar id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={frame} />
-          <div className="profile-hero-main">
-            <div className="profile-hero-name" style={(nickHex ? { '--nick': nickHex } : {}) as CSSProperties}>
-              <span className="hero-nick-line">
-                <span className="hero-nick-who">
-                  <h1>{user?.nickname ?? '—'}</h1>
-                </span>
-              </span>
-              {user?.tag && <i className="player-tag">#{user.tag}</i>}
-              {worn && <i className={`player-title is-${worn} is-under`}>{t(`title.${worn}` as UiKey)}</i>}
+        {slots.map((one) => {
+          const face = faceOf(one)
+          return (
+            <div
+              key={one}
+              className={`hero-tile ${one === 'rank' && stats?.rank ? medal(stats.rank.position) : ''}`}
+              style={{ animation: 'none' } as CSSProperties}
+            >
+              <span>{face.label}</span>
+              <b>
+                {face.value}
+                {'tail' in face && face.tail ? <i>{face.tail}</i> : null}
+              </b>
             </div>
-
-            <div className="level-panel">
-              <div className="level-line">
-                <span className="level-xp">
-                  <b>{stand.into}</b> / {stand.need} XP
-                </span>
-                <span className="profile-hero-level">{t('nav.level', { level: stand.level })}</span>
-              </div>
-              <div className="level-bar" aria-hidden>
-                <i style={{ width: `${share(stand.into, stand.need)}%` }} />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {slots.length > 0 && !deck && (
-          <div
-            className={`profile-hero-tiles ${spot === 'column' ? 'is-stack' : ''} ${spot === 'under' ? 'is-under' : ''}`}
-            ref={pads}
-          >
-            {slots.map((one) => {
-              const face = faceOf(one)
-              return (
-                <div
-                  key={one}
-                  className={`hero-tile ${one === 'rank' && stats?.rank ? medal(stats.rank.position) : ''}`}
-                  style={{ animation: 'none' } as CSSProperties}
-                >
-                  <span>{face.label}</span>
-                  <b>
-                    {face.value}
-                    {'tail' in face && face.tail ? <i>{face.tail}</i> : null}
-                  </b>
-                </div>
-              )
-            })}
-          </div>
-        )}
+          )
+        })}
       </div>
-    </section>
+    ) : null
+
+  return (
+    <>
+      <section className="profile-hero shop-mock">
+        <ProfileStage
+          art={
+            <>
+              {!!banner && (
+                <span className="profile-art" aria-hidden>
+                  <BannerArt id={banner} look={user?.bannerLooks?.[banner]} place="profile" />
+                </span>
+              )}
+              <div className="profile-banner" aria-hidden />
+            </>
+          }
+        >
+          <div className="profile-hero-id">
+            <Avatar id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={frame} />
+            <div className="profile-hero-main">
+              <div className="profile-hero-name" style={(nickHex ? { '--nick': nickHex } : {}) as CSSProperties}>
+                <span className="hero-nick-line">
+                  <span className="hero-nick-who">
+                    <h1>{user?.nickname ?? '—'}</h1>
+                  </span>
+                </span>
+                {user?.tag && <i className="player-tag">#{user.tag}</i>}
+                {worn && <i className={`player-title is-${worn} is-under`}>{t(`title.${worn}` as UiKey)}</i>}
+              </div>
+
+              <div className="level-panel">
+                <div className="level-line">
+                  <span className="level-xp">
+                    <b>{stand.into}</b> / {stand.need} XP
+                  </span>
+                  <span className="profile-hero-level">{t('nav.level', { level: stand.level })}</span>
+                </div>
+                <div className="level-bar" aria-hidden>
+                  <i style={{ width: `${share(stand.into, stand.need)}%` }} />
+                </div>
+              </div>
+            </div>
+          </div>
+          {!narrow && tilesBlock}
+        </ProfileStage>
+      </section>
+
+      {narrow && tilesBlock && <div className="profile-hero-body is-under profile-tiles-out">{tilesBlock}</div>}
+    </>
   )
 }

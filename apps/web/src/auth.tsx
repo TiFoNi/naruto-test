@@ -18,6 +18,7 @@ export type User = {
   frames: string[]
   banner: string | null
   banners: string[]
+  bannerLooks?: Record<string, Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>>>
   tone: string | null
   nickTone: string | null
   title?: string | null

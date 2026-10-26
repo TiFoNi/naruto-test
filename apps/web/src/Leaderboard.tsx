@@ -25,6 +25,7 @@ type Row = {
   avatar?: string | null
   frame?: string | null
   banner?: string | null
+  bannerLook?: Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>> | null
   title?: string | null
   me: boolean
   level?: number
@@ -211,7 +212,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                   <li key={row.rank} className={`lb-step ${medals[index]} has-art`}>
                     <span className="lb-step-art" aria-hidden>
                       {row.banner ? (
-                        <BannerArt id={row.banner} />
+                        <BannerArt id={row.banner} look={row.bannerLook} place="board" />
                       ) : (
                         <i className="mini-me-marks lb-step-marks">
                           {MARKS.map((mark) => (

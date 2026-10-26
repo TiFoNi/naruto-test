@@ -7,7 +7,7 @@ import { gameData } from '../games'
 import { fail, handle, json } from '../http'
 import { currentUser, defaultNickname, ensureTag, unauthorized } from '../profile'
 import { friendState } from '../friends'
-import { levelAt } from '@nanda/game'
+import { levelAt, lookOf } from '@nanda/game'
 import { levelOf } from '../quests'
 import { shiftDay, today } from '../daily'
 import { seasonAt } from '../season'
@@ -291,6 +291,7 @@ export const GET = handle(async (request) => {
     showcase: doc.showcase ?? [],
     tiles: doc.tiles ?? null,
     banner: doc.banner ?? null,
+    bannerLook: lookOf(doc),
     tone: doc.tone ?? null,
     nickTone: doc.nickTone ?? null,
     title: doc.title ?? null,

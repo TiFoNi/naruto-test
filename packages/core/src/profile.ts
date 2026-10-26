@@ -9,6 +9,7 @@ import {
   STAT_KEYS,
   XP_CAPS,
   isTitle,
+  lookOf,
   type ModeId,
   type XpSource,
 } from '@nanda/game'
@@ -77,7 +78,7 @@ export async function searchPlayers(userId: ObjectId, asked: unknown, limit = 6)
   const list = await (await users())
     .find(
       { _id: { $ne: userId }, ...(or.length === 1 ? or[0] : { $or: or }) },
-      { projection: { nickname: 1, username: 1, tag: 1, avatar: 1, frame: 1, banner: 1 }, sort: { nicknameLower: 1 } },
+      { projection: { nickname: 1, username: 1, tag: 1, avatar: 1, frame: 1, banner: 1, bannerLooks: 1 }, sort: { nicknameLower: 1 } },
     )
     .limit(limit)
     .toArray()
@@ -89,6 +90,7 @@ export async function searchPlayers(userId: ObjectId, asked: unknown, limit = 6)
     avatar: doc.avatar ?? null,
     frame: doc.frame ?? null,
     banner: doc.banner ?? null,
+    bannerLook: lookOf(doc),
   }))
 }
 
@@ -220,6 +222,7 @@ export function toProfile(doc: UserDoc) {
       frames: doc.frames ?? [],
       banner: doc.banner ?? null,
       banners: doc.banners ?? [],
+      bannerLooks: doc.bannerLooks ?? {},
       tone: doc.tone ?? null,
       nickTone: doc.nickTone ?? null,
       title: ownedTitles(doc).includes(doc.title as never) ? doc.title! : null,

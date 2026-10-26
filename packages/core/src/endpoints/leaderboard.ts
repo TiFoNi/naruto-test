@@ -5,7 +5,7 @@ import { currentUser, defaultNickname, unauthorized } from '../profile'
 import { today } from '../daily'
 import { levelOf } from '../quests'
 import { isFrame } from '../frame-list'
-import { isBanner } from '@nanda/game'
+import { isBanner, lookOf } from '@nanda/game'
 
 const LIMIT = 200
 const SORTS = {
@@ -21,6 +21,7 @@ type Row = {
   avatar?: string | null
   frame?: string | null
   banner?: string | null
+  bannerLooks?: Record<string, unknown> | null
   title?: string | null
   xp?: number
   solved: number
@@ -65,6 +66,7 @@ export const GET = handle(async (request) => {
         avatar: found.doc.avatar ?? null,
         frame: found.doc.frame ?? null,
         banner: found.doc.banner ?? null,
+        bannerLooks: found.doc.bannerLooks ?? null,
         title: found.doc.title ?? null,
         xp: found.doc.xp,
         solved: stats?.solved ?? 0,
@@ -88,6 +90,7 @@ export const GET = handle(async (request) => {
           avatar: 1,
           frame: 1,
           banner: 1,
+          bannerLooks: 1,
           title: 1,
           xp: 1,
           solved: { $ifNull: [`${path}.solved`, 0] },
@@ -113,6 +116,7 @@ export const GET = handle(async (request) => {
     avatar: row.avatar ?? null,
     frame: isFrame(row.frame) ? row.frame : null,
     banner: isBanner(row.banner) ? row.banner : null,
+    bannerLook: isBanner(row.banner) ? lookOf(row) : null,
     title: row.title ?? null,
     level: levelOf(row.xp ?? 0),
     solved: row.solved,

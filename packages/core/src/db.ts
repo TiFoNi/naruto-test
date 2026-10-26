@@ -37,6 +37,7 @@ export type UserDoc = {
   avatarPreset?: string | null
   banner?: string
   banners?: string[]
+  bannerLooks?: Record<string, Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>>>
   tone?: string
   nickTone?: string
   title?: string | null
@@ -113,6 +114,7 @@ export type DuelPlayer = {
   avatar?: string | null
   frame?: string | null
   banner?: string | null
+  bannerLook?: Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>> | null
   title?: string | null
   secret?: number
   cards?: number[]
