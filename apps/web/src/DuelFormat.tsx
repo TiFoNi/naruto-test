@@ -1,15 +1,13 @@
 'use client'
 
 import { Fragment, useState, type CSSProperties } from 'react'
-import { DUEL_TEAM_COUNTS, DUEL_TEAM_SIZES, TEAM_MODES } from '@nanda/game'
+import { DUEL_TEAM_COUNTS, TEAM_MODES } from '@nanda/game'
 import BackButton from './BackButton'
 import { api } from './api'
 import { setActiveDuel } from './activeDuel'
 import { UserIcon } from './icons'
 import { useI18n } from './i18n'
 import { useHref, useNavigate } from './router'
-
-const COLUMNS = { 1: 'duel.colSolo', 2: 'duel.colPairs', 3: 'duel.colTrios' } as const
 
 const pips = (count: number) =>
   Array.from({ length: count }, (_, spot) => (
@@ -45,7 +43,7 @@ export default function DuelFormat() {
     const state = await api<{ duel?: { game?: string | null; mode?: string | null } }>('duel', { code, action: 'state' }).catch(() => null)
     const game = state?.data.duel?.game ?? 'naruto'
     const was = state?.data.duel?.mode ?? 'classic'
-    const mode = size > 1 && !TEAM_MODES.includes(was as never) ? 'who' : was
+    const mode = count > 2 && !TEAM_MODES.includes(was as never) ? 'classic' : was
     await api('duel', { code, action: 'setup', game, mode, per: size, teams: count }).catch(() => null)
 
     navigate.replace(href.duel(code))
@@ -63,44 +61,29 @@ export default function DuelFormat() {
         </div>
       </header>
 
-      <div className="duel-matrix">
-        <span className="duel-matrix-corner" aria-hidden />
-        {DUEL_TEAM_SIZES.map((size) => (
-          <span key={`head-${size}`} className="duel-matrix-col">
-            {t(COLUMNS[size as 1 | 2 | 3])}
-          </span>
-        ))}
-
+      <div className="duel-matrix is-solo">
         {DUEL_TEAM_COUNTS.map((count) => (
-          <Fragment key={count}>
-            <span className="duel-matrix-side">
-              <b>{t(count === 2 ? 'duel.sides2' : 'duel.sides3')}</b>
-              <em>{t(count === 2 ? 'duel.sides2Hint' : 'duel.sides3Hint')}</em>
+          <button
+            key={count}
+            type="button"
+            className={`duel-format-card ${per === 1 && teams === count ? 'on' : ''}`}
+            style={{ '--cols': count, '--sides': count } as CSSProperties}
+            disabled={busy}
+            onClick={() => void go(1, count)}
+          >
+            <span className="duel-format-name">
+              <b>{Array.from({ length: count }, () => 1).join(' × ')}</b>
+              <em>{t('duel.sizeTotal', { count })}</em>
             </span>
-            {DUEL_TEAM_SIZES.map((size) => (
-              <button
-                key={`${size}-${count}`}
-                type="button"
-                className={`duel-format-card ${per === size && teams === count ? 'on' : ''}`}
-                style={{ '--cols': count * (size === 3 ? 2 : size), '--sides': count } as CSSProperties}
-                disabled={busy}
-                onClick={() => void go(size, count)}
-              >
-                <span className="duel-format-name">
-                  <b>{Array.from({ length: count }, () => size).join(' × ')}</b>
-                  <em>{t('duel.sizeTotal', { count: size * count })}</em>
-                </span>
-                <span className="duel-pips" aria-hidden>
-                  {Array.from({ length: count }, (_, line) => (
-                    <Fragment key={line}>
-                      {line > 0 && <em className="duel-pip-vs">vs</em>}
-                      <span className={`duel-pip-set is-${size}`}>{pips(size)}</span>
-                    </Fragment>
-                  ))}
-                </span>
-              </button>
-            ))}
-          </Fragment>
+            <span className="duel-pips" aria-hidden>
+              {Array.from({ length: count }, (_, line) => (
+                <Fragment key={line}>
+                  {line > 0 && <em className="duel-pip-vs">vs</em>}
+                  <span className="duel-pip-set is-1">{pips(1)}</span>
+                </Fragment>
+              ))}
+            </span>
+          </button>
         ))}
       </div>
 

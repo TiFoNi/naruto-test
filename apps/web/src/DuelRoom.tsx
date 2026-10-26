@@ -412,7 +412,10 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
           variant={duel.mode === 'image' ? 'shot' : duel.mode === 'ability' ? 'ability' : 'classic'}
           side={
             <aside className="play-side duel-side">
-              {duel.mode === 'classic' && duel.rival && <RivalBoard game={game} rows={duel.rival.board ?? []} total={duel.rival.guessCount} />}
+              {duel.mode === 'classic' &&
+                (duel.rivals
+                  ? duel.rivals.map((one) => <RivalBoard key={one.id} game={game} rows={one.board ?? []} total={one.guessCount} name={one.nickname} slots={5} />)
+                  : duel.rival && <RivalBoard game={game} rows={duel.rival.board ?? []} total={duel.rival.guessCount} />)}
               {!solo && !over && !youDone && (
                 <div className="duel-quit">
                   <GiveUp disabled={busy} onConfirm={giveUp}>

@@ -564,7 +564,7 @@ export const XP_CAPS = { daily: 400, endless: 300, duel: 200 } as const
 
 export type XpSource = keyof typeof XP_CAPS
 
-export const DUEL_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'who', 'grid', 'clue']
+export const DUEL_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'who', 'grid']
 
 // світи, де даних вистачає на сітку з мінімум 5 персонажами в кожній клітинці
 export const GRID_GAMES: GameId[] = [
@@ -596,9 +596,9 @@ export const BOARD_SIZES = [4, 5, 6, 7] as const
 export const BOARD_DEFAULT = 5
 export const TEAM_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'clue']
 
-export const DUEL_TEAM_SIZES = [1, 2, 3] as const
+export const DUEL_TEAM_SIZES = [1] as const
 
-export const DUEL_TEAM_COUNTS = [2, 3] as const
+export const DUEL_TEAM_COUNTS = [2, 3, 4] as const
 
 export const CLUE_SIZES = [4, 5, 6] as const
 export const CLUE_DEFAULT = 5

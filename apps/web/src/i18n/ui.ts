@@ -314,7 +314,7 @@ const ui = {
   'duel.teamsTitle': { ru: 'Команд', uk: 'Команд', en: 'Teams' },
   'duel.sizeTitle': { ru: 'Формат дуэли', uk: 'Формат дуелі', en: 'Duel format' },
 
-  'duel.sizeHint': { ru: 'Сколько сторон и сколько игроков в каждой.', uk: 'Скільки сторін і скільки гравців у кожній.', en: 'How many sides, and how many players in each.' },
+  'duel.sizeHint': { ru: 'Сколько игроков — каждый сам за себя.', uk: 'Скільки гравців — кожен сам за себе.', en: 'How many players — every one for themselves.' },
   'duel.colSolo': { ru: 'Соло', uk: 'Соло', en: 'Solo' },
   'duel.colPairs': { ru: 'Пары', uk: 'Пари', en: 'Pairs' },
   'duel.colTrios': { ru: 'Тройки', uk: 'Трійки', en: 'Trios' },

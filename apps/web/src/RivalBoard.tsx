@@ -5,18 +5,19 @@ import { useI18n } from './i18n'
 
 type Row = Record<string, string>
 
-export default function RivalBoard({ game, rows, total }: { game: Game; rows: Row[]; total: number }) {
+export default function RivalBoard({ game, rows, total, name, slots }: { game: Game; rows: Row[]; total: number; name?: string; slots?: number }) {
   const { t } = useI18n()
   const first = total - rows.length + 1
+  const ghosts = slots ? Math.max(0, slots - rows.length) : 0
 
   return (
-    <section className="play-card rival-board">
+    <section className={`play-card rival-board ${name ? 'is-crowd' : ''}`}>
       <header className="rival-board-head">
-        <span className="play-card-title">{t('duel.rivalBoard')}</span>
+        <span className="play-card-title">{name ?? t('duel.rivalBoard')}</span>
         <em className="rival-live">{t('duel.live')}</em>
       </header>
-      <p className="muted">{t('duel.rivalBoardHint')}</p>
-      {rows.length ? (
+      {!name && <p className="muted">{t('duel.rivalBoardHint')}</p>}
+      {rows.length || ghosts ? (
         <ol className="rival-rows" style={{ '--rival-cols': game.columns.length + 1 } as React.CSSProperties}>
           {rows
             .map((row, index) => ({ row, number: first + index }))
@@ -32,6 +33,15 @@ export default function RivalBoard({ game, rows, total }: { game: Game; rows: Ro
                 ))}
               </li>
             ))}
+          {Array.from({ length: ghosts }, (_, slot) => (
+            <li key={`ghost-${slot}`} className="is-ghost" aria-hidden>
+              <i>0</i>
+              <span className="rival-cell mystery">?</span>
+              {game.columns.map((column) => (
+                <span key={column.key} className="rival-cell" />
+              ))}
+            </li>
+          ))}
         </ol>
       ) : (
         <p className="rival-empty muted">{t('duel.rivalBoardEmpty')}</p>

@@ -93,9 +93,9 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
         (one) =>
           DUEL_MODES.includes(one.id as never) &&
           (one.id === 'who' || one.id === 'clue' || game.modes.includes(one.id) || (one.id === 'grid' && GRID_GAMES.includes(game.id))) &&
-          ((duel.per ?? 1) < 2 || TEAM_MODES.includes(one.id as never)),
+          (((duel.per ?? 1) < 2 && (duel.teams ?? 2) < 3) || TEAM_MODES.includes(one.id as never)),
       ),
-    [game, duel.per],
+    [game, duel.per, duel.teams],
   )
 
   useEffect(() => {
@@ -411,7 +411,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
         </div>
       </header>
 
-      <section className={`duel-arena ${teams > 2 ? 'is-trio' : ''}`} style={{ '--sides': teams } as CSSProperties}>
+      <section className={`duel-arena ${teams > 3 ? 'is-quad' : teams > 2 ? 'is-trio' : ''}`} style={{ '--sides': teams } as CSSProperties}>
         {Array.from({ length: teams }, (_, team) => (
           <Fragment key={team}>
             {team > 0 && (

@@ -10,6 +10,8 @@ import {
   DUEL_DEFAULT,
   DUEL_MATCH_XP,
   DUEL_MODES,
+  DUEL_TEAM_COUNTS,
+  DUEL_TEAM_SIZES,
   DUEL_ROUNDS,
   DUEL_SECONDS,
   GRID_GAMES,
@@ -46,6 +48,7 @@ export const MIN_GAP_MS = 800
 export const RUSH_PER_TRY_MS = 10_000
 export const DUEL_LOG_MAX = 10
 const BOARD_ROWS = 10
+const CROWD_ROWS = 5
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
 
 const code = () => Array.from({ length: 6 }, () => CODE_ALPHABET[randomInt(CODE_ALPHABET.length)]).join('')
@@ -113,7 +116,7 @@ export async function createDuel(doc: UserDoc, invited?: UserDoc) {
       status: 'lobby',
       best: DUEL_DEFAULT.best,
       seconds: DUEL_DEFAULT.seconds,
-      invite: invited ? { toId: invited._id!, nickname: nameOf(invited), at: new Date() } : null,
+      invites: invited ? [{ toId: invited._id!, nickname: nameOf(invited), at: new Date() }] : [],
       round: 0,
       draws: 0,
       per: 1,
@@ -186,8 +189,8 @@ export async function setupDuel(duel: DuelDoc, userId: ObjectId, body: Record<st
   const here = duel.players.length
   const wantPer = teamSize(mode, body.per ?? duel.per)
   const wantTeams = teamCount(mode, body.teams ?? duel.teams)
-  const per = wantPer * wantTeams >= here ? wantPer : Math.min(3, Math.max(wantPer, Math.ceil(here / wantTeams)))
-  const teams = per * wantTeams >= here ? wantTeams : Math.min(3, Math.max(wantTeams, Math.ceil(here / per)))
+  const per = wantPer * wantTeams >= here ? wantPer : Math.min(Math.max(...DUEL_TEAM_SIZES), Math.max(wantPer, Math.ceil(here / wantTeams)))
+  const teams = per * wantTeams >= here ? wantTeams : Math.min(Math.max(...DUEL_TEAM_COUNTS), Math.max(wantTeams, Math.ceil(here / per)))
   const plan = { ...duel, mode, per, teams } as DuelDoc
   const room = Array.from({ length: teams }, () => 0)
   const calm = Object.fromEntries(duel.players.map((_, slot) => [`players.${slot}.ready`, false]))
@@ -224,15 +227,16 @@ const INVITE_PUSH: Record<PushLang, (name: string) => string> = {
 }
 
 export async function inviteTo(duel: DuelDoc, userId: ObjectId, targetId: unknown) {
-  if (!isHost(duel, userId) || duel.status !== 'lobby' || duel.players.length > 1) return null
+  if (!isHost(duel, userId) || duel.status !== 'lobby' || duel.players.length >= seatsOf(duel)) return null
   if (typeof targetId !== 'string' || !ObjectId.isValid(targetId)) return null
   const _id = new ObjectId(targetId)
-  if (_id.equals(userId)) return null
+  if (_id.equals(userId) || sideOf(duel, _id)) return null
   const target = await (await users()).findOne({ _id })
   if (!target) return null
+  const invites = [...(duel.invites ?? []).filter((one) => !one.toId.equals(_id)), { toId: _id, nickname: nameOf(target), at: new Date() }]
   const updated = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: 'lobby' },
-    { $set: { invite: { toId: _id, nickname: nameOf(target), at: new Date() } } },
+    { $set: { invites: invites.slice(-INVITES_MAX) } },
     { returnDocument: 'after' },
   )
   const host = duel.players.find((side) => side.userId.equals(userId))
@@ -247,16 +251,25 @@ export async function inviteTo(duel: DuelDoc, userId: ObjectId, targetId: unknow
 }
 
 export const INVITE_MS = 60 * 60 * 1000
+const INVITES_MAX = 8
+
+const inviteFor = (duel: DuelDoc, userId: ObjectId) => duel.invites?.find((one) => one.toId.equals(userId))
+
+const pendingInvites = (duel: DuelDoc) =>
+  duel.players.length < seatsOf(duel) ? (duel.invites ?? []).filter((one) => !one.declined && !sideOf(duel, one.toId)) : []
 
 export async function duelInvites(userId: ObjectId) {
   const list = await (await duels())
-    .find({ 'invite.toId': userId, 'invite.declined': { $ne: true }, status: 'lobby', 'invite.at': { $gt: new Date(Date.now() - INVITE_MS) } })
-    .sort({ 'invite.at': -1 })
+    .find({
+      status: 'lobby',
+      invites: { $elemMatch: { toId: userId, declined: { $ne: true }, at: { $gt: new Date(Date.now() - INVITE_MS) } } },
+    })
+    .sort({ createdAt: -1 })
     .limit(5)
     .toArray()
   const seen = new Set<string>()
   return list
-    .filter((duel) => !sideOf(duel, userId))
+    .filter((duel) => !sideOf(duel, userId) && duel.players.length < seatsOf(duel))
     .filter((duel) => {
       const host = duel.hostId.toHexString()
       if (seen.has(host)) return false
@@ -270,13 +283,13 @@ export async function duelInvites(userId: ObjectId) {
       mode: duel.mode ?? null,
       best: duel.best ?? DUEL_DEFAULT.best,
       seconds: duel.seconds || DUEL_DEFAULT.seconds,
-      at: (duel.invite?.at ?? duel.createdAt).toISOString(),
+      at: (inviteFor(duel, userId)?.at ?? duel.createdAt).toISOString(),
     }))
 }
 
 export async function declineInvite(duel: DuelDoc, userId: ObjectId) {
-  if (!duel.invite?.toId.equals(userId)) return null
-  await (await duels()).updateOne({ _id: duel._id }, { $set: { 'invite.declined': true } })
+  if (!inviteFor(duel, userId)) return null
+  await (await duels()).updateOne({ _id: duel._id, 'invites.toId': userId }, { $set: { 'invites.$.declined': true } })
   return true
 }
 
@@ -537,7 +550,7 @@ async function dropPlayers(duel: DuelDoc, gone: DuelPlayer[]) {
         matchDone: false,
         round: 0,
         draws: 0,
-        invite: null,
+        invites: [],
         left: { nickname: gone[0].nickname, at: new Date() },
       },
     },
@@ -1133,7 +1146,7 @@ export async function soloGrid(doc: UserDoc, game: unknown) {
       best: 1,
       seconds: 0,
       bot: true,
-      invite: null,
+      invites: [],
       round: 0,
       draws: 0,
       players: [{ ...player(doc), ready: true }, botPlayer()],
@@ -1260,6 +1273,15 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
   const data = game ? await gameData(game) : null
   const byId = data?.byId ?? null
   const answer = byId && duel.answerId !== undefined ? byId.get(duel.answerId) : undefined
+  const foes = duel.players.filter((p) => teamOf(duel, p) !== yours)
+  const boardOf = (side: DuelPlayer, rows: number) =>
+    duel.mode === 'classic' && byId && answer
+      ? side.guesses
+          .slice(-rows)
+          .map((id) => byId.get(id))
+          .filter((entity) => entity !== undefined)
+          .map((entity) => Object.fromEntries(Object.entries(judgeAll(game!, entity, answer)).map(([key, value]) => [key, value.verdict])))
+      : undefined
   const ability =
     duel.mode === 'ability' && you && answer && (finished || you.solvedAt || you.gaveUp || wrongCount(duel, you) >= ABILITY_HINT_AT)
       ? abilityByKey(duel.answerId!, duel.extra ?? undefined)?.name
@@ -1275,8 +1297,8 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
     strict: duel.strict ?? false,
     needed: winsNeeded(duel),
     matchDone: Boolean(duel.matchDone),
-    invited: duel.invite && !duel.invite.declined && duel.players.length < seatsOf(duel) ? duel.invite.nickname : null,
-    declined: Boolean(duel.invite?.declined) && duel.players.length < seatsOf(duel),
+    invited: pendingInvites(duel).map((one) => one.nickname).join(', ') || null,
+    declined: Boolean(duel.invites?.at(-1)?.declined) && duel.players.length < seatsOf(duel),
     left: duel.left && duel.players.length < seatsOf(duel) && Date.now() - duel.left.at.getTime() < 120_000 ? duel.left.nickname : null,
     per: perTeam(duel),
     teams: sideCount(duel),
@@ -1400,14 +1422,18 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
       solved: Boolean(rival.solvedAt),
       gaveUp: Boolean(rival.gaveUp),
       guessCount: rival.guesses.length,
-      board:
-        duel.mode === 'classic' && byId && answer
-          ? rival.guesses
-              .slice(-BOARD_ROWS)
-              .map((id) => byId.get(id))
-              .filter((entity) => entity !== undefined)
-              .map((entity) => Object.fromEntries(Object.entries(judgeAll(game!, entity, answer)).map(([key, value]) => [key, value.verdict])))
-          : undefined,
+      board: boardOf(rival, BOARD_ROWS),
     },
+    rivals:
+      foes.length > 1
+        ? foes.map((side) => ({
+            id: side.userId.toHexString(),
+            nickname: side.nickname,
+            solved: Boolean(side.solvedAt),
+            gaveUp: Boolean(side.gaveUp),
+            guessCount: side.guesses.length,
+            board: boardOf(side, CROWD_ROWS),
+          }))
+        : undefined,
   }
 }

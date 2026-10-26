@@ -1,6 +1,6 @@
 import type { ObjectId } from 'mongodb'
 import { chatRoom, coinLedger, duels, type ChatDoc, type DuelDoc } from './db'
-import { duelShotKey, duelView, leaveDuel, scheduleBot, seatsOf, settle, sideOf } from './duels'
+import { duelShotKey, duelView, leaveDuel, scheduleBot, settle, sideOf } from './duels'
 import { friends, type FriendDoc } from './friends'
 import { lineOf } from './chat'
 
@@ -75,7 +75,7 @@ const mark = (duel: DuelDoc) =>
     duel.winnerId,
     duel.grid ? [duel.grid.marks, duel.grid.miss ?? null] : null,
     duel.clue ? [duel.clue.open, duel.clue.turn, duel.clue.word ?? null, duel.clue.left ?? 0, duel.clue.hit ?? null] : null,
-    duel.invite,
+    duel.invites,
     duel.left,
     duel.hostId,
     duel.per,
@@ -154,7 +154,7 @@ async function startWatcher() {
       const doc = (change as { fullDocument?: DuelDoc }).fullDocument
       if (doc) {
         codes.set(String(doc._id), doc.code)
-        if (doc.invite && !doc.invite.declined && doc.players.length < seatsOf(doc)) notifyBell(doc.invite.toId)
+        if (doc.status === 'lobby') for (const one of doc.invites ?? []) if (!sideOf(doc, one.toId)) notifyBell(one.toId)
         void pushRoom(doc.code, doc)
         return
       }

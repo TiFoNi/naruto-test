@@ -4121,3 +4121,50 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   align-self: flex-start;
   margin: 2px 0 1px;
 }
+
+.duel-matrix.is-solo {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: none;
+}
+
+@media (max-width: 760px) {
+  .duel-matrix.is-solo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.duel-arena.is-quad {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 24px;
+}
+
+.duel-arena.is-quad .duel-vs {
+  display: none;
+}
+
+.duel-arena.is-quad .duel-corner {
+  width: 100%;
+}
+
+@media (max-width: 760px) {
+  .duel-arena.is-quad {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.rival-board.is-crowd .play-card-title {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rival-rows li.is-ghost i,
+.rival-rows li.is-ghost .rival-cell {
+  color: transparent;
+}
+
+.rival-rows li.is-ghost .rival-cell {
+  background: color-mix(in srgb, var(--card-2) 55%, transparent);
+}
