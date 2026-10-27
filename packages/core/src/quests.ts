@@ -141,7 +141,28 @@ export async function questBoard(userId: ObjectId) {
   const bonus = { xp: BONUS_XP, coins: person?.bonusDay === day ? 0 : BONUS_COINS, claimed: claimed.has('bonus'), ready }
   const collected = items.filter((quest) => quest.claimed).length + (free.claimed ? 1 : 0)
 
-  return { day, quests: items, free, bonus, collected, total: items.length + 1 }
+  const swap = !stored?.swapped
+
+  return { day, quests: items, free, bonus, collected, total: items.length + 1, swap }
+}
+
+export async function swapQuest(userId: ObjectId, id: string) {
+  const day = today()
+  const board = await questBoard(userId)
+  const quest = board.quests.find((item) => item.id === id)
+  const current = byId.get(id)
+  if (!board.swap || !quest || !current || quest.claimed || quest.done) return false
+
+  const taken = new Set(board.quests.map((item) => item.id))
+  const options = POOL.filter((one) => one.tier === current.tier && !taken.has(one.id))
+  if (!options.length) return false
+  const next = options[Math.floor(Math.random() * options.length)]!
+
+  const changed = await (await quests()).updateOne(
+    { _id: `${day}:${userId.toHexString()}`, swapped: { $exists: false }, picks: id, claimed: { $ne: id } },
+    { $set: { 'picks.$': next.id, swapped: id } },
+  )
+  return changed.modifiedCount > 0
 }
 
 export async function claimQuest(userId: ObjectId, id: string) {

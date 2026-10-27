@@ -1,0 +1,531 @@
+.lvmap {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: min(100%, 1100px);
+  margin: 0 auto;
+}
+
+.lvmap-top .back {
+  margin: 0;
+}
+
+.lvmap-title h1 {
+  margin: 0 0 6px;
+  font-family: var(--display);
+  font-size: clamp(30px, 6vw, 44px);
+}
+
+.lvmap-title p {
+  margin: 0;
+}
+
+.lvmap-chapter {
+  --tier: #9aa3ad;
+  --gem: var(--tier);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid color-mix(in srgb, var(--tier) 10%, var(--line));
+  border-radius: var(--round, 18px);
+  background:
+    radial-gradient(90% 45% at 50% 0%, color-mix(in srgb, var(--tier) 7%, transparent), transparent 70%),
+    var(--card);
+}
+
+
+
+
+
+.lvmap-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap, 22px) * 1.4);
+  min-height: 60px;
+}
+
+.lvmap-line {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.lvmap-line path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+}
+
+.lvmap-line .is-all {
+  stroke: color-mix(in srgb, #ffffff 10%, transparent);
+}
+
+.lvmap-line .is-done {
+  stroke: color-mix(in srgb, var(--tier) 75%, transparent);
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--tier) 45%, transparent));
+}
+
+.lvmap-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap, 22px);
+}
+
+.lvmap-row.is-back {
+  flex-direction: row-reverse;
+}
+
+
+
+.lvmap-block {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  border: 1px solid color-mix(in srgb, #ffffff 9%, transparent);
+  border-radius: var(--round, 18px);
+  background: #0b0d10;
+  box-shadow: 0 6px 16px rgb(0 0 0 / 35%);
+}
+
+.lvmap-block.kind-pile {
+  box-shadow:
+    0 6px 16px rgb(0 0 0 / 35%),
+    calc(var(--unit, 100px) * 0.06) calc(var(--unit, 100px) * -0.06) 0 -1px #0b0d10,
+    calc(var(--unit, 100px) * 0.06) calc(var(--unit, 100px) * -0.06) 0 0 color-mix(in srgb, #ffffff 9%, transparent);
+}
+
+.lvmap-block.kind-title {
+  border-radius: var(--round, 18px);
+}
+
+.lvmap-block.kind-avatar,
+.lvmap-block.kind-frame {
+  border-radius: var(--round, 18px);
+}
+
+.lvmap-block.kind-banner {
+  border-radius: var(--round, 18px);
+}
+
+.lvmap-block.kind-chest {
+  border-color: color-mix(in srgb, var(--tier) 22%, transparent);
+  border-radius: var(--round, 18px);
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--tier) 6%, transparent), transparent 55%),
+    #0b0d10;
+}
+
+.lvmap-block.is-open {
+  border-color: color-mix(in srgb, var(--tier) 30%, transparent);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--tier) 9%, #0b0d10), #0b0d10 70%);
+}
+
+.lvmap-block:not(.is-open):not(.is-next) .lvmap-gold .gem {
+  filter: grayscale(0.7) brightness(0.72) drop-shadow(0 3px 6px rgb(0 0 0 / 45%));
+}
+
+.lvmap-block:not(.is-open):not(.is-next) .lvmap-gold b {
+  color: color-mix(in srgb, var(--tier) 25%, var(--text-3));
+}
+
+.lvmap-block.is-next {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent),
+    0 6px 16px rgb(0 0 0 / 35%);
+}
+
+.lvmap-gold {
+  position: absolute;
+  inset: 0 0 18% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--unit, 100px) * 0.04);
+  pointer-events: none;
+}
+
+.lvmap-gold .gem {
+  width: calc(var(--unit, 100px) * 0.5);
+  height: calc(var(--unit, 100px) * 0.5);
+  filter: drop-shadow(0 3px 6px rgb(0 0 0 / 45%));
+}
+
+.lvmap-gold b {
+  color: color-mix(in oklch, var(--tier), white 35%);
+  font-family: var(--display);
+  font-size: max(12px, calc(var(--unit, 100px) * 0.18));
+  line-height: 1;
+}
+
+.lvmap-level {
+  position: absolute;
+  bottom: 9px;
+  left: 11px;
+  color: var(--text-3);
+  font-family: var(--display);
+  font-size: clamp(11px, calc(var(--unit, 100px) * 0.11), 16px);
+  font-style: normal;
+  line-height: 1;
+}
+
+.lvmap-block.is-open .lvmap-level {
+  color: color-mix(in srgb, var(--tier) 75%, var(--text-3));
+}
+
+.lvmap-here {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #0d0f12;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  translate: -50% 0;
+}
+
+@media (max-width: 560px) {
+  .lvmap-chapter {
+    padding: 14px 12px;
+  }
+
+}
+
+.lvmap-door {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lvmap-strip {
+  --tier: #9aa3ad;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: min(100%, 520px);
+  align-self: center;
+}
+
+.lvmap-nums {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.lvmap-link {
+  flex: 1;
+  height: 2px;
+  min-width: 8px;
+  border-radius: 2px;
+  background: color-mix(in srgb, #ffffff 9%, transparent);
+}
+
+.lvmap-link.is-done {
+  background: color-mix(in srgb, var(--tier) 45%, transparent);
+}
+
+.lvmap-num {
+  --tier: #9aa3ad;
+  position: relative;
+  display: grid;
+  flex: none;
+  min-width: 44px;
+  height: 52px;
+  place-items: center;
+  padding: 0 6px;
+  border: 0;
+  background: none;
+  color: var(--text-3);
+  font-family: var(--display);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 0.3s ease,
+    font-size 0.35s cubic-bezier(0.22, 0.9, 0.24, 1);
+}
+
+.lvmap-num.is-done {
+  color: color-mix(in srgb, var(--tier) 55%, var(--text-3));
+}
+
+.lvmap-num:hover {
+  color: var(--text);
+}
+
+.lvmap-num.is-on {
+  color: var(--tier);
+  font-size: 30px;
+  text-shadow: 0 0 18px color-mix(in srgb, var(--tier) 45%, transparent);
+}
+
+.lvmap-num:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.lvmap-caption {
+  margin: 0;
+  color: var(--text-3);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.lvmap-caption b {
+  color: var(--text-2);
+}
+
+.lvmap-stage {
+  --fog: 150px;
+  position: relative;
+  width: 100vw;
+  min-height: 200px;
+  margin-inline: calc(50% - 50vw);
+  overflow-x: clip;
+  overflow-y: visible;
+  mask-image: linear-gradient(
+    90deg,
+    transparent calc(50% - var(--face, 800px) / 2 - var(--fog)),
+    #000 calc(50% - var(--face, 800px) / 2 - 40px),
+    #000 calc(50% + var(--face, 800px) / 2 + 40px),
+    transparent calc(50% + var(--face, 800px) / 2 + var(--fog))
+  );
+  perspective: 3200px;
+  touch-action: pan-y;
+}
+
+.lvmap-stage.is-settled {
+  transition: height 0.5s cubic-bezier(0.22, 0.9, 0.24, 1);
+}
+
+.lvmap-ring {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform-style: preserve-3d;
+  transition: transform 0.75s cubic-bezier(0.22, 0.9, 0.24, 1);
+}
+
+.lvmap-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  backface-visibility: hidden;
+  transition:
+    opacity 0.6s ease,
+    filter 0.6s ease;
+}
+
+.lvmap-face.is-near {
+  opacity: 0.75;
+  cursor: pointer;
+}
+
+
+.lvmap-face:not(.is-on) .lvmap-face-real {
+  pointer-events: none;
+}
+
+.lvmap-face {
+  overflow: clip;
+  border-radius: var(--round, 18px);
+  touch-action: pan-y;
+}
+
+.lvmap-face.is-on {
+  overflow: visible;
+}
+
+.lvmap-glass {
+  --tier: #9aa3ad;
+  position: absolute;
+  inset: 0;
+  border: 1px solid color-mix(in srgb, var(--tier) 16%, transparent);
+  border-radius: var(--round, 18px);
+  background: color-mix(in srgb, var(--tier) 2%, var(--card));
+}
+
+.lvmap-face-real {
+  position: relative;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.lvmap-face.is-on .lvmap-face-real {
+  opacity: 1;
+  transition-delay: 0.15s;
+}
+
+
+.lvmap-face.is-far {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lvmap-ring,
+  .lvmap-stage,
+  .lvmap-face {
+    transition: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .lvmap-num {
+    min-width: 40px;
+    font-size: 13px;
+  }
+
+  .lvmap-num.is-on {
+    font-size: 24px;
+  }
+}
+
+.lvmap .tier-bronze {
+  --tier: #d98a4e;
+}
+
+.lvmap .tier-silver {
+  --tier: #c9d1dc;
+}
+
+.lvmap .tier-gold {
+  --tier: #f5c451;
+}
+
+.lvmap .tier-legend {
+  --tier: #a78bfa;
+}
+
+.lvmap .tier-mythic {
+  --tier: #ef3f4e;
+}
+
+.lvmap .tier-secret {
+  --tier: #6ec06e;
+}
+
+@media (max-width: 560px) {
+  .lvmap-stage {
+    --fog: 70px;
+  }
+}
+
+.lvmap-ring.is-still,
+.lvmap-ring.is-still .lvmap-face,
+.lvmap-ring.is-still .lvmap-face-real {
+  transition: none;
+}
+
+.lvmap-face:not(.is-on) .lvmap-block {
+  pointer-events: none;
+}
+
+.lvmap-block.is-ready {
+  border-color: color-mix(in srgb, var(--tier) 70%, transparent);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--tier) 20%, #0b0d10), #0b0d10 75%);
+  cursor: pointer;
+  transition: transform 0.18s ease;
+}
+
+.lvmap-block.is-ready::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  animation: lvmap-ready 2.6s ease-in-out infinite;
+}
+
+.lvmap-block.is-ready:hover {
+  transform: translateY(-3px);
+}
+
+.lvmap-block.is-ready:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.lvmap-block.is-ready .lvmap-gold .gem {
+  animation: lvmap-bob 2.6s ease-in-out infinite;
+}
+
+.lvmap-block.is-busy {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.lvmap-here.is-take {
+  background: var(--tier);
+}
+
+.lvmap-block.is-taken .lvmap-gold {
+  opacity: 0.38;
+}
+
+.lvmap-got {
+  position: absolute;
+  right: 9px;
+  bottom: 8px;
+  display: grid;
+  place-items: center;
+  width: clamp(18px, calc(var(--unit, 100px) * 0.17), 24px);
+  height: clamp(18px, calc(var(--unit, 100px) * 0.17), 24px);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--tier) 22%, transparent);
+  color: var(--tier);
+}
+
+.lvmap-got svg {
+  width: 62%;
+  height: 62%;
+  stroke-width: 3;
+}
+
+@keyframes lvmap-ready {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--tier) 40%, transparent);
+  }
+
+  60% {
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--tier) 0%, transparent);
+  }
+}
+
+@keyframes lvmap-bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lvmap-block.is-ready::after,
+  .lvmap-block.is-ready .lvmap-gold .gem {
+    animation: none;
+  }
+}

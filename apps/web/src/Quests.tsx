@@ -1,11 +1,12 @@
 'use client'
 
 import { useCallback, useEffect, useState, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { api } from './api'
 import { useAuth } from './auth'
 import { useI18n } from './i18n'
 import type { UiKey } from './i18n/ui'
-import { CalendarIcon, CheckIcon, GiftIcon, GlobeIcon, GridIcon, MedalIcon, PageIcon, PictureIcon, PlayIcon, PuzzleIcon, SparkIcon, SwordsIcon, TrophyIcon } from './icons'
+import { CalendarIcon, CheckIcon, GiftIcon, GlobeIcon, GridIcon, MedalIcon, PageIcon, PictureIcon, PlayIcon, CloseIcon, PuzzleIcon, RefreshIcon, SparkIcon, SwordsIcon, TrophyIcon } from './icons'
 import { keepPerUser } from './session-cache'
 import Ticker from './Ticker'
 
@@ -19,6 +20,7 @@ export type Board = {
   bonus: { xp: number; coins: number; claimed: boolean; ready: boolean }
   collected: number
   total: number
+  swap: boolean
 } & Level
 
 let known: Board | null = null
@@ -98,6 +100,7 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
   const [board, setBoard] = useState<Board | null>(known)
   const [claiming, setClaiming] = useState<string | null>(null)
   const [poke, setPoke] = useState({ id: '', turn: 0 })
+  const [asking, setAsking] = useState<string | null>(null)
 
   const remember = (next: Board) => {
     known = next
@@ -128,6 +131,13 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
     remember(data)
     onLevel?.(data)
     if (data.coins) void refresh()
+  }
+
+  const swap = async (id: string) => {
+    setClaiming(`swap:${id}`)
+    const { ok, data } = await api<Board>('quests/swap', { swap: id })
+    setClaiming(null)
+    if (ok) remember(data)
   }
 
   const widest = board ? widestCount(board) : '12/12'
@@ -177,10 +187,12 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
           <li key={quest.id}>
             <button
               type="button"
-              className={`quest ${quest.claimed ? 'is-claimed' : quest.done ? 'is-ready' : ''}`}
+              className={`quest ${quest.claimed ? 'is-claimed' : quest.done ? 'is-ready' : board?.swap ? 'is-swappable' : ''}`}
               disabled={claiming === quest.id}
-              title={quest.done && !quest.claimed ? t('quests.take') : undefined}
-              onClick={() => (quest.done && !quest.claimed ? claim(quest.id) : nudge(quest.id))}
+              title={quest.done && !quest.claimed ? t('quests.take') : board?.swap && !quest.claimed ? t('quests.swapTitle') : undefined}
+              onClick={() =>
+                quest.done && !quest.claimed ? claim(quest.id) : board?.swap && !quest.claimed ? setAsking(quest.id) : nudge(quest.id)
+              }
             >
               <span className="quest-icon" aria-hidden>
                 {quest.claimed ? <CheckIcon /> : iconOf(quest.id)}
@@ -260,6 +272,47 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
         )}
 
       </ul>
+
+      {asking &&
+        createPortal(
+          <div className="modal-backdrop" onClick={() => setAsking(null)} role="presentation">
+            <section
+              className="card modal give-up-ask"
+              role="dialog"
+              aria-modal="true"
+              aria-label={t('quests.swapTitle')}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button type="button" className="modal-close" onClick={() => setAsking(null)} aria-label={t('quests.swapNo')}>
+                <CloseIcon />
+              </button>
+              <span className="quest-swap-art" aria-hidden>
+                {iconOf(asking)}
+                <RefreshIcon />
+              </span>
+              <h2>{t('quests.swapTitle')}</h2>
+              <p className="muted">{t('quests.swapHint').replace('{name}', t(`quest.${asking}` as UiKey))}</p>
+              <div className="give-up-actions">
+                <button type="button" className="ghost" onClick={() => setAsking(null)}>
+                  {t('quests.swapNo')}
+                </button>
+                <button
+                  type="button"
+                  className="primary"
+                  disabled={claiming !== null}
+                  onClick={() => {
+                    const id = asking
+                    setAsking(null)
+                    void swap(id)
+                  }}
+                >
+                  {t('quests.swapYes')}
+                </button>
+              </div>
+            </section>
+          </div>,
+          document.body,
+        )}
     </section>
   )
 }

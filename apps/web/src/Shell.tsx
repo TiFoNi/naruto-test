@@ -24,6 +24,7 @@ import { shownTone, watchTone } from './tone'
 import { AWARDS_FILTER, dropCoins, dropFrames, dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
 import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
 import { startAnimGate } from './animGate'
+import GemIcon from './GemIcon'
 import { MODE_XP, MODE_XP_AFTER, TONE_HEX, levelAt } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
@@ -543,7 +544,9 @@ function Bell() {
             >
               <small>{t('coins.news')}</small>
               <span className="bell-main">
-                <span className="bell-mark bell-purse" aria-hidden style={{ backgroundImage: 'url(/shop/coins-big.webp)' }} />
+                <span className="bell-mark bell-purse" aria-hidden>
+                  <GemIcon count={3} sparkles={false} />
+                </span>
                 <span className="bell-body">
                   <b>{t('coins.added', { count: purse.coins })}</b>
                   <span className="bell-hint">{t('coins.toShop')}</span>
@@ -576,7 +579,9 @@ function Bell() {
                 >
                   <small>{t('coins.news')}</small>
                   <span className="bell-main">
-                    <span className="bell-mark bell-purse" aria-hidden style={{ backgroundImage: 'url(/shop/coins-big.webp)' }} />
+                    <span className="bell-mark bell-purse" aria-hidden>
+                      <GemIcon count={3} sparkles={false} />
+                    </span>
                     <span className="bell-body">
                       <b>{t('coins.added', { count: feed.coins.coins })}</b>
                       <span className="bell-hint">{t('coins.toShop')}</span>

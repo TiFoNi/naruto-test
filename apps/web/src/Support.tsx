@@ -13,6 +13,9 @@ import { useAuth } from './auth'
 import BackButton from './BackButton'
 import { useI18n } from './i18n'
 import { CoinIcon, StarIcon } from './icons'
+import GemIcon from './GemIcon'
+
+const PACK_GEMS: Record<string, 1 | 2 | 3> = { small: 1, mid: 2, big: 3 }
 import { useHref } from './router'
 
 const PACKS = COIN_PACKS
@@ -173,20 +176,10 @@ export default function Support() {
                   setError(null)
                 }}
               >
-                <img
-                  className="support-art"
-                  style={{ '--grow': one.grow } as React.CSSProperties}
-                  src={`/shop/${one.art}.webp`}
-                  alt=""
-                  width={512}
-                  height={512}
-                  loading="lazy"
-                  decoding="async"
-                  draggable={false}
-                />
+                <GemIcon className="support-art" count={PACK_GEMS[one.id] ?? 1} style={{ '--grow': one.grow } as React.CSSProperties} />
 
                 <span className="support-amount">
-                  <CoinIcon />
+                  <GemIcon sparkles={false} />
                   <b>{nice(one.base)}</b>
                   <em className="support-bonus">{t('support.bonusChip', { count: nice(one.bonus) })}</em>
                 </span>

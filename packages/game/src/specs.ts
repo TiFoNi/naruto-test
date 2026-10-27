@@ -834,7 +834,21 @@ export function levelAt(xp: number) {
 export const LEVEL_BIG = 10
 export const LEVEL_MID = 1
 export const LEVEL_LAST = 300
-export const LEVEL_COINS = 25
+export const LEVEL_CHAPTER = 50
 
-export const levelCoins = (level: number) =>
-  Number.isInteger(level) && level >= 1 && level <= LEVEL_LAST ? LEVEL_COINS : 0
+export const LEVEL_CHAPTER_COINS = [25, 30, 35, 40, 45, 50]
+
+export const LEVEL_PILE_SPOTS = [5, 15, 35, 45]
+
+export const LEVEL_PRIZE_SPOTS = [10, 20, 25, 30, 40]
+
+export const levelBaseCoins = (level: number) =>
+  LEVEL_CHAPTER_COINS[Math.min(Math.floor((level - 1) / LEVEL_CHAPTER), LEVEL_CHAPTER_COINS.length - 1)]!
+
+export const levelCoins = (level: number) => {
+  if (!Number.isInteger(level) || level < 1 || level > LEVEL_LAST) return 0
+  const spot = level - Math.floor((level - 1) / LEVEL_CHAPTER) * LEVEL_CHAPTER
+  if (LEVEL_PRIZE_SPOTS.includes(spot)) return 0
+  if (spot === LEVEL_CHAPTER) return levelBaseCoins(level) * 5
+  return LEVEL_PILE_SPOTS.includes(spot) ? levelBaseCoins(level) * 3 : levelBaseCoins(level)
+}

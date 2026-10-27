@@ -16,6 +16,7 @@ import { useI18n, type UiKey } from './i18n'
 import { CheckIcon } from './icons'
 import Rail from './Rail'
 import { useHref } from './router'
+import GemIcon from './GemIcon'
 
 type Kind = 'bundle' | 'frame' | 'banner'
 
@@ -164,7 +165,10 @@ export default function Shop() {
             onClick={() => setAsk({ card: one, kind, id, cost })}
           >
             {t('shop.buy')}
-            <i>{cost}</i>
+            <i>
+              <GemIcon sparkles={false} />
+              {cost}
+            </i>
           </button>
         )}
       </div>
@@ -211,7 +215,7 @@ export default function Shop() {
         </div>
 
         <div className="shop-purse">
-          <img className="shop-purse-mark" src="/shop/coins-big.webp" alt="" aria-hidden />
+          <GemIcon className="shop-purse-mark" count={3} />
           <span className="shop-purse-text">
             <em>{t('shop.purse')}</em>
             <b>{user?.coins ?? 0}</b>
@@ -314,7 +318,7 @@ export default function Shop() {
 
               <div className="shop-ask-sum">
                 <span className="shop-ask-cost">
-                  <img src="/shop/coins-big.webp" alt="" aria-hidden />
+                  <GemIcon sparkles={false} />
                   {ask.cost}
                 </span>
                 <em>{t('shop.left', { left: (user?.coins ?? 0) - ask.cost })}</em>

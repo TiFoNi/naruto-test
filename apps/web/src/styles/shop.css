@@ -48,10 +48,10 @@
 }
 
 .shop-purse-mark {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   flex: none;
-  object-fit: contain;
+  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent) 45%, transparent)) drop-shadow(0 6px 10px rgb(0 0 0 / 45%));
 }
 
 .shop-purse-text {
@@ -211,10 +211,18 @@
 }
 
 .shop-foot .shop-go i {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-family: var(--display);
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
+}
+
+.shop-foot .shop-go i .gem {
+  width: 16px;
+  height: 16px;
 }
 
 
@@ -680,10 +688,10 @@
   line-height: 1;
 }
 
-.shop-ask-cost img {
-  width: 34px;
-  height: 34px;
-  object-fit: contain;
+.shop-ask-cost .gem {
+  width: 28px;
+  height: 28px;
+  flex: none;
 }
 
 .shop-ask-sum em {

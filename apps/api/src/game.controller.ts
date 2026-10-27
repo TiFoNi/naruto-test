@@ -183,6 +183,11 @@ export class GameController {
     return bridge(quests.POST, req, res)
   }
 
+  @Post('quests/swap')
+  questSwap(@Req() req: Request, @Res() res: Response) {
+    return bridge(quests.SWAP, req, res)
+  }
+
   @Get('levels')
   levelBoard(@Req() req: Request, @Res() res: Response) {
     return bridge(levels.GET, req, res)
