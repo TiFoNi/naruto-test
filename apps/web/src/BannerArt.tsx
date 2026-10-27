@@ -15,7 +15,7 @@ export const lookStyle = (id: string, look?: BannerLook | null): CSSProperties =
 
 export default function BannerArt({ id, look, place }: { id: string; look?: BannerLooks | null; place: LookPlace | 'profile' }) {
   const style = lookStyle(id, place === 'profile' ? look?.desktop : (look?.[place] ?? look?.desktop))
-  if (!isLive(id)) return <img src={bannerPic(id)} alt="" style={style} />
+  if (!isLive(id)) return <img src={bannerPic(id, place === 'board')} alt="" style={style} />
   return <LiveArt id={id} style={style} />
 }
 

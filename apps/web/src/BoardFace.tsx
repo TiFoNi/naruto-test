@@ -1,7 +1,7 @@
 'use client'
 
-import type { CSSProperties } from 'react'
-import { frameOf, frameStyle, frameUrl } from './frames'
+import { useSyncExternalStore, type CSSProperties } from 'react'
+import { frameOf, frameStyle, frameUrl, tuneStamp, watchTune } from './frames'
 import { avatarUrl } from './pics'
 
 const TONES = 8
@@ -17,6 +17,7 @@ type Props = { id?: string; nickname: string; avatar?: string | null; frame?: st
 export default function BoardFace({ id, nickname, avatar, frame, big }: Props) {
   const src = id && avatar ? avatarUrl(id, avatar) : null
   const worn = frameOf(frame)
+  useSyncExternalStore(watchTune, tuneStamp, () => 0)
 
   return (
     <span className={`lb-face ${worn ? 'has-frame' : ''}`} aria-hidden>
@@ -35,7 +36,9 @@ export default function BoardFace({ id, nickname, avatar, frame, big }: Props) {
         )}
       </span>
       {worn && (
-        <i className="avatar-frame" style={{ backgroundImage: `url(${frameUrl(worn.id, !big)})`, ...frameStyle(worn.id) } as CSSProperties} />
+        <i className="avatar-frame" style={frameStyle(worn.id) as CSSProperties}>
+          <img src={frameUrl(worn.id, !big)} alt="" loading="lazy" decoding="async" />
+        </i>
       )}
     </span>
   )

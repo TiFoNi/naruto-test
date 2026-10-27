@@ -9491,12 +9491,21 @@ html[data-auth] .guest-note {
   position: absolute;
   inset: calc((1 - var(--frame-scale, 1.22)) / 2 * 100%);
   translate: var(--frame-x, 0%) var(--frame-y, 0%);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
   pointer-events: none;
   z-index: 2;
   filter: drop-shadow(0 1px 4px rgb(0 0 0 / 55%));
+}
+
+.avatar .avatar-frame > img,
+.avatar-frame > img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  background: none;
+  object-fit: contain;
 }
 
 .avatar.has-frame {

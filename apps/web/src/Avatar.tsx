@@ -1,14 +1,15 @@
 'use client'
 
-import type { CSSProperties, ReactNode } from 'react'
+import { useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
 import { avatarUrl } from './pics'
-import { faceStyle, frameOf, frameStyle, frameUrl } from './frames'
+import { faceStyle, frameOf, frameStyle, frameUrl, tuneStamp, watchTune } from './frames'
 
 type Props = { id?: string | null; name: string; avatar?: string | null; frame?: string | null; className?: string; hint?: ReactNode; small?: boolean }
 
 export default function Avatar({ id, name, avatar, frame, className, hint, small = false }: Props) {
   const src = id && avatar ? avatarUrl(id, avatar) : null
   const worn = frameOf(frame)
+  useSyncExternalStore(watchTune, tuneStamp, () => 0)
 
   return (
     <span
@@ -30,7 +31,9 @@ export default function Avatar({ id, name, avatar, frame, className, hint, small
       )}
       {hint}
       {worn && (
-        <i className="avatar-frame" style={{ backgroundImage: `url(${frameUrl(worn.id, small)})`, ...frameStyle(worn.id) } as CSSProperties} />
+        <i className="avatar-frame" style={frameStyle(worn.id) as CSSProperties}>
+          <img src={frameUrl(worn.id, small)} alt="" loading="lazy" decoding="async" />
+        </i>
       )}
     </span>
   )

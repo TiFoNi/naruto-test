@@ -18,6 +18,7 @@ const MAX_CHAPTER = 699
 const ANSWER_POOL_SIZE = 150
 const KEEP = 250
 
+const NOTE_NON_CANON = /^(anime|novel|game|movie|boruto)( only)?$|non-canon/i
 const NON_CANON = /\((anime|novel|game|movie|ova|databook)[^)]*only\)|non-canon/i
 
 
@@ -182,7 +183,7 @@ function infoboxField(text, field) {
     value
       .split(/,|<br\s*\/?>/)
       .map((s) => s.trim().split('~'))
-      .filter(([, ...notes]) => !/only|non-canon/i.test(notes.join(' ')))
+      .filter(([, ...notes]) => !NOTE_NON_CANON.test(notes.filter(Boolean).join(' ').trim()))
       .map(([base]) => base.trim()),
   ).filter(Boolean)
 }

@@ -459,6 +459,14 @@
   z-index: 1;
 }
 
+.lb-step.has-art {
+  isolation: isolate;
+}
+
+.lb-step.has-art > *:not(.lb-step-art) {
+  transform: translateZ(0);
+}
+
 .lb-step {
   container-type: inline-size;
   position: relative;

@@ -4,7 +4,7 @@ const LIVE: Record<string, { spot?: string; clips: string[] }> = {
 
 export const isLive = (id: string) => id in LIVE
 
-export const bannerPic = (id: string) => `/banners/${id}.webp`
+export const bannerPic = (id: string, medium = false) => `/banners/${id}${medium ? '-md' : ''}.webp`
 
 export const bannerSpot = (id: string) => LIVE[id]?.spot
 
