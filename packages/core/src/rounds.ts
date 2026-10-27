@@ -1,9 +1,9 @@
 import { ObjectId } from 'mongodb'
-import { ABILITY_HINT_AT, ABILITY_STAGES, PHRASE_EVERY, PHRASE_VOICE_AT, ZOOM_LEVELS, ZOOM_REVEAL, dailyKey, zoomAt, judgeAll, statsKey, type GameId, type ModeId } from '@nanda/game'
+import { ABILITY_HINT_AT, ABILITY_STAGES, PHRASE_EVERY, PHRASE_VOICE_AT, ZOOM_LEVELS, ZOOM_REVEAL, dailyKey, guessLimit, zoomAt, judgeAll, statsKey, type GameId, type ModeId } from '@nanda/game'
 import { dailyAnswer, nextReset, pastAnswer, shiftDay, today } from './daily'
 import { rounds, type RoundDoc, type UserDoc } from './db'
 import { gameData, isGame, isMode, knows } from './games'
-import { applyDailyResult, applyResult, awardSolveXp, defaultNickname } from './profile'
+import { applyDailyResult, applyResult, applySkip, awardSolveXp, defaultNickname } from './profile'
 import { abilityByKey } from './abilities'
 import { modeFits, modePool, oddOptions, oddTrait, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { findChallenge, recordSolve } from './challenges'
@@ -141,9 +141,16 @@ async function shotOf(round: RoundDoc, game: GameId) {
   return { focus, shot, zoom: zoomAt(step) }
 }
 
+export async function roundLimit(round: RoundDoc) {
+  const whole = modePool((await gameData(round.game as GameId)).pool, round.mode as ModeId)
+  const shown = round.anime ? whole.filter((one) => one.anime !== false) : whole
+  return guessLimit(round.game, round.mode, (shown.length ? shown : whole).length)
+}
+
 export async function roundView(round: RoundDoc, full = true) {
   const game = round.game as GameId
   const { byId } = await gameData(game)
+  const limit = await roundLimit(round)
   const answer = byId.get(round.answerId)!
   const id = round._id!.toHexString()
   return {
@@ -154,6 +161,7 @@ export async function roundView(round: RoundDoc, full = true) {
     ...(round.challenge ? { challenge: round.challenge } : {}),
     status: round.status,
     ...(round.anime ? { anime: true } : {}),
+    ...(limit ? { limit } : {}),
     guesses: round.guesses
       .filter((guessId) => byId.has(guessId))
       .map((guessId) => ({
@@ -244,6 +252,7 @@ export async function finishRound(users: Collection<UserDoc>, round: RoundDoc, w
 
   if (round.daily) {
     const key = dailyKey(round.game, round.mode)
+    if (!won && (await roundLimit(round))) return { round: updated, xp, stats: { key, value: await applySkip(users, round.userId, key) } }
     return { round: updated, xp, stats: { key, value: await applyDailyResult(users, round.userId, key, round.daily, guesses) } }
   }
   const key = statsKey(round.game, round.mode)

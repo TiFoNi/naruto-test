@@ -29,9 +29,10 @@ type Props = {
   gained?: number
   day?: string
   board?: string[][]
+  outOfTries?: boolean
 }
 
-export default function RoundResult({ game, mode, answer, guesses, won, skipped, onNext, challenge, nextAt, compact, gained = 0, day, board }: Props) {
+export default function RoundResult({ game, mode, answer, guesses, won, skipped, onNext, challenge, nextAt, compact, gained = 0, day, board, outOfTries }: Props) {
   const { t, name, l } = useI18n()
   const href = useHref()
   const { stats: all, user } = useAuth()
@@ -52,7 +53,7 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
 
   const note = challenge ? t('challenge.summary', { guesses }) : ''
   const verdict: UiKey = won ? 'result.won' : skipped ? 'result.skipped' : 'result.lost'
-  const headline = won && guesses > 0 ? t('result.wonTries', { count: guesses }) : skipped ? t('result.gaveUp') : t(verdict).replace(/…$/, '')
+  const headline = won && guesses > 0 ? t('result.wonTries', { count: guesses }) : skipped ? t('result.gaveUp') : outOfTries ? t('result.outOfTries') : t(verdict).replace(/…$/, '')
   const number = day ? dailyNumber(day) : 0
   const eyebrow = [daily && number > 0 ? t('result.dailyNo', { count: number }) : null, headline].filter(Boolean).join(' · ')
 

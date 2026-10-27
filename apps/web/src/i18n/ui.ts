@@ -998,6 +998,8 @@ const ui = {
     uk: 'Здався — раунд не зараховано в статистику',
     en: 'Gave up — this round does not count toward your stats',
   },
+  'tries.left': { ru: 'Осталось попыток', uk: 'Залишилось спроб', en: 'Tries left' },
+  'result.outOfTries': { ru: 'Попытки закончились', uk: 'Спроби закінчились', en: 'Out of tries' },
   'result.lost': { ru: 'Не в этот раз', uk: 'Не цього разу', en: 'Not this time' },
   'result.badgeWon': { ru: 'Угадал', uk: 'Вгадано', en: 'Solved' },
   'result.badgeLost': { ru: 'Не угадал', uk: 'Не вгадано', en: 'Missed' },

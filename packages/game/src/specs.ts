@@ -597,6 +597,15 @@ export const ONE_TRY_MODES: ModeId[] = ['odd']
 
 export const oneTry = (game: unknown, mode?: unknown) => ONE_TRY_GAMES.includes(game as GameId) || ONE_TRY_MODES.includes(mode as ModeId)
 
+export const LIMIT_MODES: ModeId[] = ['classic', 'blind']
+
+export const GUESS_SHARE = 0.3
+
+export const GUESS_CAP = 20
+
+export const guessLimit = (game: unknown, mode: unknown, pool: number) =>
+  LIMIT_MODES.includes(mode as ModeId) && !oneTry(game, mode) && pool > 0 ? Math.max(1, Math.min(GUESS_CAP, Math.ceil(pool * GUESS_SHARE))) : null
+
 export const DAILY_XP_FACTOR = 3
 
 export const DAILY_XP_MODES: ModeId[] = ['classic', 'blind', 'image', 'ability', 'page', 'phrase', 'odd', 'shot', 'tune']

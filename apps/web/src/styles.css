@@ -6904,6 +6904,22 @@ html[data-auth] .guest-note {
   transform: rotate(-3deg);
 }
 
+.play-tries {
+  color: var(--text-3);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.play-tries b {
+  color: var(--accent);
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
+}
+
+.play-tries.is-low b {
+  color: #ef4e5a;
+}
+
 .play-copy {
   flex: 1 1 260px;
   min-width: 0;

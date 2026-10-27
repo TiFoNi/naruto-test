@@ -7,6 +7,7 @@ import PlayPanel from './PlayPanel'
 import PlaySide from './PlaySide'
 import RoundResult from './RoundResult'
 import RoundStatus from './RoundStatus'
+import TriesMeter from './TriesMeter'
 import Yesterday from './Yesterday'
 import type { Game } from './games/types'
 import { useI18n } from './i18n'
@@ -39,6 +40,7 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
           title={t('play.classicTitle')}
           aside={<AnimeFilter game={game} daily={daily} playing={!!round && !over} fresh={guesses.length === 0} roundAnime={round?.anime === true} onSurrender={giveUp} onRefilter={refilter} />}
           hint={t('play.classicPrompt')}
+          note={round?.limit ? <TriesMeter used={round.guesses.length} limit={round.limit} /> : undefined}
         >
           {!error && <CharacterSearch game={game} exclude={exclude} busy={busy || !round} onPick={guess} limited={round?.anime === true} />}
         </PlayPanel>
@@ -67,6 +69,7 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
           challenge={challenge}
           mode={mode}
           nextAt={round.nextAt}
+          outOfTries={!!round.limit && !won && !skipped}
         />
       )}
 

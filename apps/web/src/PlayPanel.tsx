@@ -5,10 +5,11 @@ type Props = {
   title: string
   hint: string
   aside?: ReactNode
+  note?: ReactNode
   children?: ReactNode
 }
 
-export default function PlayPanel({ media, title, hint, aside, children }: Props) {
+export default function PlayPanel({ media, title, hint, aside, note, children }: Props) {
   return (
     <div className="play-panel">
       <div className="play-panel-top">
@@ -16,6 +17,7 @@ export default function PlayPanel({ media, title, hint, aside, children }: Props
         <div className="play-copy">
           <h2>{title}</h2>
           <p>{hint}</p>
+          {note}
         </div>
         {aside}
       </div>

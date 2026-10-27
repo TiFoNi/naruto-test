@@ -4,7 +4,7 @@ import { gameData, isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
 import { oneTry } from '@nanda/game'
 import { rememberLang, roundOwner, touchVisit } from '../profile'
-import { finishRound, roundView } from '../rounds'
+import { finishRound, roundLimit, roundView } from '../rounds'
 
 const MAX_GUESSES = 300
 const MIN_GAP_MS = 800
@@ -54,7 +54,9 @@ export const POST = handle(async (request) => {
     await rememberLang(people, userId, request)
   }
   if (entityId !== updated.answerId) {
-    if (!oneTry(updated.game, updated.mode)) return json({ round: await roundView(updated, false) })
+    const limit = await roundLimit(updated)
+    const spent = limit !== null && updated.guesses.length >= limit
+    if (!oneTry(updated.game, updated.mode) && !spent) return json({ round: await roundView(updated, false) })
     const missed = await finishRound(people, updated, false)
     return json({ round: await roundView(missed.round, false), stats: missed.stats })
   }
