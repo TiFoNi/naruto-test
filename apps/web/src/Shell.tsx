@@ -25,7 +25,7 @@ import { AWARDS_FILTER, dropCoins, dropFrames, dropInvite, dropRequest, freshFee
 import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
 import { startAnimGate } from './animGate'
 import GemIcon from './GemIcon'
-import { MODE_XP, MODE_XP_AFTER, TONE_HEX, levelAt } from '@nanda/game'
+import { MODE_XP, MODE_XP_AFTER, POOL_XP_BASE, TONE_HEX, levelAt, poolXpFactor, poolXp } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
@@ -228,12 +228,13 @@ function XpToday() {
                 {MODES.map((mode) => (
                   <tr key={mode.id}>
                     <td>{t(mode.label)}</td>
-                    <td>{MODE_XP[mode.id]}</td>
-                    <td>{MODE_XP_AFTER[mode.id]}</td>
+                    <td>{xpRange(MODE_XP[mode.id], mode.id)}</td>
+                    <td>{xpRange(MODE_XP_AFTER[mode.id], mode.id)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            <span className="xp-tip-note">{t('xp.poolNote')}</span>
           </span>
         </span>
       </div>
@@ -783,6 +784,9 @@ function useScrolled() {
 
   return scrolled
 }
+
+const xpRange = (base: number, mode: string) =>
+  poolXpFactor(mode, POOL_XP_BASE) === 1 && poolXpFactor(mode, 1) === 1 ? base : `${poolXp(base, mode, 1)}–${poolXp(base, mode, POOL_XP_BASE * 9)}`
 
 export default function Shell({ children, games }: { children: ReactNode; games: GameMeta[] }) {
   const { user, loading } = useAuth()

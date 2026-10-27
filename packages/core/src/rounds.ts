@@ -141,10 +141,14 @@ async function shotOf(round: RoundDoc, game: GameId) {
   return { focus, shot, zoom: zoomAt(step) }
 }
 
-export async function roundLimit(round: RoundDoc) {
+export async function roundPool(round: RoundDoc) {
   const whole = modePool((await gameData(round.game as GameId)).pool, round.mode as ModeId)
   const shown = round.anime ? whole.filter((one) => one.anime !== false) : whole
-  return guessLimit(round.game, round.mode, (shown.length ? shown : whole).length)
+  return (shown.length ? shown : whole).length
+}
+
+export async function roundLimit(round: RoundDoc) {
+  return guessLimit(round.game, round.mode, await roundPool(round))
 }
 
 export async function roundView(round: RoundDoc, full = true) {
@@ -248,7 +252,7 @@ export async function finishRound(users: Collection<UserDoc>, round: RoundDoc, w
     return { round: updated, stats: null }
   }
   await markSeasonPlay(round.userId, won, today())
-  const xp = won ? await awardSolveXp(users, round.userId, round.mode as ModeId, round.daily ? 'daily' : 'endless') : null
+  const xp = won ? await awardSolveXp(users, round.userId, round.mode as ModeId, round.daily ? 'daily' : 'endless', await roundPool(round)) : null
 
   if (round.daily) {
     const key = dailyKey(round.game, round.mode)

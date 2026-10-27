@@ -606,6 +606,16 @@ export const GUESS_CAP = 20
 export const guessLimit = (game: unknown, mode: unknown, pool: number) =>
   LIMIT_MODES.includes(mode as ModeId) && !oneTry(game, mode) && pool > 0 ? Math.max(1, Math.min(GUESS_CAP, Math.ceil(pool * GUESS_SHARE))) : null
 
+export const POOL_XP_BASE = 100
+
+export const poolXpFactor = (mode: unknown, pool: number) =>
+  LIMIT_MODES.includes(mode as ModeId) && pool > 0 ? Math.min(1.5, Math.max(0.5, Math.sqrt(pool / POOL_XP_BASE))) : 1
+
+export const poolXp = (base: number, mode: unknown, pool: number) => {
+  const factor = poolXpFactor(mode, pool)
+  return factor === 1 ? base : Math.max(5, Math.round((base * factor) / 5) * 5)
+}
+
 export const DAILY_XP_FACTOR = 3
 
 export const DAILY_XP_MODES: ModeId[] = ['classic', 'blind', 'image', 'ability', 'page', 'phrase', 'odd', 'shot', 'tune']

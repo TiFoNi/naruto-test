@@ -6,6 +6,7 @@ import {
   DAILY_XP_MODES,
   MODE_XP,
   MODE_XP_AFTER,
+  poolXp,
   STAT_KEYS,
   XP_CAPS,
   isTitle,
@@ -132,9 +133,11 @@ export async function applyDailyResult(collection: Collection<UserDoc>, userId: 
   return dailyStats(next)
 }
 
-export async function awardSolveXp(collection: Collection<UserDoc>, userId: ObjectId, mode: ModeId, source: XpSource) {
+export async function awardSolveXp(collection: Collection<UserDoc>, userId: ObjectId, mode: ModeId, source: XpSource, pool = 0) {
   const extra = source === 'daily' && DAILY_XP_MODES.includes(mode) ? DAILY_XP_FACTOR : 1
-  return addXp(collection, userId, MODE_XP[mode] * extra, source, mode, source === 'daily' ? MODE_XP[mode] : undefined)
+  const base = poolXp(MODE_XP[mode], mode, pool)
+  const after = source === 'daily' ? base : poolXp(MODE_XP_AFTER[mode], mode, pool)
+  return addXp(collection, userId, base * extra, source, mode, after)
 }
 
 export async function addXp(

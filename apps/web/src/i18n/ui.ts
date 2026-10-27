@@ -385,6 +385,11 @@ const ui = {
   'xp.rules': { ru: 'Сколько дают за игру', uk: 'Скільки дають за гру', en: 'XP per game' },
   'xp.colMode': { ru: 'Режим', uk: 'Режим', en: 'Mode' },
   'xp.colGame': { ru: 'За игру', uk: 'За гру', en: 'Per game' },
+  'xp.poolNote': {
+    ru: 'В «По признакам» и «Вслепую» опыт зависит от числа персонажей во вселенной: чем их больше, тем больше опыта.',
+    uk: 'У «За ознаками» та «Наосліп» досвід залежить від кількості персонажів у всесвіті: що їх більше, то більше досвіду.',
+    en: 'In By traits and Blind, XP depends on how many characters the universe has: the more there are, the more XP you get.',
+  },
   'xp.colAfter': { ru: 'После лимита', uk: 'Після ліміту', en: 'Past limit' },
   'xp.daily': { ru: 'Ежедневные загадки', uk: 'Щоденні загадки', en: 'Daily puzzles' },
   'xp.endless': { ru: 'Бесконечный', uk: 'Нескінченний', en: 'Endless' },
