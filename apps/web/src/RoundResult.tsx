@@ -2,11 +2,13 @@ import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import Countdown from './Countdown'
 import type { Entity, Game } from './games/types'
-import { ArrowIcon } from './icons'
+import { ArrowIcon, CalendarIcon } from './icons'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
 import { useHref } from './router'
-import { dailyNumber, type Stats } from './stats'
+import { dailyKey, hasDaily } from '@nanda/game'
+import { useAuth } from './auth'
+import { dailyNumber, kyivToday, type Stats } from './stats'
 import { fullUrl } from './pics'
 import Share from './Share'
 import { SITE } from './brand'
@@ -32,6 +34,7 @@ type Props = {
 export default function RoundResult({ game, mode, answer, guesses, won, skipped, onNext, challenge, nextAt, compact, gained = 0, day, board }: Props) {
   const { t, name, l } = useI18n()
   const href = useHref()
+  const { stats: all, user } = useAuth()
   const ref = useRef<HTMLDivElement>(null)
   const daily = nextAt !== undefined && !challenge
 
@@ -64,14 +67,26 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
 
   const rows = board?.length === 1 ? [[...board[0], ...Array(Math.max(0, 4 - board[0].length)).fill('blank')]] : board
 
+  const today = kyivToday()
+  const upNext =
+    daily && user ? game.modes.find((one) => one !== mode && hasDaily(one) && all[dailyKey(game.id, one)]?.lastDay !== today) : undefined
+
   const actions = daily ? (
     <div className="result-actions">
       <Link className="ghost" href={href.home}>
         {t('play.back')}
       </Link>
-      <Link className="primary" href={href.play(game.id, mode)}>
-        {t('daily.endless')}
-      </Link>
+      {upNext ? (
+        <Link className="primary" href={href.play(game.id, upNext, true)}>
+          <CalendarIcon />
+          {t(MODES.find((one) => one.id === upNext)?.label ?? 'mode.classic')}
+          <ArrowIcon />
+        </Link>
+      ) : (
+        <Link className="primary" href={href.play(game.id, mode)}>
+          {t('daily.endless')}
+        </Link>
+      )}
     </div>
   ) : challenge ? (
     <div className="result-actions">
