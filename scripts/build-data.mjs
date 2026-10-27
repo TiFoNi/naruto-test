@@ -27,9 +27,9 @@ const DROP_AFFILIATIONS = new Set(['Allied Shinobi Forces'])
 
 const JUTSU_RULES = [
   [JUTSU.genjutsu, /genjutsu|demonic illusion|tsukuyomi|izanami|izanagi|sly mind|nirvana|kotoamatsukami|illusion|hell viewing/i],
-  [JUTSU.taijutsu, /taijutsu|lotus|leaf (whirlwind|hurricane|gale|rising|great|drop|flash|coiling)|fist|kick|eight gates|gate of|dynamic entry|punch|lariat|heel drop|palm|eight trigrams|gentle step|heavenly spin|rotation|combo|dropkick|cherry blossom impact|chakra enhanced strength/i],
+  [JUTSU.taijutsu, /taijutsu|gentle fist|trigrams|twin lion|strong fist|hand-to-hand|morning peacock|daytime tiger|evening elephant|night guy|lotus|leaf (whirlwind|hurricane|gale|rising|great|drop|flash|coiling)|fist|kick|eight gates|gate of|dynamic entry|punch|lariat|heel drop|palm|eight trigrams|gentle step|heavenly spin|rotation|combo|dropkick|cherry blossom impact|chakra enhanced strength/i],
   [JUTSU.kenjutsu, /sword|blade|kenjutsu|slash|silent homicide|crescent moon dance|iaido|samehada|kubikiribōchō/i],
-  [JUTSU.fuinjutsu, /seal|fūinjutsu|sealing|reaper death|tetragram/i],
+  [JUTSU.fuinjutsu, /seal|fūinjutsu|juinjutsu|sealing|reaper death|tetragram/i],
   [JUTSU.senjutsu, /sage mode|sage art|senjutsu|sage transformation|frog kata/i],
   [JUTSU.dojutsu, /sharingan|byakugan|rinnegan|amaterasu|kamui|susanoo|tsukuyomi|kagutsuchi|izanagi|izanami|tenseigan|ketsuryūgan/i],
   [JUTSU.medical, /mystical palm|healing|medical|chakra scalpel|cell activation|creation rebirth|strength of a hundred/i],
@@ -53,6 +53,21 @@ const OVERRIDES = {
 
 const WIKI_API = 'https://naruto.fandom.com/api.php'
 
+const AFTER_SERIES = {
+  'Sasuke Uchiha': ['Mystical Palm Technique'],
+  'Mirai Sarutobi': ['Demonic Illusion: Tree Binding Death', 'Flying Swallow', 'Shadow Shuriken Technique'],
+}
+
+const WIKI_CLASSES = [
+  [JUTSU.ninjutsu, /^(.*ninjutsu|clone techniques|nintaijutsu|chakra flow|kekkei tōta)$/i],
+  [JUTSU.taijutsu, /^(taijutsu|nintaijutsu)$/i],
+  [JUTSU.genjutsu, /^genjutsu$/i],
+  [JUTSU.kenjutsu, /^kenjutsu$/i],
+  [JUTSU.fuinjutsu, /^(fūinjutsu|juinjutsu)$/i],
+  [JUTSU.dojutsu, /^dōjutsu$/i],
+  [JUTSU.medical, /^medical ninjutsu$/i],
+]
+
 const asList = (v) => (v == null ? [] : Array.isArray(v) ? v : [v])
 const clean = (s) => s.replace(/\s*\([^)]*\)\s*/g, ' ').replace(/\s+/g, ' ').trim()
 const canon = (arr) => asList(arr).filter((s) => typeof s === 'string' && !NON_CANON.test(s) && !s.includes('"'))
@@ -64,11 +79,17 @@ function arcFor(chapter) {
   return { arc: arc[1], arcIndex: ARCS.indexOf(arc) }
 }
 
-function jutsuTypes(c) {
+function jutsuTypes(c, wiki) {
   const jutsu = canon(c.jutsu).filter((j) => !/wiki has an article/i.test(j) && j !== c.name)
   const kg = canon(c.personal?.kekkeiGenkai).map(clean)
   const types = new Set()
-  let ninjutsu = canon(c.natureType).length > 0
+  let ninjutsu = canon(c.natureType).length > 0 || Boolean(wiki?.natures.length)
+  for (const j of wiki?.jutsu ?? []) {
+    const rules = j.classes.length
+      ? WIKI_CLASSES.filter(([, re]) => j.classes.some((k) => re.test(k)))
+      : JUTSU_RULES.filter(([, re]) => re.test(j.name))
+    for (const [type] of rules) types.add(type)
+  }
   for (const j of jutsu) {
     let matched = false
     for (const [type, re] of JUTSU_RULES) {
@@ -93,8 +114,8 @@ function affiliations(p) {
   )
 }
 
-function natures(c) {
-  return uniq(canon(c.natureType).map(clean).map((n) => NATURES[n]))
+function natures(c, wiki) {
+  return uniq([...canon(c.natureType), ...(wiki?.natures ?? [])].map(clean).map((n) => NATURES[n]))
 }
 
 async function keepUkrainian(result) {
@@ -113,8 +134,8 @@ function kekkeiGenkai(p) {
   return uniq(all.map(clean).map((k) => KEKKEI_GENKAI[k] ?? transliterate(k)))
 }
 
-function attributes(p) {
-  return uniq(canon(p.classification).map(clean).map((a) => CLASSIFICATIONS[a] ?? a))
+function attributes(p, wiki) {
+  return uniq([...canon(p.classification), ...(wiki?.classification ?? [])].map(clean).map((a) => CLASSIFICATIONS[a] ?? a))
 }
 
 const DOJUTSU_VALUES = ['Шаринган', 'Мангекьё Шаринган', 'Вечный Мангекьё Шаринган', 'Бьякуган', 'Риннеган', 'Риннэ-Шаринган', 'Тенсейган']
@@ -146,6 +167,100 @@ async function fetchArticleLengths(names) {
   }
   await fs.writeFile(file, JSON.stringify(cached))
   return cached
+}
+
+function infoboxField(text, field) {
+  const m = new RegExp(`\\|\\s*${field}\\s*=([\\s\\S]*?)(?=\\n\\s*\\||\\n}})`, 'i').exec(text)
+  if (!m) return []
+  const value = m[1]
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<ref[^>]*\/>/g, '')
+    .replace(/<ref[^>]*>[\s\S]*?<\/ref>/g, '')
+    .replace(/\{\{[^}]*\}\}/g, '')
+    .replace(/\[\[(?:[^\]|]*\|)?([^\]]*)\]\]/g, '$1')
+  return canon(
+    value
+      .split(/,|<br\s*\/?>/)
+      .map((s) => s.trim().split('~'))
+      .filter(([, ...notes]) => !/only|non-canon/i.test(notes.join(' ')))
+      .map(([base]) => base.trim()),
+  ).filter(Boolean)
+}
+
+async function wikiQuery(params) {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const res = await fetch(`${WIKI_API}?format=json&${new URLSearchParams(params)}`, { headers: UA }).catch(() => null)
+    if (res?.ok) return res.json()
+    await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)))
+  }
+  throw new Error(`wiki ${JSON.stringify(params)}`)
+}
+
+async function fetchInfoboxes(names) {
+  const out = {}
+  for (let i = 0; i < names.length; i += 50) {
+    const batch = names.slice(i, i + 50)
+    const res = await wikiQuery({
+      action: 'query',
+      redirects: 1,
+      prop: 'revisions',
+      rvprop: 'content',
+      rvslots: 'main',
+      titles: batch.map((n) => `Infobox:${n}`).join('|'),
+    })
+    const back = Object.fromEntries([...(res.query.normalized ?? []), ...(res.query.redirects ?? [])].map((x) => [x.to, x.from]))
+    for (const page of Object.values(res.query.pages)) {
+      let title = page.title
+      while (back[title]) title = back[title]
+      const text = page.revisions?.[0]?.slots?.main?.['*'] ?? ''
+      out[title.replace(/^Infobox:/, '')] = {
+        natures: infoboxField(text, 'nature type'),
+        classification: infoboxField(text, 'classification'),
+      }
+    }
+  }
+  return out
+}
+
+async function fetchWikiJutsu(name) {
+  const jutsu = []
+  let offset = 0
+  while (offset != null) {
+    const res = await wikiQuery({
+      action: 'ask',
+      query: `[[Concept:Jutsu]][[User tech::${name}]]|?Appears in|?Manga|?Jutsu classification|?User tech|limit=500|offset=${offset}`,
+    })
+    for (const [title, { printouts }] of Object.entries(res.query?.results ?? {})) {
+      const mine = printouts['User tech'].find((u) => u.Page?.item?.[0]?.fulltext === name)
+      const restricted = mine?.Text?.item?.[0]
+      const media = restricted && restricted !== 'null' ? restricted : printouts['Appears in'].join(', ')
+      jutsu.push({
+        name: title,
+        classes: printouts['Jutsu classification'].map((k) => k.fulltext),
+        canon:
+          /manga/i.test(media) &&
+          printouts.Manga.includes('Naruto') &&
+          !NON_CANON.test(title) &&
+          !AFTER_SERIES[name]?.includes(title),
+      })
+    }
+    offset = res['query-continue-offset'] ?? null
+  }
+  return jutsu
+}
+
+async function fetchWikiInfo(names) {
+  const file = path.join(CACHE, 'wiki-info.json')
+  const cached = JSON.parse(await fs.readFile(file, 'utf8').catch(() => '{}'))
+  const missing = names.filter((n) => !(n in cached))
+  const boxes = await fetchInfoboxes(missing)
+  await pool(missing, 6, async (name) => {
+    cached[name] = { ...(boxes[name] ?? { natures: [], classification: [] }), jutsu: await fetchWikiJutsu(name) }
+  })
+  await fs.writeFile(file, JSON.stringify(cached))
+  return Object.fromEntries(
+    names.map((n) => [n, { ...cached[n], jutsu: cached[n].jutsu.filter((j) => j.canon) }]),
+  )
 }
 
 async function fetchRussianTitles(names) {
@@ -292,6 +407,7 @@ async function main() {
   })
 
   const result = []
+  const raw = new Map()
   let done = 0
   await pool(candidates, 12, async (c) => {
     const buf = await fetchImage(c)
@@ -307,6 +423,7 @@ async function main() {
       console.warn('image failed', c.name, e.message)
       return
     }
+    raw.set(c.id, c)
     const chapter = Number(/#(\d+)/.exec(c.debut.manga)[1])
     const p = c.personal
     const character = {
@@ -340,6 +457,18 @@ async function main() {
   }
   dropDeleted(result, 'naruto')
   onlyAnswers(result)
+  const wiki = await fetchWikiInfo(result.map((c) => c.nameEn))
+  result.forEach((c, i) => {
+    const source = raw.get(c.id)
+    const info = wiki[c.nameEn]
+    result[i] = consistent({
+      ...c,
+      jutsuTypes: jutsuTypes(source, info),
+      natureTypes: natures(source, info),
+      attributes: attributes(source.personal, info),
+      ...OVERRIDES[c.nameEn],
+    })
+  })
   result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
 
   await keepUkrainian(result)
