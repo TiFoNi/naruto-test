@@ -34,7 +34,7 @@ export type RoundView = {
 type RoundResponse = {
   round?: RoundView
   stats?: { key: string; value: Stats } | null
-  xp?: { xp: number; level: number; today: XpToday }
+  xp?: { xp: number; level: number; today: XpToday; gained?: number }
 }
 
 export type Guess = { entity: Entity; judgement?: Record<string, Judgement>; pending?: boolean }
@@ -70,7 +70,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
       )
       if (data.stats) setStats(data.stats.key, data.stats.value)
       if (data.xp) {
-        setGained(Math.max(0, data.xp.xp - xpNow.current))
+        setGained(data.xp.gained ?? Math.max(0, data.xp.xp - xpNow.current))
         setXp(data.xp)
         void refreshFeed()
       }

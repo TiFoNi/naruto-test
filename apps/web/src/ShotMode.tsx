@@ -46,7 +46,7 @@ type Answer = {
   points?: number
   shots?: string[]
   fresh?: boolean
-  xp?: { xp: number; level: number; today: XpToday }
+  xp?: { xp: number; level: number; today: XpToday; gained?: number }
 }
 
 type Over = { score: number; streak: number; best: number; total?: number; answerId?: number; fresh: boolean; shots?: string[] }
@@ -73,7 +73,7 @@ type Daily = {
   won?: boolean
   guesses?: number
   gained?: number
-  xp?: { xp: number; level: number; today: XpToday }
+  xp?: { xp: number; level: number; today: XpToday; gained?: number }
   stats?: { key: string; value: Stats }
 }
 
@@ -355,7 +355,7 @@ function ShotDaily({ game, active, stats }: { game: Game; active: boolean; stats
       setState((was) => ({ ...(was ?? ({} as Daily)), ...data }))
       if (data.stats) setStats(data.stats.key, data.stats.value)
       if (data.xp) {
-        setGained(Math.max(0, data.xp.xp - xpNow.current))
+        setGained(data.xp.gained ?? Math.max(0, data.xp.xp - xpNow.current))
         setXp(data.xp)
         void refreshFeed()
       }

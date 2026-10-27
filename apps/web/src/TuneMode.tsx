@@ -39,7 +39,7 @@ type Run = {
   nextAt?: number
   gained?: number
   guesses?: number
-  xp?: { xp: number; level: number; today: XpToday }
+  xp?: { xp: number; level: number; today: XpToday; gained?: number }
   stats?: { key: string; value: Stats }
 }
 
@@ -121,7 +121,7 @@ export default function TuneMode({ game, active, daily = false, stats }: { game:
       setRun(data)
       if (data.stats) setStats(data.stats.key, data.stats.value)
       if (data.xp) {
-        setGained(Math.max(0, data.xp.xp - xpNow.current))
+        setGained(data.xp.gained ?? Math.max(0, data.xp.xp - xpNow.current))
         setXp(data.xp)
         void refreshFeed()
       }

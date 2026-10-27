@@ -166,7 +166,7 @@ export async function addXp(
   if (!doc) return null
   await addSeasonXp(userId, number(doc.xpGain))
   const xp = number(doc.xp)
-  return { xp, level: levelOf(xp), today: todayXp(doc) }
+  return { xp, level: levelOf(xp), today: todayXp(doc), gained: number(doc.xpGain) }
 }
 
 export function todayXp(doc: UserDoc) {
