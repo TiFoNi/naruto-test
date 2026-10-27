@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { MODE_XP, type GameId } from '@nanda/game'
+import { MODE_XP, statsKey, type GameId } from '@nanda/game'
 import { rounds, streaks, users, type StreakDoc } from './db'
 import { addXp } from './profile'
 import { pairRound, type PairSide } from './pairs'
@@ -91,6 +91,7 @@ export async function pairAnswer(userId: ObjectId, game: GameId, pick: PairSide)
   const now = new Date()
 
   await logPair(found, right)
+  if (!found.guest) await countPair(userId, game, right, streak)
 
   if (!right) {
     await collection.updateOne(
@@ -110,6 +111,16 @@ export async function pairAnswer(userId: ObjectId, game: GameId, pick: PairSide)
     { $set: { streak, best, left: next.left, right: next.right, ask: next.ask, answer: next.answer, updatedAt: now } },
   )
   return { right: true, answer: found.answer as PairSide, streak, best, question: { left: next.left, right: next.right, ask: next.ask } }
+}
+
+async function countPair(userId: ObjectId, game: GameId, right: boolean, streak: number) {
+  const path = `stats.${statsKey(game, 'pair')}`
+  await (await users()).updateOne(
+    { _id: userId },
+    right
+      ? { $inc: { [`${path}.solved`]: 1, [`${path}.totalGuesses`]: 1 }, $set: { [`${path}.streak`]: streak }, $max: { [`${path}.best`]: streak } }
+      : { $set: { [`${path}.streak`]: 0 } },
+  )
 }
 
 export async function pairBoard(game: GameId, limit = 20) {

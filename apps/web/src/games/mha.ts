@@ -33,7 +33,7 @@ export const mha: Game<Character> = {
     'U.A. students, pro heroes and villains: quirk type, side, faction, height and debut arc.',
   ),
   accent: '#3fa14b',
-  modes: ['classic', 'image', 'odd', 'pair'],
+  modes: ['classic', 'blind', 'image', 'odd', 'pair'],
   featured: ['Izuku Midoriya', 'Katsuki Bakugo', 'Shoto Todoroki', 'Toshinori Yagi'],
   unit: 'character',
   entities: [],

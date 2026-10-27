@@ -25,7 +25,7 @@ export type GameId =
   | 'shots'
   | 'tunes'
 
-export type ModeId = 'classic' | 'image' | 'ability' | 'page' | 'phrase' | 'who' | 'grid' | 'clue' | 'odd' | 'pair' | 'shot' | 'tune'
+export type ModeId = 'classic' | 'blind' | 'image' | 'ability' | 'page' | 'phrase' | 'who' | 'grid' | 'clue' | 'odd' | 'pair' | 'shot' | 'tune'
 
 export type Verdict = 'correct' | 'partial' | 'wrong'
 
@@ -302,7 +302,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     featured: ['Iron Man', 'Spider-Man', 'Thor'],
     data: 'marvel',
     images: 'marvel',
-    modes: ['classic', 'image', 'odd', 'pair'],
+    modes: ['classic', 'blind', 'image', 'odd', 'pair'],
     columns: [
       col('gender', 'exact'),
       col('species', 'exact'),
@@ -316,7 +316,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     featured: ['Lionel Messi', 'Cristiano Ronaldo', 'Pelé'],
     data: 'football',
     images: 'football',
-    modes: ['classic', 'odd', 'pair'],
+    modes: ['classic', 'blind', 'odd', 'pair'],
     columns: [
       col('country', 'exact'),
       col('part', 'exact'),
@@ -344,7 +344,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     featured: ['Hu Tao', 'Raiden Shogun', 'Zhongli', 'Klee'],
     data: 'genshin',
     images: 'genshin',
-    modes: ['classic', 'image', 'odd', 'pair'],
+    modes: ['classic', 'blind', 'image', 'odd', 'pair'],
     columns: [
       col('gender', 'exact'),
       col('element', 'exact'),
@@ -359,7 +359,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     shape: 'wide',
     data: 'dota',
     images: 'dota',
-    modes: ['classic', 'image', 'ability', 'phrase', 'odd', 'pair'],
+    modes: ['classic', 'blind', 'image', 'ability', 'phrase', 'odd', 'pair'],
     columns: [
       col('gender', 'exact'),
       col('species', 'list'),
@@ -374,13 +374,14 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
-export const MODE_IDS: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd', 'pair', 'shot', 'tune', 'who', 'grid', 'clue']
+export const MODE_IDS: ModeId[] = ['classic', 'blind', 'image', 'ability', 'page', 'phrase', 'odd', 'pair', 'shot', 'tune', 'who', 'grid', 'clue']
 
 export const ABILITY_STAGES = 6
 export const ABILITY_HINT_AT = 5
 
 export const MODE_XP: Record<ModeId, number> = {
   classic: 30,
+  blind: 50,
   phrase: 10,
   image: 5,
   ability: 5,
@@ -396,6 +397,7 @@ export const MODE_XP: Record<ModeId, number> = {
 
 export const MODE_XP_AFTER: Record<ModeId, number> = {
   classic: 15,
+  blind: 25,
   phrase: 1,
   image: 1,
   ability: 1,
@@ -589,7 +591,7 @@ export const oneTry = (game: unknown, mode?: unknown) => ONE_TRY_GAMES.includes(
 
 export const DAILY_XP_FACTOR = 3
 
-export const DAILY_XP_MODES: ModeId[] = ['classic', 'image', 'ability', 'page', 'phrase', 'odd', 'shot', 'tune']
+export const DAILY_XP_MODES: ModeId[] = ['classic', 'blind', 'image', 'ability', 'page', 'phrase', 'odd', 'shot', 'tune']
 
 // режими-забіги: у них нема щоденного варіанта
 export const ENDLESS_MODES: ModeId[] = ['pair', 'grid']
@@ -715,7 +717,7 @@ export const TUNE_CUTS = [...new Set(TUNE_LEVELS.flatMap((level) => TUNE_STEPS[l
 export const PHRASE_EVERY = 3
 export const PHRASE_VOICE_AT = 3
 
-const DEFAULT_MODES: ModeId[] = ['classic', 'image', 'odd', 'pair']
+const DEFAULT_MODES: ModeId[] = ['classic', 'blind', 'image', 'odd', 'pair']
 
 export const modesOf = (game: GameId) => GAME_SPECS[game].modes ?? DEFAULT_MODES
 

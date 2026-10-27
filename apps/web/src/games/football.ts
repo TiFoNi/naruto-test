@@ -34,7 +34,7 @@ export const football: Game<Player> = {
     'The most recognisable footballers in the world — from Pelé and Yashin to Messi, Mbappé and Yamal.',
   ),
   accent: '#3fbf6f',
-  modes: ['classic', 'odd', 'pair'],
+  modes: ['classic', 'blind', 'odd', 'pair'],
   featured: ['Lionel Messi', 'Cristiano Ronaldo', 'Pelé'],
   unit: 'player',
   entities: [],

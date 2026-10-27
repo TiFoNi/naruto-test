@@ -10106,8 +10106,9 @@ html[data-auth] .guest-note {
 
 .ava-canvas {
   width: 300px;
-  height: 300px;
+  height: auto;
   max-width: 100%;
+  aspect-ratio: 1;
   border-radius: 50%;
   background: #0d0f12;
   box-shadow: 0 0 0 1px color-mix(in srgb, #ffffff 14%, transparent), 0 0 0 10px rgba(0, 0, 0, 0.3);
@@ -12754,5 +12755,3 @@ html[data-auth] .guest-note {
   border-color: color-mix(in srgb, #ffffff 16%, transparent);
   color: var(--text);
 }
-
-

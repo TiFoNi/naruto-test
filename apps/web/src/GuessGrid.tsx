@@ -55,7 +55,19 @@ const ROW_STEP = 0.06
 const COL_STEP = 0.05
 const MAX_ROW_DELAY = 0.5
 
-export default function GuessGrid({ game, guesses, answerId, loading }: { game: Game; guesses: Guess[]; answerId?: number; loading?: boolean }) {
+export default function GuessGrid({
+  game,
+  guesses,
+  answerId,
+  loading,
+  blind = false,
+}: {
+  game: Game
+  guesses: Guess[]
+  answerId?: number
+  loading?: boolean
+  blind?: boolean
+}) {
   const { t, l, tv, lang, name } = useI18n()
   const legend = game.legend === 'debut' ? (['legend.debutLater', 'legend.debutEarlier'] as const) : (['legend.higher', 'legend.lower'] as const)
   const firstBatch = useRef<number | null>(null)
@@ -254,10 +266,10 @@ export default function GuessGrid({ game, guesses, answerId, loading }: { game: 
             {game.columns.map((col, i) => {
               if (pending) return <div key={col.key} className="cell pending" />
               const ctx = { tv, lang }
-              const text = col.text(g, ctx)
-              const icons = col.icons?.(g, ctx) ?? []
               const verdict = judgement?.[col.key]
               const kind = verdict?.verdict ?? 'wrong'
+              const text = blind ? t(`legend.${kind}`) : col.text(g, ctx)
+              const icons = blind ? [] : (col.icons?.(g, ctx) ?? [])
               const key = `${g.id}:${col.key}`
               const parts = text.split(', ')
               let shown = text

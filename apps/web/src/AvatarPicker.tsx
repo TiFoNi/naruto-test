@@ -160,14 +160,22 @@ export default function AvatarPicker({ edit = true }: { edit?: boolean }) {
     setAt(fence(spot, limited, shot.image, shot.base));
   };
 
-  const spotOf = (
+  const pointOf = (
     event: PointerEvent<HTMLCanvasElement> | WheelEvent<HTMLCanvasElement>,
   ) => {
     const box = (event.target as HTMLCanvasElement).getBoundingClientRect();
+    const scale = box.width ? BOX / box.width : 1;
     return {
-      x: event.clientX - box.left - BOX / 2,
-      y: event.clientY - box.top - BOX / 2,
+      x: (event.clientX - box.left) * scale,
+      y: (event.clientY - box.top) * scale,
     };
+  };
+
+  const spotOf = (
+    event: PointerEvent<HTMLCanvasElement> | WheelEvent<HTMLCanvasElement>,
+  ) => {
+    const point = pointOf(event);
+    return { x: point.x - BOX / 2, y: point.y - BOX / 2 };
   };
 
   const onWheel = (event: WheelEvent<HTMLCanvasElement>) => {
@@ -183,36 +191,31 @@ export default function AvatarPicker({ edit = true }: { edit?: boolean }) {
     } catch {
       /* вказівник уже відпущено */
     }
-    touches.current.set(event.pointerId, {
-      x: event.clientX,
-      y: event.clientY,
-    });
+    touches.current.set(event.pointerId, pointOf(event));
 
     if (touches.current.size === 2) {
       const [one, two] = [...touches.current.values()];
-      const box = event.currentTarget.getBoundingClientRect();
       pinch.current = {
         gap: Math.hypot(one.x - two.x, one.y - two.y),
         zoom,
         at,
         mid: {
-          x: (one.x + two.x) / 2 - box.left - BOX / 2,
-          y: (one.y + two.y) / 2 - box.top - BOX / 2,
+          x: (one.x + two.x) / 2 - BOX / 2,
+          y: (one.y + two.y) / 2 - BOX / 2,
         },
       };
       drag.current = null;
       return;
     }
 
-    drag.current = { x: event.clientX - at.x, y: event.clientY - at.y };
+    const point = pointOf(event);
+    drag.current = { x: point.x - at.x, y: point.y - at.y };
   };
 
   const move = (event: PointerEvent<HTMLCanvasElement>) => {
     if (!shot || !touches.current.has(event.pointerId)) return;
-    touches.current.set(event.pointerId, {
-      x: event.clientX,
-      y: event.clientY,
-    });
+    const point = pointOf(event);
+    touches.current.set(event.pointerId, point);
 
     if (pinch.current && touches.current.size >= 2) {
       const [one, two] = [...touches.current.values()];
@@ -233,8 +236,8 @@ export default function AvatarPicker({ edit = true }: { edit?: boolean }) {
     setAt(
       fence(
         {
-          x: event.clientX - drag.current.x,
-          y: event.clientY - drag.current.y,
+          x: point.x - drag.current.x,
+          y: point.y - drag.current.y,
         },
         zoom,
         shot.image,

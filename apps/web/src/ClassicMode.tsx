@@ -12,20 +12,21 @@ import { useI18n } from './i18n'
 import type { Stats } from './stats'
 import { useRound } from './useRound'
 
-type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
+type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string; mode?: 'classic' | 'blind' }
 
-export default function ClassicMode({ game, active, stats, daily = false, challenge }: Props) {
+export default function ClassicMode({ game, active, stats, daily = false, challenge, mode = 'classic' }: Props) {
+  const blind = mode === 'blind'
   const { t } = useI18n()
   const { round, guesses, exclude, over, won, skipped, answer, yesterday, gained, busy, error, guess, giveUp, refilter, next, retry } = useRound(
     game,
-    'classic',
+    mode,
     active,
     daily,
     challenge,
   )
   const playing = !!round && !over
   return (
-    <PlayBoard side={<PlaySide game={game} mode="classic" daily={daily} stats={stats} playing={playing} legend onGiveUp={giveUp} />}>
+    <PlayBoard side={<PlaySide game={game} mode={mode} daily={daily} stats={stats} playing={playing} legend={!blind} howto={blind ? 'blind' : undefined} onGiveUp={giveUp} />}>
       {!over && (
         <PlayPanel
           media={
@@ -62,12 +63,12 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
                   .map((g) => game.columns.map((col) => g.judgement?.[col.key]?.verdict ?? 'wrong'))}
           onNext={next}
           challenge={challenge}
-          mode="classic"
+          mode={mode}
           nextAt={round.nextAt}
         />
       )}
 
-      <GuessGrid game={game} guesses={guesses} answerId={answer?.id} loading={!round && !error} />
+      <GuessGrid game={game} guesses={guesses} answerId={answer?.id} loading={!round && !error} blind={blind} />
     </PlayBoard>
   )
 }

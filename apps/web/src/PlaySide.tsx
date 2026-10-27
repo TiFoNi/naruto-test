@@ -18,11 +18,12 @@ type Props = {
   playing: boolean
   busy?: boolean
   legend?: boolean
-  howto?: 'image' | 'page' | 'ability' | 'phrase' | 'odd' | 'shot' | 'shotDaily' | 'tuneDaily'
+  howto?: 'blind' | 'image' | 'page' | 'ability' | 'phrase' | 'odd' | 'shot' | 'shotDaily' | 'tuneDaily'
   onGiveUp: () => void
 }
 
 const STEPS = {
+  blind: ['howtoBlind.step1', 'howtoBlind.step2', 'howtoBlind.step3'],
   image: ['howto.step1', 'howto.step2', 'howto.step3'],
   page: ['howtoPage.step1', 'howtoPage.step2', 'howtoPage.step3'],
   ability: ['howtoAbility.step1', 'howtoAbility.step2', 'howtoAbility.step3'],

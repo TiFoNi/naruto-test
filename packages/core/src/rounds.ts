@@ -158,7 +158,7 @@ export async function roundView(round: RoundDoc, full = true) {
       .filter((guessId) => byId.has(guessId))
       .map((guessId) => ({
         id: guessId,
-        judgement: round.mode === 'classic' ? judgeAll(game, byId.get(guessId)!, answer) : undefined,
+        judgement: round.mode === 'classic' || round.mode === 'blind' ? judgeAll(game, byId.get(guessId)!, answer) : undefined,
       })),
     answerId: round.status === 'active' ? undefined : round.answerId,
     image: round.mode === 'image' || round.mode === 'ability' || round.mode === 'page' ? `/api/round/image?id=${id}` : undefined,

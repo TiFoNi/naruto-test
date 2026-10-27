@@ -454,6 +454,27 @@ const ui = {
   'err.network': { ru: 'Нет связи с сервером', uk: 'Немає зв’язку з сервером', en: 'Cannot reach the server' },
 
   'mode.classic': { ru: 'По признакам', uk: 'За ознаками', en: 'By traits' },
+  'mode.blind': { ru: 'Вслепую', uk: 'Наосліп', en: 'Blind' },
+  'mode.blind.desc': {
+    ru: 'Как по признакам, только в клетках нет значений — видно лишь, совпал признак, частично или мимо.',
+    uk: 'Як за ознаками, тільки в клітинках нема значень — видно лише, чи збіглася ознака, частково чи мимо.',
+    en: 'Like by traits, but the tiles hide the values — you only see whether a trait matches, partly matches or misses.',
+  },
+  'howtoBlind.step1': {
+    ru: 'Вводи любого персонажа — как в режиме по признакам',
+    uk: 'Вводь будь-якого персонажа — як у режимі за ознаками',
+    en: 'Enter any character — just like the traits mode',
+  },
+  'howtoBlind.step2': {
+    ru: 'Клетки по тем же признакам: зелёные — совпало, жёлтые — частично, красные — мимо',
+    uk: 'Клітинки за тими самими ознаками: зелені — збіглося, жовті — частково, червоні — мимо',
+    en: 'Tiles follow the same traits: green — match, yellow — partly, red — miss',
+  },
+  'howtoBlind.step3': {
+    ru: 'Значений не видно — что именно совпало у загаданного, придётся вычислить',
+    uk: 'Значень не видно — що саме збіглося із загаданим, доведеться вирахувати',
+    en: 'Values stay hidden — work out what exactly matched yourself',
+  },
   'mode.image': { ru: 'По картинке', uk: 'За картинкою', en: 'By picture' },
   'mode.ability': { ru: 'По способности', uk: 'За здібністю', en: 'By ability' },
   'mode.ability.desc': {

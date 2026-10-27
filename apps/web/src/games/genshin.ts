@@ -50,7 +50,7 @@ export const genshin: Game<Hero> = {
     'Genshin Impact characters: element, weapon, region, rarity and release year.',
   ),
   accent: '#4cc2f1',
-  modes: ['classic', 'image', 'odd', 'pair'],
+  modes: ['classic', 'blind', 'image', 'odd', 'pair'],
   featured: ['Hu Tao', 'Raiden Shogun', 'Zhongli', 'Klee'],
   unit: 'character',
   entities: [],

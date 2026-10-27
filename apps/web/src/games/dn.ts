@@ -35,7 +35,7 @@ export const dn: Game<Character> = {
     'Kira, L and the shinigami — the task force, the SPK and the mafia from the first name written to the end.',
   ),
   accent: '#c0392b',
-  modes: ['classic', 'image', 'odd', 'pair'],
+  modes: ['classic', 'blind', 'image', 'odd', 'pair'],
   featured: ['Light Yagami', 'L', 'Ryuk'],
   unit: 'character',
   entities: [],

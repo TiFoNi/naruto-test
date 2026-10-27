@@ -179,6 +179,8 @@ export default function ChallengeRoom({ code }: { code: string }) {
         </section>
       ) : mode === 'classic' ? (
         <ClassicMode {...props} />
+      ) : mode === 'blind' ? (
+        <ClassicMode {...props} mode="blind" />
       ) : mode === 'image' ? (
         <ImageMode {...props} />
       ) : mode === 'page' ? (

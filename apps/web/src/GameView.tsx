@@ -71,6 +71,11 @@ export default function GameView({ game, mode, daily }: { game: Game; mode: Mode
               <ClassicMode game={game} active={daily === d && mode === 'classic'} stats={statsFor('classic', d)} daily={d} />
             </div>
           )}
+          {game.modes.includes('blind') && (
+            <div hidden={mode !== 'blind'}>
+              <ClassicMode game={game} mode="blind" active={daily === d && mode === 'blind'} stats={statsFor('blind', d)} daily={d} />
+            </div>
+          )}
           {game.modes.includes('pair') && !d && (
             <div hidden={mode !== 'pair'}>
               <PairMode game={game} active={!daily && mode === 'pair'} />

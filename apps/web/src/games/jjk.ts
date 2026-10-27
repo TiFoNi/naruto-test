@@ -33,7 +33,7 @@ export const jjk: Game<Character> = {
     'Sorcerers, curses and grades — from the cursed womb to the Shinjuku showdown.',
   ),
   accent: '#4a66e0',
-  modes: ['classic', 'image', 'odd', 'pair'],
+  modes: ['classic', 'blind', 'image', 'odd', 'pair'],
   featured: ['Yuji Itadori', 'Satoru Gojo', 'Megumi Fushiguro'],
   unit: 'character',
   entities: [],
