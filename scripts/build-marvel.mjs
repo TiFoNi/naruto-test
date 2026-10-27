@@ -91,7 +91,7 @@ const SCREEN_NAMES = {
 const SCREEN_TRAITS = {
   'Doctor Strange': { teams: ['Мстители'] },
   'Scarlet Witch': { species: 'Человек', teams: ['Мстители'] },
-  Quicksilver: { teams: ['Люди Икс', 'Мстители'] },
+  Quicksilver: { species: 'Человек', teams: ['Люди Икс', 'Мстители'] },
   Wasp: { teams: ['Щ.И.Т.'] },
   'Winter Soldier': { teams: ['Мстители', 'Тандерболты'] },
   Nebula: { teams: ['Стражи Галактики', 'Мстители'] },
