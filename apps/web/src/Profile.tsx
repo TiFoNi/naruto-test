@@ -14,9 +14,10 @@ import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
 import { ProfileGhost } from './PageSkeleton'
 import Rail from './Rail'
-import { ArrowIcon, CloseIcon, GearIcon, GripIcon, PaletteIcon, PencilIcon, PictureIcon, PlusIcon, TrophyIcon } from './icons'
+import { ArrowIcon, CloseIcon, GearIcon, GripIcon, PaletteIcon, PencilIcon, PictureIcon, PlusIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
 import AwardIcon from './awardIcons'
-import { useHref } from './router'
+import { useHref, useNavigate } from './router'
+import { refreshFeed } from './awards'
 import { SHOWCASE_MAX } from './showcase'
 import { keepPerUser } from './session-cache'
 import { showTone } from './tone'
@@ -350,6 +351,37 @@ export default function Profile({ id }: { id?: string }) {
     void load()
     if (own) void refresh()
   }, [load, own, refresh])
+
+  const [friend, setFriend] = useState<FriendState>('none')
+  const [calling, setCalling] = useState(false)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    setFriend(summary?.friend ?? 'none')
+  }, [summary?.friend])
+
+  const askFriend = async (target: string) => {
+    const { ok, data } = await api<{ state?: FriendState }>('friends', { action: 'ask', id: target })
+    if (ok) setFriend(data.state ?? 'out')
+  }
+
+  const answerFriend = async (target: string, accept: boolean) => {
+    const { ok, data } = await api<{ state?: FriendState }>('friends', { action: accept ? 'accept' : 'decline', id: target })
+    if (ok) setFriend(data.state ?? 'none')
+    void refreshFeed()
+  }
+
+  const removeFriend = async (target: string) => {
+    const { ok } = await api('friends', { action: 'remove', id: target })
+    if (ok) setFriend('none')
+  }
+
+  const challenge = async (target: string) => {
+    setCalling(true)
+    const { ok, data } = await api<{ duel?: { code: string } }>('duel', { action: 'challenge', to: target })
+    setCalling(false)
+    if (ok && data.duel) navigate(href.duel(data.duel.code))
+  }
 
   const nickname = (own ? user?.nickname : summary?.nickname) ?? ''
   const tag = (own ? user?.tag : summary?.tag) ?? null
@@ -1127,6 +1159,35 @@ export default function Profile({ id }: { id?: string }) {
         </button>
         </div>
       )}
+        {!own && id && user && (
+          <div className="profile-banner-acts profile-visit-acts">
+            {friend === 'in' ? (
+              <>
+                <button type="button" className="ghost profile-friend" onClick={() => void answerFriend(id, true)}>
+                  <UserIcon />
+                  {t('friends.accept')}
+                </button>
+                <button type="button" className="ghost profile-friend" onClick={() => void answerFriend(id, false)}>
+                  {t('friends.decline')}
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
+                className={`ghost profile-friend ${friend === 'friends' ? 'is-on' : ''}`}
+                title={t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}
+                onClick={() => void (friend === 'none' ? askFriend(id) : removeFriend(id))}
+              >
+                <UserIcon />
+                <span>{t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}</span>
+              </button>
+            )}
+            <button type="button" className="primary profile-duel" disabled={calling} onClick={() => void challenge(id)}>
+              <SwordsIcon />
+              {t('duel.challenge')}
+            </button>
+          </div>
+        )}
       </div>
 
       {tuning && banner && <BannerTuner banner={banner} looks={user?.bannerLooks?.[banner] ?? null} onClose={() => setTuning(false)} />}

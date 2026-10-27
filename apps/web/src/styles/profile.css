@@ -2579,7 +2579,7 @@ button.fact-rank:hover {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--accent);
+  color: #ffffff;
   font-size: 13.5px;
   font-weight: 800;
   text-decoration: none;
@@ -2592,7 +2592,7 @@ button.fact-rank:hover {
 }
 
 .worlds-all:hover {
-  color: color-mix(in srgb, var(--accent) 70%, #ffffff);
+  color: color-mix(in srgb, #ffffff 78%, transparent);
 }
 
 .world-shelf {
@@ -3429,4 +3429,91 @@ a.world-blank:hover .world-pic.is-empty {
 .profile-hero-body .profile-hero-tiles > .hero-tile.is-add .hero-tile-open {
   align-items: center;
   text-align: center;
+}
+
+.profile-visit-acts {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.profile-visit-acts .profile-duel,
+.profile-visit-acts .profile-friend {
+  display: inline-flex;
+  width: auto;
+  min-height: 38px;
+  margin: 0;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.profile-visit-acts .profile-duel svg,
+.profile-visit-acts .profile-friend svg {
+  width: 16px;
+  height: 16px;
+}
+
+.profile-visit-acts .profile-duel,
+.profile-visit-acts .profile-duel:hover,
+.profile-visit-acts .profile-friend {
+  color: #ffffff;
+}
+
+@media (max-width: 560px) {
+  .profile-visit-acts {
+    gap: 8px;
+  }
+
+  .profile-visit-acts .profile-friend {
+    width: 38px;
+    padding: 0;
+  }
+
+  .profile-visit-acts .profile-friend > span {
+    display: none;
+  }
+
+  .profile-visit-acts .profile-duel {
+    padding: 0 14px;
+  }
+}
+
+.profile-visit-acts .profile-duel,
+.profile-visit-acts .profile-friend {
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.profile-visit-acts .profile-duel:hover:not(:disabled) {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+
+.profile-visit-acts .profile-friend:hover {
+  border-color: color-mix(in srgb, #ffffff 22%, transparent);
+  background-color: color-mix(in srgb, #ffffff 6%, var(--card));
+  transform: translateY(-1px);
+}
+
+.profile-visit-acts .profile-duel:active:not(:disabled),
+.profile-visit-acts .profile-friend:active {
+  transform: translateY(0);
+}
+
+.worlds-all {
+  transition: color 0.15s ease;
+}
+
+.worlds-all .icon {
+  transition: transform 0.15s ease;
+}
+
+.worlds-all:hover .icon {
+  transform: translateX(3px);
 }
