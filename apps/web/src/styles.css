@@ -12773,3 +12773,12 @@ html[data-auth] .guest-note {
 [data-still] *::after {
   animation-play-state: paused !important;
 }
+
+.ssr-peek {
+  display: contents;
+}
+
+html:not([data-auth]) .ssr-peek:not(.is-on),
+html[data-auth] .ssr-skel {
+  display: none;
+}

@@ -794,6 +794,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   const naming = Boolean(user && user.named === false)
   const bare = section === 'login' || gated
   const game = section === 'play' ? metaById(games, gameId as never) : null
+  const peek = section === 'leaderboard'
   const tone = useSyncExternalStore(watchTone, shownTone, () => null)
   useSyncExternalStore(watchTune, tuneStamp, () => 0)
 
@@ -899,7 +900,16 @@ export default function Shell({ children, games }: { children: ReactNode; games:
       )}
 
       <div className="app-main">
-        {user || open || (loading && returning) ? (
+        {peek && (user || loading) ? (
+          <>
+            <div className={`ssr-peek ${user || returning ? 'is-on' : ''}`}>{children}</div>
+            {!user && !returning && (
+              <div className="ssr-skel">
+                <PageSkeleton section={section} mode={modeId} />
+              </div>
+            )}
+          </>
+        ) : user || open || (loading && returning) ? (
           children
         ) : loading ? (
           section === 'duel' || section === 'duels' ? (
