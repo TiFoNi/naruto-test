@@ -37,7 +37,14 @@ export const version = (buffer: Buffer) => createHash('sha1').update(buffer).dig
 
 const AVATAR = 384
 
+const AVATAR_SMALL = 192
+
 export const avatarKey = (userId: string) => `avatars/${userId}.webp`
+
+export const smallAvatarKey = (userId: string) => `avatars/${userId}-sm.webp`
+
+export const smallAvatar = (image: Buffer) =>
+  sharp(image).resize(AVATAR_SMALL, AVATAR_SMALL, { kernel: 'lanczos3' }).webp({ quality: 90 }).toBuffer()
 
 export async function uploadAvatar(userId: string, source: Buffer) {
   const image = await sharp(source)
@@ -46,12 +53,17 @@ export async function uploadAvatar(userId: string, source: Buffer) {
     .webp({ quality: 92 })
     .toBuffer()
 
-  await put(avatarKey(userId), image)
+  await Promise.all([put(avatarKey(userId), image), put(smallAvatarKey(userId), await smallAvatar(image))])
   return version(image)
 }
 
 export async function dropAvatar(userId: string) {
-  await s3().send(new DeleteObjectCommand({ Bucket: bucket(), Key: avatarKey(userId) }))
+  await s3().send(
+    new DeleteObjectsCommand({
+      Bucket: bucket(),
+      Delete: { Objects: [{ Key: avatarKey(userId) }, { Key: smallAvatarKey(userId) }], Quiet: true },
+    }),
+  )
 }
 
 export async function uploadPortrait(game: GameId, id: number, source: Buffer) {

@@ -15,7 +15,8 @@ const toneOf = (nickname: string) => {
 type Props = { id?: string; nickname: string; avatar?: string | null; frame?: string | null; big?: boolean }
 
 export default function BoardFace({ id, nickname, avatar, frame, big }: Props) {
-  const src = id && avatar ? avatarUrl(id, avatar) : null
+  const full = id && avatar ? avatarUrl(id, avatar) : null
+  const src = id && avatar ? avatarUrl(id, avatar, !big) : null
   const worn = frameOf(frame)
   useSyncExternalStore(watchTune, tuneStamp, () => 0)
 
@@ -30,7 +31,11 @@ export default function BoardFace({ id, nickname, avatar, frame, big }: Props) {
             loading="lazy"
             decoding="async"
             onError={(event) => {
-              event.currentTarget.hidden = true
+              const img = event.currentTarget
+              if (full && src !== full && !img.dataset.full) {
+                img.dataset.full = '1'
+                img.src = full
+              } else img.hidden = true
             }}
           />
         )}

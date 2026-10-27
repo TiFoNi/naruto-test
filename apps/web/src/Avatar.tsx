@@ -7,7 +7,9 @@ import { faceStyle, frameOf, frameStyle, frameUrl, tuneStamp, watchTune } from '
 type Props = { id?: string | null; name: string; avatar?: string | null; frame?: string | null; className?: string; hint?: ReactNode; small?: boolean; medium?: boolean }
 
 export default function Avatar({ id, name, avatar, frame, className, hint, small = false, medium = false }: Props) {
-  const src = id && avatar ? avatarUrl(id, avatar) : null
+  const tiny = small || (className ?? '').split(' ').includes('small')
+  const full = id && avatar ? avatarUrl(id, avatar) : null
+  const src = id && avatar ? avatarUrl(id, avatar, tiny) : null
   const worn = frameOf(frame)
   useSyncExternalStore(watchTune, tuneStamp, () => 0)
 
@@ -25,7 +27,11 @@ export default function Avatar({ id, name, avatar, frame, className, hint, small
           loading="lazy"
           decoding="async"
           onError={(event) => {
-            event.currentTarget.hidden = true
+            const img = event.currentTarget
+            if (full && src !== full && !img.dataset.full) {
+              img.dataset.full = '1'
+              img.src = full
+            } else img.hidden = true
           }}
         />
       )}

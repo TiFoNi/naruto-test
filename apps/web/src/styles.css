@@ -12764,3 +12764,12 @@ html[data-auth] .guest-note {
   border-color: color-mix(in srgb, #ffffff 16%, transparent);
   color: var(--text);
 }
+
+[data-still],
+[data-still]::before,
+[data-still]::after,
+[data-still] *,
+[data-still] *::before,
+[data-still] *::after {
+  animation-play-state: paused !important;
+}

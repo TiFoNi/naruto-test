@@ -23,6 +23,7 @@ import { MARKS } from './Profile'
 import { shownTone, watchTone } from './tone'
 import { AWARDS_FILTER, dropCoins, dropFrames, dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
 import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
+import { startAnimGate } from './animGate'
 import { MODE_XP, MODE_XP_AFTER, TONE_HEX, levelAt } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
@@ -799,6 +800,8 @@ export default function Shell({ children, games }: { children: ReactNode; games:
   useEffect(() => {
     void loadTune()
   }, [])
+
+  useEffect(() => startAnimGate(), [])
 
   useBeforePaint(() => {
     const root = document.documentElement
