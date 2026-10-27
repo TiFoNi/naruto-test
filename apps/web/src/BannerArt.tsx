@@ -13,9 +13,19 @@ export const lookStyle = (id: string, look?: BannerLook | null): CSSProperties =
       }
     : { objectPosition: bannerSpot(id) }
 
-export default function BannerArt({ id, look, place }: { id: string; look?: BannerLooks | null; place: LookPlace | 'profile' }) {
+export default function BannerArt({
+  id,
+  look,
+  place,
+  first = false,
+}: {
+  id: string
+  look?: BannerLooks | null
+  place: LookPlace | 'profile'
+  first?: boolean
+}) {
   const style = lookStyle(id, place === 'profile' ? look?.desktop : (look?.[place] ?? look?.desktop))
-  if (!isLive(id)) return <img src={bannerPic(id, place === 'board')} alt="" style={style} />
+  if (!isLive(id)) return <img src={bannerPic(id, place === 'board')} alt="" style={style} fetchPriority={first ? 'high' : undefined} decoding={first ? 'sync' : 'async'} />
   return <LiveArt id={id} style={style} />
 }
 

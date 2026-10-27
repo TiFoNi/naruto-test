@@ -212,7 +212,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                   <li key={row.rank} className={`lb-step ${medals[index]} has-art`}>
                     <span className="lb-step-art" aria-hidden>
                       {row.banner ? (
-                        <BannerArt id={row.banner} look={row.bannerLook} place="board" />
+                        <BannerArt id={row.banner} look={row.bannerLook} place="board" first={index === 0} />
                       ) : (
                         <i className="mini-me-marks lb-step-marks">
                           {MARKS.map((mark) => (

@@ -1238,7 +1238,7 @@ export default function Profile({ id }: { id?: string }) {
             <>
               {!!banner && (
                 <span className="profile-art" aria-hidden>
-                  <BannerArt id={banner} look={own ? user?.bannerLooks?.[banner] : summary?.bannerLook} place="profile" />
+                  <BannerArt id={banner} look={own ? user?.bannerLooks?.[banner] : summary?.bannerLook} place="profile" first />
                 </span>
               )}
       

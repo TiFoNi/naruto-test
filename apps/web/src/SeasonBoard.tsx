@@ -31,7 +31,7 @@ type Row = {
   me: boolean
 }
 
-type Board = {
+export type Board = {
   season: { number: number; from: string; to: string }
   total: number
   rows: Row[]
@@ -54,16 +54,21 @@ keepPerUser(() => {
   known = null
 })
 
-export default function SeasonBoard() {
+export default function SeasonBoard({ initial = null }: { initial?: Board | null }) {
   const { t, lang, error: errorText } = useI18n()
   const { user } = useAuth()
   const href = useHref()
-  const [board, setBoard] = useState<Board | null>(known)
+  const [board, setBoard] = useState<Board | null>(() => {
+    if (typeof window === 'undefined') return initial
+    if (initial) known = initial
+    return known
+  })
   const [error, setError] = useState<string | null>(null)
   const [now, setNow] = useState(() => Date.now())
   const [size, setSize] = useState(PAGE)
 
   useEffect(() => {
+    if (initial) return
     let cancelled = false
     api<Board>('season')
       .then(({ ok, data }) => {
@@ -77,7 +82,7 @@ export default function SeasonBoard() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [initial])
 
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 60_000)
@@ -180,7 +185,7 @@ export default function SeasonBoard() {
                   <li key={row.rank} className={`lb-step ${medals[index]} has-art`}>
                     <span className="lb-step-art" aria-hidden>
                       {row.banner ? (
-                        <BannerArt id={row.banner} look={row.bannerLook} place="board" />
+                        <BannerArt id={row.banner} look={row.bannerLook} place="board" first={index === 0} />
                       ) : (
                         <i className="mini-me-marks lb-step-marks">
                           {MARKS.map((mark) => (
