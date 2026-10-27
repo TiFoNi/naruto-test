@@ -6905,15 +6905,25 @@ html[data-auth] .guest-note {
 }
 
 .play-tries {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 6px;
   color: var(--text-3);
   font-size: 13px;
   font-weight: 600;
 }
 
+.play-tries-count {
+  font-family: var(--display);
+  font-size: 16px;
+  line-height: 1;
+  translate: 0 0.5px;
+  font-variant-numeric: tabular-nums;
+}
+
 .play-tries b {
   color: var(--accent);
-  font-family: var(--display);
-  font-variant-numeric: tabular-nums;
 }
 
 .play-tries.is-low b {

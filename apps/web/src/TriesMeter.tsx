@@ -7,7 +7,7 @@ export default function TriesMeter({ used, limit }: { used: number; limit: numbe
 
   return (
     <span className={`play-tries ${low ? 'is-low' : ''}`} role="status">
-      {t('tries.left')}: <b>{left}</b> / {limit}
+      {t('tries.left')}: <b className="play-tries-count">{left}</b>
     </span>
   )
 }
