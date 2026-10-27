@@ -35,7 +35,7 @@ export const FRAMES: Frame[] = ALL.filter((one) => DRAWN.has(one.id))
 
 const ART = '26'
 
-export const frameUrl = (id: string, small?: boolean) => `/frames/${id}${small ? '-sm' : ''}.webp?v=${ART}`
+export const frameUrl = (id: string, size?: 'sm' | 'md' | boolean) => `/frames/${id}${size === true || size === 'sm' ? '-sm' : size === 'md' ? '-md' : ''}.webp?v=${ART}`
 
 export type FrameTune = { scale: number; x: number; y: number; cut: number; cx: number; cy: number }
 

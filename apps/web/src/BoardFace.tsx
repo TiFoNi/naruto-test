@@ -37,7 +37,7 @@ export default function BoardFace({ id, nickname, avatar, frame, big }: Props) {
       </span>
       {worn && (
         <i className="avatar-frame" style={frameStyle(worn.id) as CSSProperties}>
-          <img src={frameUrl(worn.id, !big)} alt="" loading="lazy" decoding="async" />
+          <img src={frameUrl(worn.id, big ? 'md' : 'sm')} alt="" loading="lazy" decoding="async" />
         </i>
       )}
     </span>
