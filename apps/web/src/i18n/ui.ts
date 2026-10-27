@@ -1025,6 +1025,8 @@ const ui = {
   'anime.turnOff': { ru: 'Выключить фильтр?', uk: 'Вимкнути фільтр?', en: 'Turn the filter off?' },
   'anime.surrender': { ru: 'Текущая загадка засчитается как сдача — ответ покажем сразу. Следующая будет уже по новой настройке.', uk: 'Поточна загадка зарахується як здача — відповідь покажемо одразу. Наступна буде вже за новим налаштуванням.', en: 'The current puzzle counts as a surrender and the answer is revealed. The next one follows the new setting.' },
   'anime.surrenderYes': { ru: 'Сдаюсь', uk: 'Здаюсь', en: 'Give up' },
+  'screen.only': { ru: 'Только из кино', uk: 'Тільки з кіно', en: 'Live-action only' },
+  'screen.hint': { ru: 'Только герои фильмов и сериалов (MCU, Fox, Sony). Последний столбец — первое появление в кино. Сработает со следующей загадки.', uk: 'Лише герої фільмів і серіалів (MCU, Fox, Sony). Останній стовпчик — перша поява в кіно. Спрацює з наступної загадки.', en: 'Only heroes from live-action films and series (MCU, Fox, Sony). The last column shows the first screen appearance. Applies from the next puzzle.' },
   'anime.hint': { ru: 'Без персонажей, которых ещё не было в аниме. Сработает со следующей загадки.', uk: 'Без персонажів, яких ще не було в аніме. Спрацює з наступної загадки.', en: 'Hides characters not yet in the anime. Applies from the next puzzle.' },
   'seo.ogPlay': { ru: 'Подсказки после каждой попытки', uk: 'Підказки після кожної спроби', en: 'Hints after every try' },
   'seo.ogDaily': { ru: 'Одна загадка в день', uk: 'Одна загадка на день', en: 'One puzzle a day' },

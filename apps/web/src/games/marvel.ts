@@ -11,6 +11,12 @@ type Hero = Entity & {
   debut: string
   debutWork: string | null
   debutIndex: number
+  screenWork?: string | null
+  screenGender: string
+  screenSpecies: string
+  screenSide: string
+  screenTeams: string[]
+  screenPowers: string[]
 }
 
 const { list, exact } = cells<Hero>()
@@ -28,6 +34,19 @@ const columns: Column<Hero>[] = [
   },
 ]
 
+const only: Record<string, Column<Hero>> = {
+  gender: { title: l10n('Пол', 'Стать', 'Gender'), ...exact('screenGender') },
+  species: { title: l10n('Вид', 'Вид', 'Species'), ...exact('screenSpecies') },
+  side: { title: l10n('Сторона', 'Сторона', 'Side'), ...exact('screenSide') },
+  teams: { title: l10n('Команда', 'Команда', 'Team'), ...list('screenTeams') },
+  powers: { title: l10n('Способности', 'Здібності', 'Powers'), ...list('screenPowers') },
+  debutWork: {
+    title: l10n('Первое появление в кино', 'Перша поява в кіно', 'First screen appearance'),
+    key: 'screenWork',
+    text: (hero) => hero.screenWork ?? '—',
+  },
+}
+
 export const marvel: Game<Hero> = {
   id: 'marvel',
   label: l10n('Марвел', 'Марвел', 'Marvel'),
@@ -43,6 +62,7 @@ export const marvel: Game<Hero> = {
   unit: 'hero',
   entities: [],
   columns,
+  only,
   atlas,
   wideImages: false,
   legend: null,

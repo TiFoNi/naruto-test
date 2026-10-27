@@ -34,6 +34,7 @@ export type Game<T extends Entity = Entity> = {
   entities: T[]
   updated?: string
   columns: Column<T>[]
+  only?: Record<string, Column<T>>
   atlas: { cols: number; rows: number; version?: string }
   wideImages: boolean
   legend: 'debut' | 'order' | null

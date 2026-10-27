@@ -36,6 +36,7 @@ export default function AnimeFilter({ game, daily, playing = false, fresh = fals
   useEffect(() => setMounted(true), [])
 
   const loaded = game.entities.length > 0
+  const words = game.only ? 'screen' : 'anime'
   const mixed = loaded ? game.entities.some((one) => one.anime === false) : known
 
   useEffect(() => {
@@ -72,9 +73,9 @@ export default function AnimeFilter({ game, daily, playing = false, fresh = fals
 
   return (
     <>
-      <label className="anime-filter" title={t('anime.hint')}>
+      <label className="anime-filter" title={t(`${words}.hint`)}>
         <input type="checkbox" checked={on} suppressHydrationWarning onChange={(event) => pick(event.target.checked)} />
-        <span>{t('anime.only')}</span>
+        <span>{t(`${words}.only`)}</span>
       </label>
 
       {asking !== null &&

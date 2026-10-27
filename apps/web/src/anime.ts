@@ -1,6 +1,7 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { Game } from './games/types'
 
 const key = (game: string) => `anime-only:${game}`
 
@@ -39,4 +40,12 @@ export function useAnimeOnly(game: string) {
   )
 
   return [on, set] as const
+}
+
+export function useOnlyView(game: Game, on: boolean) {
+  const { columns, only, entities } = game
+  return useMemo(() => {
+    if (!on || !only) return game
+    return { ...game, columns: columns.map((column) => only[column.key] ?? column), entities: entities.filter((one) => one.anime !== false) }
+  }, [game, columns, only, entities, on])
 }

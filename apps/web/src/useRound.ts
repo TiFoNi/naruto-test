@@ -65,7 +65,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
       const next = data.round
       setRound((prev) =>
         prev && prev.id === next.id
-          ? { ...prev, ...next, nextAt: next.nextAt ?? prev.nextAt, yesterdayId: next.yesterdayId ?? prev.yesterdayId, daily: next.daily ?? prev.daily }
+          ? { ...prev, ...next, anime: next.anime, nextAt: next.nextAt ?? prev.nextAt, yesterdayId: next.yesterdayId ?? prev.yesterdayId, daily: next.daily ?? prev.daily }
           : next,
       )
       if (data.stats) setStats(data.stats.key, data.stats.value)

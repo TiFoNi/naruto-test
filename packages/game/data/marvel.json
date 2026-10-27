@@ -13,11 +13,23 @@
    "Магия"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 0,
   "debut": "1970",
   "debutWork": "Fantastic Four #94",
-  "debutIndex": 1970
+  "debutIndex": 1970,
+  "anime": true,
+  "screenWork": "WandaVision (2021)",
+  "screenIndex": 2021,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Магия"
+  ],
+  "answer": true,
+  "thumb": 0
  },
  {
   "id": 122,
@@ -34,11 +46,21 @@
    "Стрельба"
   ],
   "species": "Симбиот",
-  "answer": true,
-  "thumb": 1,
   "debut": "1962",
   "debutWork": "Amazing Fantasy #15",
-  "debutIndex": 1962
+  "debutIndex": 1962,
+  "anime": true,
+  "screenWork": "Spider-Man (2002)",
+  "screenIndex": 2002,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [],
+  "answer": true,
+  "thumb": 1
  },
  {
   "id": 140,
@@ -55,17 +77,30 @@
    "Полёт"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 2,
   "debut": "1967",
   "debutWork": "Fantastic Four #66",
-  "debutIndex": 1967
+  "debutIndex": 1967,
+  "anime": true,
+  "screenWork": "Guardians of the Galaxy Vol. 2 (2017)",
+  "screenIndex": 2017,
+  "screenGender": "Мужской",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Стражи Галактики"
+  ],
+  "screenPowers": [
+   "Энергия",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 2
  },
  {
   "id": 13,
   "name": "Алая ведьма",
   "nameEn": "Scarlet Witch",
-  "nameUk": "Багряна Відьма",
+  "nameUk": "Багряна відьма",
   "gender": "Женский",
   "side": "Антигерой",
   "teams": [
@@ -77,17 +112,30 @@
    "Телекинез"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 3,
   "debut": "1964",
   "debutWork": "X-Men #4",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "Captain America: The Winter Soldier (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Магия",
+   "Телекинез"
+  ],
+  "answer": true,
+  "thumb": 3
  },
  {
   "id": 116,
   "name": "Алый паук",
   "nameEn": "Scarlet Spider",
-  "nameUk": "Багряний Павук",
+  "nameUk": "Багряний павук",
   "gender": "Мужской",
   "side": "Герой",
   "teams": [
@@ -95,14 +143,18 @@
   ],
   "powers": [
    "Сила",
-   "Ловкость"
+   "Ловкость",
+   "Чутьё"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 4,
   "debut": "1975",
   "debutWork": "Amazing Spider-Man #149",
-  "debutIndex": 1975
+  "debutIndex": 1975,
+  "anime": false,
+  "screenWork": null,
+  "screenIndex": null,
+  "answer": true,
+  "thumb": 4
  },
  {
   "id": 66,
@@ -120,11 +172,25 @@
    "Энергия"
   ],
   "species": "Андроид",
-  "answer": true,
-  "thumb": 5,
   "debut": "1968",
   "debutWork": "Avengers #54",
-  "debutIndex": 1968
+  "debutIndex": 1968,
+  "anime": true,
+  "screenWork": "Avengers: Age of Ultron (2015)",
+  "screenIndex": 2015,
+  "screenGender": "Мужской",
+  "screenSpecies": "Андроид",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Технологии",
+   "Полёт",
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 5
  },
  {
   "id": 124,
@@ -138,14 +204,27 @@
   ],
   "powers": [
    "Сила",
-   "Полёт"
+   "Полёт",
+   "Телепортация"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 6,
   "debut": "2011",
   "debutWork": "Vengeance #1",
-  "debutIndex": 2011
+  "debutIndex": 2011,
+  "anime": true,
+  "screenWork": "Doctor Strange in the Multiverse of Madness (2022)",
+  "screenIndex": 2022,
+  "screenGender": "Женский",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Телепортация"
+  ],
+  "answer": true,
+  "thumb": 6
  },
  {
   "id": 104,
@@ -161,11 +240,23 @@
    "Полёт"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 7,
   "debut": "1963",
   "debutWork": "X-Men #1",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "X-Men: The Last Stand (2006)",
+  "screenIndex": 2006,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 7
  },
  {
   "id": 99,
@@ -182,11 +273,24 @@
    "Перевоплощение"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 8,
   "debut": "1986",
   "debutWork": "X-Factor #5",
-  "debutIndex": 1986
+  "debutIndex": 1986,
+  "anime": true,
+  "screenWork": "X-Men: Days of Future Past (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Перевоплощение"
+  ],
+  "answer": true,
+  "thumb": 8
  },
  {
   "id": 144,
@@ -202,11 +306,23 @@
    "Технологии"
   ],
   "species": "Андроид",
-  "answer": true,
-  "thumb": 9,
   "debut": "1977",
   "debutWork": "Captain America #208",
-  "debutIndex": 1977
+  "debutIndex": 1977,
+  "anime": true,
+  "screenWork": "Captain America: The First Avenger (2011)",
+  "screenIndex": 2011,
+  "screenGender": "Мужской",
+  "screenSpecies": "Андроид",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Гидра"
+  ],
+  "screenPowers": [
+   "Технологии"
+  ],
+  "answer": true,
+  "thumb": 9
  },
  {
   "id": 92,
@@ -222,11 +338,23 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 10,
   "debut": "1973",
   "debutWork": "Captain America #168",
-  "debutIndex": 1973
+  "debutIndex": 1973,
+  "anime": true,
+  "screenWork": "Captain America: Civil War (2016)",
+  "screenIndex": 2016,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 10
  },
  {
   "id": 110,
@@ -244,11 +372,14 @@
    "Магия"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 11,
   "debut": "1983",
   "debutWork": "Thor #337",
-  "debutIndex": 1983
+  "debutIndex": 1983,
+  "anime": false,
+  "screenWork": null,
+  "screenIndex": null,
+  "answer": true,
+  "thumb": 11
  },
  {
   "id": 130,
@@ -265,11 +396,24 @@
    "Стрельба"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 12,
   "debut": "1991",
   "debutWork": "Uncanny X-Men #282",
-  "debutIndex": 1991
+  "debutIndex": 1991,
+  "anime": true,
+  "screenWork": "X-Men: Days of Future Past (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Поглощение",
+   "Стрельба"
+  ],
+  "answer": true,
+  "thumb": 12
  },
  {
   "id": 87,
@@ -286,11 +430,24 @@
    "Регенерация"
   ],
   "species": "Существо",
-  "answer": true,
-  "thumb": 13,
   "debut": "1973",
   "debutWork": "Tomb of Dracula #10",
-  "debutIndex": 1973
+  "debutIndex": 1973,
+  "anime": true,
+  "screenWork": "Blade (1998)",
+  "screenIndex": 1998,
+  "screenGender": "Мужской",
+  "screenSpecies": "Существо",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Боевые навыки",
+   "Регенерация"
+  ],
+  "answer": true,
+  "thumb": 13
  },
  {
   "id": 70,
@@ -307,11 +464,24 @@
    "Полёт"
   ],
   "species": "Асгардиец",
-  "answer": true,
-  "thumb": 14,
   "debut": "1970",
   "debutWork": "Thor #133",
-  "debutIndex": 1970
+  "debutIndex": 1970,
+  "anime": true,
+  "screenWork": "Thor: Ragnarok (2017)",
+  "screenIndex": 2017,
+  "screenGender": "Женский",
+  "screenSpecies": "Асгардиец",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 14
  },
  {
   "id": 55,
@@ -325,14 +495,29 @@
   ],
   "powers": [
    "Сила",
+   "Ловкость",
    "Регенерация"
   ],
   "species": "Симбиот",
-  "answer": true,
-  "thumb": 15,
   "debut": "1988",
   "debutWork": "Web of Spider-Man #18",
-  "debutIndex": 1988
+  "debutIndex": 1988,
+  "anime": true,
+  "screenWork": "Venom (2018)",
+  "screenIndex": 2018,
+  "screenGender": "Мужской",
+  "screenSpecies": "Симбиот",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Ловкость",
+   "Регенерация"
+  ],
+  "answer": true,
+  "thumb": 15
  },
  {
   "id": 15,
@@ -347,20 +532,34 @@
   "powers": [
    "Полёт",
    "Энергия",
-   "Технологии"
+   "Проницаемость"
   ],
   "species": "Андроид",
-  "answer": true,
-  "thumb": 16,
   "debut": "1968",
   "debutWork": "Avengers #57",
-  "debutIndex": 1968
+  "debutIndex": 1968,
+  "anime": true,
+  "screenWork": "Avengers: Age of Ultron (2015)",
+  "screenIndex": 2015,
+  "screenGender": "Мужской",
+  "screenSpecies": "Андроид",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Полёт",
+   "Энергия",
+   "Проницаемость"
+  ],
+  "answer": true,
+  "thumb": 16
  },
  {
   "id": 106,
   "name": "Воитель",
   "nameEn": "War Machine",
-  "nameUk": "Бойова Машина",
+  "nameUk": "Воїн",
   "gender": "Мужской",
   "side": "Герой",
   "teams": [
@@ -372,11 +571,25 @@
    "Стрельба"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 17,
   "debut": "1979",
   "debutWork": "Iron Man #118",
-  "debutIndex": 1979
+  "debutIndex": 1979,
+  "anime": true,
+  "screenWork": "Iron Man (2008)",
+  "screenIndex": 2008,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Технологии",
+   "Полёт",
+   "Стрельба"
+  ],
+  "answer": true,
+  "thumb": 17
  },
  {
   "id": 126,
@@ -393,11 +606,24 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 18,
   "debut": "1963",
   "debutWork": "Strange Tales #110",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "Doctor Strange (2016)",
+  "screenIndex": 2016,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Магия",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 18
  },
  {
   "id": 141,
@@ -414,11 +640,24 @@
    "Энергия"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 19,
   "debut": "1966",
   "debutWork": "Thor #134",
-  "debutIndex": 1966
+  "debutIndex": 1966,
+  "anime": true,
+  "screenWork": "Guardians of the Galaxy Vol. 3 (2023)",
+  "screenIndex": 2023,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Технологии",
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 19
  },
  {
   "id": 97,
@@ -435,11 +674,24 @@
    "Сила"
   ],
   "species": "Существо",
-  "answer": true,
-  "thumb": 20,
   "debut": "1966",
   "debutWork": "Fantastic Four #48",
-  "debutIndex": 1966
+  "debutIndex": 1966,
+  "anime": true,
+  "screenWork": "Fantastic Four: Rise of the Silver Surfer (2007)",
+  "screenIndex": 2007,
+  "screenGender": "Мужской",
+  "screenSpecies": "Существо",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Энергия",
+   "Сила"
+  ],
+  "answer": true,
+  "thumb": 20
  },
  {
   "id": 40,
@@ -456,11 +708,24 @@
    "Боевые навыки"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 21,
   "debut": "1990",
   "debutWork": "X-Men Annual #14",
-  "debutIndex": 1990
+  "debutIndex": 1990,
+  "anime": true,
+  "screenWork": "X-Men Origins: Wolverine (2009)",
+  "screenIndex": 2009,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Энергия",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 21
  },
  {
   "id": 20,
@@ -477,11 +742,24 @@
    "Сила"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 22,
   "debut": "1975",
   "debutWork": "Strange Tales #180",
-  "debutIndex": 1975
+  "debutIndex": 1975,
+  "anime": true,
+  "screenWork": "Guardians of the Galaxy (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Женский",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Стражи Галактики"
+  ],
+  "screenPowers": [
+   "Боевые навыки",
+   "Сила"
+  ],
+  "answer": true,
+  "thumb": 22
  },
  {
   "id": 64,
@@ -495,14 +773,18 @@
   ],
   "powers": [
    "Сила",
-   "Ловкость"
+   "Ловкость",
+   "Чутьё"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 23,
   "debut": "2014",
   "debutWork": "Edge of Spider-Verse #2",
-  "debutIndex": 2014
+  "debutIndex": 2014,
+  "anime": false,
+  "screenWork": null,
+  "screenIndex": null,
+  "answer": true,
+  "thumb": 23
  },
  {
   "id": 23,
@@ -519,11 +801,24 @@
    "Регенерация"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 24,
   "debut": "1960",
-  "debutWork": "Annihilation: Conquest - Starlord #1",
-  "debutIndex": 1960
+  "debutWork": "Tales to Astonish #13",
+  "debutIndex": 1960,
+  "anime": true,
+  "screenWork": "Guardians of the Galaxy (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Мужской",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Стражи Галактики"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Регенерация"
+  ],
+  "answer": true,
+  "thumb": 24
  },
  {
   "id": 125,
@@ -540,11 +835,14 @@
    "Ловкость"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 25,
   "debut": "1992",
   "debutWork": "Marvel Super-Heroes Vol. 2 #8",
-  "debutIndex": 1992
+  "debutIndex": 1992,
+  "anime": false,
+  "screenWork": null,
+  "screenIndex": null,
+  "answer": true,
+  "thumb": 25
  },
  {
   "id": 105,
@@ -561,11 +859,24 @@
    "Неуязвимость"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 26,
   "debut": "1965",
   "debutWork": "X-Men #12",
-  "debutIndex": 1965
+  "debutIndex": 1965,
+  "anime": true,
+  "screenWork": "X-Men: The Last Stand (2006)",
+  "screenIndex": 2006,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Братство мутантов"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Неуязвимость"
+  ],
+  "answer": true,
+  "thumb": 26
  },
  {
   "id": 51,
@@ -582,11 +893,23 @@
    "Полёт"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 27,
   "debut": "2001",
-  "debutWork": "Amazing Spider-Man #4",
-  "debutIndex": 2001
+  "debutWork": "Alias #1",
+  "debutIndex": 2001,
+  "anime": true,
+  "screenWork": "Jessica Jones (2015)",
+  "screenIndex": 2015,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Защитники"
+  ],
+  "screenPowers": [
+   "Сила"
+  ],
+  "answer": true,
+  "thumb": 27
  },
  {
   "id": 34,
@@ -603,11 +926,24 @@
    "Телекинез"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 28,
   "debut": "1963",
   "debutWork": "X-Men #1",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "X-Men (2000)",
+  "screenIndex": 2000,
+  "screenGender": "Женский",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Телепатия",
+   "Телекинез"
+  ],
+  "answer": true,
+  "thumb": 28
  },
  {
   "id": 132,
@@ -623,11 +959,23 @@
    "Энергия"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 29,
   "debut": "1989",
   "debutWork": "Uncanny X-Men #244",
-  "debutIndex": 1989
+  "debutIndex": 1989,
+  "anime": true,
+  "screenWork": "X-Men (2000)",
+  "screenIndex": 2000,
+  "screenGender": "Женский",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 29
  },
  {
   "id": 29,
@@ -644,11 +992,24 @@
    "Технологии"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 30,
   "debut": "1962",
   "debutWork": "Fantastic Four #5",
-  "debutIndex": 1962
+  "debutIndex": 1962,
+  "anime": true,
+  "screenWork": "Fantastic Four (2005)",
+  "screenIndex": 2005,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Энергия",
+   "Технологии"
+  ],
+  "answer": true,
+  "thumb": 30
  },
  {
   "id": 58,
@@ -664,11 +1025,23 @@
    "Технологии"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 31,
   "debut": "1963",
   "debutWork": "Amazing Spider-Man #3",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "Spider-Man 2 (2004)",
+  "screenIndex": 2004,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Технологии"
+  ],
+  "answer": true,
+  "thumb": 31
  },
  {
   "id": 8,
@@ -685,11 +1058,24 @@
    "Полёт"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 32,
   "debut": "1963",
   "debutWork": "Strange Tales #110",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "Doctor Strange (2016)",
+  "screenIndex": 2016,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Магия",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 32
  },
  {
   "id": 147,
@@ -706,11 +1092,24 @@
    "Энергия"
   ],
   "species": "Существо",
-  "answer": true,
-  "thumb": 33,
   "debut": "1964",
   "debutWork": "Strange Tales #126",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "Doctor Strange (2016)",
+  "screenIndex": 2016,
+  "screenGender": "Мужской",
+  "screenSpecies": "Существо",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Магия",
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 33
  },
  {
   "id": 21,
@@ -726,11 +1125,23 @@
    "Сила"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 34,
   "debut": "1973",
   "debutWork": "Iron Man #55",
-  "debutIndex": 1973
+  "debutIndex": 1973,
+  "anime": true,
+  "screenWork": "Guardians of the Galaxy (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Мужской",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Стражи Галактики"
+  ],
+  "screenPowers": [
+   "Сила"
+  ],
+  "answer": true,
+  "thumb": 34
  },
  {
   "id": 44,
@@ -747,11 +1158,24 @@
    "Боевые навыки"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 35,
   "debut": "1991",
   "debutWork": "New Mutants #98",
-  "debutIndex": 1991
+  "debutIndex": 1991,
+  "anime": true,
+  "screenWork": "X-Men Origins: Wolverine (2009)",
+  "screenIndex": 2009,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Регенерация",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 35
  },
  {
   "id": 82,
@@ -767,17 +1191,29 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 36,
   "debut": "1999",
   "debutWork": "Inhumans Vol. 2 #5",
-  "debutIndex": 1999
+  "debutIndex": 1999,
+  "anime": true,
+  "screenWork": "Black Widow (2021)",
+  "screenIndex": 2021,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Тандерболты"
+  ],
+  "screenPowers": [
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 36
  },
  {
   "id": 80,
   "name": "Железное сердце",
   "nameEn": "Ironheart",
-  "nameUk": "Залізне Серце",
+  "nameUk": "Залізне серце",
   "gender": "Женский",
   "side": "Герой",
   "teams": [
@@ -788,17 +1224,30 @@
    "Полёт"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 37,
   "debut": "2016",
   "debutWork": "Invincible Iron Man Vol. 3 #7",
-  "debutIndex": 2016
+  "debutIndex": 2016,
+  "anime": true,
+  "screenWork": "Black Panther: Wakanda Forever (2022)",
+  "screenIndex": 2022,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Технологии",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 37
  },
  {
   "id": 53,
   "name": "Железный кулак",
   "nameEn": "Iron Fist",
-  "nameUk": "Залізний Кулак",
+  "nameUk": "Залізний кулак",
   "gender": "Мужской",
   "side": "Герой",
   "teams": [
@@ -809,17 +1258,30 @@
    "Энергия"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 38,
   "debut": "1974",
   "debutWork": "Marvel Premiere #15",
-  "debutIndex": 1974
+  "debutIndex": 1974,
+  "anime": true,
+  "screenWork": "Iron Fist (2017)",
+  "screenIndex": 2017,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Защитники"
+  ],
+  "screenPowers": [
+   "Боевые навыки",
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 38
  },
  {
   "id": 94,
   "name": "Железный торговец",
   "nameEn": "Iron Monger",
-  "nameUk": "Залізний Торговець",
+  "nameUk": "Залізний торговець",
   "gender": "Мужской",
   "side": "Злодей",
   "teams": [
@@ -830,17 +1292,30 @@
    "Сила"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 39,
   "debut": "1982",
   "debutWork": "Iron Man #163",
-  "debutIndex": 1982
+  "debutIndex": 1982,
+  "anime": true,
+  "screenWork": "Iron Man (2008)",
+  "screenIndex": 2008,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Технологии",
+   "Сила"
+  ],
+  "answer": true,
+  "thumb": 39
  },
  {
   "id": 1,
   "name": "Железный человек",
   "nameEn": "Iron Man",
-  "nameUk": "Залізна Людина",
+  "nameUk": "Залізна людина",
   "gender": "Мужской",
   "side": "Герой",
   "teams": [
@@ -851,11 +1326,24 @@
    "Полёт"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 40,
   "debut": "1963",
   "debutWork": "Tales of Suspense #39",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "Iron Man (2008)",
+  "screenIndex": 2008,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Технологии",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 40
  },
  {
   "id": 118,
@@ -868,15 +1356,19 @@
    "Мстители"
   ],
   "powers": [
+   "Сила",
    "Полёт",
    "Энергия"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 41,
   "debut": "1977",
   "debutWork": "Marvel Spotlight #32",
-  "debutIndex": 1977
+  "debutIndex": 1977,
+  "anime": false,
+  "screenWork": null,
+  "screenIndex": null,
+  "answer": true,
+  "thumb": 41
  },
  {
   "id": 77,
@@ -893,17 +1385,30 @@
    "Регенерация"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 42,
   "debut": "1980",
   "debutWork": "Savage She-Hulk #1",
-  "debutIndex": 1980
+  "debutIndex": 1980,
+  "anime": true,
+  "screenWork": "She-Hulk: Attorney at Law (2022)",
+  "screenIndex": 2022,
+  "screenGender": "Женский",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Регенерация"
+  ],
+  "answer": true,
+  "thumb": 42
  },
  {
   "id": 19,
   "name": "Звёздный лорд",
   "nameEn": "Star-Lord",
-  "nameUk": "Зоряний Лорд",
+  "nameUk": "Зоряний лорд",
   "gender": "Мужской",
   "side": "Герой",
   "teams": [
@@ -914,11 +1419,24 @@
    "Полёт"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 43,
   "debut": "1976",
-  "debutWork": "Thanos #8",
-  "debutIndex": 1976
+  "debutWork": "Marvel Preview #4",
+  "debutIndex": 1976,
+  "anime": true,
+  "screenWork": "Guardians of the Galaxy (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Стражи Галактики"
+  ],
+  "screenPowers": [
+   "Стрельба",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 43
  },
  {
   "id": 36,
@@ -936,17 +1454,30 @@
    "Ловкость"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 44,
   "debut": "1963",
   "debutWork": "X-Men #1",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "X2 (2003)",
+  "screenIndex": 2003,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Ловкость"
+  ],
+  "answer": true,
+  "thumb": 44
  },
  {
   "id": 57,
   "name": "Зелёный гоблин",
   "nameEn": "Green Goblin",
-  "nameUk": "Зелений Гоблін",
+  "nameUk": "Зелений гоблін",
   "gender": "Мужской",
   "side": "Злодей",
   "teams": [
@@ -958,17 +1489,31 @@
    "Технологии"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 45,
   "debut": "1964",
   "debutWork": "Amazing Spider-Man #14",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "Spider-Man (2002)",
+  "screenIndex": 2002,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Полёт",
+   "Технологии"
+  ],
+  "answer": true,
+  "thumb": 45
  },
  {
   "id": 17,
   "name": "Зимний солдат",
   "nameEn": "Winter Soldier",
-  "nameUk": "Зимовий Солдат",
+  "nameUk": "Зимовий солдат",
   "gender": "Мужской",
   "side": "Антигерой",
   "teams": [
@@ -979,11 +1524,25 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 46,
   "debut": "1941",
   "debutWork": "Captain America Comics #1",
-  "debutIndex": 1941
+  "debutIndex": 1941,
+  "anime": true,
+  "screenWork": "Captain America: The First Avenger (2011)",
+  "screenIndex": 2011,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Мстители",
+   "Тандерболты"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 46
  },
  {
   "id": 150,
@@ -1000,11 +1559,24 @@
    "Энергия"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 47,
   "debut": "1976",
   "debutWork": "Eternals #1",
-  "debutIndex": 1976
+  "debutIndex": 1976,
+  "anime": true,
+  "screenWork": "Eternals (2021)",
+  "screenIndex": 2021,
+  "screenGender": "Мужской",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Полёт",
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 47
  },
  {
   "id": 102,
@@ -1018,14 +1590,29 @@
   ],
   "powers": [
    "Регенерация",
+   "Чутьё",
    "Боевые навыки"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 48,
   "debut": "2004",
   "debutWork": "NYX #3",
-  "debutIndex": 2004
+  "debutIndex": 2004,
+  "anime": true,
+  "screenWork": "Logan (2017)",
+  "screenIndex": 2017,
+  "screenGender": "Женский",
+  "screenSpecies": "Мутант",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Регенерация",
+   "Чутьё",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 48
  },
  {
   "id": 26,
@@ -1038,20 +1625,34 @@
    "Стражи Галактики"
   ],
   "powers": [
+   "Стрельба",
    "Боевые навыки"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 49,
   "debut": "1969",
-  "debutWork": "Star-Lord #1",
-  "debutIndex": 1969
+  "debutWork": "Marvel Super-Heroes #18",
+  "debutIndex": 1969,
+  "anime": true,
+  "screenWork": "Guardians of the Galaxy (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Мужской",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Стрельба",
+   "Технологии"
+  ],
+  "answer": true,
+  "thumb": 49
  },
  {
   "id": 142,
   "name": "Канг Завоеватель",
   "nameEn": "Kang the Conqueror",
-  "nameUk": "Канг Завойовник",
+  "nameUk": "Канґ Завойовник",
   "gender": "Мужской",
   "side": "Злодей",
   "teams": [
@@ -1062,11 +1663,24 @@
    "Энергия"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 50,
   "debut": "1964",
   "debutWork": "Avengers #8",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "Ant-Man and the Wasp: Quantumania (2023)",
+  "screenIndex": 2023,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Технологии",
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 50
  },
  {
   "id": 2,
@@ -1083,11 +1697,24 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 51,
   "debut": "1941",
   "debutWork": "Captain America Comics #1",
-  "debutIndex": 1941
+  "debutIndex": 1941,
+  "anime": true,
+  "screenWork": "Captain America: The First Avenger (2011)",
+  "screenIndex": 2011,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 51
  },
  {
   "id": 12,
@@ -1105,11 +1732,25 @@
    "Энергия"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 52,
   "debut": "1968",
   "debutWork": "Marvel Super-Heroes #13",
-  "debutIndex": 1968
+  "debutIndex": 1968,
+  "anime": true,
+  "screenWork": "Captain Marvel (2019)",
+  "screenIndex": 2019,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Полёт",
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 52
  },
  {
   "id": 50,
@@ -1126,11 +1767,24 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 53,
   "debut": "1974",
   "debutWork": "Amazing Spider-Man #129",
-  "debutIndex": 1974
+  "debutIndex": 1974,
+  "anime": true,
+  "screenWork": "The Punisher (2004)",
+  "screenIndex": 2004,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Стрельба",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 53
  },
  {
   "id": 56,
@@ -1144,14 +1798,29 @@
   ],
   "powers": [
    "Сила",
+   "Ловкость",
    "Регенерация"
   ],
   "species": "Симбиот",
-  "answer": true,
-  "thumb": 54,
   "debut": "1991",
   "debutWork": "Amazing Spider-Man #344",
-  "debutIndex": 1991
+  "debutIndex": 1991,
+  "anime": true,
+  "screenWork": "Venom (2018)",
+  "screenIndex": 2018,
+  "screenGender": "Мужской",
+  "screenSpecies": "Симбиот",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Ловкость",
+   "Регенерация"
+  ],
+  "answer": true,
+  "thumb": 54
  },
  {
   "id": 128,
@@ -1168,11 +1837,24 @@
    "Стрельба"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 55,
   "debut": "1986",
   "debutWork": "Uncanny X-Men #201",
-  "debutIndex": 1986
+  "debutIndex": 1986,
+  "anime": true,
+  "screenWork": "Deadpool 2 (2018)",
+  "screenIndex": 2018,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Технологии",
+   "Стрельба"
+  ],
+  "answer": true,
+  "thumb": 55
  },
  {
   "id": 81,
@@ -1189,11 +1871,24 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 56,
   "debut": "2005",
   "debutWork": "Young Avengers #1",
-  "debutIndex": 2005
+  "debutIndex": 2005,
+  "anime": true,
+  "screenWork": "Hawkeye (2021)",
+  "screenIndex": 2021,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Стрельба",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 56
  },
  {
   "id": 67,
@@ -1209,11 +1904,23 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 57,
   "debut": "1973",
   "debutWork": "Jungle Action Vol. 2 #6",
-  "debutIndex": 1973
+  "debutIndex": 1973,
+  "anime": true,
+  "screenWork": "Black Panther (2018)",
+  "screenIndex": 2018,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 57
  },
  {
   "id": 72,
@@ -1230,11 +1937,24 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 58,
   "debut": "1967",
   "debutWork": "Amazing Spider-Man #50",
-  "debutIndex": 1967
+  "debutIndex": 1967,
+  "anime": true,
+  "screenWork": "Daredevil (2003)",
+  "screenIndex": 2003,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 58
  },
  {
   "id": 43,
@@ -1250,11 +1970,23 @@
    "Проницаемость"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 59,
   "debut": "1980",
   "debutWork": "X-Men #129",
-  "debutIndex": 1980
+  "debutIndex": 1980,
+  "anime": true,
+  "screenWork": "X-Men (2000)",
+  "screenIndex": 2000,
+  "screenGender": "Женский",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Проницаемость"
+  ],
+  "answer": true,
+  "thumb": 59
  },
  {
   "id": 42,
@@ -1271,17 +2003,30 @@
    "Неуязвимость"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 60,
   "debut": "1975",
   "debutWork": "Giant-Size X-Men #1",
-  "debutIndex": 1975
+  "debutIndex": 1975,
+  "anime": true,
+  "screenWork": "X2 (2003)",
+  "screenIndex": 2003,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Неуязвимость"
+  ],
+  "answer": true,
+  "thumb": 60
  },
  {
   "id": 93,
   "name": "Красный череп",
   "nameEn": "Red Skull",
-  "nameUk": "Червоний Череп",
+  "nameUk": "Червоний череп",
   "gender": "Мужской",
   "side": "Злодей",
   "teams": [
@@ -1291,11 +2036,23 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 61,
   "debut": "1941",
   "debutWork": "Captain America Comics #7",
-  "debutIndex": 1941
+  "debutIndex": 1941,
+  "anime": true,
+  "screenWork": "Captain America: The First Avenger (2011)",
+  "screenIndex": 2011,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Гидра"
+  ],
+  "screenPowers": [
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 61
  },
  {
   "id": 145,
@@ -1312,11 +2069,24 @@
    "Стрельба"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 62,
   "debut": "1989",
   "debutWork": "Captain America #359",
-  "debutIndex": 1989
+  "debutIndex": 1989,
+  "anime": true,
+  "screenWork": "Captain America: The Winter Soldier (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Гидра"
+  ],
+  "screenPowers": [
+   "Боевые навыки",
+   "Стрельба"
+  ],
+  "answer": true,
+  "thumb": 62
  },
  {
   "id": 61,
@@ -1333,17 +2103,30 @@
    "Чутьё"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 63,
   "debut": "1964",
   "debutWork": "Amazing Spider-Man #15",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "Kraven the Hunter (2024)",
+  "screenIndex": 2024,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Боевые навыки",
+   "Чутьё"
+  ],
+  "answer": true,
+  "thumb": 63
  },
  {
   "id": 37,
   "name": "Ледяной человек",
   "nameEn": "Iceman",
-  "nameUk": "Крижана Людина",
+  "nameUk": "Крижана людина",
   "gender": "Мужской",
   "side": "Герой",
   "teams": [
@@ -1353,11 +2136,23 @@
    "Лёд"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 64,
   "debut": "1963",
   "debutWork": "X-Men #1",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "X-Men (2000)",
+  "screenIndex": 2000,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Лёд"
+  ],
+  "answer": true,
+  "thumb": 64
  },
  {
   "id": 28,
@@ -1374,17 +2169,30 @@
    "Иллюзии"
   ],
   "species": "Асгардиец",
+  "debut": "1962",
+  "debutWork": "Journey Into Mystery #85",
+  "debutIndex": 1962,
+  "anime": true,
+  "screenWork": "Thor (2011)",
+  "screenIndex": 2011,
+  "screenGender": "Мужской",
+  "screenSpecies": "Асгардиец",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Магия",
+   "Иллюзии"
+  ],
   "answer": true,
-  "thumb": 65,
-  "debut": "1949",
-  "debutWork": "Venus #6",
-  "debutIndex": 1949
+  "thumb": 65
  },
  {
   "id": 54,
   "name": "Лунный рыцарь",
   "nameEn": "Moon Knight",
-  "nameUk": "Місячний Лицар",
+  "nameUk": "Місячний лицар",
   "gender": "Мужской",
   "side": "Антигерой",
   "teams": [
@@ -1395,11 +2203,24 @@
    "Магия"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 66,
   "debut": "1975",
   "debutWork": "Werewolf by Night #32",
-  "debutIndex": 1975
+  "debutIndex": 1975,
+  "anime": true,
+  "screenWork": "Moon Knight (2022)",
+  "screenIndex": 2022,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Боевые навыки",
+   "Магия"
+  ],
+  "answer": true,
+  "thumb": 66
  },
  {
   "id": 52,
@@ -1416,11 +2237,24 @@
    "Неуязвимость"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 67,
   "debut": "1972",
   "debutWork": "Hero for Hire #1",
-  "debutIndex": 1972
+  "debutIndex": 1972,
+  "anime": true,
+  "screenWork": "Jessica Jones (2015)",
+  "screenIndex": 2015,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Защитники"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Неуязвимость"
+  ],
+  "answer": true,
+  "thumb": 67
  },
  {
   "id": 30,
@@ -1438,11 +2272,25 @@
    "Полёт"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 68,
   "debut": "1963",
   "debutWork": "X-Men #1",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "X-Men (2000)",
+  "screenIndex": 2000,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Братство мутантов",
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Магнетизм",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 68
  },
  {
   "id": 65,
@@ -1456,14 +2304,20 @@
   ],
   "powers": [
    "Сила",
-   "Невидимость"
+   "Ловкость",
+   "Чутьё",
+   "Невидимость",
+   "Энергия"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 69,
   "debut": "2011",
   "debutWork": "Ultimate Fallout #4",
-  "debutIndex": 2011
+  "debutIndex": 2011,
+  "anime": false,
+  "screenWork": null,
+  "screenIndex": null,
+  "answer": true,
+  "thumb": 69
  },
  {
   "id": 25,
@@ -1480,11 +2334,23 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 70,
   "debut": "1973",
   "debutWork": "Avengers #112",
-  "debutIndex": 1973
+  "debutIndex": 1973,
+  "anime": true,
+  "screenWork": "Guardians of the Galaxy Vol. 2 (2017)",
+  "screenIndex": 2017,
+  "screenGender": "Женский",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Стражи Галактики"
+  ],
+  "screenPowers": [
+   "Телепатия"
+  ],
+  "answer": true,
+  "thumb": 70
  },
  {
   "id": 114,
@@ -1501,11 +2367,23 @@
    "Энергия"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 71,
   "debut": "1967",
   "debutWork": "Marvel Super-Heroes #12",
-  "debutIndex": 1967
+  "debutIndex": 1967,
+  "anime": true,
+  "screenWork": "Captain Marvel (2019)",
+  "screenIndex": 2019,
+  "screenGender": "Женский",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Технологии"
+  ],
+  "answer": true,
+  "thumb": 71
  },
  {
   "id": 89,
@@ -1522,11 +2400,24 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 72,
   "debut": "2004",
   "debutWork": "New Avengers #4",
-  "debutIndex": 2004
+  "debutIndex": 2004,
+  "anime": true,
+  "screenWork": "The Avengers (2012)",
+  "screenIndex": 2012,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Щ.И.Т."
+  ],
+  "screenPowers": [
+   "Стрельба",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 72
  },
  {
   "id": 85,
@@ -1543,11 +2434,24 @@
    "Боевые навыки"
   ],
   "species": "Нелюдь",
-  "answer": true,
-  "thumb": 73,
   "debut": "1965",
   "debutWork": "Fantastic Four #36",
-  "debutIndex": 1965
+  "debutIndex": 1965,
+  "anime": true,
+  "screenWork": "Inhumans (2017)",
+  "screenIndex": 2017,
+  "screenGender": "Женский",
+  "screenSpecies": "Нелюдь",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Нелюди"
+  ],
+  "screenPowers": [
+   "Волосы",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 73
  },
  {
   "id": 113,
@@ -1564,11 +2468,24 @@
    "Регенерация"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 74,
   "debut": "1967",
   "debutWork": "Tales to Astonish #90",
-  "debutIndex": 1967
+  "debutIndex": 1967,
+  "anime": true,
+  "screenWork": "The Incredible Hulk (2008)",
+  "screenIndex": 2008,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Регенерация"
+  ],
+  "answer": true,
+  "thumb": 74
  },
  {
   "id": 148,
@@ -1585,11 +2502,24 @@
    "Иллюзии"
   ],
   "species": "Существо",
-  "answer": true,
-  "thumb": 75,
   "debut": "1968",
-  "debutWork": "Bible Tales for Young Folk #1",
-  "debutIndex": 1968
+  "debutWork": "Silver Surfer #3",
+  "debutIndex": 1968,
+  "anime": true,
+  "screenWork": "Ghost Rider (2007)",
+  "screenIndex": 2007,
+  "screenGender": "Мужской",
+  "screenSpecies": "Существо",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Магия",
+   "Иллюзии"
+  ],
+  "answer": true,
+  "thumb": 75
  },
  {
   "id": 137,
@@ -1606,11 +2536,24 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 76,
   "debut": "1976",
   "debutWork": "Daredevil #131",
-  "debutIndex": 1976
+  "debutIndex": 1976,
+  "anime": true,
+  "screenWork": "Daredevil (2003)",
+  "screenIndex": 2003,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Стрельба",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 76
  },
  {
   "id": 74,
@@ -1627,11 +2570,24 @@
    "Изменение размера"
   ],
   "species": "Нелюдь",
-  "answer": true,
-  "thumb": 77,
   "debut": "2013",
   "debutWork": "Captain Marvel Vol. 7 #14",
-  "debutIndex": 2013
+  "debutIndex": 2013,
+  "anime": true,
+  "screenWork": "Ms. Marvel (2022)",
+  "screenIndex": 2022,
+  "screenGender": "Женский",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Энергия",
+   "Изменение размера"
+  ],
+  "answer": true,
+  "thumb": 77
  },
  {
   "id": 100,
@@ -1648,11 +2604,14 @@
    "Технологии"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 78,
   "debut": "1987",
   "debutWork": "Uncanny X-Men #213",
-  "debutIndex": 1987
+  "debutIndex": 1987,
+  "anime": false,
+  "screenWork": null,
+  "screenIndex": null,
+  "answer": true,
+  "thumb": 78
  },
  {
   "id": 45,
@@ -1669,11 +2628,24 @@
    "Технологии"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 79,
   "debut": "1961",
-  "debutWork": "Amazing Adult Fantasy #7",
-  "debutIndex": 1961
+  "debutWork": "Fantastic Four #1",
+  "debutIndex": 1961,
+  "anime": true,
+  "screenWork": "Fantastic Four (2005)",
+  "screenIndex": 2005,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Фантастическая четвёрка"
+  ],
+  "screenPowers": [
+   "Растяжение",
+   "Технологии"
+  ],
+  "answer": true,
+  "thumb": 79
  },
  {
   "id": 134,
@@ -1690,11 +2662,24 @@
    "Технологии"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 80,
   "debut": "1964",
   "debutWork": "Amazing Spider-Man #2",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "Spider-Man: Far From Home (2019)",
+  "screenIndex": 2019,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Иллюзии",
+   "Технологии"
+  ],
+  "answer": true,
+  "thumb": 80
  },
  {
   "id": 38,
@@ -1710,11 +2695,24 @@
    "Перевоплощение"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 81,
   "debut": "1978",
   "debutWork": "Ms. Marvel #16",
-  "debutIndex": 1978
+  "debutIndex": 1978,
+  "anime": true,
+  "screenWork": "X-Men (2000)",
+  "screenIndex": 2000,
+  "screenGender": "Женский",
+  "screenSpecies": "Мутант",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Братство мутантов",
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Перевоплощение"
+  ],
+  "answer": true,
+  "thumb": 81
  },
  {
   "id": 109,
@@ -1732,11 +2730,25 @@
    "Магия"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 82,
   "debut": "1962",
   "debutWork": "Journey Into Mystery #84",
-  "debutIndex": 1962
+  "debutIndex": 1962,
+  "anime": true,
+  "screenWork": "Thor (2011)",
+  "screenIndex": 2011,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Полёт",
+   "Магия"
+  ],
+  "answer": true,
+  "thumb": 82
  },
  {
   "id": 133,
@@ -1753,11 +2765,24 @@
    "Полёт"
   ],
   "species": "Существо",
-  "answer": true,
-  "thumb": 83,
   "debut": "1971",
   "debutWork": "Amazing Spider-Man #101",
-  "debutIndex": 1971
+  "debutIndex": 1971,
+  "anime": true,
+  "screenWork": "Morbius (2022)",
+  "screenIndex": 2022,
+  "screenGender": "Мужской",
+  "screenSpecies": "Существо",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Регенерация",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 83
  },
  {
   "id": 24,
@@ -1774,17 +2799,31 @@
    "Технологии"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 84,
   "debut": "1985",
   "debutWork": "Avengers #257",
-  "debutIndex": 1985
+  "debutIndex": 1985,
+  "anime": true,
+  "screenWork": "Guardians of the Galaxy (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Женский",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Стражи Галактики",
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Боевые навыки",
+   "Технологии"
+  ],
+  "answer": true,
+  "thumb": 84
  },
  {
   "id": 46,
   "name": "Невидимая леди",
   "nameEn": "Invisible Woman",
-  "nameUk": "Невидима Леді",
+  "nameUk": "Невидима леді",
   "gender": "Женский",
   "side": "Герой",
   "teams": [
@@ -1795,11 +2834,24 @@
    "Силовые поля"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 85,
   "debut": "1961",
   "debutWork": "Fantastic Four #1",
-  "debutIndex": 1961
+  "debutIndex": 1961,
+  "anime": true,
+  "screenWork": "Fantastic Four (2005)",
+  "screenIndex": 2005,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Фантастическая четвёрка"
+  ],
+  "screenPowers": [
+   "Невидимость",
+   "Силовые поля"
+  ],
+  "answer": true,
+  "thumb": 85
  },
  {
   "id": 18,
@@ -1816,11 +2868,24 @@
    "Стрельба"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 86,
   "debut": "1963",
   "debutWork": "Sgt. Fury #1",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "Iron Man (2008)",
+  "screenIndex": 2008,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Щ.И.Т."
+  ],
+  "screenPowers": [
+   "Боевые навыки",
+   "Стрельба"
+  ],
+  "answer": true,
+  "thumb": 86
  },
  {
   "id": 73,
@@ -1837,11 +2902,14 @@
    "Энергия"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 87,
   "debut": "2011",
   "debutWork": "Point One #1",
-  "debutIndex": 2011
+  "debutIndex": 2011,
+  "anime": false,
+  "screenWork": null,
+  "screenIndex": null,
+  "answer": true,
+  "thumb": 87
  },
  {
   "id": 136,
@@ -1858,17 +2926,30 @@
    "Неуязвимость"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 88,
   "debut": "1966",
   "debutWork": "Amazing Spider-Man #41",
-  "debutIndex": 1966
+  "debutIndex": 1966,
+  "anime": true,
+  "screenWork": "The Amazing Spider-Man 2 (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Технологии",
+   "Сила"
+  ],
+  "answer": true,
+  "thumb": 88
  },
  {
   "id": 39,
   "name": "Ночной змей",
   "nameEn": "Nightcrawler",
-  "nameUk": "Нічний Змій",
+  "nameUk": "Нічний змій",
   "gender": "Мужской",
   "side": "Герой",
   "teams": [
@@ -1879,11 +2960,24 @@
    "Ловкость"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 89,
   "debut": "1975",
   "debutWork": "Giant-Size X-Men #1",
-  "debutIndex": 1975
+  "debutIndex": 1975,
+  "anime": true,
+  "screenWork": "X2 (2003)",
+  "screenIndex": 2003,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Телепортация",
+   "Ловкость"
+  ],
+  "answer": true,
+  "thumb": 89
  },
  {
   "id": 83,
@@ -1900,12 +2994,26 @@
    "Полёт",
    "Вода"
   ],
-  "species": "Нелюдь",
-  "answer": true,
-  "thumb": 90,
+  "species": "Мутант",
   "debut": "1939",
   "debutWork": "Motion Picture Funnies Weekly #1",
-  "debutIndex": 1939
+  "debutIndex": 1939,
+  "anime": true,
+  "screenWork": "Black Panther: Wakanda Forever (2022)",
+  "screenIndex": 2022,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Полёт",
+   "Вода"
+  ],
+  "answer": true,
+  "thumb": 90
  },
  {
   "id": 71,
@@ -1922,11 +3030,24 @@
    "Сила"
   ],
   "species": "Асгардиец",
-  "answer": true,
-  "thumb": 91,
   "debut": "1962",
   "debutWork": "Journey Into Mystery #85",
-  "debutIndex": 1962
+  "debutIndex": 1962,
+  "anime": true,
+  "screenWork": "Thor (2011)",
+  "screenIndex": 2011,
+  "screenGender": "Мужской",
+  "screenSpecies": "Асгардиец",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Магия",
+   "Сила"
+  ],
+  "answer": true,
+  "thumb": 91
  },
  {
   "id": 11,
@@ -1943,11 +3064,24 @@
    "Полёт"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 92,
   "debut": "1963",
   "debutWork": "Tales to Astonish #44",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "Ant-Man (2015)",
+  "screenIndex": 2015,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Щ.И.Т."
+  ],
+  "screenPowers": [
+   "Изменение размера",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 92
  },
  {
   "id": 91,
@@ -1964,11 +3098,24 @@
    "Стрельба"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 93,
   "debut": "1966",
   "debutWork": "Tales of Suspense #75",
-  "debutIndex": 1966
+  "debutIndex": 1966,
+  "anime": true,
+  "screenWork": "Captain America: The First Avenger (2011)",
+  "screenIndex": 2011,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Щ.И.Т."
+  ],
+  "screenPowers": [
+   "Боевые навыки",
+   "Стрельба"
+  ],
+  "answer": true,
+  "thumb": 93
  },
  {
   "id": 127,
@@ -1985,17 +3132,30 @@
    "Полёт"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 94,
   "debut": "1963",
   "debutWork": "Tales of Suspense #45",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "Iron Man (2008)",
+  "screenIndex": 2008,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Технологии",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 94
  },
  {
   "id": 60,
   "name": "Песочный человек",
   "nameEn": "Sandman",
-  "nameUk": "Піщана Людина",
+  "nameUk": "Піщана людина",
   "gender": "Мужской",
   "side": "Злодей",
   "teams": [
@@ -2006,11 +3166,24 @@
    "Сила"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 95,
   "debut": "1963",
   "debutWork": "Amazing Spider-Man #4",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "Spider-Man 3 (2007)",
+  "screenIndex": 2007,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Перевоплощение",
+   "Сила"
+  ],
+  "answer": true,
+  "thumb": 95
  },
  {
   "id": 103,
@@ -2026,17 +3199,29 @@
    "Магнетизм"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 96,
   "debut": "1968",
   "debutWork": "X-Men #49",
-  "debutIndex": 1968
+  "debutIndex": 1968,
+  "anime": true,
+  "screenWork": "The Gifted (2017)",
+  "screenIndex": 2017,
+  "screenGender": "Женский",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Магнетизм"
+  ],
+  "answer": true,
+  "thumb": 96
  },
  {
   "id": 86,
   "name": "Призрачный гонщик",
   "nameEn": "Ghost Rider",
-  "nameUk": "Примарний Гонщик",
+  "nameUk": "Примарний гонщик",
   "gender": "Мужской",
   "side": "Антигерой",
   "teams": [
@@ -2047,11 +3232,24 @@
    "Магия"
   ],
   "species": "Существо",
-  "answer": true,
-  "thumb": 97,
   "debut": "1972",
   "debutWork": "Marvel Spotlight #5",
-  "debutIndex": 1972
+  "debutIndex": 1972,
+  "anime": true,
+  "screenWork": "Ghost Rider (2007)",
+  "screenIndex": 2007,
+  "screenGender": "Мужской",
+  "screenSpecies": "Существо",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Огонь",
+   "Магия"
+  ],
+  "answer": true,
+  "thumb": 97
  },
  {
   "id": 31,
@@ -2067,11 +3265,23 @@
    "Телепатия"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 98,
   "debut": "1963",
   "debutWork": "X-Men #1",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "X-Men (2000)",
+  "screenIndex": 2000,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Телепатия"
+  ],
+  "answer": true,
+  "thumb": 98
  },
  {
   "id": 129,
@@ -2088,17 +3298,30 @@
    "Боевые навыки"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 99,
   "debut": "1976",
   "debutWork": "Captain Britain #8",
-  "debutIndex": 1976
+  "debutIndex": 1976,
+  "anime": true,
+  "screenWork": "X-Men: The Last Stand (2006)",
+  "screenIndex": 2006,
+  "screenGender": "Женский",
+  "screenSpecies": "Мутант",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Братство мутантов"
+  ],
+  "screenPowers": [
+   "Телепатия",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 99
  },
  {
   "id": 138,
   "name": "Пурпурный человек",
   "nameEn": "Purple Man",
-  "nameUk": "Пурпурова Людина",
+  "nameUk": "Пурпурова людина",
   "gender": "Мужской",
   "side": "Злодей",
   "teams": [
@@ -2108,11 +3331,23 @@
    "Телепатия"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 100,
   "debut": "1964",
   "debutWork": "Daredevil #4",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "Jessica Jones (2015)",
+  "screenIndex": 2015,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Телепатия"
+  ],
+  "answer": true,
+  "thumb": 100
  },
  {
   "id": 22,
@@ -2129,11 +3364,24 @@
    "Стрельба"
   ],
   "species": "Существо",
-  "answer": true,
-  "thumb": 101,
   "debut": "1976",
-  "debutWork": "Incredible Hulk #271",
-  "debutIndex": 1976
+  "debutWork": "Marvel Preview #7",
+  "debutIndex": 1976,
+  "anime": true,
+  "screenWork": "Guardians of the Galaxy (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Мужской",
+  "screenSpecies": "Существо",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Стражи Галактики"
+  ],
+  "screenPowers": [
+   "Технологии",
+   "Стрельба"
+  ],
+  "answer": true,
+  "thumb": 101
  },
  {
   "id": 112,
@@ -2150,11 +3398,24 @@
    "Магия"
   ],
   "species": "Существо",
-  "answer": true,
-  "thumb": 102,
   "debut": "2014",
   "debutWork": "All-New Ghost Rider #1",
-  "debutIndex": 2014
+  "debutIndex": 2014,
+  "anime": true,
+  "screenWork": "Agents of S.H.I.E.L.D. (2016)",
+  "screenIndex": 2016,
+  "screenGender": "Мужской",
+  "screenSpecies": "Существо",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Щ.И.Т."
+  ],
+  "screenPowers": [
+   "Огонь",
+   "Магия"
+  ],
+  "answer": true,
+  "thumb": 102
  },
  {
   "id": 96,
@@ -2171,11 +3432,24 @@
    "Энергия"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 103,
   "debut": "1967",
   "debutWork": "Fantastic Four #65",
-  "debutIndex": 1967
+  "debutIndex": 1967,
+  "anime": true,
+  "screenWork": "Guardians of the Galaxy (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Мужской",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 103
  },
  {
   "id": 32,
@@ -2190,14 +3464,29 @@
   ],
   "powers": [
    "Регенерация",
+   "Чутьё",
    "Боевые навыки"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 104,
   "debut": "1974",
   "debutWork": "Incredible Hulk #180",
-  "debutIndex": 1974
+  "debutIndex": 1974,
+  "anime": true,
+  "screenWork": "X-Men (2000)",
+  "screenIndex": 2000,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Регенерация",
+   "Чутьё",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 104
  },
  {
   "id": 41,
@@ -2215,11 +3504,23 @@
    "Поглощение"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 105,
   "debut": "1981",
   "debutWork": "Avengers Annual #10",
-  "debutIndex": 1981
+  "debutIndex": 1981,
+  "anime": true,
+  "screenWork": "X-Men (2000)",
+  "screenIndex": 2000,
+  "screenGender": "Женский",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Поглощение"
+  ],
+  "answer": true,
+  "thumb": 105
  },
  {
   "id": 14,
@@ -2236,11 +3537,24 @@
    "Скорость"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 106,
   "debut": "1964",
   "debutWork": "X-Men #4",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "Captain America: The Winter Soldier (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Люди Икс",
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Скорость"
+  ],
+  "answer": true,
+  "thumb": 106
  },
  {
   "id": 131,
@@ -2257,17 +3571,30 @@
    "Чутьё"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 107,
   "debut": "1977",
   "debutWork": "Iron Fist #14",
-  "debutIndex": 1977
+  "debutIndex": 1977,
+  "anime": true,
+  "screenWork": "X-Men (2000)",
+  "screenIndex": 2000,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Братство мутантов"
+  ],
+  "screenPowers": [
+   "Регенерация",
+   "Чутьё"
+  ],
+  "answer": true,
+  "thumb": 107
  },
  {
   "id": 98,
   "name": "Серебряный сёрфер",
   "nameEn": "Silver Surfer",
-  "nameUk": "Срібний Серфер",
+  "nameUk": "Срібний серфер",
   "gender": "Мужской",
   "side": "Герой",
   "teams": [
@@ -2278,11 +3605,24 @@
    "Энергия"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 108,
   "debut": "1966",
   "debutWork": "Fantastic Four #48",
-  "debutIndex": 1966
+  "debutIndex": 1966,
+  "anime": true,
+  "screenWork": "Fantastic Four: Rise of the Silver Surfer (2007)",
+  "screenIndex": 2007,
+  "screenGender": "Мужской",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Полёт",
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 108
  },
  {
   "id": 149,
@@ -2299,11 +3639,24 @@
    "Перевоплощение"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 109,
   "debut": "1976",
-  "debutWork": "Venus #1",
-  "debutIndex": 1976
+  "debutWork": "Eternals #3",
+  "debutIndex": 1976,
+  "anime": true,
+  "screenWork": "Eternals (2021)",
+  "screenIndex": 2021,
+  "screenGender": "Женский",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Магия",
+   "Перевоплощение"
+  ],
+  "answer": true,
+  "thumb": 109
  },
  {
   "id": 123,
@@ -2320,11 +3673,24 @@
    "Регенерация"
   ],
   "species": "Симбиот",
-  "answer": true,
-  "thumb": 110,
   "debut": "1984",
   "debutWork": "Amazing Spider-Man #252",
-  "debutIndex": 1984
+  "debutIndex": 1984,
+  "anime": true,
+  "screenWork": "Spider-Man 3 (2007)",
+  "screenIndex": 2007,
+  "screenGender": "Мужской",
+  "screenSpecies": "Симбиот",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Перевоплощение",
+   "Регенерация"
+  ],
+  "answer": true,
+  "thumb": 110
  },
  {
   "id": 62,
@@ -2341,11 +3707,21 @@
    "Технологии"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 111,
   "debut": "1964",
   "debutWork": "Amazing Spider-Man #19",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "Spider-Man: Homecoming (2017)",
+  "screenIndex": 2017,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [],
+  "answer": true,
+  "thumb": 111
  },
  {
   "id": 16,
@@ -2362,17 +3738,30 @@
    "Технологии"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 112,
   "debut": "1969",
   "debutWork": "Captain America #117",
-  "debutIndex": 1969
+  "debutIndex": 1969,
+  "anime": true,
+  "screenWork": "Captain America: The Winter Soldier (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Полёт",
+   "Технологии"
+  ],
+  "answer": true,
+  "thumb": 112
  },
  {
   "id": 6,
   "name": "Соколиный глаз",
   "nameEn": "Hawkeye",
-  "nameUk": "Соколине Око",
+  "nameUk": "Соколине око",
   "gender": "Мужской",
   "side": "Герой",
   "teams": [
@@ -2383,11 +3772,24 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 113,
   "debut": "1964",
   "debutWork": "Tales of Suspense #57",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "Thor (2011)",
+  "screenIndex": 2011,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Стрельба",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 113
  },
  {
   "id": 49,
@@ -2404,11 +3806,24 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 114,
   "debut": "1964",
   "debutWork": "Daredevil #1",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "Daredevil (2003)",
+  "screenIndex": 2003,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Защитники"
+  ],
+  "screenPowers": [
+   "Чутьё",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 114
  },
  {
   "id": 119,
@@ -2422,14 +3837,18 @@
   ],
   "powers": [
    "Сила",
-   "Ловкость"
+   "Ловкость",
+   "Чутьё"
   ],
   "species": "Существо",
-  "answer": true,
-  "thumb": 115,
   "debut": "1983",
   "debutWork": "Marvel Tails #1",
-  "debutIndex": 1983
+  "debutIndex": 1983,
+  "anime": false,
+  "screenWork": null,
+  "screenIndex": null,
+  "answer": true,
+  "thumb": 115
  },
  {
   "id": 63,
@@ -2446,11 +3865,24 @@
    "Технологии"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 116,
   "debut": "1963",
   "debutWork": "Amazing Spider-Man #2",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "Spider-Man: Homecoming (2017)",
+  "screenIndex": 2017,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Полёт",
+   "Технологии"
+  ],
+  "answer": true,
+  "thumb": 116
  },
  {
   "id": 48,
@@ -2467,11 +3899,24 @@
    "Неуязвимость"
   ],
   "species": "Существо",
-  "answer": true,
-  "thumb": 117,
   "debut": "1961",
   "debutWork": "Fantastic Four #1",
-  "debutIndex": 1961
+  "debutIndex": 1961,
+  "anime": true,
+  "screenWork": "Fantastic Four (2005)",
+  "screenIndex": 2005,
+  "screenGender": "Мужской",
+  "screenSpecies": "Существо",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Фантастическая четвёрка"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Неуязвимость"
+  ],
+  "answer": true,
+  "thumb": 117
  },
  {
   "id": 88,
@@ -2487,11 +3932,23 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 118,
   "debut": "1962",
   "debutWork": "Incredible Hulk #1",
-  "debutIndex": 1962
+  "debutIndex": 1962,
+  "anime": true,
+  "screenWork": "Hulk (2003)",
+  "screenIndex": 2003,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 118
  },
  {
   "id": 27,
@@ -2508,11 +3965,24 @@
    "Энергия"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 119,
   "debut": "1973",
   "debutWork": "Iron Man #55",
-  "debutIndex": 1973
+  "debutIndex": 1973,
+  "anime": true,
+  "screenWork": "The Avengers (2012)",
+  "screenIndex": 2012,
+  "screenGender": "Мужской",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Чёрный орден"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 119
  },
  {
   "id": 146,
@@ -2529,11 +3999,24 @@
    "Стрельба"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 120,
   "debut": "1980",
   "debutWork": "Avengers #195",
-  "debutIndex": 1980
+  "debutIndex": 1980,
+  "anime": true,
+  "screenWork": "Black Widow (2021)",
+  "screenIndex": 2021,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Тандерболты"
+  ],
+  "screenPowers": [
+   "Боевые навыки",
+   "Стрельба"
+  ],
+  "answer": true,
+  "thumb": 120
  },
  {
   "id": 3,
@@ -2551,11 +4034,25 @@
    "Магия"
   ],
   "species": "Асгардиец",
-  "answer": true,
-  "thumb": 121,
   "debut": "1962",
-  "debutWork": "Venus #11",
-  "debutIndex": 1962
+  "debutWork": "Journey Into Mystery #83",
+  "debutIndex": 1962,
+  "anime": true,
+  "screenWork": "Thor (2011)",
+  "screenIndex": 2011,
+  "screenGender": "Мужской",
+  "screenSpecies": "Асгардиец",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Полёт",
+   "Магия"
+  ],
+  "answer": true,
+  "thumb": 121
  },
  {
   "id": 90,
@@ -2571,11 +4068,23 @@
    "Стрельба"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 122,
   "debut": "2011",
   "debutWork": "Battle Scars #1",
-  "debutIndex": 2011
+  "debutIndex": 2011,
+  "anime": true,
+  "screenWork": "Iron Man (2008)",
+  "screenIndex": 2008,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Щ.И.Т."
+  ],
+  "screenPowers": [
+   "Стрельба"
+  ],
+  "answer": true,
+  "thumb": 122
  },
  {
   "id": 79,
@@ -2592,11 +4101,24 @@
    "Полёт"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 123,
   "debut": "1982",
   "debutWork": "Amazing Spider-Man Annual #16",
-  "debutIndex": 1982
+  "debutIndex": 1982,
+  "anime": true,
+  "screenWork": "Captain Marvel (2019)",
+  "screenIndex": 2019,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Энергия",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 123
  },
  {
   "id": 4,
@@ -2613,11 +4135,24 @@
    "Регенерация"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 124,
   "debut": "1962",
   "debutWork": "Incredible Hulk #1",
-  "debutIndex": 1962
+  "debutIndex": 1962,
+  "anime": true,
+  "screenWork": "Hulk (2003)",
+  "screenIndex": 2003,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Регенерация"
+  ],
+  "answer": true,
+  "thumb": 124
  },
  {
   "id": 69,
@@ -2634,11 +4169,24 @@
    "Сила"
   ],
   "species": "Асгардиец",
-  "answer": true,
-  "thumb": 125,
   "debut": "1962",
   "debutWork": "Journey Into Mystery #85",
-  "debutIndex": 1962
+  "debutIndex": 1962,
+  "anime": true,
+  "screenWork": "Thor (2011)",
+  "screenIndex": 2011,
+  "screenGender": "Мужской",
+  "screenSpecies": "Асгардиец",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Чутьё",
+   "Сила"
+  ],
+  "answer": true,
+  "thumb": 125
  },
  {
   "id": 68,
@@ -2655,11 +4203,24 @@
    "Сила"
   ],
   "species": "Асгардиец",
-  "answer": true,
-  "thumb": 126,
   "debut": "1964",
   "debutWork": "Journey Into Mystery #102",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "Thor: Ragnarok (2017)",
+  "screenIndex": 2017,
+  "screenGender": "Женский",
+  "screenSpecies": "Асгардиец",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Магия",
+   "Сила"
+  ],
+  "answer": true,
+  "thumb": 126
  },
  {
   "id": 107,
@@ -2676,11 +4237,24 @@
    "Технологии"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 127,
   "debut": "1962",
-  "debutWork": "Strange Tales #75",
-  "debutIndex": 1962
+  "debutWork": "Tales to Astonish #27",
+  "debutIndex": 1962,
+  "anime": true,
+  "screenWork": "Ant-Man (2015)",
+  "screenIndex": 2015,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Щ.И.Т."
+  ],
+  "screenPowers": [
+   "Изменение размера",
+   "Технологии"
+  ],
+  "answer": true,
+  "thumb": 127
  },
  {
   "id": 33,
@@ -2696,11 +4270,23 @@
    "Энергия"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 128,
   "debut": "1963",
   "debutWork": "X-Men #1",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "X-Men (2000)",
+  "screenIndex": 2000,
+  "screenGender": "Мужской",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 128
  },
  {
   "id": 78,
@@ -2718,11 +4304,25 @@
    "Энергия"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 129,
   "debut": "2000",
   "debutWork": "Sentry #1",
-  "debutIndex": 2000
+  "debutIndex": 2000,
+  "anime": true,
+  "screenWork": "Thunderbolts* (2025)",
+  "screenIndex": 2025,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Тандерболты"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Полёт",
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 129
  },
  {
   "id": 10,
@@ -2739,11 +4339,24 @@
    "Технологии"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 130,
   "debut": "1979",
   "debutWork": "Avengers #181",
-  "debutIndex": 1979
+  "debutIndex": 1979,
+  "anime": true,
+  "screenWork": "Ant-Man (2015)",
+  "screenIndex": 2015,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Изменение размера",
+   "Технологии"
+  ],
+  "answer": true,
+  "thumb": 130
  },
  {
   "id": 7,
@@ -2757,14 +4370,29 @@
   ],
   "powers": [
    "Сила",
-   "Ловкость"
+   "Ловкость",
+   "Чутьё"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 131,
   "debut": "1962",
   "debutWork": "Amazing Fantasy #15",
-  "debutIndex": 1962
+  "debutIndex": 1962,
+  "anime": true,
+  "screenWork": "Spider-Man (2002)",
+  "screenIndex": 2002,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Ловкость",
+   "Чутьё"
+  ],
+  "answer": true,
+  "thumb": 131
  },
  {
   "id": 115,
@@ -2780,12 +4408,15 @@
    "Сила",
    "Ловкость"
   ],
-  "species": "Мутант",
-  "answer": true,
-  "thumb": 132,
+  "species": "Человек",
   "debut": "1992",
-  "debutWork": "Marvel 1991 Annual Report #1",
-  "debutIndex": 1992
+  "debutWork": "Amazing Spider-Man #365",
+  "debutIndex": 1992,
+  "anime": false,
+  "screenWork": null,
+  "screenIndex": null,
+  "answer": true,
+  "thumb": 132
  },
  {
   "id": 120,
@@ -2799,14 +4430,18 @@
   ],
   "powers": [
    "Сила",
-   "Ловкость"
+   "Ловкость",
+   "Чутьё"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 133,
   "debut": "2004",
   "debutWork": "Spider-Man: India #1",
-  "debutIndex": 2004
+  "debutIndex": 2004,
+  "anime": false,
+  "screenWork": null,
+  "screenIndex": null,
+  "answer": true,
+  "thumb": 133
  },
  {
   "id": 121,
@@ -2820,14 +4455,18 @@
   ],
   "powers": [
    "Ловкость",
+   "Чутьё",
    "Стрельба"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 134,
   "debut": "2009",
   "debutWork": "Spider-Man Noir #1",
-  "debutIndex": 2009
+  "debutIndex": 2009,
+  "anime": false,
+  "screenWork": null,
+  "screenIndex": null,
+  "answer": true,
+  "thumb": 134
  },
  {
   "id": 47,
@@ -2844,17 +4483,30 @@
    "Полёт"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 135,
   "debut": "1961",
   "debutWork": "Fantastic Four #1",
-  "debutIndex": 1961
+  "debutIndex": 1961,
+  "anime": true,
+  "screenWork": "Fantastic Four (2005)",
+  "screenIndex": 2005,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Фантастическая четвёрка"
+  ],
+  "screenPowers": [
+   "Огонь",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 135
  },
  {
   "id": 5,
   "name": "Чёрная вдова",
   "nameEn": "Black Widow",
-  "nameUk": "Чорна Вдова",
+  "nameUk": "Чорна вдова",
   "gender": "Женский",
   "side": "Герой",
   "teams": [
@@ -2865,17 +4517,30 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 136,
   "debut": "1964",
   "debutWork": "Tales of Suspense #52",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "Iron Man 2 (2010)",
+  "screenIndex": 2010,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители",
+   "Щ.И.Т."
+  ],
+  "screenPowers": [
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 136
  },
  {
   "id": 139,
   "name": "Чёрная кошка",
   "nameEn": "Black Cat",
-  "nameUk": "Чорна Кішка",
+  "nameUk": "Чорна кішка",
   "gender": "Женский",
   "side": "Антигерой",
   "teams": [
@@ -2886,17 +4551,27 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 137,
   "debut": "1979",
   "debutWork": "Amazing Spider-Man #194",
-  "debutIndex": 1979
+  "debutIndex": 1979,
+  "anime": true,
+  "screenWork": "The Amazing Spider-Man 2 (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [],
+  "answer": true,
+  "thumb": 137
  },
  {
   "id": 9,
   "name": "Чёрная пантера",
   "nameEn": "Black Panther",
-  "nameUk": "Чорна Пантера",
+  "nameUk": "Чорна пантера",
   "gender": "Мужской",
   "side": "Герой",
   "teams": [
@@ -2907,11 +4582,24 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 138,
   "debut": "1966",
   "debutWork": "Fantastic Four #52",
-  "debutIndex": 1966
+  "debutIndex": 1966,
+  "anime": true,
+  "screenWork": "Captain America: Civil War (2016)",
+  "screenIndex": 2016,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Мстители"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 138
  },
  {
   "id": 84,
@@ -2928,11 +4616,24 @@
    "Полёт"
   ],
   "species": "Нелюдь",
-  "answer": true,
-  "thumb": 139,
   "debut": "1965",
   "debutWork": "Fantastic Four #45",
-  "debutIndex": 1965
+  "debutIndex": 1965,
+  "anime": true,
+  "screenWork": "Inhumans (2017)",
+  "screenIndex": 2017,
+  "screenGender": "Мужской",
+  "screenSpecies": "Нелюдь",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Нелюди"
+  ],
+  "screenPowers": [
+   "Энергия",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 139
  },
  {
   "id": 75,
@@ -2948,11 +4649,24 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 140,
   "debut": "1973",
   "debutWork": "Special Marvel Edition #15",
-  "debutIndex": 1973
+  "debutIndex": 1973,
+  "anime": true,
+  "screenWork": "Shang-Chi and the Legend of the Ten Rings (2021)",
+  "screenIndex": 2021,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Боевые навыки",
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 140
  },
  {
   "id": 117,
@@ -2966,14 +4680,25 @@
   ],
   "powers": [
    "Сила",
-   "Ловкость"
+   "Ловкость",
+   "Чутьё"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 141,
   "debut": "2014",
   "debutWork": "Amazing Spider-Man Vol. 3 #1",
-  "debutIndex": 2014
+  "debutIndex": 2014,
+  "anime": true,
+  "screenWork": "Spider-Man: Homecoming (2017)",
+  "screenIndex": 2017,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [],
+  "answer": true,
+  "thumb": 141
  },
  {
   "id": 35,
@@ -2990,11 +4715,24 @@
    "Полёт"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 142,
   "debut": "1975",
   "debutWork": "Giant-Size X-Men #1",
-  "debutIndex": 1975
+  "debutIndex": 1975,
+  "anime": true,
+  "screenWork": "X-Men (2000)",
+  "screenIndex": 2000,
+  "screenGender": "Женский",
+  "screenSpecies": "Мутант",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Люди Икс"
+  ],
+  "screenPowers": [
+   "Погода",
+   "Полёт"
+  ],
+  "answer": true,
+  "thumb": 142
  },
  {
   "id": 108,
@@ -3011,11 +4749,24 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 143,
   "debut": "2005",
   "debutWork": "Black Panther Vol. 4 #2",
-  "debutIndex": 2005
+  "debutIndex": 2005,
+  "anime": true,
+  "screenWork": "Black Panther (2018)",
+  "screenIndex": 2018,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Герой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Технологии",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 143
  },
  {
   "id": 95,
@@ -3032,11 +4783,24 @@
    "Телепатия"
   ],
   "species": "Инопланетянин",
-  "answer": true,
-  "thumb": 144,
   "debut": "2013",
   "debutWork": "New Avengers Vol. 3 #8",
-  "debutIndex": 2013
+  "debutIndex": 2013,
+  "anime": true,
+  "screenWork": "Avengers: Infinity War (2018)",
+  "screenIndex": 2018,
+  "screenGender": "Мужской",
+  "screenSpecies": "Инопланетянин",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Чёрный орден"
+  ],
+  "screenPowers": [
+   "Телекинез",
+   "Телепатия"
+  ],
+  "answer": true,
+  "thumb": 144
  },
  {
   "id": 111,
@@ -3053,11 +4817,24 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 145,
   "debut": "1986",
   "debutWork": "Captain America #323",
-  "debutIndex": 1986
+  "debutIndex": 1986,
+  "anime": true,
+  "screenWork": "The Falcon and The Winter Soldier (2021)",
+  "screenIndex": 2021,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Тандерболты"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 145
  },
  {
   "id": 76,
@@ -3073,11 +4850,23 @@
    "Боевые навыки"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 146,
   "debut": "1981",
   "debutWork": "Daredevil #168",
-  "debutIndex": 1981
+  "debutIndex": 1981,
+  "anime": true,
+  "screenWork": "Daredevil (2003)",
+  "screenIndex": 2003,
+  "screenGender": "Женский",
+  "screenSpecies": "Человек",
+  "screenSide": "Антигерой",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Боевые навыки"
+  ],
+  "answer": true,
+  "thumb": 146
  },
  {
   "id": 59,
@@ -3094,11 +4883,23 @@
    "Полёт"
   ],
   "species": "Человек",
-  "answer": true,
-  "thumb": 147,
   "debut": "1964",
   "debutWork": "Amazing Spider-Man #9",
-  "debutIndex": 1964
+  "debutIndex": 1964,
+  "anime": true,
+  "screenWork": "The Amazing Spider-Man 2 (2014)",
+  "screenIndex": 2014,
+  "screenGender": "Мужской",
+  "screenSpecies": "Человек",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Энергия"
+  ],
+  "answer": true,
+  "thumb": 147
  },
  {
   "id": 101,
@@ -3116,11 +4917,24 @@
    "Неуязвимость"
   ],
   "species": "Мутант",
-  "answer": true,
-  "thumb": 148,
   "debut": "1980",
   "debutWork": "X-Men #129",
-  "debutIndex": 1980
+  "debutIndex": 1980,
+  "anime": true,
+  "screenWork": "X-Men: First Class (2011)",
+  "screenIndex": 2011,
+  "screenGender": "Женский",
+  "screenSpecies": "Мутант",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Клуб Адского пламени"
+  ],
+  "screenPowers": [
+   "Телепатия",
+   "Неуязвимость"
+  ],
+  "answer": true,
+  "thumb": 148
  },
  {
   "id": 135,
@@ -3137,10 +4951,23 @@
    "Регенерация"
   ],
   "species": "Существо",
-  "answer": true,
-  "thumb": 149,
   "debut": "1963",
   "debutWork": "Amazing Spider-Man #6",
-  "debutIndex": 1963
+  "debutIndex": 1963,
+  "anime": true,
+  "screenWork": "Spider-Man 2 (2004)",
+  "screenIndex": 2004,
+  "screenGender": "Мужской",
+  "screenSpecies": "Существо",
+  "screenSide": "Злодей",
+  "screenTeams": [
+   "Одиночка"
+  ],
+  "screenPowers": [
+   "Сила",
+   "Регенерация"
+  ],
+  "answer": true,
+  "thumb": 149
  }
 ]

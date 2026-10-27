@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: '/',
     display: 'standalone',
     background_color: '#0d0f12',
-    theme_color: '#ff8a1f',
+    theme_color: '#0d0f12',
     related_applications: [{ platform: 'webapp', url: 'https://nandaguessr.com/manifest.webmanifest' }],
     prefer_related_applications: false,
     icons: [

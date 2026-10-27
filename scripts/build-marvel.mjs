@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { PUBLIC, ROOT, cachedDownload, cachedJson, comicIssue, infobox, pool, pruneImages, wikiImageUrls, wikiPages, wikiQuery, writeAtlas, writeFullAndThumb } from './lib.mjs'
+import { PUBLIC, ROOT, cachedDownload, cachedJson, categoryMembers, comicIssue, infobox, pool, pruneImages, wikiImageUrls, wikiPages, wikiQuery, writeAtlas, writeFullAndThumb } from './lib.mjs'
 import { dropDeleted, onlyAnswers } from './dropped.mjs'
 
 const API = 'https://marvel.fandom.com/api.php'
@@ -26,6 +26,18 @@ const FIRST = {
   Mystique: 'Ms. Marvel Vol 1 16',
   Apocalypse: 'X-Factor Vol 1 5',
   'Spider-Ham': 'Marvel Tails Vol 1 1',
+  Thor: 'Journey Into Mystery Vol 1 83',
+  Loki: 'Journey Into Mystery Vol 1 85',
+  'Star-Lord': 'Marvel Preview Vol 1 4',
+  Groot: 'Tales to Astonish Vol 1 13',
+  Yondu: 'Marvel Super-Heroes Vol 1 18',
+  Rocket: 'Marvel Preview Vol 1 7',
+  'Mister Fantastic': 'Fantastic Four Vol 1 1',
+  'Jessica Jones': 'Alias Vol 1 1',
+  Mephisto: 'Silver Surfer Vol 1 3',
+  Sersi: 'Eternals Vol 1 3',
+  'Hank Pym': 'Tales to Astonish Vol 1 27',
+  'Spider-Man 2099': 'Amazing Spider-Man Vol 1 365',
 }
 
 const M = 'Мужской'
@@ -33,6 +45,180 @@ const F = 'Женский'
 const HERO = 'Герой'
 const VILLAIN = 'Злодей'
 const ANTI = 'Антигерой'
+
+const SCREEN_REALITIES = [
+  'Earth-199999',
+  'Earth-828',
+  'Earth-TRN1655',
+  'Earth-41578',
+  'Earth-10005',
+  'Earth-17315',
+  'Earth-17040',
+  'Earth-17372',
+  'Earth-121698',
+  'Earth-15866',
+  'Earth-701306',
+  'Earth-121347',
+  'Earth-96283',
+  'Earth-120703',
+  'Earth-688B',
+  'Earth-26320',
+  'Earth-400083',
+  'Earth-58732',
+  'Earth-47281',
+  'Earth-66250',
+]
+
+const SCREEN_NAMES = {
+  'Winter Soldier': ['James Buchanan Barnes'],
+  Magneto: ['Erik Lehnsherr'],
+  Mystique: ['Raven Darkhölme'],
+  Rogue: ["Marie D'Ancanto"],
+  Killmonger: ["N'Jadaka"],
+  Hela: ['Hela Odinsdottir'],
+  'Shang-Chi': ['Xu Shang-Chi'],
+  Namor: ["K'uk'ulkan"],
+  'X-23': ['Laura'],
+  'Purple Man': ['Kevin Thompson'],
+  Taskmaster: ['Antonia Dreykov'],
+  Punisher: ['Francis Castle', 'Francis Castle Jr.'],
+  Bullseye: ['Bullseye', 'Benjamin Poindexter'],
+  'Mister Sinister': ['Nathaniel Essex'],
+  'Kang the Conqueror': ['Kang the Conqueror'],
+  Bishop: ['Lucas Bishop'],
+}
+
+const SCREEN_TRAITS = {
+  'Doctor Strange': { teams: ['Мстители'] },
+  'Scarlet Witch': { species: 'Человек', teams: ['Мстители'] },
+  Quicksilver: { teams: ['Люди Икс', 'Мстители'] },
+  Wasp: { teams: ['Щ.И.Т.'] },
+  'Winter Soldier': { teams: ['Мстители', 'Тандерболты'] },
+  Nebula: { teams: ['Стражи Галактики', 'Мстители'] },
+  Mantis: { species: 'Инопланетянин', powers: ['Телепатия'] },
+  Yondu: { teams: ['Одиночка'], powers: ['Стрельба', 'Технологии'] },
+  'Doctor Doom': { powers: ['Энергия', 'Технологии'] },
+  Wolverine: { teams: ['Люди Икс'] },
+  Beast: { teams: ['Люди Икс'] },
+  Mystique: { side: 'Антигерой', teams: ['Братство мутантов', 'Люди Икс'] },
+  Gambit: { teams: ['Одиночка'] },
+  Rogue: { powers: ['Поглощение'] },
+  'Jessica Jones': { powers: ['Сила'] },
+  'Doctor Octopus': { teams: ['Одиночка'] },
+  Electro: { teams: ['Одиночка'], powers: ['Энергия'] },
+  Sandman: { teams: ['Одиночка'] },
+  'Kraven the Hunter': { teams: ['Одиночка'] },
+  Scorpion: { teams: ['Одиночка'], powers: [] },
+  Vulture: { teams: ['Одиночка'] },
+  Rhino: { teams: ['Одиночка'], powers: ['Технологии', 'Сила'] },
+  Mysterio: { teams: ['Одиночка'] },
+  'Black Cat': { powers: [] },
+  'Agent Venom': { species: 'Человек', teams: ['Одиночка'], powers: [] },
+  Silk: { powers: [] },
+  'Ms. Marvel': { species: 'Мутант', teams: ['Одиночка'], powers: ['Энергия', 'Изменение размера'] },
+  'Shang-Chi': { teams: ['Одиночка'], powers: ['Боевые навыки', 'Энергия'] },
+  Sentry: { teams: ['Тандерболты'] },
+  Photon: { teams: ['Одиночка'] },
+  Ironheart: { teams: ['Одиночка'] },
+  'Kate Bishop': { teams: ['Одиночка'] },
+  'Yelena Belova': { teams: ['Тандерболты'] },
+  Namor: { species: 'Мутант', teams: ['Одиночка'] },
+  'Thunderbolt Ross': { teams: ['Одиночка'] },
+  'Baron Zemo': { teams: ['Одиночка'] },
+  'Emma Frost': { side: 'Злодей', teams: ['Клуб Адского пламени'] },
+  Polaris: { teams: ['Одиночка'] },
+  Juggernaut: { species: 'Мутант' },
+  'Hank Pym': { teams: ['Щ.И.Т.'] },
+  Shuri: { teams: ['Одиночка'] },
+  'Mighty Thor': { teams: ['Одиночка'] },
+  'Robbie Reyes': { teams: ['Щ.И.Т.'] },
+  Taskmaster: { gender: F },
+  'Mar-Vell': { gender: F, powers: ['Технологии'] },
+  'America Chavez': { teams: ['Одиночка'], powers: ['Телепортация'] },
+  Wong: { teams: ['Одиночка'] },
+  Cable: { teams: ['Одиночка'], powers: ['Технологии', 'Стрельба'] },
+  Psylocke: { side: 'Злодей', teams: ['Братство мутантов'] },
+  'Agatha Harkness': { side: 'Антигерой' },
+  Sersi: { teams: ['Одиночка'] },
+  Ikaris: { side: 'Злодей' },
+}
+
+const SCREEN_TEMPLATE = /Marvel Database:(Film|Episode) Template/
+
+const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
+
+async function cachedMap(name, keys, load) {
+  const file = path.join(CACHE, name)
+  const known = JSON.parse(await fs.readFile(file, 'utf8').catch(() => '{}'))
+  const fresh = [...new Set(keys)].filter((key) => !(key in known))
+  if (fresh.length) {
+    Object.assign(known, await load(fresh))
+    await fs.writeFile(file, JSON.stringify(known))
+  }
+  return known
+}
+
+function releaseDate(text) {
+  const raw = infobox(text, 'Release Date') ?? infobox(text, 'US Release Date')
+  const film = raw?.match(/([A-Za-z]+)\s+(\d{1,2}),?\s+(\d{4})/)
+  if (film) return `${film[3]}-${String(MONTHS.indexOf(film[1].toLowerCase()) + 1).padStart(2, '0')}-${film[2].padStart(2, '0')}`
+  const year = (infobox(text, 'Year') ?? raw)?.match(/\d{4}/)?.[0]
+  if (!year) return null
+  const month = MONTHS.indexOf((infobox(text, 'Month') ?? '').trim().toLowerCase()) + 1
+  const day = Number(infobox(text, 'Day')?.match(/\d+/)?.[0] ?? 0)
+  return `${year}-${String(month || 12).padStart(2, '0')}-${String(day || 28).padStart(2, '0')}`
+}
+
+function screenTitle(work) {
+  return work
+    .replace(/ Season \d+ \d+$/, '')
+    .replace(/ \((?:\d{4} )?(?:film|TV series)\)$/, '')
+    .replace(/^Marvel's /, '')
+}
+
+async function screenDebuts(roster) {
+  const bases = Object.fromEntries(
+    roster.map(([title, nameEn]) => [
+      nameEn,
+      [...(title.endsWith('(Earth-616)') ? [title.replace(/ \(Earth-616\)$/, '')] : []), ...(SCREEN_NAMES[nameEn] ?? [])],
+    ]),
+  )
+  const candidates = Object.values(bases).flatMap((names) => names.flatMap((name) => SCREEN_REALITIES.map((earth) => `${name} (${earth})`)))
+  const versions = await cachedMap('screen-versions.json', candidates, async (titles) => {
+    const res = await wikiQuery(API, titles, 'prop=info')
+    return Object.fromEntries(titles.map((title) => [title, res[title] && !('missing' in res[title]) ? res[title].title : null]))
+  })
+  const found = [...new Set(Object.values(versions).filter(Boolean))]
+  const appearances = await cachedMap('screen-appearances.json', found, async (titles) => {
+    const out = {}
+    await pool(titles, 6, async (title) => {
+      out[title] = await categoryMembers(API, `${title}/Appearances`)
+    })
+    return out
+  })
+  const works = await cachedMap('screen-works.json', Object.values(appearances).flat(), async (titles) => {
+    const res = await wikiQuery(API, titles, 'prop=revisions&rvprop=content&rvslots=main&rvsection=0')
+    return Object.fromEntries(
+      titles.map((title) => {
+        const text = res[title]?.revisions?.[0]?.slots?.main?.['*'] ?? ''
+        return [title, SCREEN_TEMPLATE.test(text) ? releaseDate(text) : null]
+      }),
+    )
+  })
+  const today = new Date().toISOString().slice(0, 10)
+  return Object.fromEntries(
+    Object.entries(bases).map(([nameEn, names]) => {
+      const pages = names.flatMap((name) => SCREEN_REALITIES.map((earth) => versions[`${name} (${earth})`])).filter(Boolean)
+      const seen = pages
+        .flatMap((page) => appearances[page] ?? [])
+        .filter((work) => works[work] && works[work] <= today)
+        .sort((a, b) => works[a].localeCompare(works[b]))
+      const first = seen[0]
+      return [nameEn, first ? { work: screenTitle(first), date: works[first] } : null]
+    }),
+  )
+}
+
 
 // [сторінка вікі, en, ru, uk, стать, сторона, команди, сили, вид, рік дебюту]
 const ROSTER = [
@@ -42,7 +228,7 @@ const ROSTER = [
   ['Bruce Banner (Earth-616)', 'Hulk', 'Халк', 'Халк', M, HERO, ['Мстители'], ['Сила', 'Регенерация'], 'Мутант', 1962],
   ['Natasha Romanoff (Earth-616)', 'Black Widow', 'Чёрная вдова', 'Чорна вдова', F, HERO, ['Мстители', 'Щ.И.Т.'], ['Боевые навыки'], 'Человек', 1964],
   ['Clinton Barton (Earth-616)', 'Hawkeye', 'Соколиный глаз', 'Соколине око', M, HERO, ['Мстители'], ['Стрельба', 'Боевые навыки'], 'Человек', 1964],
-  ['Peter Parker (Earth-616)', 'Spider-Man', 'Человек-паук', 'Людина-павук', M, HERO, ['Мстители'], ['Сила', 'Ловкость'], 'Человек', 1962],
+  ['Peter Parker (Earth-616)', 'Spider-Man', 'Человек-паук', 'Людина-павук', M, HERO, ['Мстители'], ['Сила', 'Ловкость', 'Чутьё'], 'Человек', 1962],
   ['Stephen Strange (Earth-616)', 'Doctor Strange', 'Доктор Стрэндж', 'Доктор Стрендж', M, HERO, ['Защитники'], ['Магия', 'Полёт'], 'Человек', 1963],
   ["T'Challa (Earth-616)", 'Black Panther', 'Чёрная пантера', 'Чорна пантера', M, HERO, ['Мстители'], ['Сила', 'Боевые навыки'], 'Человек', 1966],
   ['Scott Lang (Earth-616)', 'Ant-Man', 'Человек-муравей', 'Людина-мураха', M, HERO, ['Мстители'], ['Изменение размера', 'Технологии'], 'Человек', 1979],
@@ -50,7 +236,7 @@ const ROSTER = [
   ['Carol Danvers (Earth-616)', 'Captain Marvel', 'Капитан Марвел', 'Капітан Марвел', F, HERO, ['Мстители'], ['Сила', 'Полёт', 'Энергия'], 'Человек', 1968],
   ['Wanda Maximoff (Earth-616)', 'Scarlet Witch', 'Алая ведьма', 'Багряна відьма', F, ANTI, ['Мстители', 'Братство мутантов'], ['Магия', 'Телекинез'], 'Мутант', 1964],
   ['Pietro Maximoff (Earth-616)', 'Quicksilver', 'Ртуть', 'Ртуть', M, ANTI, ['Мстители', 'Братство мутантов'], ['Скорость'], 'Мутант', 1964],
-  ['Vision (Earth-616)', 'Vision', 'Вижн', 'Віжн', M, HERO, ['Мстители'], ['Полёт', 'Энергия', 'Технологии'], 'Андроид', 1968],
+  ['Vision (Earth-616)', 'Vision', 'Вижн', 'Віжн', M, HERO, ['Мстители'], ['Полёт', 'Энергия', 'Проницаемость'], 'Андроид', 1968],
   ['Samuel Wilson (Earth-616)', 'Falcon', 'Сокол', 'Сокіл', M, HERO, ['Мстители'], ['Полёт', 'Технологии'], 'Человек', 1969],
   ['James Barnes (Earth-616)', 'Winter Soldier', 'Зимний солдат', 'Зимовий солдат', M, ANTI, ['Мстители'], ['Сила', 'Боевые навыки'], 'Человек', 1941],
   ['Nicholas Fury (Earth-616)', 'Nick Fury', 'Ник Фьюри', 'Нік Ф’юрі', M, HERO, ['Щ.И.Т.'], ['Боевые навыки', 'Стрельба'], 'Человек', 1963],
@@ -61,13 +247,13 @@ const ROSTER = [
   ['Groot (Earth-616)', 'Groot', 'Грут', 'Грут', M, HERO, ['Стражи Галактики'], ['Сила', 'Регенерация'], 'Инопланетянин', 1960],
   ['Nebula (Earth-616)', 'Nebula', 'Небула', 'Небула', F, ANTI, ['Стражи Галактики'], ['Боевые навыки', 'Технологии'], 'Инопланетянин', 1985],
   ['Mantis (Earth-616)', 'Mantis', 'Мантис', 'Мантіс', F, HERO, ['Стражи Галактики'], ['Телепатия', 'Боевые навыки'], 'Человек', 1973],
-  ['Yondu Udonta (Earth-616)', 'Yondu', 'Йонду', 'Йонду', M, ANTI, ['Стражи Галактики'], ['Боевые навыки'], 'Инопланетянин', 1969],
+  ['Yondu Udonta (Earth-616)', 'Yondu', 'Йонду', 'Йонду', M, ANTI, ['Стражи Галактики'], ['Стрельба', 'Боевые навыки'], 'Инопланетянин', 1969],
   ['Thanos (Earth-616)', 'Thanos', 'Танос', 'Танос', M, VILLAIN, ['Чёрный орден'], ['Сила', 'Энергия'], 'Инопланетянин', 1973],
-  ['Loki Laufeyson (Earth-616)', 'Loki', 'Локи', 'Локі', M, ANTI, ['Одиночка'], ['Магия', 'Иллюзии'], 'Асгардиец', 1949],
+  ['Loki Laufeyson (Earth-616)', 'Loki', 'Локи', 'Локі', M, ANTI, ['Одиночка'], ['Магия', 'Иллюзии'], 'Асгардиец', 1962],
   ['Victor von Doom (Earth-616)', 'Doctor Doom', 'Доктор Дум', 'Доктор Дум', M, VILLAIN, ['Одиночка'], ['Магия', 'Технологии'], 'Человек', 1962],
   ['Max Eisenhardt (Earth-616)', 'Magneto', 'Магнето', 'Магнето', M, ANTI, ['Братство мутантов', 'Люди Икс'], ['Магнетизм', 'Полёт'], 'Мутант', 1963],
   ['Charles Xavier (Earth-616)', 'Professor X', 'Профессор Икс', 'Професор Ікс', M, HERO, ['Люди Икс'], ['Телепатия'], 'Мутант', 1963],
-  ['James Howlett (Earth-616)', 'Wolverine', 'Росомаха', 'Росомаха', M, ANTI, ['Люди Икс', 'Мстители'], ['Регенерация', 'Боевые навыки'], 'Мутант', 1974],
+  ['James Howlett (Earth-616)', 'Wolverine', 'Росомаха', 'Росомаха', M, ANTI, ['Люди Икс', 'Мстители'], ['Регенерация', 'Чутьё', 'Боевые навыки'], 'Мутант', 1974],
   ['Scott Summers (Earth-616)', 'Cyclops', 'Циклоп', 'Циклоп', M, HERO, ['Люди Икс'], ['Энергия'], 'Мутант', 1963],
   ['Jean Grey (Earth-616)', 'Jean Grey', 'Джина Грей', 'Джина Ґрей', F, HERO, ['Люди Икс'], ['Телепатия', 'Телекинез'], 'Мутант', 1963],
   ['Ororo Munroe (Earth-616)', 'Storm', 'Шторм', 'Шторм', F, HERO, ['Люди Икс'], ['Погода', 'Полёт'], 'Мутант', 1975],
@@ -90,8 +276,8 @@ const ROSTER = [
   ['Luke Cage (Earth-616)', 'Luke Cage', 'Люк Кейдж', 'Люк Кейдж', M, HERO, ['Защитники'], ['Сила', 'Неуязвимость'], 'Человек', 1972],
   ['Daniel Rand (Earth-616)', 'Iron Fist', 'Железный кулак', 'Залізний кулак', M, HERO, ['Защитники'], ['Боевые навыки', 'Энергия'], 'Человек', 1974],
   ['Marc Spector (Earth-616)', 'Moon Knight', 'Лунный рыцарь', 'Місячний лицар', M, ANTI, ['Одиночка'], ['Боевые навыки', 'Магия'], 'Человек', 1975],
-  ['Edward Brock (Earth-616)', 'Venom', 'Веном', 'Веном', M, ANTI, ['Одиночка'], ['Сила', 'Регенерация'], 'Симбиот', 1988],
-  ['Cletus Kasady (Earth-616)', 'Carnage', 'Карнаж', 'Карнаж', M, VILLAIN, ['Одиночка'], ['Сила', 'Регенерация'], 'Симбиот', 1991],
+  ['Edward Brock (Earth-616)', 'Venom', 'Веном', 'Веном', M, ANTI, ['Одиночка'], ['Сила', 'Ловкость', 'Регенерация'], 'Симбиот', 1988],
+  ['Cletus Kasady (Earth-616)', 'Carnage', 'Карнаж', 'Карнаж', M, VILLAIN, ['Одиночка'], ['Сила', 'Ловкость', 'Регенерация'], 'Симбиот', 1991],
   ['Norman Osborn (Earth-616)', 'Green Goblin', 'Зелёный гоблин', 'Зелений гоблін', M, VILLAIN, ['Одиночка'], ['Сила', 'Полёт', 'Технологии'], 'Человек', 1964],
   ['Otto Octavius (Earth-616)', 'Doctor Octopus', 'Доктор Осьминог', 'Доктор Восьминіг', M, VILLAIN, ['Зловещая шестёрка'], ['Технологии'], 'Человек', 1963],
   ['Maxwell Dillon (Earth-616)', 'Electro', 'Электро', 'Електро', M, VILLAIN, ['Зловещая шестёрка'], ['Энергия', 'Полёт'], 'Человек', 1964],
@@ -99,8 +285,8 @@ const ROSTER = [
   ['Sergei Kravinoff (Earth-616)', 'Kraven the Hunter', 'Крэйвен-охотник', 'Крейвен-мисливець', M, VILLAIN, ['Зловещая шестёрка'], ['Боевые навыки', 'Чутьё'], 'Человек', 1964],
   ['MacDonald Gargan (Earth-616)', 'Scorpion', 'Скорпион', 'Скорпіон', M, VILLAIN, ['Зловещая шестёрка'], ['Сила', 'Технологии'], 'Человек', 1964],
   ['Adrian Toomes (Earth-616)', 'Vulture', 'Стервятник', 'Стерв’ятник', M, VILLAIN, ['Зловещая шестёрка'], ['Полёт', 'Технологии'], 'Человек', 1963],
-  ['Gwendolyn Stacy (Earth-65)', 'Spider-Gwen', 'Гвен-паук', 'Гвен-павук', F, HERO, ['Одиночка'], ['Сила', 'Ловкость'], 'Человек', 2014],
-  ['Miles Morales (Earth-1610)', 'Miles Morales', 'Майлз Моралес', 'Майлз Моралес', M, HERO, ['Мстители'], ['Сила', 'Невидимость'], 'Человек', 2011],
+  ['Gwendolyn Stacy (Earth-65)', 'Spider-Gwen', 'Гвен-паук', 'Гвен-павук', F, HERO, ['Одиночка'], ['Сила', 'Ловкость', 'Чутьё'], 'Человек', 2014],
+  ['Miles Morales (Earth-1610)', 'Miles Morales', 'Майлз Моралес', 'Майлз Моралес', M, HERO, ['Мстители'], ['Сила', 'Ловкость', 'Чутьё', 'Невидимость', 'Энергия'], 'Человек', 2011],
   ['Ultron (Earth-616)', 'Ultron', 'Альтрон', 'Альтрон', M, VILLAIN, ['Одиночка'], ['Технологии', 'Полёт', 'Энергия'], 'Андроид', 1968],
   ['Erik Killmonger (Earth-616)', 'Killmonger', 'Киллмонгер', 'Кіллмонґер', M, VILLAIN, ['Одиночка'], ['Боевые навыки'], 'Человек', 1973],
   ['Hela (Earth-616)', 'Hela', 'Хела', 'Хела', F, VILLAIN, ['Одиночка'], ['Магия', 'Сила'], 'Асгардиец', 1964],
@@ -118,7 +304,7 @@ const ROSTER = [
   ['Riri Williams (Earth-616)', 'Ironheart', 'Железное сердце', 'Залізне серце', F, HERO, ['Мстители'], ['Технологии', 'Полёт'], 'Человек', 2016],
   ['Katherine Bishop (Earth-616)', 'Kate Bishop', 'Кейт Бишоп', 'Кейт Бішоп', F, HERO, ['Мстители'], ['Стрельба', 'Боевые навыки'], 'Человек', 2005],
   ['Yelena Belova (Earth-616)', 'Yelena Belova', 'Елена Белова', 'Олена Бєлова', F, ANTI, ['Мстители'], ['Боевые навыки'], 'Человек', 1999],
-  ['Namor McKenzie (Earth-616)', 'Namor', 'Нэмор', 'Немор', M, ANTI, ['Защитники'], ['Сила', 'Полёт', 'Вода'], 'Нелюдь', 1939],
+  ['Namor McKenzie (Earth-616)', 'Namor', 'Нэмор', 'Немор', M, ANTI, ['Защитники'], ['Сила', 'Полёт', 'Вода'], 'Мутант', 1939],
   ['Blackagar Boltagon (Earth-616)', 'Black Bolt', 'Чёрный Гром', 'Чорний Грім', M, HERO, ['Нелюди'], ['Энергия', 'Полёт'], 'Нелюдь', 1965],
   ['Medusalith Amaquelin (Earth-616)', 'Medusa', 'Медуза', 'Медуза', F, HERO, ['Нелюди'], ['Волосы', 'Боевые навыки'], 'Нелюдь', 1965],
   ['Johnathon Blaze (Earth-616)', 'Ghost Rider', 'Призрачный гонщик', 'Примарний гонщик', M, ANTI, ['Одиночка'], ['Огонь', 'Магия'], 'Существо', 1972],
@@ -137,7 +323,7 @@ const ROSTER = [
   ['En Sabah Nur (Earth-616)', 'Apocalypse', 'Апокалипсис', 'Апокаліпсис', M, VILLAIN, ['Одиночка'], ['Сила', 'Перевоплощение'], 'Мутант', 1986],
   ['Nathaniel Essex (Mister Sinister) (Earth-616)', 'Mister Sinister', 'Мистер Зловещий', 'Містер Зловісний', M, VILLAIN, ['Одиночка'], ['Перевоплощение', 'Технологии'], 'Мутант', 1987],
   ['Emma Frost (Earth-616)', 'Emma Frost', 'Эмма Фрост', 'Емма Фрост', F, ANTI, ['Люди Икс', 'Клуб Адского пламени'], ['Телепатия', 'Неуязвимость'], 'Мутант', 1980],
-  ['Laura Kinney (Earth-616)', 'X-23', 'Икс-23', 'Ікс-23', F, ANTI, ['Люди Икс'], ['Регенерация', 'Боевые навыки'], 'Мутант', 2004],
+  ['Laura Kinney (Earth-616)', 'X-23', 'Икс-23', 'Ікс-23', F, ANTI, ['Люди Икс'], ['Регенерация', 'Чутьё', 'Боевые навыки'], 'Мутант', 2004],
   ['Lorna Dane (Earth-616)', 'Polaris', 'Полярис', 'Полярис', F, HERO, ['Люди Икс'], ['Магнетизм'], 'Мутант', 1968],
   ['Warren Worthington III (Earth-616)', 'Angel', 'Ангел', 'Янгол', M, HERO, ['Люди Икс'], ['Полёт'], 'Мутант', 1963],
   ['Cain Marko (Earth-616)', 'Juggernaut', 'Джаггернаут', 'Джаґернаут', M, VILLAIN, ['Братство мутантов'], ['Сила', 'Неуязвимость'], 'Человек', 1965],
@@ -150,16 +336,16 @@ const ROSTER = [
   ['Roberto Reyes (Earth-616)', 'Robbie Reyes', 'Робби Рейес', 'Роббі Реєс', M, ANTI, ['Мстители'], ['Огонь', 'Магия'], 'Существо', 2014],
   ['Emil Blonsky (Earth-616)', 'Abomination', 'Мерзость', 'Мерзота', M, VILLAIN, ['Одиночка'], ['Сила', 'Регенерация'], 'Мутант', 1967],
   ['Mar-Vell (Earth-616)', 'Mar-Vell', 'Мар-Велл', 'Мар-Велл', M, HERO, ['Одиночка'], ['Полёт', 'Энергия'], 'Инопланетянин', 1967],
-  ["Miguel O'Hara (Earth-928)", 'Spider-Man 2099', 'Человек-паук 2099', 'Людина-павук 2099', M, HERO, ['Одиночка'], ['Сила', 'Ловкость'], 'Мутант', 1992],
-  ['Benjamin Reilly (Earth-616)', 'Scarlet Spider', 'Алый паук', 'Багряний павук', M, HERO, ['Одиночка'], ['Сила', 'Ловкость'], 'Человек', 1975],
-  ['Cindy Moon (Earth-616)', 'Silk', 'Шёлк', 'Шовк', F, HERO, ['Одиночка'], ['Сила', 'Ловкость'], 'Человек', 2014],
-  ['Jessica Drew (Earth-616)', 'Spider-Woman', 'Женщина-паук', 'Жінка-павук', F, HERO, ['Мстители'], ['Полёт', 'Энергия'], 'Человек', 1977],
-  ['Peter Porker (Earth-8311)', 'Spider-Ham', 'Спайдер-Хэм', 'Спайдер-Хем', M, HERO, ['Одиночка'], ['Сила', 'Ловкость'], 'Существо', 1983],
-  ['Pavitr Prabhakar (Earth-50101)', 'Spider-Man India', 'Человек-паук Индия', 'Людина-павук Індія', M, HERO, ['Одиночка'], ['Сила', 'Ловкость'], 'Человек', 2004],
-  ['Peter Parker (Earth-90214)', 'Spider-Man Noir', 'Человек-паук Нуар', 'Людина-павук Нуар', M, HERO, ['Одиночка'], ['Ловкость', 'Стрельба'], 'Человек', 2009],
+  ["Miguel O'Hara (Earth-928)", 'Spider-Man 2099', 'Человек-паук 2099', 'Людина-павук 2099', M, HERO, ['Одиночка'], ['Сила', 'Ловкость'], 'Человек', 1992],
+  ['Benjamin Reilly (Earth-616)', 'Scarlet Spider', 'Алый паук', 'Багряний павук', M, HERO, ['Одиночка'], ['Сила', 'Ловкость', 'Чутьё'], 'Человек', 1975],
+  ['Cindy Moon (Earth-616)', 'Silk', 'Шёлк', 'Шовк', F, HERO, ['Одиночка'], ['Сила', 'Ловкость', 'Чутьё'], 'Человек', 2014],
+  ['Jessica Drew (Earth-616)', 'Spider-Woman', 'Женщина-паук', 'Жінка-павук', F, HERO, ['Мстители'], ['Сила', 'Полёт', 'Энергия'], 'Человек', 1977],
+  ['Peter Porker (Earth-8311)', 'Spider-Ham', 'Спайдер-Хэм', 'Спайдер-Хем', M, HERO, ['Одиночка'], ['Сила', 'Ловкость', 'Чутьё'], 'Существо', 1983],
+  ['Pavitr Prabhakar (Earth-50101)', 'Spider-Man India', 'Человек-паук Индия', 'Людина-павук Індія', M, HERO, ['Одиночка'], ['Сила', 'Ловкость', 'Чутьё'], 'Человек', 2004],
+  ['Peter Parker (Earth-90214)', 'Spider-Man Noir', 'Человек-паук Нуар', 'Людина-павук Нуар', M, HERO, ['Одиночка'], ['Ловкость', 'Чутьё', 'Стрельба'], 'Человек', 2009],
   ['Eugene Thompson (Earth-616)', 'Agent Venom', 'Агент Веном', 'Агент Веном', M, ANTI, ['Тандерболты'], ['Сила', 'Стрельба'], 'Симбиот', 1962],
   ['Venom (Symbiote) (Earth-616)', 'Venom Symbiote', 'Симбиот Веном', 'Симбіот Веном', M, ANTI, ['Одиночка'], ['Перевоплощение', 'Регенерация'], 'Симбиот', 1984],
-  ['America Chavez (Earth-616)', 'America Chavez', 'Америка Чавес', 'Америка Чавес', F, HERO, ['Мстители'], ['Сила', 'Полёт'], 'Инопланетянин', 2011],
+  ['America Chavez (Earth-616)', 'America Chavez', 'Америка Чавес', 'Америка Чавес', F, HERO, ['Мстители'], ['Сила', 'Полёт', 'Телепортация'], 'Инопланетянин', 2011],
   ['Doreen Green (Earth-616)', 'Squirrel Girl', 'Девушка-белка', 'Дівчина-білка', F, HERO, ['Мстители'], ['Сила', 'Ловкость'], 'Мутант', 1992],
   ['Wong (Earth-616)', 'Wong', 'Вонг', 'Вонг', M, HERO, ['Защитники'], ['Магия', 'Боевые навыки'], 'Человек', 1963],
   ['Virginia Potts (Earth-616)', 'Pepper Potts', 'Пеппер Поттс', 'Пеппер Поттс', F, HERO, ['Мстители'], ['Технологии', 'Полёт'], 'Человек', 1963],
@@ -201,6 +387,7 @@ async function main() {
   })
 
   const chosen = await cachedJson(CACHE, 'chosen.json', () => wikiImageUrls(API, [...new Set(Object.values(PICK))]))
+  const screen = await screenDebuts(ROSTER)
 
   const result = []
   const missing = []
@@ -223,7 +410,12 @@ async function main() {
       return missing.push(`${nameEn} (${error.message})`)
     }
     const issue = comicIssue(FIRST[nameEn] ?? infobox(page.text, 'First'))
-    result.push({ id, name: nameRu, nameEn, nameUk, gender, side, teams, powers, species, debut: String(year), debutWork: issue, debutIndex: year, answer: true })
+    const film = screen[nameEn]
+    const screenYear = film ? Number(film.date.slice(0, 4)) : null
+    const screenWork = film ? `${film.work} (${screenYear})` : null
+    const trait = { gender, species, side, teams, powers, ...SCREEN_TRAITS[nameEn] }
+    const shown = film ? { screenGender: trait.gender, screenSpecies: trait.species, screenSide: trait.side, screenTeams: trait.teams, screenPowers: trait.powers } : {}
+    result.push({ id, name: nameRu, nameEn, nameUk, gender, side, teams, powers, species, debut: String(year), debutWork: issue, debutIndex: year, anime: !!film, screenWork, screenIndex: screenYear, ...shown, answer: true })
     },
   )
 
@@ -233,7 +425,7 @@ async function main() {
   await writeAtlas(result, THUMBS, path.join(OUT_IMG, 'thumbs.webp'), OUT_ATLAS, 12, 96)
   await pruneImages(path.join(OUT_IMG, 'full'), result)
   await fs.writeFile(OUT_JSON, JSON.stringify(result, null, 1))
-  console.log(`wrote ${result.length} heroes`)
+  console.log(`wrote ${result.length} heroes, ${result.filter((one) => one.anime).length} on screen`)
   if (missing.length) console.warn(`no image for ${missing.length}:`, missing.join(', '))
 }
 

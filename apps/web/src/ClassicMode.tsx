@@ -1,4 +1,5 @@
 import AnimeFilter from './AnimeFilter'
+import { useOnlyView } from './anime'
 import CharacterSearch from './CharacterSearch'
 import GuessGrid from './GuessGrid'
 import PlayBoard from './PlayBoard'
@@ -25,6 +26,7 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
     challenge,
   )
   const playing = !!round && !over
+  const view = useOnlyView(game, round?.anime === true)
   return (
     <PlayBoard side={<PlaySide game={game} mode={mode} daily={daily} stats={stats} playing={playing} legend={!blind} howto={blind ? 'blind' : undefined} onGiveUp={giveUp} />}>
       {!over && (
@@ -48,7 +50,7 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
 
       {round && over && answer && (
         <RoundResult
-          game={game}
+          game={view}
           answer={answer}
           guesses={guesses.length}
           won={won}
@@ -60,7 +62,7 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
                   .filter((g) => !g.pending)
                   .slice(0, 4)
                   .reverse()
-                  .map((g) => game.columns.map((col) => g.judgement?.[col.key]?.verdict ?? 'wrong'))}
+                  .map((g) => view.columns.map((col) => g.judgement?.[col.key]?.verdict ?? 'wrong'))}
           onNext={next}
           challenge={challenge}
           mode={mode}
@@ -68,7 +70,7 @@ export default function ClassicMode({ game, active, stats, daily = false, challe
         />
       )}
 
-      <GuessGrid game={game} guesses={guesses} answerId={answer?.id} loading={!round && !error} blind={blind} />
+      <GuessGrid game={view} guesses={guesses} answerId={answer?.id} loading={!round && !error} blind={blind} />
     </PlayBoard>
   )
 }

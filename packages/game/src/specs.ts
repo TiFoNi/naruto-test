@@ -37,7 +37,7 @@ export type JudgeSpec = { key: string; kind: JudgeKind }
 
 export type PicShape = 'square' | 'poster' | 'wide'
 
-export type GameSpec = { data: string; images: string; columns: JudgeSpec[]; modes?: ModeId[]; shape?: PicShape; featured?: string[] }
+export type GameSpec = { data: string; images: string; columns: JudgeSpec[]; only?: Record<string, JudgeSpec>; modes?: ModeId[]; shape?: PicShape; featured?: string[] }
 
 const col = (key: string, kind: JudgeKind): JudgeSpec => ({ key, kind })
 
@@ -311,6 +311,14 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('powers', 'list'),
       col('debutWork', 'exact'),
     ],
+    only: {
+      gender: col('screenGender', 'exact'),
+      species: col('screenSpecies', 'exact'),
+      side: col('screenSide', 'exact'),
+      teams: col('screenTeams', 'list'),
+      powers: col('screenPowers', 'list'),
+      debutWork: col('screenWork', 'exact'),
+    },
   },
   football: {
     featured: ['Lionel Messi', 'Cristiano Ronaldo', 'Pelé'],
@@ -761,8 +769,13 @@ export function judge(spec: JudgeSpec, guess: Record<string, unknown>, answer: R
   }
 }
 
-export function judgeAll(game: GameId, guess: Record<string, unknown>, answer: Record<string, unknown>) {
-  return Object.fromEntries(GAME_SPECS[game].columns.map((spec) => [spec.key, judge(spec, guess, answer)]))
+export const columnsOf = (game: GameId, only = false) => {
+  const { columns, only: swap } = GAME_SPECS[game]
+  return only && swap ? columns.map((spec) => swap[spec.key] ?? spec) : columns
+}
+
+export function judgeAll(game: GameId, guess: Record<string, unknown>, answer: Record<string, unknown>, only = false) {
+  return Object.fromEntries(columnsOf(game, only).map((spec) => [spec.key, judge(spec, guess, answer)]))
 }
 
 export type CoinPack = { id: string; usd: number; stars: number; base: number; bonus: number; art: string; grow: number; starsOnly?: boolean }
