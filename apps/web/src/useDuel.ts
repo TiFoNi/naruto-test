@@ -46,6 +46,7 @@ export type DuelView = {
   left: string | null
   round: number
   draws: number
+  results?: (number | null)[]
   host: boolean
   now: number
   startedAt?: number

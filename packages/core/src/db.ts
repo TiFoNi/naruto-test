@@ -182,6 +182,8 @@ export type DuelDoc = {
   finishedAt?: Date | null
   winnerId?: ObjectId | null
   winnerTeam?: number | null
+  matchTeam?: number | null
+  results?: (number | null)[]
 }
 
 export type EntityDoc = Record<string, unknown> & {

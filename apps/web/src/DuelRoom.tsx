@@ -203,13 +203,19 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
   const foeWins = teamly
     ? squads.reduce((sum, _line, team) => (team === myTeam ? sum : sum + squadWins(team)), 0)
     : rival?.wins ?? 0
-  const settled = myWins + foeWins + (duel.draws ?? 0)
+  const results = duel.results?.length ? duel.results : null
+  const settled = results ? results.length : myWins + foeWins + (duel.draws ?? 0)
   const roundMark = (index: number) => {
-    if (index < myWins) return 'won'
-    if (index < myWins + foeWins) return 'lost'
-    if (index < settled) return 'drawn'
+    if (results) {
+      if (index < results.length) return results[index] === null ? 'drawn' : results[index] === myTeam ? 'won' : 'lost'
+    } else {
+      if (index < myWins) return 'won'
+      if (index < myWins + foeWins) return 'lost'
+      if (index < settled) return 'drawn'
+    }
     return index === settled && !over ? 'now' : ''
   }
+  const dots = Math.max(duel.best, settled + (over ? 0 : 1))
 
   const mateNote = (mate: { solved: boolean; gaveUp: boolean; guessCount: number }) =>
     [
@@ -297,7 +303,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
 
         {duel.best > 1 && (
           <ul className="duel-hud-dots" aria-hidden>
-            {Array.from({ length: duel.best }, (_, index) => (
+            {Array.from({ length: dots }, (_, index) => (
               <li key={index} className={roundMark(index)} />
             ))}
           </ul>
