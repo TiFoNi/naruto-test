@@ -88,6 +88,7 @@ function Chapter({ index, level }: { index: number; level: number }) {
   const { t } = useI18n()
   const chapter = chapterOf(index)
   const { taken, busy, claim } = useContext(ClaimsContext)
+  const [deny, setDeny] = useState<number | null>(null)
   const box = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState(0)
   const [line, setLine] = useState<{ all: string; done: string; w: number; h: number }>({ all: '', done: '', w: 0, h: 0 })
@@ -161,12 +162,13 @@ function Chapter({ index, level }: { index: number; level: number }) {
                   key={reward.level}
                   data-level={reward.level}
                   data-row={place}
-                  className={`lvmap-block kind-${reward.kind} ${state} ${got ? 'is-taken' : ''} ${ready ? 'is-ready' : ''} ${busy === reward.level ? 'is-busy' : ''}`}
+                  className={`lvmap-block kind-${reward.kind} ${state} ${got ? 'is-taken' : ''} ${ready ? 'is-ready' : ''} ${busy === reward.level ? 'is-busy' : ''} ${deny === reward.level ? 'is-deny' : ''}`}
                   style={{ width: size.w, height: size.h } as CSSProperties}
                   title={ready ? t('levels.take') : got ? t('levels.gotIt') : t(`levels.kind.${reward.kind}` as UiKey)}
                   role={ready ? 'button' : undefined}
                   tabIndex={ready ? 0 : undefined}
-                  onClick={ready ? () => claim(reward.level) : undefined}
+                  onClick={() => (ready ? claim(reward.level) : setDeny(reward.level))}
+                  onAnimationEnd={(event) => event.animationName === 'lvmap-deny' && setDeny(null)}
                   onKeyDown={ready ? (event) => (event.key === 'Enter' || event.key === ' ') && claim(reward.level) : undefined}
                 >
                   {(reward.kind === 'coins' || reward.kind === 'pile') && (
