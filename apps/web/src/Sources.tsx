@@ -11,7 +11,7 @@ const NOTE: Record<string, keyof typeof ui> = {
 
 export default function Sources({ lang }: { lang: Lang }) {
   return (
-    <main className="legal sources-page">
+    <div className="legal sources-page page-main">
       <h1>{ui['sources.title'][lang]}</h1>
       <p className="legal-intro">{ui['sources.intro'][lang]}</p>
 
@@ -27,6 +27,6 @@ export default function Sources({ lang }: { lang: Lang }) {
       </ul>
 
       <p className="legal-intro">{ui['footer.disclaimer'][lang]}</p>
-    </main>
+    </div>
   )
 }

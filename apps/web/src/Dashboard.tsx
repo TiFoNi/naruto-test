@@ -385,7 +385,7 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
   }
 
   return (
-    <main className="dashboard">
+    <div className="dashboard page-main">
       <section className="hero">
         <DailyCard games={games} />
         {user ? (
@@ -496,6 +496,6 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
           </section>
         )
       })}
-    </main>
+    </div>
   )
 }

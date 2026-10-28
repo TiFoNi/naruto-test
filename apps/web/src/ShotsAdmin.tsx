@@ -76,7 +76,7 @@ export default function ShotsAdmin() {
   if (denied) return <div className="card center muted">Страница не найдена</div>
 
   return (
-    <main className="admin shots-admin">
+    <div className="admin shots-admin page-main">
       <header className="admin-bar">
         <div className="admin-bar-main">
           <h1>Кадры аниме</h1>
@@ -141,7 +141,7 @@ export default function ShotsAdmin() {
           {!shown.length && <li className="card center muted">ничего не найдено</li>}
         </ul>
       )}
-    </main>
+    </div>
   )
 }
 

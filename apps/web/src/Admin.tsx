@@ -157,7 +157,7 @@ export default function Admin() {
   if (denied) return <div className="card center muted">Страница не найдена</div>
 
   return (
-    <main className="admin">
+    <div className="admin page-main">
       <header className="admin-bar">
         <div className="admin-bar-main">
           <h1>{unit.many}</h1>
@@ -263,7 +263,7 @@ export default function Admin() {
           onClose={() => setOpenId(null)}
         />
       )}
-    </main>
+    </div>
   )
 }
 

@@ -895,7 +895,8 @@ a {
   background: var(--tab-accent);
 }
 
-main {
+main,
+.page-main {
   width: 100%;
 }
 

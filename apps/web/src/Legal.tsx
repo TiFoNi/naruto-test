@@ -4,7 +4,7 @@ export type Section = { heading: string; paragraphs: string[]; list?: string[] }
 
 export default function Legal({ title, updated, intro, sections }: { title: string; updated: string; intro: string; sections: Section[] }) {
   return (
-    <main className="legal">
+    <div className="legal page-main">
       <BackButton href="/">NandaGuessr</BackButton>
       <h1>{title}</h1>
       <p className="legal-updated">{updated}</p>
@@ -24,6 +24,6 @@ export default function Legal({ title, updated, intro, sections }: { title: stri
           )}
         </section>
       ))}
-    </main>
+    </div>
   )
 }

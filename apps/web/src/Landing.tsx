@@ -14,7 +14,7 @@ export default function Landing({ games }: { games: GameMeta[] }) {
   const { t } = useI18n()
 
   return (
-    <main className="login">
+    <div className="login page-main">
       <section className="login-pitch">
         <div className="login-patches" aria-hidden>
           {PATCHES.map((row) => (
@@ -46,6 +46,6 @@ export default function Landing({ games }: { games: GameMeta[] }) {
       </section>
 
       <AuthScreen />
-    </main>
+    </div>
   )
 }

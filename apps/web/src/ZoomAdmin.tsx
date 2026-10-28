@@ -170,7 +170,7 @@ export default function ZoomAdmin() {
   if (denied) return <div className="card center muted">Страница не найдена</div>
 
   return (
-    <main className="admin zoom-admin">
+    <div className="admin zoom-admin page-main">
       <header className="admin-bar">
         <div className="admin-bar-main">
           <h1>Точка зума</h1>
@@ -304,6 +304,6 @@ export default function ZoomAdmin() {
           </div>
         </div>
       )}
-    </main>
+    </div>
   )
 }

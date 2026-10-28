@@ -16,7 +16,8 @@ type Props = { id?: string; nickname: string; avatar?: string | null; frame?: st
 
 export default function BoardFace({ id, nickname, avatar, frame, big }: Props) {
   const full = id && avatar ? avatarUrl(id, avatar) : null
-  const src = id && avatar ? avatarUrl(id, avatar, !big) : null
+  const src = id && avatar ? avatarUrl(id, avatar, true) : null
+  const set = big && id && avatar ? `${src} 192w, ${full} 384w` : undefined
   const worn = frameOf(frame)
   useSyncExternalStore(watchTune, tuneStamp, () => 0)
 
@@ -27,6 +28,8 @@ export default function BoardFace({ id, nickname, avatar, frame, big }: Props) {
         {src && (
           <img
             src={src}
+            srcSet={set}
+            sizes={set ? '(max-width: 560px) 72px, 112px' : undefined}
             alt=""
             loading="lazy"
             decoding="async"
@@ -34,6 +37,7 @@ export default function BoardFace({ id, nickname, avatar, frame, big }: Props) {
               const img = event.currentTarget
               if (full && src !== full && !img.dataset.full) {
                 img.dataset.full = '1'
+                img.removeAttribute('srcset')
                 img.src = full
               } else img.hidden = true
             }}
@@ -42,7 +46,14 @@ export default function BoardFace({ id, nickname, avatar, frame, big }: Props) {
       </span>
       {worn && (
         <i className="avatar-frame" style={frameStyle(worn.id) as CSSProperties}>
-          <img src={frameUrl(worn.id, big ? 'md' : 'sm')} alt="" loading="lazy" decoding="async" />
+          <img
+            src={frameUrl(worn.id, 'sm')}
+            srcSet={big ? `${frameUrl(worn.id, 'sm')} 192w, ${frameUrl(worn.id, 'md')} 512w` : undefined}
+            sizes={big ? '(max-width: 560px) 110px, 170px' : undefined}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
         </i>
       )}
     </span>

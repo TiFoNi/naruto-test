@@ -908,7 +908,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
         </header>
       )}
 
-      <div className="app-main">
+      <main className="app-main">
         {peek && (user || loading) ? (
           <>
             <div className={`ssr-peek ${user || returning ? 'is-on' : ''}`}>{children}</div>
@@ -931,7 +931,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
         ) : (
           <Landing games={games} />
         )}
-      </div>
+      </main>
 
       {!bare && <Footer />}
       {!bare && <InstallBanner />}

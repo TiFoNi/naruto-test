@@ -15,7 +15,7 @@ export default function NotFound({ games }: { games: GameMeta[] }) {
   const found = useMemo(() => searchGames(games, query) ?? [], [games, query])
 
   return (
-    <main className="oops">
+    <div className="oops page-main">
       <p className="oops-mark" aria-hidden>
         <span>4</span>
         <span className="oops-hole">
@@ -60,6 +60,6 @@ export default function NotFound({ games }: { games: GameMeta[] }) {
       <Link className="primary oops-home" href={href.home}>
         {t('oops.home')}
       </Link>
-    </main>
+    </div>
   )
 }

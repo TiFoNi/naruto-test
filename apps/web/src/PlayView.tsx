@@ -36,7 +36,7 @@ export default function PlayView({ game: gameId, mode: modeId, daily }: { game: 
       <div className="play-nav">
         <BackButton href={href.world(game.id)}>{l(game.label)}</BackButton>
       </div>
-      <main>
+      <div className="page-main">
         {lock.state === 'blocked' ? (
           <div className="card center muted locked">
             <p>
@@ -73,7 +73,7 @@ export default function PlayView({ game: gameId, mode: modeId, daily }: { game: 
         ) : (
           <GameView game={game} mode={mode} daily={daily} />
         )}
-      </main>
+      </div>
     </div>
   )
 }
