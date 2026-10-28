@@ -80,7 +80,7 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
       {upNext ? (
         <Link className="primary" href={href.play(game.id, upNext, true)}>
           <CalendarIcon />
-          {t(MODES.find((one) => one.id === upNext)?.label ?? 'mode.classic')}
+          <span className="result-action-label">{t(MODES.find((one) => one.id === upNext)?.label ?? 'mode.classic')}</span>
           <ArrowIcon />
         </Link>
       ) : (

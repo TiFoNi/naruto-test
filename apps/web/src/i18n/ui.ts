@@ -1008,7 +1008,7 @@ const ui = {
   'result.lost': { ru: 'Не в этот раз', uk: 'Не цього разу', en: 'Not this time' },
   'result.badgeWon': { ru: 'Угадал', uk: 'Вгадано', en: 'Solved' },
   'result.badgeLost': { ru: 'Не угадал', uk: 'Не вгадано', en: 'Missed' },
-  'result.tries': { ru: '{count} попытки|{count} попытки|{count} попыток', uk: '{count} спроба|{count} спроби|{count} спроб', en: '{count} try|{count} tries' },
+  'result.tries': { ru: '{count} попытка|{count} попытки|{count} попыток', uk: '{count} спроба|{count} спроби|{count} спроб', en: '{count} try|{count} tries' },
   'result.dailyNo': { ru: 'Персонаж дня #{count}', uk: 'Персонаж дня #{count}', en: 'Daily character #{count}' },
   'result.gaveUp': { ru: 'Сдался', uk: 'Здався', en: 'Gave up' },
   'result.wonTries': {
