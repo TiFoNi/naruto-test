@@ -227,7 +227,7 @@ export type LedgerDoc = {
   at: Date
 }
 
-export type QuestDoc = { _id: string; userId: ObjectId; day: string; picks: string[]; claimed: string[]; swapped?: string; createdAt: Date }
+export type QuestDoc = { _id: string; userId: ObjectId; day: string; picks: string[]; claimed: string[]; swapped?: string; swapBase?: Record<string, number>; createdAt: Date }
 
 export type StreakDoc = {
   _id?: ObjectId

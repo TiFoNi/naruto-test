@@ -128,11 +128,12 @@ export async function questBoard(userId: ObjectId) {
   const counts = await progress(userId, day)
   const person = await (await users()).findOne({ _id: userId }, { projection: { bonusDay: 1 } })
 
+  const base = stored?.swapBase ?? {}
   const list = (stored?.picks ?? picks).map((id) => {
     const quest = byId.get(id)
     if (!quest) return null
-    const state = done(quest, counts)
-    return { id, goal: quest.goal, xp: quest.xp, value: Math.min(state.value, quest.goal), done: state.done, claimed: claimed.has(id) }
+    const value = Math.max(0, done(quest, counts).value - (base[id] ?? 0))
+    return { id, goal: quest.goal, xp: quest.xp, value: Math.min(value, quest.goal), done: value >= quest.goal, claimed: claimed.has(id) }
   })
 
   const items = list.filter((quest): quest is NonNullable<typeof quest> => quest !== null)
@@ -157,10 +158,11 @@ export async function swapQuest(userId: ObjectId, id: string) {
   const options = POOL.filter((one) => one.tier === current.tier && !taken.has(one.id))
   if (!options.length) return false
   const next = options[Math.floor(Math.random() * options.length)]!
+  const already = done(next, await progress(userId, day)).value
 
   const changed = await (await quests()).updateOne(
     { _id: `${day}:${userId.toHexString()}`, swapped: { $exists: false }, picks: id, claimed: { $ne: id } },
-    { $set: { 'picks.$': next.id, swapped: id } },
+    { $set: { 'picks.$': next.id, swapped: id, swapBase: { [next.id]: already } } },
   )
   return changed.modifiedCount > 0
 }
