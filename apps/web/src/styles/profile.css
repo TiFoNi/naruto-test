@@ -3440,6 +3440,8 @@ a.world-blank:hover .world-pic.is-empty {
 .profile-visit-acts .profile-duel,
 .profile-visit-acts .profile-friend {
   display: inline-flex;
+  align-items: center;
+  gap: 8px;
   width: auto;
   min-height: 38px;
   margin: 0;
@@ -3467,17 +3469,23 @@ a.world-blank:hover .world-pic.is-empty {
     gap: 8px;
   }
 
-  .profile-visit-acts .profile-friend {
-    width: 38px;
+  .profile-visit-acts .profile-friend,
+  .profile-visit-acts .profile-duel {
+    width: 40px;
+    min-height: 40px;
+    justify-content: center;
     padding: 0;
   }
 
-  .profile-visit-acts .profile-friend > span {
+  .profile-visit-acts .profile-friend > span,
+  .profile-visit-acts .profile-duel > span {
     display: none;
   }
 
-  .profile-visit-acts .profile-duel {
-    padding: 0 14px;
+  .profile-visit-acts .profile-duel svg,
+  .profile-visit-acts .profile-friend svg {
+    width: 19px;
+    height: 19px;
   }
 }
 
@@ -3490,11 +3498,7 @@ a.world-blank:hover .world-pic.is-empty {
     border-color 0.15s ease;
 }
 
-.profile-visit-acts .profile-duel:hover:not(:disabled) {
-  filter: brightness(1.12);
-  transform: translateY(-1px);
-}
-
+.profile-visit-acts .profile-duel:hover:not(:disabled),
 .profile-visit-acts .profile-friend:hover {
   border-color: color-mix(in srgb, #ffffff 22%, transparent);
   background-color: color-mix(in srgb, #ffffff 6%, var(--card));

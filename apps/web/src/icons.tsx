@@ -92,6 +92,37 @@ export function UserIcon({ className }: IconProps) {
   )
 }
 
+export function UserPlusIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <circle cx="9.5" cy="8.5" r="4" />
+      <path d="M2.5 20.5c1.2-3.4 3.8-5.2 7-5.2s5.8 1.8 7 5.2" />
+      <path d="M19 8v6M16 11h6" />
+    </svg>
+  )
+}
+
+export function UserCheckIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <circle cx="9.5" cy="8.5" r="4" />
+      <path d="M2.5 20.5c1.2-3.4 3.8-5.2 7-5.2s5.8 1.8 7 5.2" />
+      <path d="m16 11 2 2 4-4.5" />
+    </svg>
+  )
+}
+
+export function UserWaitIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <circle cx="9.5" cy="8.5" r="4" />
+      <path d="M2.5 20.5c1.2-3.4 3.8-5.2 7-5.2s5.8 1.8 7 5.2" />
+      <circle cx="19" cy="11" r="3.4" />
+      <path d="M19 9.4V11l1 .8" />
+    </svg>
+  )
+}
+
 export function BellIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`} viewBox="0.15 -0.25 23.6 23.6" fill="currentColor" stroke="none">

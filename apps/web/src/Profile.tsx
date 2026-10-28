@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import Avatar from './Avatar'
 import TilePop from './TilePop'
@@ -14,7 +15,7 @@ import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
 import { ProfileGhost } from './PageSkeleton'
 import Rail from './Rail'
-import { ArrowIcon, CloseIcon, GearIcon, GripIcon, PaletteIcon, PencilIcon, PictureIcon, PlusIcon, SwordsIcon, TrophyIcon, UserIcon } from './icons'
+import { ArrowIcon, CloseIcon, GearIcon, GripIcon, PaletteIcon, PencilIcon, PictureIcon, PlusIcon, SwordsIcon, TrophyIcon, UserCheckIcon, UserPlusIcon, UserWaitIcon } from './icons'
 import AwardIcon from './awardIcons'
 import { useHref, useNavigate } from './router'
 import { refreshFeed } from './awards'
@@ -353,6 +354,7 @@ export default function Profile({ id }: { id?: string }) {
   }, [load, own, refresh])
 
   const [friend, setFriend] = useState<FriendState>('none')
+  const [unfriending, setUnfriending] = useState(false)
   const [calling, setCalling] = useState(false)
   const navigate = useNavigate()
 
@@ -1163,32 +1165,77 @@ export default function Profile({ id }: { id?: string }) {
           <div className="profile-banner-acts profile-visit-acts">
             {friend === 'in' ? (
               <>
-                <button type="button" className="ghost profile-friend" onClick={() => void answerFriend(id, true)}>
-                  <UserIcon />
-                  {t('friends.accept')}
+                <button type="button" className="ghost profile-friend" aria-label={t('friends.accept')} title={t('friends.accept')} onClick={() => void answerFriend(id, true)}>
+                  <UserCheckIcon />
+                  <span>{t('friends.accept')}</span>
                 </button>
-                <button type="button" className="ghost profile-friend" onClick={() => void answerFriend(id, false)}>
-                  {t('friends.decline')}
+                <button type="button" className="ghost profile-friend" aria-label={t('friends.decline')} title={t('friends.decline')} onClick={() => void answerFriend(id, false)}>
+                  <CloseIcon />
+                  <span>{t('friends.decline')}</span>
                 </button>
               </>
             ) : (
               <button
                 type="button"
                 className={`ghost profile-friend ${friend === 'friends' ? 'is-on' : ''}`}
+                aria-label={t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}
                 title={t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}
-                onClick={() => void (friend === 'none' ? askFriend(id) : removeFriend(id))}
+                onClick={() => (friend === 'friends' ? setUnfriending(true) : void (friend === 'none' ? askFriend(id) : removeFriend(id)))}
               >
-                <UserIcon />
+                {friend === 'friends' ? <UserCheckIcon /> : friend === 'out' ? <UserWaitIcon /> : <UserPlusIcon />}
                 <span>{t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}</span>
               </button>
             )}
-            <button type="button" className="primary profile-duel" disabled={calling} onClick={() => void challenge(id)}>
+            <button
+              type="button"
+              className="ghost profile-duel"
+              disabled={calling}
+              aria-label={t('duel.challenge')}
+              title={t('duel.challenge')}
+              onClick={() => void challenge(id)}
+            >
               <SwordsIcon />
-              {t('duel.challenge')}
+              <span>{t('duel.challenge')}</span>
             </button>
           </div>
         )}
       </div>
+
+      {unfriending &&
+        id &&
+        createPortal(
+          <div className="modal-backdrop" onClick={() => setUnfriending(false)} role="presentation">
+            <section
+              className="card modal mates-ask"
+              role="dialog"
+              aria-modal="true"
+              aria-label={t('friends.removeSure', { name: nickname })}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button type="button" className="modal-close" aria-label={t('profile.cancel')} onClick={() => setUnfriending(false)}>
+                <CloseIcon />
+              </button>
+              <h2>{t('friends.removeSure', { name: nickname })}</h2>
+              <p className="muted">{t('friends.removeHint')}</p>
+              <div className="modal-actions">
+                <button type="button" className="ghost" onClick={() => setUnfriending(false)}>
+                  {t('profile.cancel')}
+                </button>
+                <button
+                  type="button"
+                  className="danger-button"
+                  onClick={() => {
+                    setUnfriending(false)
+                    void removeFriend(id)
+                  }}
+                >
+                  {t('friends.remove')}
+                </button>
+              </div>
+            </section>
+          </div>,
+          document.body,
+        )}
 
       {tuning && banner && <BannerTuner banner={banner} looks={user?.bannerLooks?.[banner] ?? null} onClose={() => setTuning(false)} />}
 
