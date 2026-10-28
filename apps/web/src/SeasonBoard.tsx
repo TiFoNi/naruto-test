@@ -138,7 +138,7 @@ export default function SeasonBoard({ initial = null }: { initial?: Board | null
           {PRIZES.map((prize) => (
             <li key={prize.title} className={prize.tone}>
               {prize.frame && (
-                <Avatar medium className="season-prize-face" id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={prize.title === 'champion' && board ? championFrame(board.season.number) : prize.frame} />
+                <Avatar small className="season-prize-face" id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={prize.title === 'champion' && board ? championFrame(board.season.number) : prize.frame} />
               )}
               <span className="season-prize-what">
                 <b>{t(prize.place)}</b>

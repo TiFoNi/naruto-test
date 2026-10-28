@@ -68,7 +68,7 @@ const API = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, '') ?? ''
 const BOOT_SCRIPT = `try{var d=document.documentElement,c=localStorage.getItem('nanda.category');if(${JSON.stringify(CATEGORIES)}.indexOf(c)>=0)d.dataset.cat=c;if(localStorage.getItem('nanda.session')){d.dataset.auth='1';d.dataset.checking='1'}var p=location.pathname.split('/');var i=p.indexOf('duel');if(i>0&&p[i+1]&&sessionStorage.getItem('nanda.duel.'+p[i+1])==='play')d.dataset.duel='play';var j=p.indexOf('c');if(j>0&&p[j+1]&&sessionStorage.getItem('nanda.ch.'+p[j+1])==='result')d.dataset.ch='result'}catch(e){}
 try{if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js',{scope:'/'})}catch(e){}
 try{window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window.__install=e;window.dispatchEvent(new Event('nanda:install'))})}catch(e){}
-try{window.__me=fetch('${API}/api/me',{credentials:'${API ? 'include' : 'same-origin'}'}).then(function(r){return r.json().catch(function(){return{}}).then(function(data){return{ok:r.ok,status:r.status,data:data}})}).catch(function(){return null})}catch(e){}`
+try{var d=document.documentElement;window.__me=fetch('${API}/api/me',{credentials:'${API ? 'include' : 'same-origin'}'}).then(function(r){return r.json().catch(function(){return{}}).then(function(data){if(r.ok&&data&&data.user){d.dataset.auth='1';try{localStorage.setItem('nanda.session','1')}catch(e){}}return{ok:r.ok,status:r.status,data:data}})}).catch(function(){return null})}catch(e){}`
 
 export const generateStaticParams = () => LANGS.map(({ id }) => ({ lang: id }))
 
