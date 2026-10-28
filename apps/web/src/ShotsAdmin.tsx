@@ -1,9 +1,8 @@
 'use client'
 
+import AdminNav from './AdminNav'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import Link from 'next/link'
 import { api, apiUrl } from './api'
-import { useHref } from './router'
 
 type Title = { id: number; name?: string; nameEn?: string; year?: number; frames?: number[]; frameNames?: string[][]; ver?: string; answer?: boolean }
 
@@ -34,7 +33,6 @@ const namesOf = (title: Title) =>
 const total = (title: Title) => countsOf(title).reduce((sum, count) => sum + count, 0)
 
 export default function ShotsAdmin() {
-  const href = useHref()
   const [titles, setTitles] = useState<Title[] | null>(null)
   const [pics, setPics] = useState('')
   const [denied, setDenied] = useState(false)
@@ -84,15 +82,10 @@ export default function ShotsAdmin() {
 
   return (
     <div className="admin shots-admin page-main">
+      <AdminNav />
       <header className="admin-bar">
         <div className="admin-bar-main">
           <h1>Кадры аниме</h1>
-          <Link className="admin-more" href={href.admin}>
-            Персонажи
-          </Link>
-          <Link className="admin-more" href={href.adminZoom}>
-            Точка зума
-          </Link>
           <label className="admin-search">
             <svg viewBox="0 0 24 24" aria-hidden>
               <circle cx="11" cy="11" r="6.5" />

@@ -2,11 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { GAME_SPECS } from '@nanda/game'
-import Link from 'next/link'
 import { api } from './api'
-import { useHref } from './router'
 import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
+import AdminNav from './AdminNav'
 import Thumb from './Thumb'
 
 type Row = Entity & Record<string, unknown>
@@ -19,10 +18,10 @@ const asList = (value: unknown) => (Array.isArray(value) ? (value as string[]) :
 const PAGE = 60
 
 const FILTERS = [
-  { id: 'all', label: 'все' },
-  { id: 'pool', label: 'в пуле' },
-  { id: 'hidden', label: 'скрытые' },
-  { id: 'nopic', label: 'без картинки' },
+  { id: 'all', label: 'Все' },
+  { id: 'pool', label: 'В пуле' },
+  { id: 'hidden', label: 'Скрытые' },
+  { id: 'nopic', label: 'Без картинки' },
 ] as const
 
 type Filter = (typeof FILTERS)[number]['id']
@@ -39,7 +38,6 @@ const hasPicture = (row: Row) => !!row.image || (row.thumb ?? -1) >= 0
 const LAST_GAME = 'admin-game'
 
 export default function Admin() {
-  const href = useHref()
   const [gameId, setGameId] = useState<GameId>(GAMES[0].id)
   const [rows, setRows] = useState<Row[] | null>(null)
   const [options, setOptions] = useState<Record<string, string[]>>({})
@@ -158,49 +156,47 @@ export default function Admin() {
 
   return (
     <div className="admin page-main">
+      <AdminNav />
       <header className="admin-bar">
-        <div className="admin-bar-main">
-          <h1>{unit.many}</h1>
-          <Dropdown
-            value={GAMES.find((g) => g.id === gameId)?.label.ru ?? ''}
-            choices={GAMES.map((g) => g.label.ru)}
-            onPick={(label) => {
-              const picked = GAMES.find((g) => g.label.ru === label)?.id ?? gameId
-              localStorage.setItem(LAST_GAME, picked)
-              setGameId(picked)
-            }}
-          />
+        <div className="admin-bar-row">
+          <div className="admin-bar-title">
+            <span className="admin-bar-label">Вселенная</span>
+            <Dropdown
+              value={GAMES.find((g) => g.id === gameId)?.label.ru ?? ''}
+              choices={GAMES.map((g) => g.label.ru)}
+              onPick={(label) => {
+                const picked = GAMES.find((g) => g.label.ru === label)?.id ?? gameId
+                localStorage.setItem(LAST_GAME, picked)
+                setGameId(picked)
+              }}
+            />
+          </div>
+          <div className="admin-bar-side">
+            <span className={`admin-note ${note ? 'on' : ''}`}>{note}</span>
+            <label className="admin-date" title="Показывается в игре как дата актуальности данных">
+              <span>Данные актуальны на</span>
+              <input type="date" value={updated} onChange={(e) => void saveUpdated(e.target.value)} />
+            </label>
+          </div>
+        </div>
+
+        <div className="admin-bar-row">
           <label className="admin-search">
             <svg viewBox="0 0 24 24" aria-hidden>
               <circle cx="11" cy="11" r="6.5" />
               <path d="M16 16l4.5 4.5" />
             </svg>
-            <input placeholder="Поиск по имени" value={query} onChange={(e) => setQuery(e.target.value)} />
+            <input placeholder={`Найти ${unit.accusative} по имени`} value={query} onChange={(e) => setQuery(e.target.value)} />
           </label>
-          <Link className="admin-more" href={href.adminShots}>
-            Кадры аниме
-          </Link>
-          <Link className="admin-more" href={href.adminZoom}>
-            Точка зума
-          </Link>
-          <Link className="admin-more" href={href.adminTitles}>
-            Титулы
-          </Link>
-          <label className="admin-date" title="Дата, на которую актуальны данные — показывается в игре">
-            данные на
-            <input type="date" value={updated} onChange={(e) => void saveUpdated(e.target.value)} />
-          </label>
-        </div>
-
-        <div className="admin-bar-filters">
-          {FILTERS.map(({ id, label }) => (
-            <button key={id} type="button" className={filter === id ? 'on' : ''} onClick={() => setFilter(id)}>
-              {label}
-              <em>{counts[id]}</em>
-            </button>
-          ))}
+          <div className="admin-bar-filters is-segmented">
+            {FILTERS.map(({ id, label }) => (
+              <button key={id} type="button" className={filter === id ? 'on' : ''} onClick={() => setFilter(id)}>
+                {label}
+                <em>{counts[id]}</em>
+              </button>
+            ))}
+          </div>
           <span className="admin-found">{query.trim() ? `найдено ${shown.length}` : ''}</span>
-          <span className={`admin-note ${note ? 'on' : ''}`}>{note}</span>
         </div>
       </header>
 

@@ -1,5 +1,6 @@
 'use client'
 
+import AdminNav from './AdminNav'
 import { useEffect, useState, type CSSProperties } from 'react'
 import Avatar from './Avatar'
 import { useAuth } from './auth'
@@ -64,6 +65,7 @@ export default function FrameAdmin() {
 
   return (
     <div className="admin frame-admin">
+      <AdminNav />
       <header className="admin-head">
         <h1>Посадка рамок</h1>
         <p className="muted">Крути ползунки — превью меняется сразу. «Сохранить для всех» кладёт значения на сервер, и их видят все игроки.</p>

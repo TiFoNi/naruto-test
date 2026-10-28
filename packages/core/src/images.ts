@@ -203,3 +203,14 @@ export async function uploadShotCard(id: number, level: number, name: string) {
   await put(`${SHOTS}/card/${id}.webp`, card)
   return version(card)
 }
+
+export async function uploadQuizCover(source: Buffer) {
+  const cover = await sharp(source)
+    .rotate()
+    .resize({ width: 640, height: 640, fit: 'cover', position: 'attention' })
+    .webp({ quality: 84 })
+    .toBuffer()
+  const key = `quizzes/${randomBytes(8).toString('hex')}.webp`
+  await put(key, cover)
+  return { key, ver: version(cover) }
+}

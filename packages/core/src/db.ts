@@ -229,6 +229,44 @@ export type LedgerDoc = {
 
 export type QuestDoc = { _id: string; userId: ObjectId; day: string; picks: string[]; claimed: string[]; swapped?: string; swapBase?: Record<string, number>; createdAt: Date }
 
+export type QuizOption = { kind: 'entity'; id: number } | { kind: 'ability'; hero: number; key: string } | { kind: 'text'; text: string }
+
+export type QuizQuestion =
+  | { kind: 'choice'; text: string; multi: boolean; options: QuizOption[]; correct: number[] }
+  | { kind: 'name'; text: string; answer: number }
+  | { kind: 'bool'; text: string; answer: boolean }
+  | { kind: 'order'; text: string; options: QuizOption[] }
+  | { kind: 'pairs'; text: string; left: QuizOption[]; right: QuizOption[] }
+
+export type QuizCover = { kind: 'entity'; id: number } | { kind: 'upload'; key: string; ver: string } | null
+
+export type QuizDoc = {
+  _id?: ObjectId
+  game: string
+  title: string
+  cover: QuizCover
+  layout: 'steps' | 'list'
+  status: 'draft' | 'published'
+  official: boolean
+  questions: QuizQuestion[]
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type QuizValue = number[] | number | null
+
+export type QuizAttemptDoc = {
+  _id: string
+  quizId: ObjectId
+  userId: ObjectId
+  answers: QuizValue[]
+  finished: boolean
+  score: number
+  total: number
+  startedAt: Date
+  finishedAt?: Date
+}
+
 export type StreakDoc = {
   _id?: ObjectId
   userId: ObjectId
@@ -338,6 +376,8 @@ const cache = globalThis as typeof globalThis & {
   __entitiesIndexed?: Promise<unknown>
   __settingsIndexed?: Promise<unknown>
   __questsIndexed?: Promise<unknown>
+  __quizzesIndexed?: Promise<unknown>
+  __quizAttemptsIndexed?: Promise<unknown>
   __roundsIndexed?: Promise<unknown>
   __duelsIndexed?: Promise<unknown>
   __challengesIndexed?: Promise<unknown>
@@ -573,6 +613,26 @@ export async function quests(): Promise<Collection<QuestDoc>> {
     throw error
   })
   await cache.__questsIndexed
+  return collection
+}
+
+export async function quizzes(): Promise<Collection<QuizDoc>> {
+  const collection = (await database()).collection<QuizDoc>('quizzes')
+  cache.__quizzesIndexed ??= collection.createIndex({ game: 1, status: 1, createdAt: -1 }).catch((error) => {
+    cache.__quizzesIndexed = undefined
+    throw error
+  })
+  await cache.__quizzesIndexed
+  return collection
+}
+
+export async function quizAttempts(): Promise<Collection<QuizAttemptDoc>> {
+  const collection = (await database()).collection<QuizAttemptDoc>('quizAttempts')
+  cache.__quizAttemptsIndexed ??= collection.createIndex({ userId: 1, quizId: 1 }).catch((error) => {
+    cache.__quizAttemptsIndexed = undefined
+    throw error
+  })
+  await cache.__quizAttemptsIndexed
   return collection
 }
 

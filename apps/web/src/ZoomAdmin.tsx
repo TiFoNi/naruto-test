@@ -1,13 +1,12 @@
 'use client'
 
+import AdminNav from './AdminNav'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react'
-import Link from 'next/link'
 import { ZOOM_LEVELS, hasMode } from '@nanda/game'
 import { api } from './api'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
-import { useHref } from './router'
 
 const ZOOM_GAMES = GAMES.filter((one) => hasMode(one.id, 'image'))
 
@@ -49,7 +48,6 @@ const cropStyle = (url: string, box: { left: number; top: number; width: number;
 })
 
 export default function ZoomAdmin() {
-  const href = useHref()
   const { l } = useI18n()
   const [game, setGame] = useState<GameId>(ZOOM_GAMES[0]?.id ?? 'genshin')
   const [rows, setRows] = useState<Row[] | null>(null)
@@ -171,15 +169,10 @@ export default function ZoomAdmin() {
 
   return (
     <div className="admin zoom-admin page-main">
+      <AdminNav />
       <header className="admin-bar">
         <div className="admin-bar-main">
           <h1>Точка зума</h1>
-          <Link className="admin-more" href={href.admin}>
-            Персонажи
-          </Link>
-          <Link className="admin-more" href={href.adminShots}>
-            Кадры аниме
-          </Link>
           <label className="admin-search">
             <svg viewBox="0 0 24 24" aria-hidden>
               <circle cx="11" cy="11" r="6.5" />
@@ -219,23 +212,28 @@ export default function ZoomAdmin() {
             return (
               <li key={row.id}>
                 <button type="button" className={`zoom-card ${row.focus ? 'is-set' : ''}`} onClick={() => (setOpenId(row.id), setDraft(null))}>
-                  <span className="zoom-shot">
-                    <img
-                      src={urlOf(row)}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                      onLoad={(event) => {
-                        const { naturalWidth: w, naturalHeight: h } = event.currentTarget
-                        setSizes((was) => (was[row.id] ? was : { ...was, [row.id]: { w, h } }))
-                      }}
-                    />
-                    {box && (
-                      <i
-                        className="zoom-frame"
-                        style={{ left: `${box.left * 100}%`, top: `${box.top * 100}%`, width: `${box.width * 100}%`, height: `${box.height * 100}%` }}
+                  <span className={`zoom-shot ${own ? 'is-ready' : ''}`}>
+                    <span
+                      className="zoom-pic"
+                      style={own ? { aspectRatio: `${own.w} / ${own.h}`, [own.w >= own.h ? 'width' : 'height']: '100%' } : undefined}
+                    >
+                      <img
+                        src={urlOf(row)}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        onLoad={(event) => {
+                          const { naturalWidth: w, naturalHeight: h } = event.currentTarget
+                          setSizes((was) => (was[row.id] ? was : { ...was, [row.id]: { w, h } }))
+                        }}
                       />
-                    )}
+                      {box && (
+                        <i
+                          className="zoom-frame"
+                          style={{ left: `${box.left * 100}%`, top: `${box.top * 100}%`, width: `${box.width * 100}%`, height: `${box.height * 100}%` }}
+                        />
+                      )}
+                    </span>
                   </span>
                   <b>{row.name ?? row.id}</b>
                   <small>{row.focus ? 'вручную' : 'авто'}</small>

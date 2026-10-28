@@ -1,11 +1,10 @@
 'use client'
 
+import AdminNav from './AdminNav'
 import { useCallback, useEffect, useState } from 'react'
-import Link from 'next/link'
 import Avatar from './Avatar'
 import { api } from './api'
 import { useI18n, type UiKey } from './i18n'
-import { useHref } from './router'
 
 type Player = {
   id: string
@@ -19,7 +18,6 @@ type Player = {
 
 export default function TitleAdmin() {
   const { t } = useI18n()
-  const href = useHref()
   const [query, setQuery] = useState('')
   const [titles, setTitles] = useState<string[]>([])
   const [players, setPlayers] = useState<Player[]>([])
@@ -54,12 +52,10 @@ export default function TitleAdmin() {
 
   return (
     <div className="admin title-admin">
+      <AdminNav />
       <header className="admin-head">
         <h1>Титулы</h1>
         <p className="muted">Ищи по нику, части ника, #тегу или id. Клик по титулу выдаёт, повторный — снимает.</p>
-        <Link className="admin-more" href={href.admin}>
-          Персонажи
-        </Link>
       </header>
 
       {!!titles.length && (

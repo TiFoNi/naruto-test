@@ -1,13 +1,15 @@
 'use client'
 
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { GRID_GAMES, dailyKey, hasDaily, statsKey } from '@nanda/game'
+import { api } from './api'
 import BackButton from './BackButton'
 import { useAuth } from './auth'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
-import { CalendarIcon, CheckIcon } from './icons'
+import { CalendarIcon, CheckIcon, PuzzleIcon } from './icons'
 import { MODES } from './modes'
 import { useHref } from './router'
 import { emptyStats, kyivToday } from './stats'
@@ -17,6 +19,11 @@ export default function WorldModes({ game: gameId }: { game: string }) {
   const href = useHref()
   const { user, stats } = useAuth()
   const game = GAMES.find((one) => one.id === (gameId as GameId))
+  const [tests, setTests] = useState(0)
+
+  useEffect(() => {
+    void api<{ counts?: Record<string, number> }>('quizzes').then(({ ok, data }) => ok && setTests(data.counts?.[gameId] ?? 0))
+  }, [gameId])
   if (!game) return <div className="card center muted">{t('err.not_found')}</div>
 
   const modes = MODES.filter((one) => game.modes.includes(one.id) || (one.id === 'grid' && GRID_GAMES.includes(game.id)))
@@ -93,6 +100,21 @@ export default function WorldModes({ game: gameId }: { game: string }) {
             </article>
           )
         })}
+
+        {tests > 0 && (
+          <article className="world-card is-tests">
+            <Link className="world-card-main" href={href.tests(game.id)} prefetch={false}>
+              <span className="world-card-mark" aria-hidden>
+                <PuzzleIcon />
+              </span>
+              <b className="world-card-name">{t('quiz.title')}</b>
+              <small className="world-card-desc">{t('quiz.desc')}</small>
+            </Link>
+            <div className="world-card-foot">
+              <span className="world-card-stat">{t('quiz.count', { count: tests })}</span>
+            </div>
+          </article>
+        )}
       </div>
     </div>
   )

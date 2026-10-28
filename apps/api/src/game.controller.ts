@@ -12,6 +12,8 @@ import * as shopStars from '@nanda/core/endpoints/shop-telegram'
 import * as push from '@nanda/core/endpoints/push'
 import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as adminShots from '@nanda/core/endpoints/admin-shots'
+import * as quizzes from '@nanda/core/endpoints/quizzes'
+import * as adminQuizzes from '@nanda/core/endpoints/admin-quizzes'
 import * as adminZoom from '@nanda/core/endpoints/admin-zoom'
 import * as adminTitles from '@nanda/core/endpoints/admin-titles'
 import * as framesTune from '@nanda/core/endpoints/frames-tune'
@@ -181,6 +183,41 @@ export class GameController {
   @Post('quests/claim')
   questClaim(@Req() req: Request, @Res() res: Response) {
     return bridge(quests.POST, req, res)
+  }
+
+  @Get('quizzes')
+  quizList(@Req() req: Request, @Res() res: Response) {
+    return bridge(quizzes.LIST, req, res)
+  }
+
+  @Get('quiz')
+  quizOne(@Req() req: Request, @Res() res: Response) {
+    return bridge(quizzes.ONE, req, res)
+  }
+
+  @Post('quiz')
+  quizPlay(@Req() req: Request, @Res() res: Response) {
+    return bridge(quizzes.PLAY, req, res)
+  }
+
+  @Get('admin/quizzes')
+  adminQuizList(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminQuizzes.GET, req, res)
+  }
+
+  @Post('admin/quizzes')
+  adminQuizSave(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminQuizzes.SAVE, req, res)
+  }
+
+  @Post('admin/quizzes/drop')
+  adminQuizDrop(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminQuizzes.DROP, req, res)
+  }
+
+  @Post('admin/quizzes/cover')
+  adminQuizCover(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminQuizzes.COVER, req, res)
   }
 
   @Post('quests/swap')
