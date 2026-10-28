@@ -1,5 +1,5 @@
 import { lookOf } from '@nanda/game'
-import { fail, handle, json, readJson } from '../http'
+import { automated, fail, handle, json, readJson, robot } from '../http'
 import { currentUser, searchPlayers, unauthorized } from '../profile'
 import {
   answerCard,
@@ -125,6 +125,7 @@ export const POST = handle(async (request) => {
   if (action === 'seat') return json({ duel: await duelView(await takeSeat(live, userId, body.team, body.lead), userId) })
 
   if (action === 'clue') {
+    if (automated(request)) return robot()
     const result = await giveClue(live, userId, body.word, body.count)
     if (result.error)
       return fail(result.error === 'round_over' ? 409 : result.error === 'not_your_turn' ? 403 : 400, result.error)
@@ -166,6 +167,7 @@ export const POST = handle(async (request) => {
   }
 
   if (action === 'pick') {
+    if (automated(request)) return robot()
     const entityId = Number(body.entityId)
     if (!Number.isInteger(entityId)) return fail(400, 'bad_request')
     const result = await pickSecret(live, userId, entityId)
@@ -174,6 +176,7 @@ export const POST = handle(async (request) => {
   }
 
   if (action === 'strike' || action === 'answer') {
+    if (automated(request)) return robot()
     const entityId = Number(body.entityId)
     if (!Number.isInteger(entityId)) return fail(400, 'bad_request')
     const result = action === 'answer' ? await answerCard(live, userId, entityId) : await strikeCard(live, userId, entityId)
@@ -182,6 +185,7 @@ export const POST = handle(async (request) => {
   }
 
   if (action === 'guess') {
+    if (automated(request)) return robot()
     const entityId = Number(body.entityId)
     if (!Number.isInteger(entityId)) return fail(400, 'bad_request')
     const result = await duelGuess(await settle(live), userId, entityId)

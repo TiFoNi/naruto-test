@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb'
 import { rounds, users } from '../db'
 import { gameData, isGame } from '../games'
-import { fail, handle, json, readJson } from '../http'
+import { automated, fail, handle, json, readJson, robot } from '../http'
 import { oneTry } from '@nanda/game'
 import { rememberLang, roundOwner, touchVisit } from '../profile'
 import { finishRound, roundLimit, roundView } from '../rounds'
@@ -10,6 +10,7 @@ const MAX_GUESSES = 300
 const MIN_GAP_MS = 800
 
 export const POST = handle(async (request) => {
+  if (automated(request)) return robot()
   const owner = await roundOwner(request)
   const userId = owner.id
   const body = await readJson(request)

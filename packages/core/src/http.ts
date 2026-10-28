@@ -32,6 +32,18 @@ export function cached(data: unknown, seconds: number, request?: Request) {
 
 export const fail = (status: number, error: string) => json({ error }, status)
 
+const TOUCH_WINDOW_MS = 10_000
+
+export function automated(request: Request) {
+  if (request.headers.get('x-nanda-wd') === '1') return true
+  const touch = request.headers.get('x-nanda-touch')
+  if (touch === null) return false
+  const age = Number(touch)
+  return !Number.isFinite(age) || age < 0 || age > TOUCH_WINDOW_MS
+}
+
+export const robot = () => fail(403, 'automation')
+
 export async function readJson(request: Request): Promise<Record<string, unknown>> {
   try {
     const body = await request.json()

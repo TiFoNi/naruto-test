@@ -425,6 +425,11 @@ const ui = {
     en: 'Username or email: 3–64 characters, no spaces',
   },
   'err.invalid_password': { ru: 'Пароль: от 6 до 100 символов', uk: 'Пароль: від 6 до 100 символів', en: 'Password: 6–100 characters' },
+  'err.automation': {
+    ru: 'Похоже, играет не человек. Автоматические помощники и боты в игре запрещены.',
+    uk: 'Схоже, грає не людина. Автоматичні помічники й боти в грі заборонені.',
+    en: 'Looks like this isn’t a person playing. Automated helpers and bots aren’t allowed.',
+  },
   'err.taken': { ru: 'Такой логин уже занят', uk: 'Такий логін уже зайнятий', en: 'This username is already taken' },
   'err.bad_credentials': { ru: 'Неверный логин или пароль', uk: 'Неправильний логін або пароль', en: 'Wrong username or password' },
   'err.unauthorized': { ru: 'Нужно войти в аккаунт', uk: 'Потрібно увійти в акаунт', en: 'Please log in' },

@@ -1,4 +1,4 @@
-import { fail, handle, json, readJson } from '../http'
+import { automated, fail, handle, json, readJson, robot } from '../http'
 import { gameData, isGame } from '../games'
 import { roundOwner } from '../profile'
 import { isSide, pairAnswer, pairRun } from '../streaks'
@@ -12,6 +12,7 @@ export const POST = handle(async (request) => {
   if (!(await gameData(game)).pool.length) return fail(503, 'not_ready')
 
   if (body.action === 'answer') {
+    if (automated(request)) return robot()
     if (!isSide(body.pick)) return fail(400, 'bad_request')
     const result = await pairAnswer(owner.id, game, body.pick)
     return result ? json(result, 200, owner.cookie) : fail(409, 'no_round')

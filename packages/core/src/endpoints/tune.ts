@@ -1,5 +1,5 @@
 import { tuneLevel } from '@nanda/game'
-import { fail, handle, json, readJson } from '../http'
+import { automated, fail, handle, json, readJson, robot } from '../http'
 import { gameData } from '../games'
 import { roundOwner } from '../profile'
 import { dailyTune, dailyTuneAnswer, dailyTuneGiveUp, dailyTuneSkip, tuneAnswer, tuneGiveUp, tunePoints, tuneRun, tuneSkip } from '../tunes'
@@ -12,6 +12,7 @@ export const POST = handle(async (request) => {
 
   if (body.daily) {
     if (body.action === 'answer') {
+    if (automated(request)) return robot()
       if (typeof body.pick !== 'number') return fail(400, 'bad_request')
       const result = await dailyTuneAnswer(owner.id, body.pick)
       return result ? json(result, 200, owner.cookie) : fail(409, 'no_round')
@@ -27,6 +28,7 @@ export const POST = handle(async (request) => {
   }
 
   if (body.action === 'answer') {
+    if (automated(request)) return robot()
     if (typeof body.pick !== 'number') return fail(400, 'bad_request')
     const result = await tuneAnswer(owner.id, body.pick, owner.guest)
     return result ? json(result, 200, owner.cookie) : fail(409, 'no_round')

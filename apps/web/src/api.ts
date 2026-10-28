@@ -1,3 +1,5 @@
+import { humanHeaders } from './human'
+
 const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, '') ?? ''
 
 const LANGS = new Set(['ru', 'uk', 'en'])
@@ -16,6 +18,7 @@ export async function api<T = Record<string, unknown>>(path: string, body?: unkn
     headers: {
       ...(body === undefined ? {} : { 'content-type': 'application/json' }),
       ...(lang ? { 'x-nanda-lang': lang } : {}),
+      ...(body === undefined ? {} : humanHeaders()),
     },
     body: body === undefined ? undefined : JSON.stringify(body),
     credentials: base ? 'include' : 'same-origin',
