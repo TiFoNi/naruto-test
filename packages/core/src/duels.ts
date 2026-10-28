@@ -704,6 +704,7 @@ function roundPoints(duel: DuelDoc) {
   }
 
   const order = sides.map(tally).sort(rank)
+  if (sides.length === 2 && decide(duel) === null) return points
   order.forEach((board) => {
     if (!board.solved) return
     const first = order.findIndex((other) => rank(other, board) === 0)
