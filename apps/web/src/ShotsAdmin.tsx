@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { api, apiUrl } from './api'
 import { useHref } from './router'
 
-type Title = { id: number; name?: string; nameEn?: string; year?: number; frames?: number[]; ver?: string; answer?: boolean }
+type Title = { id: number; name?: string; nameEn?: string; year?: number; frames?: number[]; frameNames?: string[][]; ver?: string; answer?: boolean }
 
 const LEVELS = [
   { id: 0, label: 'Сложный' },
@@ -23,6 +23,13 @@ const FILTERS = [
 type Filter = (typeof FILTERS)[number]['id']
 
 const countsOf = (title: Title) => Array.from({ length: LEVELS.length }, (_, level) => title.frames?.[level] ?? 0)
+
+const namesOf = (title: Title) =>
+  LEVELS.map(({ id: level }) =>
+    title.frameNames?.length === LEVELS.length
+      ? (title.frameNames[level] ?? [])
+      : Array.from({ length: title.frames?.[level] ?? 0 }, (_, index) => String(index)),
+  )
 
 const total = (title: Title) => countsOf(title).reduce((sum, count) => sum + count, 0)
 
@@ -159,8 +166,9 @@ function Frames({
   const [busy, setBusy] = useState<number | null>(null)
   const [shown, setShown] = useState<{ level: number; index: number } | null>(null)
   const counts = countsOf(title)
+  const names = namesOf(title)
   const frameUrl = (level: number, index: number) =>
-    `${pics}/shots/frames/${title.id}/${level}/${index}.webp?v=${title.ver ?? ''}`
+    `${pics}/shots/frames/${title.id}/${level}/${names[level]?.[index] ?? index}.webp?v=${title.ver ?? ''}`
 
   const say = (text: string) => {
     onNote(text)
@@ -168,7 +176,7 @@ function Frames({
   }
 
   const send = async (level: number, files: FileList | null) => {
-    if (!files?.length) return
+    if (!files?.length || busy !== null) return
     setBusy(level)
     const form = new FormData()
     form.append('id', String(title.id))
@@ -183,10 +191,10 @@ function Frames({
     say(`добавлено ${files.length}`)
   }
 
-  const drop = async (level: number, index: number) => {
-    if (!confirm('Удалить кадр?')) return
+  const drop = async (level: number, name: string) => {
+    if (busy !== null || !confirm('Удалить кадр?')) return
     setBusy(level)
-    const { ok, data } = await api<{ title?: Title }>('admin/shots/drop', { id: title.id, level, index })
+    const { ok, data } = await api<{ title?: Title }>('admin/shots/drop', { id: title.id, level, name })
     setBusy(null)
     if (!ok || !data.title) return say('не вышло удалить')
     onDone(data.title)
@@ -203,12 +211,12 @@ function Frames({
           </header>
 
           <div className="shots-tiles">
-            {Array.from({ length: counts[level] }, (_, index) => (
-              <figure key={`${title.ver}-${index}`} className="shots-tile">
+            {names[level]!.map((name, index) => (
+              <figure key={name} className="shots-tile">
                 <button type="button" className="shots-open" onClick={() => setShown({ level, index })} aria-label="Открыть кадр">
                   <img src={frameUrl(level, index)} alt="" loading="lazy" />
                 </button>
-                <button type="button" className="shots-drop" onClick={() => void drop(level, index)} aria-label="Удалить кадр">
+                <button type="button" className="shots-drop" disabled={busy !== null} onClick={() => void drop(level, name)} aria-label="Удалить кадр">
                   ✕
                 </button>
               </figure>

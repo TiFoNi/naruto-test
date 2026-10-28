@@ -1,4 +1,4 @@
-import { createHash } from 'node:crypto'
+import { createHash, randomBytes } from 'node:crypto'
 import { DeleteObjectCommand, DeleteObjectsCommand, GetObjectCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import sharp from 'sharp'
 import { GAME_SPECS, shapeOf, type GameId } from '@nanda/game'
@@ -156,7 +156,7 @@ const frameBox = (width: number) => {
 const SHOT_CARD = { width: 288, height: 384 }
 const SHOTS = 'shots'
 
-export const frameKey = (id: number, level: number, index: number) => `${SHOTS}/frames/${id}/${level}/${index}.webp`
+export const frameKey = (id: number, level: number, name: string) => `${SHOTS}/frames/${id}/${level}/${name}.webp`
 
 async function unbarred(source: Buffer) {
   const full = await sharp(source).metadata()
@@ -169,8 +169,9 @@ async function unbarred(source: Buffer) {
   return left > 0.5 ? cut.data : source
 }
 
-export async function uploadFrames(id: number, level: number, sources: Buffer[], from: number) {
-  for (const [step, source] of sources.entries()) {
+export async function uploadFrames(id: number, level: number, sources: Buffer[]) {
+  const names: string[] = []
+  for (const source of sources) {
     const plain = await unbarred(source)
     const { width = 0 } = await sharp(plain).metadata()
     const stretched = width < FRAME_MIN
@@ -179,23 +180,21 @@ export async function uploadFrames(id: number, level: number, sources: Buffer[],
       .sharpen(stretched ? { sigma: 1.1, m1: 0.6, m2: 2 } : { sigma: 0.5 })
       .webp({ quality: 88 })
       .toBuffer()
-    await put(frameKey(id, level, from + step), frame)
+    const name = randomBytes(6).toString('hex')
+    await put(frameKey(id, level, name), frame)
+    names.push(name)
   }
-  return sources.length
+  return names
 }
 
-export async function dropFrame(id: number, level: number, index: number, count: number) {
-  for (let step = index; step < count - 1; step++) {
-    const next = await get(frameKey(id, level, step + 1))
-    await put(frameKey(id, level, step), next)
-  }
+export async function deleteFrame(id: number, level: number, name: string) {
   await s3()
-    .send(new DeleteObjectCommand({ Bucket: bucket(), Key: frameKey(id, level, count - 1) }))
+    .send(new DeleteObjectCommand({ Bucket: bucket(), Key: frameKey(id, level, name) }))
     .catch(() => undefined)
 }
 
-export async function uploadShotCard(id: number, level: number) {
-  const frame = await get(frameKey(id, level, 0)).catch(() => null)
+export async function uploadShotCard(id: number, level: number, name: string) {
+  const frame = await get(frameKey(id, level, name)).catch(() => null)
   if (!frame) return null
   const card = await sharp(frame)
     .resize({ ...SHOT_CARD, fit: 'cover', position: 'attention' })

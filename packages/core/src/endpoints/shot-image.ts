@@ -12,7 +12,7 @@ export const GET = handle(async (request) => {
 
   const pics = process.env.PICS_URL?.replace(/\/+$/, '') ?? new URL(request.url).origin
   const tag = shown.ver ? `?v=${shown.ver}` : ''
-  const image = await fetch(`${pics}/shots/frames/${shown.answerId}/${shown.level}/${shown.variant}.webp${tag}`).catch(() => null)
+  const image = await fetch(`${pics}/shots/frames/${shown.answerId}/${shown.level}/${shown.name}.webp${tag}`).catch(() => null)
   if (!image?.ok) return fail(502, 'server')
 
   return new Response(Buffer.from(await image.arrayBuffer()), {

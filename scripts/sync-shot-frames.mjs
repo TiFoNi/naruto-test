@@ -21,18 +21,18 @@ const s3 = new S3Client({
 })
 const Bucket = process.env.R2_BUCKET ?? 'nandaguessr'
 
-const counts = new Map()
+const found = new Map()
 let token
 do {
   const page = await s3.send(new ListObjectsV2Command({ Bucket, Prefix: `${GAME}/frames/`, ContinuationToken: token }))
   for (const object of page.Contents ?? []) {
-    const hit = object.Key.match(/^shots\/frames\/(\d+)\/(\d+)\/\d+\.webp$/)
+    const hit = object.Key.match(/^shots\/frames\/(\d+)\/(\d+)\/([\w-]+)\.webp$/)
     if (!hit) continue
     const id = Number(hit[1])
     const level = Number(hit[2])
     if (level >= LEVELS) continue
-    if (!counts.has(id)) counts.set(id, Array.from({ length: LEVELS }, () => 0))
-    counts.get(id)[level] += 1
+    if (!found.has(id)) found.set(id, Array.from({ length: LEVELS }, () => []))
+    found.get(id)[level].push({ name: hit[3], at: object.LastModified?.getTime() ?? 0 })
   }
   token = page.IsTruncated ? page.NextContinuationToken : undefined
 } while (token)
@@ -41,21 +41,33 @@ const client = new MongoClient(uri)
 await client.connect()
 const entities = client.db(process.env.MONGODB_DB || 'nandaguessr').collection('entities')
 
-const docs = await entities.find({ game: GAME }, { projection: { _id: 0, id: 1, nameEn: 1, frames: 1, answer: 1 } }).sort({ id: 1 }).toArray()
+const docs = await entities.find({ game: GAME }, { projection: { _id: 0, id: 1, nameEn: 1, frames: 1, frameNames: 1, answer: 1 } }).sort({ id: 1 }).toArray()
+
+const ordered = (doc, level) => {
+  const files = found.get(doc.id)?.[level] ?? []
+  const held = Array.isArray(doc.frameNames?.[level]) ? doc.frameNames[level] : []
+  const rank = (file) => {
+    const place = held.indexOf(file.name)
+    return place >= 0 ? place : Number.MAX_SAFE_INTEGER
+  }
+  const legacy = (file) => (/^\d+$/.test(file.name) ? Number(file.name) : Number.MAX_SAFE_INTEGER)
+  return [...files].sort((a, b) => rank(a) - rank(b) || legacy(a) - legacy(b) || a.at - b.at).map((file) => file.name)
+}
 
 const ops = []
 for (const doc of docs) {
-  const real = counts.get(doc.id) ?? Array.from({ length: LEVELS }, () => 0)
+  const names = Array.from({ length: LEVELS }, (_, level) => ordered(doc, level))
+  const real = names.map((list) => list.length)
   const held = Array.isArray(doc.frames) ? doc.frames : []
-  const same = real.every((value, level) => value === (Number(held[level]) || 0))
-  const answer = real.some((value) => value > 0)
+  const same = real.every((value, level) => value === (Number(held[level]) || 0)) && JSON.stringify(names) === JSON.stringify(doc.frameNames ?? null)
+  const answer = real.every((value) => value > 0)
   if (same && doc.answer === answer) continue
 
   console.log(`  ${String(doc.id).padStart(3)} ${doc.nameEn.slice(0, 36).padEnd(36)} ${JSON.stringify(held)} → ${JSON.stringify(real)}`)
   ops.push({
     updateOne: {
       filter: { game: GAME, id: doc.id },
-      update: { $set: { frames: real, answer, ver: Date.now().toString(36), updatedAt: new Date() } },
+      update: { $set: { frames: real, frameNames: names, answer, ver: Date.now().toString(36), updatedAt: new Date() } },
     },
   })
 }
@@ -67,7 +79,7 @@ else {
   console.log(`\nоновлено ${result.modifiedCount}`)
 }
 
-const playable = docs.filter((doc) => (counts.get(doc.id) ?? []).some((value) => value > 0)).length
+const playable = docs.filter((doc) => (found.get(doc.id) ?? []).every((list) => list.length > 0)).length
 console.log(`тайтлів із картинками: ${playable}`)
 
 await client.close()

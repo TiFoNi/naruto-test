@@ -45,6 +45,13 @@ const remember = (shown: ShotDoc['shown'], id: number, variant: number[]) =>
 const framesOf = (title: Record<string, unknown> | undefined) =>
   Array.isArray(title?.frames) ? (title.frames as number[]) : []
 
+export const frameNames = (title: Record<string, unknown> | undefined) => {
+  const stored = title?.frameNames
+  if (Array.isArray(stored) && stored.length === LEVELS) return stored.map((names) => (Array.isArray(names) ? names.map(String) : []))
+  const counts = framesOf(title)
+  return Array.from({ length: LEVELS }, (_, level) => Array.from({ length: Number(counts[level]) || 0 }, (_, index) => String(index)))
+}
+
 const complete = (title: Record<string, unknown>) => {
   const counts = framesOf(title)
   return Array.from({ length: LEVELS }, (_, level) => Number(counts[level]) || 0).every((count) => count > 0)
@@ -354,7 +361,8 @@ export async function shotShown(userId: ObjectId, want?: number, day?: string) {
   const count = Number(framesOf(title)[level]) || 0
   const asked = doc.variant?.[level] ?? 0
   const variant = count ? Math.min(asked, count - 1) : 0
-  return { answerId: shown, level, variant, ver: typeof title?.ver === 'string' ? title.ver : '' }
+  const name = frameNames(title)[level]?.[variant] ?? String(variant)
+  return { answerId: shown, level, variant, name, ver: typeof title?.ver === 'string' ? title.ver : '' }
 }
 
 export async function shotBoard(limit = 20) {

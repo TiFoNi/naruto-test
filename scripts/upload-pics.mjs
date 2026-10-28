@@ -30,6 +30,7 @@ async function exists(key, size) {
 }
 
 async function main() {
+  if (only === 'shots') console.warn('увага: кадри в R2 редагуються через адмінку, локальні файли можуть повернути видалені кадри')
   const files = await collectPics(only)
   if (!files.length) return console.log(only ? `у public/${only} нічого не знайшов` : 'картинок не знайшов')
   console.log(`знайшов ${files.length} картинок${only ? ` (гра ${only})` : ''}`)

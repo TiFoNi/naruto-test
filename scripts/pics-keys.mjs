@@ -3,6 +3,8 @@ import path from 'node:path'
 import { GAME_SPECS } from '../packages/game/src/specs.ts'
 import { PUBLIC, ROOT } from './lib.mjs'
 
+const ADMIN_MANAGED = 'shots'
+
 export async function knownIds() {
   const known = new Map()
   for (const spec of Object.values(GAME_SPECS)) {
@@ -21,6 +23,7 @@ export async function collectPics(only) {
 
   for (const game of games) {
     if (!game.isDirectory() || (only && game.name !== only)) continue
+    if (game.name === ADMIN_MANAGED && only !== ADMIN_MANAGED) continue
     const ids = known.get(game.name)
     const keep = (id) => !ids || ids.has(id)
 
