@@ -192,13 +192,26 @@ function Frames({
   }
 
   const drop = async (level: number, name: string) => {
-    if (busy !== null || !confirm('Удалить кадр?')) return
+    if (busy !== null || !confirm('Удалить кадр?')) return false
     setBusy(level)
     const { ok, data } = await api<{ title?: Title }>('admin/shots/drop', { id: title.id, level, name })
     setBusy(null)
-    if (!ok || !data.title) return say('не вышло удалить')
+    if (!ok || !data.title) {
+      say('не вышло удалить')
+      return false
+    }
     onDone(data.title)
     say('кадр удалён')
+    return true
+  }
+
+  const dropShown = async () => {
+    if (!shown) return
+    const level = shown.level
+    const left = counts[level] - 1
+    if (!(await drop(level, names[level]![shown.index]!))) return
+    if (left <= 0) setShown(null)
+    else setShown({ level, index: Math.min(shown.index, left - 1) })
   }
 
   return (
@@ -245,7 +258,9 @@ function Frames({
           counts={counts}
           shown={shown}
           url={frameUrl(shown.level, shown.index)}
+          busy={busy !== null}
           onShow={setShown}
+          onDrop={() => void dropShown()}
           onClose={() => setShown(null)}
         />
       )}
@@ -264,14 +279,18 @@ function Viewer({
   counts,
   shown,
   url,
+  busy,
   onShow,
+  onDrop,
   onClose,
 }: {
   title: Title
   counts: number[]
   shown: { level: number; index: number }
   url: string
+  busy: boolean
   onShow: (shown: { level: number; index: number }) => void
+  onDrop: () => void
   onClose: () => void
 }) {
   useEffect(() => {
@@ -313,6 +332,9 @@ function Viewer({
           </a>
           <button type="button" onClick={() => void save()}>
             Скачать
+          </button>
+          <button type="button" className="shots-view-drop" disabled={busy} onClick={onDrop}>
+            Удалить
           </button>
           <button type="button" onClick={onClose} aria-label="Закрыть">
             ✕
