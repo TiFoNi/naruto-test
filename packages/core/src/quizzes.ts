@@ -27,11 +27,32 @@ async function readOption(raw: unknown, known: Set<number>, game: string): Promi
     const text = clean(option.text, QUIZ_LIMITS.option)
     return text ? { kind: 'text', text } : null
   }
+  if (option?.kind === 'image') {
+    const key = typeof option.key === 'string' && /^quizzes\/[\w-]+\.webp$/.test(option.key) ? option.key : ''
+    const text = clean(option.text, QUIZ_LIMITS.option)
+    return key && text ? { kind: 'image', key, ver: clean(option.ver, 16), text } : null
+  }
+  return null
+}
+
+function readPicture(raw: unknown, known: Set<number>): QuizCover {
+  const picture = raw as Record<string, unknown> | null
+  if (picture?.kind === 'entity' && known.has(whole(picture.id))) return { kind: 'entity', id: whole(picture.id) }
+  if (picture?.kind === 'upload' && typeof picture.key === 'string' && /^quizzes\/[\w-]+\.webp$/.test(picture.key)) {
+    return { kind: 'upload', key: picture.key, ver: clean(picture.ver, 16) }
+  }
   return null
 }
 
 async function readQuestion(raw: unknown, known: Set<number>, game: string): Promise<QuizQuestion | string> {
   const question = raw as Record<string, unknown>
+  const read = await readBody(question, known, game)
+  if (typeof read === 'string') return read
+  const picture = readPicture(question.picture, known)
+  return picture ? { ...read, picture } : read
+}
+
+async function readBody(question: Record<string, unknown>, known: Set<number>, game: string): Promise<QuizQuestion | string> {
   const text = clean(question?.text, QUIZ_LIMITS.text)
   if (!text) return 'question_text'
 
@@ -96,12 +117,7 @@ export async function readQuiz(raw: unknown): Promise<{ quiz: Omit<QuizDoc, '_id
   const { byId } = await gameData(game)
   const known = new Set(byId.keys())
 
-  const coverRaw = body.cover as Record<string, unknown> | null
-  let cover: QuizCover = null
-  if (coverRaw?.kind === 'entity' && known.has(whole(coverRaw.id))) cover = { kind: 'entity', id: whole(coverRaw.id) }
-  if (coverRaw?.kind === 'upload' && typeof coverRaw.key === 'string' && /^quizzes\/[\w-]+\.webp$/.test(coverRaw.key)) {
-    cover = { kind: 'upload', key: coverRaw.key, ver: clean(coverRaw.ver, 16) }
-  }
+  const cover = readPicture(body.cover, known)
 
   const list = Array.isArray(body.questions) ? body.questions : []
   if (!list.length || list.length > QUIZ_LIMITS.maxQuestions) return { error: 'questions' }
@@ -145,6 +161,10 @@ const shownOrder = (quiz: QuizDoc, at: number) => shuffleFor(`${quiz._id?.toHexS
 const inverse = (order: number[]) => order.reduce<number[]>((all, original, shown) => Object.assign(all, { [original]: shown }), [])
 
 function questionView(quiz: QuizDoc, at: number) {
+  return { ...viewBody(quiz, at), picture: quiz.questions[at]!.picture ?? null }
+}
+
+function viewBody(quiz: QuizDoc, at: number) {
   const question = quiz.questions[at]!
   const { kind, text } = question
   if (question.kind === 'choice') return { kind, text, multi: question.multi, options: question.options.map(optionView) }

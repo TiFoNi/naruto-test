@@ -12,7 +12,7 @@ import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { ArrowIcon, CheckIcon, CloseIcon, RefreshIcon } from './icons'
-import { type QuizOption, type QuizQuestionView, type QuizValue, type QuizView } from './quiz'
+import { coverUrl, optionImage, type QuizOption, type QuizQuestionView, type QuizValue, type QuizView } from './quiz'
 import QuizTile, { QuizChip, useOptionLabel, type TileState } from './QuizTile'
 import { abilityUrl } from './pics'
 import { useHref } from './router'
@@ -414,6 +414,7 @@ function Mini({ game, byId, option }: { game: Game; byId: Map<number, Entity>; o
     <span className="quiz-mini">
       {entity && <Thumb game={game} entity={entity} size={24} />}
       {option.kind === 'ability' && <img src={abilityUrl(option.key)} alt="" />}
+      {option.kind === 'image' && <img src={optionImage(option)} alt="" />}
       {label}
     </span>
   )
@@ -603,7 +604,14 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
   const block = (question: QuizQuestionView, index: number, tag: ReactNode, body: ReactNode, state = '') => (
     <section key={index} id={`quiz-q-${index}`} className={`quiz-q ${state}`}>
       <em className="quiz-q-tag">{tag}</em>
-      <h2>{question.text}</h2>
+      {question.picture ? (
+        <div className="quiz-q-head">
+          <img className="quiz-q-picture" src={coverUrl(game.id, question.picture) ?? ''} alt="" loading="lazy" />
+          <h2>{question.text}</h2>
+        </div>
+      ) : (
+        <h2>{question.text}</h2>
+      )}
       {body}
     </section>
   )

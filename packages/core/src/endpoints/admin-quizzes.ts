@@ -59,5 +59,5 @@ export const COVER = handle(async (request) => {
   const file = form?.get('file') as unknown as Upload | null
   if (!file || typeof file === 'string' || !file.size) return fail(400, 'no_file')
   if (file.size > LIMIT) return fail(413, 'too_large')
-  return json(await uploadQuizCover(Buffer.from(await file.arrayBuffer())))
+  return json(await uploadQuizCover(Buffer.from(await file.arrayBuffer()), form?.get('wide') === '1'))
 })

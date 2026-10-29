@@ -229,16 +229,21 @@ export type LedgerDoc = {
 
 export type QuestDoc = { _id: string; userId: ObjectId; day: string; picks: string[]; claimed: string[]; swapped?: string; swapBase?: Record<string, number>; createdAt: Date }
 
-export type QuizOption = { kind: 'entity'; id: number } | { kind: 'ability'; hero: number; key: string } | { kind: 'text'; text: string }
+export type QuizOption =
+  | { kind: 'entity'; id: number }
+  | { kind: 'ability'; hero: number; key: string }
+  | { kind: 'text'; text: string }
+  | { kind: 'image'; key: string; ver: string; text: string }
 
-export type QuizQuestion =
+export type QuizCover = { kind: 'entity'; id: number } | { kind: 'upload'; key: string; ver: string } | null
+
+export type QuizQuestion = { picture?: QuizCover } & (
   | { kind: 'choice'; text: string; multi: boolean; options: QuizOption[]; correct: number[] }
   | { kind: 'name'; text: string; answer: number }
   | { kind: 'bool'; text: string; answer: boolean }
   | { kind: 'order'; text: string; options: QuizOption[] }
   | { kind: 'pairs'; text: string; left: QuizOption[]; right: QuizOption[] }
-
-export type QuizCover = { kind: 'entity'; id: number } | { kind: 'upload'; key: string; ver: string } | null
+)
 
 export type QuizDoc = {
   _id?: ObjectId

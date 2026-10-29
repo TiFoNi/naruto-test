@@ -5,7 +5,7 @@ import type { Entity, Game } from './games/types'
 import { useI18n } from './i18n'
 import { CheckIcon, CloseIcon } from './icons'
 import { abilityUrl, fullUrl } from './pics'
-import type { QuizOption } from './quiz'
+import { optionImage, type QuizOption } from './quiz'
 import Thumb from './Thumb'
 
 export type TileState = 'idle' | 'picked' | 'right' | 'wrong' | 'missed'
@@ -22,7 +22,7 @@ type Props = {
 export function useOptionLabel(byId: Map<number, Entity>) {
   const { name, l } = useI18n()
   return (option: QuizOption) => {
-    if (option.kind === 'text') return option.text
+    if (option.kind === 'text' || option.kind === 'image') return option.text
     if (option.kind === 'ability') return option.name ? l(option.name) : option.key
     const entity = byId.get(option.id)
     return entity ? name(entity) : `#${option.id}`
@@ -32,6 +32,7 @@ export function useOptionLabel(byId: Map<number, Entity>) {
 function Art({ game, option, byId }: { game: Game; option: QuizOption; byId: Map<number, Entity> }) {
   const [broken, setBroken] = useState(false)
   if (option.kind === 'text') return null
+  if (option.kind === 'image') return <img className="quiz-tile-art" src={optionImage(option)} alt="" loading="lazy" />
   if (option.kind === 'ability') {
     return broken ? null : <img className="quiz-tile-art is-icon" src={abilityUrl(option.key)} alt="" loading="lazy" onError={() => setBroken(true)} />
   }
@@ -48,7 +49,7 @@ export default function QuizTile({ game, option, byId, state = 'idle', disabled,
   return (
     <button
       type="button"
-      className={`quiz-tile kind-${option.kind} is-${state} ${option.kind === 'entity' && byId.has(option.id) ? 'has-art' : ''}`}
+      className={`quiz-tile kind-${option.kind === 'image' ? 'entity' : option.kind} is-${state} ${option.kind === 'image' || (option.kind === 'entity' && byId.has(option.id)) ? 'has-art' : ''}`}
       disabled={disabled}
       aria-pressed={state === 'picked'}
       onClick={onClick}
@@ -75,6 +76,7 @@ type ChipProps = {
 function ChipArt({ game, option, byId }: { game: Game; option: QuizOption; byId: Map<number, Entity> }) {
   const [broken, setBroken] = useState(false)
   if (option.kind === 'text') return null
+  if (option.kind === 'image') return <img className="quiz-chip-art" src={optionImage(option)} alt="" loading="lazy" />
   if (option.kind === 'ability') return broken ? null : <img className="quiz-chip-art" src={abilityUrl(option.key)} alt="" loading="lazy" onError={() => setBroken(true)} />
   const entity = byId.get(option.id)
   return entity ? <Thumb game={game} entity={entity} size={36} className="quiz-chip-art" /> : null

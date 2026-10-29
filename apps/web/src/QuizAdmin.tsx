@@ -12,7 +12,7 @@ import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
 import { useI18n } from './i18n'
 import { CheckIcon, CloseIcon, DownIcon, UpIcon } from './icons'
-import { abilityUrl } from './pics'
+import { abilityUrl, picsUrl } from './pics'
 import { coverUrl, type QuizCover, type QuizLayout } from './quiz'
 import { useHref } from './router'
 import Thumb from './Thumb'
@@ -23,13 +23,15 @@ type DraftOption =
   | { kind: 'entity'; id?: number }
   | { kind: 'ability'; hero?: number; key?: string }
   | { kind: 'text'; text: string }
+  | { kind: 'image'; key?: string; ver?: string; text: string }
 
-type DraftQuestion =
+type DraftQuestion = { picture?: QuizCover } & (
   | { kind: 'choice'; text: string; multi: boolean; options: DraftOption[]; correct: number[] }
   | { kind: 'name'; text: string; answer?: number }
   | { kind: 'bool'; text: string; answer?: boolean }
   | { kind: 'order'; text: string; options: DraftOption[] }
   | { kind: 'pairs'; text: string; left: DraftOption[]; right: DraftOption[] }
+)
 
 type Draft = {
   id?: string
@@ -76,7 +78,80 @@ const blank = (kind: DraftQuestion['kind'], text = ''): DraftQuestion => {
   return { ...(blankChoice() as Extract<DraftQuestion, { kind: 'choice' }>), text }
 }
 
-const nextOption = (list: DraftOption[]): DraftOption => (list.at(-1)?.kind === 'text' ? { kind: 'text', text: '' } : ({ kind: list.at(-1)?.kind ?? 'entity' } as DraftOption))
+const blankOption = (kind: DraftOption['kind']): DraftOption =>
+  kind === 'text' || kind === 'image' ? { kind, text: '' } : kind === 'ability' ? { kind: 'ability' } : { kind: 'entity' }
+
+const nextOption = (list: DraftOption[]): DraftOption => blankOption(list.at(-1)?.kind ?? 'entity')
+
+async function uploadPicture(file: File, wide = false) {
+  const form = new FormData()
+  form.append('file', file)
+  if (wide) form.append('wide', '1')
+  const answer = await fetch(apiUrl('admin/quizzes/cover'), { method: 'POST', body: form, credentials: 'include' })
+  const data = (await answer.json().catch(() => ({}))) as { key?: string; ver?: string }
+  return answer.ok && data.key ? { key: data.key, ver: data.ver ?? '' } : null
+}
+
+function ImageOption({ option, onChange }: { option: Extract<DraftOption, { kind: 'image' }>; onChange: (option: DraftOption) => void }) {
+  const [busy, setBusy] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const pick = async (file: File | undefined) => {
+    if (!file) return
+    setBusy(true)
+    setFailed(false)
+    const saved = await uploadPicture(file)
+    setBusy(false)
+    if (!saved) return setFailed(true)
+    onChange({ ...option, ...saved })
+  }
+  return (
+    <div className="quiz-admin-image">
+      <label className={`quiz-admin-image-pick ${option.key ? 'has-pic' : ''} ${busy ? 'is-busy' : ''}`} title="Загрузить картинку">
+        {option.key ? <img src={picsUrl(option.key, option.ver ?? '')} alt="" /> : <span>{busy ? '…' : '+'}</span>}
+        <input type="file" accept="image/*" disabled={busy} onChange={(event) => void pick(event.target.files?.[0])} />
+      </label>
+      <input
+        className="quiz-admin-input"
+        maxLength={80}
+        placeholder={failed ? 'Картинка не загрузилась — попробуй ещё раз' : 'Подпись: кто или что на картинке'}
+        value={option.text}
+        onChange={(event) => onChange({ ...option, text: event.target.value })}
+      />
+    </div>
+  )
+}
+
+function QuestionPicture({ game, picture, onChange }: { game: Game; picture?: QuizCover; onChange: (picture: QuizCover) => void }) {
+  const [busy, setBusy] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const pick = async (file: File | undefined) => {
+    if (!file) return
+    setBusy(true)
+    setFailed(false)
+    const saved = await uploadPicture(file, true)
+    setBusy(false)
+    if (!saved) return setFailed(true)
+    onChange({ kind: 'upload', ...saved })
+  }
+  const art = coverUrl(game.id, picture ?? null)
+  return (
+    <div className={`quiz-admin-qpic ${art ? 'has-pic' : ''}`}>
+      {art && <img src={art} alt="" />}
+      <div className="quiz-admin-qpic-tools">
+        <label className={`ghost quiz-admin-upload ${busy ? 'is-busy' : ''}`}>
+          {busy ? 'Загружаю…' : art ? 'Заменить картинку' : '+ Картинка к вопросу'}
+          <input type="file" accept="image/*" disabled={busy} onChange={(event) => void pick(event.target.files?.[0])} />
+        </label>
+        {art && (
+          <button type="button" className="ghost" onClick={() => onChange(null)}>
+            Убрать
+          </button>
+        )}
+        {failed && <span className="quiz-admin-hint">Картинка не загрузилась — попробуй ещё раз</span>}
+      </div>
+    </div>
+  )
+}
 
 const fresh = (game: GameId): Draft => ({ game, title: '', cover: null, layout: 'steps', status: 'draft', questions: [blankChoice()] })
 
@@ -115,6 +190,7 @@ function OptionEditor({
     return <input className="quiz-admin-input" maxLength={80} placeholder="Впиши текст варианта" value={option.text} onChange={(event) => onChange({ kind: 'text', text: event.target.value })} />
   }
   if (option.kind === 'entity') return <EntityPick game={game} byId={byId} id={option.id} onPick={(id) => onChange({ kind: 'entity', id })} />
+  if (option.kind === 'image') return <ImageOption option={option} onChange={onChange} />
 
   const list = option.hero === undefined ? [] : (HEROES[String(option.hero)] ?? [])
   return (
@@ -156,13 +232,14 @@ function OptionField({
         {[
           { value: 'entity' as const, label: game.unit === 'manga' ? 'Тайтл' : game.unit === 'hero' ? 'Герой' : game.unit === 'player' ? 'Футболист' : 'Персонаж' },
           ...(game.id === 'dota' ? [{ value: 'ability' as const, label: 'Способность' }] : []),
+          { value: 'image' as const, label: 'Картинка' },
           { value: 'text' as const, label: 'Текст' },
         ].map((one) => (
           <button
             key={one.value}
             type="button"
             className={option.kind === one.value ? 'on' : ''}
-            onClick={() => option.kind !== one.value && onChange(one.value === 'text' ? { kind: 'text', text: '' } : one.value === 'ability' ? { kind: 'ability' } : { kind: 'entity' })}
+            onClick={() => option.kind !== one.value && onChange(blankOption(one.value))}
           >
             {one.label}
           </button>
@@ -201,7 +278,7 @@ function QuestionEditor({
         className="quiz-admin-qkind"
         value={question.kind}
         choices={KINDS.map((one) => ({ value: one.kind, label: one.label }))}
-        onPick={(kind) => onChange(blank(kind, question.text))}
+        onPick={(kind) => onChange({ ...blank(kind, question.text), picture: question.picture })}
       />
       <span className="quiz-admin-qtools">
         <button type="button" className="ghost" disabled={index === 0} onClick={() => onMove(-1)} aria-label="Выше">
@@ -217,7 +294,7 @@ function QuestionEditor({
     </div>
   )
 
-  const text = (
+  const area = (
     <textarea
       className="quiz-admin-input"
       rows={2}
@@ -226,6 +303,12 @@ function QuestionEditor({
       value={question.text}
       onChange={(event) => onChange({ ...question, text: event.target.value })}
     />
+  )
+  const text = (
+    <>
+      {area}
+      <QuestionPicture game={game} picture={question.picture} onChange={(picture) => onChange({ ...question, picture })} />
+    </>
   )
 
   if (question.kind === 'name') {
@@ -440,13 +523,10 @@ function Editor({ draft, onSaved, onDropped }: { draft: Draft; onSaved: (quiz: S
   const upload = async (file: File | undefined) => {
     if (!file) return
     setBusy(true)
-    const form = new FormData()
-    form.append('file', file)
-    const answer = await fetch(apiUrl('admin/quizzes/cover'), { method: 'POST', body: form, credentials: 'include' })
-    const data = (await answer.json().catch(() => ({}))) as { key?: string; ver?: string }
+    const saved = await uploadPicture(file)
     setBusy(false)
-    if (!answer.ok || !data.key) return setNote('картинка не загрузилась')
-    patch({ cover: { kind: 'upload', key: data.key, ver: data.ver ?? '' } })
+    if (!saved) return setNote('картинка не загрузилась')
+    patch({ cover: { kind: 'upload', ...saved } })
   }
 
   const art = coverUrl(game.id, quiz.cover)
