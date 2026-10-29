@@ -537,15 +537,15 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
   const art = coverUrl(game.id, quiz.cover)
   const hero = (aside: ReactNode) => (
     <header className={`quiz-hero ${art ? '' : 'no-art'}`}>
-      {art && <img className="quiz-hero-bg" src={art} alt="" aria-hidden />}
+      {art ? (
+        <img className="quiz-hero-pic" src={art} alt="" />
+      ) : (
+        <span className="quiz-hero-mark" aria-hidden>
+          {BRAND.mark}
+        </span>
+      )}
+      <span className="quiz-hero-shade" aria-hidden />
       <div className="quiz-hero-in">
-        {art ? (
-          <img className="quiz-hero-cover" src={art} alt="" />
-        ) : (
-          <span className="quiz-hero-cover quiz-hero-mark" aria-hidden>
-            {BRAND.mark}
-          </span>
-        )}
         <div className="quiz-hero-title">
           <small>
             {l(game.label)} · {t('quiz.questions', { count: quiz.count })}

@@ -2,14 +2,14 @@
 
 import Link from 'next/link'
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
-import AdminSelect from './AdminSelect'
 import { api } from './api'
+import AdminSelect from './AdminSelect'
 import BackButton from './BackButton'
 import { BRAND } from './brand'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { CheckIcon, ClockIcon, FlameIcon, GridIcon, LinkIcon, PlayIcon, SearchIcon, SortIcon, UsersIcon } from './icons'
+import { CheckIcon, GridIcon, LinkIcon, SearchIcon, SortIcon, UsersIcon } from './icons'
 import { coverUrl, type QuizCard, type QuizKind, type QuizLayout } from './quiz'
 import { useHref } from './router'
 
@@ -38,9 +38,9 @@ function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
 
   return (
     <Link className={`qz-card is-${status}`} href={href} prefetch={false}>
-      <span className="qz-art">{art ? <img src={art} alt="" loading="lazy" /> : <span className="qz-mark">{BRAND.mark}</span>}</span>
-      <span className="qz-info">
-        <span className="qz-top">
+      <span className="qz-art">
+        {art ? <img src={art} alt="" loading="lazy" /> : <span className="qz-mark">{BRAND.mark}</span>}
+        <span className="qz-corner is-left">
           {status === 'done' ? (
             <em className={`qz-badge is-score ${grade}`}>
               <CheckIcon />
@@ -49,13 +49,17 @@ function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
           ) : (
             <em className={`qz-badge is-${status}`}>{t(status === 'going' ? 'quiz.going' : 'quiz.badge.new')}</em>
           )}
-          {!!quiz.plays && (
+        </span>
+        {!!quiz.plays && (
+          <span className="qz-corner is-right">
             <em className="qz-badge is-plays" title={t('quiz.plays', { count: quiz.plays })}>
               <UsersIcon />
               {quiz.plays}
             </em>
-          )}
-        </span>
+          </span>
+        )}
+      </span>
+      <span className="qz-info">
         <b>{quiz.title}</b>
         <small>
           {t('quiz.questions', { count: quiz.count })} · {t(quiz.layout === 'steps' ? 'quiz.layout.steps' : 'quiz.layout.list')}
@@ -69,45 +73,6 @@ function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
         </span>
       </span>
     </Link>
-  )
-}
-
-function Featured({ quiz, href }: { quiz: QuizCard; href: string }) {
-  const { t } = useI18n()
-  const art = coverUrl(quiz.game, quiz.cover)
-  const status = statusOf(quiz)
-  return (
-    <section className={`qz-feat ${art ? '' : 'no-art'}`}>
-      {art && <img className="qz-feat-bg" src={art} alt="" aria-hidden />}
-      <div className="qz-feat-text">
-        <small className="qz-feat-kicker">
-          <FlameIcon />
-          {t('quiz.featured')}
-        </small>
-        <h2>{quiz.title}</h2>
-        <div className="qz-feat-meta">
-          <span>
-            <GridIcon />
-            {t('quiz.questions', { count: quiz.count })}
-          </span>
-          <span>
-            <ClockIcon />
-            {t('quiz.minutes', { count: Math.max(1, Math.round((quiz.count * 20) / 60)) })}
-          </span>
-          {!!quiz.plays && (
-            <span>
-              <UsersIcon />
-              {t('quiz.plays', { count: quiz.plays })}
-            </span>
-          )}
-        </div>
-        <Link className="quiz-btn" href={href} prefetch={false}>
-          <PlayIcon />
-          {t(status === 'going' ? 'quiz.continue' : status === 'done' ? 'quiz.again' : 'quiz.start')}
-        </Link>
-      </div>
-      {art ? <img className="qz-feat-cover" src={art} alt="" /> : <span className="qz-feat-cover qz-mark">{BRAND.mark}</span>}
-    </section>
   )
 }
 
@@ -128,22 +93,6 @@ export default function QuizList({ game: gameId }: { game: string }) {
     void api<{ quizzes?: QuizCard[] }>(`quizzes?game=${game.id}`).then(({ ok, data }) => setList(ok ? (data.quizzes ?? []) : []))
   }, [game])
 
-  const counts = useMemo(() => {
-    const all = list ?? []
-    return {
-      all: all.length,
-      new: all.filter((quiz) => statusOf(quiz) === 'new').length,
-      going: all.filter((quiz) => statusOf(quiz) === 'going').length,
-      done: all.filter((quiz) => statusOf(quiz) === 'done').length,
-    }
-  }, [list])
-
-  const featured = useMemo(() => {
-    const all = list ?? []
-    const open = all.filter((quiz) => statusOf(quiz) !== 'done')
-    return [...(open.length ? open : all)].sort((a, b) => (b.plays ?? 0) - (a.plays ?? 0))[0] ?? null
-  }, [list])
-
   const shown = useMemo(() => {
     const needle = query.trim().toLowerCase()
     const rows = (list ?? []).filter(
@@ -161,13 +110,14 @@ export default function QuizList({ game: gameId }: { game: string }) {
 
   if (!game) return <div className="card center muted">{t('err.not_found')}</div>
 
-  const active = (status !== 'all' ? 1 : 0) + (layout ? 1 : 0) + kinds.size
+  const active = (status !== 'all' ? 1 : 0) + (layout ? 1 : 0) + kinds.size + (sort !== 'new' ? 1 : 0)
   const filtered = !!query.trim() || active > 0
   const reset = () => {
     setQuery('')
     setStatus('all')
     setLayout(null)
     setKinds(new Set())
+    setSort('new')
   }
   const toggleKind = (kind: QuizKind) =>
     setKinds((current) => {
@@ -183,7 +133,18 @@ export default function QuizList({ game: gameId }: { game: string }) {
         <BackButton href={href.world(game.id)}>{l(game.label)}</BackButton>
       </div>
 
-      {list === null ? <div className="qz-feat is-ghost" /> : featured && <Featured quiz={featured} href={href.test(game.id, featured.id)} />}
+      <div className="qz-main-top">
+        <div>
+          <h1>{t('quiz.title')}</h1>
+        </div>
+        <div className="qz-main-tools">
+          <button type="button" className={`qz-panel-toggle ${active ? 'has-active' : ''}`} onClick={() => setPanel(!panel)}>
+            <SortIcon />
+            {t('quiz.side.open')}
+            {!!active && <b>{active}</b>}
+          </button>
+        </div>
+      </div>
 
       <div className={`qz-body ${panel ? 'is-open' : ''}`}>
         <aside className="qz-side">
@@ -194,12 +155,22 @@ export default function QuizList({ game: gameId }: { game: string }) {
 
           <div className="qz-group">
             <h4>{t('quiz.side.status')}</h4>
-            {(['all', 'new', 'going', 'done'] as const).map((one) => (
-              <button key={one} type="button" className={`qz-opt ${status === one ? 'on' : ''}`} onClick={() => setStatus(one)}>
-                {t(`quiz.filter.${one}` as UiKey)}
-                <b>{counts[one]}</b>
-              </button>
-            ))}
+            <AdminSelect<Status>
+              className="qz-select"
+              value={status}
+              choices={(['all', 'new', 'going', 'done'] as const).map((one) => ({ value: one, label: t(`quiz.filter.${one}` as UiKey) }))}
+              onPick={setStatus}
+            />
+          </div>
+
+          <div className="qz-group">
+            <h4>{t('quiz.side.sort')}</h4>
+            <AdminSelect<Sort>
+              className="qz-select"
+              value={sort}
+              choices={(['new', 'popular', 'short', 'long'] as const).map((one) => ({ value: one, label: t(`quiz.sort.${one}` as UiKey) }))}
+              onPick={setSort}
+            />
           </div>
 
           <div className="qz-group">
@@ -231,25 +202,6 @@ export default function QuizList({ game: gameId }: { game: string }) {
         </aside>
 
         <div className="qz-main">
-          <div className="qz-main-top">
-            <div>
-              <h1>{t('quiz.title')}</h1>
-            </div>
-            <div className="qz-main-tools">
-              <button type="button" className={`qz-panel-toggle ${active ? 'has-active' : ''}`} onClick={() => setPanel(!panel)}>
-                <SortIcon />
-                {t('quiz.side.open')}
-                {!!active && <b>{active}</b>}
-              </button>
-              <AdminSelect<Sort>
-                className="qz-sort"
-                value={sort}
-                choices={(['new', 'popular', 'short', 'long'] as const).map((one) => ({ value: one, label: t(`quiz.sort.${one}` as UiKey) }))}
-                onPick={setSort}
-              />
-            </div>
-          </div>
-
           {list === null ? (
             <div className="qz-grid">
               {[0, 1, 2, 3].map((one) => (
