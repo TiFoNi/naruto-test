@@ -1321,6 +1321,7 @@ const ui = {
   'quiz.reset': { ru: 'Сбросить фильтры', uk: 'Скинути фільтри', en: 'Reset filters' },
   'quiz.doneOf': { ru: 'пройдено {done} из {total}', uk: 'пройдено {done} з {total}', en: '{done} of {total} completed' },
   'quiz.side.status': { ru: 'Статус', uk: 'Статус', en: 'Status' },
+  'quiz.tileCount': { ru: 'Тестов: {count}', uk: 'Тестів: {count}', en: 'Quizzes: {count}' },
   'quiz.side.world': { ru: 'Вселенная', uk: 'Всесвіт', en: 'Universe' },
   'quiz.side.allWorlds': { ru: 'Все вселенные', uk: 'Усі всесвіти', en: 'All universes' },
   'quiz.side.sort': { ru: 'Сортировка', uk: 'Сортування', en: 'Sort by' },

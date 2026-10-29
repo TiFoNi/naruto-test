@@ -305,7 +305,7 @@ function TestsTile({ category, count }: { category: Category; count: number | nu
         </span>
       </span>
       <b>{t('quiz.title')}</b>
-      <small>{count === null ? '\u00a0' : count ? t('quiz.count', { count }) : t('quiz.empty')}</small>
+      <small>{count === null ? '\u00a0' : t('quiz.tileCount', { count })}</small>
     </Link>
   )
 }
