@@ -1297,6 +1297,7 @@ const ui = {
   'quiz.recap.orderRight': { ru: 'Порядок верный', uk: 'Порядок правильний', en: 'Right order' },
   'quiz.recap.orderWrong': { ru: 'Порядок неверный — разбор выше', uk: 'Порядок неправильний — розбір вище', en: 'Wrong order — see above' },
   'quiz.recap.pairs': { ru: 'Пар верно: {hits} из {total}', uk: 'Пар правильно: {hits} з {total}', en: 'Pairs right: {hits} of {total}' },
+  'quiz.pickName': { ru: 'Начни вводить имя и выбери из списка', uk: 'Почни вводити ім’я й обери зі списку', en: 'Start typing a name and pick from the list' },
   'quiz.resultHint': { ru: 'Правильный ответ отмечен галочкой', uk: 'Правильну відповідь позначено галочкою', en: 'The correct answer is marked with a check' },
   'quiz.true': { ru: 'Правда', uk: 'Правда', en: 'True' },
   'quiz.false': { ru: 'Неправда', uk: 'Неправда', en: 'False' },

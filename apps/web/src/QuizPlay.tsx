@@ -11,7 +11,7 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
 import { useI18n } from './i18n'
-import { ArrowIcon, CheckIcon, CloseIcon } from './icons'
+import { ArrowIcon, CheckIcon, CloseIcon, RefreshIcon } from './icons'
 import { coverUrl, type QuizOption, type QuizQuestionView, type QuizValue, type QuizView } from './quiz'
 import QuizTile, { QuizChip, useOptionLabel, type TileState } from './QuizTile'
 import { abilityUrl } from './pics'
@@ -25,18 +25,6 @@ type QuestionProps = {
   value: QuizValue
   onChange?: (update: (value: QuizValue) => QuizValue) => void
   result?: { right: boolean; correct: number[] | number }
-}
-
-function Picked({ game, entity, state }: { game: Game; entity: Entity; state?: 'right' | 'wrong' }) {
-  const { name } = useI18n()
-  return (
-    <span className={`quiz-picked ${state ? `is-${state}` : ''}`}>
-      <Thumb game={game} entity={entity} size={40} />
-      <b>{name(entity)}</b>
-      {state === 'right' && <CheckIcon />}
-      {state === 'wrong' && <CloseIcon />}
-    </span>
-  )
 }
 
 const listOf = (value: QuizValue) => (Array.isArray(value) ? value : [])
@@ -309,29 +297,37 @@ function Question({ game, byId, question, value, onChange, result }: QuestionPro
   if (question.kind === 'name') {
     const chosen = typeof value === 'number' ? byId.get(value) : undefined
     const correct = result && typeof result.correct === 'number' ? byId.get(result.correct) : undefined
+    const tile = (entity: Entity, state: TileState, onClick?: () => void) => (
+      <QuizTile key={`${state}-${entity.id}`} game={game} option={{ kind: 'entity', id: entity.id }} byId={byId} state={state} disabled={!onClick} onClick={onClick} />
+    )
+    if (result) {
+      return (
+        <>
+          <p className="quiz-hint">{t(chosen ? 'quiz.resultHint' : 'quiz.skipped')}</p>
+          <div className="quiz-tiles is-result">
+            {chosen && tile(chosen, result.right ? 'right' : 'wrong')}
+            {!result.right && correct && tile(correct, 'missed')}
+          </div>
+        </>
+      )
+    }
     return (
-      <div className="quiz-answer-name">
-        {result ? (
-          <div className="quiz-name-result">
-            {chosen ? <Picked game={game} entity={chosen} state={result.right ? 'right' : 'wrong'} /> : <span className="muted">{t('quiz.skipped')}</span>}
-            {!result.right && correct && (
-              <span className="quiz-name-correct">
-                <small>{t('quiz.correctWas')}</small>
-                <Picked game={game} entity={correct} state="right" />
-              </span>
-            )}
-          </div>
-        ) : chosen ? (
-          <div className="quiz-name-chosen">
-            <Picked game={game} entity={chosen} />
-            <button type="button" className="ghost" onClick={() => onChange?.(() => null)}>
-              {t('quiz.change')}
-            </button>
-          </div>
-        ) : (
-          <CharacterSearch game={game} exclude={new Set()} pickOnly onPick={(entity) => onChange?.(() => entity.id)} />
-        )}
-      </div>
+      <>
+        <p className="quiz-hint">{t('quiz.pickName')}</p>
+        <div className="quiz-answer-name">
+          {chosen ? (
+            <>
+              <div className="quiz-tiles">{tile(chosen, 'picked')}</div>
+              <button type="button" className="quiz-change" onClick={() => onChange?.(() => null)}>
+                <RefreshIcon />
+                {t('quiz.change')}
+              </button>
+            </>
+          ) : (
+            <CharacterSearch game={game} exclude={new Set()} pickOnly onPick={(entity) => onChange?.(() => entity.id)} />
+          )}
+        </div>
+      </>
     )
   }
 

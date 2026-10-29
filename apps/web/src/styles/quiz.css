@@ -2332,3 +2332,44 @@ textarea.quiz-admin-input {
 .quiz-pair .quiz-slot-empty {
   width: 100%;
 }
+
+.quiz-q .quiz-answer-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.quiz-q .quiz-answer-name .search {
+  width: 100%;
+}
+
+.quiz-change {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card-2);
+  color: var(--text-2);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.quiz-change:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
+  color: var(--text);
+}
+
+.quiz-change svg {
+  width: 16px;
+  height: 16px;
+}
