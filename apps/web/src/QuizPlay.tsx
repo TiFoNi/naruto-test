@@ -5,14 +5,13 @@ import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent, t
 import { createPortal } from 'react-dom'
 import { api } from './api'
 import BackButton from './BackButton'
-import { BRAND } from './brand'
 import CharacterSearch from './CharacterSearch'
 import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
 import { useI18n } from './i18n'
 import { ArrowIcon, CheckIcon, CloseIcon, RefreshIcon } from './icons'
-import { coverUrl, type QuizOption, type QuizQuestionView, type QuizValue, type QuizView } from './quiz'
+import { type QuizOption, type QuizQuestionView, type QuizValue, type QuizView } from './quiz'
 import QuizTile, { QuizChip, useOptionLabel, type TileState } from './QuizTile'
 import { abilityUrl } from './pics'
 import { useHref } from './router'
@@ -487,7 +486,7 @@ const filled = (question: QuizQuestionView, value: QuizValue | undefined) => {
 }
 
 export default function QuizPlay({ game: gameId, id }: { game: string; id: string }) {
-  const { t, l } = useI18n()
+  const { t } = useI18n()
   const href = useHref()
   const game = GAMES.find((one) => one.id === (gameId as GameId))
   useEntities(game)
@@ -534,26 +533,10 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
   }
 
   const attempt = quiz.attempt
-  const art = coverUrl(game.id, quiz.cover)
   const hero = (aside: ReactNode) => (
-    <header className={`quiz-hero ${art ? '' : 'no-art'}`}>
-      {art ? (
-        <img className="quiz-hero-pic" src={art} alt="" />
-      ) : (
-        <span className="quiz-hero-mark" aria-hidden>
-          {BRAND.mark}
-        </span>
-      )}
-      <span className="quiz-hero-shade" aria-hidden />
-      <div className="quiz-hero-in">
-        <div className="quiz-hero-title">
-          <small>
-            {l(game.label)} · {t('quiz.questions', { count: quiz.count })}
-          </small>
-          <h1>{quiz.title}</h1>
-        </div>
-        {aside}
-      </div>
+    <header className="quiz-hero">
+      <h1>{quiz.title}</h1>
+      {aside}
     </header>
   )
   const steps = (now: number) =>

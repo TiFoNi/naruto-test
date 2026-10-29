@@ -19,7 +19,7 @@ export default function WorldModes({ game: gameId }: { game: string }) {
   const href = useHref()
   const { user, stats } = useAuth()
   const game = GAMES.find((one) => one.id === (gameId as GameId))
-  const [tests, setTests] = useState(0)
+  const [tests, setTests] = useState<number | null>(null)
 
   useEffect(() => {
     void api<{ counts?: Record<string, number> }>('quizzes').then(({ ok, data }) => ok && setTests(data.counts?.[gameId] ?? 0))
@@ -101,20 +101,18 @@ export default function WorldModes({ game: gameId }: { game: string }) {
           )
         })}
 
-        {tests > 0 && (
-          <article className="world-card is-tests">
-            <Link className="world-card-main" href={href.tests(game.id)} prefetch={false}>
-              <span className="world-card-mark" aria-hidden>
-                <PuzzleIcon />
-              </span>
-              <b className="world-card-name">{t('quiz.title')}</b>
-              <small className="world-card-desc">{t('quiz.desc')}</small>
-            </Link>
-            <div className="world-card-foot">
-              <span className="world-card-stat">{t('quiz.count', { count: tests })}</span>
-            </div>
-          </article>
-        )}
+        <article className="world-card is-tests">
+          <Link className="world-card-main" href={href.tests(game.id)} prefetch={false}>
+            <span className="world-card-mark" aria-hidden>
+              <PuzzleIcon />
+            </span>
+            <b className="world-card-name">{t('quiz.title')}</b>
+            <small className="world-card-desc">{t('quiz.desc')}</small>
+          </Link>
+          <div className="world-card-foot">
+            <span className="world-card-stat">{tests === null ? '\u00a0' : tests ? t('quiz.count', { count: tests }) : t('quiz.empty')}</span>
+          </div>
+        </article>
       </div>
     </div>
   )
