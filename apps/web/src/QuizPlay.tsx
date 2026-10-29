@@ -1,17 +1,19 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { api } from './api'
 import BackButton from './BackButton'
+import { BRAND } from './brand'
 import CharacterSearch from './CharacterSearch'
 import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
 import { useI18n } from './i18n'
 import { ArrowIcon, CheckIcon, CloseIcon } from './icons'
-import { coverUrl, type QuizQuestionView, type QuizValue, type QuizView } from './quiz'
-import QuizTile, { QuizChip, type TileState } from './QuizTile'
+import { coverUrl, type QuizOption, type QuizQuestionView, type QuizValue, type QuizView } from './quiz'
+import QuizTile, { QuizChip, useOptionLabel, type TileState } from './QuizTile'
+import { abilityUrl } from './pics'
 import { useHref } from './router'
 import Thumb from './Thumb'
 
@@ -266,6 +268,112 @@ function Question({ game, byId, question, value, onChange, result }: QuestionPro
   )
 }
 
+function Mini({ game, byId, option }: { game: Game; byId: Map<number, Entity>; option: QuizOption }) {
+  const label = useOptionLabel(byId)(option)
+  const entity = option.kind === 'entity' ? byId.get(option.id) : undefined
+  return (
+    <span className="quiz-mini">
+      {entity && <Thumb game={game} entity={entity} size={24} />}
+      {option.kind === 'ability' && <img src={abilityUrl(option.key)} alt="" />}
+      {label}
+    </span>
+  )
+}
+
+function Recap({
+  game,
+  byId,
+  quiz,
+  busy,
+  onRestart,
+  moreHref,
+}: {
+  game: Game
+  byId: Map<number, Entity>
+  quiz: QuizView
+  busy: boolean
+  onRestart: () => void
+  moreHref: string
+}) {
+  const { t } = useI18n()
+  const attempt = quiz.attempt!
+  const share = attempt.total ? attempt.score / attempt.total : 0
+  const entityOf = (id: unknown) => (typeof id === 'number' ? byId.get(id) : undefined)
+
+  const describe = (question: QuizQuestionView, value: QuizValue | number[] | number | null | undefined, correct = false): ReactNode => {
+    if (value === null || value === undefined) return <span className="quiz-mini is-empty">{t('quiz.skipped')}</span>
+    if (question.kind === 'bool') return <span className="quiz-mini">{t(value === 1 ? 'quiz.true' : 'quiz.false')}</span>
+    if (question.kind === 'name') {
+      const entity = entityOf(value)
+      return entity ? <Mini game={game} byId={byId} option={{ kind: 'entity', id: entity.id }} /> : null
+    }
+    if (question.kind === 'choice' && Array.isArray(value)) {
+      return value.map((at) => question.options[at] && <Mini key={at} game={game} byId={byId} option={question.options[at]!} />)
+    }
+    if (question.kind === 'order') return <span className="quiz-mini">{t(correct ? 'quiz.recap.orderRight' : 'quiz.recap.orderWrong')}</span>
+    if (question.kind === 'pairs' && Array.isArray(value)) {
+      const right = attempt.results?.[quiz.questions.indexOf(question)]?.correct
+      const hits = Array.isArray(right) ? value.filter((one, at) => one === right[at]).length : 0
+      return <span className="quiz-mini">{t('quiz.recap.pairs', { hits, total: question.left.length })}</span>
+    }
+    return null
+  }
+
+  return (
+    <section className="quiz-recap">
+      <header className="quiz-recap-head">
+        <div>
+          <small>{t('quiz.recap.title')}</small>
+          <b>{t(share === 1 ? 'quiz.grade.top' : share >= 0.6 ? 'quiz.grade.good' : 'quiz.grade.low')}</b>
+        </div>
+        <strong>
+          {attempt.score}
+          <span>/{attempt.total}</span>
+        </strong>
+      </header>
+      <div className="quiz-recap-bar" aria-hidden>
+        {quiz.questions.map((_, at) => (
+          <i key={at} className={attempt.results?.[at]?.right ? 'is-right' : 'is-wrong'} />
+        ))}
+      </div>
+      <ol className="quiz-recap-list">
+        {quiz.questions.map((question, at) => {
+          const result = attempt.results?.[at]
+          const right = !!result?.right
+          return (
+            <li key={at} className={right ? 'is-right' : 'is-wrong'}>
+              <i className="quiz-recap-mark">{right ? <CheckIcon /> : <CloseIcon />}</i>
+              <div className="quiz-recap-body">
+                <p>
+                  <em>{at + 1}.</em> {question.text}
+                </p>
+                <div className="quiz-recap-answers">
+                  <span className="quiz-recap-label">{t('quiz.recap.yours')}</span>
+                  {describe(question, attempt.answers[at], right)}
+                </div>
+                {!right && result && question.kind !== 'order' && question.kind !== 'pairs' && (
+                  <div className="quiz-recap-answers is-correct">
+                    <span className="quiz-recap-label">{t('quiz.recap.correct')}</span>
+                    {describe(question, result.correct, true)}
+                  </div>
+                )}
+              </div>
+            </li>
+          )
+        })}
+      </ol>
+      <footer className="quiz-recap-foot">
+        <button type="button" className="quiz-btn is-ghost" disabled={busy} onClick={onRestart}>
+          {t('quiz.again')}
+        </button>
+        <Link className="quiz-btn" href={moreHref}>
+          {t('quiz.more')}
+        </Link>
+      </footer>
+    </section>
+  )
+}
+
 const filled = (question: QuizQuestionView, value: QuizValue | undefined) => {
   if (value === null || value === undefined) return false
   if (!Array.isArray(value)) return true
@@ -316,71 +424,70 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
     return (
       <div className="quiz-page">
         {back}
-        <div className="card quiz-question is-ghost" />
+        <div className="quiz-hero is-ghost" />
       </div>
     )
   }
 
   const attempt = quiz.attempt
   const art = coverUrl(game.id, quiz.cover)
-  const head = (
-    <header className="quiz-run-head">
-      {art && <img className="quiz-run-art" src={art} alt="" />}
-      <div className="quiz-run-title">
-        <small className="muted">
-          {l(game.label)} · {t('quiz.questions', { count: quiz.count })}
-        </small>
-        <h1>{quiz.title}</h1>
+  const hero = (aside: ReactNode) => (
+    <header className={`quiz-hero ${art ? '' : 'no-art'}`}>
+      {art && <img className="quiz-hero-bg" src={art} alt="" aria-hidden />}
+      <div className="quiz-hero-in">
+        {art ? (
+          <img className="quiz-hero-cover" src={art} alt="" />
+        ) : (
+          <span className="quiz-hero-cover quiz-hero-mark" aria-hidden>
+            {BRAND.mark}
+          </span>
+        )}
+        <div className="quiz-hero-title">
+          <small>
+            {l(game.label)} · {t('quiz.questions', { count: quiz.count })}
+          </small>
+          <h1>{quiz.title}</h1>
+        </div>
+        {aside}
       </div>
     </header>
   )
-  const progress = (now: number) => (
-    <div className="quiz-status">
-      <div className="quiz-progress" aria-hidden>
-        {quiz.questions.map((_, at) => (
-          <i key={at} className={at < now ? 'is-done' : at === now ? 'is-now' : ''} />
-        ))}
-      </div>
+  const steps = (now: number) =>
+    quiz.count > 1 && (
+    <div className="quiz-hero-steps" aria-hidden>
+      {quiz.questions.map((_, at) => (
+        <i key={at} className={at < now ? 'is-done' : at === now ? 'is-now' : ''} />
+      ))}
     </div>
   )
+  const block = (question: QuizQuestionView, index: number, tag: ReactNode, body: ReactNode, state = '') => (
+    <section key={index} className={`quiz-q ${state}`}>
+      <em className="quiz-q-tag">{tag}</em>
+      <h2>{question.text}</h2>
+      {body}
+    </section>
+  )
+  const edit = (index: number) => (update: (value: QuizValue) => QuizValue) =>
+    setDraft((all) => Object.assign([...all], { [index]: update(all[index] ?? null) }))
 
   if (attempt?.finished) {
     return (
       <div className="quiz-page">
         {back}
-        {head}
-        <div className="quiz-status">
-          <div className="quiz-score">
-            <b>
-              {attempt.score}
-              <small>/{attempt.total}</small>
-            </b>
-            <span>{t('quiz.scoreLine', { score: attempt.score, total: attempt.total })}</span>
-            <div className="quiz-score-actions">
-              <button type="button" className="ghost" disabled={busy} onClick={() => void send({ action: 'restart' })}>
-                {t('quiz.again')}
-              </button>
-              <Link className="primary" href={href.tests(game.id)}>
-                {t('quiz.more')}
-              </Link>
-            </div>
-          </div>
-        </div>
-        <ol className="quiz-results">
-          {quiz.questions.map((question, index) => {
-            const result = attempt.results?.[index]
-            return (
-              <li key={index} className={`card quiz-question ${result?.right ? 'is-right' : 'is-wrong'}`}>
-                <div className="quiz-question-head">
-                  <em>{index + 1}</em>
-                  <h2>{question.text}</h2>
-                  <i className="quiz-verdict">{result?.right ? <CheckIcon /> : <CloseIcon />}</i>
-                </div>
-                <Question game={game} byId={byId} question={question} value={attempt.answers[index] ?? null} result={result} />
-              </li>
-            )
-          })}
-        </ol>
+        {hero(steps(quiz.count))}
+        {quiz.questions.map((question, index) => {
+          const result = attempt.results?.[index]
+          return block(
+            question,
+            index,
+            <>
+              {t('quiz.questionOf', { at: index + 1, total: quiz.count })} · {t(result?.right ? 'quiz.right' : 'quiz.wrong')}
+            </>,
+            <Question game={game} byId={byId} question={question} value={attempt.answers[index] ?? null} result={result} />,
+            result?.right ? 'is-right' : 'is-wrong',
+          )
+        })}
+        <Recap game={game} byId={byId} quiz={quiz} busy={busy} onRestart={() => void send({ action: 'restart' })} moreHref={href.tests(game.id)} />
       </div>
     )
   }
@@ -392,31 +499,21 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
     return (
       <div className="quiz-page">
         {back}
-        {head}
-        {progress(index)}
-        <section className="card quiz-question">
-          <div className="quiz-question-head">
-            <em>
-              {index + 1}/{quiz.count}
-            </em>
-            <h2>{question.text}</h2>
-          </div>
-          <Question
-            game={game}
-            byId={byId}
-            question={question}
-            value={value}
-            onChange={(update) => setDraft((all) => Object.assign([...all], { [index]: update(all[index] ?? null) }))}
-          />
-          {error && <p className="quiz-error">{error}</p>}
-          <div className="quiz-actions">
-            <span className="muted">{t('quiz.noBack')}</span>
-            <button type="button" className="primary" disabled={busy || !filled(question, value)} onClick={() => void send({ action: 'answer', index, value })}>
-              {t(index + 1 === quiz.count ? 'quiz.finish' : 'quiz.next')}
-              <ArrowIcon />
-            </button>
-          </div>
-        </section>
+        {hero(steps(index))}
+        {block(
+          question,
+          index,
+          t('quiz.questionOf', { at: index + 1, total: quiz.count }),
+          <Question game={game} byId={byId} question={question} value={value} onChange={edit(index)} />,
+        )}
+        {error && <p className="quiz-error">{error}</p>}
+        <div className="quiz-bar">
+          <span>{t('quiz.noBack')}</span>
+          <button type="button" className="quiz-btn" disabled={busy || !filled(question, value)} onClick={() => void send({ action: 'answer', index, value })}>
+            {t(index + 1 === quiz.count ? 'quiz.finish' : 'quiz.next')}
+            <ArrowIcon />
+          </button>
+        </div>
       </div>
     )
   }
@@ -425,28 +522,19 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
   return (
     <div className="quiz-page">
       {back}
-      {head}
-      <ol className="quiz-results">
-        {quiz.questions.map((question, index) => (
-          <li key={index} className="card quiz-question">
-            <div className="quiz-question-head">
-              <em>{index + 1}</em>
-              <h2>{question.text}</h2>
-            </div>
-            <Question
-              game={game}
-              byId={byId}
-              question={question}
-              value={draft[index] ?? null}
-              onChange={(update) => setDraft((all) => Object.assign([...all], { [index]: update(all[index] ?? null) }))}
-            />
-          </li>
-        ))}
-      </ol>
+      {hero(null)}
+      {quiz.questions.map((question, index) =>
+        block(
+          question,
+          index,
+          t('quiz.questionOf', { at: index + 1, total: quiz.count }),
+          <Question game={game} byId={byId} question={question} value={draft[index] ?? null} onChange={edit(index)} />,
+        ),
+      )}
       {error && <p className="quiz-error">{error}</p>}
-      <div className="quiz-actions is-final">
-        <span className="muted">{t('quiz.answered', { done: quiz.questions.filter((question, at) => filled(question, draft[at])).length, total: quiz.count })}</span>
-        <button type="button" className="primary" disabled={busy || !ready} onClick={() => void send({ action: 'finish', answers: draft })}>
+      <div className="quiz-bar is-sticky">
+        <span>{t('quiz.answered', { done: quiz.questions.filter((question, at) => filled(question, draft[at])).length, total: quiz.count })}</span>
+        <button type="button" className="quiz-btn" disabled={busy || !ready} onClick={() => void send({ action: 'finish', answers: draft })}>
           {t('quiz.show')}
           <ArrowIcon />
         </button>

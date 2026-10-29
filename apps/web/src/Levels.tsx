@@ -396,7 +396,7 @@ export default function Levels() {
   }, [user?.id])
 
   const take = useCallback(
-    async (body: { level: number }, mark: number) => {
+    async (body: { level?: number; all?: boolean }, mark: number) => {
       if (busy !== null) return
       setBusy(mark)
       const { ok, data } = await api<{ taken: number[] }>('levels/claim', body)
@@ -408,7 +408,7 @@ export default function Levels() {
     [busy, refresh],
   )
 
-  const claim = useCallback((level: number) => void take({ level }, level), [take])
+  const claim = useCallback((level: number) => void take({ all: true }, level), [take])
 
 
   return (

@@ -7,7 +7,8 @@ import BackButton from './BackButton'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
-import { CheckIcon, PuzzleIcon } from './icons'
+import { BRAND } from './brand'
+import { CheckIcon } from './icons'
 import { coverUrl, type QuizCard } from './quiz'
 import { useHref } from './router'
 
@@ -50,7 +51,7 @@ export default function QuizList({ game: gameId }: { game: string }) {
             return (
               <Link key={quiz.id} className="quiz-card" href={href.test(game.id, quiz.id)} prefetch={false}>
                 <span className="quiz-card-art">
-                  {art ? <img src={art} alt="" loading="lazy" /> : <PuzzleIcon />}
+                  {art ? <img src={art} alt="" loading="lazy" /> : <span className="quiz-card-mark">{BRAND.mark}</span>}
                   {quiz.mine?.finished && (
                     <em className="quiz-card-done">
                       <CheckIcon />

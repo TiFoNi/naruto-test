@@ -43,7 +43,7 @@ function Art({ game, option, byId }: { game: Game; option: QuizOption; byId: Map
 
 export default function QuizTile({ game, option, byId, state = 'idle', disabled, onClick }: Props) {
   const label = useOptionLabel(byId)(option)
-  const mark = state === 'right' || state === 'missed' ? <CheckIcon /> : state === 'wrong' ? <CloseIcon /> : null
+  const mark = state === 'right' || state === 'missed' || state === 'picked' ? <CheckIcon /> : state === 'wrong' ? <CloseIcon /> : null
 
   return (
     <button
