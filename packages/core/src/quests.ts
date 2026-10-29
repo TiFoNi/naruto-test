@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { levelAt } from '@nanda/game'
+import { GAME_IDS, hasDaily, levelAt, modesOf } from '@nanda/game'
 import { quests, rounds, users } from './db'
 import { dayOf, today } from './daily'
 import { addSeasonXp } from './season'
@@ -108,6 +108,15 @@ async function progress(userId: ObjectId, day: string) {
   }
 }
 
+const DAILY_SLOTS = GAME_IDS.reduce((sum, game) => sum + modesOf(game).filter(hasDaily).length, 0)
+
+async function dailiesLeft(userId: ObjectId, day: string) {
+  const closed = await (await rounds()).countDocuments({ userId, daily: day, status: { $ne: 'active' } })
+  return Math.max(0, DAILY_SLOTS - closed)
+}
+
+const reachable = (quest: Quest, left: number) => quest.metric !== 'daily' || left >= quest.goal
+
 const done = (quest: Quest, counts: Awaited<ReturnType<typeof progress>>) => {
   const value = quest.metric === 'mode' ? (counts.modes[quest.mode ?? ''] ?? 0) : counts[quest.metric]
   return { value, done: value >= quest.goal }
@@ -155,7 +164,8 @@ export async function swapQuest(userId: ObjectId, id: string) {
   if (!board.swap || !quest || !current || quest.claimed || quest.done) return false
 
   const taken = new Set(board.quests.map((item) => item.id))
-  const options = POOL.filter((one) => one.tier === current.tier && !taken.has(one.id))
+  const left = await dailiesLeft(userId, day)
+  const options = POOL.filter((one) => one.tier === current.tier && !taken.has(one.id) && reachable(one, left))
   if (!options.length) return false
   const next = options[Math.floor(Math.random() * options.length)]!
   const already = done(next, await progress(userId, day)).value
