@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type PointerEvent } from 'react'
 import type { Entity, Game } from './games/types'
 import { useI18n } from './i18n'
 import { CheckIcon, CloseIcon } from './icons'
@@ -67,7 +67,9 @@ type ChipProps = {
   state?: TileState
   active?: boolean
   disabled?: boolean
+  className?: string
   onClick?: () => void
+  onPointerDown?: (event: PointerEvent<HTMLButtonElement>) => void
 }
 
 function ChipArt({ game, option, byId }: { game: Game; option: QuizOption; byId: Map<number, Entity> }) {
@@ -78,11 +80,17 @@ function ChipArt({ game, option, byId }: { game: Game; option: QuizOption; byId:
   return entity ? <Thumb game={game} entity={entity} size={36} className="quiz-chip-art" /> : null
 }
 
-export function QuizChip({ game, option, byId, state = 'idle', active, disabled, onClick }: ChipProps) {
+export function QuizChip({ game, option, byId, state = 'idle', active, disabled, className, onClick, onPointerDown }: ChipProps) {
   const label = useOptionLabel(byId)(option)
   const mark = state === 'right' ? <CheckIcon /> : state === 'wrong' ? <CloseIcon /> : null
   return (
-    <button type="button" className={`quiz-chip kind-${option.kind} is-${state} ${active ? 'is-active' : ''}`} disabled={disabled} onClick={onClick}>
+    <button
+      type="button"
+      className={`quiz-chip kind-${option.kind} is-${state} ${active ? 'is-active' : ''} ${className ?? ''}`}
+      disabled={disabled}
+      onClick={onClick}
+      onPointerDown={onPointerDown}
+    >
       <ChipArt game={game} option={option} byId={byId} />
       <span className="quiz-chip-label">{label}</span>
       {mark && <i className="quiz-chip-mark">{mark}</i>}

@@ -2269,3 +2269,66 @@ textarea.quiz-admin-input {
 .quiz-hero-in {
   z-index: 1;
 }
+
+.quiz-slots .quiz-chip,
+.quiz-pool .quiz-chip:not(:disabled),
+.quiz-pair-side .quiz-chip:not(:disabled) {
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.quiz-chip.is-placeholder {
+  border-style: dashed;
+  border-color: color-mix(in srgb, #ffffff 12%, transparent);
+  background: none;
+  opacity: 0.35;
+  cursor: default;
+}
+
+.quiz-chip.is-placeholder > * {
+  visibility: hidden;
+}
+
+.quiz-chip.is-lifted {
+  opacity: 0.3;
+}
+
+.quiz-ghost {
+  position: fixed;
+  z-index: 200;
+  pointer-events: none;
+  transform: rotate(-2deg) scale(1.04);
+  filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.5));
+}
+
+.quiz-ghost .quiz-chip {
+  width: 100%;
+  cursor: grabbing;
+}
+
+.quiz-slot.is-over .quiz-slot-empty,
+.quiz-slot.is-over .quiz-chip,
+.quiz-pair.is-over .quiz-slot-empty,
+.quiz-pair.is-over .quiz-pair-side .quiz-chip {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.quiz-pool.is-over {
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+
+.quiz-slot .quiz-chip,
+.quiz-slot .quiz-slot-empty,
+.quiz-pair .quiz-chip,
+.quiz-pair .quiz-slot-empty {
+  box-sizing: border-box;
+  height: 52px;
+  min-height: 52px;
+}
+
+.quiz-slot .quiz-slot-empty,
+.quiz-pair .quiz-slot-empty {
+  width: 100%;
+}

@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { api } from './api'
 import BackButton from './BackButton'
 import { BRAND } from './brand'
@@ -40,47 +41,138 @@ function Picked({ game, entity, state }: { game: Game; entity: Entity; state?: '
 
 const listOf = (value: QuizValue) => (Array.isArray(value) ? value : [])
 
+type Drag = { item: number; x: number; y: number; w: number; over: string | null }
+
+function useDrag(onDrop: (item: number, target: string | null) => void) {
+  const [drag, setDrag] = useState<Drag | null>(null)
+  const moved = useRef(false)
+  const drop = useRef(onDrop)
+  drop.current = onDrop
+
+  const targetAt = (x: number, y: number) => document.elementFromPoint(x, y)?.closest('[data-drop]')?.getAttribute('data-drop') ?? null
+
+  const grab = (item: number) => (event: PointerEvent<HTMLElement>) => {
+    if (event.button !== 0) return
+    const rect = event.currentTarget.getBoundingClientRect()
+    const startX = event.clientX
+    const startY = event.clientY
+    let live = false
+    moved.current = false
+    const move = (next: globalThis.PointerEvent) => {
+      if (!live && Math.hypot(next.clientX - startX, next.clientY - startY) < 6) return
+      live = true
+      moved.current = true
+      next.preventDefault()
+      setDrag({ item, x: next.clientX - (startX - rect.left), y: next.clientY - (startY - rect.top), w: rect.width, over: targetAt(next.clientX, next.clientY) })
+    }
+    const end = (last: globalThis.PointerEvent) => {
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', end)
+      window.removeEventListener('pointercancel', end)
+      if (live && last.type === 'pointerup') drop.current(item, targetAt(last.clientX, last.clientY))
+      setDrag(null)
+    }
+    window.addEventListener('pointermove', move, { passive: false })
+    window.addEventListener('pointerup', end)
+    window.addEventListener('pointercancel', end)
+  }
+
+  const tap = (action: () => void) => () => {
+    if (moved.current) {
+      moved.current = false
+      return
+    }
+    action()
+  }
+
+  return { drag, grab, tap }
+}
+
+function Ghost({ drag, children }: { drag: Drag | null; children: ReactNode }) {
+  if (!drag || typeof document === 'undefined') return null
+  return createPortal(
+    <div className="quiz-ghost" style={{ left: drag.x, top: drag.y, width: drag.w }}>
+      {children}
+    </div>,
+    document.body,
+  )
+}
+
+const slotsOf = (value: QuizValue, size: number) =>
+  Array.from({ length: size }, (_, at) => {
+    const one = listOf(value)[at]
+    return typeof one === 'number' && one >= 0 ? one : -1
+  })
+
+function placeIn(current: QuizValue, size: number, item: number, target: number | null) {
+  const next = slotsOf(current, size)
+  const from = next.indexOf(item)
+  const place = target ?? next.indexOf(-1)
+  if (place < 0) return next
+  if (from >= 0) next[from] = next[place]!
+  next[place] = item
+  return next
+}
+
+function takeOut(current: QuizValue, size: number, item: number) {
+  const next = slotsOf(current, size).map((one) => (one === item ? -1 : one))
+  return next.some((one) => one >= 0) ? next : null
+}
+
 function Order({ game, byId, question, value, onChange, result }: QuestionProps & { question: Extract<QuizQuestionView, { kind: 'order' }> }) {
   const { t } = useI18n()
-  const placed = listOf(value)
+  const size = question.options.length
+  const slots = slotsOf(value, size)
   const correct = result && Array.isArray(result.correct) ? result.correct : []
-  const pool = question.options.map((_, at) => at).filter((at) => !placed.includes(at))
+  const { drag, grab, tap } = useDrag((item, target) => {
+    if (target?.startsWith('slot:')) onChange?.((current) => placeIn(current, size, item, Number(target.slice(5))))
+    else if (target === 'pool') onChange?.((current) => takeOut(current, size, item))
+  })
 
   return (
     <>
       <p className="quiz-hint">{t(result ? 'quiz.resultHint' : 'quiz.pickOrder')}</p>
       <ol className="quiz-slots">
-        {question.options.map((_, place) => {
-          const at = placed[place]
-          return (
-            <li key={place} className="quiz-slot">
-              <em>{place + 1}</em>
-              {at === undefined ? (
-                <span className="quiz-slot-empty" />
-              ) : (
-                <QuizChip
-                  game={game}
-                  option={question.options[at]!}
-                  byId={byId}
-                  state={result ? (correct[place] === at ? 'right' : 'wrong') : 'picked'}
-                  disabled={!!result}
-                  onClick={() => onChange?.((current) => {
-                    const next = listOf(current).filter((one) => one !== at)
-                    return next.length ? next : null
-                  })}
-                />
-              )}
-            </li>
-          )
-        })}
+        {slots.map((at, place) => (
+          <li key={place} className={`quiz-slot ${drag?.over === `slot:${place}` ? 'is-over' : ''}`} data-drop={result ? undefined : `slot:${place}`}>
+            <em>{place + 1}</em>
+            {at < 0 ? (
+              <span className="quiz-slot-empty" />
+            ) : (
+              <QuizChip
+                game={game}
+                option={question.options[at]!}
+                byId={byId}
+                state={result ? (correct[place] === at ? 'right' : 'wrong') : 'idle'}
+                disabled={!!result}
+                className={drag?.item === at ? 'is-lifted' : ''}
+                onPointerDown={result ? undefined : grab(at)}
+                onClick={tap(() => onChange?.((current) => takeOut(current, size, at)))}
+              />
+            )}
+          </li>
+        ))}
       </ol>
-      {!result && pool.length > 0 && (
-        <div className="quiz-pool">
-          {pool.map((at) => (
-            <QuizChip key={at} game={game} option={question.options[at]!} byId={byId} onClick={() => onChange?.((current) => [...listOf(current).filter((one) => one !== at), at])} />
-          ))}
+      {!result && (
+        <div className={`quiz-pool ${drag?.over === 'pool' ? 'is-over' : ''}`} data-drop="pool">
+          {question.options.map((option, at) =>
+            slots.includes(at) ? (
+              <QuizChip key={at} game={game} option={option} byId={byId} disabled className="is-placeholder" />
+            ) : (
+              <QuizChip
+                key={at}
+                game={game}
+                option={option}
+                byId={byId}
+                className={drag?.item === at ? 'is-lifted' : ''}
+                onPointerDown={grab(at)}
+                onClick={tap(() => onChange?.((current) => placeIn(current, size, at, null)))}
+              />
+            ),
+          )}
         </div>
       )}
+      <Ghost drag={drag}>{drag && <QuizChip game={game} option={question.options[drag.item]!} byId={byId} />}</Ghost>
       {result && !result.right && (
         <div className="quiz-correct-line">
           <small>{t('quiz.correctOrder')}</small>
@@ -100,27 +192,24 @@ function Order({ game, byId, question, value, onChange, result }: QuestionProps 
 
 function Pairs({ game, byId, question, value, onChange, result }: QuestionProps & { question: Extract<QuizQuestionView, { kind: 'pairs' }> }) {
   const { t } = useI18n()
-  const linked = question.left.map((_, row) => listOf(value)[row] ?? -1)
+  const size = question.left.length
+  const linked = slotsOf(value, size)
   const correct = result && Array.isArray(result.correct) ? result.correct : []
   const [active, setActive] = useState<number | null>(null)
-  const row = active ?? linked.findIndex((one) => one < 0)
-  const pool = question.right.map((_, at) => at).filter((at) => !linked.includes(at))
+  const row = active ?? linked.indexOf(-1)
+  const { drag, grab, tap } = useDrag((item, target) => {
+    if (target?.startsWith('row:')) onChange?.((current) => placeIn(current, size, item, Number(target.slice(4))))
+    else if (target === 'pool') onChange?.((current) => takeOut(current, size, item))
+    setActive(null)
+  })
 
   const link = (at: number) => {
     if (row < 0) return
-    onChange?.((current) => {
-      const next = question.left.map((_, one) => listOf(current)[one] ?? -1).map((one) => (one === at ? -1 : one))
-      next[row] = at
-      return next
-    })
+    onChange?.((current) => placeIn(current, size, at, row))
     setActive(null)
   }
-  const unlink = (target: number) => {
-    onChange?.((current) => {
-      const next = question.left.map((_, one) => listOf(current)[one] ?? -1)
-      next[target] = -1
-      return next.some((one) => one >= 0) ? next : null
-    })
+  const unlink = (target: number, at: number) => {
+    onChange?.((current) => takeOut(current, size, at))
     setActive(target)
   }
 
@@ -132,7 +221,11 @@ function Pairs({ game, byId, question, value, onChange, result }: QuestionProps 
           const right = linked[at]!
           const good = correct[at]
           return (
-            <li key={at} className={`quiz-pair ${!result && row === at ? 'is-active' : ''}`}>
+            <li
+              key={at}
+              className={`quiz-pair ${!result && row === at ? 'is-active' : ''} ${drag?.over === `row:${at}` ? 'is-over' : ''}`}
+              data-drop={result ? undefined : `row:${at}`}
+            >
               <QuizChip game={game} option={option} byId={byId} active={!result && row === at} disabled={!!result} onClick={() => setActive(at)} />
               <i className="quiz-pair-link" aria-hidden />
               <span className="quiz-pair-side">
@@ -143,9 +236,11 @@ function Pairs({ game, byId, question, value, onChange, result }: QuestionProps 
                     game={game}
                     option={question.right[right]!}
                     byId={byId}
-                    state={result ? (good === right ? 'right' : 'wrong') : 'picked'}
+                    state={result ? (good === right ? 'right' : 'wrong') : 'idle'}
                     disabled={!!result}
-                    onClick={() => unlink(at)}
+                    className={drag?.item === right ? 'is-lifted' : ''}
+                    onPointerDown={result ? undefined : grab(right)}
+                    onClick={tap(() => unlink(at, right))}
                   />
                 )}
                 {result && good !== undefined && good !== right && <QuizChip game={game} option={question.right[good]!} byId={byId} state="right" disabled />}
@@ -154,13 +249,26 @@ function Pairs({ game, byId, question, value, onChange, result }: QuestionProps 
           )
         })}
       </ul>
-      {!result && pool.length > 0 && (
-        <div className="quiz-pool">
-          {pool.map((at) => (
-            <QuizChip key={at} game={game} option={question.right[at]!} byId={byId} onClick={() => link(at)} />
-          ))}
+      {!result && (
+        <div className={`quiz-pool ${drag?.over === 'pool' ? 'is-over' : ''}`} data-drop="pool">
+          {question.right.map((option, at) =>
+            linked.includes(at) ? (
+              <QuizChip key={at} game={game} option={option} byId={byId} disabled className="is-placeholder" />
+            ) : (
+              <QuizChip
+                key={at}
+                game={game}
+                option={option}
+                byId={byId}
+                className={drag?.item === at ? 'is-lifted' : ''}
+                onPointerDown={grab(at)}
+                onClick={tap(() => link(at))}
+              />
+            ),
+          )}
         </div>
       )}
+      <Ghost drag={drag}>{drag && <QuizChip game={game} option={question.right[drag.item]!} byId={byId} />}</Ghost>
     </>
   )
 }
@@ -377,7 +485,7 @@ function Recap({
 const filled = (question: QuizQuestionView, value: QuizValue | undefined) => {
   if (value === null || value === undefined) return false
   if (!Array.isArray(value)) return true
-  if (question.kind === 'order') return value.length === question.options.length
+  if (question.kind === 'order') return value.length === question.options.length && value.every((one) => one >= 0)
   if (question.kind === 'pairs') return value.length === question.left.length && value.every((one) => one >= 0)
   return value.length > 0
 }
