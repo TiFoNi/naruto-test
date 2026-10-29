@@ -2,20 +2,21 @@ import { quizAttempts, quizzes } from '../db'
 import { isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
 import { roundOwner } from '../profile'
-import { attemptId, finishAttempt, publishedQuiz, quizCard, quizView, readValue } from '../quizzes'
+import { attemptId, finishAttempt, publishedQuiz, quizCard, quizView, readValue, restartAttempt } from '../quizzes'
 
 export const LIST = handle(async (request) => {
   const owner = await roundOwner(request)
-  const game = new URL(request.url).searchParams.get('game')
+  const search = new URL(request.url).searchParams
+  const games = (search.get('games') ?? search.get('game') ?? '').split(',').filter(Boolean)
   const collection = await quizzes()
 
-  if (!game) {
+  if (!games.length) {
     const rows = await collection.aggregate<{ _id: string; count: number }>([{ $match: { status: 'published' } }, { $group: { _id: '$game', count: { $sum: 1 } } }]).toArray()
     return json({ counts: Object.fromEntries(rows.map((row) => [row._id, row.count])) }, 200, owner.cookie)
   }
-  if (!isGame(game)) return fail(400, 'bad_request')
+  if (games.length > 50 || !games.every((one) => isGame(one))) return fail(400, 'bad_request')
 
-  const list = await collection.find({ game, status: 'published' }, { sort: { createdAt: -1 } }).toArray()
+  const list = await collection.find({ game: { $in: games }, status: 'published' }, { sort: { createdAt: -1 } }).toArray()
   const ids = list.map((quiz) => quiz._id!)
   const attempts = await quizAttempts()
   const tries = await attempts.find({ userId: owner.id, quizId: { $in: ids } }).toArray()
@@ -60,7 +61,7 @@ export const PLAY = handle(async (request) => {
   const reply = async () => json({ quiz: quizView(quiz, await collection.findOne({ _id })) }, 200, owner.cookie)
 
   if (body.action === 'restart') {
-    await collection.deleteOne({ _id })
+    await restartAttempt(quiz, owner.id)
     return reply()
   }
 
@@ -93,7 +94,7 @@ export const PLAY = handle(async (request) => {
       { returnDocument: 'after' },
     )
     if (!pushed) return fail(409, 'answered')
-    if (pushed.answers.length >= quiz.questions.length) await finishAttempt(quiz, owner.id, pushed.answers)
+    if (pushed.answers.length >= quiz.questions.length) await finishAttempt(quiz, owner.id, pushed.answers, owner.guest)
     return reply()
   }
 
@@ -103,7 +104,7 @@ export const PLAY = handle(async (request) => {
     if (raw.length !== quiz.questions.length) return fail(400, 'bad_answer')
     const answers = quiz.questions.map((question, at) => readValue(question, raw[at]))
     if (answers.some((one) => one === undefined)) return fail(400, 'bad_answer')
-    const done = await finishAttempt(quiz, owner.id, answers as NonNullable<(typeof answers)[number]>[])
+    const done = await finishAttempt(quiz, owner.id, answers as NonNullable<(typeof answers)[number]>[], owner.guest)
     if (!done) return fail(409, 'answered')
     return reply()
   }

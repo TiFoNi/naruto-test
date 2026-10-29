@@ -4,12 +4,13 @@ import Link from 'next/link'
 import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { api } from './api'
+import { useAuth } from './auth'
 import BackButton from './BackButton'
 import CharacterSearch from './CharacterSearch'
 import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
-import { useI18n } from './i18n'
+import { useI18n, type UiKey } from './i18n'
 import { ArrowIcon, CheckIcon, CloseIcon, RefreshIcon } from './icons'
 import { type QuizOption, type QuizQuestionView, type QuizValue, type QuizView } from './quiz'
 import QuizTile, { QuizChip, useOptionLabel, type TileState } from './QuizTile'
@@ -23,8 +24,10 @@ type QuestionProps = {
   question: QuizQuestionView
   value: QuizValue
   onChange?: (update: (value: QuizValue) => QuizValue) => void
-  result?: { right: boolean; correct: number[] | number }
+  result?: { right: boolean; correct?: number[] | number }
 }
+
+const hintOf = (result: QuestionProps['result'], pick: UiKey): UiKey => (!result ? pick : result.correct === undefined ? 'quiz.hiddenHint' : 'quiz.resultHint')
 
 const listOf = (value: QuizValue) => (Array.isArray(value) ? value : [])
 
@@ -149,7 +152,7 @@ function Order({ game, byId, question, value, onChange, result }: QuestionProps 
 
   return (
     <>
-      <p className="quiz-hint">{t(result ? 'quiz.resultHint' : 'quiz.pickOrder')}</p>
+      <p className="quiz-hint">{t(hintOf(result, 'quiz.pickOrder'))}</p>
       <ol className="quiz-slots">
         {slots.map((at, place) => (
           <li key={place} className={`quiz-slot ${drag?.over === `slot:${place}` ? 'is-over' : ''}`} data-drop={result ? undefined : `slot:${place}`}>
@@ -161,7 +164,7 @@ function Order({ game, byId, question, value, onChange, result }: QuestionProps 
                 game={game}
                 option={question.options[at]!}
                 byId={byId}
-                state={result ? (correct[place] === at ? 'right' : 'wrong') : 'idle'}
+                state={!result ? 'idle' : result.correct === undefined ? (result.right ? 'right' : 'idle') : correct[place] === at ? 'right' : 'wrong'}
                 disabled={!!result}
                 className={drag?.item === at ? 'is-lifted' : ''}
                 onPointerDown={result ? undefined : grab(at)}
@@ -191,7 +194,7 @@ function Order({ game, byId, question, value, onChange, result }: QuestionProps 
         </div>
       )}
       <Ghost drag={drag}>{drag && <QuizChip game={game} option={question.options[drag.item]!} byId={byId} />}</Ghost>
-      {result && !result.right && (
+      {result && !result.right && result.correct !== undefined && (
         <div className="quiz-correct-line">
           <small>{t('quiz.correctOrder')}</small>
           <ol className="quiz-slots">
@@ -233,7 +236,7 @@ function Pairs({ game, byId, question, value, onChange, result }: QuestionProps 
 
   return (
     <>
-      <p className="quiz-hint">{t(result ? 'quiz.resultHint' : 'quiz.pickPairs')}</p>
+      <p className="quiz-hint">{t(hintOf(result, 'quiz.pickPairs'))}</p>
       <ul className="quiz-pairs">
         {question.left.map((option, at) => {
           const right = linked[at]!
@@ -254,7 +257,7 @@ function Pairs({ game, byId, question, value, onChange, result }: QuestionProps 
                     game={game}
                     option={question.right[right]!}
                     byId={byId}
-                    state={result ? (good === right ? 'right' : 'wrong') : 'idle'}
+                    state={!result ? 'idle' : result.correct === undefined ? (result.right ? 'right' : 'idle') : good === right ? 'right' : 'wrong'}
                     disabled={!!result}
                     className={drag?.item === right ? 'is-lifted' : ''}
                     onPointerDown={result ? undefined : grab(right)}
@@ -301,12 +304,13 @@ function Question({ game, byId, question, value, onChange, result }: QuestionPro
     const correct = result?.correct
     const stateOf = (answer: number): TileState => {
       if (!result) return value === answer ? 'picked' : 'idle'
+      if (correct === undefined) return value === answer ? (result.right ? 'right' : 'wrong') : 'idle'
       if (value === answer) return answer === correct ? 'right' : 'wrong'
       return answer === correct ? 'missed' : 'idle'
     }
     return (
       <>
-      <p className="quiz-hint">{t(result ? 'quiz.resultHint' : 'quiz.pickOne')}</p>
+      <p className="quiz-hint">{t(hintOf(result, 'quiz.pickOne'))}</p>
       <div className={`quiz-tiles count-2 is-bool ${result ? 'is-result' : ''}`}>
         {[1, 0].map((answer) => (
           <QuizTile
@@ -333,7 +337,7 @@ function Question({ game, byId, question, value, onChange, result }: QuestionPro
     if (result) {
       return (
         <>
-          <p className="quiz-hint">{t(chosen ? 'quiz.resultHint' : 'quiz.skipped')}</p>
+          <p className="quiz-hint">{t(chosen ? hintOf(result, 'quiz.pickName') : 'quiz.skipped')}</p>
           <div className="quiz-tiles is-result">
             {chosen && tile(chosen, result.right ? 'right' : 'wrong')}
             {!result.right && correct && tile(correct, 'missed')}
@@ -365,6 +369,7 @@ function Question({ game, byId, question, value, onChange, result }: QuestionPro
   const correct = result && Array.isArray(result.correct) ? result.correct : []
   const stateOf = (index: number): TileState => {
     if (!result) return picked.includes(index) ? 'picked' : 'idle'
+    if (result.correct === undefined) return picked.includes(index) ? (result.right ? 'right' : 'wrong') : 'idle'
     const chose = picked.includes(index)
     const good = correct.includes(index)
     if (chose && good) return 'right'
@@ -384,7 +389,7 @@ function Question({ game, byId, question, value, onChange, result }: QuestionPro
 
   return (
     <>
-      <p className="quiz-hint">{t(result ? 'quiz.resultHint' : question.multi ? 'quiz.pickMany' : 'quiz.pickOne')}</p>
+      <p className="quiz-hint">{t(hintOf(result, question.multi ? 'quiz.pickMany' : 'quiz.pickOne'))}</p>
       <div className={`quiz-tiles count-${question.options.length} ${result ? 'is-result' : ''}`}>
         {question.options.map((option, index) => (
           <QuizTile
@@ -444,10 +449,11 @@ function Recap({
     if (question.kind === 'choice' && Array.isArray(value)) {
       return value.map((at) => question.options[at] && <Mini key={at} game={game} byId={byId} option={question.options[at]!} />)
     }
-    if (question.kind === 'order') return <span className="quiz-mini">{t(correct ? 'quiz.recap.orderRight' : 'quiz.recap.orderWrong')}</span>
+    if (question.kind === 'order') return <span className="quiz-mini">{t(correct ? 'quiz.recap.orderRight' : attempt.reveal ? 'quiz.recap.orderWrong' : 'quiz.recap.orderOff')}</span>
     if (question.kind === 'pairs' && Array.isArray(value)) {
       const right = attempt.results?.[quiz.questions.indexOf(question)]?.correct
-      const hits = Array.isArray(right) ? value.filter((one, at) => one === right[at]).length : 0
+      if (!Array.isArray(right)) return <span className="quiz-mini">{t(correct ? 'quiz.recap.pairsRight' : 'quiz.recap.pairsWrong')}</span>
+      const hits = value.filter((one, at) => one === right[at]).length
       return <span className="quiz-mini">{t('quiz.recap.pairs', { hits, total: question.left.length })}</span>
     }
     return null
@@ -465,6 +471,8 @@ function Recap({
           <span>/{attempt.total}</span>
         </strong>
       </header>
+      {!!attempt.xp && <p className="quiz-recap-xp">{t('quiz.recap.xp', { xp: attempt.xp })}</p>}
+      {!attempt.reveal && <p className="quiz-recap-note">{t('quiz.recap.hidden')}</p>}
       <div className="quiz-recap-bar" aria-hidden>
         {quiz.questions.map((_, at) => (
           <i key={at} className={attempt.results?.[at]?.right ? 'is-right' : 'is-wrong'} />
@@ -485,7 +493,7 @@ function Recap({
                   <span className="quiz-recap-label">{t('quiz.recap.yours')}</span>
                   {describe(question, attempt.answers[at], right)}
                 </div>
-                {!right && result && question.kind !== 'order' && question.kind !== 'pairs' && (
+                {!right && result && result.correct !== undefined && question.kind !== 'order' && question.kind !== 'pairs' && (
                   <div className="quiz-recap-answers is-correct">
                     <span className="quiz-recap-label">{t('quiz.recap.correct')}</span>
                     {describe(question, result.correct, true)}
@@ -537,6 +545,7 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
     void api<{ quiz?: QuizView }>(`quiz?id=${id}`).then(({ ok, data }) => (ok && data.quiz ? take(data.quiz) : setMissing(true)))
   }, [id, take])
 
+  const { refresh } = useAuth()
   const send = async (body: Record<string, unknown>) => {
     setBusy(true)
     setError('')
@@ -544,13 +553,14 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
     setBusy(false)
     if (!ok || !data.quiz) return setError(t('quiz.failed'))
     take(data.quiz)
+    if (data.quiz.attempt?.finished && data.quiz.attempt.xp) void refresh()
   }
 
   if (!game || missing) return <div className="card center muted">{t('err.not_found')}</div>
 
   const back = (
     <div className="play-nav">
-      <BackButton href={href.tests(game.id)}>{t('quiz.title')}</BackButton>
+      <BackButton href={href.tests(game.category)}>{t('quiz.title')}</BackButton>
     </div>
   )
 
@@ -605,7 +615,7 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
             result?.right ? 'is-right' : 'is-wrong',
           )
         })}
-        <Recap game={game} byId={byId} quiz={quiz} busy={busy} onRestart={() => void send({ action: 'restart' })} moreHref={href.tests(game.id)} />
+        <Recap game={game} byId={byId} quiz={quiz} busy={busy} onRestart={() => void send({ action: 'restart' })} moreHref={href.tests(game.category)} />
       </div>
     )
   }

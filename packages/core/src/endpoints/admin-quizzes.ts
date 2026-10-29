@@ -32,7 +32,7 @@ export const SAVE = handle(async (request) => {
       { returnDocument: 'after' },
     )
     if (!saved) return missing()
-    await (await quizAttempts()).deleteMany({ quizId: saved._id!, finished: false })
+    await (await quizAttempts()).updateMany({ quizId: saved._id!, finished: false }, { $set: { answers: [] } })
     return json({ quiz: full(saved) })
   }
 

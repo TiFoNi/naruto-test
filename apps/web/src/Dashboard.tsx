@@ -2,7 +2,9 @@
 
 import Link from 'next/link'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointer } from 'react'
+import { api } from './api'
 import { useAuth } from './auth'
+import { BRAND } from './brand'
 import type { GameMeta } from './games/meta'
 import type { Category } from './games/types'
 import { useI18n, type UiKey } from './i18n'
@@ -292,10 +294,34 @@ function WorldTile({ game, eager }: { game: GameMeta; eager: boolean }) {
   )
 }
 
+function TestsTile({ category, count }: { category: Category; count: number | null }) {
+  const { t } = useI18n()
+  const href = useHref()
+  return (
+    <Link className="cat-card is-tests" href={href.tests(category)} prefetch={false}>
+      <span className="cat-card-art is-tests">
+        <span className="cat-tests-mark" aria-hidden>
+          {BRAND.mark}
+        </span>
+      </span>
+      <b>{t('quiz.title')}</b>
+      <small>{count === null ? '\u00a0' : count ? t('quiz.count', { count }) : t('quiz.empty')}</small>
+    </Link>
+  )
+}
+
 export default function Dashboard({ games }: { games: GameMeta[] }) {
   const { t } = useI18n()
   const href = useHref()
   const { user, loading } = useAuth()
+  const [tests, setTests] = useState<Record<string, number> | null>(null)
+
+  useEffect(() => {
+    void api<{ counts?: Record<string, number> }>('quizzes').then(({ ok, data }) => setTests(ok ? (data.counts ?? {}) : {}))
+  }, [])
+
+  const testsIn = (category: Category) =>
+    tests === null ? null : games.filter((g) => g.category === category).reduce((sum, g) => sum + (tests[g.id] ?? 0), 0)
 
   const shown = CATEGORIES.filter((category) => games.some((g) => g.category === category.id))
 
@@ -489,6 +515,7 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         return (
           <section key={category.id} className="category" data-id={category.id} data-first={index === 0 ? '' : undefined}>
             <div className="cat-grid">
+              <TestsTile category={category.id} count={testsIn(category.id)} />
               {list.map((g, i) => (
                 <WorldTile key={g.id} game={g} eager={index === 0 && i < 7} />
               ))}

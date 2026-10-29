@@ -1,13 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import { api } from './api'
 import AdminSelect from './AdminSelect'
 import BackButton from './BackButton'
 import { BRAND } from './brand'
 import { GAMES } from './games'
-import type { GameId } from './games/types'
+import { CATEGORIES, type Category, type GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { CheckIcon, GridIcon, LinkIcon, SearchIcon, SortIcon, UsersIcon } from './icons'
 import { coverUrl, type QuizCard, type QuizKind, type QuizLayout } from './quiz'
@@ -30,7 +30,8 @@ const statusOf = (quiz: QuizCard): Exclude<Status, 'all'> =>
   quiz.mine?.finished ? 'done' : quiz.mine && quiz.mine.answered > 0 ? 'going' : 'new'
 
 function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
-  const { t } = useI18n()
+  const { t, l } = useI18n()
+  const world = GAMES.find((one) => one.id === quiz.game)
   const art = coverUrl(quiz.game, quiz.cover)
   const status = statusOf(quiz)
   const share = quiz.mine?.finished && quiz.count ? quiz.mine.score / quiz.count : 0
@@ -60,6 +61,12 @@ function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
         )}
       </span>
       <span className="qz-info">
+        {world && (
+          <em className="qz-world" style={{ '--world-accent': world.accent } as CSSProperties}>
+            <img src={`/worlds/${world.id}.webp`} alt="" loading="lazy" />
+            {l(world.label)}
+          </em>
+        )}
         <b>{quiz.title}</b>
         <small>
           {t('quiz.questions', { count: quiz.count })} · {t(quiz.layout === 'steps' ? 'quiz.layout.steps' : 'quiz.layout.list')}
@@ -76,11 +83,22 @@ function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
   )
 }
 
-export default function QuizList({ game: gameId }: { game: string }) {
+const TITLES: Record<Category, UiKey> = {
+  anime: 'dash.anime',
+  manga: 'dash.mangaTitle',
+  cartoon: 'dash.cartoon',
+  screen: 'dash.screen',
+  games: 'dash.games',
+  sport: 'dash.sport',
+}
+
+export default function QuizList({ category }: { category: string }) {
   const { t, l } = useI18n()
   const href = useHref()
-  const game = GAMES.find((one) => one.id === (gameId as GameId))
+  const known = (CATEGORIES as readonly string[]).includes(category)
+  const worlds = useMemo(() => GAMES.filter((one) => one.category === category), [category])
   const [list, setList] = useState<QuizCard[] | null>(null)
+  const [world, setWorld] = useState<GameId | 'all'>('all')
   const [query, setQuery] = useState('')
   const [status, setStatus] = useState<Status>('all')
   const [layout, setLayout] = useState<QuizLayout | null>(null)
@@ -89,14 +107,17 @@ export default function QuizList({ game: gameId }: { game: string }) {
   const [panel, setPanel] = useState(false)
 
   useEffect(() => {
-    if (!game) return
-    void api<{ quizzes?: QuizCard[] }>(`quizzes?game=${game.id}`).then(({ ok, data }) => setList(ok ? (data.quizzes ?? []) : []))
-  }, [game])
+    if (!worlds.length) return setList([])
+    void api<{ quizzes?: QuizCard[] }>(`quizzes?games=${worlds.map((one) => one.id).join(',')}`).then(({ ok, data }) => setList(ok ? (data.quizzes ?? []) : []))
+  }, [worlds])
+
+  const present = useMemo(() => worlds.filter((one) => (list ?? []).some((quiz) => quiz.game === one.id)), [worlds, list])
 
   const shown = useMemo(() => {
     const needle = query.trim().toLowerCase()
     const rows = (list ?? []).filter(
       (quiz) =>
+        (world === 'all' || quiz.game === world) &&
         (status === 'all' || statusOf(quiz) === status) &&
         (!layout || quiz.layout === layout) &&
         [...kinds].every((kind) => quiz.kinds.includes(kind)) &&
@@ -106,14 +127,15 @@ export default function QuizList({ game: gameId }: { game: string }) {
     if (sort === 'short') return [...rows].sort((a, b) => a.count - b.count)
     if (sort === 'long') return [...rows].sort((a, b) => b.count - a.count)
     return rows
-  }, [list, query, status, layout, kinds, sort])
+  }, [list, query, world, status, layout, kinds, sort])
 
-  if (!game) return <div className="card center muted">{t('err.not_found')}</div>
+  if (!known) return <div className="card center muted">{t('err.not_found')}</div>
 
-  const active = (status !== 'all' ? 1 : 0) + (layout ? 1 : 0) + kinds.size + (sort !== 'new' ? 1 : 0)
+  const active = (world !== 'all' ? 1 : 0) + (status !== 'all' ? 1 : 0) + (layout ? 1 : 0) + kinds.size + (sort !== 'new' ? 1 : 0)
   const filtered = !!query.trim() || active > 0
   const reset = () => {
     setQuery('')
+    setWorld('all')
     setStatus('all')
     setLayout(null)
     setKinds(new Set())
@@ -130,11 +152,12 @@ export default function QuizList({ game: gameId }: { game: string }) {
   return (
     <div className="quiz-page qz-page">
       <div className="play-nav">
-        <BackButton href={href.world(game.id)}>{l(game.label)}</BackButton>
+        <BackButton href={href.home}>{t('play.back')}</BackButton>
       </div>
 
       <div className="qz-main-top">
         <div>
+          <small className="qz-kicker">{t(TITLES[category as Category])}</small>
           <h1>{t('quiz.title')}</h1>
         </div>
         <div className="qz-main-tools">
@@ -152,6 +175,18 @@ export default function QuizList({ game: gameId }: { game: string }) {
             <SearchIcon />
             <input value={query} placeholder={t('quiz.search')} onChange={(event) => setQuery(event.target.value)} />
           </label>
+
+          {present.length > 1 && (
+            <div className="qz-group">
+              <h4>{t('quiz.side.world')}</h4>
+              <AdminSelect<GameId | 'all'>
+                className="qz-select"
+                value={world}
+                choices={[{ value: 'all' as const, label: t('quiz.side.allWorlds') }, ...present.map((one) => ({ value: one.id, label: l(one.label) }))]}
+                onPick={setWorld}
+              />
+            </div>
+          )}
 
           <div className="qz-group">
             <h4>{t('quiz.side.status')}</h4>
@@ -221,7 +256,7 @@ export default function QuizList({ game: gameId }: { game: string }) {
           ) : (
             <div className="qz-grid">
               {shown.map((quiz) => (
-                <Card key={quiz.id} quiz={quiz} href={href.test(game.id, quiz.id)} />
+                <Card key={quiz.id} quiz={quiz} href={href.test(quiz.game, quiz.id)} />
               ))}
             </div>
           )}

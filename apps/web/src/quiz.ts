@@ -40,7 +40,9 @@ export type QuizAttempt = {
   score: number
   total: number
   answers: QuizValue[]
-  results?: { right: boolean; correct: number[] | number }[]
+  results?: { right: boolean; correct?: number[] | number }[]
+  reveal?: boolean
+  xp?: number | null
 }
 
 export type QuizView = QuizCard & { questions: QuizQuestionView[]; attempt: QuizAttempt | null }

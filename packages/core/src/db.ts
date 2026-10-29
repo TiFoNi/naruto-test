@@ -265,6 +265,8 @@ export type QuizAttemptDoc = {
   total: number
   startedAt: Date
   finishedAt?: Date
+  runs?: number
+  xp?: number
 }
 
 export type StreakDoc = {

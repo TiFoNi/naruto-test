@@ -1,7 +1,10 @@
 import { ObjectId } from 'mongodb'
 import { isGame, gameData } from './games'
 import { abilityByKey } from './abilities'
-import { quizAttempts, quizzes, type QuizAttemptDoc, type QuizCover, type QuizDoc, type QuizOption, type QuizQuestion, type QuizValue } from './db'
+import { addXp } from './profile'
+import { quizAttempts, quizzes, users, type QuizAttemptDoc, type QuizCover, type QuizDoc, type QuizOption, type QuizQuestion, type QuizValue } from './db'
+
+export const QUIZ_XP_PER_ANSWER = 10
 
 export const QUIZ_LIMITS = { title: 80, text: 300, option: 80, minOptions: 2, maxOptions: 8, maxPairs: 6, maxQuestions: 50 }
 
@@ -202,10 +205,16 @@ export function attemptView(quiz: QuizDoc, attempt: QuizAttemptDoc | null) {
   if (!attempt) return null
   const base = { answered: attempt.answers.length, finished: attempt.finished, score: attempt.score, total: quiz.questions.length }
   if (!attempt.finished) return { ...base, answers: quiz.layout === 'list' ? [] : attempt.answers }
+  const first = (attempt.runs ?? 1) <= 1
   return {
     ...base,
     answers: attempt.answers,
-    results: quiz.questions.map((_, at) => ({ right: isRight(quiz, at, attempt.answers[at] ?? null), correct: solution(quiz, at) })),
+    reveal: !first,
+    xp: first ? (attempt.xp ?? 0) : null,
+    results: quiz.questions.map((_, at) => {
+      const right = isRight(quiz, at, attempt.answers[at] ?? null)
+      return first ? { right } : { right, correct: solution(quiz, at) }
+    }),
   }
 }
 
@@ -220,11 +229,27 @@ export async function publishedQuiz(id: unknown) {
   return (await quizzes()).findOne({ _id: new ObjectId(id), status: 'published' })
 }
 
-export async function finishAttempt(quiz: QuizDoc, userId: ObjectId, answers: QuizValue[]) {
+export async function finishAttempt(quiz: QuizDoc, userId: ObjectId, answers: QuizValue[], guest: boolean) {
   const score = quiz.questions.reduce((sum, _, at) => sum + (isRight(quiz, at, answers[at] ?? null) ? 1 : 0), 0)
-  return (await quizAttempts()).findOneAndUpdate(
+  const collection = await quizAttempts()
+  const done = await collection.findOneAndUpdate(
     { _id: attemptId(quiz._id!, userId), finished: false },
-    { $set: { answers, finished: true, score, total: quiz.questions.length, finishedAt: new Date() } },
+    { $set: { answers, finished: true, score, total: quiz.questions.length, finishedAt: new Date() }, $inc: { runs: 1 } },
     { returnDocument: 'after' },
+  )
+  if (!done || done.runs !== 1) return done
+  const xp = guest ? 0 : score * QUIZ_XP_PER_ANSWER
+  if (xp > 0) await addXp(await users(), userId, xp, 'endless', undefined, xp)
+  await collection.updateOne({ _id: done._id }, { $set: { xp } })
+  return { ...done, xp }
+}
+
+export async function restartAttempt(quiz: QuizDoc, userId: ObjectId) {
+  const collection = await quizAttempts()
+  const _id = attemptId(quiz._id!, userId)
+  await collection.updateOne({ _id, finished: true, runs: { $exists: false } }, { $set: { runs: 1 } })
+  await collection.updateOne(
+    { _id },
+    { $set: { answers: [], finished: false, score: 0, total: quiz.questions.length, startedAt: new Date() }, $unset: { finishedAt: '' } },
   )
 }

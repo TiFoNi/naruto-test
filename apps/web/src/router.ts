@@ -1,5 +1,5 @@
 import { usePathname, useRouter } from 'next/navigation'
-import type { GameId } from './games/types'
+import type { Category, GameId } from './games/types'
 import { useI18n, type Lang } from './i18n'
 import type { ModeId } from './modes'
 
@@ -35,7 +35,7 @@ export function hrefs(lang: Lang) {
     duel: (code: string) => at(`/duel/${code}`),
     challenge: (code: string) => at(`/c/${code}`),
     world: (game: GameId) => at(`/play/${game}`),
-    tests: (game: GameId) => at(`/play/${game}/tests`),
+    tests: (category: Category) => at(`/tests/${category}`),
     test: (game: GameId, id: string) => at(`/play/${game}/tests/${id}`),
     play: (game: GameId, mode: ModeId, daily = false) => at(`/play/${game}/${mode}${variant(daily)}`),
     board: at('/leaderboard'),

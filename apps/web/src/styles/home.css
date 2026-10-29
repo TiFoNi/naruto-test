@@ -976,3 +976,38 @@ html[data-auth][data-checking] .hero-guest {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+.cat-card-art.is-tests {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 70% at 50% 45%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%),
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 6px),
+    #141416;
+}
+
+.cat-tests-mark {
+  display: grid;
+  place-items: center;
+  width: 46%;
+  aspect-ratio: 1;
+  border: 3px solid color-mix(in srgb, #ffd28a 55%, transparent);
+  border-radius: 26%;
+  background: var(--accent);
+  color: #0d0f12;
+  font-family: var(--display);
+  font-size: clamp(22px, 3vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  box-shadow:
+    0 0 0 6px rgba(0, 0, 0, 0.35),
+    0 16px 34px rgba(0, 0, 0, 0.5),
+    0 0 40px color-mix(in srgb, var(--accent) 35%, transparent);
+  transform: rotate(-6deg);
+  transition: transform 0.25s ease;
+}
+
+.cat-card.is-tests:hover .cat-tests-mark {
+  transform: rotate(-2deg) scale(1.05);
+}
