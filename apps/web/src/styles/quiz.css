@@ -1801,8 +1801,7 @@ textarea.quiz-admin-input {
 }
 
 .quiz-recap-label {
-  min-width: 82px;
-  margin-right: 2px;
+  flex-basis: 100%;
   color: var(--text-3);
   font-size: 12.5px;
   font-weight: 700;
@@ -1872,12 +1871,14 @@ textarea.quiz-admin-input {
 
 
 
-.quiz-slots .quiz-chip,
+.quiz-slots .quiz-chip:not(:disabled),
 .quiz-pool .quiz-chip:not(:disabled),
 .quiz-pair-side .quiz-chip:not(:disabled) {
-  touch-action: none;
+  touch-action: pan-y;
   cursor: grab;
   user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .quiz-chip.is-placeholder {
@@ -2607,4 +2608,10 @@ textarea.quiz-admin-input {
   border-radius: 14px;
   background: var(--card);
   animation: zoom-shot-wait 1.4s ease-in-out infinite;
+}
+
+.quiz-chip img,
+.quiz-chip .thumb {
+  pointer-events: none;
+  -webkit-user-drag: none;
 }

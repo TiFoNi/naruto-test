@@ -34,7 +34,16 @@ function useDrag(onDrop: (item: number, target: string | null) => void) {
   const [drag, setDrag] = useState<Drag | null>(null)
   const moved = useRef(false)
   const drop = useRef(onDrop)
+  const holding = useRef(false)
   drop.current = onDrop
+
+  useEffect(() => {
+    const block = (event: TouchEvent) => {
+      if (holding.current) event.preventDefault()
+    }
+    document.addEventListener('touchmove', block, { passive: false })
+    return () => document.removeEventListener('touchmove', block)
+  }, [])
 
   const targetAt = (x: number, y: number) => document.elementFromPoint(x, y)?.closest('[data-drop]')?.getAttribute('data-drop') ?? null
 
@@ -43,21 +52,43 @@ function useDrag(onDrop: (item: number, target: string | null) => void) {
     const rect = event.currentTarget.getBoundingClientRect()
     const startX = event.clientX
     const startY = event.clientY
+    const touch = event.pointerType !== 'mouse'
+    let armed = !touch
     let live = false
     moved.current = false
-    const move = (next: globalThis.PointerEvent) => {
-      if (!live && Math.hypot(next.clientX - startX, next.clientY - startY) < 6) return
+    const hold = touch
+      ? window.setTimeout(() => {
+          armed = true
+          holding.current = true
+          navigator.vibrate?.(15)
+        }, 220)
+      : 0
+    const lift = (x: number, y: number) => {
       live = true
       moved.current = true
-      next.preventDefault()
-      setDrag({ item, x: next.clientX - (startX - rect.left), y: next.clientY - (startY - rect.top), w: rect.width, over: targetAt(next.clientX, next.clientY) })
+      setDrag({ item, x: x - (startX - rect.left), y: y - (startY - rect.top), w: rect.width, over: targetAt(x, y) })
     }
-    const end = (last: globalThis.PointerEvent) => {
+    const move = (next: globalThis.PointerEvent) => {
+      const far = Math.hypot(next.clientX - startX, next.clientY - startY) >= 6
+      if (!armed) {
+        if (far) finish()
+        return
+      }
+      if (!live && !far) return
+      next.preventDefault()
+      lift(next.clientX, next.clientY)
+    }
+    const finish = () => {
+      window.clearTimeout(hold)
       window.removeEventListener('pointermove', move)
       window.removeEventListener('pointerup', end)
       window.removeEventListener('pointercancel', end)
-      if (live && last.type === 'pointerup') drop.current(item, targetAt(last.clientX, last.clientY))
+      holding.current = false
       setDrag(null)
+    }
+    const end = (last: globalThis.PointerEvent) => {
+      if (live && last.type === 'pointerup') drop.current(item, targetAt(last.clientX, last.clientY))
+      finish()
     }
     window.addEventListener('pointermove', move, { passive: false })
     window.addEventListener('pointerup', end)
@@ -163,14 +194,14 @@ function Order({ game, byId, question, value, onChange, result }: QuestionProps 
       {result && !result.right && (
         <div className="quiz-correct-line">
           <small>{t('quiz.correctOrder')}</small>
-          <div className="quiz-pool is-result">
+          <ol className="quiz-slots">
             {correct.map((at, place) => (
-              <span key={place} className="quiz-correct-step">
+              <li key={place} className="quiz-slot">
                 <em>{place + 1}</em>
                 <QuizChip game={game} option={question.options[at]!} byId={byId} disabled />
-              </span>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       )}
     </>
