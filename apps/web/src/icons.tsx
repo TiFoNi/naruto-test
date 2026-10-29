@@ -589,6 +589,14 @@ export function DiceIcon({ className }: IconProps) {
   )
 }
 
+export function HeartIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M12 20.3s-7.6-4.6-9.2-9.4C1.7 7.6 3.7 4.4 7 4.2c2-.1 3.6 1 5 2.8 1.4-1.8 3-2.9 5-2.8 3.3.2 5.3 3.4 4.2 6.7-1.6 4.8-9.2 9.4-9.2 9.4Z" />
+    </svg>
+  )
+}
+
 export function LinkIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

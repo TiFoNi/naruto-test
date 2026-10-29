@@ -260,6 +260,8 @@ export type QuizDoc = {
 
 export type QuizValue = number[] | number | null
 
+export type QuizLikeDoc = { _id: string; quizId: ObjectId; userId: ObjectId; at: Date }
+
 export type QuizAttemptDoc = {
   _id: string
   quizId: ObjectId
@@ -385,6 +387,7 @@ const cache = globalThis as typeof globalThis & {
   __questsIndexed?: Promise<unknown>
   __quizzesIndexed?: Promise<unknown>
   __quizAttemptsIndexed?: Promise<unknown>
+  __quizLikesIndexed?: Promise<unknown>
   __roundsIndexed?: Promise<unknown>
   __duelsIndexed?: Promise<unknown>
   __challengesIndexed?: Promise<unknown>
@@ -640,6 +643,16 @@ export async function quizAttempts(): Promise<Collection<QuizAttemptDoc>> {
     throw error
   })
   await cache.__quizAttemptsIndexed
+  return collection
+}
+
+export async function quizLikes(): Promise<Collection<QuizLikeDoc>> {
+  const collection = (await database()).collection<QuizLikeDoc>('quizLikes')
+  cache.__quizLikesIndexed ??= collection.createIndex({ quizId: 1 }).catch((error) => {
+    cache.__quizLikesIndexed = undefined
+    throw error
+  })
+  await cache.__quizLikesIndexed
   return collection
 }
 

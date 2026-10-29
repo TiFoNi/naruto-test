@@ -195,6 +195,11 @@ export class GameController {
     return bridge(quizzes.ONE, req, res)
   }
 
+  @Post('quiz/like')
+  quizLike(@Req() req: Request, @Res() res: Response) {
+    return bridge(quizzes.LIKE, req, res)
+  }
+
   @Post('quiz')
   quizPlay(@Req() req: Request, @Res() res: Response) {
     return bridge(quizzes.PLAY, req, res)

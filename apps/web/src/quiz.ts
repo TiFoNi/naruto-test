@@ -24,6 +24,7 @@ export type QuizCard = {
   kinds: QuizKind[]
   mine?: { finished: boolean; score: number; answered: number } | null
   plays?: number
+  likes?: number
 }
 
 export type QuizQuestionView = { picture?: QuizCover } & (
@@ -47,7 +48,7 @@ export type QuizAttempt = {
   xp?: number | null
 }
 
-export type QuizView = QuizCard & { questions: QuizQuestionView[]; attempt: QuizAttempt | null }
+export type QuizView = QuizCard & { questions: QuizQuestionView[]; attempt: QuizAttempt | null; liked?: boolean }
 
 export const coverUrl = (game: GameId, cover: QuizCover) =>
   !cover ? null : cover.kind === 'upload' ? picsUrl(cover.key, cover.ver) : fullUrl(game, cover.id)

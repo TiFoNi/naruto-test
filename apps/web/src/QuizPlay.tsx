@@ -11,7 +11,7 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { ArrowIcon, CheckIcon, CloseIcon, RefreshIcon } from './icons'
+import { ArrowIcon, CheckIcon, CloseIcon, HeartIcon, RefreshIcon } from './icons'
 import { coverUrl, optionImage, type QuizOption, type QuizQuestionView, type QuizValue, type QuizView } from './quiz'
 import QuizTile, { QuizChip, useOptionLabel, type TileState } from './QuizTile'
 import { abilityUrl } from './pics'
@@ -426,6 +426,8 @@ function Recap({
   quiz,
   busy,
   onRestart,
+  onLike,
+  likeNote,
   moreHref,
 }: {
   game: Game
@@ -433,6 +435,8 @@ function Recap({
   quiz: QuizView
   busy: boolean
   onRestart: () => void
+  onLike: () => void
+  likeNote: string
   moreHref: string
 }) {
   const { t } = useI18n()
@@ -505,7 +509,19 @@ function Recap({
           )
         })}
       </ol>
+      {likeNote && <p className="quiz-recap-note">{likeNote}</p>}
       <footer className="quiz-recap-foot">
+        <button
+          type="button"
+          className={`quiz-btn is-ghost quiz-like ${quiz.liked ? 'is-on' : ''}`}
+          aria-pressed={!!quiz.liked}
+          aria-label={t('quiz.like')}
+          title={t('quiz.likes', { count: quiz.likes ?? 0 })}
+          onClick={onLike}
+        >
+          <HeartIcon />
+          {quiz.likes ?? 0}
+        </button>
         <button type="button" className="quiz-btn is-ghost" disabled={busy} onClick={onRestart}>
           <span className="is-long">{t('quiz.again')}</span>
           <span className="is-short">{t('quiz.againShort')}</span>
@@ -538,6 +554,7 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
   const [draft, setDraft] = useState<QuizValue[]>([])
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [likeNote, setLikeNote] = useState('')
 
   const take = useCallback((next: QuizView) => {
     setQuiz(next)
@@ -557,6 +574,17 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
     if (!ok || !data.quiz) return setError(t('quiz.failed'))
     take(data.quiz)
     if (data.quiz.attempt?.finished && data.quiz.attempt.xp) void refresh()
+  }
+
+  const like = async () => {
+    if (!quiz) return
+    const next = !quiz.liked
+    setLikeNote('')
+    setQuiz({ ...quiz, liked: next, likes: Math.max(0, (quiz.likes ?? 0) + (next ? 1 : -1)) })
+    const { ok, status, data } = await api<{ likes?: number; liked?: boolean }>('quiz/like', { id, like: next })
+    if (ok) return setQuiz((current) => current && { ...current, likes: data.likes, liked: data.liked })
+    setQuiz((current) => current && { ...current, liked: quiz.liked, likes: quiz.likes })
+    setLikeNote(t(status === 401 ? 'quiz.likeLogin' : 'quiz.failed'))
   }
 
   if (!game || missing) return <div className="card center muted">{t('err.not_found')}</div>
@@ -635,7 +663,7 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
             result?.right ? 'is-right' : 'is-wrong',
           )
         })}
-        <Recap game={game} byId={byId} quiz={quiz} busy={busy} onRestart={() => void send({ action: 'restart' })} moreHref={href.tests(game.category)} />
+        <Recap game={game} byId={byId} quiz={quiz} busy={busy} onRestart={() => void send({ action: 'restart' })} onLike={() => void like()} likeNote={likeNote} moreHref={href.tests(game.category)} />
       </div>
     )
   }

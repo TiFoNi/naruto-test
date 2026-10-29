@@ -9,12 +9,12 @@ import { BRAND } from './brand'
 import { GAMES } from './games'
 import { CATEGORIES, type Category, type GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { CheckIcon, GridIcon, LinkIcon, SearchIcon, SortIcon, UsersIcon } from './icons'
+import { CheckIcon, GridIcon, HeartIcon, LinkIcon, SearchIcon, SortIcon, UsersIcon } from './icons'
 import { coverUrl, type QuizCard, type QuizKind, type QuizLayout } from './quiz'
 import { useHref } from './router'
 
 type Status = 'all' | 'new' | 'going' | 'done'
-type Sort = 'new' | 'popular' | 'short' | 'long'
+type Sort = 'new' | 'popular' | 'liked' | 'short' | 'long'
 
 const KINDS: QuizKind[] = ['choice', 'name', 'bool', 'order', 'pairs']
 
@@ -51,12 +51,20 @@ function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
             <em className={`qz-badge is-${status}`}>{t(status === 'going' ? 'quiz.going' : 'quiz.badge.new')}</em>
           )}
         </span>
-        {!!quiz.plays && (
+        {(!!quiz.plays || !!quiz.likes) && (
           <span className="qz-corner is-right">
-            <em className="qz-badge is-plays" title={t('quiz.plays', { count: quiz.plays })}>
-              <UsersIcon />
-              {quiz.plays}
-            </em>
+            {!!quiz.likes && (
+              <em className="qz-badge is-likes" title={t('quiz.likes', { count: quiz.likes })}>
+                <HeartIcon />
+                {quiz.likes}
+              </em>
+            )}
+            {!!quiz.plays && (
+              <em className="qz-badge is-plays" title={t('quiz.plays', { count: quiz.plays })}>
+                <UsersIcon />
+                {quiz.plays}
+              </em>
+            )}
           </span>
         )}
       </span>
@@ -124,6 +132,7 @@ export default function QuizList({ category }: { category: string }) {
         (!needle || quiz.title.toLowerCase().includes(needle)),
     )
     if (sort === 'popular') return [...rows].sort((a, b) => (b.plays ?? 0) - (a.plays ?? 0))
+    if (sort === 'liked') return [...rows].sort((a, b) => (b.likes ?? 0) - (a.likes ?? 0))
     if (sort === 'short') return [...rows].sort((a, b) => a.count - b.count)
     if (sort === 'long') return [...rows].sort((a, b) => b.count - a.count)
     return rows
@@ -203,7 +212,7 @@ export default function QuizList({ category }: { category: string }) {
             <AdminSelect<Sort>
               className="qz-select"
               value={sort}
-              choices={(['new', 'popular', 'short', 'long'] as const).map((one) => ({ value: one, label: t(`quiz.sort.${one}` as UiKey) }))}
+              choices={(['new', 'popular', 'liked', 'short', 'long'] as const).map((one) => ({ value: one, label: t(`quiz.sort.${one}` as UiKey) }))}
               onPick={setSort}
             />
           </div>

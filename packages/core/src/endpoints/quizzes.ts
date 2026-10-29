@@ -1,8 +1,17 @@
-import { quizAttempts, quizzes } from '../db'
+import type { ObjectId } from 'mongodb'
+import { quizAttempts, quizLikes, quizzes, type QuizAttemptDoc, type QuizDoc } from '../db'
 import { isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
 import { roundOwner } from '../profile'
 import { attemptId, finishAttempt, publishedQuiz, quizCard, quizView, readValue, restartAttempt } from '../quizzes'
+
+async function liked(quiz: QuizDoc, userId: ObjectId) {
+  const likes = await quizLikes()
+  const [count, mine] = await Promise.all([likes.countDocuments({ quizId: quiz._id! }), likes.countDocuments({ _id: attemptId(quiz._id!, userId) }, { limit: 1 })])
+  return { likes: count, liked: mine > 0 }
+}
+
+const fullView = async (quiz: QuizDoc, attempt: QuizAttemptDoc | null, userId: ObjectId) => ({ ...quizView(quiz, attempt), ...(await liked(quiz, userId)) })
 
 export const LIST = handle(async (request) => {
   const owner = await roundOwner(request)
@@ -25,6 +34,10 @@ export const LIST = handle(async (request) => {
     .aggregate<{ _id: unknown; count: number }>([{ $match: { quizId: { $in: ids }, finished: true } }, { $group: { _id: '$quizId', count: { $sum: 1 } } }])
     .toArray()
   const plays = new Map(counted.map((row) => [String(row._id), row.count]))
+  const hearts = await (await quizLikes())
+    .aggregate<{ _id: unknown; count: number }>([{ $match: { quizId: { $in: ids } } }, { $group: { _id: '$quizId', count: { $sum: 1 } } }])
+    .toArray()
+  const likes = new Map(hearts.map((row) => [String(row._id), row.count]))
 
   return json(
     {
@@ -33,6 +46,7 @@ export const LIST = handle(async (request) => {
         return {
           ...quizCard(quiz),
           plays: plays.get(quiz._id!.toHexString()) ?? 0,
+          likes: likes.get(quiz._id!.toHexString()) ?? 0,
           mine: own ? { finished: own.finished, score: own.score, answered: own.answers.length } : null,
         }
       }),
@@ -47,7 +61,20 @@ export const ONE = handle(async (request) => {
   const quiz = await publishedQuiz(new URL(request.url).searchParams.get('id'))
   if (!quiz) return fail(404, 'not_found')
   const attempt = await (await quizAttempts()).findOne({ _id: attemptId(quiz._id!, owner.id) })
-  return json({ quiz: quizView(quiz, attempt) }, 200, owner.cookie)
+  return json({ quiz: await fullView(quiz, attempt, owner.id) }, 200, owner.cookie)
+})
+
+export const LIKE = handle(async (request) => {
+  const owner = await roundOwner(request)
+  if (owner.guest) return fail(401, 'login')
+  const body = await readJson(request)
+  const quiz = await publishedQuiz(body.id)
+  if (!quiz) return fail(404, 'not_found')
+  const likes = await quizLikes()
+  const _id = attemptId(quiz._id!, owner.id)
+  if (body.like === true) await likes.updateOne({ _id }, { $setOnInsert: { quizId: quiz._id!, userId: owner.id, at: new Date() } }, { upsert: true })
+  else await likes.deleteOne({ _id })
+  return json(await liked(quiz, owner.id), 200, owner.cookie)
 })
 
 export const PLAY = handle(async (request) => {
@@ -58,7 +85,7 @@ export const PLAY = handle(async (request) => {
 
   const collection = await quizAttempts()
   const _id = attemptId(quiz._id!, owner.id)
-  const reply = async () => json({ quiz: quizView(quiz, await collection.findOne({ _id })) }, 200, owner.cookie)
+  const reply = async () => json({ quiz: await fullView(quiz, await collection.findOne({ _id }), owner.id) }, 200, owner.cookie)
 
   if (body.action === 'restart') {
     await restartAttempt(quiz, owner.id)

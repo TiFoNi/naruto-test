@@ -2866,3 +2866,33 @@ textarea.quiz-admin-input {
 .quiz-admin-qpic .quiz-admin-upload {
   width: auto;
 }
+
+.qz-corner.is-right {
+  display: flex;
+  gap: 6px;
+}
+
+.quiz-recap .quiz-btn.quiz-like {
+  margin-right: auto;
+  gap: 7px;
+}
+
+.quiz-recap .quiz-btn.quiz-like svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.15s ease;
+}
+
+.quiz-recap .quiz-btn.quiz-like:active svg {
+  transform: scale(0.85);
+}
+
+.quiz-recap .quiz-btn.quiz-like.is-on {
+  border-color: color-mix(in srgb, #e5484d 55%, transparent);
+  color: #ff8a8e;
+}
+
+.quiz-recap .quiz-btn.quiz-like.is-on svg {
+  fill: #e5484d;
+  stroke: #e5484d;
+}
