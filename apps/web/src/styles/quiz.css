@@ -2344,7 +2344,7 @@ textarea.quiz-admin-input {
   place-items: center;
   width: 18px;
   height: 18px;
-  border: 1.5px solid var(--line);
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
   border-radius: 6px;
   color: #111;
 }
@@ -2422,9 +2422,9 @@ textarea.quiz-admin-input {
   gap: 8px;
   height: 44px;
   padding: 0 14px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
-  background: var(--card);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text);
   font: inherit;
   font-size: 14px;
