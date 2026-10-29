@@ -16,14 +16,24 @@ export const LIST = handle(async (request) => {
   if (!isGame(game)) return fail(400, 'bad_request')
 
   const list = await collection.find({ game, status: 'published' }, { sort: { createdAt: -1 } }).toArray()
-  const tries = await (await quizAttempts()).find({ userId: owner.id, quizId: { $in: list.map((quiz) => quiz._id!) } }).toArray()
+  const ids = list.map((quiz) => quiz._id!)
+  const attempts = await quizAttempts()
+  const tries = await attempts.find({ userId: owner.id, quizId: { $in: ids } }).toArray()
   const mine = new Map(tries.map((one) => [one.quizId.toHexString(), one]))
+  const counted = await attempts
+    .aggregate<{ _id: unknown; count: number }>([{ $match: { quizId: { $in: ids }, finished: true } }, { $group: { _id: '$quizId', count: { $sum: 1 } } }])
+    .toArray()
+  const plays = new Map(counted.map((row) => [String(row._id), row.count]))
 
   return json(
     {
       quizzes: list.map((quiz) => {
         const own = mine.get(quiz._id!.toHexString())
-        return { ...quizCard(quiz), mine: own ? { finished: own.finished, score: own.score, answered: own.answers.length } : null }
+        return {
+          ...quizCard(quiz),
+          plays: plays.get(quiz._id!.toHexString()) ?? 0,
+          mine: own ? { finished: own.finished, score: own.score, answered: own.answers.length } : null,
+        }
       }),
     },
     200,

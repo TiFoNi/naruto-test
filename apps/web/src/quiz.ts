@@ -22,6 +22,7 @@ export type QuizCard = {
   count: number
   kinds: QuizKind[]
   mine?: { finished: boolean; score: number; answered: number } | null
+  plays?: number
 }
 
 export type QuizQuestionView =
