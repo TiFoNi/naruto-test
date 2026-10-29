@@ -506,10 +506,12 @@ function Recap({
       </ol>
       <footer className="quiz-recap-foot">
         <button type="button" className="quiz-btn is-ghost" disabled={busy} onClick={onRestart}>
-          {t('quiz.again')}
+          <span className="is-long">{t('quiz.again')}</span>
+          <span className="is-short">{t('quiz.againShort')}</span>
         </button>
         <Link className="quiz-btn" href={moreHref}>
-          {t('quiz.more')}
+          <span className="is-long">{t('quiz.more')}</span>
+          <span className="is-short">{t('quiz.moreShort')}</span>
         </Link>
       </footer>
     </section>
@@ -580,14 +582,14 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
       {aside}
     </header>
   )
-  const steps = (now: number) =>
+  const steps = (now: number, marks?: { right: boolean }[]) =>
     quiz.count > 1 && (
-    <div className="quiz-hero-steps" aria-hidden>
-      {quiz.questions.map((_, at) => (
-        <i key={at} className={at < now ? 'is-done' : at === now ? 'is-now' : ''} />
-      ))}
-    </div>
-  )
+      <div className="quiz-hero-steps" aria-hidden>
+        {quiz.questions.map((_, at) => (
+          <i key={at} className={marks ? (marks[at]?.right ? 'is-right' : 'is-wrong') : at < now ? 'is-done' : at === now ? 'is-now' : ''} />
+        ))}
+      </div>
+    )
   const block = (question: QuizQuestionView, index: number, tag: ReactNode, body: ReactNode, state = '') => (
     <section key={index} className={`quiz-q ${state}`}>
       <em className="quiz-q-tag">{tag}</em>
@@ -602,7 +604,7 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
     return (
       <div className="quiz-page">
         {back}
-        {hero(steps(quiz.count))}
+        {hero(steps(quiz.count, attempt.results))}
         {quiz.questions.map((question, index) => {
           const result = attempt.results?.[index]
           return block(

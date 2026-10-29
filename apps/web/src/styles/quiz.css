@@ -1864,7 +1864,8 @@ textarea.quiz-admin-input {
 
   .quiz-recap-foot > * {
     flex: 1 1 0;
-    padding: 0 12px;
+    min-width: 0;
+    padding: 0 10px;
     font-size: 13px;
   }
 }
@@ -2663,4 +2664,26 @@ textarea.quiz-admin-input {
   border-radius: 7px;
   object-fit: cover;
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--world-accent, var(--accent)) 45%, transparent);
+}
+
+.quiz-hero-steps i.is-right {
+  background: var(--correct, #3fae6a);
+}
+
+.quiz-hero-steps i.is-wrong {
+  background: color-mix(in srgb, var(--wrong, #d14343) 80%, transparent);
+}
+
+.quiz-recap-foot .is-short {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .quiz-recap-foot .is-long {
+    display: none;
+  }
+
+  .quiz-recap-foot .is-short {
+    display: inline;
+  }
 }

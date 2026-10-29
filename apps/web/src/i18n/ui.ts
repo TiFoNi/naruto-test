@@ -1291,6 +1291,8 @@ const ui = {
   'quiz.grade.top': { ru: 'Идеально!', uk: 'Ідеально!', en: 'Perfect!' },
   'quiz.grade.good': { ru: 'Неплохо!', uk: 'Непогано!', en: 'Nice!' },
   'quiz.grade.low': { ru: 'Есть куда расти', uk: 'Є куди рости', en: 'Room to grow' },
+  'quiz.againShort': { ru: 'Ещё раз', uk: 'Ще раз', en: 'Again' },
+  'quiz.moreShort': { ru: 'Все тесты', uk: 'Усі тести', en: 'All quizzes' },
   'quiz.recap.title': { ru: 'Итог теста', uk: 'Підсумок тесту', en: 'Quiz summary' },
   'quiz.recap.yours': { ru: 'Твой ответ', uk: 'Твоя відповідь', en: 'Your answer' },
   'quiz.recap.correct': { ru: 'Правильно', uk: 'Правильно', en: 'Correct' },
