@@ -2687,3 +2687,58 @@ textarea.quiz-admin-input {
     display: inline;
   }
 }
+
+.quiz-hero-steps.is-links {
+  margin: -6px 0;
+}
+
+.quiz-hero-steps.is-links button {
+  position: relative;
+  flex: 1 1 0;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.quiz-hero-steps.is-links button::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 0;
+  left: 0;
+  height: 6px;
+  border-radius: 9px;
+  transition: transform 0.15s, filter 0.15s;
+}
+
+.quiz-hero-steps.is-links button:hover::before {
+  filter: brightness(1.25);
+  transform: scaleY(1.6);
+}
+
+.quiz-hero-steps.is-links button.is-right::before {
+  background: var(--correct, #3fae6a);
+}
+
+.quiz-hero-steps.is-links button.is-wrong::before {
+  background: color-mix(in srgb, var(--wrong, #d14343) 80%, transparent);
+}
+
+.quiz-q {
+  scroll-margin-top: calc(var(--topbar-h, 64px) + 20px);
+}
+
+.quiz-recap-list li.is-wrong .quiz-recap-mark,
+.quiz-tile.is-wrong .quiz-tile-mark,
+.quiz-chip.is-wrong .quiz-chip-mark {
+  background: #c94545;
+  color: #ffd6d6;
+}
+
+.quiz-recap-list li.is-wrong .quiz-recap-mark svg,
+.quiz-tile.is-wrong .quiz-tile-mark svg,
+.quiz-chip.is-wrong .quiz-chip-mark svg {
+  stroke-width: 3;
+}

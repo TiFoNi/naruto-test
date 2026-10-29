@@ -584,14 +584,24 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
   )
   const steps = (now: number, marks?: { right: boolean }[]) =>
     quiz.count > 1 && (
-      <div className="quiz-hero-steps" aria-hidden>
-        {quiz.questions.map((_, at) => (
-          <i key={at} className={marks ? (marks[at]?.right ? 'is-right' : 'is-wrong') : at < now ? 'is-done' : at === now ? 'is-now' : ''} />
-        ))}
+      <div className={`quiz-hero-steps ${marks ? 'is-links' : ''}`} aria-hidden={!marks}>
+        {quiz.questions.map((_, at) =>
+          marks ? (
+            <button
+              key={at}
+              type="button"
+              className={marks[at]?.right ? 'is-right' : 'is-wrong'}
+              aria-label={t('quiz.questionOf', { at: at + 1, total: quiz.count })}
+              onClick={() => document.getElementById(`quiz-q-${at}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+            />
+          ) : (
+            <i key={at} className={at < now ? 'is-done' : at === now ? 'is-now' : ''} />
+          ),
+        )}
       </div>
     )
   const block = (question: QuizQuestionView, index: number, tag: ReactNode, body: ReactNode, state = '') => (
-    <section key={index} className={`quiz-q ${state}`}>
+    <section key={index} id={`quiz-q-${index}`} className={`quiz-q ${state}`}>
       <em className="quiz-q-tag">{tag}</em>
       <h2>{question.text}</h2>
       {body}
