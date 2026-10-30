@@ -1456,3 +1456,13 @@
     height: max(112px, calc(100cqw / 3.85));
   }
 }
+
+.lb-av:not(.big) + .avatar-frame {
+  filter: none;
+}
+
+@media (pointer: coarse) {
+  .lb-face .avatar-frame {
+    filter: none;
+  }
+}

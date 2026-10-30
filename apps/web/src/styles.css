@@ -12451,3 +12451,15 @@ html:not([data-auth]) .ssr-peek:not(.is-on),
 html[data-auth] .ssr-skel {
   display: none;
 }
+
+@media (pointer: coarse), (max-width: 760px) {
+  .backdrop-blob,
+  .backdrop-dots {
+    animation: none;
+    will-change: auto;
+  }
+
+  .backdrop-glyph {
+    display: none;
+  }
+}

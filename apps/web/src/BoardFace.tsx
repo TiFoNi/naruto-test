@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore, type CSSProperties } from 'react'
 import { frameOf, frameStyle, frameUrl, tuneStamp, watchTune } from './frames'
+import { useNear } from './near'
 import { avatarUrl } from './pics'
 
 const TONES = 8
@@ -20,12 +21,13 @@ export default function BoardFace({ id, nickname, avatar, frame, big }: Props) {
   const set = big && id && avatar ? `${src} 192w, ${full} 384w` : undefined
   const worn = frameOf(frame)
   useSyncExternalStore(watchTune, tuneStamp, () => 0)
+  const [box, near] = useNear<HTMLSpanElement>()
 
   return (
-    <span className={`lb-face ${worn ? 'has-frame' : ''}`} aria-hidden>
-      <span className={`lb-av ${big ? 'big' : ''} ${src ? 'has-pic' : ''}`} data-tone={toneOf(nickname)}>
+    <span ref={box} className={`lb-face ${worn ? 'has-frame' : ''}`} aria-hidden>
+      <span className={`lb-av ${big ? 'big' : ''} ${src && near ? 'has-pic' : ''}`} data-tone={toneOf(nickname)}>
         {nickname.charAt(0).toUpperCase()}
-        {src && (
+        {src && near && (
           <img
             src={src}
             srcSet={set}
@@ -44,7 +46,7 @@ export default function BoardFace({ id, nickname, avatar, frame, big }: Props) {
           />
         )}
       </span>
-      {worn && (
+      {worn && near && (
         <i className="avatar-frame" style={frameStyle(worn.id) as CSSProperties}>
           <img
             src={frameUrl(worn.id, 'sm')}

@@ -640,3 +640,28 @@ body:has(.chat-panel) .duel-dock {
   flex-basis: 100%;
   color: color-mix(in srgb, var(--correct) 80%, #ffffff);
 }
+
+.chat-line {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 56px;
+}
+
+.chat-av .avatar-frame {
+  filter: none;
+}
+
+@media (max-width: 560px) {
+  html:has(.chat-panel),
+  html:has(.chat-panel) body {
+    overflow: hidden;
+  }
+}
+
+.chat-shade {
+  touch-action: none;
+  overscroll-behavior: contain;
+}
+
+.chat-panel {
+  overscroll-behavior: contain;
+}
