@@ -148,6 +148,7 @@ export default function CharacterSearch({
             setQuery(e.target.value)
             setActive(0)
           }}
+          onBlur={() => strict && setQuery('')}
           onKeyDown={(e) => {
             if (e.key === 'ArrowDown') {
               e.preventDefault()

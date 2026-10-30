@@ -1,11 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { createContext, useContext, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import abilities from '@nanda/game/data/dota-abilities.json'
 import { api, apiUrl } from './api'
 import AdminSelect from './AdminSelect'
 import Picker from './Picker'
+import Rail from './Rail'
 import WorldMark from './WorldMark'
 import CharacterSearch from './CharacterSearch'
 import { useEntities } from './entities'
@@ -488,6 +489,55 @@ function QuestionBody({ game, byId, question, onChange }: { game: Game; byId: Ma
   )
 }
 
+function SegTabs<T extends string>({ label, value, items, onPick }: { label: string; value: T; items: { value: T; icon?: ReactNode; label: string }[]; onPick: (value: T) => void }) {
+  const row = useRef<HTMLDivElement>(null)
+  const [ink, setInk] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
+
+  const slide = useCallback(() => {
+    const on = row.current?.querySelector<HTMLElement>('.cat-tab.active')
+    setInk(on ? { x: on.offsetLeft, y: on.offsetTop, w: on.offsetWidth, h: on.offsetHeight } : null)
+  }, [])
+
+  useLayoutEffect(() => {
+    slide()
+    const track = row.current
+    const on = track?.querySelector<HTMLElement>('.cat-tab.active')
+    if (track && on && track.scrollWidth > track.clientWidth) track.scrollTo({ left: Math.max(0, on.offsetLeft - (track.clientWidth - on.offsetWidth) / 2) })
+  }, [slide, value])
+
+  useEffect(() => {
+    const track = row.current
+    if (!track || typeof ResizeObserver === 'undefined') return
+    const watcher = new ResizeObserver(slide)
+    watcher.observe(track)
+    return () => watcher.disconnect()
+  }, [slide])
+
+  return (
+    <Rail className="cat-rail qb-seg" trackClass="rail-chips" innerRef={row}>
+      <span
+        className={`seg-ink ${ink ? 'is-set' : ''}`}
+        style={ink ? { transform: `translate(${ink.x}px, ${ink.y}px)`, width: ink.w, height: ink.h } : undefined}
+        aria-hidden
+      />
+      {items.map((item) => (
+        <button
+          key={item.value}
+          type="button"
+          role="radio"
+          aria-checked={value === item.value}
+          aria-label={label}
+          className={`cat-tab ${value === item.value ? 'active' : ''}`}
+          onClick={() => value !== item.value && onPick(item.value)}
+        >
+          {item.icon}
+          {item.label}
+        </button>
+      ))}
+    </Rail>
+  )
+}
+
 function QuestionEditor({
   game,
   byId,
@@ -538,21 +588,12 @@ function QuestionEditor({
         </span>
       </header>
 
-      <div className="qb-kinds" role="radiogroup" aria-label={t('qb.type')}>
-        {KINDS.map((kind) => (
-          <button
-            key={kind}
-            type="button"
-            role="radio"
-            aria-checked={question.kind === kind}
-            className={question.kind === kind ? 'on' : ''}
-            onClick={() => question.kind !== kind && guard(hasAnswers(question), () => onChange({ ...blank(kind, question.text), picture: question.picture }))}
-          >
-            {KIND_ICON[kind]}
-            {t(`qb.kind.${kind}` as UiKey)}
-          </button>
-        ))}
-      </div>
+      <SegTabs
+        label={t('qb.type')}
+        value={question.kind}
+        items={KINDS.map((kind) => ({ value: kind, icon: KIND_ICON[kind], label: t(`qb.kind.${kind}` as UiKey) }))}
+        onPick={(kind) => guard(hasAnswers(question), () => onChange({ ...blank(kind, question.text), picture: question.picture }))}
+      />
 
       <div className="qb-qrow">
         <QuestionPicture game={game} picture={question.picture} onChange={(picture) => onChange({ ...question, picture })} />
