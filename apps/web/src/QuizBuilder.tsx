@@ -567,10 +567,8 @@ function QuestionEditor({
     <section className="qb-card qb-question">
       {nav}
       <header className="qb-card-head">
-        <span className="qb-num">{index + 1}</span>
         <div className="qb-card-title">
-          <small>{t('qb.question', { n: index + 1 })}</small>
-          <b>{t(`qb.kind.${question.kind}` as UiKey)}</b>
+          <b>{t('qb.question', { n: index + 1 })}</b>
         </div>
         <span className="qb-card-tools">
           <button type="button" className="qb-icon" disabled={index === 0} onClick={() => onMove(-1)} title={t('qb.up')} aria-label={t('qb.up')}>
