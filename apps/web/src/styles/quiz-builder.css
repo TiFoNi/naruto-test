@@ -3374,3 +3374,102 @@ body:has(.chat-bubble) .qb-foot {
 .qb-pane .qb-settings-foot {
   margin-top: 0;
 }
+
+.qb-pane {
+  --qa-h: 48px;
+}
+
+.qb-pane .qb-card {
+  gap: 20px;
+  padding: 26px;
+}
+
+.qb-pane .qb-card-head {
+  gap: 14px;
+}
+
+.qb-pane .qb-num {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  font-size: 19px;
+}
+
+.qb-pane .qb-num svg {
+  width: 21px;
+  height: 21px;
+}
+
+.qb-pane .qb-card-title small {
+  font-size: 13px;
+}
+
+.qb-pane .qb-card-title b {
+  font-size: 22px;
+}
+
+.qb-check-count {
+  margin-left: auto;
+  color: var(--text-2);
+  font-family: var(--display);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.qb-pane .quiz-admin-input {
+  font-size: 15px;
+}
+
+.qb-pane .qb-kinds button {
+  padding: 14px 8px;
+  font-size: 13.5px;
+}
+
+.qb-pane .qb-kinds button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.qb-pane .qb-chip {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  font-size: 17px;
+}
+
+.qb-pane .qb-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.qb-pane .quiz-admin-hint,
+.qb-pane .qb-switch {
+  font-size: 14px;
+}
+
+.qb-pane .qb-add-row {
+  min-height: 46px;
+  font-size: 14.5px;
+}
+
+@container (max-width: 620px) {
+  .qb-pane .qb-card {
+    padding: 16px;
+  }
+
+  .qb-pane .qb-card-title b {
+    font-size: 19px;
+  }
+}
+
+.qb-checklist .qb-card-head > .qb-num {
+  display: grid;
+  flex: none;
+  gap: 0;
+}
+
+.qb-checklist .qb-card-head .qb-card-title {
+  flex: 1 1 auto;
+}

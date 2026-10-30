@@ -1044,13 +1044,18 @@ export default function QuizBuilder({
 
   const checklist = (
     <section className="qb-card qb-checklist">
-      <header className="qb-check-head">
-        <h3>{t('qb.check.title')}</h3>
-        <em>
+      <header className="qb-card-head">
+        <span className="qb-num">
+          <CheckIcon />
+        </span>
+        <div className="qb-card-title">
+          <small>{t('qb.try.locked')}</small>
+          <b>{t('qb.check.title')}</b>
+        </div>
+        <em className="qb-check-count">
           {quiz.questions.length + 1 - issueCount}/{quiz.questions.length + 1}
         </em>
       </header>
-      <p className="qb-check-lead">{t('qb.try.locked')}</p>
       <span className="qb-check-bar" aria-hidden>
         <i style={{ width: `${((quiz.questions.length + 1 - issueCount) / (quiz.questions.length + 1)) * 100}%` }} />
       </span>
