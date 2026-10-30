@@ -972,6 +972,17 @@ export default function QuizBuilder({
     onSaved(saved)
   }
 
+  const saveChecked = (submit: boolean) => {
+    if (mode !== 'user' || base.status !== 'published') return void save(submit)
+    setAsk({
+      title: t(submit ? 'qb.live.submitTitle' : 'qb.live.draftTitle'),
+      hint: t(submit ? 'qb.live.submitHint' : 'qb.live.draftHint'),
+      action: t(submit ? 'qb.submitShort' : 'qb.saveDraft'),
+      danger: !submit,
+      run: () => void save(submit),
+    })
+  }
+
   const remove = async () => {
     if (!quiz.id) return
     const { ok } = await api(`${endpoint}/drop`, { id: quiz.id })
@@ -1160,7 +1171,7 @@ export default function QuizBuilder({
               </Link>
             )}
             {(mode === 'user' || step < 2) && (
-              <button type="button" className="qb-save-link" disabled={busy} onClick={() => void save(false)}>
+              <button type="button" className="qb-save-link" disabled={busy} onClick={() => saveChecked(false)}>
                 <span className="is-long">{t(mode === 'user' ? 'qb.saveDraft' : 'qb.save')}</span>
                 <span className="is-short">{t('qb.save')}</span>
               </button>
@@ -1175,7 +1186,7 @@ export default function QuizBuilder({
                 {t('qb.save')}
               </button>
             ) : (
-              <button type="button" className="quiz-btn" disabled={busy || issueCount > 0} title={issueCount ? t('qb.issues', { count: issueCount }) : undefined} onClick={() => void save(true)}>
+              <button type="button" className="quiz-btn" disabled={busy || issueCount > 0} title={issueCount ? t('qb.issues', { count: issueCount }) : undefined} onClick={() => saveChecked(true)}>
                 <span className="is-long">{t('qb.submit')}</span>
                 <span className="is-short">{t('qb.submitShort')}</span>
               </button>

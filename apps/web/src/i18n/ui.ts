@@ -2486,6 +2486,10 @@ const ui = {
   'qb.reset.hint': { ru: 'Текущие варианты ответов сбросятся. Текст вопроса и картинка останутся.', uk: 'Поточні варіанти відповідей скинуться. Текст питання й картинка залишаться.', en: 'Current answers will be cleared. Question text and picture stay.' },
   'qb.reset.ok': { ru: 'Сменить', uk: 'Змінити', en: 'Change' },
   'qb.err.duplicate': { ru: 'есть одинаковые варианты', uk: 'є однакові варіанти', en: 'some options are the same' },
+  'qb.live.draftTitle': { ru: 'Снять тест с публикации?', uk: 'Зняти тест із публікації?', en: 'Unpublish the quiz?' },
+  'qb.live.draftHint': { ru: 'Тест станет черновиком и пропадёт из общего списка, пока ты снова не отправишь его на проверку и его не одобрят.', uk: 'Тест стане чернеткою і зникне із загального списку, доки ти знову не надішлеш його на перевірку і його не схвалять.', en: 'The quiz becomes a draft and disappears from the public list until you resubmit it and it is approved.' },
+  'qb.live.submitTitle': { ru: 'Отправить изменения на проверку?', uk: 'Надіслати зміни на перевірку?', en: 'Send changes for review?' },
+  'qb.live.submitHint': { ru: 'Пока изменения проверяют, тест не будет виден в общем списке. После одобрения он вернётся уже с правками.', uk: 'Поки зміни перевіряють, тест не буде видно в загальному списку. Після схвалення він повернеться вже з правками.', en: 'While the changes are reviewed, the quiz is hidden from the public list. Once approved it comes back with your edits.' },
 } satisfies Record<string, L10n>
 
 export type UiKey = keyof typeof ui
