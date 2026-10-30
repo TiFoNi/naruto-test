@@ -3959,3 +3959,7 @@ body:has(.chat-bubble) .qb {
 .qb-side li.on button {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
+
+.qb-worlds-bar {
+  margin: 0;
+}
