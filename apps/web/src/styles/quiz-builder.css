@@ -3473,3 +3473,31 @@ body:has(.chat-bubble) .qb-foot {
 .qb-checklist .qb-card-head .qb-card-title {
   flex: 1 1 auto;
 }
+
+.qb-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 15;
+  margin: 0 -8px;
+  padding: 14px 8px 16px;
+  background: linear-gradient(to top, var(--bg, #0d0f12) 55%, transparent);
+}
+
+@media (max-width: 560px) {
+  body:has(.chat-bubble) .qb-bar {
+    padding-right: 84px;
+  }
+}
+
+.qb {
+  min-height: calc(100dvh - var(--qb-top, 220px) - 8px);
+}
+
+.qb > .qb-pane {
+  flex: 1 0 auto;
+  min-height: 0;
+}
+
+.qb > .qb-bar {
+  margin-top: auto;
+}
