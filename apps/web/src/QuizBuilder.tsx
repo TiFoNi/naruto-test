@@ -12,7 +12,7 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
 import { useI18n, type L10n, type UiKey } from './i18n'
-import { ArrowIcon, CheckIcon, CloseIcon, CopyIcon, DownIcon, GearIcon, PictureIcon, PlusIcon, SparkIcon, TextIcon, TrashIcon, UpIcon, UserIcon } from './icons'
+import { ArrowIcon, CheckIcon, CloseIcon, CopyIcon, DownIcon, GearIcon, PencilIcon, PictureIcon, PlayIcon, PlusIcon, SparkIcon, TextIcon, TrashIcon, UpIcon, UserIcon } from './icons'
 import { abilityUrl, picsUrl } from './pics'
 import { coverUrl, type QuizCover, type QuizKind, type QuizLayout, type QuizAttempt, type QuizOption, type QuizQuestionView, type QuizStatus, type QuizValue, type QuizView } from './quiz'
 import { KIND_ICON } from './QuizList'
@@ -810,6 +810,8 @@ function Ask({ ask, onClose }: { ask: Asking; onClose: () => void }) {
   )
 }
 
+const STEP_ICONS = [<GearIcon key="main" />, <PencilIcon key="questions" />, <PlayIcon key="check" />]
+
 const storeKey = (draft: Draft) => `qb:${draft.id ?? `new:${draft.game}`}`
 
 function readStored(draft: Draft): Draft | null {
@@ -1101,16 +1103,20 @@ export default function QuizBuilder({
     <Guard.Provider value={(run) => setAsk({ title: t('qb.reset.title'), hint: t('qb.reset.hint'), action: t('qb.reset.ok'), danger: false, run })}>
     <UploadPath.Provider value={`${endpoint}/cover`}>
       <div className="qb quiz-admin">
-        <ol className="qb-steps">
-          {steps.map((one, at) => (
-            <li key={one.key} className={`${step === at ? 'on' : ''} ${one.ok && at < 2 ? 'is-ok' : ''}`}>
-              <button type="button" onClick={() => go(at)} aria-current={step === at ? 'step' : undefined}>
-                <span className="qb-step-num">{one.ok && at < 2 ? <CheckIcon /> : at + 1}</span>
-                <span className="qb-step-label">{t(one.key)}</span>
-              </button>
-            </li>
-          ))}
-        </ol>
+        <div className="qb-layout">
+        <nav className="qb-side">
+          <ol>
+            {steps.map((one, at) => (
+              <li key={one.key} className={`${step === at ? 'on' : ''} ${one.ok && at < 2 ? 'is-ok' : ''}`}>
+                <button type="button" onClick={() => go(at)} aria-current={step === at ? 'step' : undefined}>
+                  <i>{one.ok && at < 2 ? <CheckIcon /> : STEP_ICONS[at]}</i>
+                  <span>{t(one.key)}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </nav>
+        <div className="qb-main">
 
         {mode === 'user' && quiz.status === 'published' && !sent && <p className="qb-banner">{t('qb.republish')}</p>}
         {mode === 'user' && quiz.status === 'rejected' && quiz.note && !sent && <p className="qb-banner is-bad">{t('qb.rejectNote', { note: quiz.note })}</p>}
@@ -1176,6 +1182,8 @@ export default function QuizBuilder({
             )}
           </footer>
         )}
+        </div>
+        </div>
       </div>
       {note && (
         <div className={`qb-toast ${note.bad ? 'is-bad' : ''}`} role="status">
