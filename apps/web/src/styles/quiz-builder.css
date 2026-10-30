@@ -3930,3 +3930,32 @@ body:has(.chat-bubble) .qb {
 .qb-settings .qb-formats {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
 }
+
+.qb {
+  --qb-soft: rgba(255, 255, 255, 0.035);
+  --qb-line: color-mix(in srgb, #ffffff 8%, transparent);
+}
+
+.qb-card,
+.qb-side,
+.qb-outline,
+.qb-preview-stage,
+.qb-try {
+  background: var(--qb-soft);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 18px 38px rgba(0, 0, 0, 0.22);
+  backdrop-filter: none;
+}
+
+.qb-try {
+  background: none;
+  box-shadow: none;
+}
+
+.qb-chip,
+.qb-steps button {
+  backdrop-filter: none;
+}
+
+.qb-side li.on button {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
