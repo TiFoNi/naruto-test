@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { createContext, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import abilities from '@nanda/game/data/dota-abilities.json'
 import { api, apiUrl } from './api'
 import AdminSelect from './AdminSelect'
@@ -855,15 +855,6 @@ export default function QuizBuilder({
   const [badAt, setBadAt] = useState<number | null>(null)
   const [busy, setBusy] = useState(false)
   const restored = useRef(false)
-  const frame = useRef<HTMLDivElement>(null)
-  const [top, setTop] = useState(0)
-
-  useLayoutEffect(() => {
-    const measure = () => frame.current && setTop(Math.round(frame.current.getBoundingClientRect().top + window.scrollY))
-    measure()
-    window.addEventListener('resize', measure)
-    return () => window.removeEventListener('resize', measure)
-  }, [])
   const [ask, setAsk] = useState<Asking | null>(null)
   const game = GAMES.find((one) => one.id === quiz.game)!
   const ready = useEntities(game)
@@ -1109,7 +1100,7 @@ export default function QuizBuilder({
   return (
     <Guard.Provider value={(run) => setAsk({ title: t('qb.reset.title'), hint: t('qb.reset.hint'), action: t('qb.reset.ok'), danger: false, run })}>
     <UploadPath.Provider value={`${endpoint}/cover`}>
-      <div ref={frame} className="qb quiz-admin" style={{ '--qb-top': `${top}px` } as CSSProperties}>
+      <div className="qb quiz-admin">
         <ol className="qb-steps">
           {steps.map((one, at) => (
             <li key={one.key} className={`${step === at ? 'on' : ''} ${one.ok && at < 2 ? 'is-ok' : ''}`}>
