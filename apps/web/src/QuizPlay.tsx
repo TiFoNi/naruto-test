@@ -11,7 +11,7 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { ArrowIcon, CheckIcon, CloseIcon, HeartIcon, RefreshIcon } from './icons'
+import { ArrowIcon, CheckIcon, CloseIcon, HeartIcon, MinusIcon, RefreshIcon } from './icons'
 import { coverUrl, optionImage, type QuizOption, type QuizQuestionView, type QuizValue, type QuizView } from './quiz'
 import QuizTile, { QuizChip, useOptionLabel, type TileState } from './QuizTile'
 import { abilityUrl } from './pics'
@@ -24,8 +24,12 @@ type QuestionProps = {
   question: QuizQuestionView
   value: QuizValue
   onChange?: (update: (value: QuizValue) => QuizValue) => void
-  result?: { right: boolean; correct?: number[] | number }
+  result?: { right: boolean; partial?: boolean; correct?: number[] | number }
 }
+
+export const markOf = (result?: { right: boolean; partial?: boolean }) => (result?.right ? 'is-right' : result?.partial ? 'is-partial' : 'is-wrong')
+
+const verdictOf = (result?: { right: boolean; partial?: boolean }): UiKey => (result?.right ? 'quiz.right' : result?.partial ? 'quiz.partial' : 'quiz.wrong')
 
 const hintOf = (result: QuestionProps['result'], pick: UiKey): UiKey => (!result ? pick : result.correct === undefined ? 'quiz.hiddenHint' : 'quiz.resultHint')
 
@@ -388,7 +392,14 @@ export function Question({ game, byId, question, value, onChange, result }: Ques
 
   return (
     <>
-      <p className="quiz-hint">{t(hintOf(result, question.multi ? 'quiz.pickMany' : 'quiz.pickOne'))}</p>
+      {result ? (
+        <p className="quiz-hint">{t(hintOf(result, 'quiz.pickOne'))}</p>
+      ) : (
+        <p className={`quiz-hint is-pill ${question.multi ? 'is-multi' : ''}`}>
+          {question.multi && <CheckIcon />}
+          {t(question.multi ? 'quiz.pickMany' : 'quiz.pickOne')}
+        </p>
+      )}
       <div className={`quiz-tiles count-${question.options.length} ${result ? 'is-result' : ''}`}>
         {question.options.map((option, index) => (
           <QuizTile
@@ -398,6 +409,7 @@ export function Question({ game, byId, question, value, onChange, result }: Ques
             byId={byId}
             state={stateOf(index)}
             disabled={!!result}
+            multi={question.multi}
             onClick={() => toggle(index)}
           />
         ))}
@@ -476,10 +488,9 @@ function Recap({
         </strong>
       </header>
       {!!attempt.xp && <p className="quiz-recap-xp">{t('quiz.recap.xp', { xp: attempt.xp })}</p>}
-      {!attempt.reveal && <p className="quiz-recap-note">{t('quiz.recap.hidden')}</p>}
       <div className="quiz-recap-bar" aria-hidden>
         {quiz.questions.map((_, at) => (
-          <i key={at} className={attempt.results?.[at]?.right ? 'is-right' : 'is-wrong'} />
+          <i key={at} className={markOf(attempt.results?.[at])} />
         ))}
       </div>
       <ol className="quiz-recap-list">
@@ -487,8 +498,8 @@ function Recap({
           const result = attempt.results?.[at]
           const right = !!result?.right
           return (
-            <li key={at} className={right ? 'is-right' : 'is-wrong'}>
-              <i className="quiz-recap-mark">{right ? <CheckIcon /> : <CloseIcon />}</i>
+            <li key={at} className={markOf(result)}>
+              <i className="quiz-recap-mark">{right ? <CheckIcon /> : result?.partial ? <MinusIcon /> : <CloseIcon />}</i>
               <div className="quiz-recap-body">
                 <p>
                   <em>{at + 1}.</em> {question.text}
@@ -583,7 +594,7 @@ export function QuizRun({
       {aside}
     </header>
   )
-  const steps = (now: number, marks?: { right: boolean }[]) =>
+  const steps = (now: number, marks?: { right: boolean; partial?: boolean }[]) =>
     quiz.count > 1 && (
       <div className={`quiz-hero-steps ${marks ? 'is-links' : ''}`} aria-hidden={!marks}>
         {quiz.questions.map((_, at) =>
@@ -591,7 +602,7 @@ export function QuizRun({
             <button
               key={at}
               type="button"
-              className={marks[at]?.right ? 'is-right' : 'is-wrong'}
+              className={markOf(marks[at])}
               aria-label={t('quiz.questionOf', { at: at + 1, total: quiz.count })}
               onClick={() => document.getElementById(`quiz-q-${at}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
             />
@@ -629,10 +640,10 @@ export function QuizRun({
             question,
             index,
             <>
-              {t('quiz.questionOf', { at: index + 1, total: quiz.count })} · {t(result?.right ? 'quiz.right' : 'quiz.wrong')}
+              {t('quiz.questionOf', { at: index + 1, total: quiz.count })} · {t(verdictOf(result))}
             </>,
             <Question game={game} byId={byId} question={question} value={attempt.answers[index] ?? null} result={result} />,
-            result?.right ? 'is-right' : 'is-wrong',
+            markOf(result),
           )
         })}
         <Recap game={game} byId={byId} quiz={quiz} busy={busy} onRestart={() => onSend({ action: 'restart' })} onLike={onLike} likeNote={likeNote} moreHref={moreHref} />

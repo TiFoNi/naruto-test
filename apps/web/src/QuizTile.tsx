@@ -16,6 +16,7 @@ type Props = {
   byId: Map<number, Entity>
   state?: TileState
   disabled?: boolean
+  multi?: boolean
   onClick?: () => void
 }
 
@@ -42,21 +43,21 @@ function Art({ game, option, byId }: { game: Game; option: QuizOption; byId: Map
   return <img className="quiz-tile-art" src={fullUrl(game.id, entity.id, entity.image)} alt="" loading="lazy" onError={() => setBroken(true)} />
 }
 
-export default function QuizTile({ game, option, byId, state = 'idle', disabled, onClick }: Props) {
+export default function QuizTile({ game, option, byId, state = 'idle', disabled, multi = false, onClick }: Props) {
   const label = useOptionLabel(byId)(option)
   const mark = state === 'right' || state === 'missed' || state === 'picked' ? <CheckIcon /> : state === 'wrong' ? <CloseIcon /> : null
 
   return (
     <button
       type="button"
-      className={`quiz-tile kind-${option.kind === 'image' ? 'entity' : option.kind} is-${state} ${option.kind === 'image' || (option.kind === 'entity' && byId.has(option.id)) ? 'has-art' : ''}`}
+      className={`quiz-tile kind-${option.kind === 'image' ? 'entity' : option.kind} is-${state} ${multi ? 'is-multi' : ''} ${option.kind === 'image' || (option.kind === 'entity' && byId.has(option.id)) ? 'has-art' : ''}`}
       disabled={disabled}
       aria-pressed={state === 'picked'}
       onClick={onClick}
     >
       <Art game={game} option={option} byId={byId} />
       <span className="quiz-tile-label">{label}</span>
-      {mark && <i className="quiz-tile-mark">{mark}</i>}
+      {mark ? <i className="quiz-tile-mark">{mark}</i> : multi && !disabled && <i className="quiz-tile-mark is-empty" aria-hidden />}
     </button>
   )
 }

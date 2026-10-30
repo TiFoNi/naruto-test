@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb'
 import { isGame, gameData } from './games'
 import { abilityByKey } from './abilities'
-import { addXp } from './profile'
+import { addLevelXp } from './profile'
 import { quizAttempts, quizzes, users, type QuizAttemptDoc, type QuizCover, type QuizDoc, type QuizOption, type QuizQuestion, type QuizStatus, type QuizValue } from './db'
 
 export const QUIZ_XP_PER_ANSWER = 10
@@ -236,6 +236,14 @@ function solution(quiz: QuizDoc, at: number) {
   return inverse(shownOrder(quiz, at))
 }
 
+function isPartial(quiz: QuizDoc, at: number, value: QuizValue) {
+  const question = quiz.questions[at]!
+  const correct = solution(quiz, at)
+  if (!Array.isArray(value) || !Array.isArray(correct) || isRight(quiz, at, value)) return false
+  if (question.kind === 'choice') return question.multi && value.some((one) => correct.includes(one))
+  return value.some((one, place) => one === correct[place])
+}
+
 function isRight(quiz: QuizDoc, at: number, value: QuizValue) {
   const correct = solution(quiz, at)
   if (typeof correct === 'number') return value === correct
@@ -287,15 +295,14 @@ export function attemptView(quiz: QuizDoc, attempt: QuizAttemptDoc | null) {
   if (!attempt) return null
   const base = { answered: attempt.answers.length, finished: attempt.finished, score: attempt.score, total: quiz.questions.length }
   if (!attempt.finished) return { ...base, answers: quiz.layout === 'list' ? [] : attempt.answers }
-  const first = (attempt.runs ?? 1) <= 1
   return {
     ...base,
     answers: attempt.answers,
-    reveal: !first,
-    xp: first ? (attempt.xp ?? 0) : null,
+    reveal: true,
+    xp: attempt.xp ?? 0,
     results: quiz.questions.map((_, at) => {
-      const right = isRight(quiz, at, attempt.answers[at] ?? null)
-      return first ? { right } : { right, correct: solution(quiz, at) }
+      const value = attempt.answers[at] ?? null
+      return { right: isRight(quiz, at, value), partial: isPartial(quiz, at, value), correct: solution(quiz, at) }
     }),
   }
 }
@@ -312,17 +319,19 @@ export async function publishedQuiz(id: unknown) {
 }
 
 export async function finishAttempt(quiz: QuizDoc, userId: ObjectId, answers: QuizValue[], guest: boolean) {
-  const score = quiz.questions.reduce((sum, _, at) => sum + (isRight(quiz, at, answers[at] ?? null) ? 1 : 0), 0)
+  const marks = quiz.questions.map((_, at) => isRight(quiz, at, answers[at] ?? null))
+  const score = marks.filter(Boolean).length
   const collection = await quizAttempts()
   const done = await collection.findOneAndUpdate(
     { _id: attemptId(quiz._id!, userId), finished: false },
     { $set: { answers, finished: true, score, total: quiz.questions.length, finishedAt: new Date() }, $inc: { runs: 1 } },
     { returnDocument: 'after' },
   )
-  if (!done || done.runs !== 1) return done
-  const xp = guest || quiz.authorId?.equals(userId) ? 0 : score * QUIZ_XP_PER_ANSWER
-  if (xp > 0) await addXp(await users(), userId, xp, 'endless', undefined, xp)
-  await collection.updateOne({ _id: done._id }, { $set: { xp } })
+  if (!done) return done
+  const rewarded = guest || quiz.authorId?.equals(userId) ? [] : marks.flatMap((right, at) => (right && !done.paid?.includes(at) ? [at] : []))
+  const xp = rewarded.length * QUIZ_XP_PER_ANSWER
+  await collection.updateOne({ _id: done._id }, { $set: { xp }, ...(rewarded.length ? { $addToSet: { paid: { $each: rewarded } } } : {}) })
+  if (xp > 0) await addLevelXp(await users(), userId, xp)
   return { ...done, xp }
 }
 

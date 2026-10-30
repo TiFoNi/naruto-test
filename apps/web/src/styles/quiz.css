@@ -2930,3 +2930,80 @@ textarea.quiz-admin-input {
   box-shadow: none;
   backdrop-filter: none;
 }
+
+.quiz-hint.is-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 2px 0 4px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-2);
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.quiz-hint.is-pill.is-multi {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--text);
+}
+
+.quiz-hint.is-pill svg {
+  width: 16px;
+  height: 16px;
+  color: var(--accent);
+}
+
+.quiz-hint.is-pill b {
+  padding: 2px 9px;
+  border-radius: 99px;
+  background: var(--accent);
+  color: #111;
+  font-size: 12.5px;
+}
+
+.quiz-tile.is-multi .quiz-tile-mark {
+  border-radius: 7px;
+}
+
+.quiz-tile-mark.is-empty {
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  background: rgba(10, 10, 14, 0.45);
+}
+
+.quiz-hint.is-pill b {
+  min-width: 78px;
+  text-align: center;
+}
+
+.quiz-hint.is-pill b.is-zero {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-2);
+}
+
+.quiz-q.is-partial .quiz-q-tag {
+  background: color-mix(in srgb, #e5a50a 18%, transparent);
+  color: #f1c04a;
+}
+
+.quiz-hero-steps.is-links button.is-partial::before,
+.quiz-hero-steps i.is-partial,
+.quiz-recap-bar i.is-partial {
+  background: #e5a50a;
+}
+
+.quiz-recap-list li.is-partial .quiz-recap-mark {
+  background: #e5a50a;
+  color: #2b1d00;
+}
+
+.quiz-recap-list li.is-partial .quiz-recap-mark svg {
+  stroke-width: 3;
+}
+
+.quiz-recap-list li.is-partial .quiz-recap-answers:not(.is-correct) .quiz-mini {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #e5a50a 55%, transparent);
+}

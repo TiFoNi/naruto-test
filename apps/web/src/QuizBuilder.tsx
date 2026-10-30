@@ -753,26 +753,33 @@ function TryRun({ game, byId, quiz }: { game: Game; byId: Map<number, Entity>; q
   const plays = useMemo(() => quiz.questions.map((question, at) => playable(question, at)), [quiz.questions])
   const fresh = (): QuizAttempt => ({ answered: 0, finished: false, score: 0, total: plays.length, answers: [] })
   const [attempt, setAttempt] = useState<QuizAttempt>(fresh)
-  const [runs, setRuns] = useState(1)
 
   const finish = (answers: QuizValue[]): QuizAttempt => {
-    const marks = plays.map((play, at) => same(answers[at] ?? null, play.solution))
-    const reveal = runs > 1
+    const results = plays.map((play, at) => {
+      const value = answers[at] ?? null
+      const right = same(value, play.solution)
+      const solved = play.solution
+      const partial =
+        !right &&
+        Array.isArray(value) &&
+        Array.isArray(solved) &&
+        (play.view.kind === 'choice' ? play.view.multi && value.some((one) => solved.includes(one)) : value.some((one, place) => one === solved[place]))
+      return { right, partial, correct: solved }
+    })
     return {
       answered: answers.length,
       finished: true,
-      score: marks.filter(Boolean).length,
+      score: results.filter((one) => one.right).length,
       total: plays.length,
       answers,
-      results: marks.map((right, at) => (reveal ? { right, correct: plays[at]!.solution } : { right })),
-      reveal,
+      results,
+      reveal: true,
       xp: null,
     }
   }
 
   const send = (body: Record<string, unknown>) => {
     if (body.action === 'restart') {
-      setRuns((current) => current + 1)
       setAttempt(fresh())
     } else if (body.action === 'answer') {
       const answers = [...attempt.answers, body.value as QuizValue]

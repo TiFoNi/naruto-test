@@ -278,6 +278,7 @@ export type QuizAttemptDoc = {
   finishedAt?: Date
   runs?: number
   xp?: number
+  paid?: number[]
 }
 
 export type StreakDoc = {

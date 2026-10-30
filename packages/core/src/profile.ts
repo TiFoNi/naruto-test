@@ -172,6 +172,14 @@ export async function addXp(
   return { xp, level: levelOf(xp), today: todayXp(doc), gained: number(doc.xpGain) }
 }
 
+export async function addLevelXp(collection: Collection<UserDoc>, userId: ObjectId, amount: number) {
+  if (amount <= 0) return null
+  const doc = await collection.findOneAndUpdate({ _id: userId }, { $inc: { xp: amount } }, { returnDocument: 'after' })
+  if (!doc) return null
+  const xp = number(doc.xp)
+  return { xp, level: levelOf(xp), gained: amount }
+}
+
 export function todayXp(doc: UserDoc) {
   const fresh = doc.xpToday?.day === today()
   const earned = (source: XpSource) => (fresh ? number(doc.xpToday?.[source]) : 0)
