@@ -4204,3 +4204,7 @@ body:has(.chat-bubble) .qb {
     min-height: 92px;
   }
 }
+
+.qb-worlds > .qb-worlds-bar.picker {
+  order: 0;
+}
