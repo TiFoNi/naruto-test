@@ -3,7 +3,7 @@ import { quizAttempts, quizLikes, quizzes, type QuizAttemptDoc, type QuizDoc } f
 import { isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
 import { roundOwner } from '../profile'
-import { attemptId, finishAttempt, publishedQuiz, quizCard, quizView, readValue, restartAttempt } from '../quizzes'
+import { attemptId, finishAttempt, publishedQuiz, quizAuthors, quizCard, quizView, readValue, restartAttempt } from '../quizzes'
 
 async function liked(quiz: QuizDoc, userId: ObjectId) {
   const likes = await quizLikes()
@@ -11,7 +11,11 @@ async function liked(quiz: QuizDoc, userId: ObjectId) {
   return { likes: count, liked: mine > 0 }
 }
 
-const fullView = async (quiz: QuizDoc, attempt: QuizAttemptDoc | null, userId: ObjectId) => ({ ...quizView(quiz, attempt), ...(await liked(quiz, userId)) })
+const fullView = async (quiz: QuizDoc, attempt: QuizAttemptDoc | null, userId: ObjectId) => ({
+  ...quizView(quiz, attempt),
+  ...(await liked(quiz, userId)),
+  author: quiz.authorId ? ((await quizAuthors([quiz])).get(quiz.authorId.toHexString()) ?? null) : null,
+})
 
 export const LIST = handle(async (request) => {
   const owner = await roundOwner(request)
@@ -38,6 +42,7 @@ export const LIST = handle(async (request) => {
     .aggregate<{ _id: unknown; count: number }>([{ $match: { quizId: { $in: ids } } }, { $group: { _id: '$quizId', count: { $sum: 1 } } }])
     .toArray()
   const likes = new Map(hearts.map((row) => [String(row._id), row.count]))
+  const authors = await quizAuthors(list)
 
   return json(
     {
@@ -47,6 +52,7 @@ export const LIST = handle(async (request) => {
           ...quizCard(quiz),
           plays: plays.get(quiz._id!.toHexString()) ?? 0,
           likes: likes.get(quiz._id!.toHexString()) ?? 0,
+          author: quiz.authorId ? (authors.get(quiz.authorId.toHexString()) ?? null) : null,
           mine: own ? { finished: own.finished, score: own.score, answered: own.answers.length } : null,
         }
       }),

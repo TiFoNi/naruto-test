@@ -251,12 +251,16 @@ export type QuizDoc = {
   title: string
   cover: QuizCover
   layout: 'steps' | 'list'
-  status: 'draft' | 'published'
+  status: QuizStatus
   official: boolean
+  authorId?: ObjectId
+  note?: string
   questions: QuizQuestion[]
   createdAt: Date
   updatedAt: Date
 }
+
+export type QuizStatus = 'draft' | 'review' | 'published' | 'rejected'
 
 export type QuizValue = number[] | number | null
 

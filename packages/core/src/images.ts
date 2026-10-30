@@ -207,7 +207,7 @@ export async function uploadShotCard(id: number, level: number, name: string) {
 export async function uploadQuizCover(source: Buffer, wide = false) {
   const cover = await sharp(source)
     .rotate()
-    .resize({ width: 640, height: wide ? 480 : 640, fit: 'cover', position: 'attention' })
+    .resize({ width: 640, height: wide ? 480 : 640, fit: 'cover', position: 'centre' })
     .webp({ quality: 84 })
     .toBuffer()
   const key = `quizzes/${randomBytes(8).toString('hex')}.webp`

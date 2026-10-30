@@ -37,6 +37,9 @@ export function hrefs(lang: Lang) {
     world: (game: GameId) => at(`/play/${game}`),
     tests: (category: Category) => at(`/tests/${category}`),
     test: (game: GameId, id: string) => at(`/play/${game}/tests/${id}`),
+    myTests: at('/tests/mine'),
+    makeTest: (target?: { id?: string; game?: GameId }) =>
+      at(`/tests/make${target?.id ? `?id=${target.id}` : target?.game ? `?game=${target.game}` : ''}`),
     play: (game: GameId, mode: ModeId, daily = false) => at(`/play/${game}/${mode}${variant(daily)}`),
     board: at('/leaderboard'),
     leaderboard: (game: GameId, mode: ModeId) => at(`/leaderboard/${game}/${mode}`),

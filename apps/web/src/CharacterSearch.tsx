@@ -15,6 +15,7 @@ type Props = {
   limited?: boolean
   plain?: boolean
   noThumbs?: boolean
+  strict?: boolean
   placeholder?: string
   onPick: (e: Entity) => void
 }
@@ -28,6 +29,7 @@ export default function CharacterSearch({
   limited = false,
   plain = false,
   noThumbs = false,
+  strict = false,
   placeholder,
   onPick,
 }: Props) {
@@ -126,7 +128,7 @@ export default function CharacterSearch({
   return (
     <div className={`search ${compact ? 'compact' : ''}`}>
       <div className="search-row">
-      <div className="search-box" ref={box}>
+      <div className={`search-box ${strict && query.trim() && !matches.length ? 'is-miss' : ''}`} ref={box}>
         <SearchIcon />
         <input
           value={query}

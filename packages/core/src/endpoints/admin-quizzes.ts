@@ -1,20 +1,29 @@
 import { ObjectId } from 'mongodb'
 import { adminSession } from '../admin'
-import { quizAttempts, quizzes, type QuizDoc } from '../db'
+import { quizAttempts, quizLikes, quizzes, type QuizDoc } from '../db'
 import { fail, handle, json, readJson } from '../http'
 import { uploadQuizCover } from '../images'
-import { readQuiz } from '../quizzes'
+import { quizAuthors, readQuiz } from '../quizzes'
 
 const LIMIT = 8 * 1024 * 1024
 
 const missing = () => fail(404, 'not_found')
 
-const full = (quiz: QuizDoc) => ({ ...quiz, _id: undefined, id: quiz._id!.toHexString() })
+const full = (quiz: QuizDoc, authors: Awaited<ReturnType<typeof quizAuthors>>) => ({
+  ...quiz,
+  _id: undefined,
+  authorId: undefined,
+  id: quiz._id!.toHexString(),
+  author: quiz.authorId ? (authors.get(quiz.authorId.toHexString()) ?? null) : null,
+})
+
+const one = async (quiz: QuizDoc) => full(quiz, await quizAuthors([quiz]))
 
 export const GET = handle(async (request) => {
   if (!(await adminSession(request))) return missing()
-  const list = await (await quizzes()).find({}, { sort: { updatedAt: -1 } }).toArray()
-  return json({ quizzes: list.map(full), pics: process.env.PICS_URL?.replace(/\/+$/, '') ?? '' })
+  const list = await (await quizzes()).find({ $or: [{ official: true }, { status: { $ne: 'draft' } }] }, { sort: { updatedAt: -1 } }).toArray()
+  const authors = await quizAuthors(list)
+  return json({ quizzes: list.map((quiz) => full(quiz, authors)), pics: process.env.PICS_URL?.replace(/\/+$/, '') ?? '' })
 })
 
 export const SAVE = handle(async (request) => {
@@ -26,19 +35,16 @@ export const SAVE = handle(async (request) => {
   const collection = await quizzes()
   const now = new Date()
   if (typeof body.id === 'string' && ObjectId.isValid(body.id)) {
-    const saved = await collection.findOneAndUpdate(
-      { _id: new ObjectId(body.id) },
-      { $set: { ...read.quiz, updatedAt: now } },
-      { returnDocument: 'after' },
-    )
+    const { official: _official, ...fields } = read.quiz
+    const saved = await collection.findOneAndUpdate({ _id: new ObjectId(body.id) }, { $set: { ...fields, updatedAt: now } }, { returnDocument: 'after' })
     if (!saved) return missing()
     await (await quizAttempts()).updateMany({ quizId: saved._id!, finished: false }, { $set: { answers: [] } })
-    return json({ quiz: full(saved) })
+    return json({ quiz: await one(saved) })
   }
 
   const doc: QuizDoc = { ...read.quiz, createdAt: now, updatedAt: now }
   const { insertedId } = await collection.insertOne(doc)
-  return json({ quiz: full({ ...doc, _id: insertedId }) })
+  return json({ quiz: await one({ ...doc, _id: insertedId }) })
 })
 
 export const DROP = handle(async (request) => {
@@ -48,6 +54,7 @@ export const DROP = handle(async (request) => {
   const id = new ObjectId(body.id)
   await (await quizzes()).deleteOne({ _id: id })
   await (await quizAttempts()).deleteMany({ quizId: id })
+  await (await quizLikes()).deleteMany({ quizId: id })
   return json({ ok: true })
 })
 

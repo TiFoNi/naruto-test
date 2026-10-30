@@ -2,15 +2,26 @@ import { ObjectId } from 'mongodb'
 import { isGame, gameData } from './games'
 import { abilityByKey } from './abilities'
 import { addXp } from './profile'
-import { quizAttempts, quizzes, users, type QuizAttemptDoc, type QuizCover, type QuizDoc, type QuizOption, type QuizQuestion, type QuizValue } from './db'
+import { quizAttempts, quizzes, users, type QuizAttemptDoc, type QuizCover, type QuizDoc, type QuizOption, type QuizQuestion, type QuizStatus, type QuizValue } from './db'
 
 export const QUIZ_XP_PER_ANSWER = 10
 
-export const QUIZ_LIMITS = { title: 80, text: 300, option: 80, minOptions: 2, maxOptions: 8, maxPairs: 6, maxQuestions: 50 }
+export const QUIZ_LIMITS = { title: 80, text: 300, option: 80, note: 300, minOptions: 2, maxOptions: 8, maxPairs: 6, maxQuestions: 30, ownQuizzes: 30 }
+
+const STATUSES: QuizStatus[] = ['draft', 'review', 'published', 'rejected']
 
 const clean = (value: unknown, max: number) => (typeof value === 'string' ? value.trim().replace(/\s+/g, ' ').slice(0, max) : '')
 
 const whole = (value: unknown) => (Number.isInteger(value) ? (value as number) : Number.NaN)
+
+const optionKey = (option: QuizOption) =>
+  option.kind === 'entity'
+    ? `e:${option.id}`
+    : option.kind === 'ability'
+      ? `a:${option.hero}:${option.key}`
+      : option.kind === 'image'
+        ? `i:${option.key}`
+        : `t:${option.text.toLowerCase()}`
 
 async function readOption(raw: unknown, known: Set<number>, game: string): Promise<QuizOption | null> {
   const option = raw as Record<string, unknown>
@@ -74,6 +85,8 @@ async function readBody(question: Record<string, unknown>, known: Set<number>, g
       if (!option) return 'question_option'
       options.push(option)
     }
+    const keys = options.map(optionKey)
+    if (new Set(keys).size !== keys.length) return 'question_duplicate'
     return options
   }
 
@@ -105,14 +118,49 @@ async function readBody(question: Record<string, unknown>, known: Set<number>, g
   return 'question_kind'
 }
 
-export async function readQuiz(raw: unknown): Promise<{ quiz: Omit<QuizDoc, '_id' | 'createdAt' | 'updatedAt'> } | { error: string; at?: number }> {
+const KINDS = ['choice', 'name', 'bool', 'order', 'pairs']
+
+function looseOption(raw: unknown) {
+  const option = raw as Record<string, unknown>
+  const id = whole(option?.id)
+  const hero = whole(option?.hero)
+  if (option?.kind === 'entity') return Number.isInteger(id) ? { kind: 'entity', id } : { kind: 'entity' }
+  if (option?.kind === 'ability') return { kind: 'ability', ...(Number.isInteger(hero) ? { hero } : {}), ...(option.key ? { key: clean(option.key, 80) } : {}) }
+  if (option?.kind === 'image') {
+    const key = typeof option.key === 'string' && /^quizzes\/[\w-]+\.webp$/.test(option.key) ? option.key : undefined
+    return { kind: 'image', ...(key ? { key, ver: clean(option.ver, 16) } : {}), text: clean(option.text, QUIZ_LIMITS.option) }
+  }
+  return { kind: 'text', text: clean(option?.text, QUIZ_LIMITS.option) }
+}
+
+function looseQuestion(raw: unknown, known: Set<number>) {
+  const question = raw as Record<string, unknown>
+  const kind = KINDS.includes(question?.kind as string) ? (question.kind as string) : 'choice'
+  const text = clean(question?.text, QUIZ_LIMITS.text)
+  const list = (value: unknown, max: number) => (Array.isArray(value) ? value.slice(0, max) : []).map(looseOption)
+  const picture = readPicture(question?.picture, known)
+  const base = { kind, text, ...(picture ? { picture } : {}) }
+  if (kind === 'name') return { ...base, ...(Number.isInteger(whole(question.answer)) ? { answer: whole(question.answer) } : {}) }
+  if (kind === 'bool') return { ...base, ...(typeof question.answer === 'boolean' ? { answer: question.answer } : {}) }
+  if (kind === 'order') return { ...base, options: list(question.options, QUIZ_LIMITS.maxOptions) }
+  if (kind === 'pairs') return { ...base, left: list(question.left, QUIZ_LIMITS.maxPairs), right: list(question.right, QUIZ_LIMITS.maxPairs) }
+  const options = list(question.options, QUIZ_LIMITS.maxOptions)
+  const correct = (Array.isArray(question.correct) ? question.correct : []).map(whole).filter((at) => at >= 0 && at < options.length)
+  return { ...base, multi: question.multi === true, options, correct }
+}
+
+export async function readQuiz(
+  raw: unknown,
+  loose = false,
+): Promise<{ quiz: Omit<QuizDoc, '_id' | 'createdAt' | 'updatedAt'>; complete: boolean } | { error: string; at?: number }> {
   const body = raw as Record<string, unknown>
   const game = typeof body?.game === 'string' && isGame(body.game) ? body.game : null
   if (!game) return { error: 'game' }
   const title = clean(body.title, QUIZ_LIMITS.title)
-  if (!title) return { error: 'title' }
+  if (!title && !loose) return { error: 'title' }
+  let complete = !!title
   const layout = body.layout === 'list' ? 'list' : 'steps'
-  const status = body.status === 'published' ? 'published' : 'draft'
+  const status = STATUSES.includes(body.status as QuizStatus) ? (body.status as QuizStatus) : 'draft'
 
   const { byId } = await gameData(game)
   const known = new Set(byId.keys())
@@ -120,15 +168,20 @@ export async function readQuiz(raw: unknown): Promise<{ quiz: Omit<QuizDoc, '_id
   const cover = readPicture(body.cover, known)
 
   const list = Array.isArray(body.questions) ? body.questions : []
-  if (!list.length || list.length > QUIZ_LIMITS.maxQuestions) return { error: 'questions' }
+  if (list.length > QUIZ_LIMITS.maxQuestions || (!list.length && !loose)) return { error: 'questions' }
+  if (!list.length) complete = false
   const questions: QuizQuestion[] = []
   for (const [at, one] of list.entries()) {
     const question = await readQuestion(one, known, game)
-    if (typeof question === 'string') return { error: question, at }
-    questions.push(question)
+    if (typeof question !== 'string') questions.push(question)
+    else if (!loose) return { error: question, at }
+    else {
+      complete = false
+      questions.push(looseQuestion(one, known) as never)
+    }
   }
 
-  return { quiz: { game, title, cover, layout, status, official: true, questions } }
+  return { quiz: { game, title, cover, layout, status, official: true, questions, note: clean(body.note, QUIZ_LIMITS.note) }, complete }
 }
 
 const optionView = (option: QuizOption) => {
@@ -209,6 +262,15 @@ export function readValue(question: QuizQuestion, raw: unknown): QuizValue | und
 
 export const kindsOf = (quiz: QuizDoc) => [...new Set(quiz.questions.map((question) => question.kind))]
 
+export type QuizAuthor = { id: string; nickname: string; tag: string | null }
+
+export async function quizAuthors(list: QuizDoc[]) {
+  const ids = [...new Set(list.filter((quiz) => quiz.authorId).map((quiz) => quiz.authorId!.toHexString()))].map((id) => new ObjectId(id))
+  if (!ids.length) return new Map<string, QuizAuthor>()
+  const people = await (await users()).find({ _id: { $in: ids } }, { projection: { nickname: 1, tag: 1 } }).toArray()
+  return new Map(people.map((one) => [one._id!.toHexString(), { id: one._id!.toHexString(), nickname: one.nickname ?? '—', tag: one.tag ?? null }]))
+}
+
 export function quizCard(quiz: QuizDoc) {
   return {
     id: quiz._id!.toHexString(),
@@ -258,7 +320,7 @@ export async function finishAttempt(quiz: QuizDoc, userId: ObjectId, answers: Qu
     { returnDocument: 'after' },
   )
   if (!done || done.runs !== 1) return done
-  const xp = guest ? 0 : score * QUIZ_XP_PER_ANSWER
+  const xp = guest || quiz.authorId?.equals(userId) ? 0 : score * QUIZ_XP_PER_ANSWER
   if (xp > 0) await addXp(await users(), userId, xp, 'endless', undefined, xp)
   await collection.updateOne({ _id: done._id }, { $set: { xp } })
   return { ...done, xp }

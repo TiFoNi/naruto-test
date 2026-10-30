@@ -9,7 +9,7 @@ import { BRAND } from './brand'
 import { GAMES } from './games'
 import { CATEGORIES, type Category, type GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { CheckIcon, GridIcon, HeartIcon, LinkIcon, SearchIcon, SortIcon, UsersIcon } from './icons'
+import { CheckIcon, GridIcon, HeartIcon, LinkIcon, PencilIcon, PlusIcon, SearchIcon, SortIcon, UsersIcon } from './icons'
 import { coverUrl, type QuizCard, type QuizKind, type QuizLayout } from './quiz'
 import { useHref } from './router'
 
@@ -18,7 +18,7 @@ type Sort = 'new' | 'popular' | 'liked' | 'short' | 'long'
 
 const KINDS: QuizKind[] = ['choice', 'name', 'bool', 'order', 'pairs']
 
-const KIND_ICON: Record<QuizKind, ReactNode> = {
+export const KIND_ICON: Record<QuizKind, ReactNode> = {
   choice: <GridIcon />,
   name: <SearchIcon />,
   bool: <CheckIcon />,
@@ -29,7 +29,7 @@ const KIND_ICON: Record<QuizKind, ReactNode> = {
 const statusOf = (quiz: QuizCard): Exclude<Status, 'all'> =>
   quiz.mine?.finished ? 'done' : quiz.mine && quiz.mine.answered > 0 ? 'going' : 'new'
 
-function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
+export function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
   const { t, l } = useI18n()
   const world = GAMES.find((one) => one.id === quiz.game)
   const art = coverUrl(quiz.game, quiz.cover)
@@ -51,22 +51,6 @@ function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
             <em className={`qz-badge is-${status}`}>{t(status === 'going' ? 'quiz.going' : 'quiz.badge.new')}</em>
           )}
         </span>
-        {(!!quiz.plays || !!quiz.likes) && (
-          <span className="qz-corner is-right">
-            {!!quiz.likes && (
-              <em className="qz-badge is-likes" title={t('quiz.likes', { count: quiz.likes })}>
-                <HeartIcon />
-                {quiz.likes}
-              </em>
-            )}
-            {!!quiz.plays && (
-              <em className="qz-badge is-plays" title={t('quiz.plays', { count: quiz.plays })}>
-                <UsersIcon />
-                {quiz.plays}
-              </em>
-            )}
-          </span>
-        )}
       </span>
       <span className="qz-info">
         {world && (
@@ -76,22 +60,41 @@ function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
           </em>
         )}
         <b>{quiz.title}</b>
+        {quiz.author && <em className="qz-author">{t('qb.by', { name: quiz.author.nickname })}</em>}
         <small>
           {t('quiz.questions', { count: quiz.count })} · {t(quiz.layout === 'steps' ? 'quiz.layout.steps' : 'quiz.layout.list')}
         </small>
-        <span className="qz-kinds">
-          {quiz.kinds.map((kind) => (
-            <i key={kind} title={t(`quiz.kind.${kind}` as UiKey)}>
-              {KIND_ICON[kind]}
-            </i>
-          ))}
+        <span className="qz-foot">
+          <span className="qz-kinds">
+            {quiz.kinds.map((kind) => (
+              <i key={kind} title={t(`quiz.kind.${kind}` as UiKey)}>
+                {KIND_ICON[kind]}
+              </i>
+            ))}
+          </span>
+          {(!!quiz.likes || !!quiz.plays) && (
+            <span className="qz-stats">
+              {!!quiz.likes && (
+                <span title={t('quiz.likes', { count: quiz.likes })}>
+                  <HeartIcon />
+                  {quiz.likes}
+                </span>
+              )}
+              {!!quiz.plays && (
+                <span title={t('quiz.plays', { count: quiz.plays })}>
+                  <UsersIcon />
+                  {quiz.plays}
+                </span>
+              )}
+            </span>
+          )}
         </span>
       </span>
     </Link>
   )
 }
 
-const TITLES: Record<Category, UiKey> = {
+export const CATEGORY_TITLES: Record<Category, UiKey> = {
   anime: 'dash.anime',
   manga: 'dash.mangaTitle',
   cartoon: 'dash.cartoon',
@@ -166,10 +169,18 @@ export default function QuizList({ category }: { category: string }) {
 
       <div className="qz-main-top">
         <div>
-          <small className="qz-kicker">{t(TITLES[category as Category])}</small>
+          <small className="qz-kicker">{t(CATEGORY_TITLES[category as Category])}</small>
           <h1>{t('quiz.title')}</h1>
         </div>
         <div className="qz-main-tools">
+          <Link className="qz-action" href={href.myTests}>
+            <PencilIcon />
+            {t('qb.mine')}
+          </Link>
+          <Link className="qz-action is-accent" href={href.makeTest()}>
+            <PlusIcon />
+            {t('qb.create')}
+          </Link>
           <button type="button" className={`qz-panel-toggle ${active ? 'has-active' : ''}`} onClick={() => setPanel(!panel)}>
             <SortIcon />
             {t('quiz.side.open')}

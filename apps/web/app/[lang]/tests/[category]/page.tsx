@@ -1,5 +1,6 @@
 import QuizList from '@/src/QuizList'
 import '@/src/styles/quiz.css'
+import '@/src/styles/quiz-builder.css'
 
 type Params = { params: Promise<{ lang: string; category: string }> }
 

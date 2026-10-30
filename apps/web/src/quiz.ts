@@ -12,6 +12,10 @@ export type QuizCover = { kind: 'entity'; id: number } | { kind: 'upload'; key: 
 
 export type QuizLayout = 'steps' | 'list'
 
+export type QuizStatus = 'draft' | 'review' | 'published' | 'rejected'
+
+export type QuizAuthor = { id: string; nickname: string; tag: string | null }
+
 export type QuizKind = 'choice' | 'name' | 'bool' | 'order' | 'pairs'
 
 export type QuizCard = {
@@ -25,6 +29,7 @@ export type QuizCard = {
   mine?: { finished: boolean; score: number; answered: number } | null
   plays?: number
   likes?: number
+  author?: QuizAuthor | null
 }
 
 export type QuizQuestionView = { picture?: QuizCover } & (

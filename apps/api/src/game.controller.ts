@@ -14,6 +14,7 @@ import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as adminShots from '@nanda/core/endpoints/admin-shots'
 import * as quizzes from '@nanda/core/endpoints/quizzes'
 import * as adminQuizzes from '@nanda/core/endpoints/admin-quizzes'
+import * as myQuizzes from '@nanda/core/endpoints/my-quizzes'
 import * as adminZoom from '@nanda/core/endpoints/admin-zoom'
 import * as adminTitles from '@nanda/core/endpoints/admin-titles'
 import * as framesTune from '@nanda/core/endpoints/frames-tune'
@@ -203,6 +204,26 @@ export class GameController {
   @Post('quiz')
   quizPlay(@Req() req: Request, @Res() res: Response) {
     return bridge(quizzes.PLAY, req, res)
+  }
+
+  @Get('my/quizzes')
+  myQuizList(@Req() req: Request, @Res() res: Response) {
+    return bridge(myQuizzes.GET, req, res)
+  }
+
+  @Post('my/quizzes')
+  myQuizSave(@Req() req: Request, @Res() res: Response) {
+    return bridge(myQuizzes.SAVE, req, res)
+  }
+
+  @Post('my/quizzes/drop')
+  myQuizDrop(@Req() req: Request, @Res() res: Response) {
+    return bridge(myQuizzes.DROP, req, res)
+  }
+
+  @Post('my/quizzes/cover')
+  myQuizCover(@Req() req: Request, @Res() res: Response) {
+    return bridge(myQuizzes.COVER, req, res)
   }
 
   @Get('admin/quizzes')

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { api } from './api'
 import { useAuth } from './auth'
@@ -294,7 +294,7 @@ function Pairs({ game, byId, question, value, onChange, result }: QuestionProps 
   )
 }
 
-function Question({ game, byId, question, value, onChange, result }: QuestionProps) {
+export function Question({ game, byId, question, value, onChange, result }: QuestionProps) {
   const { t } = useI18n()
 
   if (question.kind === 'order') return <Order game={game} byId={byId} question={question} value={value} onChange={onChange} result={result} />
@@ -337,7 +337,7 @@ function Question({ game, byId, question, value, onChange, result }: QuestionPro
     if (result) {
       return (
         <>
-          <p className="quiz-hint">{t(chosen ? hintOf(result, 'quiz.pickName') : 'quiz.skipped')}</p>
+          {!chosen && <p className="quiz-hint">{t('quiz.skipped')}</p>}
           <div className="quiz-tiles is-result">
             {chosen && tile(chosen, result.right ? 'right' : 'wrong')}
             {!result.right && correct && tile(correct, 'missed')}
@@ -347,7 +347,6 @@ function Question({ game, byId, question, value, onChange, result }: QuestionPro
     }
     return (
       <>
-        <p className="quiz-hint">{t('quiz.pickName')}</p>
         <div className="quiz-answer-name">
           {chosen ? (
             <>
@@ -358,7 +357,7 @@ function Question({ game, byId, question, value, onChange, result }: QuestionPro
               </button>
             </>
           ) : (
-            <CharacterSearch game={game} exclude={new Set()} pickOnly onPick={(entity) => onChange?.(() => entity.id)} />
+            <CharacterSearch game={game} exclude={new Set()} pickOnly strict onPick={(entity) => onChange?.(() => entity.id)} />
           )}
         </div>
       </>
@@ -435,9 +434,9 @@ function Recap({
   quiz: QuizView
   busy: boolean
   onRestart: () => void
-  onLike: () => void
+  onLike?: () => void
   likeNote: string
-  moreHref: string
+  moreHref?: string
 }) {
   const { t } = useI18n()
   const attempt = quiz.attempt!
@@ -511,25 +510,29 @@ function Recap({
       </ol>
       {likeNote && <p className="quiz-recap-note">{likeNote}</p>}
       <footer className="quiz-recap-foot">
-        <button
-          type="button"
-          className={`quiz-btn is-ghost quiz-like ${quiz.liked ? 'is-on' : ''}`}
-          aria-pressed={!!quiz.liked}
-          aria-label={t('quiz.like')}
-          title={t('quiz.likes', { count: quiz.likes ?? 0 })}
-          onClick={onLike}
-        >
-          <HeartIcon />
-          {quiz.likes ?? 0}
-        </button>
+        {onLike && (
+          <button
+            type="button"
+            className={`quiz-btn is-ghost quiz-like ${quiz.liked ? 'is-on' : ''}`}
+            aria-pressed={!!quiz.liked}
+            aria-label={t('quiz.like')}
+            title={t('quiz.likes', { count: quiz.likes ?? 0 })}
+            onClick={onLike}
+          >
+            <HeartIcon />
+            {quiz.likes ?? 0}
+          </button>
+        )}
         <button type="button" className="quiz-btn is-ghost" disabled={busy} onClick={onRestart}>
           <span className="is-long">{t('quiz.again')}</span>
           <span className="is-short">{t('quiz.againShort')}</span>
         </button>
-        <Link className="quiz-btn" href={moreHref}>
-          <span className="is-long">{t('quiz.more')}</span>
-          <span className="is-short">{t('quiz.moreShort')}</span>
-        </Link>
+        {moreHref && (
+          <Link className="quiz-btn" href={moreHref}>
+            <span className="is-long">{t('quiz.more')}</span>
+            <span className="is-short">{t('quiz.moreShort')}</span>
+          </Link>
+        )}
       </footer>
     </section>
   )
@@ -543,68 +546,37 @@ const filled = (question: QuizQuestionView, value: QuizValue | undefined) => {
   return value.length > 0
 }
 
-export default function QuizPlay({ game: gameId, id }: { game: string; id: string }) {
+export function QuizRun({
+  game,
+  byId,
+  quiz,
+  busy,
+  error,
+  top,
+  likeNote,
+  moreHref,
+  onSend,
+  onLike,
+}: {
+  game: Game
+  byId: Map<number, Entity>
+  quiz: QuizView
+  busy: boolean
+  error: string
+  top?: ReactNode
+  likeNote: string
+  moreHref?: string
+  onSend: (body: Record<string, unknown>) => void
+  onLike?: () => void
+}) {
   const { t } = useI18n()
-  const href = useHref()
-  const game = GAMES.find((one) => one.id === (gameId as GameId))
-  useEntities(game)
-  const byId = useMemo(() => new Map((game?.entities ?? []).map((one) => [one.id, one])), [game, game?.entities])
-  const [quiz, setQuiz] = useState<QuizView | null>(null)
-  const [missing, setMissing] = useState(false)
-  const [draft, setDraft] = useState<QuizValue[]>([])
-  const [busy, setBusy] = useState(false)
-  const [error, setError] = useState('')
-  const [likeNote, setLikeNote] = useState('')
-
-  const take = useCallback((next: QuizView) => {
-    setQuiz(next)
-    setDraft(next.layout === 'list' ? next.questions.map(() => null) : [])
-  }, [])
+  const [draft, setDraft] = useState<QuizValue[]>(() => (quiz.layout === 'list' ? quiz.questions.map(() => null) : []))
+  const attempt = quiz.attempt
 
   useEffect(() => {
-    void api<{ quiz?: QuizView }>(`quiz?id=${id}`).then(({ ok, data }) => (ok && data.quiz ? take(data.quiz) : setMissing(true)))
-  }, [id, take])
+    setDraft(quiz.layout === 'list' ? quiz.questions.map(() => null) : [])
+  }, [attempt, quiz.layout, quiz.questions])
 
-  const { refresh } = useAuth()
-  const send = async (body: Record<string, unknown>) => {
-    setBusy(true)
-    setError('')
-    const { ok, data } = await api<{ quiz?: QuizView; error?: string }>('quiz', { id, ...body })
-    setBusy(false)
-    if (!ok || !data.quiz) return setError(t('quiz.failed'))
-    take(data.quiz)
-    if (data.quiz.attempt?.finished && data.quiz.attempt.xp) void refresh()
-  }
-
-  const like = async () => {
-    if (!quiz) return
-    const next = !quiz.liked
-    setLikeNote('')
-    setQuiz({ ...quiz, liked: next, likes: Math.max(0, (quiz.likes ?? 0) + (next ? 1 : -1)) })
-    const { ok, status, data } = await api<{ likes?: number; liked?: boolean }>('quiz/like', { id, like: next })
-    if (ok) return setQuiz((current) => current && { ...current, likes: data.likes, liked: data.liked })
-    setQuiz((current) => current && { ...current, liked: quiz.liked, likes: quiz.likes })
-    setLikeNote(t(status === 401 ? 'quiz.likeLogin' : 'quiz.failed'))
-  }
-
-  if (!game || missing) return <div className="card center muted">{t('err.not_found')}</div>
-
-  const back = (
-    <div className="play-nav">
-      <BackButton href={href.tests(game.category)}>{t('quiz.title')}</BackButton>
-    </div>
-  )
-
-  if (!quiz) {
-    return (
-      <div className="quiz-page">
-        {back}
-        <div className="quiz-hero is-ghost" />
-      </div>
-    )
-  }
-
-  const attempt = quiz.attempt
   const hero = (aside: ReactNode) => (
     <header className="quiz-hero">
       <h1>{quiz.title}</h1>
@@ -649,7 +621,7 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
   if (attempt?.finished) {
     return (
       <div className="quiz-page">
-        {back}
+        {top}
         {hero(steps(quiz.count, attempt.results))}
         {quiz.questions.map((question, index) => {
           const result = attempt.results?.[index]
@@ -663,7 +635,7 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
             result?.right ? 'is-right' : 'is-wrong',
           )
         })}
-        <Recap game={game} byId={byId} quiz={quiz} busy={busy} onRestart={() => void send({ action: 'restart' })} onLike={() => void like()} likeNote={likeNote} moreHref={href.tests(game.category)} />
+        <Recap game={game} byId={byId} quiz={quiz} busy={busy} onRestart={() => onSend({ action: 'restart' })} onLike={onLike} likeNote={likeNote} moreHref={moreHref} />
       </div>
     )
   }
@@ -674,7 +646,7 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
     const value = draft[index] ?? null
     return (
       <div className="quiz-page">
-        {back}
+        {top}
         {hero(steps(index))}
         {block(
           question,
@@ -685,7 +657,7 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
         {error && <p className="quiz-error">{error}</p>}
         <div className="quiz-bar">
           <span>{t('quiz.noBack')}</span>
-          <button type="button" className="quiz-btn" disabled={busy || !filled(question, value)} onClick={() => void send({ action: 'answer', index, value })}>
+          <button type="button" className="quiz-btn" disabled={busy || !filled(question, value)} onClick={() => onSend({ action: 'answer', index, value })}>
             {t(index + 1 === quiz.count ? 'quiz.finish' : 'quiz.next')}
             <ArrowIcon />
           </button>
@@ -697,7 +669,7 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
   const ready = draft.length === quiz.count && quiz.questions.every((question, at) => filled(question, draft[at]))
   return (
     <div className="quiz-page">
-      {back}
+      {top}
       {hero(null)}
       {quiz.questions.map((question, index) =>
         block(
@@ -710,11 +682,82 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
       {error && <p className="quiz-error">{error}</p>}
       <div className="quiz-bar is-sticky">
         <span>{t('quiz.answered', { done: quiz.questions.filter((question, at) => filled(question, draft[at])).length, total: quiz.count })}</span>
-        <button type="button" className="quiz-btn" disabled={busy || !ready} onClick={() => void send({ action: 'finish', answers: draft })}>
+        <button type="button" className="quiz-btn" disabled={busy || !ready} onClick={() => onSend({ action: 'finish', answers: draft })}>
           {t('quiz.show')}
           <ArrowIcon />
         </button>
       </div>
     </div>
+  )
+}
+
+export default function QuizPlay({ game: gameId, id }: { game: string; id: string }) {
+  const { t } = useI18n()
+  const href = useHref()
+  const game = GAMES.find((one) => one.id === (gameId as GameId))
+  useEntities(game)
+  const byId = useMemo(() => new Map((game?.entities ?? []).map((one) => [one.id, one])), [game, game?.entities])
+  const [quiz, setQuiz] = useState<QuizView | null>(null)
+  const [missing, setMissing] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
+  const [likeNote, setLikeNote] = useState('')
+
+  useEffect(() => {
+    void api<{ quiz?: QuizView }>(`quiz?id=${id}`).then(({ ok, data }) => (ok && data.quiz ? setQuiz(data.quiz) : setMissing(true)))
+  }, [id])
+
+  const { refresh } = useAuth()
+  const send = async (body: Record<string, unknown>) => {
+    setBusy(true)
+    setError('')
+    const { ok, data } = await api<{ quiz?: QuizView; error?: string }>('quiz', { id, ...body })
+    setBusy(false)
+    if (!ok || !data.quiz) return setError(t('quiz.failed'))
+    setQuiz(data.quiz)
+    if (data.quiz.attempt?.finished && data.quiz.attempt.xp) void refresh()
+  }
+
+  const like = async () => {
+    if (!quiz) return
+    const next = !quiz.liked
+    setLikeNote('')
+    setQuiz({ ...quiz, liked: next, likes: Math.max(0, (quiz.likes ?? 0) + (next ? 1 : -1)) })
+    const { ok, status, data } = await api<{ likes?: number; liked?: boolean }>('quiz/like', { id, like: next })
+    if (ok) return setQuiz((current) => current && { ...current, likes: data.likes, liked: data.liked })
+    setQuiz((current) => current && { ...current, liked: quiz.liked, likes: quiz.likes })
+    setLikeNote(t(status === 401 ? 'quiz.likeLogin' : 'quiz.failed'))
+  }
+
+  if (!game || missing) return <div className="card center muted">{t('err.not_found')}</div>
+
+  const back = (
+    <div className="play-nav">
+      <BackButton href={href.tests(game.category)}>{t('quiz.title')}</BackButton>
+    </div>
+  )
+
+  if (!quiz) {
+    return (
+      <div className="quiz-page">
+        {back}
+        <div className="quiz-hero is-ghost" />
+      </div>
+    )
+  }
+
+  return (
+    <QuizRun
+      game={game}
+      byId={byId}
+      quiz={quiz}
+      busy={busy}
+      error={error}
+      top={back}
+      likeNote={likeNote}
+      moreHref={href.tests(game.category)}
+      onSend={(body) => void send(body)}
+      onLike={() => void like()}
+    />
   )
 }
