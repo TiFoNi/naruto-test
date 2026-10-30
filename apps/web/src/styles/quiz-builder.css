@@ -4174,3 +4174,33 @@ body:has(.chat-bubble) .qb {
   border-radius: 10px;
   font-size: 15px;
 }
+
+@container (max-width: 520px) {
+  .qb-qpic,
+  .qb-qpic .qb-qpic-box {
+    width: 84px;
+  }
+
+  .qb-qpic .qb-qpic-box {
+    height: 63px;
+    border-radius: 12px;
+  }
+
+  .qb-qpic-empty {
+    font-size: 0;
+    gap: 0;
+  }
+
+  .qb-qpic-empty svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .qb-qrow {
+    gap: 10px;
+  }
+
+  .qb-qrow .qb-text {
+    min-height: 92px;
+  }
+}
