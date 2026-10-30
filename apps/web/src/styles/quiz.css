@@ -1299,16 +1299,6 @@ textarea.quiz-admin-input {
   backdrop-filter: none;
 }
 
-.quiz-admin .suggestions::before {
-  content: 'Выбери из списка';
-  display: block;
-  padding: 4px 8px 6px;
-  color: var(--text-3);
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
 
 .quiz-admin .suggestions li.active {
   background: color-mix(in srgb, var(--accent) 14%, transparent);

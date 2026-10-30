@@ -3963,3 +3963,36 @@ body:has(.chat-bubble) .qb {
 .qb-worlds-bar {
   margin: 0;
 }
+
+.qb-main > .qb-pane,
+.qb-main > .qb-try {
+  position: relative;
+  z-index: 2;
+}
+
+.qb-main > .qb-bar,
+.qb-main > .qb-bar:is(*) {
+  position: relative;
+  z-index: 1;
+}
+
+@container (max-width: 520px) {
+  .qb-atype-list button {
+    flex-direction: column;
+    gap: 4px;
+    height: 62px;
+    padding: 0 6px;
+    font-size: 12.5px;
+  }
+
+  .qb-atype-list button svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@container (max-width: 900px) {
+  .qb-atype-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
