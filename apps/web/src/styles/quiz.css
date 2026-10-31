@@ -3007,3 +3007,7 @@ textarea.quiz-admin-input {
 .quiz-recap-list li.is-partial .quiz-recap-answers:not(.is-correct) .quiz-mini {
   box-shadow: inset 0 0 0 1px color-mix(in srgb, #e5a50a 55%, transparent);
 }
+
+.quiz-q-head {
+  margin-bottom: 14px;
+}
