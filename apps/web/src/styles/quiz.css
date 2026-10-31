@@ -2141,6 +2141,7 @@ textarea.quiz-admin-input {
 
 .qz-info {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: 6px;
   padding: 0 6px 6px;
