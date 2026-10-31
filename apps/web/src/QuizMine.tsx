@@ -32,7 +32,7 @@ export default function QuizMine() {
 
   const back = (
     <div className="play-nav">
-      <BackButton href={href.home}>{t('play.back')}</BackButton>
+      <BackButton href={href.home} anywhere>{t('play.back')}</BackButton>
     </div>
   )
 

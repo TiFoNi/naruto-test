@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { api } from './api'
 import { useAuth } from './auth'
@@ -13,7 +12,7 @@ import { CloseIcon, SearchIcon } from './icons'
 import Rail from './Rail'
 import QuizBuilder, { freshDraft, QUIZ_WORLDS, type Draft, type SavedDraft } from './QuizBuilder'
 import { CATEGORY_TITLES } from './QuizList'
-import { useHref } from './router'
+import { useHref, useNavigate } from './router'
 
 function WorldPicker({ onPick }: { onPick: (game: GameId) => void }) {
   const { t, l } = useI18n()
@@ -108,7 +107,7 @@ function WorldPicker({ onPick }: { onPick: (game: GameId) => void }) {
 export default function QuizMake({ id, game }: { id?: string; game?: string }) {
   const { t } = useI18n()
   const href = useHref()
-  const router = useRouter()
+  const navigate = useNavigate()
   const { user, loading } = useAuth()
   const [draft, setDraft] = useState<Draft | null>(null)
   const [missing, setMissing] = useState(false)
@@ -122,7 +121,7 @@ export default function QuizMake({ id, game }: { id?: string; game?: string }) {
 
   const back = (
     <div className="play-nav">
-      <BackButton href={href.myTests}>{t('qb.mine')}</BackButton>
+      <BackButton href={href.myTests} anywhere>{t('qb.mine')}</BackButton>
     </div>
   )
 
@@ -170,7 +169,7 @@ export default function QuizMake({ id, game }: { id?: string; game?: string }) {
             if (!draft.id) window.history.replaceState(null, '', href.makeTest({ id: saved.id }))
             setDraft(saved)
           }}
-          onDropped={() => router.push(href.myTests)}
+          onDropped={() => navigate.replace(href.myTests)}
         />
       ) : (
         <div className="qb-card qb-loading" />

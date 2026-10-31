@@ -1449,8 +1449,9 @@
 }
 
 .qz-action svg {
-  width: 15px;
-  height: 15px;
+  flex: none;
+  width: 18px;
+  height: 18px;
 }
 
 .qz-action.is-accent {
