@@ -1781,6 +1781,27 @@
   "thumb": 82
  },
  {
+  "id": 64430,
+  "name": "Отохимэ",
+  "nameEn": "Otohime",
+  "gender": "Женский",
+  "races": [
+   "Русал"
+  ],
+  "affiliations": [
+   "Королевство Рюгу"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения"
+  ],
+  "bounty": 0,
+  "arc": "Остров рыболюдей",
+  "arcIndex": 19,
+  "answer": true,
+  "thumb": 83
+ },
+ {
   "id": 1952,
   "name": "Пандамен",
   "nameEn": "Pandaman",
@@ -1797,7 +1818,7 @@
   "arc": "Барати",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 83
+  "thumb": 84
  },
  {
   "id": 8165,
@@ -1816,7 +1837,7 @@
   "arc": "Алабаста",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 84
+  "thumb": 85
  },
  {
   "id": 5485,
@@ -1837,7 +1858,7 @@
   "arc": "Триллер Барк",
   "arcIndex": 14,
   "answer": true,
-  "thumb": 85
+  "thumb": 86
  },
  {
   "id": 306850,
@@ -1862,7 +1883,7 @@
   "arc": "Остров Драм",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 86
+  "thumb": 87
  },
  {
   "id": 291338,
@@ -1881,7 +1902,7 @@
   "arc": "Пирожный остров",
   "arcIndex": 23,
   "answer": true,
-  "thumb": 87
+  "thumb": 88
  },
  {
   "id": 199943,
@@ -1902,7 +1923,7 @@
   "arc": "Дрессроза",
   "arcIndex": 21,
   "answer": true,
-  "thumb": 88
+  "thumb": 89
  },
  {
   "id": 2183,
@@ -1922,7 +1943,7 @@
   "arc": "Оранж-Таун",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 89
+  "thumb": 90
  },
  {
   "id": 1528,
@@ -1946,7 +1967,7 @@
   "arc": "Water 7",
   "arcIndex": 12,
   "answer": true,
-  "thumb": 90
+  "thumb": 91
  },
  {
   "id": 308027,
@@ -1968,7 +1989,7 @@
   "arc": "Вано",
   "arcIndex": 24,
   "answer": true,
-  "thumb": 91
+  "thumb": 92
  },
  {
   "id": 1520,
@@ -1991,7 +2012,7 @@
   "arc": "Ромэнс Дон",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 92
+  "thumb": 93
  },
  {
   "id": 9532,
@@ -2015,7 +2036,7 @@
   "arc": "Маринфорд",
   "arcIndex": 18,
   "answer": true,
-  "thumb": 93
+  "thumb": 94
  },
  {
   "id": 1672,
@@ -2039,7 +2060,7 @@
   "arc": "Эниес Лобби",
   "arcIndex": 13,
   "answer": true,
-  "thumb": 94
+  "thumb": 95
  },
  {
   "id": 1621,
@@ -2061,7 +2082,7 @@
   "arc": "Барати",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 95
+  "thumb": 96
  },
  {
   "id": 197521,
@@ -2082,7 +2103,7 @@
   "arc": "Дрессроза",
   "arcIndex": 21,
   "answer": true,
-  "thumb": 96
+  "thumb": 97
  },
  {
   "id": 8693,
@@ -2105,7 +2126,7 @@
   "arc": "Оранж-Таун",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 97
+  "thumb": 98
  },
  {
   "id": 17494,
@@ -2126,7 +2147,7 @@
   "arc": "Остров рыболюдей",
   "arcIndex": 19,
   "answer": true,
-  "thumb": 98
+  "thumb": 99
  },
  {
   "id": 8551,
@@ -2150,7 +2171,7 @@
   "arc": "Сабаоди",
   "arcIndex": 15,
   "answer": true,
-  "thumb": 99
+  "thumb": 100
  },
  {
   "id": 327207,
@@ -2174,7 +2195,7 @@
   "arc": "Логтаун",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 100
+  "thumb": 101
  },
  {
   "id": 1671,
@@ -2199,7 +2220,7 @@
   "arc": "Джая",
   "arcIndex": 10,
   "answer": true,
-  "thumb": 101
+  "thumb": 102
  },
  {
   "id": 1684,
@@ -2221,7 +2242,7 @@
   "arc": "Логтаун",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 102
+  "thumb": 103
  },
  {
   "id": 1626,
@@ -2242,7 +2263,7 @@
   "arc": "Остров Драм",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 103
+  "thumb": 104
  },
  {
   "id": 8554,
@@ -2266,7 +2287,7 @@
   "arc": "Сабаоди",
   "arcIndex": 15,
   "answer": true,
-  "thumb": 104
+  "thumb": 105
  },
  {
   "id": 194006,
@@ -2290,7 +2311,7 @@
   "arc": "Дрессроза",
   "arcIndex": 21,
   "answer": true,
-  "thumb": 105
+  "thumb": 106
  },
  {
   "id": 8552,
@@ -2311,7 +2332,7 @@
   "arc": "Сабаоди",
   "arcIndex": 15,
   "answer": true,
-  "thumb": 106
+  "thumb": 107
  },
  {
   "id": 1630,
@@ -2332,7 +2353,7 @@
   "arc": "Деревня Сиропа",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 107
+  "thumb": 108
  },
  {
   "id": 333574,
@@ -2353,7 +2374,7 @@
   "arc": "Вано",
   "arcIndex": 24,
   "answer": true,
-  "thumb": 108
+  "thumb": 109
  },
  {
   "id": 1959,
@@ -2372,7 +2393,7 @@
   "arc": "Water 7",
   "arcIndex": 12,
   "answer": true,
-  "thumb": 109
+  "thumb": 110
  },
  {
   "id": 1809,
@@ -2391,7 +2412,7 @@
   "arc": "Арлонг Парк",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 110
+  "thumb": 111
  },
  {
   "id": 1681,
@@ -2412,7 +2433,7 @@
   "arc": "Алабаста",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 111
+  "thumb": 112
  },
  {
   "id": 56093,
@@ -2431,7 +2452,7 @@
   "arc": "Остров рыболюдей",
   "arcIndex": 19,
   "answer": true,
-  "thumb": 112
+  "thumb": 113
  },
  {
   "id": 149327,
@@ -2452,7 +2473,7 @@
   "arc": "Панк Хазард",
   "arcIndex": 20,
   "answer": true,
-  "thumb": 113
+  "thumb": 114
  },
  {
   "id": 1617,
@@ -2475,7 +2496,7 @@
   "arc": "Ромэнс Дон",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 114
+  "thumb": 115
  },
  {
   "id": 291389,
@@ -2500,7 +2521,7 @@
   "arc": "Пирожный остров",
   "arcIndex": 23,
   "answer": true,
-  "thumb": 115
+  "thumb": 116
  },
  {
   "id": 32174,
@@ -2525,7 +2546,7 @@
   "arc": "Остров рыболюдей",
   "arcIndex": 19,
   "answer": true,
-  "thumb": 116,
+  "thumb": 117,
   "nameUk": "Шарлотта Лінлін (Велика Матуся)"
  },
  {
@@ -2547,7 +2568,7 @@
   "arc": "Остров рыболюдей",
   "arcIndex": 19,
   "answer": true,
-  "thumb": 117
+  "thumb": 118
  },
  {
   "id": 67047,
@@ -2566,7 +2587,7 @@
   "arc": "Оранж-Таун",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 118
+  "thumb": 119
  },
  {
   "id": 327212,
@@ -2591,7 +2612,7 @@
   "arc": "Алабаста",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 119
+  "thumb": 120
  },
  {
   "id": 11838,
@@ -2612,7 +2633,7 @@
   "arc": "Импел Даун",
   "arcIndex": 17,
   "answer": true,
-  "thumb": 120
+  "thumb": 121
  },
  {
   "id": 1957,
@@ -2635,7 +2656,7 @@
   "arc": "Скайпия",
   "arcIndex": 11,
   "answer": true,
-  "thumb": 121
+  "thumb": 122
  },
  {
   "id": 8550,
@@ -2660,7 +2681,7 @@
   "arc": "Сабаоди",
   "arcIndex": 15,
   "answer": true,
-  "thumb": 122
+  "thumb": 123
  },
  {
   "id": 322112,
@@ -2685,6 +2706,6 @@
   "arc": "Вано",
   "arcIndex": 24,
   "answer": true,
-  "thumb": 123
+  "thumb": 124
  }
 ]
