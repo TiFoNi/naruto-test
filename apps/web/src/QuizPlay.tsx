@@ -588,9 +588,16 @@ export function QuizRun({
     setDraft(quiz.layout === 'list' ? quiz.questions.map(() => null) : [])
   }, [attempt, quiz.layout, quiz.questions])
 
-  const hero = (aside: ReactNode) => (
+  const hero = (aside: ReactNode, action?: ReactNode) => (
     <header className="quiz-hero">
-      <h1>{quiz.title}</h1>
+      {action ? (
+        <div className="quiz-hero-row">
+          <h1>{quiz.title}</h1>
+          {action}
+        </div>
+      ) : (
+        <h1>{quiz.title}</h1>
+      )}
       {aside}
     </header>
   )
@@ -633,7 +640,13 @@ export function QuizRun({
     return (
       <div className="quiz-page">
         {top}
-        {hero(steps(quiz.count, attempt.results))}
+        {hero(
+          steps(quiz.count, attempt.results),
+          <button type="button" className="quiz-btn is-ghost quiz-hero-again" disabled={busy} onClick={() => onSend({ action: 'restart' })}>
+            <span className="is-long">{t('quiz.again')}</span>
+            <span className="is-short">{t('quiz.againShort')}</span>
+          </button>,
+        )}
         {quiz.questions.map((question, index) => {
           const result = attempt.results?.[index]
           return block(

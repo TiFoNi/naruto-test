@@ -2594,6 +2594,43 @@ textarea.quiz-admin-input {
   margin-top: 0;
 }
 
+.quiz-hero-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.quiz-btn.quiz-hero-again {
+  flex: none;
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  backdrop-filter: none;
+  font-size: 17px;
+  transition: color 0.15s;
+}
+
+.quiz-btn.quiz-hero-again:hover:not(:disabled) {
+  transform: none;
+  color: var(--accent);
+}
+
+.quiz-hero-again .is-short {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .quiz-hero-again .is-long {
+    display: none;
+  }
+
+  .quiz-hero-again .is-short {
+    display: inline;
+  }
+}
+
 .quiz-hero.is-ghost {
   height: 64px;
   border-radius: 14px;
