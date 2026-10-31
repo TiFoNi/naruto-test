@@ -2377,6 +2377,25 @@
   "thumb": 109
  },
  {
+  "id": 10681,
+  "name": "Фишер Тигер",
+  "nameEn": "Fisher Tiger",
+  "gender": "Мужской",
+  "races": [
+   "Рыболюд"
+  ],
+  "affiliations": [
+   "Пираты Солнца"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 230000000,
+  "arc": "Амазон Лили",
+  "arcIndex": 16,
+  "answer": true,
+  "thumb": 110
+ },
+ {
   "id": 1959,
   "name": "Фрэнки",
   "nameEn": "Franky",
@@ -2393,7 +2412,7 @@
   "arc": "Water 7",
   "arcIndex": 12,
   "answer": true,
-  "thumb": 110
+  "thumb": 111
  },
  {
   "id": 1809,
@@ -2412,7 +2431,7 @@
   "arc": "Арлонг Парк",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 111
+  "thumb": 112
  },
  {
   "id": 1681,
@@ -2433,7 +2452,7 @@
   "arc": "Алабаста",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 112
+  "thumb": 113
  },
  {
   "id": 56093,
@@ -2452,7 +2471,7 @@
   "arc": "Остров рыболюдей",
   "arcIndex": 19,
   "answer": true,
-  "thumb": 113
+  "thumb": 114
  },
  {
   "id": 149327,
@@ -2473,7 +2492,7 @@
   "arc": "Панк Хазард",
   "arcIndex": 20,
   "answer": true,
-  "thumb": 114
+  "thumb": 115
  },
  {
   "id": 1617,
@@ -2496,7 +2515,7 @@
   "arc": "Ромэнс Дон",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 115
+  "thumb": 116
  },
  {
   "id": 291389,
@@ -2521,7 +2540,7 @@
   "arc": "Пирожный остров",
   "arcIndex": 23,
   "answer": true,
-  "thumb": 116
+  "thumb": 117
  },
  {
   "id": 32174,
@@ -2546,7 +2565,7 @@
   "arc": "Остров рыболюдей",
   "arcIndex": 19,
   "answer": true,
-  "thumb": 117,
+  "thumb": 118,
   "nameUk": "Шарлотта Лінлін (Велика Матуся)"
  },
  {
@@ -2568,7 +2587,7 @@
   "arc": "Остров рыболюдей",
   "arcIndex": 19,
   "answer": true,
-  "thumb": 118
+  "thumb": 119
  },
  {
   "id": 67047,
@@ -2587,7 +2606,7 @@
   "arc": "Оранж-Таун",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 119
+  "thumb": 120
  },
  {
   "id": 327212,
@@ -2612,7 +2631,7 @@
   "arc": "Алабаста",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 120
+  "thumb": 121
  },
  {
   "id": 11838,
@@ -2633,7 +2652,7 @@
   "arc": "Импел Даун",
   "arcIndex": 17,
   "answer": true,
-  "thumb": 121
+  "thumb": 122
  },
  {
   "id": 1957,
@@ -2656,7 +2675,7 @@
   "arc": "Скайпия",
   "arcIndex": 11,
   "answer": true,
-  "thumb": 122
+  "thumb": 123
  },
  {
   "id": 8550,
@@ -2681,7 +2700,7 @@
   "arc": "Сабаоди",
   "arcIndex": 15,
   "answer": true,
-  "thumb": 123
+  "thumb": 124
  },
  {
   "id": 322112,
@@ -2706,6 +2725,6 @@
   "arc": "Вано",
   "arcIndex": 24,
   "answer": true,
-  "thumb": 124
+  "thumb": 125
  }
 ]

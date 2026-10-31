@@ -4208,3 +4208,91 @@ body:has(.chat-bubble) .qb {
 .qb-worlds > .qb-worlds-bar.picker {
   order: 0;
 }
+
+.qb-qpic-box.is-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  cursor: default;
+}
+
+.qb-qpic-box.is-empty:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.qb-qpic-picks {
+  display: flex;
+  gap: 6px;
+  padding: 0 10px;
+}
+
+.qb-qpic-pick {
+  position: relative;
+  display: inline-flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  height: 32px;
+  padding: 0 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-2);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.qb-qpic-pick:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  color: var(--text);
+}
+
+.qb-qpic-pick svg {
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+
+.qb-qpic-pick span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qb-qpic-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qb-qpic-search .search {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@container (max-width: 520px) {
+  .qb-qpic-box.is-empty .qb-qpic-empty {
+    display: none;
+  }
+
+  .qb-qpic-picks {
+    flex-direction: column;
+    padding: 0 6px;
+    gap: 4px;
+  }
+
+  .qb-qpic-pick {
+    height: 26px;
+    font-size: 0;
+  }
+
+  .qb-qpic-pick svg {
+    width: 15px;
+    height: 15px;
+  }
+}

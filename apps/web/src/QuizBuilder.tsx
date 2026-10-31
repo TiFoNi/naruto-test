@@ -192,28 +192,44 @@ function ImageOption({ option, onChange }: { option: Extract<DraftOption, { kind
   )
 }
 
-function QuestionPicture({ game, picture, onChange }: { game: Game; picture?: QuizCover; onChange: (picture: QuizCover) => void }) {
+function QuestionPicture({ game, picture, onChange, onSearch }: { game: Game; picture?: QuizCover; onChange: (picture: QuizCover) => void; onSearch: () => void }) {
   const { t } = useI18n()
   const { busy, failed, pick } = useUpload(true, (saved) => onChange({ kind: 'upload', ...saved }))
   const art = coverUrl(game.id, picture ?? null)
-  return (
-    <div className={`qb-qpic ${art ? 'has-pic' : ''} ${busy ? 'is-busy' : ''} ${failed ? 'is-failed' : ''}`}>
-      <label className="qb-qpic-box" title={art ? t('qb.pictureChange') : t('qb.picture')}>
-        {art ? (
+  const file = <input type="file" accept="image/*" disabled={busy} onChange={(event) => void pick(event.target.files?.[0])} />
+
+  if (art) {
+    return (
+      <div className={`qb-qpic has-pic ${busy ? 'is-busy' : ''}`}>
+        <span className="qb-qpic-box">
           <img src={art} alt="" />
-        ) : (
-          <span className="qb-qpic-empty">
-            <PictureIcon />
-            {busy ? t('qb.uploading') : failed ? t('qb.uploadFailed') : t('qb.picture')}
-          </span>
-        )}
-        <input type="file" accept="image/*" disabled={busy} onChange={(event) => void pick(event.target.files?.[0])} />
-      </label>
-      {art && (
+        </span>
         <button type="button" className="qb-qpic-drop" onClick={() => onChange(null)} aria-label={t('qb.pictureDrop')} title={t('qb.pictureDrop')}>
           <CloseIcon />
         </button>
-      )}
+      </div>
+    )
+  }
+
+  return (
+    <div className={`qb-qpic ${busy ? 'is-busy' : ''} ${failed ? 'is-failed' : ''}`}>
+      <div className="qb-qpic-box is-empty">
+        <span className="qb-qpic-empty">
+          <PictureIcon />
+          <span className="qb-qpic-title">{busy ? t('qb.uploading') : failed ? t('qb.uploadFailed') : t('qb.picture')}</span>
+        </span>
+        <span className="qb-qpic-picks">
+          <label className="qb-qpic-pick" title={t('qb.coverUpload')}>
+            <PictureIcon />
+            <span>{t('qb.pic.upload')}</span>
+            {file}
+          </label>
+          <button type="button" className="qb-qpic-pick" onClick={onSearch} title={t('qb.pic.character')}>
+            <UserIcon />
+            <span>{t('qb.pic.base')}</span>
+          </button>
+        </span>
+      </div>
     </div>
   )
 }
@@ -563,6 +579,11 @@ function QuestionEditor({
 }) {
   const { t } = useI18n()
   const guard = useGuard()
+  const [picking, setPicking] = useState(false)
+
+  useEffect(() => {
+    if (picking) document.querySelector<HTMLInputElement>('.qb-qpic-search input')?.focus()
+  }, [picking])
   return (
     <section className="qb-card qb-question">
       {nav}
@@ -594,9 +615,28 @@ function QuestionEditor({
       />
 
       <div className="qb-qrow">
-        <QuestionPicture game={game} picture={question.picture} onChange={(picture) => onChange({ ...question, picture })} />
+        <QuestionPicture game={game} picture={question.picture} onChange={(picture) => onChange({ ...question, picture })} onSearch={() => setPicking(true)} />
         <textarea className="quiz-admin-input qb-text" rows={3} maxLength={300} placeholder={t('qb.questionPh')} value={question.text} onChange={(event) => onChange({ ...question, text: event.target.value })} />
       </div>
+      {picking && (
+        <div className="qb-qpic-search">
+          <CharacterSearch
+            game={game}
+            exclude={new Set()}
+            compact
+            pickOnly
+            strict
+            placeholder={t('qb.searchPh')}
+            onPick={(one) => {
+              onChange({ ...question, picture: { kind: 'entity', id: one.id } })
+              setPicking(false)
+            }}
+          />
+          <button type="button" className="qb-icon" onClick={() => setPicking(false)} aria-label={t('profile.cancel')}>
+            <CloseIcon />
+          </button>
+        </div>
+      )}
       <div className="qb-divider" />
       <QuestionBody game={game} byId={byId} question={question} onChange={onChange} />
     </section>
