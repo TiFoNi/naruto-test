@@ -22,6 +22,7 @@ export type GameId =
   | 'avatar'
   | 'jjk'
   | 'csm'
+  | 'brawl'
   | 'shots'
   | 'tunes'
 
@@ -346,6 +347,20 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('affiliations', 'list'),
       col('height', 'order'),
       col('arcIndex', 'order'),
+    ],
+  },
+  brawl: {
+    featured: ['Shelly', 'Colt', 'Spike', 'Leon'],
+    data: 'brawl',
+    images: 'brawl',
+    modes: ['classic', 'blind', 'image', 'odd', 'pair'],
+    columns: [
+      col('gender', 'exact'),
+      col('kind', 'exact'),
+      col('rarityIndex', 'order'),
+      col('rangeIndex', 'order'),
+      col('speedIndex', 'order'),
+      col('release', 'order'),
     ],
   },
   genshin: {

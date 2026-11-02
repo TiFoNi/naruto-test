@@ -11,6 +11,7 @@
     "data:naruto": "node scripts/build-data.mjs",
     "data:mha": "node scripts/build-mha.mjs",
     "data:genshin": "node scripts/build-genshin.mjs",
+    "data:brawl": "node scripts/build-brawl.mjs",
     "data:dota": "node scripts/build-dota.mjs && node scripts/build-dota-abilities.mjs",
     "data:aot": "node scripts/build-aot.mjs",
     "data:bleach": "node scripts/build-bleach.mjs",
