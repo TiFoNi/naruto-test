@@ -1,4 +1,5 @@
 import { automated, fail, handle, json, readJson, robot } from '../http'
+import { humanCheck } from '../human'
 import { gameData } from '../games'
 import { roundOwner } from '../profile'
 import { dailyShot, dailyShotAnswer, dailyShotGiveUp, dailyShotSkip, shotAnswer, shotGiveUp, shotPoints, shotRun, shotSkip } from '../shots'
@@ -12,6 +13,8 @@ export const POST = handle(async (request) => {
   if (body.daily) {
     if (body.action === 'answer') {
     if (automated(request)) return robot()
+    const blocked = await humanCheck(owner)
+    if (blocked) return blocked
       if (typeof body.pick !== 'number') return fail(400, 'bad_request')
       const result = await dailyShotAnswer(owner.id, body.pick)
       return result ? json(result, 200, owner.cookie) : fail(409, 'no_round')
@@ -28,6 +31,8 @@ export const POST = handle(async (request) => {
 
   if (body.action === 'answer') {
     if (automated(request)) return robot()
+    const blocked = await humanCheck(owner)
+    if (blocked) return blocked
     if (typeof body.pick !== 'number') return fail(400, 'bad_request')
     const result = await shotAnswer(owner.id, body.pick)
     return result ? json(result, 200, owner.cookie) : fail(409, 'no_round')

@@ -3,6 +3,7 @@ import { rounds, users } from '../db'
 import { gameData, isGame } from '../games'
 import { automated, fail, handle, json, readJson, robot } from '../http'
 import { oneTry } from '@nanda/game'
+import { humanCheck } from '../human'
 import { rememberLang, roundOwner, touchVisit } from '../profile'
 import { finishRound, roundLimit, roundView } from '../rounds'
 
@@ -13,6 +14,8 @@ export const POST = handle(async (request) => {
   if (automated(request)) return robot()
   const owner = await roundOwner(request)
   const userId = owner.id
+  const blocked = await humanCheck(owner)
+  if (blocked) return blocked
   const body = await readJson(request)
   const entityId = Number(body.entityId)
   if (typeof body.roundId !== 'string' || !ObjectId.isValid(body.roundId) || !Number.isInteger(entityId)) return fail(400, 'bad_request')

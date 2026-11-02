@@ -1,4 +1,4 @@
-import { humanHeaders } from './human'
+import { askHuman, humanHeaders } from './human'
 
 const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, '') ?? ''
 
@@ -24,6 +24,7 @@ export async function api<T = Record<string, unknown>>(path: string, body?: unkn
     credentials: base ? 'include' : 'same-origin',
   })
   const data = (await response.json().catch(() => ({}))) as T & { error?: string }
+  if (response.status === 428 && data.error === 'human_check') askHuman()
   return { ok: response.ok, status: response.status, data }
 }
 

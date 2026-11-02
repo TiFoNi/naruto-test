@@ -4,6 +4,7 @@ import * as auth from '@nanda/core/endpoints/auth'
 import * as me from '@nanda/core/endpoints/me'
 import * as admin from '@nanda/core/endpoints/admin'
 import * as summary from '@nanda/core/endpoints/profile-summary'
+import * as human from '@nanda/core/endpoints/human'
 import * as quests from '@nanda/core/endpoints/quests'
 import * as levels from '@nanda/core/endpoints/levels'
 import * as shop from '@nanda/core/endpoints/shop'
@@ -239,6 +240,11 @@ export class GameController {
   @Post('admin/quizzes/cover')
   adminQuizCover(@Req() req: Request, @Res() res: Response) {
     return bridge(adminQuizzes.COVER, req, res)
+  }
+
+  @Post('human')
+  humanProof(@Req() req: Request, @Res() res: Response) {
+    return bridge(human.POST, req, res)
   }
 
   @Post('quests/swap')

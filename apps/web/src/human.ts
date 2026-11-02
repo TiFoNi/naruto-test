@@ -14,3 +14,7 @@ export const humanHeaders = (): Record<string, string> => {
     ...(navigator.webdriver ? { 'x-nanda-wd': '1' } : {}),
   }
 }
+
+export const HUMAN_CHECK_EVENT = 'nanda:human-check'
+
+export const askHuman = () => window.dispatchEvent(new Event(HUMAN_CHECK_EVENT))

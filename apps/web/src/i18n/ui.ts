@@ -425,6 +425,23 @@ const ui = {
     en: 'Username or email: 3–64 characters, no spaces',
   },
   'err.invalid_password': { ru: 'Пароль: от 6 до 100 символов', uk: 'Пароль: від 6 до 100 символів', en: 'Password: 6–100 characters' },
+  'err.human_check': {
+    ru: 'Подтверди, что играет человек, и попробуй ещё раз.',
+    uk: 'Підтвердь, що грає людина, і спробуй ще раз.',
+    en: 'Confirm you’re a person, then try again.',
+  },
+  'err.human_failed': {
+    ru: 'Проверка не прошла, попробуй ещё раз.',
+    uk: 'Перевірка не пройшла, спробуй ще раз.',
+    en: 'The check failed, try again.',
+  },
+  'human.title': { ru: 'Ты человек?', uk: 'Ти людина?', en: 'Are you a person?' },
+  'human.hint': {
+    ru: 'Ты играешь очень много подряд. Пройди быструю проверку, и можно продолжать.',
+    uk: 'Ти граєш дуже багато поспіль. Пройди швидку перевірку, і можна продовжувати.',
+    en: 'You’ve been playing a lot in a row. Pass a quick check to keep going.',
+  },
+  'human.close': { ru: 'Закрыть', uk: 'Закрити', en: 'Close' },
   'err.automation': {
     ru: 'Похоже, играет не человек. Автоматические помощники и боты в игре запрещены.',
     uk: 'Схоже, грає не людина. Автоматичні помічники й боти в грі заборонені.',

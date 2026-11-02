@@ -12373,3 +12373,16 @@ html[data-auth] .ssr-skel {
     display: none;
   }
 }
+
+.human-check-box {
+  display: flex;
+  justify-content: center;
+  min-height: 65px;
+  margin-top: 16px;
+}
+
+.human-check-error {
+  margin: 12px 0 0;
+  color: var(--wrong, #d14343);
+  text-align: center;
+}

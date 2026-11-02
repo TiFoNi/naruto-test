@@ -37,7 +37,7 @@ const TOUCH_WINDOW_MS = 10_000
 export function automated(request: Request) {
   if (request.headers.get('x-nanda-wd') === '1') return true
   const touch = request.headers.get('x-nanda-touch')
-  if (touch === null) return false
+  if (touch === null) return true
   const age = Number(touch)
   return !Number.isFinite(age) || age < 0 || age > TOUCH_WINDOW_MS
 }

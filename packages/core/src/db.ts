@@ -23,6 +23,7 @@ export type UserDoc = {
   stats?: Record<string, Partial<Stats>>
   solvedTotal?: number
   visit?: { lastDay: string; streak: number; best: number; days: string[] }
+  humanAt?: Date
   awards?: Record<string, Date>
   tally?: import('./achievements').Tally
   awardsSolved?: number

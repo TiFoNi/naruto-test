@@ -1,5 +1,6 @@
 import { automated, fail, handle, json, readJson, robot } from '../http'
 import { gameData, isGame } from '../games'
+import { humanCheck } from '../human'
 import { roundOwner } from '../profile'
 import { isSide, pairAnswer, pairRun } from '../streaks'
 
@@ -13,6 +14,8 @@ export const POST = handle(async (request) => {
 
   if (body.action === 'answer') {
     if (automated(request)) return robot()
+    const blocked = await humanCheck(owner)
+    if (blocked) return blocked
     if (!isSide(body.pick)) return fail(400, 'bad_request')
     const result = await pairAnswer(owner.id, game, body.pick)
     return result ? json(result, 200, owner.cookie) : fail(409, 'no_round')
