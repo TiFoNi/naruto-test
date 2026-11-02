@@ -74,6 +74,13 @@ const STATUS_RULES = [
 ]
 
 const SPECIES_OVERRIDES = { Kite: ['Человек'], 'Palm Siberia': ['Человек'] }
+const AFFILIATION_FIX = {
+  'Biscuit Krueger': ['Ассоциация охотников'],
+  'Morena Prudo': ['Мафия'],
+  'Hinrigh Biganduffno': ['Мафия'],
+  'Tserriednich Hui Guo Rou': ['Королевство Какин', 'Мафия'],
+  'Zhang Lei Hui Guo Rou': ['Королевство Какин', 'Мафия'],
+}
 
 const NAMES = {
   'Gon Freecss': 'Гон Фрикс',
@@ -193,8 +200,8 @@ async function main() {
       nameEn: name,
       gender: SEX[plain(field(text, 'gender')).trim()] ?? 'Другое',
       species: species.length ? species : ['Человек'],
-      nen: matchRules(NEN_RULES, plain(field(text, 'type')))[0] ?? 'Нет',
-      affiliations: matchRules(AFFILIATION_RULES, affiliationText),
+      nen: matchRules(NEN_RULES, field(text, 'type'))[0] ?? 'Нет',
+      affiliations: AFFILIATION_FIX[name] ?? matchRules(AFFILIATION_RULES, affiliationText),
       status: matchRules(STATUS_RULES, plain(field(text, 'status')))[0] ?? 'Неизвестно',
       arc: ARCS[arcIndex][1],
       arcIndex,

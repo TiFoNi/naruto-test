@@ -89,7 +89,11 @@ const STATUS_RULES = [
   ['Мёртв', /^deceased/i],
 ]
 
+const AFFILIATION_FIX = { Daiba: ['Кушан'], Rickert: ['Отряд Ястреба'] }
+const OCCUPATION_FIX = { Flora: ['Маг'], Zodd: ['Наёмник', 'Военный'] }
+
 const KIND_OVERRIDES = {
+  'Egg of the Perfect World': ['Апостол'],
   'Demon Child': ['Сущность'],
   'Beast of Darkness': ['Сущность'],
   'Sea God': ['Сущность'],
@@ -182,8 +186,8 @@ async function main() {
       nameEn: name,
       gender: SEX[field('gender')[0]] ?? OTHER_SEX,
       kinds,
-      affiliations: matchRules(AFFILIATION_RULES, field('affiliations')),
-      occupations: matchRules(OCCUPATION_RULES, [...field('occupations'), ...field('ranks')]),
+      affiliations: AFFILIATION_FIX[name] ?? matchRules(AFFILIATION_RULES, field('affiliations')),
+      occupations: OCCUPATION_FIX[name] ?? matchRules(OCCUPATION_RULES, [...field('occupations'), ...field('ranks')]),
       status: matchRules(STATUS_RULES, field('status'))[0] ?? 'Неизвестно',
       arc: ARC_CATEGORIES[index][1],
       arcIndex: index,

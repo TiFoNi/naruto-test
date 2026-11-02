@@ -47,9 +47,7 @@
   "nameEn": "Egg of the Perfect World",
   "gender": "Мужской",
   "kinds": [
-   "Апостол",
-   "Псевдоапостол",
-   "Демон"
+   "Апостол"
   ],
   "affiliations": [
    "Длань Господа"
@@ -315,7 +313,9 @@
   "kinds": [
    "Человек"
   ],
-  "affiliations": [],
+  "affiliations": [
+   "Кушан"
+  ],
   "occupations": [
    "Маг",
    "Военный"
@@ -413,7 +413,7 @@
   ],
   "occupations": [
    "Наёмник",
-   "Знать"
+   "Военный"
   ],
   "status": "Жив",
   "arc": "Золотой век",
@@ -792,7 +792,9 @@
   "kinds": [
    "Человек"
   ],
-  "affiliations": [],
+  "affiliations": [
+   "Отряд Ястреба"
+  ],
   "occupations": [
    "Наёмник"
   ],
@@ -1001,8 +1003,7 @@
   ],
   "affiliations": [],
   "occupations": [
-   "Маг",
-   "Военный"
+   "Маг"
   ],
   "status": "Мёртв",
   "arc": "Сокол тысячелетия",
