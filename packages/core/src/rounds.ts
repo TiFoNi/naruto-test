@@ -13,7 +13,7 @@ import { focusFor, roundSeed, shotFor } from './crop'
 
 import type { Collection } from 'mongodb'
 
-const RECENT_SHARE = 0.5
+const RECENT_SHARE = 0.25
 const RECENT_MAX = 200
 
 const recentWindow = (pool: number) => Math.max(1, Math.min(RECENT_MAX, Math.floor(pool * RECENT_SHARE)))
