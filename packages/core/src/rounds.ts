@@ -12,7 +12,10 @@ import { focusFor, roundSeed, shotFor } from './crop'
 
 import type { Collection } from 'mongodb'
 
-const RECENT = 25
+const RECENT_SHARE = 0.5
+const RECENT_MAX = 200
+
+const recentWindow = (pool: number) => Math.max(1, Math.min(RECENT_MAX, Math.floor(pool * RECENT_SHARE)))
 
 const playable = async (round: RoundDoc) =>
   isGame(round.game) && modeFits(round.mode as ModeId, round.answerId) && (await knows(round.game, round.answerId))
@@ -27,13 +30,13 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, 
   if (existing && (await playable(existing))) return existing
   if (existing) await collection.deleteOne({ _id: existing._id })
 
-  const recent = await collection
-    .find({ userId, game, mode }, { projection: { answerId: 1 }, sort: { createdAt: -1 }, limit: RECENT })
-    .toArray()
-  const seen = new Set(recent.map((r) => r.answerId))
   const whole = modePool((await gameData(game)).pool, mode)
   const shown = animeOnly ? whole.filter((one) => one.anime !== false) : whole
   const pool = shown.length ? shown : whole
+  const recent = await collection
+    .find({ userId, game, mode }, { projection: { answerId: 1 }, sort: { createdAt: -1 }, limit: recentWindow(pool.length) })
+    .toArray()
+  const seen = new Set(recent.map((r) => r.answerId))
   const fresh = pool.filter((e) => !seen.has(e.id))
   const choices = fresh.length ? fresh : pool
   const answer = choices[Math.floor(Math.random() * choices.length)]
