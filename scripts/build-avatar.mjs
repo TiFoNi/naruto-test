@@ -204,6 +204,9 @@ function imageFile(text) {
   return /\.(png|jpg|jpeg|webp|gif)$/i.test(plainName) ? plainName : null
 }
 
+const NATION_FIX = { Iroh: 'Народ Огня', Yue: 'Племя Воды', Wan: 'Неизвестно' }
+const SKILL_FIX = { Ozai: ['Молния'] }
+
 function genderOf(text) {
   const value = plain(infobox(text, 'pronouns') ?? '').toLowerCase()
   if (value.startsWith('she')) return 'Женский'
@@ -258,9 +261,9 @@ async function main() {
       name: NAMES[name] ?? ruName(name, ru, transliterate),
       nameEn: name,
       gender: genderOf(text),
-      nation,
+      nation: NATION_FIX[name] ?? nation,
       bending: bending.length ? bending : ['Нет'],
-      skills: matchRules(SKILLS, cats).length ? matchRules(SKILLS, cats) : ['Нет'],
+      skills: SKILL_FIX[name] ?? (matchRules(SKILLS, cats).length ? matchRules(SKILLS, cats) : ['Нет']),
       groups: groups.length ? groups : cats.some((c) => ANIMALS.test(c)) ? ['Животные'] : ['Сами по себе'],
       status: plain(infobox(text, 'death') ?? '').trim() ? 'Мёртв' : 'Жив',
       ...debutOf(text, seriesOf(name)),

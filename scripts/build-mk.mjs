@@ -67,7 +67,7 @@ const FIGHTERS = [
   ['Kai', 'Kai', 'Кай', false, ['Шаолинь', 'Белый Лотос'], GOOD],
   ['Frost', 'Frost', 'Фрост', true, ['Лин Куэй'], EVIL],
   ['Kenshi Takahashi', 'Kenshi', 'Кенши', true, ['Спецназ'], GOOD],
-  ['Li Mei', 'Li Mei', 'Ли Мэй', true, ['Армия Внешнего мира'], GOOD],
+  ['Li Mei', 'Li Mei', 'Ли Мэй', true, [], GOOD],
   ["Bo' Rai Cho", "Bo' Rai Cho", 'Бо Рай Чо', true, ['Шаолинь'], GOOD],
   ['Mavado', 'Mavado', 'Мавадо', false, ['Красный Дракон'], EVIL],
   ['Hsu Hao', 'Hsu Hao', 'Сю Хао', false, ['Красный Дракон'], EVIL],
@@ -156,7 +156,7 @@ const IMAGE_OVERRIDES = {
 
 const MALE = new Set(['Kung Lao', 'Kotal Kahn', 'Cyrax', 'Sektor', 'Takeda Takahashi'])
 
-const DEBUT_OVERRIDES = { 'Kenshi Takahashi': 4, "Bo' Rai Cho": 4, Onaga: 5 }
+const DEBUT_OVERRIDES = { 'Kenshi Takahashi': 4, "Bo' Rai Cho": 4, Onaga: 5, Reptile: 0, 'Kuai Liang': 0, 'Bi-Han': 1, 'Kung Lao': 1 }
 
 const OVERRIDES = {
   'Bi-Han': { species: ['Призрак'], origin: 'Земное царство' },
@@ -169,7 +169,7 @@ const OVERRIDES = {
   Shinnok: { species: ['Бог'], origin: 'Небеса' },
   Cetrion: { species: ['Бог'], origin: 'Небеса' },
   Kronika: { species: ['Бог'], origin: 'Небеса' },
-  Geras: { species: ['Бог'], origin: 'Небеса' },
+  Geras: { species: ['Искусственный'], origin: 'Преисподняя' },
   Rain: { species: ['Эденианец', 'Бог'], origin: 'Эдения' },
   Onaga: { species: ['Дракон'], origin: 'Внешний мир' },
   Motaro: { species: ['Кентавр'], origin: 'Внешний мир' },

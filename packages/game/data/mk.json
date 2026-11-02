@@ -60,12 +60,12 @@
   "nameEn": "Geras",
   "gender": "Мужской",
   "species": [
-   "Бог"
+   "Искусственный"
   ],
   "affiliations": [
    "Кроника"
   ],
-  "origin": "Небеса",
+  "origin": "Преисподняя",
   "alignment": "Зло",
   "debut": "MK 11",
   "debutIndex": 11,
@@ -362,8 +362,8 @@
   ],
   "origin": "Земное царство",
   "alignment": "Добро",
-  "debut": "MK (1992)",
-  "debutIndex": 0,
+  "debut": "MK II",
+  "debutIndex": 1,
   "answer": true,
   "thumb": 19
  },
@@ -412,7 +412,7 @@
    "Внешнемирец"
   ],
   "affiliations": [
-   "Армия Внешнего мира"
+   "Одиночка"
   ],
   "origin": "Внешний мир",
   "alignment": "Добро",
@@ -528,8 +528,8 @@
   ],
   "origin": "Земное царство",
   "alignment": "Зло",
-  "debut": "MK (1992)",
-  "debutIndex": 0,
+  "debut": "MK II",
+  "debutIndex": 1,
   "answer": true,
   "thumb": 28
  },
@@ -601,8 +601,8 @@
   ],
   "origin": "Мир Зетерры",
   "alignment": "Зло",
-  "debut": "MK II",
-  "debutIndex": 1,
+  "debut": "MK (1992)",
+  "debutIndex": 0,
   "answer": true,
   "thumb": 32
  },
@@ -620,8 +620,8 @@
   ],
   "origin": "Земное царство",
   "alignment": "Добро",
-  "debut": "MK II",
-  "debutIndex": 1,
+  "debut": "MK (1992)",
+  "debutIndex": 0,
   "answer": true,
   "thumb": 33
  },

@@ -45,6 +45,9 @@ const REGIONS = {
   RANGER: 'Иной мир',
 }
 
+const YEAR_FIX = { Mavuika: 2025, Citlali: 2025 }
+const REGION_FIX = { Arlecchino: 'Снежная', Tartaglia: 'Снежная', Zibai: 'Ли Юэ' }
+
 const GENDERS = { BOY: 'Мужской', MALE: 'Мужской', GIRL: 'Женский', LADY: 'Женский', LOLI: 'Женский' }
 
 const splashOf = (icon) => icon.replace('UI_AvatarIcon_', 'UI_Gacha_AvatarImg_')
@@ -89,9 +92,9 @@ async function main() {
       gender: GENDERS[one.bodyType] ?? 'Другое',
       element: ELEMENTS[one.element],
       weapon: WEAPONS[one.weaponType] ?? 'Другое',
-      region: REGIONS[one.region] ?? 'Другое',
+      region: REGION_FIX[one.name] ?? REGIONS[one.region] ?? 'Другое',
       rarity: one.rank,
-      year: new Date((one.release ?? 0) * 1000).getUTCFullYear(),
+      year: YEAR_FIX[one.name] ?? new Date((one.release ?? 0) * 1000).getUTCFullYear(),
       answer: true,
     })
   })

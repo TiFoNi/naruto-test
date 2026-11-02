@@ -205,7 +205,7 @@ const sharper = async (...buffers) => {
 }
 
 const GENDER_FIX = { Angelo: 'Мужской', Meeple: 'Другое', Shade: 'Другое', Trunk: 'Другое', Sprout: 'Другое' }
-const RANGE_FIX = { Bolt: 'Short' }
+const RANGE_FIX = { Bolt: 'Short', Janet: 'Long', Glowy: 'Long', Nori: 'Long' }
 const RELEASE_FIX = { Pam: 17, Penny: 20 }
 
 const field = (text, pattern) => text.match(new RegExp(`\\|\\s*${pattern}\\s*=\\s*([^|}\\n]*)`))?.[1]?.trim() ?? ''
