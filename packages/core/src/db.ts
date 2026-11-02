@@ -283,6 +283,7 @@ export type QuizAttemptDoc = {
 
 export type StreakDoc = {
   _id?: ObjectId
+  turn?: number
   userId: ObjectId
   game: string
   streak: number
@@ -299,6 +300,7 @@ export type StreakDoc = {
 
 export type ShotDoc = {
   _id?: ObjectId
+  turn?: number
   userId: ObjectId
   guest?: boolean
   answerId?: number
@@ -350,6 +352,7 @@ export type TuneDayDoc = {
 
 export type TuneDoc = {
   _id?: ObjectId
+  turn?: number
   userId: ObjectId
   guest?: boolean
   answerId?: number

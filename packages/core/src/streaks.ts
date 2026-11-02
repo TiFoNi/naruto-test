@@ -1,4 +1,4 @@
-import type { ObjectId } from 'mongodb'
+import type { Filter, ObjectId } from 'mongodb'
 import { MODE_XP, statsKey, type GameId } from '@nanda/game'
 import { rounds, streaks, users, type StreakDoc } from './db'
 import { addXp, raiseBest } from './profile'
@@ -86,6 +86,8 @@ export async function pairAnswer(userId: ObjectId, game: GameId, pick: PairSide)
   const collection = await streaks()
   const found = await collection.findOne({ userId, game })
   if (!found || found.status !== 'playing' || !found.answer) return null
+  const taken = await collection.updateOne({ _id: found._id, status: 'playing', turn: found.turn ?? null } as Filter<StreakDoc>, { $inc: { turn: 1 } })
+  if (!taken.modifiedCount) return null
 
   const right = pick === found.answer
   const streak = right ? found.streak + 1 : found.streak

@@ -47,6 +47,7 @@ import { duelSeed, focusFor, shotFor } from './crop'
 import { markSeasonDuel } from './season'
 
 export const MIN_GAP_MS = 800
+const NO_XP_PAST_CAP = 0
 export const RUSH_PER_TRY_MS = 10_000
 export const DUEL_LOG_MAX = 10
 const BOARD_ROWS = 10
@@ -928,7 +929,7 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   if (!finished) return (await duels()).findOne({ _id: duel._id }) as Promise<DuelDoc>
   if (duel.bot) {
     if (winnerId && !winnerId.equals(BOT_ID))
-      await addXp(await users(), winnerId, MODE_XP[duel.mode as ModeId], 'endless', duel.mode as ModeId)
+      await addXp(await users(), winnerId, MODE_XP[duel.mode as ModeId], 'endless', duel.mode as ModeId, NO_XP_PAST_CAP)
     return finished
   }
   if (matchDone) {
@@ -947,7 +948,7 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
 
 async function duelXp(userId: ObjectId, mode: ModeId, round: boolean, match: boolean) {
   const collection = await users()
-  await addXp(collection, userId, (round ? MODE_XP[mode] : 0) + (match ? DUEL_MATCH_XP : 0), 'duel', mode)
+  await addXp(collection, userId, (round ? MODE_XP[mode] : 0) + (match ? DUEL_MATCH_XP : 0), 'duel', mode, NO_XP_PAST_CAP)
 }
 
 export async function duelGuess(duel: DuelDoc, userId: ObjectId, entityId: number) {

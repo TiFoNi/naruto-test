@@ -1,4 +1,4 @@
-import type { ObjectId } from 'mongodb'
+import type { Filter, ObjectId } from 'mongodb'
 import { DAILY_XP_FACTOR, MODE_XP, TUNE_FULL, TUNE_MISS, TUNE_POINTS, TUNE_STEPS, dailyKey, tuneLevel, type TuneLevel } from '@nanda/game'
 import { rounds, tuneDays, tuneRuns, users, type TuneDayDoc, type TuneDoc } from './db'
 import { gameData } from './games'
@@ -128,11 +128,15 @@ async function logRound(doc: { userId: ObjectId; guest?: boolean; updatedAt: Dat
 
 const stillThere = async (id?: number) => id !== undefined && (await gameData(GAME)).byId.has(id)
 
+const takeTurn = async (doc: TuneDoc) =>
+  (await (await tuneRuns()).updateOne({ _id: doc._id, status: 'playing', turn: doc.turn ?? null } as Filter<TuneDoc>, { $inc: { turn: 1 } })).modifiedCount > 0
+
 export async function tuneAnswer(userId: ObjectId, pick: number, guest = false) {
   const collection = await tuneRuns()
   const doc = await collection.findOne({ userId })
   if (!doc || doc.status !== 'playing' || doc.answerId === undefined) return null
   if (!(await stillThere(doc.answerId))) return tuneRun(userId, guest, tuneLevel(doc.grade), true)
+  if (!(await takeTurn(doc))) return null
 
   const grade = tuneLevel(doc.grade)
   const right = pick === doc.answerId
@@ -188,6 +192,7 @@ export async function tuneSkip(userId: ObjectId, guest = false) {
   const grade = tuneLevel(doc.grade)
   const step = doc.step + 1
   if (step > lastStep(grade)) return tuneGiveUp(userId, guest)
+  if (!(await takeTurn(doc))) return null
 
   const next: Partial<TuneDoc> = { step, misses: doc.misses + 1, updatedAt: new Date() }
   await collection.updateOne({ userId }, { $set: next })
@@ -199,6 +204,7 @@ export async function tuneGiveUp(userId: ObjectId, guest = false) {
   const doc = await collection.findOne({ userId })
   if (!doc || doc.status !== 'playing' || doc.answerId === undefined) return null
   if (!(await stillThere(doc.answerId))) return tuneRun(userId, guest, tuneLevel(doc.grade), true)
+  if (!(await takeTurn(doc))) return null
 
   const next: Partial<TuneDoc> = { status: 'over', lastId: doc.answerId, won: false, streak: 0, updatedAt: new Date() }
   await collection.updateOne({ userId }, { $set: next })
@@ -286,7 +292,8 @@ async function dailyPlaying(userId: ObjectId) {
 async function endDaily(doc: TuneDayDoc, won: boolean) {
   const gained = won && !doc.guest ? DAILY_POINTS : 0
   const over: TuneDayDoc = { ...doc, status: 'over', won, gained }
-  await (await tuneDays()).updateOne({ _id: doc._id }, { $set: { status: 'over', won, gained, updatedAt: new Date() } })
+  const closed = await (await tuneDays()).updateOne({ _id: doc._id, status: 'playing' }, { $set: { status: 'over', won, gained, updatedAt: new Date() } })
+  if (!closed.modifiedCount) return null
   await logRound(doc, doc.answerId, won ? 'won' : 'lost', doc.day)
   if (doc.guest) return { ...(await dailyView(over)), xp: null }
   const collection = await users()

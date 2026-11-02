@@ -1,4 +1,4 @@
-import type { ObjectId } from 'mongodb'
+import type { Filter, ObjectId } from 'mongodb'
 import { DAILY_XP_FACTOR, SHOT_MISS, SHOT_POINTS, dailyKey } from '@nanda/game'
 import { rounds, shotDays, shotRuns, users, type ShotDayDoc, type ShotDoc } from './db'
 import { gameData } from './games'
@@ -222,13 +222,15 @@ async function harder(doc: ShotDoc, score: number) {
   return { score, level, points: pointsAt(level), shots: opened(doc.key ?? '0', level, doc.variant) }
 }
 
-async function playing(userId: ObjectId) {
+async function takeTurn(userId: ObjectId) {
   const found = await (await shotRuns()).findOne({ userId })
-  return found && found.status === 'playing' && found.answerId !== undefined ? found : null
+  if (!found || found.status !== 'playing' || found.answerId === undefined) return null
+  const taken = await (await shotRuns()).updateOne({ _id: found._id, status: 'playing', turn: found.turn ?? null } as Filter<ShotDoc>, { $inc: { turn: 1 } })
+  return taken.modifiedCount ? found : null
 }
 
 export async function shotAnswer(userId: ObjectId, pick: number) {
-  const doc = await playing(userId)
+  const doc = await takeTurn(userId)
   if (!doc) return null
 
   if (pick === doc.answerId) {
@@ -249,14 +251,14 @@ export async function shotAnswer(userId: ObjectId, pick: number) {
 }
 
 export async function shotSkip(userId: ObjectId) {
-  const doc = await playing(userId)
+  const doc = await takeTurn(userId)
   if (!doc) return null
   if (doc.level + 1 >= LEVELS) return { skipped: true as const, ...(await endRun(doc, doc.answerId!, 'skipped')) }
   return { skipped: true as const, streak: doc.streak, best: doc.best, ...(await harder(doc, doc.score)) }
 }
 
 export async function shotGiveUp(userId: ObjectId) {
-  const doc = await playing(userId)
+  const doc = await takeTurn(userId)
   return doc ? { gaveUp: true as const, ...(await endRun(doc, doc.answerId!, 'skipped')) } : null
 }
 
@@ -307,7 +309,8 @@ async function endDaily(doc: ShotDayDoc, won: boolean) {
   const level = Math.min(doc.level, LEVELS - 1)
   const gained = won && !doc.guest ? xpAt(level) * DAILY_XP_FACTOR : 0
   const over: ShotDayDoc = { ...doc, status: 'over', won, gained, level }
-  await (await shotDays()).updateOne({ _id: doc._id }, { $set: { status: 'over', won, gained, level, updatedAt: new Date() } })
+  const closed = await (await shotDays()).updateOne({ _id: doc._id, status: 'playing' }, { $set: { status: 'over', won, gained, level, updatedAt: new Date() } })
+  if (!closed.modifiedCount) return null
   await logRound(doc, doc.answerId, won ? 'won' : 'lost', won ? level + 1 : LEVELS, doc.day)
   if (doc.guest) return { ...dailyView(over), xp: null }
   const collection = await users()
@@ -320,8 +323,14 @@ async function endDaily(doc: ShotDayDoc, won: boolean) {
 export async function dailyShotAnswer(userId: ObjectId, pick: number) {
   const doc = await dailyPlaying(userId)
   if (!doc) return null
-  if (pick === doc.answerId) return { right: true as const, ...(await endDaily(doc, true)) }
-  if (doc.level + 1 >= LEVELS) return { right: false as const, ...(await endDaily(doc, false)) }
+  if (pick === doc.answerId) {
+    const ended = await endDaily(doc, true)
+    return ended && { right: true as const, ...ended }
+  }
+  if (doc.level + 1 >= LEVELS) {
+    const ended = await endDaily(doc, false)
+    return ended && { right: false as const, ...ended }
+  }
   const level = doc.level + 1
   await (await shotDays()).updateOne({ _id: doc._id }, { $set: { level, updatedAt: new Date() } })
   return { right: false as const, ...dailyView({ ...doc, level }) }
@@ -330,7 +339,10 @@ export async function dailyShotAnswer(userId: ObjectId, pick: number) {
 export async function dailyShotSkip(userId: ObjectId) {
   const doc = await dailyPlaying(userId)
   if (!doc) return null
-  if (doc.level + 1 >= LEVELS) return { skipped: true as const, ...(await endDaily(doc, false)) }
+  if (doc.level + 1 >= LEVELS) {
+    const ended = await endDaily(doc, false)
+    return ended && { skipped: true as const, ...ended }
+  }
   const level = doc.level + 1
   await (await shotDays()).updateOne({ _id: doc._id }, { $set: { level, updatedAt: new Date() } })
   return { skipped: true as const, ...dailyView({ ...doc, level }) }
@@ -338,7 +350,9 @@ export async function dailyShotSkip(userId: ObjectId) {
 
 export async function dailyShotGiveUp(userId: ObjectId) {
   const doc = await dailyPlaying(userId)
-  return doc ? { gaveUp: true as const, ...(await endDaily(doc, false)) } : null
+  if (!doc) return null
+  const ended = await endDaily(doc, false)
+  return ended && { gaveUp: true as const, ...ended }
 }
 
 async function seatShown(userId: ObjectId, day?: string) {

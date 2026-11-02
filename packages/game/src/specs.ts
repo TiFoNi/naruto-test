@@ -631,6 +631,12 @@ export const poolXp = (base: number, mode: unknown, pool: number) => {
   return factor === 1 ? base : Math.max(5, Math.round((base * factor) / 5) * 5)
 }
 
+export const poolXpPastCap = (base: number, mode: unknown, pool: number) => {
+  if (!LIMIT_MODES.includes(mode as ModeId) || pool <= 0) return base
+  const share = pool / POOL_XP_BASE
+  return Math.max(1, Math.round(base * (share < 1 ? share ** 1.5 : Math.min(1.5, Math.sqrt(share)))))
+}
+
 export const DAILY_XP_FACTOR = 3
 
 export const DAILY_XP_MODES: ModeId[] = ['classic', 'blind', 'image', 'ability', 'page', 'phrase', 'odd', 'shot', 'tune']
@@ -644,7 +650,7 @@ export const ZOOM_LEVELS = [5.1, 3.7, 2.6, 1.9] as const
 export const ZOOM_REVEAL = ZOOM_LEVELS.length
 export const zoomAt = (step: number) => (step >= ZOOM_LEVELS.length ? 1 : ZOOM_LEVELS[Math.max(0, step)])
 
-export const XP_CAPS = { daily: 400, endless: 300, duel: 200 } as const
+export const XP_CAPS = { daily: 800, endless: 600, duel: 400 } as const
 
 
 export type XpSource = keyof typeof XP_CAPS
