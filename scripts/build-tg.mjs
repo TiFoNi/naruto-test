@@ -46,7 +46,8 @@ const SPECIES_RULES = [
 ]
 
 const AFFILIATION_RULES = [
-  ['CCG', /\bccg\b|squad|division|sunlit garden|\bgarden\b|\btsc\b|oggai|investigator/i],
+  ['CCG', /\bccg\b|squad|division|oggai|investigator/i],
+  ['TSC', /\btsc\b/i],
   ['Клан Вашу', /washuu/i],
   ['Антейку', /anteiku/i],
   ['Древо Аогири', /aogiri tree/i],

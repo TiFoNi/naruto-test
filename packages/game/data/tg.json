@@ -79,7 +79,7 @@
    "Гуль"
   ],
   "affiliations": [
-   "CCG",
+   "TSC",
    "Древо Аогири",
    "Козёл",
    ":re",
@@ -132,6 +132,7 @@
   ],
   "affiliations": [
    "CCG",
+   "TSC",
    "Гуль-ресторан"
   ],
   "kagune": [],
@@ -179,7 +180,8 @@
    "Человек"
   ],
   "affiliations": [
-   "CCG"
+   "CCG",
+   "TSC"
   ],
   "kagune": [],
   "rating": null,
@@ -201,7 +203,8 @@
    "Человек"
   ],
   "affiliations": [
-   "CCG"
+   "CCG",
+   "TSC"
   ],
   "kagune": [],
   "rating": null,
@@ -248,7 +251,7 @@
    "Гуль"
   ],
   "affiliations": [
-   "CCG",
+   "TSC",
    "Древо Аогири",
    "Анти-Аогири",
    "Козёл",
@@ -329,6 +332,7 @@
   ],
   "affiliations": [
    "CCG",
+   "TSC",
    "Антейку",
    "Древо Аогири",
    "Анти-Аогири",
@@ -358,7 +362,8 @@
    "Человек"
   ],
   "affiliations": [
-   "CCG"
+   "CCG",
+   "TSC"
   ],
   "kagune": [],
   "rating": null,
@@ -380,7 +385,7 @@
    "Человек"
   ],
   "affiliations": [
-   "CCG",
+   "TSC",
    "Древо Аогири",
    "Канао"
   ],
@@ -429,7 +434,8 @@
    "Человек"
   ],
   "affiliations": [
-   "CCG"
+   "CCG",
+   "TSC"
   ],
   "kagune": [],
   "rating": null,
@@ -498,7 +504,8 @@
    "Квинкс"
   ],
   "affiliations": [
-   "CCG"
+   "CCG",
+   "TSC"
   ],
   "kagune": [
    "Коукаку"
@@ -620,6 +627,7 @@
   ],
   "affiliations": [
    "CCG",
+   "TSC",
    "Клан Вашу",
    "V"
   ],
@@ -668,7 +676,7 @@
    "Гуль"
   ],
   "affiliations": [
-   "CCG",
+   "TSC",
    "Древо Аогири",
    "Козёл",
    "Объединённый фронт"
@@ -695,7 +703,7 @@
    "Гуль"
   ],
   "affiliations": [
-   "CCG",
+   "TSC",
    "Древо Аогири",
    "Козёл",
    "Объединённый фронт",
@@ -774,7 +782,7 @@
    "Гуль"
   ],
   "affiliations": [
-   "CCG",
+   "TSC",
    "Антейку",
    "Козёл",
    ":re"
@@ -851,7 +859,6 @@
    "Гуль"
   ],
   "affiliations": [
-   "CCG",
    "Клан Вашу",
    "V"
   ],
@@ -902,7 +909,8 @@
    "Квинкс"
   ],
   "affiliations": [
-   "CCG"
+   "CCG",
+   "TSC"
   ],
   "kagune": [
    "Ринкаку"
@@ -981,7 +989,8 @@
    "Человек"
   ],
   "affiliations": [
-   "CCG"
+   "CCG",
+   "TSC"
   ],
   "kagune": [],
   "rating": null,
@@ -1027,7 +1036,8 @@
    "Человек"
   ],
   "affiliations": [
-   "CCG"
+   "CCG",
+   "TSC"
   ],
   "kagune": [],
   "rating": null,
@@ -1172,7 +1182,8 @@
    "Человек"
   ],
   "affiliations": [
-   "CCG"
+   "CCG",
+   "TSC"
   ],
   "kagune": [],
   "rating": null,
@@ -1194,7 +1205,8 @@
    "Человек"
   ],
   "affiliations": [
-   "CCG"
+   "CCG",
+   "TSC"
   ],
   "kagune": [],
   "rating": null,
@@ -1216,7 +1228,7 @@
    "Гуль"
   ],
   "affiliations": [
-   "CCG",
+   "TSC",
    "Антейку",
    "Древо Аогири",
    "Козёл",
@@ -1246,7 +1258,7 @@
    "Человек"
   ],
   "affiliations": [
-   "CCG",
+   "TSC",
    "Козёл",
    "Семья Цукиямы"
   ],
@@ -1298,7 +1310,7 @@
    "Гуль"
   ],
   "affiliations": [
-   "CCG",
+   "TSC",
    "Козёл",
    "Гуль-ресторан",
    "Семья Цукиямы",

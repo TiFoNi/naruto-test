@@ -1,4 +1,5 @@
 export const VALUES: Record<string, [uk: string, en: string, ru?: string]> = {
+  TSC: ['TSC', 'TSC'],
   // бравл старс
   Боец: ['Боєць', 'Damage Dealer'],
   Снайпер: ['Снайпер', 'Marksman'],
