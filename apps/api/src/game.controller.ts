@@ -14,6 +14,7 @@ import * as push from '@nanda/core/endpoints/push'
 import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as adminShots from '@nanda/core/endpoints/admin-shots'
 import * as quizzes from '@nanda/core/endpoints/quizzes'
+import * as adminActivity from '@nanda/core/endpoints/admin-activity'
 import * as adminQuizzes from '@nanda/core/endpoints/admin-quizzes'
 import * as myQuizzes from '@nanda/core/endpoints/my-quizzes'
 import * as adminZoom from '@nanda/core/endpoints/admin-zoom'
@@ -110,6 +111,11 @@ export class GameController {
   @Post('admin/image')
   adminImage(@Req() req: Request, @Res() res: Response) {
     return bridge(adminImage.POST, req, res)
+  }
+
+  @Get('admin/activity')
+  adminActivityList(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminActivity.GET, req, res)
   }
 
   @Get('admin/zoom')

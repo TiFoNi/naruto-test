@@ -26,6 +26,7 @@ export function hrefs(lang: Lang) {
     adminTitles: at('/admin/titles'),
     adminQuizzes: at('/admin/quizzes'),
     adminFrames: at('/admin/frames'),
+    adminActivity: at('/admin/activity'),
     duels: at('/duels'),
     privacy: at('/privacy'),
     terms: at('/terms'),

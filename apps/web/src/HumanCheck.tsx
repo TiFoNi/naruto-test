@@ -52,10 +52,11 @@ export default function HumanCheck() {
   }, [])
 
   useEffect(() => {
-    if (!open || !SITE_KEY) return
+    if (!open) return
     let widget: string | undefined
     let gone = false
     const failed = () => setProblem(error('human_failed'))
+    if (!SITE_KEY) return failed()
     loadTurnstile()
       .then(() => {
         if (gone || !box.current || !window.turnstile) return
