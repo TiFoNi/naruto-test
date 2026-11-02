@@ -457,7 +457,7 @@
   "gender": "Женский",
   "side": "Герой",
   "teams": [
-   "Мстители"
+   "Защитники"
   ],
   "powers": [
    "Сила",
@@ -465,7 +465,7 @@
   ],
   "species": "Асгардиец",
   "debut": "1970",
-  "debutWork": "Thor #133",
+  "debutWork": "Avengers #83",
   "debutIndex": 1970,
   "anime": true,
   "screenWork": "Thor: Ragnarok (2017)",
@@ -1185,7 +1185,7 @@
   "gender": "Женский",
   "side": "Антигерой",
   "teams": [
-   "Мстители"
+   "Тандерболты"
   ],
   "powers": [
    "Боевые навыки"
@@ -2605,9 +2605,9 @@
    "Технологии"
   ],
   "species": "Мутант",
-  "debut": "1987",
-  "debutWork": "Uncanny X-Men #213",
-  "debutIndex": 1987,
+  "debut": "1986",
+  "debutWork": "Uncanny X-Men #212",
+  "debutIndex": 1986,
   "anime": false,
   "screenWork": null,
   "screenIndex": null,
@@ -2664,7 +2664,7 @@
   ],
   "species": "Человек",
   "debut": "1964",
-  "debutWork": "Amazing Spider-Man #2",
+  "debutWork": "Amazing Spider-Man #13",
   "debutIndex": 1964,
   "anime": true,
   "screenWork": "Spider-Man: Far From Home (2019)",
@@ -3929,7 +3929,7 @@
   "gender": "Мужской",
   "side": "Антигерой",
   "teams": [
-   "Щ.И.Т."
+   "Тандерболты"
   ],
   "powers": [
    "Боевые навыки"

@@ -13,7 +13,6 @@
   ],
   "club": "Аль-Наср",
   "status": "Играет",
-  "height": 185,
   "birth": 1985,
   "answer": true,
   "thumb": 0
@@ -32,7 +31,6 @@
   ],
   "club": "Интер Майами",
   "status": "Играет",
-  "height": 169,
   "birth": 1987,
   "answer": true,
   "thumb": 1
@@ -50,7 +48,6 @@
   ],
   "club": "Манчестер Сити",
   "status": "Играет",
-  "height": 195,
   "birth": 2000,
   "answer": true,
   "thumb": 2
@@ -67,7 +64,6 @@
   ],
   "club": "Барселона",
   "status": "Играет",
-  "height": 178,
   "birth": 2007,
   "answer": true,
   "thumb": 3
@@ -85,7 +81,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 178,
   "birth": 1998,
   "answer": true,
   "thumb": 4
@@ -103,7 +98,6 @@
   ],
   "club": "Бавария",
   "status": "Играет",
-  "height": 188,
   "birth": 1993,
   "answer": true,
   "thumb": 5
@@ -121,7 +115,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 186,
   "birth": 2003,
   "answer": true,
   "thumb": 6
@@ -135,11 +128,11 @@
   "country": "Бразилия",
   "part": "Южная Америка",
   "roles": [
-   "Полузащитник"
+   "Полузащитник",
+   "Нападающий"
   ],
   "club": "Сантос",
   "status": "Играет",
-  "height": 175,
   "birth": 1992,
   "answer": true,
   "thumb": 7
@@ -157,7 +150,6 @@
   ],
   "club": "Бавария",
   "status": "Играет",
-  "height": 180,
   "birth": 2001,
   "answer": true,
   "thumb": 8
@@ -165,7 +157,7 @@
  {
   "id": 10520,
   "name": "Дэвид Бекхэм",
-  "nameEn": null,
+  "nameEn": "David Beckham",
   "nameUk": "Девід Бекхем",
   "aliases": "Бекхэм, Дэвид",
   "country": "Англия",
@@ -175,17 +167,16 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 183,
   "birth": 1975,
   "answer": true,
   "thumb": 9
  },
  {
   "id": 46896,
-  "name": "Златан",
+  "name": "Златан Ибрагимович",
   "nameEn": "Zlatan Ibrahimović",
   "nameUk": "Златан Ібрагімович",
-  "aliases": "Ибрагимович Златан",
+  "aliases": "Ибрагимович Златан, Златан",
   "country": "Швеция",
   "part": "Европа",
   "roles": [
@@ -193,7 +184,6 @@
   ],
   "club": "Пари Сен-Жермен",
   "status": "Завершил карьеру",
-  "height": 195,
   "birth": 1981,
   "answer": true,
   "thumb": 10
@@ -211,7 +201,6 @@
   ],
   "club": "Монако",
   "status": "Играет",
-  "height": 178,
   "birth": 2001,
   "answer": true,
   "thumb": 11
@@ -230,7 +219,6 @@
   ],
   "club": "Наполи",
   "status": "Завершил карьеру",
-  "height": 165,
   "birth": 1960,
   "answer": true,
   "thumb": 12
@@ -249,7 +237,6 @@
   ],
   "club": "Трабзонспор",
   "status": "Играет",
-  "height": 175,
   "birth": 1992,
   "answer": true,
   "thumb": 13
@@ -267,7 +254,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Завершил карьеру",
-  "height": 183,
   "birth": 1976,
   "answer": true,
   "thumb": 14
@@ -285,7 +271,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Завершил карьеру",
-  "height": 185,
   "birth": 1972,
   "answer": true,
   "thumb": 15
@@ -303,7 +288,6 @@
   ],
   "club": "Пари Сен-Жермен",
   "status": "Играет",
-  "height": 179,
   "birth": 1997,
   "answer": true,
   "thumb": 16
@@ -319,9 +303,8 @@
   "roles": [
    "Полузащитник"
   ],
-  "club": "Барселона",
-  "status": "Завершил карьеру",
-  "height": 182,
+  "club": "Равенна",
+  "status": "Играет",
   "birth": 1980,
   "answer": true,
   "thumb": 17
@@ -340,7 +323,6 @@
   ],
   "club": "Сантос",
   "status": "Завершил карьеру",
-  "height": 173,
   "birth": 1940,
   "answer": true,
   "thumb": 18
@@ -358,7 +340,6 @@
   ],
   "club": "Арсенал",
   "status": "Завершил карьеру",
-  "height": 188,
   "birth": 1977,
   "answer": true,
   "thumb": 19
@@ -376,7 +357,6 @@
   ],
   "club": "Ульм 1846",
   "status": "Завершил карьеру",
-  "height": 192,
   "birth": 1973,
   "answer": true,
   "thumb": 20
@@ -394,7 +374,6 @@
   ],
   "club": "Милан",
   "status": "Играет",
-  "height": 177,
   "birth": 1998,
   "answer": true,
   "thumb": 21
@@ -412,7 +391,6 @@
   ],
   "club": "Чикаго Файр",
   "status": "Играет",
-  "height": 185,
   "birth": 1988,
   "answer": true,
   "thumb": 22
@@ -430,7 +408,6 @@
   ],
   "club": "Милан",
   "status": "Играет",
-  "height": 174,
   "birth": 1985,
   "answer": true,
   "thumb": 23
@@ -448,7 +425,6 @@
   ],
   "club": "Барселона",
   "status": "Завершил карьеру",
-  "height": 194,
   "birth": 1987,
   "answer": true,
   "thumb": 24
@@ -466,7 +442,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Играет",
-  "height": 188,
   "birth": 1997,
   "answer": true,
   "thumb": 25
@@ -484,7 +459,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 188,
   "birth": 1981,
   "answer": true,
   "thumb": 26
@@ -502,7 +476,6 @@
   ],
   "club": "Бернли",
   "status": "Играет",
-  "height": 179,
   "birth": 1987,
   "answer": true,
   "thumb": 27
@@ -520,7 +493,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Завершил карьеру",
-  "height": 183,
   "birth": 1981,
   "answer": true,
   "thumb": 28
@@ -528,7 +500,7 @@
  {
   "id": 22082505,
   "name": "Марк Кукурелья",
-  "nameEn": "Marc Hagit Cucurella",
+  "nameEn": "Marc Cucurella",
   "nameUk": "Марк Кукурелья",
   "aliases": "Кукурелья, Марк",
   "country": "Испания",
@@ -538,7 +510,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 173,
   "birth": 1998,
   "answer": true,
   "thumb": 29
@@ -556,7 +527,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 176,
   "birth": 2000,
   "answer": true,
   "thumb": 30
@@ -564,7 +534,7 @@
  {
   "id": 3018091,
   "name": "Возинья",
-  "nameEn": null,
+  "nameEn": "Vozinha",
   "nameUk": "Возінья",
   "aliases": "Жозимар Жозе Эвора Диаш, Эвора Диаш, Жозимар Жозе, Жозимар Диаш",
   "country": "Кабо-Верде",
@@ -574,7 +544,6 @@
   ],
   "club": "Коло-Коло",
   "status": "Играет",
-  "height": 189,
   "birth": 1986,
   "answer": true,
   "thumb": 31
@@ -593,7 +562,6 @@
   ],
   "club": "Пари Сен-Жермен",
   "status": "Играет",
-  "height": 184,
   "birth": 2000,
   "answer": true,
   "thumb": 32
@@ -611,7 +579,6 @@
   ],
   "club": "Барселона",
   "status": "Играет",
-  "height": 183,
   "birth": 2001,
   "answer": true,
   "thumb": 33
@@ -629,7 +596,6 @@
   ],
   "club": "Арсенал",
   "status": "Играет",
-  "height": 188,
   "birth": 1999,
   "answer": true,
   "thumb": 34
@@ -647,7 +613,6 @@
   ],
   "club": "Арсенал",
   "status": "Играет",
-  "height": 178,
   "birth": 2001,
   "answer": true,
   "thumb": 35
@@ -665,7 +630,6 @@
   ],
   "club": "Эвертон",
   "status": "Завершил карьеру",
-  "height": 175,
   "birth": 1982,
   "answer": true,
   "thumb": 36
@@ -684,7 +648,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 176,
   "birth": 1985,
   "answer": true,
   "thumb": 37
@@ -703,7 +666,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Завершил карьеру",
-  "height": 178,
   "birth": 1996,
   "answer": true,
   "thumb": 38
@@ -717,11 +679,11 @@
   "country": "Франция",
   "part": "Европа",
   "roles": [
-   "Нападающий"
+   "Нападающий",
+   "Полузащитник"
   ],
   "club": "Орландо Сити",
   "status": "Играет",
-  "height": 176,
   "birth": 1991,
   "answer": true,
   "thumb": 39
@@ -739,7 +701,6 @@
   ],
   "club": "Арсенал",
   "status": "Играет",
-  "height": 189,
   "birth": 1998,
   "answer": true,
   "thumb": 40
@@ -757,7 +718,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Играет",
-  "height": 190,
   "birth": 1999,
   "answer": true,
   "thumb": 41
@@ -776,7 +736,6 @@
   ],
   "club": "Атлетико Насьональ",
   "status": "Играет",
-  "height": 180,
   "birth": 1991,
   "answer": true,
   "thumb": 42
@@ -784,7 +743,7 @@
  {
   "id": 483309,
   "name": "Серхио Рамос",
-  "nameEn": null,
+  "nameEn": "Sergio Ramos",
   "nameUk": "Серхіо Рамос",
   "aliases": "Серхио Рамос Гарсия, Рамос, Серхио, Рамос Гарсия, Серхио",
   "country": "Испания",
@@ -792,9 +751,8 @@
   "roles": [
    "Защитник"
   ],
-  "club": "Реал Мадрид",
-  "status": "Завершил карьеру",
-  "height": 184,
+  "club": "Без клуба",
+  "status": "Играет",
   "birth": 1986,
   "answer": true,
   "thumb": 43
@@ -813,7 +771,6 @@
   ],
   "club": "Атлетик Бильбао",
   "status": "Завершил карьеру",
-  "height": 182,
   "birth": 1982,
   "answer": true,
   "thumb": 44
@@ -831,17 +788,16 @@
   ],
   "club": "Челси",
   "status": "Играет",
-  "height": 195,
   "birth": 1992,
   "answer": true,
   "thumb": 45
  },
  {
   "id": 96105248,
-  "name": "Энцо Херемиас Фернандес",
+  "name": "Энцо Фернандес",
   "nameEn": "Enzo Fernández",
   "nameUk": "Енцо Фернандес",
-  "aliases": "Фернандес, Энцо Херемиас",
+  "aliases": "Фернандес, Энцо Херемиас, Энцо Херемиас Фернандес",
   "country": "Аргентина",
   "part": "Южная Америка",
   "roles": [
@@ -849,7 +805,6 @@
   ],
   "club": "Манчестер Сити",
   "status": "Играет",
-  "height": 178,
   "birth": 2001,
   "answer": true,
   "thumb": 46
@@ -867,7 +822,6 @@
   ],
   "club": "Лос-Анджелес ФК",
   "status": "Играет",
-  "height": 183,
   "birth": 1992,
   "answer": true,
   "thumb": 47
@@ -885,7 +839,6 @@
   ],
   "club": "Пари Сен-Жермен",
   "status": "Играет",
-  "height": 180,
   "birth": 1998,
   "answer": true,
   "thumb": 48
@@ -904,7 +857,6 @@
   ],
   "club": "Барселона",
   "status": "Завершил карьеру",
-  "height": 180,
   "birth": 1970,
   "answer": true,
   "thumb": 49
@@ -922,7 +874,6 @@
   ],
   "club": "Наполи",
   "status": "Играет",
-  "height": 181,
   "birth": 1991,
   "answer": true,
   "thumb": 50
@@ -941,7 +892,6 @@
   ],
   "club": "Майнц 05",
   "status": "Завершил карьеру",
-  "height": 191,
   "birth": 1967,
   "answer": true,
   "thumb": 51
@@ -959,7 +909,6 @@
   ],
   "club": "Реал Сарагоса",
   "status": "Завершил карьеру",
-  "height": 184,
   "birth": 1983,
   "answer": true,
   "thumb": 52
@@ -977,7 +926,6 @@
   ],
   "club": "Атлетико Мадрид",
   "status": "Играет",
-  "height": 169,
   "birth": 2000,
   "answer": true,
   "thumb": 53
@@ -995,8 +943,7 @@
   ],
   "club": "Севилья",
   "status": "Завершил карьеру",
-  "height": 180,
-  "birth": 1981,
+  "birth": 1980,
   "answer": true,
   "thumb": 54
  },
@@ -1010,9 +957,8 @@
   "roles": [
    "Нападающий"
   ],
-  "club": "Реал Мадрид",
-  "status": "Завершил карьеру",
-  "height": 185,
+  "club": "Без клуба",
+  "status": "Играет",
   "birth": 1987,
   "answer": true,
   "thumb": 55
@@ -1026,11 +972,11 @@
   "country": "Франция",
   "part": "Европа",
   "roles": [
+   "Полузащитник",
    "Нападающий"
   ],
   "club": "Манчестер Сити",
   "status": "Играет",
-  "height": 176,
   "birth": 2003,
   "answer": true,
   "thumb": 56
@@ -1048,7 +994,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 170,
   "birth": 1999,
   "answer": true,
   "thumb": 57
@@ -1066,7 +1011,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Играет",
-  "height": 176,
   "birth": 1998,
   "answer": true,
   "thumb": 58
@@ -1084,7 +1028,6 @@
   ],
   "club": "Лацио",
   "status": "Завершил карьеру",
-  "height": 177,
   "birth": 1970,
   "answer": true,
   "thumb": 59
@@ -1100,9 +1043,8 @@
   "roles": [
    "Полузащитник"
   ],
-  "club": "Манчестер Юнайтед",
-  "status": "Завершил карьеру",
-  "height": 191,
+  "club": "Без клуба",
+  "status": "Играет",
   "birth": 1993,
   "answer": true,
   "thumb": 60
@@ -1120,7 +1062,6 @@
   ],
   "club": "Фенербахче",
   "status": "Играет",
-  "height": 171,
   "birth": 1991,
   "answer": true,
   "thumb": 61
@@ -1136,9 +1077,8 @@
   "roles": [
    "Полузащитник"
   ],
-  "club": "Манчестер Сити",
-  "status": "Завершил карьеру",
-  "height": 172,
+  "club": "Без клуба",
+  "status": "Играет",
   "birth": 1994,
   "answer": true,
   "thumb": 62
@@ -1156,7 +1096,6 @@
   ],
   "club": "Аль-Наср",
   "status": "Играет",
-  "height": 174,
   "birth": 1992,
   "answer": true,
   "thumb": 63
@@ -1174,7 +1113,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Играет",
-  "height": 195,
   "birth": 1991,
   "answer": true,
   "thumb": 64
@@ -1193,7 +1131,6 @@
   ],
   "club": "Пари Сен-Жермен",
   "status": "Играет",
-  "height": 183,
   "birth": 2001,
   "answer": true,
   "thumb": 65
@@ -1211,7 +1148,6 @@
   ],
   "club": "Реал Сосьедад",
   "status": "Играет",
-  "height": 181,
   "birth": 1997,
   "answer": true,
   "thumb": 66
@@ -1229,7 +1165,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Играет",
-  "height": 179,
   "birth": 1994,
   "answer": true,
   "thumb": 67
@@ -1247,7 +1182,6 @@
   ],
   "club": "Ювентус",
   "status": "Завершил карьеру",
-  "height": 170,
   "birth": 1968,
   "answer": true,
   "thumb": 68
@@ -1265,7 +1199,6 @@
   ],
   "club": "Манчестер Сити",
   "status": "Играет",
-  "height": 196,
   "birth": 1999,
   "answer": true,
   "thumb": 69
@@ -1283,7 +1216,6 @@
   ],
   "club": "Бока Хуниорс",
   "status": "Играет",
-  "height": 184,
   "birth": 1994,
   "answer": true,
   "thumb": 70
@@ -1301,7 +1233,6 @@
   ],
   "club": "Арсенал",
   "status": "Играет",
-  "height": 178,
   "birth": 1998,
   "answer": true,
   "thumb": 71
@@ -1320,7 +1251,6 @@
   ],
   "club": "Атлетик Бильбао",
   "status": "Играет",
-  "height": 181,
   "birth": 2002,
   "answer": true,
   "thumb": 72
@@ -1338,7 +1268,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 200,
   "birth": 1992,
   "answer": true,
   "thumb": 73
@@ -1356,7 +1285,6 @@
   ],
   "club": "Милан",
   "status": "Завершил карьеру",
-  "height": 186,
   "birth": 1982,
   "answer": true,
   "thumb": 74
@@ -1374,7 +1302,6 @@
   ],
   "club": "Челси",
   "status": "Завершил карьеру",
-  "height": 184,
   "birth": 1978,
   "answer": true,
   "thumb": 75
@@ -1392,7 +1319,6 @@
   ],
   "club": "Интер Майами",
   "status": "Играет",
-  "height": 188,
   "birth": 1992,
   "answer": true,
   "thumb": 76
@@ -1410,7 +1336,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 178,
   "birth": 1971,
   "answer": true,
   "thumb": 77
@@ -1428,7 +1353,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Завершил карьеру",
-  "height": 185,
   "birth": 1989,
   "answer": true,
   "thumb": 78
@@ -1446,7 +1370,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Завершил карьеру",
-  "height": 172,
   "birth": 1979,
   "answer": true,
   "thumb": 79
@@ -1464,7 +1387,6 @@
   ],
   "club": "Ювентус",
   "status": "Завершил карьеру",
-  "height": 193,
   "birth": 1978,
   "answer": true,
   "thumb": 80
@@ -1482,7 +1404,6 @@
   ],
   "club": "Депортиво Ла-Корунья",
   "status": "Завершил карьеру",
-  "height": 182,
   "birth": 1978,
   "answer": true,
   "thumb": 81
@@ -1500,7 +1421,6 @@
   ],
   "club": "Челси",
   "status": "Играет",
-  "height": 185,
   "birth": 2002,
   "answer": true,
   "thumb": 82
@@ -1518,7 +1438,6 @@
   ],
   "club": "Штутгарт",
   "status": "Играет",
-  "height": 178,
   "birth": 1996,
   "answer": true,
   "thumb": 83
@@ -1536,17 +1455,16 @@
   ],
   "club": "Бавария",
   "status": "Играет",
-  "height": 193,
   "birth": 1986,
   "answer": true,
   "thumb": 84
  },
  {
   "id": 28861547,
-  "name": "Рафаэль Диас Беллоли",
+  "name": "Рафинья",
   "nameEn": "Raphinha",
-  "nameUk": "Рафаель Діас Беллолі",
-  "aliases": "Беллоли, Рафаэль Диас",
+  "nameUk": "Рафінья",
+  "aliases": "Беллоли, Рафаэль Диас, Рафаэль Диас Беллоли",
   "country": "Бразилия",
   "part": "Южная Америка",
   "roles": [
@@ -1554,7 +1472,6 @@
   ],
   "club": "Барселона",
   "status": "Играет",
-  "height": 177,
   "birth": 1996,
   "answer": true,
   "thumb": 85
@@ -1572,7 +1489,6 @@
   ],
   "club": "Шальке 04",
   "status": "Играет",
-  "height": 193,
   "birth": 1986,
   "answer": true,
   "thumb": 86
@@ -1590,7 +1506,6 @@
   ],
   "club": "Челси",
   "status": "Играет",
-  "height": 185,
   "birth": 1990,
   "answer": true,
   "thumb": 87
@@ -1609,7 +1524,6 @@
   ],
   "club": "Ванкувер Уайткэпс",
   "status": "Играет",
-  "height": 185,
   "birth": 1989,
   "answer": true,
   "thumb": 88
@@ -1627,7 +1541,6 @@
   ],
   "club": "Вулверхэмптон Уондерерс",
   "status": "Играет",
-  "height": 191,
   "birth": 1991,
   "answer": true,
   "thumb": 89
@@ -1645,7 +1558,6 @@
   ],
   "club": "Атлетик Бильбао",
   "status": "Завершил карьеру",
-  "height": 172,
   "birth": 1961,
   "answer": true,
   "thumb": 90
@@ -1663,7 +1575,6 @@
   ],
   "club": "Америка",
   "status": "Завершил карьеру",
-  "height": 183,
   "birth": 1985,
   "answer": true,
   "thumb": 91
@@ -1681,7 +1592,6 @@
   ],
   "club": "Арсенал",
   "status": "Играет",
-  "height": 182,
   "birth": 2002,
   "answer": true,
   "thumb": 92
@@ -1698,7 +1608,6 @@
   ],
   "club": "Эвертон",
   "status": "Играет",
-  "height": 185,
   "birth": 1994,
   "answer": true,
   "thumb": 93
@@ -1715,17 +1624,16 @@
   ],
   "club": "Реал Сосьедад Б",
   "status": "Завершил карьеру",
-  "height": 180,
   "birth": 1971,
   "answer": true,
   "thumb": 94
  },
  {
   "id": 44737396,
-  "name": "Марк Гэи",
+  "name": "Марк Геи",
   "nameEn": "Marc Guéhi",
   "nameUk": "Марк Гехі",
-  "aliases": "Гэи, Марк",
+  "aliases": "Гэи, Марк, Марк Гэи",
   "country": "Англия",
   "part": "Европа",
   "roles": [
@@ -1733,7 +1641,6 @@
   ],
   "club": "Манчестер Сити",
   "status": "Играет",
-  "height": 182,
   "birth": 2000,
   "answer": true,
   "thumb": 95
@@ -1752,7 +1659,6 @@
   ],
   "club": "Аякс",
   "status": "Завершил карьеру",
-  "height": 178,
   "birth": 1947,
   "answer": true,
   "thumb": 96
@@ -1770,7 +1676,6 @@
   ],
   "club": "Манчестер Сити",
   "status": "Завершил карьеру",
-  "height": 193,
   "birth": 1986,
   "answer": true,
   "thumb": 97
@@ -1778,7 +1683,7 @@
  {
   "id": 30148558,
   "name": "Джейдон Санчо",
-  "nameEn": "Sancho Panza",
+  "nameEn": "Jadon Sancho",
   "nameUk": "Джейдон Санчо",
   "aliases": "Санчо, Джейдон",
   "country": "Англия",
@@ -1786,9 +1691,8 @@
   "roles": [
    "Полузащитник"
   ],
-  "club": "Манчестер Юнайтед",
-  "status": "Завершил карьеру",
-  "height": 180,
+  "club": "Без клуба",
+  "status": "Играет",
   "birth": 2000,
   "answer": true,
   "thumb": 98
@@ -1806,7 +1710,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 173,
   "birth": 1994,
   "answer": true,
   "thumb": 99
@@ -1824,7 +1727,6 @@
   ],
   "club": "Эвертон",
   "status": "Играет",
-  "height": 180,
   "birth": 1995,
   "answer": true,
   "thumb": 100
@@ -1842,17 +1744,16 @@
   ],
   "club": "Ливерпуль",
   "status": "Завершил карьеру",
-  "height": 185,
   "birth": 1980,
   "answer": true,
   "thumb": 101
  },
  {
   "id": 118473161,
-  "name": "Пау Кубарси Паредес",
+  "name": "Пау Кубарси",
   "nameEn": "Pau Cubarsí",
   "nameUk": "Пау Кубарсі",
-  "aliases": "Кубарси, Пау, Пау Кубарси, Pau Cubarsí Paredes",
+  "aliases": "Кубарси, Пау, Пау Кубарси, Pau Cubarsí Paredes, Пау Кубарси Паредес",
   "country": "Испания",
   "part": "Европа",
   "roles": [
@@ -1860,7 +1761,6 @@
   ],
   "club": "Барселона",
   "status": "Играет",
-  "height": 184,
   "birth": 2007,
   "answer": true,
   "thumb": 102
@@ -1878,7 +1778,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Играет",
-  "height": 182,
   "birth": 2002,
   "answer": true,
   "thumb": 103
@@ -1896,7 +1795,6 @@
   ],
   "club": "Фенербахче",
   "status": "Играет",
-  "height": 181,
   "birth": 2001,
   "answer": true,
   "thumb": 104
@@ -1914,7 +1812,6 @@
   ],
   "club": "Челси",
   "status": "Играет",
-  "height": 182,
   "birth": 1990,
   "answer": true,
   "thumb": 105
@@ -1932,7 +1829,6 @@
   ],
   "club": "Челси",
   "status": "Завершил карьеру",
-  "height": 175,
   "birth": 1991,
   "answer": true,
   "thumb": 106
@@ -1950,7 +1846,6 @@
   ],
   "club": "Сандерленд",
   "status": "Играет",
-  "height": 185,
   "birth": 1992,
   "answer": true,
   "thumb": 107
@@ -1968,7 +1863,6 @@
   ],
   "club": "Челси",
   "status": "Завершил карьеру",
-  "height": 189,
   "birth": 1978,
   "answer": true,
   "thumb": 108
@@ -1986,7 +1880,6 @@
   ],
   "club": "Арсенал",
   "status": "Играет",
-  "height": 178,
   "birth": 1998,
   "answer": true,
   "thumb": 109
@@ -2005,7 +1898,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Завершил карьеру",
-  "height": 175,
   "birth": 1986,
   "answer": true,
   "thumb": 110
@@ -2023,7 +1915,6 @@
   ],
   "club": "Арсенал",
   "status": "Завершил карьеру",
-  "height": 179,
   "birth": 1987,
   "answer": true,
   "thumb": 111
@@ -2040,7 +1931,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Играет",
-  "height": 184,
   "birth": 1999,
   "answer": true,
   "thumb": 112
@@ -2058,7 +1948,6 @@
   ],
   "club": "Сток Сити",
   "status": "Завершил карьеру",
-  "height": 201,
   "birth": 1981,
   "answer": true,
   "thumb": 113
@@ -2076,7 +1965,6 @@
   ],
   "club": "Арсенал",
   "status": "Завершил карьеру",
-  "height": 175,
   "birth": 1963,
   "answer": true,
   "thumb": 114
@@ -2094,7 +1982,6 @@
   ],
   "club": "Атлетико Мадрид",
   "status": "Завершил карьеру",
-  "height": 186,
   "birth": 1984,
   "answer": true,
   "thumb": 115
@@ -2112,7 +1999,6 @@
   ],
   "club": "Арсенал",
   "status": "Играет",
-  "height": 188,
   "birth": 1996,
   "answer": true,
   "thumb": 116
@@ -2130,7 +2016,6 @@
   ],
   "club": "Росарио Сентраль",
   "status": "Играет",
-  "height": 180,
   "birth": 1988,
   "answer": true,
   "thumb": 117
@@ -2148,7 +2033,6 @@
   ],
   "club": "Барселона",
   "status": "Играет",
-  "height": 182,
   "birth": 1994,
   "answer": true,
   "thumb": 118
@@ -2161,11 +2045,11 @@
   "country": "Португалия",
   "part": "Европа",
   "roles": [
-   "Нападающий"
+   "Нападающий",
+   "Полузащитник"
   ],
   "club": "Аль-Наср",
   "status": "Играет",
-  "height": 180,
   "birth": 1999,
   "answer": true,
   "thumb": 119
@@ -2182,7 +2066,6 @@
   ],
   "club": "Лилль",
   "status": "Играет",
-  "height": 193,
   "birth": 1986,
   "answer": true,
   "thumb": 120
@@ -2200,7 +2083,6 @@
   ],
   "club": "Лацио",
   "status": "Завершил карьеру",
-  "height": 184,
   "birth": 1978,
   "answer": true,
   "thumb": 121
@@ -2218,7 +2100,6 @@
   ],
   "club": "Галатасарай",
   "status": "Играет",
-  "height": 186,
   "birth": 1998,
   "answer": true,
   "thumb": 122
@@ -2236,7 +2117,6 @@
   ],
   "club": "Милан",
   "status": "Завершил карьеру",
-  "height": 186,
   "birth": 1968,
   "answer": true,
   "thumb": 123
@@ -2254,7 +2134,6 @@
   ],
   "club": "Бавария",
   "status": "Играет",
-  "height": 184,
   "birth": 2003,
   "answer": true,
   "thumb": 124
@@ -2272,7 +2151,6 @@
   ],
   "club": "Арсенал",
   "status": "Играет",
-  "height": 184,
   "birth": 1995,
   "answer": true,
   "thumb": 125
@@ -2288,9 +2166,8 @@
   "roles": [
    "Полузащитник"
   ],
-  "club": "Тоттенхэм Хотспур",
-  "status": "Завершил карьеру",
-  "height": 182,
+  "club": "Без клуба",
+  "status": "Играет",
   "birth": 1992,
   "answer": true,
   "thumb": 126
@@ -2308,7 +2185,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Играет",
-  "height": 176,
   "birth": 1997,
   "answer": true,
   "thumb": 127
@@ -2327,7 +2203,6 @@
   ],
   "club": "Интер",
   "status": "Играет",
-  "height": 188,
   "birth": 1994,
   "answer": true,
   "thumb": 128
@@ -2344,9 +2219,8 @@
    "Полузащитник",
    "Нападающий"
   ],
-  "club": "Олимпик",
-  "status": "Завершил карьеру",
-  "height": 178,
+  "club": "Коринтианс",
+  "status": "Играет",
   "birth": 1994,
   "answer": true,
   "thumb": 129
@@ -2354,7 +2228,7 @@
  {
   "id": 65950315,
   "name": "Беньямин Шешко",
-  "nameEn": null,
+  "nameEn": "Benjamin Šeško",
   "nameUk": "Беньямін Шешко",
   "aliases": "Шешко, Беньямин",
   "country": "Словения",
@@ -2364,7 +2238,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Играет",
-  "height": 195,
   "birth": 2003,
   "answer": true,
   "thumb": 130
@@ -2382,7 +2255,6 @@
   ],
   "club": "Бенфика",
   "status": "Завершил карьеру",
-  "height": 178,
   "birth": 1985,
   "answer": true,
   "thumb": 131
@@ -2400,7 +2272,6 @@
   ],
   "club": "Пари Сен-Жермен",
   "status": "Играет",
-  "height": 181,
   "birth": 2005,
   "answer": true,
   "thumb": 132
@@ -2418,7 +2289,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Завершил карьеру",
-  "height": 168,
   "birth": 1973,
   "answer": true,
   "thumb": 133
@@ -2436,7 +2306,6 @@
   ],
   "club": "Наполи",
   "status": "Играет",
-  "height": 190,
   "birth": 1996,
   "answer": true,
   "thumb": 134
@@ -2452,19 +2321,18 @@
   "roles": [
    "Полузащитник"
   ],
-  "club": "Тоттенхэм Хотспур",
-  "status": "Завершил карьеру",
-  "height": 188,
+  "club": "Без клуба",
+  "status": "Играет",
   "birth": 1996,
   "answer": true,
   "thumb": 135
  },
  {
   "id": 28531111,
-  "name": "Луис Фернандо Диас",
+  "name": "Луис Диас",
   "nameEn": "Luis Díaz",
-  "nameUk": "Луїс Діас (колумбійський футболіст)",
-  "aliases": "Диас, Луис Фернандо",
+  "nameUk": "Луїс Діас",
+  "aliases": "Диас, Луис Фернандо, Луис Фернандо Диас",
   "country": "Колумбия",
   "part": "Южная Америка",
   "roles": [
@@ -2472,7 +2340,6 @@
   ],
   "club": "Бавария",
   "status": "Играет",
-  "height": 178,
   "birth": 1997,
   "answer": true,
   "thumb": 136
@@ -2491,7 +2358,6 @@
   ],
   "club": "Арсенал",
   "status": "Играет",
-  "height": 193,
   "birth": 1999,
   "answer": true,
   "thumb": 137
@@ -2509,7 +2375,6 @@
   ],
   "club": "Уиган Атлетик",
   "status": "Завершил карьеру",
-  "height": 178,
   "birth": 1973,
   "answer": true,
   "thumb": 138
@@ -2527,17 +2392,16 @@
   ],
   "club": "Ювентус",
   "status": "Завершил карьеру",
-  "height": 192,
   "birth": 1978,
   "answer": true,
   "thumb": 139
  },
  {
   "id": 165125,
-  "name": "Хавьер Эрнандес Балькасар",
+  "name": "Хавьер Эрнандес",
   "nameEn": "Javier Hernández",
-  "nameUk": "Хав'єр Ернандес Балькасар",
-  "aliases": "Чичарито, Эрнандес Балькасар, Хавьер, Хавьер Эрнандес",
+  "nameUk": "Хав'єр Ернандес",
+  "aliases": "Чичарито, Эрнандес Балькасар, Хавьер, Хавьер Эрнандес, Хавьер Эрнандес Балькасар",
   "country": "Мексика",
   "part": "Северная Америка",
   "roles": [
@@ -2545,7 +2409,6 @@
   ],
   "club": "Атлетико Даллас",
   "status": "Играет",
-  "height": 175,
   "birth": 1988,
   "answer": true,
   "thumb": 140
@@ -2563,7 +2426,6 @@
   ],
   "club": "Зволле",
   "status": "Завершил карьеру",
-  "height": 185,
   "birth": 1978,
   "answer": true,
   "thumb": 141
@@ -2581,7 +2443,6 @@
   ],
   "club": "Арсенал",
   "status": "Завершил карьеру",
-  "height": 180,
   "birth": 1988,
   "answer": true,
   "thumb": 142
@@ -2599,7 +2460,6 @@
   ],
   "club": "Интер",
   "status": "Играет",
-  "height": 174,
   "birth": 1997,
   "answer": true,
   "thumb": 143
@@ -2617,7 +2477,6 @@
   ],
   "club": "Манчестер Сити",
   "status": "Играет",
-  "height": 171,
   "birth": 2000,
   "answer": true,
   "thumb": 144
@@ -2635,7 +2494,6 @@
   ],
   "club": "Интер Майами",
   "status": "Играет",
-  "height": 180,
   "birth": 1994,
   "answer": true,
   "thumb": 145
@@ -2643,7 +2501,7 @@
  {
   "id": 108159340,
   "name": "Арда Гюлер",
-  "nameEn": "Αrda Güler",
+  "nameEn": "Arda Güler",
   "nameUk": "Арда Гюлер",
   "aliases": "Гюлер, Арда",
   "country": "Турция",
@@ -2653,17 +2511,16 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 176,
   "birth": 2005,
   "answer": true,
   "thumb": 146
  },
  {
   "id": 577384,
-  "name": "Ханс-Дитер Флик",
+  "name": "Ханси Флик",
   "nameEn": "Hansi Flick",
-  "nameUk": "Ганс-Дітер Флік",
-  "aliases": "Флик, Ханс-Дитер",
+  "nameUk": "Гансі Флік",
+  "aliases": "Флик, Ханс-Дитер, Ханс-Дитер Флик",
   "country": "Германия",
   "part": "Европа",
   "roles": [
@@ -2671,7 +2528,6 @@
   ],
   "club": "Бавария",
   "status": "Завершил карьеру",
-  "height": 177,
   "birth": 1965,
   "answer": true,
   "thumb": 147
@@ -2689,7 +2545,6 @@
   ],
   "club": "Барселона",
   "status": "Играет",
-  "height": 176,
   "birth": 1998,
   "answer": true,
   "thumb": 148
@@ -2707,7 +2562,6 @@
   ],
   "club": "Динамо Москва",
   "status": "Завершил карьеру",
-  "height": 189,
   "birth": 1929,
   "answer": true,
   "thumb": 149
@@ -2724,7 +2578,6 @@
   ],
   "club": "Тоттенхэм Хотспур",
   "status": "Играет",
-  "height": 175,
   "birth": 2001,
   "answer": true,
   "thumb": 150
@@ -2742,7 +2595,6 @@
   ],
   "club": "Селтик",
   "status": "Играет",
-  "height": 180,
   "birth": 1993,
   "answer": true,
   "thumb": 151
@@ -2760,7 +2612,6 @@
   ],
   "club": "Лестер Сити",
   "status": "Завершил карьеру",
-  "height": 177,
   "birth": 1960,
   "answer": true,
   "thumb": 152
@@ -2778,7 +2629,6 @@
   ],
   "club": "Ньюкасл Юнайтед",
   "status": "Завершил карьеру",
-  "height": 183,
   "birth": 1970,
   "answer": true,
   "thumb": 153
@@ -2796,7 +2646,6 @@
   ],
   "club": "Дирия",
   "status": "Играет",
-  "height": 187,
   "birth": 1999,
   "answer": true,
   "thumb": 154
@@ -2814,7 +2663,6 @@
   ],
   "club": "Бавария",
   "status": "Играет",
-  "height": 183,
   "birth": 2000,
   "answer": true,
   "thumb": 155
@@ -2832,7 +2680,6 @@
   ],
   "club": "Атлетико Мадрид",
   "status": "Играет",
-  "height": 194,
   "birth": 1995,
   "answer": true,
   "thumb": 156
@@ -2851,7 +2698,6 @@
   ],
   "club": "Лос-Анджелес Гэлакси",
   "status": "Завершил карьеру",
-  "height": 173,
   "birth": 1982,
   "answer": true,
   "thumb": 157
@@ -2869,7 +2715,6 @@
   ],
   "club": "Аль-Хиляль",
   "status": "Играет",
-  "height": 195,
   "birth": 1991,
   "answer": true,
   "thumb": 158
@@ -2887,7 +2732,6 @@
   ],
   "club": "Депортиво Ла-Корунья",
   "status": "Играет",
-  "height": 187,
   "birth": 1989,
   "answer": true,
   "thumb": 159
@@ -2905,7 +2749,6 @@
   ],
   "club": "Барселона",
   "status": "Завершил карьеру",
-  "height": 180,
   "birth": 1981,
   "answer": true,
   "thumb": 160
@@ -2923,7 +2766,6 @@
   ],
   "club": "Парма",
   "status": "Завершил карьеру",
-  "height": 176,
   "birth": 1973,
   "answer": true,
   "thumb": 161
@@ -2941,7 +2783,6 @@
   ],
   "club": "Милан",
   "status": "Завершил карьеру",
-  "height": 182,
   "birth": 1966,
   "answer": true,
   "thumb": 162
@@ -2959,7 +2800,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Играет",
-  "height": 176,
   "birth": 2003,
   "answer": true,
   "thumb": 163
@@ -2977,7 +2817,6 @@
   ],
   "club": "ПСВ",
   "status": "Завершил карьеру",
-  "height": 168,
   "birth": 1966,
   "answer": true,
   "thumb": 164
@@ -2995,7 +2834,6 @@
   ],
   "club": "Атлетик Бильбао",
   "status": "Играет",
-  "height": 192,
   "birth": 1997,
   "answer": true,
   "thumb": 165
@@ -3013,7 +2851,6 @@
   ],
   "club": "Арсенал",
   "status": "Играет",
-  "height": 192,
   "birth": 2001,
   "answer": true,
   "thumb": 166
@@ -3031,7 +2868,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Играет",
-  "height": 182,
   "birth": 2000,
   "answer": true,
   "thumb": 167
@@ -3049,7 +2885,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 176,
   "birth": 1946,
   "answer": true,
   "thumb": 168
@@ -3067,7 +2902,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 175,
   "birth": 1998,
   "answer": true,
   "thumb": 169
@@ -3085,7 +2919,6 @@
   ],
   "club": "Атлетик Бильбао",
   "status": "Играет",
-  "height": 191,
   "birth": 1994,
   "answer": true,
   "thumb": 170
@@ -3102,7 +2935,6 @@
   ],
   "club": "Тоттенхэм Хотспур",
   "status": "Играет",
-  "height": 178,
   "birth": 1994,
   "answer": true,
   "thumb": 171
@@ -3120,7 +2952,6 @@
   ],
   "club": "Манчестер Сити",
   "status": "Играет",
-  "height": 173,
   "birth": 2002,
   "answer": true,
   "thumb": 172
@@ -3138,7 +2969,6 @@
   ],
   "club": "Арсенал",
   "status": "Завершил карьеру",
-  "height": 183,
   "birth": 1983,
   "answer": true,
   "thumb": 173
@@ -3146,7 +2976,7 @@
  {
   "id": 165772,
   "name": "Гарри Магуайр",
-  "nameEn": null,
+  "nameEn": "Harry Maguire",
   "nameUk": "Гаррі Магвайр",
   "aliases": "Магуайр, Гарри, Джейкоб Гарри Магуайр",
   "country": "Англия",
@@ -3156,7 +2986,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Играет",
-  "height": 194,
   "birth": 1993,
   "answer": true,
   "thumb": 174
@@ -3174,7 +3003,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Завершил карьеру",
-  "height": 173,
   "birth": 1951,
   "answer": true,
   "thumb": 175
@@ -3192,7 +3020,6 @@
   ],
   "club": "Манчестер Сити",
   "status": "Завершил карьеру",
-  "height": 170,
   "birth": 1988,
   "answer": true,
   "thumb": 176
@@ -3211,7 +3038,6 @@
   ],
   "club": "Зенит",
   "status": "Завершил карьеру",
-  "height": 172,
   "birth": 1981,
   "answer": true,
   "thumb": 177
@@ -3229,7 +3055,6 @@
   ],
   "club": "Челси",
   "status": "Завершил карьеру",
-  "height": 180,
   "birth": 1972,
   "answer": true,
   "thumb": 178
@@ -3247,7 +3072,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Играет",
-  "height": 193,
   "birth": 1992,
   "answer": true,
   "thumb": 179
@@ -3265,7 +3089,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 183,
   "birth": 1998,
   "answer": true,
   "thumb": 180
@@ -3281,9 +3104,8 @@
   "roles": [
    "Нападающий"
   ],
-  "club": "Арсенал",
+  "club": "Бешикташ",
   "status": "Играет",
-  "height": 172,
   "birth": 1994,
   "answer": true,
   "thumb": 181
@@ -3300,17 +3122,16 @@
   ],
   "club": "Атлетико Мадрид",
   "status": "Играет",
-  "height": 174,
   "birth": 1997,
   "answer": true,
   "thumb": 182
  },
  {
   "id": 166317,
-  "name": "Паоло Дибала",
+  "name": "Пауло Дибала",
   "nameEn": "Paulo Dybala",
   "nameUk": "Пауло Дибала",
-  "aliases": "Дибала, Паоло",
+  "aliases": "Дибала, Паоло, Паоло Дибала",
   "country": "Аргентина",
   "part": "Южная Америка",
   "roles": [
@@ -3319,7 +3140,6 @@
   ],
   "club": "Рома",
   "status": "Играет",
-  "height": 177,
   "birth": 1993,
   "answer": true,
   "thumb": 183
@@ -3337,7 +3157,6 @@
   ],
   "club": "Милан",
   "status": "Завершил карьеру",
-  "height": 176,
   "birth": 1960,
   "answer": true,
   "thumb": 184
@@ -3354,7 +3173,6 @@
   ],
   "club": "Барселона",
   "status": "Играет",
-  "height": 177,
   "birth": 1997,
   "answer": true,
   "thumb": 185
@@ -3370,9 +3188,8 @@
   "roles": [
    "Полузащитник"
   ],
-  "club": "Манчестер Сити",
-  "status": "Завершил карьеру",
-  "height": 181,
+  "club": "Аль-Шамаль",
+  "status": "Играет",
   "birth": 1991,
   "answer": true,
   "thumb": 186
@@ -3390,7 +3207,6 @@
   ],
   "club": "Ювентус",
   "status": "Завершил карьеру",
-  "height": 174,
   "birth": 1967,
   "answer": true,
   "thumb": 187
@@ -3409,7 +3225,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Играет",
-  "height": 193,
   "birth": 1999,
   "answer": true,
   "thumb": 188
@@ -3427,7 +3242,6 @@
   ],
   "club": "Спортинг",
   "status": "Завершил карьеру",
-  "height": 180,
   "birth": 1972,
   "answer": true,
   "thumb": 189
@@ -3445,7 +3259,6 @@
   ],
   "club": "Барселона",
   "status": "Завершил карьеру",
-  "height": 171,
   "birth": 1984,
   "answer": true,
   "thumb": 190
@@ -3462,7 +3275,6 @@
   ],
   "club": "Тоттенхэм Хотспур",
   "status": "Играет",
-  "height": 183,
   "birth": 1999,
   "answer": true,
   "thumb": 191
@@ -3480,7 +3292,6 @@
   ],
   "club": "Тоттенхэм Хотспур",
   "status": "Завершил карьеру",
-  "height": 175,
   "birth": 1980,
   "answer": true,
   "thumb": 192
@@ -3488,7 +3299,7 @@
  {
   "id": 19116103,
   "name": "Андре Онана",
-  "nameEn": "Andrcu Onana",
+  "nameEn": "André Onana",
   "nameUk": "Андре Онана",
   "aliases": "Онана, Андре",
   "country": "Камерун",
@@ -3498,17 +3309,16 @@
   ],
   "club": "Трабзонспор",
   "status": "Играет",
-  "height": 185,
   "birth": 1996,
   "answer": true,
   "thumb": 193
  },
  {
   "id": 17074511,
-  "name": "Эдерсон Сантана ди Мораес",
+  "name": "Эдерсон",
   "nameEn": "Ederson",
-  "nameUk": "Едерсон Мораес",
-  "aliases": "Эдерсон, Эдерсон Сантана де Мораес, Сантана ди Мораес, Эдерсон",
+  "nameUk": "Едерсон",
+  "aliases": "Эдерсон, Эдерсон Сантана де Мораес, Сантана ди Мораес, Эдерсон, Эдерсон Сантана ди Мораес",
   "country": "Бразилия",
   "part": "Южная Америка",
   "roles": [
@@ -3516,7 +3326,6 @@
   ],
   "club": "Фенербахче",
   "status": "Играет",
-  "height": 188,
   "birth": 1993,
   "answer": true,
   "thumb": 194
@@ -3534,7 +3343,6 @@
   ],
   "club": "Арсенал",
   "status": "Играет",
-  "height": 182,
   "birth": 1997,
   "answer": true,
   "thumb": 195
@@ -3552,7 +3360,6 @@
   ],
   "club": "Флуминенсе",
   "status": "Играет",
-  "height": 183,
   "birth": 1984,
   "answer": true,
   "thumb": 196
@@ -3570,7 +3377,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Завершил карьеру",
-  "height": 185,
   "birth": 1981,
   "answer": true,
   "thumb": 197
@@ -3588,7 +3394,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 180,
   "birth": 1973,
   "answer": true,
   "thumb": 198
@@ -3606,7 +3411,6 @@
   ],
   "club": "Ривер Плейт",
   "status": "Играет",
-  "height": 183,
   "birth": 1988,
   "answer": true,
   "thumb": 199
@@ -3624,7 +3428,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 183,
   "birth": 1984,
   "answer": true,
   "thumb": 200
@@ -3642,7 +3445,6 @@
   ],
   "club": "Милан",
   "status": "Завершил карьеру",
-  "height": 177,
   "birth": 1979,
   "answer": true,
   "thumb": 201
@@ -3660,7 +3462,6 @@
   ],
   "club": "Барселона",
   "status": "Играет",
-  "height": 173,
   "birth": 2004,
   "answer": true,
   "thumb": 202
@@ -3678,7 +3479,6 @@
   ],
   "club": "Ювентус",
   "status": "Играет",
-  "height": 187,
   "birth": 1998,
   "answer": true,
   "thumb": 203
@@ -3696,7 +3496,6 @@
   ],
   "club": "АДО Ден Хааг",
   "status": "Завершил карьеру",
-  "height": 170,
   "birth": 1947,
   "answer": true,
   "thumb": 204
@@ -3714,7 +3513,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 194,
   "birth": 1999,
   "answer": true,
   "thumb": 205
@@ -3733,7 +3531,6 @@
   ],
   "club": "Барселона",
   "status": "Завершил карьеру",
-  "height": 186,
   "birth": 1972,
   "answer": true,
   "thumb": 206
@@ -3751,7 +3548,6 @@
   ],
   "club": "Аль-Хиляль",
   "status": "Играет",
-  "height": 180,
   "birth": 2001,
   "answer": true,
   "thumb": 207
@@ -3769,7 +3565,6 @@
   ],
   "club": "Бавария",
   "status": "Завершил карьеру",
-  "height": 181,
   "birth": 1945,
   "answer": true,
   "thumb": 208
@@ -3787,7 +3582,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Завершил карьеру",
-  "height": 182,
   "birth": 1990,
   "answer": true,
   "thumb": 209
@@ -3805,7 +3599,6 @@
   ],
   "club": "Аль-Хиляль",
   "status": "Играет",
-  "height": 180,
   "birth": 1995,
   "answer": true,
   "thumb": 210
@@ -3821,19 +3614,18 @@
   "roles": [
    "Нападающий"
   ],
-  "club": "Сандерленд",
+  "club": "Манчестер Юнайтед",
   "status": "Играет",
-  "height": 173,
   "birth": 2002,
   "answer": true,
   "thumb": 211
  },
  {
   "id": 20994118,
-  "name": "Родриго Эрнандес",
+  "name": "Родри",
   "nameEn": "Rodri",
-  "nameUk": "Родріго Ернандес",
-  "aliases": "Rodrigo Hernández Cascante, Rodrigo",
+  "nameUk": "Родрі",
+  "aliases": "Rodrigo Hernández Cascante, Rodrigo, Родриго Эрнандес",
   "country": "Испания",
   "part": "Европа",
   "roles": [
@@ -3841,7 +3633,6 @@
   ],
   "club": "Барселона",
   "status": "Играет",
-  "height": 190,
   "birth": 1996,
   "answer": true,
   "thumb": 212
@@ -3859,7 +3650,6 @@
   ],
   "club": "Челси",
   "status": "Завершил карьеру",
-  "height": 185,
   "birth": 1979,
   "answer": true,
   "thumb": 213
@@ -3877,7 +3667,6 @@
   ],
   "club": "Арсенал",
   "status": "Завершил карьеру",
-  "height": 192,
   "birth": 1976,
   "answer": true,
   "thumb": 214
@@ -3895,7 +3684,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 178,
   "birth": 1975,
   "answer": true,
   "thumb": 215
@@ -3913,7 +3701,6 @@
   ],
   "club": "Леганес",
   "status": "Играет",
-  "height": 187,
   "birth": 1992,
   "answer": true,
   "thumb": 216
@@ -3931,7 +3718,6 @@
   ],
   "club": "Бернли",
   "status": "Играет",
-  "height": 178,
   "birth": 1990,
   "answer": true,
   "thumb": 217
@@ -3949,7 +3735,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 188,
   "birth": 1966,
   "answer": true,
   "thumb": 218
@@ -3967,7 +3752,6 @@
   ],
   "club": "Кристал Пэлас",
   "status": "Завершил карьеру",
-  "height": 183,
   "birth": 1970,
   "answer": true,
   "thumb": 219
@@ -3986,7 +3770,6 @@
   ],
   "club": "Удинезе",
   "status": "Играет",
-  "height": 180,
   "birth": 1992,
   "answer": true,
   "thumb": 220
@@ -4004,7 +3787,6 @@
   ],
   "club": "Бавария",
   "status": "Завершил карьеру",
-  "height": 180,
   "birth": 1984,
   "answer": true,
   "thumb": 221
@@ -4022,7 +3804,6 @@
   ],
   "club": "Тоттенхэм Хотспур",
   "status": "Завершил карьеру",
-  "height": 177,
   "birth": 1967,
   "answer": true,
   "thumb": 222
@@ -4040,7 +3821,6 @@
   ],
   "club": "Пари Сен-Жермен",
   "status": "Играет",
-  "height": 178,
   "birth": 1993,
   "answer": true,
   "thumb": 223
@@ -4058,7 +3838,6 @@
   ],
   "club": "Селтик",
   "status": "Завершил карьеру",
-  "height": 177,
   "birth": 1971,
   "answer": true,
   "thumb": 224
@@ -4076,7 +3855,6 @@
   ],
   "club": "Фламенго",
   "status": "Играет",
-  "height": 180,
   "birth": 1991,
   "answer": true,
   "thumb": 225
@@ -4094,7 +3872,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 168,
   "birth": 1974,
   "answer": true,
   "thumb": 226
@@ -4112,7 +3889,6 @@
   ],
   "club": "Аякс",
   "status": "Играет",
-  "height": 187,
   "birth": 1992,
   "answer": true,
   "thumb": 227
@@ -4126,11 +3902,10 @@
   "country": "Норвегия",
   "part": "Европа",
   "roles": [
-   "Полузащитник"
+   "Нападающий"
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 179,
   "birth": 1973,
   "answer": true,
   "thumb": 228
@@ -4148,7 +3923,6 @@
   ],
   "club": "Галатасарай",
   "status": "Играет",
-  "height": 183,
   "birth": 1996,
   "answer": true,
   "thumb": 229
@@ -4166,7 +3940,6 @@
   ],
   "club": "Валенсия",
   "status": "Завершил карьеру",
-  "height": 175,
   "birth": 1981,
   "answer": true,
   "thumb": 230
@@ -4184,7 +3957,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 188,
   "birth": 1976,
   "answer": true,
   "thumb": 231
@@ -4202,7 +3974,6 @@
   ],
   "club": "Милан",
   "status": "Играет",
-  "height": 191,
   "birth": 1995,
   "answer": true,
   "thumb": 232
@@ -4220,7 +3991,6 @@
   ],
   "club": "Милан",
   "status": "Завершил карьеру",
-  "height": 183,
   "birth": 1976,
   "answer": true,
   "thumb": 233
@@ -4236,9 +4006,8 @@
   "roles": [
    "Защитник"
   ],
-  "club": "Реал Мадрид",
-  "status": "Завершил карьеру",
-  "height": 168,
+  "club": "Хетафе",
+  "status": "Играет",
   "birth": 1992,
   "answer": true,
   "thumb": 234
@@ -4256,7 +4025,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 189,
   "birth": 1978,
   "answer": true,
   "thumb": 235
@@ -4274,7 +4042,6 @@
   ],
   "club": "Пари Сен-Жермен",
   "status": "Играет",
-  "height": 183,
   "birth": 1994,
   "answer": true,
   "thumb": 236
@@ -4282,7 +4049,7 @@
  {
   "id": 59205608,
   "name": "Антони",
-  "nameEn": "Antony dos Santos",
+  "nameEn": "Antony",
   "nameUk": "Антоні Матеус дус Сантус",
   "country": "Бразилия",
   "part": "Южная Америка",
@@ -4291,7 +4058,6 @@
   ],
   "club": "Реал Бетис",
   "status": "Играет",
-  "height": 172,
   "birth": 2000,
   "answer": true,
   "thumb": 237
@@ -4310,7 +4076,6 @@
   ],
   "club": "Сиэтл Саундерс",
   "status": "Завершил карьеру",
-  "height": 185,
   "birth": 1983,
   "answer": true,
   "thumb": 238
@@ -4328,7 +4093,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Играет",
-  "height": 191,
   "birth": 1999,
   "answer": true,
   "thumb": 239
@@ -4346,7 +4110,6 @@
   ],
   "club": "Тоттенхэм Хотспур",
   "status": "Играет",
-  "height": 179,
   "birth": 2003,
   "answer": true,
   "thumb": 240
@@ -4364,7 +4127,6 @@
   ],
   "club": "Коринтианс",
   "status": "Играет",
-  "height": 175,
   "birth": 1992,
   "answer": true,
   "thumb": 241
@@ -4382,7 +4144,6 @@
   ],
   "club": "Пари Сен-Жермен",
   "status": "Играет",
-  "height": 174,
   "birth": 2004,
   "answer": true,
   "thumb": 242
@@ -4400,7 +4161,6 @@
   ],
   "club": "Челси",
   "status": "Завершил карьеру",
-  "height": 187,
   "birth": 1980,
   "answer": true,
   "thumb": 243
@@ -4419,7 +4179,6 @@
   ],
   "club": "Сантос",
   "status": "Играет",
-  "height": 172,
   "birth": 1992,
   "answer": true,
   "thumb": 244
@@ -4437,7 +4196,6 @@
   ],
   "club": "Фиорентина",
   "status": "Завершил карьеру",
-  "height": 185,
   "birth": 1969,
   "answer": true,
   "thumb": 245
@@ -4455,7 +4213,6 @@
   ],
   "club": "Аль-Шабаб",
   "status": "Играет",
-  "height": 185,
   "birth": 1993,
   "answer": true,
   "thumb": 246
@@ -4473,7 +4230,6 @@
   ],
   "club": "Ливерпуль",
   "status": "Завершил карьеру",
-  "height": 185,
   "birth": 1978,
   "answer": true,
   "thumb": 247
@@ -4489,9 +4245,8 @@
   "roles": [
    "Нападающий"
   ],
-  "club": "Ювентус",
+  "club": "Олимпик Марсель",
   "status": "Играет",
-  "height": 183,
   "birth": 2000,
   "answer": true,
   "thumb": 248
@@ -4510,7 +4265,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 173,
   "birth": 1937,
   "answer": true,
   "thumb": 249
@@ -4524,11 +4278,10 @@
   "country": "Испания",
   "part": "Европа",
   "roles": [
-   "Полузащитник"
+   "Защитник"
   ],
   "club": "Реал Мадрид Кастилья",
   "status": "Завершил карьеру",
-  "height": 175,
   "birth": 1960,
   "answer": true,
   "thumb": 250
@@ -4546,7 +4299,6 @@
   ],
   "club": "Галатасарай",
   "status": "Играет",
-  "height": 188,
   "birth": 1999,
   "answer": true,
   "thumb": 251
@@ -4560,11 +4312,10 @@
   "country": "Бразилия",
   "part": "Южная Америка",
   "roles": [
-   "Полузащитник"
+   "Нападающий"
   ],
   "club": "Милан",
   "status": "Завершил карьеру",
-  "height": 172,
   "birth": 1984,
   "answer": true,
   "thumb": 252
@@ -4582,7 +4333,6 @@
   ],
   "club": "Челси",
   "status": "Играет",
-  "height": 179,
   "birth": 1999,
   "answer": true,
   "thumb": 253
@@ -4600,7 +4350,6 @@
   ],
   "club": "Барселона",
   "status": "Играет",
-  "height": 176,
   "birth": 2002,
   "answer": true,
   "thumb": 254
@@ -4611,24 +4360,23 @@
   "nameEn": "Ferenc Puskás",
   "nameUk": "Ференц Пушкаш",
   "aliases": "Пушкаш Ференц, Пушкаш Ф., Пушкаш, Ференц, Ференц Пурцельд Биро",
-  "country": "Испания",
+  "country": "Венгрия",
   "part": "Европа",
   "roles": [
    "Нападающий"
   ],
   "club": "Гонвед",
   "status": "Завершил карьеру",
-  "height": 172,
   "birth": 1927,
   "answer": true,
   "thumb": 255
  },
  {
   "id": 23703372,
-  "name": "Тео Эранандес",
+  "name": "Тео Эрнандес",
   "nameEn": "Théo Hernandez",
   "nameUk": "Тео Ернандес",
-  "aliases": "Эрнандес, Тео",
+  "aliases": "Эрнандес, Тео, Тео Эранандес",
   "country": "Франция",
   "part": "Европа",
   "roles": [
@@ -4636,7 +4384,6 @@
   ],
   "club": "Аль-Хиляль",
   "status": "Играет",
-  "height": 184,
   "birth": 1997,
   "answer": true,
   "thumb": 256
@@ -4654,7 +4401,6 @@
   ],
   "club": "Милан",
   "status": "Завершил карьеру",
-  "height": 177,
   "birth": 1978,
   "answer": true,
   "thumb": 257
@@ -4672,7 +4418,6 @@
   ],
   "club": "Милан",
   "status": "Завершил карьеру",
-  "height": 188,
   "birth": 1964,
   "answer": true,
   "thumb": 258
@@ -4690,7 +4435,6 @@
   ],
   "club": "Индепендьенте",
   "status": "Завершил карьеру",
-  "height": 179,
   "birth": 1979,
   "answer": true,
   "thumb": 259
@@ -4708,7 +4452,6 @@
   ],
   "club": "Ювентус",
   "status": "Завершил карьеру",
-  "height": 178,
   "birth": 1969,
   "answer": true,
   "thumb": 260
@@ -4724,9 +4467,8 @@
   "roles": [
    "Нападающий"
   ],
-  "club": "Пари Сен-Жермен",
-  "status": "Завершил карьеру",
-  "height": 184,
+  "club": "Без клуба",
+  "status": "Играет",
   "birth": 1987,
   "answer": true,
   "thumb": 261
@@ -4744,7 +4486,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Завершил карьеру",
-  "height": 193,
   "birth": 1963,
   "answer": true,
   "thumb": 262
@@ -4762,7 +4503,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 190,
   "birth": 1993,
   "answer": true,
   "thumb": 263
@@ -4779,7 +4519,6 @@
   ],
   "club": "Атлетико Мадрид",
   "status": "Играет",
-  "height": 188,
   "birth": 1998,
   "answer": true,
   "thumb": 264
@@ -4797,7 +4536,6 @@
   ],
   "club": "Бавария",
   "status": "Завершил карьеру",
-  "height": 174,
   "birth": 1991,
   "answer": true,
   "thumb": 265
@@ -4815,17 +4553,16 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Играет",
-  "height": 175,
   "birth": 1998,
   "answer": true,
   "thumb": 266
  },
  {
   "id": 42728914,
-  "name": "Родриго Силва де Гоис",
+  "name": "Родриго",
   "nameEn": "Rodrygo",
-  "nameUk": "Родрігу Сілва де Гоес",
-  "aliases": "Силва де Гоис, Родриго",
+  "nameUk": "Родріго",
+  "aliases": "Силва де Гоис, Родриго, Родриго Силва де Гоис",
   "country": "Бразилия",
   "part": "Южная Америка",
   "roles": [
@@ -4833,7 +4570,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 174,
   "birth": 2001,
   "answer": true,
   "thumb": 267
@@ -4850,7 +4586,6 @@
   ],
   "club": "Пафос",
   "status": "Играет",
-  "height": 189,
   "birth": 1987,
   "answer": true,
   "thumb": 268
@@ -4868,7 +4603,6 @@
   ],
   "club": "Депортиво Ла-Корунья",
   "status": "Играет",
-  "height": 178,
   "birth": 1996,
   "answer": true,
   "thumb": 269
@@ -4887,7 +4621,6 @@
   ],
   "club": "Бавария",
   "status": "Играет",
-  "height": 177,
   "birth": 1995,
   "answer": true,
   "thumb": 270
@@ -4905,7 +4638,6 @@
   ],
   "club": "Манчестер Сити",
   "status": "Завершил карьеру",
-  "height": 173,
   "birth": 1984,
   "answer": true,
   "thumb": 271
@@ -4924,7 +4656,6 @@
   ],
   "club": "Рома",
   "status": "Завершил карьеру",
-  "height": 180,
   "birth": 1976,
   "answer": true,
   "thumb": 272
@@ -4942,7 +4673,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 187,
   "birth": 2000,
   "answer": true,
   "thumb": 273
@@ -4960,7 +4690,6 @@
   ],
   "club": "Барселона",
   "status": "Завершил карьеру",
-  "height": 189,
   "birth": 1988,
   "answer": true,
   "thumb": 274
@@ -4978,7 +4707,6 @@
   ],
   "club": "Институто",
   "status": "Завершил карьеру",
-  "height": 184,
   "birth": 1955,
   "answer": true,
   "thumb": 275
@@ -4996,7 +4724,6 @@
   ],
   "club": "Динамо",
   "status": "Завершил карьеру",
-  "height": 177,
   "birth": 1945,
   "answer": true,
   "thumb": 276
@@ -5015,7 +4742,6 @@
   ],
   "club": "Аталанта",
   "status": "Играет",
-  "height": 192,
   "birth": 2001,
   "answer": true,
   "thumb": 277
@@ -5033,7 +4759,6 @@
   ],
   "club": "Мидлсбро",
   "status": "Завершил карьеру",
-  "height": 178,
   "birth": 1935,
   "answer": true,
   "thumb": 278
@@ -5051,7 +4776,6 @@
   ],
   "club": "Лидс Юнайтед",
   "status": "Играет",
-  "height": 187,
   "birth": 1997,
   "answer": true,
   "thumb": 279
@@ -5069,7 +4793,6 @@
   ],
   "club": "Престон Норт Энд",
   "status": "Завершил карьеру",
-  "height": 185,
   "birth": 1963,
   "answer": true,
   "thumb": 280
@@ -5087,7 +4810,6 @@
   ],
   "club": "Нанси",
   "status": "Завершил карьеру",
-  "height": 179,
   "birth": 1955,
   "answer": true,
   "thumb": 281
@@ -5104,7 +4826,6 @@
   ],
   "club": "Фламенго",
   "status": "Играет",
-  "height": 180,
   "birth": 1997,
   "answer": true,
   "thumb": 282
@@ -5122,7 +4843,6 @@
   ],
   "club": "Манчестер Сити",
   "status": "Завершил карьеру",
-  "height": 196,
   "birth": 1987,
   "answer": true,
   "thumb": 283
@@ -5140,7 +4860,6 @@
   ],
   "club": "Твенте",
   "status": "Завершил карьеру",
-  "height": 182,
   "birth": 1970,
   "answer": true,
   "thumb": 284
@@ -5159,7 +4878,6 @@
   ],
   "club": "Манчестер Сити",
   "status": "Завершил карьеру",
-  "height": 189,
   "birth": 1983,
   "answer": true,
   "thumb": 285
@@ -5177,7 +4895,6 @@
   ],
   "club": "Штутгарт",
   "status": "Завершил карьеру",
-  "height": 181,
   "birth": 1964,
   "answer": true,
   "thumb": 286
@@ -5196,7 +4913,6 @@
   ],
   "club": "Монтеррей",
   "status": "Играет",
-  "height": 181,
   "birth": 1995,
   "answer": true,
   "thumb": 287
@@ -5214,7 +4930,6 @@
   ],
   "club": "Милан",
   "status": "Завершил карьеру",
-  "height": 176,
   "birth": 1976,
   "answer": true,
   "thumb": 288
@@ -5228,11 +4943,11 @@
   "country": "Германия",
   "part": "Европа",
   "roles": [
+   "Нападающий",
    "Полузащитник"
   ],
   "club": "Гурник",
   "status": "Завершил карьеру",
-  "height": 182,
   "birth": 1985,
   "answer": true,
   "thumb": 289
@@ -5250,7 +4965,6 @@
   ],
   "club": "Арсенал",
   "status": "Играет",
-  "height": 181,
   "birth": 1999,
   "answer": true,
   "thumb": 290
@@ -5268,7 +4982,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Завершил карьеру",
-  "height": 178,
   "birth": 1926,
   "answer": true,
   "thumb": 291
@@ -5286,7 +4999,6 @@
   ],
   "club": "Реал Мадрид",
   "status": "Играет",
-  "height": 188,
   "birth": 1996,
   "answer": true,
   "thumb": 292
@@ -5305,7 +5017,6 @@
   ],
   "club": "Монако",
   "status": "Играет",
-  "height": 178,
   "birth": 2002,
   "answer": true,
   "thumb": 293
@@ -5323,17 +5034,16 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Играет",
-  "height": 181,
   "birth": 1999,
   "answer": true,
   "thumb": 294
  },
  {
   "id": 624,
-  "name": "Алесандро Дель Пьеро",
+  "name": "Алессандро Дель Пьеро",
   "nameEn": "Alessandro Del Piero",
   "nameUk": "Алессандро Дель П'єро",
-  "aliases": "Алесандро дель Пьеро, Дель Пьеро, Алессандро",
+  "aliases": "Алесандро дель Пьеро, Дель Пьеро, Алессандро, Алесандро Дель Пьеро",
   "country": "Италия",
   "part": "Европа",
   "roles": [
@@ -5341,7 +5051,6 @@
   ],
   "club": "Ювентус",
   "status": "Завершил карьеру",
-  "height": 173,
   "birth": 1974,
   "answer": true,
   "thumb": 295
@@ -5359,7 +5068,6 @@
   ],
   "club": "Галатасарай",
   "status": "Играет",
-  "height": 180,
   "birth": 1990,
   "answer": true,
   "thumb": 296
@@ -5377,7 +5085,6 @@
   ],
   "club": "Манчестер Юнайтед",
   "status": "Играет",
-  "height": 175,
   "birth": 2005,
   "answer": true,
   "thumb": 297
@@ -5395,7 +5102,6 @@
   ],
   "club": "Фиорентина",
   "status": "Играет",
-  "height": 189,
   "birth": 1990,
   "answer": true,
   "thumb": 298
@@ -5413,7 +5119,6 @@
   ],
   "club": "Шеффилд Юнайтед",
   "status": "Играет",
-  "height": 178,
   "birth": 1995,
   "answer": true,
   "thumb": 299

@@ -8,6 +8,7 @@ const OUT_IMG = path.join(PUBLIC, 'football')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'football.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'football-atlas.json')
 const OUT_TERMS = path.join(ROOT, 'scripts', 'data', 'football-terms.json')
+const FIXES = JSON.parse(await fs.readFile(path.join(ROOT, 'scripts', 'data', 'football-fixes.json'), 'utf8'))
 
 const WANTED = 300
 const MIN_LINKS = 45
@@ -430,7 +431,6 @@ const main = async () => {
       roles,
       club: clubName ?? 'Неизвестно',
       status: club.active ? PLAYING : RETIRED,
-      height,
       birth,
       image,
       answer: true,
@@ -440,7 +440,10 @@ const main = async () => {
 
   const entities = collected.slice(0, WANTED).sort((a, b) => b.fame - a.fame)
   const floor = entities.at(-1)?.fame ?? 0
-  for (const player of entities) delete player.fame
+  for (const player of entities) {
+    delete player.fame
+    Object.assign(player, FIXES[player.id])
+  }
 
   const active = entities.filter((e) => e.status === PLAYING).length
   console.log(`зібрано гравців: ${entities.length} (грають ${active}, завершили ${entities.length - active})`)
