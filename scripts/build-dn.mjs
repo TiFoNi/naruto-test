@@ -191,6 +191,8 @@ const NAMES = {
 
 const matchRules = (rules, values) => rules.filter(([, re]) => values.some((v) => re.test(v))).map(([label]) => label)
 
+const NEVER_OWNED = ['L', 'Raye Penber']
+
 function field(text, name) {
   const start = text.match(new RegExp(`\\|\\s*${name}\\s*=`, 'i'))
   if (!start) return ''
@@ -262,9 +264,9 @@ async function main() {
       gender: cats.includes('Category:Female characters') ? 'Женский' : cats.includes('Category:Male characters') ? 'Мужской' : 'Другое',
       species: shinigami ? 'Синигами' : 'Человек',
       orgs: matchRules(ORGS, cats).length ? matchRules(ORGS, cats) : ['Вне организаций'],
-      note: shinigami || cats.includes('Category:Human Death Note users') || plain(field(text, 'owned')).trim() ? 'Владел' : 'Не владел',
+      note: !NEVER_OWNED.includes(clean) && (shinigami || cats.includes('Category:Human Death Note users') || plain(field(text, 'owned')).trim()) ? 'Владел' : 'Не владел',
       eyes: shinigami || cats.includes('Category:Humans with Shinigami Eyes') ? 'Есть' : 'Нет',
-      status: cats.includes('Category:Deceased') || plain(field(text, 'death')).trim() ? 'Мёртв' : 'Жив',
+      status: clean !== 'Kanzo Mogi' && (cats.includes('Category:Deceased') || plain(field(text, 'death')).trim()) ? 'Мёртв' : 'Жив',
       arc: ARCS[arcIndex][1],
       arcIndex,
       length,

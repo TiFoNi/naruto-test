@@ -33,7 +33,7 @@ const KEEP = 65
 const ANIME_MEDIA = 3588
 const MANGA_MEDIA = 30908
 
-const GENDER_OVERRIDES = { Crona: 'Другое' }
+const GENDER_OVERRIDES = { Crona: 'Другое', Giriko: 'Другое' }
 
 const ANIME_ART = {
   'Kimial Diehl': 'Kim Diehl (Pre-Timeskip) Profile.png',
@@ -83,7 +83,7 @@ const ROLE_RULES = [
   ['Мастер', /^Category:(Meister|.*-Meister|.* Meister)$/],
 ]
 
-const DEAD = new Set(['Asura'])
+const DEAD = new Set(['Death'])
 
 const VILLAIN = ['Арахнофобия', 'Банда Ноя', 'Фракция Медузы']
 const HERO = ['Шибусэн', 'Класс EAT', 'Класс NOT', 'Спартой', 'Оружие Смерти', 'Разведка Шибусэна', 'Легионы Жнеца']
