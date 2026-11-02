@@ -112,7 +112,7 @@
   "nameEn": "Sorahiko Torino",
   "aliases": "gran torino",
   "gender": "Мужской",
-  "quirkType": "Эмиттер",
+  "quirkType": "Мутация",
   "side": "Профи-герой",
   "affiliations": [
    "Ю-Эй",
@@ -446,7 +446,7 @@
   "nameEn": "Kaina Tsutsumi",
   "aliases": "lady nagant",
   "gender": "Женский",
-  "quirkType": "Эмиттер",
+  "quirkType": "Трансформация",
   "side": "Злодей",
   "affiliations": [
    "Профи-герои"
@@ -1044,7 +1044,7 @@
   "aliases": "loud cloud",
   "gender": "Мужской",
   "quirkType": "Эмиттер",
-  "side": "Профи-герой",
+  "side": "Ученик",
   "affiliations": [
    "Ю-Эй"
   ],
@@ -1235,7 +1235,7 @@
   "nameEn": "Salaam",
   "aliases": "",
   "gender": "Мужской",
-  "quirkType": "Трансформация",
+  "quirkType": "Мутация",
   "side": "Профи-герой",
   "affiliations": [
    "Профи-герои"
@@ -1645,8 +1645,7 @@
   "quirkType": "Эмиттер",
   "side": "Ученик",
   "affiliations": [
-   "Ю-Эй",
-   "Профи-герои"
+   "Ю-Эй"
   ],
   "height": 177,
   "arc": "Спортивный фестиваль",
@@ -1836,7 +1835,7 @@
   "nameEn": "Shuichi Iguchi",
   "aliases": "spinner",
   "gender": "Мужской",
-  "quirkType": "Трансформация",
+  "quirkType": "Мутация",
   "side": "Злодей",
   "affiliations": [
    "Лига злодеев",
@@ -1978,11 +1977,10 @@
   "aliases": "",
   "gender": "Мужской",
   "quirkType": "Эмиттер",
-  "side": "Профи-герой",
+  "side": "Ученик",
   "affiliations": [
    "Класс 1-A",
-   "Ю-Эй",
-   "Профи-герои"
+   "Ю-Эй"
   ],
   "height": 168,
   "arc": "Вступительный экзамен",

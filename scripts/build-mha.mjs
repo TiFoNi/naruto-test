@@ -151,6 +151,10 @@ const firstTag = (rules, tags) => rules.find(([, names]) => names.some((name) =>
 
 const allTags = (rules, tags) => rules.filter(([, names]) => names.some((name) => tags.includes(name))).map(([label]) => label)
 
+const QUIRK_FIX = {'Sorahiko Torino': 'Мутация', 'Kaina Tsutsumi': 'Трансформация', 'Salaam': 'Мутация', 'Shuichi Iguchi': 'Мутация'}
+const SIDE_FIX = {'Yuga Aoyama': 'Ученик', 'Oboro Shirakumo': 'Ученик'}
+const AFFILIATION_FIX = {'Yuga Aoyama': ['Класс 1-A', 'Ю-Эй'], 'Hitoshi Shinso': ['Ю-Эй']}
+
 const quirkType = (tags) => QUIRKS.find(([, tag]) => tags.includes(tag))?.[0] ?? 'Неизвестно'
 
 const aliasesOf = (text) => {
@@ -213,9 +217,9 @@ async function main() {
       nameEn: name,
       aliases: [NICKS[name], ...aliasesOf(text)].filter(Boolean).join(' ').toLowerCase(),
       gender: SEX[plain(infobox(text, 'gender') ?? '').trim()] ?? 'Другое',
-      quirkType: quirkType(own),
-      side: firstTag(SIDES, own) ?? 'Гражданский',
-      affiliations: affiliations.length ? affiliations : ['Без фракции'],
+      quirkType: QUIRK_FIX[name] ?? quirkType(own),
+      side: SIDE_FIX[name] ?? firstTag(SIDES, own) ?? 'Гражданский',
+      affiliations: AFFILIATION_FIX[name] ?? (affiliations.length ? affiliations : ['Без фракции']),
       height: heightOf(text),
       arc: ARCS[arcIndex][1],
       arcIndex,
