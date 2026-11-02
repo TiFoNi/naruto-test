@@ -67,12 +67,17 @@ function sideOf(cats) {
   return 'Нейтралитет'
 }
 
+const NOT_DIO_AGENTS = ['Straizo', 'Foo Fighters', 'Dio Brando']
+const POWER_FIX = { 'Vinegar Doppio': ['Стенд'] }
+const NATION_FIX = { 'Gyro Zeppeli': 'Италия', 'Emporio Alniño': 'США', 'Lucy Steel': 'США', 'Muhammad Avdol': 'Египет' }
+const SIDE_FIX = { 'Yukako Yamagishi': 'Союзник' }
+
 const GROUP_RULES = [
   ['Семья Джостар', /joestar family/i],
   ['Отряд Джостара', /joestar group/i],
   ['Пассионе', /passione/i],
   ['Люди из столбов', /pillar men/i],
-  ['Прислужники DIO', /^dio.s /i],
+  ['Прислужники DIO', /^agents of dio$/i],
   ['Тюрьма Грин Долфин', /green dolphin street prison/i],
   ['Гонка Стального шара', /steel ball run participants/i],
   ['Семья Хигашиката', /higashikata family/i],
@@ -213,10 +218,10 @@ async function main() {
       aliases: name !== cleanName(name) ? name : undefined,
       gender: SEX[plain(field(text, 'gender')).trim()] ?? (cats.includes('Category:Female Characters') ? 'Женский' : 'Мужской'),
       species: species.length ? species : ['Человек'],
-      powers: matchRules(POWER_RULES, cats).length ? matchRules(POWER_RULES, cats) : ['Нет'],
-      groups: matchRules(GROUP_RULES, cats.map((c) => c.replace('Category:', ''))),
-      side: sideOf(cats),
-      nation: NATIONS.find(([, re]) => re.test(nation))?.[0] ?? 'Неизвестно',
+      powers: POWER_FIX[cleanName(name)] ?? (matchRules(POWER_RULES, cats).length ? matchRules(POWER_RULES, cats) : ['Нет']),
+      groups: matchRules(GROUP_RULES, cats.map((c) => c.replace('Category:', ''))).filter((group) => group !== 'Прислужники DIO' || !NOT_DIO_AGENTS.includes(cleanName(name))),
+      side: SIDE_FIX[cleanName(name)] ?? sideOf(cats),
+      nation: NATION_FIX[cleanName(name)] ?? NATIONS.find(([, re]) => re.test(nation))?.[0] ?? 'Неизвестно',
       status: /deceased/i.test(plain(field(text, 'status'))) || cats.includes('Category:Deceased Characters') ? 'Мёртв' : 'Жив',
       part: PARTS[part][1],
       partIndex: part,

@@ -1,4 +1,6 @@
 export const VALUES: Record<string, [uk: string, en: string, ru?: string]> = {
+  Печати: ['Печатки', 'Seals'],
+  'Страна Хино': ['Країна Хіно', 'Hino Country'],
   TSC: ['TSC', 'TSC'],
   // бравл старс
   Боец: ['Боєць', 'Damage Dealer'],

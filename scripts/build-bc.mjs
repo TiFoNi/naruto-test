@@ -126,6 +126,7 @@ const COUNTRY_RULES = [
   ['Королевство Сердца', /heart kingdom/i],
   ['Лес ведьм', /witches.? forest/i],
   ['Подземный мир', /underworld/i],
+  ['Страна Хино', /hino country/i],
 ]
 
 const STATUS_RULES = [
@@ -139,7 +140,7 @@ const ATTRIBUTE_RULES = [
   ['Вода', /water|sea dragon/i],
   ['Ветер', /wind|star magic/i],
   ['Земля', /earth|sand|stone|mud/i],
-  ['Свет', /light/i],
+  ['Свет', /light(?!ning)/i],
   ['Тьма', /dark(ness)? magic|shadow/i],
   ['Молния', /lightning|thunder/i],
   ['Лёд', /ice|glacier/i],
@@ -148,8 +149,8 @@ const ATTRIBUTE_RULES = [
   ['Время', /time/i],
   ['Пространство', /spatial|space/i],
   ['Зеркала', /mirror/i],
-  ['Оружие', /sword|spear|steel|weapon|bone|ash/i],
-  ['Звери', /beast|wolf|bird|ant/i],
+  ['Оружие', /sword|spear|steel|weapon|bone|slash/i],
+  ['Звери', /beast|wolf|bird|\bant\b/i],
   ['Нити', /thread|string|steel thread/i],
   ['Деревья', /tree|wood|forest/i],
   ['Яд', /poison|venom|toxic/i],
@@ -157,13 +158,14 @@ const ATTRIBUTE_RULES = [
   ['Гравитация', /gravity|body magic/i],
   ['Сны', /dream/i],
   ['Звук', /sound|song|music/i],
-  ['Пепел', /ash|smoke|dust/i],
-  ['Стекло', /glass|crystal|mirror/i],
+  ['Пепел', /\bash\b|smoke|dust/i],
+  ['Стекло', /glass|crystal/i],
   ['Туман', /mist|fog|cloud/i],
   ['Хлопок', /cotton|wool/i],
   ['Слизь', /slime|mucus|gel/i],
   ['Бумага', /paper|ink|scroll/i],
-  ['Проклятия', /curse|seal|magic drain/i],
+  ['Проклятия', /curse|magic drain/i],
+  ['Печати', /seal/i],
   ['Исцеление', /heal|recovery|life magic/i],
 ]
 
@@ -337,7 +339,7 @@ async function main() {
       name: NAMES[name] ?? ruName(name, ru, transliterate),
       nameEn: name,
       gender: SEX[plain(field(text, 'gender')).trim()] ?? 'Другое',
-      species: matchRules(SPECIES_RULES, plain(field(text, 'species')))[0] ?? 'Человек',
+      species: name === 'Zenon Zogratis' ? 'Человек' : matchRules(SPECIES_RULES, plain(field(text, 'species')))[0] ?? 'Человек',
       magic: attributes.length ? attributes : ['Нет'],
       squad,
       country:
