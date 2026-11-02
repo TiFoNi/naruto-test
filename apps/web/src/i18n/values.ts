@@ -45,7 +45,7 @@ export const VALUES: Record<string, [uk: string, en: string, ru?: string]> = {
   'Клан Годжо': ['Клан Ґодзьо', 'Gojo Clan'],
   'Клан Дзенин': ['Клан Дзенін', 'Zenin Clan'],
   'Клан Камо': ['Клан Камо', 'Kamo Clan'],
-  'Проклятые духи': ['Прокляті духи', 'Curses'],
+  'Группа Кендзяку': ['Група Кендзяку', 'Kenjaku’s Group'],
   'Ассоциация магов': ['Асоціація магів', 'Jujutsu society'],
   'Без фракции': ['Без фракції', 'No affiliation'],
   'Проклятое дитя': ['Прокляте дитя', 'Cursed Child'],

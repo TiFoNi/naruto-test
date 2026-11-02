@@ -63,8 +63,13 @@ const SPECIES_OVERRIDES = { Sukuna: 'Проклятый дух', 'Ryomen Sukuna'
 const AFFILIATION_FIX = {
   Tengen: ['Токийский колледж'],
   'Rika Orimoto': ['Токийский колледж'],
-  'Juzo Kumiya': ['Проклятые духи'],
-  Uraume: ['Проклятые духи'],
+  'Juzo Kumiya': ['Группа Кендзяку'],
+  Uraume: ['Группа Кендзяку'],
+  Sukuna: ['Без фракции'],
+  'Naoya Zenin': ['Клан Дзенин'],
+  Choso: ['Без фракции'],
+  'Suguru Geto': ['Токийский колледж'],
+  Kurourushi: ['Без фракции'],
 }
 
 const SPECIES = [
@@ -80,7 +85,7 @@ const AFFILIATIONS = [
   ['Клан Годжо', /gojo clan/i],
   ['Клан Дзенин', /zenin/i],
   ['Клан Камо', /kamo clan/i],
-  ['Проклятые духи', /cursed spirits|curse user|mahito|geto|disaster curses/i],
+  ['Группа Кендзяку', /kenjaku|cursed spirits|curse user|mahito|geto|disaster curses/i],
   ['Ассоциация магов', /jujutsu (society|headquarters|higher-ups)/i],
   ['Якудза', /yakuza|q\b/i],
   ['Звёздный коридор', /star religious group|tengen/i],
@@ -242,7 +247,6 @@ async function main() {
     const occupation = plain(infobox(text, 'occupation') ?? '')
     const affiliationText = plain(lines(infobox(text, 'affiliation')).join('\n'))
     const affiliations = matchRules(AFFILIATIONS, affiliationText)
-    if (kind.includes('Проклятый дух') && !affiliations.includes('Проклятые духи')) affiliations.unshift('Проклятые духи')
 
     const chapter = debutChapter(text)
     const arcIndex = arcIndexOf(chapter)
