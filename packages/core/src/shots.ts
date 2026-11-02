@@ -5,6 +5,7 @@ import { gameData } from './games'
 import { addXp, applyDailyResult, raiseBest } from './profile'
 import { dailyAnswer, nextReset, today } from './daily'
 import { shotVariant } from './extra'
+import { collectQuestsQuietly } from './quests'
 import { markSeasonPlay } from './season'
 
 const GAME = 'shots'
@@ -181,6 +182,7 @@ async function logRound(doc: { userId: ObjectId; guest?: boolean }, answerId: nu
     finishedAt: now,
   })
   await markSeasonPlay(doc.userId, status === 'won', today())
+  await collectQuestsQuietly(doc.userId)
 }
 
 async function endRun(doc: ShotDoc, revealed: number, status: 'lost' | 'skipped') {

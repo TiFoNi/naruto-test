@@ -4,6 +4,7 @@ import { rounds, tuneDays, tuneRuns, users, type TuneDayDoc, type TuneDoc } from
 import { gameData } from './games'
 import { addXp, applyDailyResult, raiseBest } from './profile'
 import { dailyAnswer, nextReset, today } from './daily'
+import { collectQuestsQuietly } from './quests'
 import { markSeasonPlay } from './season'
 
 const GAME = 'tunes'
@@ -122,6 +123,7 @@ async function logRound(doc: { userId: ObjectId; guest?: boolean; updatedAt: Dat
     finishedAt: new Date(),
   })
   await markSeasonPlay(doc.userId, status === 'won', today())
+  await collectQuestsQuietly(doc.userId)
 }
 
 const stillThere = async (id?: number) => id !== undefined && (await gameData(GAME)).byId.has(id)

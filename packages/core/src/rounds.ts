@@ -7,6 +7,7 @@ import { applyDailyResult, applyResult, applySkip, awardSolveXp, defaultNickname
 import { abilityByKey } from './abilities'
 import { modeFits, modePool, oddOptions, oddTrait, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { findChallenge, recordSolve } from './challenges'
+import { collectQuestsQuietly } from './quests'
 import { markSeasonPlay } from './season'
 import { focusFor, roundSeed, shotFor } from './crop'
 
@@ -259,11 +260,13 @@ export async function finishRound(users: Collection<UserDoc>, round: RoundDoc, w
 
   if (round.daily) {
     const key = dailyKey(round.game, round.mode)
-    if (!won && (await roundLimit(round))) return { round: updated, xp, stats: { key, value: await applySkip(users, round.userId, key) } }
-    return { round: updated, xp, stats: { key, value: await applyDailyResult(users, round.userId, key, round.daily, guesses) } }
+    const value = !won && (await roundLimit(round)) ? await applySkip(users, round.userId, key) : await applyDailyResult(users, round.userId, key, round.daily, guesses)
+    if (!round.guest) await collectQuestsQuietly(round.userId)
+    return { round: updated, xp, stats: { key, value } }
   }
   const key = statsKey(round.game, round.mode)
   const stats = await applyResult(users, round.userId, key, won, guesses)
+  if (!round.guest) await collectQuestsQuietly(round.userId)
   return { round: updated, xp, stats: { key, value: stats } }
 }
 

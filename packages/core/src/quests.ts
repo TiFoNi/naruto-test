@@ -177,6 +177,26 @@ export async function swapQuest(userId: ObjectId, id: string) {
   return changed.modifiedCount > 0
 }
 
+export async function collectQuests(userId: ObjectId) {
+  const stored = await (await quests()).findOne({ _id: `${today()}:${userId.toHexString()}` }, { projection: { claimed: 1 } })
+  if (stored?.claimed?.includes('bonus')) return { xp: 0, coins: 0 }
+
+  const board = await questBoard(userId)
+  const waiting = [...board.quests.filter((quest) => quest.done && !quest.claimed).map((quest) => quest.id), ...(board.free.claimed ? [] : ['free'])]
+  const complete = board.quests.every((quest) => quest.done || quest.claimed)
+  const paid = { xp: 0, coins: 0 }
+  for (const id of complete ? [...waiting, 'bonus'] : waiting) {
+    const award = await claimQuest(userId, id)
+    paid.xp += award?.xp ?? 0
+    paid.coins += award?.coins ?? 0
+  }
+  return paid
+}
+
+export async function collectQuestsQuietly(userId: ObjectId) {
+  await collectQuests(userId).catch((error) => console.error('[quests] collect failed', error))
+}
+
 export async function claimQuest(userId: ObjectId, id: string) {
   const day = today()
   const board = await questBoard(userId)

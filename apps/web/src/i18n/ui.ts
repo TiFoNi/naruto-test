@@ -1347,7 +1347,6 @@ const ui = {
   'quiz.pickPairs': { ru: 'Перетащи вариант к нужной строке — или выбери строку и нажми на вариант', uk: 'Перетягни варіант до потрібного рядка — або обери рядок і натисни варіант', en: 'Drag an option onto the right row — or pick a row and tap an option' },
   'quiz.correctOrder': { ru: 'Правильный порядок:', uk: 'Правильний порядок:', en: 'Correct order:' },
   'quiz.failed': { ru: 'Не получилось отправить ответ, попробуй ещё раз', uk: 'Не вдалося надіслати відповідь, спробуй ще раз', en: 'Couldn’t send the answer, try again' },
-  'quests.take': { ru: 'Нажми, чтобы забрать', uk: 'Натисни, щоб забрати', en: 'Tap to claim' },
   'quests.swapTitle': { ru: 'Заменить задание?', uk: 'Замінити завдання?', en: 'Swap this quest?' },
   'quests.swapHint': {
     ru: '«{name}» сменится на другое задание. Заменять можно раз в день.',

@@ -181,11 +181,6 @@ export class GameController {
     return bridge(quests.GET, req, res)
   }
 
-  @Post('quests/claim')
-  questClaim(@Req() req: Request, @Res() res: Response) {
-    return bridge(quests.POST, req, res)
-  }
-
   @Get('quizzes')
   quizList(@Req() req: Request, @Res() res: Response) {
     return bridge(quizzes.LIST, req, res)

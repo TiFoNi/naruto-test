@@ -41,6 +41,7 @@ import { gameData, isGame, isMode } from './games'
 import { matchesFacet, planGrid } from './grid'
 import { BLACK, GREY, cleanCount, cleanWord, clueBoard, clueSizes, clueWinner, kindFor, sideLeft, teamKey } from './clue'
 import { addXp, defaultNickname } from './profile'
+import { collectQuestsQuietly } from './quests'
 import { sendPush, type PushLang } from './push'
 import { duelSeed, focusFor, shotFor } from './crop'
 import { markSeasonDuel } from './season'
@@ -540,6 +541,7 @@ async function dropPlayers(duel: DuelDoc, gone: DuelPlayer[]) {
     await pushDuelLog(scores, winnerTeam, duel.game, duel.mode, at)
     await Promise.all(rest.map((side) => markSeasonDuel(side.userId, true, at)))
     await Promise.all(rest.map((side) => duelXp(side.userId, (duel.mode ?? 'classic') as ModeId, true, true)))
+    await Promise.all(rest.map((side) => collectQuestsQuietly(side.userId)))
   }
 
   const updated = await collection.findOneAndUpdate(
@@ -939,6 +941,7 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   if (ms && ms > 0 && winnerId) await (await users()).updateOne({ _id: winnerId }, { $min: { duelBestMs: ms } })
   const rewarded = duel.players.filter((side) => champs.includes(side) || masters.includes(side))
   await Promise.all(rewarded.map((side) => duelXp(side.userId, duel.mode as ModeId, champs.includes(side), masters.includes(side))))
+  await Promise.all(masters.map((side) => collectQuestsQuietly(side.userId)))
   return finished
 }
 

@@ -94,11 +94,11 @@ const widestCount = (board: Board) => {
   return all.reduce((best, one) => (one.length > best.length ? one : best), '')
 }
 
-export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }) {
+export default function Quests() {
   const { refresh } = useAuth()
   const { t } = useI18n()
   const [board, setBoard] = useState<Board | null>(known)
-  const [claiming, setClaiming] = useState<string | null>(null)
+  const [swapping, setSwapping] = useState(false)
   const [poke, setPoke] = useState({ id: '', turn: 0 })
   const [asking, setAsking] = useState<string | null>(null)
 
@@ -109,34 +109,26 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
 
   const load = useCallback(async () => {
     const { ok, data } = await api<Board>('quests')
-    if (ok) remember(data)
-  }, [])
+    if (!ok) return
+    if (data.bonus.claimed && !known?.bonus.claimed) void refresh()
+    remember(data)
+  }, [refresh])
 
   useEffect(() => {
     void load()
-    const refresh = () => document.visibilityState === 'visible' && void load()
-    window.addEventListener('focus', refresh)
-    document.addEventListener('visibilitychange', refresh)
+    const reload = () => document.visibilityState === 'visible' && void load()
+    window.addEventListener('focus', reload)
+    document.addEventListener('visibilitychange', reload)
     return () => {
-      window.removeEventListener('focus', refresh)
-      document.removeEventListener('visibilitychange', refresh)
+      window.removeEventListener('focus', reload)
+      document.removeEventListener('visibilitychange', reload)
     }
   }, [load])
 
-  const claim = async (id: string) => {
-    setClaiming(id)
-    const { ok, data } = await api<Board & { coins?: number }>('quests/claim', { claim: id })
-    setClaiming(null)
-    if (!ok) return
-    remember(data)
-    onLevel?.(data)
-    if (data.coins) void refresh()
-  }
-
   const swap = async (id: string) => {
-    setClaiming(`swap:${id}`)
+    setSwapping(true)
     const { ok, data } = await api<Board>('quests/swap', { swap: id })
-    setClaiming(null)
+    setSwapping(false)
     if (ok) remember(data)
   }
 
@@ -187,12 +179,9 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
           <li key={quest.id}>
             <button
               type="button"
-              className={`quest ${quest.claimed ? 'is-claimed' : quest.done ? 'is-ready' : board?.swap ? 'is-swappable' : ''}`}
-              disabled={claiming === quest.id}
-              title={quest.done && !quest.claimed ? t('quests.take') : board?.swap && !quest.claimed ? t('quests.swapTitle') : undefined}
-              onClick={() =>
-                quest.done && !quest.claimed ? claim(quest.id) : board?.swap && !quest.claimed ? setAsking(quest.id) : nudge(quest.id)
-              }
+              className={`quest ${quest.claimed ? 'is-claimed' : board?.swap && !quest.done ? 'is-swappable' : ''}`}
+              title={board?.swap && !quest.claimed && !quest.done ? t('quests.swapTitle') : undefined}
+              onClick={() => (board?.swap && !quest.claimed && !quest.done ? setAsking(quest.id) : nudge(quest.id))}
             >
               <span className="quest-icon" aria-hidden>
                 {quest.claimed ? <CheckIcon /> : iconOf(quest.id)}
@@ -220,10 +209,8 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
           <li>
             <button
               type="button"
-              className={`quest ${board.free.claimed ? 'is-claimed' : 'is-ready'}`}
-              disabled={claiming === 'free'}
-              title={board.free.claimed ? undefined : t('quests.take')}
-              onClick={() => (board.free.claimed ? nudge('free') : claim('free'))}
+              className={`quest ${board.free.claimed ? 'is-claimed' : ''}`}
+              onClick={() => nudge('free')}
             >
               <span className="quest-icon" aria-hidden>
                 {board.free.claimed ? <CheckIcon /> : <CalendarIcon />}
@@ -251,10 +238,8 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
           <li>
             <button
               type="button"
-              className={`bonus ${board.bonus.claimed ? 'is-claimed' : board.bonus.ready ? 'is-ready' : ''}`}
-              disabled={claiming === 'bonus'}
-              title={board.bonus.ready && !board.bonus.claimed ? t('quests.take') : undefined}
-              onClick={() => (board.bonus.ready && !board.bonus.claimed ? claim('bonus') : nudge('bonus'))}
+              className={`bonus ${board.bonus.claimed ? 'is-claimed' : ''}`}
+              onClick={() => nudge('bonus')}
             >
               <span className="bonus-gift" aria-hidden>
                 {board.bonus.claimed ? <CheckIcon /> : <GiftIcon />}
@@ -299,7 +284,7 @@ export default function Quests({ onLevel }: { onLevel?: (level: Level) => void }
                 <button
                   type="button"
                   className="primary"
-                  disabled={claiming !== null}
+                  disabled={swapping}
                   onClick={() => {
                     const id = asking
                     setAsking(null)

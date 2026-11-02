@@ -2,6 +2,7 @@ import type { ObjectId } from 'mongodb'
 import { MODE_XP, statsKey, type GameId } from '@nanda/game'
 import { rounds, streaks, users, type StreakDoc } from './db'
 import { addXp, raiseBest } from './profile'
+import { collectQuestsQuietly } from './quests'
 import { pairRound, type PairSide } from './pairs'
 import { markSeasonPlay } from './season'
 import { today } from './daily'
@@ -78,6 +79,7 @@ async function logPair(doc: StreakDoc, won: boolean) {
     finishedAt: now,
   })
   await markSeasonPlay(doc.userId, won, today())
+  await collectQuestsQuietly(doc.userId)
 }
 
 export async function pairAnswer(userId: ObjectId, game: GameId, pick: PairSide) {
