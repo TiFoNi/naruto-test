@@ -60,6 +60,12 @@ const GRADES = [
 ]
 
 const SPECIES_OVERRIDES = { Sukuna: 'Проклятый дух', 'Ryomen Sukuna': 'Проклятый дух' }
+const AFFILIATION_FIX = {
+  Tengen: ['Токийский колледж'],
+  'Rika Orimoto': ['Токийский колледж'],
+  'Juzo Kumiya': ['Проклятые духи'],
+  Uraume: ['Проклятые духи'],
+}
 
 const SPECIES = [
   ['Проклятое тело', /death painting|cursed corpse|shikigami/i],
@@ -249,7 +255,7 @@ async function main() {
       species: kind,
       grade: firstMatch(GRADES, plain(infobox(text, 'class') ?? '')) ?? 'Нет',
       roles: roles(occupation, categories(text)),
-      affiliations: affiliations.length ? affiliations : ['Без фракции'],
+      affiliations: AFFILIATION_FIX[name] ?? (affiliations.length ? affiliations : ['Без фракции']),
       arc: ARCS[arcIndex][1],
       arcIndex,
       length,

@@ -103,6 +103,20 @@ const OVERRIDES = {
   'Sousuke Aizen': { affiliations: ['Готей 13', 'Армия Айзена'] },
   'Gin Ichimaru': { affiliations: ['Готей 13', 'Армия Айзена'] },
   'Kaname Tōsen': { affiliations: ['Готей 13', 'Армия Айзена'] },
+  'Askin Nakk Le Vaar': { ranks: ['Штернриттер'] },
+  'Bazz-B': { ranks: ['Штернриттер'] },
+  'Bambietta Basterbine': { ranks: ['Штернриттер'] },
+  'Giselle Gewelle': { ranks: ['Штернриттер'] },
+  'Lille Barro': { ranks: ['Штернриттер'] },
+  'Mask De Masculine': { ranks: ['Штернриттер'] },
+  'Quilge Opie': { ranks: ['Штернриттер'] },
+  'Äs Nödt': { ranks: ['Штернриттер'] },
+  'Uryū Ishida': { ranks: ['Штернриттер', 'Школьник'] },
+  'Ggio Vega': { ranks: ['Фрасьон'] },
+  'Charlotte Chuhlhourne': { ranks: ['Фрасьон'] },
+  'Gerard Valkyrie': { ranks: ['Штернриттер'], affiliations: ['Ванденрейх'] },
+  "Ichibe'e Hyōsube": { powers: ['Шикай', 'Банкай'] },
+  'Ōetsu Nimaiya': { powers: ['Шикай', 'Банкай'] },
 }
 
 const NAMES = {
@@ -113,6 +127,16 @@ const NAMES = {
   'Zangetsu (Quincy Powers)': 'Зангецу (Яхве)',
   'Soul King': 'Король душ',
   'Suì-Fēng': 'Сой Фон',
+}
+
+const NO_POWER = /^(none|not (yet )?achieved|n\/a)/i
+const HIDDEN_POWER = /^(unknown|not revealed)/i
+const CAPTAIN_POWERS = ['shikai', 'bankai']
+
+const hasPower = (text, field, ranks) => {
+  const value = plainList(infobox(text, field)).join(' ').trim()
+  if (!value || NO_POWER.test(value)) return false
+  return !HIDDEN_POWER.test(value) || (ranks.includes('Капитан') && CAPTAIN_POWERS.includes(field))
 }
 
 const pageTitle = (t) => !t.includes('/')
@@ -262,7 +286,7 @@ async function main() {
       races: races(text, affiliations, powers),
       affiliations,
       ranks: matchRules(RANK_RULES, occupationTexts),
-      powers,
+      powers: [...new Set(POWER_FIELDS.filter(([f]) => hasPower(text, f, matchRules(RANK_RULES, occupationTexts))).map(([, label]) => label))],
       division: division(text),
       ...arcFor(chapter),
       popularity: favorites[nameKey(name)] ?? 0,
