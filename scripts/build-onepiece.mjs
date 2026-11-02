@@ -99,13 +99,26 @@ const RACE_RULES = [
   ['Великан', /^Category:Giants$/],
   ['Гном', /^Category:Dwarves$/],
   ['Лунарианец', /^Category:Lunarians$/],
-  ['Длиннорукий', /^Category:Longarm Tribe$/],
+  ['Длиннорукий', /^Category:(Longarm Tribe|Longarms)$/],
   ['Длинноногий', /^Category:Longleg Tribe$/],
   ['Змеешеий', /^Category:Snakeneck Tribe$/],
   ['Трёхглазый', /^Category:Three-Eye Tribe$/],
   ['Животное', /^Category:(Animals|Talking Animals|Animals with Devil Fruit Abilities|Whales|Pets|(?!.*\b(?:Use|Using|Fighters|Riders)\b)[A-Za-z0-9 ']+ Animals)$/],
   ['Хоми', /^Category:Homies$/],
+  ['Биркан', /^Category:Birkans$/],
+  ['Букканир', /^Category:Buccaneers$/],
 ]
+
+const RACE_FIX = {
+  Kaidou: ['Они'],
+  Yamato: ['Они'],
+  Urouge: ['Биркан'],
+  'Charlotte Pudding': ['Человек', 'Трёхглазый'],
+  'Nerona Imu': ['Неизвестно'],
+  Pandaman: ['Неизвестно'],
+}
+
+const GENDER_FIX = { Yamato: 'Женский', Bentham: 'Мужской' }
 
 const FRUIT_RULES = [
   ['Парамеция', /Paramecia Devil Fruit Users$/],
@@ -402,8 +415,8 @@ async function main() {
       id: page.id,
       name: NAMES[name] ?? ruName(name, page.ru, transliterate),
       nameEn: name,
-      gender: matchCategories(SEX_CATEGORIES, cats)[0] ?? 'Другое',
-      races: races.length ? races : ['Человек'],
+      gender: GENDER_FIX[name] ?? matchCategories(SEX_CATEGORIES, cats)[0] ?? 'Другое',
+      races: RACE_FIX[name] ?? (races.length ? races : ['Человек']),
       affiliations: AFFILIATION_OVERRIDES[name] ?? affiliationsOf(affiliationText),
       fruits: matchCategories(FRUIT_RULES, cats),
       haki: matchCategories(HAKI_RULES, cats),

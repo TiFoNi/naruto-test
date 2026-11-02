@@ -108,7 +108,7 @@
   "nameEn": "Bartholomew Kuma",
   "gender": "Мужской",
   "races": [
-   "Человек"
+   "Букканир"
   ],
   "affiliations": [
    "Революционная армия"
@@ -151,7 +151,7 @@
   "id": 1831,
   "name": "Бентам (Мистер 2)",
   "nameEn": "Bentham",
-  "gender": "Другое",
+  "gender": "Мужской",
   "races": [
    "Человек"
   ],
@@ -855,7 +855,7 @@
   "nameEn": "Nerona Imu",
   "gender": "Мужской",
   "races": [
-   "Человек"
+   "Неизвестно"
   ],
   "affiliations": [
    "Мировое правительство"
@@ -966,7 +966,7 @@
   "nameEn": "Kaidou",
   "gender": "Мужской",
   "races": [
-   "Человек"
+   "Они"
   ],
   "affiliations": [
    "Пираты Зверей"
@@ -1807,7 +1807,7 @@
   "nameEn": "Pandaman",
   "gender": "Мужской",
   "races": [
-   "Человек"
+   "Неизвестно"
   ],
   "affiliations": [
    "Другое"
@@ -2155,7 +2155,7 @@
   "nameEn": "Scratchmen Apoo",
   "gender": "Мужской",
   "races": [
-   "Человек"
+   "Длиннорукий"
   ],
   "affiliations": [
    "Другие пираты"
@@ -2319,7 +2319,7 @@
   "nameEn": "Urouge",
   "gender": "Мужской",
   "races": [
-   "Человек"
+   "Биркан"
   ],
   "affiliations": [
    "Другие пираты"
@@ -2574,7 +2574,8 @@
   "nameEn": "Charlotte Pudding",
   "gender": "Женский",
   "races": [
-   "Человек"
+   "Человек",
+   "Трёхглазый"
   ],
   "affiliations": [
    "Пираты Большой Мамочки"
@@ -2660,7 +2661,7 @@
   "nameEn": "Enel",
   "gender": "Мужской",
   "races": [
-   "Человек"
+   "Биркан"
   ],
   "affiliations": [
    "Другое"
@@ -2706,9 +2707,9 @@
   "id": 322112,
   "name": "Ямато",
   "nameEn": "Yamato",
-  "gender": "Мужской",
+  "gender": "Женский",
   "races": [
-   "Человек"
+   "Они"
   ],
   "affiliations": [
    "Пираты Зверей"
