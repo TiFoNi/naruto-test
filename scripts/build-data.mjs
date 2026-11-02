@@ -49,6 +49,11 @@ const OVERRIDES = {
   'Kaguya Ōtsutsuki': { kekkeiGenkai: ['Бьякуган', 'Риннэ-Шаринган'] },
   'Ten-Tails': { kekkeiGenkai: ['Мокутон', 'Риннэ-Шаринган'] },
   'Hagoromo Ōtsutsuki': { kekkeiGenkai: ['Риннеган'] },
+  'Asura Ōtsutsuki': { kekkeiGenkai: ['Мокутон'] },
+  'Gaara': { kekkeiGenkai: ['Джитон'] },
+  'Madara Uchiha': { kekkeiGenkai: ['Шаринган', 'Мангекьё Шаринган', 'Вечный Мангекьё Шаринган', 'Риннеган', 'Мокутон', 'Рантон', 'Риннэ-Шаринган'] },
+  'Sasuke Uchiha': { kekkeiGenkai: ['Шаринган', 'Мангекьё Шаринган', 'Вечный Мангекьё Шаринган', 'Риннеган'] },
+  'Fugaku Uchiha': { kekkeiGenkai: ['Шаринган', 'Мангекьё Шаринган'] },
   'Hamura Ōtsutsuki': { kekkeiGenkai: ['Бьякуган', 'Тенсейган'] },
 }
 

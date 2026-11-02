@@ -120,6 +120,8 @@ const RACE_FIX = {
 
 const GENDER_FIX = { Yamato: 'Женский', Bentham: 'Мужской' }
 
+const HAKI_FIX = { Sanji: ['Наблюдения', 'Вооружения', 'Королевская'] }
+
 const FRUIT_RULES = [
   ['Парамеция', /Paramecia Devil Fruit Users$/],
   ['Зоан', /Zoan Devil Fruit Users$|SMILE Users$/],
@@ -419,7 +421,7 @@ async function main() {
       races: RACE_FIX[name] ?? (races.length ? races : ['Человек']),
       affiliations: AFFILIATION_OVERRIDES[name] ?? affiliationsOf(affiliationText),
       fruits: matchCategories(FRUIT_RULES, cats),
-      haki: matchCategories(HAKI_RULES, cats),
+      haki: HAKI_FIX[name] ?? matchCategories(HAKI_RULES, cats),
       bounty: bounty(box),
       arc: ARCS[arcIndex][1],
       arcIndex,
