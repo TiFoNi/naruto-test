@@ -31,7 +31,7 @@ export const GET = handle(async (request) => {
   const entries = (await (await seasons())
     .aggregate([
       { $match: { season: season.id, xp: { $gte: 1 } } },
-      { $sort: { xp: -1, _id: 1 } },
+      { $sort: { xp: -1, xpAt: 1, _id: 1 } },
       { $lookup: { from: 'users', localField: 'userId', foreignField: '_id', as: 'player' } },
       { $unwind: '$player' },
       {

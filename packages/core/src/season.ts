@@ -69,7 +69,7 @@ export async function addSeasonXp(userId: ObjectId, xp: number, now = new Date()
   const season = seasonAt(now)
   await (await seasons()).updateOne(
     { _id: key(season.id, userId) },
-    { $inc: { xp }, $setOnInsert: { season: season.id, userId, solved: 0, days: [] } },
+    { $inc: { xp }, $set: { xpAt: now }, $setOnInsert: { season: season.id, userId, solved: 0, days: [] } },
     { upsert: true },
   )
 }
@@ -97,7 +97,7 @@ export const previousSeason = (now = new Date()): Season => seasonAt(new Date(se
 
 export async function seasonStanding(seasonId: string, limit = 100) {
   return (await seasons())
-    .find({ season: seasonId, xp: { $gt: 0 } }, { projection: { userId: 1, xp: 1 }, sort: { xp: -1 }, limit })
+    .find({ season: seasonId, xp: { $gt: 0 } }, { projection: { userId: 1, xp: 1 }, sort: { xp: -1, xpAt: 1, _id: 1 }, limit })
     .toArray()
 }
 

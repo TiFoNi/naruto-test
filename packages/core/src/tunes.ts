@@ -2,7 +2,7 @@ import type { ObjectId } from 'mongodb'
 import { DAILY_XP_FACTOR, MODE_XP, TUNE_FULL, TUNE_MISS, TUNE_POINTS, TUNE_STEPS, dailyKey, tuneLevel, type TuneLevel } from '@nanda/game'
 import { rounds, tuneDays, tuneRuns, users, type TuneDayDoc, type TuneDoc } from './db'
 import { gameData } from './games'
-import { addXp, applyDailyResult } from './profile'
+import { addXp, applyDailyResult, raiseBest } from './profile'
 import { dailyAnswer, nextReset, today } from './daily'
 import { markSeasonPlay } from './season'
 
@@ -148,10 +148,11 @@ export async function tuneAnswer(userId: ObjectId, pick: number, guest = false) 
         { _id: userId },
         {
           $inc: { [`${PATH}.solved`]: 1, [`${PATH}.points`]: gained, [`${PATH}.totalGuesses`]: doc.step + 1 },
-          $set: { [`${PATH}.streak`]: streak, [`${PATH}.best`]: best },
+          $set: { [`${PATH}.streak`]: streak },
           $max: { [`${PATH}.bestStreak`]: streak },
         },
       )
+      await raiseBest(await users(), userId, PATH, 'best', best)
       await addXp(await users(), userId, MODE_XP.tune, 'endless', MODE)
     }
     return { ...(await view({ ...doc, ...next } as TuneDoc)), right: true, answerId: doc.answerId, gained }

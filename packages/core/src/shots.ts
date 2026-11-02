@@ -2,7 +2,7 @@ import type { ObjectId } from 'mongodb'
 import { DAILY_XP_FACTOR, SHOT_MISS, SHOT_POINTS, dailyKey } from '@nanda/game'
 import { rounds, shotDays, shotRuns, users, type ShotDayDoc, type ShotDoc } from './db'
 import { gameData } from './games'
-import { addXp, applyDailyResult } from './profile'
+import { addXp, applyDailyResult, raiseBest } from './profile'
 import { dailyAnswer, nextReset, today } from './daily'
 import { shotVariant } from './extra'
 import { markSeasonPlay } from './season'
@@ -149,10 +149,10 @@ async function markSolved(userId: ObjectId, frames: number, streak: number, gain
     {
       $inc: { [`${PATH}.solved`]: 1, [`${PATH}.totalGuesses`]: frames, [`${PATH}.points`]: gained },
       $set: { [`${PATH}.streak`]: streak },
-      $max: { [`${PATH}.bestStreak`]: streak },
     },
     { returnDocument: 'after', projection: { [`${PATH}.points`]: 1 } },
   )
+  await raiseBest(await users(), userId, PATH, 'bestStreak', streak)
   return pointsOf(doc)
 }
 

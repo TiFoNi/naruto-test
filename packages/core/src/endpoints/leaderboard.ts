@@ -8,8 +8,9 @@ import { isFrame } from '../frame-list'
 import { isBanner, lookOf } from '@nanda/game'
 
 const LIMIT = 200
+const LONG_AGO = new Date(0)
 const SORTS = {
-  best: { field: 'best', natural: -1, tie: { solved: -1 } },
+  best: { field: 'best', natural: -1, tie: { bestAt: 1, solved: -1 } },
   solved: { field: 'solved', natural: -1, tie: { best: -1 } },
 } as const
 
@@ -26,6 +27,7 @@ type Row = {
   xp?: number
   solved: number
   best: number
+  bestAt: Date
   avg: number
 }
 
@@ -71,6 +73,7 @@ export const GET = handle(async (request) => {
         xp: found.doc.xp,
         solved: stats?.solved ?? 0,
         best: day ? (stats?.dayBest ?? 0) : (stats?.[field] ?? 0),
+        bestAt: stats?.bestAt ?? LONG_AGO,
         avg: (stats?.totalGuesses ?? 0) / Math.max(1, stats?.solved ?? 0),
       }
     : null
@@ -95,6 +98,7 @@ export const GET = handle(async (request) => {
           xp: 1,
           solved: { $ifNull: [`${path}.solved`, 0] },
           best: { $ifNull: [day ? `${path}.dayBest` : `${path}.${field}`, 0] },
+          bestAt: { $ifNull: [`${path}.bestAt`, LONG_AGO] },
           avg: { $divide: [{ $ifNull: [`${path}.totalGuesses`, 0] }, { $max: [1, { $ifNull: [`${path}.solved`, 0] }] }] },
         },
       },

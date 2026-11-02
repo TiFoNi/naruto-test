@@ -128,7 +128,8 @@ export async function applyDailyResult(collection: Collection<UserDoc>, userId: 
   const base = normalizeStats(prev)
   if (prev?.lastDay === day) return dailyStats(prev)
   const streak = prev?.lastDay === shiftDay(day, -1) ? base.streak + 1 : 1
-  const next = { ...base, solved: base.solved + 1, streak, best: Math.max(base.best, streak), totalGuesses: base.totalGuesses + guesses, lastDay: day }
+  const bestAt = streak > base.best ? new Date() : prev?.bestAt
+  const next = { ...base, solved: base.solved + 1, streak, best: Math.max(base.best, streak), totalGuesses: base.totalGuesses + guesses, lastDay: day, ...(bestAt ? { bestAt } : {}) }
   await collection.updateOne({ _id: userId }, { $set: { [`stats.${key}`]: next }, $inc: { solvedTotal: 1 } })
   return dailyStats(next)
 }
@@ -305,6 +306,13 @@ export async function roundOwner(request: Request): Promise<Owner> {
 
 const orZero = (path: string) => ({ $ifNull: [`$${path}`, 0] })
 
+export async function raiseBest(collection: Collection<UserDoc>, userId: ObjectId, path: string, field: string, value: number) {
+  await collection.updateOne(
+    { _id: userId, [`${path}.${field}`]: { $not: { $gte: value } } } as Filter<UserDoc>,
+    { $set: { [`${path}.${field}`]: value, [`${path}.bestAt`]: new Date() } },
+  )
+}
+
 export async function applySkip(collection: Collection<UserDoc>, userId: ObjectId, key: string) {
   const doc = await collection.findOneAndUpdate(
     { _id: userId },
@@ -324,6 +332,7 @@ export async function applyResult(collection: Collection<UserDoc>, userId: Objec
               solved: { $add: [orZero(`${path}.solved`), 1] },
               streak: { $add: [orZero(`${path}.streak`), 1] },
               best: { $max: [orZero(`${path}.best`), { $add: [orZero(`${path}.streak`), 1] }] },
+              bestAt: { $cond: [{ $gt: [{ $add: [orZero(`${path}.streak`), 1] }, orZero(`${path}.best`)] }, '$$NOW', `$${path}.bestAt`] },
               totalGuesses: { $add: [orZero(`${path}.totalGuesses`), guesses] },
               skipped: orZero(`${path}.skipped`),
             },

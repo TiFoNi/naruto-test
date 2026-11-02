@@ -1,7 +1,7 @@
 import type { ObjectId } from 'mongodb'
 import { MODE_XP, statsKey, type GameId } from '@nanda/game'
 import { rounds, streaks, users, type StreakDoc } from './db'
-import { addXp } from './profile'
+import { addXp, raiseBest } from './profile'
 import { pairRound, type PairSide } from './pairs'
 import { markSeasonPlay } from './season'
 import { today } from './daily'
@@ -118,9 +118,10 @@ async function countPair(userId: ObjectId, game: GameId, right: boolean, streak:
   await (await users()).updateOne(
     { _id: userId },
     right
-      ? { $inc: { [`${path}.solved`]: 1, [`${path}.totalGuesses`]: 1 }, $set: { [`${path}.streak`]: streak }, $max: { [`${path}.best`]: streak } }
+      ? { $inc: { [`${path}.solved`]: 1, [`${path}.totalGuesses`]: 1 }, $set: { [`${path}.streak`]: streak } }
       : { $set: { [`${path}.streak`]: 0 } },
   )
+  if (right) await raiseBest(await users(), userId, path, 'best', streak)
 }
 
 export async function pairBoard(game: GameId, limit = 20) {
