@@ -12,9 +12,11 @@ export const POST = handle(async (request) => {
   if (!update) return json({ ok: true })
 
   if (update.kind === 'check') {
-    const order = await (await purchases()).findOne({ orderId: update.payload, status: 'pending' })
+    const book = await purchases()
+    const order = await book.findOne({ orderId: update.payload, status: 'pending' })
     if (order) await allowCheckout(update.id)
     else await denyCheckout(update.id, 'Order not found')
+    if (order) await book.updateOne({ _id: order._id }, { $set: { checkedAt: new Date() } })
     return json({ ok: true })
   }
 

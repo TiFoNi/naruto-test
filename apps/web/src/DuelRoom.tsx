@@ -188,16 +188,15 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
   const rivalNote = rival ? sideNote(rival, rival.guessCount, duel.rivalLeft ?? 0) : ''
 
   const quit =
-    duel.status === 'playing' &&
-    (solo ? (
+    duel.status === 'playing' && solo ? (
       <GiveUp hint="grid.giveUpHint" disabled={busy} onConfirm={giveUp}>
         {t('grid.giveUp')}
       </GiveUp>
-    ) : (
+    ) : duel.status === 'playing' || duel.status === 'finished' ? (
       <button type="button" className="give-up" onClick={() => void leave()} disabled={busy}>
-        {t('duel.leave')}
+        {solo ? t('grid.quit') : t('duel.leave')}
       </button>
-    ))
+    ) : null
 
   const myWins = teamly ? squadWins(myTeam) : you?.wins ?? 0
   const foeWins = teamly
@@ -400,6 +399,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
           onAnswer={markAnswer}
           onNext={next}
         />}
+      {!inLobby && game && duel.mode === 'who' && quit && <div className="duel-quit is-wide">{quit}</div>}
 
       {!inLobby && game && duel.mode === 'clue' && (
         <>

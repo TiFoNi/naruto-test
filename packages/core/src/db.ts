@@ -207,6 +207,7 @@ export type PurchaseDoc = {
   charged?: number
   stars?: number
   way?: 'crypto' | 'stars'
+  checkedAt?: Date
   provider: string
   orderId: string
   invoiceId?: string

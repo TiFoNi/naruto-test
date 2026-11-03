@@ -1179,14 +1179,14 @@
   gap: 8px;
   padding: 9px 14px;
   white-space: nowrap;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ff8085 40%, var(--line));
   border-radius: 12px;
-  background: var(--card);
-  color: var(--text-3);
+  background: color-mix(in srgb, #ff8085 10%, var(--card));
+  color: #ff8085;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
 
 .duel-leave svg {
@@ -1201,8 +1201,9 @@
 }
 
 .duel-leave:hover:not(:disabled) {
-  border-color: color-mix(in srgb, #ff8085 45%, var(--line));
-  color: #ff8085;
+  border-color: color-mix(in srgb, #ff8085 70%, var(--line));
+  background: color-mix(in srgb, #ff8085 18%, var(--card));
+  color: #ff9ea2;
 }
 
 .duel-head-side {
@@ -2522,10 +2523,10 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   width: 36px;
   height: 36px;
   padding: 0;
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, #ff8085 40%, var(--line));
   border-radius: 10px;
-  background: transparent;
-  color: var(--text-3);
+  background: color-mix(in srgb, #ff8085 10%, transparent);
+  color: #ff8085;
   cursor: pointer;
 }
 
@@ -2535,8 +2536,9 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 }
 
 .duel-room .duel-leave:hover:not(:disabled) {
-  border-color: color-mix(in srgb, var(--wrong) 60%, transparent);
-  color: var(--wrong-text, #ff8f99);
+  border-color: color-mix(in srgb, #ff8085 70%, transparent);
+  background: color-mix(in srgb, #ff8085 18%, transparent);
+  color: #ff9ea2;
 }
 
 .duel-arena {
