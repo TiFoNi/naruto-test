@@ -11,7 +11,14 @@ const config: NextConfig = {
     return upstream ? [{ source: '/api/:path*', destination: `${upstream}/api/:path*` }] : []
   },
   async headers() {
-    return [{ source: '/terms.json', headers: [{ key: 'Cache-Control', value: 'public, max-age=3600, stale-while-revalidate=604800' }] }]
+    return [
+      { source: '/terms.json', headers: [{ key: 'Cache-Control', value: 'public, max-age=3600, stale-while-revalidate=604800' }] },
+      { source: '/frames/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=604800, stale-while-revalidate=2592000' }] },
+      {
+        source: '/:dir(banners|worlds|awards|shop|promo|avatar)/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' }],
+      },
+    ]
   },
 }
 
