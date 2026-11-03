@@ -174,11 +174,11 @@ export default function QuizList({ category }: { category: string }) {
           <h1>{t('quiz.title')}</h1>
         </div>
         <div className="qz-main-tools">
-          <Link className="qz-action" href={href.myTests}>
+          <Link prefetch={false} className="qz-action" href={href.myTests}>
             <PencilIcon />
             {t('qb.mine')}
           </Link>
-          <Link className="qz-action is-accent" href={href.makeTest()}>
+          <Link prefetch={false} className="qz-action is-accent" href={href.makeTest()}>
             <PlusIcon />
             {t('qb.create')}
           </Link>

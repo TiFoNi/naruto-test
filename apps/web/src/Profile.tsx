@@ -845,7 +845,7 @@ export default function Profile({ id }: { id?: string }) {
         <header>
           <h2>{t('profile.worlds')}</h2>
           {!!user && (
-            <Link className="worlds-all" href={own || !id ? href.worlds : href.playerWorlds(id)}>
+            <Link prefetch={false} className="worlds-all" href={own || !id ? href.worlds : href.playerWorlds(id)}>
               {t('profile.worldsAll', { count: summary?.games.length ?? 0 })}
               <ArrowIcon />
             </Link>
@@ -924,7 +924,7 @@ export default function Profile({ id }: { id?: string }) {
             </small>
           </h2>
           {!!user && (
-            <Link className="worlds-all" href={own || !id ? href.achievements : href.playerAwards(id)}>
+            <Link prefetch={false} className="worlds-all" href={own || !id ? href.achievements : href.playerAwards(id)}>
               {t('profile.worldsAll', { count: summary?.awardsTotal ?? 0 })}
               <ArrowIcon />
             </Link>

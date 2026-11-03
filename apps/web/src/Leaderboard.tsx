@@ -313,7 +313,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                           <td colSpan={columns.length + 2}>
                             <div className="lb-blank-inner">
                               <span>{t('lb.empty')}</span>
-                              <Link className="primary" href={href.play(gameId, mode)}>
+                              <Link prefetch={false} className="primary" href={href.play(gameId, mode)}>
                                 {t('lb.play')}
                               </Link>
                             </div>
@@ -387,7 +387,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                 {t('lb.gameHow3')}
               </li>
             </ol>
-            <Link className="primary lb-cta" href={href.play(gameId, mode)} title={t('lb.playGame', { game: l(game.label) })}>
+            <Link prefetch={false} className="primary lb-cta" href={href.play(gameId, mode)} title={t('lb.playGame', { game: l(game.label) })}>
               <span>{t('lb.play')}</span>
             </Link>
           </div>

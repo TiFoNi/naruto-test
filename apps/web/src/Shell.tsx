@@ -93,13 +93,13 @@ function NavMenu({ user, section }: { user: boolean; section?: string }) {
       <nav className="topbar-nav">
         {user && (
           <>
-            <Link className={onDuels ? 'active' : ''} href={href.duels} title={t('nav.duels')}>
+            <Link prefetch={false} className={onDuels ? 'active' : ''} href={href.duels} title={t('nav.duels')}>
               <span className="topbar-nav-icon" aria-hidden>
                 <SwordsIcon />
               </span>
               <span className="topbar-nav-word">{t('nav.duels')}</span>
             </Link>
-            <Link className={onBoard ? 'active' : ''} href={href.board} title={t('nav.leaderboard')}>
+            <Link prefetch={false} className={onBoard ? 'active' : ''} href={href.board} title={t('nav.leaderboard')}>
               <span className="topbar-nav-icon" aria-hidden>
                 <PodiumIcon />
               </span>
@@ -873,7 +873,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
               <LangSwitch />
               <div className="topbar-slot">
                 {(section === 'login' || (!loading && !user && !open)) && (
-                  <Link className="topbar-link guest" href={href.home}>
+                  <Link prefetch={false} className="topbar-link guest" href={href.home}>
                     <span className="topbar-link-label">{t('login.guest')}</span>
                   </Link>
                 )}
@@ -884,7 +884,7 @@ export default function Shell({ children, games }: { children: ReactNode; games:
                 )}
                 {user && (
                   <>
-                    <Link
+                    <Link prefetch={false}
                       className={`topbar-coins topbar-shop ${section === 'shop' ? 'active' : ''}`}
                       href={href.shop}
                       title={t('nav.shop')}
