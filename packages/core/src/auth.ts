@@ -65,13 +65,33 @@ let pending: ReturnType<typeof build> | null = null
 
 export const auth = () => (pending ??= build())
 
+type SessionUser = { id: string; email: string; name: string }
+
+const SESSION_KEEP_MS = 60_000
+const SESSION_KEEP_MAX = 5_000
+const SESSION_COOKIE = /(?:^|;\s*)(?:__Secure-)?nanda\.session_token=([^;]+)/
+
+const sessions = new Map<string, { at: number; user: SessionUser | null }>()
+
+const tokenOf = (request: Request) => request.headers.get('cookie')?.match(SESSION_COOKIE)?.[1] ?? null
+
 export async function authSession(request: Request) {
+  const token = tokenOf(request)
+  const kept = token ? sessions.get(token) : undefined
+  if (kept && Date.now() - kept.at < SESSION_KEEP_MS) return kept.user
   const api = await auth()
   const found = await api.api.getSession({ headers: request.headers }).catch(() => null)
-  return found?.user ? { id: found.user.id, email: found.user.email, name: found.user.name } : null
+  const user = found?.user ? { id: found.user.id, email: found.user.email, name: found.user.name } : null
+  if (token && found !== null) {
+    if (sessions.size >= SESSION_KEEP_MAX) sessions.clear()
+    sessions.set(token, { at: Date.now(), user })
+  }
+  return user
 }
 
 export async function authHandler(request: Request) {
+  const token = tokenOf(request)
+  if (token && request.method !== 'GET') sessions.delete(token)
   const api = await auth()
   return api.handler(request)
 }

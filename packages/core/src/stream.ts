@@ -8,7 +8,7 @@ export type Sender = (event: string, data: unknown) => void
 
 type RoomClient = { userId: ObjectId; send: Sender; shot?: string | null }
 
-const HEARTBEAT_MS = 20_000
+const HEARTBEAT_MS = 45_000
 const GRACE_MS = 60_000
 const SAFETY_MS = 15_000
 
@@ -54,6 +54,34 @@ export function markTyping(userId: string, nickname: string, on: boolean) {
   sweep ??= setInterval(pruneTyping, 1_000)
   if (!known || known.nickname !== nickname) pushTyping()
 }
+
+const PRESENCE_FIELD = '(^|\\.)(seenAt|touchedAt)$'
+
+const PRESENCE_ONLY = [
+  {
+    $match: {
+      $expr: {
+        $or: [
+          { $ne: ['$operationType', 'update'] },
+          { $gt: [{ $size: { $ifNull: ['$updateDescription.removedFields', []] } }, 0] },
+          {
+            $gt: [
+              {
+                $size: {
+                  $filter: {
+                    input: { $objectToArray: { $ifNull: ['$updateDescription.updatedFields', {}] } },
+                    cond: { $not: [{ $regexMatch: { input: '$$this.k', regex: PRESENCE_FIELD } }] },
+                  },
+                },
+              },
+              0,
+            ],
+          },
+        ],
+      },
+    },
+  },
+]
 
 let watcher: Promise<void> | null = null
 let talk: Promise<void> | null = null
@@ -149,7 +177,7 @@ function notifyBell(userId: unknown) {
 
 async function startWatcher() {
   watcher ??= (async () => {
-    const stream = (await duels()).watch([], { fullDocument: 'updateLookup' })
+    const stream = (await duels()).watch(PRESENCE_ONLY, { fullDocument: 'updateLookup' })
     stream.on('change', (change) => {
       const id = String((change as { documentKey?: { _id?: unknown } }).documentKey?._id ?? '')
       const doc = (change as { fullDocument?: DuelDoc }).fullDocument
