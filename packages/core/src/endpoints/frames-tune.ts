@@ -25,9 +25,15 @@ const clean = (raw: unknown) => {
   return out
 }
 
+const KEEP_MS = 60_000
+
+let kept: { at: number; tune: Record<string, unknown> } | null = null
+
 export const GET = handle(async () => {
+  if (kept && Date.now() - kept.at < KEEP_MS) return json({ tune: kept.tune })
   const doc = await (await settings()).findOne({ game: SLOT }, { projection: { _id: 0, tune: 1 } })
-  return json({ tune: doc?.tune ?? {} })
+  kept = { at: Date.now(), tune: doc?.tune ?? {} }
+  return json({ tune: kept.tune })
 })
 
 export const POST = handle(async (request) => {
@@ -38,5 +44,6 @@ export const POST = handle(async (request) => {
   if (!picked) return fail(400, 'bad_request')
 
   await (await settings()).updateOne({ game: SLOT }, { $set: { tune: picked } }, { upsert: true })
+  kept = { at: Date.now(), tune: picked }
   return json({ tune: picked })
 })

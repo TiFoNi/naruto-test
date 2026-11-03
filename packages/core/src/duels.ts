@@ -138,10 +138,16 @@ export async function createDuel(doc: UserDoc, invited?: UserDoc) {
   return null
 }
 
-export const findDuel = async (value: unknown) =>
-  typeof value === 'string' && /^[A-Z0-9]{6}$/.test(value)
-    ? (await duels()).findOneAndUpdate({ code: value }, { $set: { touchedAt: new Date() } }, { returnDocument: 'after' })
-    : null
+const TOUCH_EVERY_MS = 60 * 60 * 1000
+
+export const findDuel = async (value: unknown) => {
+  if (typeof value !== 'string' || !/^[A-Z0-9]{6}$/.test(value)) return null
+  const collection = await duels()
+  const found = await collection.findOne({ code: value })
+  if (found && (!found.touchedAt || Date.now() - found.touchedAt.getTime() > TOUCH_EVERY_MS))
+    await collection.updateOne({ _id: found._id }, { $set: { touchedAt: new Date() } })
+  return found
+}
 
 export async function joinDuel(duel: DuelDoc, doc: UserDoc) {
   if (sideOf(duel, doc._id!)) return duel
@@ -505,6 +511,8 @@ export async function wantNext(duel: DuelDoc, userId: ObjectId) {
 }
 
 export const IDLE_MS = 150_000
+
+export const SEEN_EVERY_MS = 15_000
 const EMPTY_MS = 240_000
 const SWEEP_MS = 60_000
 let sweptAt = 0
@@ -585,6 +593,7 @@ export async function touchSide(
   const index = duel.players.findIndex((side) => side.userId.equals(userId))
   if (index < 0) return duel
   const side = duel.players[index]!
+  const recent = !!side.seenAt && Date.now() - side.seenAt.getTime() < SEEN_EVERY_MS
   const fresh =
     look &&
     (side.frame !== (look.frame ?? null) ||
@@ -598,6 +607,7 @@ export async function touchSide(
           [`players.${index}.title`]: look.title ?? null,
         }
       : {}
+  if (recent && !Object.keys(fresh || {}).length) return duel
   const updated = await (await duels()).findOneAndUpdate(
     { _id: duel._id },
     { $set: { [`players.${index}.seenAt`]: new Date(), ...fresh } },

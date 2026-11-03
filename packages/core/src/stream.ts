@@ -1,6 +1,6 @@
 import type { ObjectId } from 'mongodb'
 import { chatRoom, coinLedger, duels, type ChatDoc, type DuelDoc } from './db'
-import { duelShotKey, duelView, leaveDuel, scheduleBot, settle, sideOf } from './duels'
+import { SEEN_EVERY_MS, duelShotKey, duelView, leaveDuel, scheduleBot, settle, sideOf } from './duels'
 import { friends, type FriendDoc } from './friends'
 import { lineOf } from './chat'
 
@@ -10,7 +10,7 @@ type RoomClient = { userId: ObjectId; send: Sender; shot?: string | null }
 
 const HEARTBEAT_MS = 20_000
 const GRACE_MS = 60_000
-const SAFETY_MS = 4_000
+const SAFETY_MS = 15_000
 
 const rooms = new Map<string, Set<RoomClient>>()
 const bells = new Map<string, Set<Sender>>()
@@ -99,9 +99,10 @@ const mark = (duel: DuelDoc) =>
 const hasClient = (code: string, userId: ObjectId) => [...(rooms.get(code) ?? [])].some((client) => client.userId.equals(userId))
 
 async function touch(code: string, userId: ObjectId) {
+  const now = new Date()
   await (await duels()).updateOne(
-    { code, 'players.userId': userId },
-    { $set: { 'players.$.seenAt': new Date(), touchedAt: new Date() } },
+    { code, players: { $elemMatch: { userId, seenAt: { $lt: new Date(now.getTime() - SEEN_EVERY_MS) } } } },
+    { $set: { 'players.$.seenAt': now, touchedAt: now } },
   )
 }
 
