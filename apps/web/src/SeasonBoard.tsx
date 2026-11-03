@@ -189,7 +189,7 @@ export default function SeasonBoard({ initial = null }: { initial?: Board | null
           createPortal(
             <div className="modal-backdrop shop-peek" onClick={() => setPeek(null)} role="presentation">
               <section className="shop-peek-box" role="dialog" aria-modal="true" aria-label={t('lb.reward1')}>
-                <HeroPeek user={user ?? null} stats={peekStats} banner={user?.banner ?? null} frame={peek} />
+                <HeroPeek user={user ?? null} stats={peekStats} banner={user?.banner ?? null} frame={peek} under={false} />
               </section>
             </div>,
             document.body,
