@@ -4,6 +4,7 @@ import type { NestExpressApplication } from '@nestjs/platform-express'
 import compression from 'compression'
 import { raw } from 'express'
 import { AppModule } from './app.module'
+import { rateLimit } from './rate-limit'
 
 const origins = (process.env.CORS_ORIGINS ?? 'http://localhost:5173').split(',').map((o) => o.trim())
 
@@ -11,6 +12,7 @@ async function bootstrap() {
   const port = Number(process.env.PORT ?? 4000)
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   app.set('trust proxy', 1)
+  app.use(rateLimit)
   const plain = ['/api/stream/', '/api/tune/audio']
   app.use(
     compression({
