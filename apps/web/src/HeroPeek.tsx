@@ -94,8 +94,8 @@ export default function HeroPeek({ user, stats, banner, frame }: Props) {
             >
               <span>{face.label}</span>
               <b>
-                {face.value}
-                {'tail' in face && face.tail ? <i>{face.tail}</i> : null}
+                {stats ? face.value : '—'}
+                {stats && 'tail' in face && face.tail ? <i>{face.tail}</i> : null}
               </b>
             </div>
           )

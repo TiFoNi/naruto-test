@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import '@/src/styles/leaderboard.css'
+import '@/src/styles/shop.css'
 
 export const metadata: Metadata = { robots: { index: false, follow: false } }
 

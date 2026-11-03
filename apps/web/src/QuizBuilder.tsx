@@ -57,6 +57,7 @@ const HEROES = abilities as Record<string, Ability[]>
 const MAX_OPTIONS = 8
 const MAX_PAIRS = 6
 const MAX_QUESTIONS = 30
+const MIN_QUESTIONS = 3
 
 const ERRORS: Record<string, UiKey> = {
   game: 'qb.err.game',
@@ -983,10 +984,11 @@ export default function QuizBuilder({
   const patch = (next: Partial<Draft>) => setQuiz((current) => ({ ...current, ...next }))
   const setQuestions = (questions: DraftQuestion[]) => patch({ questions })
   const issues = quiz.questions.map(issueOf)
-  const issueCount = issues.filter(Boolean).length + (quiz.title.trim() ? 0 : 1)
+  const enough = quiz.questions.length >= MIN_QUESTIONS
+  const issueCount = issues.filter(Boolean).length + (quiz.title.trim() ? 0 : 1) + (enough ? 0 : 1)
   const current = Math.max(0, Math.min(sel, quiz.questions.length - 1))
   const titleOk = !!quiz.title.trim()
-  const questionsOk = quiz.questions.length > 0 && issues.every((one) => !one)
+  const questionsOk = enough && issues.every((one) => !one)
   const steps = [
     { key: 'qb.step.main' as UiKey, ok: titleOk },
     { key: 'qb.step.questions' as UiKey, ok: questionsOk },
@@ -1141,6 +1143,7 @@ export default function QuizBuilder({
     />
   )
 
+  const checks = quiz.questions.length + 2
   const checklist = (
     <section className="qb-card qb-checklist">
       <header className="qb-card-head">
@@ -1152,11 +1155,11 @@ export default function QuizBuilder({
           <b>{t('qb.check.title')}</b>
         </div>
         <em className="qb-check-count">
-          {quiz.questions.length + 1 - issueCount}/{quiz.questions.length + 1}
+          {checks - issueCount}/{checks}
         </em>
       </header>
       <span className="qb-check-bar" aria-hidden>
-        <i style={{ width: `${((quiz.questions.length + 1 - issueCount) / (quiz.questions.length + 1)) * 100}%` }} />
+        <i style={{ width: `${((checks - issueCount) / checks) * 100}%` }} />
       </span>
       <ul>
         <li className={titleOk ? 'is-ok' : 'is-bad'}>
@@ -1165,6 +1168,16 @@ export default function QuizBuilder({
             <span>
               <b>{t('qb.titleLabel')}</b>
               <small>{titleOk ? quiz.title : t('qb.err.title')}</small>
+            </span>
+            <ArrowIcon />
+          </button>
+        </li>
+        <li className={enough ? 'is-ok' : 'is-bad'}>
+          <button type="button" onClick={() => go(1)}>
+            <i>{enough ? <CheckIcon /> : <CloseIcon />}</i>
+            <span>
+              <b>{t('qb.step.questions')}</b>
+              <small>{enough ? quiz.questions.length : t('qb.err.fewQuestions')}</small>
             </span>
             <ArrowIcon />
           </button>

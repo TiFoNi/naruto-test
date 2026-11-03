@@ -1082,6 +1082,37 @@
   --medal: #d9a066;
 }
 
+.season-rewards li.is-peek {
+  padding: 0;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.season-rewards li.is-peek:hover {
+  border-color: color-mix(in srgb, var(--medal, var(--line)) 60%, transparent);
+  background: color-mix(in srgb, var(--medal, #ffffff) 13%, transparent);
+  transform: translateY(-2px);
+}
+
+.season-prize-card {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
 .season-prize-face {
   width: 48px;
   height: 48px;
@@ -1123,6 +1154,11 @@
     padding: 14px 12px;
   }
 
+  .season-prize-card {
+    gap: 12px;
+    padding: 14px 12px;
+  }
+
   .season-prize-what b {
     font-size: 12px;
   }
@@ -1140,6 +1176,12 @@
     flex-direction: column;
     gap: 8px;
     min-height: 118px;
+    padding: 14px 6px;
+  }
+
+  .season-prize-card {
+    flex-direction: column;
+    gap: 8px;
     padding: 14px 6px;
   }
 

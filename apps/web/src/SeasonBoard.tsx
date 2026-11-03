@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, type CSSProperties } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { championFrame } from '@nanda/core/frame-list'
 import { api } from './api'
@@ -14,6 +15,7 @@ import BoardFace from './BoardFace'
 import { useAuth } from './auth'
 import { MARKS } from './Profile'
 import BannerArt from './BannerArt'
+import HeroPeek, { type PeekStats } from './HeroPeek'
 
 type Row = {
   id: string
@@ -58,6 +60,30 @@ export default function SeasonBoard({ initial = null }: { initial?: Board | null
   const { t, lang, error: errorText } = useI18n()
   const { user } = useAuth()
   const href = useHref()
+  const [peek, setPeek] = useState<string | null>(null)
+  const [peekStats, setPeekStats] = useState<PeekStats | null>(null)
+
+  useEffect(() => {
+    if (!peek) return
+    const key = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setPeek(null)
+    }
+    document.addEventListener('keydown', key)
+    return () => document.removeEventListener('keydown', key)
+  }, [peek])
+
+  useEffect(() => {
+    if (!user) return
+    let alive = true
+    void api<PeekStats>('profile/summary').then(({ ok, data }) => {
+      if (alive && ok) setPeekStats(data)
+    })
+    return () => {
+      alive = false
+    }
+  }, [user])
+
+  const openPeek = (frame: string) => setPeek(frame)
   const [board, setBoard] = useState<Board | null>(() => {
     if (typeof window === 'undefined') return initial
     if (initial) known = initial
@@ -135,18 +161,39 @@ export default function SeasonBoard({ initial = null }: { initial?: Board | null
         </div>
 
         <ul className="season-rewards">
-          {PRIZES.map((prize) => (
-            <li key={prize.title} className={prize.tone}>
-              {prize.frame && (
-                <Avatar medium className="season-prize-face" id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={prize.title === 'champion' && board ? championFrame(board.season.number) : prize.frame} />
-              )}
-              <span className="season-prize-what">
-                <b>{t(prize.place)}</b>
-                <i className={`player-title is-slim is-${prize.title}`}>{t(`title.${prize.title}` as UiKey)}</i>
-              </span>
-            </li>
-          ))}
+          {PRIZES.map((prize) => {
+            const frame = prize.frame && (prize.title === 'champion' && board ? championFrame(board.season.number) : prize.frame)
+            const what = (
+              <>
+                {frame && <Avatar medium className="season-prize-face" id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={frame} />}
+                <span className="season-prize-what">
+                  <b>{t(prize.place)}</b>
+                  <i className={`player-title is-slim is-${prize.title}`}>{t(`title.${prize.title}` as UiKey)}</i>
+                </span>
+              </>
+            )
+            return (
+              <li key={prize.title} className={`${prize.tone} ${frame ? 'is-peek' : ''}`}>
+                {frame ? (
+                  <button type="button" className="season-prize-card" onClick={() => openPeek(frame)}>
+                    {what}
+                  </button>
+                ) : (
+                  what
+                )}
+              </li>
+            )
+          })}
         </ul>
+        {peek &&
+          createPortal(
+            <div className="modal-backdrop shop-peek" onClick={() => setPeek(null)} role="presentation">
+              <section className="shop-peek-box" role="dialog" aria-modal="true" aria-label={t('lb.reward1')}>
+                <HeroPeek user={user ?? null} stats={peekStats} banner={user?.banner ?? null} frame={peek} />
+              </section>
+            </div>,
+            document.body,
+          )}
 
         <div className="season-sticks" aria-hidden>
           {Array.from({ length: parts }, (_, index) => (

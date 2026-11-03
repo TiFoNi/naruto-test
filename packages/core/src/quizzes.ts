@@ -6,7 +6,7 @@ import { quizAttempts, quizzes, users, type QuizAttemptDoc, type QuizCover, type
 
 export const QUIZ_XP_PER_ANSWER = 10
 
-export const QUIZ_LIMITS = { title: 80, text: 300, option: 80, note: 300, minOptions: 2, maxOptions: 8, maxPairs: 6, maxQuestions: 30, ownQuizzes: 30 }
+export const QUIZ_LIMITS = { title: 80, text: 300, option: 80, note: 300, minOptions: 2, maxOptions: 8, maxPairs: 6, minQuestions: 3, maxQuestions: 30, ownQuizzes: 30 }
 
 const STATUSES: QuizStatus[] = ['draft', 'review', 'published', 'rejected']
 
@@ -168,8 +168,8 @@ export async function readQuiz(
   const cover = readPicture(body.cover, known)
 
   const list = Array.isArray(body.questions) ? body.questions : []
-  if (list.length > QUIZ_LIMITS.maxQuestions || (!list.length && !loose)) return { error: 'questions' }
-  if (!list.length) complete = false
+  if (list.length > QUIZ_LIMITS.maxQuestions || (list.length < QUIZ_LIMITS.minQuestions && !loose)) return { error: 'questions' }
+  if (list.length < QUIZ_LIMITS.minQuestions) complete = false
   const questions: QuizQuestion[] = []
   for (const [at, one] of list.entries()) {
     const question = await readQuestion(one, known, game)
