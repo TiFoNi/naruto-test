@@ -208,7 +208,24 @@ export default function Chat() {
   useEffect(() => {
     if (!open) return
     const box = feed.current
-    if (box) box.scrollTop = box.scrollHeight
+    if (!box) return
+    nearEnd.current = true
+    box.scrollTop = box.scrollHeight
+    const stick = () => {
+      if (nearEnd.current) box.scrollTop = box.scrollHeight
+    }
+    const sizes = new ResizeObserver(stick)
+    sizes.observe(box)
+    for (const child of box.children) sizes.observe(child)
+    const added = new MutationObserver((changes) => {
+      for (const change of changes) for (const node of change.addedNodes) if (node instanceof Element) sizes.observe(node)
+      stick()
+    })
+    added.observe(box, { childList: true })
+    return () => {
+      sizes.disconnect()
+      added.disconnect()
+    }
   }, [open])
 
   useEffect(() => {

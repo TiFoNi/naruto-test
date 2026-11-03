@@ -4,7 +4,7 @@ import AdminNav from './AdminNav'
 import { useEffect, useState, type CSSProperties } from 'react'
 import Avatar from './Avatar'
 import { useAuth } from './auth'
-import { FRAMES, TUNE_DEFAULT, dropLegacy, frameUrl, keepTune, legacyTune, loadTune, setTune, tuneOf, type FrameTune } from './frames'
+import { FRAMES, TUNE_DEFAULT, dropLegacy, frameUrl, keepTune, loadTune, setTune, tuneOf, type FrameTune } from './frames'
 
 const SIZES = [148, 92, 44]
 
@@ -23,11 +23,13 @@ export default function FrameAdmin() {
   const [all, setAll] = useState<Record<string, FrameTune>>({})
   const [busy, setBusy] = useState(false)
   const [kept, setSaved] = useState(false)
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    void loadTune().then(() => {
-      const mine = legacyTune()
-      setAll(Object.fromEntries(FRAMES.map((one) => [one.id, { ...tuneOf(one.id), ...(mine[one.id] ?? {}) }])))
+    void loadTune().then((loaded) => {
+      if (!loaded) return
+      setAll(Object.fromEntries(FRAMES.map((one) => [one.id, tuneOf(one.id)])))
+      setReady(true)
     })
   }, [])
 
@@ -48,6 +50,7 @@ export default function FrameAdmin() {
   }
 
   const save = async () => {
+    if (!ready) return
     setBusy(true)
     const { ok } = await keepTune(Object.fromEntries(FRAMES.map((frame) => [frame.id, all[frame.id] ?? TUNE_DEFAULT])))
     setBusy(false)
@@ -119,7 +122,7 @@ export default function FrameAdmin() {
               </label>
             ))}
             <div className="frame-admin-acts">
-              <button type="button" disabled={busy} onClick={() => void save()}>
+              <button type="button" disabled={busy || !ready} onClick={() => void save()}>
                 {busy ? 'Сохраняю…' : kept ? 'Сохранено для всех' : 'Сохранить для всех'}
               </button>
               <button type="button" className="ghost" onClick={reset}>

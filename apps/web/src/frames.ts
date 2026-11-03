@@ -12,6 +12,7 @@ export type Frame = { id: string; kind: FrameKind; label: L10n }
 const AWARD_LABELS: Record<string, L10n> = {
   top1: l10n('1-е место', '1-ше місце', '1st place'),
   cosmos: l10n('Космос', 'Космос', 'Cosmos'),
+  blades: l10n('Клинки', 'Клинки', 'Blades'),
 }
 
 const NATURE_LABELS: Record<string, L10n> = {
@@ -22,7 +23,7 @@ const NATURE_LABELS: Record<string, L10n> = {
   fireflies: l10n('Светлячки', 'Світляки', 'Fireflies'),
 }
 
-const DRAWN = new Set<string>([...NATURE_FRAMES, 'aot', 'kny', 'tg', 'dn', 'top1', 'cosmos'])
+const DRAWN = new Set<string>([...NATURE_FRAMES, 'aot', 'kny', 'tg', 'dn', 'top1', 'cosmos', 'blades'])
 
 const ALL: Frame[] = [
   ...AWARD_FRAMES.map((id) => ({ id, kind: 'award' as const, label: AWARD_LABELS[id] })),
@@ -33,7 +34,7 @@ const ALL: Frame[] = [
 
 export const FRAMES: Frame[] = ALL.filter((one) => DRAWN.has(one.id))
 
-const ART = '26'
+const ART = '28'
 
 export const frameUrl = (id: string, size?: 'sm' | 'md' | boolean) => `/frames/${id}${size === true || size === 'sm' ? '-sm' : size === 'md' ? '-md' : ''}.webp?v=${ART}`
 
@@ -42,14 +43,6 @@ export type FrameTune = { scale: number; x: number; y: number; cut: number; cx: 
 export const TUNE_DEFAULT: FrameTune = { scale: 1.22, x: 0, y: 0, cut: 100, cx: 0, cy: 0 }
 
 const LEGACY_KEY = 'nanda.frame-tune'
-
-export const legacyTune = (): Record<string, Partial<FrameTune>> => {
-  try {
-    return JSON.parse(localStorage.getItem(LEGACY_KEY) ?? '{}') as Record<string, Partial<FrameTune>>
-  } catch {
-    return {}
-  }
-}
 
 export const dropLegacy = () => {
   try {
@@ -80,13 +73,18 @@ export const setTune = (next: Record<string, Partial<FrameTune>>) => {
   for (const fn of watchers) fn()
 }
 
-let asked = false
+let asked: Promise<boolean> | null = null
 
-export const loadTune = async () => {
-  if (asked) return
-  asked = true
-  const { ok, data } = await api<{ tune?: Record<string, Partial<FrameTune>> }>('frames/tune')
-  if (ok && data.tune) setTune(data.tune)
+export const loadTune = () => {
+  asked ??= api<{ tune?: Record<string, Partial<FrameTune>> }>('frames/tune').then(({ ok, data }) => {
+    if (!ok || !data.tune) {
+      asked = null
+      return false
+    }
+    setTune(data.tune)
+    return true
+  })
+  return asked
 }
 
 export const keepTune = async (next: Record<string, FrameTune>) => {
