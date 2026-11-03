@@ -12,6 +12,7 @@ import { useI18n, type UiKey } from './i18n'
 import { CheckIcon, GridIcon, HeartIcon, LinkIcon, PencilIcon, PlusIcon, SearchIcon, SortIcon, UsersIcon } from './icons'
 import { coverUrl, type QuizCard, type QuizKind, type QuizLayout } from './quiz'
 import { useHref } from './router'
+import { uiUrl } from './pics'
 
 type Status = 'all' | 'new' | 'going' | 'done'
 type Sort = 'new' | 'popular' | 'liked' | 'short' | 'long'
@@ -55,7 +56,7 @@ export function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
       <span className="qz-info">
         {world && (
           <em className="qz-world" style={{ '--world-accent': world.accent } as CSSProperties}>
-            <img src={`/worlds/${world.id}.webp`} alt="" loading="lazy" />
+            <img src={uiUrl(`worlds/${world.id}.webp`)} alt="" loading="lazy" />
             {l(world.label)}
           </em>
         )}

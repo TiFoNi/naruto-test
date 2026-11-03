@@ -182,13 +182,13 @@ export default function AuthScreen() {
         {error?.where === 'link' && <div className="auth-error">{error.text}</div>}
       </form>
 
-      <Link className="ghost auth-guest" href={href.home}>
+      <Link prefetch={false} className="ghost auth-guest" href={href.home}>
         {t('login.guest')}
       </Link>
 
       <p className="auth-terms">
-        {t('auth.guestNote')} {t('auth.termsWith')} <Link href={href.terms}>{t('auth.termsTerms')}</Link> {t('auth.termsAnd')}{' '}
-        <Link href={href.privacy}>{t('auth.termsPrivacy')}</Link>.
+        {t('auth.guestNote')} {t('auth.termsWith')} <Link prefetch={false} href={href.terms}>{t('auth.termsTerms')}</Link> {t('auth.termsAnd')}{' '}
+        <Link prefetch={false} href={href.privacy}>{t('auth.termsPrivacy')}</Link>.
       </p>
     </section>
   )

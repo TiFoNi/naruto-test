@@ -11,6 +11,7 @@ import { CalendarIcon, CheckIcon } from './icons'
 import { MODES } from './modes'
 import { useHref } from './router'
 import { emptyStats, kyivToday } from './stats'
+import { uiUrl } from './pics'
 
 export default function WorldModes({ game: gameId }: { game: string }) {
   const { t, l } = useI18n()
@@ -32,7 +33,7 @@ export default function WorldModes({ game: gameId }: { game: string }) {
       <header className="world-head">
         <img
           className="world-head-art"
-          src={`/worlds/big/${game.id}.webp`}
+          src={uiUrl(`worlds/big/${game.id}.webp`)}
           alt=""
           aria-hidden
           width={448}
@@ -44,7 +45,7 @@ export default function WorldModes({ game: gameId }: { game: string }) {
             const img = event.currentTarget
             if (img.dataset.small === undefined) {
               img.dataset.small = ''
-              img.src = `/worlds/${game.id}.webp`
+              img.src = uiUrl(`worlds/${game.id}.webp`)
             } else img.hidden = true
           }}
         />

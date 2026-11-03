@@ -16,6 +16,7 @@ import { dailyNumber, kyivToday, type Stats } from './stats'
 import { BallIcon, BookIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, MedalIcon, PaletteIcon, PlayIcon, SearchIcon, SwordsIcon, TvIcon } from './icons'
 import { useBeforePaint } from './paint'
 import { searchGames } from './search'
+import { uiUrl } from './pics'
 
 const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
@@ -108,7 +109,7 @@ function DailyCard({ games }: { games: GameMeta[] }) {
     return {
       id: `${game.id}-${mode}`,
       accent: game.accent,
-      art: `/worlds/big/${game.id}.webp`,
+      art: uiUrl(`worlds/big/${game.id}.webp`),
       kicker,
       done: stats[dailyKey(game.id, mode)]?.lastDay === today,
       title: titles ? t('dash.dailyTitleManga') : t('dash.dailyTitle', { world: l(game.label) }),
@@ -124,7 +125,7 @@ function DailyCard({ games }: { games: GameMeta[] }) {
     slides.push({
       id: 'shots',
       accent: shots.accent,
-      art: `/worlds/big/${shots.id}.webp`,
+      art: uiUrl(`worlds/big/${shots.id}.webp`),
       kicker: t('dash.newMode'),
       title: t('mode.shot'),
       lead: t('mode.shot.desc'),
@@ -262,7 +263,7 @@ function WorldTile({ game, eager }: { game: GameMeta; eager: boolean }) {
     <Link className="cat-card" href={href.world(game.id)} prefetch={false} style={{ '--world-accent': game.accent } as CSSProperties}>
       <span className="cat-card-art">
         <img
-          src={`/worlds/big/${game.id}.webp`}
+          src={uiUrl(`worlds/big/${game.id}.webp`)}
           alt=""
           width={448}
           height={448}
@@ -273,7 +274,7 @@ function WorldTile({ game, eager }: { game: GameMeta; eager: boolean }) {
             const img = event.currentTarget
             if (img.dataset.small === undefined) {
               img.dataset.small = ''
-              img.src = `/worlds/${game.id}.webp`
+              img.src = uiUrl(`worlds/${game.id}.webp`)
             } else img.hidden = true
           }}
         />

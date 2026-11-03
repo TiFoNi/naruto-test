@@ -4,6 +4,7 @@ import AuthScreen from './AuthScreen'
 import { BRAND } from './brand'
 import type { GameMeta } from './games/meta'
 import { useI18n } from './i18n'
+import { uiUrl } from './pics'
 
 const PATCHES = [
   ['naruto', 'onepiece', 'aot', 'jojo'],
@@ -21,7 +22,7 @@ export default function Landing({ games }: { games: GameMeta[] }) {
             <div className="login-patch-row" key={row[0]}>
               {row.map((id) => (
                 <span className="login-patch" key={id}>
-                  <img src={`/worlds/big/${id}.webp`} alt="" width={448} height={448} draggable={false} />
+                  <img src={uiUrl(`worlds/big/${id}.webp`)} alt="" width={448} height={448} draggable={false} />
                 </span>
               ))}
             </div>

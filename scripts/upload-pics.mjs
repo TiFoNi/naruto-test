@@ -1,7 +1,18 @@
 import fs from 'node:fs/promises'
 import { HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { pool } from './lib.mjs'
-import { collectPics } from './pics-keys.mjs'
+import { UI_DIRS, collectPics } from './pics-keys.mjs'
+
+const TYPES = { mp3: 'audio/mpeg', webp: 'image/webp', png: 'image/png', svg: 'image/svg+xml', mp4: 'video/mp4', webm: 'video/webm' }
+
+const UI_CACHE = 'public, max-age=86400, stale-while-revalidate=604800'
+const FRAMES_CACHE = 'public, max-age=604800, stale-while-revalidate=2592000'
+
+const cacheOf = (key) => {
+  const folder = key.split('/')[0]
+  if (folder === 'frames') return FRAMES_CACHE
+  return UI_DIRS.includes(folder) ? UI_CACHE : 'public, max-age=31536000, immutable'
+}
 
 const { R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET } = process.env
 const missing = ['R2_ACCOUNT_ID', 'R2_ACCESS_KEY_ID', 'R2_SECRET_ACCESS_KEY', 'R2_BUCKET'].filter((k) => !process.env[k])
@@ -50,8 +61,8 @@ async function main() {
           Bucket: R2_BUCKET,
           Key: key,
           Body: body,
-          ContentType: key.endsWith('.mp3') ? 'audio/mpeg' : 'image/webp',
-          CacheControl: 'public, max-age=31536000, immutable',
+          ContentType: TYPES[key.split('.').pop()] ?? 'application/octet-stream',
+          CacheControl: cacheOf(key),
         }),
       )
       uploaded++

@@ -120,7 +120,7 @@ export default function Friends() {
             <ul className="mates-rows">
               {found.map((one) => (
                 <li key={one.id}>
-                  <Link href={href.player(one.id)} className="mates-who">
+                  <Link prefetch={false} href={href.player(one.id)} className="mates-who">
                     <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
                     <b>
                       {one.nickname}
@@ -152,7 +152,7 @@ export default function Friends() {
           <ul className="mates-rows">
             {lists.requests.map((one) => (
               <li key={one.id}>
-                <Link href={href.player(one.id)} className="mates-who">
+                <Link prefetch={false} href={href.player(one.id)} className="mates-who">
                   <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
                   <span className="mates-name">
                     <b>
@@ -186,7 +186,7 @@ export default function Friends() {
           <ul className="mates-grid">
             {lists.friends.map((one) => (
               <li key={one.id}>
-                <Link href={href.player(one.id)} className="mates-who">
+                <Link prefetch={false} href={href.player(one.id)} className="mates-who">
                   <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
                   <span className="mates-name">
                     <b>{one.nickname}</b>
@@ -267,7 +267,7 @@ export default function Friends() {
           <ul className="mates-rows">
             {lists.sent.map((one) => (
               <li key={one.id}>
-                <Link href={href.player(one.id)} className="mates-who">
+                <Link prefetch={false} href={href.player(one.id)} className="mates-who">
                   <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
                   <span className="mates-name">
                     <b>

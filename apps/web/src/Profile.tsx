@@ -42,6 +42,7 @@ import {
   type HeroTile,
   type ProfileBlock,
 } from '@nanda/game'
+import { uiUrl } from './pics'
 
 type Held = { block: ProfileBlock; x: number; y: number; dx: number; dy: number; w: number; h: number }
 
@@ -861,7 +862,7 @@ export default function Profile({ id }: { id?: string }) {
                     <span className="world-pic" style={{ '--fill': `${share}%` } as CSSProperties}>
                       <img
                         className="world-art"
-                        src={`/worlds/big/${row.game}.webp`}
+                        src={uiUrl(`worlds/big/${row.game}.webp`)}
                         alt=""
                         width={448}
                         height={448}
@@ -869,7 +870,7 @@ export default function Profile({ id }: { id?: string }) {
                         decoding="async"
                         draggable={false}
                       />
-                      <span className="world-lit" style={{ backgroundImage: `url(/worlds/big/${row.game}.webp)` }} />
+                      <span className="world-lit" style={{ backgroundImage: `url(${uiUrl(`worlds/big/${row.game}.webp`)})` }} />
                       {share > 0 && share < 100 && <i className="world-edge" />}
                       <em className={`world-share ${share >= 100 ? 'is-full' : ''}`}>
                         {share}%

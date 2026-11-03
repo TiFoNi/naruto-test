@@ -5,6 +5,10 @@ import { PUBLIC, ROOT } from './lib.mjs'
 
 const ADMIN_MANAGED = 'shots'
 
+export const UI_DIRS = ['frames', 'banners', 'worlds', 'awards']
+
+const UI_FILES = /\.(webp|png|svg|mp4|webm)$/
+
 export async function knownIds() {
   const known = new Map()
   for (const spec of Object.values(GAME_SPECS)) {
@@ -16,13 +20,26 @@ export async function knownIds() {
   return known
 }
 
+async function collectUi() {
+  const files = []
+  const walk = async (dir, key) => {
+    for (const item of await fs.readdir(dir, { withFileTypes: true }).catch(() => [])) {
+      if (item.isDirectory()) await walk(path.join(dir, item.name), `${key}/${item.name}`)
+      else if (UI_FILES.test(item.name)) files.push({ key: `${key}/${item.name}`, path: path.join(dir, item.name) })
+    }
+  }
+  for (const folder of UI_DIRS) await walk(path.join(PUBLIC, folder), folder)
+  return files
+}
+
 export async function collectPics(only) {
+  if (only === 'ui') return collectUi()
   const known = await knownIds()
   const games = await fs.readdir(PUBLIC, { withFileTypes: true })
   const files = []
 
   for (const game of games) {
-    if (!game.isDirectory() || (only && game.name !== only)) continue
+    if (!game.isDirectory() || (only && game.name !== only) || UI_DIRS.includes(game.name)) continue
     if (game.name === ADMIN_MANAGED && only !== ADMIN_MANAGED) continue
     const ids = known.get(game.name)
     const keep = (id) => !ids || ids.has(id)
@@ -53,5 +70,6 @@ export async function collectPics(only) {
     }
   }
 
+  if (!only) files.push(...(await collectUi()))
   return files
 }

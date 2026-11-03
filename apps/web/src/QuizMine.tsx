@@ -12,6 +12,7 @@ import { HeartIcon, PlusIcon, UsersIcon } from './icons'
 import { coverUrl } from './quiz'
 import type { SavedDraft } from './QuizBuilder'
 import { useHref } from './router'
+import { uiUrl } from './pics'
 
 type Mine = SavedDraft & { plays: number; likes: number }
 
@@ -44,7 +45,7 @@ export default function QuizMine() {
           <span className="qz-mark">{BRAND.mark}</span>
           <b>{t('qb.mine.login')}</b>
           <p>{t('qb.mine.lead')}</p>
-          <Link className="quiz-btn" href={href.login}>
+          <Link prefetch={false} className="quiz-btn" href={href.login}>
             {t('qb.mine.loginBtn')}
           </Link>
         </div>
@@ -66,7 +67,7 @@ export default function QuizMine() {
           {full ? (
             <span className="qz-action is-disabled">{t('qb.err.tooMany', { max: limit })}</span>
           ) : (
-            <Link className="qz-action is-accent" href={href.makeTest()}>
+            <Link prefetch={false} className="qz-action is-accent" href={href.makeTest()}>
               <PlusIcon />
               {t('qb.create')}
             </Link>
@@ -85,7 +86,7 @@ export default function QuizMine() {
           <span className="qz-mark">{BRAND.mark}</span>
           <b>{t('qb.mine.empty')}</b>
           <p>{t('qb.mine.lead')}</p>
-          <Link className="quiz-btn" href={href.makeTest()}>
+          <Link prefetch={false} className="quiz-btn" href={href.makeTest()}>
             <PlusIcon />
             {t('qb.create')}
           </Link>
@@ -96,7 +97,7 @@ export default function QuizMine() {
             const world = GAMES.find((one) => one.id === quiz.game)
             const art = coverUrl(quiz.game, quiz.cover)
             return (
-              <Link key={quiz.id} className="qz-card qb-mine-card" href={href.makeTest({ id: quiz.id })}>
+              <Link prefetch={false} key={quiz.id} className="qz-card qb-mine-card" href={href.makeTest({ id: quiz.id })}>
                 <span className="qz-art">
                   {art ? <img src={art} alt="" loading="lazy" /> : <span className="qz-mark">{BRAND.mark}</span>}
                   <span className="qz-corner is-left">
@@ -106,7 +107,7 @@ export default function QuizMine() {
                 <span className="qz-info">
                   {world && (
                     <em className="qz-world" style={{ '--world-accent': world.accent } as CSSProperties}>
-                      <img src={`/worlds/${world.id}.webp`} alt="" loading="lazy" />
+                      <img src={uiUrl(`worlds/${world.id}.webp`)} alt="" loading="lazy" />
                       {l(world.label)}
                     </em>
                   )}

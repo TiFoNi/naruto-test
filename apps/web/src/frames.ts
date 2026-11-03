@@ -4,6 +4,7 @@ import { api } from './api'
 import { GAMES } from './games'
 import { l10n } from './games/types'
 import type { L10n } from './i18n/langs'
+import { uiUrl } from './pics'
 
 export type FrameKind = 'award' | 'world' | 'nature' | 'other'
 
@@ -36,7 +37,7 @@ export const FRAMES: Frame[] = ALL.filter((one) => DRAWN.has(one.id))
 
 const ART = '28'
 
-export const frameUrl = (id: string, size?: 'sm' | 'md' | boolean) => `/frames/${id}${size === true || size === 'sm' ? '-sm' : size === 'md' ? '-md' : ''}.webp?v=${ART}`
+export const frameUrl = (id: string, size?: 'sm' | 'md' | boolean) => uiUrl(`frames/${id}${size === true || size === 'sm' ? '-sm' : size === 'md' ? '-md' : ''}.webp?v=${ART}`)
 
 export type FrameTune = { scale: number; x: number; y: number; cut: number; cx: number; cy: number }
 

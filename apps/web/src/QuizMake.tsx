@@ -13,6 +13,7 @@ import Rail from './Rail'
 import QuizBuilder, { freshDraft, QUIZ_WORLDS, type Draft, type SavedDraft } from './QuizBuilder'
 import { CATEGORY_TITLES } from './QuizList'
 import { useHref, useNavigate } from './router'
+import { uiUrl } from './pics'
 
 function WorldPicker({ onPick }: { onPick: (game: GameId) => void }) {
   const { t, l } = useI18n()
@@ -92,7 +93,7 @@ function WorldPicker({ onPick }: { onPick: (game: GameId) => void }) {
         <div className="qb-worlds-grid">
           {shown.map((world) => (
             <button key={world.id} type="button" className="qb-world" style={{ '--world-accent': world.accent } as CSSProperties} onClick={() => onPick(world.id)}>
-              <img src={`/worlds/${world.id}.webp`} alt="" />
+              <img src={uiUrl(`worlds/${world.id}.webp`)} alt="" />
               <span>{l(world.label)}</span>
             </button>
           ))}

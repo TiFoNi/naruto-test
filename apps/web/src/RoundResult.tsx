@@ -74,30 +74,30 @@ export default function RoundResult({ game, mode, answer, guesses, won, skipped,
 
   const actions = daily ? (
     <div className="result-actions">
-      <Link className="ghost" href={href.home}>
+      <Link prefetch={false} className="ghost" href={href.home}>
         {t('play.back')}
       </Link>
       {upNext ? (
-        <Link className="primary" href={href.play(game.id, upNext, true)}>
+        <Link prefetch={false} className="primary" href={href.play(game.id, upNext, true)}>
           <CalendarIcon />
           <span className="result-action-label">{t(MODES.find((one) => one.id === upNext)?.label ?? 'mode.classic')}</span>
           <ArrowIcon />
         </Link>
       ) : (
-        <Link className="primary" href={href.play(game.id, mode)}>
+        <Link prefetch={false} className="primary" href={href.play(game.id, mode)}>
           {t('daily.endless')}
         </Link>
       )}
     </div>
   ) : challenge ? (
     <div className="result-actions">
-      <Link className="ghost" href={href.home}>
+      <Link prefetch={false} className="ghost" href={href.home}>
         {t('play.back')}
       </Link>
     </div>
   ) : (
     <div className="result-actions">
-      <Link className="ghost" href={href.home}>
+      <Link prefetch={false} className="ghost" href={href.home}>
         {t('play.back')}
       </Link>
       <button className="primary" onClick={onNext}>

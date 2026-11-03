@@ -35,6 +35,7 @@ import {
   UsersIcon,
   ZoomInIcon,
 } from './icons'
+import { uiUrl } from './pics'
 
 const ICONS: Record<string, ComponentType<{ className?: string }>> = {
   solved: LayersIcon,
@@ -132,7 +133,7 @@ const ART: Record<string, string> = {
 
 export default function AwardIcon({ award, family }: { award?: string | null; family?: string | null }) {
   const art = ART[family ?? ''] ?? ART[award ?? '']
-  if (art) return <img className="icon award-art" src={`/awards/${art}.webp`} alt="" width={512} height={512} loading="lazy" decoding="async" draggable={false} />
+  if (art) return <img className="icon award-art" src={uiUrl(`awards/${art}.webp`)} alt="" width={512} height={512} loading="lazy" decoding="async" draggable={false} />
   const Icon = ICONS[family ?? ''] ?? ICONS[award ?? ''] ?? TrophyIcon
   return <Icon />
 }

@@ -32,4 +32,6 @@ export const avatarUrl = (id: string, version: string, small = false) => `${full
 
 export const abilityUrl = (key: string) => `${fullBase}${GAME_SPECS.dota.images}/abilities/${key}.webp`
 
+export const uiUrl = (file: string) => `${fullBase}${file.replace(/^\/+/, '')}`
+
 export const picsUrl = (key: string, version?: string) => `${fullBase}${key}${version ? `?v=${version}` : ''}`

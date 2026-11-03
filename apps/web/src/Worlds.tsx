@@ -8,6 +8,7 @@ import { useI18n } from './i18n'
 import { CloseIcon, PlusIcon } from './icons'
 import { useHref } from './router'
 import { SHOWCASE_MAX } from './showcase'
+import { uiUrl } from './pics'
 
 type Row = { game: string; pool: number; solved: number }
 type Summary = { games: Row[]; showcase: string[] }
@@ -329,7 +330,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
           <span className="world-pic" style={{ '--fill': `${share}%` } as CSSProperties}>
             <img
               className="world-art"
-              src={`/worlds/big/${game}.webp`}
+              src={uiUrl(`worlds/big/${game}.webp`)}
               alt=""
               width={448}
               height={448}
@@ -337,7 +338,7 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
               decoding="async"
               draggable={false}
             />
-            <span className="world-lit" style={{ backgroundImage: `url(/worlds/big/${game}.webp)` }} />
+            <span className="world-lit" style={{ backgroundImage: `url(${uiUrl(`worlds/big/${game}.webp`)})` }} />
             {share > 0 && share < 100 && <i className="world-edge" />}
             <em className={`world-share ${full ? 'is-full' : ''}`}>
               {share}%
@@ -452,8 +453,8 @@ export default function Worlds({ id, nickname }: { id?: string; nickname?: strin
           }
         >
           <span className="world-pic" style={{ '--fill': `${percent(lifted.solved, lifted.pool)}%` } as CSSProperties}>
-            <img className="world-art" src={`/worlds/big/${drag.game}.webp`} alt="" draggable={false} />
-            <span className="world-lit" style={{ backgroundImage: `url(/worlds/big/${drag.game}.webp)` }} />
+            <img className="world-art" src={uiUrl(`worlds/big/${drag.game}.webp`)} alt="" draggable={false} />
+            <span className="world-lit" style={{ backgroundImage: `url(${uiUrl(`worlds/big/${drag.game}.webp`)})` }} />
             {lifted.solved > 0 && lifted.solved < lifted.pool && <i className="world-edge" />}
           </span>
         </span>
