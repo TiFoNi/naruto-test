@@ -225,6 +225,10 @@ body:has(.chat-panel) .duel-dock {
   padding-top: 0;
 }
 
+.chat-line + .chat-line:not(.is-glued) {
+  margin-top: 5px;
+}
+
 .chat-av {
   width: 44px;
   height: 44px;
