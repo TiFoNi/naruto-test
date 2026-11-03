@@ -63,7 +63,11 @@ const build = async () => {
 
 let pending: ReturnType<typeof build> | null = null
 
-export const auth = () => (pending ??= build())
+export const auth = () =>
+  (pending ??= build().catch((error) => {
+    pending = null
+    throw error
+  }))
 
 type SessionUser = { id: string; email: string; name: string }
 
