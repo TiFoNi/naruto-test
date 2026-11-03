@@ -4,10 +4,7 @@ const build = async () => {
     import('better-auth/client/plugins'),
     import('@better-auth/passkey/client'),
   ])
-  const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, '')
-
   return createAuthClient({
-    ...(base ? { baseURL: base } : {}),
     basePath: '/api/auth',
     plugins: [magicLinkClient(), passkeyClient()],
   })

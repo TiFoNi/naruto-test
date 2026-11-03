@@ -4,6 +4,7 @@ import type { NestExpressApplication } from '@nestjs/platform-express'
 import compression from 'compression'
 import { raw } from 'express'
 import { AppModule } from './app.module'
+import { liftCookies } from './lift-cookies'
 import { rateLimit } from './rate-limit'
 
 const origins = (process.env.CORS_ORIGINS ?? 'http://localhost:5173').split(',').map((o) => o.trim())
@@ -13,6 +14,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
   app.set('trust proxy', 1)
   app.use(rateLimit)
+  app.use(liftCookies)
   const plain = ['/api/stream/', '/api/tune/audio']
   app.use(
     compression({
@@ -20,7 +22,7 @@ async function bootstrap() {
     }),
   )
   app.use(raw({ type: 'multipart/form-data', limit: '40mb' }))
-  app.enableCors({ origin: origins, credentials: true })
+  app.enableCors({ origin: origins, credentials: true, maxAge: 86400 })
   await app.listen(port, '0.0.0.0')
   console.log(`[nanda] слухаю порт ${port}, CORS для: ${origins.join(', ')}`)
 }

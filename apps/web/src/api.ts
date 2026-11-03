@@ -1,3 +1,4 @@
+import { liftCookies } from './cookieLift'
 import { askHuman, humanHeaders } from './human'
 
 const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, '') ?? ''
@@ -11,6 +12,7 @@ const speaking = () => {
 }
 
 export async function api<T = Record<string, unknown>>(path: string, body?: unknown) {
+  await liftCookies()
   const lang = speaking()
   const response = await fetch(`${base}/api/${path}`, {
     signal: AbortSignal.timeout(15000),
