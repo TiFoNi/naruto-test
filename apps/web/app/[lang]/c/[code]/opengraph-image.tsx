@@ -13,7 +13,7 @@ type Params = { params: Promise<{ lang: string; code: string }> }
 export default async function Image({ params }: Params) {
   const { lang, code } = await params
   const at = (['ru', 'uk', 'en'] as const).includes(lang as Lang) ? (lang as Lang) : 'en'
-  const doc = /^[A-Z0-9]{7}$/.test(code.toUpperCase()) ? await apiJson<{ game?: string; mode?: string; author?: string }>(`meta?challenge=${code.toUpperCase()}`, 60) : null
+  const doc = /^[A-Z0-9]{7}$/.test(code.toUpperCase()) ? await apiJson<{ game?: string; mode?: string; author?: string }>(`meta?challenge=${code.toUpperCase()}`, 86400) : null
   const game = GAMES.find((one) => one.id === doc?.game)
   const mode = MODES.find((one) => one.id === doc?.mode)
 

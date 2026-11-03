@@ -3,7 +3,7 @@ import WorldModes from '@/src/WorldModes'
 import type { Lang } from '@/src/i18n/ui'
 import { worldMetadata } from '@/src/seo'
 
-export const revalidate = 600
+export const revalidate = 86400
 export const generateStaticParams = async () => []
 
 type Params = { params: Promise<{ lang: string; game: string }> }

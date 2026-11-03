@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Landing from '@/src/Landing'
 import { gameMeta } from '@/src/games/meta.server'
 
-export const revalidate = 600
+export const revalidate = 86400
 
 export const metadata: Metadata = {
   title: 'Вход',

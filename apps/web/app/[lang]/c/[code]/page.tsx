@@ -13,7 +13,7 @@ const isCode = (code: string) => /^[A-Z0-9]{7}$/.test(code)
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang, code } = await params
   const at = (['ru', 'uk', 'en'] as const).includes(lang as Lang) ? (lang as Lang) : 'en'
-  const doc = isCode(code.toUpperCase()) ? await apiJson<{ game?: string; mode?: string; author?: string }>(`meta?challenge=${code.toUpperCase()}`, 60) : null
+  const doc = isCode(code.toUpperCase()) ? await apiJson<{ game?: string; mode?: string; author?: string }>(`meta?challenge=${code.toUpperCase()}`, 86400) : null
   if (!doc?.author) return { title: 'NandaGuessr' }
 
   const game = GAMES.find((g) => g.id === doc.game)
