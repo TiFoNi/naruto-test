@@ -772,7 +772,9 @@ export default function Chat() {
             </p>
           )}
 
-          {user && !canWrite ? (
+          {user && room === 'duel' && talk?.alone ? (
+            <p className="chat-readonly">{t('chat.duelAlone')}</p>
+          ) : user && !canWrite ? (
             <p className="chat-readonly">{t('chat.newsOnly')}</p>
           ) : user ? (
             <form

@@ -1231,6 +1231,7 @@ const ui = {
   'chat.online': { ru: 'онлайн: {count}', uk: 'онлайн: {count}', en: '{count} online' },
   'chat.close': { ru: 'Закрыть чат', uk: 'Закрити чат', en: 'Close chat' },
   'chat.roomAll': { ru: 'Общий', uk: 'Загальний', en: 'General' },
+  'chat.duelAlone': { ru: 'Вы тут один, писать пока некому', uk: 'Ви тут самі, поки нікому писати', en: 'You are alone here, nobody to write to yet' },
   'chat.roomDuel': { ru: 'Дуэль', uk: 'Дуель', en: 'Duel' },
   'chat.duelEmpty': { ru: 'Здесь видите только вы и соперник', uk: 'Тут бачите лише ви та суперник', en: 'Only you and your rival see this' },
   'chat.holdAct': { ru: 'Действия с сообщением', uk: 'Дії з повідомленням', en: 'Message actions' },

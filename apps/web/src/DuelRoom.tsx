@@ -90,13 +90,14 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
 
   const talkLines = duel?.talk
   const talkOpen = Boolean(duel?.you) && !duel?.bot
+  const talkAlone = (duel?.crowd ?? 2) < 2
   const sayRef = useRef(say)
   sayRef.current = say
 
   useEffect(() => {
     if (!talkOpen) return shareDuelTalk(null)
-    shareDuelTalk({ code, lines: talkLines ?? [], say: (text) => sayRef.current(text) })
-  }, [code, talkOpen, talkLines])
+    shareDuelTalk({ code, lines: talkLines ?? [], alone: talkAlone, say: (text) => sayRef.current(text) })
+  }, [code, talkOpen, talkLines, talkAlone])
 
   useEffect(() => () => shareDuelTalk(null), [])
 

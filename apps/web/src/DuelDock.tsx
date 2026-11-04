@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { activeDuel, setActiveDuel, watchActiveDuel } from './activeDuel'
+import { sayTo, shareDuelTalk } from './duelTalk'
 import { api } from './api'
 import { useI18n } from './i18n'
 import { CloseIcon, SwordsIcon } from './icons'
@@ -41,6 +42,15 @@ export default function DuelDock() {
       },
     })
   }, [code, inRoom])
+
+  const talkLines = duel?.talk
+  const talkAlone = (duel?.crowd ?? 2) < 2
+
+  useEffect(() => {
+    if (inRoom) return
+    if (!code || !duel || duel.bot) return shareDuelTalk(null)
+    shareDuelTalk({ code, lines: talkLines ?? [], alone: talkAlone, say: (text) => sayTo(code, text) })
+  }, [code, inRoom, duel, talkLines, talkAlone])
 
   useEffect(() => {
     if (!duel || duel.status !== 'playing') return

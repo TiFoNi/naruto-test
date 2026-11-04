@@ -29,6 +29,7 @@ export type DuelView = {
   code: string
   bot?: boolean
   talk?: TalkLine[]
+  crowd?: number
   per?: number
   teams?: number
   seats?: number

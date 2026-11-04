@@ -573,6 +573,7 @@ async function dropPlayers(duel: DuelDoc, gone: DuelPlayer[]) {
     {
       $set: {
         players: rest.map((side) => ({ ...side, ready: false, wantsNext: false, wins: 0, guesses: [], solvedAt: null, gaveUp: false })),
+        talk: [],
         hostId: ids.has(duel.hostId.toHexString()) ? rest[0].userId : duel.hostId,
         status: 'lobby',
         matchDone: false,
@@ -1064,7 +1065,7 @@ export const talkLine = (line: DuelTalk) => ({
 })
 
 export async function sayInDuel(duel: DuelDoc, doc: UserDoc, raw: unknown) {
-  if (duel.bot) return { error: 'forbidden' as const }
+  if (duel.bot || duel.players.length < 2) return { error: 'forbidden' as const }
   const text = tidy(raw, TALK_MAX)
   if (!text) return { error: 'empty' as const }
   if (doc.chatMutedUntil && doc.chatMutedUntil.getTime() > Date.now()) return { error: 'muted' as const }
@@ -1454,6 +1455,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
     code: duel.code,
     bot: Boolean(duel.bot),
     talk: duel.bot ? [] : (duel.talk ?? []).map(talkLine),
+    crowd: duel.players.length,
     game: duel.game ?? null,
     mode: duel.mode ?? null,
     status: duel.status,
