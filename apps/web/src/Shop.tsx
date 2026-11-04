@@ -266,7 +266,7 @@ export default function Shop() {
         createPortal(
           <div className="modal-backdrop shop-peek" onClick={() => setPick(null)} role="presentation">
             <section className="shop-peek-box" role="dialog" aria-modal="true" aria-label={nameOf(card)}>
-              <HeroPeek user={user ?? null} stats={stats} banner={art} frame={worn} />
+              <HeroPeek user={user ?? null} stats={stats} banner={art} frame={worn} under={false} />
             </section>
           </div>,
           document.body,
