@@ -2117,6 +2117,24 @@ const ui = {
     uk: 'Перейди за посиланням з листа на {email}. Воно працює 15 хвилин.',
     en: 'Open the link we sent to {email}. It works for 15 minutes.',
   },
+  'google.news': { ru: 'Важно для входа', uk: 'Важливо для входу', en: 'Sign-in notice' },
+  'google.title': { ru: 'Привяжи Google', uk: "Прив'яжи Google", en: 'Link Google' },
+  'google.hint': {
+    ru: 'Скоро уберём вход по почте. Привяжи Google, чтобы не потерять прогресс',
+    uk: "Скоро приберемо вхід через пошту. Прив'яжи Google, щоб не втратити прогрес",
+    en: 'Email sign-in is going away soon. Link Google to keep your progress',
+  },
+  'google.settingsHint': {
+    ru: 'Вход по почте скоро отключим. После привязки будешь входить через Google в этот же аккаунт со всем прогрессом',
+    uk: "Вхід через пошту скоро вимкнемо. Після прив'язки входитимеш через Google у цей самий акаунт з усім прогресом",
+    en: 'Email sign-in is going away soon. Once linked, you sign in with Google to this same account with all your progress',
+  },
+  'google.link': { ru: 'Привязать', uk: "Прив'язати", en: 'Link' },
+  'google.failed': {
+    ru: 'Не вышло. Возможно, этот Google уже привязан к другому аккаунту',
+    uk: "Не вийшло. Можливо, цей Google уже прив'язаний до іншого акаунта",
+    en: 'That did not work. This Google account may already be linked to another profile',
+  },
   'auth.otherEmail': { ru: 'Другая почта', uk: 'Інша пошта', en: 'Use another email' },
   'auth.badEmail': { ru: 'Проверь адрес почты', uk: 'Перевір адресу пошти', en: 'Check the email address' },
   'auth.googleFailed': {

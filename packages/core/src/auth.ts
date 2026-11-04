@@ -29,7 +29,7 @@ const build = async () => {
     database: mongodbAdapter(db),
     trustedOrigins: origins,
     emailAndPassword: { enabled: false },
-    account: { accountLinking: { enabled: true, trustedProviders: ['google'] } },
+    account: { accountLinking: { enabled: true, trustedProviders: ['google'], allowDifferentEmails: true } },
     socialProviders: {
       google: {
         clientId: process.env.GOOGLE_CLIENT_ID ?? '',

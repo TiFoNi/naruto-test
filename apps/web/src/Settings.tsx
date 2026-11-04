@@ -6,8 +6,9 @@ import Rail from './Rail'
 import { api } from './api'
 import { useAuth } from './auth'
 import { authClient } from './authClient'
+import { freshFeed, refreshFeed, watchFeed } from './awards'
 import { LANGS, useI18n, type UiKey } from './i18n'
-import { BellIcon, CloseIcon, KeyIcon, MailIcon, ShieldIcon, UserIcon } from './icons'
+import { BellIcon, CloseIcon, GoogleIcon, KeyIcon, MailIcon, ShieldIcon, UserIcon } from './icons'
 import { already, useInstall } from './install'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
@@ -48,6 +49,16 @@ export default function Settings() {
   const [saving, setSaving] = useState(false)
   const [confirmReset, setConfirmReset] = useState(false)
   const [resetting, setResetting] = useState(false)
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    const asked = url.searchParams.get('tab')
+    if (!asked || !TABS.some((one) => one.id === asked)) return
+    url.searchParams.delete('tab')
+    window.history.replaceState(window.history.state, '', url.toString())
+    lastTab = asked as Tab
+    setTab(asked as Tab)
+  }, [])
 
   useEffect(() => {
     if (!message) return
@@ -195,6 +206,8 @@ export default function Settings() {
                 <b>{user ? mask(user.username) : ''}</b>
               </div>
 
+              <GoogleRow />
+
               <PasskeyRows />
 
               <div className="settings-row">
@@ -275,6 +288,61 @@ const deviceName = () => {
   if (/Macintosh/.test(ua)) return 'Mac'
   if (/Windows/.test(ua)) return 'Windows'
   return 'Passkey'
+}
+
+function GoogleRow() {
+  const { t } = useI18n()
+  const href = useHref()
+  const [needed, setNeeded] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [failed, setFailed] = useState(false)
+
+  useEffect(() => {
+    void freshFeed().then((feed) => setNeeded(feed.linkGoogle))
+    const stop = watchFeed((feed) => setNeeded(feed.linkGoogle))
+    const url = new URL(window.location.href)
+    if (url.searchParams.has('error')) setFailed(true)
+    if (url.searchParams.has('linked')) void refreshFeed()
+    if (url.searchParams.has('error') || url.searchParams.has('linked')) {
+      url.searchParams.delete('error')
+      url.searchParams.delete('linked')
+      window.history.replaceState(window.history.state, '', url.toString())
+    }
+    return () => {
+      stop()
+    }
+  }, [])
+
+  if (!needed) return null
+
+  const link = async () => {
+    setBusy(true)
+    setFailed(false)
+    const client = await authClient()
+    const back = `${window.location.origin}${href.settings}?tab=account`
+    const { error } = await client.linkSocial({ provider: 'google', callbackURL: `${back}&linked=1`, errorCallbackURL: back })
+    if (error) {
+      setFailed(true)
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="settings-row google-link">
+      <div>
+        <label>
+          <GoogleIcon /> {t('google.title')}
+        </label>
+        <p className="muted">{t('google.settingsHint')}</p>
+        {failed && <p className="muted small">{t('google.failed')}</p>}
+      </div>
+      <div className="settings-actions">
+        <button type="button" className="primary" disabled={busy} onClick={() => void link()}>
+          {busy ? t('auth.busy') : t('google.link')}
+        </button>
+      </div>
+    </div>
+  )
 }
 
 function PasskeyRows() {

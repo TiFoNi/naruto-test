@@ -11,9 +11,9 @@ export type DuelInvite = { code: string; from: string; game: string | null; mode
 export type FriendAsk = { id: string; nickname: string; tag: string | null; at: string }
 export type CoinNews = { coins: number; at: string }
 export type MentionNews = { id: string; fromId: string; from: string; text: string; at: string }
-export type Feed = { awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[]; frames: string[]; coins: CoinNews | null; mentions: MentionNews[] }
+export type Feed = { awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[]; frames: string[]; coins: CoinNews | null; mentions: MentionNews[]; linkGoogle: boolean }
 
-const EMPTY: Feed = { awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [] }
+const EMPTY: Feed = { awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false }
 
 const watchers = new Set<(feed: Feed) => void>()
 
@@ -83,6 +83,7 @@ export function freshFeed() {
             frames: data.frames ?? [],
             coins: data.coins ?? null,
             mentions: data.mentions ?? [],
+            linkGoogle: data.linkGoogle === true,
           })
         : EMPTY,
     )

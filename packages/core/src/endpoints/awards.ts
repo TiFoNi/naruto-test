@@ -1,6 +1,6 @@
 import { STAT_KEYS } from '@nanda/game'
 import { LIFE, SEASON, familyOf, lifeFacts, seasonFacts, syncAwards, syncSeasonAwards } from '../achievements'
-import { seasons, users, type UserDoc } from '../db'
+import { database, seasons, users, type UserDoc } from '../db'
 import { seasonAt } from '../season'
 import { handle, json } from '../http'
 import { currentUser, unauthorized } from '../profile'
@@ -9,6 +9,14 @@ import { duelInvites } from '../duels'
 import { friendRequests } from '../friends'
 
 const FRESH_MS = 600_000
+const GOOGLE_MAIL = /@(gmail|googlemail)\.[a-z.]+$/i
+
+async function needsGoogle(doc: UserDoc) {
+  const mail = doc.username ?? ''
+  if (!mail.includes('@') || GOOGLE_MAIL.test(mail)) return false
+  const linked = await (await database()).collection('account').findOne({ userId: doc._id, providerId: 'google' }, { projection: { _id: 1 } })
+  return !linked
+}
 
 async function ready(doc: UserDoc) {
   const id = doc._id!
@@ -47,17 +55,18 @@ export const GET = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
 
-  const [awards, invites, requests] = await Promise.all([
+  const [awards, invites, requests, linkGoogle] = await Promise.all([
     ready(found.doc),
     duelInvites(found.doc._id!),
     friendRequests(found.doc._id!),
+    needsGoogle(found.doc),
   ])
   const mentions = (found.doc.mentionNews ?? []).map((one) => ({ ...one, at: one.at.toISOString() })).reverse()
   const owned = found.doc.frames ?? []
   if (!found.doc.framesSeen) {
     await (await users()).updateOne({ _id: found.doc._id }, { $set: { framesSeen: owned } })
-    return json({ awards, invites, requests, frames: [], coins: found.doc.coinsNews ?? null, mentions })
+    return json({ awards, invites, requests, frames: [], coins: found.doc.coinsNews ?? null, mentions, linkGoogle })
   }
   const frames = owned.filter((frame) => !found.doc.framesSeen!.includes(frame))
-  return json({ awards, invites, requests, frames, coins: found.doc.coinsNews ?? null, mentions })
+  return json({ awards, invites, requests, frames, coins: found.doc.coinsNews ?? null, mentions, linkGoogle })
 })

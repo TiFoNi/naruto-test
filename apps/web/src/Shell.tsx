@@ -31,7 +31,7 @@ import { MODE_XP, MODE_XP_AFTER, POOL_XP_BASE, TONE_HEX, levelAt, poolXpFactor, 
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
-import { BellIcon, ChatIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MedalIcon, PodiumIcon, ShopIcon, TrophyIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
+import { BellIcon, ChatIcon, GoogleIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MedalIcon, PodiumIcon, ShopIcon, TrophyIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { api } from './api'
 import { openStream } from './stream'
 import { GAMES, gameById } from './games'
@@ -39,6 +39,8 @@ import type { GameId } from './games/types'
 import { MODES } from './modes'
 import { useBeforePaint } from './paint'
 import { useHref, useNavigate, useVisitTracker } from './router'
+
+const GOOGLE_HIDE_KEY = 'google-hide'
 
 const PUBLIC = new Set(['', 'play', 'privacy', 'terms'])
 const SECTIONS = new Set([
@@ -366,7 +368,17 @@ function Bell() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const box = useDropdown(open, setOpen)
-  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [] })
+  const [googleHidden, setGoogleHidden] = useState(false)
+
+  useEffect(() => {
+    try {
+      setGoogleHidden(sessionStorage.getItem(GOOGLE_HIDE_KEY) === '1')
+    } catch {
+      setGoogleHidden(false)
+    }
+  }, [])
+
+  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false })
   const [hidden, setHidden] = useState<Set<string>>(() => new Set())
   const [busy, setBusy] = useState(false)
   const [toast, setToast] = useState<DuelInvite | null>(null)
@@ -471,14 +483,24 @@ function Bell() {
     void api('profile', { action: 'seenCoins' }).catch(() => null)
   }
 
+  const hideGoogle = () => {
+    setGoogleHidden(true)
+    try {
+      sessionStorage.setItem(GOOGLE_HIDE_KEY, '1')
+    } catch {
+      /* приватний режим */
+    }
+  }
+
   const seenMentions = () => {
     dropMentions()
     void api('profile', { action: 'seenMentions' }).catch(() => null)
   }
 
+  const googleDue = feed.linkGoogle && !googleHidden
   const awards = feed.awards.filter((award) => !hidden.has(award.id))
   const frames = feed.frames.map((id) => FRAMES.find((one) => one.id === id)).filter((one) => one !== undefined)
-  const count = awards.length + feed.invites.length + feed.requests.length + frames.length + (feed.coins ? 1 : 0) + feed.mentions.length
+  const count = awards.length + feed.invites.length + feed.requests.length + frames.length + (feed.coins ? 1 : 0) + feed.mentions.length + (googleDue ? 1 : 0)
 
   return (
     <div ref={box} className={`bell-box ${open ? 'open' : ''}`}>
@@ -574,6 +596,25 @@ function Bell() {
           <p className="bell-empty">{t('nav.bellEmpty')}</p>
         ) : (
           <ul className="bell-list">
+            {googleDue && (
+              <li className="bell-item is-google">
+                <Link className="bell-card" href={`${href.settings}?tab=account`} onClick={() => setOpen(false)} prefetch={false}>
+                  <small>{t('google.news')}</small>
+                  <span className="bell-main">
+                    <span className="bell-mark" aria-hidden>
+                      <GoogleIcon />
+                    </span>
+                    <span className="bell-body">
+                      <b>{t('google.title')}</b>
+                      <span className="bell-hint">{t('google.hint')}</span>
+                    </span>
+                  </span>
+                </Link>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={hideGoogle}>
+                  <CloseIcon />
+                </button>
+              </li>
+            )}
             {feed.coins && (
               <li className="bell-item is-coins">
                 <Link
