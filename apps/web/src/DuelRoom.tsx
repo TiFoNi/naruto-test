@@ -2,7 +2,7 @@
 
 import Avatar from './Avatar'
 import BackButton from './BackButton'
-import { Fragment, useEffect, useMemo, useState, type CSSProperties } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import AbilityIcon from './AbilityIcon'
 import { ABILITY_STAGES, GRID_MISSES, PHRASE_VOICE_AT } from '@nanda/game'
 import { ZOOM_LEVELS, levelAt } from './zoom'
@@ -35,6 +35,8 @@ import { SwordsIcon, TrophyIcon } from './icons'
 import { fullUrl } from './pics'
 import { api, apiSrc } from './api'
 import { useEntities } from './entities'
+
+const AUTO_NEXT_MS = 3000
 
 
 const clarity = (step: number) => Math.round((step / ABILITY_STAGES) * 100)
@@ -133,6 +135,17 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
   }, [duel, byId, pending])
 
   const picked = useMemo(() => new Set(guesses.map((g) => g.entity.id)), [guesses])
+
+  const between = duel?.status === 'finished' && !duel.matchDone && !duel.bot && !duel.you?.wantsNext
+  const roundKey = `${duel?.code}:${duel?.round}`
+  const advance = useRef(next)
+  advance.current = next
+
+  useEffect(() => {
+    if (!between) return
+    const timer = window.setTimeout(() => advance.current(), AUTO_NEXT_MS)
+    return () => window.clearTimeout(timer)
+  }, [between, roundKey])
 
   if (error && !duel) {
     return (
