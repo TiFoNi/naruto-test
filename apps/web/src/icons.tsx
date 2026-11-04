@@ -777,3 +777,14 @@ export function SpeechIcon({ className }: IconProps) {
     </svg>
   )
 }
+
+export function SmileIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M8.5 14.5c.9 1.2 2.1 1.8 3.5 1.8s2.6-.6 3.5-1.8" />
+      <circle cx="9" cy="10" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="15" cy="10" r="1.1" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}

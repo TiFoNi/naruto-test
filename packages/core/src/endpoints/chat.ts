@@ -2,23 +2,29 @@ import { users } from '../db'
 import { fail, handle, json, readJson } from '../http'
 import { currentUser, touchVisit, unauthorized } from '../profile'
 import { adminSession } from '../admin'
-import { CHAT_MAX, chatPage, dropChat, muteChat, sendChat } from '../chat'
+import { CHAT_MAX, NEWS_MAX, channelOf, chatPage, dropChat, muteChat, sendChat, sendNews } from '../chat'
 import { markTyping } from '../stream'
 
 export const GET = handle(async (request) => {
   const url = new URL(request.url)
   const before = url.searchParams.get('before') ?? undefined
   const limit = Number(url.searchParams.get('limit')) || undefined
-  const page = await chatPage(before, limit)
-  return json({ ...page, max: CHAT_MAX })
+  const channel = channelOf(url.searchParams.get('channel'))
+  const page = await chatPage(before, limit, channel)
+  return json({ ...page, max: channel === 'news' ? NEWS_MAX : CHAT_MAX })
 })
 
 export const POST = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
 
-  const { text } = (await readJson(request)) as { text?: unknown }
-  const line = await sendChat(found.doc, text)
+  const { text, channel, tags } = (await readJson(request)) as { text?: unknown; channel?: unknown; tags?: unknown }
+  if (channelOf(channel) === 'news') {
+    if (!(await adminSession(request))) return fail(403, 'forbidden')
+    const news = await sendNews(found.doc, text)
+    return news === 'empty' ? fail(400, 'bad_request') : json({ line: news })
+  }
+  const line = await sendChat(found.doc, text, tags)
   if (line === 'empty') return fail(400, 'bad_request')
   if (line === 'muted') return fail(403, 'muted')
   if (line === 'too_fast') return fail(429, 'too_fast')
@@ -41,8 +47,8 @@ export const TYPING = handle(async (request) => {
 export const ADMIN = handle(async (request) => {
   if (!(await adminSession(request))) return fail(404, 'not_found')
 
-  const { drop, mute, minutes } = (await readJson(request)) as { drop?: unknown; mute?: unknown; minutes?: unknown }
-  if (drop !== undefined) return (await dropChat(drop)) ? json({ dropped: drop }) : fail(404, 'not_found')
+  const { drop, mute, minutes, channel } = (await readJson(request)) as { drop?: unknown; mute?: unknown; minutes?: unknown; channel?: unknown }
+  if (drop !== undefined) return (await dropChat(drop, channelOf(channel))) ? json({ dropped: drop }) : fail(404, 'not_found')
   if (mute !== undefined) {
     const until = await muteChat(mute, minutes)
     return json({ muted: mute, until: until ? until.getTime() : null })

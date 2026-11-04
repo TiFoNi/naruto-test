@@ -10,9 +10,10 @@ export type FreshAward = { id: string; tier: string; family?: string | null; kin
 export type DuelInvite = { code: string; from: string; game: string | null; mode: string | null; best: number; seconds: number; at: string }
 export type FriendAsk = { id: string; nickname: string; tag: string | null; at: string }
 export type CoinNews = { coins: number; at: string }
-export type Feed = { awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[]; frames: string[]; coins: CoinNews | null }
+export type MentionNews = { id: string; fromId: string; from: string; text: string; at: string }
+export type Feed = { awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[]; frames: string[]; coins: CoinNews | null; mentions: MentionNews[] }
 
-const EMPTY: Feed = { awards: [], invites: [], requests: [], frames: [], coins: null }
+const EMPTY: Feed = { awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [] }
 
 const watchers = new Set<(feed: Feed) => void>()
 
@@ -50,6 +51,11 @@ export function dropFrames() {
   return publish({ ...(cache ?? EMPTY), frames: [] })
 }
 
+export function dropMentions() {
+  if (!cache?.mentions.length) return cache ?? EMPTY
+  return publish({ ...cache, mentions: [] })
+}
+
 export function dropRequest(id: string) {
   return publish({ ...(cache ?? EMPTY), requests: (cache?.requests ?? []).filter((one) => one.id !== id) })
 }
@@ -76,6 +82,7 @@ export function freshFeed() {
             requests: data.requests ?? [],
             frames: data.frames ?? [],
             coins: data.coins ?? null,
+            mentions: data.mentions ?? [],
           })
         : EMPTY,
     )

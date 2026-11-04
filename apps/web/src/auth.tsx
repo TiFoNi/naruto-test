@@ -21,6 +21,7 @@ export type User = {
   bannerLooks?: Record<string, Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>>>
   tone: string | null
   nickTone: string | null
+  mentionPush?: boolean
   title?: string | null
   titles?: string[]
   level: number

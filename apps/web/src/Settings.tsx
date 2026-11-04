@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type FormEvent } from 'react'
 import BackButton from './BackButton'
 import Rail from './Rail'
+import { api } from './api'
 import { useAuth } from './auth'
 import { authClient } from './authClient'
 import { LANGS, useI18n, type UiKey } from './i18n'
@@ -384,8 +385,19 @@ function InstallBlock() {
 
 function PushBlock() {
   const { t } = useI18n()
+  const { user, refresh } = useAuth()
   const [state, setState] = useState<PushState | null>(null)
   const [busy, setBusy] = useState(false)
+  const [tagged, setTagged] = useState<boolean | null>(null)
+  const mentionOn = tagged ?? user?.mentionPush !== false
+
+  const toggleMentions = async () => {
+    const next = !mentionOn
+    setTagged(next)
+    const { ok } = await api('profile', { action: 'mentionPush', on: next })
+    if (!ok) return setTagged(!next)
+    await refresh()
+  }
 
   useEffect(() => {
     let alive = true
@@ -427,6 +439,24 @@ function PushBlock() {
           <i />
         </button>
       </div>
+      {user && (
+        <div className="push-row">
+          <div>
+            <b>{t('push.mentionTitle')}</b>
+            <p className="muted">{t('push.mentionHint')}</p>
+          </div>
+          <button
+            type="button"
+            className={`push-switch ${mentionOn ? 'on' : ''}`}
+            role="switch"
+            aria-checked={mentionOn}
+            aria-label={t('push.mentionTitle')}
+            onClick={() => void toggleMentions()}
+          >
+            <i />
+          </button>
+        </div>
+      )}
       {!pushSupported() && <p className="muted small">{t('push.unsupported')}</p>}
       {blocked && <p className="muted small">{t('push.blocked')}</p>}
       {pushSupported() && !blocked && <p className="muted small">{t('push.iosHint')}</p>}

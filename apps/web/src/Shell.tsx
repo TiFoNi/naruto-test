@@ -22,7 +22,8 @@ import BannerArt from './BannerArt'
 import { MARKS } from './Profile'
 import { shownTone, watchTone } from './tone'
 import HumanCheck from './HumanCheck'
-import { AWARDS_FILTER, dropCoins, dropFrames, dropInvite, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
+import { AWARDS_FILTER, dropCoins, dropFrames, dropInvite, dropMentions, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
+import { openChat } from './chatEvents'
 import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
 import { startAnimGate } from './animGate'
 import GemIcon from './GemIcon'
@@ -30,7 +31,7 @@ import { MODE_XP, MODE_XP_AFTER, POOL_XP_BASE, TONE_HEX, levelAt, poolXpFactor, 
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
-import { BellIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MedalIcon, PodiumIcon, ShopIcon, TrophyIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
+import { BellIcon, ChatIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MedalIcon, PodiumIcon, ShopIcon, TrophyIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { api } from './api'
 import { openStream } from './stream'
 import { GAMES, gameById } from './games'
@@ -365,7 +366,7 @@ function Bell() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const box = useDropdown(open, setOpen)
-  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [], frames: [], coins: null })
+  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [] })
   const [hidden, setHidden] = useState<Set<string>>(() => new Set())
   const [busy, setBusy] = useState(false)
   const [toast, setToast] = useState<DuelInvite | null>(null)
@@ -470,9 +471,14 @@ function Bell() {
     void api('profile', { action: 'seenCoins' }).catch(() => null)
   }
 
+  const seenMentions = () => {
+    dropMentions()
+    void api('profile', { action: 'seenMentions' }).catch(() => null)
+  }
+
   const awards = feed.awards.filter((award) => !hidden.has(award.id))
   const frames = feed.frames.map((id) => FRAMES.find((one) => one.id === id)).filter((one) => one !== undefined)
-  const count = awards.length + feed.invites.length + feed.requests.length + frames.length + (feed.coins ? 1 : 0)
+  const count = awards.length + feed.invites.length + feed.requests.length + frames.length + (feed.coins ? 1 : 0) + feed.mentions.length
 
   return (
     <div ref={box} className={`bell-box ${open ? 'open' : ''}`}>
@@ -595,6 +601,33 @@ function Bell() {
                 </button>
               </li>
             )}
+            {feed.mentions.map((one) => (
+              <li key={one.id} className="bell-item is-mention">
+                <button
+                  type="button"
+                  className="bell-card"
+                  onClick={() => {
+                    setOpen(false)
+                    seenMentions()
+                    openChat(one.id)
+                  }}
+                >
+                  <small>{t('chat.mentionNew')}</small>
+                  <span className="bell-main">
+                    <span className="bell-mark" aria-hidden>
+                      <ChatIcon />
+                    </span>
+                    <span className="bell-body">
+                      <b>{t('chat.mentionFrom', { name: one.from })}</b>
+                      <span className="bell-hint">{one.text}</span>
+                    </span>
+                  </span>
+                </button>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={seenMentions}>
+                  <CloseIcon />
+                </button>
+              </li>
+            ))}
             {feed.invites.map((invite) => {
               const game = invite.game ? gameById(invite.game as GameId) : null
               const mode = MODES.find((m) => m.id === invite.mode)

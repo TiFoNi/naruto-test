@@ -196,6 +196,17 @@ export const POST = handle(async (request) => {
     return json(toProfile(doc ?? found.doc))
   }
 
+  if (body.action === 'seenMentions') {
+    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $unset: { mentionNews: '' } }, { returnDocument: 'after' })
+    return json(toProfile(doc ?? found.doc))
+  }
+
+  if (body.action === 'mentionPush') {
+    if (typeof body.on !== 'boolean') return fail(400, 'bad_request')
+    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $set: { mentionPush: body.on } }, { returnDocument: 'after' })
+    return json(toProfile(doc ?? found.doc))
+  }
+
   if (body.action === 'seenCoins') {
     const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $unset: { coinsNews: '' } }, { returnDocument: 'after' })
     return json(toProfile(doc ?? found.doc))

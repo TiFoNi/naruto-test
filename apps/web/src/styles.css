@@ -736,6 +736,20 @@ a.bell.active {
   line-height: 1.4;
 }
 
+button.bell-card {
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.bell-item.is-mention .bell-hint {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .bell-tags {
   display: flex;
   flex-wrap: wrap;

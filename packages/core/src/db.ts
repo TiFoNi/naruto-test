@@ -15,6 +15,8 @@ export type UserDoc = {
   xp?: number
   coins?: number
   coinsNews?: { coins: number; at: Date }
+  mentionPush?: boolean
+  mentionNews?: MentionNews[]
   bonusDay?: string
   levelsTaken?: number[]
   chatMutedUntil?: Date | null
@@ -412,6 +414,7 @@ const cache = globalThis as typeof globalThis & {
   __purchasesIndexed?: Promise<unknown>
   __ledgerIndexed?: Promise<unknown>
   __chatIndexed?: Promise<unknown>
+  __chatNewsIndexed?: Promise<unknown>
   __pulseIndexed?: Promise<unknown>
 }
 
@@ -520,7 +523,13 @@ export type ChatDoc = {
   text: string
   at: Date
   hidden?: boolean
+  tags?: ChatTag[]
+  everyone?: boolean
 }
+
+export type ChatTag = { id: ObjectId; nick: string }
+
+export type MentionNews = { id: string; fromId: string; from: string; text: string; at: Date }
 
 export async function chatRoom(): Promise<Collection<ChatDoc>> {
   const collection = (await database()).collection<ChatDoc>('chat')
@@ -533,6 +542,16 @@ export async function chatRoom(): Promise<Collection<ChatDoc>> {
     throw error
   })
   await cache.__chatIndexed
+  return collection
+}
+
+export async function chatNews(): Promise<Collection<ChatDoc>> {
+  const collection = (await database()).collection<ChatDoc>('chatNews')
+  cache.__chatNewsIndexed ??= collection.createIndex({ at: -1 }).catch((error) => {
+    cache.__chatNewsIndexed = undefined
+    throw error
+  })
+  await cache.__chatNewsIndexed
   return collection
 }
 

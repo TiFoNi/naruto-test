@@ -238,6 +238,7 @@ export function toProfile(doc: UserDoc) {
       bannerLooks: doc.bannerLooks ?? {},
       tone: doc.tone ?? null,
       nickTone: doc.nickTone ?? null,
+      mentionPush: doc.mentionPush !== false,
       title: ownedTitles(doc).includes(doc.title as never) ? doc.title! : null,
       titles: ownedTitles(doc),
       level: levelOf(xp),
