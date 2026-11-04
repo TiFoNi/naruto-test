@@ -103,6 +103,8 @@ async function credit(purchaseId: ObjectId, userId: ObjectId, delta: number, rea
   return true
 }
 
+const PATRON_TITLE = 'patron'
+
 export async function applyPayment(event: PaymentEvent) {
   const book = await purchases()
   const stamp = {
@@ -121,6 +123,7 @@ export async function applyPayment(event: PaymentEvent) {
     )
     if (!paid) return 'skipped'
     await credit(paid._id!, paid.userId, paid.base + paid.bonus, 'purchase')
+    await (await users()).updateOne({ _id: paid.userId }, { $addToSet: { titles: PATRON_TITLE } })
     return 'paid'
   }
 

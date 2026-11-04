@@ -9295,6 +9295,20 @@ html[data-auth] .guest-note {
   --t-hi: #ffe2c0;
 }
 
+.player-title.is-patron {
+  --t-ink: #ffe9a8;
+  --t-bg: #2b1f08;
+  --t-a: #4f3207;
+  --t-b: #e3a826;
+  --t-hi: #ffffff;
+
+  background:
+    linear-gradient(135deg, #3a2a0c, #2b1f08 55%, #3d2c0a) padding-box,
+    linear-gradient(100deg, var(--t-a) 0%, var(--t-b) 25%, var(--t-hi) 35%, var(--t-b) 45%, var(--t-a) 70%) border-box;
+  background-size: auto, 300% 100%;
+  text-shadow: 0 0 6px rgb(255 200 61 / 45%);
+}
+
 .player-title.is-champion,
 .player-title.is-runner,
 .player-title.is-hundred {

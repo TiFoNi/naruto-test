@@ -2342,6 +2342,7 @@ const ui = {
   'title.champion': { ru: 'Чемпион', uk: 'Чемпіон', en: 'Champion' },
   'title.runner': { ru: 'Топ-10', uk: 'Топ-10', en: 'Top 10' },
   'title.hundred': { ru: 'Топ-100', uk: 'Топ-100', en: 'Top 100' },
+  'title.patron': { ru: 'Меценат', uk: 'Меценат', en: 'Patron' },
   'lb.colXp': { ru: 'XP за сезон', uk: 'XP за сезон', en: 'Season XP' },
   'lb.colDays': { ru: 'Активных дней', uk: 'Активних днів', en: 'Active days' },
   'lb.topShare': { ru: 'топ {percent}%', uk: 'топ {percent}%', en: 'top {percent}%' },

@@ -433,7 +433,7 @@ export const MODE_XP_AFTER: Record<ModeId, number> = {
   clue: 5,
 }
 
-export const TITLES = ['admin', 'tester', 'champion', 'runner', 'hundred'] as const
+export const TITLES = ['admin', 'tester', 'champion', 'runner', 'hundred', 'patron'] as const
 
 export type TitleId = (typeof TITLES)[number]
 
