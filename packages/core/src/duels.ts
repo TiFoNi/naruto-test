@@ -39,7 +39,7 @@ import {
 import { abilityByKey } from './abilities'
 import { duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type UserDoc } from './db'
 import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
-import { gameData, isGame, isMode } from './games'
+import { gameData, isGame, isMode, type Entity } from './games'
 import { matchesFacet, planGrid } from './grid'
 import { BLACK, GREY, cleanCount, cleanWord, clueBoard, clueSizes, clueWinner, kindFor, sideLeft, teamKey } from './clue'
 import { addXp, defaultNickname } from './profile'
@@ -180,6 +180,12 @@ export async function switchTeam(duel: DuelDoc, userId: ObjectId) {
   return updated ?? duel
 }
 
+export const animePool = (pool: Entity[], anime?: boolean) => {
+  if (!anime) return pool
+  const kept = pool.filter((one) => one.anime !== false)
+  return kept.length ? kept : pool
+}
+
 export const boardSizes = (pool: number) => {
   const fits = (BOARD_SIZES as readonly number[]).filter((side) => side * side <= pool)
   return fits.length ? fits : [BOARD_SIZES[0]]
@@ -192,14 +198,15 @@ export async function setupDuel(duel: DuelDoc, userId: ObjectId, body: Record<st
   if (mode !== 'who' && mode !== 'clue' && !hasMode(game, mode)) return null
   const best = rounds(body.best) ?? duel.best ?? DUEL_DEFAULT.best
   const limit = seconds(body.seconds) ?? duel.seconds ?? DUEL_DEFAULT.seconds
-  const pool = (await gameData(game)).pool.length
+  const whole = (await gameData(game)).pool
+  const wantAnime = typeof body.anime === 'boolean' ? body.anime : duel.anime ?? false
+  const anime = wantAnime && DUEL_FILTER_MODES.includes(mode) && whole.some((one) => one.anime === false)
+  const pool = animePool(whole, anime).length
   const allowed = mode === 'clue' ? clueSizes(pool) : boardSizes(pool)
   if (!allowed.length) return null
   const asked = Number(body.size) || duel.size || (mode === 'clue' ? CLUE_DEFAULT : BOARD_DEFAULT)
   const size = allowed.includes(asked) ? asked : Math.max(...allowed.filter((side) => side <= asked), allowed[0])
   const strict = typeof body.strict === 'boolean' ? body.strict : duel.strict ?? false
-  const wantAnime = typeof body.anime === 'boolean' ? body.anime : duel.anime ?? false
-  const anime = wantAnime && DUEL_FILTER_MODES.includes(mode) && (await gameData(game)).pool.some((one) => one.anime === false)
   const here = duel.players.length
   const wantPer = teamSize(mode, body.per ?? duel.per)
   const wantTeams = teamCount(mode, body.teams ?? duel.teams)
@@ -356,7 +363,7 @@ const shuffled = <T>(list: T[]) => {
 }
 
 async function boardStart(duel: DuelDoc) {
-  const { pool } = await gameData(duel.game as GameId)
+  const pool = animePool((await gameData(duel.game as GameId)).pool, duel.anime)
   const allowed = boardSizes(pool.length)
   const size = allowed.includes(duel.size ?? BOARD_DEFAULT) ? (duel.size ?? BOARD_DEFAULT) : allowed[allowed.length - 1]
   const cards = shuffled(pool.map((entity) => entity.id)).slice(0, Math.min(size * size, pool.length))
@@ -391,8 +398,9 @@ async function boardStart(duel: DuelDoc) {
 }
 
 async function gridStart(duel: DuelDoc) {
-  let plan = await planGrid(duel.game as GameId, GRID_MIN)
-  for (let retry = 0; !plan && retry < 2; retry++) plan = await planGrid(duel.game as GameId, GRID_MIN)
+  let plan = await planGrid(duel.game as GameId, GRID_MIN, duel.anime)
+  for (let retry = 0; !plan && retry < 2; retry++) plan = await planGrid(duel.game as GameId, GRID_MIN, duel.anime)
+  if (!plan && duel.anime) plan = await planGrid(duel.game as GameId, GRID_MIN)
   const startedAt = new Date()
   const limit = duel.seconds || DUEL_DEFAULT.seconds
   const first = duel.bot
@@ -423,7 +431,7 @@ async function gridStart(duel: DuelDoc) {
 }
 
 async function clueStart(duel: DuelDoc) {
-  const board = await clueBoard(duel.game as GameId, duel.size, duel.clue?.cards ?? [])
+  const board = await clueBoard(duel.game as GameId, duel.size, duel.clue?.cards ?? [], duel.anime)
   const startedAt = new Date()
   return {
     status: 'playing' as const,
@@ -1159,7 +1167,7 @@ export function scheduleBot(duel: DuelDoc) {
 async function botChoice(duel: DuelDoc) {
   if (!duel.grid) return null
   const game = duel.game as GameId
-  const { pool } = await gameData(game)
+  const pool = animePool((await gameData(game)).pool, duel.anime)
   const used = new Set(duel.grid.used)
   const marks = duel.grid.marks
   const me = duel.players.findIndex((side) => side.userId.equals(BOT_ID))
@@ -1441,8 +1449,8 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
     winner: finished ? winnerName(duel) : undefined,
     youWon: finished ? shownTeam(duel) !== null && shownTeam(duel) === yours : undefined,
     results: duel.results ?? [],
-    ...(duel.mode === 'who' ? { size: duel.size ?? BOARD_DEFAULT, sizes: boardSizes(data?.pool.length ?? 0) } : {}),
-    ...(duel.mode === 'clue' ? { size: clueSide(duel.size), sizes: clueSizes(data?.pool.length ?? 0) } : {}),
+    ...(duel.mode === 'who' ? { size: duel.size ?? BOARD_DEFAULT, sizes: boardSizes(animePool(data?.pool ?? [], duel.anime).length) } : {}),
+    ...(duel.mode === 'clue' ? { size: clueSide(duel.size), sizes: clueSizes(animePool(data?.pool ?? [], duel.anime).length) } : {}),
     ...(duel.mode === 'clue' && duel.clue
       ? {
           clue: {

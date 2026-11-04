@@ -656,7 +656,7 @@ export type XpSource = keyof typeof XP_CAPS
 
 export const DUEL_MODES: ModeId[] = ['classic', 'blind', 'image', 'ability', 'page', 'phrase', 'who', 'grid']
 
-export const DUEL_FILTER_MODES: ModeId[] = ['classic', 'blind', 'image', 'ability', 'page', 'phrase']
+export const DUEL_FILTER_MODES: ModeId[] = ['classic', 'blind', 'image', 'ability', 'page', 'phrase', 'who', 'grid', 'clue']
 
 export const TABLE_MODES: ModeId[] = ['classic', 'blind']
 
@@ -731,7 +731,7 @@ export const teamCount = (mode: unknown, value: unknown) => {
 
 export const DUEL_ROUNDS = [3, 5, 7, 10] as const
 export const DUEL_SECONDS = [60, 180, 600, 1800] as const
-export const DUEL_DEFAULT = { best: 5, seconds: 180 }
+export const DUEL_DEFAULT = { best: 5, seconds: 600 }
 export const DUEL_MATCH_XP = 50
 
 export const duelWinsNeeded = (best: number) => Math.floor(best / 2) + 1

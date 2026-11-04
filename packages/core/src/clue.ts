@@ -23,8 +23,10 @@ export const teamKey = (team: number) => (team === 0 ? 0 : 1)
 
 export const kindFor = (key: number, team: number) => (key > 1 ? key : key === teamKey(team) ? OWN : FOE)
 
-export async function clueBoard(game: GameId, size: unknown, seen: number[] = []) {
-  const pool = (await gameData(game)).pool
+export async function clueBoard(game: GameId, size: unknown, seen: number[] = [], anime = false) {
+  const whole = (await gameData(game)).pool
+  const kept = anime ? whole.filter((one) => one.anime !== false) : whole
+  const pool = kept.length >= cluePlan(size).cells ? kept : whole
   const plan = cluePlan(size)
   if (pool.length < plan.cells) return null
 

@@ -83,8 +83,10 @@ function search(pool: Candidate[], min: number, tries: number) {
   return null
 }
 
-export async function planGrid(game: GameId, min = 5): Promise<GridPlan | null> {
-  const { pool } = await gameData(game)
+export async function planGrid(game: GameId, min = 5, anime = false): Promise<GridPlan | null> {
+  const whole = (await gameData(game)).pool
+  const kept = anime ? whole.filter((one) => one.anime !== false) : whole
+  const pool = kept.length ? kept : whole
   const deck = candidates(pool, game, Math.max(min * 2, 10))
   if (deck.length < SIDE * 2) return null
 

@@ -626,7 +626,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
         </PlayBoard>
       )}
 
-      {!inLobby && quit && duel.mode !== 'grid' && duel.mode !== 'clue' && (
+      {!inLobby && quit && duel.mode !== 'grid' && duel.mode !== 'clue' && duel.mode !== 'who' && (
         <>
           {!solo && !over && !youDone && (
             <div className="duel-quit is-narrow">
