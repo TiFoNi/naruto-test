@@ -1116,7 +1116,12 @@ body:has(.chat-panel) .duel-dock {
 }
 
 .chat-menu.is-point {
+  width: max-content;
   transform: none;
+}
+
+.chat-menu.is-point .chat-menu-item {
+  white-space: nowrap;
 }
 
 .chat-menu-item.is-bad,

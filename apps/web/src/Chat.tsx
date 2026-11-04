@@ -41,6 +41,7 @@ const toneOf = (tone?: string | null): CSSProperties | undefined => {
 }
 
 const MENU_EDGE = 8
+const POINT_EDGE = 16
 const HOLD_MS = 450
 const HOLD_SLIP = 10
 const GROUP_MS = 5 * 60_000
@@ -159,8 +160,8 @@ export default function Chat() {
   useLayoutEffect(() => {
     const node = pointBox.current
     if (!pointed || !node) return setPointAt(null)
-    const x = Math.min(pointed.x, window.innerWidth - node.offsetWidth - MENU_EDGE)
-    const y = Math.min(pointed.y, window.innerHeight - node.offsetHeight - MENU_EDGE)
+    const x = Math.min(pointed.x, window.innerWidth - node.offsetWidth - POINT_EDGE)
+    const y = Math.min(pointed.y, window.innerHeight - node.offsetHeight - POINT_EDGE)
     setPointAt({ x: Math.max(MENU_EDGE, x), y: Math.max(MENU_EDGE, y) })
   }, [pointed])
   const hold = useRef<{ timer: number; x: number; y: number } | null>(null)
