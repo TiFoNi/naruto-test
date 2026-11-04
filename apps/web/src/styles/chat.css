@@ -506,7 +506,7 @@ body:has(.chat-panel) .duel-dock {
   font-size: 15px;
   line-height: 1.35;
   resize: none;
-  overflow-y: auto;
+  overflow-y: hidden;
   scrollbar-width: thin;
   scrollbar-color: var(--card-2) transparent;
 }
@@ -715,6 +715,8 @@ body:has(.chat-panel) .duel-dock {
 }
 
 .chat-room-dot {
+  position: relative;
+  top: 1px;
   width: 8px;
   height: 8px;
   border-radius: 50%;

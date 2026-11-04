@@ -185,6 +185,7 @@ export default function Chat() {
     if (!box) return
     box.style.height = 'auto'
     box.style.height = `${Math.min(box.scrollHeight, 132)}px`
+    box.style.overflowY = box.scrollHeight > 132 ? 'auto' : 'hidden'
   }, [])
 
   const say = useCallback((text: string, bad = false) => setNote({ text, bad }), [])
