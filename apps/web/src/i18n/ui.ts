@@ -1514,6 +1514,8 @@ const ui = {
   'banner.levelup': { ru: 'Новый уровень', uk: 'Новий рівень', en: 'Level up' },
   'banner.snakes': { ru: 'Змеиное гнездо', uk: 'Зміїне гніздо', en: 'Snake nest' },
   'banner.touch': { ru: 'Сотворение', uk: 'Створення', en: 'Creation' },
+  'banner.golden': { ru: 'Золотое свидание', uk: 'Золоте побачення', en: 'Golden date' },
+  'banner.lonely': { ru: 'Бескрайнее небо', uk: 'Безкрайнє небо', en: 'Endless sky' },
   'profile.blockAll': { ru: 'Все блоки уже на месте', uk: 'Усі блоки вже на місці', en: 'Every block is already here' },
   'profile.block.worlds': { ru: 'Любимые вселенные', uk: 'Улюблені всесвіти', en: 'Favourite worlds' },
   'profile.block.awards': { ru: 'Достижения', uk: 'Досягнення', en: 'Achievements' },

@@ -449,7 +449,7 @@ export const isBlock = (value: unknown): value is ProfileBlock => (PROFILE_BLOCK
 
 export const profileBlocks = (value: unknown) => (Array.isArray(value) ? [...new Set(value.filter(isBlock))] : null)
 
-export const BANNERS = ['frog', 'night', 'sharingan', 'blossom', 'crows', 'fireflies', 'aot', 'kny', 'tg', 'dn', 'tester', 'castle', 'poppies', 'pain', 'levelup', 'snakes', 'touch'] as const
+export const BANNERS = ['frog', 'night', 'sharingan', 'blossom', 'crows', 'fireflies', 'aot', 'kny', 'tg', 'dn', 'tester', 'castle', 'poppies', 'pain', 'levelup', 'snakes', 'touch', 'golden', 'lonely'] as const
 
 export type Banner = (typeof BANNERS)[number]
 
@@ -532,6 +532,8 @@ export const BANNER_RARITY: Record<string, Rarity> = {
   levelup: 'common',
   snakes: 'epic',
   touch: 'rare',
+  golden: 'rare',
+  lonely: 'rare',
 }
 
 const priced = <T extends Record<string, Rarity>>(rarity: T, kind: 'frame' | 'banner') =>
