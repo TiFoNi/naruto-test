@@ -417,7 +417,7 @@ async function main() {
     }
 
 
-    const stamp = []
+    const stamp = ['covers-2']
     for (const file of [path.join(OUT_IMG, 'full', `${id}.webp`), ...pages.map((_, at) => path.join(pageDir, `${at + 1}.webp`))]) {
       const info = await fs.stat(file).catch(() => null)
       if (info) stamp.push(`${path.basename(file)}:${info.size}`)

@@ -2,6 +2,7 @@
 
 import { Fragment, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { BOARD_DEFAULT, BOARD_SIZES, CLUE_DEFAULT, CLUE_SIZES, DUEL_FILTER_MODES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, GRID_GAMES, TEAM_MODES } from '@nanda/game'
+import Link from 'next/link'
 import Avatar from './Avatar'
 import BannerArt from './BannerArt'
 import { ChevronIcon, UserIcon } from './icons'
@@ -12,6 +13,7 @@ import { GAMES, gameById } from './games'
 import type { Category, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { MODES } from './modes'
+import { useHref } from './router'
 import type { DuelView } from './useDuel'
 import { CopyIcon, ExitIcon } from './icons'
 
@@ -48,6 +50,7 @@ const duelMode = (game: { modes: readonly string[] }, current: string | null) =>
 
 export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady, onSeat, onLeave }: Props) {
   const { t, l } = useI18n()
+  const href = useHref()
   const host = duel.host
   const game = gameById((duel.game ?? 'naruto') as GameId)
   const [category, setCategory] = useState<Category>(game.category)
@@ -182,9 +185,13 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                       </span>
                     )}
                     {spot.lead && <em className="duel-seat-tag">{t('clue.lead')}</em>}
-                    <Avatar className="duel-face" id={mate.id} name={mate.nickname} avatar={mate.avatar} frame={mate.frame} />
+                    <Link className="duel-seat-link" href={mate.you ? href.profile : href.player(mate.id)} prefetch={false} aria-label={mate.nickname}>
+                      <Avatar className="duel-face" id={mate.id} name={mate.nickname} avatar={mate.avatar} frame={mate.frame} />
+                    </Link>
                     <span className="duel-seat-text">
-                      <b>{mate.nickname}</b>
+                      <Link className="duel-seat-nick" href={mate.you ? href.profile : href.player(mate.id)} prefetch={false}>
+                        <b>{mate.nickname}</b>
+                      </Link>
                       {mate.title && <i className={`player-title is-slim is-${mate.title}`}>{t(`title.${mate.title}` as UiKey)}</i>}
                       <small className={mate.ready ? 'on' : ''}>
                         {mate.you ? `${t('duel.youSide')} · ` : ''}
