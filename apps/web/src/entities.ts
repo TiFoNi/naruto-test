@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react'
 import { api } from './api'
 import type { Entity, Game } from './games/types'
 
+const RETRY_MS = 2_000
+const RETRY_MAX_MS = 10_000
+
 const loaded = new Set<string>()
 const pending = new Map<string, Promise<void>>()
 
@@ -27,14 +30,26 @@ export function useEntities(game: Game | null | undefined) {
 
     setReady(false)
     let alive = true
-    let run = pending.get(game.id)
-    if (!run) {
-      run = fetchInto(game).finally(() => pending.delete(game.id))
-      pending.set(game.id, run)
+    let tries = 0
+    let timer = 0
+    const load = () => {
+      let run = pending.get(game.id)
+      if (!run) {
+        run = fetchInto(game).finally(() => pending.delete(game.id))
+        pending.set(game.id, run)
+      }
+      run
+        .then(() => alive && setReady(true))
+        .catch(() => {
+          if (!alive) return
+          tries += 1
+          timer = window.setTimeout(load, Math.min(RETRY_MS * tries, RETRY_MAX_MS))
+        })
     }
-    run.then(() => alive && setReady(true)).catch(() => alive && setReady(false))
+    load()
     return () => {
       alive = false
+      window.clearTimeout(timer)
     }
   }, [game])
 

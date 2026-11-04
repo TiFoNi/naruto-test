@@ -261,6 +261,7 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
         </div>
       )}
 
+      {cards.length > 0 && !cards.some((id) => byId.has(id)) && <p className="who-loading muted">{t('image.loading')}</p>}
       <ol className={`who-grid ${choosing ? (youPicked ? 'who-waiting' : 'who-choosing') : ''}`} ref={grid} style={{ ['--board' as string]: board }}>
         {cards.map((id) => {
           const entity = byId.get(id)

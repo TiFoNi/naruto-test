@@ -4182,3 +4182,8 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 .rival-rows li.is-ghost .rival-cell {
   background: color-mix(in srgb, var(--card-2) 55%, transparent);
 }
+
+.who-loading {
+  margin: 18px 0;
+  text-align: center;
+}
