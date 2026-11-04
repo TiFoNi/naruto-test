@@ -35,6 +35,8 @@ const hintOf = (result: QuestionProps['result'], pick: UiKey): UiKey => (!result
 
 const listOf = (value: QuizValue) => (Array.isArray(value) ? value : [])
 
+const LONG_TEXT = 60
+
 type Drag = { item: number; x: number; y: number; w: number; over: string | null }
 
 function useDrag(onDrop: (item: number, target: string | null) => void) {
@@ -628,7 +630,7 @@ export function QuizRun({
     <section key={index} id={`quiz-q-${index}`} className={`quiz-q ${state}`}>
       <em className="quiz-q-tag">{tag}</em>
       {question.picture ? (
-        <div className="quiz-q-head">
+        <div className={`quiz-q-head ${question.text.length > LONG_TEXT ? 'is-long' : ''}`}>
           <img className="quiz-q-picture" src={coverUrl(game.id, question.picture) ?? ''} alt="" loading="lazy" />
           <h2>{question.text}</h2>
         </div>

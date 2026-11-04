@@ -2863,6 +2863,19 @@ textarea.quiz-admin-input {
     height: 84px;
     border-radius: 10px;
   }
+
+  .quiz-q-head.is-long {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .quiz-q-head.is-long .quiz-q-picture {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
 }
 
 .quiz-admin-qpic {
