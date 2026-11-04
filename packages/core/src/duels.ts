@@ -1028,7 +1028,20 @@ export async function pickSecret(duel: DuelDoc, userId: ObjectId, entityId: numb
   }
 
   const updated = await (await duels()).findOneAndUpdate({ _id: duel._id, status: 'playing' }, { $set: set }, { returnDocument: 'after' })
-  return { duel: updated ?? duel }
+  if (!updated || picking(updated) || updated.turnId) return { duel: updated ?? duel }
+  const startedAt = new Date()
+  const started = await (await duels()).findOneAndUpdate(
+    { _id: duel._id, status: 'playing', turnId: null },
+    {
+      $set: {
+        startedAt,
+        endsAt: new Date(startedAt.getTime() + (updated.seconds || DUEL_DEFAULT.seconds) * 1000),
+        turnId: updated.firstId ?? updated.players[0]?.userId ?? null,
+      },
+    },
+    { returnDocument: 'after' },
+  )
+  return { duel: started ?? (await (await duels()).findOne({ _id: duel._id })) ?? updated }
 }
 
 export const yourTurn = (duel: DuelDoc, userId: ObjectId) => Boolean(duel.turnId && duel.turnId.equals(userId))

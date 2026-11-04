@@ -13,7 +13,7 @@ type Props = {
   duel: DuelView
   busy: boolean
   onPick: (entityId: number) => void
-  onPass: () => void
+  onPass: () => unknown
   onStrike: (entityId: number) => void
   onAnswer: (entityId: number) => void
   onNext: () => void
@@ -185,7 +185,7 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
             disabled={passing}
             onClick={() => {
               setPassing(true)
-              onPass()
+              void Promise.resolve(onPass()).finally(() => setPassing(false))
             }}
           >
             {t('who.pass')}
