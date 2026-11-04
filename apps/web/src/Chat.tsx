@@ -152,6 +152,17 @@ export default function Chat() {
   const [asking, setAsking] = useState<{ kind: 'drop' | 'mute' | 'unfriend'; line: Line } | null>(null)
   const [menu, setMenu] = useState<{ line: Line; x: number; y: number; above: number } | null>(null)
   const [held, setHeld] = useState<Line | null>(null)
+  const [pointed, setPointed] = useState<{ line: Line; x: number; y: number } | null>(null)
+  const pointBox = useRef<HTMLDivElement>(null)
+  const [pointAt, setPointAt] = useState<{ x: number; y: number } | null>(null)
+
+  useLayoutEffect(() => {
+    const node = pointBox.current
+    if (!pointed || !node) return setPointAt(null)
+    const x = Math.min(pointed.x, window.innerWidth - node.offsetWidth - MENU_EDGE)
+    const y = Math.min(pointed.y, window.innerHeight - node.offsetHeight - MENU_EDGE)
+    setPointAt({ x: Math.max(MENU_EDGE, x), y: Math.max(MENU_EDGE, y) })
+  }, [pointed])
   const hold = useRef<{ timer: number; x: number; y: number } | null>(null)
   const menuBox = useRef<HTMLDivElement>(null)
   const [menuTop, setMenuTop] = useState<number | null>(null)
@@ -420,12 +431,13 @@ export default function Chat() {
     if (!open) return
     const keys = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return
+      if (pointed) return setPointed(null)
       if (menu) return setMenu(null)
       close()
     }
     window.addEventListener('keydown', keys)
     return () => window.removeEventListener('keydown', keys)
-  }, [open, close, menu])
+  }, [open, close, menu, pointed])
 
   const typeBeat = useCallback(
     (on: boolean) => {
@@ -628,7 +640,11 @@ export default function Chat() {
     onPointerUp: letGo,
     onPointerCancel: letGo,
     onContextMenu: (event: React.MouseEvent) => {
-      if (holdable && window.matchMedia('(hover: none)').matches) event.preventDefault()
+      if (!holdable) return
+      event.preventDefault()
+      if (window.matchMedia('(hover: none)').matches) return
+      setMenu(null)
+      setPointed({ line, x: event.clientX, y: event.clientY })
     },
   })
 
@@ -637,6 +653,7 @@ export default function Chat() {
     if (!box) return
     nearEnd.current = box.scrollHeight - box.scrollTop - box.clientHeight < 80
     setMenu(null)
+    setPointed(null)
   }
 
   return (
@@ -744,18 +761,6 @@ export default function Chat() {
                     )}
                     <p>{bodyOf(line)}</p>
                   </div>
-                  {user?.admin && room !== 'duel' && (
-                    <span className="chat-tools">
-                      <button type="button" title={t('chat.drop')} aria-label={t('chat.drop')} onClick={() => setAsking({ kind: 'drop', line })}>
-                        <CloseIcon />
-                      </button>
-                      {line.userId !== user.id && (
-                        <button type="button" title={t('chat.mute')} aria-label={t('chat.mute')} onClick={() => setAsking({ kind: 'mute', line })}>
-                          <MuteIcon />
-                        </button>
-                      )}
-                    </span>
-                  )}
                 </article>
               )
             })}
@@ -979,6 +984,47 @@ export default function Chat() {
                   {t('chat.duel')}
                 </button>
               </>
+            )}
+          </div>
+        </>
+      )}
+
+      {pointed && (
+        <>
+          <div className="chat-menu-away" role="presentation" onClick={() => setPointed(null)} onContextMenu={(event) => {
+            event.preventDefault()
+            setPointed(null)
+          }} />
+          <div
+            ref={pointBox}
+            className="chat-menu is-point"
+            style={{ left: pointAt?.x ?? pointed.x, top: pointAt?.y ?? pointed.y, visibility: pointAt ? undefined : 'hidden' }}
+            role="menu"
+            aria-label={t('chat.holdAct')}
+          >
+            <button
+              type="button"
+              className="chat-menu-item is-bad"
+              onClick={() => {
+                setAsking({ kind: 'drop', line: pointed.line })
+                setPointed(null)
+              }}
+            >
+              <CloseIcon />
+              {t('chat.drop')}
+            </button>
+            {pointed.line.userId !== user?.id && (
+              <button
+                type="button"
+                className="chat-menu-item"
+                onClick={() => {
+                  setAsking({ kind: 'mute', line: pointed.line })
+                  setPointed(null)
+                }}
+              >
+                <MuteIcon />
+                {t('chat.mute')}
+              </button>
             )}
           </div>
         </>
