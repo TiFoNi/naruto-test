@@ -2354,9 +2354,9 @@ const ui = {
     en: 'Your level and achievements stay — the season counts only new XP.',
   },
   'lb.how3': {
-    ru: 'Каждый месяц новый сезон: у всех равные шансы попасть в топ.',
-    uk: 'Щомісяця новий сезон: у всіх рівні шанси потрапити в топ.',
-    en: 'A new season every month: everyone gets a fair shot at the top.',
+    ru: 'Каждую неделю новый сезон: у всех равные шансы попасть в топ.',
+    uk: 'Щотижня новий сезон: у всіх рівні шанси потрапити в топ.',
+    en: 'A new season every week: everyone gets a fair shot at the top.',
   },
   'lb.seasonEmpty': {
     ru: 'В этом сезоне ещё никто не набрал опыта — стань первым!',
