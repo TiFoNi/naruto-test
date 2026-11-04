@@ -532,8 +532,8 @@ export const BANNER_RARITY: Record<string, Rarity> = {
   levelup: 'common',
   snakes: 'epic',
   touch: 'rare',
-  golden: 'rare',
-  lonely: 'rare',
+  golden: 'epic',
+  lonely: 'epic',
 }
 
 const priced = <T extends Record<string, Rarity>>(rarity: T, kind: 'frame' | 'banner') =>
