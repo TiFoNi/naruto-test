@@ -238,12 +238,13 @@ body:has(.chat-panel) .duel-dock {
 
 .chat-body {
   min-width: 0;
-  max-width: 74%;
+  max-width: 80%;
   flex: 0 1 auto;
 }
 
 .chat-body header {
   display: flex;
+  height: 22px;
   align-items: baseline;
   gap: 7px;
 }
@@ -365,13 +366,17 @@ body:has(.chat-panel) .duel-dock {
 
 .chat-tools {
   position: absolute;
+  top: 28px;
   right: 0;
-  bottom: 3px;
   display: flex;
   gap: 2px;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.14s ease;
+}
+
+.chat-line.is-glued .chat-tools {
+  top: 2px;
 }
 
 .chat-line.is-mine .chat-tools {
