@@ -315,6 +315,19 @@ export const GET = handle(async (request) => {
       wins: doc.duelStats?.wins ?? 0,
       losses: doc.duelStats?.losses ?? 0,
       draws: doc.duelStats?.draws ?? 0,
+      modes: Object.entries(doc.duelStats?.modes ?? {}).map(([mode, row]) => ({ mode, played: row.played ?? 0, wins: row.wins ?? 0 })),
+      recent: [...(doc.duelLog ?? [])]
+        .reverse()
+        .map((row) => ({
+          rivalId: row.rivalId?.toHexString() ?? null,
+          rival: row.rival || '?',
+          game: row.game ?? null,
+          mode: row.mode ?? null,
+          wins: row.wins,
+          losses: row.losses,
+          won: row.won,
+          at: row.at.toISOString(),
+        })),
     },
     challenges: { solved: doc.challengeStats?.solved ?? 0 },
     favourite: games.find((row) => row.solved > 0)?.game ?? null,

@@ -77,6 +77,11 @@
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--rival) 60%, transparent);
 }
 
+.duel-hud-side .duel-hud-face.has-frame,
+.duel-hud-mate .duel-hud-face.has-frame {
+  box-shadow: none;
+}
+
 .duel-hud-name {
   display: flex;
   flex-direction: column;
@@ -2646,6 +2651,11 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   box-shadow:
     0 0 0 2px color-mix(in srgb, var(--rival) 60%, transparent),
     0 0 26px color-mix(in srgb, var(--rival) 32%, transparent);
+}
+
+.duel-corner .duel-face.has-pic,
+.duel-corner .duel-face.has-frame {
+  box-shadow: none;
 }
 
 .duel-chips-row {

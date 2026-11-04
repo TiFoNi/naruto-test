@@ -67,7 +67,14 @@ type Summary = {
     guesses: number
     characters: number
   }
-  duels: { played: number; wins: number; losses: number; draws: number }
+  duels: {
+    played: number
+    wins: number
+    losses: number
+    draws: number
+    modes?: { mode: string; played: number; wins: number }[]
+    recent?: { rivalId: string | null; rival: string; game: string | null; mode: string | null; wins: number; losses: number; won: boolean; at: string }[]
+  }
   challenges: { solved: number }
   favourite: GameId | null
   rank: { position: number; players: number } | null
@@ -282,6 +289,8 @@ export default function Profile({ id }: { id?: string }) {
   const [weekAt, setWeekAt] = useState<HTMLElement | null>(null)
   const [week, setWeek] = useState(false)
   const weekRef = useRef<HTMLDivElement>(null)
+  const [duelAt, setDuelAt] = useState<HTMLElement | null>(null)
+  const [duelOpen, setDuelOpen] = useState(false)
   const [shop, setShop] = useState<number | null>(null)
   const shopRef = useRef<HTMLDivElement>(null)
   const [mix, setMix] = useState<(HeroTile | null)[] | null>(null)
@@ -1117,6 +1126,105 @@ export default function Profile({ id }: { id?: string }) {
               </div>
             )
   
+          if (one === 'duels') {
+            const record = summary?.duels
+            const played = record?.played ?? 0
+            const byMode = (record?.modes ?? []).filter((row) => row.played > 0).sort((a, b) => b.played - a.played)
+            return (
+              <div
+                key={one}
+                className={`hero-tile is-modes is-duels ${duelOpen ? 'is-open' : ''} ${grabbed === spot ? 'is-held' : ''}`}
+                onPointerDown={grabTile(spot)}
+              >
+                <button
+                  type="button"
+                  className="hero-tile-open"
+                  aria-expanded={duelOpen}
+                  onClick={(event) => {
+                    setDuelAt(event.currentTarget.closest<HTMLElement>('.hero-tile'))
+                    setDuelOpen((was) => !was)
+                  }}
+                >
+                  <span>{tileName('profile.duelsTitle', 'profile.duelsTitle')}</span>
+                  <b>{played ? `${percent(record?.wins ?? 0, played)}%` : '—'}</b>
+                </button>
+                {off}
+                {duelOpen && (
+                  <TilePop at={duelAt} onClose={() => setDuelOpen(false)}>
+                    <header>
+                      <h2>{t('profile.duelsTitle')}</h2>
+                      <span className="muted">{t('profile.duelPlayed', { count: played })}</span>
+                    </header>
+                    {played ? (
+                      <div className="duel-pop">
+                        <ul className="duel-pop-score">
+                          <li className="is-won">
+                            <b>{record?.wins ?? 0}</b>
+                            <small>{t('profile.duelWon')}</small>
+                          </li>
+                          <li className="is-lost">
+                            <b>{record?.losses ?? 0}</b>
+                            <small>{t('profile.duelLosses')}</small>
+                          </li>
+                          <li>
+                            <b>{record?.draws ?? 0}</b>
+                            <small>{t('profile.duelDraws')}</small>
+                          </li>
+                        </ul>
+                        {byMode.length > 0 && (
+                          <>
+                            <h3>{t('profile.duelModes')}</h3>
+                            <ul className="modes-list">
+                              {byMode.map((row) => {
+                                const mode = MODES.find((item) => item.id === row.mode)
+                                const share = percent(row.wins, row.played)
+                                return (
+                                  <li key={row.mode}>
+                                    <span className="mode-name">{mode ? t(mode.label) : row.mode}</span>
+                                    <span className="mode-count muted">{t('profile.duelPlayed', { count: row.played })}</span>
+                                    <b>{share}%</b>
+                                    <span className="mode-bar">
+                                      <i style={{ width: `${Math.max(share, 2)}%` }} />
+                                    </span>
+                                  </li>
+                                )
+                              })}
+                            </ul>
+                          </>
+                        )}
+                        {(record?.recent?.length ?? 0) > 0 && (
+                          <>
+                            <h3>{t('profile.duelRecent')}</h3>
+                            <ul className="duel-pop-log">
+                              {record!.recent!.map((row, at) => {
+                                const game = GAMES.find((item) => item.id === row.game)
+                                const mode = MODES.find((item) => item.id === row.mode)
+                                return (
+                                  <li key={`${row.at}-${at}`} className={row.won ? 'is-won' : 'is-lost'}>
+                                    <em>{t(row.won ? 'profile.duelWin' : 'profile.duelLoss')}</em>
+                                    <span>
+                                      <b>{row.rival}</b>
+                                      <small>{[game ? l(game.label) : null, mode ? t(mode.label) : null].filter(Boolean).join(' · ')}</small>
+                                    </span>
+                                    <strong>
+                                      {row.wins}:{row.losses}
+                                    </strong>
+                                  </li>
+                                )
+                              })}
+                            </ul>
+                          </>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="muted">{t('profile.duelNone')}</p>
+                    )}
+                  </TilePop>
+                )}
+              </div>
+            )
+          }
+
           const face = tileFace(one)
           return (
             <div

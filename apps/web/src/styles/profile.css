@@ -1515,6 +1515,134 @@
   height: 5px;
 }
 
+.modes-pop .duel-pop {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 12px;
+}
+
+.modes-pop .duel-pop .modes-list {
+  flex: none;
+  overflow: visible;
+  padding-right: 0;
+}
+
+.modes-pop .duel-pop h3 {
+  margin: 4px 0 0;
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.duel-pop-score {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.duel-pop-score li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 6px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+}
+
+.duel-pop-score b {
+  font-family: var(--display);
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+.duel-pop-score small {
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.duel-pop-score .is-won b {
+  color: var(--correct);
+}
+
+.duel-pop-score .is-lost b {
+  color: #ff8085;
+}
+
+.duel-pop-log {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.duel-pop-log li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+}
+
+.duel-pop-log em {
+  flex: none;
+  min-width: 82px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.duel-pop-log .is-won em {
+  color: var(--correct);
+}
+
+.duel-pop-log .is-lost em {
+  color: #ff8085;
+}
+
+.duel-pop-log span {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.duel-pop-log span b {
+  overflow: hidden;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.duel-pop-log span small {
+  overflow: hidden;
+  color: var(--text-3);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.duel-pop-log strong {
+  flex: none;
+  font-family: var(--display);
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
 @keyframes modes-pop-in {
   from {
     opacity: 0;

@@ -42,6 +42,9 @@ export function useAnimeOnly(game: string) {
   return [on, set] as const
 }
 
+export const onlyView = (game: Game, on: boolean): Game =>
+  !on ? game : { ...game, columns: game.only ? game.columns.map((column) => game.only![column.key] ?? column) : game.columns, entities: game.entities.filter((one) => one.anime !== false) }
+
 export function useOnlyView(game: Game, on: boolean) {
   const { columns, only, entities } = game
   return useMemo(() => {

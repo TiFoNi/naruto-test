@@ -1,3 +1,4 @@
 {
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "ignoreCommand": "root=$(git rev-parse --show-toplevel) && git diff --quiet \"${VERCEL_GIT_PREVIOUS_SHA:-HEAD^}\" HEAD -- \"$root/apps/web\" \"$root/packages\" \"$root/package.json\" \"$root/package-lock.json\" \"$root/vercel.json\""
 }

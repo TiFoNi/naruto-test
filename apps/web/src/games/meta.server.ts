@@ -2,7 +2,7 @@ import { GAMES } from './index'
 import type { GameMeta } from './meta'
 
 const API = (process.env.API_ORIGIN ?? process.env.NEXT_PUBLIC_API_URL ?? '').replace(/\/+$/, '')
-const FRESH = 86400
+const FRESH = 604800
 
 type Row = { game: string; count: number; plays?: number; featured: { id: number; image?: string }[] }
 

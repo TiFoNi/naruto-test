@@ -1,7 +1,7 @@
 'use client'
 
 import { Fragment, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
-import { BOARD_DEFAULT, BOARD_SIZES, CLUE_DEFAULT, CLUE_SIZES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, GRID_GAMES, TEAM_MODES } from '@nanda/game'
+import { BOARD_DEFAULT, BOARD_SIZES, CLUE_DEFAULT, CLUE_SIZES, DUEL_FILTER_MODES, DUEL_MODES, DUEL_ROUNDS, DUEL_SECONDS, GRID_GAMES, TEAM_MODES } from '@nanda/game'
 import Avatar from './Avatar'
 import BannerArt from './BannerArt'
 import { ChevronIcon, UserIcon } from './icons'
@@ -31,7 +31,7 @@ type Props = {
   duel: DuelView
   busy: boolean
   link: string
-  onSetup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; per?: number; teams?: number; strict?: boolean }) => void
+  onSetup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; per?: number; teams?: number; strict?: boolean; anime?: boolean }) => void
   onSeat: (team: number, lead?: boolean) => void
   onInvite: (to: string) => void
   onReady: (want?: boolean) => void
@@ -372,6 +372,20 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
             label: `${value}×${value}`,
             hint: t('who.size').toUpperCase(),
           }))}
+        />
+      )}
+
+      {duel.filterable && DUEL_FILTER_MODES.includes(duel.mode as never) && (
+        <Picker
+          rich
+          disabled={!host || busy}
+          label={duel.anime ? t(game.only ? 'screen.only' : 'anime.only') : t('duel.animeAll')}
+          value={duel.anime ? 'on' : 'off'}
+          onChange={(next) => onSetup({ anime: next === 'on' })}
+          options={[
+            { value: 'off', label: t('duel.animeAll'), hint: t('duel.animeTitle').toUpperCase() },
+            { value: 'on', label: t(game.only ? 'screen.only' : 'anime.only'), hint: t('duel.animeTitle').toUpperCase() },
+          ]}
         />
       )}
 

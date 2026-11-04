@@ -3,7 +3,7 @@ import PlayView from '@/src/PlayView'
 import type { Lang } from '@/src/i18n/ui'
 import { playMetadata } from '@/src/seo'
 
-export const revalidate = 86400
+export const revalidate = 604800
 export const generateStaticParams = async () => []
 
 type Params = { params: Promise<{ lang: string; game: string; mode: string }> }

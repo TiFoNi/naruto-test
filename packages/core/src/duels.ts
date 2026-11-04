@@ -10,6 +10,8 @@ import {
   DUEL_DEFAULT,
   DUEL_MATCH_XP,
   DUEL_MODES,
+  DUEL_FILTER_MODES,
+  TABLE_MODES,
   DUEL_TEAM_COUNTS,
   DUEL_TEAM_SIZES,
   DUEL_ROUNDS,
@@ -196,6 +198,8 @@ export async function setupDuel(duel: DuelDoc, userId: ObjectId, body: Record<st
   const asked = Number(body.size) || duel.size || (mode === 'clue' ? CLUE_DEFAULT : BOARD_DEFAULT)
   const size = allowed.includes(asked) ? asked : Math.max(...allowed.filter((side) => side <= asked), allowed[0])
   const strict = typeof body.strict === 'boolean' ? body.strict : duel.strict ?? false
+  const wantAnime = typeof body.anime === 'boolean' ? body.anime : duel.anime ?? false
+  const anime = wantAnime && DUEL_FILTER_MODES.includes(mode) && (await gameData(game)).pool.some((one) => one.anime === false)
   const here = duel.players.length
   const wantPer = teamSize(mode, body.per ?? duel.per)
   const wantTeams = teamCount(mode, body.teams ?? duel.teams)
@@ -224,7 +228,7 @@ export async function setupDuel(duel: DuelDoc, userId: ObjectId, body: Record<st
   )
   const updated = await (await duels()).findOneAndUpdate(
     { _id: duel._id, status: 'lobby' },
-    { $set: { game, mode, best, seconds: limit, size, strict, per, teams, ...seated, ...roles, ...calm } },
+    { $set: { game, mode, best, seconds: limit, size, strict, anime, per, teams, ...seated, ...roles, ...calm } },
     { returnDocument: 'after' },
   )
   return updated ?? duel
@@ -449,7 +453,9 @@ async function roundStart(duel: DuelDoc) {
   if (duel.mode === 'grid') return gridStart(duel)
   if (duel.mode === 'clue') return clueStart(duel)
   const game = duel.game as GameId
-  const pool = modePool((await gameData(game)).pool, duel.mode as ModeId)
+  const whole = modePool((await gameData(game)).pool, duel.mode as ModeId)
+  const shown = duel.anime ? whole.filter((one) => one.anime !== false) : whole
+  const pool = shown.length ? shown : whole
   const fresh = pool.filter((e) => e.id !== duel.answerId)
   const answer = (fresh.length ? fresh : pool)[randomInt(fresh.length || pool.length)]
   const extra = await roundExtra(duel.game as GameId, duel.mode as ModeId, answer.id)
@@ -1361,12 +1367,12 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
   const answer = byId && duel.answerId !== undefined ? byId.get(duel.answerId) : undefined
   const foes = duel.players.filter((p) => teamOf(duel, p) !== yours)
   const boardOf = (side: DuelPlayer, rows: number) =>
-    duel.mode === 'classic' && byId && answer
+    TABLE_MODES.includes(duel.mode as ModeId) && byId && answer
       ? side.guesses
           .slice(-rows)
           .map((id) => byId.get(id))
           .filter((entity) => entity !== undefined)
-          .map((entity) => Object.fromEntries(Object.entries(judgeAll(game!, entity, answer)).map(([key, value]) => [key, value.verdict])))
+          .map((entity) => Object.fromEntries(Object.entries(judgeAll(game!, entity, answer, duel.anime === true)).map(([key, value]) => [key, value.verdict])))
       : undefined
   const ability =
     duel.mode === 'ability' && you && answer && (finished || you.solvedAt || you.gaveUp || wrongCount(duel, you) >= ABILITY_HINT_AT)
@@ -1381,6 +1387,8 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
     best: duel.best ?? DUEL_DEFAULT.best,
     seconds: duel.seconds || DUEL_DEFAULT.seconds,
     strict: duel.strict ?? false,
+    anime: duel.anime === true,
+    filterable: Boolean(data?.pool.some((one) => one.anime === false)),
     needed: winsNeeded(duel),
     matchDone: Boolean(duel.matchDone),
     invited: pendingInvites(duel).map((one) => one.nickname).join(', ') || null,
@@ -1488,6 +1496,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
       id: you.userId.toHexString(),
       nickname: you.nickname,
       avatar: you.avatar ?? null,
+      frame: you.frame ?? null,
       lead: Boolean(you.lead),
       ready: you.ready,
       wantsNext: Boolean(you.wantsNext),
@@ -1497,13 +1506,14 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
       guesses: (playing || finished) && byId
         ? you.guesses
             .filter((id) => byId.has(id))
-            .map((id) => ({ id, judgement: duel.mode === 'classic' && answer ? judgeAll(game!, byId.get(id)!, answer) : undefined }))
+            .map((id) => ({ id, judgement: TABLE_MODES.includes(duel.mode as ModeId) && answer ? judgeAll(game!, byId.get(id)!, answer, duel.anime === true) : undefined }))
         : [],
     },
     rival: rival && {
       id: rival.userId.toHexString(),
       nickname: rival.nickname,
       avatar: rival.avatar ?? null,
+      frame: rival.frame ?? null,
       ready: rival.ready,
       wantsNext: Boolean(rival.wantsNext),
       wins: rival.wins ?? 0,

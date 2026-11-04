@@ -6,7 +6,7 @@ import { homeSchema } from '@/src/seo'
 import { LANGS, type Lang } from '@/src/i18n/ui'
 import '@/src/styles/home.css'
 
-export const revalidate = 86400
+export const revalidate = 604800
 
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params

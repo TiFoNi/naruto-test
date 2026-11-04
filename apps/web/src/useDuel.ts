@@ -5,7 +5,7 @@ import { useAuth } from './auth'
 import type { Entity } from './games/types'
 import type { Judgement } from '@nanda/game'
 
-export type DuelSide = { id: string; nickname: string; avatar?: string | null; lead?: boolean; ready: boolean; wantsNext: boolean; wins: number; solved: boolean; gaveUp: boolean }
+export type DuelSide = { id: string; nickname: string; avatar?: string | null; frame?: string | null; lead?: boolean; ready: boolean; wantsNext: boolean; wins: number; solved: boolean; gaveUp: boolean }
 
 export type DuelMate = {
   id: string
@@ -60,6 +60,8 @@ export type DuelView = {
   size?: number
   sizes?: number[]
   strict?: boolean
+  anime?: boolean
+  filterable?: boolean
   first?: string | null
   youFirst?: boolean
   turn?: string | null
@@ -202,7 +204,7 @@ export function useDuel(code: string) {
     pending,
     serverNow: () => Date.now() + offset.current,
     ready: (want = true) => send({ action: 'ready', ready: want }),
-    setup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; per?: number; teams?: number; strict?: boolean }) =>
+    setup: (patch: { game?: string; mode?: string; best?: number; seconds?: number; size?: number; per?: number; teams?: number; strict?: boolean; anime?: boolean }) =>
       send({
         action: 'setup',
         game: patch.game ?? duel?.game ?? 'naruto',
@@ -213,6 +215,7 @@ export function useDuel(code: string) {
         per: patch.per ?? duel?.per,
         teams: patch.teams ?? duel?.teams,
         strict: patch.strict ?? duel?.strict,
+        anime: patch.anime ?? duel?.anime,
       }),
     team: () => send({ action: 'team' }),
     seat: (team: number, lead = false) => send({ action: 'seat', team, lead }),

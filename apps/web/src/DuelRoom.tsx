@@ -7,6 +7,7 @@ import AbilityIcon from './AbilityIcon'
 import { ABILITY_STAGES, GRID_MISSES, PHRASE_VOICE_AT } from '@nanda/game'
 import { ZOOM_LEVELS, levelAt } from './zoom'
 import CharacterSearch from './CharacterSearch'
+import { onlyView } from './anime'
 import GiveUp from './GiveUp'
 import GuessGrid from './GuessGrid'
 import MangaStage, { MangaOptions } from './MangaStage'
@@ -117,7 +118,10 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
   const solo = Boolean(duel?.bot)
 
   const game = duel?.game ? gameById(duel.game as GameId) : null
+  const table = duel?.mode === 'classic' || duel?.mode === 'blind'
+  const filtered = duel?.anime === true
   const loaded = useEntities(game)
+  const view = useMemo(() => (game ? onlyView(game, filtered) : null), [game, game?.entities, filtered, loaded])
   const byId = useMemo(() => new Map((game?.entities ?? []).map((e) => [e.id, e])), [game, game?.entities, loaded])
 
   const guesses: Guess[] = useMemo(() => {
@@ -259,7 +263,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
                     )}
                     {mates.map((mate) => (
                       <li key={mate.id} className={`duel-hud-mate ${mate.solved ? 'is-solved' : ''} ${mate.gaveUp ? 'is-out' : ''}`}>
-                        <Avatar className="duel-hud-face" id={mate.id} name={mate.nickname} avatar={mate.avatar} />
+                        <Avatar className="duel-hud-face" id={mate.id} name={mate.nickname} avatar={mate.avatar} frame={mate.frame} small />
                         <span className="duel-hud-name">
                           <b>{mate.nickname}</b>
                           <small>{mate.you ? youNote : mateNote(mate)}</small>
@@ -276,7 +280,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
         {!teamly && (
         <div className="duel-hud-row">
           <div className="duel-hud-side is-you">
-            {you && <Avatar className="duel-hud-face" id={you.id} name={you.nickname} avatar={you.avatar} />}
+            {you && <Avatar className="duel-hud-face" id={you.id} name={you.nickname} avatar={you.avatar} frame={you.frame} small />}
             <span className="duel-hud-name">
               <b>{you?.nickname}</b>
               <small>{youNote}</small>
@@ -294,7 +298,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
               <b>{rival?.nickname ?? t('duel.waitingRival')}</b>
               <small>{rivalNote}</small>
             </span>
-            {rival && <Avatar className="duel-hud-face" id={rival.id} name={rival.nickname} avatar={rival.avatar} />}
+            {rival && <Avatar className="duel-hud-face" id={rival.id} name={rival.nickname} avatar={rival.avatar} frame={rival.frame} small />}
           </div>
 
         </div>
@@ -420,10 +424,11 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
           variant={duel.mode === 'image' ? 'shot' : duel.mode === 'ability' ? 'ability' : 'classic'}
           side={
             <aside className="play-side duel-side">
-              {duel.mode === 'classic' &&
+              {table &&
+                view &&
                 (duel.rivals
-                  ? duel.rivals.map((one) => <RivalBoard key={one.id} game={game} rows={one.board ?? []} total={one.guessCount} name={one.nickname} slots={5} />)
-                  : duel.rival && <RivalBoard game={game} rows={duel.rival.board ?? []} total={duel.rival.guessCount} />)}
+                  ? duel.rivals.map((one) => <RivalBoard key={one.id} game={view} rows={one.board ?? []} total={one.guessCount} name={one.nickname} slots={5} />)
+                  : duel.rival && <RivalBoard game={view} rows={duel.rival.board ?? []} total={duel.rival.guessCount} />)}
               {!solo && !over && !youDone && (
                 <div className="duel-quit">
                   <GiveUp disabled={busy} onConfirm={giveUp}>
@@ -496,7 +501,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
         >
           {!over &&
             !youDone &&
-            (duel.mode === 'classic' ? (
+            (table ? (
               <PlayPanel
                 media={
                   <span className="play-mystery" aria-hidden>
@@ -506,7 +511,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
                 title={t('play.classicTitle')}
                 hint={t('duel.hurry')}
               >
-                <CharacterSearch game={game} exclude={picked} busy={busy} onPick={guess} />
+                <CharacterSearch game={view ?? game} exclude={picked} busy={busy} onPick={guess} />
               </PlayPanel>
             ) : duel.mode === 'page' ? (
               <>
@@ -528,7 +533,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
                   title={t(duel.mode === 'ability' ? 'play.abilityTitle' : duel.mode === 'phrase' ? 'play.phraseTitle' : 'play.imageTitle')}
                   hint={t('duel.hurry')}
                 />
-                <CharacterSearch game={game} exclude={picked} busy={busy} onPick={guess} compact />
+                <CharacterSearch game={view ?? game} exclude={picked} busy={busy} onPick={guess} compact />
               </>
             ))}
 
@@ -588,8 +593,8 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
             </div>
           )}
 
-          {duel.mode === 'classic' ? (
-            <GuessGrid game={game} guesses={guesses} answerId={duel.answerId} />
+          {table ? (
+            <GuessGrid game={view ?? game} guesses={guesses} answerId={duel.answerId} blind={duel.mode === 'blind'} />
           ) : (
             <TriesList
               game={game}

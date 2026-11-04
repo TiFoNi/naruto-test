@@ -147,6 +147,7 @@ export type DuelDoc = {
   size?: number
   per?: number
   teams?: number
+  anime?: boolean
   strict?: boolean
   bot?: boolean
   firstId?: ObjectId | null
