@@ -107,6 +107,7 @@ const mark = (duel: DuelDoc) =>
     duel.left,
     duel.hostId,
     duel.per,
+    duel.talk?.at(-1)?.id ?? null,
     duel.players.map((side) => [
       side.team,
       side.lead,

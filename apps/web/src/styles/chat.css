@@ -389,10 +389,15 @@ body:has(.chat-panel) .duel-dock {
   visibility: visible;
 }
 
-@media (hover: none), (max-width: 760px) {
+@media (hover: none) {
   .chat-tools {
-    opacity: 1;
-    visibility: visible;
+    display: none;
+  }
+
+  .chat-line.is-holdable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
   }
 }
 
@@ -1049,4 +1054,73 @@ body:has(.chat-panel) .duel-dock {
   color: var(--text-3);
   font-size: 13px;
   text-align: center;
+}
+
+.chat-hold-away {
+  z-index: 60;
+  align-items: flex-end;
+  padding: 0;
+}
+
+.chat-hold {
+  display: flex;
+  width: min(100%, 420px);
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 auto;
+  padding: 12px;
+  border-radius: 22px 22px 0 0;
+  padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  animation: chat-fade 0.16s ease-out;
+}
+
+.chat-hold .chat-quote {
+  display: -webkit-box;
+  margin: 0 0 6px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.chat-hold .chat-quote b {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--text);
+}
+
+.chat-hold-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.chat-hold-item:active {
+  background: color-mix(in srgb, #ffffff 8%, transparent);
+}
+
+.chat-hold-item svg {
+  width: 19px;
+  height: 19px;
+  flex: none;
+}
+
+.chat-hold-item.is-bad {
+  color: #ff7a6e;
+}
+
+.chat-hold-item.is-quiet {
+  justify-content: center;
+  margin-top: 4px;
+  background: var(--card-2);
+  color: var(--text-2);
 }

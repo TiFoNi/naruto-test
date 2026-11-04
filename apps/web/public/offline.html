@@ -1,38 +1,303 @@
 <!doctype html>
-<html lang="uk">
+<html lang="ru">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0d0f12" />
     <title>NandaGuessr</title>
     <style>
+      :root {
+        --bg: #0d0f12;
+        --card: #15181d;
+        --line: rgba(255, 255, 255, 0.08);
+        --text: #eef1f5;
+        --text-2: #9aa2af;
+        --text-3: #6b7380;
+        --accent: #ff8a1f;
+        --accent-2: #f0a04b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
       body {
         display: grid;
         place-items: center;
         min-height: 100dvh;
         margin: 0;
-        background: #0d0f12;
-        color: #e8ebf0;
-        font-family: system-ui, sans-serif;
+        padding: 24px 16px;
+        overflow: hidden;
+        background:
+          radial-gradient(60% 45% at 50% 38%, rgba(255, 138, 31, 0.13), transparent 70%),
+          radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1.4px) 0 0 / 22px 22px,
+          var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
         text-align: center;
+        -webkit-font-smoothing: antialiased;
       }
+
+      main {
+        display: flex;
+        width: min(100%, 380px);
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .logo {
+        position: relative;
+        display: grid;
+        width: 96px;
+        height: 96px;
+        place-items: center;
+        margin-bottom: 30px;
+        border: 0;
+        border-radius: 26px;
+        background: linear-gradient(145deg, var(--accent-2), var(--accent));
+        box-shadow:
+          0 18px 40px rgba(255, 138, 31, 0.28),
+          inset 0 -4px 0 rgba(0, 0, 0, 0.12);
+        color: #14100a;
+        cursor: pointer;
+        font: 900 44px/1 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        letter-spacing: -2px;
+        transform: rotate(-8deg);
+        animation: bob 3.2s ease-in-out infinite;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .logo.is-spin {
+        animation: spin 0.7s cubic-bezier(0.3, 1.4, 0.5, 1);
+      }
+
+      .logo i {
+        position: absolute;
+        right: -10px;
+        bottom: -10px;
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border: 4px solid var(--bg);
+        border-radius: 50%;
+        background: var(--card);
+        color: var(--text-2);
+        transform: rotate(8deg);
+      }
+
+      .logo svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: 26px;
+        font-weight: 850;
+        letter-spacing: -0.4px;
+      }
+
       p {
-        max-width: 280px;
-        color: #8b93a1;
-        font-size: 14px;
-        line-height: 1.6;
+        margin: 0 0 26px;
+        color: var(--text-2);
+        font-size: 15.5px;
+        line-height: 1.55;
       }
-      b {
-        display: block;
-        margin-bottom: 8px;
-        color: #ff8a1f;
-        font-size: 20px;
+
+      .again {
+        width: 100%;
+        max-width: 260px;
+        height: 50px;
+        border: 0;
+        border-radius: 99px;
+        background: var(--accent);
+        color: #14100a;
+        cursor: pointer;
+        font: inherit;
+        font-size: 16px;
+        font-weight: 800;
+        transition: transform 0.12s ease, filter 0.12s ease;
+      }
+
+      .again:hover {
+        filter: brightness(1.06);
+      }
+
+      .again:active {
+        transform: scale(0.97);
+      }
+
+      .wait {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin-top: 18px;
+        padding: 8px 14px;
+        border: 1px solid var(--line);
+        border-radius: 99px;
+        background: rgba(21, 24, 29, 0.7);
+        color: var(--text-3);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .wait em {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: pulse 1.4s ease-in-out infinite;
+      }
+
+      .wait.is-back {
+        color: #7ee2a8;
+      }
+
+      .wait.is-back em {
+        background: #3ecf7a;
+        animation: none;
+      }
+
+      @keyframes bob {
+        0%,
+        100% {
+          transform: rotate(-8deg) translateY(0);
+        }
+        50% {
+          transform: rotate(-4deg) translateY(-8px);
+        }
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(-8deg);
+        }
+        to {
+          transform: rotate(352deg);
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.35;
+          transform: scale(0.7);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .logo,
+        .wait em {
+          animation: none;
+        }
       }
     </style>
   </head>
   <body>
-    <p>
-      <b>NandaGuessr</b>
-      Немає зв'язку. Онови сторінку, коли інтернет повернеться.
-    </p>
+    <main>
+      <button type="button" class="logo" aria-hidden="true" tabindex="-1">
+        ?!
+        <i>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 8.8a15 15 0 0 1 4.2-2.9M22 8.8A15 15 0 0 0 10.7 5" />
+            <path d="M5.3 12.5a10 10 0 0 1 3.4-2.1M18.7 12.5a10 10 0 0 0-2.3-1.6" />
+            <path d="M8.6 16.2a5 5 0 0 1 6.8 0" />
+            <path d="M12 20h.01" />
+            <path d="M3 3l18 18" />
+          </svg>
+        </i>
+      </button>
+      <h1 data-t="title">Нет связи</h1>
+      <p data-t="text">Проверь интернет. Страница обновится сама, как только связь вернётся.</p>
+      <button type="button" class="again" data-t="again">Попробовать снова</button>
+      <span class="wait" role="status"><em></em><span data-t="wait">Ждём сеть…</span></span>
+    </main>
+
+    <script>
+      ;(function () {
+        var words = {
+          ru: {
+            title: 'Нет связи',
+            text: 'Проверь интернет. Страница обновится сама, как только связь вернётся.',
+            again: 'Попробовать снова',
+            wait: 'Ждём сеть…',
+            back: 'Связь есть, загружаем…',
+          },
+          uk: {
+            title: "Немає зв'язку",
+            text: "Перевір інтернет. Сторінка оновиться сама, щойно зв'язок повернеться.",
+            again: 'Спробувати знову',
+            wait: 'Чекаємо мережу…',
+            back: "Зв'язок є, завантажуємо…",
+          },
+          en: {
+            title: "You're offline",
+            text: 'Check your connection. The page will reload on its own once you are back online.',
+            again: 'Try again',
+            wait: 'Waiting for network…',
+            back: 'Back online, loading…',
+          },
+        }
+
+        var path = location.pathname.split('/')[1]
+        var browser = (navigator.language || '').slice(0, 2).toLowerCase()
+        var lang = words[path] ? path : browser === 'uk' ? 'uk' : browser === 'en' ? 'en' : 'ru'
+        var copy = words[lang]
+        document.documentElement.lang = lang
+        document.querySelectorAll('[data-t]').forEach(function (node) {
+          node.textContent = copy[node.getAttribute('data-t')]
+        })
+
+        var wait = document.querySelector('.wait')
+        var label = document.querySelector('[data-t="wait"]')
+        var leaving = false
+
+        function reload() {
+          if (leaving) return
+          leaving = true
+          wait.classList.add('is-back')
+          label.textContent = copy.back
+          setTimeout(function () {
+            location.reload()
+          }, 350)
+        }
+
+        function probe() {
+          if (leaving) return
+          fetch('/icon-192.png?ping=' + Date.now(), { method: 'HEAD', cache: 'no-store' })
+            .then(function (answer) {
+              if (answer.ok) reload()
+            })
+            .catch(function () {})
+        }
+
+        document.querySelector('.again').addEventListener('click', function () {
+          location.reload()
+        })
+
+        var logo = document.querySelector('.logo')
+        logo.addEventListener('click', function () {
+          logo.classList.remove('is-spin')
+          void logo.offsetWidth
+          logo.classList.add('is-spin')
+        })
+        logo.addEventListener('animationend', function (event) {
+          if (event.animationName === 'spin') logo.classList.remove('is-spin')
+        })
+
+        window.addEventListener('online', probe)
+        setInterval(probe, 5000)
+      })()
+    </script>
   </body>
 </html>

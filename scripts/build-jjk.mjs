@@ -72,6 +72,8 @@ const AFFILIATION_FIX = {
   Kurourushi: ['Без фракции'],
 }
 
+const CULLING_PLAYERS = new Set(['Yuji Itadori', 'Megumi Fushiguro', 'Yuta Okkotsu', 'Kinji Hakari', 'Panda', 'Maki Zenin'])
+
 const SPECIES = [
   ['Проклятое тело', /death painting|cursed corpse|shikigami/i],
   ['Воплощение', /incarnat/i],
@@ -189,15 +191,15 @@ function species(name, text) {
   return /sorcerer|student|teacher/i.test(plain(infobox(text, 'occupation') ?? '')) ? ['Человек'] : ['Неизвестно']
 }
 
-function roles(occupation, tags) {
+function roles(occupation, tags, name) {
   const list = []
-  const has = (name) => tags.includes(name)
+  const has = (tag) => tags.includes(tag)
 
   if (has('Jujutsu Sorcerers') || /sorcerer/i.test(occupation)) list.push('Маг')
   if (has('Students') || /student/i.test(occupation)) list.push('Ученик')
   if (/teacher|principal|instructor|headmaster/i.test(occupation)) list.push('Преподаватель')
   if (has('Curse Users') || /curse user/i.test(occupation)) list.push('Проклятый пользователь')
-  if (has('Culling Game Players')) list.push('Игрок Игры на выбывание')
+  if (has('Culling Game Players') || CULLING_PLAYERS.has(name)) list.push('Игрок Игры на выбывание')
   if (/assistant|window|auxiliary manager|driver/i.test(occupation)) list.push('Помощник')
   if (/doctor|medic/i.test(occupation)) list.push('Врач')
   if (/assassin|hitman/i.test(occupation)) list.push('Убийца')
@@ -258,7 +260,7 @@ async function main() {
       gender: SEX[plain(infobox(text, 'gender') ?? '').trim()] ?? 'Другое',
       species: kind,
       grade: firstMatch(GRADES, plain(infobox(text, 'class') ?? '')) ?? 'Нет',
-      roles: roles(occupation, categories(text)),
+      roles: roles(occupation, categories(text), name),
       affiliations: AFFILIATION_FIX[name] ?? (affiliations.length ? affiliations : ['Без фракции']),
       arc: ARCS[arcIndex][1],
       arcIndex,

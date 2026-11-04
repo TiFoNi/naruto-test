@@ -7,6 +7,7 @@ import { abilityStageOf, findDuel, sideOf, wrongCount } from '../duels'
 import { abilityStage, ownedRound, zoomStep } from '../rounds'
 import { duelSeed, maskStage, pinnedFocus, roundSeed } from '../crop'
 import { pageOf } from '../extra'
+import { hiddenUrl, sendTo } from '../images'
 
 async function duelSource(code: string, userId: ObjectId) {
   const duel = await findDuel(code)
@@ -41,6 +42,11 @@ export const GET = handle(async (request) => {
       : round.mode === 'page'
         ? `${pics}/${folder}/pages/${round.answerId}/${pageOf(round.extra)}.webp${tag}`
         : `${pics}/${folder}/full/${round.answerId}.webp${tag}`
+  if (round.mode === 'page') {
+    const direct = await hiddenUrl(`${folder}/pages/${round.answerId}/${pageOf(round.extra)}.webp`, typeof entity?.image === 'string' ? entity.image : '')
+    if (direct) return sendTo(direct, duelCode ? 'private, no-store' : 'private, max-age=86400')
+  }
+
   const image = await fetch(source)
   if (!image.ok) return fail(502, 'server')
   const full = Buffer.from(await image.arrayBuffer())

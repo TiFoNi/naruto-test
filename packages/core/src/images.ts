@@ -1,5 +1,14 @@
-import { createHash, randomBytes } from 'node:crypto'
-import { DeleteObjectCommand, DeleteObjectsCommand, GetObjectCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { createHash, createHmac, randomBytes } from 'node:crypto'
+import {
+  CopyObjectCommand,
+  DeleteObjectCommand,
+  DeleteObjectsCommand,
+  GetObjectCommand,
+  HeadObjectCommand,
+  ListObjectsV2Command,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3'
 import sharp from 'sharp'
 import { GAME_SPECS, shapeOf, type GameId } from '@nanda/game'
 import { CELL, derive } from './pictures'
@@ -32,6 +41,45 @@ async function put(key: string, body: Buffer) {
     new PutObjectCommand({ Bucket: bucket(), Key: key, Body: body, ContentType: 'image/webp', CacheControl: CACHE }),
   )
 }
+
+const hidden = new Set<string>()
+const hiding = new Map<string, Promise<boolean>>()
+
+const hiddenKey = (key: string, tag: string, secret: string) =>
+  `x/${createHmac('sha256', secret).update(`${key}#${tag}`).digest('hex').slice(0, 32)}.${key.split('.').pop()}`
+
+async function hide(source: string, target: string) {
+  try {
+    await s3().send(new HeadObjectCommand({ Bucket: bucket(), Key: target }))
+    return true
+  } catch {
+    try {
+      await s3().send(new CopyObjectCommand({ Bucket: bucket(), Key: target, CopySource: `${bucket()}/${source}`, MetadataDirective: 'COPY' }))
+      return true
+    } catch {
+      return false
+    }
+  }
+}
+
+export async function hiddenUrl(key: string, tag = '') {
+  const secret = process.env.PICS_SECRET
+  const pics = process.env.PICS_URL?.replace(/\/+$/, '')
+  if (!secret || !pics) return null
+  const target = hiddenKey(key, tag, secret)
+  if (!hidden.has(target)) {
+    let job = hiding.get(target)
+    if (!job) {
+      job = hide(key, target).finally(() => hiding.delete(target))
+      hiding.set(target, job)
+    }
+    if (!(await job)) return null
+    hidden.add(target)
+  }
+  return `${pics}/${target}`
+}
+
+export const sendTo = (url: string, cache: string) => new Response(null, { status: 302, headers: { location: url, 'cache-control': cache } })
 
 export const version = (buffer: Buffer) => createHash('sha1').update(buffer).digest('hex').slice(0, 8)
 

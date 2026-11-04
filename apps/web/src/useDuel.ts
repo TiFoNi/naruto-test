@@ -4,6 +4,7 @@ import { openStream } from './stream'
 import { useAuth } from './auth'
 import type { Entity } from './games/types'
 import type { Judgement } from '@nanda/game'
+import type { TalkLine, TalkResult } from './duelTalk'
 
 export type DuelSide = { id: string; nickname: string; avatar?: string | null; frame?: string | null; lead?: boolean; ready: boolean; wantsNext: boolean; wins: number; solved: boolean; gaveUp: boolean }
 
@@ -27,6 +28,7 @@ export type DuelMate = {
 export type DuelView = {
   code: string
   bot?: boolean
+  talk?: TalkLine[]
   per?: number
   teams?: number
   seats?: number
@@ -232,6 +234,18 @@ export function useDuel(code: string) {
     strike: (entityId: number) => send({ action: 'strike', entityId }),
     answer: (entityId: number) => send({ action: 'answer', entityId }),
     refresh: () => send({ action: 'state' }),
+    say: async (text: string): Promise<TalkResult> => {
+      try {
+        const { ok, status, data } = await api<{ duel?: DuelView }>('duel', { code, action: 'say', text })
+        if (ok && data.duel) {
+          apply(data.duel)
+          return 'ok'
+        }
+        return status === 403 ? 'muted' : status === 429 ? 'too_fast' : 'failed'
+      } catch {
+        return 'failed'
+      }
+    },
     guess,
   }
 }

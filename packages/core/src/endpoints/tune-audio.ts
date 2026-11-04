@@ -1,6 +1,7 @@
 import { fail, handle } from '../http'
 import { roundOwner } from '../profile'
 import { tuneClip } from '../tunes'
+import { hiddenUrl, sendTo } from '../images'
 
 export const GET = handle(async (request) => {
   const owner = await roundOwner(request)
@@ -11,6 +12,9 @@ export const GET = handle(async (request) => {
 
   const clip = await tuneClip(owner.id, key, asked)
   if (!clip) return fail(404, 'not_found')
+
+  const direct = await hiddenUrl(`tunes/${clip.id}/${clip.seconds}.m4a`)
+  if (direct) return sendTo(direct, 'private, max-age=900')
 
   const pics = process.env.PICS_URL?.replace(/\/+$/, '') ?? url.origin
   const sound = await fetch(`${pics}/tunes/${clip.id}/${clip.seconds}.m4a`).catch(() => null)

@@ -9,6 +9,7 @@ import { api } from './api'
 import { dropMentions, watchFeed } from './awards'
 import ChatMentions, { EVERYONE_NICK, type MentionPick, type Person } from './ChatMentions'
 import { onChatOpen } from './chatEvents'
+import { useDuelTalk } from './duelTalk'
 import { useAuth } from './auth'
 import { useI18n, type UiKey } from './i18n'
 import { ChatIcon, CloseIcon, MuteIcon, SendIcon, SmileIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
@@ -40,6 +41,8 @@ const toneOf = (tone?: string | null): CSSProperties | undefined => {
 }
 
 const MENU_EDGE = 8
+const HOLD_MS = 450
+const HOLD_SLIP = 10
 const GROUP_MS = 5 * 60_000
 const TYPE_GAP_MS = 3500
 const PULSE_MS = 45_000
@@ -47,7 +50,7 @@ const SEEN_KEY = 'chat:seen'
 const NEWS_KEY = 'chat:news-seen'
 const WHO_KEY = 'chat:who'
 
-type Room = 'chat' | 'news'
+type Room = 'chat' | 'news' | 'duel'
 
 const EMOJI_SETS = [
   {
@@ -148,6 +151,8 @@ export default function Chat() {
   const [sending, setSending] = useState(false)
   const [asking, setAsking] = useState<{ kind: 'drop' | 'mute' | 'unfriend'; line: Line } | null>(null)
   const [menu, setMenu] = useState<{ line: Line; x: number; y: number; above: number } | null>(null)
+  const [held, setHeld] = useState<Line | null>(null)
+  const hold = useRef<{ timer: number; x: number; y: number } | null>(null)
   const menuBox = useRef<HTMLDivElement>(null)
   const [menuTop, setMenuTop] = useState<number | null>(null)
 
@@ -176,6 +181,9 @@ export default function Chat() {
   const [picked, setPicked] = useState<MentionPick[]>([])
   const [tagCount, setTagCount] = useState(0)
   const [focusLine, setFocusLine] = useState<string | null>(null)
+  const talk = useDuelTalk()
+  const talkCode = talk?.code ?? null
+  const [talkSeen, setTalkSeen] = useState('')
   const feed = useRef<HTMLDivElement>(null)
   const nearEnd = useRef(true)
   const field = useRef<HTMLTextAreaElement>(null)
@@ -204,6 +212,11 @@ export default function Chat() {
   }, [])
 
   useEffect(() => setNewsSeen(readKey(NEWS_KEY)), [])
+
+  useEffect(() => {
+    if (talkCode) return setRoom('duel')
+    setRoom((was) => (was === 'duel' ? 'chat' : was))
+  }, [talkCode])
 
   useEffect(
     () =>
@@ -276,6 +289,7 @@ export default function Chat() {
 
   const load = useCallback(async (before?: string) => {
     const asked = roomRef.current
+    if (asked === 'duel') return
     setLoading(true)
     const query = new URLSearchParams()
     if (before) query.set('before', before)
@@ -304,6 +318,10 @@ export default function Chat() {
   }, [beat])
 
   useEffect(() => {
+    if (open && room === 'duel') {
+      setTalkSeen(talk?.lines.at(-1)?.id ?? '')
+      return
+    }
     const last = lines[lines.length - 1]
     if (!open || !last) return
     if (room === 'news') {
@@ -313,7 +331,7 @@ export default function Chat() {
     }
     keepSeen(last.id)
     setFresh(false)
-  }, [open, lines, room])
+  }, [open, lines, room, talk])
 
   useEffect(() => {
     if (!open) return
@@ -358,7 +376,7 @@ export default function Chat() {
     if (!open) return
     const box = feed.current
     if (box && nearEnd.current) box.scrollTop = box.scrollHeight
-  }, [lines, open])
+  }, [lines, open, talk])
 
   useEffect(() => {
     if (!open) return
@@ -411,7 +429,7 @@ export default function Chat() {
 
   const typeBeat = useCallback(
     (on: boolean) => {
-      if (!user) return
+      if (!user || roomRef.current !== 'chat') return
       const now = Date.now()
       if (on ? now - typedAt.current < TYPE_GAP_MS : !typedAt.current) return
       typedAt.current = on ? now : 0
@@ -437,6 +455,17 @@ export default function Chat() {
     const body = text.trim()
     if (!body || sending) return
     setSending(true)
+    if (room === 'duel') {
+      const result = talk ? await talk.say(body) : 'failed'
+      setSending(false)
+      if (result === 'ok') {
+        setText('')
+        requestAnimationFrame(grow)
+        nearEnd.current = true
+        return
+      }
+      return say(result === 'too_fast' ? t('chat.slow') : result === 'muted' ? t('chat.muted') : t('chat.failed'), true)
+    }
     const lower = body.toLowerCase()
     const tags = [...new Set(picked.filter((one) => one.id && lower.includes(`@${one.nick.toLowerCase()}`)).map((one) => one.id!))]
     const { ok, status, data } = await api<{ line?: Line }>('chat', room === 'news' ? { text: body, channel: 'news' } : { text: body, tags })
@@ -477,13 +506,18 @@ export default function Chat() {
   }
 
   const newsFresh = Boolean(newsTop) && newsTop > newsSeen
-  const canWrite = room === 'chat' || Boolean(user?.admin)
+  const canWrite = room === 'chat' || room === 'duel' || Boolean(user?.admin)
+  const limit = room === 'news' ? 1500 : room === 'duel' ? 200 : 300
+  const shown: Line[] = room === 'duel' ? (talk?.lines ?? []) : lines
+  const mine = (line: Line) => line.userId === user?.id
+  const talkFresh = Boolean(talk?.lines.length) && talk!.lines.at(-1)!.id !== talkSeen && !mine(talk!.lines.at(-1)!)
+  const rooms: Room[] = talkCode ? ['duel', 'chat', 'news'] : ['chat', 'news']
 
   const addEmoji = (emoji: string) => {
     const box = field.current
     const start = box?.selectionStart ?? text.length
     const end = box?.selectionEnd ?? text.length
-    const next = `${text.slice(0, start)}${emoji}${text.slice(end)}`.slice(0, room === 'news' ? 1500 : 300)
+    const next = `${text.slice(0, start)}${emoji}${text.slice(end)}`.slice(0, limit)
     setText(next)
     requestAnimationFrame(() => {
       if (!box) return
@@ -495,6 +529,7 @@ export default function Chat() {
   }
 
   const readAt = (value: string, caret: number) => {
+    if (room === 'duel') return setAtAsk(null)
     const hit = value.slice(0, caret).match(AT_BEFORE)
     if (!hit) return setAtAsk(null)
     setAtAsk({ start: caret - hit[2].length - 1, query: hit[2] })
@@ -564,6 +599,39 @@ export default function Chat() {
           ? t('chat.typingMany', { one: said[0].nickname, two: said[1].nickname, count: said.length - 2 })
           : ''
 
+  const holdable = Boolean(user?.admin) && room !== 'duel'
+
+  const letGo = () => {
+    if (hold.current) window.clearTimeout(hold.current.timer)
+    hold.current = null
+  }
+
+  const holdOn = (line: Line) => ({
+    onPointerDown: (event: React.PointerEvent) => {
+      if (!holdable || event.pointerType !== 'touch') return
+      letGo()
+      hold.current = {
+        x: event.clientX,
+        y: event.clientY,
+        timer: window.setTimeout(() => {
+          hold.current = null
+          setMenu(null)
+          setHeld(line)
+          navigator.vibrate?.(12)
+        }, HOLD_MS),
+      }
+    },
+    onPointerMove: (event: React.PointerEvent) => {
+      const start = hold.current
+      if (start && Math.hypot(event.clientX - start.x, event.clientY - start.y) > HOLD_SLIP) letGo()
+    },
+    onPointerUp: letGo,
+    onPointerCancel: letGo,
+    onContextMenu: (event: React.MouseEvent) => {
+      if (holdable && window.matchMedia('(hover: none)').matches) event.preventDefault()
+    },
+  })
+
   const watch = () => {
     const box = feed.current
     if (!box) return
@@ -585,7 +653,7 @@ export default function Chat() {
             {tagCount > 9 ? '9+' : tagCount}
           </em>
         ) : (
-          !open && (fresh || newsFresh) && <em className="chat-dot" aria-label={t('chat.fresh')} />
+          !open && (fresh || newsFresh || talkFresh) && <em className="chat-dot" aria-label={t('chat.fresh')} />
         )}
       </button>
 
@@ -595,7 +663,7 @@ export default function Chat() {
         <section className={`chat-panel ${leaving ? 'is-leaving' : ''}`} aria-label={t('chat.title')}>
           <header className="chat-head">
             <div className="chat-rooms" role="tablist" aria-label={t('chat.title')}>
-              {(['chat', 'news'] as const).map((one) => (
+              {rooms.map((one) => (
                 <button
                   key={one}
                   type="button"
@@ -608,8 +676,9 @@ export default function Chat() {
                     setRoom(one)
                   }}
                 >
-                  {t(one === 'news' ? 'chat.roomNews' : 'chat.roomAll')}
+                  {t(one === 'news' ? 'chat.roomNews' : one === 'duel' ? 'chat.roomDuel' : 'chat.roomAll')}
                   {one === 'news' && newsFresh && room !== 'news' && <em className="chat-room-dot" aria-label={t('chat.newsFresh')} />}
+                  {one === 'duel' && talkFresh && room !== 'duel' && <em className="chat-room-dot" aria-label={t('chat.fresh')} />}
                 </button>
               ))}
             </div>
@@ -620,20 +689,23 @@ export default function Chat() {
           </header>
 
           <div className="chat-feed" ref={feed} onScroll={watch}>
-            {more && (
+            {more && room !== 'duel' && (
               <button type="button" className="chat-earlier" disabled={loading} onClick={() => void load(lines[0]?.id)}>
                 {t('chat.earlier')}
               </button>
             )}
-            {lines.length === 0 && !loading && <p className="chat-empty">{t(room === 'news' ? 'chat.newsEmpty' : 'chat.empty')}</p>}
-            {lines.map((line, index) => {
-              const before = lines[index - 1]
+            {shown.length === 0 && (room === 'duel' || !loading) && (
+              <p className="chat-empty">{t(room === 'news' ? 'chat.newsEmpty' : room === 'duel' ? 'chat.duelEmpty' : 'chat.empty')}</p>
+            )}
+            {shown.map((line, index) => {
+              const before = shown[index - 1]
               const glued = before && before.userId === line.userId && line.at - before.at < GROUP_MS
               return (
                 <article
                   key={line.id}
                   id={`chat-line-${line.id}`}
-                  className={`chat-line ${glued ? 'is-glued' : ''} ${line.userId === user?.id ? 'is-mine' : ''} ${
+                  {...holdOn(line)}
+                  className={`chat-line ${holdable ? 'is-holdable' : ''} ${glued ? 'is-glued' : ''} ${line.userId === user?.id ? 'is-mine' : ''} ${
                     user && line.userId !== user.id && (line.everyone || line.tags?.some((tag) => tag.id === user.id)) ? 'is-tagged' : ''
                   }`}
                 >
@@ -672,7 +744,7 @@ export default function Chat() {
                     )}
                     <p>{bodyOf(line)}</p>
                   </div>
-                  {user?.admin && (
+                  {user?.admin && room !== 'duel' && (
                     <span className="chat-tools">
                       <button type="button" title={t('chat.drop')} aria-label={t('chat.drop')} onClick={() => setAsking({ kind: 'drop', line })}>
                         <CloseIcon />
@@ -726,7 +798,7 @@ export default function Chat() {
                 ref={field}
                 value={text}
                 rows={1}
-                maxLength={room === 'news' ? 1500 : 300}
+                maxLength={limit}
                 placeholder={t('chat.placeholder')}
                 onChange={(event) => {
                   setText(event.target.value)
@@ -908,6 +980,44 @@ export default function Chat() {
             )}
           </div>
         </>
+      )}
+
+      {held && (
+        <div className="modal-backdrop chat-hold-away" onClick={() => setHeld(null)} role="presentation">
+          <section className="card chat-hold" role="dialog" aria-modal="true" aria-label={t('chat.holdAct')} onClick={(event) => event.stopPropagation()}>
+            <blockquote className="chat-quote">
+              <b>{held.nickname}</b>
+              {held.text}
+            </blockquote>
+            <button
+              type="button"
+              className="chat-hold-item is-bad"
+              onClick={() => {
+                setAsking({ kind: 'drop', line: held })
+                setHeld(null)
+              }}
+            >
+              <CloseIcon />
+              {t('chat.drop')}
+            </button>
+            {held.userId !== user?.id && (
+              <button
+                type="button"
+                className="chat-hold-item"
+                onClick={() => {
+                  setAsking({ kind: 'mute', line: held })
+                  setHeld(null)
+                }}
+              >
+                <MuteIcon />
+                {t('chat.mute')}
+              </button>
+            )}
+            <button type="button" className="chat-hold-item is-quiet" onClick={() => setHeld(null)}>
+              {t('chat.cancel')}
+            </button>
+          </section>
+        </div>
       )}
 
       {asking && (

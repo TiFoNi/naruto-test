@@ -188,6 +188,20 @@ export type DuelDoc = {
   winnerTeam?: number | null
   matchTeam?: number | null
   results?: (number | null)[]
+  talk?: DuelTalk[]
+}
+
+export type DuelTalk = {
+  id: string
+  userId: ObjectId
+  nickname: string
+  tag?: string
+  avatar?: string | null
+  frame?: string | null
+  title?: string | null
+  nickTone?: string | null
+  text: string
+  at: Date
 }
 
 export type EntityDoc = Record<string, unknown> & {

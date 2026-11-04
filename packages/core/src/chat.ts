@@ -117,7 +117,7 @@ export const channelOf = (value: unknown): ChatChannel => (value === 'news' ? 'n
 
 const roomOf = (channel: ChatChannel) => (channel === 'news' ? chatNews() : chatRoom())
 
-const tidy = (text: unknown, max = CHAT_MAX) =>
+export const tidy = (text: unknown, max = CHAT_MAX) =>
   typeof text === 'string'
     ? text
         .replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g, '')

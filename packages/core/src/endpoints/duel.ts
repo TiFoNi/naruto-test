@@ -16,6 +16,7 @@ import {
   duelView,
   findDuel,
   giveUpDuel,
+  sayInDuel,
   inviteTo,
   joinDuel,
   leaveDuel,
@@ -110,6 +111,11 @@ export const POST = handle(async (request) => {
   }
 
   if (action === 'state') return json({ duel: await duelView(await settle(live), userId) })
+  if (action === 'say') {
+    const result = await sayInDuel(live, found.doc, body.text)
+    if (result.error) return fail(result.error === 'muted' || result.error === 'forbidden' ? 403 : result.error === 'too_fast' ? 429 : 400, result.error)
+    return json({ duel: await duelView(result.duel!, userId) })
+  }
   if (action === 'setup') {
     const updated = await setupDuel(live, userId, body)
     return updated ? json({ duel: await duelView(updated, userId) }) : fail(400, 'bad_request')

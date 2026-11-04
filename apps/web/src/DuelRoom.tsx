@@ -35,6 +35,7 @@ import { SwordsIcon, TrophyIcon } from './icons'
 import { fullUrl } from './pics'
 import { api, apiSrc } from './api'
 import { useEntities } from './entities'
+import { shareDuelTalk } from './duelTalk'
 
 const AUTO_NEXT_MS = 3000
 
@@ -79,13 +80,25 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
   const { t, l, name, lang, error: errorText } = useI18n()
   const href = useHref()
   const navigate = useNavigate()
-  const { duel, error, busy, pending, serverNow, ready, setup, seat, clue, open, skip, invite, next, toLobby, giveUp, guess, pick, pass, mark, strike, answer: markAnswer, refresh } = useDuel(code)
+  const { duel, error, busy, pending, serverNow, ready, setup, seat, clue, open, skip, invite, next, toLobby, giveUp, guess, pick, pass, mark, strike, answer: markAnswer, refresh, say } = useDuel(code)
   const [pageReady, setPageReady] = useState(false)
   const [showResult, setShowResult] = useState(true)
 
   useEffect(() => {
     if (duel?.matchDone) setShowResult(true)
   }, [duel?.matchDone, duel?.round])
+
+  const talkLines = duel?.talk
+  const talkOpen = Boolean(duel?.you) && !duel?.bot
+  const sayRef = useRef(say)
+  sayRef.current = say
+
+  useEffect(() => {
+    if (!talkOpen) return shareDuelTalk(null)
+    shareDuelTalk({ code, lines: talkLines ?? [], say: (text) => sayRef.current(text) })
+  }, [code, talkOpen, talkLines])
+
+  useEffect(() => () => shareDuelTalk(null), [])
 
   useEffect(() => {
     if (!duel?.you) return

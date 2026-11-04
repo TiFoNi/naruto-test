@@ -1,6 +1,7 @@
 import { fail, handle } from '../http'
 import { roundOwner } from '../profile'
 import { shotShown } from '../shots'
+import { hiddenUrl, sendTo } from '../images'
 
 export const GET = handle(async (request) => {
   const owner = await roundOwner(request)
@@ -9,6 +10,10 @@ export const GET = handle(async (request) => {
   const day = params.get('d') ?? undefined
   const shown = await shotShown(owner.id, Number.isFinite(asked) ? asked : undefined, day)
   if (!shown) return fail(404, 'not_found')
+
+  const key = `shots/frames/${shown.answerId}/${shown.level}/${shown.name}.webp`
+  const direct = await hiddenUrl(key, shown.ver)
+  if (direct) return sendTo(direct, 'private, max-age=900')
 
   const pics = process.env.PICS_URL?.replace(/\/+$/, '') ?? new URL(request.url).origin
   const tag = shown.ver ? `?v=${shown.ver}` : ''

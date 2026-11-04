@@ -37,7 +37,8 @@ import {
   type ModeId,
 } from '@nanda/game'
 import { abilityByKey } from './abilities'
-import { duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type UserDoc } from './db'
+import { duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type DuelTalk, type UserDoc } from './db'
+import { tidy } from './chat'
 import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { gameData, isGame, isMode, type Entity } from './games'
 import { matchesFacet, planGrid } from './grid'
@@ -1044,6 +1045,56 @@ export async function pickSecret(duel: DuelDoc, userId: ObjectId, entityId: numb
   return { duel: started ?? (await (await duels()).findOne({ _id: duel._id })) ?? updated }
 }
 
+export const TALK_MAX = 200
+const TALK_KEEP = 30
+const TALK_GAP_MS = 700
+const talkedAt = new Map<string, { at: number; text: string }>()
+
+export const talkLine = (line: DuelTalk) => ({
+  id: line.id,
+  userId: line.userId.toHexString(),
+  nickname: line.nickname,
+  ...(line.tag ? { tag: line.tag } : {}),
+  avatar: line.avatar ?? null,
+  frame: line.frame ?? null,
+  title: line.title ?? null,
+  nickTone: line.nickTone ?? null,
+  text: line.text,
+  at: line.at.getTime(),
+})
+
+export async function sayInDuel(duel: DuelDoc, doc: UserDoc, raw: unknown) {
+  if (duel.bot) return { error: 'forbidden' as const }
+  const text = tidy(raw, TALK_MAX)
+  if (!text) return { error: 'empty' as const }
+  if (doc.chatMutedUntil && doc.chatMutedUntil.getTime() > Date.now()) return { error: 'muted' as const }
+  const key = doc._id!.toHexString()
+  const now = Date.now()
+  const last = talkedAt.get(key)
+  if (last && (now - last.at < TALK_GAP_MS || (last.text === text && now - last.at < 10_000))) return { error: 'too_fast' as const }
+  talkedAt.set(key, { at: now, text })
+  if (talkedAt.size > 5_000) talkedAt.clear()
+
+  const line: DuelTalk = {
+    id: new ObjectId().toHexString(),
+    userId: doc._id!,
+    nickname: doc.nickname ?? doc.username,
+    ...(doc.tag ? { tag: doc.tag } : {}),
+    avatar: doc.avatar ?? null,
+    frame: doc.frame ?? null,
+    title: doc.title ?? null,
+    nickTone: doc.nickTone ?? null,
+    text,
+    at: new Date(now),
+  }
+  const updated = await (await duels()).findOneAndUpdate(
+    { _id: duel._id },
+    { $push: { talk: { $each: [line], $slice: -TALK_KEEP } } },
+    { returnDocument: 'after' },
+  )
+  return { duel: updated ?? duel }
+}
+
 export const yourTurn = (duel: DuelDoc, userId: ObjectId) => Boolean(duel.turnId && duel.turnId.equals(userId))
 
 export async function passTurn(duel: DuelDoc, userId: ObjectId) {
@@ -1402,6 +1453,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
   return {
     code: duel.code,
     bot: Boolean(duel.bot),
+    talk: duel.bot ? [] : (duel.talk ?? []).map(talkLine),
     game: duel.game ?? null,
     mode: duel.mode ?? null,
     status: duel.status,

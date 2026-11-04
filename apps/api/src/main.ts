@@ -4,6 +4,7 @@ import type { NestExpressApplication } from '@nestjs/platform-express'
 import compression from 'compression'
 import { raw } from 'express'
 import { AppModule } from './app.module'
+import { egressMeter } from './egress-meter'
 import { liftCookies } from './lift-cookies'
 import { rateLimit } from './rate-limit'
 
@@ -15,6 +16,7 @@ async function bootstrap() {
   app.set('trust proxy', 1)
   app.use(rateLimit)
   app.use(liftCookies)
+  app.use(egressMeter)
   const plain = ['/api/stream/', '/api/tune/audio']
   app.use(
     compression({

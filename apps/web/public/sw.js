@@ -1,4 +1,4 @@
-const OFFLINE = 'nanda-offline-v1'
+const OFFLINE = 'nanda-offline-v2'
 const FALLBACK = '/offline.html'
 
 self.addEventListener('install', (event) => {
