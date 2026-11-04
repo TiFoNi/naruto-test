@@ -11,9 +11,9 @@ export type DuelInvite = { code: string; from: string; game: string | null; mode
 export type FriendAsk = { id: string; nickname: string; tag: string | null; at: string }
 export type CoinNews = { coins: number; at: string }
 export type MentionNews = { id: string; fromId: string; from: string; text: string; at: string }
-export type Feed = { awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[]; frames: string[]; coins: CoinNews | null; mentions: MentionNews[]; linkGoogle: boolean }
+export type Feed = { awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[]; frames: string[]; coins: CoinNews | null; mentions: MentionNews[]; linkGoogle: boolean; title: string | null }
 
-const EMPTY: Feed = { awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false }
+const EMPTY: Feed = { awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false, title: null }
 
 const watchers = new Set<(feed: Feed) => void>()
 
@@ -41,6 +41,10 @@ export function putAwards(list: AwardRow[]) {
 
 export function dropInvite(code: string) {
   return publish({ ...(cache ?? EMPTY), invites: (cache?.invites ?? []).filter((invite) => invite.code !== code) })
+}
+
+export function dropTitle() {
+  return publish({ ...(cache ?? EMPTY), title: null })
 }
 
 export function dropCoins() {
@@ -84,6 +88,7 @@ export function freshFeed() {
             coins: data.coins ?? null,
             mentions: data.mentions ?? [],
             linkGoogle: data.linkGoogle === true,
+            title: typeof data.title === 'string' ? data.title : null,
           })
         : EMPTY,
     )

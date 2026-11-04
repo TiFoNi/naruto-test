@@ -123,7 +123,7 @@ export async function applyPayment(event: PaymentEvent) {
     )
     if (!paid) return 'skipped'
     await credit(paid._id!, paid.userId, paid.base + paid.bonus, 'purchase')
-    await (await users()).updateOne({ _id: paid.userId }, { $addToSet: { titles: PATRON_TITLE } })
+    await (await users()).updateOne({ _id: paid.userId, titles: { $ne: PATRON_TITLE } }, { $addToSet: { titles: PATRON_TITLE }, $set: { titleNews: PATRON_TITLE } })
     return 'paid'
   }
 

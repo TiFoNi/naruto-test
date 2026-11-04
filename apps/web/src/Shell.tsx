@@ -22,7 +22,7 @@ import BannerArt from './BannerArt'
 import { MARKS } from './Profile'
 import { shownTone, watchTone } from './tone'
 import HumanCheck from './HumanCheck'
-import { AWARDS_FILTER, dropCoins, dropFrames, dropInvite, dropMentions, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
+import { AWARDS_FILTER, dropCoins, dropFrames, dropTitle, dropInvite, dropMentions, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
 import { openChat } from './chatEvents'
 import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
 import { startAnimGate } from './animGate'
@@ -378,7 +378,7 @@ function Bell() {
     }
   }, [])
 
-  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false })
+  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false, title: null })
   const [hidden, setHidden] = useState<Set<string>>(() => new Set())
   const [busy, setBusy] = useState(false)
   const [toast, setToast] = useState<DuelInvite | null>(null)
@@ -492,6 +492,11 @@ function Bell() {
     }
   }
 
+  const seenTitle = () => {
+    dropTitle()
+    void api('profile', { action: 'seenTitle' }).catch(() => null)
+  }
+
   const seenMentions = () => {
     dropMentions()
     void api('profile', { action: 'seenMentions' }).catch(() => null)
@@ -500,7 +505,7 @@ function Bell() {
   const googleDue = feed.linkGoogle && !googleHidden
   const awards = feed.awards.filter((award) => !hidden.has(award.id))
   const frames = feed.frames.map((id) => FRAMES.find((one) => one.id === id)).filter((one) => one !== undefined)
-  const count = awards.length + feed.invites.length + feed.requests.length + frames.length + (feed.coins ? 1 : 0) + feed.mentions.length + (googleDue ? 1 : 0)
+  const count = awards.length + feed.invites.length + feed.requests.length + frames.length + (feed.coins ? 1 : 0) + feed.mentions.length + (googleDue ? 1 : 0) + (feed.title ? 1 : 0)
 
   return (
     <div ref={box} className={`bell-box ${open ? 'open' : ''}`}>
@@ -596,6 +601,31 @@ function Bell() {
           <p className="bell-empty">{t('nav.bellEmpty')}</p>
         ) : (
           <ul className="bell-list">
+            {feed.title && (
+              <li className="bell-item is-title">
+                <Link
+                  className="bell-card"
+                  href={href.profile}
+                  onClick={() => {
+                    setOpen(false)
+                    seenTitle()
+                  }}
+                  prefetch={false}
+                >
+                  <small>{t('titleNews.new')}</small>
+                  <span className="bell-main">
+                    <span className="bell-body">
+                      <i className={`player-title is-${feed.title}`}>{t(`title.${feed.title}` as UiKey)}</i>
+                      <b>{t(feed.title === 'patron' ? 'titleNews.patron' : 'titleNews.any')}</b>
+                      <span className="bell-hint">{t('titleNews.hint')}</span>
+                    </span>
+                  </span>
+                </Link>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={seenTitle}>
+                  <CloseIcon />
+                </button>
+              </li>
+            )}
             {googleDue && (
               <li className="bell-item is-google">
                 <Link className="bell-card" href={`${href.settings}?tab=account`} onClick={() => setOpen(false)} prefetch={false}>

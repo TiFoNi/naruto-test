@@ -725,6 +725,11 @@ a.bell.active {
   gap: 4px;
 }
 
+.bell-item.is-title .player-title {
+  align-self: flex-start;
+  margin-bottom: 2px;
+}
+
 .bell-body b {
   font-size: 16px;
   line-height: 1.2;

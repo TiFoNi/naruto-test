@@ -15,6 +15,7 @@ export type UserDoc = {
   xp?: number
   coins?: number
   coinsNews?: { coins: number; at: Date }
+  titleNews?: string | null
   mentionPush?: boolean
   mentionNews?: MentionNews[]
   bonusDay?: string
