@@ -431,6 +431,23 @@ function Mini({ game, byId, option }: { game: Game; byId: Map<number, Entity>; o
   )
 }
 
+function LikeButton({ quiz, onLike }: { quiz: QuizView; onLike: () => void }) {
+  const { t } = useI18n()
+  return (
+    <button
+      type="button"
+      className={`quiz-btn is-ghost quiz-like ${quiz.liked ? 'is-on' : ''}`}
+      aria-pressed={!!quiz.liked}
+      aria-label={t('quiz.like')}
+      title={t('quiz.likes', { count: quiz.likes ?? 0 })}
+      onClick={onLike}
+    >
+      <HeartIcon />
+      {quiz.likes ?? 0}
+    </button>
+  )
+}
+
 function Recap({
   game,
   byId,
@@ -521,19 +538,7 @@ function Recap({
       </ol>
       {likeNote && <p className="quiz-recap-note">{likeNote}</p>}
       <footer className="quiz-recap-foot">
-        {onLike && (
-          <button
-            type="button"
-            className={`quiz-btn is-ghost quiz-like ${quiz.liked ? 'is-on' : ''}`}
-            aria-pressed={!!quiz.liked}
-            aria-label={t('quiz.like')}
-            title={t('quiz.likes', { count: quiz.likes ?? 0 })}
-            onClick={onLike}
-          >
-            <HeartIcon />
-            {quiz.likes ?? 0}
-          </button>
-        )}
+        {onLike && <LikeButton quiz={quiz} onLike={onLike} />}
         <button type="button" className="quiz-btn is-ghost" disabled={busy} onClick={onRestart}>
           <span className="is-long">{t('quiz.again')}</span>
           <span className="is-short">{t('quiz.againShort')}</span>
@@ -641,11 +646,17 @@ export function QuizRun({
       <div className="quiz-page">
         {top}
         {hero(
-          steps(quiz.count, attempt.results),
-          <button type="button" className="quiz-btn is-ghost quiz-hero-again" disabled={busy} onClick={() => onSend({ action: 'restart' })}>
-            <span className="is-long">{t('quiz.again')}</span>
-            <span className="is-short">{t('quiz.againShort')}</span>
-          </button>,
+          <>
+            {steps(quiz.count, attempt.results)}
+            {likeNote && <p className="quiz-recap-note quiz-hero-note">{likeNote}</p>}
+          </>,
+          <div className="quiz-hero-acts">
+            {onLike && <LikeButton quiz={quiz} onLike={onLike} />}
+            <button type="button" className="quiz-btn is-ghost quiz-hero-again" disabled={busy} onClick={() => onSend({ action: 'restart' })}>
+              <span className="is-long">{t('quiz.again')}</span>
+              <span className="is-short">{t('quiz.againShort')}</span>
+            </button>
+          </div>,
         )}
         {quiz.questions.map((question, index) => {
           const result = attempt.results?.[index]
