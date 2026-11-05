@@ -11,13 +11,15 @@ let tally: { at: number; counts: Record<string, number>; voters: number } | null
 async function counts(fresh = false) {
   if (!fresh && tally && Date.now() - tally.at < LIVE_MS) return tally
   const collection = await pollVotes()
+  const live = POLL.groups.map((group) => group.id)
   const [voters, rows] = await Promise.all([
-    collection.countDocuments({ poll: POLL.id }),
+    collection.countDocuments({ poll: POLL.id, $or: live.map((group) => ({ [`picks.${group}.0`]: { $exists: true } })) }),
     collection
       .aggregate<{ _id: string; n: number }>([
         { $match: { poll: POLL.id } },
         { $project: { picks: { $objectToArray: '$picks' } } },
         { $unwind: '$picks' },
+        { $match: { 'picks.k': { $in: live } } },
         { $unwind: '$picks.v' },
         { $group: { _id: '$picks.v', n: { $sum: 1 } } },
       ])
@@ -48,11 +50,17 @@ export const POST = handle(async (request) => {
   const picks = [...new Set(body.picks.filter((one: unknown): one is string => typeof one === 'string' && known.has(one)))]
   if (picks.length > group.max) return fail(400, 'bad_request')
   const userId = found.doc._id!
-  await (await pollVotes()).updateOne(
-    { poll: POLL.id, userId },
-    { $set: { [`picks.${group.id}`]: picks, updatedAt: new Date() }, $setOnInsert: { poll: POLL.id, userId } },
-    { upsert: true },
-  )
+  const collection = await pollVotes()
+  const save = () =>
+    collection.updateOne(
+      { poll: POLL.id, userId },
+      { $set: { [`picks.${group.id}`]: picks, updatedAt: new Date() }, $setOnInsert: { poll: POLL.id, userId } },
+      { upsert: true },
+    )
+  await save().catch((error: { code?: number }) => {
+    if (error?.code !== 11000) throw error
+    return save()
+  })
   const [{ counts: votes, voters }, own] = await Promise.all([counts(true), mine(userId)])
   return json({ poll: POLL.id, counts: votes, voters, mine: own })
 })

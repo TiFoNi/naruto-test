@@ -35,7 +35,8 @@ export default function HomePoll() {
   const [at, setAt] = useState(0)
   const [order, setOrder] = useState<Record<string, string[]> | null>(null)
   const swipe = useRef<{ x: number; y: number } | null>(null)
-  const sent = useRef(0)
+  const busy = useRef(false)
+  const queued = useRef(new Map<string, string[]>())
 
   useEffect(() => {
     let alive = true
@@ -68,6 +69,23 @@ export default function HomePoll() {
 
   const page = pages[at] ?? pages[0]
 
+  const flush = () => {
+    const [next] = queued.current
+    if (busy.current || !next) return
+    const [group, picks] = next
+    queued.current.delete(group)
+    busy.current = true
+    void api<Tally>('poll', { group, picks }).then(({ ok, data }) => {
+      busy.current = false
+      if (queued.current.size) return flush()
+      if (ok) return setTally({ counts: data.counts ?? {}, voters: data.voters ?? 0, mine: data.mine ?? null })
+      void api<Tally>('poll').then((again) => {
+        if (again.ok && !queued.current.size && !busy.current)
+          setTally({ counts: again.data.counts ?? {}, voters: again.data.voters ?? 0, mine: again.data.mine ?? null })
+      })
+    })
+  }
+
   const vote = (group: PollGroup, id: string) => {
     if (!user) return
     const before = tally.mine?.[group.id] ?? []
@@ -75,12 +93,12 @@ export default function HomePoll() {
     const counts = { ...tally.counts }
     for (const one of before) if (!after.includes(one)) counts[one] = Math.max(0, (counts[one] ?? 0) - 1)
     for (const one of after) if (!before.includes(one)) counts[one] = (counts[one] ?? 0) + 1
-    const first = !tally.mine || !Object.values(tally.mine).some((list) => list.length)
-    setTally({ counts, voters: tally.voters + (first && after.length ? 1 : 0), mine: { ...tally.mine, [group.id]: after } })
-    const ticket = ++sent.current
-    void api<Tally>('poll', { group: group.id, picks: after }).then(({ ok, data }) => {
-      if (ok && ticket === sent.current) setTally({ counts: data.counts ?? {}, voters: data.voters ?? 0, mine: data.mine ?? null })
-    })
+    const mine = { ...tally.mine, [group.id]: after }
+    const was = POLL.groups.some((one) => (tally.mine?.[one.id] ?? []).length)
+    const now = POLL.groups.some((one) => (mine[one.id] ?? []).length)
+    setTally({ counts, voters: Math.max(0, tally.voters + Number(now) - Number(was)), mine })
+    queued.current.set(group.id, after)
+    flush()
   }
 
   const turn = (step: number) => setAt((one) => Math.max(0, Math.min(pages.length - 1, one + step)))
