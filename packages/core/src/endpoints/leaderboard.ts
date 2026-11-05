@@ -29,11 +29,14 @@ type Row = {
   best: number
   bestAt: Date
   avg: number
+  score?: number
 }
 
 type Page = { top: Row[]; size: { value: number }[]; ahead?: { value: number }[] }
 
 type Order = Record<string, number>
+
+const STREAK_BOARDS = ['shots_shot', 'tunes_tune']
 
 const before = (order: Order, mine: Row) => ({
   $or: Object.entries(order).map(([field], index) => {
@@ -52,7 +55,8 @@ export const GET = handle(async (request) => {
   const key = statsKey(params.get('game') ?? '', params.get('mode') ?? '')
   const sort = (params.get('sort') ?? 'best') as Sort
   const day = params.get('scope') === 'day' ? today() : null
-  const field = key === 'shots_shot' ? 'bestStreak' : 'best'
+  const field = STREAK_BOARDS.includes(key) ? 'bestStreak' : 'best'
+  const scored = STREAK_BOARDS.includes(key) && !day
   if (!STAT_KEYS.includes(key) || !(sort in SORTS)) return fail(400, 'bad_request')
   const reversed = params.get('dir') === 'rev'
   const spec = SORTS[sort]
@@ -73,6 +77,7 @@ export const GET = handle(async (request) => {
         xp: found.doc.xp,
         solved: stats?.solved ?? 0,
         best: day ? (stats?.dayBest ?? 0) : (stats?.[field] ?? 0),
+        ...(scored ? { score: stats?.best ?? 0 } : {}),
         bestAt: stats?.bestAt ?? LONG_AGO,
         avg: (stats?.totalGuesses ?? 0) / Math.max(1, stats?.solved ?? 0),
       }
@@ -100,6 +105,7 @@ export const GET = handle(async (request) => {
           best: { $ifNull: [day ? `${path}.dayBest` : `${path}.${field}`, 0] },
           bestAt: { $ifNull: [`${path}.bestAt`, LONG_AGO] },
           avg: { $divide: [{ $ifNull: [`${path}.totalGuesses`, 0] }, { $max: [1, { $ifNull: [`${path}.solved`, 0] }] }] },
+          ...(scored ? { score: { $ifNull: [`${path}.best`, 0] } } : {}),
         },
       },
       {
@@ -126,6 +132,7 @@ export const GET = handle(async (request) => {
     solved: row.solved,
     best: row.best,
     avg: Math.round(row.avg * 10) / 10,
+    ...(scored ? { score: row.score ?? 0 } : {}),
     me: String(row._id) === me,
   })
 

@@ -31,6 +31,7 @@ type Row = {
   level?: number
   solved?: number
   best?: number
+  score?: number
 }
 
 type Board = { rows: Row[]; me: Row | null; total: number }
@@ -38,7 +39,7 @@ type Board = { rows: Row[]; me: Row | null; total: number }
 type Column = {
   label: UiKey
   short: UiKey
-  sort: Sort
+  sort?: Sort
   raw: (row: Row) => number
   value: (row: Row) => number
 }
@@ -56,6 +57,8 @@ const COLUMNS: Column[] = [
   { label: 'lb.colBest', short: 'lb.shortBest', sort: 'best', raw: (r) => r.best ?? 0, value: (r) => r.best ?? 0 },
   { label: 'lb.colSolved', short: 'lb.shortSolved', sort: 'solved', raw: (r) => r.solved ?? 0, value: (r) => r.solved ?? 0 },
 ]
+
+const SCORE: Column = { label: 'lb.colScore', short: 'lb.shortScore', raw: (r) => r.score ?? 0, value: (r) => r.score ?? 0 }
 
 const PAGE_SIZE = 10
 const SKELETON_ROWS = PAGE_SIZE
@@ -121,7 +124,8 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   }, [size, board])
 
   const boardKey = `${gameId}:${mode}`
-  const columns = COLUMNS
+  const scored = (board?.rows ?? []).some((row) => row.score !== undefined)
+  const columns = scored ? [COLUMNS[0]!, SCORE, COLUMNS[1]!] : COLUMNS
   const active = columns.find((c) => c.sort === sort) ?? columns[0]
   const all = board?.rows ?? []
   const waiting = !board && !error
