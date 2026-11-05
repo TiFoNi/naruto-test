@@ -5,7 +5,7 @@ import { PUBLIC, ROOT } from './lib.mjs'
 
 const ADMIN_MANAGED = 'shots'
 
-export const UI_DIRS = ['frames', 'banners', 'worlds', 'awards']
+export const UI_DIRS = ['frames', 'banners', 'worlds', 'awards', 'bestiary']
 
 const UI_FILES = /\.(webp|png|svg|mp4|webm)$/
 

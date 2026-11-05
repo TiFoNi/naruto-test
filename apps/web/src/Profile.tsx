@@ -867,7 +867,7 @@ export default function Profile({ id }: { id?: string }) {
               const share = percent(row.solved, row.pool)
               return (
                 <li key={row.game} style={{ '--world-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
-                  <Link href={href.world(row.game as GameId)} prefetch={false}>
+                  <Link href={own || !id ? href.bestiary(row.game as GameId) : href.playerBestiary(id, row.game as GameId)} prefetch={false}>
                     <span className="world-pic" style={{ '--fill': `${share}%` } as CSSProperties}>
                       <img
                         className="world-art"

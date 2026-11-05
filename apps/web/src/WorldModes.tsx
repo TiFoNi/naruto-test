@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { GRID_GAMES, dailyKey, hasDaily, statsKey } from '@nanda/game'
 import BackButton from './BackButton'
+import DexStrip from './DexStrip'
 import { useAuth } from './auth'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
@@ -61,6 +62,8 @@ export default function WorldModes({ game: gameId }: { game: string }) {
           </div>
         </div>
       </header>
+
+      <DexStrip game={game} />
 
       <h2 className="world-pick">{t('world.pick')}</h2>
 

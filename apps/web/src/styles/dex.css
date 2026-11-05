@@ -1,0 +1,237 @@
+.dex {
+  --ink: #ece8e4;
+  --scrap: #ebe5dc;
+  --scrap-dark: #1c1a1f;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .25 0 0 0 -1.5 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  padding-bottom: 40px;
+}
+
+.dex-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dex-head h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(28px, 4vw, 40px);
+}
+
+.dex-count {
+  display: flex;
+  min-height: 1.4em;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  margin: 0;
+  color: var(--text-2);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.dex-guest {
+  color: var(--dex);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.dex-board {
+  --edge: clamp(26px, 5vw, 58px);
+
+  position: relative;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: calc(var(--edge) + 22px) calc(var(--edge) + 6px) calc(var(--edge) + 16px);
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--dex) 6%, transparent),
+    color-mix(in srgb, var(--dex) 4.5%, transparent) 30%,
+    color-mix(in srgb, var(--dex) 2.5%, transparent) 55%,
+    color-mix(in srgb, var(--dex) 1%, transparent) 78%,
+    transparent
+  );
+}
+
+.dex-ink {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.dex-ink svg {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  fill: var(--ink);
+  filter: drop-shadow(0 2px 4px rgb(0 0 0 / 60%));
+  animation: dex-ink-in 0.35s ease-out;
+}
+
+.dex-ink .is-accent {
+  fill: var(--dex);
+}
+
+.dex-ink .is-seat {
+  fill: #0b0a0d;
+}
+
+.dex-ink .is-shine {
+  fill: #fff;
+  opacity: 0.55;
+}
+
+@keyframes dex-ink-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.dex-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 26px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dex-grid li {
+  display: flex;
+  min-width: 0;
+  transform: rotate(var(--tilt, 0deg));
+}
+
+.dex-scrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  color: #1b1a1e;
+  filter:
+    drop-shadow(0 6px 8px rgb(0 0 0 / 55%))
+    drop-shadow(0 0 0 color-mix(in srgb, var(--dex) 0%, transparent))
+    drop-shadow(0 0 0 color-mix(in srgb, var(--dex) 0%, transparent));
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dex-scrap:not(.is-locked):hover {
+  filter:
+    drop-shadow(0 10px 12px rgb(0 0 0 / 55%))
+    drop-shadow(0 0 1px color-mix(in srgb, var(--dex) 80%, transparent))
+    drop-shadow(0 0 7px color-mix(in srgb, var(--dex) 30%, transparent));
+  transform: translateY(-4px) rotate(calc(var(--tilt, 0deg) * -1));
+}
+
+.dex-paper {
+  position: absolute;
+  inset: 0;
+  background: var(--grain), var(--scrap);
+}
+
+.dex-pic {
+  position: absolute;
+  inset: 7% 7% 21%;
+  overflow: hidden;
+  background: #141216;
+}
+
+.dex-pic img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.dex-scrap b {
+  position: absolute;
+  right: 8%;
+  bottom: 6.5%;
+  left: 8%;
+  overflow: hidden;
+  font-size: clamp(10px, 1.1vw, 13px);
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dex-scrap.is-locked {
+  color: #6e6775;
+}
+
+.dex-scrap.is-locked .dex-paper {
+  background:
+    radial-gradient(90% 80% at 40% 30%, rgb(255 255 255 / 4%), transparent 70%),
+    var(--scrap-dark);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 5%);
+}
+
+.dex-pic.is-fog img {
+  filter: blur(5px) brightness(0.55) saturate(0.5);
+  transform: scale(1.15);
+}
+
+.dex-scrap.is-locked em {
+  position: absolute;
+  top: 7%;
+  right: 7%;
+  bottom: 21%;
+  left: 7%;
+  display: grid;
+  place-items: center;
+  color: #ece8e4;
+  font-family: var(--display);
+  font-size: clamp(26px, 3vw, 38px);
+  font-style: normal;
+  line-height: 1;
+  opacity: 0.85;
+  text-shadow: 0 2px 8px rgb(0 0 0 / 70%);
+}
+
+.dex-scrap.is-locked small {
+  position: absolute;
+  right: 8%;
+  bottom: 7%;
+  left: 8%;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.dex-scrap.is-ghost .dex-paper {
+  background: var(--scrap-dark);
+}
+
+.dex-scrap.is-ghost {
+  animation: dex-ghost 1.4s ease-in-out infinite;
+}
+
+@keyframes dex-ghost {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@media (max-width: 559px) {
+  .dex-board {
+    padding-inline: 34px;
+  }
+
+  .dex-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px 12px;
+  }
+}

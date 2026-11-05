@@ -25,6 +25,7 @@ import * as pulse from '@nanda/core/endpoints/pulse'
 import * as challenge from '@nanda/core/endpoints/challenge'
 import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
+import * as dex from '@nanda/core/endpoints/dex'
 import * as pair from '@nanda/core/endpoints/pair'
 import * as shot from '@nanda/core/endpoints/shot'
 import * as tune from '@nanda/core/endpoints/tune'
@@ -286,6 +287,11 @@ export class GameController {
   @Get('entities')
   entities(@Req() req: Request, @Res() res: Response) {
     return bridge(entitiesEndpoint.GET, req, res)
+  }
+
+  @Get('dex')
+  dexBook(@Req() req: Request, @Res() res: Response) {
+    return bridge(dex.GET, req, res)
   }
 
   @Get('achievements')

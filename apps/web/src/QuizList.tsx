@@ -14,6 +14,8 @@ import { coverUrl, type QuizCard, type QuizKind, type QuizLayout } from './quiz'
 import { useHref } from './router'
 import { uiUrl } from './pics'
 
+const KINDS_SHOWN = 4
+
 type Status = 'all' | 'new' | 'going' | 'done'
 type Sort = 'new' | 'popular' | 'liked' | 'short' | 'long'
 
@@ -67,11 +69,16 @@ export function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
         </small>
         <span className="qz-foot">
           <span className="qz-kinds">
-            {quiz.kinds.map((kind) => (
+            {(quiz.kinds.length > KINDS_SHOWN ? quiz.kinds.slice(0, KINDS_SHOWN - 1) : quiz.kinds).map((kind) => (
               <i key={kind} title={t(`quiz.kind.${kind}` as UiKey)}>
                 {KIND_ICON[kind]}
               </i>
             ))}
+            {quiz.kinds.length > KINDS_SHOWN && (
+              <i className="is-more" title={quiz.kinds.slice(KINDS_SHOWN - 1).map((kind) => t(`quiz.kind.${kind}` as UiKey)).join(', ')}>
+                +{quiz.kinds.length - KINDS_SHOWN + 1}
+              </i>
+            )}
           </span>
           {(!!quiz.likes || !!quiz.plays) && (
             <span className="qz-stats">

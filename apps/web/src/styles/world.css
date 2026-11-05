@@ -955,3 +955,164 @@
     display: none;
   }
 }
+
+.world-dex {
+  --dex: var(--game-accent, var(--accent));
+
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border: 1px solid color-mix(in srgb, var(--dex) 32%, var(--line));
+  border-radius: 16px;
+  background: linear-gradient(100deg, color-mix(in srgb, var(--dex) 16%, var(--card)), var(--card) 70%);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 0.4s ease, background 0.4s ease;
+}
+
+.world-dex:hover {
+  border-color: color-mix(in srgb, var(--dex) 60%, var(--line));
+  background: linear-gradient(100deg, color-mix(in srgb, var(--dex) 24%, var(--card)), var(--card) 75%);
+}
+
+.world-dex-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: none;
+  place-items: center;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--dex) 20%, transparent);
+  color: var(--dex);
+}
+
+.world-dex-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.world-dex-body {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.world-dex-body b {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.world-dex-body small {
+  min-height: 1.3em;
+  color: var(--text-2);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.world-dex-peek {
+  display: flex;
+  width: 104px;
+  height: 52px;
+  flex: none;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.world-dex-card {
+  position: relative;
+  width: 40px;
+  height: 52px;
+  flex: none;
+  filter: drop-shadow(0 4px 6px rgb(0 0 0 / 50%));
+  transform: rotate(var(--tilt, 0deg));
+  animation: world-dex-in 0.4s ease-out backwards;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.world-dex-card + .world-dex-card {
+  margin-left: -8px;
+}
+
+.world-dex-card:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.world-dex-card:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.world-dex:hover .world-dex-card {
+  transform: rotate(calc(var(--tilt, 0deg) * 1.6)) translateY(-2px);
+}
+
+.world-dex-paper {
+  position: absolute;
+  inset: 0;
+  background: #ebe5dc;
+}
+
+.world-dex-pic {
+  position: absolute;
+  inset: 8% 9% 16%;
+  overflow: hidden;
+  background: #141216;
+}
+
+.world-dex-pic img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.world-dex-card.is-locked .world-dex-paper {
+  background: #1f1c22;
+}
+
+.world-dex-card.is-locked .world-dex-pic img {
+  filter: blur(3px) brightness(0.55) saturate(0.5);
+  transform: scale(1.2);
+}
+
+.world-dex-card em {
+  position: absolute;
+  inset: 8% 9% 16%;
+  display: grid;
+  place-items: center;
+  color: #ece8e4;
+  font-family: var(--display);
+  font-size: 16px;
+  font-style: normal;
+  opacity: 0.85;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 70%);
+}
+
+@keyframes world-dex-in {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+}
+
+.world-dex-go {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  color: var(--dex);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.world-dex:hover .world-dex-go {
+  transform: translateX(3px);
+}
+
+@media (max-width: 420px) {
+  .world-dex-peek {
+    display: none;
+  }
+}

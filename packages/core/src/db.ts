@@ -17,6 +17,7 @@ export type UserDoc = {
   coinsNews?: { coins: number; at: Date }
   titleNews?: string | null
   quizNews?: QuizNews[]
+  dex?: Record<string, number[]>
   mentionPush?: boolean
   mentionNews?: MentionNews[]
   bonusDay?: string

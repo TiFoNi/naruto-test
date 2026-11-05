@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, type CSSProperties } from 'react'
 import type { BannerLook, BannerLooks, LookPlace } from '@nanda/game'
-import { BOARD_SIZES, bannerClips, bannerPic, bannerSet, bannerSpot, isLive } from './banners'
+import { bannerClips, bannerPic, bannerSet, bannerSpot, boardSizes, isLive } from './banners'
 
 export const lookStyle = (id: string, look?: BannerLook | null): CSSProperties =>
   look
@@ -24,14 +24,15 @@ export default function BannerArt({
   place: LookPlace | 'profile'
   first?: boolean
 }) {
-  const style = lookStyle(id, place === 'profile' ? look?.desktop : (look?.[place] ?? look?.desktop))
+  const chosen = place === 'profile' ? look?.desktop : (look?.[place] ?? look?.desktop)
+  const style = lookStyle(id, chosen)
   if (!isLive(id)) {
     const board = place === 'board'
     return (
       <img
         src={bannerPic(id, board)}
         srcSet={board ? bannerSet(id) : undefined}
-        sizes={board ? BOARD_SIZES[first ? 'first' : 'rest'] : undefined}
+        sizes={board ? boardSizes(first, chosen?.z) : undefined}
         alt=""
         style={style}
         fetchPriority={first ? 'high' : undefined}
