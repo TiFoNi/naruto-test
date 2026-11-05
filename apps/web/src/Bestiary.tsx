@@ -1,14 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
+import { createPortal } from 'react-dom'
 import BackButton from './BackButton'
 import { api } from './api'
 import { useAuth } from './auth'
 import { useEntities } from './entities'
 import { GAMES } from './games'
-import type { GameId } from './games/types'
+import type { Entity, GameId } from './games/types'
 import { useI18n } from './i18n'
+import { CloseIcon } from './icons'
 import { cardUrl, miniUrl } from './pics'
 import { useHref } from './router'
 import { random, torn } from './torn'
@@ -398,6 +400,81 @@ const InkFrame = () => {
   )
 }
 
+type Focus = { entity: Entity; from: DOMRect; tilt: number }
+
+const OPEN_MS = 620
+const CLOSE_MS = 420
+
+const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game: GameId; label: string; accent: string; onClosed: () => void }) => {
+  const { t } = useI18n()
+  const card = useRef<HTMLDivElement>(null)
+  const shade = useRef<HTMLDivElement>(null)
+  const shut = useRef<HTMLButtonElement>(null)
+  const leaving = useRef(false)
+
+  const travel = useCallback(() => {
+    const node = card.current
+    if (!node) return 'none'
+    const to = node.getBoundingClientRect()
+    const { from, tilt } = focus
+    const dx = from.left + from.width / 2 - (to.left + to.width / 2)
+    const dy = from.top + from.height / 2 - (to.top + to.height / 2)
+    return `translate(${dx}px, ${dy}px) scale(${from.width / to.width}) rotate(${tilt}deg)`
+  }, [focus])
+
+  const close = useCallback(() => {
+    if (leaving.current) return
+    leaving.current = true
+    const motion = { duration: CLOSE_MS, easing: 'cubic-bezier(0.4, 0, 0.6, 1)', fill: 'forwards' as const }
+    shade.current?.animate([{ opacity: 1 }, { opacity: 0 }], motion)
+    const back = card.current?.animate([{ transform: 'none' }, { transform: travel() }], motion)
+    if (back) back.onfinish = onClosed
+    else onClosed()
+  }, [travel, onClosed])
+
+  useEffect(() => {
+    shade.current?.animate([{ opacity: 0 }, { opacity: 1 }], { duration: OPEN_MS * 0.7, easing: 'ease-out' })
+    card.current?.animate(
+      [
+        { transform: travel(), offset: 0 },
+        { transform: 'translateY(-10px) scale(1.04) rotate(-1.5deg)', offset: 0.72 },
+        { transform: 'none', offset: 1 },
+      ],
+      { duration: OPEN_MS, easing: 'cubic-bezier(0.2, 0.8, 0.25, 1)' },
+    )
+    shut.current?.focus({ preventScroll: true })
+    const root = document.documentElement
+    const before = root.style.overflow
+    root.style.overflow = 'hidden'
+    const key = (event: KeyboardEvent) => event.key === 'Escape' && close()
+    window.addEventListener('keydown', key)
+    return () => {
+      window.removeEventListener('keydown', key)
+      root.style.overflow = before
+    }
+  }, [travel, close])
+
+  const { entity } = focus
+
+  return createPortal(
+    <div className="dex-zoom" role="dialog" aria-modal="true" aria-label={label} style={{ '--dex': accent } as CSSProperties}>
+      <div ref={shade} className="dex-zoom-shade" onClick={close} />
+      <div ref={card} className="dex-zoom-card">
+        <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
+        <span className="dex-zoom-pic" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
+          <img src={cardUrl(game, entity.id, entity.image)} alt="" draggable={false} />
+          <i className="dex-zoom-shine" />
+        </span>
+        <b className="dex-zoom-name">{label}</b>
+      </div>
+      <button ref={shut} type="button" className="dex-zoom-close" onClick={close} aria-label={t('dex.close')}>
+        <CloseIcon />
+      </button>
+    </div>,
+    document.body,
+  )
+}
+
 const SIZE_KEY = 'dex-size:'
 const noop = () => () => {}
 const useRemembered = (game: string) =>
@@ -422,6 +499,8 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   const [open, setOpen] = useState<Set<number>>(new Set())
   const [nickname, setNickname] = useState<string | null>(null)
   const remembered = useRemembered(gameId)
+  const [focus, setFocus] = useState<Focus | null>(null)
+  const release = useCallback(() => setFocus(null), [])
 
   useEffect(() => {
     if (!game || !user) return
@@ -486,13 +565,19 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
             : cast.map((entity, place) => (
                 <li key={entity.id} style={{ '--tilt': `${tilt(entity.id)}deg` } as CSSProperties}>
                   {open.has(entity.id) ? (
-                    <span className="dex-scrap">
+                    <button
+                      type="button"
+                      className={`dex-scrap ${focus?.entity.id === entity.id ? 'is-lifted' : ''}`}
+                      onClick={(event) =>
+                        setFocus({ entity, from: event.currentTarget.getBoundingClientRect(), tilt: tilt(entity.id) })
+                      }
+                    >
                       <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
                       <span className="dex-pic" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
                         <img src={cardUrl(game.id, entity.id, entity.image)} alt="" loading="lazy" decoding="async" draggable={false} />
                       </span>
                       <b>{name(entity)}</b>
-                    </span>
+                    </button>
                   ) : (
                     <span className="dex-scrap is-locked" aria-label={t('dex.locked')}>
                       <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
@@ -507,6 +592,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
               ))}
         </ol>
       </div>
+      {focus && <DexZoom focus={focus} game={game.id} label={name(focus.entity)} accent={accent} onClosed={release} />}
     </div>
   )
 }

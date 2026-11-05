@@ -1,9 +1,12 @@
-.dex {
+.dex,
+.dex-zoom {
   --ink: #ece8e4;
   --scrap: #ebe5dc;
   --scrap-dark: #1c1a1f;
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .25 0 0 0 -1.5 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+}
 
+.dex {
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -113,6 +116,11 @@
 .dex-scrap {
   position: relative;
   display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: inherit;
   width: 100%;
   aspect-ratio: 3 / 4;
   color: #1b1a1e;
@@ -123,6 +131,19 @@
   transition:
     transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
     filter 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+button.dex-scrap {
+  cursor: zoom-in;
+}
+
+button.dex-scrap:focus-visible {
+  outline: 2px solid var(--dex);
+  outline-offset: 4px;
+}
+
+.dex-scrap.is-lifted {
+  visibility: hidden;
 }
 
 .dex-scrap:not(.is-locked):hover {
@@ -180,8 +201,8 @@
 }
 
 .dex-pic.is-fog img {
-  filter: blur(5px) brightness(0.55) saturate(0.5);
-  transform: scale(1.15);
+  filter: blur(3px) brightness(0.62) saturate(0.6);
+  transform: scale(1.1);
 }
 
 .dex-scrap.is-locked em {
@@ -222,6 +243,106 @@
 @keyframes dex-ghost {
   50% {
     opacity: 0.4;
+  }
+}
+
+.dex-zoom {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.dex-zoom-shade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 60% at 50% 45%, color-mix(in srgb, var(--dex) 14%, rgb(6 5 8 / 70%)), rgb(6 5 8 / 86%));
+  backdrop-filter: blur(6px);
+  cursor: zoom-out;
+}
+
+.dex-zoom-card {
+  position: relative;
+  width: min(360px, 80vw, calc((100dvh - 120px) * 0.75));
+  aspect-ratio: 3 / 4;
+  container-type: inline-size;
+  color: #1b1a1e;
+  filter: drop-shadow(0 30px 40px rgb(0 0 0 / 60%)) drop-shadow(0 0 24px color-mix(in srgb, var(--dex) 25%, transparent));
+  pointer-events: none;
+  will-change: transform;
+}
+
+.dex-zoom-pic {
+  position: absolute;
+  inset: 7% 7% 21%;
+  overflow: hidden;
+  background: #141216;
+}
+
+.dex-zoom-pic img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.dex-zoom-shine {
+  position: absolute;
+  inset: -20%;
+  background: linear-gradient(115deg, transparent 40%, rgb(255 255 255 / 32%) 50%, transparent 60%);
+  transform: translateX(-70%);
+  animation: dex-shine 1.1s 0.45s cubic-bezier(0.3, 0.6, 0.3, 1) forwards;
+}
+
+@keyframes dex-shine {
+  to {
+    transform: translateX(70%);
+  }
+}
+
+.dex-zoom-name {
+  position: absolute;
+  right: 8%;
+  bottom: 6.5%;
+  left: 8%;
+  overflow: hidden;
+  font-size: 9cqw;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dex-zoom-close {
+  position: absolute;
+  top: max(16px, env(safe-area-inset-top));
+  right: 16px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 50%;
+  background: rgb(20 18 24 / 70%);
+  color: #ece8e4;
+  cursor: pointer;
+  animation: dex-ink-in 0.4s 0.2s ease-out backwards;
+}
+
+.dex-zoom-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dex-zoom-shine {
+    display: none;
   }
 }
 

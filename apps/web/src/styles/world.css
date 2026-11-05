@@ -1075,8 +1075,8 @@
 }
 
 .world-dex-card.is-locked .world-dex-pic img {
-  filter: blur(3px) brightness(0.55) saturate(0.5);
-  transform: scale(1.2);
+  filter: blur(2px) brightness(0.62) saturate(0.6);
+  transform: scale(1.15);
 }
 
 .world-dex-card em {

@@ -23,6 +23,7 @@ const ui = {
   'dex.openHint': { ru: 'Открыто {got} из {total}', uk: 'Відкрито {got} з {total}', en: '{got} of {total} found' },
   'dex.count': { ru: 'Открыто {got} из {total}', uk: 'Відкрито {got} з {total}', en: '{got} of {total} found' },
   'dex.locked': { ru: 'Ещё не угадан', uk: 'Ще не вгаданий', en: 'Not guessed yet' },
+  'dex.close': { ru: 'Закрыть', uk: 'Закрити', en: 'Close' },
   'dex.login': { ru: 'Войди, чтобы собирать бестиарий', uk: 'Увійди, щоб збирати бестіарій', en: 'Sign in to fill your bestiary' },
   'dex.pages': { ru: 'Стр. {from}–{to} из {total}', uk: 'Стор. {from}–{to} з {total}', en: 'Pages {from}–{to} of {total}' },
   'dex.page': { ru: 'Стр. {page} из {total}', uk: 'Стор. {page} з {total}', en: 'Page {page} of {total}' },
