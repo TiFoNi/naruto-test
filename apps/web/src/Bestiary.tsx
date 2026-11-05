@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import BackButton from './BackButton'
 import { api } from './api'
@@ -400,48 +400,80 @@ const InkFrame = () => {
   )
 }
 
-type Focus = { entity: Entity; from: DOMRect; tilt: number }
+type Focus = { entity: Entity; node: HTMLElement; from: DOMRect; hovered: boolean; tilt: number; type: number; cut: boolean }
 
-const OPEN_MS = 620
-const CLOSE_MS = 420
+const lift = (entity: Entity, node: HTMLElement): Focus => {
+  const from = node.getBoundingClientRect()
+  const name = node.querySelector('b')
+  const size = name ? parseFloat(getComputedStyle(name).fontSize) : 13
+  return {
+    entity,
+    node,
+    from,
+    hovered: node.matches(':hover'),
+    tilt: tilt(entity.id),
+    type: (size / Math.max(1, node.offsetWidth)) * 100,
+    cut: !!name && name.scrollWidth > name.clientWidth + 1,
+  }
+}
+
+const MOVE_MS = 480
+const MOVE_EASE = 'cubic-bezier(0.4, 0, 0.2, 1)'
 
 const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game: GameId; label: string; accent: string; onClosed: () => void }) => {
   const { t } = useI18n()
   const card = useRef<HTMLDivElement>(null)
   const shade = useRef<HTMLDivElement>(null)
   const shut = useRef<HTMLButtonElement>(null)
+  const title = useRef<HTMLElement>(null)
+  const words = useRef<HTMLSpanElement>(null)
+  const [fit, setFit] = useState(focus.type)
   const leaving = useRef(false)
 
-  const travel = useCallback(() => {
-    const node = card.current
-    if (!node) return 'none'
-    const to = node.getBoundingClientRect()
-    const { from, tilt } = focus
-    const dx = from.left + from.width / 2 - (to.left + to.width / 2)
-    const dy = from.top + from.height / 2 - (to.top + to.height / 2)
-    return `translate(${dx}px, ${dy}px) scale(${from.width / to.width}) rotate(${tilt}deg)`
-  }, [focus])
+  const travel = useCallback(
+    (back: boolean) => {
+      const node = card.current
+      if (!node) return 'none'
+      node.getAnimations().forEach((motion) => motion.cancel())
+      const to = node.getBoundingClientRect()
+      const home = back ? (focus.node.parentElement ?? focus.node).getBoundingClientRect() : focus.from
+      const turn = back || !focus.hovered ? focus.tilt : 0
+      const dx = home.left + home.width / 2 - (to.left + to.width / 2)
+      const dy = home.top + home.height / 2 - (to.top + to.height / 2)
+      return `translate(${dx}px, ${dy}px) scale(${focus.node.offsetWidth / node.offsetWidth}) rotate(${turn}deg)`
+    },
+    [focus],
+  )
 
   const close = useCallback(() => {
     if (leaving.current) return
     leaving.current = true
-    const motion = { duration: CLOSE_MS, easing: 'cubic-bezier(0.4, 0, 0.6, 1)', fill: 'forwards' as const }
+    const motion = { duration: MOVE_MS, easing: MOVE_EASE, fill: 'forwards' as const }
     shade.current?.animate([{ opacity: 1 }, { opacity: 0 }], motion)
-    const back = card.current?.animate([{ transform: 'none' }, { transform: travel() }], motion)
+    const back = card.current?.animate([{ transform: 'none' }, { transform: travel(true) }], motion)
     if (back) back.onfinish = onClosed
     else onClosed()
   }, [travel, onClosed])
 
+  useLayoutEffect(() => {
+    const node = title.current
+    const text = words.current
+    if (!node || !text || !focus.cut) return
+    let size = focus.type
+    const tall = () => text.offsetHeight > parseFloat(getComputedStyle(node).fontSize) * 1.1 * 2 + 1
+    node.style.fontSize = `${size}cqw`
+    while (tall() && size > focus.type * 0.5) {
+      size *= 0.92
+      node.style.fontSize = `${size}cqw`
+    }
+    setFit(size)
+  }, [focus])
+
   useEffect(() => {
-    shade.current?.animate([{ opacity: 0 }, { opacity: 1 }], { duration: OPEN_MS * 0.7, easing: 'ease-out' })
-    card.current?.animate(
-      [
-        { transform: travel(), offset: 0 },
-        { transform: 'translateY(-10px) scale(1.04) rotate(-1.5deg)', offset: 0.72 },
-        { transform: 'none', offset: 1 },
-      ],
-      { duration: OPEN_MS, easing: 'cubic-bezier(0.2, 0.8, 0.25, 1)' },
-    )
+    const motion = { duration: MOVE_MS, easing: MOVE_EASE }
+    shade.current?.getAnimations().forEach((running) => running.cancel())
+    shade.current?.animate([{ opacity: 0 }, { opacity: 1 }], motion)
+    card.current?.animate([{ transform: travel(false) }, { transform: 'none' }], motion)
     shut.current?.focus({ preventScroll: true })
     const root = document.documentElement
     const before = root.style.overflow
@@ -465,7 +497,9 @@ const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game:
           <img src={cardUrl(game, entity.id, entity.image)} alt="" draggable={false} />
           <i className="dex-zoom-shine" />
         </span>
-        <b className="dex-zoom-name">{label}</b>
+        <b ref={title} className={`dex-zoom-name ${focus.cut ? 'is-wrap' : ''}`} style={{ fontSize: `${fit}cqw` }}>
+          <span ref={words}>{label}</span>
+        </b>
       </div>
       <button ref={shut} type="button" className="dex-zoom-close" onClick={close} aria-label={t('dex.close')}>
         <CloseIcon />
@@ -569,7 +603,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                       type="button"
                       className={`dex-scrap ${focus?.entity.id === entity.id ? 'is-lifted' : ''}`}
                       onClick={(event) =>
-                        setFocus({ entity, from: event.currentTarget.getBoundingClientRect(), tilt: tilt(entity.id) })
+                        setFocus(lift(entity, event.currentTarget))
                       }
                     >
                       <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
@@ -592,7 +626,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
               ))}
         </ol>
       </div>
-      {focus && <DexZoom focus={focus} game={game.id} label={name(focus.entity)} accent={accent} onClosed={release} />}
+      {focus && <DexZoom key={focus.entity.id} focus={focus} game={game.id} label={name(focus.entity)} accent={accent} onClosed={release} />}
     </div>
   )
 }
