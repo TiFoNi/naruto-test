@@ -909,10 +909,16 @@ export default function Profile({ id }: { id?: string }) {
                     <span className="world-pic is-empty">
                       <PlusIcon />
                     </span>
+                    <span className="world-line" aria-hidden>
+                      <b />
+                    </span>
                   </Link>
                 ) : (
                   <span className="world-blank" aria-hidden>
                     <span className="world-pic is-empty" />
+                    <span className="world-line">
+                      <b />
+                    </span>
                   </span>
                 )}
               </li>
@@ -950,9 +956,13 @@ export default function Profile({ id }: { id?: string }) {
                       <span className="soon-mark" aria-hidden>
                         <PlusIcon />
                       </span>
+                      <b aria-hidden />
                     </Link>
                   ) : (
-                    <span className="soon-mark" aria-hidden />
+                    <>
+                      <span className="soon-mark" aria-hidden />
+                      <b aria-hidden />
+                    </>
                   )}
                 </li>
               )
