@@ -13,6 +13,7 @@ type Tally = { counts: Record<string, number>; voters: number; mine: Record<stri
 
 const EMPTY: Tally = { counts: {}, voters: 0, mine: null }
 const PER_PAGE = 6
+const REFRESH_MS = 60_000
 
 const choose = (group: PollGroup, picked: string[], id: string) => {
   if (picked.includes(id)) return picked.filter((one) => one !== id)
@@ -50,6 +51,17 @@ export default function HomePoll() {
     return () => {
       alive = false
     }
+  }, [user])
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === 'hidden' || busy.current || queued.current.size) return
+      void api<Tally>('poll').then(({ ok, data }) => {
+        if (!ok || busy.current || queued.current.size) return
+        setTally({ counts: data.counts ?? {}, voters: data.voters ?? 0, mine: data.mine ?? null })
+      })
+    }, REFRESH_MS)
+    return () => window.clearInterval(timer)
   }, [user])
 
   const pages = useMemo(
