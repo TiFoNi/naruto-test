@@ -449,8 +449,6 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   if (!game) return <div className="card center muted">{t('err.not_found')}</div>
 
   const accent = game.accent && /^#[0-9a-f]{3,8}$/i.test(game.accent) ? game.accent : '#ff8a1f'
-  const total = cast.length
-  const got = cast.filter((one) => open.has(one.id)).length
   const loading = cast.length === 0
 
   return (
@@ -465,14 +463,13 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
 
       <header className="dex-head">
         <h1>{owner ? t('dex.titleOf', { world: l(game.label) }) : t('dex.title')}</h1>
-        <p className="dex-count">
-          <span>{loading ? ' ' : t('dex.count', { got, total })}</span>
-          {!owner && !user && !checking && (
+        {!owner && !user && !checking && (
+          <p className="dex-count">
             <Link href={href.login} prefetch={false} className="dex-guest">
               {t('dex.login')}
             </Link>
-          )}
-        </p>
+          </p>
+        )}
       </header>
 
       <div className="dex-board">
