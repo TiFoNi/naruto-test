@@ -8,7 +8,7 @@ import { useEntities } from './entities'
 import type { Entity, Game } from './games/types'
 import { useI18n } from './i18n'
 import { ArrowIcon, BookIcon } from './icons'
-import { cardUrl, miniUrl } from './pics'
+import { PICTURELESS, cardUrl, miniUrl } from './pics'
 import { useHref } from './router'
 import { torn } from './torn'
 
@@ -66,7 +66,7 @@ export default function DexStrip({ game }: { game: Game }) {
         <b>{t('dex.title')}</b>
         <small>{total && ids ? t('dex.count', { got, total }) : ' '}</small>
       </span>
-      <span className="world-dex-peek" aria-hidden>
+      <span className={`world-dex-peek ${PICTURELESS.has(game.id) ? 'is-empty' : ''}`} aria-hidden>
         {peek.map(({ one, open }, index) => (
           <span key={one.id} className={`world-dex-card ${open ? '' : 'is-locked'}`} style={{ '--tilt': `${TILT[index]}deg` } as CSSProperties}>
             <i className="world-dex-paper" style={{ clipPath: torn(one.id, 6, 6) }} />

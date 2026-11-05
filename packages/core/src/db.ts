@@ -432,6 +432,7 @@ const cache = globalThis as typeof globalThis & {
   __tunesIndexed?: Promise<unknown>
   __tuneDaysIndexed?: Promise<unknown>
   __purchasesIndexed?: Promise<unknown>
+  __pollIndexed?: Promise<unknown>
   __ledgerIndexed?: Promise<unknown>
   __chatIndexed?: Promise<unknown>
   __chatNewsIndexed?: Promise<unknown>
@@ -721,6 +722,18 @@ export async function seasons(): Promise<Collection<SeasonDoc>> {
     throw error
   })
   await cache.__seasonsIndexed
+  return collection
+}
+
+export type PollVoteDoc = { _id?: ObjectId; poll: string; userId: ObjectId; picks: Record<string, string[]>; updatedAt: Date }
+
+export async function pollVotes(): Promise<Collection<PollVoteDoc>> {
+  const collection = (await database()).collection<PollVoteDoc>('pollVotes')
+  cache.__pollIndexed ??= collection.createIndex({ poll: 1, userId: 1 }, { unique: true }).catch((error) => {
+    cache.__pollIndexed = undefined
+    throw error
+  })
+  await cache.__pollIndexed
   return collection
 }
 

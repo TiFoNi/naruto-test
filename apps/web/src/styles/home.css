@@ -1,3 +1,9 @@
+@property --hero-tint {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ff8a1f;
+}
+
 .dashboard {
   display: flex;
   flex-direction: column;
@@ -16,11 +22,12 @@
   gap: 10px;
   overflow: hidden;
   padding: 28px 30px;
-  border: 1px solid color-mix(in srgb, var(--world-accent, var(--accent)) 24%, var(--line));
+  border: 1px solid color-mix(in srgb, var(--hero-tint) 24%, var(--line));
   border-radius: 26px;
   background:
-    radial-gradient(130% 150% at 0% 0%, color-mix(in srgb, var(--world-accent, var(--accent)) 16%, transparent), transparent 62%),
+    radial-gradient(130% 150% at 0% 0%, color-mix(in srgb, var(--hero-tint) 16%, transparent), transparent 62%),
     var(--card);
+  transition: --hero-tint 0.6s ease;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 5%),
     0 18px 38px rgb(0 0 0 / 22%);
@@ -52,6 +59,24 @@
   mask-image: radial-gradient(66% 80% at 82% 46%, #000 28%, rgba(0, 0, 0, 0.4) 64%, transparent 100%);
 }
 
+.hero-daily-stack {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+  min-width: 0;
+}
+
+.hero-daily-stack > .hero-daily-copy {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+
+.hero-daily-copy.is-off {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .hero-daily-copy {
   display: flex;
   flex: 1 1 auto;
@@ -66,33 +91,15 @@
   padding-top: 14px;
 }
 
-.hero-daily-copy.is-swap {
-  animation: hero-slide-in 0.38s cubic-bezier(0.22, 0.9, 0.24, 1);
+.hero-daily-art {
+  transition: opacity 0.6s ease;
 }
 
-.hero-daily-art.is-swap {
-  animation: hero-art-in 0.5s ease;
+.hero-daily > .hero-daily-art.is-off {
+  opacity: 0;
 }
 
-@keyframes hero-slide-in {
-  from {
-    opacity: 0;
-    transform: translate3d(18px, 0, 0);
-  }
-}
 
-@keyframes hero-art-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-daily-copy.is-swap,
-  .hero-daily-art.is-swap {
-    animation: none;
-  }
-}
 
 .hero-daily .hero-dots {
   position: absolute;
@@ -1010,4 +1017,286 @@ html[data-auth][data-checking] .hero-guest {
 
 .cat-card.is-tests:hover .cat-tests-mark {
   transform: rotate(-2deg) scale(1.05);
+}
+
+.home-poll {
+  display: flex;
+  width: min(100%, max(70%, 440px));
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home-poll-tabs {
+  display: flex;
+  width: 100%;
+  margin-top: 8px;
+  gap: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.home-poll-tabs button {
+  position: relative;
+  flex: none;
+  padding: 2px 0 6px;
+  border: 0;
+  background: none;
+  color: color-mix(in srgb, var(--text) 34%, transparent);
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.home-poll-tabs button:hover {
+  color: color-mix(in srgb, var(--text) 62%, transparent);
+}
+
+.home-poll-tabs button.is-on {
+  color: var(--text);
+}
+
+.home-poll-tabs button::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--world-accent), transparent);
+  content: '';
+  opacity: 0;
+  transform: scaleX(0.4);
+  transform-origin: left;
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-poll-tabs button.is-on::after {
+  opacity: 1;
+  transform: none;
+}
+
+.home-poll-tabs button i {
+  position: absolute;
+  top: 2px;
+  right: -8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--world-accent);
+}
+
+.home-poll-pages {
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.home-poll-track {
+  display: flex;
+  align-items: flex-start;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-poll-page {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+.home-poll-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(3, 32px);
+  gap: 5px 10px;
+}
+
+.home-poll-option {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 9px;
+  overflow: hidden;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--card) 62%, #000000);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.2;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.home-poll-option:disabled {
+  cursor: default;
+}
+
+.home-poll-option:not(:disabled):hover {
+  border-color: color-mix(in srgb, var(--world-accent) 45%, transparent);
+}
+
+.home-poll-option.is-mine {
+  border-color: var(--world-accent);
+}
+
+.home-poll-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--share, 0%);
+  background: color-mix(in srgb, var(--world-accent) 14%, transparent);
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-poll-option.is-mine .home-poll-fill {
+  background: color-mix(in srgb, var(--world-accent) 26%, transparent);
+}
+
+.home-poll-check {
+  position: relative;
+  display: grid;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  place-items: center;
+  border: 1.5px solid color-mix(in srgb, var(--text) 28%, transparent);
+  border-radius: 5px;
+  color: #1a120a;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.home-poll-check svg {
+  width: 11px;
+  height: 11px;
+}
+
+.home-poll-option.is-mine .home-poll-check {
+  border-color: var(--world-accent);
+  background: var(--world-accent);
+}
+
+.home-poll-name {
+  position: relative;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-poll-option b {
+  position: relative;
+  flex: none;
+  color: color-mix(in srgb, var(--world-accent) 70%, var(--text));
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 560px) {
+  .home-poll-grid {
+    gap: 5px 6px;
+  }
+
+  .home-poll-option {
+    gap: 6px;
+    padding: 0 8px;
+    font-size: 12px;
+  }
+
+}
+
+@media (max-width: 720px) {
+  .home-poll {
+    width: 100%;
+  }
+}
+
+.home-poll-foot {
+  display: flex;
+  min-width: 0;
+  min-height: 28px;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.home-poll-foot a {
+  overflow: hidden;
+  color: var(--world-accent);
+  text-overflow: ellipsis;
+}
+
+.home-poll-more {
+  display: flex;
+  width: 76px;
+  flex: none;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.home-poll-more button {
+  height: 16px;
+  flex: 1;
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.home-poll-more button::before {
+  display: block;
+  height: 4px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--text) 16%, transparent);
+  content: '';
+  transition: background 0.35s ease;
+}
+
+.home-poll-more button:hover::before {
+  background: color-mix(in srgb, var(--text) 30%, transparent);
+}
+
+.home-poll-more button.is-on::before {
+  background: var(--world-accent);
+}
+
+.home-poll-more.is-idle {
+  visibility: hidden;
+}
+
+
+
+.hero-daily h1.is-poll {
+  max-width: none;
+  font-size: clamp(20px, 2.1vw, 27px);
+  -webkit-line-clamp: unset;
+}
+
+.hero-daily-art.is-poll {
+  opacity: 0.12;
+}
+
+@media (max-width: 560px) {
+  .home-poll-foot {
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    font-size: 12px;
+  }
+
+  .home-poll-tabs {
+    gap: 12px;
+  }
+
+  .home-poll-tabs button {
+    font-size: 13px;
+  }
 }

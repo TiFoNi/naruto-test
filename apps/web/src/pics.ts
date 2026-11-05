@@ -35,3 +35,5 @@ export const abilityUrl = (key: string) => `${fullBase}${GAME_SPECS.dota.images}
 export const uiUrl = (file: string) => `${fullBase}${file.replace(/^\/+/, '')}`
 
 export const picsUrl = (key: string, version?: string) => `${fullBase}${key}${version ? `?v=${version}` : ''}`
+
+export const PICTURELESS = new Set<string>(['tunes'])

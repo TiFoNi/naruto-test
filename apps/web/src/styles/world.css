@@ -1022,6 +1022,10 @@
   justify-content: flex-end;
 }
 
+.world-dex-peek.is-empty {
+  visibility: hidden;
+}
+
 .world-dex-card {
   position: relative;
   width: 40px;

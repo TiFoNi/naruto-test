@@ -11,7 +11,7 @@ import { GAMES } from './games'
 import type { Entity, GameId } from './games/types'
 import { useI18n } from './i18n'
 import { CloseIcon } from './icons'
-import { cardUrl, miniUrl } from './pics'
+import { PICTURELESS, cardUrl, miniUrl } from './pics'
 import { useHref } from './router'
 import { random, torn } from './torn'
 
@@ -570,6 +570,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   }, [game, user, owner])
 
   const cast = useMemo(() => (game?.entities ?? []).filter((one) => one.answer), [game, ready])
+  const pictures = !PICTURELESS.has(gameId)
   const label = (entity: Entity) => SHORT[`${gameId}:${entity.id}`]?.[lang] ?? name(entity)
 
   useEffect(() => {
@@ -618,13 +619,18 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
               ))
             : cast.map((entity, place) => (
                 <li key={entity.id} style={{ '--tilt': `${tilt(entity.id)}deg` } as CSSProperties}>
-                  {open.has(entity.id) ? (
+                  {open.has(entity.id) && !pictures ? (
+                    <span className="dex-scrap is-text">
+                      <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
+                      <b>
+                        <span>{label(entity)}</span>
+                      </b>
+                    </span>
+                  ) : open.has(entity.id) ? (
                     <button
                       type="button"
                       className={`dex-scrap ${focus?.entity.id === entity.id ? 'is-lifted' : ''}`}
-                      onClick={(event) =>
-                        setFocus(lift(entity, event.currentTarget))
-                      }
+                      onClick={(event) => setFocus(lift(entity, event.currentTarget))}
                     >
                       <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
                       <span className="dex-pic" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
@@ -637,9 +643,11 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                   ) : (
                     <span className="dex-scrap is-locked" aria-label={t('dex.locked')}>
                       <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
-                      <span className="dex-pic is-fog" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
-                        <img src={miniUrl(game.id, entity.id, entity.image)} alt="" loading="lazy" decoding="async" draggable={false} />
-                      </span>
+                      {pictures && (
+                        <span className="dex-pic is-fog" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
+                          <img src={miniUrl(game.id, entity.id, entity.image)} alt="" loading="lazy" decoding="async" draggable={false} />
+                        </span>
+                      )}
                       <em aria-hidden>?</em>
                       <small>№ {place + 1}</small>
                     </span>

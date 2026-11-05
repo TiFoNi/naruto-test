@@ -10,6 +10,7 @@ import type { Category } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import Quests, { QuestsGhost } from './Quests'
 import Rail from './Rail'
+import HomePoll from './HomePoll'
 import { useHref } from './router'
 import { DAILY_XP_MODES, dailyKey, hasDaily, type ModeId } from '@nanda/game'
 import { dailyNumber, kyivToday, type Stats } from './stats'
@@ -75,6 +76,7 @@ const favourite = (games: GameMeta[], stats: Record<string, Stats>) => {
 
 type Slide = {
   id: string
+  poll?: boolean
   accent: string
   art: string
   flat?: boolean
@@ -88,6 +90,8 @@ type Slide = {
 }
 
 const SPIN = 7000
+const POLL_SPIN = SPIN * 2
+const LET_GO_MS = 2500
 const TELEGRAM = 'https://t.me/nandaguessr'
 
 function DailyCard({ games }: { games: GameMeta[] }) {
@@ -98,6 +102,12 @@ function DailyCard({ games }: { games: GameMeta[] }) {
   const [turns, setTurns] = useState(0)
   const [awake, setAwake] = useState(false)
   const swipe = useRef<{ x: number; y: number } | null>(null)
+  const [held, setHeld] = useState(false)
+  const [tick, setTick] = useState(0)
+  const letGo = useRef(0)
+  const stack = useRef<HTMLDivElement>(null)
+  const last = useRef(0)
+  const way = useRef<'forward' | 'back'>('forward')
 
   const today = kyivToday()
   const loved = useMemo(() => favourite(games, stats), [games, stats])
@@ -119,7 +129,20 @@ function DailyCard({ games }: { games: GameMeta[] }) {
     }
   }
 
-  const slides: Slide[] = []
+  const slides: Slide[] = [
+    {
+      id: 'poll',
+      poll: true,
+      accent: '#ff8a1f',
+      art: '/promo/poll.svg',
+      flat: true,
+      kicker: t('poll.kicker'),
+      title: t('poll.title'),
+      lead: '',
+      cta: '',
+      href: '',
+    },
+  ]
   if (loved) slides.push(daily(loved, `${t('dash.dailyKicker')} · #${dailyNumber(today)}`))
   if (shots)
     slides.push({
@@ -159,76 +182,142 @@ function DailyCard({ games }: { games: GameMeta[] }) {
     }
   }, [awake])
 
+  const wait = slide?.poll ? POLL_SPIN : SPIN
+
   useEffect(() => {
-    if (count < 2 || !awake) return
-    const timer = window.setInterval(() => {
-      if (document.visibilityState === 'hidden') return
+    if (count < 2 || !awake || held) return
+    const timer = window.setTimeout(() => {
+      if (document.visibilityState === 'hidden') {
+        setTick((one) => one + 1)
+        return
+      }
+      way.current = 'forward'
       setShown((one) => (one + 1) % count)
       setTurns((one) => one + 1)
-    }, SPIN)
-    return () => window.clearInterval(timer)
-  }, [awake, count, shown])
+    }, wait)
+    return () => window.clearTimeout(timer)
+  }, [awake, count, shown, held, wait, tick])
+
+  useEffect(() => () => window.clearTimeout(letGo.current), [])
+
+  useEffect(() => {
+    const before = last.current
+    last.current = at
+    if (before === at || !stack.current) return
+    const shift = way.current === 'back' ? -1 : 1
+    const motion = { duration: 520, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' }
+    const gone = stack.current.children[before]
+    const come = stack.current.children[at]
+    gone?.animate(
+      [
+        { opacity: 1, transform: 'none', visibility: 'visible' },
+        { opacity: 0, transform: `translate3d(${-28 * shift}px, 0, 0)`, visibility: 'visible' },
+      ],
+      { ...motion, duration: 360 },
+    )
+    come?.animate(
+      [
+        { opacity: 0, transform: `translate3d(${36 * shift}px, 0, 0)` },
+        { opacity: 0, transform: `translate3d(${36 * shift}px, 0, 0)`, offset: 0.25 },
+        { opacity: 1, transform: 'none' },
+      ],
+      motion,
+    )
+  }, [at, turns])
+
+  const go = (index: number, back = false) => {
+    way.current = back ? 'back' : 'forward'
+    setShown(index)
+    setTurns((one) => one + 1)
+  }
+
+  const hold = () => {
+    window.clearTimeout(letGo.current)
+    setHeld(true)
+  }
+
+  const release = (after = LET_GO_MS) => {
+    window.clearTimeout(letGo.current)
+    letGo.current = window.setTimeout(() => setHeld(false), after)
+  }
 
   if (!slide) return null
 
   const start = (event: ReactPointer<HTMLElement>) => {
+    if (event.pointerType !== 'mouse') hold()
     swipe.current = { x: event.clientX, y: event.clientY }
   }
 
   const end = (event: ReactPointer<HTMLElement>) => {
+    if (event.pointerType !== 'mouse') release(LET_GO_MS * 2)
     const from = swipe.current
     swipe.current = null
     if (!from || count < 2) return
     const dx = event.clientX - from.x
     if (Math.abs(dx) < 45 || Math.abs(event.clientY - from.y) > Math.abs(dx)) return
-    setShown((one) => (one + (dx < 0 ? 1 : count - 1)) % count)
-    setTurns((one) => one + 1)
+    go((at + (dx < 0 ? 1 : count - 1)) % count, dx > 0)
   }
 
   return (
     <section
       className="hero-daily"
-      style={{ '--world-accent': slide.accent } as CSSProperties}
+      style={{ '--world-accent': slide.accent, '--hero-tint': slide.accent } as CSSProperties}
       onPointerDown={start}
       onPointerUp={end}
       onPointerCancel={() => (swipe.current = null)}
+      onPointerEnter={(event) => event.pointerType === 'mouse' && hold()}
+      onPointerLeave={(event) => event.pointerType === 'mouse' && release()}
+      onFocus={hold}
+      onBlur={(event) => !event.currentTarget.contains(event.relatedTarget as Node | null) && release()}
     >
-      <img
-        key={slide.art}
-        className={`hero-daily-art ${slide.flat ? 'is-flat' : ''} ${turns ? 'is-swap' : ''}`}
-        src={slide.art}
-        alt=""
-        aria-hidden
-        width={448}
-        height={448}
-      />
+      {slides.map((one, index) => (
+        <img
+          key={one.id}
+          className={`hero-daily-art ${one.flat ? 'is-flat' : ''} ${one.poll ? 'is-poll' : ''} ${index === at ? 'is-on' : 'is-off'}`}
+          src={one.art}
+          alt=""
+          aria-hidden
+          width={448}
+          height={448}
+        />
+      ))}
 
-      <div key={slide.id} className={`hero-daily-copy ${turns ? 'is-swap' : ''}`}>
-        <span className="hero-daily-kicker">
-          <i aria-hidden />
-          {slide.kicker}
-          {slide.done && (
-            <em>
-              <CheckIcon />
-              {t('dash.dailyDone')}
-            </em>
-          )}
-        </span>
+      <div className="hero-daily-stack" ref={stack}>
+        {slides.map((one, index) => (
+          <div key={one.id} className={`hero-daily-copy ${index === at ? 'is-on' : 'is-off'}`} aria-hidden={index !== at} inert={index !== at}>
+            <span className="hero-daily-kicker">
+              <i aria-hidden />
+              {one.kicker}
+              {one.done && (
+                <em>
+                  <CheckIcon />
+                  {t('dash.dailyDone')}
+                </em>
+              )}
+            </span>
 
-        <h1>{slide.title}</h1>
-        <p>{slide.lead}</p>
+            <h1 className={one.poll ? 'is-poll' : undefined}>{one.title}</h1>
+            {one.poll ? (
+              <HomePoll />
+            ) : (
+              <>
+                <p>{one.lead}</p>
 
-        <div className="hero-daily-actions">
-          {slide.out ? (
-            <a className="primary" href={slide.href} target="_blank" rel="noreferrer">
-              {slide.cta}
-            </a>
-          ) : (
-            <Link className="primary" href={slide.href} prefetch={false}>
-              {slide.cta}
-            </Link>
-          )}
-        </div>
+                <div className="hero-daily-actions">
+                  {one.out ? (
+                    <a className="primary" href={one.href} target="_blank" rel="noreferrer">
+                      {one.cta}
+                    </a>
+                  ) : (
+                    <Link className="primary" href={one.href} prefetch={false}>
+                      {one.cta}
+                    </Link>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+        ))}
       </div>
 
       {count > 1 && (
@@ -240,10 +329,7 @@ function DailyCard({ games }: { games: GameMeta[] }) {
               className={index === at ? 'active' : ''}
               aria-label={t('dash.slide', { number: index + 1 })}
               aria-current={index === at}
-              onClick={() => {
-                setShown(index)
-                setTurns((one) => one + 1)
-              }}
+              onClick={() => index !== at && go(index, index < at)}
             />
           ))}
         </div>
@@ -321,8 +407,7 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
     void api<{ counts?: Record<string, number> }>('quizzes').then(({ ok, data }) => setTests(ok ? (data.counts ?? {}) : {}))
   }, [])
 
-  const testsIn = (category: Category) =>
-    tests === null ? null : games.filter((g) => g.category === category).reduce((sum, g) => sum + (tests[g.id] ?? 0), 0)
+  const testsIn = (category: Category) => (tests === null ? null : games.filter((g) => g.category === category).reduce((sum, g) => sum + (tests[g.id] ?? 0), 0))
 
   const shown = CATEGORIES.filter((category) => games.some((g) => g.category === category.id))
 
@@ -334,7 +419,12 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
   const started = useRef(false)
   const tabs = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState<Category | undefined>(undefined)
-  const [ink, setInk] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
+  const [ink, setInk] = useState<{
+    x: number
+    y: number
+    w: number
+    h: number
+  } | null>(null)
 
   useEffect(() => {
     setActive(storedCategory())
@@ -343,7 +433,16 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
   const slide = useCallback(() => {
     const row = tabs.current
     const on = row?.querySelector<HTMLElement>('.cat-tab.active')
-    setInk(on ? { x: on.offsetLeft, y: on.offsetTop, w: on.offsetWidth, h: on.offsetHeight } : null)
+    setInk(
+      on
+        ? {
+            x: on.offsetLeft,
+            y: on.offsetTop,
+            w: on.offsetWidth,
+            h: on.offsetHeight,
+          }
+        : null,
+    )
   }, [])
 
   useLayoutEffect(() => {
@@ -444,7 +543,15 @@ export default function Dashboard({ games }: { games: GameMeta[] }) {
         <Rail className="cat-rail" trackClass="rail-chips" innerRef={tabs}>
           <span
             className={`seg-ink ${ink ? 'is-set' : ''}`}
-            style={ink ? { transform: `translate(${ink.x}px, ${ink.y}px)`, width: ink.w, height: ink.h } : undefined}
+            style={
+              ink
+                ? {
+                    transform: `translate(${ink.x}px, ${ink.y}px)`,
+                    width: ink.w,
+                    height: ink.h,
+                  }
+                : undefined
+            }
             aria-hidden
           />
           {shown.map((category) => (

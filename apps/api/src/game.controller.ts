@@ -26,6 +26,7 @@ import * as challenge from '@nanda/core/endpoints/challenge'
 import * as duel from '@nanda/core/endpoints/duel'
 import * as entitiesEndpoint from '@nanda/core/endpoints/entities'
 import * as dex from '@nanda/core/endpoints/dex'
+import * as poll from '@nanda/core/endpoints/poll'
 import * as pair from '@nanda/core/endpoints/pair'
 import * as shot from '@nanda/core/endpoints/shot'
 import * as tune from '@nanda/core/endpoints/tune'
@@ -292,6 +293,16 @@ export class GameController {
   @Get('dex')
   dexBook(@Req() req: Request, @Res() res: Response) {
     return bridge(dex.GET, req, res)
+  }
+
+  @Get('poll')
+  pollView(@Req() req: Request, @Res() res: Response) {
+    return bridge(poll.GET, req, res)
+  }
+
+  @Post('poll')
+  pollVote(@Req() req: Request, @Res() res: Response) {
+    return bridge(poll.POST, req, res)
   }
 
   @Get('achievements')

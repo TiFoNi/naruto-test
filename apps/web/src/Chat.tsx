@@ -398,8 +398,11 @@ export default function Chat() {
     if (!box) return
     nearEnd.current = true
     box.scrollTop = box.scrollHeight
+    let tall = box.clientHeight
     const stick = () => {
       if (nearEnd.current) box.scrollTop = box.scrollHeight
+      else if (box.clientHeight !== tall) box.scrollTop += tall - box.clientHeight
+      tall = box.clientHeight
     }
     const sizes = new ResizeObserver(stick)
     sizes.observe(box)

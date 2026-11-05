@@ -1206,12 +1206,14 @@ body:has(.chat-panel) .duel-dock {
 }
 
 .chat-reply-bar {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
+  overflow: hidden;
   margin: 0 12px -2px;
-  padding: 8px 8px 8px 12px;
-  border-radius: 14px 14px 6px 6px;
+  padding: 8px 8px 8px 14px;
+  border-radius: 12px;
   background: color-mix(in srgb, var(--accent) 10%, var(--card-2));
   box-shadow: inset 3px 0 0 var(--accent);
   color: var(--accent);

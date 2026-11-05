@@ -900,3 +900,42 @@ export const levelCoins = (level: number) => {
   if (spot === LEVEL_CHAPTER) return levelBaseCoins(level) * 5
   return LEVEL_PILE_SPOTS.includes(spot) ? levelBaseCoins(level) * 3 : levelBaseCoins(level)
 }
+
+export type PollText = { ru: string; uk: string; en: string }
+export type PollOption = { id: string; label: PollText }
+export type PollGroup = { id: string; label: PollText; max: number; options: PollOption[] }
+
+export const POLL = {
+  id: 'next-world-1',
+  groups: [
+    {
+      id: 'anime',
+      label: { ru: 'Аниме', uk: 'Аніме', en: 'Anime' },
+      max: 2,
+      options: [
+        { id: 'sao', label: { ru: 'Мастера меча онлайн', uk: 'Майстри меча онлайн', en: 'Sword Art Online' } },
+        { id: 'nanatsu', label: { ru: 'Семь смертных грехов', uk: 'Сім смертних гріхів', en: 'The Seven Deadly Sins' } },
+        { id: 'rezero', label: { ru: 'Re:Zero', uk: 'Re:Zero', en: 'Re:Zero' } },
+        { id: 'shaman', label: { ru: 'Шаман Кинг', uk: 'Шаман Кінг', en: 'Shaman King' } },
+        { id: 'dragonball', label: { ru: 'Драгонболл', uk: 'Драгонбол', en: 'Dragon Ball' } },
+        { id: 'kuroko', label: { ru: 'Баскетбол Куроко', uk: 'Баскетбол Куроко', en: "Kuroko's Basketball" } },
+        { id: 'mushoku', label: { ru: 'Реинкарнация безработного', uk: 'Реінкарнація безробітного', en: 'Mushoku Tensei' } },
+        { id: 'edgerunners', label: { ru: 'Киберпанк: Бегущие по краю', uk: 'Кіберпанк: Ті, хто біжать краєм', en: 'Cyberpunk: Edgerunners' } },
+        { id: 'vinland', label: { ru: 'Сага о Винланде', uk: 'Сага про Вінланд', en: 'Vinland Saga' } },
+        { id: 'sakamoto', label: { ru: 'Дни Сакамото', uk: 'Дні Сакамото', en: 'Sakamoto Days' } },
+        { id: 'haikyu', label: { ru: 'Волейбол!!', uk: 'Волейбол!!', en: 'Haikyu!!' } },
+      ],
+    },
+    {
+      id: 'shows',
+      label: { ru: 'Сериалы и мульты', uk: 'Серіали й мульти', en: 'Shows & cartoons' },
+      max: 1,
+      options: [
+        { id: 'got', label: { ru: 'Игра престолов', uk: 'Гра престолів', en: 'Game of Thrones' } },
+        { id: 'winx', label: { ru: 'Винкс', uk: 'Вінкс', en: 'Winx Club' } },
+        { id: 'theboys', label: { ru: 'Пацаны', uk: 'Хлопаки', en: 'The Boys' } },
+        { id: 'twilight', label: { ru: 'Сумерки', uk: 'Сутінки', en: 'Twilight' } },
+      ],
+    },
+  ] as PollGroup[],
+}

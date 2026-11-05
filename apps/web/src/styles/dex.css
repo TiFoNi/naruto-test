@@ -387,3 +387,16 @@ button.dex-scrap:focus-visible {
     font-size: 7px;
   }
 }
+
+.dex-scrap.is-text b {
+  top: 10%;
+  right: 9%;
+  bottom: 10%;
+  left: 9%;
+  font-size: clamp(12px, 1.3vw, 16px);
+  line-height: 1.2;
+}
+
+.dex-scrap.is-text b span {
+  -webkit-line-clamp: 5;
+}
