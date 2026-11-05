@@ -571,7 +571,7 @@
  },
  {
   "id": 2743,
-  "name": "Киокколата",
+  "name": "Чокколата",
   "nameEn": "Cioccolata",
   "gender": "Мужской",
   "species": [
@@ -584,13 +584,14 @@
    "Пассионе"
   ],
   "side": "Злодей",
-  "nation": "Неизвестно",
+  "nation": "Италия",
   "status": "Мёртв",
   "part": "Золотой ветер",
   "partIndex": 4,
   "answer": true,
   "thumb": 24,
-  "anime": true
+  "anime": true,
+  "aliases": "Чоколата Чиокколата Шоколата"
  },
  {
   "id": 1953,

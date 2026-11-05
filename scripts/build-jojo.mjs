@@ -69,7 +69,7 @@ function sideOf(cats) {
 
 const NOT_DIO_AGENTS = ['Straizo', 'Foo Fighters', 'Dio Brando']
 const POWER_FIX = { 'Vinegar Doppio': ['Стенд'] }
-const NATION_FIX = { 'Gyro Zeppeli': 'Италия', 'Emporio Alniño': 'США', 'Lucy Steel': 'США', 'Muhammad Avdol': 'Египет' }
+const NATION_FIX = { Cioccolata: 'Италия', 'Gyro Zeppeli': 'Италия', 'Emporio Alniño': 'США', 'Lucy Steel': 'США', 'Muhammad Avdol': 'Египет' }
 const SIDE_FIX = { 'Yukako Yamagishi': 'Союзник' }
 
 const GROUP_RULES = [
@@ -101,7 +101,10 @@ const NATIONS = [
   ['Китай', /chinese/i],
 ]
 
+const ALIASES = { Cioccolata: 'Чоколата Чиокколата Шоколата' }
+
 const NAMES = {
+  Cioccolata: 'Чокколата',
   'Jonathan Joestar': 'Джонатан Джостар',
   'Dio Brando': 'Дио Брандо',
   'Robert E. O. Speedwagon': 'Роберт Спидвагон',
@@ -215,7 +218,7 @@ async function main() {
       id,
       name: NAMES[name] ?? ruName(cleanName(name), ru, transliterate),
       nameEn: cleanName(name),
-      aliases: name !== cleanName(name) ? name : undefined,
+      aliases: [name !== cleanName(name) ? name : '', ALIASES[cleanName(name)] ?? ''].filter(Boolean).join(' ') || undefined,
       gender: SEX[plain(field(text, 'gender')).trim()] ?? (cats.includes('Category:Female Characters') ? 'Женский' : 'Мужской'),
       species: species.length ? species : ['Человек'],
       powers: POWER_FIX[cleanName(name)] ?? (matchRules(POWER_RULES, cats).length ? matchRules(POWER_RULES, cats) : ['Нет']),
