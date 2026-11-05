@@ -826,6 +826,29 @@
   "thumb": 38
  },
  {
+  "id": 35456,
+  "name": "Изо",
+  "nameEn": "Izou",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Пираты Белоуса",
+   "Вано"
+  ],
+  "fruits": [],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 510000000,
+  "arc": "Маринфорд",
+  "arcIndex": 18,
+  "answer": true,
+  "thumb": 39
+ },
+ {
   "id": 8547,
   "name": "Икс Дрейк",
   "nameEn": "X Drake",
@@ -847,7 +870,7 @@
   "arc": "Сабаоди",
   "arcIndex": 15,
   "answer": true,
-  "thumb": 39
+  "thumb": 40
  },
  {
   "id": 308206,
@@ -869,7 +892,7 @@
   "arc": "Пирожный остров",
   "arcIndex": 23,
   "answer": true,
-  "thumb": 40
+  "thumb": 41
  },
  {
   "id": 279068,
@@ -892,7 +915,7 @@
   "arc": "Зоу",
   "arcIndex": 22,
   "answer": true,
-  "thumb": 41
+  "thumb": 42
  },
  {
   "id": 194047,
@@ -916,7 +939,7 @@
   "arc": "Дрессроза",
   "arcIndex": 21,
   "answer": true,
-  "thumb": 42
+  "thumb": 43
  },
  {
   "id": 1820,
@@ -936,7 +959,7 @@
   "arc": "Оранж-Таун",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 43
+  "thumb": 44
  },
  {
   "id": 199938,
@@ -958,7 +981,7 @@
   "arc": "Дрессроза",
   "arcIndex": 21,
   "answer": true,
-  "thumb": 44
+  "thumb": 45
  },
  {
   "id": 10603,
@@ -983,7 +1006,7 @@
   "arc": "Дрессроза",
   "arcIndex": 21,
   "answer": true,
-  "thumb": 45
+  "thumb": 46
  },
  {
   "id": 2078,
@@ -1007,7 +1030,7 @@
   "arc": "Water 7",
   "arcIndex": 12,
   "answer": true,
-  "thumb": 46
+  "thumb": 47
  },
  {
   "id": 2687,
@@ -1031,7 +1054,7 @@
   "arc": "Water 7",
   "arcIndex": 12,
   "answer": true,
-  "thumb": 47
+  "thumb": 48
  },
  {
   "id": 8548,
@@ -1052,7 +1075,7 @@
   "arc": "Сабаоди",
   "arcIndex": 15,
   "answer": true,
-  "thumb": 48
+  "thumb": 49
  },
  {
   "id": 2091,
@@ -1071,7 +1094,7 @@
   "arc": "Реверс Маунтин",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 49
+  "thumb": 50
  },
  {
   "id": 312139,
@@ -1093,7 +1116,7 @@
   "arc": "Сабаоди",
   "arcIndex": 15,
   "answer": true,
-  "thumb": 50
+  "thumb": 51
  },
  {
   "id": 311916,
@@ -1117,7 +1140,7 @@
   "arc": "Вано",
   "arcIndex": 24,
   "answer": true,
-  "thumb": 51
+  "thumb": 52
  },
  {
   "id": 324999,
@@ -1141,7 +1164,7 @@
   "arc": "Панк Хазард",
   "arcIndex": 20,
   "answer": true,
-  "thumb": 52
+  "thumb": 53
  },
  {
   "id": 199974,
@@ -1160,7 +1183,7 @@
   "arc": "Дрессроза",
   "arcIndex": 21,
   "answer": true,
-  "thumb": 53
+  "thumb": 54
  },
  {
   "id": 73893,
@@ -1179,7 +1202,7 @@
   "arc": "Остров рыболюдей",
   "arcIndex": 19,
   "answer": true,
-  "thumb": 54
+  "thumb": 55
  },
  {
   "id": 1686,
@@ -1201,7 +1224,7 @@
   "arc": "Ромэнс Дон",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 55
+  "thumb": 56
  },
  {
   "id": 140659,
@@ -1224,7 +1247,7 @@
   "arc": "Панк Хазард",
   "arcIndex": 20,
   "answer": true,
-  "thumb": 56
+  "thumb": 57
  },
  {
   "id": 283205,
@@ -1247,7 +1270,7 @@
   "arc": "Вано",
   "arcIndex": 24,
   "answer": true,
-  "thumb": 57
+  "thumb": 58
  },
  {
   "id": 312347,
@@ -1266,7 +1289,7 @@
   "arc": "Вано",
   "arcIndex": 24,
   "answer": true,
-  "thumb": 58
+  "thumb": 59
  },
  {
   "id": 324831,
@@ -1290,7 +1313,7 @@
   "arc": "Литл Гарден",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 59
+  "thumb": 60
  },
  {
   "id": 2160,
@@ -1314,7 +1337,7 @@
   "arc": "Скайпия",
   "arcIndex": 11,
   "answer": true,
-  "thumb": 60
+  "thumb": 61
  },
  {
   "id": 311946,
@@ -1338,7 +1361,7 @@
   "arc": "Вано",
   "arcIndex": 24,
   "answer": true,
-  "thumb": 61
+  "thumb": 62
  },
  {
   "id": 1966,
@@ -1357,7 +1380,7 @@
   "arc": "Деревня Сиропа",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 62
+  "thumb": 63
  },
  {
   "id": 194037,
@@ -1381,7 +1404,7 @@
   "arc": "Дрессроза",
   "arcIndex": 21,
   "answer": true,
-  "thumb": 63
+  "thumb": 64
  },
  {
   "id": 308530,
@@ -1402,7 +1425,7 @@
   "arc": "Вано",
   "arcIndex": 24,
   "answer": true,
-  "thumb": 64
+  "thumb": 65
  },
  {
   "id": 3010,
@@ -1421,7 +1444,7 @@
   "arc": "Алабаста",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 65
+  "thumb": 66
  },
  {
   "id": 4221,
@@ -1440,7 +1463,7 @@
   "arc": "Зоу",
   "arcIndex": 22,
   "answer": true,
-  "thumb": 66
+  "thumb": 67
  },
  {
   "id": 11017,
@@ -1461,7 +1484,7 @@
   "arc": "Импел Даун",
   "arcIndex": 17,
   "answer": true,
-  "thumb": 67
+  "thumb": 68
  },
  {
   "id": 1963,
@@ -1480,7 +1503,7 @@
   "arc": "Литл Гарден",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 68
+  "thumb": 69
  },
  {
   "id": 2240,
@@ -1504,7 +1527,7 @@
   "arc": "Джая",
   "arcIndex": 10,
   "answer": true,
-  "thumb": 69
+  "thumb": 70
  },
  {
   "id": 1698,
@@ -1529,7 +1552,7 @@
   "arc": "Джая",
   "arcIndex": 10,
   "answer": true,
-  "thumb": 70,
+  "thumb": 71,
   "nameUk": "Маршалл Д. Тіч (Чорна Борода)"
  },
  {
@@ -1549,7 +1572,7 @@
   "arc": "Реверс Маунтин",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 71
+  "thumb": 72
  },
  {
   "id": 1821,
@@ -1569,7 +1592,7 @@
   "arc": "Оранж-Таун",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 72
+  "thumb": 73
  },
  {
   "id": 1969,
@@ -1588,7 +1611,7 @@
   "arc": "Арлонг Парк",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 73
+  "thumb": 74
  },
  {
   "id": 146906,
@@ -1609,7 +1632,7 @@
   "arc": "Панк Хазард",
   "arcIndex": 20,
   "answer": true,
-  "thumb": 74
+  "thumb": 75
  },
  {
   "id": 1703,
@@ -1632,7 +1655,7 @@
   "arc": "Арлонг Парк",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 75
+  "thumb": 76
  },
  {
   "id": 1813,
@@ -1651,7 +1674,7 @@
   "arc": "Логтаун",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 76
+  "thumb": 77
  },
  {
   "id": 1444,
@@ -1677,7 +1700,7 @@
   "arc": "Ромэнс Дон",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 77
+  "thumb": 78
  },
  {
   "id": 2515,
@@ -1696,7 +1719,7 @@
   "arc": "Деревня Сиропа",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 78
+  "thumb": 79
  },
  {
   "id": 1584,
@@ -1715,7 +1738,7 @@
   "arc": "Оранж-Таун",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 79
+  "thumb": 80
  },
  {
   "id": 311539,
@@ -1734,7 +1757,7 @@
   "arc": "Реверс Маунтин",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 80
+  "thumb": 81
  },
  {
   "id": 1558,
@@ -1755,7 +1778,7 @@
   "arc": "Реверс Маунтин",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 81
+  "thumb": 82
  },
  {
   "id": 278402,
@@ -1778,7 +1801,7 @@
   "arc": "Зоу",
   "arcIndex": 22,
   "answer": true,
-  "thumb": 82
+  "thumb": 83
  },
  {
   "id": 64430,
@@ -1799,7 +1822,7 @@
   "arc": "Остров рыболюдей",
   "arcIndex": 19,
   "answer": true,
-  "thumb": 83
+  "thumb": 84
  },
  {
   "id": 1952,
@@ -1818,7 +1841,7 @@
   "arc": "Барати",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 84
+  "thumb": 85
  },
  {
   "id": 8165,
@@ -1837,7 +1860,7 @@
   "arc": "Алабаста",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 85
+  "thumb": 86
  },
  {
   "id": 5485,
@@ -1858,7 +1881,7 @@
   "arc": "Триллер Барк",
   "arcIndex": 14,
   "answer": true,
-  "thumb": 86
+  "thumb": 87
  },
  {
   "id": 306850,
@@ -1883,7 +1906,7 @@
   "arc": "Остров Драм",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 87
+  "thumb": 88
  },
  {
   "id": 291338,
@@ -1902,7 +1925,31 @@
   "arc": "Пирожный остров",
   "arcIndex": 23,
   "answer": true,
-  "thumb": 88
+  "thumb": 89
+ },
+ {
+  "id": 277094,
+  "name": "Райдзо",
+  "nameEn": "Raizo",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Вано"
+  ],
+  "fruits": [
+   "Парамеция"
+  ],
+  "haki": [
+   "Наблюдения",
+   "Вооружения"
+  ],
+  "bounty": 0,
+  "arc": "Зоу",
+  "arcIndex": 22,
+  "answer": true,
+  "thumb": 90
  },
  {
   "id": 199943,
@@ -1923,7 +1970,7 @@
   "arc": "Дрессроза",
   "arcIndex": 21,
   "answer": true,
-  "thumb": 89
+  "thumb": 91
  },
  {
   "id": 2183,
@@ -1943,7 +1990,7 @@
   "arc": "Оранж-Таун",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 90
+  "thumb": 92
  },
  {
   "id": 1528,
@@ -1967,7 +2014,7 @@
   "arc": "Water 7",
   "arcIndex": 12,
   "answer": true,
-  "thumb": 91
+  "thumb": 93
  },
  {
   "id": 308027,
@@ -1989,7 +2036,7 @@
   "arc": "Вано",
   "arcIndex": 24,
   "answer": true,
-  "thumb": 92
+  "thumb": 94
  },
  {
   "id": 1520,
@@ -2012,7 +2059,7 @@
   "arc": "Ромэнс Дон",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 93
+  "thumb": 95
  },
  {
   "id": 9532,
@@ -2036,7 +2083,7 @@
   "arc": "Маринфорд",
   "arcIndex": 18,
   "answer": true,
-  "thumb": 94
+  "thumb": 96
  },
  {
   "id": 1672,
@@ -2060,7 +2107,7 @@
   "arc": "Эниес Лобби",
   "arcIndex": 13,
   "answer": true,
-  "thumb": 95
+  "thumb": 97
  },
  {
   "id": 1621,
@@ -2083,7 +2130,7 @@
   "arc": "Барати",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 96
+  "thumb": 98
  },
  {
   "id": 197521,
@@ -2104,7 +2151,7 @@
   "arc": "Дрессроза",
   "arcIndex": 21,
   "answer": true,
-  "thumb": 97
+  "thumb": 99
  },
  {
   "id": 8693,
@@ -2127,7 +2174,7 @@
   "arc": "Оранж-Таун",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 98
+  "thumb": 100
  },
  {
   "id": 17494,
@@ -2148,7 +2195,7 @@
   "arc": "Остров рыболюдей",
   "arcIndex": 19,
   "answer": true,
-  "thumb": 99
+  "thumb": 101
  },
  {
   "id": 8551,
@@ -2172,7 +2219,7 @@
   "arc": "Сабаоди",
   "arcIndex": 15,
   "answer": true,
-  "thumb": 100
+  "thumb": 102
  },
  {
   "id": 327207,
@@ -2196,7 +2243,7 @@
   "arc": "Логтаун",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 101
+  "thumb": 103
  },
  {
   "id": 1671,
@@ -2221,7 +2268,7 @@
   "arc": "Джая",
   "arcIndex": 10,
   "answer": true,
-  "thumb": 102
+  "thumb": 104
  },
  {
   "id": 1684,
@@ -2243,7 +2290,7 @@
   "arc": "Логтаун",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 103
+  "thumb": 105
  },
  {
   "id": 1626,
@@ -2264,7 +2311,7 @@
   "arc": "Остров Драм",
   "arcIndex": 8,
   "answer": true,
-  "thumb": 104
+  "thumb": 106
  },
  {
   "id": 8554,
@@ -2288,7 +2335,7 @@
   "arc": "Сабаоди",
   "arcIndex": 15,
   "answer": true,
-  "thumb": 105
+  "thumb": 107
  },
  {
   "id": 194006,
@@ -2312,7 +2359,7 @@
   "arc": "Дрессроза",
   "arcIndex": 21,
   "answer": true,
-  "thumb": 106
+  "thumb": 108
  },
  {
   "id": 8552,
@@ -2333,7 +2380,7 @@
   "arc": "Сабаоди",
   "arcIndex": 15,
   "answer": true,
-  "thumb": 107
+  "thumb": 109
  },
  {
   "id": 1630,
@@ -2354,7 +2401,7 @@
   "arc": "Деревня Сиропа",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 108
+  "thumb": 110
  },
  {
   "id": 333574,
@@ -2375,7 +2422,7 @@
   "arc": "Вано",
   "arcIndex": 24,
   "answer": true,
-  "thumb": 109
+  "thumb": 111
  },
  {
   "id": 10681,
@@ -2394,7 +2441,7 @@
   "arc": "Амазон Лили",
   "arcIndex": 16,
   "answer": true,
-  "thumb": 110
+  "thumb": 112
  },
  {
   "id": 1959,
@@ -2413,7 +2460,7 @@
   "arc": "Water 7",
   "arcIndex": 12,
   "answer": true,
-  "thumb": 111
+  "thumb": 113
  },
  {
   "id": 1809,
@@ -2432,7 +2479,7 @@
   "arc": "Арлонг Парк",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 112
+  "thumb": 114
  },
  {
   "id": 1681,
@@ -2453,7 +2500,7 @@
   "arc": "Алабаста",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 113
+  "thumb": 115
  },
  {
   "id": 56093,
@@ -2472,7 +2519,7 @@
   "arc": "Остров рыболюдей",
   "arcIndex": 19,
   "answer": true,
-  "thumb": 114
+  "thumb": 116
  },
  {
   "id": 149327,
@@ -2493,7 +2540,7 @@
   "arc": "Панк Хазард",
   "arcIndex": 20,
   "answer": true,
-  "thumb": 115
+  "thumb": 117
  },
  {
   "id": 1617,
@@ -2516,7 +2563,7 @@
   "arc": "Ромэнс Дон",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 116
+  "thumb": 118
  },
  {
   "id": 291389,
@@ -2541,7 +2588,7 @@
   "arc": "Пирожный остров",
   "arcIndex": 23,
   "answer": true,
-  "thumb": 117
+  "thumb": 119
  },
  {
   "id": 32174,
@@ -2566,7 +2613,7 @@
   "arc": "Остров рыболюдей",
   "arcIndex": 19,
   "answer": true,
-  "thumb": 118,
+  "thumb": 120,
   "nameUk": "Шарлотта Лінлін (Велика Матуся)"
  },
  {
@@ -2589,7 +2636,7 @@
   "arc": "Остров рыболюдей",
   "arcIndex": 19,
   "answer": true,
-  "thumb": 119
+  "thumb": 121
  },
  {
   "id": 67047,
@@ -2608,7 +2655,7 @@
   "arc": "Оранж-Таун",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 120
+  "thumb": 122
  },
  {
   "id": 327212,
@@ -2633,7 +2680,7 @@
   "arc": "Алабаста",
   "arcIndex": 9,
   "answer": true,
-  "thumb": 121
+  "thumb": 123
  },
  {
   "id": 11838,
@@ -2654,7 +2701,7 @@
   "arc": "Импел Даун",
   "arcIndex": 17,
   "answer": true,
-  "thumb": 122
+  "thumb": 124
  },
  {
   "id": 1957,
@@ -2677,7 +2724,7 @@
   "arc": "Скайпия",
   "arcIndex": 11,
   "answer": true,
-  "thumb": 123
+  "thumb": 125
  },
  {
   "id": 8550,
@@ -2702,7 +2749,7 @@
   "arc": "Сабаоди",
   "arcIndex": 15,
   "answer": true,
-  "thumb": 124
+  "thumb": 126
  },
  {
   "id": 322112,
@@ -2727,6 +2774,6 @@
   "arc": "Вано",
   "arcIndex": 24,
   "answer": true,
-  "thumb": 125
+  "thumb": 127
  }
 ]

@@ -1176,6 +1176,28 @@
   "thumb": 52
  },
  {
+  "id": 22859,
+  "name": "Траут Карвен",
+  "nameEn": "Traute Caven",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Военная полиция",
+   "Королевское правительство"
+  ],
+  "occupations": [
+   "Солдат"
+  ],
+  "titans": [],
+  "status": "Мёртв",
+  "arc": "Восстание",
+  "arcIndex": 5,
+  "answer": true,
+  "thumb": 53
+ },
+ {
   "id": 43723,
   "name": "Удо",
   "nameEn": "Udo",
@@ -1195,7 +1217,7 @@
   "arc": "Марли",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 53
+  "thumb": 54
  },
  {
   "id": 20482,
@@ -1220,7 +1242,7 @@
   "arc": "Восстание",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 54
+  "thumb": 55
  },
  {
   "id": 66957,
@@ -1245,7 +1267,7 @@
   "arc": "Марли",
   "arcIndex": 7,
   "answer": true,
-  "thumb": 55
+  "thumb": 56
  },
  {
   "id": 13388,
@@ -1266,7 +1288,7 @@
   "arc": "Восстание",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 56
+  "thumb": 57
  },
  {
   "id": 72859,
@@ -1290,7 +1312,7 @@
   "arc": "Восстание",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 57
+  "thumb": 58
  },
  {
   "id": 12394,
@@ -1315,7 +1337,7 @@
   "arc": "Восстание",
   "arcIndex": 5,
   "answer": true,
-  "thumb": 58
+  "thumb": 59
  },
  {
   "id": 39322,
@@ -1332,7 +1354,7 @@
   "arc": "Возвращение в Шиганшину",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 59
+  "thumb": 60
  },
  {
   "id": 72839,
@@ -1353,7 +1375,7 @@
   "arc": "Битва за Трост",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 60
+  "thumb": 61
  },
  {
   "id": 2493,
@@ -1374,7 +1396,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 61
+  "thumb": 62
  },
  {
   "id": 25815,
@@ -1399,7 +1421,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 62
+  "thumb": 63
  },
  {
   "id": 2633,
@@ -1422,7 +1444,7 @@
   "arc": "Женская особь",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 63
+  "thumb": 64
  },
  {
   "id": 2081,
@@ -1449,7 +1471,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 64
+  "thumb": 65
  },
  {
   "id": 30428,
@@ -1470,7 +1492,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 65
+  "thumb": 66
  },
  {
   "id": 2284,
@@ -1491,7 +1513,7 @@
   "arc": "Женская особь",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 66
+  "thumb": 67
  },
  {
   "id": 30294,
@@ -1519,7 +1541,7 @@
   "arc": "Пролог",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 67
+  "thumb": 68
  },
  {
   "id": 39543,
@@ -1544,7 +1566,7 @@
   "arc": "Возвращение в Шиганшину",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 68
+  "thumb": 69
  },
  {
   "id": 2641,
@@ -1566,6 +1588,6 @@
   "arc": "Битва за Трост",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 69
+  "thumb": 70
  }
 ]

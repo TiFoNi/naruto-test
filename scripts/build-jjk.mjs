@@ -33,6 +33,7 @@ const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'jjk.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'jjk-atlas.json')
 const ANSWER_POOL_SIZE = 55
 const KEEP = 70
+const ALWAYS = new Set(['Yoshinobu Gakuganji', 'Utahime Iori'])
 
 const EXCLUDE = new Set(['Characters', 'Jujutsu Kaisen 0 Characters', 'Unnamed Characters', 'Rika'])
 
@@ -271,8 +272,9 @@ async function main() {
   result.sort((a, b) => b.length - a.length)
   let picked = 0
   for (const one of result) {
-    one.answer = picked < ANSWER_POOL_SIZE && !one.species.includes('Неизвестно')
-    if (one.answer) picked++
+    const forced = ALWAYS.has(one.nameEn)
+    one.answer = forced || (picked < ANSWER_POOL_SIZE && !one.species.includes('Неизвестно'))
+    if (one.answer && !forced) picked++
     delete one.length
   }
 

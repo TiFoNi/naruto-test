@@ -40,7 +40,7 @@ const ANSWERS = [
   'Galdino', 'Daz Bonez', 'Kalifa', 'Monet', 'Vergo', 'Trebol', 'Rebecca', 'Kyros', 'Rocks D. Xebec', 'Nerona Imu',
   'Jaygarcia Saturn', 'Koala', 'Hina', 'Uta', 'Kurozumi Kanjuro', 'Kouzuki Hiyori',
   'Chouchou', 'Karoo', 'Gaimon', 'Johnny', 'Yosaku', 'Jango', 'Mohji', 'Cabaji', 'Richie', 'Marianne', 'Gem', 'Mr. 9',
-  'Camie', 'Pappag', 'Duval', 'Baby 5', 'Senor Pink', 'Dalton', 'Yokozuna', 'Pandaman', 'Momoo', 'Zeus', 'Prometheus', 'Merry', 'Otohime', 'Fisher Tiger',
+  'Camie', 'Pappag', 'Duval', 'Baby 5', 'Senor Pink', 'Dalton', 'Yokozuna', 'Pandaman', 'Momoo', 'Zeus', 'Prometheus', 'Merry', 'Otohime', 'Fisher Tiger', 'Raizo', 'Izou',
 ]
 
 const MINOR = new Set(['Hyougoro', 'Sai', 'Leo', 'Mansherry', 'Gan Fall', 'Genzo', 'Hannyabal', 'Tom', 'Shakuyaku', 'Mikita', 'Zala'])
@@ -251,7 +251,7 @@ const NAMES = {
   'Nico Olvia': 'Нико Ольвия',
 }
 
-const AFFILIATION_OVERRIDES = { Magellan: ['Мировое правительство'] }
+const AFFILIATION_OVERRIDES = { Magellan: ['Мировое правительство'], Izou: ['Пираты Белоуса', 'Вано'] }
 
 function affiliationsOf(text) {
   const found = AFFILIATION_RULES.filter(([, re]) => re.test(text)).map(([label]) => label)

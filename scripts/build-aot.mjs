@@ -43,7 +43,7 @@ const ANSWER_POOL = [
   'Eld Jinn', 'Gunther Schultz', 'Mike Zacharias', 'Moblit Berner', 'Marco Bott', 'Thomas Wagner', 'Mina Carolina',
   'Hitch Dreyse', 'Marlowe Freudenberg', 'Rico Brzenska', 'Kiyomi Azumabito', 'Niccolo', 'Louise',
   'Nanaba', 'Kaya', 'Karina Braun', 'Ian Dietrich', 'Dimo Reeves',
-  'Flegel Reeves', 'Djel Sannes', 'Kuchel Ackerman', 'Faye Yeager', 'Nifa', 'Gross',
+  'Flegel Reeves', 'Djel Sannes', 'Kuchel Ackerman', 'Faye Yeager', 'Nifa', 'Gross', 'Traute Caven',
 ]
 
 const SEX = { Male: 'Мужской', Female: 'Женский' }

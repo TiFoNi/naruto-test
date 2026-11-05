@@ -28,6 +28,7 @@ const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'hxh.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'hxh-atlas.json')
 const ANSWER_POOL_SIZE = 55
 const KEEP = 70
+const ALWAYS = new Set(['Alluka Zoldyck', 'Silva Zoldyck', 'Milluki Zoldyck', 'Zushi'])
 
 const ARCS = [
   [1, 'Экзамен на охотника'],
@@ -73,6 +74,7 @@ const STATUS_RULES = [
   ['Мёртв', /deceased|dead/i],
 ]
 
+const DEBUT_FIX = { 'Alluka Zoldyck': 321 }
 const SPECIES_OVERRIDES = { Kite: ['Человек'], 'Palm Siberia': ['Человек'] }
 const AFFILIATION_FIX = {
   'Biscuit Krueger': ['Ассоциация охотников'],
@@ -187,7 +189,7 @@ async function main() {
       return console.warn('image failed', name, e.message)
     }
     const cats = categories[name] ?? []
-    const chapter = debutChapter(text)
+    const chapter = DEBUT_FIX[name] ?? debutChapter(text)
     const arcIndex = arcIndexOf(chapter)
     const affiliationText = plain(`${field(text, 'affiliation')}\n${field(text, 'previous affiliation')}`).replace(
       /chimera ants?\s*(\n|\|)?\s*extermination team|extermination team/gi,
@@ -212,8 +214,9 @@ async function main() {
   result.sort((a, b) => b.length - a.length)
   let picked = 0
   for (const c of result) {
-    c.answer = picked < ANSWER_POOL_SIZE
-    if (c.answer) picked++
+    const forced = ALWAYS.has(c.nameEn)
+    c.answer = forced || picked < ANSWER_POOL_SIZE
+    if (c.answer && !forced) picked++
     delete c.length
   }
   const kept = keepNotable(result, KEEP)
