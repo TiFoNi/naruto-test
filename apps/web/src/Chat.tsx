@@ -12,7 +12,7 @@ import { onChatOpen } from './chatEvents'
 import { useDuelTalk } from './duelTalk'
 import { useAuth } from './auth'
 import { useI18n, type UiKey } from './i18n'
-import { ChatIcon, CloseIcon, MuteIcon, ReplyIcon, SendIcon, SmileIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
+import { ChatIcon, CloseIcon, DownIcon, MuteIcon, ReplyIcon, SendIcon, SmileIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { useHref, useNavigate } from './router'
 import { openStream } from './stream'
 import { hyphenate } from './hyphen'
@@ -60,7 +60,56 @@ const EMOJI_SETS = [
     id: 'faces',
     icon: '😀',
     label: 'chat.emojiFaces',
-    list: ['😀', '😁', '😂', '🤣', '😅', '😊', '🙂', '😉', '😍', '🥰', '😘', '😋', '😜', '🤪', '😎', '🤓', '🤔', '🤨', '😐', '😑', '😏', '🙄', '😬', '😴', '😮', '😯', '😱', '😭', '🥲', '😢', '😤', '😡', '🤬', '🤯', '🥺', '😇', '🫡', '🫠', '🤡', '🥳', '🤠', '😈', '💀', '👻', '👽', '🤖', '💩', '🙈'],
+    list: [
+      '😀',
+      '😁',
+      '😂',
+      '🤣',
+      '😅',
+      '😊',
+      '🙂',
+      '😉',
+      '😍',
+      '🥰',
+      '😘',
+      '😋',
+      '😜',
+      '🤪',
+      '😎',
+      '🤓',
+      '🤔',
+      '🤨',
+      '😐',
+      '😑',
+      '😏',
+      '🙄',
+      '😬',
+      '😴',
+      '😮',
+      '😯',
+      '😱',
+      '😭',
+      '🥲',
+      '😢',
+      '😤',
+      '😡',
+      '🤬',
+      '🤯',
+      '🥺',
+      '😇',
+      '🫡',
+      '🫠',
+      '🤡',
+      '🥳',
+      '🤠',
+      '😈',
+      '💀',
+      '👻',
+      '👽',
+      '🤖',
+      '💩',
+      '🙈',
+    ],
   },
   {
     id: 'hands',
@@ -135,8 +184,7 @@ const keepSeen = (id: string) => {
 }
 const KEEP = 300
 
-const clock = (at: number) =>
-  new Date(at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+const clock = (at: number) => new Date(at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 
 const IDLE_MS = 3 * 60_000
 
@@ -207,6 +255,7 @@ export default function Chat() {
   const [talkSeen, setTalkSeen] = useState('')
   const feed = useRef<HTMLDivElement>(null)
   const nearEnd = useRef(true)
+  const [away, setAway] = useState(false)
   const field = useRef<HTMLTextAreaElement>(null)
 
   const grow = useCallback(() => {
@@ -416,6 +465,7 @@ export default function Chat() {
     const box = feed.current
     if (!box) return
     nearEnd.current = true
+    setAway(false)
     box.scrollTop = box.scrollHeight
     let tall = box.clientHeight
     const stick = () => {
@@ -506,7 +556,10 @@ export default function Chat() {
     }
     const lower = body.toLowerCase()
     const tags = [...new Set(picked.filter((one) => one.id && lower.includes(`@${one.nick.toLowerCase()}`)).map((one) => one.id!))]
-    const { ok, status, data } = await api<{ line?: Line }>('chat', room === 'news' ? { text: body, channel: 'news' } : { text: body, tags, ...(replyTo ? { reply: replyTo.id } : {}) })
+    const { ok, status, data } = await api<{ line?: Line }>(
+      'chat',
+      room === 'news' ? { text: body, channel: 'news' } : { text: body, tags, ...(replyTo ? { reply: replyTo.id } : {}) },
+    )
     setSending(false)
     if (ok && data.line) {
       typedAt.current = 0
@@ -604,7 +657,13 @@ export default function Chat() {
     const tags = line.tags ?? []
     const names = [...tags.map((tag) => tag.nick), ...(line.everyone ? [EVERYONE_NICK, 'all', 'everyone', 'всех', 'усі', 'всім'] : [])]
     if (!names.length) return hyphenate(line.text)
-    const split = new RegExp(`(@(?:${[...names].sort((a, b) => b.length - a.length).map(escape).join('|')}))`, 'gi')
+    const split = new RegExp(
+      `(@(?:${[...names]
+        .sort((a, b) => b.length - a.length)
+        .map(escape)
+        .join('|')}))`,
+      'gi',
+    )
     return line.text.split(split).map((part, index) => {
       if (index % 2 === 0) return hyphenate(part)
       const nick = part.slice(1).toLowerCase()
@@ -694,19 +753,24 @@ export default function Chat() {
   const watch = () => {
     const box = feed.current
     if (!box) return
-    nearEnd.current = box.scrollHeight - box.scrollTop - box.clientHeight < 80
+    const left = box.scrollHeight - box.scrollTop - box.clientHeight
+    nearEnd.current = left < 80
+    setAway(left > 320)
     setMenu(null)
     setPointed(null)
   }
 
+  const toEnd = () => {
+    const box = feed.current
+    if (!box) return
+    nearEnd.current = true
+    box.scrollTop = box.scrollHeight
+    setAway(false)
+  }
+
   return (
     <>
-      <button
-        type="button"
-        className={`chat-bubble ${open ? 'is-open' : ''}`}
-        aria-label={t('chat.title')}
-        onClick={() => (open ? close() : setOpen(true))}
-      >
+      <button type="button" className={`chat-bubble ${open ? 'is-open' : ''}`} aria-label={t('chat.title')} onClick={() => (open ? close() : setOpen(true))}>
         {open ? <CloseIcon /> : <ChatIcon />}
         {!open && tagCount > 0 ? (
           <em className="chat-count" aria-label={t('chat.mentionNew')}>
@@ -748,72 +812,79 @@ export default function Chat() {
             </button>
           </header>
 
-          <div className="chat-feed" ref={feed} onScroll={watch}>
-            {more && room !== 'duel' && (
-              <button type="button" className="chat-earlier" disabled={loading} onClick={() => void load(lines[0]?.id)}>
-                {t('chat.earlier')}
+          <div className="chat-feed-wrap">
+            <div className="chat-feed" ref={feed} onScroll={watch}>
+              {more && room !== 'duel' && (
+                <button type="button" className="chat-earlier" disabled={loading} onClick={() => void load(lines[0]?.id)}>
+                  {t('chat.earlier')}
+                </button>
+              )}
+              {shown.length === 0 && (room === 'duel' || !loading) && (
+                <p className="chat-empty">{t(room === 'news' ? 'chat.newsEmpty' : room === 'duel' ? 'chat.duelEmpty' : 'chat.empty')}</p>
+              )}
+              {shown.map((line, index) => {
+                const before = shown[index - 1]
+                const glued = !line.reply && before && before.userId === line.userId && line.at - before.at < GROUP_MS
+                return (
+                  <article
+                    key={line.id}
+                    id={`chat-line-${line.id}`}
+                    {...holdOn(line)}
+                    className={`chat-line ${holdable ? 'is-holdable' : ''} ${line.reply ? 'has-reply' : ''} ${glued ? 'is-glued' : ''} ${line.userId === user?.id ? 'is-mine' : ''} ${
+                      user && line.userId !== user.id && (line.everyone || line.tags?.some((tag) => tag.id === user.id)) ? 'is-tagged' : ''
+                    }`}
+                  >
+                    {line.reply && (
+                      <button type="button" className="chat-thread" onClick={() => jump(line.reply!.id)} title={t('chat.replyJump')}>
+                        <i aria-hidden />
+                        <b>{line.reply.nickname}</b>
+                        <span>{line.reply.text}</span>
+                      </button>
+                    )}
+                    {glued ? (
+                      <span className="chat-gap" aria-hidden />
+                    ) : (
+                      <button
+                        type="button"
+                        className="chat-face"
+                        aria-label={line.nickname}
+                        onClick={(event) => {
+                          const box = event.currentTarget.getBoundingClientRect()
+                          const x = Math.min(Math.max(box.left + box.width / 2, 96), window.innerWidth - 96)
+                          setMenu((was) => (was?.line.id === line.id ? null : { line, x, y: box.bottom + 6, above: box.top - 6 }))
+                          if (user) void loadMates()
+                        }}
+                      >
+                        <Avatar id={line.userId} name={line.nickname} avatar={line.avatar} frame={line.frame} className="chat-av" small />
+                      </button>
+                    )}
+                    <div className="chat-body">
+                      {!glued && (
+                        <header>
+                          <Link
+                            className="chat-nick"
+                            href={line.userId === user?.id ? href.profile : href.player(line.userId)}
+                            style={toneOf(line.nickTone)}
+                            prefetch={false}
+                            onClick={close}
+                          >
+                            {line.nickname}
+                          </Link>
+                          {line.title && <i className={`player-title is-slim is-${line.title}`}>{t(`title.${line.title}` as UiKey)}</i>}
+                          <time dateTime={new Date(line.at).toISOString()}>{clock(line.at)}</time>
+                        </header>
+                      )}
+                      <p>{bodyOf(line)}</p>
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+            {away && (
+              <button type="button" className="chat-to-end" aria-label={t('chat.toEnd')} title={t('chat.toEnd')} onClick={toEnd}>
+                <DownIcon />
               </button>
             )}
-            {shown.length === 0 && (room === 'duel' || !loading) && (
-              <p className="chat-empty">{t(room === 'news' ? 'chat.newsEmpty' : room === 'duel' ? 'chat.duelEmpty' : 'chat.empty')}</p>
-            )}
-            {shown.map((line, index) => {
-              const before = shown[index - 1]
-              const glued = !line.reply && before && before.userId === line.userId && line.at - before.at < GROUP_MS
-              return (
-                <article
-                  key={line.id}
-                  id={`chat-line-${line.id}`}
-                  {...holdOn(line)}
-                  className={`chat-line ${holdable ? 'is-holdable' : ''} ${line.reply ? 'has-reply' : ''} ${glued ? 'is-glued' : ''} ${line.userId === user?.id ? 'is-mine' : ''} ${
-                    user && line.userId !== user.id && (line.everyone || line.tags?.some((tag) => tag.id === user.id)) ? 'is-tagged' : ''
-                  }`}
-                >
-                  {line.reply && (
-                    <button type="button" className="chat-thread" onClick={() => jump(line.reply!.id)} title={t('chat.replyJump')}>
-                      <i aria-hidden />
-                      <b>{line.reply.nickname}</b>
-                      <span>{line.reply.text}</span>
-                    </button>
-                  )}
-                  {glued ? (
-                    <span className="chat-gap" aria-hidden />
-                  ) : (
-                    <button
-                      type="button"
-                      className="chat-face"
-                      aria-label={line.nickname}
-                      onClick={(event) => {
-                        const box = event.currentTarget.getBoundingClientRect()
-                        const x = Math.min(Math.max(box.left + box.width / 2, 96), window.innerWidth - 96)
-                        setMenu((was) => (was?.line.id === line.id ? null : { line, x, y: box.bottom + 6, above: box.top - 6 }))
-                        if (user) void loadMates()
-                      }}
-                    >
-                      <Avatar id={line.userId} name={line.nickname} avatar={line.avatar} frame={line.frame} className="chat-av" small />
-                    </button>
-                  )}
-                  <div className="chat-body">
-                    {!glued && (
-                      <header>
-                        <Link
-                          className="chat-nick"
-                          href={line.userId === user?.id ? href.profile : href.player(line.userId)}
-                          style={toneOf(line.nickTone)}
-                          prefetch={false}
-                          onClick={close}
-                        >
-                          {line.nickname}
-                        </Link>
-                        {line.title && <i className={`player-title is-slim is-${line.title}`}>{t(`title.${line.title}` as UiKey)}</i>}
-                        <time dateTime={new Date(line.at).toISOString()}>{clock(line.at)}</time>
-                      </header>
-                    )}
-                    <p>{bodyOf(line)}</p>
-                  </div>
-                </article>
-              )
-            })}
           </div>
 
           {said.length > 0 && (
@@ -833,143 +904,149 @@ export default function Chat() {
             <p className="chat-readonly">{t('chat.newsOnly')}</p>
           ) : user ? (
             <>
-            {replyTo && room === 'chat' && (
-              <div className="chat-reply-bar">
-                <ReplyIcon />
-                <button type="button" className="chat-reply-what" onClick={() => jump(replyTo.id)}>
-                  <b>{t('chat.replyTo', { name: replyTo.nickname })}</b>
-                  <span>{replyTo.text}</span>
-                </button>
-                <button type="button" className="chat-reply-x" aria-label={t('chat.replyCancel')} title={t('chat.replyCancel')} onClick={() => setReplyTo(null)}>
-                  <CloseIcon />
-                </button>
-              </div>
-            )}
-            <form
-              className="chat-send"
-              onSubmit={(event) => {
-                event.preventDefault()
-                void send()
-              }}
-            >
-              {atAsk && (
-                <ChatMentions
-                  query={atAsk.query}
-                  friends={people}
-                  me={user?.id ?? null}
-                  everyone={room === 'news' && Boolean(user?.admin)}
-                  active={atActive}
-                  onActive={setAtActive}
-                  onOptions={setAtOptions}
-                  onPick={pickAt}
-                />
+              {replyTo && room === 'chat' && (
+                <div className="chat-reply-bar">
+                  <ReplyIcon />
+                  <button type="button" className="chat-reply-what" onClick={() => jump(replyTo.id)}>
+                    <b>{t('chat.replyTo', { name: replyTo.nickname })}</b>
+                    <span>{replyTo.text}</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="chat-reply-x"
+                    aria-label={t('chat.replyCancel')}
+                    title={t('chat.replyCancel')}
+                    onClick={() => setReplyTo(null)}
+                  >
+                    <CloseIcon />
+                  </button>
+                </div>
               )}
-              <textarea
-                ref={field}
-                value={text}
-                rows={1}
-                maxLength={limit}
-                placeholder={t('chat.placeholder')}
-                onChange={(event) => {
-                  setText(event.target.value)
-                  grow()
-                  typeBeat(Boolean(event.target.value.trim()))
-                  readAt(event.target.value, event.target.selectionStart ?? event.target.value.length)
-                }}
-                onSelect={(event) => readAt(event.currentTarget.value, event.currentTarget.selectionStart ?? 0)}
-                onBlur={() => window.setTimeout(() => setAtAsk(null), 120)}
-                onKeyDown={(event) => {
-                  if (atAsk && atOptions.length) {
-                    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-                      event.preventDefault()
-                      const step = event.key === 'ArrowDown' ? 1 : -1
-                      setAtActive((was) => (was + step + atOptions.length) % atOptions.length)
-                      return
-                    }
-                    if (event.key === 'Enter' || event.key === 'Tab') {
-                      event.preventDefault()
-                      pickAt(atOptions[Math.min(atActive, atOptions.length - 1)])
-                      return
-                    }
-                  }
-                  if (atAsk && event.key === 'Escape') {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    setAtAsk(null)
-                    return
-                  }
-                  if (event.key !== 'Enter' || event.shiftKey) return
+              <form
+                className="chat-send"
+                onSubmit={(event) => {
                   event.preventDefault()
                   void send()
                 }}
-                disabled={sending}
-              />
-              <div className="chat-faces">
-                <button
-                  type="button"
-                  className={`chat-face-open ${faces ? 'is-on' : ''}`}
-                  title={t('chat.emoji')}
-                  aria-label={t('chat.emoji')}
-                  aria-expanded={faces}
-                  onClick={() => setFaces((was) => !was)}
-                >
-                  <SmileIcon />
-                </button>
-                {faces && (
-                  <>
-                    <div className="chat-faces-away" role="presentation" onClick={() => setFaces(false)} />
-                    <div className="chat-faces-pop" aria-label={t('chat.emoji')}>
-                      <div className="chat-faces-tabs" role="tablist">
-                        {EMOJI_SETS.map((set) => (
-                          <button
-                            key={set.id}
-                            type="button"
-                            role="tab"
-                            aria-selected={faceSet === set.id}
-                            className={faceSet === set.id ? 'is-on' : ''}
-                            title={t(set.label)}
-                            onClick={() => setFaceSet(set.id)}
-                          >
-                            {set.icon}
-                          </button>
-                        ))}
-                        <button
-                          type="button"
-                          role="tab"
-                          aria-selected={faceSet === 'ours'}
-                          className={`is-ours ${faceSet === 'ours' ? 'is-on' : ''}`}
-                          title={t('chat.emojiOurs')}
-                          onClick={() => setFaceSet('ours')}
-                        >
-                          ?!
-                        </button>
-                      </div>
-                      <b className="chat-faces-name">{t(faceSet === 'ours' ? 'chat.emojiOurs' : EMOJI_SETS.find((set) => set.id === faceSet)!.label)}</b>
-                      {faceSet === 'ours' ? (
-                        <div className="chat-faces-soon">
-                          <span className="chat-faces-soon-art" aria-hidden>
-                            ?!
-                          </span>
-                          <b>{t('chat.emojiSoonTitle')}</b>
-                          <small>{t('chat.emojiSoonHint')}</small>
-                        </div>
-                      ) : (
-                        <div className="chat-faces-grid" role="listbox">
-                          {EMOJI_SETS.find((set) => set.id === faceSet)!.list.map((emoji) => (
-                            <button key={emoji} type="button" onClick={() => addEmoji(emoji)}>
-                              {emoji}
+              >
+                {atAsk && (
+                  <ChatMentions
+                    query={atAsk.query}
+                    friends={people}
+                    me={user?.id ?? null}
+                    everyone={room === 'news' && Boolean(user?.admin)}
+                    active={atActive}
+                    onActive={setAtActive}
+                    onOptions={setAtOptions}
+                    onPick={pickAt}
+                  />
+                )}
+                <textarea
+                  ref={field}
+                  value={text}
+                  rows={1}
+                  maxLength={limit}
+                  placeholder={t('chat.placeholder')}
+                  onChange={(event) => {
+                    setText(event.target.value)
+                    grow()
+                    typeBeat(Boolean(event.target.value.trim()))
+                    readAt(event.target.value, event.target.selectionStart ?? event.target.value.length)
+                  }}
+                  onSelect={(event) => readAt(event.currentTarget.value, event.currentTarget.selectionStart ?? 0)}
+                  onBlur={() => window.setTimeout(() => setAtAsk(null), 120)}
+                  onKeyDown={(event) => {
+                    if (atAsk && atOptions.length) {
+                      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                        event.preventDefault()
+                        const step = event.key === 'ArrowDown' ? 1 : -1
+                        setAtActive((was) => (was + step + atOptions.length) % atOptions.length)
+                        return
+                      }
+                      if (event.key === 'Enter' || event.key === 'Tab') {
+                        event.preventDefault()
+                        pickAt(atOptions[Math.min(atActive, atOptions.length - 1)])
+                        return
+                      }
+                    }
+                    if (atAsk && event.key === 'Escape') {
+                      event.preventDefault()
+                      event.stopPropagation()
+                      setAtAsk(null)
+                      return
+                    }
+                    if (event.key !== 'Enter' || event.shiftKey) return
+                    event.preventDefault()
+                    void send()
+                  }}
+                  disabled={sending}
+                />
+                <div className="chat-faces">
+                  <button
+                    type="button"
+                    className={`chat-face-open ${faces ? 'is-on' : ''}`}
+                    title={t('chat.emoji')}
+                    aria-label={t('chat.emoji')}
+                    aria-expanded={faces}
+                    onClick={() => setFaces((was) => !was)}
+                  >
+                    <SmileIcon />
+                  </button>
+                  {faces && (
+                    <>
+                      <div className="chat-faces-away" role="presentation" onClick={() => setFaces(false)} />
+                      <div className="chat-faces-pop" aria-label={t('chat.emoji')}>
+                        <div className="chat-faces-tabs" role="tablist">
+                          {EMOJI_SETS.map((set) => (
+                            <button
+                              key={set.id}
+                              type="button"
+                              role="tab"
+                              aria-selected={faceSet === set.id}
+                              className={faceSet === set.id ? 'is-on' : ''}
+                              title={t(set.label)}
+                              onClick={() => setFaceSet(set.id)}
+                            >
+                              {set.icon}
                             </button>
                           ))}
+                          <button
+                            type="button"
+                            role="tab"
+                            aria-selected={faceSet === 'ours'}
+                            className={`is-ours ${faceSet === 'ours' ? 'is-on' : ''}`}
+                            title={t('chat.emojiOurs')}
+                            onClick={() => setFaceSet('ours')}
+                          >
+                            ?!
+                          </button>
                         </div>
-                      )}
-                    </div>
-                  </>
-                )}
-              </div>
-              <button type="submit" className="primary chat-go" disabled={sending || !text.trim()} title={t('chat.send')} aria-label={t('chat.send')}>
-                <SendIcon />
-              </button>
-            </form>
+                        <b className="chat-faces-name">{t(faceSet === 'ours' ? 'chat.emojiOurs' : EMOJI_SETS.find((set) => set.id === faceSet)!.label)}</b>
+                        {faceSet === 'ours' ? (
+                          <div className="chat-faces-soon">
+                            <span className="chat-faces-soon-art" aria-hidden>
+                              ?!
+                            </span>
+                            <b>{t('chat.emojiSoonTitle')}</b>
+                            <small>{t('chat.emojiSoonHint')}</small>
+                          </div>
+                        ) : (
+                          <div className="chat-faces-grid" role="listbox">
+                            {EMOJI_SETS.find((set) => set.id === faceSet)!.list.map((emoji) => (
+                              <button key={emoji} type="button" onClick={() => addEmoji(emoji)}>
+                                {emoji}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+                <button type="submit" className="primary chat-go" disabled={sending || !text.trim()} title={t('chat.send')} aria-label={t('chat.send')}>
+                  <SendIcon />
+                </button>
+              </form>
             </>
           ) : (
             <Link className="chat-join" href={href.login}>
@@ -984,7 +1061,12 @@ export default function Chat() {
       {menu && (
         <>
           <div className="chat-menu-away" role="presentation" onClick={() => setMenu(null)} />
-          <div ref={menuBox} className="chat-menu" style={{ left: menu.x, top: menuTop ?? menu.y, visibility: menuTop === null ? 'hidden' : undefined }} role="menu">
+          <div
+            ref={menuBox}
+            className="chat-menu"
+            style={{ left: menu.x, top: menuTop ?? menu.y, visibility: menuTop === null ? 'hidden' : undefined }}
+            role="menu"
+          >
             <Link
               className="chat-menu-item"
               href={menu.line.userId === user?.id ? href.profile : href.player(menu.line.userId)}
@@ -1061,10 +1143,15 @@ export default function Chat() {
 
       {pointed && (
         <>
-          <div className="chat-menu-away" role="presentation" onClick={() => setPointed(null)} onContextMenu={(event) => {
-            event.preventDefault()
-            setPointed(null)
-          }} />
+          <div
+            className="chat-menu-away"
+            role="presentation"
+            onClick={() => setPointed(null)}
+            onContextMenu={(event) => {
+              event.preventDefault()
+              setPointed(null)
+            }}
+          />
           <div
             ref={pointBox}
             className="chat-menu is-point"
@@ -1180,9 +1267,7 @@ export default function Chat() {
                   ? t('friends.removeSure', { name: asking.line.nickname })
                   : t('chat.muteTitle', { name: asking.line.nickname })}
             </h2>
-            <p className="muted">
-              {asking.kind === 'drop' ? t('chat.dropHint') : asking.kind === 'unfriend' ? t('friends.removeHint') : t('chat.muteHint')}
-            </p>
+            <p className="muted">{asking.kind === 'drop' ? t('chat.dropHint') : asking.kind === 'unfriend' ? t('friends.removeHint') : t('chat.muteHint')}</p>
             {asking.kind !== 'unfriend' && <blockquote className="chat-quote">{asking.line.text}</blockquote>}
 
             {asking.kind === 'unfriend' ? (
@@ -1211,7 +1296,9 @@ export default function Chat() {
                   type="button"
                   className="primary"
                   onClick={() =>
-                    void moderate({ drop: asking.line.id, ...(room === 'news' ? { channel: 'news' } : {}) }, () => setLines((kept) => kept.filter((one) => one.id !== asking.line.id)))
+                    void moderate({ drop: asking.line.id, ...(room === 'news' ? { channel: 'news' } : {}) }, () =>
+                      setLines((kept) => kept.filter((one) => one.id !== asking.line.id)),
+                    )
                   }
                 >
                   {t('chat.dropYes')}
@@ -1219,12 +1306,14 @@ export default function Chat() {
               </div>
             ) : (
               <div className="chat-ask-row is-times">
-                {([
-                  [15, 'chat.mute15'],
-                  [60, 'chat.mute60'],
-                  [1440, 'chat.muteDay'],
-                  [0, 'chat.unmute'],
-                ] as const).map(([minutes, key]) => (
+                {(
+                  [
+                    [15, 'chat.mute15'],
+                    [60, 'chat.mute60'],
+                    [1440, 'chat.muteDay'],
+                    [0, 'chat.unmute'],
+                  ] as const
+                ).map(([minutes, key]) => (
                   <button
                     key={minutes}
                     type="button"

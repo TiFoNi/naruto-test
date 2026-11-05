@@ -1280,6 +1280,7 @@ const ui = {
   'chat.emojiSoonTitle': { ru: 'Скоро здесь будут наши смайлики', uk: 'Скоро тут будуть наші смайлики', en: 'Our own emoji are coming soon' },
   'chat.emojiSoonHint': { ru: 'Рисуем персонажей и мемы NandaGuessr — загляни позже', uk: 'Малюємо персонажів і меми NandaGuessr — зазирни пізніше', en: 'We are drawing NandaGuessr characters and memes — check back later' },
   'chat.empty': { ru: 'Пока тихо. Напиши первым', uk: 'Поки тихо. Напиши першим', en: 'Quiet here. Say hi first' },
+  'chat.toEnd': { ru: 'К новым сообщениям', uk: 'До нових повідомлень', en: 'Jump to latest' },
   'chat.earlier': { ru: 'Показать раньше', uk: 'Показати раніше', en: 'Show earlier' },
   'chat.placeholder': { ru: 'Напиши что-нибудь…', uk: 'Напиши щось…', en: 'Say something…' },
   'chat.send': { ru: 'Отправить', uk: 'Надіслати', en: 'Send' },
