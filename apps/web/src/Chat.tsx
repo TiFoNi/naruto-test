@@ -15,6 +15,7 @@ import { useI18n, type UiKey } from './i18n'
 import { ChatIcon, CloseIcon, MuteIcon, ReplyIcon, SendIcon, SmileIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { useHref, useNavigate } from './router'
 import { openStream } from './stream'
+import { hyphenate } from './hyphen'
 
 type Line = {
   id: string
@@ -584,10 +585,10 @@ export default function Chat() {
   const bodyOf = (line: Line) => {
     const tags = line.tags ?? []
     const names = [...tags.map((tag) => tag.nick), ...(line.everyone ? [EVERYONE_NICK, 'all', 'everyone', 'всех', 'усі', 'всім'] : [])]
-    if (!names.length) return line.text
+    if (!names.length) return hyphenate(line.text)
     const split = new RegExp(`(@(?:${[...names].sort((a, b) => b.length - a.length).map(escape).join('|')}))`, 'gi')
     return line.text.split(split).map((part, index) => {
-      if (index % 2 === 0) return part
+      if (index % 2 === 0) return hyphenate(part)
       const nick = part.slice(1).toLowerCase()
       const tag = tags.find((one) => one.nick.toLowerCase() === nick)
       if (!tag)
