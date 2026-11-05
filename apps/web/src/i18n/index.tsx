@@ -3,7 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, type ReactN
 import { LANGS, type L10n, type Lang } from './langs'
 import type { Dict, UiKey } from './ui'
 import { useTerms } from '../terms'
-import { RU_VALUES } from './ru-values'
+import { GLOSS, RU_VALUES } from './ru-values'
 import { pluralIndex } from '../plural'
 
 export { LANGS }
@@ -46,6 +46,7 @@ type I18n = {
   t: (key: UiKey, vars?: Record<string, string | number>) => string
   l: (text: L10n) => string
   tv: (value: string) => string
+  tg: (value: string) => string
   name: (entity: Named) => string
   alt: (entity: Named) => string | undefined
   tag: (entity: Named) => string | undefined
@@ -96,6 +97,7 @@ export function I18nProvider({ children, lang, dict }: { children: ReactNode; la
       }
       return uk
     }
+    const tv = (v: string) => (lang === 'ru' ? (RU_VALUES[v] ?? v) : (dictionary[v]?.[index] || v))
     const strip = (value: string) => value.replace(/\s*\([^()]*\)/g, '').trim() || value
     const name: I18n['name'] = (entity) => strip(full(entity))
     return {
@@ -103,7 +105,8 @@ export function I18nProvider({ children, lang, dict }: { children: ReactNode; la
       setLang,
       t,
       l: (text) => text[lang],
-      tv: (v) => (lang === 'ru' ? (RU_VALUES[v] ?? v) : (dictionary[v]?.[index] || v)),
+      tv,
+      tg: (v) => (GLOSS[v] && lang !== 'en' ? `${tv(v)} (${GLOSS[v][lang === 'ru' ? 0 : 1]})` : tv(v)),
       name,
       alt: (entity) => {
         const secondary = lang === 'en' ? entity.name : entity.nameEn

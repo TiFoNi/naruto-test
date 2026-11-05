@@ -16,7 +16,7 @@ import { useRound } from './useRound'
 type Props = { game: Game; active: boolean; stats: Stats; daily?: boolean; challenge?: string }
 
 export default function OddMode({ game, active, stats, daily = false, challenge }: Props) {
-  const { t, l, tv, name } = useI18n()
+  const { t, l, tg, name } = useI18n()
   const { round, guesses, over, won, skipped, answer, yesterday, gained, busy, error, guess, giveUp, refilter, next, retry } = useRound(
     game,
     'odd',
@@ -64,7 +64,7 @@ export default function OddMode({ game, active, stats, daily = false, challenge 
 
   const column = game.columns.find((one) => one.key === round?.trait?.key)
   const field = column ? l(column.title) : (round?.trait?.key ?? '')
-  const trait = round?.trait?.value ? `${field} — ${tv(round.trait.value)}` : field
+  const trait = round?.trait?.value ? `${field} — ${tg(round.trait.value)}` : field
 
   const mood = !over ? (missed.size ? 'wrong' : 'ask') : won ? 'won' : 'lost'
   const headline: UiKey =
