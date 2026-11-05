@@ -27,7 +27,7 @@ import { openChat } from './chatEvents'
 import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
 import { startAnimGate } from './animGate'
 import GemIcon from './GemIcon'
-import { MODE_XP, MODE_XP_AFTER, POOL_XP_BASE, TONE_HEX, levelAt, poolXpFactor, poolXp, poolXpPastCap } from '@nanda/game'
+import { DUEL_WIN_XP, MODE_XP, MODE_XP_AFTER, POOL_XP_BASE, TONE_HEX, levelAt, poolXpFactor, poolXp, poolXpPastCap } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
@@ -239,6 +239,7 @@ function XpToday() {
               </tbody>
             </table>
             <span className="xp-tip-note">{t('xp.poolNote')}</span>
+            <span className="xp-tip-note">{t('xp.duelNote', { xp: DUEL_WIN_XP })}</span>
           </span>
         </span>
       </div>

@@ -8,7 +8,7 @@ import {
   CLUE_DEFAULT,
   clueSide,
   DUEL_DEFAULT,
-  DUEL_MATCH_XP,
+  duelMatchXp,
   DUEL_MODES,
   DUEL_FILTER_MODES,
   TABLE_MODES,
@@ -43,7 +43,7 @@ import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { gameData, isGame, isMode, type Entity } from './games'
 import { matchesFacet, planGrid } from './grid'
 import { BLACK, GREY, cleanCount, cleanWord, clueBoard, clueSizes, clueWinner, kindFor, sideLeft, teamKey } from './clue'
-import { addXp, defaultNickname } from './profile'
+import { addXp, awardSolveXp, defaultNickname } from './profile'
 import { collectQuestsQuietly } from './quests'
 import { sendPush, type PushLang } from './push'
 import { duelSeed, focusFor, shotFor } from './crop'
@@ -564,7 +564,7 @@ async function dropPlayers(duel: DuelDoc, gone: DuelPlayer[]) {
     await applyDuelStats(winnerTeam, [...rest, ...gone], duel.mode)
     await pushDuelLog(scores, winnerTeam, duel.game, duel.mode, at)
     await Promise.all(rest.map((side) => markSeasonDuel(side.userId, true, at)))
-    await Promise.all(rest.map((side) => duelXp(side.userId, (duel.mode ?? 'classic') as ModeId, true, true)))
+    await Promise.all(rest.map((side) => duelMatchReward(side.userId, duel)))
     await Promise.all(rest.map((side) => collectQuestsQuietly(side.userId)))
   }
 
@@ -966,15 +966,21 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
     if (beaten >= 2) await (await users()).updateMany({ _id: { $in: masters.map((side) => side.userId) } }, { $set: { duelComeback: true } })
   }
   if (ms && ms > 0 && winnerId) await (await users()).updateOne({ _id: winnerId }, { $min: { duelBestMs: ms } })
-  const rewarded = duel.players.filter((side) => champs.includes(side) || masters.includes(side))
-  await Promise.all(rewarded.map((side) => duelXp(side.userId, duel.mode as ModeId, champs.includes(side), masters.includes(side))))
+  const guessed = turnMode(duel) ? champs : duel.players.filter((side) => side.solvedAt)
+  const pool = turnMode(duel) ? 0 : await duelPool(duel)
+  await Promise.all(guessed.map(async (side) => awardSolveXp(await users(), side.userId, duel.mode as ModeId, 'endless', pool)))
+  await Promise.all(masters.map((side) => duelMatchReward(side.userId, duel)))
   await Promise.all(masters.map((side) => collectQuestsQuietly(side.userId)))
   return finished
 }
 
-async function duelXp(userId: ObjectId, mode: ModeId, round: boolean, match: boolean) {
-  const collection = await users()
-  await addXp(collection, userId, (round ? MODE_XP[mode] : 0) + (match ? DUEL_MATCH_XP : 0), 'duel', mode, NO_XP_PAST_CAP)
+async function duelPool(duel: DuelDoc) {
+  const whole = modePool((await gameData(duel.game as GameId)).pool, duel.mode as ModeId)
+  return animePool(whole, duel.anime).length
+}
+
+async function duelMatchReward(userId: ObjectId, duel: DuelDoc) {
+  await addXp(await users(), userId, duelMatchXp(duel.best ?? DUEL_DEFAULT.best), 'duel', duel.mode as ModeId, NO_XP_PAST_CAP)
 }
 
 export async function duelGuess(duel: DuelDoc, userId: ObjectId, entityId: number) {

@@ -390,6 +390,11 @@ const ui = {
     uk: 'У «За ознаками» та «Наосліп» досвід залежить від кількості персонажів у всесвіті: що їх більше, то більше досвіду.',
     en: 'In By traits and Blind, XP depends on how many characters the universe has: the more there are, the more XP you get.',
   },
+  'xp.duelNote': {
+    ru: 'В дуэлях за угаданного персонажа опыт как в бесконечном режиме. Полоска «Дуэли» — только за победу в матче: {xp} XP за каждую нужную победу.',
+    uk: 'У дуелях за вгаданого персонажа досвід як у нескінченному режимі. Смужка «Дуелі» — лише за перемогу в матчі: {xp} XP за кожну потрібну перемогу.',
+    en: 'In duels, each character you guess gives the same XP as Endless. The Duels bar fills only from match wins: {xp} XP per win needed.',
+  },
   'xp.colAfter': { ru: 'После лимита', uk: 'Після ліміту', en: 'Past limit' },
   'xp.daily': { ru: 'Ежедневные загадки', uk: 'Щоденні загадки', en: 'Daily puzzles' },
   'xp.endless': { ru: 'Бесконечный', uk: 'Нескінченний', en: 'Endless' },
