@@ -22,7 +22,7 @@ import BannerArt from './BannerArt'
 import { MARKS } from './Profile'
 import { shownTone, watchTone } from './tone'
 import HumanCheck from './HumanCheck'
-import { AWARDS_FILTER, dropCoins, dropFrames, dropQuizzes, dropTitle, dropInvite, dropMentions, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
+import { AWARDS_FILTER, dropCoins, dropFrames, dropQuizzes, dropTitle, dropInvite, dropMentions, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed, type FriendAsk } from './awards'
 import { openChat } from './chatEvents'
 import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
 import { startAnimGate } from './animGate'
@@ -510,8 +510,10 @@ function Bell() {
 
   const googleDue = feed.linkGoogle && !googleHidden
   const awards = feed.awards.filter((award) => !hidden.has(award.id))
+  const askKey = (one: FriendAsk) => `friend:${one.id}:${one.at}`
+  const requests = feed.requests.filter((one) => !hidden.has(askKey(one)))
   const frames = feed.frames.map((id) => FRAMES.find((one) => one.id === id)).filter((one) => one !== undefined)
-  const count = awards.length + feed.invites.length + feed.requests.length + frames.length + (feed.coins ? 1 : 0) + feed.mentions.length + (googleDue ? 1 : 0) + (feed.title ? 1 : 0) + feed.quizzes.length
+  const count = awards.length + feed.invites.length + requests.length + frames.length + (feed.coins ? 1 : 0) + feed.mentions.length + (googleDue ? 1 : 0) + (feed.title ? 1 : 0) + feed.quizzes.length
 
   return (
     <div ref={box} className={`bell-box ${open ? 'open' : ''}`}>
@@ -767,7 +769,7 @@ function Bell() {
                 </li>
               )
             })}
-            {feed.requests.map((one) => (
+            {requests.map((one) => (
               <li key={one.id} className="bell-item is-friend">
                 <div className="bell-card">
                   <small>{t('friends.askNew')}</small>
@@ -792,7 +794,7 @@ function Bell() {
                     </button>
                   </span>
                 </div>
-                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} onClick={() => void answer(one.id, false)}>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={() => hide(askKey(one))}>
                   <CloseIcon />
                 </button>
               </li>
