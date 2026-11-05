@@ -48,6 +48,7 @@ type I18n = {
   tv: (value: string) => string
   name: (entity: Named) => string
   alt: (entity: Named) => string | undefined
+  tag: (entity: Named) => string | undefined
   error: (code: string) => string
 }
 
@@ -84,7 +85,7 @@ export function I18nProvider({ children, lang, dict }: { children: ReactNode; la
       const text = forms.length > 1 && typeof count === 'number' ? forms[Math.min(pluralIndex(count, lang), forms.length - 1)] : raw
       return text.replace(/\{(\w+)\}/g, (_, k: string) => String(vars?.[k] ?? `{${k}}`))
     }
-    const name: I18n['name'] = (entity) => {
+    const full = (entity: Named) => {
       if (lang === 'en') return entity.nameEn ?? entity.name
       if (lang === 'ru') return entity.name
       if (entity.nameUk) return entity.nameUk
@@ -95,6 +96,8 @@ export function I18nProvider({ children, lang, dict }: { children: ReactNode; la
       }
       return uk
     }
+    const strip = (value: string) => value.replace(/\s*\([^()]*\)/g, '').trim() || value
+    const name: I18n['name'] = (entity) => strip(full(entity))
     return {
       lang,
       setLang,
@@ -104,8 +107,10 @@ export function I18nProvider({ children, lang, dict }: { children: ReactNode; la
       name,
       alt: (entity) => {
         const secondary = lang === 'en' ? entity.name : entity.nameEn
-        return secondary && secondary !== name(entity) ? secondary : undefined
+        const shown = secondary && strip(secondary)
+        return shown && shown !== name(entity) ? shown : undefined
       },
+      tag: (entity) => full(entity).match(/\(([^()]*)\)/)?.[1]?.trim() || undefined,
       error: (code) => (`err.${code}` in dict ? t(`err.${code}` as UiKey) : t('err.server')),
     }
   }, [lang, setLang, dict, dictionary])

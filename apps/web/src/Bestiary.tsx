@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import BackButton from './BackButton'
 import { api } from './api'
@@ -14,6 +14,12 @@ import { CloseIcon } from './icons'
 import { cardUrl, miniUrl } from './pics'
 import { useHref } from './router'
 import { random, torn } from './torn'
+
+const SHORT: Record<string, { ru: string; uk: string; en: string }> = {
+  'naruto:195': { ru: 'Демон. Статуя Внешнего Пути', uk: 'Демон. Статуя Зовнішнього Шляху', en: 'Statue of the Outer Path' },
+}
+
+const lengthOf = (label: string) => (label.length > 26 ? 'is-longer' : label.length > 16 ? 'is-long' : '')
 
 const tilt = (id: number) => (((id * 7919) % 9) - 4) * 0.55
 
@@ -400,7 +406,30 @@ const InkFrame = () => {
   )
 }
 
-type Focus = { entity: Entity; node: HTMLElement; from: DOMRect; hovered: boolean; tilt: number; type: number; cut: boolean }
+type Focus = { entity: Entity; node: HTMLElement; from: DOMRect; hovered: boolean; tilt: number; type: number; lines: string[] }
+
+const linesOf = (span: HTMLElement | null) => {
+  const text = span?.firstChild
+  if (!span || !text || text.nodeType !== Node.TEXT_NODE) return []
+  const value = text.textContent ?? ''
+  const range = document.createRange()
+  const lines: string[] = []
+  let top = Number.NaN
+  let from = 0
+  value.split(' ').forEach((word, index, all) => {
+    const at = all.slice(0, index).join(' ').length + (index ? 1 : 0)
+    range.setStart(text, at)
+    range.setEnd(text, at + Math.max(1, word.length))
+    const y = range.getBoundingClientRect().top
+    if (index && Math.abs(y - top) > 2) {
+      lines.push(value.slice(from, at).trim())
+      from = at
+    }
+    top = index ? (Math.abs(y - top) > 2 ? y : top) : y
+  })
+  lines.push(value.slice(from).trim())
+  return lines
+}
 
 const lift = (entity: Entity, node: HTMLElement): Focus => {
   const from = node.getBoundingClientRect()
@@ -413,7 +442,7 @@ const lift = (entity: Entity, node: HTMLElement): Focus => {
     hovered: node.matches(':hover'),
     tilt: tilt(entity.id),
     type: (size / Math.max(1, node.offsetWidth)) * 100,
-    cut: !!name && name.scrollWidth > name.clientWidth + 1,
+    lines: linesOf(node.querySelector('b span')),
   }
 }
 
@@ -425,9 +454,6 @@ const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game:
   const card = useRef<HTMLDivElement>(null)
   const shade = useRef<HTMLDivElement>(null)
   const shut = useRef<HTMLButtonElement>(null)
-  const title = useRef<HTMLElement>(null)
-  const words = useRef<HTMLSpanElement>(null)
-  const [fit, setFit] = useState(focus.type)
   const leaving = useRef(false)
 
   const travel = useCallback(
@@ -454,20 +480,6 @@ const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game:
     if (back) back.onfinish = onClosed
     else onClosed()
   }, [travel, onClosed])
-
-  useLayoutEffect(() => {
-    const node = title.current
-    const text = words.current
-    if (!node || !text || !focus.cut) return
-    let size = focus.type
-    const tall = () => text.offsetHeight > parseFloat(getComputedStyle(node).fontSize) * 1.1 * 2 + 1
-    node.style.fontSize = `${size}cqw`
-    while (tall() && size > focus.type * 0.5) {
-      size *= 0.92
-      node.style.fontSize = `${size}cqw`
-    }
-    setFit(size)
-  }, [focus])
 
   useEffect(() => {
     const motion = { duration: MOVE_MS, easing: MOVE_EASE }
@@ -497,8 +509,15 @@ const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game:
           <img src={cardUrl(game, entity.id, entity.image)} alt="" draggable={false} />
           <i className="dex-zoom-shine" />
         </span>
-        <b ref={title} className={`dex-zoom-name ${focus.cut ? 'is-wrap' : ''}`} style={{ fontSize: `${fit}cqw` }}>
-          <span ref={words}>{label}</span>
+        <b className="dex-zoom-name" style={{ fontSize: `${focus.type}cqw` }}>
+          <span>
+            {(focus.lines.length ? focus.lines : [label]).map((line, index) => (
+              <Fragment key={index}>
+                {index > 0 && <br />}
+                {line}
+              </Fragment>
+            ))}
+          </span>
         </b>
       </div>
       <button ref={shut} type="button" className="dex-zoom-close" onClick={close} aria-label={t('dex.close')}>
@@ -525,7 +544,7 @@ const useRemembered = (game: string) =>
   )
 
 export default function Bestiary({ game: gameId, owner }: { game: string; owner?: string }) {
-  const { t, l, name } = useI18n()
+  const { t, l, name, lang } = useI18n()
   const href = useHref()
   const { user, loading: checking } = useAuth()
   const game = GAMES.find((one) => one.id === (gameId as GameId))
@@ -551,6 +570,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   }, [game, user, owner])
 
   const cast = useMemo(() => (game?.entities ?? []).filter((one) => one.answer), [game, ready])
+  const label = (entity: Entity) => SHORT[`${gameId}:${entity.id}`]?.[lang] ?? name(entity)
 
   useEffect(() => {
     if (!cast.length) return
@@ -610,7 +630,9 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                       <span className="dex-pic" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
                         <img src={cardUrl(game.id, entity.id, entity.image)} alt="" loading="lazy" decoding="async" draggable={false} />
                       </span>
-                      <b>{name(entity)}</b>
+                      <b className={lengthOf(label(entity))}>
+                        <span>{label(entity)}</span>
+                      </b>
                     </button>
                   ) : (
                     <span className="dex-scrap is-locked" aria-label={t('dex.locked')}>
@@ -626,7 +648,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
               ))}
         </ol>
       </div>
-      {focus && <DexZoom key={focus.entity.id} focus={focus} game={game.id} label={name(focus.entity)} accent={accent} onClosed={release} />}
+      {focus && <DexZoom key={focus.entity.id} focus={focus} game={game.id} label={label(focus.entity)} accent={accent} onClosed={release} />}
     </div>
   )
 }

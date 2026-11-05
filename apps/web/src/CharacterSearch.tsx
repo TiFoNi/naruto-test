@@ -35,7 +35,7 @@ export default function CharacterSearch({
 }: Props) {
   const [animeOnly] = useAnimeOnly(game.id)
   const pool = limited && animeOnly ? game.entities.filter((one) => one.anime !== false) : game.entities
-  const { t, name, alt } = useI18n()
+  const { t, name, alt, tag } = useI18n()
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
   const list = useRef<HTMLUListElement>(null)
@@ -205,7 +205,7 @@ export default function CharacterSearch({
               {!plain && !noThumbs && <Thumb game={game} entity={e} size={44} />}
               <span className="suggestion-name">
                 {name(e)}
-                {alt(e) && <small>{alt(e)}</small>}
+                {(tag(e) || alt(e)) && <small>{[tag(e), alt(e)].filter(Boolean).join(' · ')}</small>}
               </span>
             </li>
           ))}

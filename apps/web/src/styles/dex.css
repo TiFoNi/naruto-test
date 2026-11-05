@@ -175,18 +175,49 @@ button.dex-scrap:focus-visible {
   object-position: center 20%;
 }
 
-.dex-scrap b {
+.dex-scrap b,
+.dex-zoom-name {
   position: absolute;
-  right: 8%;
-  bottom: 6.5%;
-  left: 8%;
-  overflow: hidden;
-  font-size: clamp(10px, 1.1vw, 13px);
+  top: 79.5%;
+  right: 6%;
+  bottom: 2.5%;
+  left: 6%;
+  display: grid;
+  place-items: center;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.1;
   text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+}
+
+.dex-scrap b {
+  font-size: clamp(10px, 1.1vw, 13px);
+}
+
+.dex-scrap b.is-long {
+  font-size: clamp(9px, 0.95vw, 11.5px);
+}
+
+.dex-scrap b.is-longer {
+  font-size: clamp(8px, 0.82vw, 10px);
+}
+
+.dex-scrap b span,
+.dex-zoom-name span {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+.dex-scrap b.is-longer span {
+  -webkit-line-clamp: 3;
+}
+
+.dex-zoom-name span {
+  display: block;
+  text-wrap: nowrap;
 }
 
 .dex-scrap.is-locked {
@@ -304,29 +335,6 @@ button.dex-scrap:focus-visible {
   }
 }
 
-.dex-zoom-name {
-  position: absolute;
-  right: 8%;
-  bottom: 6.5%;
-  left: 8%;
-  overflow: hidden;
-  font-weight: 800;
-  line-height: 1.2;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.dex-zoom-name.is-wrap {
-  top: 79.5%;
-  bottom: 3%;
-  display: grid;
-  place-items: center;
-  line-height: 1.1;
-  white-space: normal;
-  text-wrap: balance;
-  overflow-wrap: anywhere;
-}
-
 .dex-zoom-close {
   position: absolute;
   top: max(16px, env(safe-area-inset-top));
@@ -363,5 +371,19 @@ button.dex-scrap:focus-visible {
   .dex-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 18px 12px;
+  }
+}
+
+@media (max-width: 559px) {
+  .dex-scrap b {
+    font-size: 9px;
+  }
+
+  .dex-scrap b.is-long {
+    font-size: 8px;
+  }
+
+  .dex-scrap b.is-longer {
+    font-size: 7px;
   }
 }
