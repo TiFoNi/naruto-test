@@ -50,7 +50,7 @@ async function history(userId: ObjectId) {
             counted,
             { $match: { status: 'won', mode: { $ne: 'pair' } } },
             { $group: { _id: { game: '$game', answerId: '$answerId' } } },
-            { $group: { _id: '$_id.game', unique: { $sum: 1 } } },
+            { $group: { _id: '$_id.game', ids: { $push: '$_id.answerId' } } },
           ],
           modes: [
             counted,
@@ -91,7 +91,7 @@ async function history(userId: ObjectId) {
     .toArray()
 
   return facet as {
-    games: { _id: string; unique: number }[]
+    games: { _id: string; ids: number[] }[]
     modes: Counted[]
     days: { _id: string }[]
     recent: { game: string; mode: string; answerId: number; status: string; guessCount?: number; daily?: string; challenge?: string; finishedAt?: Date }[]
@@ -235,13 +235,17 @@ export const GET = handle(async (request) => {
   const past = await history(doc._id!)
   const totals = past.totals[0] ?? { played: 0, won: 0, gaveUp: 0, guesses: 0 }
 
-  const unique = new Map(past.games.map((row) => [row._id, row.unique]))
+  const unique = new Map(past.games.map((row) => [row._id, row.ids]))
   const pools = await Promise.all(
-    GAME_IDS.map(async (game) => ({ game, pool: (await gameData(game as GameId)).pool.length })),
+    GAME_IDS.map(async (game) => {
+      const data = await gameData(game as GameId)
+      const solved = (unique.get(game) ?? []).filter((id) => data.byId.get(id)?.answer).length
+      return { game, pool: data.pool.length, solved }
+    }),
   )
 
   const games = pools
-    .map(({ game, pool }) => ({ game, pool, solved: unique.get(game) ?? 0 }))
+    .map(({ game, pool, solved }) => ({ game, pool, solved: Math.min(solved, pool) }))
     .filter((row) => row.pool > 0)
     .sort((a, b) => b.solved / b.pool - a.solved / a.pool)
 
