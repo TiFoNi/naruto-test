@@ -56,16 +56,31 @@ const breaks = (spots: [number, number][]) => (t: number) =>
     return distance < radius ? 0 : left * Math.pow(Math.min(1, (distance - radius) / radius), 0.3)
   }, 1)
 
+const drift = (count: number, rough: number, next: () => number) => {
+  const knots = Math.max(2, Math.ceil(count / 7))
+  const marks = Array.from({ length: knots + 1 }, () => (next() - 0.5) * rough * 2)
+  return (index: number) => {
+    const at = (index / Math.max(1, count - 1)) * knots
+    const low = Math.min(knots - 1, Math.floor(at))
+    const blend = at - low
+    const ease = blend * blend * (3 - 2 * blend)
+    return marks[low] + (marks[low + 1] - marks[low]) * ease
+  }
+}
+
 const ribbon = (points: Point[], width: (t: number) => number, next: () => number, rough = 0.22): Shape => {
   const shape = wave(next)
+  const nearSide = drift(points.length, rough, next)
+  const farSide = drift(points.length, rough, next)
   const left: Point[] = []
   const right: Point[] = []
   points.forEach((point, index) => {
     const [dx, dy] = tangent(points, index)
     const t = index / (points.length - 1)
     const half = width(t) * shape(t)
-    const near = half * (1 + (next() - 0.5) * rough * 2)
-    const far = half * (1 + (next() - 0.5) * rough * 2)
+    const nick = next() < 0.02 ? 0.6 : 1
+    const near = half * (1 + nearSide(index)) * nick
+    const far = half * (1 + farSide(index)) * (nick < 1 ? 1 : next() < 0.02 ? 0.6 : 1)
     left.push([point[0] - dy * near, point[1] + dx * near])
     right.push([point[0] + dy * far, point[1] - dx * far])
   })
@@ -138,8 +153,8 @@ const CORNER = (() => {
     thorn(down, 0.5, 10, 1, next),
     thorn(down, 0.64, 7.5, 1, next),
     thorn(down, 0.8, 5, 1, next),
-    thorn(innerAcross, 0.62, 6.5, 1, next),
-    thorn(innerDown, 0.68, 6.5, -1, next),
+    thorn(innerAcross, 0.32, 6.5, 1, next),
+    thorn(innerDown, 0.76, 6.5, -1, next),
     [...quad([9, 22], [3, 3], [-2, -2]), ...quad([-2, -2], [3, 3], [22, 9]).slice(1)],
     blot(84, 46, 2.2, next),
     blot(96, 54, 1.2, next),
