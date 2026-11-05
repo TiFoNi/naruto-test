@@ -16,6 +16,7 @@ export type UserDoc = {
   coins?: number
   coinsNews?: { coins: number; at: Date }
   titleNews?: string | null
+  quizNews?: QuizNews[]
   mentionPush?: boolean
   mentionNews?: MentionNews[]
   bonusDay?: string
@@ -191,6 +192,8 @@ export type DuelDoc = {
   results?: (number | null)[]
   talk?: DuelTalk[]
 }
+
+export type QuizNews = { id: string; quizId: string; title: string; note: string; at: Date }
 
 export type DuelTalk = {
   id: string

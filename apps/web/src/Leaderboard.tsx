@@ -127,7 +127,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   const waiting = !board && !error
   const standing = all.length > 0
   const podium = standing ? [all[0] ?? null, all[1] ?? null, all[2] ?? null] : waiting ? [null, null, null] : []
-  const listed = all
+  const listed = all.slice(podium.length ? 3 : 0)
   const shown = listed.slice(0, size)
   const left = listed.length - shown.length
   const peak = Math.max(1, ...all.map((r) => active.raw(r)))

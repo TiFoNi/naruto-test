@@ -61,12 +61,13 @@ export const GET = handle(async (request) => {
     friendRequests(found.doc._id!),
     needsGoogle(found.doc),
   ])
+  const rejected = (found.doc.quizNews ?? []).map((one) => ({ ...one, at: one.at.toISOString() })).reverse()
   const mentions = (found.doc.mentionNews ?? []).map((one) => ({ ...one, at: one.at.toISOString() })).reverse()
   const owned = found.doc.frames ?? []
   if (!found.doc.framesSeen) {
     await (await users()).updateOne({ _id: found.doc._id }, { $set: { framesSeen: owned } })
-    return json({ awards, invites, requests, frames: [], coins: found.doc.coinsNews ?? null, mentions, linkGoogle, title: found.doc.titleNews ?? null })
+    return json({ awards, invites, requests, frames: [], coins: found.doc.coinsNews ?? null, mentions, linkGoogle, title: found.doc.titleNews ?? null, quizzes: rejected })
   }
   const frames = owned.filter((frame) => !found.doc.framesSeen!.includes(frame))
-  return json({ awards, invites, requests, frames, coins: found.doc.coinsNews ?? null, mentions, linkGoogle, title: found.doc.titleNews ?? null })
+  return json({ awards, invites, requests, frames, coins: found.doc.coinsNews ?? null, mentions, linkGoogle, title: found.doc.titleNews ?? null, quizzes: rejected })
 })

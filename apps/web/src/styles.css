@@ -725,6 +725,13 @@ a.bell.active {
   gap: 4px;
 }
 
+.bell-item.is-quiz .bell-hint {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
 .bell-item.is-title .player-title {
   align-self: flex-start;
   margin-bottom: 2px;

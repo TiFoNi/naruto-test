@@ -22,7 +22,7 @@ import BannerArt from './BannerArt'
 import { MARKS } from './Profile'
 import { shownTone, watchTone } from './tone'
 import HumanCheck from './HumanCheck'
-import { AWARDS_FILTER, dropCoins, dropFrames, dropTitle, dropInvite, dropMentions, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
+import { AWARDS_FILTER, dropCoins, dropFrames, dropQuizzes, dropTitle, dropInvite, dropMentions, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed } from './awards'
 import { openChat } from './chatEvents'
 import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
 import { startAnimGate } from './animGate'
@@ -31,7 +31,7 @@ import { MODE_XP, MODE_XP_AFTER, POOL_XP_BASE, TONE_HEX, levelAt, poolXpFactor, 
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
-import { BellIcon, ChatIcon, GoogleIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MedalIcon, PodiumIcon, ShopIcon, TrophyIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
+import { BellIcon, ChatIcon, GoogleIcon, PencilIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MedalIcon, PodiumIcon, ShopIcon, TrophyIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { api } from './api'
 import { openStream } from './stream'
 import { GAMES, gameById } from './games'
@@ -378,7 +378,7 @@ function Bell() {
     }
   }, [])
 
-  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false, title: null })
+  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false, title: null, quizzes: [] })
   const [hidden, setHidden] = useState<Set<string>>(() => new Set())
   const [busy, setBusy] = useState(false)
   const [toast, setToast] = useState<DuelInvite | null>(null)
@@ -492,6 +492,11 @@ function Bell() {
     }
   }
 
+  const seenQuizzes = () => {
+    dropQuizzes()
+    void api('profile', { action: 'seenQuizzes' }).catch(() => null)
+  }
+
   const seenTitle = () => {
     dropTitle()
     void api('profile', { action: 'seenTitle' }).catch(() => null)
@@ -505,7 +510,7 @@ function Bell() {
   const googleDue = feed.linkGoogle && !googleHidden
   const awards = feed.awards.filter((award) => !hidden.has(award.id))
   const frames = feed.frames.map((id) => FRAMES.find((one) => one.id === id)).filter((one) => one !== undefined)
-  const count = awards.length + feed.invites.length + feed.requests.length + frames.length + (feed.coins ? 1 : 0) + feed.mentions.length + (googleDue ? 1 : 0) + (feed.title ? 1 : 0)
+  const count = awards.length + feed.invites.length + feed.requests.length + frames.length + (feed.coins ? 1 : 0) + feed.mentions.length + (googleDue ? 1 : 0) + (feed.title ? 1 : 0) + feed.quizzes.length
 
   return (
     <div ref={box} className={`bell-box ${open ? 'open' : ''}`}>
@@ -601,6 +606,33 @@ function Bell() {
           <p className="bell-empty">{t('nav.bellEmpty')}</p>
         ) : (
           <ul className="bell-list">
+            {feed.quizzes.map((one) => (
+              <li key={one.id} className="bell-item is-quiz">
+                <Link
+                  className="bell-card"
+                  href={href.myTests}
+                  onClick={() => {
+                    setOpen(false)
+                    seenQuizzes()
+                  }}
+                  prefetch={false}
+                >
+                  <small>{t('quizNews.rejected')}</small>
+                  <span className="bell-main">
+                    <span className="bell-mark" aria-hidden>
+                      <PencilIcon />
+                    </span>
+                    <span className="bell-body">
+                      <b>{one.title}</b>
+                      <span className="bell-hint">{one.note ? t('quizNews.why', { note: one.note }) : t('quizNews.noWhy')}</span>
+                    </span>
+                  </span>
+                </Link>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={seenQuizzes}>
+                  <CloseIcon />
+                </button>
+              </li>
+            ))}
             {feed.title && (
               <li className="bell-item is-title">
                 <Link

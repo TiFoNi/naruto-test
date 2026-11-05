@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { adminSession } from '../admin'
-import { quizAttempts, quizLikes, quizzes, type QuizDoc } from '../db'
+import { quizAttempts, quizLikes, quizzes, users, type QuizDoc } from '../db'
 import { fail, handle, json, readJson } from '../http'
 import { uploadQuizCover } from '../images'
 import { quizAuthors, readQuiz } from '../quizzes'
@@ -8,6 +8,14 @@ import { quizAuthors, readQuiz } from '../quizzes'
 const LIMIT = 8 * 1024 * 1024
 
 const missing = () => fail(404, 'not_found')
+
+const QUIZ_NEWS_KEEP = 10
+
+async function tellRejected(quiz: QuizDoc) {
+  if (!quiz.authorId || quiz.official) return
+  const news = { id: new ObjectId().toHexString(), quizId: quiz._id!.toHexString(), title: quiz.title, note: quiz.note ?? '', at: new Date() }
+  await (await users()).updateOne({ _id: quiz.authorId }, { $push: { quizNews: { $each: [news], $slice: -QUIZ_NEWS_KEEP } } })
+}
 
 const full = (quiz: QuizDoc, authors: Awaited<ReturnType<typeof quizAuthors>>) => ({
   ...quiz,
@@ -36,8 +44,10 @@ export const SAVE = handle(async (request) => {
   const now = new Date()
   if (typeof body.id === 'string' && ObjectId.isValid(body.id)) {
     const { official: _official, ...fields } = read.quiz
+    const before = await collection.findOne({ _id: new ObjectId(body.id) }, { projection: { status: 1 } })
     const saved = await collection.findOneAndUpdate({ _id: new ObjectId(body.id) }, { $set: { ...fields, updatedAt: now } }, { returnDocument: 'after' })
     if (!saved) return missing()
+    if (saved.status === 'rejected' && before?.status !== 'rejected') await tellRejected(saved)
     await (await quizAttempts()).updateMany({ quizId: saved._id!, finished: false }, { $set: { answers: [] } })
     return json({ quiz: await one(saved) })
   }
