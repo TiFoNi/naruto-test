@@ -155,10 +155,14 @@ export async function watcherKey(request: Request) {
 
 const ALIVE_MS = 90_000
 
+export async function countPulse() {
+  return (await pulse()).countDocuments({ at: { $gt: new Date(Date.now() - ALIVE_MS) } })
+}
+
 export async function touchPulse(key: string) {
   const beats = await pulse()
   await beats.updateOne({ _id: key }, { $set: { at: new Date() } }, { upsert: true })
-  return beats.countDocuments({ at: { $gt: new Date(Date.now() - ALIVE_MS) } })
+  return countPulse()
 }
 
 export async function freshSince(seen: unknown) {

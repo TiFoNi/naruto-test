@@ -138,6 +138,12 @@ const KEEP = 300
 const clock = (at: number) =>
   new Date(at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 
+const IDLE_MS = 3 * 60_000
+
+let lastInput = Date.now()
+
+const present = () => document.visibilityState === 'visible' && (document.hasFocus() || Date.now() - lastInput < IDLE_MS)
+
 export default function Chat() {
   const { t } = useI18n()
   const href = useHref()
@@ -219,6 +225,7 @@ export default function Chat() {
     if (seen) ask.set('seen', seen)
     const who = whoAmI()
     if (who) ask.set('who', who)
+    if (!present()) ask.set('idle', '1')
     const { ok, data } = await api<{ online?: number; fresh?: boolean; news?: string | null }>(`pulse?${ask.toString()}`)
     if (!ok) return
     if (typeof data.online === 'number') setOnline(data.online)
@@ -319,6 +326,17 @@ export default function Chat() {
       const known = new Set(kept.map((line) => line.id))
       return [...data.lines!.filter((line) => !known.has(line.id)), ...kept]
     })
+  }, [])
+
+  useEffect(() => {
+    const touch = () => {
+      lastInput = Date.now()
+    }
+    const kinds = ['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart', 'scroll'] as const
+    for (const kind of kinds) window.addEventListener(kind, touch, { passive: true })
+    return () => {
+      for (const kind of kinds) window.removeEventListener(kind, touch)
+    }
   }, [])
 
   useEffect(() => {
