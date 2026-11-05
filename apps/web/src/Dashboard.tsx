@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointer } from 'react'
 import { api } from './api'
 import { useAuth } from './auth'
-import { BRAND } from './brand'
 import type { GameMeta } from './games/meta'
 import type { Category } from './games/types'
 import { useI18n, type UiKey } from './i18n'
@@ -386,10 +385,8 @@ function TestsTile({ category, count }: { category: Category; count: number | nu
   const href = useHref()
   return (
     <Link className="cat-card is-tests" href={href.tests(category)} prefetch={false}>
-      <span className="cat-card-art is-tests">
-        <span className="cat-tests-mark" aria-hidden>
-          {BRAND.mark}
-        </span>
+      <span className="cat-card-art">
+        <img src={uiUrl('worlds/big/tests.webp')} alt="" width={448} height={448} loading="lazy" decoding="async" draggable={false} />
       </span>
       <b>{t('quiz.title')}</b>
       <small>{count === null ? '\u00a0' : t('quiz.tileCount', { count })}</small>

@@ -42,6 +42,7 @@
     "entities": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/import-entities.mjs",
     "mini": "node --experimental-strip-types scripts/build-mini.mjs",
     "pics": "node --env-file-if-exists=.env.local scripts/upload-pics.mjs",
+    "pics:mark": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/mark-admin-pics.mjs",
     "pics:clean": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/clean-pics.mjs",
     "dev:api": "npm run dev --workspace @nanda/api",
     "build:api": "npm run build --workspace @nanda/api",
