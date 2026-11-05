@@ -73,7 +73,7 @@ type Summary = {
     losses: number
     draws: number
     modes?: { mode: string; played: number; wins: number }[]
-    recent?: { rivalId: string | null; rival: string; game: string | null; mode: string | null; wins: number; losses: number; won: boolean; at: string }[]
+    recent?: { rivalId: string | null; rival: string; game: string | null; mode: string | null; wins: number; losses: number; board?: number[]; won: boolean; at: string }[]
   }
   challenges: { solved: number }
   favourite: GameId | null
@@ -1206,9 +1206,7 @@ export default function Profile({ id }: { id?: string }) {
                                       <b>{row.rival}</b>
                                       <small>{[game ? l(game.label) : null, mode ? t(mode.label) : null].filter(Boolean).join(' · ')}</small>
                                     </span>
-                                    <strong>
-                                      {row.wins}:{row.losses}
-                                    </strong>
+                                    <strong>{(row.board ?? [row.wins, row.losses]).join(':')}</strong>
                                   </li>
                                 )
                               })}

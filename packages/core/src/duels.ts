@@ -752,17 +752,20 @@ async function pushDuelLog(
 ) {
   const collection = await users()
   const best = (team: number) => Math.max(0, ...scores.filter((side) => side.team === team).map((side) => side.wins))
+  const teams = [...new Set(scores.map((side) => side.team))]
   await Promise.all(
     scores.map((side) => {
       const foes = scores.filter((one) => one.team !== side.team)
+      const others = teams.filter((team) => team !== side.team).map(best).sort((a, b) => b - a)
       const row: DuelLogRow = {
         at,
         game,
         mode,
         rivalId: foes[0]?.userId,
         rival: foes.map((one) => one.nickname).join(', '),
-        wins: side.wins,
-        losses: best(side.team === 0 ? 1 : 0),
+        wins: best(side.team),
+        losses: others[0] ?? 0,
+        ...(others.length > 1 ? { board: [best(side.team), ...others] } : {}),
         won: winnerTeam !== null && side.team === winnerTeam,
       }
       return collection.updateOne({ _id: side.userId }, { $push: { duelLog: { $each: [row], $slice: -DUEL_LOG_MAX } } })

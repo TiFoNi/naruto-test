@@ -69,6 +69,7 @@ export type DuelLogRow = {
   rival: string
   wins: number
   losses: number
+  board?: number[]
   won: boolean
 }
 

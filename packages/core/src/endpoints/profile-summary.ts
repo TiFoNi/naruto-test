@@ -325,6 +325,7 @@ export const GET = handle(async (request) => {
           mode: row.mode ?? null,
           wins: row.wins,
           losses: row.losses,
+          ...(row.board ? { board: row.board } : {}),
           won: row.won,
           at: row.at.toISOString(),
         })),
