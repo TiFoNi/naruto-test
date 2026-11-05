@@ -2623,6 +2623,16 @@ textarea.quiz-admin-input {
 }
 
 @media (max-width: 560px) {
+  .quiz-hero-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .quiz-hero-row .quiz-hero-acts {
+    justify-content: space-between;
+  }
+
   .quiz-hero-again .is-long {
     display: none;
   }
