@@ -924,6 +924,7 @@ export const POLL = {
         { id: 'vinland', label: { ru: 'Сага о Винланде', uk: 'Сага про Вінланд', en: 'Vinland Saga' } },
         { id: 'sakamoto', label: { ru: 'Дни Сакамото', uk: 'Дні Сакамото', en: 'Sakamoto Days' } },
         { id: 'haikyu', label: { ru: 'Волейбол!!', uk: 'Волейбол!!', en: 'Haikyu!!' } },
+        { id: 'geass', label: { ru: 'Код Гиасс', uk: 'Код Ґіасс', en: 'Code Geass' } },
       ],
     },
     {
