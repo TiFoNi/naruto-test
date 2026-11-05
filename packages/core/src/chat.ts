@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
-import { ObjectId } from 'mongodb'
+import { ObjectId, type Collection } from 'mongodb'
 import { authSession } from './auth'
-import { chatNews, chatRoom, pulse, users, type ChatDoc, type ChatTag, type UserDoc } from './db'
+import { chatNews, chatRoom, pulse, users, type ChatDoc, type ChatReply, type ChatTag, type UserDoc } from './db'
 import { pushSubs, sendPush, type PushLang } from './push'
 import { readGuest } from './session'
 
@@ -25,6 +25,7 @@ export type ChatLine = {
   at: number
   tags?: { id: string; nick: string }[]
   everyone?: boolean
+  reply?: { id: string; userId: string; nickname: string; text: string }
 }
 
 export const lineOf = (doc: ChatDoc): ChatLine => ({
@@ -40,6 +41,9 @@ export const lineOf = (doc: ChatDoc): ChatLine => ({
   at: doc.at.getTime(),
   ...(doc.tags?.length ? { tags: doc.tags.map((tag) => ({ id: tag.id.toHexString(), nick: tag.nick })) } : {}),
   ...(doc.everyone ? { everyone: true } : {}),
+  ...(doc.reply
+    ? { reply: { id: doc.reply.id.toHexString(), userId: doc.reply.userId.toHexString(), nickname: doc.reply.nickname, text: doc.reply.text } }
+    : {}),
 })
 
 export const TAGS_MAX = 3
@@ -50,11 +54,13 @@ const CROWD = new Set(['все', 'всех', 'усі', 'всім', 'all', 'every
 
 const tagged = new Map<string, number>()
 
-const PUSH_TEXT: Record<PushLang, { one: string; all: string }> = {
-  ru: { one: 'упомянул тебя в чате', all: 'Важное объявление' },
-  uk: { one: 'згадав тебе в чаті', all: 'Важливе оголошення' },
-  en: { one: 'mentioned you in chat', all: 'Announcement' },
+const PUSH_TEXT: Record<PushLang, { one: string; all: string; reply: string }> = {
+  ru: { one: 'упомянул тебя в чате', all: 'Важное объявление', reply: 'ответил тебе в чате' },
+  uk: { one: 'згадав тебе в чаті', all: 'Важливе оголошення', reply: 'відповів тобі в чаті' },
+  en: { one: 'mentioned you in chat', all: 'Announcement', reply: 'replied to you in chat' },
 }
+
+const REPLY_SNIPPET = 120
 
 const mentions = (text: string, nick: string) => text.toLowerCase().includes(`@${nick.toLowerCase()}`)
 
@@ -80,7 +86,7 @@ async function readTags(doc: UserDoc, text: string, picked: unknown): Promise<Ch
   return tags.slice(0, TAGS_MAX)
 }
 
-async function notifyTags(doc: UserDoc, line: ChatLine, tags: ChatTag[]) {
+async function notifyTags(doc: UserDoc, line: ChatLine, tags: ChatTag[], reply = false) {
   const from = doc.nickname ?? doc.username
   const people = await users()
   await Promise.all(
@@ -90,11 +96,11 @@ async function notifyTags(doc: UserDoc, line: ChatLine, tags: ChatTag[]) {
       tagged.set(key, Date.now())
       const target = await people.findOneAndUpdate(
         { _id: tag.id },
-        { $push: { mentionNews: { $each: [{ id: line.id, fromId: doc._id!.toHexString(), from, text: line.text.slice(0, 160), at: new Date() }], $slice: -10 } } },
+        { $push: { mentionNews: { $each: [{ id: line.id, fromId: doc._id!.toHexString(), from, text: line.text.slice(0, 160), at: new Date(), ...(reply ? { reply: true } : {}) }], $slice: -10 } } },
         { projection: { mentionPush: 1 } },
       )
       if (target && target.mentionPush !== false)
-        await sendPush(tag.id, (lang) => ({ title: `${from} ${PUSH_TEXT[lang].one}`, body: line.text.slice(0, 140), url: `/${lang}?chat=1`, tag: 'mention' }))
+        await sendPush(tag.id, (lang) => ({ title: `${from} ${reply ? PUSH_TEXT[lang].reply : PUSH_TEXT[lang].one}`, body: line.text.slice(0, 140), url: `/${lang}?chat=1`, tag: 'mention' }))
     }),
   )
   if (tagged.size > 5000) tagged.clear()
@@ -193,7 +199,13 @@ export async function chatPage(before?: string, limit = PAGE, channel: ChatChann
 
 export type ChatFail = 'empty' | 'muted' | 'too_fast'
 
-export async function sendChat(doc: UserDoc, raw: unknown, picked?: unknown): Promise<ChatLine | ChatFail> {
+async function readReply(room: Collection<ChatDoc>, asked: unknown): Promise<ChatReply | null> {
+  if (typeof asked !== 'string' || !ObjectId.isValid(asked)) return null
+  const found = await room.findOne({ _id: new ObjectId(asked), hidden: { $ne: true } }, { projection: { userId: 1, nickname: 1, text: 1 } })
+  return found ? { id: found._id!, userId: found.userId, nickname: found.nickname, text: found.text.slice(0, REPLY_SNIPPET) } : null
+}
+
+export async function sendChat(doc: UserDoc, raw: unknown, picked?: unknown, replyTo?: unknown): Promise<ChatLine | ChatFail> {
   const text = tidy(raw)
   if (!text) return 'empty'
   if (doc.chatMutedUntil && doc.chatMutedUntil.getTime() > Date.now()) return 'muted'
@@ -221,9 +233,13 @@ export async function sendChat(doc: UserDoc, raw: unknown, picked?: unknown): Pr
   }
   const tags = await readTags(doc, text, picked)
   if (tags.length) line.tags = tags
+  const reply = await readReply(room, replyTo)
+  if (reply) line.reply = reply
   const saved = await room.insertOne(line)
   const done = lineOf({ ...line, _id: saved.insertedId })
   if (tags.length) void notifyTags(doc, done, tags).catch(() => undefined)
+  const answered = reply && !reply.userId.equals(userId) && !tags.some((tag) => tag.id.equals(reply.userId))
+  if (answered) void notifyTags(doc, done, [{ id: reply.userId, nick: reply.nickname }], true).catch(() => undefined)
   return done
 }
 

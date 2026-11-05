@@ -722,7 +722,7 @@ function Bell() {
                       <ChatIcon />
                     </span>
                     <span className="bell-body">
-                      <b>{t('chat.mentionFrom', { name: one.from })}</b>
+                      <b>{t(one.reply ? 'chat.replyFrom' : 'chat.mentionFrom', { name: one.from })}</b>
                       <span className="bell-hint">{one.text}</span>
                     </span>
                   </span>

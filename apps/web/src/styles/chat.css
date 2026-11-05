@@ -1148,3 +1148,129 @@ body:has(.chat-panel) .duel-dock {
     background: color-mix(in srgb, var(--accent) 14%, transparent);
   }
 }
+
+.chat-line.has-reply {
+  padding-top: 26px;
+}
+
+.chat-thread {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  left: 21px;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-3);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12.5px;
+  text-align: left;
+}
+
+.chat-thread i {
+  flex: none;
+  align-self: flex-end;
+  width: 22px;
+  height: 11px;
+  margin-bottom: -3px;
+  border-top: 2px solid color-mix(in srgb, #ffffff 32%, transparent);
+  border-left: 2px solid color-mix(in srgb, #ffffff 32%, transparent);
+  border-radius: 8px 0 0 0;
+}
+
+.chat-thread b {
+  flex: none;
+  color: var(--text-2);
+  font-weight: 700;
+}
+
+.chat-thread span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-thread:hover b,
+.chat-thread:hover span {
+  color: var(--text);
+}
+
+.chat-line.is-tagged .chat-thread {
+  left: 31px;
+}
+
+.chat-reply-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 12px -2px;
+  padding: 8px 8px 8px 12px;
+  border-radius: 14px 14px 6px 6px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--card-2));
+  box-shadow: inset 3px 0 0 var(--accent);
+  color: var(--accent);
+}
+
+.chat-reply-bar > svg {
+  flex: none;
+  width: 17px;
+  height: 17px;
+}
+
+.chat-reply-what {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.chat-reply-what b {
+  color: var(--accent);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.chat-reply-what span {
+  overflow: hidden;
+  color: var(--text-2);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-reply-x {
+  display: grid;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+}
+
+.chat-reply-x:hover {
+  background: color-mix(in srgb, #ffffff 8%, transparent);
+  color: var(--text);
+}
+
+.chat-reply-x svg {
+  width: 15px;
+  height: 15px;
+}

@@ -11,7 +11,7 @@ export type DuelInvite = { code: string; from: string; game: string | null; mode
 export type FriendAsk = { id: string; nickname: string; tag: string | null; at: string }
 export type CoinNews = { coins: number; at: string }
 export type QuizNews = { id: string; quizId: string; title: string; note: string; at: string }
-export type MentionNews = { id: string; fromId: string; from: string; text: string; at: string }
+export type MentionNews = { id: string; fromId: string; from: string; text: string; at: string; reply?: boolean }
 export type Feed = { awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[]; frames: string[]; coins: CoinNews | null; mentions: MentionNews[]; linkGoogle: boolean; title: string | null; quizzes: QuizNews[] }
 
 const EMPTY: Feed = { awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false, title: null, quizzes: [] }

@@ -18,13 +18,13 @@ export const POST = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
 
-  const { text, channel, tags } = (await readJson(request)) as { text?: unknown; channel?: unknown; tags?: unknown }
+  const { text, channel, tags, reply } = (await readJson(request)) as { text?: unknown; channel?: unknown; tags?: unknown; reply?: unknown }
   if (channelOf(channel) === 'news') {
     if (!(await adminSession(request))) return fail(403, 'forbidden')
     const news = await sendNews(found.doc, text)
     return news === 'empty' ? fail(400, 'bad_request') : json({ line: news })
   }
-  const line = await sendChat(found.doc, text, tags)
+  const line = await sendChat(found.doc, text, tags, reply)
   if (line === 'empty') return fail(400, 'bad_request')
   if (line === 'muted') return fail(403, 'muted')
   if (line === 'too_fast') return fail(429, 'too_fast')

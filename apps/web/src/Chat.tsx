@@ -12,7 +12,7 @@ import { onChatOpen } from './chatEvents'
 import { useDuelTalk } from './duelTalk'
 import { useAuth } from './auth'
 import { useI18n, type UiKey } from './i18n'
-import { ChatIcon, CloseIcon, MuteIcon, SendIcon, SmileIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
+import { ChatIcon, CloseIcon, MuteIcon, ReplyIcon, SendIcon, SmileIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { useHref, useNavigate } from './router'
 import { openStream } from './stream'
 
@@ -29,6 +29,7 @@ type Line = {
   at: number
   tags?: { id: string; nick: string }[]
   everyone?: boolean
+  reply?: { id: string; userId: string; nickname: string; text: string }
 }
 
 const AT_BEFORE = /(^|\s)@([^\s@]{0,32})$/
@@ -153,6 +154,7 @@ export default function Chat() {
   const [asking, setAsking] = useState<{ kind: 'drop' | 'mute' | 'unfriend'; line: Line } | null>(null)
   const [menu, setMenu] = useState<{ line: Line; x: number; y: number; above: number } | null>(null)
   const [held, setHeld] = useState<Line | null>(null)
+  const [replyTo, setReplyTo] = useState<Line | null>(null)
   const [pointed, setPointed] = useState<{ line: Line; x: number; y: number } | null>(null)
   const pointBox = useRef<HTMLDivElement>(null)
   const [pointAt, setPointAt] = useState<{ x: number; y: number } | null>(null)
@@ -433,12 +435,13 @@ export default function Chat() {
     const keys = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return
       if (pointed) return setPointed(null)
+      if (replyTo) return setReplyTo(null)
       if (menu) return setMenu(null)
       close()
     }
     window.addEventListener('keydown', keys)
     return () => window.removeEventListener('keydown', keys)
-  }, [open, close, menu, pointed])
+  }, [open, close, menu, pointed, replyTo])
 
   const typeBeat = useCallback(
     (on: boolean) => {
@@ -481,11 +484,12 @@ export default function Chat() {
     }
     const lower = body.toLowerCase()
     const tags = [...new Set(picked.filter((one) => one.id && lower.includes(`@${one.nick.toLowerCase()}`)).map((one) => one.id!))]
-    const { ok, status, data } = await api<{ line?: Line }>('chat', room === 'news' ? { text: body, channel: 'news' } : { text: body, tags })
+    const { ok, status, data } = await api<{ line?: Line }>('chat', room === 'news' ? { text: body, channel: 'news' } : { text: body, tags, ...(replyTo ? { reply: replyTo.id } : {}) })
     setSending(false)
     if (ok && data.line) {
       typedAt.current = 0
       setText('')
+      setReplyTo(null)
       setPicked([])
       setAtAsk(null)
       requestAnimationFrame(grow)
@@ -522,6 +526,7 @@ export default function Chat() {
   const canWrite = room === 'chat' || room === 'duel' || Boolean(user?.admin)
   const limit = room === 'news' ? 1500 : room === 'duel' ? 200 : 300
   const shown: Line[] = room === 'duel' ? (talk?.lines ?? []) : lines
+  const shownIds = new Set(shown.map((line) => line.id))
   const mine = (line: Line) => line.userId === user?.id
   const talkFresh = Boolean(talk?.lines.length) && talk!.lines.at(-1)!.id !== talkSeen && !mine(talk!.lines.at(-1)!)
   const rooms: Room[] = talkCode ? ['duel', 'chat', 'news'] : ['chat', 'news']
@@ -612,7 +617,22 @@ export default function Chat() {
           ? t('chat.typingMany', { one: said[0].nickname, two: said[1].nickname, count: said.length - 2 })
           : ''
 
-  const holdable = Boolean(user?.admin) && room !== 'duel'
+  const canReply = Boolean(user) && room === 'chat'
+  const canModerate = Boolean(user?.admin) && room !== 'duel'
+  const holdable = canReply || canModerate
+
+  const answer = (line: Line) => {
+    setMenu(null)
+    setPointed(null)
+    setHeld(null)
+    setReplyTo(line)
+    requestAnimationFrame(() => field.current?.focus())
+  }
+
+  const jump = (id: string) => {
+    if (!shownIds.has(id)) return say(t('chat.replyGone'))
+    setFocusLine(id)
+  }
 
   const letGo = () => {
     if (hold.current) window.clearTimeout(hold.current.timer)
@@ -717,16 +737,23 @@ export default function Chat() {
             )}
             {shown.map((line, index) => {
               const before = shown[index - 1]
-              const glued = before && before.userId === line.userId && line.at - before.at < GROUP_MS
+              const glued = !line.reply && before && before.userId === line.userId && line.at - before.at < GROUP_MS
               return (
                 <article
                   key={line.id}
                   id={`chat-line-${line.id}`}
                   {...holdOn(line)}
-                  className={`chat-line ${holdable ? 'is-holdable' : ''} ${glued ? 'is-glued' : ''} ${line.userId === user?.id ? 'is-mine' : ''} ${
+                  className={`chat-line ${holdable ? 'is-holdable' : ''} ${line.reply ? 'has-reply' : ''} ${glued ? 'is-glued' : ''} ${line.userId === user?.id ? 'is-mine' : ''} ${
                     user && line.userId !== user.id && (line.everyone || line.tags?.some((tag) => tag.id === user.id)) ? 'is-tagged' : ''
                   }`}
                 >
+                  {line.reply && (
+                    <button type="button" className="chat-thread" onClick={() => jump(line.reply!.id)} title={t('chat.replyJump')}>
+                      <i aria-hidden />
+                      <b>{line.reply.nickname}</b>
+                      <span>{line.reply.text}</span>
+                    </button>
+                  )}
                   {glued ? (
                     <span className="chat-gap" aria-hidden />
                   ) : (
@@ -783,6 +810,19 @@ export default function Chat() {
           ) : user && !canWrite ? (
             <p className="chat-readonly">{t('chat.newsOnly')}</p>
           ) : user ? (
+            <>
+            {replyTo && room === 'chat' && (
+              <div className="chat-reply-bar">
+                <ReplyIcon />
+                <button type="button" className="chat-reply-what" onClick={() => jump(replyTo.id)}>
+                  <b>{t('chat.replyTo', { name: replyTo.nickname })}</b>
+                  <span>{replyTo.text}</span>
+                </button>
+                <button type="button" className="chat-reply-x" aria-label={t('chat.replyCancel')} title={t('chat.replyCancel')} onClick={() => setReplyTo(null)}>
+                  <CloseIcon />
+                </button>
+              </div>
+            )}
             <form
               className="chat-send"
               onSubmit={(event) => {
@@ -908,6 +948,7 @@ export default function Chat() {
                 <SendIcon />
               </button>
             </form>
+            </>
           ) : (
             <Link className="chat-join" href={href.login}>
               {t('chat.join')}
@@ -980,6 +1021,12 @@ export default function Chat() {
                     {t('chat.mentionAct')}
                   </button>
                 )}
+                {room === 'chat' && (
+                  <button type="button" className="chat-menu-item" onClick={() => answer(menu.line)}>
+                    <ReplyIcon />
+                    {t('chat.reply')}
+                  </button>
+                )}
                 <button type="button" className="chat-menu-item" onClick={() => void toDuel(menu.line)}>
                   <SwordsIcon />
                   {t('chat.duel')}
@@ -1003,18 +1050,26 @@ export default function Chat() {
             role="menu"
             aria-label={t('chat.holdAct')}
           >
-            <button
-              type="button"
-              className="chat-menu-item is-bad"
-              onClick={() => {
-                setAsking({ kind: 'drop', line: pointed.line })
-                setPointed(null)
-              }}
-            >
-              <CloseIcon />
-              {t('chat.drop')}
-            </button>
-            {pointed.line.userId !== user?.id && (
+            {canReply && (
+              <button type="button" className="chat-menu-item" onClick={() => answer(pointed.line)}>
+                <ReplyIcon />
+                {t('chat.reply')}
+              </button>
+            )}
+            {canModerate && (
+              <button
+                type="button"
+                className="chat-menu-item is-bad"
+                onClick={() => {
+                  setAsking({ kind: 'drop', line: pointed.line })
+                  setPointed(null)
+                }}
+              >
+                <CloseIcon />
+                {t('chat.drop')}
+              </button>
+            )}
+            {canModerate && pointed.line.userId !== user?.id && (
               <button
                 type="button"
                 className="chat-menu-item"
@@ -1038,18 +1093,26 @@ export default function Chat() {
               <b>{held.nickname}</b>
               {held.text}
             </blockquote>
-            <button
-              type="button"
-              className="chat-hold-item is-bad"
-              onClick={() => {
-                setAsking({ kind: 'drop', line: held })
-                setHeld(null)
-              }}
-            >
-              <CloseIcon />
-              {t('chat.drop')}
-            </button>
-            {held.userId !== user?.id && (
+            {canReply && (
+              <button type="button" className="chat-hold-item" onClick={() => answer(held)}>
+                <ReplyIcon />
+                {t('chat.reply')}
+              </button>
+            )}
+            {canModerate && (
+              <button
+                type="button"
+                className="chat-hold-item is-bad"
+                onClick={() => {
+                  setAsking({ kind: 'drop', line: held })
+                  setHeld(null)
+                }}
+              >
+                <CloseIcon />
+                {t('chat.drop')}
+              </button>
+            )}
+            {canModerate && held.userId !== user?.id && (
               <button
                 type="button"
                 className="chat-hold-item"

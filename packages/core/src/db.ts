@@ -544,11 +544,14 @@ export type ChatDoc = {
   hidden?: boolean
   tags?: ChatTag[]
   everyone?: boolean
+  reply?: ChatReply
 }
+
+export type ChatReply = { id: ObjectId; userId: ObjectId; nickname: string; text: string }
 
 export type ChatTag = { id: ObjectId; nick: string }
 
-export type MentionNews = { id: string; fromId: string; from: string; text: string; at: Date }
+export type MentionNews = { id: string; fromId: string; from: string; text: string; at: Date; reply?: boolean }
 
 export async function chatRoom(): Promise<Collection<ChatDoc>> {
   const collection = (await database()).collection<ChatDoc>('chat')
