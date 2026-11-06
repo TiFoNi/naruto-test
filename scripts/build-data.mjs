@@ -56,6 +56,7 @@ const OVERRIDES = {
   'Fugaku Uchiha': { kekkeiGenkai: ['Шаринган', 'Мангекьё Шаринган'] },
   'Hamura Ōtsutsuki': { kekkeiGenkai: ['Бьякуган', 'Тенсейган'] },
   'Black Zetsu': { kekkeiGenkai: ['Мокутон'], attributes: ['Сенсор'] },
+  'Konohamaru Sarutobi': { jutsuTypes: [JUTSU.ninjutsu] },
 }
 
 const WIKI_API = 'https://naruto.fandom.com/api.php'
