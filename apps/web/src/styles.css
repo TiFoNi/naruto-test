@@ -6211,10 +6211,18 @@ html[data-auth] .guest-note {
 .quests-head {
   position: relative;
   z-index: 3;
+  container-type: inline-size;
 }
 
 .quests-card h2 {
   font-size: 22px;
+}
+
+.quests-card .quests-title {
+  width: max-content;
+  max-width: 100%;
+  white-space: nowrap;
+  font-size: min(22px, calc((100cqi - 44px) / var(--fit, 13)));
 }
 
 .quests-swap {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { api } from './api'
 import { useAuth } from './auth'
@@ -46,13 +46,34 @@ const ICONS: Record<string, ReactNode> = {
 
 const iconOf = (id: string) => ICONS[id.replace(/\d+$/, '')] ?? <PlayIcon />
 
+function FitTitle({ children }: { children: string }) {
+  const node = useRef<HTMLHeadingElement>(null)
+
+  useLayoutEffect(() => {
+    const title = node.current
+    if (!title) return
+    const fit = () => {
+      const size = parseFloat(getComputedStyle(title).fontSize)
+      if (size > 0) title.style.setProperty('--fit', String(title.scrollWidth / size))
+    }
+    fit()
+    void document.fonts?.ready.then(fit)
+  }, [children])
+
+  return (
+    <h2 ref={node} className="quests-title">
+      {children}
+    </h2>
+  )
+}
+
 export function QuestsGhost() {
   const { t } = useI18n()
 
   return (
     <section className="card quests-card">
-      <header>
-        <h2>{t('profile.questsTitle')}</h2>
+      <header className="quests-head">
+        <FitTitle>{t('profile.questsTitle')}</FitTitle>
       </header>
 
       <ul className="quests">
@@ -140,7 +161,7 @@ export default function Quests() {
   return (
     <section className="card quests-card">
       <header className="quests-head">
-        <h2>{t('profile.questsTitle')}</h2>
+        <FitTitle>{t('profile.questsTitle')}</FitTitle>
         {board?.quests.some((quest) => !quest.done) && (
           <span className={`quests-swap ${tip ? 'is-open' : ''} ${board.swap ? '' : 'is-used'}`}>
             <button
