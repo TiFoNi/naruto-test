@@ -748,13 +748,6 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
   const [error, setError] = useState('')
   const [likeNote, setLikeNote] = useState('')
 
-  const [demoPage, setDemoPage] = useState<'none' | 'off' | 'on'>('none')
-  useEffect(() => {
-    const search = window.location.search
-    if (search.includes('demo-comments')) setDemoPage(search.includes('finished') ? 'on' : 'off')
-  }, [])
-  const back0 = null
-
   useEffect(() => {
     void api<{ quiz?: QuizView }>(`quiz?id=${id}`).then(({ ok, data }) => (ok && data.quiz ? setQuiz(data.quiz) : setMissing(true)))
   }, [id])
@@ -781,19 +774,6 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
     setLikeNote(t(status === 401 ? 'quiz.likeLogin' : 'quiz.failed'))
   }
 
-  if (demoPage === 'off' || demoPage === 'on')
-    return (
-      <div className="quiz-page">
-        {back0}
-        <p className="quiz-recap-note">
-          Тестовая страница: всё остаётся в браузере. {demoPage === 'on' ? 'Тест «пройден» — спойлеры открыты.' : 'Тест «не пройден» — спойлеры скрыты.'}{' '}
-          <a href={demoPage === 'on' ? '?demo-comments' : '?demo-comments&finished'} style={{ color: 'var(--accent)' }}>
-            {demoPage === 'on' ? 'Показать как непройденный' : 'Показать как пройденный'}
-          </a>
-        </p>
-        <QuizComments quizId="demo" finished={demoPage === 'on'} />
-      </div>
-    )
   if (!game || missing) return <div className="card center muted">{t('err.not_found')}</div>
 
   const back = (

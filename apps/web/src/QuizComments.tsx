@@ -66,21 +66,7 @@ export default function QuizComments({ quizId, finished }: { quizId: string; fin
     [quizId],
   )
 
-  const [demo, setDemo] = useState(false)
   useEffect(() => {
-    if (window.location.search.includes('demo-comments')) {
-      const now = Date.now()
-      setDemo(true)
-      setList([
-        { id: 'd1', userId: '0000000000000000000000a1', nickname: 'Injani', avatar: null, frame: 'cosmos', title: 'admin', nickTone: null, text: 'Отличный тест! Вопрос про то, кто убил Меруэма, вообще огонь — я был уверен, что Нетеро, а это яд Розы.', spoiler: true, at: now - 50 * 60_000, author: false, mine: false },
-        { id: 'd2', userId: '0000000000000000000000a2', nickname: 'Автор', avatar: null, frame: 'kny', title: 'patron', nickTone: 'hxh', text: 'Спасибо! Старался сделать вопросы с подвохом 🙂', spoiler: false, at: now - 40 * 60_000, author: true, mine: false, reply: { id: 'd1', userId: '0000000000000000000000a1', nickname: 'Injani', spoiler: true, text: 'Отличный тест! Вопрос про то, кто убил Меруэма, вообще огонь — я был уверен, что Нетеро, а это яд Розы.' } },
-        { id: 'd3', userId: '0000000000000000000000a3', nickname: 'Arthas', avatar: null, frame: 'blossom', title: null, nickTone: null, text: '9 из 12, на этажах Небесной арены завалился. Пройду ещё раз.', spoiler: false, at: now - 2 * 86400_000, author: false, mine: false },
-      ].reverse().reverse())
-      setTotal(3)
-      setModerator(true)
-      setReady(true)
-      return
-    }
     void load()
   }, [load, user?.id])
 
@@ -98,15 +84,6 @@ export default function QuizComments({ quizId, finished }: { quizId: string; fin
   const send = async () => {
     const body = text.trim()
     if (!body || busy) return
-    if (demo) {
-      const made: Comment = { id: `m${Date.now()}`, userId: 'me', nickname: user?.nickname ?? 'Ты', avatar: user?.avatar ?? null, frame: user?.frame ?? null, title: null, nickTone: null, text: body, spoiler, at: Date.now(), author: false, mine: true, ...(replying ? { reply: { id: replying.id, userId: replying.userId, nickname: replying.nickname, text: replying.text.slice(0, 120), spoiler: replying.spoiler } } : {}) }
-      setList((was) => [made, ...was])
-      setTotal((was) => was + 1)
-      setText('')
-      setSpoiler(false)
-      setReplying(null)
-      return
-    }
     setBusy(true)
     setError('')
     const { ok, status, data } = await api<{ comment?: Comment }>('quiz/comments', { id: quizId, text: body, spoiler, reply: replying?.id })
@@ -120,10 +97,8 @@ export default function QuizComments({ quizId, finished }: { quizId: string; fin
   }
 
   const edit = async (comment: Comment, change: { drop?: true; spoiler?: boolean }) => {
-    if (!demo) {
-      const { ok, status } = await api('quiz/comments/edit', { id: quizId, comment: comment.id, ...change })
-      if (!ok) return setError(t(errorOf(status)))
-    }
+    const { ok, status } = await api('quiz/comments/edit', { id: quizId, comment: comment.id, ...change })
+    if (!ok) return setError(t(errorOf(status)))
     if (change.spoiler) setShown((was) => new Set(was).add(comment.id))
     if (change.drop) {
       setList((was) =>
@@ -164,7 +139,7 @@ export default function QuizComments({ quizId, finished }: { quizId: string; fin
         {total > 0 && <span>{total}</span>}
       </h2>
 
-      {user || demo ? (
+      {user ? (
         <div className="qc-form">
           {replying && (
             <div className="qc-replying">
@@ -257,7 +232,7 @@ export default function QuizComments({ quizId, finished }: { quizId: string; fin
                     </button>
                   )}
                 </div>
-                {(user || demo) && (
+                {user && (
                   <div className="qc-acts">
                     <button type="button" onClick={() => answer(comment)}>
                       <ReplyIcon />
