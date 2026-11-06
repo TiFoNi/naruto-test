@@ -14,6 +14,7 @@ import { CloseIcon, FilterIcon, SearchIcon } from './icons'
 import { MODES } from './modes'
 import { CARD_RARITIES, CARD_STEPS, cardRank } from '@nanda/game'
 import { PICTURELESS, cardUrl, hdUrl, miniUrl } from './pics'
+import { entityTerms, matchTier, searchKey } from './entity-match'
 import { useHref } from './router'
 import { random, torn, tornPoints } from './torn'
 
@@ -506,8 +507,6 @@ const CHIP_POINTS = tornPoints(24, 7, 6)
 const SEARCH_POINTS = tornPoints(57, 3, 9)
   .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
   .join(' ')
-
-const plain = (text: string) => text.toLowerCase().replace(/ё/g, 'е')
 
 type TileProps = {
   entity: Entity
@@ -1032,6 +1031,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
       return next
     })
   const cast = useMemo(() => (game?.entities ?? []).filter((one) => one.answer), [game, ready])
+  const terms = useMemo(() => new Map(cast.map((entity) => [entity.id, entityTerms(entity)])), [cast])
   const pictures = !PICTURELESS.has(gameId)
   const label = (entity: Entity) => SHORT[`${gameId}:${entity.id}`]?.[lang] ?? name(entity)
 
@@ -1048,12 +1048,15 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   const loading = cast.length === 0
   const counts = CARD_RARITIES.map(() => 0)
   if (Object.keys(cards).length) for (const entity of cast) if (open.has(entity.id)) counts[tierOf(entity)]!++
-  const needle = plain(deferred.trim())
-  const matches = (entity: Entity) => !needle || (open.has(entity.id) && (plain(label(entity)).includes(needle) || plain(name(entity)).includes(needle)))
+  const key = searchKey(deferred)
+  const needle = key.q
+  const tiers = needle ? new Map(cast.map((entity) => [entity.id, open.has(entity.id) ? matchTier(terms.get(entity.id)!, key) : -1])) : null
+  const matches = (entity: Entity) => !tiers || tiers.get(entity.id)! >= 0
   const dimmed = (entity: Entity) => (only.size > 0 && !(open.has(entity.id) && only.has(tierOf(entity)))) || !matches(entity)
   const hasRarity = counts.some((count, tier) => tier > 0 && count > 0)
   const jump = () => {
-    const first = cast.find((entity) => !dimmed(entity))
+    const visible = cast.filter((entity) => !dimmed(entity))
+    const first = tiers ? [...visible].sort((a, b) => tiers.get(a.id)! - tiers.get(b.id)!)[0] : visible[0]
     if (first) document.querySelector(`[data-dex="${first.id}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
