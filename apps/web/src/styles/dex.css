@@ -146,12 +146,14 @@ button.dex-scrap:focus-visible {
   visibility: hidden;
 }
 
-.dex-scrap:not(.is-locked):hover {
-  filter:
-    drop-shadow(0 10px 12px rgb(0 0 0 / 55%))
-    drop-shadow(0 0 1px color-mix(in srgb, var(--dex) 80%, transparent))
-    drop-shadow(0 0 7px color-mix(in srgb, var(--dex) 30%, transparent));
-  transform: translateY(-4px) rotate(calc(var(--tilt, 0deg) * -1));
+@media (hover: hover) {
+  .dex-scrap:not(.is-locked):hover {
+    filter:
+      drop-shadow(0 10px 12px rgb(0 0 0 / 55%))
+      drop-shadow(0 0 1px color-mix(in srgb, var(--dex) 80%, transparent))
+      drop-shadow(0 0 7px color-mix(in srgb, var(--dex) 30%, transparent));
+    transform: translateY(-4px) rotate(calc(var(--tilt, 0deg) * -1));
+  }
 }
 
 .dex-paper {
@@ -300,9 +302,26 @@ button.dex-scrap:focus-visible {
   aspect-ratio: 3 / 4;
   container-type: inline-size;
   color: #1b1a1e;
-  filter: drop-shadow(0 30px 40px rgb(0 0 0 / 60%)) drop-shadow(0 0 24px color-mix(in srgb, var(--dex) 25%, transparent));
   pointer-events: none;
   will-change: transform;
+}
+
+.card-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.card-glow-halo {
+  fill: var(--lv-halo, transparent);
+}
+
+.card-glow-shade {
+  fill: rgb(0 0 0 / 55%);
 }
 
 .dex-zoom-face {
@@ -482,7 +501,6 @@ button.dex-scrap:focus-visible {
   position: absolute;
   inset: 0;
   z-index: -1;
-  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--lv-c) 60%, transparent));
   transform: rotate(var(--turn, 6deg)) translate(4%, 2%);
   pointer-events: none;
 }
@@ -493,6 +511,11 @@ button.dex-scrap:focus-visible {
   width: 100%;
   height: 100%;
   overflow: visible;
+}
+
+.lv-back .lv-back-glow {
+  fill: color-mix(in srgb, var(--lv-c) 60%, transparent);
+  stroke: none;
 }
 
 .lv-back polygon {
@@ -514,17 +537,16 @@ button.dex-scrap:focus-visible {
 }
 
 .dex-zoom-face .lv-back {
-  filter: drop-shadow(0 0 5.1cqw color-mix(in srgb, var(--lv-c) 60%, transparent));
   transform: translateZ(-2px) translate(calc(var(--sx, 0) * -3.5%), calc(var(--sy, 0) * 2.8%)) rotate(calc(var(--sx, 0) * -1.7deg)) rotate(var(--turn, 6deg))
     translate(4%, 2%);
 }
 
 .dex-zoom-drop {
   position: absolute;
-  inset: 3% 4% 1% 4%;
-  border-radius: 8px;
+  inset: 9% 10% 7% 10%;
+  border-radius: 14px;
   background: rgb(0 0 0 / 60%);
-  filter: blur(14px);
+  box-shadow: 0 0 28px 14px rgb(0 0 0 / 60%);
   pointer-events: none;
   transform: translateZ(-1px) translate(3%, 3%);
 }
@@ -564,7 +586,7 @@ button.dex-scrap:focus-visible {
 
 .lv-badge polygon {
   fill: var(--scrap, #ebe5dc);
-  stroke: var(--lv-c, #1b1a1e);
+  stroke: var(--lv-ink, var(--lv-c, #1b1a1e));
   stroke-width: 6;
   stroke-linejoin: round;
 }
@@ -575,17 +597,14 @@ button.dex-scrap:focus-visible {
 }
 
 .dex-scrap[class*='lv-'] {
-  filter:
-    drop-shadow(0 6px 8px rgb(0 0 0 / 55%))
-    drop-shadow(0 0 0 transparent)
-    drop-shadow(0 0 var(--lv-halo-r, 0px) var(--lv-halo, transparent));
+  isolation: isolate;
+  filter: none;
 }
 
-.dex-scrap[class*='lv-']:not(.is-locked):hover {
-  filter:
-    drop-shadow(0 10px 12px rgb(0 0 0 / 55%))
-    drop-shadow(0 0 1px var(--lv-c, color-mix(in srgb, var(--dex) 80%, transparent)))
-    drop-shadow(0 0 calc(var(--lv-halo-r, 0px) * 1.5 + 7px) var(--lv-halo, color-mix(in srgb, var(--dex) 30%, transparent)));
+@media (hover: hover) {
+  .dex-scrap[class*='lv-']:not(.is-locked):hover {
+    filter: none;
+  }
 }
 
 .lv-2,
@@ -604,6 +623,7 @@ button.dex-scrap:focus-visible {
 
 .lv-3 {
   --lv-c: #c9d1dc;
+  --lv-ink: #7d8a9d;
   --lv-halo-r: 6.5px;
   color: #2c333f;
 }
@@ -664,12 +684,6 @@ button.dex-scrap:focus-visible {
   100% {
     transform: translateX(60%);
   }
-}
-
-.dex-zoom-card[class*='lv-'] {
-  filter:
-    drop-shadow(0 30px 40px rgb(0 0 0 / 60%))
-    drop-shadow(0 0 calc(var(--lv-halo-r, 0px) * 2 + 10px) var(--lv-halo, color-mix(in srgb, var(--dex) 25%, transparent)));
 }
 
 .dex-zoom-card .lv-badge {
@@ -758,7 +772,7 @@ button.lv-badge:focus-visible {
 
 .lv-sheet-paper polygon {
   fill: var(--scrap, #ebe5dc);
-  stroke: var(--lv-c, #1b1a1e);
+  stroke: var(--lv-ink, var(--lv-c, #1b1a1e));
   stroke-width: 2.5px;
   stroke-linejoin: round;
 }
@@ -811,7 +825,7 @@ button.lv-badge:focus-visible {
 }
 
 .lv-sheet-kicker {
-  color: color-mix(in srgb, var(--lv-c, #1b1a1e) 70%, #1b1a1e);
+  color: color-mix(in srgb, var(--lv-ink, var(--lv-c, #1b1a1e)) 70%, #1b1a1e);
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -855,7 +869,7 @@ button.lv-badge:focus-visible {
 .lv-sheet-bar i {
   display: block;
   height: 100%;
-  background: color-mix(in srgb, var(--lv-c, #1b1a1e) 80%, #1b1a1e);
+  background: color-mix(in srgb, var(--lv-ink, var(--lv-c, #1b1a1e)) 80%, #1b1a1e);
   transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -918,7 +932,7 @@ button.lv-badge:focus-visible {
 
 .lv-sheet-where li em {
   min-width: 38px;
-  color: color-mix(in srgb, var(--lv-c, #1b1a1e) 75%, #1b1a1e);
+  color: color-mix(in srgb, var(--lv-ink, var(--lv-c, #1b1a1e)) 75%, #1b1a1e);
   font-size: 12px;
   font-style: normal;
   font-weight: 800;

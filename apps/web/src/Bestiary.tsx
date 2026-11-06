@@ -454,6 +454,48 @@ const BACK_POINTS = tornPoints(24, 5)
 
 const BACK_CLIP = torn(24, 5)
 
+const HALO_PX = [0, 0, 5, 6.5, 8, 10.5, 12]
+
+const UNIT = 2.4
+
+const CardGlow = ({ seed, tier, turn }: { seed: number; tier?: number; turn: number }) => {
+  const id = useId()
+  const paper = tornPoints(seed, 4)
+    .map(([x, y]) => `${(x * 3).toFixed(1)},${(y * 4).toFixed(1)}`)
+    .join(' ')
+  const halo = (tier ? HALO_PX[tier]! : 0) * UNIT
+  const drop = 6 * UNIT
+  const shapes = (
+    <>
+      {tier && tier > 1 && <polygon points={BACK_POINTS} transform={`rotate(${turn} 150 200) translate(12 8)`} />}
+      <polygon points={paper} />
+    </>
+  )
+  return (
+    <svg className="card-glow" viewBox="0 0 300 400" preserveAspectRatio="none" aria-hidden>
+      <defs>
+        <filter id={`${id}halo`} x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation={halo / 2} />
+        </filter>
+        <filter id={`${id}shade`} x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation={4 * UNIT} />
+        </filter>
+      </defs>
+      {halo > 0 && (
+        <g className="card-glow-halo" filter={`url(#${id}halo)`}>
+          {shapes}
+          <g transform={`translate(0 ${drop})`} opacity={0.55}>
+            {shapes}
+          </g>
+        </g>
+      )}
+      <g className="card-glow-shade" filter={`url(#${id}shade)`} transform={`translate(0 ${drop})`}>
+        {shapes}
+      </g>
+    </svg>
+  )
+}
+
 const PicEdge = ({ seed }: { seed: number }) => {
   const points = tornPoints(seed, 3, 7)
     .map(([x, y]) => `${(x * 2.58).toFixed(1)},${(y * 2.88).toFixed(1)}`)
@@ -487,7 +529,11 @@ const BackSheet = ({ turn = BACK_TURN }: { turn?: number }) => {
             <stop offset="0%" className="lv-back-top" />
             <stop offset="78%" className="lv-back-bottom" />
           </radialGradient>
+          <filter id={`${id}glow`} x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation={3 * UNIT} />
+          </filter>
         </defs>
+        <polygon className="lv-back-glow" points={points} filter={`url(#${id}glow)`} />
         <polygon points={points} fill={`url(#${id})`} />
       </svg>
       <i className="lv-back-light" style={{ clipPath: BACK_CLIP }} />
@@ -507,13 +553,52 @@ const useTilt = (face: React.RefObject<HTMLDivElement | null>, ready: () => bool
   const aim = useRef({ x: 0, y: 0 })
   const state = useRef<Tilt>({ x: 0, y: 0, vx: 0, vy: 0 })
   const dragged = useRef(false)
+  const wake = useRef(() => {})
 
   useEffect(() => {
     const node = face.current
     if (!node || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     let frame = 0
-    let last = performance.now()
+    let last = 0
     let grab: { id: number; x: number; y: number; width: number; height: number } | null = null
+
+    const paint = (one: Tilt) => {
+      const reach = Math.min(1, Math.hypot(one.x / TILT_X, one.y / TILT_Y))
+      node.style.setProperty('--rx', `${one.x.toFixed(2)}deg`)
+      node.style.setProperty('--ry', `${one.y.toFixed(2)}deg`)
+      node.style.setProperty('--gx', `${(50 + (one.y / TILT_Y) * 45).toFixed(1)}%`)
+      node.style.setProperty('--gy', `${(50 - (one.x / TILT_X) * 45).toFixed(1)}%`)
+      node.style.setProperty('--glow', (reach * 0.75).toFixed(3))
+      node.style.setProperty('--sx', (one.y / TILT_Y).toFixed(3))
+      node.style.setProperty('--sy', (one.x / TILT_X).toFixed(3))
+    }
+
+    const step = (now: number) => {
+      const dt = Math.min(0.05, (now - last) / 1000)
+      last = now
+      const one = state.current
+      const stiff = grab ? 260 : 90
+      const damp = grab ? 24 : 9
+      one.vx += ((aim.current.x - one.x) * stiff - one.vx * damp) * dt
+      one.vy += ((aim.current.y - one.y) * stiff - one.vy * damp) * dt
+      one.x += one.vx * dt
+      one.y += one.vy * dt
+      const settled = !grab && Math.abs(one.x - aim.current.x) + Math.abs(one.y - aim.current.y) < 0.02 && Math.abs(one.vx) + Math.abs(one.vy) < 0.05
+      if (settled) {
+        state.current = { x: aim.current.x, y: aim.current.y, vx: 0, vy: 0 }
+        paint(state.current)
+        frame = 0
+        return
+      }
+      paint(one)
+      frame = requestAnimationFrame(step)
+    }
+
+    wake.current = () => {
+      if (frame) return
+      last = performance.now()
+      frame = requestAnimationFrame(step)
+    }
 
     const down = (event: PointerEvent) => {
       if (!ready() || (event.target as Element).closest('.lv-badge')) return
@@ -522,6 +607,7 @@ const useTilt = (face: React.RefObject<HTMLDivElement | null>, ready: () => bool
       dragged.current = false
       node.setPointerCapture(event.pointerId)
       node.classList.add('is-held')
+      wake.current()
     }
     const move = (event: PointerEvent) => {
       if (!grab || event.pointerId !== grab.id) return
@@ -537,39 +623,19 @@ const useTilt = (face: React.RefObject<HTMLDivElement | null>, ready: () => bool
       grab = null
       aim.current = { x: 0, y: 0 }
       node.classList.remove('is-held')
+      wake.current()
       window.setTimeout(() => {
         dragged.current = false
       }, 0)
     }
 
-    const step = (now: number) => {
-      const dt = Math.min(0.05, (now - last) / 1000)
-      last = now
-      const one = state.current
-      const stiff = grab ? 260 : 90
-      const damp = grab ? 24 : 9
-      one.vx += ((aim.current.x - one.x) * stiff - one.vx * damp) * dt
-      one.vy += ((aim.current.y - one.y) * stiff - one.vy * damp) * dt
-      one.x += one.vx * dt
-      one.y += one.vy * dt
-      const reach = Math.min(1, Math.hypot(one.x / TILT_X, one.y / TILT_Y))
-      node.style.setProperty('--rx', `${one.x.toFixed(2)}deg`)
-      node.style.setProperty('--ry', `${one.y.toFixed(2)}deg`)
-      node.style.setProperty('--gx', `${(50 + (one.y / TILT_Y) * 45).toFixed(1)}%`)
-      node.style.setProperty('--gy', `${(50 - (one.x / TILT_X) * 45).toFixed(1)}%`)
-      node.style.setProperty('--glow', (reach * 0.75).toFixed(3))
-      node.style.setProperty('--sx', (one.y / TILT_Y).toFixed(3))
-      node.style.setProperty('--sy', (one.x / TILT_X).toFixed(3))
-      frame = requestAnimationFrame(step)
-    }
-
-    frame = requestAnimationFrame(step)
     node.addEventListener('pointerdown', down)
     node.addEventListener('pointermove', move)
     node.addEventListener('pointerup', up)
     node.addEventListener('pointercancel', up)
     return () => {
       cancelAnimationFrame(frame)
+      wake.current = () => {}
       node.removeEventListener('pointerdown', down)
       node.removeEventListener('pointermove', move)
       node.removeEventListener('pointerup', up)
@@ -579,6 +645,7 @@ const useTilt = (face: React.RefObject<HTMLDivElement | null>, ready: () => bool
 
   const rest = useCallback(() => {
     aim.current = { x: 0, y: 0 }
+    wake.current()
   }, [])
 
   return { dragged, rest }
@@ -722,6 +789,7 @@ const DexZoom = ({ focus, game, label, accent, rank, onClosed }: { focus: Focus;
     <div className="dex-zoom" role="dialog" aria-modal="true" aria-label={label} style={{ '--dex': accent } as CSSProperties}>
       <div ref={shade} className="dex-zoom-shade" onClick={() => !dragged.current && close()} />
       <div ref={card} className={`dex-zoom-card ${tier ? `lv-${tier}` : ''} ${away ? 'is-leaving' : ''}`}>
+        <CardGlow seed={entity.id} tier={tier} turn={BACK_TURN + focus.tilt} />
         <div ref={face} className="dex-zoom-face">
           {tier && tier > 1 && <BackSheet turn={BACK_TURN + focus.tilt} />}
           {tier && tier > 1 && <i className="dex-zoom-drop" />}
@@ -739,6 +807,7 @@ const DexZoom = ({ focus, game, label, accent, rank, onClosed }: { focus: Focus;
             <img src={cardUrl(game, entity.id, entity.image)} alt="" draggable={false} />
             <img
               className="dex-zoom-hd"
+              decoding="async"
               src={hdUrl(game, entity.id, entity.image)}
               alt=""
               draggable={false}
@@ -875,8 +944,12 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                     <button
                       type="button"
                       className={`dex-scrap ${focus?.entity.id === entity.id ? 'is-lifted' : ''} ${tierOf(entity) ? `lv-${tierOf(entity) + 1}` : ''}`}
+                      onPointerDown={() => {
+                        if (pictures) new Image().src = hdUrl(game.id, entity.id, entity.image)
+                      }}
                       onClick={(event) => setFocus(lift(entity, event.currentTarget))}
                     >
+                      {tierOf(entity) > 0 && <CardGlow seed={entity.id} tier={tierOf(entity) + 1} turn={BACK_TURN} />}
                       {tierOf(entity) > 0 && <BackSheet />}
                       <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
                       <span className="dex-pic" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
