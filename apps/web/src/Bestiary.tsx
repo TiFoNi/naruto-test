@@ -496,6 +496,14 @@ const CardGlow = ({ seed, tier, turn }: { seed: number; tier?: number; turn: num
   )
 }
 
+const DexImg = ({ src }: { src: string }) => {
+  const [shown, setShown] = useState(false)
+  const check = useCallback((node: HTMLImageElement | null) => {
+    if (node?.complete && node.naturalWidth) setShown(true)
+  }, [])
+  return <img ref={check} className={shown ? 'is-in' : ''} src={src} alt="" loading="lazy" decoding="async" draggable={false} onLoad={() => setShown(true)} />
+}
+
 const PicEdge = ({ seed }: { seed: number }) => {
   const points = tornPoints(seed, 3, 7)
     .map(([x, y]) => `${(x * 2.58).toFixed(1)},${(y * 2.88).toFixed(1)}`)
@@ -962,7 +970,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                       {tierOf(entity) > 0 && <BackSheet />}
                       <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
                       <span className="dex-pic" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
-                        <img src={cardUrl(game.id, entity.id, entity.image)} alt="" loading="lazy" decoding="async" draggable={false} />
+                        <DexImg src={cardUrl(game.id, entity.id, entity.image)} />
                         <PicEdge seed={entity.id * 3 + 1} />
                       </span>
                       <b className={lengthOf(label(entity))}>
@@ -974,7 +982,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                       <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
                       {pictures && (
                         <span className="dex-pic is-fog" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
-                          <img src={miniUrl(game.id, entity.id, entity.image)} alt="" loading="lazy" decoding="async" draggable={false} />
+                          <DexImg src={miniUrl(game.id, entity.id, entity.image)} />
                         </span>
                       )}
                       <em aria-hidden>?</em>

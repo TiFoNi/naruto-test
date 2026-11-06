@@ -177,6 +177,26 @@ button.dex-scrap:focus-visible {
   object-position: center 20%;
 }
 
+.dex-pic img:not(.is-in) {
+  opacity: 0;
+}
+
+.dex-pic img.is-in {
+  animation: dex-pic-in 0.6s ease-out backwards;
+}
+
+@keyframes dex-pic-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dex-pic img.is-in {
+    animation: none;
+  }
+}
+
 .dex-scrap b,
 .dex-zoom-name {
   position: absolute;
