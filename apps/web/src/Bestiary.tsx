@@ -12,7 +12,7 @@ import type { Entity, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { CloseIcon, FilterIcon, SearchIcon } from './icons'
 import { MODES } from './modes'
-import { CARD_RARITIES, CARD_STEPS, cardRank } from '@nanda/game'
+import { CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_POINTS, CARD_RARITIES, CARD_STEPS, cardRank, type ModeId } from '@nanda/game'
 import { PICTURELESS, cardUrl, hdUrl, miniUrl } from './pics'
 import { entityTerms, matchTier, searchKey } from './entity-match'
 import { useHref } from './router'
@@ -765,6 +765,112 @@ type Rank = ReturnType<typeof cardRank> & { modes: CardStats['modes'] }
 
 const rankOf = (stats?: CardStats): Rank => ({ ...cardRank(stats?.xp ?? 0), modes: stats?.modes ?? {} })
 
+const DexHelp = ({ modes }: { modes: ModeId[] }) => {
+  const { t } = useI18n()
+  const [state, setState] = useState<'in' | 'out' | null>(null)
+  const [spot, setSpot] = useState({ left: 0, origin: 20 })
+  const box = useRef<HTMLDivElement>(null)
+  const hide = useCallback(() => setState((was) => (was ? 'out' : null)), [])
+
+  const show = () => {
+    const button = box.current?.firstElementChild?.getBoundingClientRect()
+    const frame = box.current?.parentElement?.getBoundingClientRect()
+    if (button && frame) {
+      const width = Math.min(360, window.innerWidth - 32)
+      const wanted = button.left - frame.left - 18
+      const left = Math.max(0, Math.min(wanted, window.innerWidth - 16 - width - frame.left))
+      setSpot({ left, origin: button.left - frame.left + button.width / 2 - left })
+    }
+    setState('in')
+  }
+
+  useEffect(() => {
+    if (state !== 'in') return
+    const away = (event: PointerEvent) => {
+      if (!box.current?.contains(event.target as Node)) hide()
+    }
+    const key = (event: KeyboardEvent) => event.key === 'Escape' && hide()
+    document.addEventListener('pointerdown', away)
+    window.addEventListener('keydown', key)
+    return () => {
+      document.removeEventListener('pointerdown', away)
+      window.removeEventListener('keydown', key)
+    }
+  }, [state, hide])
+
+  useEffect(() => {
+    if (state !== 'out') return
+    const timer = window.setTimeout(() => setState(null), 240)
+    return () => window.clearTimeout(timer)
+  }, [state])
+
+  const groups = [...new Set(modes.map((mode) => CARD_POINTS[mode] ?? 0))]
+    .filter((points) => points > 0)
+    .sort((a, b) => b - a)
+    .map((points) => ({
+      points,
+      names: MODES.filter((mode) => modes.includes(mode.id) && CARD_POINTS[mode.id] === points).map((mode) => t(mode.label)),
+    }))
+
+  return (
+    <div ref={box} className="dex-help-box">
+      <button
+        type="button"
+        className={`dex-help-toggle ${state === 'in' ? 'is-open' : ''}`}
+        aria-expanded={state === 'in'}
+        aria-label={t('dex.help')}
+        title={t('dex.help')}
+        onClick={() => (state === 'in' ? hide() : show())}
+      >
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+          <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
+        </svg>
+        <b aria-hidden>?</b>
+      </button>
+      {state && (
+        <div
+          className={`dex-help ${state === 'out' ? 'is-out' : ''}`}
+          role="dialog"
+          aria-label={t('dex.help')}
+          style={{ left: spot.left, transformOrigin: `${spot.origin}px -12px` } as CSSProperties}
+        >
+          <svg className="dex-help-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+            <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
+          </svg>
+          <button type="button" className="lv-sheet-x" aria-label={t('dex.close')} onClick={hide}>
+            <CloseIcon />
+          </button>
+          <b className="dex-help-title">{t('dex.help')}</b>
+          <p>{t('dex.help.open')}</p>
+          <span className="dex-help-label">{t('dex.help.points')}</span>
+          <ul className="dex-help-points">
+            {groups.map((group) => (
+              <li key={group.points}>
+                <b>{group.points}</b>
+                <span>{group.names.join(', ')}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="dex-help-note">{t('dex.help.daily', { factor: CARD_DAILY_FACTOR })}</p>
+          <span className="dex-help-label">{t('dex.help.rarity', { max: CARD_MAX_LEVEL })}</span>
+          <ul className="dex-help-rarities">
+            {CARD_STEPS.map((step, tier) => (
+              <li key={tier} className={`lv-${tier + 1}`}>
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                  <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
+                </svg>
+                <span>{t(`card.rarity.${CARD_RARITIES[tier]}` as UiKey)}</span>
+                <em>{step.level}</em>
+              </li>
+            ))}
+          </ul>
+          <p className="dex-help-note">{t('dex.help.tap')}</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
 const CardSheet = ({ rank, out, onClose, onGone }: { rank: Rank; out: boolean; onClose: () => void; onGone: () => void }) => {
   const { t } = useI18n()
   const finds = Object.entries(rank.modes)
@@ -1071,7 +1177,10 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
       </div>
 
       <header className="dex-head">
-        <h1>{owner ? t('dex.titleOf', { world: l(game.label) }) : t('dex.title')}</h1>
+        <div className="dex-title">
+          <h1>{owner ? t('dex.titleOf', { world: l(game.label) }) : t('dex.title')}</h1>
+          <DexHelp modes={game.modes} />
+        </div>
         {!owner && !user && !checking && (
           <p className="dex-count">
             <Link href={href.login} prefetch={false} className="dex-guest">

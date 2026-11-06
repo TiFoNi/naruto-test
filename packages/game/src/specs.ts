@@ -642,12 +642,14 @@ export const DAILY_XP_FACTOR = 3
 
 export const CARD_STEPS = [
   { level: 1, xp: 0 },
-  { level: 5, xp: 2 },
-  { level: 10, xp: 4 },
-  { level: 20, xp: 7 },
-  { level: 35, xp: 15 },
-  { level: 50, xp: 30 },
+  { level: 2, xp: 2 },
+  { level: 4, xp: 4 },
+  { level: 7, xp: 7 },
+  { level: 15, xp: 15 },
+  { level: 30, xp: 30 },
 ] as const
+
+export const CARD_MAX_LEVEL = CARD_STEPS[CARD_STEPS.length - 1]!.xp
 
 export const CARD_POINTS: Partial<Record<ModeId, number>> = {
   image: 1,
@@ -673,9 +675,8 @@ export function cardRank(xp: number) {
   const total = Math.max(0, xp)
   let tier = 0
   while (tier + 1 < CARD_STEPS.length && total >= CARD_STEPS[tier + 1]!.xp) tier++
-  const here = CARD_STEPS[tier]!
   const next = CARD_STEPS[tier + 1]
-  const level = next ? here.level + Math.floor(((total - here.xp) / (next.xp - here.xp)) * (next.level - here.level)) : here.level
+  const level = Math.max(1, Math.min(total, CARD_MAX_LEVEL))
   return { tier, rarity: CARD_RARITIES[tier]!, level, xp: total, next: next ? { xp: next.xp, rarity: CARD_RARITIES[tier + 1]! } : null }
 }
 

@@ -438,6 +438,246 @@
   opacity: 0.18;
 }
 
+.dex-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.dex-help-box {
+  display: flex;
+  flex: none;
+}
+
+.dex-help-toggle {
+  position: relative;
+  display: grid;
+  width: 38px;
+  height: 34px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #ebe5dc;
+  cursor: pointer;
+  isolation: isolate;
+  rotate: -3deg;
+  transition:
+    rotate 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dex-help-toggle svg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.dex-help-toggle polygon {
+  fill: color-mix(in srgb, #ebe5dc 14%, #120f16);
+  stroke: #ebe5dc;
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  transition:
+    fill 0.2s ease,
+    stroke 0.2s ease;
+}
+
+.dex-help-toggle b {
+  font-family: var(--display);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.dex-help-toggle.is-open {
+  color: color-mix(in srgb, var(--dex) 70%, white);
+  rotate: 4deg;
+}
+
+.dex-help-toggle.is-open polygon {
+  fill: color-mix(in srgb, var(--dex) 26%, #120f16);
+  stroke: var(--dex);
+}
+
+@media (hover: hover) {
+  .dex-help-toggle:hover {
+    scale: 1.08;
+  }
+}
+
+.dex-help-toggle:focus-visible {
+  outline: 2px solid var(--dex);
+  outline-offset: 4px;
+}
+
+.dex-help {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  z-index: 30;
+  display: flex;
+  width: min(360px, calc(100vw - 32px));
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 20px 18px;
+  color: #1b1a1e;
+  transform-origin: 40px 0;
+  rotate: -1deg;
+  animation: dex-help-in 0.34s cubic-bezier(0.22, 1.3, 0.36, 1);
+}
+
+.dex-help.is-out {
+  pointer-events: none;
+  animation: dex-help-out 0.22s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+}
+
+@keyframes dex-help-in {
+  from {
+    opacity: 0;
+    scale: 0.5;
+    rotate: -7deg;
+  }
+}
+
+@keyframes dex-help-out {
+  to {
+    opacity: 0;
+    scale: 0.5;
+    rotate: -7deg;
+  }
+}
+
+.dex-help-paper {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 14px 20px rgb(0 0 0 / 55%));
+}
+
+.dex-help-paper polygon {
+  fill: var(--scrap, #ebe5dc);
+  stroke: #4a4640;
+  stroke-width: 2.5px;
+  stroke-linejoin: round;
+}
+
+.dex-help-title {
+  padding-right: 30px;
+  font-family: var(--display);
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.dex-help p {
+  margin: 0;
+  color: rgb(27 26 30 / 80%);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.dex-help .dex-help-note {
+  color: rgb(27 26 30 / 58%);
+  font-size: 12.5px;
+}
+
+.dex-help-label {
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px dashed rgb(27 26 30 / 22%);
+  color: rgb(27 26 30 / 55%);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dex-help-points,
+.dex-help-rarities {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dex-help-points li {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.dex-help-points b {
+  color: color-mix(in srgb, var(--dex) 60%, #2a1206);
+  font-family: var(--display);
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-align: center;
+}
+
+.dex-help-rarities li {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) 40px;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.dex-help-rarities li.lv-1 {
+  --lv-c: #b8ad9c;
+}
+
+.dex-help-rarities svg {
+  width: 24px;
+  height: 17px;
+  overflow: visible;
+  rotate: -4deg;
+}
+
+.dex-help-rarities li:nth-child(odd) svg {
+  rotate: 3deg;
+}
+
+.dex-help-rarities polygon {
+  fill: color-mix(in srgb, var(--lv-c) 32%, #120f16);
+  stroke: var(--lv-ink, var(--lv-c));
+  stroke-width: 2px;
+  stroke-linejoin: round;
+}
+
+.dex-help-rarities span {
+  font-weight: 700;
+}
+
+.dex-help-rarities em {
+  color: inherit;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-align: right;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .dex-help,
+  .dex-help.is-out {
+    animation: none;
+  }
+}
+
 .dex-head h1 {
   margin: 0;
   font-family: var(--display);
