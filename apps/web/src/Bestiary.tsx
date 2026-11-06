@@ -10,9 +10,9 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { CloseIcon, FilterIcon, SearchIcon } from './icons'
+import { CloseIcon, FilterIcon, PinIcon, SearchIcon } from './icons'
 import { MODES } from './modes'
-import { CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_POINTS, CARD_RARITIES, CARD_STEPS, cardRank, type ModeId } from '@nanda/game'
+import { CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_PINS_MAX, CARD_POINTS, CARD_RARITIES, CARD_STEPS, cardRank, type ModeId } from '@nanda/game'
 import { PICTURELESS, cardUrl, hdUrl, miniUrl } from './pics'
 import { entityTerms, matchTier, searchKey } from './entity-match'
 import { useHref } from './router'
@@ -709,7 +709,7 @@ const useTilt = (face: React.RefObject<HTMLDivElement | null>, ready: () => bool
     }
 
     const down = (event: PointerEvent) => {
-      if (!ready() || (event.target as Element).closest('.lv-badge')) return
+      if (!ready() || (event.target as Element).closest('.lv-badge, .dex-zoom-pin')) return
       const box = node.getBoundingClientRect()
       grab = { id: event.pointerId, x: event.clientX, y: event.clientY, width: box.width, height: box.height }
       dragged.current = false
@@ -873,7 +873,42 @@ const DexHelp = ({ modes }: { modes: ModeId[] }) => {
   )
 }
 
-const CardSheet = ({ rank, out, onClose, onGone }: { rank: Rank; out: boolean; onClose: () => void; onGone: () => void }) => {
+export function ShowcaseCard({ game, id, image, label, xp }: { game: GameId; id: number; image?: string; label: string; xp: number }) {
+  const rank = cardRank(xp)
+  const tier = rank.tier
+  return (
+    <span className={`dex-scrap ${tier ? `lv-${tier + 1}` : ''}`}>
+      {tier > 0 && <CardGlow seed={id} tier={tier + 1} turn={BACK_TURN} />}
+      {tier > 0 && <BackSheet />}
+      <i className="dex-paper" style={{ clipPath: torn(id, 4) }} />
+      <span className="dex-pic" style={{ clipPath: torn(id * 3 + 1, 3, 7) }}>
+        <DexImg src={cardUrl(game, id, image)} />
+        <PicEdge seed={id * 3 + 1} />
+      </span>
+      <b className={lengthOf(label)}>
+        <span>{label}</span>
+      </b>
+      <span className="lv-badge" aria-hidden>
+        <svg viewBox="0 0 130 100" preserveAspectRatio="none">
+          <polygon points={BADGE_POINTS} />
+        </svg>
+        <b>{rank.level}</b>
+      </span>
+    </span>
+  )
+}
+
+const CardSheet = ({
+  rank,
+  out,
+  onClose,
+  onGone,
+}: {
+  rank: Rank
+  out: boolean
+  onClose: () => void
+  onGone: () => void
+}) => {
   const { t } = useI18n()
   const finds = Object.entries(rank.modes)
     .map(([mode, one]) => ({ mode: MODES.find((item) => item.id === mode), ...one }))
@@ -935,6 +970,7 @@ const DexZoom = ({
   label,
   accent,
   rank,
+  pin,
   onClosed,
 }: {
   focus: Focus
@@ -942,6 +978,7 @@ const DexZoom = ({
   label: string
   accent: string
   rank?: Rank
+  pin?: { on: boolean; toggle: () => void }
   onClosed: () => void
 }) => {
   const { t } = useI18n()
@@ -1019,6 +1056,21 @@ const DexZoom = ({
         <div ref={face} className="dex-zoom-face">
           {tier && tier > 1 && <BackSheet turn={BACK_TURN + focus.tilt} />}
           {tier && tier > 1 && <i className="dex-zoom-drop" />}
+          {pin && (
+            <button
+              type="button"
+              className={`dex-zoom-pin ${pin.on ? 'is-on' : ''}`}
+              aria-pressed={pin.on}
+              aria-label={t(pin.on ? 'card.pinned' : 'card.pin')}
+              title={t(pin.on ? 'card.pinned' : 'card.pin')}
+              onClick={pin.toggle}
+            >
+              <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
+              </svg>
+              <PinIcon />
+            </button>
+          )}
           {level !== undefined && (
             <button
               type="button"
@@ -1066,7 +1118,7 @@ const DexZoom = ({
         </div>
         {sheet && rank && <CardSheet rank={rank} out={sheet === 'out'} onClose={hide} onGone={gone} />}
       </div>
-      <button ref={shut} type="button" className="dex-zoom-close" onClick={close} aria-label={t('dex.close')}>
+      <button ref={shut} type="button" className={`dex-zoom-close ${away ? 'is-leaving' : ''}`} onClick={close} aria-label={t('dex.close')}>
         <CloseIcon />
       </button>
     </div>,
@@ -1102,15 +1154,36 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   const release = useCallback(() => setFocus(null), [])
 
   const [cards, setCards] = useState<Record<number, CardStats>>({})
+  const [pins, setPins] = useState<Set<number> | null>(null)
+  const [pinCount, setPinCount] = useState(0)
+
+  const togglePin = async (id: number) => {
+    if (!pins || !game) return
+    const on = !pins.has(id)
+    const flip = (value: boolean) => {
+      setPins((was) => {
+        const next = new Set(was ?? [])
+        if (value) next.add(id)
+        else next.delete(id)
+        return next
+      })
+      setPinCount((was) => Math.max(0, was + (value ? 1 : -1)))
+    }
+    flip(on)
+    const { ok } = await api('profile', { action: 'cardPin', game: game.id, id, on })
+    if (!ok) flip(!on)
+  }
 
   useEffect(() => {
     if (!game || !user) return
     let alive = true
     const query = owner ? `dex?game=${game.id}&user=${encodeURIComponent(owner)}` : `dex?game=${game.id}`
-    void api<{ ids?: number[]; cards?: Record<number, CardStats>; nickname?: string | null }>(query).then(({ ok, data }) => {
+    void api<{ ids?: number[]; cards?: Record<number, CardStats>; pins?: number[]; pinCount?: number; nickname?: string | null }>(query).then(({ ok, data }) => {
       if (!alive || !ok) return
       setOpen(new Set(data.ids ?? []))
       setCards(data.cards ?? {})
+      setPins(owner ? null : new Set(data.pins ?? []))
+      setPinCount(data.pinCount ?? 0)
       setNickname(data.nickname ?? null)
     })
     return () => {
@@ -1246,6 +1319,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
               <button
                 type="button"
                 className={`dex-filter-toggle is-search ${searching ? 'is-open' : ''} ${needle ? 'is-active' : ''}`}
+            inert={filtering}
                 aria-expanded={searching}
                 aria-label={t('dex.search')}
                 title={t('dex.search')}
@@ -1322,6 +1396,11 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
           label={label(focus.entity)}
           accent={accent}
           rank={rankOf(cards[focus.entity.id])}
+          pin={
+            pins && open.has(focus.entity.id) && (pins.has(focus.entity.id) || pinCount < CARD_PINS_MAX)
+              ? { on: pins.has(focus.entity.id), toggle: () => void togglePin(focus.entity.id) }
+              : undefined
+          }
           onClosed={release}
         />
       )}

@@ -1,5 +1,6 @@
 .dex,
-.dex-zoom {
+.dex-zoom,
+.card-shelf {
   --ink: #ece8e4;
   --scrap: #ebe5dc;
   --scrap-dark: #1c1a1f;
@@ -43,8 +44,22 @@
   padding-inline: 10px;
 }
 
+.dex-filter-toggle.is-search {
+  transition:
+    width 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.12s,
+    margin 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.12s,
+    opacity 0.25s ease 0.18s,
+    scale 0.35s cubic-bezier(0.22, 1.3, 0.36, 1) 0.15s,
+    rotate 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .dex-filter.is-filtering .dex-filter-toggle.is-search {
-  display: none;
+  width: 0;
+  margin-right: -14px;
+  opacity: 0;
+  scale: 0.5;
+  pointer-events: none;
+  transition: none;
 }
 
 .dex-filter-stage {
@@ -402,6 +417,10 @@
 @media (max-width: 560px) {
   .dex-filter {
     gap: 10px;
+  }
+
+  .dex-filter.is-filtering .dex-filter-toggle.is-search {
+    margin-right: -10px;
   }
 
   .dex-search {
@@ -861,7 +880,7 @@ button.dex-scrap:focus-visible {
   }
 }
 
-.dex-scrap b,
+.dex-scrap > b,
 .dex-zoom-name {
   position: absolute;
   top: 79.5%;
@@ -875,19 +894,19 @@ button.dex-scrap:focus-visible {
   text-align: center;
 }
 
-.dex-scrap b {
+.dex-scrap > b {
   font-size: clamp(10px, 1.1vw, 13px);
 }
 
-.dex-scrap b.is-long {
+.dex-scrap > b.is-long {
   font-size: clamp(9px, 0.95vw, 11.5px);
 }
 
-.dex-scrap b.is-longer {
+.dex-scrap > b.is-longer {
   font-size: clamp(8px, 0.82vw, 10px);
 }
 
-.dex-scrap b span,
+.dex-scrap > b span,
 .dex-zoom-name span {
   display: -webkit-box;
   overflow: hidden;
@@ -897,7 +916,7 @@ button.dex-scrap:focus-visible {
   overflow-wrap: break-word;
 }
 
-.dex-scrap b.is-longer span {
+.dex-scrap > b.is-longer span {
   -webkit-line-clamp: 3;
 }
 
@@ -1149,20 +1168,20 @@ button.dex-scrap:focus-visible {
 }
 
 @media (max-width: 559px) {
-  .dex-scrap b {
+  .dex-scrap > b {
     font-size: 9px;
   }
 
-  .dex-scrap b.is-long {
+  .dex-scrap > b.is-long {
     font-size: 8px;
   }
 
-  .dex-scrap b.is-longer {
+  .dex-scrap > b.is-longer {
     font-size: 7px;
   }
 }
 
-.dex-scrap.is-text b {
+.dex-scrap.is-text > b {
   top: 10%;
   right: 9%;
   bottom: 10%;
@@ -1171,7 +1190,7 @@ button.dex-scrap:focus-visible {
   line-height: 1.2;
 }
 
-.dex-scrap.is-text b span {
+.dex-scrap.is-text > b span {
   -webkit-line-clamp: 5;
 }
 
@@ -1682,4 +1701,335 @@ button.lv-badge:focus-visible {
     width: min(250px, 78vw);
     transform-origin: 100% 100%;
   }
+}
+
+.card-shelf {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: var(--card-row, auto);
+  gap: 22px 16px;
+  margin: 0;
+  padding: 8px 10px 4px;
+  list-style: none;
+}
+
+.card-shelf > li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+.card-shelf > li > * {
+  width: min(100%, var(--card-w, 100%));
+}
+
+.card-shelf > li:nth-child(4n + 1) .dex-scrap {
+  rotate: -1.5deg;
+}
+
+.card-shelf > li:nth-child(4n + 2) .dex-scrap {
+  rotate: 1deg;
+}
+
+.card-shelf > li:nth-child(4n + 3) .dex-scrap {
+  rotate: -0.5deg;
+}
+
+.card-shelf > li:nth-child(4n) .dex-scrap {
+  rotate: 1.5deg;
+}
+
+.card-shelf > li > a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.card-shelf .dex-scrap {
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    rotate 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease;
+}
+
+@media (hover: hover) {
+  .card-shelf a:hover .dex-scrap {
+    rotate: 0deg;
+  }
+}
+
+.card-shelf .card-blank {
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  display: grid;
+  width: min(100%, var(--card-w, 100%));
+  aspect-ratio: 3 / 4;
+  place-items: center;
+  border: 1.5px dashed rgb(236 232 228 / 22%);
+  border-radius: 8px;
+  color: rgb(236 232 228 / 40%);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.card-shelf .card-blank .icon {
+  width: 22px;
+  height: 22px;
+}
+
+.card-shelf .card-blank.is-open,
+.card-shelf .card-blank:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.card-shelf .sk.card-ghost {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 8px;
+}
+
+.dex-zoom-pin {
+  position: absolute;
+  top: -14px;
+  right: -16px;
+  z-index: 5;
+  display: grid;
+  width: 46px;
+  height: 42px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #ebe5dc;
+  cursor: pointer;
+  pointer-events: auto;
+  isolation: isolate;
+  transform: translateZ(20px);
+  rotate: 6deg;
+  transition:
+    rotate 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.25s ease;
+}
+
+.dex-zoom-pin > svg:first-child {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 8px rgb(0 0 0 / 50%));
+}
+
+.dex-zoom-pin polygon {
+  fill: #1d1b21;
+  stroke: #ebe5dc;
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  transition:
+    fill 0.25s ease,
+    stroke 0.25s ease;
+}
+
+.dex-zoom-pin .icon {
+  width: 19px;
+  height: 19px;
+  transition: rotate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dex-zoom-pin.is-on {
+  color: #fff;
+  rotate: -4deg;
+}
+
+.dex-zoom-pin.is-on polygon {
+  fill: color-mix(in srgb, var(--dex) 40%, #120f16);
+  stroke: var(--dex);
+}
+
+.dex-zoom-pin.is-on .icon {
+  rotate: -35deg;
+}
+
+@media (hover: hover) {
+  .dex-zoom-pin:hover {
+    scale: 1.08;
+  }
+}
+
+.dex-zoom-pin:focus-visible {
+  outline: 2px solid var(--dex);
+  outline-offset: 4px;
+}
+
+.dex-zoom-card.is-leaving .dex-zoom-pin {
+  visibility: hidden;
+}
+
+.card-edit {
+  position: relative;
+  display: block;
+}
+
+.card-unpin {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  z-index: 3;
+  display: grid;
+  width: clamp(26px, 30%, 40px);
+  height: auto;
+  aspect-ratio: 8 / 7;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #1b1a1e;
+  cursor: pointer;
+  isolation: isolate;
+  rotate: 6deg;
+  transition:
+    opacity 0.35s ease,
+    scale 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    rotate 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.3s ease;
+}
+
+
+.card-unpin svg:first-child {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 8px rgb(0 0 0 / 45%));
+}
+
+.card-unpin polygon {
+  fill: #ebe5dc;
+  stroke: #1b1a1e;
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  transition: stroke 0.3s ease;
+}
+
+.card-unpin .icon {
+  width: 42%;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+@media (hover: hover) {
+  .card-unpin:hover {
+    color: #c43c3c;
+    rotate: -4deg;
+  }
+
+  .card-unpin:hover polygon {
+    stroke: #c43c3c;
+  }
+}
+
+.profile-grid .cards-card {
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.profile-grid:not(.is-edit) .cards-card {
+  border-color: transparent;
+  background: none;
+  box-shadow: none;
+}
+
+.profile-slot:has(> .cards-card.is-empty) {
+  display: none;
+}
+
+.card-worlds {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0 -13px 0 0;
+  padding: 0 7px 0 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  list-style: none;
+}
+
+@supports (-moz-appearance: none) {
+  .card-worlds {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--text) 26%, transparent) transparent;
+  }
+}
+
+.card-worlds::-webkit-scrollbar {
+  width: 6px;
+}
+
+.card-worlds::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.card-worlds::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--text) 26%, transparent);
+  background-clip: content-box;
+}
+
+.card-worlds a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 8px;
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.card-worlds a:hover,
+.card-worlds a:focus-visible {
+  background: color-mix(in srgb, #ffffff 6%, transparent);
+}
+
+.card-worlds img {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.card-worlds span {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-worlds small {
+  color: var(--text-3);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.dex-zoom-close.is-leaving {
+  visibility: hidden;
 }

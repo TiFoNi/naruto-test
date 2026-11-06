@@ -55,7 +55,7 @@ function PlayGhost({ mode }: { mode?: string }) {
 export function ProfileGhost() {
   const { t } = useI18n()
   const href = useHref()
-  const plan = { blocks: PROFILE_BLOCKS_DEFAULT, sides: {} as Record<string, number>, sizes: {} as Record<string, number>, tiles: HERO_TILES_MAX }
+  const plan = { blocks: PROFILE_BLOCKS_DEFAULT.filter((block) => block === 'worlds' || block === 'awards'), sides: {} as Record<string, number>, sizes: {} as Record<string, number>, tiles: HERO_TILES_MAX }
   const cards: Record<ProfileBlock, ReactNode> = {
     worlds: (
       <section className="card worlds-card">
@@ -82,6 +82,17 @@ export function ProfileGhost() {
           {Array.from({ length: 4 }, (_, index) => (
             <li key={index}>
               <span className="sk soon-mark" />
+            </li>
+          ))}
+        </ul>
+      </section>
+    ),
+    cards: (
+      <section className="card cards-card">
+        <ul className="card-shelf">
+          {Array.from({ length: 4 }, (_, index) => (
+            <li key={index}>
+              <span className="sk card-ghost" />
             </li>
           ))}
         </ul>

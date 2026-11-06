@@ -14,7 +14,8 @@ export const GET = handle(async (request) => {
   if (!wanted) {
     if (!found) return json({ ids: [], guest: true })
     const [ids, cards] = await Promise.all([dexOf(found.doc._id!, game), cardsOf(found.doc._id!, game)])
-    return json({ ids, cards })
+    const all = found.doc.cardPins ?? []
+    return json({ ids, cards, pins: all.filter((key) => key.startsWith(`${game}:`)).map((key) => Number(key.split(':')[1])), pinCount: all.length })
   }
   if (!found) return unauthorized()
   if (!ObjectId.isValid(wanted)) return fail(404, 'not_found')

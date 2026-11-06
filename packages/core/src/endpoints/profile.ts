@@ -2,7 +2,7 @@ import { fail, handle, json, readJson } from '../http'
 import { quests, rounds, seasons, shotDays, shotRuns, streaks, tuneRuns } from '../db'
 import { claimTag, currentUser, lowerNickname, ownedTitles, parseNickname, toProfile, unauthorized } from '../profile'
 import { isFrame } from '../frames'
-import { GAME_IDS, bannerCost, bannerLooks, bundleOf, frameCost, heroTiles, isBanner, isTitle, isTone, profileBlocks } from '@nanda/game'
+import { CARD_PINS_MAX, GAME_IDS, bannerCost, bannerLooks, bundleOf, frameCost, heroTiles, isBanner, isTitle, isTone, profileBlocks } from '@nanda/game'
 
 const SHOWCASE_MAX = 8
 const BLOCK_MIN = 60
@@ -67,6 +67,40 @@ export const POST = handle(async (request) => {
     const picked = [...new Set(asked.filter((id: unknown): id is string => typeof id === 'string' && (GAME_IDS as string[]).includes(id)))].slice(0, SHOWCASE_MAX)
     const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $set: { showcase: picked } }, { returnDocument: 'after' })
     return json(toProfile(doc ?? found.doc))
+  }
+
+  if (body.action === 'cardPins') {
+    const asked = Array.isArray(body.pins) ? body.pins : null
+    if (!asked) return fail(400, 'bad_request')
+    const pins = [
+      ...new Set(
+        asked.filter((key: unknown): key is string => {
+          if (typeof key !== 'string') return false
+          const [game, raw] = key.split(':')
+          const id = Number(raw)
+          return (GAME_IDS as string[]).includes(game!) && Number.isInteger(id) && (found.doc.dex?.[game!] ?? []).includes(id)
+        }),
+      ),
+    ].slice(0, CARD_PINS_MAX)
+    await found.collection.updateOne({ _id: found.doc._id }, { $set: { cardPins: pins } })
+    return json({ pins })
+  }
+
+  if (body.action === 'cardPin') {
+    const game = body.game
+    const id = Number(body.id)
+    if (typeof game !== 'string' || !(GAME_IDS as string[]).includes(game) || !Number.isInteger(id)) return fail(400, 'bad_request')
+    const key = `${game}:${id}`
+    const pins = found.doc.cardPins ?? []
+    if (body.on) {
+      if (!(found.doc.dex?.[game] ?? []).includes(id)) return fail(403, 'not_yours')
+      if (!pins.includes(key) && pins.length >= CARD_PINS_MAX) return fail(409, 'pins_full')
+      await found.collection.updateOne({ _id: found.doc._id }, { $addToSet: { cardPins: key } })
+    } else {
+      await found.collection.updateOne({ _id: found.doc._id }, { $pull: { cardPins: key } })
+    }
+    const doc = await found.collection.findOne({ _id: found.doc._id }, { projection: { cardPins: 1 } })
+    return json({ pins: doc?.cardPins ?? [] })
   }
 
   if (body.action === 'title') {

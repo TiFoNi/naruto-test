@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState, type MouseEvent, type ReactNode } from 'react'
 import { useI18n } from './i18n'
 import { BackIcon } from './icons'
-import { cameFrom, previousPath, useNavigate } from './router'
+import { cameFrom, fromProfile, previousPath, useNavigate } from './router'
 
 type Props = { href: string; children: ReactNode; onClick?: () => void; fixed?: boolean; anywhere?: boolean }
 
@@ -12,8 +12,14 @@ export default function BackButton({ href, children, onClick, fixed, anywhere = 
   const navigate = useNavigate()
   const { t } = useI18n()
   const [returning, setReturning] = useState(false)
+  const [profile, setProfile] = useState(false)
 
-  useEffect(() => setReturning(!onClick && (anywhere ? previousPath() !== null : cameFrom(href))), [onClick, anywhere, href])
+  useEffect(() => {
+    const direct = cameFrom(href)
+    const viaProfile = !direct && fromProfile()
+    setProfile(!onClick && viaProfile)
+    setReturning(!onClick && (anywhere ? previousPath() !== null : direct || viaProfile))
+  }, [onClick, anywhere, href])
 
   const handle = (event: MouseEvent<HTMLAnchorElement>) => {
     if (onClick) {
@@ -29,7 +35,7 @@ export default function BackButton({ href, children, onClick, fixed, anywhere = 
   return (
     <Link className="back" href={href} onClick={handle}>
       <BackIcon />
-      {returning && anywhere && !fixed ? t('common.back') : children}
+      {profile ? t('nav.profile') : returning && anywhere && !fixed ? t('common.back') : children}
     </Link>
   )
 }

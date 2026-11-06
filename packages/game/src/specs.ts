@@ -439,11 +439,11 @@ export type TitleId = (typeof TITLES)[number]
 
 export const isTitle = (value: unknown): value is TitleId => (TITLES as readonly string[]).includes(value as string)
 
-export const PROFILE_BLOCKS = ['worlds', 'awards', 'facts', 'activity'] as const
+export const PROFILE_BLOCKS = ['worlds', 'awards', 'cards', 'facts', 'activity'] as const
 
 export type ProfileBlock = (typeof PROFILE_BLOCKS)[number]
 
-export const PROFILE_BLOCKS_DEFAULT: ProfileBlock[] = ['worlds', 'awards']
+export const PROFILE_BLOCKS_DEFAULT: ProfileBlock[] = ['worlds', 'awards', 'cards']
 
 export const isBlock = (value: unknown): value is ProfileBlock => (PROFILE_BLOCKS as readonly string[]).includes(value as string)
 
@@ -648,6 +648,8 @@ export const CARD_STEPS = [
   { level: 15, xp: 15 },
   { level: 30, xp: 30 },
 ] as const
+
+export const CARD_PINS_MAX = 12
 
 export const CARD_MAX_LEVEL = CARD_STEPS[CARD_STEPS.length - 1]!.xp
 

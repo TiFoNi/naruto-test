@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import Avatar from './Avatar'
@@ -27,6 +27,7 @@ import BannerTuner from './BannerTuner'
 import ProfileStage, { useNarrow } from './ProfileStage'
 import { bannerPic } from './banners'
 import {
+  CARD_PINS_MAX,
   HERO_TILES,
   HERO_TILES_DEFAULT,
   HERO_TILES_MAX,
@@ -43,6 +44,9 @@ import {
   type ProfileBlock,
 } from '@nanda/game'
 import { uiUrl } from './pics'
+import { ShowcaseCard } from './Bestiary'
+import { tornPoints } from './torn'
+import { useShelfSort } from './useShelfSort'
 
 type Held = { block: ProfileBlock; x: number; y: number; dx: number; dy: number; w: number; h: number }
 
@@ -51,6 +55,11 @@ type Sized = { block: ProfileBlock; y: number; from: number; roof: number; floor
 const BLOCK_MIN = 180
 const BLOCK_ROOF = 520
 const BLOCK_MAGNET = 10
+const UNPIN_POINTS = tornPoints(42, 9, 4)
+  .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
+  .join(' ')
+const BLOCK_FULL = 900
+const CARDS_ROW = 60
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -89,6 +98,7 @@ type Summary = {
   blockSeen?: Record<string, number>
   gamePlaces: { game: GameId; mode: string; position: number }[]
   showcase: string[]
+  cards?: { game: GameId; id: number; xp: number; image?: string; name: Named }[]
   tiles?: (string | null)[] | null
   banner?: string | null
   bannerLook?: Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>> | null
@@ -167,6 +177,8 @@ export default function Profile({ id }: { id?: string }) {
   const href = useHref()
 
   const [summary, setSummary] = useState<Summary | null>(own ? knownSummary : null)
+  const [adding, setAdding] = useState<HTMLElement | null>(null)
+  const blankAt = useRef<(HTMLButtonElement | null)[]>([])
   const [places, setPlaces] = useState(false)
   const [edit, setEdit] = useState(false)
   const [layout, setLayout] = useState<ProfileBlock[] | null>(null)
@@ -190,7 +202,9 @@ export default function Profile({ id }: { id?: string }) {
       const whole = sized.stops ? next === sized.roof : sized.bare > 0 && Math.abs(next - sized.bare) <= BLOCK_MAGNET
       const copy = { ...tall.current }
       delete eyed.current[sized.block]
-      if (whole) delete copy[sized.block]
+      resized.current.add(sized.block)
+      if (whole && sized.block === 'cards') copy[sized.block] = BLOCK_FULL
+      else if (whole) delete copy[sized.block]
       else copy[sized.block] = next
       tall.current = copy
       setSizes(copy)
@@ -269,6 +283,35 @@ export default function Profile({ id }: { id?: string }) {
     return () => window.removeEventListener('resize', even)
   })
 
+  useLayoutEffect(() => {
+    const match = () => {
+      const shelf = document.querySelector('.profile-slot[data-block="cards"] .card-shelf') as HTMLElement | null
+      if (!shelf) return
+      const peer = (['awards', 'worlds'] as ProfileBlock[])
+        .map((block) => document.querySelector(`.profile-slot[data-block="${block}"] > .card`) as HTMLElement | null)
+        .find((one) => one)
+      if (!peer) {
+        shelf.style.removeProperty('--card-w')
+        shelf.style.removeProperty('--card-row')
+        return
+      }
+      const section = shelf.closest('.card') as HTMLElement | null
+      if (!section) return
+      const outer = getComputedStyle(section)
+      const inner = getComputedStyle(shelf)
+      const chrome =
+        parseFloat(outer.paddingTop) + parseFloat(outer.paddingBottom) + parseFloat(outer.borderTopWidth) + parseFloat(outer.borderBottomWidth) + parseFloat(inner.paddingTop) + parseFloat(inner.paddingBottom)
+      const row = peer.getBoundingClientRect().height - chrome
+      const width = Math.max(90, Math.floor(row * 0.75))
+      const tall = Math.max(120, Math.floor(row))
+      if (shelf.style.getPropertyValue('--card-w') !== `${width}px`) shelf.style.setProperty('--card-w', `${width}px`)
+      if (shelf.style.getPropertyValue('--card-row') !== `${tall}px`) shelf.style.setProperty('--card-row', `${tall}px`)
+    }
+    match()
+    window.addEventListener('resize', match)
+    return () => window.removeEventListener('resize', match)
+  })
+
   useEffect(() => {
     if (!places) return
     const away = (event: MouseEvent) => {
@@ -315,6 +358,7 @@ export default function Profile({ id }: { id?: string }) {
   const [tight, setTight] = useState(false)
   const narrow = useNarrow()
   const eyed = useRef<Record<string, number>>({})
+  const resized = useRef(new Set<string>())
 
   useEffect(() => {
     if (!skins && !tones) return
@@ -428,6 +472,34 @@ export default function Profile({ id }: { id?: string }) {
   const shelf = picked.length ? picked : games.slice(0, SHOWCASE_MAX)
   const blanks = Math.max(0, SHOWCASE_MAX - shelf.length)
 
+  const deck = (summary?.cards ?? []).slice(0, CARD_PINS_MAX)
+  const homes = games.filter((row) => row.solved > 0).sort((a, b) => b.solved - a.solved)
+  const sorting = edit && own && !!user
+  const worldSort = useShelfSort(shelf, (row) => row.game, sorting, (next) => {
+    const ids = next.map((row) => row.game)
+    setSummary((was) => (was ? { ...was, showcase: ids } : was))
+    void api('profile', { action: 'showcase', showcase: ids })
+  })
+  const awardSort = useShelfSort(pinned, (award) => award.id ?? 'secret', sorting, (next) => {
+    setSummary((was) => (was ? { ...was, pinned: next } : was))
+    void api('achievements', { pinned: next.map((award) => award.id).filter(Boolean) })
+  })
+  const cardSort = useShelfSort(deck, (card) => `${card.game}:${card.id}`, sorting, (next) => {
+    setSummary((was) => (was ? { ...was, cards: next } : was))
+    void api('profile', { action: 'cardPins', pins: next.map((one) => `${one.game}:${one.id}`) })
+  })
+  useEffect(() => {
+    if (!sorting) setAdding(null)
+  }, [sorting])
+  const holdLinks = (event: ReactMouseEvent<HTMLElement>) => {
+    if (sorting && !(event.target as Element).closest('.is-blank, .free')) event.preventDefault()
+  }
+
+  const unpin = (card: (typeof deck)[number]) => {
+    const rest = deck.filter((one) => one !== card)
+    setSummary((was) => (was ? { ...was, cards: rest } : was))
+    void api('profile', { action: 'cardPins', pins: rest.map((one) => `${one.game}:${one.id}`) })
+  }
   const gameLabel = (id: string) => GAMES.find((g) => g.id === id)?.label
   const modeLabel = (id: string) => MODES.find((m) => m.id === id)?.label ?? 'mode.classic'
 
@@ -471,7 +543,7 @@ export default function Profile({ id }: { id?: string }) {
     }
   })
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const snap = () => snapper.current()
     snap()
     window.addEventListener('resize', snap)
@@ -622,7 +694,8 @@ export default function Profile({ id }: { id?: string }) {
     return { label: tileName('profile.characters', 'profile.charactersShort'), value: `${summary?.totals.solved ?? 0}` }
   }
 
-  const grown = sizes ?? summary?.blockSizes ?? {}
+  const heights: Record<string, number> = sizes ?? summary?.blockSizes ?? {}
+  const grown: Record<string, number> = 'cards' in heights ? heights : { ...heights, cards: CARDS_ROW }
   const seated = spots ?? summary?.blockSides ?? {}
   const sideOf = (block: ProfileBlock, index: number) => seated[block] ?? index % 2
   const columns = [0, 1].map((column) => shown.map((block, index) => ({ block, index })).filter(({ block, index }) => sideOf(block, index) === column))
@@ -650,16 +723,18 @@ export default function Profile({ id }: { id?: string }) {
     if (kept) slot.style.removeProperty('--slot-h')
     if (mate) slot.style.removeProperty('--mate-h')
     const own = Math.round(card.getBoundingClientRect().height)
-    const list = card.querySelector('.world-shelf, .soon-badges') as HTMLElement | null
+    const list = card.querySelector('.world-shelf, .soon-badges, .card-shelf') as HTMLElement | null
     const items = list ? ([...list.children] as HTMLElement[]) : []
     const box = list?.getBoundingClientRect()
-    const pad = list ? Math.round(parseFloat(getComputedStyle(list).paddingTop)) || 0 : 0
     const chrome = box ? own - box.height : 0
     const steps: number[] = []
     if (list && box && items.length > 1) {
-      const top = items[0].getBoundingClientRect().top
-      const line = items.filter((one) => Math.abs(one.getBoundingClientRect().top - top) < 2)
-      if (line.length < items.length) steps.push(Math.round(chrome + pad + Math.max(...line.map((one) => one.getBoundingClientRect().height))))
+      const tops = [...new Set(items.map((one) => Math.round(one.getBoundingClientRect().top)))].sort((a, b) => a - b)
+      const rows = tops.filter((top, index) => index === 0 || top - tops[index - 1]! >= 2)
+      for (const top of rows.slice(0, -1)) {
+        const line = items.filter((one) => Math.abs(one.getBoundingClientRect().top - top) < 2)
+        steps.push(Math.round(chrome + Math.max(...line.map((one) => one.getBoundingClientRect().bottom)) - box.top))
+      }
     }
     if (kept) slot.style.setProperty('--slot-h', kept)
     if (mate) slot.style.setProperty('--mate-h', mate)
@@ -686,7 +761,7 @@ export default function Profile({ id }: { id?: string }) {
     for (const [block, kept] of Object.entries(grown)) {
       const card = cardOf(block as ProfileBlock)
       const slot = card?.parentElement as HTMLElement | null
-      const shelf = card?.querySelector('.world-shelf, .soon-badges') as HTMLElement | null
+      const shelf = card?.querySelector('.world-shelf, .soon-badges, .card-shelf') as HTMLElement | null
       if (!card || !slot || !shelf) continue
       const held = slot.style.getPropertyValue('--slot-h')
       const mate = slot.style.getPropertyValue('--mate-h')
@@ -695,18 +770,20 @@ export default function Profile({ id }: { id?: string }) {
       const full = Math.round(card.getBoundingClientRect().height)
       const box = shelf.getBoundingClientRect()
       const items = [...shelf.children] as HTMLElement[]
-      const top = items[0]?.getBoundingClientRect()
-      const cols = top ? items.filter((one) => Math.abs(one.getBoundingClientRect().top - top.top) < 2).length : 0
-      const row = top ? Math.round(top.height) : 0
+      const first = items[0]
+      const cols = first ? items.filter((one) => Math.abs(one.offsetTop - first.offsetTop) < 2).length : 0
+      const row = first ? first.offsetHeight : 0
       const gap = Math.round(parseFloat(getComputedStyle(shelf).rowGap)) || 0
-      const pad = Math.round(parseFloat(getComputedStyle(shelf).paddingTop)) || 0
+      const pad =
+        (Math.round(parseFloat(getComputedStyle(shelf).paddingTop)) || 0) + (block === 'cards' ? Math.round(parseFloat(getComputedStyle(shelf).paddingBottom)) || 0 : 0)
       const chrome = Math.round(full - box.height)
       if (mate) slot.style.setProperty('--mate-h', mate)
       if (!cols || !row) {
         if (held) slot.style.setProperty('--slot-h', held)
         continue
       }
-      const seen = eyed.current[block] ?? summary?.blockSeen?.[block] ?? Math.max(1, Math.round((kept - chrome + gap) / (row + gap))) * cols
+      const seen =
+        eyed.current[block] ?? (resized.current.has(block) ? undefined : summary?.blockSeen?.[block]) ?? Math.max(1, Math.round((kept - chrome + gap) / (row + gap))) * cols
       eyed.current[block] = seen
       const rows = Math.max(1, Math.ceil(seen / cols))
       const want = Math.min(full, Math.round(chrome + pad + rows * row + (rows - 1) * gap))
@@ -861,12 +938,17 @@ export default function Profile({ id }: { id?: string }) {
           )}
         </header>
         {shelf.length || own ? (
-          <ul className="world-shelf">
-            {shelf.map((row) => {
+          <ul className={`world-shelf ${sorting ? 'is-sortable' : ''}`} ref={worldSort.list} onClickCapture={holdLinks}>
+            {worldSort.sorted.map((row) => {
               const game = GAMES.find((g) => g.id === row.game)
               const share = percent(row.solved, row.pool)
               return (
-                <li key={row.game} style={{ '--world-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}>
+                <li
+                  key={row.game}
+                  {...worldSort.handle(row.game)}
+                  className={worldSort.dragging === row.game ? 'is-dragging' : undefined}
+                  style={{ '--world-accent': game?.accent ?? 'var(--accent)' } as CSSProperties}
+                >
                   <Link href={own || !id ? href.bestiary(row.game as GameId) : href.playerBestiary(id, row.game as GameId)} prefetch={false}>
                     <span className="world-pic" style={{ '--fill': `${share}%` } as CSSProperties}>
                       <img
@@ -929,6 +1011,75 @@ export default function Profile({ id }: { id?: string }) {
         )}
       </section>
     ),
+    cards: (
+      <section className={`card cards-card ${deck.length || sorting ? '' : 'is-empty'}`} aria-label={t('profile.cardsTitle')}>
+        <ul className={`card-shelf ${sorting ? 'is-sortable' : ''}`} ref={cardSort.list}>
+          {cardSort.sorted.map((card) => (
+            <li
+              key={`${card.game}:${card.id}`}
+              {...cardSort.handle(`${card.game}:${card.id}`)}
+              className={cardSort.dragging === `${card.game}:${card.id}` ? 'is-dragging' : undefined}
+              style={{ '--dex': GAMES.find((one) => one.id === card.game)?.accent ?? 'var(--accent)' } as CSSProperties}
+            >
+              {edit && own ? (
+                <span className="card-edit">
+                  <ShowcaseCard game={card.game} id={card.id} image={card.image} label={l(card.name)} xp={card.xp} />
+                  <button type="button" className="card-unpin" aria-label={t('profile.cardsRemove')} title={t('profile.cardsRemove')} onClick={() => unpin(card)}>
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                      <polygon points={UNPIN_POINTS} vectorEffect="non-scaling-stroke" />
+                    </svg>
+                    <CloseIcon />
+                  </button>
+                </span>
+              ) : (
+                <Link href={own || !id ? href.bestiary(card.game) : href.playerBestiary(id, card.game)} prefetch={false} aria-label={l(card.name)}>
+                  <ShowcaseCard game={card.game} id={card.id} image={card.image} label={l(card.name)} xp={card.xp} />
+                </Link>
+              )}
+            </li>
+          ))}
+          {sorting &&
+            Array.from({ length: Math.max(0, CARD_PINS_MAX - deck.length) }, (_, index) => (
+              <li key={`blank-${index}`} className="is-blank">
+                <button
+                  type="button"
+                  className={`card-blank ${adding && adding === blankAt.current[index] ? 'is-open' : ''}`}
+                  ref={(node) => {
+                    blankAt.current[index] = node
+                  }}
+                  aria-label={t('profile.cardsAdd')}
+                  title={t('profile.cardsAdd')}
+                  onClick={(event) => setAdding(event.currentTarget)}
+                >
+                  <PlusIcon />
+                </button>
+              </li>
+            ))}
+        </ul>
+        {adding && (
+          <TilePop at={adding} wide={300} onClose={() => setAdding(null)}>
+            <header>
+              <h2>{t('profile.cardsPick')}</h2>
+            </header>
+            <ul className="card-worlds">
+              {homes.map((row) => {
+                const game = GAMES.find((one) => one.id === row.game)
+                return (
+                  <li key={row.game}>
+                    <Link href={href.bestiary(row.game as GameId)} prefetch={false} onClick={() => setAdding(null)}>
+                      <img src={uiUrl(`worlds/big/${row.game}.webp`)} alt="" width={36} height={36} loading="lazy" decoding="async" draggable={false} />
+                      <span>{game ? l(game.label) : row.game}</span>
+                      <small>{row.solved}</small>
+                    </Link>
+                  </li>
+                )
+              })}
+              {!homes.length && <li className="muted">{t('profile.activityEmpty')}</li>}
+            </ul>
+          </TilePop>
+        )}
+      </section>
+    ),
     awards: (
       <section className="card soon-card">
         <header>
@@ -945,9 +1096,9 @@ export default function Profile({ id }: { id?: string }) {
             </Link>
           )}
         </header>
-        <ul className="soon-badges">
+        <ul className={`soon-badges ${sorting ? 'is-sortable' : ''}`} ref={awardSort.list} onClickCapture={holdLinks}>
           {Array.from({ length: SHOWCASE_MAX }, (_, index) => {
-            const award = pinned[index]
+            const award = awardSort.sorted[index]
             if (!award)
               return (
                 <li key={index} className="free">
@@ -968,7 +1119,11 @@ export default function Profile({ id }: { id?: string }) {
               )
             const secret = award.hidden || !award.id
             return (
-              <li key={award.id ?? `secret-${index}`} className={`on tier-${award.tier}`}>
+              <li
+                key={award.id ?? `secret-${index}`}
+                {...(award.id ? awardSort.handle(award.id) : {})}
+                className={`on tier-${award.tier} ${awardSort.dragging && awardSort.dragging === award.id ? 'is-dragging' : ''}`}
+              >
                 {user ? (
                   <Link href={own || !id ? `${href.achievements}?filter=done` : href.playerAwards(id)} prefetch={false}>
                     <span className="soon-mark" aria-hidden>

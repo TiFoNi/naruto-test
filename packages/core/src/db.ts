@@ -40,6 +40,7 @@ export type UserDoc = {
   resetAt?: Date
   pinned?: string[]
   showcase?: string[]
+  cardPins?: string[]
   tiles?: (string | null)[]
   avatarPreset?: string | null
   banner?: string

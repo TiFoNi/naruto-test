@@ -1,9 +1,10 @@
 import { ObjectId } from 'mongodb'
-import { GAME_IDS, STAT_KEYS, type GameId } from '@nanda/game'
+import { CARD_PINS_MAX, GAME_IDS, STAT_KEYS, type GameId } from '@nanda/game'
 import { ACHIEVEMENTS, LIFE, familyOf } from '../achievements'
 import { PINNED_MAX } from './achievements'
 import { rounds, seasons, users, type UserDoc } from '../db'
 import { gameData } from '../games'
+import { showcaseOf } from '../dex'
 import { fail, handle, json } from '../http'
 import { currentUser, defaultNickname, ensureTag, unauthorized } from '../profile'
 import { friendState } from '../friends'
@@ -271,6 +272,21 @@ export const GET = handle(async (request) => {
     }),
   )
 
+  const showcase = await showcaseOf(doc, CARD_PINS_MAX)
+  const shelf = (
+    await Promise.all(
+      showcase.map(async (card) => {
+        if (!GAME_IDS.includes(card.game as GameId)) return null
+        const entity = (await gameData(card.game as GameId)).byId.get(card.id)
+        if (!entity) return null
+        const ru = typeof entity.name === 'string' ? entity.name : ''
+        const uk = typeof entity.nameUk === 'string' && entity.nameUk ? entity.nameUk : ru
+        const en = typeof entity.nameEn === 'string' && entity.nameEn ? entity.nameEn : ru
+        return { game: card.game, id: card.id, xp: card.xp, image: typeof entity.image === 'string' ? entity.image : undefined, name: { ru, uk, en } }
+      }),
+    )
+  ).filter((card) => card !== null)
+
   const xp = doc.xp ?? 0
   const level = levelOf(xp)
 
@@ -293,6 +309,7 @@ export const GET = handle(async (request) => {
       }
     }),
     showcase: doc.showcase ?? [],
+    cards: shelf,
     tiles: doc.tiles ?? null,
     banner: doc.banner ?? null,
     bannerLook: lookOf(doc),

@@ -64,6 +64,11 @@ export function useVisitTracker() {
 
 export const previousPath = () => trail[trail.length - 2] ?? null
 
+export const fromProfile = () => {
+  const previous = previousPath()
+  return previous !== null && /^\/(profile|u\/[^/]+)$/.test(bare(previous))
+}
+
 export const cameFrom = (href: string) => {
   const previous = previousPath()
   return previous !== null && bare(previous) === bare(href)

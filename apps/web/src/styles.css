@@ -12543,3 +12543,29 @@ html[data-auth] .ssr-skel {
   text-align: center;
 }
 
+
+.is-sortable {
+  position: relative;
+}
+
+.is-sortable > [data-sort] {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.is-sortable a,
+.is-sortable img {
+  -webkit-user-drag: none;
+}
+
+.is-sortable > .is-dragging {
+  position: relative;
+  z-index: 6;
+  cursor: grabbing;
+}
+
+.is-sortable > .is-dragging > * {
+  filter: drop-shadow(0 14px 22px rgb(0 0 0 / 50%));
+}
