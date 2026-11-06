@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Fragment, useCallback, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
+import { Fragment, memo, useCallback, useDeferredValue, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import BackButton from './BackButton'
 import { api } from './api'
@@ -509,6 +509,65 @@ const SEARCH_POINTS = tornPoints(57, 3, 9)
 
 const plain = (text: string) => text.toLowerCase().replace(/ё/g, 'е')
 
+type TileProps = {
+  entity: Entity
+  game: GameId
+  place: number
+  state: 'open' | 'text' | 'locked'
+  pictures: boolean
+  label: string
+  tier: number
+  lifted: boolean
+  lockedLabel: string
+  onOpen: (focus: Focus) => void
+}
+
+const DexTile = memo(function DexTile({ entity, game, place, state, pictures, label, tier, lifted, lockedLabel, onOpen }: TileProps) {
+  if (state === 'text')
+    return (
+      <span className="dex-scrap is-text">
+        <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
+        <b>
+          <span>{label}</span>
+        </b>
+      </span>
+    )
+  if (state === 'locked')
+    return (
+      <span className="dex-scrap is-locked" aria-label={lockedLabel}>
+        <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
+        {pictures && (
+          <span className="dex-pic is-fog" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
+            <DexImg src={miniUrl(game, entity.id, entity.image)} />
+          </span>
+        )}
+        <em aria-hidden>?</em>
+        <small>№ {place + 1}</small>
+      </span>
+    )
+  return (
+    <button
+      type="button"
+      className={`dex-scrap ${lifted ? 'is-lifted' : ''} ${tier ? `lv-${tier + 1}` : ''}`}
+      onPointerDown={() => {
+        new Image().src = hdUrl(game, entity.id, entity.image)
+      }}
+      onClick={(event) => onOpen(lift(entity, event.currentTarget))}
+    >
+      {tier > 0 && <CardGlow seed={entity.id} tier={tier + 1} turn={BACK_TURN} />}
+      {tier > 0 && <BackSheet />}
+      <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
+      <span className="dex-pic" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
+        <DexImg src={cardUrl(game, entity.id, entity.image)} />
+        <PicEdge seed={entity.id * 3 + 1} />
+      </span>
+      <b className={lengthOf(label)}>
+        <span>{label}</span>
+      </b>
+    </button>
+  )
+})
+
 const RarityChip = ({ tier, count, on, step, onToggle }: { tier: number; count: number; on: boolean; step: number; onToggle: () => void }) => {
   const { t } = useI18n()
   const id = useId()
@@ -957,6 +1016,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   const [panel, setPanel] = useState<'filter' | 'search' | null>(null)
   const [touched, setTouched] = useState(false)
   const [query, setQuery] = useState('')
+  const deferred = useDeferredValue(query)
   const searchBox = useRef<HTMLInputElement>(null)
   const filtering = panel === 'filter'
   const searching = panel === 'search'
@@ -988,7 +1048,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   const loading = cast.length === 0
   const counts = CARD_RARITIES.map(() => 0)
   if (Object.keys(cards).length) for (const entity of cast) if (open.has(entity.id)) counts[tierOf(entity)]!++
-  const needle = plain(query.trim())
+  const needle = plain(deferred.trim())
   const matches = (entity: Entity) => !needle || (open.has(entity.id) && (plain(label(entity)).includes(needle) || plain(name(entity)).includes(needle)))
   const dimmed = (entity: Entity) => (only.size > 0 && !(open.has(entity.id) && only.has(tierOf(entity)))) || !matches(entity)
   const hasRarity = counts.some((count, tier) => tier > 0 && count > 0)
@@ -1124,45 +1184,18 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                   className={dimmed(entity) ? 'is-dim' : undefined}
                   style={{ '--tilt': `${tilt(entity.id)}deg` } as CSSProperties}
                 >
-                  {open.has(entity.id) && !pictures ? (
-                    <span className="dex-scrap is-text">
-                      <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
-                      <b>
-                        <span>{label(entity)}</span>
-                      </b>
-                    </span>
-                  ) : open.has(entity.id) ? (
-                    <button
-                      type="button"
-                      className={`dex-scrap ${focus?.entity.id === entity.id ? 'is-lifted' : ''} ${tierOf(entity) ? `lv-${tierOf(entity) + 1}` : ''}`}
-                      onPointerDown={() => {
-                        if (pictures) new Image().src = hdUrl(game.id, entity.id, entity.image)
-                      }}
-                      onClick={(event) => setFocus(lift(entity, event.currentTarget))}
-                    >
-                      {tierOf(entity) > 0 && <CardGlow seed={entity.id} tier={tierOf(entity) + 1} turn={BACK_TURN} />}
-                      {tierOf(entity) > 0 && <BackSheet />}
-                      <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
-                      <span className="dex-pic" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
-                        <DexImg src={cardUrl(game.id, entity.id, entity.image)} />
-                        <PicEdge seed={entity.id * 3 + 1} />
-                      </span>
-                      <b className={lengthOf(label(entity))}>
-                        <span>{label(entity)}</span>
-                      </b>
-                    </button>
-                  ) : (
-                    <span className="dex-scrap is-locked" aria-label={t('dex.locked')}>
-                      <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
-                      {pictures && (
-                        <span className="dex-pic is-fog" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
-                          <DexImg src={miniUrl(game.id, entity.id, entity.image)} />
-                        </span>
-                      )}
-                      <em aria-hidden>?</em>
-                      <small>№ {place + 1}</small>
-                    </span>
-                  )}
+                  <DexTile
+                    entity={entity}
+                    game={game.id}
+                    place={place}
+                    state={open.has(entity.id) ? (pictures ? 'open' : 'text') : 'locked'}
+                    pictures={pictures}
+                    label={label(entity)}
+                    tier={open.has(entity.id) ? tierOf(entity) : 0}
+                    lifted={focus?.entity.id === entity.id}
+                    lockedLabel={t('dex.locked')}
+                    onOpen={setFocus}
+                  />
                 </li>
               ))}
         </ol>
