@@ -55,6 +55,7 @@ const OVERRIDES = {
   'Sasuke Uchiha': { kekkeiGenkai: ['Шаринган', 'Мангекьё Шаринган', 'Вечный Мангекьё Шаринган', 'Риннеган'] },
   'Fugaku Uchiha': { kekkeiGenkai: ['Шаринган', 'Мангекьё Шаринган'] },
   'Hamura Ōtsutsuki': { kekkeiGenkai: ['Бьякуган', 'Тенсейган'] },
+  'Black Zetsu': { kekkeiGenkai: ['Мокутон'] },
 }
 
 const WIKI_API = 'https://naruto.fandom.com/api.php'
