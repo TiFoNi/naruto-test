@@ -298,7 +298,7 @@ button.dex-scrap:focus-visible {
 
 .dex-zoom-card {
   position: relative;
-  width: min(360px, 80vw, calc((100dvh - 120px) * 0.75));
+  width: min(360px, 72vw, calc((100dvh - 120px) * 0.75));
   aspect-ratio: 3 / 4;
   container-type: inline-size;
   color: #1b1a1e;
@@ -720,6 +720,51 @@ button.lv-badge {
 
 .dex-zoom-card button.lv-badge {
   font-size: 17px;
+}
+
+.dex-zoom-card button.lv-badge.is-calling {
+  animation: lv-badge-call 2.6s ease-in-out 0.9s infinite;
+}
+
+@keyframes lv-badge-call {
+  0%,
+  42%,
+  100% {
+    rotate: -6deg;
+    scale: 1;
+  }
+
+  8% {
+    rotate: -15deg;
+    scale: 1.12;
+  }
+
+  18% {
+    rotate: 3deg;
+    scale: 1.08;
+  }
+
+  27% {
+    rotate: -11deg;
+    scale: 1.04;
+  }
+
+  35% {
+    rotate: -4deg;
+    scale: 1;
+  }
+}
+
+@media (hover: hover) {
+  .dex-zoom-card button.lv-badge.is-calling:hover {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dex-zoom-card button.lv-badge.is-calling {
+    animation: none;
+  }
 }
 
 button.lv-badge.is-on {

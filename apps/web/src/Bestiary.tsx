@@ -721,6 +721,7 @@ const CardSheet = ({ rank, out, onClose, onGone }: { rank: Rank; out: boolean; o
 const DexZoom = ({ focus, game, label, accent, rank, onClosed }: { focus: Focus; game: GameId; label: string; accent: string; rank?: Rank; onClosed: () => void }) => {
   const { t } = useI18n()
   const [sheet, setSheet] = useState<'in' | 'out' | null>(null)
+  const [seen, setSeen] = useState(false)
   const hide = () => setSheet((was) => (was ? 'out' : null))
   const gone = useCallback(() => setSheet(null), [])
   const [away, setAway] = useState(false)
@@ -794,7 +795,15 @@ const DexZoom = ({ focus, game, label, accent, rank, onClosed }: { focus: Focus;
           {tier && tier > 1 && <BackSheet turn={BACK_TURN + focus.tilt} />}
           {tier && tier > 1 && <i className="dex-zoom-drop" />}
           {level !== undefined && (
-            <button type="button" className={`lv-badge ${sheet === 'in' ? 'is-on' : ''}`} aria-label={t('card.stats')} aria-expanded={sheet === 'in'} onClick={() => (sheet === 'in' ? hide() : setSheet('in'))}>
+            <button type="button" className={`lv-badge ${sheet === 'in' ? 'is-on' : ''} ${seen ? '' : 'is-calling'}`}
+              aria-label={t('card.stats')}
+              aria-expanded={sheet === 'in'}
+              onClick={() => {
+                setSeen(true)
+                if (sheet === 'in') hide()
+                else setSheet('in')
+              }}
+            >
               <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
                 <polygon points={BADGE_POINTS} />
               </svg>
