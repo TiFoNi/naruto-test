@@ -6,11 +6,23 @@ import { quizAttempts, quizzes, users, type QuizAttemptDoc, type QuizCover, type
 
 export const QUIZ_XP_PER_ANSWER = 10
 
-export const QUIZ_LIMITS = { title: 80, text: 300, option: 80, note: 300, minOptions: 2, maxOptions: 8, maxPairs: 6, minQuestions: 3, maxQuestions: 30, ownQuizzes: 30 }
+export const QUIZ_LIMITS = { title: 80, text: 300, option: 80, note: 1000, minOptions: 2, maxOptions: 8, maxPairs: 6, minQuestions: 3, maxQuestions: 30, ownQuizzes: 30 }
 
 const STATUSES: QuizStatus[] = ['draft', 'review', 'published', 'rejected']
 
 const clean = (value: unknown, max: number) => (typeof value === 'string' ? value.trim().replace(/\s+/g, ' ').slice(0, max) : '')
+
+const block = (value: unknown, max: number) =>
+  typeof value === 'string'
+    ? value
+        .replace(/\r/g, '')
+        .split('\n')
+        .map((line) => line.replace(/\s+/g, ' ').trim())
+        .join('\n')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim()
+        .slice(0, max)
+    : ''
 
 const whole = (value: unknown) => (Number.isInteger(value) ? (value as number) : Number.NaN)
 
@@ -181,7 +193,7 @@ export async function readQuiz(
     }
   }
 
-  return { quiz: { game, title, cover, layout, status, official: true, questions, note: clean(body.note, QUIZ_LIMITS.note) }, complete }
+  return { quiz: { game, title, cover, layout, status, official: true, questions, note: block(body.note, QUIZ_LIMITS.note) }, complete }
 }
 
 const optionView = (option: QuizOption) => {

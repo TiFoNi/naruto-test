@@ -92,6 +92,7 @@
 .qb-banner {
   margin: 0;
   padding: 12px 16px;
+  white-space: pre-line;
   border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
   border-radius: 14px;
   background: color-mix(in srgb, var(--accent) 8%, transparent);

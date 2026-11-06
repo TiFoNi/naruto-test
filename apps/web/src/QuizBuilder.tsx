@@ -736,7 +736,7 @@ function Settings({
               {quiz.status === 'rejected' && (
                 <label className="quiz-admin-field">
                   <span className="quiz-admin-label">Причина отказа — её увидит автор</span>
-                  <textarea className="quiz-admin-input" rows={2} maxLength={300} value={quiz.note ?? ''} onChange={(event) => patch({ note: event.target.value })} />
+                  <textarea className="quiz-admin-input" rows={5} maxLength={1000} value={quiz.note ?? ''} onChange={(event) => patch({ note: event.target.value })} />
                 </label>
               )}
             </>

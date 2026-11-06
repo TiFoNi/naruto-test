@@ -726,6 +726,7 @@ a.bell.active {
 }
 
 .bell-item.is-quiz .bell-hint {
+  white-space: pre-line;
   display: -webkit-box;
   overflow: hidden;
   -webkit-box-orient: vertical;
