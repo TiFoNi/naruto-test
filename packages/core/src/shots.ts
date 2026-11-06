@@ -7,7 +7,7 @@ import { dailyAnswer, nextReset, today } from './daily'
 import { shotVariant } from './extra'
 import { collectQuestsQuietly } from './quests'
 import { markSeasonPlay } from './season'
-import { openDex } from './dex'
+import { openDex, cardXpFor } from './dex'
 
 const GAME = 'shots'
 const MODE = 'shot'
@@ -182,7 +182,7 @@ async function logRound(doc: { userId: ObjectId; guest?: boolean }, answerId: nu
     createdAt: now,
     finishedAt: now,
   })
-  if (status === 'won') await openDex(doc.userId, GAME, answerId)
+  if (status === 'won') await openDex(doc.userId, GAME, answerId, { mode: MODE, xp: cardXpFor(MODE, { daily: !!day }) })
   await markSeasonPlay(doc.userId, status === 'won', today())
   await collectQuestsQuietly(doc.userId)
 }

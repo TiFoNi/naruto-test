@@ -6,13 +6,17 @@ export const random = (seed: number) => {
   }
 }
 
-export const torn = (seed: number, jag: number, steps = 9) => {
+export const tornPoints = (seed: number, jag: number, steps = 9) => {
   const next = random(seed)
-  const out: string[] = []
-  const at = (x: number, y: number) => out.push(`${x.toFixed(1)}% ${y.toFixed(1)}%`)
-  for (let i = 0; i < steps; i++) at((i / steps) * 100, next() * jag)
-  for (let i = 0; i < steps; i++) at(100 - next() * jag, (i / steps) * 100)
-  for (let i = 0; i < steps; i++) at(100 - (i / steps) * 100, 100 - next() * jag)
-  for (let i = 0; i < steps; i++) at(next() * jag, 100 - (i / steps) * 100)
-  return `polygon(${out.join(',')})`
+  const out: [number, number][] = []
+  for (let i = 0; i < steps; i++) out.push([(i / steps) * 100, next() * jag])
+  for (let i = 0; i < steps; i++) out.push([100 - next() * jag, (i / steps) * 100])
+  for (let i = 0; i < steps; i++) out.push([100 - (i / steps) * 100, 100 - next() * jag])
+  for (let i = 0; i < steps; i++) out.push([next() * jag, 100 - (i / steps) * 100])
+  return out
 }
+
+export const torn = (seed: number, jag: number, steps = 9) =>
+  `polygon(${tornPoints(seed, jag, steps)
+    .map(([x, y]) => `${x.toFixed(1)}% ${y.toFixed(1)}%`)
+    .join(',')})`

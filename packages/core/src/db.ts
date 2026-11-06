@@ -443,6 +443,7 @@ const cache = globalThis as typeof globalThis & {
   __quizAttemptsIndexed?: Promise<unknown>
   __quizLikesIndexed?: Promise<unknown>
   __quizCommentsIndexed?: Promise<unknown>
+  __cardsIndexed?: Promise<unknown>
   __roundsIndexed?: Promise<unknown>
   __duelsIndexed?: Promise<unknown>
   __challengesIndexed?: Promise<unknown>
@@ -729,6 +730,26 @@ export async function quizLikes(): Promise<Collection<QuizLikeDoc>> {
     throw error
   })
   await cache.__quizLikesIndexed
+  return collection
+}
+
+export type CardDoc = {
+  _id: string
+  userId: ObjectId
+  game: string
+  entityId: number
+  xp: number
+  modes: Record<string, { n: number; xp: number }>
+  updatedAt: Date
+}
+
+export async function cards(): Promise<Collection<CardDoc>> {
+  const collection = (await database()).collection<CardDoc>('cards')
+  cache.__cardsIndexed ??= collection.createIndex({ userId: 1, game: 1 }).catch((error) => {
+    cache.__cardsIndexed = undefined
+    throw error
+  })
+  await cache.__cardsIndexed
   return collection
 }
 

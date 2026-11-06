@@ -11349,7 +11349,11 @@ html[data-auth] .guest-note {
 @media (max-width: 460px) {
   .install-bar {
     flex-wrap: wrap;
-    padding-right: 40px;
+    padding-right: 14px;
+  }
+
+  .install-copy {
+    padding-right: 30px;
   }
 
   .install-x {

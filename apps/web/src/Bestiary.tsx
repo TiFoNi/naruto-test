@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
+import { Fragment, useCallback, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import BackButton from './BackButton'
 import { api } from './api'
@@ -9,11 +9,13 @@ import { useAuth } from './auth'
 import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, GameId } from './games/types'
-import { useI18n } from './i18n'
+import { useI18n, type UiKey } from './i18n'
 import { CloseIcon } from './icons'
+import { MODES } from './modes'
+import { CARD_STEPS, cardRank } from '@nanda/game'
 import { PICTURELESS, cardUrl, hdUrl, miniUrl } from './pics'
 import { useHref } from './router'
-import { random, torn } from './torn'
+import { random, torn, tornPoints } from './torn'
 
 const SHORT: Record<string, { ru: string; uk: string; en: string }> = {
   'naruto:195': { ru: 'Демон. Статуя Внешнего Пути', uk: 'Демон. Статуя Зовнішнього Шляху', en: 'Statue of the Outer Path' },
@@ -446,6 +448,51 @@ const lift = (entity: Entity, node: HTMLElement): Focus => {
   }
 }
 
+const BACK_POINTS = tornPoints(24, 5)
+  .map(([x, y]) => `${(x * 3).toFixed(1)},${(y * 4).toFixed(1)}`)
+  .join(' ')
+
+const BACK_CLIP = torn(24, 5)
+
+const PicEdge = ({ seed }: { seed: number }) => {
+  const points = tornPoints(seed, 3, 7)
+    .map(([x, y]) => `${(x * 2.58).toFixed(1)},${(y * 2.88).toFixed(1)}`)
+    .join(' ')
+  return (
+    <svg className="dex-pic-edge" viewBox="0 0 258 288" preserveAspectRatio="none" aria-hidden>
+      <polygon points={points} className="is-soft" />
+      <polygon points={points} />
+    </svg>
+  )
+}
+
+const SHEET_POINTS = tornPoints(31, 2.5, 8)
+  .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
+  .join(' ')
+
+const BADGE_POINTS = tornPoints(7, 9, 5)
+  .map(([x, y]) => `${(x * 1.3).toFixed(1)},${y.toFixed(1)}`)
+  .join(' ')
+
+const BackSheet = () => {
+  const id = useId()
+  const points = BACK_POINTS
+  return (
+    <i className="lv-back" style={{ '--turn': '7deg' } as CSSProperties}>
+      <svg viewBox="0 0 300 400" preserveAspectRatio="none" aria-hidden>
+        <defs>
+          <radialGradient id={id} cx="50%" cy="0%" r="110%">
+            <stop offset="0%" className="lv-back-top" />
+            <stop offset="78%" className="lv-back-bottom" />
+          </radialGradient>
+        </defs>
+        <polygon points={points} fill={`url(#${id})`} />
+      </svg>
+      <i className="lv-back-light" style={{ clipPath: BACK_CLIP }} />
+    </i>
+  )
+}
+
 const MOVE_MS = 480
 const MOVE_EASE = 'cubic-bezier(0.4, 0, 0.2, 1)'
 const TILT_X = 22
@@ -467,7 +514,7 @@ const useTilt = (face: React.RefObject<HTMLDivElement | null>, ready: () => bool
     let grab: { id: number; x: number; y: number; width: number; height: number } | null = null
 
     const down = (event: PointerEvent) => {
-      if (!ready()) return
+      if (!ready() || (event.target as Element).closest('.lv-badge')) return
       const box = node.getBoundingClientRect()
       grab = { id: event.pointerId, x: event.clientX, y: event.clientY, width: box.width, height: box.height }
       dragged.current = false
@@ -509,6 +556,8 @@ const useTilt = (face: React.RefObject<HTMLDivElement | null>, ready: () => bool
       node.style.setProperty('--gx', `${(50 + (one.y / TILT_Y) * 45).toFixed(1)}%`)
       node.style.setProperty('--gy', `${(50 - (one.x / TILT_X) * 45).toFixed(1)}%`)
       node.style.setProperty('--glow', (reach * 0.75).toFixed(3))
+      node.style.setProperty('--sx', (one.y / TILT_Y).toFixed(3))
+      node.style.setProperty('--sy', (one.x / TILT_X).toFixed(3))
       frame = requestAnimationFrame(step)
     }
 
@@ -533,8 +582,82 @@ const useTilt = (face: React.RefObject<HTMLDivElement | null>, ready: () => bool
   return { dragged, rest }
 }
 
-const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game: GameId; label: string; accent: string; onClosed: () => void }) => {
+type CardStats = { xp: number; modes: Record<string, { n: number; xp: number }> }
+
+type Rank = ReturnType<typeof cardRank> & { modes: CardStats['modes'] }
+
+const rankOf = (stats?: CardStats): Rank => ({ ...cardRank(stats?.xp ?? 0), modes: stats?.modes ?? {} })
+
+const CardSheet = ({ rank, out, onClose, onGone }: { rank: Rank; out: boolean; onClose: () => void; onGone: () => void }) => {
   const { t } = useI18n()
+  const finds = Object.entries(rank.modes)
+    .map(([mode, one]) => ({ mode: MODES.find((item) => item.id === mode), ...one }))
+    .filter((one) => one.mode && one.n > 0)
+    .sort((a, b) => b.xp - a.xp)
+  const from = CARD_STEPS[rank.tier]!.xp
+  const share = rank.next ? Math.min(1, (rank.xp - from) / (rank.next.xp - from)) : 1
+  useEffect(() => {
+    if (!out) return
+    const timer = window.setTimeout(onGone, 320)
+    return () => window.clearTimeout(timer)
+  }, [out, onGone])
+  return (
+    <div
+      className={`lv-sheet ${out ? 'is-out' : ''}`}
+      role="dialog"
+      aria-label={t('card.stats')}
+      onPointerDown={(event) => event.stopPropagation()}
+    >
+      <svg className="lv-sheet-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+        <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
+      </svg>
+      <button type="button" className="lv-sheet-x" aria-label={t('dex.close')} onClick={onClose}>
+        <CloseIcon />
+      </button>
+      <small className="lv-sheet-kicker">{t(`card.rarity.${rank.rarity}` as UiKey)}</small>
+      <b className="lv-sheet-level">{t('card.level', { level: rank.level })}</b>
+      <div className="lv-sheet-xp">
+        <span>{t('card.xp')}</span>
+        <em>
+          {rank.xp}
+          {rank.next && <i> / {rank.next.xp}</i>}
+        </em>
+      </div>
+      <span className="lv-sheet-bar" aria-hidden>
+        <i style={{ width: `${Math.round(share * 100)}%` }} />
+      </span>
+      <small className="lv-sheet-next">
+        {rank.next ? t('card.toNext', { xp: rank.next.xp - rank.xp, name: t(`card.rarity.${rank.next.rarity}` as UiKey) }) : t('card.max')}
+      </small>
+      <div className="lv-sheet-where">
+        <span>{t('card.where')}</span>
+        {finds.length ? (
+          <ul>
+            {finds.map((one) => (
+              <li key={one.mode!.id}>
+                <i aria-hidden>{one.mode!.icon}</i>
+                <span>{t(one.mode!.label)}</span>
+                <b>×{one.n}</b>
+                <em>+{one.xp}</em>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>{t('card.never')}</p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+const DexZoom = ({ focus, game, label, accent, rank, onClosed }: { focus: Focus; game: GameId; label: string; accent: string; rank?: Rank; onClosed: () => void }) => {
+  const { t } = useI18n()
+  const [sheet, setSheet] = useState<'in' | 'out' | null>(null)
+  const hide = () => setSheet((was) => (was ? 'out' : null))
+  const gone = useCallback(() => setSheet(null), [])
+  const [away, setAway] = useState(false)
+  const tier = rank ? rank.tier + 1 : undefined
+  const level = rank?.level
   const card = useRef<HTMLDivElement>(null)
   const shade = useRef<HTMLDivElement>(null)
   const shut = useRef<HTMLButtonElement>(null)
@@ -562,6 +685,8 @@ const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game:
   const close = useCallback(() => {
     if (leaving.current) return
     leaving.current = true
+    setSheet(null)
+    setAway(true)
     rest()
     const motion = { duration: MOVE_MS, easing: MOVE_EASE, fill: 'forwards' as const }
     shade.current?.animate([{ opacity: 1 }, { opacity: 0 }], motion)
@@ -593,8 +718,18 @@ const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game:
   return createPortal(
     <div className="dex-zoom" role="dialog" aria-modal="true" aria-label={label} style={{ '--dex': accent } as CSSProperties}>
       <div ref={shade} className="dex-zoom-shade" onClick={() => !dragged.current && close()} />
-      <div ref={card} className="dex-zoom-card">
+      <div ref={card} className={`dex-zoom-card ${tier ? `lv-${tier}` : ''} ${away ? 'is-leaving' : ''}`}>
         <div ref={face} className="dex-zoom-face">
+          {tier && tier > 1 && <BackSheet />}
+          {tier && tier > 1 && <i className="dex-zoom-drop" />}
+          {level !== undefined && (
+            <button type="button" className={`lv-badge ${sheet === 'in' ? 'is-on' : ''}`} aria-label={t('card.stats')} aria-expanded={sheet === 'in'} onClick={() => (sheet === 'in' ? hide() : setSheet('in'))}>
+              <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
+                <polygon points={BADGE_POINTS} />
+              </svg>
+              <b>{level}</b>
+            </button>
+          )}
           <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
           <i className="dex-zoom-glare" style={{ clipPath: torn(entity.id, 4) }} />
           <span className="dex-zoom-pic" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
@@ -607,6 +742,7 @@ const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game:
               onLoad={(event) => event.currentTarget.classList.add('is-ready')}
               onError={(event) => event.currentTarget.classList.remove('is-ready')}
             />
+            <PicEdge seed={entity.id * 3 + 1} />
             <i className="dex-zoom-shine" />
           </span>
           <b className="dex-zoom-name" style={{ fontSize: `${focus.type}cqw` }}>
@@ -620,6 +756,7 @@ const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game:
             </span>
           </b>
         </div>
+        {sheet && rank && <CardSheet rank={rank} out={sheet === 'out'} onClose={hide} onGone={gone} />}
       </div>
       <button ref={shut} type="button" className="dex-zoom-close" onClick={close} aria-label={t('dex.close')}>
         <CloseIcon />
@@ -656,20 +793,44 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   const [focus, setFocus] = useState<Focus | null>(null)
   const release = useCallback(() => setFocus(null), [])
 
+  const [cards, setCards] = useState<Record<number, CardStats>>({})
+  const [preview, setPreview] = useState(false)
+
   useEffect(() => {
-    if (!game || !user) return
+    if (process.env.NODE_ENV === 'production' || !game || !window.location.search.includes('levels')) return
+    const forced = Number(new URLSearchParams(window.location.search).get('levels')) || 0
+    setPreview(true)
+    setOpen(new Set(game.entities.map((one) => one.id)))
+    setCards(
+      Object.fromEntries(
+        game.entities.map((one, place) => {
+          const tier = forced >= 1 && forced <= CARD_STEPS.length ? forced - 1 : place % CARD_STEPS.length
+          const xp = CARD_STEPS[tier]!.xp + (tier + 1 < CARD_STEPS.length ? place % (CARD_STEPS[tier + 1]!.xp - CARD_STEPS[tier]!.xp) : 0)
+          const classic = Math.floor((xp * 0.6) / 3)
+          const blind = Math.floor((xp - classic * 3) / 8)
+          const image = xp - classic * 3 - blind * 4
+          return [one.id, { xp, modes: { classic: { n: classic, xp: classic * 3 }, blind: { n: blind, xp: blind * 4 }, image: { n: image, xp: image } } }]
+        }),
+      ),
+    )
+  }, [game, ready])
+
+  useEffect(() => {
+    if (!game || !user || preview) return
     let alive = true
     const query = owner ? `dex?game=${game.id}&user=${encodeURIComponent(owner)}` : `dex?game=${game.id}`
-    void api<{ ids?: number[]; nickname?: string | null }>(query).then(({ ok, data }) => {
+    void api<{ ids?: number[]; cards?: Record<number, CardStats>; nickname?: string | null }>(query).then(({ ok, data }) => {
       if (!alive || !ok) return
       setOpen(new Set(data.ids ?? []))
+      setCards(data.cards ?? {})
       setNickname(data.nickname ?? null)
     })
     return () => {
       alive = false
     }
-  }, [game, user, owner])
+  }, [game, user, owner, preview])
 
+  const tierOf = (entity: Entity) => cardRank(cards[entity.id]?.xp ?? 0).tier
   const cast = useMemo(() => (game?.entities ?? []).filter((one) => one.answer), [game, ready])
   const pictures = !PICTURELESS.has(gameId)
   const label = (entity: Entity) => SHORT[`${gameId}:${entity.id}`]?.[lang] ?? name(entity)
@@ -730,12 +891,14 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                   ) : open.has(entity.id) ? (
                     <button
                       type="button"
-                      className={`dex-scrap ${focus?.entity.id === entity.id ? 'is-lifted' : ''}`}
+                      className={`dex-scrap ${focus?.entity.id === entity.id ? 'is-lifted' : ''} ${tierOf(entity) ? `lv-${tierOf(entity) + 1}` : ''}`}
                       onClick={(event) => setFocus(lift(entity, event.currentTarget))}
                     >
+                      {tierOf(entity) > 0 && <BackSheet />}
                       <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
                       <span className="dex-pic" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
                         <img src={cardUrl(game.id, entity.id, entity.image)} alt="" loading="lazy" decoding="async" draggable={false} />
+                        <PicEdge seed={entity.id * 3 + 1} />
                       </span>
                       <b className={lengthOf(label(entity))}>
                         <span>{label(entity)}</span>
@@ -757,7 +920,17 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
               ))}
         </ol>
       </div>
-      {focus && <DexZoom key={focus.entity.id} focus={focus} game={game.id} label={label(focus.entity)} accent={accent} onClosed={release} />}
+      {focus && (
+        <DexZoom
+          key={focus.entity.id}
+          focus={focus}
+          game={game.id}
+          label={label(focus.entity)}
+          accent={accent}
+          rank={rankOf(cards[focus.entity.id])}
+          onClosed={release}
+        />
+      )}
     </div>
   )
 }

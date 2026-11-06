@@ -141,7 +141,7 @@ export default function Quests() {
     <section className="card quests-card">
       <header className="quests-head">
         <h2>{t('profile.questsTitle')}</h2>
-        {board && (
+        {board?.quests.some((quest) => !quest.done) && (
           <span className={`quests-swap ${tip ? 'is-open' : ''} ${board.swap ? '' : 'is-used'}`}>
             <button
               type="button"

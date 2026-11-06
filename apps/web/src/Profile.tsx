@@ -1075,7 +1075,7 @@ export default function Profile({ id }: { id?: string }) {
                       <span className="muted">{t('profile.accuracy')}</span>
                     </header>
                     <ul className="modes-list">
-                      {MODES.map((mode) => {
+                      {MODES.filter((mode) => mode.id !== 'clue').map((mode) => {
                         const row = summary?.modes.find((item) => item.mode === mode.id)
                         const played = row?.played ?? 0
                         const share = percent(row?.won ?? 0, played)

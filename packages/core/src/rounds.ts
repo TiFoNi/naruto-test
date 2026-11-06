@@ -12,7 +12,7 @@ import { markSeasonPlay } from './season'
 import { focusFor, roundSeed, shotFor } from './crop'
 
 import type { Collection } from 'mongodb'
-import { openDex } from './dex'
+import { cardXpFor, openDex } from './dex'
 
 const RECENT_SHARE = 0.25
 const RECENT_MAX = 200
@@ -257,8 +257,10 @@ export async function finishRound(users: Collection<UserDoc>, round: RoundDoc, w
     return { round: updated, stats: null }
   }
   await markSeasonPlay(round.userId, won, today())
-  if (won && !round.guest) await openDex(round.userId, round.game, round.answerId)
-  const xp = won ? await awardSolveXp(users, round.userId, round.mode as ModeId, round.daily ? 'daily' : 'endless', await roundPool(round)) : null
+  const pool = await roundPool(round)
+  if (won && !round.guest)
+    await openDex(round.userId, round.game, round.answerId, { mode: round.mode as ModeId, xp: cardXpFor(round.mode as ModeId, { daily: !!round.daily, pool }) })
+  const xp = won ? await awardSolveXp(users, round.userId, round.mode as ModeId, round.daily ? 'daily' : 'endless', pool) : null
 
   if (round.daily) {
     const key = dailyKey(round.game, round.mode)

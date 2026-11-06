@@ -48,7 +48,7 @@ import { collectQuestsQuietly } from './quests'
 import { sendPush, type PushLang } from './push'
 import { duelSeed, focusFor, shotFor } from './crop'
 import { markSeasonDuel } from './season'
-import { openDex } from './dex'
+import { openDex, cardXpFor } from './dex'
 
 export const MIN_GAP_MS = 800
 const NO_XP_PAST_CAP = 0
@@ -958,7 +958,7 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   )
   if (!finished) return (await duels()).findOne({ _id: duel._id }) as Promise<DuelDoc>
   if (duel.bot) {
-    if (winnerId && !winnerId.equals(BOT_ID))
+    if (winnerId && !winnerId.equals(BOT_ID) && duel.mode !== 'who')
       await addXp(await users(), winnerId, MODE_XP[duel.mode as ModeId], 'endless', duel.mode as ModeId, NO_XP_PAST_CAP)
     return finished
   }
@@ -972,9 +972,12 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   if (ms && ms > 0 && winnerId) await (await users()).updateOne({ _id: winnerId }, { $min: { duelBestMs: ms } })
   const guessed = turnMode(duel) ? champs : duel.players.filter((side) => side.solvedAt)
   const pool = turnMode(duel) ? 0 : await duelPool(duel)
-  if (!turnMode(duel)) await Promise.all(guessed.map((side) => openDex(side.userId, duel.game, duel.answerId)))
-  await Promise.all(guessed.map(async (side) => awardSolveXp(await users(), side.userId, duel.mode as ModeId, 'endless', pool)))
-  await Promise.all(masters.map((side) => duelMatchReward(side.userId, duel)))
+  if (!turnMode(duel))
+    await Promise.all(guessed.map((side) => openDex(side.userId, duel.game, duel.answerId, { mode: duel.mode as ModeId, xp: cardXpFor(duel.mode as ModeId, { pool }) })))
+  if (duel.mode !== 'who') {
+    await Promise.all(guessed.map(async (side) => awardSolveXp(await users(), side.userId, duel.mode as ModeId, 'endless', pool)))
+    await Promise.all(masters.map((side) => duelMatchReward(side.userId, duel)))
+  }
   await Promise.all(masters.map((side) => collectQuestsQuietly(side.userId)))
   return finished
 }
@@ -1363,7 +1366,6 @@ export async function strikeCard(duel: DuelDoc, userId: ObjectId, entityId: numb
     set[`players.${index}.answer`] = standing[0]
     if (standing[0] === rival?.secret) {
       set[`players.${index}.solvedAt`] = new Date()
-      await openDex(userId, duel.game, standing[0])
     } else set[`players.${index}.gaveUp`] = true
   }
 
@@ -1385,7 +1387,6 @@ export async function answerCard(duel: DuelDoc, userId: ObjectId, entityId: numb
   }
   if (entityId === rival?.secret) {
     set[`players.${index}.solvedAt`] = new Date()
-    await openDex(userId, duel.game, entityId)
   } else set[`players.${index}.gaveUp`] = true
 
   const updated = await (await duels()).findOneAndUpdate({ _id: duel._id, status: 'playing' }, { $set: set }, { returnDocument: 'after' })

@@ -640,6 +640,45 @@ export const poolXpPastCap = (base: number, mode: unknown, pool: number) => {
 
 export const DAILY_XP_FACTOR = 3
 
+export const CARD_STEPS = [
+  { level: 1, xp: 0 },
+  { level: 5, xp: 2 },
+  { level: 10, xp: 4 },
+  { level: 20, xp: 7 },
+  { level: 35, xp: 15 },
+  { level: 50, xp: 30 },
+] as const
+
+export const CARD_POINTS: Partial<Record<ModeId, number>> = {
+  image: 1,
+  ability: 1,
+  page: 1,
+  phrase: 1,
+  odd: 1,
+  shot: 1,
+  tune: 1,
+  classic: 3,
+  blind: 4,
+}
+
+export const CARD_DAILY_FACTOR = 2
+
+export const cardPoints = (mode: ModeId, daily = false) => (CARD_POINTS[mode] ?? 0) * (daily ? CARD_DAILY_FACTOR : 1)
+
+export const CARD_RARITIES = ['paper', 'bronze', 'silver', 'gold', 'legend', 'mythic'] as const
+
+export type CardRarity = (typeof CARD_RARITIES)[number]
+
+export function cardRank(xp: number) {
+  const total = Math.max(0, xp)
+  let tier = 0
+  while (tier + 1 < CARD_STEPS.length && total >= CARD_STEPS[tier + 1]!.xp) tier++
+  const here = CARD_STEPS[tier]!
+  const next = CARD_STEPS[tier + 1]
+  const level = next ? here.level + Math.floor(((total - here.xp) / (next.xp - here.xp)) * (next.level - here.level)) : here.level
+  return { tier, rarity: CARD_RARITIES[tier]!, level, xp: total, next: next ? { xp: next.xp, rarity: CARD_RARITIES[tier + 1]! } : null }
+}
+
 export const DAILY_XP_MODES: ModeId[] = ['classic', 'blind', 'image', 'ability', 'page', 'phrase', 'odd', 'shot', 'tune']
 
 // режими-забіги: у них нема щоденного варіанта
