@@ -194,9 +194,7 @@
    "Инь",
    "Ян"
   ],
-  "attributes": [
-   "S-ранг"
-  ],
+  "attributes": [],
   "debutChapter": 234,
   "arc": "Возвращение Саске",
   "arcIndex": 5,
@@ -515,7 +513,6 @@
    "Райтон"
   ],
   "attributes": [
-   "S-ранг",
    "Нукенин",
    "Наёмник"
   ],
@@ -964,7 +961,6 @@
    "Ян"
   ],
   "attributes": [
-   "S-ранг",
    "Нукенин"
   ],
   "debutChapter": 139,
@@ -1108,7 +1104,6 @@
    "Райтон"
   ],
   "attributes": [
-   "S-ранг",
    "Нукенин"
   ],
   "debutChapter": 312,
@@ -1361,7 +1356,6 @@
    "Дотон"
   ],
   "attributes": [
-   "S-ранг",
    "Нукенин"
   ],
   "debutChapter": 139,
@@ -1418,7 +1412,6 @@
    "Ян"
   ],
   "attributes": [
-   "S-ранг",
    "Сенсор"
   ],
   "debutChapter": 363,
@@ -1912,7 +1905,6 @@
    "Ян"
   ],
   "attributes": [
-   "S-ранг",
    "Сенсор"
   ],
   "debutChapter": 372,
@@ -2026,7 +2018,6 @@
    "Джинчуурики",
    "Псевдо-джинчуурики",
    "Нукенин",
-   "S-ранг",
    "Сенсор"
   ],
   "debutChapter": 239,
@@ -2122,7 +2113,6 @@
   ],
   "attributes": [
    "Нукенин",
-   "S-ранг",
    "Саннин"
   ],
   "debutChapter": 45,
@@ -2487,7 +2477,6 @@
   "kekkeiGenkai": [],
   "natureTypes": [],
   "attributes": [
-   "S-ранг",
    "Нукенин"
   ],
   "debutChapter": 247,
@@ -3151,7 +3140,6 @@
   "kekkeiGenkai": [],
   "natureTypes": [],
   "attributes": [
-   "S-ранг",
    "Нукенин"
   ],
   "debutChapter": 312,
@@ -3317,7 +3305,6 @@
    "Ян"
   ],
   "attributes": [
-   "S-ранг",
    "Сенсор"
   ],
   "debutChapter": 234,

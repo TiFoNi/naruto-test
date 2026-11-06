@@ -55,7 +55,7 @@ const OVERRIDES = {
   'Sasuke Uchiha': { kekkeiGenkai: ['Шаринган', 'Мангекьё Шаринган', 'Вечный Мангекьё Шаринган', 'Риннеган'] },
   'Fugaku Uchiha': { kekkeiGenkai: ['Шаринган', 'Мангекьё Шаринган'] },
   'Hamura Ōtsutsuki': { kekkeiGenkai: ['Бьякуган', 'Тенсейган'] },
-  'Black Zetsu': { kekkeiGenkai: ['Мокутон'], attributes: ['S-ранг', 'Сенсор'] },
+  'Black Zetsu': { kekkeiGenkai: ['Мокутон'], attributes: ['Сенсор'] },
 }
 
 const WIKI_API = 'https://naruto.fandom.com/api.php'
@@ -141,8 +141,10 @@ function kekkeiGenkai(p) {
   return uniq(all.map(clean).map((k) => KEKKEI_GENKAI[k] ?? transliterate(k)))
 }
 
+const DROP_ATTRIBUTES = new Set(['S-ранг'])
+
 function attributes(p, wiki) {
-  return uniq([...canon(p.classification), ...(wiki?.classification ?? [])].map(clean).map((a) => CLASSIFICATIONS[a] ?? a))
+  return uniq([...canon(p.classification), ...(wiki?.classification ?? [])].map(clean).map((a) => CLASSIFICATIONS[a] ?? a)).filter((a) => !DROP_ATTRIBUTES.has(a))
 }
 
 const DOJUTSU_VALUES = ['Шаринган', 'Мангекьё Шаринган', 'Вечный Мангекьё Шаринган', 'Бьякуган', 'Риннеган', 'Риннэ-Шаринган', 'Тенсейган']
