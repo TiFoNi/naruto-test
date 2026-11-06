@@ -768,18 +768,20 @@ const rankOf = (stats?: CardStats): Rank => ({ ...cardRank(stats?.xp ?? 0), mode
 const DexHelp = ({ modes }: { modes: ModeId[] }) => {
   const { t } = useI18n()
   const [state, setState] = useState<'in' | 'out' | null>(null)
-  const [spot, setSpot] = useState({ left: 0, origin: 20 })
+  const [spot, setSpot] = useState({ left: 0, origin: 20, width: 360 })
   const box = useRef<HTMLDivElement>(null)
   const hide = useCallback(() => setState((was) => (was ? 'out' : null)), [])
 
   const show = () => {
     const button = box.current?.firstElementChild?.getBoundingClientRect()
     const frame = box.current?.parentElement?.getBoundingClientRect()
-    if (button && frame) {
-      const width = Math.min(360, window.innerWidth - 32)
+    const page = box.current?.closest('.dex-head')?.getBoundingClientRect()
+    if (button && frame && page) {
+      const inset = frame.left - page.left
+      const width = Math.min(360, page.width - inset * 2)
       const wanted = button.left - frame.left - 18
-      const left = Math.max(0, Math.min(wanted, window.innerWidth - 16 - width - frame.left))
-      setSpot({ left, origin: button.left - frame.left + button.width / 2 - left })
+      const left = Math.max(0, Math.min(wanted, page.right - inset - width - frame.left))
+      setSpot({ left, origin: button.left - frame.left + button.width / 2 - left, width })
     }
     setState('in')
   }
@@ -832,7 +834,7 @@ const DexHelp = ({ modes }: { modes: ModeId[] }) => {
           className={`dex-help ${state === 'out' ? 'is-out' : ''}`}
           role="dialog"
           aria-label={t('dex.help')}
-          style={{ left: spot.left, transformOrigin: `${spot.origin}px -12px` } as CSSProperties}
+          style={{ left: spot.left, width: spot.width, transformOrigin: `${spot.origin}px -12px` } as CSSProperties}
         >
           <svg className="dex-help-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
             <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
