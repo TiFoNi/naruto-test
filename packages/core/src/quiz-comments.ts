@@ -8,6 +8,10 @@ const GAP_MS = 5000
 const PER_MINUTE = 6
 const PAGE = 30
 const NEWS_KEEP = 10
+const PUSH_GAP_MS = 5 * 60_000
+const BIDI = /[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g
+
+const pushed = new Map<string, number>()
 
 export type CommentLine = {
   id: string
@@ -23,7 +27,7 @@ export type CommentLine = {
   at: number
   author: boolean
   mine: boolean
-  reply?: { id: string; userId: string; nickname: string; text: string; spoiler: boolean }
+  reply?: { id: string; userId: string; nickname: string; text: string; spoiler: boolean; gone: boolean }
 }
 
 const PUSH_TEXT: Record<PushLang, { comment: string; reply: string }> = {
@@ -32,7 +36,11 @@ const PUSH_TEXT: Record<PushLang, { comment: string; reply: string }> = {
   en: { comment: 'commented on your quiz', reply: 'replied to your comment' },
 }
 
-export const lineOf = (doc: QuizCommentDoc, quiz: QuizDoc, viewer: ObjectId | null, veiled: Set<string>): CommentLine => ({
+type Quotes = { veiled: Set<string>; gone: Set<string> }
+
+const NO_QUOTES: Quotes = { veiled: new Set(), gone: new Set() }
+
+export const lineOf = (doc: QuizCommentDoc, quiz: QuizDoc, viewer: ObjectId | null, quotes: Quotes): CommentLine => ({
   id: doc._id!.toHexString(),
   userId: doc.userId.toHexString(),
   nickname: doc.nickname,
@@ -52,8 +60,9 @@ export const lineOf = (doc: QuizCommentDoc, quiz: QuizDoc, viewer: ObjectId | nu
           id: doc.reply.id.toHexString(),
           userId: doc.reply.userId.toHexString(),
           nickname: doc.reply.nickname,
-          text: doc.reply.text,
-          spoiler: veiled.has(doc.reply.id.toHexString()),
+          text: quotes.gone.has(doc.reply.id.toHexString()) ? '' : doc.reply.text,
+          spoiler: quotes.veiled.has(doc.reply.id.toHexString()),
+          gone: quotes.gone.has(doc.reply.id.toHexString()),
         },
       }
     : {}),
@@ -70,9 +79,13 @@ export async function commentPage(quiz: QuizDoc, viewer: ObjectId | null, before
   const quoted = [...new Set(page.filter((doc) => doc.reply).map((doc) => doc.reply!.id.toHexString()))].map((id) => new ObjectId(id))
   const [faces, spoilers] = await Promise.all([
     freshFaces(page),
-    quoted.length ? collection.find({ _id: { $in: quoted }, spoiler: true }, { projection: { _id: 1 } }).toArray() : Promise.resolve([]),
+    quoted.length ? collection.find({ _id: { $in: quoted } }, { projection: { _id: 1, spoiler: 1, hidden: 1 } }).toArray() : Promise.resolve([]),
   ])
-  const veiled = new Set(spoilers.map((doc) => doc._id!.toHexString()))
+  const alive = new Map(spoilers.map((doc) => [doc._id!.toHexString(), doc]))
+  const quotes: Quotes = {
+    veiled: new Set(spoilers.filter((doc) => doc.spoiler).map((doc) => doc._id!.toHexString())),
+    gone: new Set(quoted.map((id) => id.toHexString()).filter((id) => !alive.has(id) || alive.get(id)!.hidden)),
+  }
   const lines = page.map((doc) => {
     const now = faces.get(doc.userId.toHexString())
     const fresh = now
@@ -86,7 +99,7 @@ export async function commentPage(quiz: QuizDoc, viewer: ObjectId | null, before
           nickTone: now.nickTone ?? null,
         }
       : doc
-    return lineOf(fresh, quiz, viewer, veiled)
+    return lineOf(fresh, quiz, viewer, quotes)
   })
   return { comments: lines, more: found.length > PAGE, total }
 }
@@ -130,6 +143,10 @@ async function tell(target: ObjectId, doc: UserDoc, quiz: QuizDoc, line: Comment
   const person = await (
     await users()
   ).findOneAndUpdate({ _id: target }, { $push: { commentNews: { $each: [news], $slice: -NEWS_KEEP } } }, { projection: { mentionPush: 1 } })
+  const key = `${doc._id!.toHexString()}:${target.toHexString()}`
+  if (Date.now() - (pushed.get(key) ?? 0) < PUSH_GAP_MS) return
+  pushed.set(key, Date.now())
+  if (pushed.size > 5000) pushed.clear()
   if (person && person.mentionPush !== false)
     await sendPush(target, (lang) => ({
       title: `${from} ${reply ? PUSH_TEXT[lang].reply : PUSH_TEXT[lang].comment}`,
@@ -142,7 +159,7 @@ async function tell(target: ObjectId, doc: UserDoc, quiz: QuizDoc, line: Comment
 export type CommentFail = 'empty' | 'muted' | 'too_fast'
 
 export async function sendComment(doc: UserDoc, quiz: QuizDoc, raw: unknown, spoiler: unknown, replyTo: unknown): Promise<CommentLine | CommentFail> {
-  const text = tidy(raw, COMMENT_MAX)
+  const text = tidy(typeof raw === 'string' ? raw.replace(BIDI, '') : raw, COMMENT_MAX)
   if (!text) return 'empty'
   if (doc.chatMutedUntil && doc.chatMutedUntil.getTime() > Date.now()) return 'muted'
 
@@ -173,7 +190,7 @@ export async function sendComment(doc: UserDoc, quiz: QuizDoc, raw: unknown, spo
   const reply = quote?.reply ?? null
   if (reply) comment.reply = reply
   const saved = await collection.insertOne(comment)
-  const line = lineOf({ ...comment, _id: saved.insertedId }, quiz, userId, new Set(quote?.spoiler ? [reply!.id.toHexString()] : []))
+  const line = lineOf({ ...comment, _id: saved.insertedId }, quiz, userId, { ...NO_QUOTES, veiled: new Set(quote?.spoiler ? [reply!.id.toHexString()] : []) })
 
   const author = quiz.authorId && !quiz.authorId.equals(userId) ? quiz.authorId : null
   const answered = reply && !reply.userId.equals(userId) ? reply.userId : null
@@ -188,7 +205,9 @@ export async function findComment(quiz: QuizDoc, id: unknown) {
 }
 
 export async function dropComment(comment: QuizCommentDoc) {
+  const id = comment._id!.toHexString()
   await (await quizComments()).updateOne({ _id: comment._id! }, { $set: { hidden: true } })
+  await (await users()).updateMany({ 'commentNews.id': id }, { $pull: { commentNews: { id } } })
 }
 
 export async function markSpoiler(comment: QuizCommentDoc, on: boolean) {

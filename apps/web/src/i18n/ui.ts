@@ -1366,6 +1366,7 @@ const ui = {
   'comments.empty': { ru: 'Пока никто не написал — будь первым.', uk: 'Поки ніхто не написав — будь першим.', en: 'No comments yet — be the first.' },
   'comments.spoilerHidden': { ru: 'Скрыто: спойлер', uk: 'Приховано: спойлер', en: 'Hidden: spoiler' },
   'comments.reveal': { ru: 'Спойлер — нажми, чтобы показать', uk: 'Спойлер — натисни, щоб показати', en: 'Spoiler — tap to show' },
+  'comments.gone': { ru: 'Комментарий удалён', uk: 'Коментар видалено', en: 'Comment deleted' },
   'comments.reply': { ru: 'Ответить', uk: 'Відповісти', en: 'Reply' },
   'comments.replyTo': { ru: 'Ответ {name}', uk: 'Відповідь {name}', en: 'Replying to {name}' },
   'comments.author': { ru: 'автор теста', uk: 'автор тесту', en: 'quiz author' },

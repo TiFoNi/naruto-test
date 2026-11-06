@@ -27,7 +27,7 @@ type Comment = {
   at: number
   author: boolean
   mine: boolean
-  reply?: { id: string; userId: string; nickname: string; text: string; spoiler: boolean }
+  reply?: { id: string; userId: string; nickname: string; text: string; spoiler: boolean; gone?: boolean }
 }
 
 type Page = { comments?: Comment[]; more?: boolean; total?: number; moderator?: boolean }
@@ -126,7 +126,11 @@ export default function QuizComments({ quizId, finished }: { quizId: string; fin
     }
     if (change.spoiler) setShown((was) => new Set(was).add(comment.id))
     if (change.drop) {
-      setList((was) => was.filter((one) => one.id !== comment.id))
+      setList((was) =>
+        was
+          .filter((one) => one.id !== comment.id)
+          .map((one) => (one.reply?.id === comment.id ? { ...one, reply: { ...one.reply, text: '', gone: true } } : one)),
+      )
       setTotal((was) => Math.max(0, was - 1))
     } else
       setList((was) =>
@@ -235,7 +239,11 @@ export default function QuizComments({ quizId, finished }: { quizId: string; fin
                 {comment.reply && (
                   <p className="qc-quote">
                     <b>{comment.reply.nickname}</b>
-                    {comment.reply.spoiler && !finished && !shown.has(comment.reply.id) ? t('comments.spoilerHidden') : comment.reply.text}
+                    {comment.reply.gone
+                      ? t('comments.gone')
+                      : comment.reply.spoiler && !finished && !shown.has(comment.reply.id)
+                        ? t('comments.spoilerHidden')
+                        : comment.reply.text}
                   </p>
                 )}
                 <div className={`qc-say ${veiled ? 'is-veiled' : boxed.current.get(comment.id) ? 'is-opened' : ''}`}>
