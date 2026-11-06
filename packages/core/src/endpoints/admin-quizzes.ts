@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
 import { adminSession } from '../admin'
 import { quizAttempts, quizLikes, quizzes, users, type QuizDoc } from '../db'
+import { dropQuizComments } from '../quiz-comments'
 import { fail, handle, json, readJson } from '../http'
 import { uploadQuizCover } from '../images'
 import { quizAuthors, readQuiz } from '../quizzes'
@@ -65,6 +66,7 @@ export const DROP = handle(async (request) => {
   await (await quizzes()).deleteOne({ _id: id })
   await (await quizAttempts()).deleteMany({ quizId: id })
   await (await quizLikes()).deleteMany({ quizId: id })
+  await dropQuizComments(id)
   return json({ ok: true })
 })
 

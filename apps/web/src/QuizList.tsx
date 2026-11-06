@@ -9,7 +9,7 @@ import { BRAND } from './brand'
 import { GAMES } from './games'
 import { CATEGORIES, type Category, type GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { CheckIcon, GridIcon, HeartIcon, LinkIcon, PencilIcon, PlusIcon, SearchIcon, SortIcon, UsersIcon } from './icons'
+import { ChatIcon, CheckIcon, GridIcon, HeartIcon, LinkIcon, PencilIcon, PlusIcon, SearchIcon, SortIcon, UsersIcon } from './icons'
 import { coverUrl, type QuizCard, type QuizKind, type QuizLayout } from './quiz'
 import { useHref } from './router'
 import { uiUrl } from './pics'
@@ -80,7 +80,7 @@ export function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
               </i>
             )}
           </span>
-          {(!!quiz.likes || !!quiz.plays) && (
+          {(!!quiz.likes || !!quiz.plays || !!quiz.comments) && (
             <span className="qz-stats">
               {!!quiz.likes && (
                 <span title={t('quiz.likes', { count: quiz.likes })}>
@@ -92,6 +92,12 @@ export function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
                 <span title={t('quiz.plays', { count: quiz.plays })}>
                   <UsersIcon />
                   {quiz.plays}
+                </span>
+              )}
+              {!!quiz.comments && (
+                <span title={t('comments.count', { count: quiz.comments })}>
+                  <ChatIcon />
+                  {quiz.comments}
                 </span>
               )}
             </span>

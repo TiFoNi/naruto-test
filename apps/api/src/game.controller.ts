@@ -14,6 +14,7 @@ import * as push from '@nanda/core/endpoints/push'
 import * as adminImage from '@nanda/core/endpoints/admin-image'
 import * as adminShots from '@nanda/core/endpoints/admin-shots'
 import * as quizzes from '@nanda/core/endpoints/quizzes'
+import * as quizComments from '@nanda/core/endpoints/quiz-comments'
 import * as adminActivity from '@nanda/core/endpoints/admin-activity'
 import * as adminQuizzes from '@nanda/core/endpoints/admin-quizzes'
 import * as myQuizzes from '@nanda/core/endpoints/my-quizzes'
@@ -198,6 +199,21 @@ export class GameController {
   @Get('quiz')
   quizOne(@Req() req: Request, @Res() res: Response) {
     return bridge(quizzes.ONE, req, res)
+  }
+
+  @Get('quiz/comments')
+  quizCommentList(@Req() req: Request, @Res() res: Response) {
+    return bridge(quizComments.LIST, req, res)
+  }
+
+  @Post('quiz/comments')
+  quizCommentSend(@Req() req: Request, @Res() res: Response) {
+    return bridge(quizComments.SEND, req, res)
+  }
+
+  @Post('quiz/comments/edit')
+  quizCommentEdit(@Req() req: Request, @Res() res: Response) {
+    return bridge(quizComments.EDIT, req, res)
   }
 
   @Post('quiz/like')

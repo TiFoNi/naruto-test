@@ -29,6 +29,7 @@ export type QuizCard = {
   mine?: { finished: boolean; score: number; answered: number } | null
   plays?: number
   likes?: number
+  comments?: number
   author?: QuizAuthor | null
 }
 

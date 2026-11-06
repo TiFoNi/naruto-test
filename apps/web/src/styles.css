@@ -755,6 +755,11 @@ button.bell-card {
   cursor: pointer;
 }
 
+.bell-item.is-comment {
+  --tier: var(--accent);
+}
+
+.bell-item.is-comment .bell-hint,
 .bell-item.is-mention .bell-hint {
   display: -webkit-box;
   overflow: hidden;

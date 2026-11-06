@@ -37,7 +37,7 @@ const AT_BEFORE = /(^|\s)@([^\s@]{0,32})$/
 
 const escape = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-const toneOf = (tone?: string | null): CSSProperties | undefined => {
+export const toneOf = (tone?: string | null): CSSProperties | undefined => {
   const hex = GAMES.find((game) => game.id === tone)?.accent ?? (tone && TONE_HEX.test(tone) ? tone : null)
   return hex ? { color: hex } : undefined
 }

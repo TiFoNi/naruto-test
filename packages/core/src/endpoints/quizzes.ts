@@ -3,6 +3,7 @@ import { quizAttempts, quizLikes, quizzes, type QuizAttemptDoc, type QuizDoc } f
 import { isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
 import { roundOwner } from '../profile'
+import { commentCounts } from '../quiz-comments'
 import { attemptId, finishAttempt, publishedQuiz, quizAuthors, quizCard, quizView, readValue, restartAttempt } from '../quizzes'
 
 async function liked(quiz: QuizDoc, userId: ObjectId) {
@@ -43,6 +44,7 @@ export const LIST = handle(async (request) => {
     .toArray()
   const likes = new Map(hearts.map((row) => [String(row._id), row.count]))
   const authors = await quizAuthors(list)
+  const talks = await commentCounts(ids)
 
   return json(
     {
@@ -52,6 +54,7 @@ export const LIST = handle(async (request) => {
           ...quizCard(quiz),
           plays: plays.get(quiz._id!.toHexString()) ?? 0,
           likes: likes.get(quiz._id!.toHexString()) ?? 0,
+          comments: talks.get(quiz._id!.toHexString()) ?? 0,
           author: quiz.authorId ? (authors.get(quiz.authorId.toHexString()) ?? null) : null,
           mine: own ? { finished: own.finished, score: own.score, answered: own.answers.length } : null,
         }

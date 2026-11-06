@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { quizAttempts, quizLikes, quizzes, type QuizDoc } from '../db'
+import { dropQuizComments } from '../quiz-comments'
 import { fail, handle, json, readJson } from '../http'
 import { uploadQuizCover } from '../images'
 import { roundOwner } from '../profile'
@@ -77,6 +78,7 @@ export const DROP = handle(async (request) => {
   if (!deletedCount) return fail(404, 'not_found')
   await (await quizAttempts()).deleteMany({ quizId: id })
   await (await quizLikes()).deleteMany({ quizId: id })
+  await dropQuizComments(id)
   return json({ ok: true })
 })
 

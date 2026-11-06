@@ -60,7 +60,7 @@ const PUSH_TEXT: Record<PushLang, { one: string; all: string; reply: string }> =
   en: { one: 'mentioned you in chat', all: 'Announcement', reply: 'replied to you in chat' },
 }
 
-const REPLY_SNIPPET = 120
+export const REPLY_SNIPPET = 120
 
 const mentions = (text: string, nick: string) => text.toLowerCase().includes(`@${nick.toLowerCase()}`)
 
@@ -174,7 +174,7 @@ export async function freshSince(seen: unknown) {
   return Boolean(found)
 }
 
-const freshFaces = async (docs: ChatDoc[]) => {
+export const freshFaces = async (docs: { userId: ObjectId }[]) => {
   const ids = [...new Set(docs.map((one) => one.userId.toHexString()))].map((id) => new ObjectId(id))
   if (!ids.length) return new Map<string, Pick<UserDoc, 'nickname' | 'tag' | 'avatar' | 'frame' | 'title' | 'nickTone'>>()
   const found = await (await users())

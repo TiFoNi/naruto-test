@@ -17,6 +17,7 @@ export type UserDoc = {
   coinsNews?: { coins: number; at: Date }
   titleNews?: string | null
   quizNews?: QuizNews[]
+  commentNews?: CommentNews[]
   dex?: Record<string, number[]>
   mentionPush?: boolean
   mentionNews?: MentionNews[]
@@ -196,6 +197,25 @@ export type DuelDoc = {
 }
 
 export type QuizNews = { id: string; quizId: string; title: string; note: string; at: Date }
+
+export type CommentNews = { id: string; quizId: string; game: string; title: string; fromId: string; from: string; text: string; at: Date; reply?: boolean }
+
+export type QuizCommentDoc = {
+  _id?: ObjectId
+  quizId: ObjectId
+  userId: ObjectId
+  nickname: string
+  tag?: string
+  avatar?: string | null
+  frame?: string | null
+  title?: string | null
+  nickTone?: string | null
+  text: string
+  spoiler: boolean
+  at: Date
+  hidden?: boolean
+  reply?: ChatReply
+}
 
 export type DuelTalk = {
   id: string
@@ -422,6 +442,7 @@ const cache = globalThis as typeof globalThis & {
   __quizzesIndexed?: Promise<unknown>
   __quizAttemptsIndexed?: Promise<unknown>
   __quizLikesIndexed?: Promise<unknown>
+  __quizCommentsIndexed?: Promise<unknown>
   __roundsIndexed?: Promise<unknown>
   __duelsIndexed?: Promise<unknown>
   __challengesIndexed?: Promise<unknown>
@@ -708,6 +729,16 @@ export async function quizLikes(): Promise<Collection<QuizLikeDoc>> {
     throw error
   })
   await cache.__quizLikesIndexed
+  return collection
+}
+
+export async function quizComments(): Promise<Collection<QuizCommentDoc>> {
+  const collection = (await database()).collection<QuizCommentDoc>('quizComments')
+  cache.__quizCommentsIndexed ??= Promise.all([collection.createIndex({ quizId: 1, _id: -1 }), collection.createIndex({ userId: 1, _id: -1 })]).catch((error) => {
+    cache.__quizCommentsIndexed = undefined
+    throw error
+  })
+  await cache.__quizCommentsIndexed
   return collection
 }
 

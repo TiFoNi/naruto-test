@@ -711,6 +711,16 @@ export function LayersIcon({ className }: IconProps) {
   )
 }
 
+export function EyeOffIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M10.6 6c.5-.1.9-.1 1.4-.1 5.5 0 9.2 6.2 9.2 6.2a17 17 0 0 1-2.6 3.3M6.6 7.6A16.6 16.6 0 0 0 2.8 12s3.7 6.2 9.2 6.2c1.6 0 3-.5 4.3-1.2" />
+      <path d="M9.9 9.9a2.8 2.8 0 0 0 4 4" />
+      <path d="M3.5 3.5l17 17" />
+    </svg>
+  )
+}
+
 export function EyeIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

@@ -12,9 +12,10 @@ export type FriendAsk = { id: string; nickname: string; tag: string | null; at: 
 export type CoinNews = { coins: number; at: string }
 export type QuizNews = { id: string; quizId: string; title: string; note: string; at: string }
 export type MentionNews = { id: string; fromId: string; from: string; text: string; at: string; reply?: boolean }
-export type Feed = { awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[]; frames: string[]; coins: CoinNews | null; mentions: MentionNews[]; linkGoogle: boolean; title: string | null; quizzes: QuizNews[] }
+export type CommentNews = { id: string; quizId: string; game: string; title: string; fromId: string; from: string; text: string; at: string; reply?: boolean }
+export type Feed = { awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[]; frames: string[]; coins: CoinNews | null; mentions: MentionNews[]; linkGoogle: boolean; title: string | null; quizzes: QuizNews[]; comments: CommentNews[] }
 
-const EMPTY: Feed = { awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false, title: null, quizzes: [] }
+const EMPTY: Feed = { awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false, title: null, quizzes: [], comments: [] }
 
 const watchers = new Set<(feed: Feed) => void>()
 
@@ -46,6 +47,10 @@ export function dropInvite(code: string) {
 
 export function dropQuizzes() {
   return publish({ ...(cache ?? EMPTY), quizzes: [] })
+}
+
+export function dropComments() {
+  return publish({ ...(cache ?? EMPTY), comments: [] })
 }
 
 export function dropTitle() {
@@ -95,6 +100,7 @@ export function freshFeed() {
             linkGoogle: data.linkGoogle === true,
             title: typeof data.title === 'string' ? data.title : null,
             quizzes: data.quizzes ?? [],
+            comments: data.comments ?? [],
           })
         : EMPTY,
     )

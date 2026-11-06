@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { api } from './api'
 import { useAuth } from './auth'
@@ -11,12 +11,11 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { ArrowIcon, CheckIcon, CloseIcon, HeartIcon, MinusIcon, RefreshIcon } from './icons'
-import { coverUrl, optionImage, type QuizOption, type QuizQuestionView, type QuizValue, type QuizView } from './quiz'
-import QuizTile, { QuizChip, useOptionLabel, type TileState } from './QuizTile'
-import { abilityUrl } from './pics'
+import { ArrowIcon, CheckIcon, CloseIcon, HeartIcon, RefreshIcon } from './icons'
+import { coverUrl, type QuizQuestionView, type QuizValue, type QuizView } from './quiz'
+import QuizComments from './QuizComments'
+import QuizTile, { QuizChip, type TileState } from './QuizTile'
 import { useHref } from './router'
-import Thumb from './Thumb'
 
 type QuestionProps = {
   game: Game
@@ -420,19 +419,6 @@ export function Question({ game, byId, question, value, onChange, result }: Ques
   )
 }
 
-function Mini({ game, byId, option }: { game: Game; byId: Map<number, Entity>; option: QuizOption }) {
-  const label = useOptionLabel(byId)(option)
-  const entity = option.kind === 'entity' ? byId.get(option.id) : undefined
-  return (
-    <span className="quiz-mini">
-      {entity && <Thumb game={game} entity={entity} size={24} />}
-      {option.kind === 'ability' && <img src={abilityUrl(option.key)} alt="" />}
-      {option.kind === 'image' && <img src={optionImage(option)} alt="" />}
-      {label}
-    </span>
-  )
-}
-
 function LikeButton({ quiz, onLike }: { quiz: QuizView; onLike: () => void }) {
   const { t } = useI18n()
   return (
@@ -450,9 +436,64 @@ function LikeButton({ quiz, onLike }: { quiz: QuizView; onLike: () => void }) {
   )
 }
 
+const RING = 2 * Math.PI * 46
+
+function QuizDone({ quiz, likeNote, onLike, onClose }: { quiz: QuizView; likeNote: string; onLike?: () => void; onClose: () => void }) {
+  const { t } = useI18n()
+  const attempt = quiz.attempt!
+  const share = attempt.total ? attempt.score / attempt.total : 0
+  const [drawn, setDrawn] = useState(0)
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setDrawn(share))
+    const onKey = (event: KeyboardEvent) => event.key === 'Escape' && onClose()
+    window.addEventListener('keydown', onKey)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [share, onClose])
+
+  return createPortal(
+    <div className="modal-backdrop quiz-done-shade" onClick={onClose} role="presentation">
+      <section className="card modal quiz-done" role="dialog" aria-modal="true" aria-label={t('quiz.recap.title')} onClick={(event) => event.stopPropagation()}>
+        <button type="button" className="modal-close" aria-label={t('dex.close')} onClick={onClose}>
+          <CloseIcon />
+        </button>
+        <small className="quiz-done-kicker">{t('quiz.recap.title')}</small>
+        <div className="quiz-done-dial">
+          <svg className="quiz-done-ring" viewBox="0 0 112 112" aria-hidden>
+            <circle cx="56" cy="56" r="46" className="is-track" />
+            <circle cx="56" cy="56" r="46" className="is-fill" strokeDasharray={`${RING * drawn} ${RING}`} />
+          </svg>
+          <p className="quiz-done-score">
+            <b>{attempt.score}</b>
+            <span>{t('quiz.done.of', { total: attempt.total })}</span>
+          </p>
+        </div>
+        <h2>{t(share === 1 ? 'quiz.grade.top' : share >= 0.6 ? 'quiz.grade.good' : 'quiz.grade.low')}</h2>
+        {!!attempt.xp && <p className="quiz-done-xp">{t('quiz.done.xp', { xp: attempt.xp })}</p>}
+        <hr />
+        {onLike && <p className="quiz-done-ask">{t('quiz.done.ask')}</p>}
+        {likeNote && <p className="quiz-recap-note">{likeNote}</p>}
+        <div className={`quiz-done-acts ${onLike ? '' : 'is-single'}`}>
+          {onLike && (
+            <button type="button" className={`quiz-btn is-ghost quiz-like ${quiz.liked ? 'is-on' : ''}`} aria-pressed={!!quiz.liked} onClick={onLike}>
+              <HeartIcon />
+              {t('quiz.like')}
+            </button>
+          )}
+          <button type="button" className="quiz-btn is-ghost" onClick={onClose}>
+            {t('dex.close')}
+          </button>
+        </div>
+      </section>
+    </div>,
+    document.body,
+  )
+}
+
 function Recap({
-  game,
-  byId,
   quiz,
   busy,
   onRestart,
@@ -460,8 +501,6 @@ function Recap({
   likeNote,
   moreHref,
 }: {
-  game: Game
-  byId: Map<number, Entity>
   quiz: QuizView
   busy: boolean
   onRestart: () => void
@@ -472,27 +511,6 @@ function Recap({
   const { t } = useI18n()
   const attempt = quiz.attempt!
   const share = attempt.total ? attempt.score / attempt.total : 0
-  const entityOf = (id: unknown) => (typeof id === 'number' ? byId.get(id) : undefined)
-
-  const describe = (question: QuizQuestionView, value: QuizValue | number[] | number | null | undefined, correct = false): ReactNode => {
-    if (value === null || value === undefined) return <span className="quiz-mini is-empty">{t('quiz.skipped')}</span>
-    if (question.kind === 'bool') return <span className="quiz-mini">{t(value === 1 ? 'quiz.true' : 'quiz.false')}</span>
-    if (question.kind === 'name') {
-      const entity = entityOf(value)
-      return entity ? <Mini game={game} byId={byId} option={{ kind: 'entity', id: entity.id }} /> : null
-    }
-    if (question.kind === 'choice' && Array.isArray(value)) {
-      return value.map((at) => question.options[at] && <Mini key={at} game={game} byId={byId} option={question.options[at]!} />)
-    }
-    if (question.kind === 'order') return <span className="quiz-mini">{t(correct ? 'quiz.recap.orderRight' : attempt.reveal ? 'quiz.recap.orderWrong' : 'quiz.recap.orderOff')}</span>
-    if (question.kind === 'pairs' && Array.isArray(value)) {
-      const right = attempt.results?.[quiz.questions.indexOf(question)]?.correct
-      if (!Array.isArray(right)) return <span className="quiz-mini">{t(correct ? 'quiz.recap.pairsRight' : 'quiz.recap.pairsWrong')}</span>
-      const hits = value.filter((one, at) => one === right[at]).length
-      return <span className="quiz-mini">{t('quiz.recap.pairs', { hits, total: question.left.length })}</span>
-    }
-    return null
-  }
 
   return (
     <section className="quiz-recap">
@@ -512,32 +530,6 @@ function Recap({
           <i key={at} className={markOf(attempt.results?.[at])} />
         ))}
       </div>
-      <ol className="quiz-recap-list">
-        {quiz.questions.map((question, at) => {
-          const result = attempt.results?.[at]
-          const right = !!result?.right
-          return (
-            <li key={at} className={markOf(result)}>
-              <i className="quiz-recap-mark">{right ? <CheckIcon /> : result?.partial ? <MinusIcon /> : <CloseIcon />}</i>
-              <div className="quiz-recap-body">
-                <p>
-                  <em>{at + 1}.</em> {question.text}
-                </p>
-                <div className="quiz-recap-answers">
-                  <span className="quiz-recap-label">{t('quiz.recap.yours')}</span>
-                  {describe(question, attempt.answers[at], right)}
-                </div>
-                {!right && result && result.correct !== undefined && question.kind !== 'order' && question.kind !== 'pairs' && (
-                  <div className="quiz-recap-answers is-correct">
-                    <span className="quiz-recap-label">{t('quiz.recap.correct')}</span>
-                    {describe(question, result.correct, true)}
-                  </div>
-                )}
-              </div>
-            </li>
-          )
-        })}
-      </ol>
       {likeNote && <p className="quiz-recap-note">{likeNote}</p>}
       <footer className="quiz-recap-foot">
         {onLike && <LikeButton quiz={quiz} onLike={onLike} />}
@@ -571,6 +563,7 @@ export function QuizRun({
   busy,
   error,
   top,
+  after,
   likeNote,
   moreHref,
   onSend,
@@ -582,6 +575,7 @@ export function QuizRun({
   busy: boolean
   error: string
   top?: ReactNode
+  after?: ReactNode
   likeNote: string
   moreHref?: string
   onSend: (body: Record<string, unknown>) => void
@@ -590,10 +584,20 @@ export function QuizRun({
   const { t } = useI18n()
   const [draft, setDraft] = useState<QuizValue[]>(() => (quiz.layout === 'list' ? quiz.questions.map(() => null) : []))
   const attempt = quiz.attempt
+  const finished = !!attempt?.finished
+  const wasFinished = useRef(finished)
+  const [done, setDone] = useState(false)
+  const closeDone = useCallback(() => setDone(false), [])
 
   useEffect(() => {
     setDraft(quiz.layout === 'list' ? quiz.questions.map(() => null) : [])
   }, [attempt, quiz.layout, quiz.questions])
+
+  useEffect(() => {
+    if (finished && !wasFinished.current) setDone(true)
+    if (!finished) setDone(false)
+    wasFinished.current = finished
+  }, [finished])
 
   const hero = (aside: ReactNode, action?: ReactNode) => (
     <header className="quiz-hero">
@@ -672,7 +676,9 @@ export function QuizRun({
             markOf(result),
           )
         })}
-        <Recap game={game} byId={byId} quiz={quiz} busy={busy} onRestart={() => onSend({ action: 'restart' })} onLike={onLike} likeNote={likeNote} moreHref={moreHref} />
+        <Recap quiz={quiz} busy={busy} onRestart={() => onSend({ action: 'restart' })} onLike={onLike} likeNote={likeNote} moreHref={moreHref} />
+        {after}
+        {done && <QuizDone quiz={quiz} likeNote={likeNote} onLike={onLike} onClose={closeDone} />}
       </div>
     )
   }
@@ -699,6 +705,7 @@ export function QuizRun({
             <ArrowIcon />
           </button>
         </div>
+        {after}
       </div>
     )
   }
@@ -724,6 +731,7 @@ export function QuizRun({
           <ArrowIcon />
         </button>
       </div>
+      {after}
     </div>
   )
 }
@@ -739,6 +747,13 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [likeNote, setLikeNote] = useState('')
+
+  const [demoPage, setDemoPage] = useState<'none' | 'off' | 'on'>('none')
+  useEffect(() => {
+    const search = window.location.search
+    if (search.includes('demo-comments')) setDemoPage(search.includes('finished') ? 'on' : 'off')
+  }, [])
+  const back0 = null
 
   useEffect(() => {
     void api<{ quiz?: QuizView }>(`quiz?id=${id}`).then(({ ok, data }) => (ok && data.quiz ? setQuiz(data.quiz) : setMissing(true)))
@@ -766,6 +781,19 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
     setLikeNote(t(status === 401 ? 'quiz.likeLogin' : 'quiz.failed'))
   }
 
+  if (demoPage === 'off' || demoPage === 'on')
+    return (
+      <div className="quiz-page">
+        {back0}
+        <p className="quiz-recap-note">
+          Тестовая страница: всё остаётся в браузере. {demoPage === 'on' ? 'Тест «пройден» — спойлеры открыты.' : 'Тест «не пройден» — спойлеры скрыты.'}{' '}
+          <a href={demoPage === 'on' ? '?demo-comments' : '?demo-comments&finished'} style={{ color: 'var(--accent)' }}>
+            {demoPage === 'on' ? 'Показать как непройденный' : 'Показать как пройденный'}
+          </a>
+        </p>
+        <QuizComments quizId="demo" finished={demoPage === 'on'} />
+      </div>
+    )
   if (!game || missing) return <div className="card center muted">{t('err.not_found')}</div>
 
   const back = (
@@ -791,6 +819,7 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
       busy={busy}
       error={error}
       top={back}
+      after={<QuizComments quizId={quiz.id} finished={!!quiz.attempt?.finished} />}
       likeNote={likeNote}
       moreHref={href.tests(game.category)}
       onSend={(body) => void send(body)}
