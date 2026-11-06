@@ -474,11 +474,13 @@ const BADGE_POINTS = tornPoints(7, 9, 5)
   .map(([x, y]) => `${(x * 1.3).toFixed(1)},${y.toFixed(1)}`)
   .join(' ')
 
-const BackSheet = () => {
+const BACK_TURN = 7
+
+const BackSheet = ({ turn = BACK_TURN }: { turn?: number }) => {
   const id = useId()
   const points = BACK_POINTS
   return (
-    <i className="lv-back" style={{ '--turn': '7deg' } as CSSProperties}>
+    <i className="lv-back" style={{ '--turn': `${turn}deg` } as CSSProperties}>
       <svg viewBox="0 0 300 400" preserveAspectRatio="none" aria-hidden>
         <defs>
           <radialGradient id={id} cx="50%" cy="0%" r="110%">
@@ -637,8 +639,7 @@ const CardSheet = ({ rank, out, onClose, onGone }: { rank: Rank; out: boolean; o
               <li key={one.mode!.id}>
                 <i aria-hidden>{one.mode!.icon}</i>
                 <span>{t(one.mode!.label)}</span>
-                <b>×{one.n}</b>
-                <em>+{one.xp}</em>
+                <em>{one.xp}</em>
               </li>
             ))}
           </ul>
@@ -690,10 +691,11 @@ const DexZoom = ({ focus, game, label, accent, rank, onClosed }: { focus: Focus;
     rest()
     const motion = { duration: MOVE_MS, easing: MOVE_EASE, fill: 'forwards' as const }
     shade.current?.animate([{ opacity: 1 }, { opacity: 0 }], motion)
+    card.current?.querySelector('.lv-back')?.animate([{ '--turn': `${BACK_TURN + focus.tilt}deg` }, { '--turn': `${BACK_TURN}deg` }], motion)
     const back = card.current?.animate([{ transform: 'none' }, { transform: travel(true) }], motion)
     if (back) back.onfinish = onClosed
     else onClosed()
-  }, [travel, onClosed, rest])
+  }, [travel, onClosed, rest, focus.tilt])
 
   useEffect(() => {
     const motion = { duration: MOVE_MS, easing: MOVE_EASE }
@@ -701,6 +703,7 @@ const DexZoom = ({ focus, game, label, accent, rank, onClosed }: { focus: Focus;
     shade.current?.getAnimations().forEach((running) => running.cancel())
     shade.current?.animate([{ opacity: 0 }, { opacity: 1 }], motion)
     card.current?.animate([{ transform: travel(false) }, { transform: 'none' }], motion)
+    card.current?.querySelector('.lv-back')?.animate([{ '--turn': `${BACK_TURN}deg` }, { '--turn': `${BACK_TURN + focus.tilt}deg` }], motion)
     shut.current?.focus({ preventScroll: true })
     const root = document.documentElement
     const before = root.style.overflow
@@ -711,7 +714,7 @@ const DexZoom = ({ focus, game, label, accent, rank, onClosed }: { focus: Focus;
       window.removeEventListener('keydown', key)
       root.style.overflow = before
     }
-  }, [travel, close])
+  }, [travel, close, focus.tilt])
 
   const { entity } = focus
 
@@ -720,7 +723,7 @@ const DexZoom = ({ focus, game, label, accent, rank, onClosed }: { focus: Focus;
       <div ref={shade} className="dex-zoom-shade" onClick={() => !dragged.current && close()} />
       <div ref={card} className={`dex-zoom-card ${tier ? `lv-${tier}` : ''} ${away ? 'is-leaving' : ''}`}>
         <div ref={face} className="dex-zoom-face">
-          {tier && tier > 1 && <BackSheet />}
+          {tier && tier > 1 && <BackSheet turn={BACK_TURN + focus.tilt} />}
           {tier && tier > 1 && <i className="dex-zoom-drop" />}
           {level !== undefined && (
             <button type="button" className={`lv-badge ${sheet === 'in' ? 'is-on' : ''}`} aria-label={t('card.stats')} aria-expanded={sheet === 'in'} onClick={() => (sheet === 'in' ? hide() : setSheet('in'))}>

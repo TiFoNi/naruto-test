@@ -472,6 +472,12 @@ button.dex-scrap:focus-visible {
   -webkit-line-clamp: 5;
 }
 
+@property --turn {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 6deg;
+}
+
 .lv-back {
   position: absolute;
   inset: 0;
@@ -509,8 +515,8 @@ button.dex-scrap:focus-visible {
 
 .dex-zoom-face .lv-back {
   filter: drop-shadow(0 0 5.1cqw color-mix(in srgb, var(--lv-c) 60%, transparent));
-  transform: translateZ(-46px) scale(1.05) translate(calc(var(--sx, 0) * -3.5%), calc(var(--sy, 0) * 2.8%)) rotate(calc(var(--sx, 0) * -1.7deg))
-    rotateX(calc(var(--rx) * -0.2)) rotateY(calc(var(--ry) * -0.2));
+  transform: translateZ(-2px) translate(calc(var(--sx, 0) * -3.5%), calc(var(--sy, 0) * 2.8%)) rotate(calc(var(--sx, 0) * -1.7deg)) rotate(var(--turn, 6deg))
+    translate(4%, 2%);
 }
 
 .dex-zoom-drop {
@@ -520,12 +526,7 @@ button.dex-scrap:focus-visible {
   background: rgb(0 0 0 / 60%);
   filter: blur(14px);
   pointer-events: none;
-  transform: translateZ(-30px) translate(3%, 3%);
-}
-
-.dex-zoom-face .lv-back svg,
-.dex-zoom-face .lv-back-light {
-  transform: rotate(var(--turn, 6deg)) translate(4%, 2%);
+  transform: translateZ(-1px) translate(3%, 3%);
 }
 
 .dex-zoom-face .lv-back-light {
@@ -892,7 +893,7 @@ button.lv-badge:focus-visible {
 
 .lv-sheet-where li {
   display: grid;
-  grid-template-columns: 18px minmax(0, 1fr) auto auto;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
   align-items: center;
   gap: 8px;
   font-size: 13px;
@@ -913,12 +914,6 @@ button.lv-badge:focus-visible {
   color: rgb(27 26 30 / 80%);
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.lv-sheet-where li b {
-  color: #1b1a1e;
-  font-family: var(--display);
-  font-size: 13px;
 }
 
 .lv-sheet-where li em {
