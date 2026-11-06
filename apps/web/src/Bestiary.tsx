@@ -1102,9 +1102,29 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   const release = useCallback(() => setFocus(null), [])
 
   const [cards, setCards] = useState<Record<number, CardStats>>({})
+  const [preview, setPreview] = useState(false)
 
   useEffect(() => {
-    if (!game || !user) return
+    if (process.env.NODE_ENV === 'production' || !game || !window.location.search.includes('levels')) return
+    const forced = Number(new URLSearchParams(window.location.search).get('levels'))
+    const stats = (place: number) => {
+      const single = CARD_STEPS.length - 2
+      const top = place >= single && place < single + 160
+      const tier = forced >= 1 && forced <= CARD_STEPS.length ? forced - 1 : place < single ? place : top ? CARD_STEPS.length - 1 : single
+      const turn = forced ? place : place < single ? 0 : place - single
+      const from = CARD_STEPS[tier]!.xp
+      const span = (CARD_STEPS[tier + 1]?.xp ?? from + 1) - from
+      const xp = from + (turn % span)
+      const blind = Math.floor(xp / 4)
+      return { xp, modes: { blind: { n: blind, xp: blind * 4 }, image: { n: xp - blind * 4, xp: xp - blind * 4 } } }
+    }
+    setPreview(true)
+    setOpen(new Set(game.entities.map((one) => one.id)))
+    setCards(Object.fromEntries(game.entities.map((one, place) => [one.id, stats(place)])))
+  }, [game, ready])
+
+  useEffect(() => {
+    if (!game || !user || preview) return
     let alive = true
     const query = owner ? `dex?game=${game.id}&user=${encodeURIComponent(owner)}` : `dex?game=${game.id}`
     void api<{ ids?: number[]; cards?: Record<number, CardStats>; nickname?: string | null }>(query).then(({ ok, data }) => {
@@ -1116,7 +1136,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
     return () => {
       alive = false
     }
-  }, [game, user, owner])
+  }, [game, user, owner, preview])
 
   const tierOf = (entity: Entity) => cardRank(cards[entity.id]?.xp ?? 0).tier
   const [only, setOnly] = useState<Set<number>>(new Set())
@@ -1192,8 +1212,8 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
         )}
       </header>
 
-      {(checking || user || owner) && (
-        <div className="dex-filter">
+      {(checking || user || owner || preview) && (
+        <div className={`dex-filter ${filtering ? 'is-filtering' : ''}`}>
           {open.size > 0 && (
             <>
               <div className="dex-filter-stage">
@@ -1245,7 +1265,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
               </div>
               <button
                 type="button"
-                className={`dex-filter-toggle ${searching ? 'is-open' : ''} ${needle ? 'is-active' : ''}`}
+                className={`dex-filter-toggle is-search ${searching ? 'is-open' : ''} ${needle ? 'is-active' : ''}`}
                 aria-expanded={searching}
                 aria-label={t('dex.search')}
                 title={t('dex.search')}
