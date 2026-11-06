@@ -3,11 +3,12 @@ import { rounds, users } from './db'
 import { fail } from './http'
 
 const HOUR_MS = 3_600_000
-const HOURLY_ROUNDS = 200
+const HOURLY_ROUNDS = 300
 const MARATHON_WINDOW_HOURS = 8
 const MARATHON_BUSY_HOURS = 6
-const MARATHON_HOUR_ROUNDS = 60
+const MARATHON_HOUR_ROUNDS = 90
 const CLEAR_FOR_MS = 60_000
+const TRUST_MS = 6 * HOUR_MS
 const VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
 
 const clearUntil = new Map<string, number>()
@@ -16,6 +17,7 @@ const secret = () => process.env.TURNSTILE_SECRET_KEY ?? ''
 
 async function looksAutomated(userId: ObjectId, now: number) {
   const person = await (await users()).findOne({ _id: userId }, { projection: { humanAt: 1 } })
+  if (person?.humanAt && now - person.humanAt.getTime() < TRUST_MS) return false
   const since = new Date(Math.max(now - MARATHON_WINDOW_HOURS * HOUR_MS, person?.humanAt?.getTime() ?? 0))
   const lastHour = new Date(now - HOUR_MS)
   const hours = await (await rounds())

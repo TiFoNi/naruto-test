@@ -51,6 +51,7 @@ const PAGE = 15
 const TOP = 100
 
 let known: Board | null = null
+let opened = PAGE
 
 keepPerUser(() => {
   known = null
@@ -91,7 +92,11 @@ export default function SeasonBoard({ initial = null }: { initial?: Board | null
   })
   const [error, setError] = useState<string | null>(null)
   const [now, setNow] = useState(() => Date.now())
-  const [size, setSize] = useState(PAGE)
+  const [size, setSize] = useState(() => opened)
+
+  useEffect(() => {
+    opened = size
+  }, [size])
 
   useEffect(() => {
     if (initial) return

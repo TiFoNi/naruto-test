@@ -64,6 +64,7 @@ const PAGE_SIZE = 10
 const SKELETON_ROWS = PAGE_SIZE
 const lastSize = new Map<string, number>()
 const known = new Map<string, Board>()
+const opened = new Map<string, number>()
 
 keepPerUser(() => {
   known.clear()
@@ -75,7 +76,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   const game = gameById(gameId)
   const sort: Sort = 'best'
   const navigate = useNavigate()
-  const [size, setSize] = useState(PAGE_SIZE)
+  const [size, setSize] = useState(() => opened.get(`${gameId}:${mode}`) ?? PAGE_SIZE)
   const more = useRef<HTMLDivElement>(null)
   const cacheKey = `${gameId}:${mode}:${sort}`
   const [board, setBoard] = useState<Board | null>(known.get(cacheKey) ?? null)
@@ -109,7 +110,14 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
     }
   }, [gameId, mode, sort])
 
-  useEffect(() => setSize(PAGE_SIZE), [gameId, mode])
+  useEffect(() => setSize(opened.get(`${gameId}:${mode}`) ?? PAGE_SIZE), [gameId, mode])
+
+  const grow = () =>
+    setSize((one) => {
+      const next = one + PAGE_SIZE
+      opened.set(`${gameId}:${mode}`, next)
+      return next
+    })
 
   useEffect(() => {
     if (board) lastSize.set(`${gameId}:${mode}`, Math.min(board.rows.length, PAGE_SIZE))
@@ -118,7 +126,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   useEffect(() => {
     const node = more.current
     if (!node) return
-    const watch = new IntersectionObserver((entries) => entries[0]?.isIntersecting && setSize((one) => one + PAGE_SIZE), { rootMargin: '200px' })
+    const watch = new IntersectionObserver((entries) => entries[0]?.isIntersecting && grow(), { rootMargin: '200px' })
     watch.observe(node)
     return () => watch.disconnect()
   }, [size, board])
@@ -364,7 +372,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
 
               {left > 0 && (
                 <div className="lb-more" ref={more}>
-                  <button type="button" onClick={() => setSize((one) => one + PAGE_SIZE)}>
+                  <button type="button" onClick={grow}>
                     {t('lb.more')}
                   </button>
                 </div>
