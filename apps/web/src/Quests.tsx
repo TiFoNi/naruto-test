@@ -6,7 +6,7 @@ import { api } from './api'
 import { useAuth } from './auth'
 import { useI18n } from './i18n'
 import type { UiKey } from './i18n/ui'
-import { CalendarIcon, CheckIcon, GiftIcon, GlobeIcon, GridIcon, MedalIcon, PageIcon, PictureIcon, PlayIcon, CloseIcon, PuzzleIcon, RefreshIcon, SparkIcon, SwordsIcon, TrophyIcon } from './icons'
+import { CalendarIcon, CheckIcon, GiftIcon, GlobeIcon, GridIcon, MedalIcon, PageIcon, PictureIcon, PlayIcon, CloseIcon, PuzzleIcon, RefreshIcon, SparkIcon, SwapIcon, SwordsIcon, TrophyIcon } from './icons'
 import { keepPerUser } from './session-cache'
 import Ticker from './Ticker'
 
@@ -101,6 +101,7 @@ export default function Quests() {
   const [swapping, setSwapping] = useState(false)
   const [poke, setPoke] = useState({ id: '', turn: 0 })
   const [asking, setAsking] = useState<string | null>(null)
+  const [tip, setTip] = useState(false)
 
   const remember = (next: Board) => {
     known = next
@@ -138,8 +139,25 @@ export default function Quests() {
 
   return (
     <section className="card quests-card">
-      <header>
+      <header className="quests-head">
         <h2>{t('profile.questsTitle')}</h2>
+        {board && (
+          <span className={`quests-swap ${tip ? 'is-open' : ''} ${board.swap ? '' : 'is-used'}`}>
+            <button
+              type="button"
+              aria-label={t(board.swap ? 'quests.swapTip' : 'quests.swapUsed')}
+              aria-expanded={tip}
+              onClick={() => setTip((was) => !was)}
+              onBlur={() => setTip(false)}
+            >
+              <SwapIcon />
+              {board.swap && <i>1</i>}
+            </button>
+            <span className="quests-swap-tip" role="tooltip">
+              {t(board.swap ? 'quests.swapTip' : 'quests.swapUsed')}
+            </span>
+          </span>
+        )}
       </header>
 
       <ul className="quests">

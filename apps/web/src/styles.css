@@ -6208,6 +6208,123 @@ html[data-auth] .guest-note {
   transition: background 0.18s ease;
 }
 
+.quests-head {
+  position: relative;
+  z-index: 3;
+}
+
+.quests-card h2 {
+  font-size: 22px;
+}
+
+.quests-swap {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  translate: 0 -50%;
+}
+
+.quests-swap > button {
+  position: relative;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 10px;
+  background: rgb(255 255 255 / 5%);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.quests-swap > button svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.quests-swap > button:hover,
+.quests-swap.is-open > button {
+  border-color: rgb(255 255 255 / 20%);
+  background: rgb(255 255 255 / 10%);
+}
+
+.quests-swap > button:hover svg,
+.quests-swap.is-open > button svg {
+  transform: rotate(180deg);
+}
+
+.quests-swap > button i {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: grid;
+  min-width: 18px;
+  height: 18px;
+  place-items: center;
+  padding: 0 4px;
+  border: 2px solid var(--card-solid);
+  border-radius: 999px;
+  background: var(--text);
+  color: #14161c;
+  font-family: var(--display);
+  font-size: 11px;
+  font-style: normal;
+  line-height: 1;
+}
+
+.quests-swap.is-used > button {
+  border-color: var(--line);
+  background: none;
+  color: var(--text-3);
+}
+
+.quests-swap-tip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 5;
+  width: max-content;
+  max-width: 220px;
+  padding: 8px 11px;
+  border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
+  border-radius: 12px;
+  background: var(--overlay);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(22px);
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  translate: 0 -4px;
+  transition:
+    opacity 0.15s ease,
+    translate 0.15s ease;
+}
+
+.quests-swap > button:hover + .quests-swap-tip,
+.quests-swap.is-open .quests-swap-tip {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.22s ease 0.08s,
+    translate 0.22s ease 0.08s;
+}
+
+@media (hover: none) {
+  .quests-swap:not(.is-open) > button:hover + .quests-swap-tip {
+    opacity: 0;
+  }
+}
+
 .quest.is-swappable {
   cursor: pointer;
 }
