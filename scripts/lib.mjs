@@ -185,17 +185,22 @@ export async function pickPicture(dir, key, urls) {
   return null
 }
 
-import { CARD, CELL, MINI, derive, framed } from '../packages/core/src/pictures.ts'
+import { CARD, CARD_HD, CELL, MINI, derive, framed } from '../packages/core/src/pictures.ts'
 
-export { CARD, CELL, MINI, SQUARE, derive, framed } from '../packages/core/src/pictures.ts'
+export { CARD, CARD_HD, CELL, MINI, SQUARE, derive, framed } from '../packages/core/src/pictures.ts'
 
 export async function writeCard(source, cardPath, frame) {
+  const hdPath = cardPath.replace(`${path.sep}card${path.sep}`, `${path.sep}hd${path.sep}`)
   await fs.mkdir(path.dirname(cardPath), { recursive: true })
+  await fs.mkdir(path.dirname(hdPath), { recursive: true })
   if (frame) {
-    await fs.writeFile(cardPath, await framed(await sharp(source).png().toBuffer(), CARD.width, CARD.height, 82))
+    const raw = await sharp(source).png().toBuffer()
+    await fs.writeFile(cardPath, await framed(raw, CARD.width, CARD.height, 82))
+    await fs.writeFile(hdPath, await framed(raw, CARD_HD.width, CARD_HD.height, 82))
     return
   }
   await sharp(source).resize(CARD.width, CARD.height, { fit: 'cover', position: 'top' }).webp({ quality: 80 }).toFile(cardPath)
+  await sharp(source).resize(CARD_HD.width, CARD_HD.height, { fit: 'cover', position: 'top' }).webp({ quality: 80 }).toFile(hdPath)
 }
 
 export async function writeMini(source, miniPath, shape = 'square') {
@@ -205,15 +210,16 @@ export async function writeMini(source, miniPath, shape = 'square') {
 }
 
 export async function writeFullAndThumb(buf, fullPath, thumbPath, cell, { big, shape = 'square' } = {}) {
-  const { full, card, mini, thumb } = await derive(buf, shape, big)
+  const { full, card, hd, mini, thumb } = await derive(buf, shape, big)
   const swap = (kind) => fullPath.replace(`${path.sep}full${path.sep}`, `${path.sep}${kind}${path.sep}`)
 
-  for (const target of [fullPath, swap('card'), swap('mini'), thumbPath]) {
+  for (const target of [fullPath, swap('card'), swap('hd'), swap('mini'), thumbPath]) {
     await fs.mkdir(path.dirname(target), { recursive: true })
   }
 
   await fs.writeFile(fullPath, full)
   await fs.writeFile(swap('card'), card)
+  await fs.writeFile(swap('hd'), hd)
   await fs.writeFile(swap('mini'), mini)
   await fs.writeFile(thumbPath, cell === CELL ? thumb : await sharp(thumb).resize(cell, cell).webp({ quality: 88 }).toBuffer())
 }
@@ -287,7 +293,7 @@ export function keepNotable(ranked, keep) {
 
 export async function pruneImages(dir, entities) {
   const keep = new Set(entities.map((e) => `${e.id}.webp`))
-  const folders = path.basename(dir) === 'full' ? ['full', 'card', 'mini'] : [path.basename(dir)]
+  const folders = path.basename(dir) === 'full' ? ['full', 'card', 'hd', 'mini'] : [path.basename(dir)]
   for (const folder of folders) {
     const target = path.join(path.dirname(dir), folder)
     for (const file of await fs.readdir(target).catch(() => [])) {

@@ -305,6 +305,45 @@ button.dex-scrap:focus-visible {
   will-change: transform;
 }
 
+.dex-zoom-face {
+  --rx: 0deg;
+  --ry: 0deg;
+  --gx: 50%;
+  --gy: 50%;
+  --glow: 0;
+
+  position: absolute;
+  inset: 0;
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  pointer-events: auto;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.dex-zoom-face.is-held {
+  cursor: grabbing;
+}
+
+.dex-zoom-face .dex-zoom-pic {
+  transform: translateZ(14px);
+}
+
+.dex-zoom-face .dex-zoom-name {
+  transform: translateZ(8px);
+}
+
+.dex-zoom-glare {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--gx) var(--gy), rgb(255 255 255 / 75%), rgb(255 255 255 / 20%) 32%, transparent 65%);
+  mix-blend-mode: overlay;
+  opacity: var(--glow);
+  pointer-events: none;
+  transform: translateZ(1px);
+}
+
 .dex-zoom-pic {
   position: absolute;
   inset: 7% 7% 21%;
@@ -319,6 +358,15 @@ button.dex-scrap:focus-visible {
   height: 100%;
   object-fit: cover;
   object-position: center 20%;
+}
+
+.dex-zoom-pic img.dex-zoom-hd {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.dex-zoom-pic img.dex-zoom-hd.is-ready {
+  opacity: 1;
 }
 
 .dex-zoom-shine {
@@ -358,7 +406,8 @@ button.dex-scrap:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dex-zoom-shine {
+  .dex-zoom-shine,
+  .dex-zoom-glare {
     display: none;
   }
 }

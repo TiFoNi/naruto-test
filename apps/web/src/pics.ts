@@ -26,6 +26,8 @@ export const fullUrl = (game: GameId, id: number, version?: string) =>
   `${fullBase}${GAME_SPECS[game].images}/full/${id}.webp${tag(game, version)}`
 export const cardUrl = (game: GameId, id: number, version?: string) =>
   `${fullBase}${GAME_SPECS[game].images}/card/${id}.webp${tag(game, version)}`
+export const hdUrl = (game: GameId, id: number, version?: string) =>
+  `${fullBase}${GAME_SPECS[game].images}/hd/${id}.webp${tag(game, version)}`
 export const miniUrl = (game: GameId, id: number, version?: string) =>
   `${fullBase}${GAME_SPECS[game].images}/mini/${id}.webp${tag(game, version)}`
 

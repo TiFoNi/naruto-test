@@ -3,6 +3,7 @@ import sharp from 'sharp'
 export type Shape = 'square' | 'poster' | 'wide'
 
 export const CARD = { width: 288, height: 384 }
+export const CARD_HD = { width: 576, height: 768 }
 export const MINI = { width: 168, height: 224 }
 export const FULL = { width: 800, height: 900 }
 export const SQUARE = 800
@@ -31,6 +32,10 @@ export async function derive(source: Buffer, shape: Shape = 'square', detailed?:
     ? await framed(trimmed.data, CARD.width, CARD.height, 82)
     : await sharp(trimmed.data).resize(CARD.width, CARD.height, { fit: 'cover', position: 'top' }).webp({ quality: 80 }).toBuffer()
 
+  const hd = tight
+    ? await framed(trimmed.data, CARD_HD.width, CARD_HD.height, 82)
+    : await sharp(trimmed.data).resize(CARD_HD.width, CARD_HD.height, { fit: 'cover', position: 'top' }).webp({ quality: 80 }).toBuffer()
+
   const mini = square
     ? await sharp(full).resize(MINI.width, MINI.width, { fit: 'cover' }).webp({ quality: 78 }).toBuffer()
     : await sharp(card).resize(MINI.width, MINI.height, { fit: 'cover', position: 'top' }).webp({ quality: 78 }).toBuffer()
@@ -45,5 +50,5 @@ export async function derive(source: Buffer, shape: Shape = 'square', detailed?:
           .webp({ quality: 88 })
           .toBuffer()
 
-  return { full, card, mini, thumb }
+  return { full, card, hd, mini, thumb }
 }

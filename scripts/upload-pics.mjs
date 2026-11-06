@@ -98,7 +98,10 @@ async function patchAtlas(file, folder, ids) {
     layers.push({ input, left: (index % cols) * CELL, top: Math.floor(index / cols) * CELL })
   }
   if (!layers.length) return 0
-  const patched = await sharp(await fs.readFile(file)).composite(layers).webp({ quality: 84 }).toBuffer()
+  const patched = await sharp(await fs.readFile(file))
+    .composite(layers)
+    .webp({ quality: 84 })
+    .toBuffer()
   await fs.writeFile(file, patched)
   return layers.length
 }
@@ -126,28 +129,51 @@ async function main() {
     }
   }
 
+  const kindOf = (key) => key.split('/')[1]
+  const SIDE = new Set(['card', 'hd', 'mini'])
+  const shielded = (key) => {
+    const [folder, kind, name] = key.split('/')
+    return SIDE.has(kind) && (portraits.get(folder) ?? []).includes(name.replace('.webp', ''))
+  }
+  const loose = files.filter(({ key }) => !ATLAS.test(key))
+
+  const handle = async ({ key, path: file }) => {
+    const body = await fs.readFile(file)
+    const info = await head(key)
+    if (shielded(key) && !fromAdmin(info)) {
+      kept.push(key)
+      if (info) {
+        const remote = await get(key)
+        if (remote) await fs.writeFile(file, remote)
+      }
+      return
+    }
+    if (fromAdmin(info)) {
+      kept.push(key)
+      const [folder, kind, name] = key.split('/')
+      if (kind === 'full') portraits.set(folder, [...(portraits.get(folder) ?? []), name.replace('.webp', '')])
+      if (info.ContentLength !== body.length) {
+        const remote = await get(key)
+        if (remote) await fs.writeFile(file, remote)
+      }
+      return
+    }
+    if (!force && info?.ContentLength === body.length) {
+      skipped++
+      return
+    }
+    await send(key, body)
+  }
+
   await pool(
-    files.filter(({ key }) => !ATLAS.test(key)),
+    loose.filter(({ key }) => kindOf(key) === 'full'),
     12,
-    async ({ key, path: file }) => {
-      const body = await fs.readFile(file)
-      const info = await head(key)
-      if (fromAdmin(info)) {
-        kept.push(key)
-        const [folder, kind, name] = key.split('/')
-        if (kind === 'full') portraits.set(folder, [...(portraits.get(folder) ?? []), name.replace('.webp', '')])
-        if (info.ContentLength !== body.length) {
-          const remote = await get(key)
-          if (remote) await fs.writeFile(file, remote)
-        }
-        return
-      }
-      if (!force && info?.ContentLength === body.length) {
-        skipped++
-        return
-      }
-      await send(key, body)
-    },
+    handle,
+  )
+  await pool(
+    loose.filter(({ key }) => kindOf(key) !== 'full'),
+    12,
+    handle,
   )
 
   for (const { key, path: file } of files.filter(({ key }) => ATLAS.test(key))) {

@@ -44,7 +44,7 @@ export async function collectPics(only) {
     const ids = known.get(game.name)
     const keep = (id) => !ids || ids.has(id)
 
-    for (const kind of ['full', 'card', 'mini']) {
+    for (const kind of ['full', 'card', 'hd', 'mini']) {
       const dir = path.join(PUBLIC, game.name, kind)
       for (const file of await fs.readdir(dir).catch(() => [])) {
         if (!file.endsWith('.webp') || !keep(file.replace('.webp', ''))) continue

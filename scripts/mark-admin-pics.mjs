@@ -84,7 +84,7 @@ for (const row of rows) {
   if (!folder) continue
   const full = await get(`${folder}/full/${row.id}.webp`)
   if (full && version(full) === row.image) {
-    for (const kind of ['full', 'card', 'mini', 'thumb']) if (await mark(`${folder}/${kind}/${row.id}.webp`)) marked++
+    for (const kind of ['full', 'card', 'hd', 'mini', 'thumb']) if (await mark(`${folder}/${kind}/${row.id}.webp`)) marked++
     continue
   }
   const pages = await pagesOf(`${folder}/pages/${row.id}/`)

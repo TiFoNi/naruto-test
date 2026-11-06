@@ -35,7 +35,7 @@ function orphan(key) {
   const ids = known.get(world)
   if (!ids) return false
   if (kind === 'thumbs.webp') return false
-  if (['full', 'card', 'mini', 'thumb'].includes(kind)) return !ids.has(rest[0]?.replace('.webp', ''))
+  if (['full', 'card', 'hd', 'mini', 'thumb'].includes(kind)) return !ids.has(rest[0]?.replace('.webp', ''))
   if (['pages', 'voice'].includes(kind)) return !ids.has(rest[0])
   return false
 }

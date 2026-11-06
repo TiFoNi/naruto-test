@@ -11,7 +11,7 @@ import { GAMES } from './games'
 import type { Entity, GameId } from './games/types'
 import { useI18n } from './i18n'
 import { CloseIcon } from './icons'
-import { PICTURELESS, cardUrl, miniUrl } from './pics'
+import { PICTURELESS, cardUrl, hdUrl, miniUrl } from './pics'
 import { useHref } from './router'
 import { random, torn } from './torn'
 
@@ -448,13 +448,101 @@ const lift = (entity: Entity, node: HTMLElement): Focus => {
 
 const MOVE_MS = 480
 const MOVE_EASE = 'cubic-bezier(0.4, 0, 0.2, 1)'
+const TILT_X = 22
+const TILT_Y = 28
+const DRAG_PX = 6
+
+type Tilt = { x: number; y: number; vx: number; vy: number }
+
+const useTilt = (face: React.RefObject<HTMLDivElement | null>, ready: () => boolean) => {
+  const aim = useRef({ x: 0, y: 0 })
+  const state = useRef<Tilt>({ x: 0, y: 0, vx: 0, vy: 0 })
+  const dragged = useRef(false)
+
+  useEffect(() => {
+    const node = face.current
+    if (!node || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    let frame = 0
+    let last = performance.now()
+    let grab: { id: number; x: number; y: number; width: number; height: number } | null = null
+
+    const down = (event: PointerEvent) => {
+      if (!ready()) return
+      const box = node.getBoundingClientRect()
+      grab = { id: event.pointerId, x: event.clientX, y: event.clientY, width: box.width, height: box.height }
+      dragged.current = false
+      node.setPointerCapture(event.pointerId)
+      node.classList.add('is-held')
+    }
+    const move = (event: PointerEvent) => {
+      if (!grab || event.pointerId !== grab.id) return
+      const dx = event.clientX - grab.x
+      const dy = event.clientY - grab.y
+      if (Math.hypot(dx, dy) > DRAG_PX) dragged.current = true
+      const nx = Math.max(-1, Math.min(1, dx / (grab.width * 0.6)))
+      const ny = Math.max(-1, Math.min(1, dy / (grab.height * 0.6)))
+      aim.current = { x: -ny * TILT_X, y: nx * TILT_Y }
+    }
+    const up = (event: PointerEvent) => {
+      if (!grab || event.pointerId !== grab.id) return
+      grab = null
+      aim.current = { x: 0, y: 0 }
+      node.classList.remove('is-held')
+      window.setTimeout(() => {
+        dragged.current = false
+      }, 0)
+    }
+
+    const step = (now: number) => {
+      const dt = Math.min(0.05, (now - last) / 1000)
+      last = now
+      const one = state.current
+      const stiff = grab ? 260 : 90
+      const damp = grab ? 24 : 9
+      one.vx += ((aim.current.x - one.x) * stiff - one.vx * damp) * dt
+      one.vy += ((aim.current.y - one.y) * stiff - one.vy * damp) * dt
+      one.x += one.vx * dt
+      one.y += one.vy * dt
+      const reach = Math.min(1, Math.hypot(one.x / TILT_X, one.y / TILT_Y))
+      node.style.setProperty('--rx', `${one.x.toFixed(2)}deg`)
+      node.style.setProperty('--ry', `${one.y.toFixed(2)}deg`)
+      node.style.setProperty('--gx', `${(50 + (one.y / TILT_Y) * 45).toFixed(1)}%`)
+      node.style.setProperty('--gy', `${(50 - (one.x / TILT_X) * 45).toFixed(1)}%`)
+      node.style.setProperty('--glow', (reach * 0.75).toFixed(3))
+      frame = requestAnimationFrame(step)
+    }
+
+    frame = requestAnimationFrame(step)
+    node.addEventListener('pointerdown', down)
+    node.addEventListener('pointermove', move)
+    node.addEventListener('pointerup', up)
+    node.addEventListener('pointercancel', up)
+    return () => {
+      cancelAnimationFrame(frame)
+      node.removeEventListener('pointerdown', down)
+      node.removeEventListener('pointermove', move)
+      node.removeEventListener('pointerup', up)
+      node.removeEventListener('pointercancel', up)
+    }
+  }, [face, ready])
+
+  const rest = useCallback(() => {
+    aim.current = { x: 0, y: 0 }
+  }, [])
+
+  return { dragged, rest }
+}
 
 const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game: GameId; label: string; accent: string; onClosed: () => void }) => {
   const { t } = useI18n()
   const card = useRef<HTMLDivElement>(null)
   const shade = useRef<HTMLDivElement>(null)
   const shut = useRef<HTMLButtonElement>(null)
+  const face = useRef<HTMLDivElement>(null)
   const leaving = useRef(false)
+  const opened = useRef(0)
+  const ready = useCallback(() => !leaving.current && performance.now() - opened.current > MOVE_MS, [])
+  const { dragged, rest } = useTilt(face, ready)
 
   const travel = useCallback(
     (back: boolean) => {
@@ -474,15 +562,17 @@ const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game:
   const close = useCallback(() => {
     if (leaving.current) return
     leaving.current = true
+    rest()
     const motion = { duration: MOVE_MS, easing: MOVE_EASE, fill: 'forwards' as const }
     shade.current?.animate([{ opacity: 1 }, { opacity: 0 }], motion)
     const back = card.current?.animate([{ transform: 'none' }, { transform: travel(true) }], motion)
     if (back) back.onfinish = onClosed
     else onClosed()
-  }, [travel, onClosed])
+  }, [travel, onClosed, rest])
 
   useEffect(() => {
     const motion = { duration: MOVE_MS, easing: MOVE_EASE }
+    opened.current = performance.now()
     shade.current?.getAnimations().forEach((running) => running.cancel())
     shade.current?.animate([{ opacity: 0 }, { opacity: 1 }], motion)
     card.current?.animate([{ transform: travel(false) }, { transform: 'none' }], motion)
@@ -502,23 +592,34 @@ const DexZoom = ({ focus, game, label, accent, onClosed }: { focus: Focus; game:
 
   return createPortal(
     <div className="dex-zoom" role="dialog" aria-modal="true" aria-label={label} style={{ '--dex': accent } as CSSProperties}>
-      <div ref={shade} className="dex-zoom-shade" onClick={close} />
+      <div ref={shade} className="dex-zoom-shade" onClick={() => !dragged.current && close()} />
       <div ref={card} className="dex-zoom-card">
-        <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
-        <span className="dex-zoom-pic" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
-          <img src={cardUrl(game, entity.id, entity.image)} alt="" draggable={false} />
-          <i className="dex-zoom-shine" />
-        </span>
-        <b className="dex-zoom-name" style={{ fontSize: `${focus.type}cqw` }}>
-          <span>
-            {(focus.lines.length ? focus.lines : [label]).map((line, index) => (
-              <Fragment key={index}>
-                {index > 0 && <br />}
-                {line}
-              </Fragment>
-            ))}
+        <div ref={face} className="dex-zoom-face">
+          <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
+          <i className="dex-zoom-glare" style={{ clipPath: torn(entity.id, 4) }} />
+          <span className="dex-zoom-pic" style={{ clipPath: torn(entity.id * 3 + 1, 3, 7) }}>
+            <img src={cardUrl(game, entity.id, entity.image)} alt="" draggable={false} />
+            <img
+              className="dex-zoom-hd"
+              src={hdUrl(game, entity.id, entity.image)}
+              alt=""
+              draggable={false}
+              onLoad={(event) => event.currentTarget.classList.add('is-ready')}
+              onError={(event) => event.currentTarget.classList.remove('is-ready')}
+            />
+            <i className="dex-zoom-shine" />
           </span>
-        </b>
+          <b className="dex-zoom-name" style={{ fontSize: `${focus.type}cqw` }}>
+            <span>
+              {(focus.lines.length ? focus.lines : [label]).map((line, index) => (
+                <Fragment key={index}>
+                  {index > 0 && <br />}
+                  {line}
+                </Fragment>
+              ))}
+            </span>
+          </b>
+        </div>
       </div>
       <button ref={shut} type="button" className="dex-zoom-close" onClick={close} aria-label={t('dex.close')}>
         <CloseIcon />

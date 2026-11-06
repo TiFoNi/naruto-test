@@ -125,11 +125,12 @@ export async function dropAvatar(userId: string) {
 
 export async function uploadPortrait(game: GameId, id: number, source: Buffer) {
   const folder = GAME_SPECS[game].images
-  const { full, card, mini, thumb } = await derive(source, shapeOf(game))
+  const { full, card, hd, mini, thumb } = await derive(source, shapeOf(game))
 
   await Promise.all([
     put(`${folder}/full/${id}.webp`, full, true),
     put(`${folder}/card/${id}.webp`, card, true),
+    put(`${folder}/hd/${id}.webp`, hd, true),
     put(`${folder}/mini/${id}.webp`, mini, true),
     put(`${folder}/thumb/${id}.webp`, thumb, true),
   ])
@@ -184,7 +185,7 @@ export async function dropPictures(game: GameId, id: number) {
   const client = s3()
   const Bucket = bucket()
 
-  for (const Key of [`${folder}/full/${id}.webp`, `${folder}/card/${id}.webp`, `${folder}/mini/${id}.webp`, `${folder}/thumb/${id}.webp`]) {
+  for (const Key of [`${folder}/full/${id}.webp`, `${folder}/card/${id}.webp`, `${folder}/hd/${id}.webp`, `${folder}/mini/${id}.webp`, `${folder}/thumb/${id}.webp`]) {
     await client.send(new DeleteObjectCommand({ Bucket, Key }))
   }
 
@@ -192,7 +193,7 @@ export async function dropPictures(game: GameId, id: number) {
   const keys = (pages.Contents ?? []).map(({ Key }) => ({ Key: Key as string }))
   if (keys.length) await client.send(new DeleteObjectsCommand({ Bucket, Delete: { Objects: keys } }))
 
-  return 4 + keys.length
+  return 5 + keys.length
 }
 
 export async function dropPages(game: GameId, id: number, from: number, to: number) {
