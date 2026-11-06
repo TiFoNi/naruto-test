@@ -794,29 +794,9 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   const release = useCallback(() => setFocus(null), [])
 
   const [cards, setCards] = useState<Record<number, CardStats>>({})
-  const [preview, setPreview] = useState(false)
 
   useEffect(() => {
-    if (process.env.NODE_ENV === 'production' || !game || !window.location.search.includes('levels')) return
-    const forced = Number(new URLSearchParams(window.location.search).get('levels')) || 0
-    setPreview(true)
-    setOpen(new Set(game.entities.map((one) => one.id)))
-    setCards(
-      Object.fromEntries(
-        game.entities.map((one, place) => {
-          const tier = forced >= 1 && forced <= CARD_STEPS.length ? forced - 1 : place % CARD_STEPS.length
-          const xp = CARD_STEPS[tier]!.xp + (tier + 1 < CARD_STEPS.length ? place % (CARD_STEPS[tier + 1]!.xp - CARD_STEPS[tier]!.xp) : 0)
-          const classic = Math.floor((xp * 0.6) / 3)
-          const blind = Math.floor((xp - classic * 3) / 8)
-          const image = xp - classic * 3 - blind * 4
-          return [one.id, { xp, modes: { classic: { n: classic, xp: classic * 3 }, blind: { n: blind, xp: blind * 4 }, image: { n: image, xp: image } } }]
-        }),
-      ),
-    )
-  }, [game, ready])
-
-  useEffect(() => {
-    if (!game || !user || preview) return
+    if (!game || !user) return
     let alive = true
     const query = owner ? `dex?game=${game.id}&user=${encodeURIComponent(owner)}` : `dex?game=${game.id}`
     void api<{ ids?: number[]; cards?: Record<number, CardStats>; nickname?: string | null }>(query).then(({ ok, data }) => {
@@ -828,7 +808,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
     return () => {
       alive = false
     }
-  }, [game, user, owner, preview])
+  }, [game, user, owner])
 
   const tierOf = (entity: Entity) => cardRank(cards[entity.id]?.xp ?? 0).tier
   const cast = useMemo(() => (game?.entities ?? []).filter((one) => one.answer), [game, ready])
