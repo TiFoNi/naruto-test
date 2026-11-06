@@ -10,9 +10,9 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { CloseIcon } from './icons'
+import { CloseIcon, FilterIcon, SearchIcon } from './icons'
 import { MODES } from './modes'
-import { CARD_STEPS, cardRank } from '@nanda/game'
+import { CARD_RARITIES, CARD_STEPS, cardRank } from '@nanda/game'
 import { PICTURELESS, cardUrl, hdUrl, miniUrl } from './pics'
 import { useHref } from './router'
 import { random, torn, tornPoints } from './torn'
@@ -121,10 +121,7 @@ const thorn = (points: Point[], at: number, size: number, side: 1 | -1, next: ()
   const back = spot(-0.62, -0.02)
   const tip = spot(hook, 1)
   const front = spot(0.24, -0.02)
-  return [
-    ...cubic(back, spot(-0.2, 0.04), spot(0.02, 0.5), tip, 14),
-    ...cubic(tip, spot(hook - 0.06, 0.62), spot(0.22, 0.2), front, 12).slice(1),
-  ]
+  return [...cubic(back, spot(-0.2, 0.04), spot(0.02, 0.5), tip, 14), ...cubic(tip, spot(hook - 0.06, 0.62), spot(0.22, 0.2), front, 12).slice(1)]
 }
 
 const blot = (cx: number, cy: number, radius: number, next: () => number): Shape =>
@@ -134,8 +131,14 @@ const blot = (cx: number, cy: number, radius: number, next: () => number): Shape
     return [cx + Math.cos(angle) * r, cy + Math.sin(angle) * r]
   })
 
-const fade = (start: number, end: number, power = 1.1) => (t: number) => end + (start - end) * Math.pow(1 - t, power)
-const swell = (peak: number, floor = 0.2, power = 0.7) => (t: number) => floor + peak * Math.pow(Math.sin(Math.PI * t), power)
+const fade =
+  (start: number, end: number, power = 1.1) =>
+  (t: number) =>
+    end + (start - end) * Math.pow(1 - t, power)
+const swell =
+  (peak: number, floor = 0.2, power = 0.7) =>
+  (t: number) =>
+    floor + peak * Math.pow(Math.sin(Math.PI * t), power)
 
 const CORNER = (() => {
   const next = random(41)
@@ -300,7 +303,7 @@ const line = (from: Point, to: Point, seed: number, outward: 1 | -1, most: numbe
       if (spot < begin + 12 || spot > end - 12 || (spot > quiet[0] - 24 && spot < quiet[1] + 24)) return
       shapes.push(thorn(points, (spot - begin) / span, size, side, next))
     }
-    for (let spot = begin + 20 + next() * 50; spot < end - 12; ) {
+    for (let spot = begin + 20 + next() * 50; spot < end - 12;) {
       const roll = next()
       const count = roll < 0.45 ? 1 : roll < 0.82 ? 2 : 3
       let side: 1 | -1 = next() < 0.68 ? outward : outward === 1 ? -1 : 1
@@ -496,6 +499,45 @@ const CardGlow = ({ seed, tier, turn }: { seed: number; tier?: number; turn: num
   )
 }
 
+const CHIP_POINTS = tornPoints(24, 7, 6)
+  .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
+  .join(' ')
+
+const SEARCH_POINTS = tornPoints(57, 3, 9)
+  .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
+  .join(' ')
+
+const plain = (text: string) => text.toLowerCase().replace(/ё/g, 'е')
+
+const RarityChip = ({ tier, count, on, step, onToggle }: { tier: number; count: number; on: boolean; step: number; onToggle: () => void }) => {
+  const { t } = useI18n()
+  const id = useId()
+  const name = t(`card.rarity.${CARD_RARITIES[tier]}` as UiKey)
+  return (
+    <button
+      type="button"
+      className={`dex-rarity lv-${tier + 1} ${on ? 'is-on' : ''}`}
+      style={{ '--step': step } as CSSProperties}
+      aria-pressed={on}
+      aria-label={`${name} ${count}`}
+      title={name}
+      onClick={onToggle}
+    >
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+        <defs>
+          <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" className="dex-rarity-top" />
+            <stop offset="100%" className="dex-rarity-bottom" />
+          </linearGradient>
+        </defs>
+        <polygon points={CHIP_POINTS} fill={`url(#${id})`} vectorEffect="non-scaling-stroke" />
+      </svg>
+      <span aria-hidden>{name}</span>
+      <b aria-hidden>{count}</b>
+    </button>
+  )
+}
+
 const DexImg = ({ src }: { src: string }) => {
   const [shown, setShown] = useState(false)
   const check = useCallback((node: HTMLImageElement | null) => {
@@ -679,12 +721,7 @@ const CardSheet = ({ rank, out, onClose, onGone }: { rank: Rank; out: boolean; o
     return () => window.clearTimeout(timer)
   }, [out, onGone])
   return (
-    <div
-      className={`lv-sheet ${out ? 'is-out' : ''}`}
-      role="dialog"
-      aria-label={t('card.stats')}
-      onPointerDown={(event) => event.stopPropagation()}
-    >
+    <div className={`lv-sheet ${out ? 'is-out' : ''}`} role="dialog" aria-label={t('card.stats')} onPointerDown={(event) => event.stopPropagation()}>
       <svg className="lv-sheet-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
         <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
       </svg>
@@ -726,7 +763,21 @@ const CardSheet = ({ rank, out, onClose, onGone }: { rank: Rank; out: boolean; o
   )
 }
 
-const DexZoom = ({ focus, game, label, accent, rank, onClosed }: { focus: Focus; game: GameId; label: string; accent: string; rank?: Rank; onClosed: () => void }) => {
+const DexZoom = ({
+  focus,
+  game,
+  label,
+  accent,
+  rank,
+  onClosed,
+}: {
+  focus: Focus
+  game: GameId
+  label: string
+  accent: string
+  rank?: Rank
+  onClosed: () => void
+}) => {
   const { t } = useI18n()
   const [sheet, setSheet] = useState<'in' | 'out' | null>(null)
   const [seen, setSeen] = useState(false)
@@ -803,7 +854,9 @@ const DexZoom = ({ focus, game, label, accent, rank, onClosed }: { focus: Focus;
           {tier && tier > 1 && <BackSheet turn={BACK_TURN + focus.tilt} />}
           {tier && tier > 1 && <i className="dex-zoom-drop" />}
           {level !== undefined && (
-            <button type="button" className={`lv-badge ${sheet === 'in' ? 'is-on' : ''} ${seen ? '' : 'is-calling'}`}
+            <button
+              type="button"
+              className={`lv-badge ${sheet === 'in' ? 'is-on' : ''} ${seen ? '' : 'is-calling'}`}
               aria-label={t('card.stats')}
               aria-expanded={sheet === 'in'}
               onClick={() => {
@@ -900,6 +953,24 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   }, [game, user, owner])
 
   const tierOf = (entity: Entity) => cardRank(cards[entity.id]?.xp ?? 0).tier
+  const [only, setOnly] = useState<Set<number>>(new Set())
+  const [panel, setPanel] = useState<'filter' | 'search' | null>(null)
+  const [touched, setTouched] = useState(false)
+  const [query, setQuery] = useState('')
+  const searchBox = useRef<HTMLInputElement>(null)
+  const filtering = panel === 'filter'
+  const searching = panel === 'search'
+
+  useEffect(() => {
+    if (searching) searchBox.current?.focus({ preventScroll: true })
+  }, [searching])
+  const toggle = (tier: number) =>
+    setOnly((was) => {
+      const next = new Set(was)
+      if (next.has(tier)) next.delete(tier)
+      else next.add(tier)
+      return next
+    })
   const cast = useMemo(() => (game?.entities ?? []).filter((one) => one.answer), [game, ready])
   const pictures = !PICTURELESS.has(gameId)
   const label = (entity: Entity) => SHORT[`${gameId}:${entity.id}`]?.[lang] ?? name(entity)
@@ -915,6 +986,16 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
 
   const accent = game.accent && /^#[0-9a-f]{3,8}$/i.test(game.accent) ? game.accent : '#ff8a1f'
   const loading = cast.length === 0
+  const counts = CARD_RARITIES.map(() => 0)
+  if (Object.keys(cards).length) for (const entity of cast) if (open.has(entity.id)) counts[tierOf(entity)]!++
+  const needle = plain(query.trim())
+  const matches = (entity: Entity) => !needle || (open.has(entity.id) && (plain(label(entity)).includes(needle) || plain(name(entity)).includes(needle)))
+  const dimmed = (entity: Entity) => (only.size > 0 && !(open.has(entity.id) && only.has(tierOf(entity)))) || !matches(entity)
+  const hasRarity = counts.some((count, tier) => tier > 0 && count > 0)
+  const jump = () => {
+    const first = cast.find((entity) => !dimmed(entity))
+    if (first) document.querySelector(`[data-dex="${first.id}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
 
   return (
     <div className="dex" style={{ '--dex': accent } as CSSProperties}>
@@ -937,6 +1018,94 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
         )}
       </header>
 
+      {(checking || user || owner) && (
+        <div className="dex-filter">
+          {open.size > 0 && (
+            <>
+              <div className="dex-filter-stage">
+                {hasRarity && (
+                  <div
+                    className={`dex-rarities ${filtering ? 'is-open' : ''} ${only.size ? 'has-on' : ''}`}
+                    role="group"
+                    aria-label={t('dex.rarityFilter')}
+                    inert={!filtering}
+                  >
+                    {touched &&
+                      counts.map((count, tier) =>
+                        count > 0 ? (
+                          <RarityChip
+                            key={tier}
+                            tier={tier}
+                            count={count}
+                            on={only.has(tier)}
+                            step={counts.slice(tier + 1).filter(Boolean).length}
+                            onToggle={() => toggle(tier)}
+                          />
+                        ) : null,
+                      )}
+                  </div>
+                )}
+                <label className={`dex-search ${searching ? 'is-open' : ''}`} inert={!searching}>
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                    <polygon points={SEARCH_POINTS} vectorEffect="non-scaling-stroke" />
+                  </svg>
+                  <input
+                    ref={searchBox}
+                    type="search"
+                    value={query}
+                    placeholder={t('dex.search')}
+                    aria-label={t('dex.search')}
+                    enterKeyHint="search"
+                    onChange={(event) => setQuery(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') jump()
+                      if (event.key === 'Escape') setPanel(null)
+                    }}
+                  />
+                  {query && (
+                    <button type="button" aria-label={t('dex.searchClear')} onClick={() => setQuery('')}>
+                      <CloseIcon />
+                    </button>
+                  )}
+                </label>
+              </div>
+              <button
+                type="button"
+                className={`dex-filter-toggle ${searching ? 'is-open' : ''} ${needle ? 'is-active' : ''}`}
+                aria-expanded={searching}
+                aria-label={t('dex.search')}
+                title={t('dex.search')}
+                onClick={() => setPanel((was) => (was === 'search' ? null : 'search'))}
+              >
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                  <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
+                </svg>
+                <SearchIcon />
+              </button>
+              {hasRarity && (
+                <button
+                  type="button"
+                  className={`dex-filter-toggle ${filtering ? 'is-open' : ''} ${only.size ? 'is-active' : ''}`}
+                  aria-expanded={filtering}
+                  aria-label={t('dex.rarityFilter')}
+                  title={t('dex.rarityFilter')}
+                  onClick={() => {
+                    setTouched(true)
+                    setPanel((was) => (was === 'filter' ? null : 'filter'))
+                  }}
+                >
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                    <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
+                  </svg>
+                  <FilterIcon />
+                  {only.size > 0 && <i>{only.size}</i>}
+                </button>
+              )}
+            </>
+          )}
+        </div>
+      )}
+
       <div className="dex-board">
         <InkFrame />
         <ol className="dex-grid" aria-busy={loading || undefined}>
@@ -949,7 +1118,12 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                 </li>
               ))
             : cast.map((entity, place) => (
-                <li key={entity.id} style={{ '--tilt': `${tilt(entity.id)}deg` } as CSSProperties}>
+                <li
+                  key={entity.id}
+                  data-dex={entity.id}
+                  className={dimmed(entity) ? 'is-dim' : undefined}
+                  style={{ '--tilt': `${tilt(entity.id)}deg` } as CSSProperties}
+                >
                   {open.has(entity.id) && !pictures ? (
                     <span className="dex-scrap is-text">
                       <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />

@@ -712,6 +712,14 @@ export function SwapIcon({ className }: IconProps) {
   )
 }
 
+export function FilterIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M4 5h16l-6 7.5V19l-4-2v-4.5z" />
+    </svg>
+  )
+}
+
 export function LayersIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

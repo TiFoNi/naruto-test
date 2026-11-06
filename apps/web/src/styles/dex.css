@@ -14,10 +14,428 @@
   padding-bottom: 40px;
 }
 
+.dex > .play-nav {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: 10px;
+}
+
 .dex-head {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-inline: 10px;
+}
+
+.dex-filter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  min-height: 40px;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto -4px;
+  padding-inline: 10px;
+}
+
+.dex-filter-stage {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  min-height: 38px;
+}
+
+.dex-search {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: min(320px, 100%);
+  height: 40px;
+  padding: 0 8px 0 16px;
+  color: #ece8e4;
+  isolation: isolate;
+  transform-origin: right center;
+  translate: 0 -50%;
+  rotate: -1deg;
+  transition:
+    opacity 0.2s ease,
+    scale 0.4s cubic-bezier(0.22, 1.2, 0.36, 1);
+}
+
+.dex-search:not(.is-open) {
+  opacity: 0;
+  scale: 0.4 0.9;
+  pointer-events: none;
+}
+
+.dex-search > svg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.dex-search polygon {
+  fill: color-mix(in srgb, #ebe5dc 10%, #120f16);
+  stroke: #ebe5dc;
+  stroke-width: 2px;
+  stroke-linejoin: round;
+}
+
+.dex-search input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: none;
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  caret-color: var(--dex);
+  appearance: none;
+}
+
+.dex-search input:focus-visible {
+  outline: none;
+}
+
+.dex-search input::-webkit-search-decoration {
+  appearance: none;
+}
+
+.dex-search input::placeholder {
+  color: rgb(236 232 228 / 45%);
+}
+
+.dex-search input::-webkit-search-cancel-button {
+  display: none;
+  appearance: none;
+}
+
+.dex-search button {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: rgb(236 232 228 / 70%);
+  cursor: pointer;
+}
+
+.dex-search button .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.dex-search button:focus-visible {
+  outline: 2px solid var(--dex);
+  outline-offset: 0;
+}
+
+@media (hover: hover) {
+  .dex-search button:hover {
+    color: #ece8e4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dex-search {
+    transition: none;
+  }
+}
+
+.dex-rarities {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px 14px;
+  min-width: 0;
+}
+
+.dex-filter-toggle {
+  --lv-c: #ebe5dc;
+
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 46px;
+  height: 38px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #ebe5dc;
+  cursor: pointer;
+  isolation: isolate;
+  rotate: 2deg;
+  animation: dex-ink-in 0.3s ease-out;
+  transition:
+    rotate 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dex-filter-toggle svg:first-child {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.dex-filter-toggle polygon {
+  fill: color-mix(in srgb, var(--lv-c) 14%, #120f16);
+  stroke: var(--lv-c);
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  transition: fill 0.2s ease;
+}
+
+.dex-filter-toggle .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.dex-filter-toggle.is-open {
+  rotate: -4deg;
+}
+
+.dex-filter-toggle.is-open polygon {
+  fill: color-mix(in srgb, var(--lv-c) 30%, #120f16);
+}
+
+.dex-filter-toggle.is-active {
+  --lv-c: var(--dex);
+
+  color: color-mix(in srgb, var(--dex) 70%, white);
+}
+
+.dex-filter-toggle i {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: var(--dex);
+  color: #120f16;
+  font-family: var(--display);
+  font-size: 11px;
+  font-style: normal;
+}
+
+@media (hover: hover) {
+  .dex-filter-toggle:hover {
+    scale: 1.06;
+  }
+}
+
+.dex-filter-toggle:focus-visible {
+  outline: 2px solid var(--dex);
+  outline-offset: 4px;
+}
+
+.dex-rarities.is-open .dex-rarity {
+  animation: dex-chip-in 0.42s cubic-bezier(0.22, 1.2, 0.36, 1) calc(var(--step, 0) * 45ms) backwards;
+}
+
+.dex-rarities:not(.is-open) .dex-rarity {
+  pointer-events: none;
+  animation: dex-chip-out 0.22s ease-in forwards;
+}
+
+@keyframes dex-chip-in {
+  from {
+    opacity: 0;
+    translate: calc(30px + var(--step, 0) * 14px) 0;
+    scale: 0.6;
+  }
+}
+
+@keyframes dex-chip-out {
+  to {
+    opacity: 0;
+    translate: calc(30px + var(--step, 0) * 14px) 0;
+    scale: 0.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dex-rarities.is-open .dex-rarity {
+    animation: none;
+  }
+
+  .dex-rarities:not(.is-open) .dex-rarity {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+.dex-rarity {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 9px 18px 10px;
+  border: 0;
+  background: none;
+  font-family: var(--display);
+  font-size: 13px;
+  cursor: pointer;
+  isolation: isolate;
+  transition:
+    opacity 0.2s ease,
+    scale 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dex-rarity.lv-1 {
+  --lv-c: #ebe5dc;
+}
+
+.dex-rarities .dex-rarity {
+  color: color-mix(in srgb, var(--lv-c) 80%, white);
+}
+
+.dex-rarities .dex-rarity.is-on {
+  color: #fff;
+}
+
+.dex-rarity:nth-child(odd) {
+  rotate: -2deg;
+}
+
+.dex-rarity:nth-child(even) {
+  rotate: 1.5deg;
+}
+
+.dex-rarity svg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.dex-rarity polygon {
+  stroke: var(--lv-c);
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  transition: stroke-width 0.2s ease;
+}
+
+.dex-rarity-top {
+  stop-color: color-mix(in srgb, var(--lv-c) 30%, #120f16);
+  transition: stop-color 0.2s ease;
+}
+
+.dex-rarity-bottom {
+  stop-color: color-mix(in srgb, var(--lv-c) 10%, #08070b);
+  transition: stop-color 0.2s ease;
+}
+
+.dex-rarity.is-on .dex-rarity-top {
+  stop-color: color-mix(in srgb, var(--lv-c) 62%, #120f16);
+}
+
+.dex-rarity.is-on .dex-rarity-bottom {
+  stop-color: color-mix(in srgb, var(--lv-c) 34%, #08070b);
+}
+
+.dex-rarity.is-on {
+  scale: 1.06;
+}
+
+.dex-rarity.is-on polygon {
+  stroke-width: 3px;
+}
+
+.dex-rarity b {
+  font-size: 11.5px;
+  opacity: 0.7;
+}
+
+.dex-rarities.has-on .dex-rarity:not(.is-on) {
+  opacity: 0.5;
+}
+
+@media (hover: hover) {
+  .dex-rarity:hover {
+    scale: 1.06;
+  }
+}
+
+.dex-rarity:focus-visible {
+  outline: 2px solid var(--lv-c);
+  outline-offset: 4px;
+}
+
+@media (max-width: 560px) {
+  .dex-filter {
+    gap: 10px;
+  }
+
+  .dex-search {
+    width: 100%;
+  }
+
+  .dex-search input {
+    font-size: 16px;
+  }
+
+  .dex-rarities {
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .dex-rarity {
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: 0;
+    padding: 8px 4px 9px;
+  }
+
+  .dex-rarity span {
+    display: none;
+  }
+
+  .dex-rarity b {
+    font-size: 13px;
+    opacity: 1;
+  }
+}
+
+.dex-grid li {
+  transition: opacity 0.25s ease;
+}
+
+.dex-grid li.is-dim {
+  opacity: 0.18;
 }
 
 .dex-head h1 {
