@@ -398,6 +398,18 @@ body:has(.chat-panel) .duel-dock {
   white-space: pre-wrap;
 }
 
+.chat-body p.is-emoji {
+  margin-top: 3px;
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: 1px;
+  text-align: left;
+}
+
+.chat-body p.is-emoji-1 {
+  font-size: 30px;
+}
+
 .chat-tools {
   position: absolute;
   top: 28px;

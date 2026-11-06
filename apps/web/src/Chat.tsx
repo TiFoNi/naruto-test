@@ -37,6 +37,16 @@ const AT_BEFORE = /(^|\s)@([^\s@]{0,32})$/
 
 const escape = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
+const PICTURE = /\p{Extended_Pictographic}|\p{Regional_Indicator}/u
+const graphemes = typeof Intl !== 'undefined' && 'Segmenter' in Intl ? new Intl.Segmenter(undefined, { granularity: 'grapheme' }) : null
+
+const emojiOnly = (text: string) => {
+  const bare = text.replace(/\s+/g, '')
+  if (!bare || bare.length > 40 || !graphemes) return 0
+  const parts = [...graphemes.segment(bare)].map((one) => one.segment)
+  return parts.length <= 3 && parts.every((part) => PICTURE.test(part)) ? parts.length : 0
+}
+
 export const toneOf = (tone?: string | null): CSSProperties | undefined => {
   const hex = GAMES.find((game) => game.id === tone)?.accent ?? (tone && TONE_HEX.test(tone) ? tone : null)
   return hex ? { color: hex } : undefined
@@ -874,7 +884,10 @@ export default function Chat() {
                           <time dateTime={new Date(line.at).toISOString()}>{clock(line.at)}</time>
                         </header>
                       )}
-                      <p>{bodyOf(line)}</p>
+                      {(() => {
+                        const big = line.tags?.length || line.everyone ? 0 : emojiOnly(line.text)
+                        return <p className={big ? `is-emoji is-emoji-${big}` : undefined}>{bodyOf(line)}</p>
+                      })()}
                     </div>
                   </article>
                 )

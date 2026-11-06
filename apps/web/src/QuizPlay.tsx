@@ -799,7 +799,7 @@ export default function QuizPlay({ game: gameId, id }: { game: string; id: strin
       busy={busy}
       error={error}
       top={back}
-      after={<QuizComments quizId={quiz.id} finished={!!quiz.attempt?.finished} />}
+      after={quiz.attempt?.finished ? <QuizComments quizId={quiz.id} finished /> : undefined}
       likeNote={likeNote}
       moreHref={href.tests(game.category)}
       onSend={(body) => void send(body)}
