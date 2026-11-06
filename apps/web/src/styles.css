@@ -6231,9 +6231,9 @@ html[data-auth] .guest-note {
   height: 32px;
   place-items: center;
   padding: 0;
-  border: 1px solid rgb(255 255 255 / 10%);
+  border: 1px solid rgb(255 255 255 / 22%);
   border-radius: 10px;
-  background: rgb(255 255 255 / 5%);
+  background: none;
   color: var(--text);
   cursor: pointer;
   transition:
@@ -6250,8 +6250,8 @@ html[data-auth] .guest-note {
 
 .quests-swap > button:hover,
 .quests-swap.is-open > button {
-  border-color: rgb(255 255 255 / 20%);
-  background: rgb(255 255 255 / 10%);
+  border-color: rgb(255 255 255 / 45%);
+  background: rgb(255 255 255 / 5%);
 }
 
 .quests-swap > button:hover svg,
@@ -6279,7 +6279,7 @@ html[data-auth] .guest-note {
 }
 
 .quests-swap.is-used > button {
-  border-color: var(--line);
+  border-color: rgb(255 255 255 / 12%);
   background: none;
   color: var(--text-3);
 }
