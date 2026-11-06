@@ -109,7 +109,6 @@ export default function PairMode({ game, active }: { game: Game; active: boolean
     const column = game.columns.find((one) => one.key === key)
     return column ? l(column.title) : key
   }
-  const alone = parts.length > 0 && parts.every((part) => part.key === parts[0].key)
   const glue = question?.ask.join === 'and' ? t('pair.and') : t('pair.or')
 
   const lit = (side: Side) => shown && (shown === side || (shown === 'both' && (side === 'left' || side === 'right')))
@@ -180,23 +179,9 @@ export default function PairMode({ game, active }: { game: Game; active: boolean
 
         {question && (
           <>
-              <p className="ask-line">
-                {alone ? (
-                  <>
-                    <span className="ask-tag">{titleOf(parts[0].key)}</span>
-                    <b>{parts.map((part) => tv(part.value)).join(glue)}</b>
-                  </>
-                ) : (
-                  <b className="ask-mix">
-                    {parts.map((part, index) => (
-                      <span key={part.key + part.value}>
-                        {index > 0 && <i>{glue}</i>}
-                        <small>{titleOf(part.key)}</small>
-                        {tv(part.value)}
-                      </span>
-                    ))}
-                  </b>
-                )}
+              <p className="ask-line pair-ask">
+                <span className="ask-tag">{[...new Set(parts.map((part) => titleOf(part.key)))].join(' · ')}</span>
+                <b>{parts.map((part) => tv(part.value)).join(glue)}</b>
               </p>
 
               <div className="pair-cards">

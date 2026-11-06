@@ -10312,6 +10312,19 @@ html[data-auth] .guest-note {
   line-height: 1.15;
 }
 
+.ask-line.pair-ask {
+  justify-content: center;
+  height: calc(23px + 2.3 * clamp(20px, 3vw, 28px));
+}
+
+.pair-ask b {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-wrap: balance;
+}
+
 .pair-cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -10350,7 +10363,8 @@ html[data-auth] .guest-note {
   max-width: 200px;
   aspect-ratio: 1;
   border-radius: 16px;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center 22%;
   background: var(--card-solid);
 }
 
@@ -10420,38 +10434,6 @@ html[data-auth] .guest-note {
   .pair-key {
     flex: 1 1 140px;
   }
-}
-
-.ask-mix {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: center;
-  gap: 4px 10px;
-}
-
-.ask-mix span {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
-}
-
-.ask-mix small {
-  color: var(--text-2);
-  font-family: var(--font-body), system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.055em;
-  text-transform: uppercase;
-}
-
-.ask-mix i {
-  margin-right: 4px;
-  color: var(--text-3);
-  font-family: var(--font-body), system-ui, sans-serif;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 700;
 }
 
 .pair-done {
