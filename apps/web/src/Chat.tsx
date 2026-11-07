@@ -402,6 +402,26 @@ export default function Chat() {
     })
   }, [])
 
+  const catchUp = useCallback(async () => {
+    if (roomRef.current !== 'chat') return
+    const { ok, data } = await api<{ lines?: Line[] }>('chat')
+    if (!ok || !data.lines || roomRef.current !== 'chat') return
+    const fresh = new Map(data.lines.map((line) => [line.id, line]))
+    const settled: string[] = []
+    setLines((kept) => {
+      const known = new Set(kept.map((line) => line.id))
+      const merged = kept.map((line) => {
+        const next = fresh.get(line.id)
+        if (!next) return line
+        if (line.bout && !line.bout.rival && next.bout?.rival) settled.push(line.id)
+        return next
+      })
+      const added = data.lines!.filter((line) => !known.has(line.id))
+      return added.length ? [...merged, ...added].sort((one, two) => (one.id < two.id ? -1 : 1)).slice(-KEEP) : merged
+    })
+    if (settled.length) setRolled((had) => new Set([...had, ...settled]))
+  }, [])
+
   useEffect(() => {
     const touch = () => {
       lastInput = Date.now()
@@ -462,6 +482,7 @@ export default function Chat() {
 
   useEffect(() => {
     if (!open) return
+    let dropped = false
     return openStream('stream/chat', {
       chat: (data) => {
         const line = data as Line | null
@@ -486,8 +507,18 @@ export default function Chat() {
         const people = (data as { people?: { id: string; nickname: string }[] } | null)?.people
         setTypers(people ?? [])
       },
+    }, (live) => {
+      if (live && dropped) void catchUp()
+      dropped = !live
     })
-  }, [open])
+  }, [open, catchUp])
+
+  useEffect(() => {
+    if (!open) return
+    const back = () => document.visibilityState === 'visible' && void catchUp()
+    document.addEventListener('visibilitychange', back)
+    return () => document.removeEventListener('visibilitychange', back)
+  }, [open, catchUp])
 
   useEffect(() => {
     if (!open) return

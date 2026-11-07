@@ -128,20 +128,7 @@ function DailyCard({ games }: { games: GameMeta[] }) {
     }
   }
 
-  const slides: Slide[] = [
-    {
-      id: 'poll',
-      poll: true,
-      accent: '#ff8a1f',
-      art: '/promo/poll.svg',
-      flat: true,
-      kicker: t('poll.kicker'),
-      title: t('poll.title'),
-      lead: '',
-      cta: '',
-      href: '',
-    },
-  ]
+  const slides: Slide[] = []
   if (loved) slides.push(daily(loved, `${t('dash.dailyKicker')} · #${dailyNumber(today)}`))
   if (shots)
     slides.push({

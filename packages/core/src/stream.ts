@@ -27,6 +27,7 @@ let sweep: ReturnType<typeof setInterval> | null = null
 const typingList = () => [...typing].map(([id, one]) => ({ id, nickname: one.nickname }))
 
 const TYPING_MS = 6_000
+const TALK_RETRY_MS = 2_000
 
 function pushTyping() {
   const people = typingList()
@@ -300,13 +301,19 @@ async function startTalk() {
       const line = lineOf(doc)
       for (const send of chatters) send(insert ? 'chat' : 'bout', line)
     })
-    stream.on('error', () => {
+    const restart = () => {
+      if (talk !== started) return
       talk = null
       void stream.close().catch(() => undefined)
-    })
+      setTimeout(() => chatters.size && void startTalk(), TALK_RETRY_MS)
+    }
+    stream.on('error', restart)
+    stream.on('close', restart)
   })().catch(() => {
     talk = null
+    setTimeout(() => chatters.size && void startTalk(), TALK_RETRY_MS)
   })
+  const started = talk
   return talk
 }
 
