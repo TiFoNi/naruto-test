@@ -48,7 +48,7 @@ import { ShowcaseCard } from './Bestiary'
 import { tornPoints } from './torn'
 import { useShelfSort } from './useShelfSort'
 
-type Held = { block: ProfileBlock; x: number; y: number; dx: number; dy: number; w: number; h: number }
+type Held = { block: ProfileBlock; x: number; y: number; dx: number; dy: number; w: number; h: number; ox: number; oy: number }
 
 type Sized = { block: ProfileBlock; y: number; from: number; roof: number; floor: number; stops: number[] | null; mates: number[]; bare: number }
 
@@ -252,8 +252,11 @@ export default function Profile({ id }: { id?: string }) {
 
   useEffect(() => {
     if (!held) return
+    let moved = false
     const move = (event: PointerEvent) => {
       setHeld((was) => (was ? { ...was, x: event.clientX, y: event.clientY } : was))
+      if (!moved && Math.hypot(event.clientX - held.ox, event.clientY - held.oy) < 6) return
+      moved = true
       const grid = document.querySelector('.profile-grid') as HTMLElement | null
       if (!grid) return
       const wide = getComputedStyle(grid).gridTemplateColumns.split(' ').length > 1
@@ -293,7 +296,7 @@ export default function Profile({ id }: { id?: string }) {
     }
   }, [held?.block])
   useLayoutEffect(() => {
-    if (document.querySelector('.is-sortable > .is-dragging')) return
+    if (document.querySelector('.is-sortable > .is-dragging, .profile-slot.is-held')) return
     const even = () => {
       const pair = (['worlds', 'awards'] as ProfileBlock[])
         .map((block) => document.querySelector(`.profile-slot[data-block="${block}"]`) as HTMLElement | null)
@@ -302,7 +305,7 @@ export default function Profile({ id }: { id?: string }) {
       if (pair.length < 2 || pair.some((slot) => slot.style.getPropertyValue('--slot-h'))) return
       const cards = pair.map((slot) => slot.querySelector('.card') as HTMLElement | null)
       if (cards.some((card) => !card)) return
-      const highs = cards.map((card) => Math.round(card!.getBoundingClientRect().height))
+      const highs = cards.map((card) => card!.offsetHeight)
       const peak = Math.max(...highs)
       highs.forEach((high, index) => high < peak && pair[index].style.setProperty('--mate-h', `${peak}px`))
     }
@@ -312,7 +315,7 @@ export default function Profile({ id }: { id?: string }) {
   })
 
   useLayoutEffect(() => {
-    if (document.querySelector('.is-sortable > .is-dragging')) return
+    if (document.querySelector('.is-sortable > .is-dragging, .profile-slot.is-held')) return
     const match = () => {
       const shelf = document.querySelector('.profile-slot[data-block="cards"] .card-shelf') as HTMLElement | null
       if (!shelf) return
@@ -627,7 +630,7 @@ export default function Profile({ id }: { id?: string }) {
   })
 
   useLayoutEffect(() => {
-    if (document.querySelector('.is-sortable > .is-dragging')) return
+    if (document.querySelector('.is-sortable > .is-dragging, .profile-slot.is-held')) return
     const snap = () => snapper.current()
     snap()
     window.addEventListener('resize', snap)
@@ -793,7 +796,7 @@ export default function Profile({ id }: { id?: string }) {
   const roofOf = () => {
     const free = (['worlds', 'awards'] as ProfileBlock[])
       .filter((one) => !grown[one])
-      .map((one) => cardOf(one)?.getBoundingClientRect().height ?? 0)
+      .map((one) => cardOf(one)?.offsetHeight ?? 0)
     const tallest = Math.max(0, ...free)
     return tallest > BLOCK_MIN ? Math.round(tallest) : BLOCK_ROOF
   }
@@ -806,18 +809,19 @@ export default function Profile({ id }: { id?: string }) {
     const mate = slot.style.getPropertyValue('--mate-h')
     if (kept) slot.style.removeProperty('--slot-h')
     if (mate) slot.style.removeProperty('--mate-h')
-    const own = Math.round(card.getBoundingClientRect().height)
+    const own = card.offsetHeight
     const list = card.querySelector('.world-shelf, .soon-badges, .card-shelf') as HTMLElement | null
     const items = list ? ([...list.children] as HTMLElement[]) : []
-    const box = list?.getBoundingClientRect()
-    const chrome = box ? own - box.height : 0
+    const chrome = list ? own - list.offsetHeight : 0
     const steps: number[] = []
-    if (list && box && items.length > 1) {
-      const tops = [...new Set(items.map((one) => Math.round(one.getBoundingClientRect().top)))].sort((a, b) => a - b)
+    if (list && items.length > 1) {
+      const base = items[0]!.offsetParent === list ? 0 : list.offsetTop
+      const topOf = (one: HTMLElement) => one.offsetTop - base
+      const tops = [...new Set(items.map(topOf))].sort((a, b) => a - b)
       const rows = tops.filter((top, index) => index === 0 || top - tops[index - 1]! >= 2)
       for (const top of rows.slice(0, -1)) {
-        const line = items.filter((one) => Math.abs(one.getBoundingClientRect().top - top) < 2)
-        steps.push(Math.round(chrome + Math.max(...line.map((one) => one.getBoundingClientRect().bottom)) - box.top))
+        const line = items.filter((one) => Math.abs(topOf(one) - top) < 2)
+        steps.push(Math.round(chrome + Math.max(...line.map((one) => topOf(one) + one.offsetHeight))))
       }
     }
     if (kept) slot.style.setProperty('--slot-h', kept)
@@ -833,7 +837,7 @@ export default function Profile({ id }: { id?: string }) {
     const mate = slot.style.getPropertyValue('--mate-h')
     if (held) slot.style.removeProperty('--slot-h')
     if (mate) slot.style.removeProperty('--mate-h')
-    const own = Math.round(card.getBoundingClientRect().height)
+    const own = card.offsetHeight
     if (held) slot.style.setProperty('--slot-h', held)
     if (mate) slot.style.setProperty('--mate-h', mate)
     return own
@@ -852,8 +856,7 @@ export default function Profile({ id }: { id?: string }) {
       const mate = slot.style.getPropertyValue('--mate-h')
       if (held) slot.style.removeProperty('--slot-h')
       if (mate) slot.style.removeProperty('--mate-h')
-      const full = Math.round(card.getBoundingClientRect().height)
-      const box = shelf.getBoundingClientRect()
+      const full = card.offsetHeight
       const items = [...shelf.children] as HTMLElement[]
       const first = items[0]
       const cols = first ? items.filter((one) => Math.abs(one.offsetTop - first.offsetTop) < 2).length : 0
@@ -861,7 +864,7 @@ export default function Profile({ id }: { id?: string }) {
       const gap = Math.round(parseFloat(getComputedStyle(shelf).rowGap)) || 0
       const pad =
         (Math.round(parseFloat(getComputedStyle(shelf).paddingTop)) || 0) + (block === 'cards' ? Math.round(parseFloat(getComputedStyle(shelf).paddingBottom)) || 0 : 0)
-      const chrome = Math.round(full - box.height)
+      const chrome = Math.round(full - shelf.offsetHeight)
       if (mate) slot.style.setProperty('--mate-h', mate)
       if (!cols || !row) {
         if (held) slot.style.setProperty('--slot-h', held)
@@ -884,7 +887,7 @@ export default function Profile({ id }: { id?: string }) {
     shutPops()
     event.preventDefault()
     event.stopPropagation()
-    const from = Math.round(card.getBoundingClientRect().height)
+    const from = card.offsetHeight
     const ladder = ladderOf(block)
     if (!ladder) return
     const base = block !== 'facts' && shown.includes('facts') ? naturalOf('facts') : 0
@@ -900,7 +903,7 @@ export default function Profile({ id }: { id?: string }) {
     const mates = [
       ...shown
         .filter((one) => one !== block)
-        .map((one) => Math.round(cardOf(one)?.getBoundingClientRect().height ?? 0)),
+        .map((one) => cardOf(one)?.offsetHeight ?? 0),
       ladder.own,
     ].filter((one) => one > 0)
     setSized({ block, y: event.clientY, from, stops: null, floor, roof: roofOf(), mates, bare: ladder.own })
@@ -921,7 +924,7 @@ export default function Profile({ id }: { id?: string }) {
     const card = (node.querySelector(':scope > .card') as HTMLElement | null) ?? node
     const box = card.getBoundingClientRect()
     event.preventDefault()
-    setHeld({ block, x: event.clientX, y: event.clientY, dx: event.clientX - box.left, dy: event.clientY - box.top, w: box.width, h: box.height })
+    setHeld({ block, x: event.clientX, y: event.clientY, dx: event.clientX - box.left, dy: event.clientY - box.top, w: box.width, h: box.height, ox: event.clientX, oy: event.clientY })
   }
 
   const show = (block: ProfileBlock) => keep([...shown, block])
