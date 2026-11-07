@@ -5,7 +5,7 @@ import { adminSession } from '../admin'
 import { CHAT_MAX, NEWS_MAX, channelOf, chatPage, dropChat, joinBout, muteChat, sendBout, sendChat, sendNews, type BoutFail } from '../chat'
 import { markTyping } from '../stream'
 
-const BOUT_STATUS: Record<BoutFail, number> = { bad: 400, muted: 403, too_fast: 429, cooldown: 429, open: 409, own: 400, gone: 410, taken: 409 }
+const BOUT_STATUS: Record<BoutFail, number> = { bad: 400, muted: 403, patron: 403, too_fast: 429, cooldown: 429, open: 409, own: 400, gone: 410, taken: 409 }
 
 export const GET = handle(async (request) => {
   const url = new URL(request.url)

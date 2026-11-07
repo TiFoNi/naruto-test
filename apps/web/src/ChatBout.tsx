@@ -20,6 +20,7 @@ type Side = { id: string; nickname: string; avatar?: string | null; frame?: stri
 
 export const BOUT_OPEN_MS = 10 * 60_000
 export const BOUT_SKIP = new Set(['tunes', 'shots'])
+export const BOUT_TITLE = 'patron'
 const ROLL_MS = 1600
 const TURN_MS = 420
 const HOST_SEED = 11

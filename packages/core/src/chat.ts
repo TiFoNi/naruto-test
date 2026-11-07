@@ -5,6 +5,7 @@ import { authSession } from './auth'
 import { cardKey } from './dex'
 import { cards, chatNews, chatRoom, pulse, users, type ChatBout, type ChatDoc, type ChatReply, type ChatTag, type UserDoc } from './db'
 import { gameData, isGame } from './games'
+import { ownedTitles } from './profile'
 import { pushSubs, sendPush, type PushLang } from './push'
 import { readGuest } from './session'
 
@@ -277,7 +278,9 @@ export async function sendChat(doc: UserDoc, raw: unknown, picked?: unknown, rep
 export const BOUT_OPEN_MS = 10 * 60_000
 export const BOUT_TEXT = '🃏'
 
-export type BoutFail = 'bad' | 'muted' | 'too_fast' | 'cooldown' | 'open' | 'own' | 'gone' | 'taken'
+export type BoutFail = 'bad' | 'muted' | 'patron' | 'too_fast' | 'cooldown' | 'open' | 'own' | 'gone' | 'taken'
+
+export const BOUT_TITLE = 'patron'
 
 export const BOUT_GAP_MS = 60_000
 
@@ -287,6 +290,7 @@ export const BOUT_SKIP = new Set(['tunes', 'shots'])
 
 export async function sendBout(doc: UserDoc, game: unknown): Promise<ChatLine | BoutFail> {
   if (!isGame(game) || BOUT_SKIP.has(game)) return 'bad'
+  if (!ownedTitles(doc).includes(BOUT_TITLE)) return 'patron'
   if (muted(doc)) return 'muted'
   const room = await chatRoom()
   const userId = doc._id!

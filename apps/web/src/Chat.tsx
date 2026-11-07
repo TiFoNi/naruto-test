@@ -7,7 +7,7 @@ import Avatar from './Avatar'
 import { GAMES } from './games'
 import { api } from './api'
 import { dropMentions, watchFeed } from './awards'
-import ChatBout, { boutWorlds, type Bout } from './ChatBout'
+import ChatBout, { BOUT_TITLE, boutWorlds, type Bout } from './ChatBout'
 import ChatMentions, { EVERYONE_NICK, type MentionPick, type Person } from './ChatMentions'
 import { onChatOpen } from './chatEvents'
 import { useDuelTalk } from './duelTalk'
@@ -1057,7 +1057,7 @@ export default function Chat() {
                   }}
                   disabled={sending}
                 />
-                {room === 'chat' && (
+                {room === 'chat' && user.titles?.includes(BOUT_TITLE) && (
                   <div className="chat-faces">
                     <button
                       type="button"
