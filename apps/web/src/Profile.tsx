@@ -1899,7 +1899,7 @@ export default function Profile({ id }: { id?: string }) {
                     </div>
                   )}
                   {panels[block]}
-                  {edit && <i className="slot-grow" onPointerDown={stretch(block)} aria-hidden />}
+                  {edit && block !== 'facts' && <i className="slot-grow" onPointerDown={stretch(block)} aria-hidden />}
                 </div>
               ))}
           </div>
