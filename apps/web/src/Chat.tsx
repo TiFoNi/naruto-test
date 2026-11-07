@@ -658,6 +658,7 @@ export default function Chat() {
   }
 
   const newsFresh = Boolean(newsTop) && newsTop > newsSeen
+  const patron = Boolean(user?.titles?.includes(BOUT_TITLE))
   const canWrite = room === 'chat' || room === 'duel' || Boolean(user?.admin)
   const limit = room === 'news' ? 1500 : room === 'duel' ? 200 : 300
   const shown: Line[] = room === 'duel' ? (talk?.lines ?? []) : lines
@@ -944,6 +945,7 @@ export default function Chat() {
                           live={rolled.has(line.id)}
                           joining={joining === line.id}
                           onJoin={(id) => void joinBout(id)}
+                          onLeave={close}
                         />
                       ) : (
                         (() => {
@@ -1057,7 +1059,7 @@ export default function Chat() {
                   }}
                   disabled={sending}
                 />
-                {room === 'chat' && user.titles?.includes(BOUT_TITLE) && (
+                {room === 'chat' && (
                   <div className="chat-faces">
                     <button
                       type="button"
@@ -1073,7 +1075,15 @@ export default function Chat() {
                     >
                       <CardsIcon />
                     </button>
-                    {throwing && (
+                    {throwing && !patron && (
+                      <>
+                        <div className="chat-faces-away" role="presentation" onClick={() => setThrowing(false)} />
+                        <div className="chat-faces-pop chat-bout-lock" role="tooltip">
+                          {t('chat.boutPatron')} <i className="player-title is-slim is-patron">{t('title.patron')}</i>
+                        </div>
+                      </>
+                    )}
+                    {throwing && patron && (
                       <>
                         <div className="chat-faces-away" role="presentation" onClick={() => setThrowing(false)} />
                         <div className="chat-faces-pop chat-bout-pop" aria-label={t('chat.boutPick')}>

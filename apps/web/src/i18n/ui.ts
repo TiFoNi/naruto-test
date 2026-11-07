@@ -1328,6 +1328,7 @@ const ui = {
   'chat.boutExpired': { ru: 'Никто не принял', uk: 'Ніхто не прийняв', en: 'No one accepted' },
   'chat.boutLose': { ru: 'Могнут', uk: 'Могнутий', en: 'Mogged' },
   'chat.boutDraw': { ru: 'Ничья', uk: 'Нічия', en: 'Draw' },
+  'chat.boutPatron': { ru: 'Дуэль карт доступна обладателям титула', uk: 'Дуель карт доступна власникам титулу', en: 'Card duels are for owners of the title' },
   'chat.boutCooldown': { ru: 'Дуэль можно бросать раз в минуту', uk: 'Дуель можна кидати раз на хвилину', en: 'You can throw a duel once a minute' },
   'chat.boutOpen': { ru: 'У тебя уже висит дуэль', uk: 'У тебе вже висить дуель', en: 'You already have an open duel' },
   'chat.boutTaken': { ru: 'Кто-то успел раньше', uk: 'Хтось встиг раніше', en: 'Someone was faster' },

@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import type { GameId } from '@nanda/game'
 import { ShowcaseCard } from './Bestiary'
 import { GAMES } from './games'
 import { useI18n } from './i18n'
+import { useHref } from './router'
 import { SwordsIcon } from './icons'
 import { torn, tornPoints } from './torn'
 import './styles/dex.css'
@@ -41,6 +43,7 @@ export default function ChatBout({
   live,
   joining,
   onJoin,
+  onLeave,
 }: {
   id: string
   bout: Bout
@@ -50,8 +53,10 @@ export default function ChatBout({
   live: boolean
   joining: boolean
   onJoin: (id: string) => void
+  onLeave?: () => void
 }) {
   const { t, l } = useI18n()
+  const href = useHref()
   const [stage, setStage] = useState<'still' | 'shake' | 'turn'>(live && bout.pick ? 'shake' : 'still')
   const rolling = stage !== 'still'
   const [now, setNow] = useState(() => Date.now())
@@ -103,6 +108,12 @@ export default function ChatBout({
       blank(side === 'host' ? HOST_SEED : RIVAL_SEED)
     )
 
+  const nick = (who: Side) => (
+    <Link className="bout-nick" href={who.id === me ? href.profile : href.player(who.id)} prefetch={false} onClick={onLeave}>
+      {who.nickname}
+    </Link>
+  )
+
   const sideClass = (which: 'host' | 'rival') => `bout-side is-${which} ${winner === which ? 'is-won' : ''} ${winner && winner !== which ? 'is-lost' : ''}`
 
   return (
@@ -116,7 +127,7 @@ export default function ChatBout({
       <div className="bout-row">
         <div className={sideClass('host')}>
           {card(hostLevel, 'host')}
-          <span className="bout-nick">{host.nickname}</span>
+          {nick(host)}
         </div>
         <span className={`bout-mid ${draw ? 'is-draw' : ''}`}>
           <b key={draw ? 'draw' : 'vs'} style={{ clipPath: VS_CLIP }}>
@@ -126,7 +137,7 @@ export default function ChatBout({
         <div className={sideClass('rival')}>
           {card(rivalLevel, 'rival')}
           {bout.rival ? (
-            <span className="bout-nick">{bout.rival.nickname}</span>
+            nick(bout.rival)
           ) : expired ? (
             <span className="bout-empty">{t('chat.boutExpired')}</span>
           ) : me && me !== host.id ? (

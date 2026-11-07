@@ -588,6 +588,7 @@ body:has(.chat-panel) .duel-dock {
   bottom: 84px;
   left: 50%;
   z-index: 2;
+  width: max-content;
   max-width: calc(100% - 32px);
   padding: 8px 15px;
   border: 1px solid color-mix(in srgb, #ffffff 10%, transparent);
@@ -1342,6 +1343,22 @@ body:has(.chat-panel) .duel-dock {
   max-height: min(380px, 60vh);
 }
 
+.chat-bout-lock {
+  display: block;
+  width: max-content;
+  max-width: min(260px, calc(100vw - 32px));
+  padding: 10px 12px;
+  color: var(--text-2);
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.chat-bout-lock .player-title {
+  margin-left: 2px;
+  vertical-align: 1px;
+}
+
 .chat-bout-pop .card-worlds {
   margin-right: -6px;
   padding-right: 2px;
@@ -1414,6 +1431,7 @@ body:has(.chat-panel) .duel-dock {
 
 .bout-nick {
   display: block;
+  text-decoration: none;
   max-width: 100%;
   line-height: 30px;
   overflow: hidden;
@@ -1422,6 +1440,13 @@ body:has(.chat-panel) .duel-dock {
   text-overflow: ellipsis;
   white-space: nowrap;
   transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+@media (hover: hover) {
+  .bout-nick:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 }
 
 .bout-side.is-won .bout-nick {
