@@ -308,6 +308,7 @@ export type QuizDoc = {
   authorId?: ObjectId
   note?: string
   questions: QuizQuestion[]
+  revisedAt?: Date
   createdAt: Date
   updatedAt: Date
 }

@@ -4,7 +4,7 @@ import { quizAttempts, quizLikes, quizzes, users, type QuizDoc } from '../db'
 import { dropQuizComments } from '../quiz-comments'
 import { fail, handle, json, readJson } from '../http'
 import { uploadQuizCover } from '../images'
-import { quizAuthors, readQuiz } from '../quizzes'
+import { quizAuthors, readQuiz, revised } from '../quizzes'
 
 const LIMIT = 8 * 1024 * 1024
 
@@ -45,8 +45,12 @@ export const SAVE = handle(async (request) => {
   const now = new Date()
   if (typeof body.id === 'string' && ObjectId.isValid(body.id)) {
     const { official: _official, ...fields } = read.quiz
-    const before = await collection.findOne({ _id: new ObjectId(body.id) }, { projection: { status: 1 } })
-    const saved = await collection.findOneAndUpdate({ _id: new ObjectId(body.id) }, { $set: { ...fields, updatedAt: now } }, { returnDocument: 'after' })
+    const before = await collection.findOne({ _id: new ObjectId(body.id) }, { projection: { status: 1, questions: 1 } })
+    const saved = await collection.findOneAndUpdate(
+      { _id: new ObjectId(body.id) },
+      { $set: { ...fields, ...revised(before?.questions, fields.questions, now), updatedAt: now } },
+      { returnDocument: 'after' },
+    )
     if (!saved) return missing()
     if (saved.status === 'rejected' && before?.status !== 'rejected') await tellRejected(saved)
     await (await quizAttempts()).updateMany({ quizId: saved._id!, finished: false }, { $set: { answers: [] } })

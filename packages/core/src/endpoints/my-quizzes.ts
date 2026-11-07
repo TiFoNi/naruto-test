@@ -4,7 +4,7 @@ import { dropQuizComments } from '../quiz-comments'
 import { fail, handle, json, readJson } from '../http'
 import { uploadQuizCover } from '../images'
 import { roundOwner } from '../profile'
-import { QUIZ_LIMITS, readQuiz } from '../quizzes'
+import { QUIZ_LIMITS, readQuiz, revised } from '../quizzes'
 
 const LIMIT = 8 * 1024 * 1024
 
@@ -57,7 +57,12 @@ export const SAVE = handle(async (request) => {
   const id = idOf(body.id)
 
   if (id) {
-    const saved = await collection.findOneAndUpdate({ _id: id, authorId: userId }, { $set: { ...fields, updatedAt: now } }, { returnDocument: 'after' })
+    const before = await collection.findOne({ _id: id, authorId: userId }, { projection: { questions: 1 } })
+    const saved = await collection.findOneAndUpdate(
+      { _id: id, authorId: userId },
+      { $set: { ...fields, ...revised(before?.questions, fields.questions, now), updatedAt: now } },
+      { returnDocument: 'after' },
+    )
     if (!saved) return fail(404, 'not_found')
     await (await quizAttempts()).updateMany({ quizId: saved._id!, finished: false }, { $set: { answers: [] } })
     return json({ quiz: view(saved) })

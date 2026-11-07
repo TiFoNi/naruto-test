@@ -4,7 +4,7 @@ import { isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
 import { roundOwner } from '../profile'
 import { commentCounts } from '../quiz-comments'
-import { attemptId, finishAttempt, publishedQuiz, quizAuthors, quizCard, quizView, readValue, restartAttempt } from '../quizzes'
+import { attemptId, finishAttempt, publishedQuiz, quizAuthors, quizCard, quizView, readValue, renewAttempt, restartAttempt, staleAttempt } from '../quizzes'
 
 async function liked(quiz: QuizDoc, userId: ObjectId) {
   const likes = await quizLikes()
@@ -56,7 +56,7 @@ export const LIST = handle(async (request) => {
           likes: likes.get(quiz._id!.toHexString()) ?? 0,
           comments: talks.get(quiz._id!.toHexString()) ?? 0,
           author: quiz.authorId ? (authors.get(quiz.authorId.toHexString()) ?? null) : null,
-          mine: own ? { finished: own.finished, score: own.score, answered: own.answers.length } : null,
+          mine: !own ? null : staleAttempt(quiz, own) ? { finished: false, score: 0, answered: 0, changed: true } : { finished: own.finished, score: own.score, answered: own.answers.length },
         }
       }),
     },
@@ -70,7 +70,7 @@ export const ONE = handle(async (request) => {
   const quiz = await publishedQuiz(new URL(request.url).searchParams.get('id'))
   if (!quiz) return fail(404, 'not_found')
   const attempt = await (await quizAttempts()).findOne({ _id: attemptId(quiz._id!, owner.id) })
-  return json({ quiz: await fullView(quiz, attempt, owner.id) }, 200, owner.cookie)
+  return json({ quiz: await fullView(quiz, staleAttempt(quiz, attempt) ? null : attempt, owner.id) }, 200, owner.cookie)
 })
 
 export const LIKE = handle(async (request) => {
@@ -95,6 +95,8 @@ export const PLAY = handle(async (request) => {
   const collection = await quizAttempts()
   const _id = attemptId(quiz._id!, owner.id)
   const reply = async () => json({ quiz: await fullView(quiz, await collection.findOne({ _id }), owner.id) }, 200, owner.cookie)
+
+  if (staleAttempt(quiz, await collection.findOne({ _id }, { projection: { startedAt: 1 } }))) await renewAttempt(quiz, owner.id)
 
   if (body.action === 'restart') {
     await restartAttempt(quiz, owner.id)

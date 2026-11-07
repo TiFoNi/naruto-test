@@ -356,3 +356,16 @@ export async function restartAttempt(quiz: QuizDoc, userId: ObjectId) {
     { $set: { answers: [], finished: false, score: 0, total: quiz.questions.length, startedAt: new Date() }, $unset: { finishedAt: '' } },
   )
 }
+
+export const revised = (before: QuizQuestion[] | undefined, after: QuizQuestion[], now: Date) =>
+  before && JSON.stringify(before) !== JSON.stringify(after) ? { revisedAt: now } : {}
+
+export const staleAttempt = (quiz: QuizDoc, attempt: QuizAttemptDoc | null | undefined) => Boolean(attempt && quiz.revisedAt && attempt.startedAt < quiz.revisedAt)
+
+export async function renewAttempt(quiz: QuizDoc, userId: ObjectId) {
+  if (!quiz.revisedAt) return
+  await (await quizAttempts()).updateOne(
+    { _id: attemptId(quiz._id!, userId), startedAt: { $lt: quiz.revisedAt } },
+    { $set: { answers: [], finished: false, score: 0, total: quiz.questions.length, startedAt: new Date() }, $unset: { finishedAt: '', xp: '', paid: '' } },
+  )
+}

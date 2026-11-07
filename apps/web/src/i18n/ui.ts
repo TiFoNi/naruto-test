@@ -1443,6 +1443,7 @@ const ui = {
   'quiz.recap.orderWrong': { ru: 'Порядок неверный — разбор выше', uk: 'Порядок неправильний — розбір вище', en: 'Wrong order — see above' },
   'quiz.recap.pairs': { ru: 'Пар верно: {hits} из {total}', uk: 'Пар правильно: {hits} з {total}', en: 'Pairs right: {hits} of {total}' },
   'quiz.badge.new': { ru: 'Новый', uk: 'Новий', en: 'New' },
+  'quiz.badge.changed': { ru: 'Изменён', uk: 'Змінено', en: 'Updated' },
   'quiz.plays': { ru: '{count} прохождение|{count} прохождения|{count} прохождений', uk: '{count} проходження|{count} проходження|{count} проходжень', en: '{count} play|{count} plays' },
   'quiz.stat.total': { ru: 'тестов', uk: 'тестів', en: 'quizzes' },
   'quiz.stat.done': { ru: 'пройдено', uk: 'пройдено', en: 'completed' },

@@ -2010,6 +2010,11 @@ textarea.quiz-admin-input {
   color: var(--accent);
 }
 
+.qz-badge.is-changed {
+  background: #ffd36a;
+  color: #2a1d00;
+}
+
 .qz-badge.is-score.is-top,
 .qz-badge.is-score.is-good {
   background: color-mix(in srgb, var(--correct, #3fae6a) 85%, #000000);

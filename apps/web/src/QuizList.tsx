@@ -45,7 +45,9 @@ export function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
       <span className="qz-art">
         {art ? <img src={art} alt="" loading="lazy" /> : <span className="qz-mark">{BRAND.mark}</span>}
         <span className="qz-corner is-left">
-          {status === 'done' ? (
+          {quiz.mine?.changed ? (
+            <em className="qz-badge is-changed">{t('quiz.badge.changed')}</em>
+          ) : status === 'done' ? (
             <em className={`qz-badge is-score ${grade}`}>
               <CheckIcon />
               {quiz.mine!.score}/{quiz.count}

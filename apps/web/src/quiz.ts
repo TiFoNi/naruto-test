@@ -26,7 +26,7 @@ export type QuizCard = {
   layout: QuizLayout
   count: number
   kinds: QuizKind[]
-  mine?: { finished: boolean; score: number; answered: number } | null
+  mine?: { finished: boolean; score: number; answered: number; changed?: boolean } | null
   plays?: number
   likes?: number
   comments?: number
