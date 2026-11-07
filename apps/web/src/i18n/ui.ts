@@ -2025,6 +2025,15 @@ const ui = {
   'friends.outgoing': { ru: 'Отправленные', uk: 'Надіслані', en: 'Sent' },
   'friends.waiting': { ru: 'Ждём ответа', uk: 'Чекаємо на відповідь', en: 'Waiting for an answer' },
   'friends.nobody': { ru: 'Никого не нашли — проверь ник или ID.', uk: 'Нікого не знайшли — перевір нік або ID.', en: 'Nobody found — check the nickname or ID.' },
+  'invite.title': { ru: 'Пригласи друга', uk: 'Запроси друга', en: 'Invite a friend' },
+  'invite.lead': {
+    ru: 'Друг регистрируется по твоей ссылке и доходит до {level} уровня',
+    uk: 'Друг реєструється за твоїм посиланням і доходить до {level} рівня',
+    en: 'A friend signs up with your link and reaches level {level}',
+  },
+  'invite.shareText': { ru: 'Угадывай персонажей аниме вместе со мной в NandaGuessr', uk: 'Вгадуй персонажів аніме разом зі мною в NandaGuessr', en: 'Guess anime characters with me on NandaGuessr' },
+  'invite.prize': { ru: 'монет за друга', uk: 'монет за друга', en: 'coins per friend' },
+  'invite.tally': { ru: 'пришли {came} · дошли {reached}', uk: 'прийшли {came} · дійшли {reached}', en: 'joined {came} · reached {reached}' },
   'friends.searchTip': {
     ru: 'ID — это код после решётки в нике. Твой: {tag}',
     uk: 'ID — це код після решітки в ніку. Твій: {tag}',
@@ -2256,6 +2265,7 @@ const ui = {
     en: 'Google sign-in is not working right now',
   },
   'auth.failed': { ru: 'Не вышло. Попробуй ещё раз', uk: 'Не вийшло. Спробуй ще раз', en: 'That did not work. Try again' },
+  'auth.throwaway': { ru: 'Временная почта не подойдёт. Укажи обычную', uk: 'Тимчасова пошта не підійде. Вкажи звичайну', en: 'Disposable email will not work. Use a regular one' },
   'footer.tagline': {
     ru: 'Аниме, манга и игры — угадывай бесконечно или по одной загадке в день.',
     uk: 'Аніме, манґа та ігри — вгадуй нескінченно або по одній загадці на день.',

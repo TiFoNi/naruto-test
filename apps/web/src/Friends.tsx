@@ -3,7 +3,9 @@
 import Link from 'next/link'
 import { useCallback, useEffect, useState } from 'react'
 import Avatar from './Avatar'
+import BannerArt from './BannerArt'
 import BackButton from './BackButton'
+import InviteCard from './InviteCard'
 import { api } from './api'
 import { useAuth } from './auth'
 import { refreshFeed, watchFeed } from './awards'
@@ -11,7 +13,9 @@ import { useI18n } from './i18n'
 import { CloseIcon, SearchIcon, SwordsIcon, UserIcon } from './icons'
 import { useHref, useNavigate } from './router'
 
-type Mate = { id: string; nickname: string; tag: string | null; avatar?: string | null; at?: string }
+type Look = Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>> | null
+
+type Mate = { id: string; nickname: string; tag: string | null; avatar?: string | null; frame?: string | null; banner?: string | null; bannerLook?: Look; at?: string }
 
 type Lists = { friends: Mate[]; requests: Mate[]; sent: Mate[] }
 
@@ -143,6 +147,8 @@ export default function Friends() {
           ))}
       </section>
 
+      {user && <InviteCard />}
+
       {lists.requests.length > 0 && (
         <section className="card mates-box is-asks">
           <header>
@@ -151,9 +157,14 @@ export default function Friends() {
           </header>
           <ul className="mates-rows">
             {lists.requests.map((one) => (
-              <li key={one.id}>
+              <li key={one.id} className={one.banner ? 'has-art' : ''}>
+                {one.banner && (
+                  <span className="mates-art" aria-hidden>
+                    <BannerArt id={one.banner} look={one.bannerLook} place="board" />
+                  </span>
+                )}
                 <Link prefetch={false} href={href.player(one.id)} className="mates-who">
-                  <Avatar className="small" id={one.id} name={one.nickname} avatar={one.avatar} />
+                  <Avatar className="mates-face" id={one.id} name={one.nickname} avatar={one.avatar} frame={one.frame} medium />
                   <span className="mates-name">
                     <b>
                       {one.nickname}

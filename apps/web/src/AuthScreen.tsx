@@ -7,6 +7,8 @@ import { ArrowIcon, GoogleIcon, KeyIcon, MailIcon } from './icons'
 import { useI18n } from './i18n'
 import { useHref } from './router'
 
+const THROWAWAY = 'THROWAWAY_EMAIL'
+
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const WAIT = 45
 
@@ -90,7 +92,7 @@ export default function AuthScreen() {
     const { error } = await (await authClient()).signIn.magicLink({ email, callbackURL })
     setBusy(null)
     if (error) {
-      setError({ where: 'link', text: t(error.status === 429 ? 'err.too_many' : 'auth.failed') })
+      setError({ where: 'link', text: t(error.status === 429 ? 'err.too_many' : error.code === THROWAWAY ? 'auth.throwaway' : 'auth.failed') })
       return false
     }
     setLeft(WAIT)

@@ -61,6 +61,10 @@ export type UserDoc = {
   lang?: string
   duelComeback?: boolean
   challengeStats?: { solved?: number }
+  ref?: string
+  mailKey?: string
+  referredBy?: ObjectId
+  refPaid?: Date
   createdAt: Date
 }
 
@@ -264,11 +268,13 @@ export type PurchaseDoc = {
   updatedAt?: Date
 }
 
+export type LedgerReason = 'purchase' | 'refund' | 'referral'
+
 export type LedgerDoc = {
   _id?: ObjectId
   userId: ObjectId
   delta: number
-  reason: 'purchase' | 'refund'
+  reason: LedgerReason
   purchaseId: ObjectId
   at: Date
 }
@@ -832,6 +838,9 @@ export async function users(): Promise<Collection<UserDoc>> {
     collection.createIndex({ nicknameLower: 1 }),
     collection.createIndex({ nicknameLower: 1, tag: 1 }, { unique: true, partialFilterExpression: { tag: { $type: 'string' } } }),
     collection.createIndex({ solvedTotal: -1 }),
+    collection.createIndex({ ref: 1 }, { unique: true, partialFilterExpression: { ref: { $type: 'string' } } }),
+    collection.createIndex({ mailKey: 1 }, { partialFilterExpression: { mailKey: { $type: 'string' } } }),
+    collection.createIndex({ referredBy: 1 }, { partialFilterExpression: { referredBy: { $type: 'objectId' } } }),
   ]).catch((error) => {
     cache.__usersIndexed = undefined
     throw error

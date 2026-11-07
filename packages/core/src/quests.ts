@@ -8,7 +8,7 @@ import { addSeasonXp } from './season'
 export const FREE_XP = 25
 export const BONUS_XP = 120
 // монети дають лише за повний набір щоденних завдань
-export const BONUS_COINS = 100
+export const BONUS_COINS = 25
 
 type Metric = 'play' | 'games' | 'mode' | 'solve' | 'daily' | 'perfect' | 'duel'
 

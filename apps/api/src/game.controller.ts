@@ -37,6 +37,7 @@ import * as meta from '@nanda/core/endpoints/meta'
 import * as achievements from '@nanda/core/endpoints/achievements'
 import * as awards from '@nanda/core/endpoints/awards'
 import * as friends from '@nanda/core/endpoints/friends'
+import * as invite from '@nanda/core/endpoints/invite'
 import * as avatar from '@nanda/core/endpoints/avatar'
 import * as leaderboard from '@nanda/core/endpoints/leaderboard'
 import * as seasonBoard from '@nanda/core/endpoints/season'
@@ -339,6 +340,11 @@ export class GameController {
   @Post('friends')
   friendsAct(@Req() req: Request, @Res() res: Response) {
     return bridge(friends.POST, req, res)
+  }
+
+  @Get('invite')
+  inviteBoard(@Req() req: Request, @Res() res: Response) {
+    return bridge(invite.GET, req, res)
   }
 
   @Get('awards')

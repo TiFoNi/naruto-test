@@ -39,16 +39,22 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0 12px;
-  border: 1px solid var(--line);
+  padding: 0 14px;
+  border: 1px solid color-mix(in srgb, #ffffff 7%, transparent);
   border-radius: 14px;
-  background: var(--card-2);
-  transition: border-color 0.16s, background 0.16s;
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.28);
+  transition: border-color 0.16s, background 0.16s, box-shadow 0.16s;
+}
+
+.mates-field:hover {
+  border-color: color-mix(in srgb, #ffffff 12%, transparent);
 }
 
 .mates-field:focus-within {
-  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
-  background: color-mix(in srgb, var(--accent) 7%, var(--card-2));
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  background: color-mix(in srgb, var(--accent) 5%, rgba(0, 0, 0, 0.22));
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.28), 0 0 0 3px color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
 .mates-field > svg {
@@ -174,9 +180,62 @@
 }
 
 .mates-grid li {
+  position: relative;
   flex-direction: column;
   align-items: stretch;
-  gap: 10px;
+  gap: 12px;
+  overflow: hidden;
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, #0a0c10 45%, transparent);
+  box-shadow: 0 14px 30px rgb(0 0 0 / 35%);
+}
+
+.mates-grid li > *:not(.mates-art) {
+  position: relative;
+  z-index: 1;
+}
+
+.mates-art {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+}
+
+.mates-art img,
+.mates-art video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+
+.mates-art::after {
+  position: absolute;
+  background: linear-gradient(180deg, rgb(10 12 16 / 30%), rgb(10 12 16 / 72%));
+  content: '';
+  inset: 0;
+}
+
+.mates-grid .mates-face {
+  width: 56px;
+  height: 56px;
+  font-size: 22px;
+}
+
+.mates-grid li .mates-name b {
+  font-size: 15.5px;
+}
+
+.mates-grid li.has-art .mates-name b,
+.mates-grid li.has-art .mates-name small {
+  text-shadow: 0 1px 6px rgb(0 0 0 / 70%);
+}
+
+.mates-grid li.has-art .mates-acts button {
+  background: rgb(10 12 16 / 55%);
+  backdrop-filter: blur(6px);
 }
 
 .mates-grid .mates-acts {
@@ -399,4 +458,198 @@
 .mates-ask .danger-button:disabled {
   cursor: default;
   opacity: 0.6;
+}
+
+.mates-ticket {
+  --stub: 168px;
+  --hole: 11px;
+  --cut-x: calc(100% - var(--stub));
+  --cut-y: 0;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.mates-ticket::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid color-mix(in srgb, #ffffff 8%, transparent);
+  border-radius: inherit;
+  background:
+    linear-gradient(to right, transparent var(--cut-x), color-mix(in srgb, var(--accent) 9%, transparent) 0),
+    rgba(255, 255, 255, 0.035);
+  mask:
+    radial-gradient(circle var(--hole) at var(--cut-x) 0, transparent 98%, #000) top / 100% 51% no-repeat,
+    radial-gradient(circle var(--hole) at var(--cut-x) 100%, transparent 98%, #000) bottom / 100% 51% no-repeat;
+}
+
+.mates-ticket-main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 18px;
+}
+
+.mates-ticket-main h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.mates-ticket-main > p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.mates-ticket-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.mates-ticket-code {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 14px;
+  border: 1.5px dashed color-mix(in srgb, var(--accent) 38%, var(--line));
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  user-select: all;
+}
+
+.mates-ticket-row > button,
+.mates-ticket-row .share-open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card-2);
+  color: var(--text-2);
+  font-size: 13.5px;
+  font-weight: 700;
+  transition: border-color 0.16s, color 0.16s, background 0.16s;
+}
+
+.mates-ticket-row > button:hover,
+.mates-ticket-row .share-open:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  background: var(--card);
+  color: var(--text);
+}
+
+.mates-ticket-row > button svg,
+.mates-ticket-row .share-open svg {
+  width: 16px;
+  height: 16px;
+}
+
+.mates-ticket-stub {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  width: var(--stub);
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.mates-ticket-stub::before {
+  content: '';
+  position: absolute;
+  top: calc(var(--hole) + 6px);
+  bottom: calc(var(--hole) + 6px);
+  left: -1px;
+  border-left: 2px dashed color-mix(in srgb, #ffffff 16%, transparent);
+}
+
+.mates-ticket-stub .gem {
+  font-size: 30px;
+}
+
+.mates-ticket-stub b {
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+.mates-ticket-stub small {
+  color: color-mix(in srgb, var(--accent) 70%, var(--text));
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.mates-ticket-stub span {
+  margin-top: 6px;
+  color: var(--text-2);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+@media (max-width: 560px) {
+  .mates-ticket {
+    --stub: 132px;
+    flex-direction: column;
+  }
+
+  .mates-ticket::before {
+    background:
+      linear-gradient(to bottom, transparent calc(100% - var(--stub)), color-mix(in srgb, var(--accent) 9%, transparent) 0),
+      rgba(255, 255, 255, 0.035);
+    mask:
+      radial-gradient(circle var(--hole) at 0 calc(100% - var(--stub)), transparent 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--hole) at 100% calc(100% - var(--stub)), transparent 98%, #000) right / 51% 100% no-repeat;
+  }
+
+  .mates-ticket-code {
+    flex: 1 1 100%;
+    text-align: center;
+  }
+
+  .mates-ticket-row > button,
+  .mates-ticket-row > .share {
+    flex: 1 1 0;
+  }
+
+  .mates-ticket-row .share-open {
+    width: 100%;
+  }
+
+  .mates-ticket-code {
+    justify-content: center;
+  }
+
+  .mates-ticket-stub {
+    width: auto;
+    height: var(--stub);
+  }
+
+  .mates-ticket-stub::before {
+    top: -1px;
+    right: calc(var(--hole) + 6px);
+    bottom: auto;
+    left: calc(var(--hole) + 6px);
+    border-top: 2px dashed color-mix(in srgb, #ffffff 16%, transparent);
+    border-left: 0;
+  }
 }

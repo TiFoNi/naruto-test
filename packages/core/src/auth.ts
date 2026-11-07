@@ -1,11 +1,17 @@
 import { passkey } from '@better-auth/passkey'
 import { betterAuth } from 'better-auth'
 import { mongodbAdapter } from 'better-auth/adapters/mongodb'
+import { APIError } from 'better-auth/api'
 import { magicLink } from 'better-auth/plugins'
 import { database } from './db'
+import { throwaway } from './email'
 import { magicLinkMail, sendMail } from './mail'
 
 const MAGIC_LINK_TTL = 60 * 15
+
+export const THROWAWAY = 'THROWAWAY_EMAIL'
+
+const refuseThrowaway = () => new APIError('BAD_REQUEST', { code: THROWAWAY, message: 'Disposable email addresses are not allowed' })
 
 const origins = (process.env.CORS_ORIGINS ?? 'http://localhost:5173').split(',').map((origin) => origin.trim())
 
@@ -40,7 +46,8 @@ const build = async () => {
     plugins: [
       magicLink({
         expiresIn: MAGIC_LINK_TTL,
-        sendMagicLink: async ({ email, url }) => {
+        sendMagicLink: async ({ email, url }, ctx) => {
+          if (throwaway(email) && !(await ctx?.context.internalAdapter.findUserByEmail(email))) throw refuseThrowaway()
           const { subject, html, text } = magicLinkMail(url)
           await sendMail(email, subject, html, text)
         },
@@ -51,6 +58,15 @@ const build = async () => {
         origin: origins,
       }),
     ],
+    databaseHooks: {
+      user: {
+        create: {
+          before: async (user) => {
+            if (throwaway(user.email)) throw refuseThrowaway()
+          },
+        },
+      },
+    },
     session: { expiresIn: 60 * 60 * 24 * 30, updateAge: 60 * 60 * 24 },
     advanced: {
       cookiePrefix: 'nanda',

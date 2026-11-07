@@ -13,6 +13,7 @@
     "@nanda/game": "*",
     "@types/web-push": "^3.6.4",
     "better-auth": "^1.7.5",
+    "disposable-email-domains-js": "^1.26.0",
     "jose": "^6.2.12",
     "mongodb": "^7.6.0",
     "resend": "^6.28.1",

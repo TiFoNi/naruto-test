@@ -22,6 +22,7 @@ import { addSeasonXp, touchSeasonDay } from './season'
 import { fail } from './http'
 import { authSession } from './auth'
 import { guestCookie, readGuest } from './session'
+import { newcomerFields, payReferral } from './referral'
 
 export { STAT_KEYS }
 
@@ -272,6 +273,7 @@ export async function currentUser(request: Request) {
   const existing = await collection.findOne({ _id })
   if (existing) {
     await ensureTag(collection, existing)
+    await payReferral(existing).catch((error) => console.error('[referral] payout failed', error))
     return { doc: existing, collection }
   }
 
@@ -284,6 +286,7 @@ export async function currentUser(request: Request) {
     nicknameLower: lowerNickname(name),
     tag: makeTag(),
     named: false,
+    ...(await newcomerFields(collection, request, session.email)),
     createdAt: new Date(),
   }
   await collection.insertOne(doc)

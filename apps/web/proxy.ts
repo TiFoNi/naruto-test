@@ -3,6 +3,17 @@ import { LANGS, type Lang } from '@/src/i18n/ui'
 
 const CODES = LANGS.map(({ id }) => id)
 const DEFAULT: Lang = 'ru'
+const REF_COOKIE = 'nanda_ref'
+const REF_SHAPE = /^[A-Z2-9]{7}$/
+const REF_DAYS = 30
+
+const refDomain = (request: NextRequest) => {
+  if (process.env.COOKIE_DOMAIN) return process.env.COOKIE_DOMAIN
+  const raw = request.headers.get('x-forwarded-host')?.split(',')[0] ?? request.headers.get('host') ?? request.nextUrl.host
+  const host = raw.trim().toLowerCase().replace(/:\d+$/, '')
+  if (!host || host === 'localhost' || host.endsWith('.localhost') || /^[\d.]+$/.test(host) || host.includes(':') || host.startsWith('[')) return undefined
+  return host.replace(/^www\./, '')
+}
 
 function preferred(request: NextRequest): Lang {
   const stored = request.cookies.get('lang')?.value
@@ -19,12 +30,20 @@ function preferred(request: NextRequest): Lang {
 }
 
 export function proxy(request: NextRequest) {
-  const { pathname, search } = request.nextUrl
-  if (CODES.some((code) => pathname === `/${code}` || pathname.startsWith(`/${code}/`))) return NextResponse.next()
+  const url = request.nextUrl.clone()
+  const ref = url.searchParams.get('ref')
+  const known = CODES.some((code) => url.pathname === `/${code}` || url.pathname.startsWith(`/${code}/`))
+  if (known && ref === null) return NextResponse.next()
 
-  const lang = preferred(request)
-  const response = NextResponse.redirect(new URL(`/${lang}${pathname === '/' ? '' : pathname}${search}`, request.url))
-  response.headers.set('vary', 'Accept-Language, Cookie')
+  url.searchParams.delete('ref')
+  if (!known) url.pathname = `/${preferred(request)}${url.pathname === '/' ? '' : url.pathname}`
+  const response = NextResponse.redirect(url)
+  if (!known) response.headers.set('vary', 'Accept-Language, Cookie')
+
+  const code = ref?.trim().toUpperCase() ?? ''
+  if (REF_SHAPE.test(code)) {
+    response.cookies.set(REF_COOKIE, code, { path: '/', domain: refDomain(request), maxAge: REF_DAYS * 86_400, httpOnly: true, sameSite: 'lax', secure: url.protocol === 'https:' })
+  }
   return response
 }
 

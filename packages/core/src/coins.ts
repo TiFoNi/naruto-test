@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import type { ObjectId } from 'mongodb'
 import { coinOf, coinsOf, packOf, wayOf } from '@nanda/game'
-import { coinLedger, purchases, users } from './db'
+import { coinLedger, purchases, users, type LedgerReason } from './db'
 import { provider, type PaymentEvent } from './payments'
 import { starsLink, starsReady } from './telegram'
 
@@ -87,7 +87,7 @@ export async function startPurchase(userId: ObjectId, packId: unknown, coinId: u
   }
 }
 
-async function credit(purchaseId: ObjectId, userId: ObjectId, delta: number, reason: 'purchase' | 'refund') {
+export async function credit(purchaseId: ObjectId, userId: ObjectId, delta: number, reason: LedgerReason) {
   try {
     await (await coinLedger()).insertOne({ userId, delta, reason, purchaseId, at: new Date() })
   } catch {
@@ -97,7 +97,7 @@ async function credit(purchaseId: ObjectId, userId: ObjectId, delta: number, rea
   const people = await users()
   await people.updateOne(
     { _id: userId },
-    { $inc: { coins: delta }, ...(reason === 'purchase' && delta > 0 ? { $set: { coinsNews: { coins: delta, at: new Date() } } } : {}) },
+    { $inc: { coins: delta }, ...(reason !== 'refund' && delta > 0 ? { $set: { coinsNews: { coins: delta, at: new Date() } } } : {}) },
   )
   if (delta < 0) await people.updateOne({ _id: userId, coins: { $lt: 0 } }, { $set: { coins: 0 } })
   return true
