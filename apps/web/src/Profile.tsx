@@ -58,6 +58,7 @@ const BLOCK_MAGNET = 10
 const UNPIN_POINTS = tornPoints(42, 9, 4)
   .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
   .join(' ')
+const ROW = 4
 const BLOCK_FULL = 900
 const CARDS_ROW = 60
 
@@ -170,6 +171,32 @@ export const MARKS = [
   { left: '93%', top: '32%', size: 24, tilt: 5 },
 ]
 
+function FitLabel({ full, short }: { full: string; short: string }) {
+  const node = useRef<HTMLSpanElement>(null)
+  const ghost = useRef<HTMLSpanElement>(null)
+  const [tight, setTight] = useState(false)
+
+  useLayoutEffect(() => {
+    const label = node.current
+    const probe = ghost.current
+    if (!label || !probe) return
+    const check = () => setTight(probe.scrollWidth > label.clientWidth + 1)
+    check()
+    const watcher = new ResizeObserver(check)
+    watcher.observe(label)
+    return () => watcher.disconnect()
+  }, [full, short])
+
+  return (
+    <span ref={node} className="fact-label" title={tight ? full : undefined}>
+      {tight ? short : full}
+      <span ref={ghost} className="fact-label-probe" aria-hidden>
+        {full}
+      </span>
+    </span>
+  )
+}
+
 export default function Profile({ id }: { id?: string }) {
   const { user, refresh } = useAuth()
   const own = !id
@@ -266,6 +293,7 @@ export default function Profile({ id }: { id?: string }) {
     }
   }, [held?.block])
   useLayoutEffect(() => {
+    if (document.querySelector('.is-sortable > .is-dragging')) return
     const even = () => {
       const pair = (['worlds', 'awards'] as ProfileBlock[])
         .map((block) => document.querySelector(`.profile-slot[data-block="${block}"]`) as HTMLElement | null)
@@ -284,33 +312,88 @@ export default function Profile({ id }: { id?: string }) {
   })
 
   useLayoutEffect(() => {
+    if (document.querySelector('.is-sortable > .is-dragging')) return
     const match = () => {
       const shelf = document.querySelector('.profile-slot[data-block="cards"] .card-shelf') as HTMLElement | null
       if (!shelf) return
-      const peer = (['awards', 'worlds'] as ProfileBlock[])
-        .map((block) => document.querySelector(`.profile-slot[data-block="${block}"] > .card`) as HTMLElement | null)
-        .find((one) => one)
-      if (!peer) {
-        shelf.style.removeProperty('--card-w')
-        shelf.style.removeProperty('--card-row')
+      const peerBlock = (['awards', 'worlds'] as ProfileBlock[]).find((block) => document.querySelector(`.profile-slot[data-block="${block}"] > .card`))
+      const ladder = peerBlock ? ladderOf(peerBlock) : null
+      const peerShelf = peerBlock
+        ? (document.querySelector(`.profile-slot[data-block="${peerBlock}"] .soon-badges, .profile-slot[data-block="${peerBlock}"] .world-shelf`) as HTMLElement | null)
+        : null
+      const first = peerShelf?.firstElementChild as HTMLElement | null
+      const section = shelf.closest('.card') as HTMLElement | null
+      if (!ladder || !peerShelf || !first || !section) {
+        for (const key of ['--card-w', '--card-row', 'padding-top', 'padding-bottom']) shelf.style.removeProperty(key)
         return
       }
-      const section = shelf.closest('.card') as HTMLElement | null
-      if (!section) return
       const outer = getComputedStyle(section)
-      const inner = getComputedStyle(shelf)
-      const chrome =
-        parseFloat(outer.paddingTop) + parseFloat(outer.paddingBottom) + parseFloat(outer.borderTopWidth) + parseFloat(outer.borderBottomWidth) + parseFloat(inner.paddingTop) + parseFloat(inner.paddingBottom)
-      const row = peer.getBoundingClientRect().height - chrome
-      const width = Math.max(90, Math.floor(row * 0.75))
-      const tall = Math.max(120, Math.floor(row))
-      if (shelf.style.getPropertyValue('--card-w') !== `${width}px`) shelf.style.setProperty('--card-w', `${width}px`)
-      if (shelf.style.getPropertyValue('--card-row') !== `${tall}px`) shelf.style.setProperty('--card-row', `${tall}px`)
+      const chrome = parseFloat(outer.paddingTop) + parseFloat(outer.paddingBottom) + parseFloat(outer.borderTopWidth) + parseFloat(outer.borderBottomWidth)
+      const least = ladder.steps[0] ?? ladder.own
+      const pitch = first.offsetHeight + (parseFloat(getComputedStyle(peerShelf).rowGap) || 0)
+      const gap = parseFloat(getComputedStyle(shelf).rowGap) || 0
+      const room = least - chrome
+      const row = Math.max(30, Math.min(room, Math.round(pitch - gap)))
+      const spare = Math.max(0, room - row)
+      const top = Math.floor(spare / 2)
+      const sets: [string, string][] = [
+        ['--card-row', `${row}px`],
+        ['--card-w', `${Math.max(20, Math.floor(row * 0.75))}px`],
+        ['padding-top', `${top}px`],
+        ['padding-bottom', `${spare - top}px`],
+      ]
+      for (const [key, value] of sets) if (shelf.style.getPropertyValue(key) !== value) shelf.style.setProperty(key, value)
+    }
+    const facts = () => {
+      const card = document.querySelector('.profile-slot[data-block="facts"] > .card') as HTMLElement | null
+      if (!card) return
+      const awards = document.querySelector('.profile-slot[data-block="awards"] > .card') as HTMLElement | null
+      if (!awards || tall.current.facts) {
+        card.style.removeProperty('height')
+        card.style.removeProperty('min-height')
+        delete card.dataset.fit
+        return
+      }
+      const ladder = ladderOf('awards')
+      if (!ladder) return
+      const least = ladder.steps[0] ?? ladder.own
+      const want = Math.round(least / 2)
+      card.dataset.fit = ''
+      card.style.removeProperty('height')
+      if (card.style.minHeight !== `${want}px`) card.style.minHeight = `${want}px`
     }
     match()
-    window.addEventListener('resize', match)
-    return () => window.removeEventListener('resize', match)
+    facts()
+    const both = () => {
+      match()
+      facts()
+    }
+    window.addEventListener('resize', both)
+    return () => window.removeEventListener('resize', both)
   })
+
+  const lifted = useRef<string | null>(null)
+  useLayoutEffect(() => {
+    if (!held) {
+      if (lifted.current) {
+        const slot = document.querySelector(`.profile-slot[data-block="${lifted.current}"]`) as HTMLElement | null
+        if (slot) {
+          const from = slot.style.translate || '0 0'
+          slot.style.translate = ''
+          slot.animate([{ translate: from }, { translate: '0 0' }], { duration: 220, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' })
+        }
+        lifted.current = null
+      }
+      return
+    }
+    const slot = document.querySelector(`.profile-slot[data-block="${held.block}"]`) as HTMLElement | null
+    const card = slot?.querySelector(':scope > .card') as HTMLElement | null
+    if (!slot || !card) return
+    lifted.current = held.block
+    slot.style.translate = ''
+    const box = card.getBoundingClientRect()
+    slot.style.translate = `${held.x - held.dx - box.left}px ${held.y - held.dy - box.top}px`
+  }, [held])
 
   useEffect(() => {
     if (!places) return
@@ -544,6 +627,7 @@ export default function Profile({ id }: { id?: string }) {
   })
 
   useLayoutEffect(() => {
+    if (document.querySelector('.is-sortable > .is-dragging')) return
     const snap = () => snapper.current()
     snap()
     window.addEventListener('resize', snap)
@@ -758,6 +842,7 @@ export default function Profile({ id }: { id?: string }) {
 
 
   snapper.current = () => {
+    document.querySelectorAll('.profile-slot li.is-off').forEach((one) => one.classList.remove('is-off'))
     for (const [block, kept] of Object.entries(grown)) {
       const card = cardOf(block as ProfileBlock)
       const slot = card?.parentElement as HTMLElement | null
@@ -788,6 +873,7 @@ export default function Profile({ id }: { id?: string }) {
       const rows = Math.max(1, Math.ceil(seen / cols))
       const want = Math.min(full, Math.round(chrome + pad + rows * row + (rows - 1) * gap))
       slot.style.setProperty('--slot-h', `${want}px`)
+      items.forEach((one, index) => one.classList.toggle('is-off', index >= rows * cols))
     }
   }
 
@@ -882,7 +968,7 @@ export default function Profile({ id }: { id?: string }) {
             </div>
           )}
           <div className="fact">
-            <span>{t('profile.favourite')}</span>
+            <FitLabel full={t('profile.favourite')} short={t('profile.favouriteShort')} />
             {summary?.favourite ? (
               <b className="small" title={l(gameLabel(summary.favourite)!)}>
                 {l(gameLabel(summary.favourite)!)}
@@ -978,7 +1064,7 @@ export default function Profile({ id }: { id?: string }) {
                 </li>
               )
             })}
-            {Array.from({ length: blanks }, (_, index) => (
+            {Array.from({ length: sorting ? blanks : Math.min(blanks, (ROW - (shelf.length % ROW)) % ROW) }, (_, index) => (
               <li key={`blank-${index}`} className="is-blank">
                 {own && user ? (
                   <Link
@@ -1097,7 +1183,7 @@ export default function Profile({ id }: { id?: string }) {
           )}
         </header>
         <ul className={`soon-badges ${sorting ? 'is-sortable' : ''}`} ref={awardSort.list} onClickCapture={holdLinks}>
-          {Array.from({ length: SHOWCASE_MAX }, (_, index) => {
+          {Array.from({ length: sorting ? SHOWCASE_MAX : Math.min(SHOWCASE_MAX, Math.ceil(awardSort.sorted.length / ROW) * ROW) }, (_, index) => {
             const award = awardSort.sorted[index]
             if (!award)
               return (
@@ -1802,15 +1888,6 @@ export default function Profile({ id }: { id?: string }) {
         ))}
       </div>
 
-      {held && (
-        <div
-          className={`profile-ghost ${grown[held.block] ? 'is-tall' : ''}`}
-          style={{ left: held.x - held.dx, top: held.y - held.dy, width: held.w, height: held.h }}
-          aria-hidden
-        >
-          {panels[held.block]}
-        </div>
-      )}
 
       {edit && (
         <div className="card profile-add">

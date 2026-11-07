@@ -873,7 +873,7 @@ const DexHelp = ({ modes }: { modes: ModeId[] }) => {
   )
 }
 
-export function ShowcaseCard({ game, id, image, label, xp }: { game: GameId; id: number; image?: string; label: string; xp: number }) {
+export const ShowcaseCard = memo(function ShowcaseCard({ game, id, image, label, xp }: { game: GameId; id: number; image?: string; label: string; xp: number }) {
   const rank = cardRank(xp)
   const tier = rank.tier
   return (
@@ -896,7 +896,7 @@ export function ShowcaseCard({ game, id, image, label, xp }: { game: GameId; id:
       </span>
     </span>
   )
-}
+})
 
 const CardSheet = ({
   rank,

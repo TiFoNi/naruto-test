@@ -12564,8 +12564,17 @@ html[data-auth] .ssr-skel {
   position: relative;
   z-index: 6;
   cursor: grabbing;
+  will-change: translate;
 }
 
 .is-sortable > .is-dragging > * {
   filter: drop-shadow(0 14px 22px rgb(0 0 0 / 50%));
+}
+
+.card-shelf.is-sortable > .is-dragging > * {
+  filter: none;
+}
+
+.is-sortable.is-live > [data-sort] {
+  will-change: translate;
 }

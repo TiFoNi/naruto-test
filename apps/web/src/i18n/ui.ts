@@ -1529,6 +1529,7 @@ const ui = {
   'profile.placesTitle': { ru: 'Места по играм', uk: 'Місця за іграми', en: 'Places by game' },
   'profile.close': { ru: 'Закрыть', uk: 'Закрити', en: 'Close' },
   'profile.favourite': { ru: 'Любимая вселенная', uk: 'Улюблений всесвіт', en: 'Favourite world' },
+  'profile.favouriteShort': { ru: 'Любимая', uk: 'Улюблений', en: 'Favourite' },
   'profile.characters': { ru: 'Разгадано всего', uk: 'Розгадано всього', en: 'Solved in total' },
   'profile.charactersShort': { ru: 'Разгадано', uk: 'Розгадано', en: 'Solved' },
   'profile.rankShort': { ru: 'Место', uk: 'Місце', en: 'Place' },

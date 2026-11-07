@@ -69,24 +69,19 @@
   min-height: 0;
 }
 
-.profile-slot.is-tall > .card,
-.profile-ghost.is-tall > .card {
+.profile-slot.is-tall > .card {
   overflow: hidden;
 }
 
 .profile-slot.is-tall .activity,
-.profile-slot.is-tall .worlds,
-.profile-ghost.is-tall .activity,
-.profile-ghost.is-tall .worlds {
+.profile-slot.is-tall .worlds {
   flex: 1 1 0;
   height: auto;
   min-height: 0;
 }
 
 .profile-slot.is-tall .world-shelf,
-.profile-slot.is-tall .soon-badges,
-.profile-ghost.is-tall .world-shelf,
-.profile-ghost.is-tall .soon-badges {
+.profile-slot.is-tall .soon-badges {
   flex: 1 1 auto;
   min-height: 0;
   margin-top: -6px;
@@ -194,23 +189,18 @@
   color: var(--text);
 }
 
-.profile-slot.is-held {
-  opacity: 0.25;
+.profile-slot {
+  transition: rotate 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.profile-ghost {
-  position: fixed;
+.profile-slot.is-held {
   z-index: 60;
-  overflow: hidden;
-  border-radius: 20px;
-  box-shadow: 0 24px 60px rgb(0 0 0 / 55%);
-  opacity: 0.95;
-  pointer-events: none;
+  will-change: translate;
   rotate: -0.6deg;
 }
 
-.profile-ghost > .card {
-  height: 100%;
+.profile-slot.is-held > .card {
+  box-shadow: 0 24px 60px rgb(0 0 0 / 55%);
 }
 
 .slot-bar .slot-off .icon {
@@ -3648,4 +3638,90 @@ a.world-blank:hover .world-pic.is-empty {
 
 .worlds-all:hover .icon {
   transform: translateX(3px);
+}
+
+@media (max-width: 560px) {
+  .profile-grid .soon-card,
+  .profile-grid .worlds-card {
+    padding-inline: 12px;
+  }
+
+  .soon-card .soon-badges,
+  .worlds-card .world-shelf {
+    gap: 10px 8px;
+  }
+
+  .soon-card .soon-mark .icon.award-art {
+    width: 88%;
+    height: 88%;
+  }
+}
+
+.profile-card .profile-facts {
+  flex: 1 1 auto;
+}
+
+.profile-card[data-fit] .profile-facts {
+  min-height: 0;
+}
+
+.profile-card[data-fit] .profile-facts .fact {
+  min-height: 0;
+}
+
+.profile-hero-tiles.is-under .hero-tile,
+.profile-hero-tiles.is-under .hero-tile-open {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.profile-hero-tiles.is-under .hero-tile-open {
+  height: 100%;
+}
+
+.profile-hero-tiles.is-under .hero-tile b {
+  justify-content: center;
+}
+
+.profile-facts .fact-label {
+  position: relative;
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.profile-facts .fact-label-probe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: max-content;
+  visibility: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+@media (max-width: 560px) {
+  .profile .card .fact,
+  .profile-facts .fact {
+    gap: 2px;
+    padding: 0 4px;
+    border-color: transparent;
+    background: none;
+    box-shadow: none;
+  }
+
+  .profile-grid .profile-card {
+    padding-block: 12px;
+  }
+
+  .profile-facts .fact b,
+  .profile-facts b.empty {
+    font-size: 24px;
+  }
+}
+
+.profile-slot li.is-off {
+  visibility: hidden;
 }

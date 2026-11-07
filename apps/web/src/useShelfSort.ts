@@ -5,7 +5,9 @@ import { useLayoutEffect, useRef, useState, type PointerEvent as ReactPointerEve
 const START_PX = 6
 const SLIDE_MS = 220
 
-type Grab = { id: string; pointer: number; x: number; y: number; dx: number; dy: number; live: boolean }
+type Frame = { left: number; right: number; top: number; bottom: number }
+
+type Grab = { id: string; pointer: number; x: number; y: number; dx: number; dy: number; live: boolean; box: DOMRect; frame: Frame }
 
 export function useShelfSort<T>(items: T[], keyOf: (item: T) => string, enabled: boolean, commit: (next: T[]) => void) {
   const [order, setOrder] = useState<string[] | null>(null)
@@ -25,21 +27,32 @@ export function useShelfSort<T>(items: T[], keyOf: (item: T) => string, enabled:
   const spot = () => {
     const held = grab.current
     const node = held ? nodeOf(held.id) : null
-    const box = list.current?.getBoundingClientRect()
-    const card = list.current?.closest('.card')?.getBoundingClientRect()
-    if (!held || !node || !box || !list.current) return null
-    const pad = getComputedStyle(list.current)
-    const frame = {
-      left: box.left + parseFloat(pad.paddingLeft),
-      right: box.right - parseFloat(pad.paddingRight),
-      top: box.top + parseFloat(pad.paddingTop),
-      bottom: Math.min(box.bottom - parseFloat(pad.paddingBottom), card ? card.bottom - parseFloat(getComputedStyle(list.current.closest('.card')!).paddingBottom) : Infinity),
-    }
+    if (!held || !node) return null
+    const { box, frame } = held
     const width = node.offsetWidth
     const height = node.offsetHeight
     const left = Math.min(Math.max(pointer.current.x - held.dx, frame.left), Math.max(frame.left, frame.right - width))
     const top = Math.min(Math.max(pointer.current.y - held.dy, frame.top), Math.max(frame.top, frame.bottom - height))
     return { node, box, left, top, x: left + width / 2, y: top + height / 2 }
+  }
+
+  const measure = (): { box: DOMRect; frame: Frame } | null => {
+    const shelf = list.current
+    if (!shelf) return null
+    const box = shelf.getBoundingClientRect()
+    const pad = getComputedStyle(shelf)
+    const card = shelf.closest('.card') as HTMLElement | null
+    const cardBox = card?.getBoundingClientRect()
+    const bottom = cardBox && card ? cardBox.bottom - parseFloat(getComputedStyle(card).paddingBottom) : Infinity
+    return {
+      box,
+      frame: {
+        left: box.left + parseFloat(pad.paddingLeft),
+        right: box.right - parseFloat(pad.paddingRight),
+        top: box.top + parseFloat(pad.paddingTop),
+        bottom: Math.min(box.bottom - parseFloat(pad.paddingBottom), bottom),
+      },
+    }
   }
 
   const follow = () => {
@@ -79,20 +92,23 @@ export function useShelfSort<T>(items: T[], keyOf: (item: T) => string, enabled:
       if (!enabled || event.button > 0 || (event.target as Element).closest('button')) return
       const node = event.currentTarget
       const rect = node.getBoundingClientRect()
-      grab.current = { id, pointer: event.pointerId, x: event.clientX, y: event.clientY, dx: event.clientX - rect.left, dy: event.clientY - rect.top, live: false }
+      const bounds = measure()
+      if (!bounds) return
+      grab.current = { id, pointer: event.pointerId, x: event.clientX, y: event.clientY, dx: event.clientX - rect.left, dy: event.clientY - rect.top, live: false, ...bounds }
       pointer.current = { x: event.clientX, y: event.clientY }
       let working = [...current]
+      let frame = 0
 
-      const move = (moved: PointerEvent) => {
+      const tick = () => {
+        frame = 0
         const held = grab.current
-        if (!held || moved.pointerId !== held.pointer) return
-        pointer.current = { x: moved.clientX, y: moved.clientY }
+        if (!held) return
         if (!held.live) {
-          if (Math.hypot(moved.clientX - held.x, moved.clientY - held.y) < START_PX) return
+          if (Math.hypot(pointer.current.x - held.x, pointer.current.y - held.y) < START_PX) return
           held.live = true
+          list.current?.classList.add('is-live')
           setDragging(id)
         }
-        moved.preventDefault()
         const at = spot()
         const target = at
           ? working.find((one) => {
@@ -118,13 +134,24 @@ export function useShelfSort<T>(items: T[], keyOf: (item: T) => string, enabled:
         follow()
       }
 
+      const move = (moved: PointerEvent) => {
+        const held = grab.current
+        if (!held || moved.pointerId !== held.pointer) return
+        pointer.current = { x: moved.clientX, y: moved.clientY }
+        if (held.live) moved.preventDefault()
+        if (!frame) frame = requestAnimationFrame(tick)
+      }
+
       const drop = (ended: PointerEvent) => {
         const held = grab.current
         if (!held || ended.pointerId !== held.pointer) return
+        if (frame) cancelAnimationFrame(frame)
+        frame = 0
         window.removeEventListener('pointermove', move)
         window.removeEventListener('pointerup', drop)
         window.removeEventListener('pointercancel', drop)
         grab.current = null
+        list.current?.classList.remove('is-live')
         const node = nodeOf(id)
         if (held.live && node) {
           const from = node.style.translate || '0 0'

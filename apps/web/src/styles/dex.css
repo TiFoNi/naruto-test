@@ -1884,7 +1884,7 @@ button.lv-badge:focus-visible {
   right: -10px;
   z-index: 3;
   display: grid;
-  width: clamp(26px, 30%, 40px);
+  width: clamp(18px, 28%, 40px);
   height: auto;
   aspect-ratio: 8 / 7;
   place-items: center;
@@ -2032,4 +2032,39 @@ button.lv-badge:focus-visible {
 
 .dex-zoom-close.is-leaving {
   visibility: hidden;
+}
+
+.card-shelf .dex-scrap {
+  container-type: inline-size;
+}
+
+.card-shelf .lv-badge {
+  right: -5.6cqw;
+  bottom: -5.6cqw;
+  width: 23.8cqw;
+  height: 19cqw;
+  font-size: 8.7cqw;
+}
+
+.card-shelf .dex-scrap > b {
+  font-size: 10.3cqw;
+}
+
+.card-shelf .dex-scrap > b.is-long {
+  font-size: 9.1cqw;
+}
+
+.card-shelf .dex-scrap > b.is-longer {
+  font-size: 7.9cqw;
+}
+
+@media (max-width: 560px) {
+  .card-shelf {
+    gap: 16px 10px;
+    padding: 6px 2px 2px;
+  }
+
+  .profile-grid .cards-card {
+    padding: 12px 8px;
+  }
 }
