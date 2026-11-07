@@ -2060,7 +2060,7 @@ button.lv-badge:focus-visible {
 
 @media (max-width: 560px) {
   .card-shelf {
-    gap: 16px 10px;
+    gap: 6px 10px;
     padding: 6px 2px 2px;
   }
 

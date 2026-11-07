@@ -47,6 +47,7 @@ import { uiUrl } from './pics'
 import { ShowcaseCard } from './Bestiary'
 import { tornPoints } from './torn'
 import { useShelfSort } from './useShelfSort'
+import { afterHold } from './hold'
 
 type Held = { block: ProfileBlock; x: number; y: number; dx: number; dy: number; w: number; h: number; ox: number; oy: number }
 
@@ -335,15 +336,13 @@ export default function Profile({ id }: { id?: string }) {
       const least = ladder.steps[0] ?? ladder.own
       const pitch = first.offsetHeight + (parseFloat(getComputedStyle(peerShelf).rowGap) || 0)
       const gap = parseFloat(getComputedStyle(shelf).rowGap) || 0
-      const room = least - chrome
-      const row = Math.max(30, Math.min(room, Math.round(pitch - gap)))
-      const spare = Math.max(0, room - row)
-      const top = Math.floor(spare / 2)
+      const rows = Math.max(1, Math.ceil((eyed.current.cards ?? ROW) / ROW))
+      const row = Math.max(30, Math.floor((least + (rows - 1) * pitch - chrome - (rows - 1) * gap) / rows))
       const sets: [string, string][] = [
         ['--card-row', `${row}px`],
         ['--card-w', `${Math.max(20, Math.floor(row * 0.75))}px`],
-        ['padding-top', `${top}px`],
-        ['padding-bottom', `${spare - top}px`],
+        ['padding-top', '0px'],
+        ['padding-bottom', '0px'],
       ]
       for (const [key, value] of sets) if (shelf.style.getPropertyValue(key) !== value) shelf.style.setProperty(key, value)
     }
@@ -762,9 +761,17 @@ export default function Profile({ id }: { id?: string }) {
       if (moved) keepTiles(order)
     }
 
-    window.addEventListener('pointermove', move)
-    window.addEventListener('pointerup', drop)
-    window.addEventListener('pointercancel', drop)
+    afterHold(event, (held) => {
+      if (held) {
+        moved = true
+        setGrabbed(spot)
+        setLift({ one, w: box.width, h: box.height })
+        liftAt.current = { x: start.x - grip.x, y: start.y - grip.y }
+      }
+      window.addEventListener('pointermove', move)
+      window.addEventListener('pointerup', drop)
+      window.addEventListener('pointercancel', drop)
+    })
   }
 
   const tileName = (wide: UiKey, slim: UiKey) => t(tight ? slim : wide)
@@ -885,8 +892,13 @@ export default function Profile({ id }: { id?: string }) {
     const card = cardOf(block)
     if (!card) return
     shutPops()
-    event.preventDefault()
+    if (event.pointerType !== 'touch') event.preventDefault()
     event.stopPropagation()
+    const { clientY } = event
+    afterHold(event, () => size(block, card, clientY))
+  }
+
+  const size = (block: ProfileBlock, card: HTMLElement, clientY: number) => {
     const from = card.offsetHeight
     const ladder = ladderOf(block)
     if (!ladder) return
@@ -895,7 +907,7 @@ export default function Profile({ id }: { id?: string }) {
     if (ladder.steps.length) {
       const fit = ladder.steps.filter((one) => one >= base)
       const stops = [...(fit.length ? fit : ladder.steps.slice(-1)), ladder.own]
-      setSized({ block, y: event.clientY, from, stops, floor: stops[0], roof: ladder.own, mates: [], bare: ladder.own })
+      setSized({ block, y: clientY, from, stops, floor: stops[0], roof: ladder.own, mates: [], bare: ladder.own })
       return
     }
 
@@ -906,7 +918,7 @@ export default function Profile({ id }: { id?: string }) {
         .map((one) => cardOf(one)?.offsetHeight ?? 0),
       ladder.own,
     ].filter((one) => one > 0)
-    setSized({ block, y: event.clientY, from, stops: null, floor, roof: roofOf(), mates, bare: ladder.own })
+    setSized({ block, y: clientY, from, stops: null, floor, roof: roofOf(), mates, bare: ladder.own })
   }
 
   const shutPops = () => {
@@ -922,9 +934,12 @@ export default function Profile({ id }: { id?: string }) {
     if (!node) return
     shutPops()
     const card = (node.querySelector(':scope > .card') as HTMLElement | null) ?? node
-    const box = card.getBoundingClientRect()
-    event.preventDefault()
-    setHeld({ block, x: event.clientX, y: event.clientY, dx: event.clientX - box.left, dy: event.clientY - box.top, w: box.width, h: box.height, ox: event.clientX, oy: event.clientY })
+    if (event.pointerType !== 'touch') event.preventDefault()
+    const { clientX: x, clientY: y } = event
+    afterHold(event, () => {
+      const box = card.getBoundingClientRect()
+      setHeld({ block, x, y, dx: x - box.left, dy: y - box.top, w: box.width, h: box.height, ox: x, oy: y })
+    })
   }
 
   const show = (block: ProfileBlock) => keep([...shown, block])

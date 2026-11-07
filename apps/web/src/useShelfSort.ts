@@ -1,6 +1,7 @@
 'use client'
 
 import { useLayoutEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
+import { afterHold } from './hold'
 
 const START_PX = 6
 const SLIDE_MS = 220
@@ -91,89 +92,108 @@ export function useShelfSort<T>(items: T[], keyOf: (item: T) => string, enabled:
     onPointerDown: (event: ReactPointerEvent<HTMLElement>) => {
       if (!enabled || event.button > 0 || (event.target as Element).closest('button')) return
       const node = event.currentTarget
-      const rect = node.getBoundingClientRect()
-      const bounds = measure()
-      if (!bounds) return
-      grab.current = { id, pointer: event.pointerId, x: event.clientX, y: event.clientY, dx: event.clientX - rect.left, dy: event.clientY - rect.top, live: false, ...bounds }
-      pointer.current = { x: event.clientX, y: event.clientY }
-      let working = [...current]
-      let frame = 0
-
-      const tick = () => {
-        frame = 0
-        const held = grab.current
-        if (!held) return
-        if (!held.live) {
-          if (Math.hypot(pointer.current.x - held.x, pointer.current.y - held.y) < START_PX) return
-          held.live = true
-          list.current?.classList.add('is-live')
-          setDragging(id)
-        }
-        const at = spot()
-        const target = at
-          ? working.find((one) => {
-              const other = one === id ? null : nodeOf(one)
-              if (!other) return false
-              const left = at.box.left + other.offsetLeft
-              const top = at.box.top + other.offsetTop
-              return at.x >= left && at.x <= left + other.offsetWidth && at.y >= top && at.y <= top + other.offsetHeight
-            })
-          : undefined
-        if (target) {
-          const from = working.indexOf(id)
-          const to = working.indexOf(target)
-          if (from !== to) {
-            remember()
-            working = [...working]
-            working.splice(from, 1)
-            working.splice(to, 0, id)
-            setOrder(working)
-            return
-          }
-        }
-        follow()
-      }
-
-      const move = (moved: PointerEvent) => {
-        const held = grab.current
-        if (!held || moved.pointerId !== held.pointer) return
-        pointer.current = { x: moved.clientX, y: moved.clientY }
-        if (held.live) moved.preventDefault()
-        if (!frame) frame = requestAnimationFrame(tick)
-      }
-
-      const drop = (ended: PointerEvent) => {
-        const held = grab.current
-        if (!held || ended.pointerId !== held.pointer) return
-        if (frame) cancelAnimationFrame(frame)
-        frame = 0
-        window.removeEventListener('pointermove', move)
-        window.removeEventListener('pointerup', drop)
-        window.removeEventListener('pointercancel', drop)
-        grab.current = null
-        list.current?.classList.remove('is-live')
-        const node = nodeOf(id)
-        if (held.live && node) {
-          const from = node.style.translate || '0 0'
-          node.style.translate = ''
-          node.animate([{ translate: from }, { translate: '0 0' }], { duration: SLIDE_MS, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' })
-          const swallow = (click: MouseEvent) => {
-            click.preventDefault()
-            click.stopPropagation()
-          }
-          window.addEventListener('click', swallow, { capture: true, once: true })
-          window.setTimeout(() => window.removeEventListener('click', swallow, { capture: true }), 0)
-        }
-        setDragging(null)
-        if (held.live && working.join() !== keys.join()) commit(working.map((one) => byKey.get(one)!).filter(Boolean))
-        setOrder(null)
-      }
-
-      window.addEventListener('pointermove', move, { passive: false })
-      window.addEventListener('pointerup', drop)
-      window.addEventListener('pointercancel', drop)
+      const press = { pointerType: event.pointerType, pointerId: event.pointerId, clientX: event.clientX, clientY: event.clientY }
+      afterHold(press, (held) => begin(node, press, held))
     },
   })
+
+  const begin = (node: HTMLElement, press: { pointerId: number; clientX: number; clientY: number }, held: boolean) => {
+    const id = node.dataset.sort!
+    const rect = node.getBoundingClientRect()
+    const bounds = measure()
+    if (!bounds) return
+    grab.current = {
+      id,
+      pointer: press.pointerId,
+      x: press.clientX,
+      y: press.clientY,
+      dx: press.clientX - rect.left,
+      dy: press.clientY - rect.top,
+      live: held,
+      ...bounds,
+    }
+    pointer.current = { x: press.clientX, y: press.clientY }
+    if (held) {
+      list.current?.classList.add('is-live')
+      setDragging(id)
+    }
+    let working = [...current]
+    let frame = 0
+
+    const tick = () => {
+      frame = 0
+      const held = grab.current
+      if (!held) return
+      if (!held.live) {
+        if (Math.hypot(pointer.current.x - held.x, pointer.current.y - held.y) < START_PX) return
+        held.live = true
+        list.current?.classList.add('is-live')
+        setDragging(id)
+      }
+      const at = spot()
+      const target = at
+        ? working.find((one) => {
+            const other = one === id ? null : nodeOf(one)
+            if (!other) return false
+            const left = at.box.left + other.offsetLeft
+            const top = at.box.top + other.offsetTop
+            return at.x >= left && at.x <= left + other.offsetWidth && at.y >= top && at.y <= top + other.offsetHeight
+          })
+        : undefined
+      if (target) {
+        const from = working.indexOf(id)
+        const to = working.indexOf(target)
+        if (from !== to) {
+          remember()
+          working = [...working]
+          working.splice(from, 1)
+          working.splice(to, 0, id)
+          setOrder(working)
+          return
+        }
+      }
+      follow()
+    }
+
+    const move = (moved: PointerEvent) => {
+      const held = grab.current
+      if (!held || moved.pointerId !== held.pointer) return
+      pointer.current = { x: moved.clientX, y: moved.clientY }
+      if (held.live) moved.preventDefault()
+      if (!frame) frame = requestAnimationFrame(tick)
+    }
+
+    const drop = (ended: PointerEvent) => {
+      const held = grab.current
+      if (!held || ended.pointerId !== held.pointer) return
+      if (frame) cancelAnimationFrame(frame)
+      frame = 0
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', drop)
+      window.removeEventListener('pointercancel', drop)
+      grab.current = null
+      list.current?.classList.remove('is-live')
+      const node = nodeOf(id)
+      if (held.live && node) {
+        const from = node.style.translate || '0 0'
+        node.style.translate = ''
+        node.animate([{ translate: from }, { translate: '0 0' }], { duration: SLIDE_MS, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' })
+        const swallow = (click: MouseEvent) => {
+          click.preventDefault()
+          click.stopPropagation()
+        }
+        window.addEventListener('click', swallow, { capture: true, once: true })
+        window.setTimeout(() => window.removeEventListener('click', swallow, { capture: true }), 0)
+      }
+      setDragging(null)
+      if (held.live && working.join() !== keys.join()) commit(working.map((one) => byKey.get(one)!).filter(Boolean))
+      setOrder(null)
+    }
+
+    window.addEventListener('pointermove', move, { passive: false })
+    window.addEventListener('pointerup', drop)
+    window.addEventListener('pointercancel', drop)
+  }
 
   return { sorted, list, handle, dragging }
 }

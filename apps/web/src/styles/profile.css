@@ -99,7 +99,8 @@
   height: 12px;
   border-radius: 6px;
   cursor: ns-resize;
-  touch-action: none;
+  touch-action: pan-y;
+  -webkit-touch-callout: none;
 }
 
 .slot-grow::after {
@@ -149,8 +150,9 @@
 
 .slot-bar {
   cursor: grab;
-  touch-action: none;
+  touch-action: pan-y;
   user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .slot-bar:active {
@@ -962,7 +964,8 @@
 }
 
 .profile-hero-tiles.is-edit > .hero-tile:not(.is-add) {
-  touch-action: none;
+  touch-action: pan-y;
+  -webkit-touch-callout: none;
   cursor: grab;
 }
 
