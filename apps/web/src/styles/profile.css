@@ -1231,6 +1231,7 @@
 .hero-nick-who {
   display: flex;
   min-width: 0;
+  max-width: 100%;
   align-items: center;
   gap: 7px;
 }
@@ -1255,8 +1256,19 @@
   text-shadow: 0 1px 3px rgb(0 0 0 / 45%);
 }
 
+.profile-hero-name h1[style*='--nick-room'] {
+  flex: none;
+}
+
 .profile-hero-name h1 {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: var(--nick-room, none);
+  overflow: hidden;
   margin: 0;
+  padding-block: 0.06em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: var(--nick, #ffffff);
   font-size: clamp(28px, 3.3vw, 42px);
   line-height: 1;

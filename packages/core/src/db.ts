@@ -570,6 +570,14 @@ export type ChatDoc = {
   tags?: ChatTag[]
   everyone?: boolean
   reply?: ChatReply
+  bout?: ChatBout
+}
+
+export type ChatBout = {
+  game: string
+  rival?: { id: ObjectId; nickname: string; avatar?: string | null; frame?: string | null }
+  pick?: { id: number; name: { ru: string; uk: string; en: string }; image?: string }
+  levels?: [number, number]
 }
 
 export type ChatReply = { id: ObjectId; userId: ObjectId; nickname: string; text: string }

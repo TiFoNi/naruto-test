@@ -1,7 +1,10 @@
 import { randomUUID } from 'node:crypto'
 import { ObjectId, type Collection } from 'mongodb'
+import { cardRank } from '@nanda/game'
 import { authSession } from './auth'
-import { chatNews, chatRoom, pulse, users, type ChatDoc, type ChatReply, type ChatTag, type UserDoc } from './db'
+import { cardKey } from './dex'
+import { cards, chatNews, chatRoom, pulse, users, type ChatBout, type ChatDoc, type ChatReply, type ChatTag, type UserDoc } from './db'
+import { gameData, isGame } from './games'
 import { pushSubs, sendPush, type PushLang } from './push'
 import { readGuest } from './session'
 
@@ -26,7 +29,24 @@ export type ChatLine = {
   tags?: { id: string; nick: string }[]
   everyone?: boolean
   reply?: { id: string; userId: string; nickname: string; text: string }
+  bout?: BoutLine
 }
+
+export type BoutLine = {
+  game: string
+  rival?: { id: string; nickname: string; avatar: string | null; frame: string | null }
+  pick?: { id: number; name: { ru: string; uk: string; en: string }; image?: string }
+  levels?: [number, number]
+}
+
+const boutOf = (bout: ChatBout): BoutLine => ({
+  game: bout.game,
+  ...(bout.rival
+    ? { rival: { id: bout.rival.id.toHexString(), nickname: bout.rival.nickname, avatar: bout.rival.avatar ?? null, frame: bout.rival.frame ?? null } }
+    : {}),
+  ...(bout.pick ? { pick: bout.pick } : {}),
+  ...(bout.levels ? { levels: bout.levels } : {}),
+})
 
 export const lineOf = (doc: ChatDoc): ChatLine => ({
   id: doc._id!.toHexString(),
@@ -44,6 +64,7 @@ export const lineOf = (doc: ChatDoc): ChatLine => ({
   ...(doc.reply
     ? { reply: { id: doc.reply.id.toHexString(), userId: doc.reply.userId.toHexString(), nickname: doc.reply.nickname, text: doc.reply.text } }
     : {}),
+  ...(doc.bout ? { bout: boutOf(doc.bout) } : {}),
 })
 
 export const TAGS_MAX = 3
@@ -209,32 +230,38 @@ async function readReply(room: Collection<ChatDoc>, asked: unknown): Promise<Cha
   return found ? { id: found._id!, userId: found.userId, nickname: found.nickname, text: found.text.slice(0, REPLY_SNIPPET) } : null
 }
 
-export async function sendChat(doc: UserDoc, raw: unknown, picked?: unknown, replyTo?: unknown): Promise<ChatLine | ChatFail> {
-  const text = tidy(raw)
-  if (!text) return 'empty'
-  if (doc.chatMutedUntil && doc.chatMutedUntil.getTime() > Date.now()) return 'muted'
+const muted = (doc: UserDoc) => Boolean(doc.chatMutedUntil && doc.chatMutedUntil.getTime() > Date.now())
 
-  const room = await chatRoom()
-  const userId = doc._id!
+async function pace(room: Collection<ChatDoc>, userId: ObjectId, text?: string) {
   const [last, lately] = await Promise.all([
     room.findOne({ userId }, { sort: { _id: -1 }, projection: { at: 1, text: 1 } }),
     room.countDocuments({ userId, at: { $gt: new Date(Date.now() - 60_000) } }),
   ])
-  if (lately >= PER_MINUTE) return 'too_fast'
-  if (last && Date.now() - last.at.getTime() < GAP_MS) return 'too_fast'
-  if (last && last.text === text && Date.now() - last.at.getTime() < 60_000) return 'too_fast'
+  if (lately >= PER_MINUTE) return false
+  if (last && Date.now() - last.at.getTime() < GAP_MS) return false
+  return !(text !== undefined && last && last.text === text && Date.now() - last.at.getTime() < 60_000)
+}
 
-  const line: ChatDoc = {
-    userId,
-    nickname: doc.nickname ?? doc.username,
-    ...(doc.tag ? { tag: doc.tag } : {}),
-    avatar: doc.avatar ?? null,
-    frame: doc.frame ?? null,
-    title: doc.title ?? null,
-    nickTone: doc.nickTone ?? null,
-    text,
-    at: new Date(),
-  }
+const authorOf = (doc: UserDoc) => ({
+  userId: doc._id!,
+  nickname: doc.nickname ?? doc.username,
+  ...(doc.tag ? { tag: doc.tag } : {}),
+  avatar: doc.avatar ?? null,
+  frame: doc.frame ?? null,
+  title: doc.title ?? null,
+  nickTone: doc.nickTone ?? null,
+})
+
+export async function sendChat(doc: UserDoc, raw: unknown, picked?: unknown, replyTo?: unknown): Promise<ChatLine | ChatFail> {
+  const text = tidy(raw)
+  if (!text) return 'empty'
+  if (muted(doc)) return 'muted'
+
+  const room = await chatRoom()
+  const userId = doc._id!
+  if (!(await pace(room, userId, text))) return 'too_fast'
+
+  const line: ChatDoc = { ...authorOf(doc), text, at: new Date() }
   const tags = await readTags(doc, text, picked)
   if (tags.length) line.tags = tags
   const reply = await readReply(room, replyTo)
@@ -245,6 +272,71 @@ export async function sendChat(doc: UserDoc, raw: unknown, picked?: unknown, rep
   const answered = reply && !reply.userId.equals(userId) && !tags.some((tag) => tag.id.equals(reply.userId))
   if (answered) void notifyTags(doc, done, [{ id: reply.userId, nick: reply.nickname }], true).catch(() => undefined)
   return done
+}
+
+export const BOUT_OPEN_MS = 10 * 60_000
+export const BOUT_TEXT = '🃏'
+
+export type BoutFail = 'bad' | 'muted' | 'too_fast' | 'cooldown' | 'open' | 'own' | 'gone' | 'taken'
+
+export const BOUT_GAP_MS = 60_000
+
+const openBout = (since = Date.now()) => ({ 'bout.game': { $exists: true }, 'bout.rival': { $exists: false }, hidden: { $ne: true }, at: { $gt: new Date(since - BOUT_OPEN_MS) } })
+
+export const BOUT_SKIP = new Set(['tunes', 'shots'])
+
+export async function sendBout(doc: UserDoc, game: unknown): Promise<ChatLine | BoutFail> {
+  if (!isGame(game) || BOUT_SKIP.has(game)) return 'bad'
+  if (muted(doc)) return 'muted'
+  const room = await chatRoom()
+  const userId = doc._id!
+  if (await room.findOne({ userId, ...openBout() }, { projection: { _id: 1 } })) return 'open'
+  if (await room.findOne({ userId, 'bout.game': { $exists: true }, at: { $gt: new Date(Date.now() - BOUT_GAP_MS) } }, { projection: { _id: 1 } })) return 'cooldown'
+  if (!(await pace(room, userId))) return 'too_fast'
+  const line: ChatDoc = { ...authorOf(doc), text: BOUT_TEXT, at: new Date(), bout: { game } }
+  const saved = await room.insertOne(line)
+  return lineOf({ ...line, _id: saved.insertedId })
+}
+
+async function levelsOf(game: string, id: number, people: ObjectId[]) {
+  const [found, owned] = await Promise.all([
+    (await users()).find({ _id: { $in: people } }, { projection: { [`dex.${game}`]: 1 } }).toArray(),
+    (await cards()).find({ _id: { $in: people.map((one) => cardKey(one, game, id)) } }, { projection: { xp: 1 } }).toArray(),
+  ])
+  const xp = new Map(owned.map((one) => [one._id, one.xp]))
+  return people.map((one) => {
+    const opened = found.find((user) => user._id!.equals(one))?.dex?.[game]?.includes(id)
+    return opened ? cardRank(xp.get(cardKey(one, game, id)) ?? 0).level : 0
+  }) as [number, number]
+}
+
+export async function joinBout(doc: UserDoc, asked: unknown): Promise<ChatLine | BoutFail> {
+  if (typeof asked !== 'string' || !ObjectId.isValid(asked)) return 'bad'
+  if (muted(doc)) return 'muted'
+  const room = await chatRoom()
+  const _id = new ObjectId(asked)
+  const found = await room.findOne({ _id, hidden: { $ne: true } }, { projection: { userId: 1, at: 1, bout: 1 } })
+  if (!found?.bout || !isGame(found.bout.game)) return 'gone'
+  if (found.userId.equals(doc._id!)) return 'own'
+  if (found.bout.rival) return 'taken'
+  if (Date.now() - found.at.getTime() > BOUT_OPEN_MS) return 'gone'
+  const { pool } = await gameData(found.bout.game)
+  if (!pool.length) return 'gone'
+  const entity = pool[Math.floor(Math.random() * pool.length)]!
+  const levels = await levelsOf(found.bout.game, entity.id, [found.userId, doc._id!])
+  const ru = typeof entity.name === 'string' ? entity.name : ''
+  const pick = {
+    id: entity.id,
+    name: { ru, uk: typeof entity.nameUk === 'string' && entity.nameUk ? entity.nameUk : ru, en: typeof entity.nameEn === 'string' && entity.nameEn ? entity.nameEn : ru },
+    ...(typeof entity.image === 'string' ? { image: entity.image } : {}),
+  }
+  const rival = { id: doc._id!, nickname: doc.nickname ?? doc.username, avatar: doc.avatar ?? null, frame: doc.frame ?? null }
+  const done = await room.findOneAndUpdate(
+    { _id, ...openBout() },
+    { $set: { 'bout.rival': rival, 'bout.pick': pick, 'bout.levels': levels } },
+    { returnDocument: 'after' },
+  )
+  return done ? lineOf(done) : 'taken'
 }
 
 export async function sendNews(doc: UserDoc, raw: unknown): Promise<ChatLine | 'empty'> {

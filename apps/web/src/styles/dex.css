@@ -1,6 +1,7 @@
 .dex,
 .dex-zoom,
-.card-shelf {
+.card-shelf,
+.bout {
   --ink: #ece8e4;
   --scrap: #ebe5dc;
   --scrap-dark: #1c1a1f;
@@ -1978,7 +1979,17 @@ button.lv-badge:focus-visible {
   background-clip: content-box;
 }
 
-.card-worlds a {
+.card-worlds button {
+  width: 100%;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.card-worlds a,
+.card-worlds button {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1990,7 +2001,9 @@ button.lv-badge:focus-visible {
 }
 
 .card-worlds a:hover,
-.card-worlds a:focus-visible {
+.card-worlds a:focus-visible,
+.card-worlds button:hover,
+.card-worlds button:focus-visible {
   background: color-mix(in srgb, #ffffff 6%, transparent);
 }
 

@@ -873,11 +873,25 @@ const DexHelp = ({ modes }: { modes: ModeId[] }) => {
   )
 }
 
-export const ShowcaseCard = memo(function ShowcaseCard({ game, id, image, label, xp }: { game: GameId; id: number; image?: string; label: string; xp: number }) {
+export const ShowcaseCard = memo(function ShowcaseCard({
+  game,
+  id,
+  image,
+  label,
+  xp,
+  level,
+}: {
+  game: GameId
+  id: number
+  image?: string
+  label: string
+  xp: number
+  level?: number
+}) {
   const rank = cardRank(xp)
-  const tier = rank.tier
+  const tier = level === 0 ? 0 : rank.tier
   return (
-    <span className={`dex-scrap ${tier ? `lv-${tier + 1}` : ''}`}>
+    <span className={`dex-scrap ${tier ? `lv-${tier + 1}` : ''} ${level === 0 ? 'is-closed' : ''}`}>
       {tier > 0 && <CardGlow seed={id} tier={tier + 1} turn={BACK_TURN} />}
       {tier > 0 && <BackSheet />}
       <i className="dex-paper" style={{ clipPath: torn(id, 4) }} />
@@ -892,7 +906,7 @@ export const ShowcaseCard = memo(function ShowcaseCard({ game, id, image, label,
         <svg viewBox="0 0 130 100" preserveAspectRatio="none">
           <polygon points={BADGE_POINTS} />
         </svg>
-        <b>{rank.level}</b>
+        <b>{level ?? rank.level}</b>
       </span>
     </span>
   )

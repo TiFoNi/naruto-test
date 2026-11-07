@@ -295,9 +295,10 @@ async function startTalk() {
         for (const send of chatters) send('drop', { id: doc._id.toHexString() })
         return
       }
-      if ((change as { operationType?: string }).operationType !== 'insert') return
+      const insert = (change as { operationType?: string }).operationType === 'insert'
+      if (!insert && !doc.bout?.rival) return
       const line = lineOf(doc)
-      for (const send of chatters) send('chat', line)
+      for (const send of chatters) send(insert ? 'chat' : 'bout', line)
     })
     stream.on('error', () => {
       talk = null

@@ -2,8 +2,10 @@ import { users } from '../db'
 import { fail, handle, json, readJson } from '../http'
 import { currentUser, touchVisit, unauthorized } from '../profile'
 import { adminSession } from '../admin'
-import { CHAT_MAX, NEWS_MAX, channelOf, chatPage, dropChat, muteChat, sendChat, sendNews } from '../chat'
+import { CHAT_MAX, NEWS_MAX, channelOf, chatPage, dropChat, joinBout, muteChat, sendBout, sendChat, sendNews, type BoutFail } from '../chat'
 import { markTyping } from '../stream'
+
+const BOUT_STATUS: Record<BoutFail, number> = { bad: 400, muted: 403, too_fast: 429, cooldown: 429, open: 409, own: 400, gone: 410, taken: 409 }
 
 export const GET = handle(async (request) => {
   const url = new URL(request.url)
@@ -18,7 +20,20 @@ export const POST = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
 
-  const { text, channel, tags, reply } = (await readJson(request)) as { text?: unknown; channel?: unknown; tags?: unknown; reply?: unknown }
+  const { text, channel, tags, reply, bout, join } = (await readJson(request)) as {
+    text?: unknown
+    channel?: unknown
+    tags?: unknown
+    reply?: unknown
+    bout?: unknown
+    join?: unknown
+  }
+  if (bout !== undefined || join !== undefined) {
+    const line = bout !== undefined ? await sendBout(found.doc, bout) : await joinBout(found.doc, join)
+    if (typeof line === 'string') return fail(BOUT_STATUS[line], line === 'bad' ? 'bad_request' : `bout_${line}`)
+    await touchVisit(await users(), found.doc._id!)
+    return json({ line })
+  }
   if (channelOf(channel) === 'news') {
     if (!(await adminSession(request))) return fail(403, 'forbidden')
     const news = await sendNews(found.doc, text)

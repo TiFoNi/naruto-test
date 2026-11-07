@@ -589,6 +589,15 @@ export function DiceIcon({ className }: IconProps) {
   )
 }
 
+export function CardsIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <rect x="3.2" y="5.6" width="10.4" height="14.4" rx="2" transform="rotate(-10 8.4 12.8)" />
+      <rect x="10.4" y="4" width="10.4" height="14.4" rx="2" transform="rotate(8 15.6 11.2)" />
+    </svg>
+  )
+}
+
 export function HeartIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

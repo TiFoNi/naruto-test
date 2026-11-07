@@ -648,6 +648,32 @@ export default function Profile({ id }: { id?: string }) {
     return () => strip.removeEventListener('wheel', roll)
   }, [skins])
 
+  const nickBox = useRef<HTMLHeadingElement>(null)
+
+  useLayoutEffect(() => {
+    const nick = nickBox.current
+    const body = nick?.closest<HTMLElement>('.profile-hero-body')
+    if (!nick || !body || typeof ResizeObserver === 'undefined') return
+    const fit = () => {
+      nick.style.removeProperty('--nick-room')
+      if (narrow) return
+      const tiles = body.querySelector<HTMLElement>(':scope > .profile-hero-tiles')
+      const box = nick.getBoundingClientRect()
+      if (!tiles || tiles.getBoundingClientRect().top < box.bottom) return
+      const used = parseFloat(getComputedStyle(nick).width)
+      const scale = used > 0 ? box.width / used : 1
+      const shell = body.getBoundingClientRect()
+      const pad = parseFloat(getComputedStyle(body).paddingRight) * (shell.width / (parseFloat(getComputedStyle(body).width) || shell.width))
+      const dye = nick.parentElement?.querySelector<HTMLElement>('.nick-dye')
+      const edge = shell.right - pad - (dye ? dye.getBoundingClientRect().width + 7 * scale : 0)
+      nick.style.setProperty('--nick-room', `${Math.max(0, Math.floor((edge - box.left) / scale))}px`)
+    }
+    fit()
+    const watch = new ResizeObserver(fit)
+    watch.observe(body)
+    return () => watch.disconnect()
+  }, [nickname, edit, narrow, summary])
+
   if (!summary && !failed) return <ProfileGhost />
 
   const shown = layout ?? ((summary?.blocks as ProfileBlock[] | null | undefined) ?? PROFILE_BLOCKS_DEFAULT)
@@ -1753,7 +1779,7 @@ export default function Profile({ id }: { id?: string }) {
               <div className="profile-hero-name" style={(nickHex ? { '--nick': nickHex } : {}) as CSSProperties}>
                 <span className="hero-nick-line">
                   <span className="hero-nick-who">
-                    <h1>{nickname}</h1>
+                    <h1 ref={nickBox}>{nickname}</h1>
                     {edit && (
                       <button
                         type="button"

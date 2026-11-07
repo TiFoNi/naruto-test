@@ -7,14 +7,16 @@ import Avatar from './Avatar'
 import { GAMES } from './games'
 import { api } from './api'
 import { dropMentions, watchFeed } from './awards'
+import ChatBout, { boutWorlds, type Bout } from './ChatBout'
 import ChatMentions, { EVERYONE_NICK, type MentionPick, type Person } from './ChatMentions'
 import { onChatOpen } from './chatEvents'
 import { useDuelTalk } from './duelTalk'
 import { useAuth } from './auth'
 import { useI18n, type UiKey } from './i18n'
-import { ChatIcon, CloseIcon, DownIcon, MuteIcon, ReplyIcon, SendIcon, SmileIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
+import { CardsIcon, ChatIcon, CloseIcon, DownIcon, MuteIcon, ReplyIcon, SendIcon, SmileIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { useHref, useNavigate } from './router'
 import { openStream } from './stream'
+import { uiUrl } from './pics'
 import { hyphenate } from './hyphen'
 
 type Line = {
@@ -31,6 +33,16 @@ type Line = {
   tags?: { id: string; nick: string }[]
   everyone?: boolean
   reply?: { id: string; userId: string; nickname: string; text: string }
+  bout?: Bout
+}
+
+const BOUT_ERRORS: Record<string, UiKey> = {
+  bout_open: 'chat.boutOpen',
+  bout_taken: 'chat.boutTaken',
+  bout_gone: 'chat.boutGone',
+  bout_too_fast: 'chat.slow',
+  bout_cooldown: 'chat.boutCooldown',
+  bout_muted: 'chat.muted',
 }
 
 const AT_BEFORE = /(^|\s)@([^\s@]{0,32})$/
@@ -203,7 +215,7 @@ let lastInput = Date.now()
 const present = () => document.visibilityState === 'visible' && (document.hasFocus() || Date.now() - lastInput < IDLE_MS)
 
 export default function Chat() {
-  const { t } = useI18n()
+  const { t, l } = useI18n()
   const href = useHref()
   const navigate = useNavigate()
   const { user } = useAuth()
@@ -252,6 +264,9 @@ export default function Chat() {
   const [newsTop, setNewsTop] = useState('')
   const [newsSeen, setNewsSeen] = useState('')
   const [faces, setFaces] = useState(false)
+  const [throwing, setThrowing] = useState(false)
+  const [joining, setJoining] = useState<string | null>(null)
+  const [rolled, setRolled] = useState<Set<string>>(() => new Set())
   const [faceSet, setFaceSet] = useState<EmojiSet>('faces')
   const [people, setPeople] = useState<Person[]>([])
   const [atAsk, setAtAsk] = useState<{ start: number; query: string } | null>(null)
@@ -453,6 +468,16 @@ export default function Chat() {
         if (!line?.id || roomRef.current !== 'chat') return
         setLines((kept) => (kept.some((one) => one.id === line.id) ? kept : [...kept, line].slice(-KEEP)))
       },
+      bout: (data) => {
+        const line = data as Line | null
+        if (!line?.id || roomRef.current !== 'chat') return
+        setLines((kept) => {
+          const was = kept.find((one) => one.id === line.id)
+          if (!was || was.bout?.rival) return kept
+          setRolled((had) => new Set(had).add(line.id))
+          return kept.map((one) => (one.id === line.id ? line : one))
+        })
+      },
       drop: (data) => {
         const gone = (data as { id?: string } | null)?.id
         if (gone && roomRef.current === 'chat') setLines((kept) => kept.filter((line) => line.id !== gone))
@@ -583,6 +608,31 @@ export default function Chat() {
       return
     }
     say(status === 429 ? t('chat.slow') : status === 403 ? t('chat.muted') : t('chat.failed'), true)
+  }
+
+  const throwBout = async (game: string) => {
+    setThrowing(false)
+    setSending(true)
+    const { ok, data } = await api<{ line?: Line }>('chat', { bout: game })
+    setSending(false)
+    if (ok && data.line) {
+      nearEnd.current = true
+      setLines((kept) => (kept.some((one) => one.id === data.line!.id) ? kept : [...kept, data.line!]))
+      return
+    }
+    say(t(BOUT_ERRORS[data.error ?? ''] ?? 'chat.failed'), true)
+  }
+
+  const joinBout = async (id: string) => {
+    setJoining(id)
+    const { ok, data } = await api<{ line?: Line }>('chat', { join: id })
+    setJoining(null)
+    if (ok && data.line) {
+      setRolled((had) => new Set(had).add(id))
+      setLines((kept) => kept.map((one) => (one.id === id && !one.bout?.rival ? data.line! : one)))
+      return
+    }
+    say(t(BOUT_ERRORS[data.error ?? ''] ?? 'chat.failed'), true)
   }
 
   const moderate = async (body: Record<string, unknown>, done: () => void) => {
@@ -884,10 +934,23 @@ export default function Chat() {
                           <time dateTime={new Date(line.at).toISOString()}>{clock(line.at)}</time>
                         </header>
                       )}
-                      {(() => {
-                        const big = line.tags?.length || line.everyone ? 0 : emojiOnly(line.text)
-                        return <p className={big ? `is-emoji is-emoji-${big}` : undefined}>{bodyOf(line)}</p>
-                      })()}
+                      {line.bout ? (
+                        <ChatBout
+                          id={line.id}
+                          bout={line.bout}
+                          host={{ id: line.userId, nickname: line.nickname, avatar: line.avatar, frame: line.frame }}
+                          at={line.at}
+                          me={user?.id ?? null}
+                          live={rolled.has(line.id)}
+                          joining={joining === line.id}
+                          onJoin={(id) => void joinBout(id)}
+                        />
+                      ) : (
+                        (() => {
+                          const big = line.tags?.length || line.everyone ? 0 : emojiOnly(line.text)
+                          return <p className={big ? `is-emoji is-emoji-${big}` : undefined}>{bodyOf(line)}</p>
+                        })()
+                      )}
                     </div>
                   </article>
                 )
@@ -994,6 +1057,42 @@ export default function Chat() {
                   }}
                   disabled={sending}
                 />
+                {room === 'chat' && (
+                  <div className="chat-faces">
+                    <button
+                      type="button"
+                      className={`chat-face-open ${throwing ? 'is-on' : ''}`}
+                      title={t('chat.boutThrow')}
+                      aria-label={t('chat.boutThrow')}
+                      aria-expanded={throwing}
+                      disabled={sending}
+                      onClick={() => {
+                        setFaces(false)
+                        setThrowing((was) => !was)
+                      }}
+                    >
+                      <CardsIcon />
+                    </button>
+                    {throwing && (
+                      <>
+                        <div className="chat-faces-away" role="presentation" onClick={() => setThrowing(false)} />
+                        <div className="chat-faces-pop chat-bout-pop" aria-label={t('chat.boutPick')}>
+                          <b className="chat-faces-name">{t('chat.boutPick')}</b>
+                          <ul className="card-worlds">
+                            {boutWorlds().map((game) => (
+                              <li key={game.id}>
+                                <button type="button" onClick={() => void throwBout(game.id)}>
+                                  <img src={uiUrl(`worlds/big/${game.id}.webp`)} alt="" width={36} height={36} loading="lazy" decoding="async" draggable={false} />
+                                  <span>{l(game.label)}</span>
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
                 <div className="chat-faces">
                   <button
                     type="button"
@@ -1001,7 +1100,10 @@ export default function Chat() {
                     title={t('chat.emoji')}
                     aria-label={t('chat.emoji')}
                     aria-expanded={faces}
-                    onClick={() => setFaces((was) => !was)}
+                    onClick={() => {
+                      setThrowing(false)
+                      setFaces((was) => !was)
+                    }}
                   >
                     <SmileIcon />
                   </button>
