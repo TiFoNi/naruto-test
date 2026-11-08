@@ -111,6 +111,7 @@ export type RoundDoc = {
   anime?: boolean
   daily?: string
   challenge?: string
+  duel?: string
   extra?: string
   guessCount?: number
   lastGuessAt?: Date

@@ -38,7 +38,7 @@ import {
   type ModeId,
 } from '@nanda/game'
 import { abilityByKey } from './abilities'
-import { duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type DuelTalk, type UserDoc } from './db'
+import { duels, rounds as roundsDb, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type DuelTalk, type RoundDoc, type RoundStatus, type UserDoc } from './db'
 import { tidy } from './chat'
 import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { gameData, isGame, isMode, type Entity } from './games'
@@ -973,14 +973,38 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   if (ms && ms > 0 && winnerId) await (await users()).updateOne({ _id: winnerId }, { $min: { duelBestMs: ms } })
   const guessed = turnMode(duel) ? champs : duel.players.filter((side) => side.solvedAt)
   const pool = turnMode(duel) ? 0 : await duelPool(duel)
-  if (!turnMode(duel))
+  if (!turnMode(duel)) {
     await Promise.all(guessed.map((side) => openDex(side.userId, duel.game, duel.answerId, { mode: duel.mode as ModeId, xp: cardXpFor(duel.mode as ModeId, { pool }) })))
+    await logDuelRounds(finished, pool, at)
+  }
   if (duel.mode !== 'who') {
     await Promise.all(guessed.map(async (side) => awardSolveXp(await users(), side.userId, duel.mode as ModeId, 'endless', pool)))
     await Promise.all(masters.map((side) => duelMatchReward(side.userId, duel)))
   }
   await Promise.all(masters.map((side) => collectQuestsQuietly(side.userId)))
   return finished
+}
+
+async function logDuelRounds(duel: DuelDoc, pool: number, at: Date) {
+  if (duel.answerId === undefined || !duel.game || !duel.mode) return
+  const limit = guessLimit(duel.game, duel.mode, pool)
+  const status = (side: DuelPlayer): RoundStatus =>
+    side.solvedAt ? 'won' : side.gaveUp && !(limit !== null && side.guesses.length >= limit) ? 'skipped' : 'lost'
+  const docs: RoundDoc[] = duel.players.map((side) => ({
+    userId: side.userId,
+    game: duel.game!,
+    mode: duel.mode!,
+    answerId: duel.answerId!,
+    guesses: side.guesses,
+    guessCount: side.guesses.length,
+    status: status(side),
+    duel: duel.code,
+    ...(duel.anime ? { anime: true } : {}),
+    ...(duel.startedAt ? { startedAt: duel.startedAt } : {}),
+    createdAt: duel.startedAt ?? at,
+    finishedAt: side.solvedAt ?? at,
+  }))
+  if (docs.length) await (await roundsDb()).insertMany(docs)
 }
 
 async function duelPool(duel: DuelDoc) {
