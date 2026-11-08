@@ -13,6 +13,10 @@ export const THROWAWAY = 'THROWAWAY_EMAIL'
 
 const refuseThrowaway = () => new APIError('BAD_REQUEST', { code: THROWAWAY, message: 'Disposable email addresses are not allowed' })
 
+export const NO_MAIL_ACCOUNT = 'NO_MAIL_ACCOUNT'
+
+const refuseNewMail = () => new APIError('BAD_REQUEST', { code: NO_MAIL_ACCOUNT, message: 'Email sign-up is closed, use Google' })
+
 const origins = (process.env.CORS_ORIGINS ?? 'http://localhost:5173').split(',').map((origin) => origin.trim())
 
 const hostOf = (origin: string) => {
@@ -46,8 +50,9 @@ const build = async () => {
     plugins: [
       magicLink({
         expiresIn: MAGIC_LINK_TTL,
+        disableSignUp: true,
         sendMagicLink: async ({ email, url }, ctx) => {
-          if (throwaway(email) && !(await ctx?.context.internalAdapter.findUserByEmail(email))) throw refuseThrowaway()
+          if (!(await ctx?.context.internalAdapter.findUserByEmail(email))) throw refuseNewMail()
           const { subject, html, text } = magicLinkMail(url)
           await sendMail(email, subject, html, text)
         },

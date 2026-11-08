@@ -8,6 +8,7 @@ import { useI18n } from './i18n'
 import { useHref } from './router'
 
 const THROWAWAY = 'THROWAWAY_EMAIL'
+const NO_MAIL_ACCOUNT = 'NO_MAIL_ACCOUNT'
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const WAIT = 45
@@ -20,6 +21,7 @@ export default function AuthScreen() {
   const [busy, setBusy] = useState<'google' | 'link' | 'passkey' | null>(null)
   const [hasPasskeys, setHasPasskeys] = useState(false)
   const [sent, setSent] = useState(false)
+  const [mailOpen, setMailOpen] = useState(false)
   const [left, setLeft] = useState(0)
   const [error, setError] = useState<{ where: 'google' | 'link' | 'passkey'; text: string } | null>(null)
 
@@ -92,7 +94,7 @@ export default function AuthScreen() {
     const { error } = await (await authClient()).signIn.magicLink({ email, callbackURL })
     setBusy(null)
     if (error) {
-      setError({ where: 'link', text: t(error.status === 429 ? 'err.too_many' : error.code === THROWAWAY ? 'auth.throwaway' : 'auth.failed') })
+      setError({ where: 'link', text: t(error.status === 429 ? 'err.too_many' : error.code === THROWAWAY ? 'auth.throwaway' : error.code === NO_MAIL_ACCOUNT ? 'auth.noMailAccount' : 'auth.failed') })
       return false
     }
     setLeft(WAIT)
@@ -153,10 +155,11 @@ export default function AuthScreen() {
       )}
       {error?.where === 'passkey' && <div className="auth-error">{error.text}</div>}
 
-      <div className="auth-or">
-        <span>{t('auth.orMail')}</span>
-      </div>
-
+      {!mailOpen ? (
+        <button type="button" className="auth-link auth-old-mail" onClick={() => setMailOpen(true)}>
+          {t('auth.oldMail')}
+        </button>
+      ) : (
       <form onSubmit={withLink} noValidate>
         <div className="auth-row">
           <div className={`auth-field ${error?.where === 'link' ? 'bad' : valid ? 'ready' : ''}`}>
@@ -183,6 +186,7 @@ export default function AuthScreen() {
         </div>
         {error?.where === 'link' && <div className="auth-error">{error.text}</div>}
       </form>
+      )}
 
       <Link prefetch={false} className="ghost auth-guest" href={href.home}>
         {t('login.guest')}

@@ -5589,6 +5589,19 @@ html[data-auth] .guest-note {
   cursor: pointer;
 }
 
+.auth-old-mail {
+  align-self: center;
+  color: var(--text-3);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.auth-old-mail:hover {
+  color: var(--text-2);
+}
+
 .legal {
   max-width: 68ch;
   margin: 0 auto;

@@ -2575,6 +2575,8 @@ const ui = {
   'auth.heading': { ru: 'Войти', uk: 'Увійти', en: 'Sign in' },
   'auth.autoAccount': { ru: 'Нет аккаунта — создадим автоматически.', uk: 'Немає акаунта — створимо автоматично.', en: 'No account yet — we will create one.' },
   'auth.orMail': { ru: 'ИЛИ ПОЧТОЙ', uk: 'АБО ПОШТОЮ', en: 'OR BY EMAIL' },
+  'auth.oldMail': { ru: 'Входили раньше по почте?', uk: 'Входили раніше поштою?', en: 'Signed in by email before?' },
+  'auth.noMailAccount': { ru: 'Аккаунта с этой почтой нет. Войди через Google', uk: 'Акаунта з цією поштою немає. Увійди через Google', en: 'No account with this email. Sign in with Google' },
   'auth.sentTo': { ru: 'Мы отправили ссылку для входа на', uk: 'Ми надіслали посилання для входу на', en: 'We sent a sign-in link to' },
   'auth.sentValid': { ru: 'Она действует 15 минут.', uk: 'Воно діє 15 хвилин.', en: 'It works for 15 minutes.' },
   'auth.resend': { ru: 'Отправить ещё раз', uk: 'Надіслати ще раз', en: 'Send it again' },
