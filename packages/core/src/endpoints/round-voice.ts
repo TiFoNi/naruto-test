@@ -15,7 +15,7 @@ async function duelSource(code: string, userId: ObjectId) {
 
   const total = phraseCount(duel.answerId)
   const step = total ? Math.min(Math.floor(wrongCount(duel, side) / PHRASE_EVERY), total - 1) : 0
-  const open = duel.status !== 'playing' || Boolean(side.solvedAt) || Boolean(side.gaveUp)
+  const open = duel.status !== 'playing' || Boolean(side.solvedAt)
   return { game: duel.game, mode: duel.mode, answerId: duel.answerId, extra: duel.extra ?? undefined, step, open }
 }
 

@@ -1244,6 +1244,7 @@ const ui = {
     uk: 'Ти вгадав! Чекаємо, поки суперник закінчить.',
     en: 'You solved it! Waiting for your rival to finish.',
   },
+  'duel.answerLater': { ru: 'Ответ покажем, когда раунд закончится', uk: 'Відповідь покажемо, коли раунд закінчиться', en: 'The answer shows when the round ends' },
   'duel.gaveUpWait': { ru: 'Ты сдался. Ждём конца дуэли.', uk: 'Ти здався. Чекаємо кінця дуелі.', en: 'You gave up. Waiting for the duel to end.' },
   'duel.youWon': { ru: 'Победа!', uk: 'Перемога!', en: 'You win!' },
   'duel.youLost': { ru: 'Победил {name}', uk: 'Переміг {name}', en: '{name} wins' },

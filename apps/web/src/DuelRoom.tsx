@@ -191,7 +191,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
   const youDone = Boolean(you?.solved || you?.gaveUp)
   const wrong = guesses.filter((g) => !g.pending).length - (you?.solved ? 1 : 0)
   const zoomStep = Math.min(wrong, ZOOM_LEVELS.length - 1)
-  const revealed = over || youDone
+  const revealed = over || Boolean(you?.solved)
   const shownStep = revealed ? ZOOM_LEVELS.length : zoomStep
   const nextZoom = shownStep < ZOOM_LEVELS.length - 1 ? ZOOM_LEVELS[shownStep + 1] : null
   const zoomText = (value: number) => (lang === 'en' ? value.toFixed(1) : value.toFixed(1).replace('.', ','))
@@ -568,6 +568,15 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
             <p className="ability-hint">
               {t(revealed ? 'ability.was' : 'ability.hint')} <b>{duel.ability[lang]}</b>
             </p>
+          )}
+
+          {!over && you?.gaveUp && !answer && (
+            <div className="card result skipped">
+              <div className="result-body">
+                <span className="result-eyebrow">{t('duel.gaveUpWait')}</span>
+                <div className="result-name">{t('duel.answerLater')}</div>
+              </div>
+            </div>
           )}
 
           {(over || youDone) && answer && (

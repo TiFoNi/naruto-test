@@ -13,7 +13,7 @@ async function duelSource(code: string, userId: ObjectId) {
   const duel = await findDuel(code)
   const side = duel && sideOf(duel, userId)
   if (!duel || !side || duel.status === 'lobby' || duel.answerId === undefined) return null
-  const revealed = duel.status === 'finished' || Boolean(side.solvedAt) || Boolean(side.gaveUp)
+  const revealed = duel.status === 'finished' || Boolean(side.solvedAt)
   return {
     game: duel.game,
     mode: duel.mode,

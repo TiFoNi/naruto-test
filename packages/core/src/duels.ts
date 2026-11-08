@@ -81,7 +81,7 @@ export const wrongCount = (duel: DuelDoc, side: DuelPlayer) => side.guesses.filt
 
 export const abilityStageOf = (duel: DuelDoc, side: DuelPlayer) => {
   const wrong = wrongCount(duel, side)
-  return duel.status !== 'playing' || side.solvedAt || side.gaveUp ? '' : wrong >= ABILITY_STAGES ? '' : `s${wrong}/`
+  return duel.status !== 'playing' || side.solvedAt ? '' : wrong >= ABILITY_STAGES ? '' : `s${wrong}/`
 }
 
 export const sideOf = (duel: DuelDoc, userId: ObjectId) => duel.players.find((p) => p.userId.equals(userId))
@@ -1413,7 +1413,7 @@ function phraseLines(duel: DuelDoc, side: DuelPlayer) {
     const line = phraseAt(duel.answerId ?? 0, duel.extra ?? undefined, i)
     if (line) lines.push(line.ru ? { text: line.text, ru: line.ru } : { text: line.text })
   }
-  const done = duel.status !== 'playing' || Boolean(side.solvedAt) || Boolean(side.gaveUp)
+  const done = duel.status !== 'playing' || Boolean(side.solvedAt)
   return {
     lines,
     linesLeft: Math.max(total - lines.length, 0),
@@ -1422,7 +1422,7 @@ function phraseLines(duel: DuelDoc, side: DuelPlayer) {
 }
 
 function duelStep(duel: DuelDoc, side: DuelPlayer) {
-  const revealed = duel.status === 'finished' || Boolean(side.solvedAt) || Boolean(side.gaveUp)
+  const revealed = duel.status === 'finished' || Boolean(side.solvedAt)
   return revealed ? ZOOM_REVEAL : Math.min(wrongCount(duel, side), ZOOM_LEVELS.length - 1)
 }
 
@@ -1464,7 +1464,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
           .map((entity) => Object.fromEntries(Object.entries(judgeAll(game!, entity, answer, duel.anime === true)).map(([key, value]) => [key, value.verdict])))
       : undefined
   const ability =
-    duel.mode === 'ability' && you && answer && (finished || you.solvedAt || you.gaveUp || wrongCount(duel, you) >= ABILITY_HINT_AT)
+    duel.mode === 'ability' && you && answer && (finished || you.solvedAt || wrongCount(duel, you) >= ABILITY_HINT_AT)
       ? abilityByKey(duel.answerId!, duel.extra ?? undefined)?.name
       : undefined
   return {
@@ -1528,7 +1528,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
       : {}),
     ...(duel.mode === 'page' ? { options: optionsOf(duel.extra ?? undefined) } : {}),
     ...(duel.mode === 'phrase' && you ? phraseLines(duel, you) : {}),
-    answerId: duel.mode === 'who' ? undefined : finished || you?.solvedAt || you?.gaveUp ? duel.answerId : undefined,
+    answerId: duel.mode === 'who' ? undefined : finished || you?.solvedAt ? duel.answerId : undefined,
     winner: finished ? winnerName(duel) : undefined,
     youWon: finished ? shownTeam(duel) !== null && shownTeam(duel) === yours : undefined,
     results: duel.results ?? [],
