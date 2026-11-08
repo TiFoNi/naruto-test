@@ -497,16 +497,16 @@ export const RARITIES = ['common', 'rare', 'epic', 'legend'] as const
 export type Rarity = (typeof RARITIES)[number]
 
 export const RARITY_PRICE: Record<Rarity, { frame: number; banner: number }> = {
-  common: { frame: 280, banner: 200 },
-  rare: { frame: 480, banner: 360 },
-  epic: { frame: 800, banner: 640 },
+  common: { frame: 450, banner: 350 },
+  rare: { frame: 650, banner: 500 },
+  epic: { frame: 900, banner: 700 },
   legend: { frame: 1400, banner: 1000 },
 }
 
 export const FRAME_RARITY: Record<string, Rarity> = {
   pond: 'common',
-  maple: 'common',
-  crows: 'common',
+  maple: 'rare',
+  crows: 'rare',
   blossom: 'common',
   fireflies: 'common',
   aot: 'rare',
@@ -516,8 +516,8 @@ export const FRAME_RARITY: Record<string, Rarity> = {
   bones: 'common',
   magma: 'common',
   dragon: 'rare',
-  holo: 'rare',
-  glitch: 'rare',
+  holo: 'common',
+  glitch: 'common',
   nekohood: 'epic',
   bearhood: 'epic',
   bunnyhood: 'epic',
@@ -525,7 +525,7 @@ export const FRAME_RARITY: Record<string, Rarity> = {
   barbed: 'epic',
   spikes: 'epic',
   blockring: 'epic',
-  moonbloom: 'epic',
+  moonbloom: 'rare',
   demonring: 'common',
   chrome: 'legend',
   orb: 'legend',
