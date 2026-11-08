@@ -16,6 +16,7 @@ import RivalBoard from './RivalBoard'
 import PlayBoard, { AskCard } from './PlayBoard'
 import PlayPanel from './PlayPanel'
 import TriesList from './TriesList'
+import TriesMeter from './TriesMeter'
 import ZoomScale from './ZoomScale'
 import ZoomImage from './ZoomImage'
 import WhoBoard from './WhoBoard'
@@ -537,6 +538,7 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
                 }
                 title={t('play.classicTitle')}
                 hint={t('duel.hurry')}
+                note={duel.limit ? <TriesMeter used={you?.guesses.length ?? 0} limit={duel.limit} /> : undefined}
               >
                 <CharacterSearch game={view ?? game} exclude={picked} busy={busy} onPick={guess} />
               </PlayPanel>
@@ -572,9 +574,28 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
 
           {!over && you?.gaveUp && !answer && (
             <div className="card result skipped">
+              <span className="result-hero">
+                <span className="result-face is-hidden">
+                  <b aria-hidden>?</b>
+                  <small>{t('duel.answerLater')}</small>
+                </span>
+                <em className="result-badge">{t('result.badgeLost')}</em>
+              </span>
+
               <div className="result-body">
-                <span className="result-eyebrow">{t('duel.gaveUpWait')}</span>
-                <div className="result-name">{t('duel.answerLater')}</div>
+                <span className="result-eyebrow">
+                  {duel.limit && (you?.guesses.length ?? 0) >= duel.limit ? t('duel.outOfTriesWait') : t('duel.gaveUpWait')}
+                </span>
+                <div className="result-name is-hidden">???</div>
+
+                <div className="result-chips">
+                  <span className="result-chip">{t('duel.score', { you: you?.wins ?? 0, rival: rival?.wins ?? 0 })}</span>
+                  {!duel.matchDone && <span className="result-chip">{t('duel.roundOf', { round: duel.round, best: duel.best })}</span>}
+                  <span className="result-chip">
+                    {you?.nickname}: <b>{you?.guesses.length ?? 0}</b>
+                    {rival ? ` · ${rival.nickname}: ${rival.guessCount}` : ''}
+                  </span>
+                </div>
               </div>
             </div>
           )}

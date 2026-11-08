@@ -20,6 +20,7 @@ import {
   GRID_MIN,
   GRID_MISSES,
   GRID_SIDE,
+  guessLimit,
   MODE_XP,
   PHRASE_EVERY,
   PHRASE_VOICE_AT,
@@ -1001,8 +1002,10 @@ export async function duelGuess(duel: DuelDoc, userId: ObjectId, entityId: numbe
 
   const now = new Date()
   const solved = entityId === duel.answerId
+  const limit = turnMode(duel) ? null : guessLimit(duel.game, duel.mode, await duelPool(duel))
   const set: Record<string, unknown> = { [`players.${index}.lastGuessAt`]: now }
   if (solved) set[`players.${index}.solvedAt`] = now
+  else if (limit !== null && side.guesses.length + 1 >= limit) set[`players.${index}.gaveUp`] = true
   if (solved && !duel.firstSolvedAt) {
     set.firstSolvedAt = now
     const rush = new Date(now.getTime() + (side.guesses.length + 1) * RUSH_PER_TRY_MS)
@@ -1529,6 +1532,7 @@ export async function duelView(duel: DuelDoc, userId: ObjectId, known = false) {
     ...(duel.mode === 'page' ? { options: optionsOf(duel.extra ?? undefined) } : {}),
     ...(duel.mode === 'phrase' && you ? phraseLines(duel, you) : {}),
     answerId: duel.mode === 'who' ? undefined : finished || you?.solvedAt ? duel.answerId : undefined,
+    limit: game && !turnMode(duel) ? (guessLimit(game, duel.mode, animePool(modePool(data?.pool ?? [], duel.mode as ModeId), duel.anime).length) ?? undefined) : undefined,
     winner: finished ? winnerName(duel) : undefined,
     youWon: finished ? shownTeam(duel) !== null && shownTeam(duel) === yours : undefined,
     results: duel.results ?? [],

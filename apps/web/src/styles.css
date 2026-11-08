@@ -1536,6 +1536,42 @@ main,
   background: var(--card);
 }
 
+.result-face.is-hidden {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 10px 20px;
+  text-align: center;
+  border: 2px dashed color-mix(in srgb, var(--text-3) 55%, transparent);
+  background:
+    radial-gradient(circle at 50% 40%, color-mix(in srgb, #d4645b 16%, transparent), transparent 70%),
+    var(--card);
+  color: var(--text-3);
+}
+
+.result-face.is-hidden b {
+  font-family: var(--display);
+  font-size: clamp(36px, 5vw, 56px);
+  line-height: 1;
+}
+
+.result-face.is-hidden small {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.result.skipped .result-face.is-hidden {
+  box-shadow: none;
+}
+
+.result-name.is-hidden {
+  color: var(--text-3);
+  letter-spacing: 0.08em;
+}
+
 .result-badge {
   position: absolute;
   left: 50%;

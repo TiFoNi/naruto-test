@@ -44,6 +44,7 @@ export type DuelView = {
   seconds: number
   needed: number
   matchDone: boolean
+  limit?: number
   invited: string | null
   declined: boolean
   left: string | null
