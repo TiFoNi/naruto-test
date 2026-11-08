@@ -9651,7 +9651,7 @@ html[data-auth] .guest-note {
   --cut-shape: circle(calc(var(--cut, 100%) / 2) at calc(50% + var(--cut-x, 0%)) calc(50% + var(--cut-y, 0%)));
 }
 
-.avatar.has-frame img,
+.avatar.has-frame > img,
 .avatar.has-frame .avatar-letter,
 .avatar.has-frame > .avatar-pic {
   clip-path: var(--cut-shape);

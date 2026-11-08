@@ -336,6 +336,33 @@
   font-weight: 700;
 }
 
+.shop-band-head button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 4px 2px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.shop-band-head button svg {
+  width: 16px;
+  height: 16px;
+  color: var(--text-3);
+  transition: rotate 0.18s ease, color 0.15s;
+}
+
+.shop-band-head button:hover svg {
+  color: var(--text);
+}
+
+.shop-band.is-folded .shop-band-head button svg {
+  rotate: -90deg;
+}
+
 .shop-gem {
   padding: 4px 11px;
   border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);

@@ -4,9 +4,9 @@ import { useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
 import { avatarUrl } from './pics'
 import { faceStyle, frameOf, frameStyle, frameUrl, tuneStamp, watchTune } from './frames'
 
-type Props = { id?: string | null; name: string; avatar?: string | null; frame?: string | null; className?: string; hint?: ReactNode; small?: boolean; medium?: boolean }
+type Props = { id?: string | null; name: string; avatar?: string | null; frame?: string | null; className?: string; hint?: ReactNode; small?: boolean; medium?: boolean; live?: boolean }
 
-export default function Avatar({ id, name, avatar, frame, className, hint, small = false, medium = false }: Props) {
+export default function Avatar({ id, name, avatar, frame, className, hint, small = false, medium = false, live = false }: Props) {
   const tiny = small || (className ?? '').split(' ').includes('small')
   const full = id && avatar ? avatarUrl(id, avatar) : null
   const src = id && avatar ? avatarUrl(id, avatar, tiny) : null
@@ -38,7 +38,7 @@ export default function Avatar({ id, name, avatar, frame, className, hint, small
       {hint}
       {worn && (
         <i className="avatar-frame" style={frameStyle(worn.id) as CSSProperties}>
-          <img src={frameUrl(worn.id, small ? 'sm' : medium ? 'md' : undefined)} alt="" loading="lazy" decoding="async" />
+          <img src={frameUrl(worn.id, small ? (live ? 'xs' : 'sm') : medium ? 'md' : undefined)} alt="" loading="lazy" decoding="async" />
         </i>
       )}
     </span>

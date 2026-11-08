@@ -3,17 +3,17 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
-import { BANNER_COSTS, BANNER_RARITY, BUNDLES, FRAME_COSTS, FRAME_RARITY, RARITIES, bannerCost, frameCost, type Rarity } from '@nanda/game'
+import { BANNER_COSTS, BANNER_RARITY, BUNDLES, FRAME_COSTS, FRAME_RARITY, RARITIES, bannerCost, frameCost, isPreview, type Rarity } from '@nanda/game'
 import Avatar from './Avatar'
 import HeroPeek, { type PeekStats } from './HeroPeek'
 import BackButton from './BackButton'
 import { api } from './api'
 import { useAuth } from './auth'
-import { bannerPic, bannerSpot } from './banners'
+import { bannerPic, bannerSet, bannerSpot } from './banners'
 import { frameOf } from './frames'
 import { showTone } from './tone'
 import { useI18n, type UiKey } from './i18n'
-import { CheckIcon } from './icons'
+import { CheckIcon, ChevronIcon } from './icons'
 import Rail from './Rail'
 import { useHref } from './router'
 import GemIcon from './GemIcon'
@@ -36,6 +36,27 @@ const FRAME_CARDS: Card[] = Object.entries(FRAME_COSTS).map(([id, cost]) => ({ k
 
 const BANNER_CARDS: Card[] = Object.entries(BANNER_COSTS).map(([id, cost]) => ({ kind: 'banner', id, banner: id, cost, rarity: BANNER_RARITY[id] }))
 
+const LEAD_TILES = 2
+const TIERS = [...RARITIES].reverse()
+const FOLDED_KEY = 'nanda.shop-folded'
+
+const readFolded = () => {
+  try {
+    const raw = JSON.parse(localStorage.getItem(FOLDED_KEY) ?? '[]')
+    return new Set<string>(Array.isArray(raw) ? raw.filter((one) => typeof one === 'string') : [])
+  } catch {
+    return new Set<string>()
+  }
+}
+
+const keepFolded = (folded: Set<string>) => {
+  try {
+    localStorage.setItem(FOLDED_KEY, JSON.stringify([...folded]))
+  } catch {
+    /* приватний режим */
+  }
+}
+
 const TABS = [
   { id: 'bundles', label: 'shop.bundles', cards: BUNDLE_CARDS },
   { id: 'frames', label: 'shop.frames', cards: FRAME_CARDS },
@@ -49,6 +70,18 @@ export default function Shop() {
   const tabs = useRef<HTMLDivElement>(null)
   const [ink, setInk] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
   const [tab, setTab] = useState<(typeof TABS)[number]['id']>('bundles')
+  const [folded, setFolded] = useState<Set<string>>(() => new Set())
+
+  useEffect(() => setFolded(readFolded()), [])
+
+  const fold = (key: string) =>
+    setFolded((was) => {
+      const next = new Set(was)
+      if (next.has(key)) next.delete(key)
+      else next.add(key)
+      keepFolded(next)
+      return next
+    })
   const [pick, setPick] = useState<string | null>(null)
   const [ready, setReady] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -104,7 +137,8 @@ export default function Shop() {
     return () => watcher.disconnect()
   }, [slide])
 
-  const list = TABS.find((one) => one.id === tab)?.cards ?? []
+  const open = (card: Card) => Boolean(user?.admin) || !isPreview(card.kind, card.id)
+  const list = (TABS.find((one) => one.id === tab)?.cards ?? []).filter(open)
   const card = list.find((one) => one.id === pick) ?? null
 
   const mineFrames = user?.frames ?? []
@@ -140,7 +174,7 @@ export default function Shop() {
   const art = card?.banner ?? user?.banner ?? null
   const worn = card?.frame ?? user?.frame ?? null
 
-  const slot = (one: Card) => {
+  const slot = (one: Card, lead: boolean) => {
     const mine = hasAll(one)
     const pair = one.kind === 'bundle' && !hasFrame(one) && !hasBanner(one)
     const kind: Kind = pair ? 'bundle' : !hasFrame(one) ? 'frame' : 'banner'
@@ -183,15 +217,28 @@ export default function Shop() {
       <div key={one.id} className={`shop-slot-card is-${one.rarity}`}>
         {one.kind === 'frame' ? (
           <button type="button" className="shop-tile is-frame" onClick={peek}>
-            <Avatar className="shop-frame-face" id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={one.frame ?? null} />
+            <Avatar className="shop-frame-face" id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={one.frame ?? null} medium />
           </button>
         ) : (
           <button type="button" className="shop-tile is-wide" onClick={peek}>
             <span className="shop-tile-art" aria-hidden>
-              {one.banner ? <img src={bannerPic(one.banner)} alt="" style={{ objectPosition: bannerSpot(one.banner) }} /> : <i />}
+              {one.banner ? (
+                <img
+                  src={bannerPic(one.banner, true)}
+                  srcSet={bannerSet(one.banner)}
+                  sizes="(max-width: 560px) 100vw, 680px"
+                  alt=""
+                  decoding="async"
+                  loading={lead ? undefined : 'lazy'}
+                  fetchPriority={lead ? 'high' : undefined}
+                  style={{ objectPosition: bannerSpot(one.banner) }}
+                />
+              ) : (
+                <i />
+              )}
             </span>
             <span className="shop-wide-body">
-              <Avatar className="shop-tile-face" id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={one.frame ?? null} />
+              <Avatar className="shop-tile-face" id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={one.frame ?? null} medium />
               <span className="shop-tile-text">
                 <b>{user?.nickname ?? '—'}</b>
                 {user?.tag && <em>#{user.tag}</em>}
@@ -226,7 +273,7 @@ export default function Shop() {
         </div>
       </header>
 
-      <Rail className="cat-rail shop-rail" trackClass="rail-chips" innerRef={tabs}>
+      <Rail className="cat-rail shop-rail" trackClass="rail-chips" innerRef={tabs} trackRole="tablist">
         <span
           className={`seg-ink ${ink ? 'is-set' : ''}`}
           style={ink ? { transform: `translate(${ink.x}px, ${ink.y}px)`, width: ink.w, height: ink.h } : undefined}
@@ -242,22 +289,32 @@ export default function Shop() {
             className={tab === one.id ? 'active' : ''}
             onClick={() => swap(one)}
           >
-            {t(one.label as UiKey)} <b>{one.cards.length}</b>
+            {t(one.label as UiKey)} <b>{one.cards.filter(open).length}</b>
           </button>
         ))}
       </Rail>
 
-      {RARITIES.filter((tier) => list.some((one) => one.rarity === tier)).map((tier) => (
-        <section key={tier} className={`shop-band is-${tier}`}>
-          <h2 className="shop-band-head">
-            <i className="shop-gem">{t(`shop.rarity.${tier}` as UiKey)}</i>
-            <span>{list.filter((one) => one.rarity === tier).length}</span>
-          </h2>
-          <div className={`shop-grid ${tab === 'frames' ? 'is-frames' : 'is-wide'}`}>
-            {list.filter((one) => one.rarity === tier).map(slot)}
-          </div>
-        </section>
-      ))}
+      {TIERS.filter((tier) => list.some((one) => one.rarity === tier)).map((tier, _, shown) => {
+        const key = `${tab}:${tier}`
+        const closed = folded.has(key)
+        const lead = shown.find((one) => !folded.has(`${tab}:${one}`)) === tier
+        return (
+          <section key={tier} className={`shop-band is-${tier} ${closed ? 'is-folded' : ''}`}>
+            <h2 className="shop-band-head">
+              <button type="button" aria-expanded={!closed} onClick={() => fold(key)}>
+                <i className="shop-gem">{t(`shop.rarity.${tier}` as UiKey)}</i>
+                <span>{list.filter((one) => one.rarity === tier).length}</span>
+                <ChevronIcon />
+              </button>
+            </h2>
+            {!closed && (
+              <div className={`shop-grid ${tab === 'frames' ? 'is-frames' : 'is-wide'}`}>
+                {list.filter((one) => one.rarity === tier).map((one, index) => slot(one, lead && index < LEAD_TILES))}
+              </div>
+            )}
+          </section>
+        )
+      })}
 
       {slip && <p className="shop-slip">{t(slip)}</p>}
 

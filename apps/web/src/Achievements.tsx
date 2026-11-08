@@ -590,7 +590,7 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
           </section>
 
           <div className="awards-sort">
-            <Rail className="cat-rail awards-rail" trackClass="rail-chips" innerRef={tabs}>
+            <Rail className="cat-rail awards-rail" trackClass="rail-chips" innerRef={tabs} trackRole="tablist">
               <span className={`seg-ink ${ink ? 'is-set' : ''}`} style={ink ? { transform: `translate(${ink.x}px, ${ink.y}px)`, width: ink.w, height: ink.h } : undefined} aria-hidden />
               {FILTERS.map(({ id, label }) => (
                 <button

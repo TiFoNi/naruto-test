@@ -26,7 +26,11 @@ export const NATURE_FRAMES = ['pond', 'maple', 'crows', 'blossom', 'fireflies'] 
 
 export const OTHER_FRAMES = ['top10'] as const
 
-export const FRAMES = [...AWARD_FRAMES, ...WORLD_FRAMES, ...NATURE_FRAMES, ...OTHER_FRAMES] as const
+export const EFFECT_FRAMES = ['chrome', 'orb', 'liquid', 'comets', 'fire', 'lightning', 'particles', 'vortex', 'ferrofluid', 'atom', 'wings'] as const
+
+export const ART_FRAMES = ['nekohood', 'bearhood', 'bunnyhood', 'bones', 'magma', 'dragon', 'holo', 'glitch', 'thorns', 'barbed', 'spikes', 'blockring', 'moonbloom', 'demonring'] as const
+
+export const FRAMES = [...AWARD_FRAMES, ...WORLD_FRAMES, ...NATURE_FRAMES, ...OTHER_FRAMES, ...EFFECT_FRAMES, ...ART_FRAMES] as const
 
 export type Frame = (typeof FRAMES)[number]
 

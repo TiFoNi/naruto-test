@@ -186,7 +186,7 @@ export default function DuelSetup({ duel, busy, link, onSetup, onInvite, onReady
                     )}
                     {spot.lead && <em className="duel-seat-tag">{t('clue.lead')}</em>}
                     <Link className="duel-seat-link" href={mate.you ? href.profile : href.player(mate.id)} prefetch={false} aria-label={mate.nickname}>
-                      <Avatar className="duel-face" id={mate.id} name={mate.nickname} avatar={mate.avatar} frame={mate.frame} />
+                      <Avatar className="duel-face" id={mate.id} name={mate.nickname} avatar={mate.avatar} frame={mate.frame} medium />
                     </Link>
                     <span className="duel-seat-text">
                       <Link className="duel-seat-nick" href={mate.you ? href.profile : href.player(mate.id)} prefetch={false}>

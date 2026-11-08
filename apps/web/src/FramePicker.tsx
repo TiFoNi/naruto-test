@@ -69,7 +69,7 @@ export default function FramePicker() {
               aria-label={l(one.label)}
               onClick={() => void pick(one.id)}
             >
-              <Avatar id={user.id} name={user.nickname} avatar={user.avatar} frame={one.id} />
+              <Avatar id={user.id} name={user.nickname} avatar={user.avatar} frame={one.id} medium />
             </button>
           ))}
         </div>

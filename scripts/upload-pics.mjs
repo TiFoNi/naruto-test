@@ -15,7 +15,7 @@ const ATLAS = /^[^/]+\/thumbs\.webp$/
 
 const cacheOf = (key) => {
   const folder = key.split('/')[0]
-  if (folder === 'frames') return FRAMES_CACHE
+  if (folder === 'frames' || folder === 'banners') return FRAMES_CACHE
   return UI_DIRS.includes(folder) ? UI_CACHE : 'public, max-age=31536000, immutable'
 }
 
@@ -28,6 +28,7 @@ if (missing.length) {
 
 const only = process.argv[2]?.startsWith('--') ? undefined : process.argv[2]
 const force = process.argv.includes('--force')
+const match = process.argv.find((arg) => arg.startsWith('--match='))?.slice('--match='.length).split(',').filter(Boolean)
 
 const client = new S3Client({
   region: 'auto',
@@ -108,7 +109,7 @@ async function patchAtlas(file, folder, ids) {
 
 async function main() {
   if (only === 'shots') console.warn('увага: кадри в R2 редагуються через адмінку, локальні файли можуть повернути видалені кадри')
-  const files = await collectPics(only)
+  const files = (await collectPics(only)).filter(({ key }) => !match || match.some((part) => key.includes(part)))
   if (!files.length) return console.log(only ? `у public/${only} нічого не знайшов` : 'картинок не знайшов')
   console.log(`знайшов ${files.length} картинок${only ? ` (гра ${only})` : ''}`)
 

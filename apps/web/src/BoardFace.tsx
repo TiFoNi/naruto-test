@@ -13,9 +13,9 @@ const toneOf = (nickname: string) => {
   return hash % TONES
 }
 
-type Props = { id?: string; nickname: string; avatar?: string | null; frame?: string | null; big?: boolean }
+type Props = { id?: string; nickname: string; avatar?: string | null; frame?: string | null; big?: boolean; first?: boolean }
 
-export default function BoardFace({ id, nickname, avatar, frame, big }: Props) {
+export default function BoardFace({ id, nickname, avatar, frame, big, first }: Props) {
   const full = id && avatar ? avatarUrl(id, avatar) : null
   const src = id && avatar ? avatarUrl(id, avatar, true) : null
   const set = big && id && avatar ? `${src} 192w, ${full} 384w` : undefined
@@ -49,9 +49,7 @@ export default function BoardFace({ id, nickname, avatar, frame, big }: Props) {
       {worn && near && (
         <i className="avatar-frame" style={frameStyle(worn.id) as CSSProperties}>
           <img
-            src={frameUrl(worn.id, 'sm')}
-            srcSet={big ? `${frameUrl(worn.id, 'sm')} 192w, ${frameUrl(worn.id, 'md')} 512w` : undefined}
-            sizes={big ? '(max-width: 560px) 110px, 170px' : undefined}
+            src={frameUrl(worn.id, first ? undefined : big ? 'md' : 'sm')}
             alt=""
             loading="lazy"
             decoding="async"

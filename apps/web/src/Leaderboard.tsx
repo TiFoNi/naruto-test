@@ -254,7 +254,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
                       />
                     )}
                     <span className="lb-step-face">
-                      <BoardFace id={row.id} nickname={row.nickname} avatar={row.avatar} frame={row.frame} big />
+                      <BoardFace id={row.id} nickname={row.nickname} avatar={row.avatar} frame={row.frame} big first={index === 0} />
                     </span>
                     <span className="lb-step-text">
                       <span className="lb-step-who">

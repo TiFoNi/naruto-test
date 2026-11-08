@@ -1,4 +1,4 @@
-import { AWARD_FRAMES, NATURE_FRAMES, OTHER_FRAMES, WORLD_FRAMES } from '@nanda/core/frame-list'
+import { ART_FRAMES, AWARD_FRAMES, EFFECT_FRAMES, NATURE_FRAMES, OTHER_FRAMES, WORLD_FRAMES } from '@nanda/core/frame-list'
 import tune from './frames-tune.json'
 import { api } from './api'
 import { GAMES } from './games'
@@ -6,7 +6,7 @@ import { l10n } from './games/types'
 import type { L10n } from './i18n/langs'
 import { uiUrl } from './pics'
 
-export type FrameKind = 'award' | 'world' | 'nature' | 'other'
+export type FrameKind = 'award' | 'world' | 'nature' | 'other' | 'effect' | 'art'
 
 export type Frame = { id: string; kind: FrameKind; label: L10n }
 
@@ -24,20 +24,58 @@ const NATURE_LABELS: Record<string, L10n> = {
   fireflies: l10n('Светлячки', 'Світляки', 'Fireflies'),
 }
 
-const DRAWN = new Set<string>([...NATURE_FRAMES, 'aot', 'kny', 'tg', 'dn', 'top1', 'cosmos', 'blades'])
+const EFFECT_LABELS: Record<string, L10n> = {
+  chrome: l10n('Хром', 'Хром', 'Chrome'),
+  orb: l10n('Сфера', 'Сфера', 'Orb'),
+  liquid: l10n('Жидкое кольцо', 'Рідке кільце', 'Liquid ring'),
+  comets: l10n('Кометы', 'Комети', 'Comets'),
+  fire: l10n('Огонь', 'Вогонь', 'Fire'),
+  lightning: l10n('Молнии', 'Блискавки', 'Lightning'),
+  particles: l10n('Частицы', 'Частинки', 'Particles'),
+  vortex: l10n('Вихрь', 'Вихор', 'Vortex'),
+  ferrofluid: l10n('Феррожидкость', 'Ферорідина', 'Ferrofluid'),
+  atom: l10n('Атом', 'Атом', 'Atom'),
+  wings: l10n('Хромовые крылья', 'Хромові крила', 'Chrome wings'),
+}
+
+const ART_LABELS: Record<string, L10n> = {
+  nekohood: l10n('Кошачий капюшон', 'Котячий каптур', 'Cat hood'),
+  bearhood: l10n('Мишкин капюшон', 'Ведмежий каптур', 'Bear hood'),
+  bunnyhood: l10n('Зайкин капюшон', 'Заячий каптур', 'Bunny hood'),
+  bones: l10n('Кости', 'Кістки', 'Bones'),
+  magma: l10n('Магма', 'Магма', 'Magma'),
+  dragon: l10n('Дракон', 'Дракон', 'Dragon'),
+  holo: l10n('Голограмма', 'Голограма', 'Hologram'),
+  glitch: l10n('Глитч', 'Глітч', 'Glitch'),
+  thorns: l10n('Шипы', 'Шипи', 'Thorns'),
+  barbed: l10n('Колючая проволока', 'Колючий дріт', 'Barbed wire'),
+  spikes: l10n('Фиолетовые шипы', 'Фіолетові шипи', 'Violet spikes'),
+  blockring: l10n('Блочное кольцо', 'Блокове кільце', 'Block ring'),
+  moonbloom: l10n('Лунный цветок', 'Місячна квітка', 'Moon bloom'),
+  demonring: l10n('Демоническое кольцо', 'Демонічне кільце', 'Demon ring'),
+}
+
+const DRAWN = new Set<string>([...NATURE_FRAMES, ...EFFECT_FRAMES, ...ART_FRAMES, 'aot', 'kny', 'tg', 'dn', 'top1', 'cosmos', 'blades'])
 
 const ALL: Frame[] = [
   ...AWARD_FRAMES.map((id) => ({ id, kind: 'award' as const, label: AWARD_LABELS[id] })),
   ...WORLD_FRAMES.map((id) => ({ id, kind: 'world' as const, label: GAMES.find((game) => game.id === id)?.label ?? l10n(id, id, id) })),
   ...NATURE_FRAMES.map((id) => ({ id, kind: 'nature' as const, label: NATURE_LABELS[id] })),
   ...OTHER_FRAMES.map((id) => ({ id, kind: 'other' as const, label: l10n('Топ-10', 'Топ-10', 'Top 10') })),
+  ...EFFECT_FRAMES.map((id) => ({ id, kind: 'effect' as const, label: EFFECT_LABELS[id] })),
+  ...ART_FRAMES.map((id) => ({ id, kind: 'art' as const, label: ART_LABELS[id] })),
 ]
 
 export const FRAMES: Frame[] = ALL.filter((one) => DRAWN.has(one.id))
 
-const ART = '28'
+const ART = '36'
 
-export const frameUrl = (id: string, size?: 'sm' | 'md' | boolean) => uiUrl(`frames/${id}${size === true || size === 'sm' ? '-sm' : size === 'md' ? '-md' : ''}.webp?v=${ART}`)
+const MOVING = new Set<string>(EFFECT_FRAMES)
+
+const suffixOf = (id: string, size?: 'xs' | 'sm' | 'md' | boolean) =>
+  size === 'xs' ? (MOVING.has(id) ? '-xs' : '-sm') : size === true || size === 'sm' ? '-sm' : size === 'md' ? '-md' : ''
+
+export const frameUrl = (id: string, size?: 'xs' | 'sm' | 'md' | boolean) => uiUrl(`frames/${id}${suffixOf(id, size)}.webp?v=${ART}`)
 
 export type FrameTune = { scale: number; x: number; y: number; cut: number; cx: number; cy: number }
 

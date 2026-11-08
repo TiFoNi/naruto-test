@@ -6,7 +6,11 @@ import Avatar from './Avatar'
 import { useAuth } from './auth'
 import { FRAMES, TUNE_DEFAULT, dropLegacy, frameUrl, keepTune, loadTune, setTune, tuneOf, type FrameTune } from './frames'
 
-const SIZES = [148, 92, 44]
+const SIZES = [
+  { px: 148, look: {} },
+  { px: 92, look: { medium: true } },
+  { px: 44, look: { small: true, live: true } },
+]
 
 const STEPS = [
   { key: 'scale' as const, label: 'размер', min: 1, max: 2.4, step: 0.01, tail: '×' },
@@ -91,12 +95,12 @@ export default function FrameAdmin() {
 
         <section className="frame-admin-main">
           <div className="frame-admin-stage">
-            {SIZES.map((size) => (
-              <div key={size} className="frame-admin-cell">
-                <span style={{ '--face': `${size}px` } as CSSProperties}>
-                  <Avatar id={user?.id} name={user?.nickname ?? 'T'} avatar={user?.avatar} frame={picked} />
+            {SIZES.map(({ px, look }) => (
+              <div key={px} className="frame-admin-cell">
+                <span style={{ '--face': `${px}px` } as CSSProperties}>
+                  <Avatar id={user?.id} name={user?.nickname ?? 'T'} avatar={user?.avatar} frame={picked} {...look} />
                 </span>
-                <small>{size}px</small>
+                <small>{px}px</small>
               </div>
             ))}
           </div>

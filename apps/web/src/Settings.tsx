@@ -128,7 +128,7 @@ export default function Settings() {
       <h1>{t('settings.title')}</h1>
 
       <div className="settings-layout">
-        <Rail className="cat-rail settings-rail" trackClass="rail-chips settings-nav" innerRef={tabs}>
+        <Rail className="cat-rail settings-rail" trackClass="rail-chips settings-nav" innerRef={tabs} trackRole="tablist">
           <span
             className={`seg-ink ${ink ? 'is-set' : ''}`}
             style={ink ? { transform: `translate(${ink.x}px, ${ink.y}px)`, width: ink.w, height: ink.h } : undefined}

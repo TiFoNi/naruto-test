@@ -9,9 +9,10 @@ type Props = {
   trackClass: string
   className?: string
   innerRef?: RefObject<HTMLDivElement | null>
+  trackRole?: string
 }
 
-export default function Rail({ children, trackClass, className = '', innerRef }: Props) {
+export default function Rail({ children, trackClass, className = '', innerRef, trackRole }: Props) {
   const { t } = useI18n()
   const track = useRef<HTMLDivElement>(null)
   const [ends, setEnds] = useState({ left: false, right: false })
@@ -50,6 +51,7 @@ export default function Rail({ children, trackClass, className = '', innerRef }:
       </button>
       <div
         className={`rail-track ${trackClass}`}
+        role={trackRole}
         ref={(node) => {
           track.current = node
           if (innerRef) innerRef.current = node

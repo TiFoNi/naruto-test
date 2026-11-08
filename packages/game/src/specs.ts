@@ -449,7 +449,7 @@ export const isBlock = (value: unknown): value is ProfileBlock => (PROFILE_BLOCK
 
 export const profileBlocks = (value: unknown) => (Array.isArray(value) ? [...new Set(value.filter(isBlock))] : null)
 
-export const BANNERS = ['frog', 'night', 'sharingan', 'blossom', 'crows', 'fireflies', 'aot', 'kny', 'tg', 'dn', 'tester', 'castle', 'poppies', 'pain', 'levelup', 'snakes', 'touch', 'golden', 'lonely'] as const
+export const BANNERS = ['frog', 'night', 'sharingan', 'blossom', 'crows', 'fireflies', 'aot', 'kny', 'tg', 'dn', 'tester', 'castle', 'poppies', 'pain', 'levelup', 'snakes', 'touch', 'golden', 'lonely', 'rinnegan', 'wanted', 'itachi', 'pixelspider', 'redmoon', 'fireforce', 'ronaldo', 'wasted', 'glowmeadow', 'moonvortex', 'jinx', 'nighttree', 'blockhome', 'moonfield', 'demon', 'lotus', 'clouds', 'byakugan', 'spikedesert', 'frieren'] as const
 
 export type Banner = (typeof BANNERS)[number]
 
@@ -513,6 +513,30 @@ export const FRAME_RARITY: Record<string, Rarity> = {
   kny: 'rare',
   tg: 'rare',
   dn: 'rare',
+  bones: 'common',
+  magma: 'common',
+  dragon: 'rare',
+  holo: 'rare',
+  glitch: 'rare',
+  nekohood: 'epic',
+  bearhood: 'epic',
+  bunnyhood: 'epic',
+  thorns: 'epic',
+  barbed: 'epic',
+  spikes: 'epic',
+  blockring: 'epic',
+  moonbloom: 'epic',
+  demonring: 'common',
+  chrome: 'legend',
+  orb: 'legend',
+  liquid: 'legend',
+  comets: 'legend',
+  fire: 'legend',
+  lightning: 'legend',
+  particles: 'legend',
+  wings: 'legend',
+  ferrofluid: 'legend',
+  atom: 'legend',
 }
 
 export const BANNER_RARITY: Record<string, Rarity> = {
@@ -534,6 +558,26 @@ export const BANNER_RARITY: Record<string, Rarity> = {
   touch: 'rare',
   golden: 'epic',
   lonely: 'epic',
+  rinnegan: 'epic',
+  itachi: 'epic',
+  wanted: 'epic',
+  redmoon: 'epic',
+  pixelspider: 'common',
+  fireforce: 'epic',
+  ronaldo: 'epic',
+  wasted: 'common',
+  glowmeadow: 'epic',
+  moonvortex: 'rare',
+  jinx: 'rare',
+  nighttree: 'epic',
+  blockhome: 'epic',
+  moonfield: 'epic',
+  demon: 'common',
+  lotus: 'legend',
+  clouds: 'legend',
+  byakugan: 'legend',
+  spikedesert: 'rare',
+  frieren: 'epic',
 }
 
 const priced = <T extends Record<string, Rarity>>(rarity: T, kind: 'frame' | 'banner') =>
@@ -560,11 +604,24 @@ export const BUNDLES = [
   { id: 'kny', ...pair('kny', 'kny') },
   { id: 'tg', ...pair('tg', 'tg') },
   { id: 'dn', ...pair('dn', 'dn') },
+  { id: 'blocky', ...pair('blockring', 'blockhome') },
+  { id: 'moonlit', ...pair('moonbloom', 'moonfield') },
+  { id: 'demonic', ...pair('demonring', 'demon') },
 ]
 
 export type Bundle = (typeof BUNDLES)[number]
 
 export const bundleOf = (id: unknown) => BUNDLES.find((one) => one.id === id) ?? null
+
+const PREVIEW_FRAMES = ['bones', 'magma', 'dragon', 'holo', 'glitch', 'nekohood', 'bearhood', 'bunnyhood', 'thorns', 'barbed', 'spikes', 'blockring', 'moonbloom', 'demonring', 'chrome', 'orb', 'liquid', 'comets', 'fire', 'lightning', 'particles', 'wings', 'ferrofluid', 'atom']
+const PREVIEW_BANNERS = ['rinnegan', 'wanted', 'itachi', 'pixelspider', 'redmoon', 'fireforce', 'ronaldo', 'wasted', 'glowmeadow', 'moonvortex', 'jinx', 'nighttree', 'blockhome', 'moonfield', 'demon', 'lotus', 'clouds', 'byakugan', 'spikedesert', 'frieren']
+const PREVIEW_BUNDLES = ['blocky', 'moonlit', 'demonic']
+
+export type ShopKind = 'frame' | 'banner' | 'bundle'
+
+const PREVIEW: Record<ShopKind, Set<string>> = { frame: new Set(PREVIEW_FRAMES), banner: new Set(PREVIEW_BANNERS), bundle: new Set(PREVIEW_BUNDLES) }
+
+export const isPreview = (kind: ShopKind, id: unknown) => typeof id === 'string' && PREVIEW[kind].has(id)
 
 export const frameRarity = (id: unknown) => (typeof id === 'string' ? (FRAME_RARITY[id] ?? null) : null)
 

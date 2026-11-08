@@ -74,7 +74,7 @@ export default function TitleAdmin() {
       <ul className="title-admin-list">
         {players.map((one) => (
           <li key={one.id}>
-            <Avatar id={one.id} name={one.nickname} avatar={one.avatar} frame={one.frame} />
+            <Avatar id={one.id} name={one.nickname} avatar={one.avatar} frame={one.frame} medium />
             <span className="title-admin-who">
               <b>{one.nickname}</b>
               {one.tag && <em>#{one.tag}</em>}

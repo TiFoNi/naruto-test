@@ -2,7 +2,8 @@ import { fail, handle, json, readJson } from '../http'
 import { quests, rounds, seasons, shotDays, shotRuns, streaks, tuneRuns } from '../db'
 import { claimTag, currentUser, lowerNickname, ownedTitles, parseNickname, toProfile, unauthorized } from '../profile'
 import { isFrame } from '../frames'
-import { CARD_PINS_MAX, GAME_IDS, bannerCost, bannerLooks, bundleOf, frameCost, heroTiles, isBanner, isTitle, isTone, profileBlocks } from '@nanda/game'
+import { CARD_PINS_MAX, GAME_IDS, bannerCost, bannerLooks, bundleOf, frameCost, heroTiles, isBanner, isPreview, isTitle, isTone, profileBlocks } from '@nanda/game'
+import { adminSession } from '../admin'
 
 const SHOWCASE_MAX = 8
 const BLOCK_MIN = 60
@@ -176,6 +177,8 @@ export const POST = handle(async (request) => {
 
     const cost = bundle ? bundle.cost : body.kind === 'frame' ? frameCost(frame) : body.kind === 'banner' ? bannerCost(banner) : null
     if (!cost) return fail(400, 'bad_request')
+    const early = (bundle && isPreview('bundle', bundle.id)) || (frame && isPreview('frame', frame)) || (banner && isPreview('banner', banner))
+    if (early && !(await adminSession(request))) return fail(403, 'locked')
     if ((frame && mineFrames.includes(frame)) || (banner && mineBanners.includes(banner))) return fail(409, 'owned')
 
     const doc = await found.collection.findOneAndUpdate(
