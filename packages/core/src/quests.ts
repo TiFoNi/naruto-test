@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { GAME_IDS, hasDaily, levelAt, modesOf } from '@nanda/game'
+import { OPEN_GAMES, hasDaily, levelAt, modesOf } from '@nanda/game'
 import { quests, rounds, users } from './db'
 import { dayOf, today } from './daily'
 import { addSeasonXp } from './season'
@@ -108,7 +108,7 @@ async function progress(userId: ObjectId, day: string) {
   }
 }
 
-const DAILY_SLOTS = GAME_IDS.reduce((sum, game) => sum + modesOf(game).filter(hasDaily).length, 0)
+const DAILY_SLOTS = OPEN_GAMES.reduce((sum, game) => sum + modesOf(game).filter(hasDaily).length, 0)
 
 async function dailiesLeft(userId: ObjectId, day: string) {
   const closed = await (await rounds()).countDocuments({ userId, daily: day, status: { $ne: 'active' } })

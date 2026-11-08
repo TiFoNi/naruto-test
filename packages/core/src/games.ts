@@ -1,3 +1,4 @@
+import { readFile } from 'node:fs/promises'
 import { GAME_SPECS, MODE_IDS, type GameId, type ModeId } from '@nanda/game'
 import { entities, settings } from './db'
 
@@ -14,11 +15,22 @@ export const isGame = (value: unknown): value is GameId => typeof value === 'str
 
 export const isMode = (value: unknown): value is ModeId => typeof value === 'string' && (MODE_IDS as string[]).includes(value)
 
+async function unsaved(game: GameId): Promise<Entity[]> {
+  if (process.env.NODE_ENV === 'production') return []
+  try {
+    const raw = await readFile(require.resolve(`@nanda/game/data/${GAME_SPECS[game].data}.json`), 'utf8')
+    return (JSON.parse(raw) as Entity[]).filter((one) => !one.hidden).sort((a, b) => a.id - b.id)
+  } catch {
+    return []
+  }
+}
+
 async function load(game: GameId): Promise<GameData> {
   const collection = await entities()
-  const list = (await collection
+  const saved = (await collection
     .find({ game, hidden: { $ne: true } }, { projection: { _id: 0, game: 0, hidden: 0, updatedAt: 0 }, sort: { id: 1 } })
     .toArray()) as unknown as Entity[]
+  const list = saved.length ? saved : await unsaved(game)
 
   const config = await (await settings()).findOne({ game }, { projection: { _id: 0, updated: 1, atlas: 1 } })
 

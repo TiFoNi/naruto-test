@@ -22,6 +22,7 @@ export type GameId =
   | 'avatar'
   | 'jjk'
   | 'csm'
+  | 'mushoku'
   | 'brawl'
   | 'shots'
   | 'tunes'
@@ -218,6 +219,18 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('arcIndex', 'order'),
     ],
   },
+  mushoku: {
+    featured: ['Rudeus Greyrat', 'Eris Boreas Greyrat', 'Roxy Migurdia', 'Sylphiette'],
+    data: 'mushoku',
+    images: 'mushoku',
+    columns: [
+      col('gender', 'exact'),
+      col('race', 'exact'),
+      col('role', 'exact'),
+      col('affiliations', 'list'),
+      col('debutIndex', 'order'),
+    ],
+  },
   jjk: {
     featured: ['Yuji Itadori', 'Satoru Gojo', 'Megumi Fushiguro'],
     data: 'jjk',
@@ -395,6 +408,10 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 }
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
+
+export const HIDDEN_GAMES: GameId[] = ['mushoku']
+
+export const OPEN_GAMES = GAME_IDS.filter((game) => !HIDDEN_GAMES.includes(game))
 
 export const MODE_IDS: ModeId[] = ['classic', 'blind', 'image', 'ability', 'page', 'phrase', 'odd', 'pair', 'shot', 'tune', 'who', 'grid', 'clue']
 

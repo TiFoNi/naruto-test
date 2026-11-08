@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { CARD_PINS_MAX, GAME_IDS, STAT_KEYS, type GameId } from '@nanda/game'
+import { CARD_PINS_MAX, GAME_IDS, OPEN_GAMES, STAT_KEYS, type GameId } from '@nanda/game'
 import { ACHIEVEMENTS, LIFE, familyOf } from '../achievements'
 import { PINNED_MAX } from './achievements'
 import { rounds, seasons, users, type UserDoc } from '../db'
@@ -238,7 +238,7 @@ export const GET = handle(async (request) => {
 
   const unique = new Map(past.games.map((row) => [row._id, row.ids]))
   const pools = await Promise.all(
-    GAME_IDS.map(async (game) => {
+    OPEN_GAMES.map(async (game) => {
       const data = await gameData(game as GameId)
       const seen = new Set([...(unique.get(game) ?? []), ...(doc.dex?.[game] ?? [])])
       const solved = [...seen].filter((id) => data.byId.get(id)?.answer).length

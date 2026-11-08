@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 import { api } from './api'
 import { statsKey } from '@nanda/game'
 import { forgetUser } from './session-cache'
+import { showHiddenGames } from './games'
 import type { Stats } from './stats'
 
 export type XpToday = { earned: number; cap: number; sources: { source: 'daily' | 'endless' | 'duel'; earned: number; cap: number }[] }
@@ -103,6 +104,7 @@ export { statsKey }
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(known)
   const [loading, setLoading] = useState(!checked)
+  showHiddenGames(Boolean(profile?.user?.admin))
 
   const remember = (next: Profile | null) => {
     known = next

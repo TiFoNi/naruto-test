@@ -1,4 +1,4 @@
-import { GAME_IDS, MODE_IDS, type GameId } from '@nanda/game'
+import { GAME_IDS, MODE_IDS, OPEN_GAMES, type GameId } from '@nanda/game'
 import { ObjectId } from 'mongodb'
 import { rounds, seasons, users, type UserDoc } from './db'
 import { gameData } from './games'
@@ -119,7 +119,7 @@ export const LIFE: Achievement[] = [
 
   life('traveller5', 'worlds', 'bronze', 5, (f) => f.worlds),
   life('traveller', 'worlds', 'silver', 10, (f) => f.worlds),
-  life('multiverse', 'worlds', 'gold', GAME_IDS.length, (f) => f.worlds),
+  life('multiverse', 'worlds', 'gold', OPEN_GAMES.length, (f) => f.worlds),
   percent('fan', 'worlds', 'gold', 25, (f) => f.bestWorldShare),
   percent('fan50', 'worlds', 'legend', 50, (f) => f.bestWorldShare),
   percent('loremaster', 'worlds', 'mythic', 100, (f) => f.bestWorldShare),
