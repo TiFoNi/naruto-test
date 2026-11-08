@@ -135,6 +135,20 @@ const CHARACTERS = [
   ['Auber Corvette', 'Auber Corvette', 'Оубер Корветт', M, 'Человек', 'Мечник', [NORTH_GOD], 4],
 ]
 
+const swap = (text, from, to) =>
+  text.replace(new RegExp(from, 'g'), to).replace(new RegExp(from.toUpperCase(), 'g'), to.toUpperCase())
+
+function searchTags(nameEn, ...names) {
+  const words = new Set((ALIASES[nameEn] ?? '').split(/\s+/).filter(Boolean))
+  for (const name of names.filter(Boolean)) {
+    for (const variant of [swap(name, 'р', 'л'), swap(swap(name, 'ль', 'р'), 'л', 'р')]) {
+      if (variant !== name) variant.split(/\s+/).forEach((word) => words.add(word))
+    }
+  }
+  for (const name of names.filter(Boolean)) name.split(/\s+/).forEach((word) => words.delete(word))
+  return [...words].join(' ')
+}
+
 function animeArt(text) {
   const blocks = [...(text ?? '').matchAll(/<gallery>([\s\S]*?)<\/gallery>/gi)].map((found) => found[1])
   for (const block of blocks) {
@@ -191,7 +205,7 @@ async function main() {
       name,
       nameUk: UK[nameEn],
       nameEn,
-      ...(ALIASES[nameEn] ? { aliases: ALIASES[nameEn] } : {}),
+      ...(searchTags(nameEn, name, UK[nameEn]) ? { aliases: searchTags(nameEn, name, UK[nameEn]) } : {}),
       gender,
       race,
       role,
