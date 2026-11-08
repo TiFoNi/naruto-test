@@ -90,7 +90,6 @@ const WATER_GOD = 'Школа Бога Воды'
 const NORTH_GOD = 'Школа Бога Севера'
 const DEMONS = 'Демонический континент'
 const SKY = 'Небесная крепость'
-const GUILD = 'Гильдия авантюристов'
 
 const CHARACTERS = [
   ['Rudeus Greyrat', 'Rudeus Greyrat', 'Рудеус Грейрат', M, 'Человек', 'Маг', [GREYRAT, RANOA, DEAD_END], 0],
@@ -129,9 +128,9 @@ const CHARACTERS = [
   ['Nina Farion', 'Nina Farion', 'Нина Фарион', F, 'Человек', 'Мечник', [SWORD_GOD], 4],
   ['Isolte Cruel', 'Isolte Cruel', 'Изольта Круэль', F, 'Человек', 'Рыцарь', [ASURA, WATER_GOD], 4],
   ['Reida Reia', 'Reida Reia', 'Райда Рейя', F, 'Человек', 'Мечник', [ASURA, WATER_GOD], 4],
-  ['Sara', 'Sara', 'Сара', F, 'Человек', 'Авантюрист', [GUILD], 2],
+  ['Sara', 'Sara', 'Сара', F, 'Человек', 'Авантюрист', [], 2],
   ['Pax Shirone', 'Pax Shirone', 'Пакс Широн', M, 'Человек', 'Знать', [SHIRONE], 0],
-  ['Soldat Heckler', 'Soldat Heckler', 'Сольдат Хеклер', M, 'Человек', 'Авантюрист', [GUILD], 2],
+  ['Soldat Heckler', 'Soldat Heckler', 'Сольдат Хеклер', M, 'Человек', 'Авантюрист', [], 2],
   ['Auber Corvette', 'Auber Corvette', 'Оубер Корветт', M, 'Человек', 'Мечник', [NORTH_GOD], 4],
 ]
 
