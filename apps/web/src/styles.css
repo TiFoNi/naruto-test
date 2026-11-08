@@ -1543,28 +1543,26 @@ main,
   justify-content: center;
   gap: 6px;
   padding: 10px 10px 20px;
-  text-align: center;
-  border: 2px dashed color-mix(in srgb, var(--text-3) 55%, transparent);
   background:
-    radial-gradient(circle at 50% 40%, color-mix(in srgb, #d4645b 16%, transparent), transparent 70%),
-    var(--card);
-  color: var(--text-3);
+    radial-gradient(circle at 50% 35%, color-mix(in srgb, #d4645b 22%, transparent), transparent 72%),
+    #14161b;
+  color: #f1d6d2;
+  text-align: center;
 }
 
 .result-face.is-hidden b {
   font-family: var(--display);
   font-size: clamp(36px, 5vw, 56px);
   line-height: 1;
+  color: #ff9b91;
+  text-shadow: 0 0 18px color-mix(in srgb, #e5483b 55%, transparent);
 }
 
 .result-face.is-hidden small {
+  color: color-mix(in srgb, #f1d6d2 80%, transparent);
   font-size: 11px;
   font-weight: 700;
   line-height: 1.25;
-}
-
-.result.skipped .result-face.is-hidden {
-  box-shadow: none;
 }
 
 .result-name.is-hidden {
