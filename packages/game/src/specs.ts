@@ -613,16 +613,6 @@ export type Bundle = (typeof BUNDLES)[number]
 
 export const bundleOf = (id: unknown) => BUNDLES.find((one) => one.id === id) ?? null
 
-const PREVIEW_FRAMES = ['bones', 'magma', 'dragon', 'holo', 'glitch', 'nekohood', 'bearhood', 'bunnyhood', 'thorns', 'barbed', 'spikes', 'blockring', 'moonbloom', 'demonring', 'chrome', 'orb', 'liquid', 'comets', 'fire', 'lightning', 'particles', 'wings', 'ferrofluid', 'atom']
-const PREVIEW_BANNERS = ['rinnegan', 'wanted', 'itachi', 'pixelspider', 'redmoon', 'fireforce', 'ronaldo', 'wasted', 'glowmeadow', 'moonvortex', 'jinx', 'nighttree', 'blockhome', 'moonfield', 'demon', 'lotus', 'clouds', 'byakugan', 'spikedesert', 'frieren']
-const PREVIEW_BUNDLES = ['blocky', 'moonlit', 'demonic']
-
-export type ShopKind = 'frame' | 'banner' | 'bundle'
-
-const PREVIEW: Record<ShopKind, Set<string>> = { frame: new Set(PREVIEW_FRAMES), banner: new Set(PREVIEW_BANNERS), bundle: new Set(PREVIEW_BUNDLES) }
-
-export const isPreview = (kind: ShopKind, id: unknown) => typeof id === 'string' && PREVIEW[kind].has(id)
-
 export const frameRarity = (id: unknown) => (typeof id === 'string' ? (FRAME_RARITY[id] ?? null) : null)
 
 export const bannerRarity = (id: unknown) => (typeof id === 'string' ? (BANNER_RARITY[id] ?? null) : null)

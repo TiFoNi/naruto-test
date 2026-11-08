@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
-import { BANNER_COSTS, BANNER_RARITY, BUNDLES, FRAME_COSTS, FRAME_RARITY, RARITIES, bannerCost, frameCost, isPreview, type Rarity } from '@nanda/game'
+import { BANNER_COSTS, BANNER_RARITY, BUNDLES, FRAME_COSTS, FRAME_RARITY, RARITIES, bannerCost, frameCost, type Rarity } from '@nanda/game'
 import Avatar from './Avatar'
 import HeroPeek, { type PeekStats } from './HeroPeek'
 import BackButton from './BackButton'
@@ -137,8 +137,7 @@ export default function Shop() {
     return () => watcher.disconnect()
   }, [slide])
 
-  const open = (card: Card) => Boolean(user?.admin) || !isPreview(card.kind, card.id)
-  const list = (TABS.find((one) => one.id === tab)?.cards ?? []).filter(open)
+  const list = TABS.find((one) => one.id === tab)?.cards ?? []
   const card = list.find((one) => one.id === pick) ?? null
 
   const mineFrames = user?.frames ?? []
@@ -289,7 +288,7 @@ export default function Shop() {
             className={tab === one.id ? 'active' : ''}
             onClick={() => swap(one)}
           >
-            {t(one.label as UiKey)} <b>{one.cards.filter(open).length}</b>
+            {t(one.label as UiKey)} <b>{one.cards.length}</b>
           </button>
         ))}
       </Rail>
