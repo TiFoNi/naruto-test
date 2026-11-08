@@ -14,7 +14,7 @@ import { coverUrl, type QuizCard, type QuizKind, type QuizLayout } from './quiz'
 import { useHref } from './router'
 import { uiUrl } from './pics'
 
-const KINDS_SHOWN = 4
+const KINDS_SHOWN = 3
 
 type Status = 'all' | 'new' | 'going' | 'done'
 type Sort = 'new' | 'popular' | 'liked' | 'short' | 'long'
