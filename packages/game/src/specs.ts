@@ -496,11 +496,11 @@ export const RARITIES = ['common', 'rare', 'epic', 'legend'] as const
 
 export type Rarity = (typeof RARITIES)[number]
 
-export const RARITY_PRICE: Record<Rarity, { frame: number; banner: number; bundle: number }> = {
-  common: { frame: 280, banner: 200, bundle: 400 },
-  rare: { frame: 480, banner: 360, bundle: 700 },
-  epic: { frame: 800, banner: 640, bundle: 1200 },
-  legend: { frame: 1400, banner: 1000, bundle: 2000 },
+export const RARITY_PRICE: Record<Rarity, { frame: number; banner: number }> = {
+  common: { frame: 280, banner: 200 },
+  rare: { frame: 480, banner: 360 },
+  epic: { frame: 800, banner: 640 },
+  legend: { frame: 1400, banner: 1000 },
 }
 
 export const FRAME_RARITY: Record<string, Rarity> = {
@@ -591,7 +591,7 @@ const RANK: Record<Rarity, number> = { common: 0, rare: 1, epic: 2, legend: 3 }
 
 const pair = (frame: string, banner: string) => {
   const tier = RANK[FRAME_RARITY[frame]] >= RANK[BANNER_RARITY[banner]] ? FRAME_RARITY[frame] : BANNER_RARITY[banner]
-  return { frame, banner, rarity: tier, cost: RARITY_PRICE[tier].bundle }
+  return { frame, banner, rarity: tier, cost: FRAME_COSTS[frame]! + BANNER_COSTS[banner]! }
 }
 
 export const BUNDLES = [
