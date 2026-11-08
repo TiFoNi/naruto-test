@@ -326,7 +326,7 @@ export const GET = handle(async (request) => {
     awardsTotal: LIFE_FAMILIES.size,
     level: levelAt(xp),
     totals: {
-      solved: totals.won,
+      solved: totals.won + (doc.duelSolved ?? 0),
       played: totals.played,
       gaveUp: totals.gaveUp,
       guesses: totals.guesses,

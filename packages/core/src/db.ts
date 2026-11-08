@@ -28,6 +28,7 @@ export type UserDoc = {
   xpToday?: { day: string; daily: number; endless: number; duel?: number }
   stats?: Record<string, Partial<Stats>>
   solvedTotal?: number
+  duelSolved?: number
   visit?: { lastDay: string; streak: number; best: number; days: string[] }
   humanAt?: Date
   awards?: Record<string, Date>
@@ -111,7 +112,6 @@ export type RoundDoc = {
   anime?: boolean
   daily?: string
   challenge?: string
-  duel?: string
   extra?: string
   guessCount?: number
   lastGuessAt?: Date

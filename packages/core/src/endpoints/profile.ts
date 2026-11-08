@@ -27,7 +27,7 @@ export const POST = handle(async (request) => {
     const doc = await found.collection.findOneAndUpdate(
       { _id: userId },
       {
-        $unset: { stats: '', solvedTotal: '', duelStats: '', duelLog: '', duelBestMs: '', duelComeback: '', challengeStats: '', xp: '', xpToday: '', xpGain: '', awards: '', awardsSolved: '', awardsAt: '', claimed: '', pinned: '', visit: '', tally: '', langs: '' },
+        $unset: { stats: '', solvedTotal: '', duelSolved: '', duelStats: '', duelLog: '', duelBestMs: '', duelComeback: '', challengeStats: '', xp: '', xpToday: '', xpGain: '', awards: '', awardsSolved: '', awardsAt: '', claimed: '', pinned: '', visit: '', tally: '', langs: '' },
         $set: { resetAt: new Date() },
       },
       { returnDocument: 'after' },
