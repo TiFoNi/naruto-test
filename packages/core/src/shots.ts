@@ -145,7 +145,20 @@ async function keepScore(userId: ObjectId, score: number, best: number) {
   await collection.updateOne({ _id: userId }, { $set: { [`${PATH}.best`]: best, [`${PATH}.day`]: day, [`${PATH}.dayBest`]: dayBest } })
 }
 
-async function markSolved(userId: ObjectId, frames: number, streak: number, gained: number) {
+async function raiseScore(userId: ObjectId, score: number) {
+  const day = today()
+  await (await users()).updateOne({ _id: userId }, [
+    {
+      $set: {
+        [`${PATH}.best`]: { $max: [{ $ifNull: [`$${PATH}.best`, 0] }, score] },
+        [`${PATH}.dayBest`]: { $cond: [{ $eq: [`$${PATH}.day`, day] }, { $max: [{ $ifNull: [`$${PATH}.dayBest`, 0] }, score] }, score] },
+        [`${PATH}.day`]: day,
+      },
+    },
+  ])
+}
+
+async function markSolved(userId: ObjectId, frames: number, streak: number, gained: number, score: number) {
   const doc = await (await users()).findOneAndUpdate(
     { _id: userId },
     {
@@ -155,6 +168,7 @@ async function markSolved(userId: ObjectId, frames: number, streak: number, gain
     { returnDocument: 'after', projection: { [`${PATH}.points`]: 1 } },
   )
   await raiseBest(await users(), userId, PATH, 'bestStreak', streak)
+  await raiseScore(userId, score)
   return pointsOf(doc)
 }
 
@@ -240,7 +254,7 @@ export async function shotAnswer(userId: ObjectId, pick: number) {
     const next = await nextTitle(doc, doc.score + gained, doc.streak + 1)
     if (!next) return null
     await logRound(doc, doc.answerId, 'won', doc.level + 1)
-    const total = doc.guest ? undefined : await markSolved(doc.userId, doc.level + 1, doc.streak + 1, gained)
+    const total = doc.guest ? undefined : await markSolved(doc.userId, doc.level + 1, doc.streak + 1, gained, doc.score + gained)
     const xp = doc.guest ? null : await addXp(await users(), doc.userId, xpAt(doc.level), 'endless', MODE)
     return { right: true as const, answerId: doc.answerId, gained, best: doc.best, total, ...(xp ? { xp } : {}), ...next }
   }
