@@ -944,7 +944,7 @@ const CardSheet = ({
   const { t } = useI18n()
   const finds = Object.entries(rank.modes)
     .map(([mode, one]) => ({ mode: MODES.find((item) => item.id === mode), ...one }))
-    .filter((one) => one.mode && one.n > 0)
+    .filter((one) => one.mode && one.xp > 0)
     .sort((a, b) => b.xp - a.xp)
   const from = CARD_STEPS[rank.tier]!.xp
   const share = rank.next ? Math.min(1, (rank.xp - from) / (rank.next.xp - from)) : 1
