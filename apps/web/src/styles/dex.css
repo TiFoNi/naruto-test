@@ -476,6 +476,14 @@
   flex: none;
 }
 
+.dex-help-box + .dex-help-box {
+  margin-left: -6px;
+}
+
+.dex-help-box.is-soon .dex-help-toggle:not(.is-open) {
+  rotate: 4deg;
+}
+
 .dex-help-toggle {
   position: relative;
   display: grid;

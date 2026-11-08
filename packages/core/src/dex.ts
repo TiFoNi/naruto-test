@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { cardPoints, type ModeId } from '@nanda/game'
+import { CARD_MAX_LEVEL, cardPoints, type ModeId } from '@nanda/game'
 import { cards, users } from './db'
 
 export type CardGain = { mode: ModeId; xp: number }
@@ -12,13 +12,28 @@ export async function openDex(userId: ObjectId, game: string | undefined, id: nu
   if (!game || !Number.isInteger(id)) return
   await (await users()).updateOne({ _id: userId }, { $addToSet: { [`dex.${game}`]: id } })
   if (!gain || gain.xp <= 0) return
+  const mode = `modes.${gain.mode}`
   await (await cards()).updateOne(
     { _id: cardKey(userId, game, id!) },
-    {
-      $inc: { xp: gain.xp, [`modes.${gain.mode}.n`]: 1, [`modes.${gain.mode}.xp`]: gain.xp },
-      $set: { updatedAt: new Date() },
-      $setOnInsert: { userId, game, entityId: id! },
-    },
+    [
+      {
+        $set: {
+          userId: { $ifNull: ['$userId', userId] },
+          game: { $ifNull: ['$game', game] },
+          entityId: { $ifNull: ['$entityId', id!] },
+          gained: { $max: [0, { $min: [gain.xp, { $subtract: [CARD_MAX_LEVEL, { $ifNull: ['$xp', 0] }] }] }] },
+        },
+      },
+      {
+        $set: {
+          xp: { $add: [{ $ifNull: ['$xp', 0] }, '$gained'] },
+          [`${mode}.n`]: { $add: [{ $ifNull: [`$${mode}.n`, 0] }, 1] },
+          [`${mode}.xp`]: { $add: [{ $ifNull: [`$${mode}.xp`, 0] }, '$gained'] },
+          updatedAt: new Date(),
+        },
+      },
+      { $unset: 'gained' },
+    ],
     { upsert: true },
   )
 }

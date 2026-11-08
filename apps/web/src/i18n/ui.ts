@@ -46,6 +46,12 @@ const ui = {
   },
   'dex.help.points': { ru: 'Каждая отгадка даёт карте очки', uk: 'Кожна відгадка дає карті очки', en: 'Each guess gives the card points' },
   'dex.help.daily': { ru: 'В ежедневных — в {factor} раза больше.', uk: 'У щоденних — у {factor} рази більше.', en: 'Daily rounds give ×{factor}.' },
+  'dex.soonTitle': { ru: 'Скоро обновление', uk: 'Скоро оновлення', en: 'Update coming' },
+  'dex.soon': {
+    ru: 'Бестиарий готовится к грандиозному обновлению. Пока карты качаются максимум до {max} уровня — опыт сверх него не засчитывается.',
+    uk: 'Бестіарій готується до грандіозного оновлення. Поки картки качаються максимум до {max} рівня — досвід понад нього не зараховується.',
+    en: 'The bestiary is getting ready for a huge update. For now cards level up to {max} at most — anything past that is not counted.',
+  },
   'dex.help.rarity': { ru: 'Очко — это уровень, максимум {max}', uk: 'Очко — це рівень, максимум {max}', en: 'One point is one level, up to {max}' },
   'dex.help.tap': {
     ru: 'Нажми на карту, а потом на её уровень — увидишь, где её угадывали.',
