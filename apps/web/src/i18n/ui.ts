@@ -446,6 +446,11 @@ const ui = {
     uk: 'У дуелях за вгаданого персонажа досвід як у нескінченному режимі. Смужка «Дуелі» — лише за перемогу в матчі: {xp} XP за кожну потрібну перемогу.',
     en: 'In duels, each character you guess gives the same XP as Endless. The Duels bar fills only from match wins: {xp} XP per win needed.',
   },
+  'xp.dailyNote': {
+    ru: 'Ежедневные загадки дают не больше {cap} XP в день — сверх лимита опыт не начисляется.',
+    uk: 'Щоденні загадки дають не більше {cap} XP на день — понад ліміт досвід не нараховується.',
+    en: 'Daily puzzles give at most {cap} XP a day — nothing past the limit.',
+  },
   'xp.colAfter': { ru: 'После лимита', uk: 'Після ліміту', en: 'Past limit' },
   'xp.daily': { ru: 'Ежедневные загадки', uk: 'Щоденні загадки', en: 'Daily puzzles' },
   'xp.endless': { ru: 'Бесконечный', uk: 'Нескінченний', en: 'Endless' },

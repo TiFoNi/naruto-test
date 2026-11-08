@@ -164,7 +164,10 @@ export async function addXp(
       { $set: { xpToday: { day, daily: carry('daily'), endless: carry('endless'), duel: carry('duel') } } },
       {
         $set: {
-          xpGain: { $cond: [{ $lt: [`$xpToday.${source}`, XP_CAPS[source]] }, amount, after] },
+          xpGain:
+            source === 'daily'
+              ? { $max: [0, { $min: [amount, { $subtract: [XP_CAPS.daily, `$xpToday.daily`] }] }] }
+              : { $cond: [{ $lt: [`$xpToday.${source}`, XP_CAPS[source]] }, amount, after] },
         },
       },
       { $set: { [`xpToday.${source}`]: { $add: [`$xpToday.${source}`, '$xpGain'] }, xp: { $add: [orZero('xp'), '$xpGain'] } } },
