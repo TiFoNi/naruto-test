@@ -240,7 +240,8 @@ export const GET = handle(async (request) => {
   const pools = await Promise.all(
     GAME_IDS.map(async (game) => {
       const data = await gameData(game as GameId)
-      const solved = (unique.get(game) ?? []).filter((id) => data.byId.get(id)?.answer).length
+      const seen = new Set([...(unique.get(game) ?? []), ...(doc.dex?.[game] ?? [])])
+      const solved = [...seen].filter((id) => data.byId.get(id)?.answer).length
       return { game, pool: data.pool.length, solved }
     }),
   )
