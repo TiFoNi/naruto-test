@@ -72,7 +72,9 @@ const UK = {
 
 const ART_ONLY = new Set(['Isolte Cruel', 'Nanahoshi Shizuka'])
 
-const DEBUTS = ['1 сезон, 1 часть', '1 сезон, 2 часть', '2 сезон, 1 часть', '2 сезон, 2 часть', '3 сезон']
+const DEBUTS = ['1 сезон', '1 сезон', '2 сезон', '2 сезон', '3 сезон']
+
+const SEASON = [0, 0, 1, 1, 2]
 
 const M = 'Мужской'
 const F = 'Женский'
@@ -210,7 +212,7 @@ async function main() {
       role,
       affiliations: affiliations.length ? affiliations : ['Без фракции'],
       debut: DEBUTS[debut],
-      debutIndex: debut,
+      debutIndex: SEASON[debut],
       answer: true,
     })
   })

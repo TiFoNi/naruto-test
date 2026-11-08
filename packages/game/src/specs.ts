@@ -536,6 +536,7 @@ export const FRAME_RARITY: Record<string, Rarity> = {
   holo: 'common',
   glitch: 'common',
   nekohood: 'epic',
+  sakura: 'epic',
   bearhood: 'epic',
   bunnyhood: 'epic',
   thorns: 'epic',

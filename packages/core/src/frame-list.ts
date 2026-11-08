@@ -4,7 +4,7 @@ export const SEASON_FRAMES: Record<number, string> = { 5: 'cosmos', 6: 'blades' 
 
 export const championFrame = (season: number) => SEASON_FRAMES[season] ?? PLACE_FRAMES[0]
 
-export const AWARD_FRAMES = [...PLACE_FRAMES, 'cosmos', 'blades', 'sakura', 'kitsune'] as const
+export const AWARD_FRAMES = [...PLACE_FRAMES, 'cosmos', 'blades'] as const
 
 export const WORLD_FRAMES = [
   'berserk',
@@ -28,7 +28,7 @@ export const OTHER_FRAMES = ['top10'] as const
 
 export const EFFECT_FRAMES = ['chrome', 'orb', 'liquid', 'comets', 'fire', 'lightning', 'particles', 'vortex', 'ferrofluid', 'atom', 'wings'] as const
 
-export const ART_FRAMES = ['nekohood', 'bearhood', 'bunnyhood', 'bones', 'magma', 'dragon', 'holo', 'glitch', 'thorns', 'barbed', 'spikes', 'blockring', 'moonbloom', 'demonring'] as const
+export const ART_FRAMES = ['nekohood', 'bearhood', 'bunnyhood', 'bones', 'magma', 'dragon', 'holo', 'glitch', 'thorns', 'barbed', 'spikes', 'blockring', 'moonbloom', 'demonring', 'sakura'] as const
 
 export const FRAMES = [...AWARD_FRAMES, ...WORLD_FRAMES, ...NATURE_FRAMES, ...OTHER_FRAMES, ...EFFECT_FRAMES, ...ART_FRAMES] as const
 

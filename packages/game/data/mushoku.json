@@ -11,7 +11,7 @@
   "affiliations": [
    "Семья Грейрат"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 0
@@ -29,8 +29,8 @@
    "Королевство Асура",
    "Университет Раноа"
   ],
-  "debut": "1 сезон, 2 часть",
-  "debutIndex": 1,
+  "debut": "1 сезон",
+  "debutIndex": 0,
   "answer": true,
   "thumb": 1
  },
@@ -46,7 +46,7 @@
   "affiliations": [
    "Небесная крепость"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 2
@@ -64,8 +64,8 @@
    "Университет Раноа",
    "Демонический континент"
   ],
-  "debut": "2 сезон, 1 часть",
-  "debutIndex": 2,
+  "debut": "2 сезон",
+  "debutIndex": 1,
   "answer": true,
   "thumb": 3
  },
@@ -83,7 +83,7 @@
    "Школа Бога Меча"
   ],
   "debut": "3 сезон",
-  "debutIndex": 4,
+  "debutIndex": 2,
   "answer": true,
   "thumb": 4
  },
@@ -101,7 +101,7 @@
    "Дом Бореас",
    "Школа Бога Меча"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 5
@@ -118,8 +118,8 @@
   "affiliations": [
    "Клык Чёрного волка"
   ],
-  "debut": "1 сезон, 2 часть",
-  "debutIndex": 1,
+  "debut": "1 сезон",
+  "debutIndex": 0,
   "answer": true,
   "thumb": 6
  },
@@ -135,8 +135,8 @@
   "affiliations": [
    "Королевство Асура"
   ],
-  "debut": "1 сезон, 2 часть",
-  "debutIndex": 1,
+  "debut": "1 сезон",
+  "debutIndex": 0,
   "answer": true,
   "thumb": 7
  },
@@ -152,8 +152,8 @@
   "affiliations": [
    "Королевство Широн"
   ],
-  "debut": "2 сезон, 1 часть",
-  "debutIndex": 2,
+  "debut": "2 сезон",
+  "debutIndex": 1,
   "answer": true,
   "thumb": 8
  },
@@ -170,8 +170,8 @@
    "Королевство Широн",
    "Университет Раноа"
   ],
-  "debut": "1 сезон, 2 часть",
-  "debutIndex": 1,
+  "debut": "1 сезон",
+  "debutIndex": 0,
   "answer": true,
   "thumb": 9
  },
@@ -188,7 +188,7 @@
    "Семья Грейрат",
    "Клык Чёрного волка"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 10
@@ -207,7 +207,7 @@
    "Школа Бога Воды"
   ],
   "debut": "3 сезон",
-  "debutIndex": 4,
+  "debutIndex": 2,
   "answer": true,
   "thumb": 11
  },
@@ -223,7 +223,7 @@
   "affiliations": [
    "Демонический континент"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 12
@@ -240,8 +240,8 @@
   "affiliations": [
    "Университет Раноа"
   ],
-  "debut": "1 сезон, 2 часть",
-  "debutIndex": 1,
+  "debut": "1 сезон",
+  "debutIndex": 0,
   "answer": true,
   "thumb": 13
  },
@@ -257,7 +257,7 @@
   "affiliations": [
    "Семья Грейрат"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 14
@@ -274,8 +274,8 @@
   "affiliations": [
    "Университет Раноа"
   ],
-  "debut": "2 сезон, 1 часть",
-  "debutIndex": 2,
+  "debut": "2 сезон",
+  "debutIndex": 1,
   "answer": true,
   "thumb": 15
  },
@@ -292,8 +292,8 @@
    "Королевство Асура",
    "Университет Раноа"
   ],
-  "debut": "1 сезон, 2 часть",
-  "debutIndex": 1,
+  "debut": "1 сезон",
+  "debutIndex": 0,
   "answer": true,
   "thumb": 16
  },
@@ -309,8 +309,8 @@
   "affiliations": [
    "Университет Раноа"
   ],
-  "debut": "1 сезон, 2 часть",
-  "debutIndex": 1,
+  "debut": "1 сезон",
+  "debutIndex": 0,
   "answer": true,
   "thumb": 17
  },
@@ -327,7 +327,7 @@
    "Школа Бога Меча"
   ],
   "debut": "3 сезон",
-  "debutIndex": 4,
+  "debutIndex": 2,
   "answer": true,
   "thumb": 18
  },
@@ -344,7 +344,7 @@
    "Семья Грейрат",
    "Университет Раноа"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 19
@@ -361,7 +361,7 @@
   "affiliations": [
    "Семь великих сил"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 20
@@ -379,7 +379,7 @@
    "Школа Бога Севера"
   ],
   "debut": "3 сезон",
-  "debutIndex": 4,
+  "debutIndex": 2,
   "answer": true,
   "thumb": 21
  },
@@ -395,7 +395,7 @@
   "affiliations": [
    "Королевство Широн"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 22
@@ -414,7 +414,7 @@
    "Королевство Асура",
    "Небесная крепость"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 23
@@ -432,7 +432,7 @@
    "Семья Грейрат",
    "Клык Чёрного волка"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 24
@@ -449,8 +449,8 @@
   "affiliations": [
    "Университет Раноа"
   ],
-  "debut": "2 сезон, 1 часть",
-  "debutIndex": 2,
+  "debut": "2 сезон",
+  "debutIndex": 1,
   "answer": true,
   "thumb": 25
  },
@@ -468,7 +468,7 @@
    "Школа Бога Воды"
   ],
   "debut": "3 сезон",
-  "debutIndex": 4,
+  "debutIndex": 2,
   "answer": true,
   "thumb": 26
  },
@@ -486,7 +486,7 @@
    "Университет Раноа",
    "Королевство Широн"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 27
@@ -505,7 +505,7 @@
    "Университет Раноа",
    "Мёртвый конец"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 28
@@ -522,7 +522,7 @@
   "affiliations": [
    "Мёртвый конец"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 29
@@ -539,8 +539,8 @@
   "affiliations": [
    "Без фракции"
   ],
-  "debut": "2 сезон, 1 часть",
-  "debutIndex": 2,
+  "debut": "2 сезон",
+  "debutIndex": 1,
   "answer": true,
   "thumb": 30
  },
@@ -557,7 +557,7 @@
    "Дом Бореас",
    "Королевство Асура"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 31
@@ -576,7 +576,7 @@
    "Университет Раноа",
    "Королевство Асура"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 32
@@ -593,8 +593,8 @@
   "affiliations": [
    "Без фракции"
   ],
-  "debut": "2 сезон, 1 часть",
-  "debutIndex": 2,
+  "debut": "2 сезон",
+  "debutIndex": 1,
   "answer": true,
   "thumb": 33
  },
@@ -610,7 +610,7 @@
   "affiliations": [
    "Клык Чёрного волка"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 34
@@ -628,7 +628,7 @@
    "Дом Бореас",
    "Королевство Асура"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 35
@@ -646,7 +646,7 @@
    "Дом Бореас",
    "Королевство Асура"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 36
@@ -662,7 +662,7 @@
   "affiliations": [
    "Без фракции"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 37
@@ -680,7 +680,7 @@
    "Клык Чёрного волка",
    "Университет Раноа"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 38
@@ -700,7 +700,7 @@
    "Мёртвый конец",
    "Школа Бога Меча"
   ],
-  "debut": "1 сезон, 1 часть",
+  "debut": "1 сезон",
   "debutIndex": 0,
   "answer": true,
   "thumb": 39

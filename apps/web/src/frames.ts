@@ -14,8 +14,6 @@ const AWARD_LABELS: Record<string, L10n> = {
   top1: l10n('1-е место', '1-ше місце', '1st place'),
   cosmos: l10n('Космос', 'Космос', 'Cosmos'),
   blades: l10n('Клинки', 'Клинки', 'Blades'),
-  sakura: l10n('Сакура', 'Сакура', 'Sakura'),
-  kitsune: l10n('Кицунэ', 'Кіцуне', 'Kitsune'),
 }
 
 const NATURE_LABELS: Record<string, L10n> = {
@@ -41,6 +39,7 @@ const EFFECT_LABELS: Record<string, L10n> = {
 }
 
 const ART_LABELS: Record<string, L10n> = {
+  sakura: l10n('Сакура', 'Сакура', 'Sakura'),
   nekohood: l10n('Кошачий капюшон', 'Котячий каптур', 'Cat hood'),
   bearhood: l10n('Мишкин капюшон', 'Ведмежий каптур', 'Bear hood'),
   bunnyhood: l10n('Зайкин капюшон', 'Заячий каптур', 'Bunny hood'),
@@ -57,7 +56,7 @@ const ART_LABELS: Record<string, L10n> = {
   demonring: l10n('Демоническое кольцо', 'Демонічне кільце', 'Demon ring'),
 }
 
-const DRAWN = new Set<string>([...NATURE_FRAMES, ...EFFECT_FRAMES, ...ART_FRAMES, 'aot', 'kny', 'tg', 'dn', 'top1', 'cosmos', 'blades', 'sakura', 'kitsune'])
+const DRAWN = new Set<string>([...NATURE_FRAMES, ...EFFECT_FRAMES, ...ART_FRAMES, 'aot', 'kny', 'tg', 'dn', 'top1', 'cosmos', 'blades'])
 
 const ALL: Frame[] = [
   ...AWARD_FRAMES.map((id) => ({ id, kind: 'award' as const, label: AWARD_LABELS[id] })),
@@ -70,7 +69,7 @@ const ALL: Frame[] = [
 
 export const FRAMES: Frame[] = ALL.filter((one) => DRAWN.has(one.id))
 
-const ART = '40'
+const ART = '41'
 
 const MOVING = new Set<string>(EFFECT_FRAMES)
 
