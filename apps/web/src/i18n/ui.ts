@@ -1383,6 +1383,7 @@ const ui = {
   'levels.take': { ru: 'Забрать', uk: 'Забрати', en: 'Claim' },
   'levels.locked': { ru: 'Откроется на {level} уровне', uk: 'Відкриється на {level} рівні', en: 'Unlocks at level {level}' },
   'nav.levels': { ru: 'Уровни', uk: 'Рівні', en: 'Levels' },
+  'levels.claimHint': { ru: 'Забрать награды', uk: 'Забрати нагороди', en: 'Claim rewards' },
 
   'quiz.title': { ru: 'Тесты', uk: 'Тести', en: 'Quizzes' },
   'quiz.desc': { ru: 'Вопросы по вселенной с вариантами ответов', uk: 'Питання по всесвіту з варіантами відповідей', en: 'Questions about the universe with answer options' },

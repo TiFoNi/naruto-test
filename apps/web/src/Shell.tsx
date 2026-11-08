@@ -31,7 +31,7 @@ import { DUEL_WIN_XP, MODE_XP, MODE_XP_AFTER, POOL_XP_BASE, TONE_HEX, levelAt, p
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
-import { BellIcon, ChatIcon, GoogleIcon, PencilIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, InfoIcon, MedalIcon, PodiumIcon, ShopIcon, TrophyIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
+import { BellIcon, ChatIcon, GoogleIcon, PencilIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, GiftIcon, InfoIcon, MedalIcon, PodiumIcon, ShopIcon, TrophyIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { api } from './api'
 import { openStream } from './stream'
 import { GAMES, gameById } from './games'
@@ -288,6 +288,7 @@ function AccountMenu({
   const box = useDropdown(open, setOpen)
   const inside = section === 'profile' || section === 'settings' || section === 'friends'
   const [asks, setAsks] = useState(0)
+  const rewards = user?.rewards ?? 0
 
   useEffect(() => {
     const stop = watchFeed((feed) => setAsks(feed.requests.length))
@@ -317,9 +318,10 @@ function AccountMenu({
           <UserIcon />
           {t('nav.profile')}
         </Link>
-        <Link href={href.levels} onClick={() => setOpen(false)} prefetch={false}>
-          <MedalIcon />
+        <Link href={href.levels} onClick={() => setOpen(false)} prefetch={false} className={rewards > 0 ? 'is-reward' : undefined}>
+          {rewards > 0 ? <GiftIcon /> : <MedalIcon />}
           {t('nav.levels')}
+          {rewards > 0 && <span className="account-claim">{t('levels.claimHint')}</span>}
         </Link>
         <Link href={href.achievements} onClick={() => setOpen(false)} prefetch={false}>
           <TrophyIcon />

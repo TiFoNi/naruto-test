@@ -27,6 +27,7 @@ export type User = {
   level: number
   xp: number
   coins: number
+  rewards?: number
   today?: XpToday
   streak: number
   bestStreak: number

@@ -2765,6 +2765,30 @@ main,
   color: inherit;
 }
 
+.account-menu a.is-reward {
+  padding: 8px 11px;
+  border: 1px solid rgba(255, 138, 31, 0.35);
+  background: rgba(255, 138, 31, 0.12);
+  color: #ffd2a8;
+}
+
+.account-menu a.is-reward:hover {
+  background: rgba(255, 138, 31, 0.2);
+  color: #ffe4cc;
+}
+
+.account-menu a.is-reward .icon {
+  color: #ff8a1f;
+}
+
+.account-claim {
+  margin-left: auto;
+  color: #ff8a1f;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
 .account-menu button:last-child:hover {
   color: #ff9b91;
 }

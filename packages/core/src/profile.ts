@@ -4,6 +4,8 @@ import {
   DAILY_KEYS,
   DAILY_XP_FACTOR,
   DAILY_XP_MODES,
+  LEVEL_LAST,
+  levelCoins,
   MODE_XP,
   MODE_XP_AFTER,
   poolXp,
@@ -245,6 +247,7 @@ export function toProfile(doc: UserDoc) {
       level: levelOf(xp),
       xp,
       coins: number(doc.coins),
+      rewards: rewardsWaiting(doc, xp),
       today: todayXp(doc),
       streak: alive(doc.visit) ? (doc.visit?.streak ?? 0) : 0,
       bestStreak: doc.visit?.best ?? 0,
@@ -262,6 +265,14 @@ export function toProfile(doc: UserDoc) {
       draws: number(doc.duelStats?.draws),
     },
   }
+}
+
+const rewardsWaiting = (doc: UserDoc, xp: number) => {
+  const reached = Math.min(levelOf(xp), LEVEL_LAST)
+  const taken = new Set(doc.levelsTaken ?? [])
+  let count = 0
+  for (let level = 1; level <= reached; level++) if (!taken.has(level) && levelCoins(level) > 0) count++
+  return count
 }
 
 export async function currentUser(request: Request) {
