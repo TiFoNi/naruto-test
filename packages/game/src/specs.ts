@@ -409,7 +409,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
-export const HIDDEN_GAMES: GameId[] = ['mushoku']
+export const HIDDEN_GAMES: GameId[] = []
 
 export const OPEN_GAMES = GAME_IDS.filter((game) => !HIDDEN_GAMES.includes(game))
 
