@@ -49,7 +49,7 @@ export default function BoardFace({ id, nickname, avatar, frame, big, first }: P
       {worn && near && (
         <i className="avatar-frame" style={frameStyle(worn.id) as CSSProperties}>
           <img
-            src={frameUrl(worn.id, first ? undefined : big ? 'md' : 'sm')}
+            src={frameUrl(worn.id, first ? undefined : big ? 'md' : 'xs')}
             alt=""
             loading="lazy"
             decoding="async"
