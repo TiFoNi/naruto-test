@@ -16,13 +16,13 @@ const TRIES = 40
 
 type Trait = { key: string; value: string; who: Set<number> }
 
-const shelf = new Map<string, Trait[]>()
+const shelf = new WeakMap<object, Trait[]>()
 
 async function traitsOf(game: GameId) {
-  const known = shelf.get(game)
+  const { pool } = await gameData(game)
+  const known = shelf.get(pool)
   if (known) return known
 
-  const { pool } = await gameData(game)
   const columns = GAME_SPECS[game].columns.filter((one) => one.key !== 'gender' && one.kind !== 'order' && one.kind !== 'optionalOrder')
   const found: Trait[] = []
 
@@ -40,7 +40,7 @@ async function traitsOf(game: GameId) {
     for (const [value, who] of seen) if (who.size >= LEAST && who.size <= pool.length * 0.7) found.push({ key: column.key, value, who })
   }
 
-  shelf.set(game, found)
+  shelf.set(pool, found)
   return found
 }
 
