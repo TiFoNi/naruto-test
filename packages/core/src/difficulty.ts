@@ -24,7 +24,7 @@ import {
 } from '@nanda/game'
 import { duelRounds, rounds } from './db'
 
-const FRESH_MS = 24 * 60 * 60_000
+const FRESH_MS = 3 * 60 * 60_000
 const WINDOW_MS = 90 * 24 * 60 * 60_000
 
 type Mean = { players: number; avg: number }

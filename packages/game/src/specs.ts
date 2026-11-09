@@ -728,7 +728,7 @@ export const PACE = { perMinute: 22, perMinuteAfter: 10, thinkCapMs: 60_000, gue
 
 export const DUEL_PACE_MODES: ModeId[] = ['who', 'grid', 'clue']
 
-export const PACE_BONUS: Partial<Record<ModeId, number>> = { classic: 1.2, blind: 1.2 }
+export const PACE_TARGET: Partial<Record<ModeId, number>> = { classic: 22, blind: 28, image: 17, ability: 26, page: 28, odd: 26 }
 
 export type Pace = { base: number; after: number; msPerWin: number }
 
@@ -745,7 +745,8 @@ export const triesXpPastCap = (mode: ModeId, factor: number, pool: number, after
 
 export const paceFromTime = (mode: ModeId, msPerWin: number): Pace => {
   const minutes = msPerWin / 60_000
-  return { base: PACE.perMinute * (PACE_BONUS[mode] ?? 1) * minutes, after: PACE.perMinuteAfter * minutes, msPerWin }
+  const target = PACE_TARGET[mode] ?? PACE.perMinute
+  return { base: target * minutes, after: (target * PACE.perMinuteAfter * minutes) / PACE.perMinute, msPerWin }
 }
 
 export const paceWithin = (mode: ModeId, pace: Pace): Pace => {
