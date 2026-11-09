@@ -9610,6 +9610,10 @@ html[data-auth] .guest-note {
   flex-direction: column;
   gap: 8px;
   width: 248px;
+  max-height: max(180px, var(--tip-room, calc(100dvh - 240px)));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   padding: 12px;
   border-radius: 12px;
   border: 1px solid var(--line);

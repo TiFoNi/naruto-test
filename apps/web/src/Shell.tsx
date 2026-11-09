@@ -210,7 +210,12 @@ function XpToday() {
           tabIndex={0}
           role="button"
           aria-label={t('xp.rules')}
+          onFocus={(event) => {
+            const room = window.innerHeight - event.currentTarget.getBoundingClientRect().bottom - 26
+            event.currentTarget.style.setProperty('--tip-room', `${Math.round(room)}px`)
+          }}
           onMouseDown={(event) => {
+            if ((event.target as Element).closest('.xp-tip')) return
             event.preventDefault()
             const hint = event.currentTarget
             if (document.activeElement === hint) hint.blur()
