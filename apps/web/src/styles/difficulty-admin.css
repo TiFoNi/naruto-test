@@ -1,0 +1,393 @@
+.diff-gap {
+  width: 1px;
+  height: 22px;
+  margin: 0 4px;
+  background: var(--line);
+}
+
+.diff-refresh {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-left: 8px;
+  vertical-align: middle;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.diff-refresh:hover:not(:disabled) {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+.diff-refresh:disabled {
+  cursor: progress;
+}
+
+.diff-refresh svg {
+  width: 15px;
+  height: 15px;
+}
+
+.diff-refresh svg.spin {
+  animation: diff-spin 0.9s linear infinite;
+}
+
+@keyframes diff-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.diff-note {
+  margin: -4px 2px 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.diff-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.diff-table thead th {
+  position: sticky;
+  top: 0;
+  padding: 10px 8px;
+  color: var(--text-2);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+  background: var(--card-solid);
+}
+
+.diff-table th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  padding: 0 14px;
+  text-align: left;
+  background: var(--card-solid);
+}
+
+.diff-table thead th:first-child {
+  z-index: 2;
+}
+
+.diff-table tbody th {
+  color: var(--text);
+  font-weight: 600;
+  border-right: 1px solid var(--line);
+}
+
+.diff-table tbody tr + tr > * {
+  border-top: 1px solid var(--line);
+}
+
+.diff-table td {
+  padding: 0;
+  text-align: center;
+}
+
+.diff-table td + td {
+  border-left: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+}
+
+.diff-table td button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  width: 100%;
+  min-width: 74px;
+  padding: 7px 8px;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.diff-table td button b {
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.diff-table td button small {
+  color: var(--text-3);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.diff-table td button:hover {
+  background: color-mix(in srgb, #ffffff 6%, transparent);
+}
+
+.diff-table td.on {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+.diff-table td.diff-few button b {
+  color: var(--text-3);
+  font-weight: 600;
+}
+
+.diff-detail {
+  scroll-margin-top: calc(var(--topbar-h) + 150px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding: 22px 24px 24px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.22);
+}
+
+.diff-detail-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.diff-detail-head > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.diff-detail-head h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--display);
+  font-size: 24px;
+}
+
+.diff-detail-head h2 span {
+  color: var(--accent);
+}
+
+.diff-detail-head p {
+  margin: 6px 0 0;
+  font-size: 13px;
+}
+
+.diff-close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.diff-close:hover {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+.diff-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.diff-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.diff-stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+}
+
+.diff-stats dt {
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.diff-stats dd {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--display);
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+}
+
+.diff-stats > .main {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  background: color-mix(in srgb, var(--accent) 12%, var(--card-2));
+}
+
+.diff-stats > .main dd {
+  color: var(--accent);
+}
+
+.diff-wait {
+  margin: 0;
+  padding: 28px 0;
+  text-align: center;
+}
+
+.diff-detail .activity-scroll {
+  max-height: min(72vh, 900px);
+  overflow: auto;
+}
+
+.diff-characters {
+  font-size: 14.5px;
+}
+
+.diff-characters thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--card-solid);
+}
+
+.diff-characters th button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.diff-characters th button:hover,
+.diff-characters th button.on {
+  color: var(--text);
+}
+
+.diff-characters th button em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.diff-characters th:first-child,
+.diff-characters td:first-child {
+  width: 100%;
+  text-align: left;
+}
+
+.diff-characters th:nth-child(8),
+.diff-characters td:nth-child(8) {
+  text-align: right;
+}
+
+.diff-characters td {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.diff-characters tbody tr:hover td {
+  background: color-mix(in srgb, #ffffff 3%, transparent);
+}
+
+.diff-characters tr.diff-few td {
+  opacity: 0.45;
+}
+
+.diff-who {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.diff-who em {
+  margin-left: 6px;
+  color: var(--text-3);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.diff-thumb {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+}
+
+.diff-main {
+  min-width: 150px;
+}
+
+.diff-value {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.diff-track {
+  flex: none;
+  display: flex;
+  width: 90px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: color-mix(in srgb, #ffffff 6%, transparent);
+}
+
+.diff-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--text-3) 70%, transparent);
+}
+
+.diff-value b {
+  min-width: 38px;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.diff-main.hard .diff-track i {
+  background: var(--accent);
+}
+
+.diff-main.hard .diff-value b {
+  color: var(--accent);
+}
+
+.diff-main.easy .diff-track i {
+  background: color-mix(in srgb, #4cc38a 80%, transparent);
+}
+
+.diff-main.easy .diff-value b {
+  color: #4cc38a;
+}

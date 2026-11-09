@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { ReactNode } from 'react'
-import { ChartIcon, CrownIcon, FilmIcon, PaletteIcon, PuzzleIcon, TargetIcon, UsersIcon } from './icons'
+import { ChartIcon, CrownIcon, FilmIcon, LayersIcon, PaletteIcon, PuzzleIcon, TargetIcon, UsersIcon } from './icons'
 import { useHref } from './router'
 
 export default function AdminNav() {
@@ -17,6 +17,7 @@ export default function AdminNav() {
     { href: href.adminTitles, label: 'Титулы', icon: <CrownIcon /> },
     { href: href.adminFrames, label: 'Рамки', icon: <PaletteIcon /> },
     { href: href.adminActivity, label: 'Активность', icon: <ChartIcon /> },
+    { href: href.adminDifficulty, label: 'Сложность', icon: <LayersIcon /> },
   ]
   const current = tabs.filter((tab) => pathname.startsWith(tab.href)).sort((a, b) => b.href.length - a.href.length)[0]
 
