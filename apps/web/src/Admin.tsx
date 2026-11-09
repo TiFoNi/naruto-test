@@ -37,6 +37,11 @@ const hasPicture = (row: Row) => !!row.image || (row.thumb ?? -1) >= 0
 
 const LAST_GAME = 'admin-game'
 
+function applyAtlas(id: GameId, version?: string) {
+  const game = GAMES.find((g) => g.id === id)
+  if (game && version) game.atlas = { ...game.atlas, version }
+}
+
 export default function Admin() {
   const [gameId, setGameId] = useState<GameId>(GAMES[0].id)
   const [rows, setRows] = useState<Row[] | null>(null)
@@ -62,10 +67,12 @@ export default function Admin() {
       entities?: Row[]
       options?: Record<string, string[]>
       updated?: string
+      atlas?: string
     }>(`admin/entities?game=${game}`)
     if (mine !== request.current) return
     if (status === 404) return setDenied(true)
     if (!ok) return setRows([])
+    applyAtlas(game, data.atlas)
     setRows(data.entities ?? [])
     setOptions(data.options ?? {})
     setUpdated(data.updated ?? '')
@@ -481,8 +488,9 @@ async function upload(game: GameId, id: number, kind: 'portrait' | 'pages', file
 
   const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, '') ?? ''
   const response = await fetch(`${base}/api/admin/image`, { method: 'POST', body: form, credentials: base ? 'include' : 'same-origin' })
-  const data = (await response.json().catch(() => ({}))) as { entity?: Row; error?: string }
+  const data = (await response.json().catch(() => ({}))) as { entity?: Row; atlas?: string; error?: string }
   if (!response.ok || !data.entity) throw new Error(data.error === 'too_large' ? 'файл больше 8 МБ' : 'не загрузилось')
+  applyAtlas(game, data.atlas)
   return data.entity
 }
 

@@ -32,7 +32,7 @@ export const GET = handle(async (request) => {
   for (const key of Object.keys(options)) options[key].sort((a, b) => a.localeCompare(b, 'ru'))
 
   const config = await (await settings()).findOne({ game }, { projection: { _id: 0, game: 0 } })
-  return json({ entities: list, options, updated: config?.updated ?? '' })
+  return json({ entities: list, options, updated: config?.updated ?? '', atlas: config?.atlas ?? '' })
 })
 
 export const POST = handle(async (request) => {

@@ -52,5 +52,6 @@ export const POST = handle(async (request) => {
   forget(game)
 
   const doc = await collection.findOne({ game, id }, { projection: { _id: 0, game: 0, updatedAt: 0, edited: 0 } })
-  return json({ entity: doc })
+  const config = await (await settings()).findOne({ game }, { projection: { _id: 0, atlas: 1 } })
+  return json({ entity: doc, atlas: config?.atlas ?? '' })
 })
