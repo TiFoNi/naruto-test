@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api } from './api'
 import { useAuth } from './auth'
 import Avatar from './Avatar'
@@ -80,6 +80,30 @@ export default function QuizComments({ quizId, finished }: { quizId: string; fin
     if (!ready || window.location.hash !== '#comments') return
     document.getElementById('comments')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [ready])
+
+  const threaded = useMemo(() => {
+    const byId = new Map(list.map((one) => [one.id, one]))
+    const rootOf = (one: Comment) => {
+      const seen = new Set<string>()
+      let current = one
+      while (current.reply && byId.has(current.reply.id) && !seen.has(current.id)) {
+        seen.add(current.id)
+        current = byId.get(current.reply.id)!
+      }
+      return current
+    }
+    const roots: Comment[] = []
+    const replies = new Map<string, Comment[]>()
+    for (const one of list) {
+      const root = rootOf(one)
+      if (root.id === one.id) roots.push(one)
+      else replies.set(root.id, [...(replies.get(root.id) ?? []), one])
+    }
+    return roots.flatMap((root) => [
+      { comment: root, nested: false },
+      ...(replies.get(root.id) ?? []).sort((a, b) => a.at - b.at).map((comment) => ({ comment, nested: true })),
+    ])
+  }, [list])
 
   const send = async () => {
     const body = text.trim()
@@ -194,11 +218,11 @@ export default function QuizComments({ quizId, finished }: { quizId: string; fin
       {ready && !list.length && <p className="qc-empty">{t('comments.empty')}</p>}
 
       <ol className="qc-list">
-        {list.map((comment) => {
+        {threaded.map(({ comment, nested }) => {
           const veiled = comment.spoiler && !finished && !shown.has(comment.id) && !comment.mine
           if (!boxed.current.has(comment.id)) boxed.current.set(comment.id, veiled)
           return (
-            <li key={comment.id} className="qc-item">
+            <li key={comment.id} className={`qc-item ${nested ? 'is-reply' : ''}`}>
               <Link href={comment.mine ? href.profile : href.player(comment.userId)} prefetch={false} className="qc-av" aria-label={comment.nickname}>
                 <Avatar id={comment.userId} name={comment.nickname} avatar={comment.avatar} frame={comment.frame} small />
               </Link>
