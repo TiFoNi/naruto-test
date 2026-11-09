@@ -140,6 +140,28 @@ export default function Admin() {
     setNote(ok ? 'дата сохранена' : 'дата не сохранилась')
   }
 
+  const exportJson = () => {
+    const list = rows ?? []
+    const stats = fields.filter((key) => !(key.endsWith('Index') && fields.includes(key.slice(0, -'Index'.length))) && key !== 'image')
+    const pretty = list.map((row) => ({
+      id: row.id,
+      'Имя': row.name,
+      ...(row.nameUk ? { 'Имя (укр.)': row.nameUk } : {}),
+      ...(row.nameEn ? { 'Имя (англ.)': row.nameEn } : {}),
+      ...(row.aliases ? { 'Другие имена': row.aliases } : {}),
+      ...Object.fromEntries(stats.filter((key) => row[key] !== undefined).map((key) => [title(key), row[key]])),
+      'В пуле': !!row.answer,
+      ...(row.hidden ? { 'Скрыт': true } : {}),
+    }))
+    const blob = new Blob([JSON.stringify(pretty, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${gameId}-${new Date().toISOString().slice(0, 10)}.json`
+    link.click()
+    URL.revokeObjectURL(url)
+  }
+
   const open = openId === null ? null : (rows ?? []).find((r) => r.id === openId) ?? null
 
   const counts = useMemo(() => {
@@ -173,6 +195,12 @@ export default function Admin() {
           </div>
           <div className="admin-bar-side">
             <span className={`admin-note ${note ? 'on' : ''}`}>{note}</span>
+            <button type="button" className="admin-export" disabled={!rows?.length} onClick={exportJson} title={`Все ${unit.many.toLowerCase()} этой вселенной со всеми характеристиками`}>
+              <svg viewBox="0 0 24 24" aria-hidden>
+                <path d="M12 4v11M7 10.5l5 5 5-5M5 19.5h14" />
+              </svg>
+              JSON
+            </button>
             <label className="admin-date" title="Показывается в игре как дата актуальности данных">
               <span>Данные актуальны на</span>
               <input type="date" value={updated} onChange={(e) => void saveUpdated(e.target.value)} />

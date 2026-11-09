@@ -6,7 +6,7 @@ import { quizAttempts, quizzes, users, type QuizAttemptDoc, type QuizCover, type
 
 export const QUIZ_XP_PER_ANSWER = 10
 
-export const QUIZ_LIMITS = { title: 80, text: 300, option: 80, note: 1000, minOptions: 2, maxOptions: 8, maxPairs: 6, minQuestions: 3, maxQuestions: 30, ownQuizzes: 30 }
+export const QUIZ_LIMITS = { title: 80, text: 300, option: 90, note: 1000, minOptions: 2, maxOptions: 8, maxPairs: 6, minQuestions: 3, maxQuestions: 30, ownQuizzes: 30 }
 
 const STATUSES: QuizStatus[] = ['draft', 'review', 'published', 'rejected']
 

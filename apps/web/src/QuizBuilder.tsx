@@ -184,7 +184,7 @@ function ImageOption({ option, onChange }: { option: Extract<DraftOption, { kind
       </label>
       <input
         className="quiz-admin-input"
-        maxLength={80}
+        maxLength={90}
         placeholder={failed ? t('qb.uploadFailed') : t('qb.captionPh')}
         value={option.text}
         onChange={(event) => onChange({ ...option, text: event.target.value })}
@@ -276,7 +276,7 @@ function OptionField({
   return (
     <div className={`quiz-admin-option ${dup ? 'is-dup' : ''}`} title={dup ? t('qb.err.duplicate') : undefined}>
         {option.kind === 'text' && (
-          <input className={`quiz-admin-input ${dup ? 'is-dup' : ''}`} maxLength={80} placeholder={t('qb.optTextPh')} value={option.text} onChange={(event) => onChange({ kind: 'text', text: event.target.value })} />
+          <input className={`quiz-admin-input ${dup ? 'is-dup' : ''}`} maxLength={90} placeholder={t('qb.optTextPh')} value={option.text} onChange={(event) => onChange({ kind: 'text', text: event.target.value })} />
         )}
         {option.kind === 'entity' && <EntityPick game={game} byId={byId} id={option.id} taken={taken} onPick={(id) => onChange({ kind: 'entity', id })} />}
         {option.kind === 'image' && <ImageOption option={option} onChange={onChange} />}
