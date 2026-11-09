@@ -29,7 +29,7 @@ const WINDOW_MS = 90 * 24 * 60 * 60_000
 
 type Mean = { players: number; avg: number }
 type World = Mean & { chars: Map<number, Mean> }
-type TriesRow = { _id: { game: string; mode: string; id: number; user: unknown }; n: number; sum: number }
+type TriesRow = { _id: { game: string; mode: string; id: number; user: unknown }; n: number; sum: number; failed: number; failedSum: number }
 type PaceRow = { _id: { game: string; mode: string; bot?: boolean }; active: number; won: number }
 type PlayerPaceRow = { _id: { game: string; mode: string; bot?: boolean; user: unknown }; active: number; won: number; n: number }
 
@@ -50,10 +50,18 @@ async function measureTries() {
   return (await rounds())
     .aggregate<TriesRow>(
       [
-        { $match: { guest: { $ne: true }, status: 'won', daily: { $exists: false }, mode: { $in: tryModes }, ...recent() } },
-        { $project: { game: 1, mode: 1, answerId: 1, userId: 1, tries: attempts } },
-        { $match: { tries: { $gt: 0 } } },
-        { $group: { _id: { game: '$game', mode: '$mode', id: '$answerId', user: '$userId' }, n: { $sum: 1 }, sum: { $sum: '$tries' } } },
+        { $match: { guest: { $ne: true }, status: { $in: ['won', 'lost', 'skipped'] }, daily: { $exists: false }, mode: { $in: tryModes }, ...recent() } },
+        { $project: { game: 1, mode: 1, answerId: 1, userId: 1, tries: attempts, won: { $eq: ['$status', 'won'] } } },
+        { $match: { $or: [{ won: false }, { tries: { $gt: 0 } }] } },
+        {
+          $group: {
+            _id: { game: '$game', mode: '$mode', id: '$answerId', user: '$userId' },
+            n: { $sum: { $cond: ['$won', 1, 0] } },
+            sum: { $sum: { $cond: ['$won', '$tries', 0] } },
+            failed: { $sum: { $cond: ['$won', 0, 1] } },
+            failedSum: { $sum: { $cond: ['$won', 0, '$tries'] } },
+          },
+        },
       ],
       { allowDiskUse: true },
     )
@@ -117,20 +125,45 @@ async function measureDuels() {
 }
 
 function buildWorlds(rows: TriesRow[]) {
+  const solved = new Map<string, { sum: number; n: number }>()
+  for (const row of rows) {
+    if (!row.n) continue
+    const person = `${worldKey(row._id.game, row._id.mode)}|${String(row._id.user)}`
+    const total = solved.get(person) ?? { sum: 0, n: 0 }
+    total.sum += row.sum
+    total.n += row.n
+    solved.set(person, total)
+  }
+  const plain = new Map<string, { sum: number; players: number }>()
+  for (const [person, total] of solved) {
+    const key = person.slice(0, person.indexOf('|'))
+    const world = plain.get(key) ?? { sum: 0, players: 0 }
+    world.sum += total.sum / total.n
+    world.players += 1
+    plain.set(key, world)
+  }
+  const penalty = (key: string) => {
+    const world = plain.get(key)
+    return world ? world.sum / world.players : 0
+  }
+
   const chars = new Map<string, Map<number, { sum: number; players: number }>>()
   const players = new Map<string, { sum: number; n: number }>()
   for (const row of rows) {
     const key = worldKey(row._id.game, row._id.mode)
+    const cost = row.sum + row.failedSum + row.failed * penalty(key)
+    const count = row.n + row.failed
+    if (!count) continue
     const list = chars.get(key) ?? new Map<number, { sum: number; players: number }>()
     const one = list.get(row._id.id) ?? { sum: 0, players: 0 }
-    one.sum += row.sum / row.n
+    one.sum += cost / count
     one.players += 1
     list.set(row._id.id, one)
     chars.set(key, list)
     const person = `${key}|${String(row._id.user)}`
     const total = players.get(person) ?? { sum: 0, n: 0 }
-    total.sum += row.sum
-    total.n += row.n
+    total.sum += cost
+    total.n += count
     players.set(person, total)
   }
   const sums = new Map<string, { sum: number; players: number }>()
