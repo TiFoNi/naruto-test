@@ -231,7 +231,7 @@ async function main() {
       species,
       affiliations,
       rank,
-      styles: species === 'Демон' && !styles.length ? ['Кровавая техника'] : styles,
+      styles: species === 'Демон' && !styles.includes('Кровавая техника') ? [...styles, 'Кровавая техника'] : styles,
       status: status(infobox(text, 'status')),
       arc: ARCS[arcIndex][1],
       arcIndex,
