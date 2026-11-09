@@ -6,10 +6,7 @@ import {
   DAILY_XP_MODES,
   LEVEL_LAST,
   levelCoins,
-  MODE_XP,
   MODE_XP_AFTER,
-  poolXp,
-  poolXpPastCap,
   STAT_KEYS,
   XP_CAPS,
   isTitle,
@@ -18,6 +15,7 @@ import {
   type XpSource,
 } from '@nanda/game'
 import { shiftDay, today } from './daily'
+import { solveXpFor, xpRates, type SolveTarget } from './difficulty'
 import { users, type DailyMiss, type Stats, type UserDoc } from './db'
 import { levelOf } from './quests'
 import { addSeasonXp, touchSeasonDay } from './season'
@@ -139,11 +137,10 @@ export async function applyDailyResult(collection: Collection<UserDoc>, userId: 
   return dailyStats(next)
 }
 
-export async function awardSolveXp(collection: Collection<UserDoc>, userId: ObjectId, mode: ModeId, source: XpSource, pool = 0) {
+export async function awardSolveXp(collection: Collection<UserDoc>, userId: ObjectId, mode: ModeId, source: XpSource, pool = 0, target?: SolveTarget) {
   const extra = source === 'daily' && DAILY_XP_MODES.includes(mode) ? DAILY_XP_FACTOR : 1
-  const base = poolXp(MODE_XP[mode], mode, pool)
-  const after = source === 'daily' ? base : poolXpPastCap(MODE_XP_AFTER[mode], mode, pool)
-  return addXp(collection, userId, base * extra, source, mode, after)
+  const { base, after } = solveXpFor(mode, pool, target)
+  return addXp(collection, userId, base * extra, source, mode, source === 'daily' ? base : after)
 }
 
 export async function addXp(
@@ -196,6 +193,7 @@ export function todayXp(doc: UserDoc) {
     earned: earned('daily') + earned('endless'),
     cap: XP_CAPS.daily + XP_CAPS.endless,
     sources: (Object.keys(XP_CAPS) as XpSource[]).map((source) => ({ source, earned: earned(source), cap: XP_CAPS[source] })),
+    rates: xpRates(),
   }
 }
 

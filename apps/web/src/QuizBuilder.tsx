@@ -944,6 +944,18 @@ export default function QuizBuilder({
   const [badAt, setBadAt] = useState<number | null>(null)
   const [busy, setBusy] = useState(false)
   const restored = useRef(false)
+  const chipsAt = useRef(0)
+  const keepChips = useCallback((track: HTMLOListElement | null) => {
+    if (!track) return
+    track.scrollLeft = chipsAt.current
+    const on = track.querySelector<HTMLElement>('.qb-chip.on')
+    if (!on) return
+    const box = track.getBoundingClientRect()
+    const chip = on.getBoundingClientRect()
+    if (chip.left < box.left) track.scrollLeft -= box.left - chip.left + 8
+    else if (chip.right > box.right) track.scrollLeft += chip.right - box.right + 8
+    chipsAt.current = track.scrollLeft
+  }, [])
   const [ask, setAsk] = useState<Asking | null>(null)
   const game = GAMES.find((one) => one.id === quiz.game)!
   const ready = useEntities(game)
@@ -1083,7 +1095,7 @@ export default function QuizBuilder({
 
   const outline = (
     <div className="qb-qbar">
-      <ol className="qb-chips">
+      <ol className="qb-chips" ref={keepChips} onScroll={(event) => (chipsAt.current = event.currentTarget.scrollLeft)}>
         {quiz.questions.map((question, at) => (
           <li key={at}>
             <button

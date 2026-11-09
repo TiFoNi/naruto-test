@@ -1,6 +1,9 @@
 import type { Document } from 'mongodb'
 import { adminSession } from '../admin'
+import type { ModeId } from '@nanda/game'
 import { rounds } from '../db'
+import { paceReport, refreshDifficulty, solveXpFor } from '../difficulty'
+import { modePool } from '../extra'
 import { gameData, isGame, isMode } from '../games'
 import { fail, handle, json } from '../http'
 
@@ -138,13 +141,18 @@ export async function difficultyOverview(kind: Kind) {
 
 export async function difficultyCharacters(kind: Kind, game: string, mode: string) {
   const [rows, data] = await Promise.all([measure({ ...kindFilter(kind), game, mode }, '$answerId'), isGame(game) ? gameData(game) : null])
+  const pool = data ? modePool(data.pool, mode as ModeId).length : 0
   return rows
     .map((row) => {
       const id = Number(row.key)
       const entity = data?.byId.get(id)
+      const xp = solveXpFor(mode as ModeId, pool, { game, id })
       return {
         ...row,
         id,
+        xp: xp.base,
+        xpAfter: xp.after,
+        tries: xp.tries,
         name: typeof entity?.name === 'string' ? entity.name : `#${id}`,
         nameEn: typeof entity?.nameEn === 'string' ? entity.nameEn : undefined,
         nameUk: typeof entity?.nameUk === 'string' ? entity.nameUk : undefined,
@@ -193,10 +201,14 @@ export const GET = handle(async (request) => {
 
   if (game || mode) {
     if (!isGame(game) || !isMode(mode)) return fail(400, 'bad_request')
+    if (force) await refreshDifficulty()
     const entry = await remember(`${kind}:${game}:${mode}`, () => difficultyCharacters(kind, game, mode), force)
-    return json({ kind, game, mode, at: entry.at, rows: entry.data })
+    const data = await gameData(game)
+    const typical = solveXpFor(mode, modePool(data.pool, mode).length, { game, id: -1 })
+    return json({ kind, game, mode, at: entry.at, rows: entry.data, xp: typical.base, xpAfter: typical.after, tries: typical.tries })
   }
 
+  if (force) await refreshDifficulty()
   const entry = await remember(kind, () => difficultyOverview(kind), force)
-  return json({ kind, at: entry.at, rows: entry.data })
+  return json({ kind, at: entry.at, rows: entry.data, pace: paceReport() })
 })

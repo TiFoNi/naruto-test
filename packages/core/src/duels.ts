@@ -37,12 +37,13 @@ import {
   type ModeId,
 } from '@nanda/game'
 import { abilityByKey } from './abilities'
-import { duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type DuelTalk, type UserDoc } from './db'
+import { duelRounds, duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type DuelTalk, type UserDoc } from './db'
 import { tidy } from './chat'
 import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { gameData, isGame, isMode, type Entity } from './games'
 import { matchesFacet, planGrid } from './grid'
 import { BLACK, GREY, cleanCount, cleanWord, clueBoard, clueSizes, clueWinner, kindFor, sideLeft, teamKey } from './clue'
+import { paceXp } from './difficulty'
 import { addXp, awardSolveXp, defaultNickname } from './profile'
 import { collectQuestsQuietly } from './quests'
 import { sendPush, type PushLang } from './push'
@@ -51,7 +52,6 @@ import { markSeasonDuel } from './season'
 import { openDex, cardXpFor } from './dex'
 
 export const MIN_GAP_MS = 800
-const NO_XP_PAST_CAP = 0
 export const RUSH_PER_TRY_MS = 10_000
 export const DUEL_LOG_MAX = 10
 const BOARD_ROWS = 10
@@ -956,9 +956,12 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
     { returnDocument: 'after' },
   )
   if (!finished) return (await duels()).findOne({ _id: duel._id }) as Promise<DuelDoc>
+  if (turnMode(duel)) await logDuelRound(duel, champs, at).catch((error) => console.error('[duel-round]', error))
   if (duel.bot) {
-    if (winnerId && !winnerId.equals(BOT_ID) && duel.mode !== 'who')
-      await addXp(await users(), winnerId, MODE_XP[duel.mode as ModeId], 'endless', duel.mode as ModeId, NO_XP_PAST_CAP)
+    if (winnerId && !winnerId.equals(BOT_ID)) {
+      const paid = paceXp(duel.mode as ModeId, MODE_XP[duel.mode as ModeId], duel.game, true)
+      await addXp(await users(), winnerId, paid.base, 'endless', duel.mode as ModeId, paid.after)
+    }
     return finished
   }
   if (matchDone) {
@@ -975,11 +978,26 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
     await Promise.all(guessed.map((side) => openDex(side.userId, duel.game, duel.answerId, { mode: duel.mode as ModeId, xp: cardXpFor(duel.mode as ModeId, { pool }) })))
     if (guessed.length) await (await users()).updateMany({ _id: { $in: guessed.map((side) => side.userId) } }, { $inc: { duelSolved: 1 } })
   }
-  if (duel.mode !== 'who') {
-    await Promise.all(guessed.map(async (side) => awardSolveXp(await users(), side.userId, duel.mode as ModeId, 'endless', pool)))
-  }
+  await Promise.all(guessed.map(async (side) => awardSolveXp(await users(), side.userId, duel.mode as ModeId, 'endless', pool, duel.game && duel.answerId !== undefined ? { game: duel.game, id: duel.answerId } : undefined)))
   await Promise.all(masters.map((side) => collectQuestsQuietly(side.userId)))
   return finished
+}
+
+async function logDuelRound(duel: DuelDoc, champs: DuelPlayer[], at: Date) {
+  const start = duel.startedAt ?? duel.createdAt
+  const people = duel.players.filter((side) => !side.userId.equals(BOT_ID))
+  if (!people.length) return
+  await (await duelRounds()).insertMany(
+    people.map((side) => ({
+      game: duel.game ?? '',
+      mode: duel.mode ?? '',
+      userId: side.userId,
+      bot: Boolean(duel.bot),
+      won: champs.some((one) => one.userId.equals(side.userId)),
+      ms: Math.max(0, at.getTime() - start.getTime()),
+      at,
+    })),
+  )
 }
 
 async function duelPool(duel: DuelDoc) {

@@ -426,7 +426,7 @@ export const MODE_XP: Record<ModeId, number> = {
   ability: 5,
   page: 5,
   odd: 8,
-  pair: 8,
+  pair: 3,
   shot: 12,
   tune: 12,
   who: 25,
@@ -712,6 +712,47 @@ export const poolXpPastCap = (base: number, mode: unknown, pool: number) => {
 
 export const DAILY_XP_FACTOR = 3
 
+export const TRIES_REF: Partial<Record<ModeId, number>> = { classic: 6.5, blind: 6.5, image: 1.85, ability: 3, phrase: 9 }
+
+export const TRIES_FACTOR = { min: 0.5, max: 2.5, pastCap: 1.5 } as const
+
+export const TRIES_MIN_PLAYERS = 10
+
+export const TRIES_PRIOR = 5
+
+export const PACE_MODES: ModeId[] = ['classic', 'blind', 'image', 'ability', 'page', 'phrase', 'odd', 'pair', 'shot', 'tune']
+
+export const LOGGED_MODES: ModeId[] = ['pair', 'shot', 'tune']
+
+export const PACE = { perMinute: 22, perMinuteAfter: 5, thinkCapMs: 60_000, guessCapMs: 45_000, duelCapMs: 10 * 60_000, minWins: 200, priorWins: 100, spread: 3 } as const
+
+export const DUEL_PACE_MODES: ModeId[] = ['who', 'grid', 'clue']
+
+export const PACE_BONUS: Partial<Record<ModeId, number>> = { classic: 1.2, blind: 1.2 }
+
+export type Pace = { base: number; after: number; msPerWin: number }
+
+export const triesFactor = (tries: number, ref: number) => (ref > 0 ? Math.min(TRIES_FACTOR.max, Math.max(TRIES_FACTOR.min, tries / ref)) : 1)
+
+export const roundXp = (value: number) => (value >= 25 ? Math.max(5, Math.round(value / 5) * 5) : Math.max(1, Math.round(value)))
+
+const poolShrink = (mode: ModeId, pool: number) => (LIMIT_MODES.includes(mode) && pool > 0 && pool < POOL_XP_BASE ? (pool / POOL_XP_BASE) ** 1.5 : 1)
+
+export const triesXp = (mode: ModeId, factor: number, base: number = MODE_XP[mode]) => roundXp(base * factor)
+
+export const triesXpPastCap = (mode: ModeId, factor: number, pool: number, after: number = MODE_XP_AFTER[mode]) =>
+  Math.max(1, Math.round(after * Math.min(TRIES_FACTOR.pastCap, factor) * poolShrink(mode, pool)))
+
+export const paceFromTime = (mode: ModeId, msPerWin: number): Pace => {
+  const minutes = msPerWin / 60_000
+  return { base: PACE.perMinute * (PACE_BONUS[mode] ?? 1) * minutes, after: PACE.perMinuteAfter * minutes, msPerWin }
+}
+
+export const paceWithin = (mode: ModeId, pace: Pace): Pace => {
+  const keep = (value: number, manual: number) => Math.min(manual * PACE.spread, Math.max(manual / PACE.spread, value))
+  return { ...pace, base: keep(pace.base, MODE_XP[mode]), after: keep(pace.after, MODE_XP_AFTER[mode]) }
+}
+
 export const CARD_STEPS = [
   { level: 1, xp: 0 },
   { level: 2, xp: 2 },
@@ -939,7 +980,7 @@ export function judgeAll(game: GameId, guess: Record<string, unknown>, answer: R
 export type CoinPack = { id: string; usd: number; stars: number; base: number; bonus: number; art: string; grow: number; starsOnly?: boolean }
 
 export const COIN_PACKS: CoinPack[] = [
-  { id: 'small', usd: 1.5, stars: 120, base: 300, bonus: 0, art: 'coins-big', grow: 0.78, starsOnly: true },
+  { id: 'small', usd: 1.25, stars: 100, base: 250, bonus: 0, art: 'coins-big', grow: 0.78, starsOnly: true },
   { id: 'mid', usd: 4.5, stars: 350, base: 900, bonus: 150, art: 'coins-big', grow: 1 },
   { id: 'big', usd: 12.5, stars: 950, base: 3000, bonus: 600, art: 'coins-big', grow: 1.22 },
 ]

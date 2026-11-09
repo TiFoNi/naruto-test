@@ -120,6 +120,7 @@ export type RoundDoc = {
   guessCount?: number
   lastGuessAt?: Date
   startedAt?: Date
+  askedAt?: Date
   createdAt: Date
   finishedAt?: Date
 }
@@ -374,6 +375,7 @@ export type ShotDoc = {
   shown?: { id: number; variant: number[] }[]
   lastId?: number
   status: 'playing' | 'over'
+  askedAt?: Date
   createdAt: Date
   updatedAt: Date
 }
@@ -426,6 +428,7 @@ export type TuneDoc = {
   lastId?: number
   won?: boolean
   status: 'playing' | 'over'
+  askedAt?: Date
   createdAt: Date
   updatedAt: Date
 }
@@ -470,6 +473,7 @@ const cache = globalThis as typeof globalThis & {
   __purchasesIndexed?: Promise<unknown>
   __pollIndexed?: Promise<unknown>
   __ledgerIndexed?: Promise<unknown>
+  __duelRoundsIndexed?: Promise<unknown>
   __chatIndexed?: Promise<unknown>
   __chatNewsIndexed?: Promise<unknown>
   __pulseIndexed?: Promise<unknown>
@@ -835,6 +839,18 @@ export async function coinLedger(): Promise<Collection<LedgerDoc>> {
     throw error
   })
   await cache.__ledgerIndexed
+  return collection
+}
+
+export type DuelRoundDoc = { _id?: ObjectId; game: string; mode: string; userId: ObjectId; bot: boolean; won: boolean; ms: number; at: Date }
+
+export async function duelRounds(): Promise<Collection<DuelRoundDoc>> {
+  const collection = (await database()).collection<DuelRoundDoc>('duelRounds')
+  cache.__duelRoundsIndexed ??= collection.createIndex({ at: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 90 }).catch((error) => {
+    cache.__duelRoundsIndexed = undefined
+    throw error
+  })
+  await cache.__duelRoundsIndexed
   return collection
 }
 

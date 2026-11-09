@@ -6,7 +6,9 @@ import { forgetUser } from './session-cache'
 import { showHiddenGames } from './games'
 import type { Stats } from './stats'
 
-export type XpToday = { earned: number; cap: number; sources: { source: 'daily' | 'endless'; earned: number; cap: number }[] }
+export type XpRate = { low: number; high: number; afterLow: number; afterHigh: number }
+
+export type XpToday = { earned: number; cap: number; sources: { source: 'daily' | 'endless'; earned: number; cap: number }[]; rates?: Partial<Record<string, XpRate>> }
 
 export type User = {
   id: string

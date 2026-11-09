@@ -17,7 +17,7 @@ import Chat from './Chat'
 import PickName from './PickName'
 import Footer from './Footer'
 import Landing from './Landing'
-import { hadSession, useAuth } from './auth'
+import { hadSession, useAuth, type XpRate } from './auth'
 import BannerArt from './BannerArt'
 import { MARKS } from './Profile'
 import { shownTone, watchTone } from './tone'
@@ -27,7 +27,7 @@ import { openChat } from './chatEvents'
 import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
 import { startAnimGate } from './animGate'
 import GemIcon from './GemIcon'
-import { MODE_XP, MODE_XP_AFTER, POOL_XP_BASE, TONE_HEX, levelAt, poolXpFactor, poolXp, poolXpPastCap, XP_CAPS } from '@nanda/game'
+import { MODE_XP, MODE_XP_AFTER, POOL_XP_BASE, TONE_HEX, TRIES_FACTOR, TRIES_REF, levelAt, poolXpFactor, poolXp, poolXpPastCap, triesXp, triesXpPastCap, XP_CAPS, type ModeId } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
@@ -234,11 +234,11 @@ function XpToday() {
                 </tr>
               </thead>
               <tbody>
-                {MODES.map((mode) => (
+                {MODES.filter((mode) => mode.id !== 'clue').map((mode) => (
                   <tr key={mode.id}>
                     <td>{t(mode.label)}</td>
-                    <td>{xpRange(MODE_XP[mode.id], mode.id)}</td>
-                    <td>{xpRange(MODE_XP_AFTER[mode.id], mode.id, poolXpPastCap)}</td>
+                    <td>{liveRange(today.rates?.[mode.id], 'low', 'high') ?? (TRIES_REF[mode.id] ? `${triesXp(mode.id, TRIES_FACTOR.min)}–${triesXp(mode.id, TRIES_FACTOR.max)}` : xpRange(MODE_XP[mode.id], mode.id))}</td>
+                    <td>{liveRange(today.rates?.[mode.id], 'afterLow', 'afterHigh') ?? (TRIES_REF[mode.id] ? afterRange(mode.id) : xpRange(MODE_XP_AFTER[mode.id], mode.id, poolXpPastCap))}</td>
                   </tr>
                 ))}
               </tbody>
@@ -963,6 +963,15 @@ function useScrolled() {
   }, [])
 
   return scrolled
+}
+
+const liveRange = (rate: XpRate | undefined, low: keyof XpRate, high: keyof XpRate) =>
+  rate ? (rate[low] === rate[high] ? `${rate[low]}` : `${rate[low]}–${rate[high]}`) : null
+
+const afterRange = (mode: ModeId) => {
+  const low = triesXpPastCap(mode, TRIES_FACTOR.min, 1)
+  const high = triesXpPastCap(mode, TRIES_FACTOR.max, POOL_XP_BASE)
+  return low === high ? `${low}` : `${low}–${high}`
 }
 
 const xpRange = (base: number, mode: string, xpFor = poolXp) =>

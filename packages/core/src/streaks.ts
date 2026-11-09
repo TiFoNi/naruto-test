@@ -1,6 +1,7 @@
 import type { Filter, ObjectId } from 'mongodb'
 import { MODE_XP, statsKey, type GameId } from '@nanda/game'
 import { rounds, streaks, users, type StreakDoc } from './db'
+import { paceXp } from './difficulty'
 import { addXp, raiseBest } from './profile'
 import { collectQuestsQuietly } from './quests'
 import { pairRound, type PairSide } from './pairs'
@@ -75,6 +76,7 @@ async function logPair(doc: StreakDoc, won: boolean) {
     answerId: doc.answer === 'right' ? doc.right : doc.left,
     guesses: [],
     status: won ? 'won' : 'lost',
+    askedAt: doc.updatedAt,
     createdAt: now,
     finishedAt: now,
   })
@@ -105,7 +107,10 @@ export async function pairAnswer(userId: ObjectId, game: GameId, pick: PairSide)
     return { right: false, answer: found.answer as PairSide, streak: found.streak, best, over: true }
   }
 
-  if (!found.guest) await addXp(await users(), userId, MODE_XP.pair, 'endless', 'pair')
+  if (!found.guest) {
+    const { base, after } = paceXp('pair', MODE_XP.pair, game)
+    await addXp(await users(), userId, base, 'endless', 'pair', after)
+  }
 
   const next = await ask(game, streak, found)
   if (!next) return null

@@ -260,7 +260,7 @@ export async function finishRound(users: Collection<UserDoc>, round: RoundDoc, w
   const pool = await roundPool(round)
   if (won && !round.guest)
     await openDex(round.userId, round.game, round.answerId, { mode: round.mode as ModeId, xp: cardXpFor(round.mode as ModeId, { daily: !!round.daily, pool }) })
-  const xp = won ? await awardSolveXp(users, round.userId, round.mode as ModeId, round.daily ? 'daily' : 'endless', pool) : null
+  const xp = won ? await awardSolveXp(users, round.userId, round.mode as ModeId, round.daily ? 'daily' : 'endless', pool, { game: round.game, id: round.answerId }) : null
 
   if (round.daily) {
     const key = dailyKey(round.game, round.mode)

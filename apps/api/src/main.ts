@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core'
 import type { NestExpressApplication } from '@nestjs/platform-express'
 import compression from 'compression'
 import { raw } from 'express'
+import { refreshDifficulty } from '@nanda/core/difficulty'
 import { AppModule } from './app.module'
 import { egressMeter } from './egress-meter'
 import { liftCookies } from './lift-cookies'
@@ -27,6 +28,7 @@ async function bootstrap() {
   app.enableCors({ origin: origins, credentials: true, maxAge: 86400 })
   await app.listen(port, '0.0.0.0')
   console.log(`[nanda] слухаю порт ${port}, CORS для: ${origins.join(', ')}`)
+  void refreshDifficulty()
 }
 
 void bootstrap()

@@ -2,6 +2,7 @@ import type { Filter, ObjectId } from 'mongodb'
 import { DAILY_XP_FACTOR, SHOT_MISS, SHOT_POINTS, dailyKey } from '@nanda/game'
 import { rounds, shotDays, shotRuns, users, type ShotDayDoc, type ShotDoc } from './db'
 import { gameData } from './games'
+import { paceXp } from './difficulty'
 import { addXp, applyDailyResult, raiseBest } from './profile'
 import { dailyAnswer, nextReset, today } from './daily'
 import { shotVariant } from './extra'
@@ -10,7 +11,7 @@ import { markSeasonPlay } from './season'
 import { openDex, cardXpFor } from './dex'
 
 const GAME = 'shots'
-const MODE = 'shot'
+const MODE = 'shot' as const
 const LEVELS = SHOT_POINTS.length
 
 const pointsAt = (level: number) => SHOT_POINTS[Math.min(level, LEVELS - 1)]
@@ -119,6 +120,7 @@ export async function shotRun(userId: ObjectId, guest: boolean, fresh = false) {
     seen: [...(found?.seen ?? []), next.id].slice(-60),
     shown: remember(found?.shown, next.id, next.variant),
     status: 'playing',
+    askedAt: now,
     createdAt: found?.createdAt ?? now,
     updatedAt: now,
   }
@@ -181,7 +183,7 @@ async function markMiss(userId: ObjectId) {
   return pointsOf(doc)
 }
 
-async function logRound(doc: { userId: ObjectId; guest?: boolean }, answerId: number, status: 'won' | 'lost' | 'skipped', frames: number, day?: string) {
+async function logRound(doc: { userId: ObjectId; guest?: boolean; askedAt?: Date }, answerId: number, status: 'won' | 'lost' | 'skipped', frames: number, day?: string) {
   if (doc.guest) return
   const now = new Date()
   await (await rounds()).insertOne({
@@ -193,6 +195,7 @@ async function logRound(doc: { userId: ObjectId; guest?: boolean }, answerId: nu
     guesses: [],
     guessCount: frames,
     status,
+    ...(doc.askedAt && !day ? { askedAt: doc.askedAt } : {}),
     createdAt: now,
     finishedAt: now,
   })
@@ -227,7 +230,7 @@ async function nextTitle(doc: ShotDoc, score: number, streak: number) {
   const shown = remember(doc.shown, next.id, next.variant)
   await (await shotRuns()).updateOne(
     { _id: doc._id },
-    { $set: { answerId: next.id, variant: next.variant, key: next.key, level: 0, misses: 0, score, streak, seen, shown, updatedAt: new Date() }, $unset: { lastId: '' } },
+    { $set: { answerId: next.id, variant: next.variant, key: next.key, level: 0, misses: 0, score, streak, seen, shown, askedAt: new Date(), updatedAt: new Date() }, $unset: { lastId: '' } },
   )
   return { score, streak, level: 0, points: pointsAt(0), shots: opened(next.key, 0, next.variant) }
 }
@@ -255,7 +258,8 @@ export async function shotAnswer(userId: ObjectId, pick: number) {
     if (!next) return null
     await logRound(doc, doc.answerId, 'won', doc.level + 1)
     const total = doc.guest ? undefined : await markSolved(doc.userId, doc.level + 1, doc.streak + 1, gained, doc.score + gained)
-    const xp = doc.guest ? null : await addXp(await users(), doc.userId, xpAt(doc.level), 'endless', MODE)
+    const paid = paceXp(MODE, xpAt(doc.level))
+    const xp = doc.guest ? null : await addXp(await users(), doc.userId, paid.base, 'endless', MODE, paid.after)
     return { right: true as const, answerId: doc.answerId, gained, best: doc.best, total, ...(xp ? { xp } : {}), ...next }
   }
 

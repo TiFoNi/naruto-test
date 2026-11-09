@@ -2,6 +2,7 @@ import type { Filter, ObjectId } from 'mongodb'
 import { DAILY_XP_FACTOR, MODE_XP, TUNE_FULL, TUNE_MISS, TUNE_POINTS, TUNE_STEPS, dailyKey, tuneLevel, type TuneLevel } from '@nanda/game'
 import { rounds, tuneDays, tuneRuns, users, type TuneDayDoc, type TuneDoc } from './db'
 import { gameData } from './games'
+import { paceXp } from './difficulty'
 import { addXp, applyDailyResult, raiseBest } from './profile'
 import { dailyAnswer, nextReset, today } from './daily'
 import { collectQuestsQuietly } from './quests'
@@ -92,6 +93,7 @@ export async function tuneRun(userId: ObjectId, guest: boolean, grade: TuneLevel
     best: found?.best ?? 0,
     seen: [...(found?.seen ?? []), next.id].slice(-60),
     status: 'playing',
+    askedAt: now,
     createdAt: found?.createdAt ?? now,
     updatedAt: now,
   }
@@ -109,7 +111,7 @@ export async function tunePoints(userId: ObjectId) {
   return pointsOf(await (await users()).findOne({ _id: userId }, { projection: { [`${PATH}.points`]: 1 } }))
 }
 
-async function logRound(doc: { userId: ObjectId; guest?: boolean; updatedAt: Date }, answerId: number, status: 'won' | 'lost' | 'skipped', day?: string) {
+async function logRound(doc: { userId: ObjectId; guest?: boolean; updatedAt: Date; askedAt?: Date }, answerId: number, status: 'won' | 'lost' | 'skipped', day?: string) {
   if (doc.guest) return
   await (await rounds()).insertOne({
     userId: doc.userId,
@@ -120,6 +122,7 @@ async function logRound(doc: { userId: ObjectId; guest?: boolean; updatedAt: Dat
     status,
     guesses: [],
     startedAt: doc.updatedAt,
+    ...(doc.askedAt && !day ? { askedAt: doc.askedAt } : {}),
     createdAt: new Date(),
     finishedAt: new Date(),
   })
@@ -161,7 +164,8 @@ export async function tuneAnswer(userId: ObjectId, pick: number, guest = false) 
         },
       )
       await raiseBest(await users(), userId, PATH, 'best', best)
-      await addXp(await users(), userId, MODE_XP.tune, 'endless', MODE)
+      const paid = paceXp(MODE, MODE_XP.tune)
+      await addXp(await users(), userId, paid.base, 'endless', MODE, paid.after)
     }
     return { ...(await view({ ...doc, ...next } as TuneDoc)), right: true, answerId: doc.answerId, gained }
   }

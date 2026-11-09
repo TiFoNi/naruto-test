@@ -27,9 +27,11 @@ type Stats = {
 }
 
 type WorldRow = Stats & { game: GameId; mode: ModeId }
-type CharacterRow = Stats & { id: number; name: string; nameEn?: string; nameUk?: string; thumb: number; gone: boolean }
+type CharacterRow = Stats & { id: number; name: string; nameEn?: string; nameUk?: string; thumb: number; gone: boolean; xp: number; xpAfter: number; tries: number | null }
+type Typical = { xp: number; xpAfter: number; tries: number | null }
 type Picked = { game: GameId; mode: ModeId }
-type SortKey = 'name' | 'rounds' | 'players' | 'win' | 'skip' | 'first' | 'playerAvg' | 'avg' | 'median'
+type PaceInfo = Partial<Record<ModeId, { base: number; after: number; seconds: number }>>
+type SortKey = 'name' | 'rounds' | 'players' | 'win' | 'skip' | 'lost' | 'first' | 'playerAvg' | 'avg' | 'median' | 'xp'
 
 const KINDS: { id: Kind; label: string }[] = [
   { id: 'all', label: 'Все раунды' },
@@ -71,24 +73,28 @@ export default function DifficultyAdmin() {
   const [measure, setMeasure] = useState<Measure>('playerAvg')
   const [rows, setRows] = useState<WorldRow[] | null>(null)
   const [at, setAt] = useState(0)
+  const [pace, setPace] = useState<PaceInfo>({})
   const [now, setNow] = useState(() => Date.now())
   const [denied, setDenied] = useState(false)
   const [busy, setBusy] = useState(false)
   const [picked, setPicked] = useState<Picked | null>(null)
   const [characters, setCharacters] = useState<CharacterRow[] | null>(null)
+  const [typical, setTypical] = useState<Typical | null>(null)
   const [sort, setSort] = useState<{ key: SortKey; down: boolean }>({ key: 'playerAvg', down: true })
   const detailRef = useRef<HTMLElement>(null)
 
   const load = useCallback(async (next: Kind, fresh = false) => {
-    const { ok, status, data } = await api<{ rows?: WorldRow[]; at?: number }>(`admin/difficulty?kind=${next}${fresh ? '&fresh=1' : ''}`)
+    const { ok, status, data } = await api<{ rows?: WorldRow[]; at?: number; pace?: PaceInfo }>(`admin/difficulty?kind=${next}${fresh ? '&fresh=1' : ''}`)
     if (status === 404) return setDenied(true)
     setRows(ok ? (data.rows ?? []) : [])
+    setPace(data.pace ?? {})
     setAt(data.at ?? 0)
   }, [])
 
   const loadCharacters = useCallback(async (next: Kind, target: Picked, fresh = false) => {
-    const { ok, data } = await api<{ rows?: CharacterRow[] }>(`admin/difficulty?kind=${next}&game=${target.game}&mode=${target.mode}${fresh ? '&fresh=1' : ''}`)
+    const { ok, data } = await api<{ rows?: CharacterRow[] } & Partial<Typical>>(`admin/difficulty?kind=${next}&game=${target.game}&mode=${target.mode}${fresh ? '&fresh=1' : ''}`)
     setCharacters(ok ? (data.rows ?? []) : [])
+    setTypical(ok && typeof data.xp === 'number' ? { xp: data.xp, xpAfter: data.xpAfter ?? 0, tries: data.tries ?? null } : null)
   }, [])
 
   useEffect(() => {
@@ -146,7 +152,8 @@ export default function DifficultyAdmin() {
     const value = (row: CharacterRow): number | string => {
       if (sort.key === 'name') return name(row)
       if (sort.key === 'win') return share(row.won, row.rounds)
-      if (sort.key === 'skip') return share(row.skipped + row.lost, row.rounds)
+      if (sort.key === 'skip') return share(row.skipped, row.rounds)
+      if (sort.key === 'lost') return share(row.lost, row.rounds)
       if (sort.key === 'first') return share(row.first, row.won)
       return row[sort.key] ?? -1
     }
@@ -203,7 +210,7 @@ export default function DifficultyAdmin() {
       </header>
 
       <p className="diff-note muted">
-        В клетке — сколько попыток в среднем уходит на угаданного персонажа ({MEASURES.find((one) => one.id === measure)?.hint.toLowerCase()}). В режимах с одной попыткой (лишний, кто из двух, опенинг) — процент угаданных. Чем ярче клетка, тем сложнее по сравнению с другими вселенными в этом режиме. Бледные клетки — меньше {FEW} раундов. Считается по всем раундам зарегистрированных игроков, сам пересчитывается раз в 10 минут.
+        В клетке — сколько попыток в среднем уходит на угаданного персонажа ({MEASURES.find((one) => one.id === measure)?.hint.toLowerCase()}). В режимах с одной попыткой (лишний, кто из двух, опенинг) — процент угаданных. Чем ярче клетка, тем сложнее по сравнению с другими вселенными в этом режиме. Бледные клетки — меньше {FEW} раундов. Таблица считается по всем раундам зарегистрированных игроков и обновляется раз в 10 минут. Опыт за персонажей и строка «Опыт за обычного» берутся только из бесконечных раундов за последние 90 дней и пересчитываются раз в сутки; кнопка ⟳ пересчитывает всё сразу.
       </p>
 
       {rows === null ? (
@@ -238,7 +245,7 @@ export default function DifficultyAdmin() {
                         <button
                           type="button"
                           onClick={() => setPicked(on ? null : { game, mode: mode.id })}
-                          title={`${label(game)} · ${t(mode.label)}\nРаундов: ${row.rounds}, игроков: ${row.players}\nУгадали: ${share(row.won, row.rounds)}%, сдались или кончились попытки: ${share(row.skipped + row.lost, row.rounds)}%\nПо игрокам: ${number(row.playerAvg)}, по раундам: ${number(row.avg)}, медиана: ${number(row.median)}\nС первой попытки: ${share(row.first, row.won)}%`}
+                          title={`${label(game)} · ${t(mode.label)}\nРаундов: ${row.rounds}, игроков: ${row.players}\nУгадали: ${share(row.won, row.rounds)}%, сдались: ${share(row.skipped, row.rounds)}%, не угадали (кончились попытки): ${share(row.lost, row.rounds)}%\nПо игрокам: ${number(row.playerAvg)}, по раундам: ${number(row.avg)}, медиана: ${number(row.median)}\nС первой попытки: ${share(row.first, row.won)}%`}
                         >
                           <b>{wins ? `${share(row.won, row.rounds)}%` : number(value)}</b>
                           <small>{row.rounds}</small>
@@ -249,6 +256,26 @@ export default function DifficultyAdmin() {
                 </tr>
               ))}
             </tbody>
+            <tfoot>
+              <tr>
+                <th scope="row" title="Сколько опыта даёт средний персонаж в режиме, чтобы за минуту игры выходило одинаково во всех режимах. После лимита — второе число. Считается само по времени раундов.">Опыт за обычного</th>
+                {modes.map((mode) => {
+                  const one = pace[mode.id]
+                  return (
+                    <td key={mode.id} className="diff-pace">
+                      {one ? (
+                        <>
+                          <b>{Math.max(1, Math.round(one.base))}</b>
+                          <small> / {Math.max(1, Math.round(one.after))}</small>
+                        </>
+                      ) : (
+                        <small>вручную</small>
+                      )}
+                    </td>
+                  )
+                })}
+              </tr>
+            </tfoot>
           </table>
         </div>
       )}
@@ -299,6 +326,15 @@ export default function DifficultyAdmin() {
                 <dt>Медиана</dt>
                 <dd>{number(pickedRow.median)}</dd>
               </div>
+              {typical && (
+                <div title="Столько опыта даёт персонаж, по которому ещё мало данных. После дневного лимита — второе число.">
+                  <dt>Опыт за обычного</dt>
+                  <dd>
+                    {typical.xp}
+                    <small> / {typical.xpAfter}</small>
+                  </dd>
+                </div>
+              )}
             </dl>
           )}
 
@@ -315,11 +351,13 @@ export default function DifficultyAdmin() {
                     {head('rounds', 'Раундов')}
                     {head('players', 'Игроков')}
                     {head('win', 'Угадали')}
-                    {head('skip', 'Сдались', 'Пропустили или кончились попытки')}
+                    {head('skip', 'Сдались', 'Нажали «Сдаться» или пропустили')}
+                    {head('lost', 'Не угадали', 'Кончились попытки')}
                     {head('first', 'С первой')}
                     {head('playerAvg', 'По игрокам')}
                     {head('avg', 'По раундам')}
                     {head('median', 'Медиана')}
+                    {head('xp', 'Опыт', 'Сколько опыта даёт сейчас за угадывание в бесконечном. После дневного лимита — второе число.')}
                   </tr>
                 </thead>
                 <tbody>
@@ -347,7 +385,8 @@ export default function DifficultyAdmin() {
                         <td>{row.rounds}</td>
                         <td>{row.players}</td>
                         <td>{share(row.won, row.rounds)}%</td>
-                        <td>{share(row.skipped + row.lost, row.rounds)}%</td>
+                        <td>{share(row.skipped, row.rounds)}%</td>
+                        <td>{share(row.lost, row.rounds)}%</td>
                         <td>{row.won ? `${share(row.first, row.won)}%` : '—'}</td>
                         <td className={`diff-main ${tone}`}>
                           <span className="diff-value">
@@ -359,6 +398,10 @@ export default function DifficultyAdmin() {
                         </td>
                         <td>{number(row.avg)}</td>
                         <td>{number(row.median)}</td>
+                        <td className="diff-xp" title={row.tries === null ? 'Мало данных по вселенной — опыт по старой формуле' : `Считается от ${number(row.tries)} попыток (сглажено к среднему по вселенной)`}>
+                          <b>{row.xp}</b>
+                          <small> / {row.xpAfter}</small>
+                        </td>
                       </tr>
                     )
                   })}
