@@ -114,7 +114,7 @@ const CHARACTERS = [
   ['Kishirika Kishirisu', 'Kishirika Kishirisu', 'Кисирика Кисирису', F, 'Демон', 'Владыка', [DEMONS], 0],
   ['Zanoba Shirone', 'Zanoba Shirone', 'Заноба Широн', M, 'Человек', ['Знать', 'Студент'], [SHIRONE, RANOA], 1],
   ['Cliff Grimoire', 'Cliff Grimoire', 'Клифф Гримуар', M, 'Полукровка', ['Маг', 'Студент', 'Авантюрист'], [RANOA], 1],
-  ['Juliette', 'Julie', 'Джули', F, 'Дварф', 'Слуга', [SHIRONE], 2],
+  ['Juliette', 'Julie', 'Джули', F, 'Дварф', 'Слуга', [SHIRONE, RANOA], 2],
   ['Linia Dedoldia', 'Linia Dedoldia', 'Линия Дедорудия', F, 'Звериный народ', 'Студент', [RANOA], 2],
   ['Pursena Adoldia', 'Pursena Adoldia', 'Пурсена Адорудия', F, 'Звериный народ', 'Студент', [RANOA], 2],
   ['Nanahoshi Shizuka', 'Nanahoshi Shizuka', 'Нанахоши Сидзука', F, 'Человек', 'Студент', [RANOA], 1],
