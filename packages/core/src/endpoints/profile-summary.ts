@@ -318,6 +318,7 @@ export const GET = handle(async (request) => {
     nickTone: doc.nickTone ?? null,
     title: doc.title ?? null,
     banners: doc.banners ?? [],
+    bannersGiven: doc.bannersGiven ?? [],
     blocks: doc.blocks ?? null,
     blockSizes: doc.blockSizes ?? {},
     blockSides: doc.blockSides ?? {},

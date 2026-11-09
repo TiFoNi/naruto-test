@@ -639,6 +639,13 @@ export const frameCost = (id: unknown) => (typeof id === 'string' ? (FRAME_COSTS
 
 export const bannerCost = (id: unknown) => (typeof id === 'string' ? (BANNER_COSTS[id] ?? null) : null)
 
+export const BANNER_SCRAP = 0.25
+
+export const scrapValue = (id: unknown) => {
+  const cost = bannerCost(id)
+  return cost ? Math.floor(cost * BANNER_SCRAP) : null
+}
+
 export const bundleFull = (one: Bundle) => (frameCost(one.frame) ?? 0) + (bannerCost(one.banner) ?? 0)
 
 export const TONES = ['naruto', 'onepiece', 'se', 'bc', 'genshin', 'jjk', 'manga', 'hxh', 'jojo', 'kny', 'marvel'] as const

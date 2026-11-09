@@ -34,7 +34,7 @@ for (const one of need) console.log(`  ${one.nickname ?? one.username}`)
 if (!apply) {
   console.log('\nце лише перегляд. запусти з --apply, щоб видати')
 } else {
-  const done = await users.updateMany({ titles: TITLE, banners: { $ne: BANNER } }, { $addToSet: { banners: BANNER } })
+  const done = await users.updateMany({ titles: TITLE, banners: { $ne: BANNER } }, { $addToSet: { banners: BANNER, bannersGiven: BANNER } })
   console.log(`\nвидано: ${done.modifiedCount}`)
 }
 

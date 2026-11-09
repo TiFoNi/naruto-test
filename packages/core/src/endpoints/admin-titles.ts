@@ -73,7 +73,7 @@ export const POST = handle(async (request) => {
     {
       ...(worn ? { $set: { titles, title: worn } } : { $set: { titles } }),
       ...(worn ? {} : { $unset: { title: '' } }),
-      ...(perk && give !== false ? { $addToSet: { banners: perk } } : {}),
+      ...(perk && give !== false ? { $addToSet: { banners: perk, bannersGiven: perk } } : {}),
     },
   )
 

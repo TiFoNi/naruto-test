@@ -2,7 +2,7 @@ import { fail, handle, json, readJson } from '../http'
 import { quests, rounds, seasons, shotDays, shotRuns, streaks, tuneRuns } from '../db'
 import { claimTag, currentUser, lowerNickname, ownedTitles, parseNickname, toProfile, unauthorized } from '../profile'
 import { isFrame } from '../frames'
-import { CARD_PINS_MAX, GAME_IDS, bannerCost, bannerLooks, bundleOf, frameCost, heroTiles, isBanner, isTitle, isTone, profileBlocks } from '@nanda/game'
+import { CARD_PINS_MAX, GAME_IDS, bannerCost, bannerLooks, bundleOf, frameCost, heroTiles, isBanner, isTitle, isTone, profileBlocks, scrapValue } from '@nanda/game'
 
 const SHOWCASE_MAX = 8
 const BLOCK_MIN = 60
@@ -165,6 +165,25 @@ export const POST = handle(async (request) => {
       { returnDocument: 'after' },
     )
     return json(toProfile(doc ?? found.doc))
+  }
+
+  if (body.action === 'breakBanner') {
+    const id = body.banner
+    const refund = scrapValue(id)
+    if (!isBanner(id) || !refund) return fail(400, 'bad_request')
+    if ((found.doc.bannersGiven ?? []).includes(id)) return fail(403, 'not_yours')
+
+    const doc = await found.collection.findOneAndUpdate(
+      { _id: found.doc._id, banners: id },
+      {
+        $pull: { banners: id },
+        $inc: { coins: refund },
+        $unset: { [`bannerLooks.${id}`]: '', ...(found.doc.banner === id ? { banner: '' } : {}) },
+      },
+      { returnDocument: 'after' },
+    )
+    if (!doc) return fail(409, 'not_owned')
+    return json(toProfile(doc))
   }
 
   if (body.action === 'buy') {

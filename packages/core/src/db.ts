@@ -47,6 +47,7 @@ export type UserDoc = {
   avatarOwn?: string | null
   banner?: string
   banners?: string[]
+  bannersGiven?: string[]
   bannerLooks?: Record<string, Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>>>
   tone?: string
   nickTone?: string

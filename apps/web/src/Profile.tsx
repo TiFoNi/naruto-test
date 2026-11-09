@@ -24,8 +24,9 @@ import { keepPerUser } from './session-cache'
 import { showTone } from './tone'
 import BannerArt from './BannerArt'
 import BannerTuner from './BannerTuner'
+import GemIcon from './GemIcon'
 import ProfileStage, { useNarrow } from './ProfileStage'
-import { bannerPic } from './banners'
+import { bannerPic, bannerSpot } from './banners'
 import {
   CARD_PINS_MAX,
   HERO_TILES,
@@ -39,6 +40,7 @@ import {
   isBanner,
   isHeroTile,
   isTone,
+  scrapValue,
   type Banner,
   type HeroTile,
   type ProfileBlock,
@@ -105,6 +107,7 @@ type Summary = {
   banner?: string | null
   bannerLook?: Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>> | null
   banners?: string[]
+  bannersGiven?: string[]
   tone?: string | null
   nickTone?: string | null
   title?: string | null
@@ -429,6 +432,7 @@ export default function Profile({ id }: { id?: string }) {
   const [dyeAt, setDyeAt] = useState<HTMLElement | null>(null)
   const [skin, setSkin] = useState<Banner | null | undefined>(undefined)
   const [skins, setSkins] = useState(false)
+  const [scrap, setScrap] = useState<Banner | null>(null)
   const [tuning, setTuning] = useState(false)
   const [tones, setTones] = useState(false)
   const tonesRef = useRef<HTMLDivElement>(null)
@@ -712,6 +716,17 @@ export default function Profile({ id }: { id?: string }) {
   const keepBanner = (next: Banner | null) => {
     setSkin(next)
     void api('profile', { action: 'banner', banner: next }).then(() => refresh())
+  }
+
+  const refundOf = (one: Banner) => ((summary?.bannersGiven ?? []).includes(one) ? null : scrapValue(one))
+
+  const scrapBanner = async (one: Banner) => {
+    setScrap(null)
+    const { ok } = await api('profile', { action: 'breakBanner', banner: one })
+    if (!ok) return
+    if (banner === one) setSkin(null)
+    setSummary((was) => (was ? { ...was, banners: (was.banners ?? []).filter((id) => id !== one), banner: was.banner === one ? null : was.banner } : was))
+    void refresh()
   }
 
   const keepTone = (next: string | null) => {
@@ -1603,6 +1618,45 @@ export default function Profile({ id }: { id?: string }) {
         )}
       </div>
 
+      {scrap &&
+        refundOf(scrap) &&
+        createPortal(
+          <div className="modal-backdrop" onClick={() => setScrap(null)} role="presentation">
+            <section
+              className="card modal mates-ask scrap-ask"
+              role="dialog"
+              aria-modal="true"
+              aria-label={t('profile.bannerScrapAsk', { name: t(`banner.${scrap}` as UiKey) })}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button type="button" className="modal-close" aria-label={t('profile.cancel')} onClick={() => setScrap(null)}>
+                <CloseIcon />
+              </button>
+              <h2>{t('profile.bannerScrapAsk', { name: t(`banner.${scrap}` as UiKey) })}</h2>
+              <span className="scrap-ask-art" aria-hidden>
+                <img src={bannerPic(scrap, true)} alt="" style={{ objectPosition: bannerSpot(scrap) }} />
+              </span>
+              <p className="muted">{t('profile.bannerScrapHint')}</p>
+              <div className="scrap-ask-sum">
+                <span>
+                  +{refundOf(scrap)}
+                  <GemIcon sparkles={false} />
+                </span>
+                <em>{t('profile.bannerScrapAfter', { coins: (user?.coins ?? 0) + (refundOf(scrap) ?? 0) })}</em>
+              </div>
+              <div className="modal-actions">
+                <button type="button" className="ghost" onClick={() => setScrap(null)}>
+                  {t('profile.cancel')}
+                </button>
+                <button type="button" className="danger-button" onClick={() => void scrapBanner(scrap)}>
+                  {t('profile.bannerScrapYes')}
+                </button>
+              </div>
+            </section>
+          </div>,
+          document.body,
+        )}
+
       {unfriending &&
         id &&
         createPortal(
@@ -1695,14 +1749,31 @@ export default function Profile({ id }: { id?: string }) {
                           <span>{t('profile.bannerNone')}</span>
                         </button>
                       </li>
-                      {owned.map((one) => (
-                        <li key={one}>
-                          <button type="button" className={`banner-face ${banner === one ? 'on' : ''}`} onClick={() => keepBanner(one)}>
-                            <img src={bannerPic(one)} alt="" />
-                            <span>{t(`banner.${one}` as UiKey)}</span>
-                          </button>
-                        </li>
-                      ))}
+                      {owned.map((one) => {
+                        const refund = refundOf(one)
+                        return (
+                          <li key={one} className="banner-slot">
+                            <button type="button" className={`banner-face ${banner === one ? 'on' : ''}`} onClick={() => keepBanner(one)}>
+                              <img src={bannerPic(one)} alt="" />
+                              <span>{t(`banner.${one}` as UiKey)}</span>
+                            </button>
+                            {refund && (
+                              <button
+                                type="button"
+                                className="banner-scrap"
+                                aria-label={t('profile.bannerScrap')}
+                                title={t('profile.bannerScrap')}
+                                onClick={() => {
+                                  setSkins(false)
+                                  setScrap(one)
+                                }}
+                              >
+                                <CloseIcon />
+                              </button>
+                            )}
+                          </li>
+                        )
+                      })}
                     </ul>
                   </div>
                 )}
