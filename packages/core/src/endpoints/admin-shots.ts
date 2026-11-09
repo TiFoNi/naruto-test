@@ -44,7 +44,7 @@ const recount = () => [
 async function settle(id: number) {
   const collection = await entities()
   await collection.updateOne({ game: GAME, id }, recount())
-  const doc = await collection.findOne({ game: GAME, id }, { projection: { _id: 0, game: 0, updatedAt: 0 } })
+  const doc = await collection.findOne({ game: GAME, id }, { projection: { _id: 0, game: 0, updatedAt: 0, edited: 0 } })
   const cover = doc ? coverOf(frameNames(doc)) : null
   if (cover) await uploadShotCard(id, cover.level, cover.name)
   forget(GAME)

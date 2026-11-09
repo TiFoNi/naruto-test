@@ -245,6 +245,7 @@ export type EntityDoc = Record<string, unknown> & {
   answer: boolean
   hidden?: boolean
   updatedAt?: Date
+  edited?: string[]
 }
 
 export type SettingsDoc = { game: string; updated?: string; atlas?: string; tune?: Record<string, { scale: number; x: number; y: number; cut: number; cx: number; cy: number }> }

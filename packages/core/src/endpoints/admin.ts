@@ -5,7 +5,7 @@ import { adminSession } from '../admin'
 
 const missing = () => fail(404, 'not_found')
 
-const INTERNAL = new Set(['_id', 'game', 'updatedAt'])
+const INTERNAL = new Set(['_id', 'game', 'updatedAt', 'edited'])
 
 const SKIP_FIELDS = new Set(['id', 'thumb', 'answer', 'hidden', 'name', 'nameEn', 'nameUk', 'aliases', 'slug'])
 
@@ -16,7 +16,7 @@ export const GET = handle(async (request) => {
   if (!isGame(game)) return fail(400, 'bad_request')
 
   const list = await (await entities())
-    .find({ game }, { projection: { _id: 0, game: 0, updatedAt: 0 }, sort: { id: 1 } })
+    .find({ game }, { projection: { _id: 0, game: 0, updatedAt: 0, edited: 0 }, sort: { id: 1 } })
     .toArray()
 
   const options: Record<string, string[]> = {}
@@ -46,11 +46,11 @@ export const POST = handle(async (request) => {
   if (!Object.keys(patch).length) return fail(400, 'bad_request')
 
   const collection = await entities()
-  const result = await collection.updateOne({ game, id }, { $set: { ...patch, updatedAt: new Date() } })
+  const result = await collection.updateOne({ game, id }, { $set: { ...patch, updatedAt: new Date() }, $addToSet: { edited: { $each: Object.keys(patch) } } as never })
   if (!result.matchedCount) return missing()
 
   forget(game)
-  const doc = await collection.findOne({ game, id }, { projection: { _id: 0, game: 0, updatedAt: 0 } })
+  const doc = await collection.findOne({ game, id }, { projection: { _id: 0, game: 0, updatedAt: 0, edited: 0 } })
   return json({ entity: doc })
 })
 

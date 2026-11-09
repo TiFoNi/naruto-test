@@ -48,9 +48,9 @@ export const POST = handle(async (request) => {
           return { pages: count, image: version }
         })()
 
-  await collection.updateOne({ game, id }, { $set: { ...patch, updatedAt: new Date() } })
+  await collection.updateOne({ game, id }, { $set: { ...patch, updatedAt: new Date() }, $addToSet: { edited: { $each: Object.keys(patch) } } as never })
   forget(game)
 
-  const doc = await collection.findOne({ game, id }, { projection: { _id: 0, game: 0, updatedAt: 0 } })
+  const doc = await collection.findOne({ game, id }, { projection: { _id: 0, game: 0, updatedAt: 0, edited: 0 } })
   return json({ entity: doc })
 })

@@ -28,7 +28,7 @@ async function unsaved(game: GameId): Promise<Entity[]> {
 async function load(game: GameId): Promise<GameData> {
   const collection = await entities()
   const saved = (await collection
-    .find({ game, hidden: { $ne: true } }, { projection: { _id: 0, game: 0, hidden: 0, updatedAt: 0 }, sort: { id: 1 } })
+    .find({ game, hidden: { $ne: true } }, { projection: { _id: 0, game: 0, hidden: 0, updatedAt: 0, edited: 0 }, sort: { id: 1 } })
     .toArray()) as unknown as Entity[]
   const list = saved.length ? saved : await unsaved(game)
 
