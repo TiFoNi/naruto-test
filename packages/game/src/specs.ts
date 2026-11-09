@@ -765,7 +765,7 @@ export const ZOOM_LEVELS = [5.1, 3.7, 2.6, 1.9] as const
 export const ZOOM_REVEAL = ZOOM_LEVELS.length
 export const zoomAt = (step: number) => (step >= ZOOM_LEVELS.length ? 1 : ZOOM_LEVELS[Math.max(0, step)])
 
-export const XP_CAPS = { daily: 800, endless: 600, duel: 400 } as const
+export const XP_CAPS = { daily: 800, endless: 600 } as const
 
 
 export type XpSource = keyof typeof XP_CAPS
@@ -850,10 +850,6 @@ export const DUEL_SECONDS = [60, 180, 600, 1800] as const
 export const DUEL_DEFAULT = { best: 5, seconds: 600 }
 
 export const duelWinsNeeded = (best: number) => Math.floor(best / 2) + 1
-
-export const DUEL_WIN_XP = 40
-
-export const duelMatchXp = (best: number) => DUEL_WIN_XP * duelWinsNeeded(best)
 
 export const SHOT_POINTS = [12, 10, 8, 6] as const
 export const SHOT_MISS = 1

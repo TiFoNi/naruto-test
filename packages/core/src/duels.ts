@@ -8,7 +8,6 @@ import {
   CLUE_DEFAULT,
   clueSide,
   DUEL_DEFAULT,
-  duelMatchXp,
   DUEL_MODES,
   DUEL_FILTER_MODES,
   TABLE_MODES,
@@ -566,7 +565,6 @@ async function dropPlayers(duel: DuelDoc, gone: DuelPlayer[]) {
     await applyDuelStats(winnerTeam, [...rest, ...gone], duel.mode)
     await pushDuelLog(scores, winnerTeam, duel.game, duel.mode, at)
     await Promise.all(rest.map((side) => markSeasonDuel(side.userId, true, at)))
-    await Promise.all(rest.map((side) => duelMatchReward(side.userId, duel)))
     await Promise.all(rest.map((side) => collectQuestsQuietly(side.userId)))
   }
 
@@ -979,7 +977,6 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   }
   if (duel.mode !== 'who') {
     await Promise.all(guessed.map(async (side) => awardSolveXp(await users(), side.userId, duel.mode as ModeId, 'endless', pool)))
-    await Promise.all(masters.map((side) => duelMatchReward(side.userId, duel)))
   }
   await Promise.all(masters.map((side) => collectQuestsQuietly(side.userId)))
   return finished
@@ -988,10 +985,6 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
 async function duelPool(duel: DuelDoc) {
   const whole = modePool((await gameData(duel.game as GameId)).pool, duel.mode as ModeId)
   return animePool(whole, duel.anime).length
-}
-
-async function duelMatchReward(userId: ObjectId, duel: DuelDoc) {
-  await addXp(await users(), userId, duelMatchXp(duel.best ?? DUEL_DEFAULT.best), 'duel', duel.mode as ModeId, NO_XP_PAST_CAP)
 }
 
 export async function duelGuess(duel: DuelDoc, userId: ObjectId, entityId: number) {

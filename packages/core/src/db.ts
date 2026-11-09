@@ -25,7 +25,7 @@ export type UserDoc = {
   levelsTaken?: number[]
   chatMutedUntil?: Date | null
   named?: boolean
-  xpToday?: { day: string; daily: number; endless: number; duel?: number }
+  xpToday?: { day: string; daily: number; endless: number }
   stats?: Record<string, Partial<Stats>>
   solvedTotal?: number
   duelSolved?: number

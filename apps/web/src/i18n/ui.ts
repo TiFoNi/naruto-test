@@ -448,9 +448,9 @@ const ui = {
     en: 'In By traits and Blind, XP depends on how many characters the universe has: the more there are, the more XP you get.',
   },
   'xp.duelNote': {
-    ru: 'В дуэлях за угаданного персонажа опыт как в бесконечном режиме. Полоска «Дуэли» — только за победу в матче: {xp} XP за каждую нужную победу.',
-    uk: 'У дуелях за вгаданого персонажа досвід як у нескінченному режимі. Смужка «Дуелі» — лише за перемогу в матчі: {xp} XP за кожну потрібну перемогу.',
-    en: 'In duels, each character you guess gives the same XP as Endless. The Duels bar fills only from match wins: {xp} XP per win needed.',
+    ru: 'В дуэлях за угаданного персонажа опыт как в бесконечном режиме. За победу в матче опыт не даётся.',
+    uk: 'У дуелях за вгаданого персонажа досвід як у нескінченному режимі. За перемогу в матчі досвід не дається.',
+    en: 'In duels, each character you guess gives the same XP as Endless. Winning a match gives no XP.',
   },
   'xp.dailyNote': {
     ru: 'Ежедневные загадки дают не больше {cap} XP в день — сверх лимита опыт не начисляется.',
@@ -460,7 +460,6 @@ const ui = {
   'xp.colAfter': { ru: 'После лимита', uk: 'Після ліміту', en: 'Past limit' },
   'xp.daily': { ru: 'Ежедневные загадки', uk: 'Щоденні загадки', en: 'Daily puzzles' },
   'xp.endless': { ru: 'Бесконечный', uk: 'Нескінченний', en: 'Endless' },
-  'xp.duel': { ru: 'Дуэли', uk: 'Дуелі', en: 'Duels' },
   'nav.profile': { ru: 'Профиль', uk: 'Профіль', en: 'Profile' },
   'brand.title': { ru: 'угадай аниме, мангу и игры', uk: 'вгадай аніме, манґу та ігри', en: 'guess anime, manga and games' },
   'nav.games': { ru: 'Игры', uk: 'Ігри', en: 'Games' },

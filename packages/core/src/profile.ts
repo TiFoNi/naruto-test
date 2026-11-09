@@ -162,7 +162,7 @@ export async function addXp(
   const doc = await collection.findOneAndUpdate(
     { _id: userId },
     [
-      { $set: { xpToday: { day, daily: carry('daily'), endless: carry('endless'), duel: carry('duel') } } },
+      { $set: { xpToday: { day, daily: carry('daily'), endless: carry('endless') } } },
       {
         $set: {
           xpGain:

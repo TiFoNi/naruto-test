@@ -6,7 +6,7 @@ import { forgetUser } from './session-cache'
 import { showHiddenGames } from './games'
 import type { Stats } from './stats'
 
-export type XpToday = { earned: number; cap: number; sources: { source: 'daily' | 'endless' | 'duel'; earned: number; cap: number }[] }
+export type XpToday = { earned: number; cap: number; sources: { source: 'daily' | 'endless'; earned: number; cap: number }[] }
 
 export type User = {
   id: string
