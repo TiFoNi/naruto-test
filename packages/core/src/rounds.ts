@@ -264,7 +264,7 @@ export async function finishRound(users: Collection<UserDoc>, round: RoundDoc, w
 
   if (round.daily) {
     const key = dailyKey(round.game, round.mode)
-    const value = !won && (await roundLimit(round)) ? await applySkip(users, round.userId, key) : await applyDailyResult(users, round.userId, key, round.daily, guesses)
+    const value = !won && (await roundLimit(round)) ? await applySkip(users, round.userId, key, { day: round.daily, how: 'outOfTries' }) : await applyDailyResult(users, round.userId, key, round.daily, guesses)
     if (!round.guest) await collectQuestsQuietly(round.userId)
     return { round: updated, xp, stats: { key, value } }
   }

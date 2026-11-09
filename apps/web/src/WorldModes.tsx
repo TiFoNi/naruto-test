@@ -8,7 +8,7 @@ import { useAuth } from './auth'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
-import { CalendarIcon, CheckIcon } from './icons'
+import { CalendarIcon, CheckIcon, CloseIcon } from './icons'
 import { MODES } from './modes'
 import { useHref } from './router'
 import { emptyStats, kyivToday } from './stats'
@@ -72,7 +72,9 @@ export default function WorldModes({ game: gameId }: { game: string }) {
           const own = stats[statsKey(game.id, one.id)] ?? emptyStats
           const played = own.solved > 0 || own.skipped > 0
           const daily = hasDaily(one.id)
-          const done = stats[dailyKey(game.id, one.id)]?.lastDay === kyivToday()
+          const today = stats[dailyKey(game.id, one.id)]
+          const done = today?.lastDay === kyivToday()
+          const missed = done ? null : (today?.missed ?? null)
 
           return (
             <article key={one.id} className="world-card">
@@ -89,9 +91,9 @@ export default function WorldModes({ game: gameId }: { game: string }) {
                   {played ? t('world.solved', { count: own.solved }) : t('world.fresh')}
                 </span>
                 {user && daily && (
-                  <Link className={`world-card-daily ${done ? 'done' : ''}`} href={href.play(game.id, one.id, true)} prefetch={false}>
-                    {done ? <CheckIcon /> : <CalendarIcon />}
-                    {t(done ? 'world.dailyDone' : 'world.daily')}
+                  <Link className={`world-card-daily ${done ? 'done' : missed ? 'missed' : ''}`} href={href.play(game.id, one.id, true)} prefetch={false}>
+                    {done ? <CheckIcon /> : missed ? <CloseIcon /> : <CalendarIcon />}
+                    {t(done ? 'world.dailyDone' : missed === 'gaveUp' ? 'result.gaveUp' : missed === 'outOfTries' ? 'result.outOfTries' : 'world.daily')}
                   </Link>
                 )}
               </div>

@@ -14,6 +14,7 @@ import { createPortal } from "react-dom";
 import Avatar from "./Avatar";
 import FramePicker from "./FramePicker";
 import { apiMode, apiUrl } from "./api";
+import { avatarUrl, ownAvatarUrl } from "./pics";
 import { useAuth } from "./auth";
 import { useI18n } from "./i18n";
 import { CloseIcon, PictureIcon } from "./icons";
@@ -303,6 +304,22 @@ export default function AvatarPicker({ edit = true }: { edit?: boolean }) {
     await send(body);
   };
 
+  const wearOwn = async () => {
+    const body = new FormData();
+    body.append("action", "own");
+    await send(body);
+  };
+
+  const oldUpload = Boolean(user?.avatar && !user?.avatarPreset && !user?.avatarOwn);
+  const ownSrc = !user
+    ? null
+    : user.avatarOwn
+      ? ownAvatarUrl(user.id, user.avatarOwn)
+      : oldUpload && user.avatar
+        ? avatarUrl(user.id, user.avatar)
+        : null;
+  const wearingOwn = Boolean(user?.avatar && (user.avatarPreset === "own" || oldUpload));
+
   const remove = async () => {
     const body = new FormData();
     body.append("action", "remove");
@@ -401,6 +418,18 @@ export default function AvatarPicker({ edit = true }: { edit?: boolean }) {
                   <section className="ava-sec">
                   <h3>{t("avatar.secFace")}</h3>
                   <div className="ava-presets">
+                    {ownSrc && (
+                      <button
+                        type="button"
+                        className={`ava-preset ${wearingOwn ? "on" : ""}`}
+                        disabled={busy}
+                        aria-label={t("avatar.own")}
+                        title={t("avatar.own")}
+                        onClick={() => void wearOwn()}
+                      >
+                        <img src={ownSrc} alt="" loading="lazy" decoding="async" />
+                      </button>
+                    )}
                     {PRESETS.map((one) => (
                       <button
                         key={one}

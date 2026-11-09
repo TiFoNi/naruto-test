@@ -213,6 +213,11 @@
   border-color: color-mix(in srgb, var(--correct) 40%, transparent);
 }
 
+.world-card-daily.missed {
+  color: #ffb4ab;
+  border-color: color-mix(in srgb, #e5483b 45%, transparent);
+}
+
 .world-card-daily .icon {
   width: 14px;
   height: 14px;

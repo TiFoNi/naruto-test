@@ -44,6 +44,7 @@ export type UserDoc = {
   cardPins?: string[]
   tiles?: (string | null)[]
   avatarPreset?: string | null
+  avatarOwn?: string | null
   banner?: string
   banners?: string[]
   bannerLooks?: Record<string, Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>>>
@@ -81,7 +82,9 @@ export type DuelLogRow = {
   won: boolean
 }
 
-export type Stats = { solved: number; streak: number; best: number; totalGuesses: number; skipped: number; lastDay?: string; day?: string; dayBest?: number; points?: number; bestStreak?: number; bestAt?: Date }
+export type DailyMiss = 'gaveUp' | 'outOfTries'
+
+export type Stats = { solved: number; streak: number; best: number; totalGuesses: number; skipped: number; lastDay?: string; missDay?: string; missHow?: DailyMiss; day?: string; dayBest?: number; points?: number; bestStreak?: number; bestAt?: Date }
 
 export type RoundStatus = 'active' | 'won' | 'lost' | 'skipped'
 

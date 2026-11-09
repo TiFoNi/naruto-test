@@ -33,6 +33,8 @@ export const miniUrl = (game: GameId, id: number, version?: string) =>
 
 export const avatarUrl = (id: string, version: string, small = false) => `${fullBase}avatars/${id}${small ? '-sm' : ''}.webp?v=${version}`
 
+export const ownAvatarUrl = (id: string, version: string) => `${fullBase}avatars/${id}-own.webp?v=${version}`
+
 export const abilityUrl = (key: string) => `${fullBase}${GAME_SPECS.dota.images}/abilities/${key}.webp`
 
 export const uiUrl = (file: string) => `${fullBase}${file.replace(/^\/+/, '')}`

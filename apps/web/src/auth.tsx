@@ -15,6 +15,7 @@ export type User = {
   tag: string | null
   avatar: string | null
   avatarPreset?: string | null
+  avatarOwn?: string | null
   frame: string | null
   frames: string[]
   banner: string | null

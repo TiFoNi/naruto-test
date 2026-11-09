@@ -18,7 +18,7 @@ import {
   type XpSource,
 } from '@nanda/game'
 import { shiftDay, today } from './daily'
-import { users, type Stats, type UserDoc } from './db'
+import { users, type DailyMiss, type Stats, type UserDoc } from './db'
 import { levelOf } from './quests'
 import { addSeasonXp, touchSeasonDay } from './season'
 import { fail } from './http'
@@ -123,7 +123,8 @@ export function dailyStats(stats: Partial<Stats> | undefined) {
   const base = normalizeStats(stats)
   const day = today()
   const alive = stats?.lastDay === day || stats?.lastDay === shiftDay(day, -1)
-  return { ...base, streak: alive ? base.streak : 0, lastDay: stats?.lastDay ?? null }
+  const missed = stats?.missDay === day && stats.lastDay !== day ? (stats.missHow ?? null) : null
+  return { ...base, streak: alive ? base.streak : 0, lastDay: stats?.lastDay ?? null, missed }
 }
 
 export async function applyDailyResult(collection: Collection<UserDoc>, userId: ObjectId, key: string, day: string, guesses: number) {
@@ -237,6 +238,7 @@ export function toProfile(doc: UserDoc) {
       tag: doc.tag ?? null,
       avatar: doc.avatar ?? null,
       avatarPreset: doc.avatarPreset ?? null,
+      avatarOwn: doc.avatarOwn ?? null,
       frame: doc.frame ?? null,
       frames: doc.frames ?? [],
       banner: doc.banner ?? null,
@@ -332,13 +334,16 @@ export async function raiseBest(collection: Collection<UserDoc>, userId: ObjectI
   )
 }
 
-export async function applySkip(collection: Collection<UserDoc>, userId: ObjectId, key: string) {
+export async function applySkip(collection: Collection<UserDoc>, userId: ObjectId, key: string, miss?: { day: string; how: DailyMiss }) {
   const doc = await collection.findOneAndUpdate(
     { _id: userId },
-    { $inc: { [`stats.${key}.skipped`]: 1 }, $set: { [`stats.${key}.streak`]: 0 } },
+    {
+      $inc: { [`stats.${key}.skipped`]: 1 },
+      $set: { [`stats.${key}.streak`]: 0, ...(miss ? { [`stats.${key}.missDay`]: miss.day, [`stats.${key}.missHow`]: miss.how } : {}) },
+    },
     { returnDocument: 'after', projection: { [`stats.${key}`]: 1 } },
   )
-  return normalizeStats(doc?.stats?.[key])
+  return miss ? dailyStats(doc?.stats?.[key]) : normalizeStats(doc?.stats?.[key])
 }
 
 export async function applyResult(collection: Collection<UserDoc>, userId: ObjectId, key: string, won: boolean, guesses: number) {

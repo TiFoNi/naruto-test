@@ -100,19 +100,31 @@ export const avatarKey = (userId: string) => `avatars/${userId}.webp`
 
 export const smallAvatarKey = (userId: string) => `avatars/${userId}-sm.webp`
 
+export const ownAvatarKey = (userId: string) => `avatars/${userId}-own.webp`
+
 export const smallAvatar = (image: Buffer) =>
   sharp(image).resize(AVATAR_SMALL, AVATAR_SMALL, { kernel: 'lanczos3' }).webp({ quality: 90 }).toBuffer()
 
-export async function uploadAvatar(userId: string, source: Buffer) {
+export async function uploadAvatar(userId: string, source: Buffer, own = false) {
   const image = await sharp(source)
     .rotate()
     .resize(AVATAR, AVATAR, { fit: 'cover', position: 'centre' })
     .webp({ quality: 92 })
     .toBuffer()
 
-  await Promise.all([put(avatarKey(userId), image), put(smallAvatarKey(userId), await smallAvatar(image))])
+  await Promise.all([
+    put(avatarKey(userId), image),
+    put(smallAvatarKey(userId), await smallAvatar(image)),
+    ...(own ? [put(ownAvatarKey(userId), image)] : []),
+  ])
   return version(image)
 }
+
+export async function keepOwnAvatar(userId: string) {
+  await s3().send(new CopyObjectCommand({ Bucket: bucket(), Key: ownAvatarKey(userId), CopySource: `${bucket()}/${avatarKey(userId)}`, MetadataDirective: 'COPY' }))
+}
+
+export const wearOwnAvatar = async (userId: string) => uploadAvatar(userId, await get(ownAvatarKey(userId)))
 
 export async function dropAvatar(userId: string) {
   await s3().send(

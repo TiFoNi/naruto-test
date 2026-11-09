@@ -15,6 +15,6 @@ export const POST = handle(async (request) => {
   const game = round.game as GameId
   const mode = round.mode as ModeId
   const key = round.daily ? dailyKey(game, mode) : statsKey(game, mode)
-  const stats = await applySkip(collection, userId, key)
+  const stats = await applySkip(collection, userId, key, round.daily ? { day: round.daily, how: 'gaveUp' } : undefined)
   return json({ round: await roundView(skipped, false), stats: { key, value: stats } })
 })

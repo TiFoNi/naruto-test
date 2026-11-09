@@ -1,4 +1,4 @@
-export type Stats = { solved: number; streak: number; best: number; totalGuesses: number; skipped: number; lastDay?: string | null }
+export type Stats = { solved: number; streak: number; best: number; totalGuesses: number; skipped: number; lastDay?: string | null; missed?: 'gaveUp' | 'outOfTries' | null }
 
 export const kyivToday = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Kyiv' }).format(new Date())
 
