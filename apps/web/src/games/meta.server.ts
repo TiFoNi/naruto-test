@@ -3,6 +3,7 @@ import type { GameMeta } from './meta'
 
 const API = (process.env.API_ORIGIN ?? process.env.NEXT_PUBLIC_API_URL ?? '').replace(/\/+$/, '')
 const FRESH = 604800
+const META_FRESH = 3600
 
 type Row = { game: string; count: number; plays?: number; featured: { id: number; image?: string }[] }
 
@@ -17,7 +18,7 @@ export async function apiJson<T>(path: string, fresh = FRESH): Promise<T | null>
 }
 
 export async function gameMeta(): Promise<GameMeta[]> {
-  const data = await apiJson<{ games: Row[] }>('meta')
+  const data = await apiJson<{ games: Row[] }>('meta', META_FRESH)
   const rows = new Map((data?.games ?? []).map((row) => [row.game, row]))
 
   return GAMES.map((game) => {
