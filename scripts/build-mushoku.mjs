@@ -128,7 +128,7 @@ const CHARACTERS = [
   ['Hitogami', 'Hitogami', 'Хитогами', M, 'Божество', 'Божество', [], 0],
   ['Gal Farion', 'Gal Farion', 'Гал Фарион', M, 'Человек', 'Мечник', [SEVEN, SWORD_GOD], 4],
   ['Nina Farion', 'Nina Farion', 'Нина Фарион', F, 'Человек', 'Мечник', [SWORD_GOD], 4],
-  ['Isolte Cruel', 'Isolte Cruel', 'Изольта Круэль', F, 'Человек', 'Рыцарь', [ASURA, WATER_GOD], 4],
+  ['Isolte Cruel', 'Isolte Cruel', 'Изольта Круэль', F, 'Человек', ['Мечник', 'Рыцарь'], [ASURA, WATER_GOD], 4],
   ['Reida Reia', 'Reida Reia', 'Райда Рейя', F, 'Человек', 'Мечник', [ASURA, WATER_GOD], 4],
   ['Sara', 'Sara', 'Сара', F, 'Человек', 'Авантюрист', [], 2],
   ['Pax Shirone', 'Pax Shirone', 'Пакс Широн', M, 'Человек', 'Знать', [SHIRONE], 0],
