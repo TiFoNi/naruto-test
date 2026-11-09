@@ -427,3 +427,9 @@
   color: var(--text-3);
   font-size: 11px;
 }
+
+.diff-pace .diff-target {
+  display: block;
+  margin-top: 2px;
+  cursor: help;
+}

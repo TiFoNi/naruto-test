@@ -730,7 +730,14 @@ export const DUEL_PACE_MODES: ModeId[] = ['who', 'grid', 'clue']
 
 export const PACE_TARGET: Partial<Record<ModeId, number>> = { classic: 22, blind: 28, image: 17, ability: 26, page: 28, odd: 26 }
 
-export type Pace = { base: number; after: number; msPerWin: number }
+export const PACE_AUTO = { farmerPerMinute: 40, think: 1.2, thinkModes: ['classic', 'blind'] as ModeId[], heavyRounds: 100, minPlayers: 3, minRounds: 500, low: 14, high: 30 } as const
+
+export const autoTarget = (mode: ModeId, faster: number) => {
+  const bonus = PACE_AUTO.thinkModes.includes(mode) ? PACE_AUTO.think : 1
+  return Math.min(PACE_AUTO.high, Math.max(PACE_AUTO.low, (PACE_AUTO.farmerPerMinute * bonus) / Math.max(1, faster)))
+}
+
+export type Pace = { base: number; after: number; msPerWin: number; target: number }
 
 export const triesFactor = (tries: number, ref: number) => (ref > 0 ? Math.min(TRIES_FACTOR.max, Math.max(TRIES_FACTOR.min, tries / ref)) : 1)
 
@@ -743,10 +750,9 @@ export const triesXp = (mode: ModeId, factor: number, base: number = MODE_XP[mod
 export const triesXpPastCap = (mode: ModeId, factor: number, pool: number, after: number = MODE_XP_AFTER[mode]) =>
   Math.max(1, Math.round(after * Math.min(TRIES_FACTOR.pastCap, factor) * poolShrink(mode, pool)))
 
-export const paceFromTime = (mode: ModeId, msPerWin: number): Pace => {
+export const paceFromTime = (mode: ModeId, msPerWin: number, target: number = PACE_TARGET[mode] ?? PACE.perMinute): Pace => {
   const minutes = msPerWin / 60_000
-  const target = PACE_TARGET[mode] ?? PACE.perMinute
-  return { base: target * minutes, after: (target * PACE.perMinuteAfter * minutes) / PACE.perMinute, msPerWin }
+  return { base: target * minutes, after: (target * PACE.perMinuteAfter * minutes) / PACE.perMinute, msPerWin, target }
 }
 
 export const paceWithin = (mode: ModeId, pace: Pace): Pace => {

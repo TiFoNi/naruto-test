@@ -6,8 +6,11 @@ import {
   MODE_XP,
   MODE_XP_AFTER,
   PACE,
+  PACE_AUTO,
   PACE_MODES,
+  PACE_TARGET,
   SHOT_POINTS,
+  autoTarget,
   TRIES_MIN_PLAYERS,
   TRIES_PRIOR,
   TRIES_REF,
@@ -196,6 +199,33 @@ function capPlayers(rows: PlayerPaceRow[]): PaceRow[] {
   return [...worlds.values()]
 }
 
+function heavyTargets(players: PlayerPaceRow[], worlds: PaceRow[]) {
+  const rate = new Map(worlds.map((world) => [`${world._id.game}|${paceKey(world._id.mode, world._id.bot)}`, world.won ? world.active / world.won : 0]))
+  const sums = new Map<string, { ratio: number; rounds: number; players: number }>()
+  for (const row of players) {
+    if (row.n < PACE_AUTO.heavyRounds || !row.won) continue
+    const key = paceKey(row._id.mode, row._id.bot)
+    const world = rate.get(`${row._id.game}|${key}`)
+    if (!world) continue
+    const sum = sums.get(key) ?? { ratio: 0, rounds: 0, players: 0 }
+    sum.ratio += (world / (row.active / row.won)) * row.n
+    sum.rounds += row.n
+    sum.players += 1
+    sums.set(key, sum)
+  }
+  const targets = new Map<string, { target: number; faster: number | null }>()
+  for (const [key, sum] of sums) {
+    if (sum.players < PACE_AUTO.minPlayers || sum.rounds < PACE_AUTO.minRounds) continue
+    const faster = sum.ratio / sum.rounds
+    targets.set(key, { target: autoTarget(baseMode(key), faster), faster })
+  }
+  return targets
+}
+
+let modeTargets = new Map<string, { target: number; faster: number | null }>()
+
+const targetOf = (key: string) => modeTargets.get(key)?.target ?? PACE_TARGET[baseMode(key)] ?? PACE.perMinute
+
 function buildPaces(rows: PaceRow[]) {
   const totals = new Map<string, { active: number; won: number }>()
   for (const row of rows) {
@@ -208,7 +238,7 @@ function buildPaces(rows: PaceRow[]) {
   const modes = new Map<string, Pace>()
   for (const [key, total] of totals) {
     if (total.won < PACE.minWins) continue
-    modes.set(key, paceWithin(baseMode(key), paceFromTime(baseMode(key), total.active / total.won)))
+    modes.set(key, paceWithin(baseMode(key), paceFromTime(baseMode(key), total.active / total.won, targetOf(key))))
   }
   const perWorld = new Map<string, Pace>()
   for (const row of rows) {
@@ -216,7 +246,7 @@ function buildPaces(rows: PaceRow[]) {
     const whole = modes.get(key)
     if (!whole) continue
     const msPerWin = (row.active + PACE.priorWins * whole.msPerWin) / (row.won + PACE.priorWins)
-    const pace = paceFromTime(baseMode(key), msPerWin)
+    const pace = paceFromTime(baseMode(key), msPerWin, targetOf(key))
     perWorld.set(worldKey(row._id.game, key), { ...pace, base: Math.min(pace.base, whole.base * PACE.spread), after: Math.min(pace.after, whole.after * PACE.spread) })
   }
   return { modes, perWorld }
@@ -226,7 +256,10 @@ export function refreshDifficulty() {
   if (running) return running
   running = Promise.all([measureTries(), measurePace(), measureDuels()])
     .then(([triesRows, paceRows, duelRows]) => {
-      const { modes, perWorld } = buildPaces(capPlayers([...paceRows, ...duelRows]))
+      const players = [...paceRows, ...duelRows]
+      const capped = capPlayers(players)
+      modeTargets = heavyTargets(players, capped)
+      const { modes, perWorld } = buildPaces(capped)
       worlds = buildWorlds(triesRows)
       modePaces = modes
       worldPaces = perWorld
@@ -303,5 +336,5 @@ export function xpRates() {
 export function paceReport() {
   stale()
   const round1 = (value: number) => Math.round(value * 10) / 10
-  return Object.fromEntries([...modePaces].map(([mode, pace]) => [mode, { base: round1(pace.base), after: round1(pace.after), seconds: round1(pace.msPerWin / 1000) }]))
+  return Object.fromEntries([...modePaces].map(([mode, pace]) => [mode, { base: round1(pace.base), after: round1(pace.after), seconds: round1(pace.msPerWin / 1000), target: round1(pace.target), faster: modeTargets.get(mode)?.faster ? round1(modeTargets.get(mode)!.faster!) : null }]))
 }

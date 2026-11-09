@@ -30,7 +30,7 @@ type WorldRow = Stats & { game: GameId; mode: ModeId }
 type CharacterRow = Stats & { id: number; name: string; nameEn?: string; nameUk?: string; thumb: number; gone: boolean; xp: number; xpAfter: number; tries: number | null }
 type Typical = { xp: number; xpAfter: number; tries: number | null }
 type Picked = { game: GameId; mode: ModeId }
-type PaceInfo = Partial<Record<ModeId, { base: number; after: number; seconds: number }>>
+type PaceInfo = Partial<Record<ModeId, { base: number; after: number; seconds: number; target: number; faster: number | null }>>
 type SortKey = 'name' | 'rounds' | 'players' | 'win' | 'skip' | 'lost' | 'first' | 'playerAvg' | 'avg' | 'median' | 'xp'
 
 const KINDS: { id: Kind; label: string }[] = [
@@ -267,6 +267,9 @@ export default function DifficultyAdmin() {
                         <>
                           <b>{Math.max(1, Math.round(one.base))}</b>
                           <small> / {Math.max(1, Math.round(one.after))}</small>
+                          <small className="diff-target" title={one.faster ? `Активные игроки быстрее среднего в ${one.faster} раза` : 'Мало активных игроков — цель задана вручную'}>
+                            {Math.round(one.target)}/мин{one.faster ? '' : ' ✎'}
+                          </small>
                         </>
                       ) : (
                         <small>вручную</small>
