@@ -214,7 +214,7 @@ export type SolveTarget = { game: string; id: number }
 export function solveXpFor(mode: ModeId, pool: number, target?: SolveTarget) {
   const pace = paceOf(mode, target?.game)
   const { tries, factor } = target && TRIES_REF[mode] ? charFactor(target.game, mode, target.id) : { tries: null, factor: 1 }
-  if (pace) return { base: triesXp(mode, factor, pace.base), after: triesXpPastCap(mode, factor, pool, pace.after), tries, factor }
+  if (pace) return { base: triesXp(mode, factor, pace.base), after: triesXpPastCap(mode, factor, 0, pace.after), tries, factor }
   return { base: poolXp(MODE_XP[mode], mode, pool), after: poolXpPastCap(MODE_XP_AFTER[mode], mode, pool), tries, factor }
 }
 
