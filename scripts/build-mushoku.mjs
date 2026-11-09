@@ -94,7 +94,7 @@ const DEMONS = 'Демонический континент'
 const SKY = 'Небесная крепость'
 
 const CHARACTERS = [
-  ['Rudeus Greyrat', 'Rudeus Greyrat', 'Рудеус Грейрат', M, 'Человек', ['Маг', 'Студент', 'Авантюрист'], [GREYRAT, RANOA, DEAD_END], 0],
+  ['Rudeus Greyrat', 'Rudeus Greyrat', 'Рудеус Грейрат', M, 'Человек', ['Маг', 'Студент', 'Авантюрист', 'Учитель'], [GREYRAT, RANOA, DEAD_END], 0],
   ['Paul Greyrat', 'Paul Greyrat', 'Пол Грейрат', M, 'Человек', ['Мечник', 'Рыцарь', 'Авантюрист'], [GREYRAT, WOLF], 0],
   ['Zenith Greyrat', 'Zenith Greyrat', 'Зенит Грейрат', F, 'Человек', ['Маг', 'Авантюрист'], [GREYRAT, WOLF], 0],
   ['Lilia Greyrat', 'Lilia Greyrat', 'Лилия Грейрат', F, 'Человек', 'Слуга', [GREYRAT], 0],
@@ -105,7 +105,7 @@ const CHARACTERS = [
   ['Sauros Boreas Greyrat', 'Sauros Boreas Greyrat', 'Саурос Бореас Грейрат', M, 'Человек', 'Знать', [GREYRAT, BOREAS, ASURA], 0],
   ['Philip Boreas Greyrat', 'Philip Boreas Greyrat', 'Филип Бореас Грейрат', M, 'Человек', 'Знать', [GREYRAT, BOREAS, ASURA], 0],
   ['Hilda Boreas Greyrat', 'Hilda Boreas Greyrat', 'Хильда Бореас Грейрат', F, 'Человек', 'Знать', [GREYRAT, BOREAS, ASURA], 0],
-  ['Ghislaine Dedoldia', 'Ghislaine Dedoldia', 'Гислен Дедорудия', F, 'Звериный народ', ['Мечник', 'Авантюрист'], [WOLF, BOREAS, SWORD_GOD], 0],
+  ['Ghislaine Dedoldia', 'Ghislaine Dedoldia', 'Гислен Дедорудия', F, 'Звериный народ', ['Мечник', 'Авантюрист', 'Учитель'], [WOLF, BOREAS, SWORD_GOD], 0],
   ['Ruijerd Superdia', 'Ruijerd Superdia', 'Руйджерд Супердия', M, 'Демон', ['Воин', 'Авантюрист'], [DEAD_END], 0],
   ['Elinalise Dragonroad', 'Elinalise Dragonroad', 'Элинализ Драгонроуд', F, 'Эльф', ['Воин', 'Авантюрист', 'Студент'], [WOLF, RANOA], 0],
   ['Geese Nukadia', 'Geese Nukadia', 'Гису Нукадия', M, 'Демон', 'Авантюрист', [WOLF], 1],
@@ -126,10 +126,10 @@ const CHARACTERS = [
   ['Darius Silva Ganius', 'Darius Silva Ganius', 'Дариус Сильва Ганиус', M, 'Человек', 'Знать', [ASURA], 1],
   ['Orsted', 'Orsted', 'Орстед', M, 'Драконий род', 'Владыка', [SEVEN], 0],
   ['Hitogami', 'Hitogami', 'Хитогами', M, 'Божество', 'Божество', [], 0],
-  ['Gal Farion', 'Gal Farion', 'Гал Фарион', M, 'Человек', 'Мечник', [SEVEN, SWORD_GOD], 4],
+  ['Gal Farion', 'Gal Farion', 'Гал Фарион', M, 'Человек', ['Мечник', 'Учитель'], [SEVEN, SWORD_GOD], 4],
   ['Nina Farion', 'Nina Farion', 'Нина Фарион', F, 'Человек', 'Мечник', [SWORD_GOD], 4],
   ['Isolte Cruel', 'Isolte Cruel', 'Изольта Круэль', F, 'Человек', ['Мечник', 'Рыцарь'], [ASURA, WATER_GOD], 4],
-  ['Reida Reia', 'Reida Reia', 'Райда Рейя', F, 'Человек', 'Мечник', [ASURA, WATER_GOD], 4],
+  ['Reida Reia', 'Reida Reia', 'Райда Рейя', F, 'Человек', ['Мечник', 'Учитель'], [ASURA, WATER_GOD], 4],
   ['Sara', 'Sara', 'Сара', F, 'Человек', 'Авантюрист', [], 2],
   ['Pax Shirone', 'Pax Shirone', 'Пакс Широн', M, 'Человек', 'Знать', [SHIRONE], 0],
   ['Soldat Heckler', 'Soldat Heckler', 'Сольдат Хеклер', M, 'Человек', 'Авантюрист', [], 2],
