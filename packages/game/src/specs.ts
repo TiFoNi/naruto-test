@@ -724,7 +724,7 @@ export const PACE_MODES: ModeId[] = ['classic', 'blind', 'image', 'ability', 'pa
 
 export const LOGGED_MODES: ModeId[] = ['pair', 'shot', 'tune']
 
-export const PACE = { perMinute: 22, perMinuteAfter: 5, thinkCapMs: 60_000, guessCapMs: 45_000, duelCapMs: 10 * 60_000, minWins: 200, priorWins: 100, spread: 3 } as const
+export const PACE = { perMinute: 22, perMinuteAfter: 10, thinkCapMs: 60_000, guessCapMs: 45_000, duelCapMs: 10 * 60_000, playerRounds: 300, minWins: 200, priorWins: 100, spread: 3 } as const
 
 export const DUEL_PACE_MODES: ModeId[] = ['who', 'grid', 'clue']
 

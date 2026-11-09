@@ -31,6 +31,7 @@ type Mean = { players: number; avg: number }
 type World = Mean & { chars: Map<number, Mean> }
 type TriesRow = { _id: { game: string; mode: string; id: number; user: unknown }; n: number; sum: number }
 type PaceRow = { _id: { game: string; mode: string; bot?: boolean }; active: number; won: number }
+type PlayerPaceRow = { _id: { game: string; mode: string; bot?: boolean; user: unknown }; active: number; won: number; n: number }
 
 let worlds: Map<string, World> | null = null
 let modePaces = new Map<string, Pace>()
@@ -70,7 +71,7 @@ async function measurePace() {
     ],
   }
   return (await rounds())
-    .aggregate<PaceRow>(
+    .aggregate<PlayerPaceRow>(
       [
         {
           $match: {
@@ -84,9 +85,10 @@ async function measurePace() {
         },
         {
           $group: {
-            _id: { game: '$game', mode: '$mode' },
+            _id: { game: '$game', mode: '$mode', user: '$userId' },
             active: { $sum: { $cond: [{ $ifNull: ['$askedAt', false] }, asked, played] } },
             won: { $sum: { $cond: [{ $eq: ['$status', 'won'] }, 1, 0] } },
+            n: { $sum: 1 },
           },
         },
       ],
@@ -97,14 +99,15 @@ async function measurePace() {
 
 async function measureDuels() {
   return (await duelRounds())
-    .aggregate<PaceRow>(
+    .aggregate<PlayerPaceRow>(
       [
         { $match: { at: { $gte: new Date(Date.now() - WINDOW_MS) }, mode: { $in: DUEL_PACE_MODES } } },
         {
           $group: {
-            _id: { game: '$game', mode: '$mode', bot: '$bot' },
+            _id: { game: '$game', mode: '$mode', bot: '$bot', user: '$userId' },
             active: { $sum: { $min: [PACE.duelCapMs, { $max: [0, '$ms'] }] } },
             won: { $sum: { $cond: ['$won', 1, 0] } },
+            n: { $sum: 1 },
           },
         },
       ],
@@ -147,6 +150,19 @@ function buildWorlds(rows: TriesRow[]) {
   return out
 }
 
+function capPlayers(rows: PlayerPaceRow[]): PaceRow[] {
+  const worlds = new Map<string, PaceRow>()
+  for (const row of rows) {
+    const weight = Math.min(1, PACE.playerRounds / Math.max(1, row.n))
+    const key = `${row._id.game}|${row._id.mode}|${row._id.bot ? 1 : 0}`
+    const world = worlds.get(key) ?? { _id: { game: row._id.game, mode: row._id.mode, bot: row._id.bot }, active: 0, won: 0 }
+    world.active += row.active * weight
+    world.won += row.won * weight
+    worlds.set(key, world)
+  }
+  return [...worlds.values()]
+}
+
 function buildPaces(rows: PaceRow[]) {
   const totals = new Map<string, { active: number; won: number }>()
   for (const row of rows) {
@@ -177,7 +193,7 @@ export function refreshDifficulty() {
   if (running) return running
   running = Promise.all([measureTries(), measurePace(), measureDuels()])
     .then(([triesRows, paceRows, duelRows]) => {
-      const { modes, perWorld } = buildPaces([...paceRows, ...duelRows])
+      const { modes, perWorld } = buildPaces(capPlayers([...paceRows, ...duelRows]))
       worlds = buildWorlds(triesRows)
       modePaces = modes
       worldPaces = perWorld
