@@ -728,9 +728,9 @@ export const PACE = { perMinute: 22, perMinuteAfter: 10, thinkCapMs: 60_000, gue
 
 export const DUEL_PACE_MODES: ModeId[] = ['who', 'grid', 'clue']
 
-export const PACE_TARGET: Partial<Record<ModeId, number>> = { classic: 22, blind: 28, image: 17, ability: 26, page: 28, odd: 26 }
+export const PACE_TARGET: Partial<Record<ModeId, number>> = { classic: 28, blind: 35, image: 17, ability: 26, page: 28, odd: 26 }
 
-export const PACE_AUTO = { farmerPerMinute: 40, think: 1.2, thinkModes: ['classic', 'blind'] as ModeId[], heavyRounds: 100, minPlayers: 3, minRounds: 500, low: 14, high: 30 } as const
+export const PACE_AUTO = { farmerPerMinute: 40, think: 1.5, thinkModes: ['classic', 'blind'] as ModeId[], heavyRounds: 100, minPlayers: 3, minRounds: 500, low: 14, high: 40 } as const
 
 export const autoTarget = (mode: ModeId, faster: number) => {
   const bonus = PACE_AUTO.thinkModes.includes(mode) ? PACE_AUTO.think : 1
