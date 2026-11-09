@@ -1,10 +1,10 @@
 export const PLACE_FRAMES = ['top1'] as const
 
-export const SEASON_FRAMES: Record<number, string> = { 5: 'cosmos', 6: 'blades' }
+export const SEASON_FRAMES: Record<number, string> = { 5: 'cosmos', 6: 'blades', 7: 'inferno' }
 
 export const championFrame = (season: number) => SEASON_FRAMES[season] ?? PLACE_FRAMES[0]
 
-export const AWARD_FRAMES = [...PLACE_FRAMES, 'cosmos', 'blades'] as const
+export const AWARD_FRAMES = [...PLACE_FRAMES, 'cosmos', 'blades', 'inferno'] as const
 
 export const WORLD_FRAMES = [
   'berserk',

@@ -14,6 +14,7 @@ const AWARD_LABELS: Record<string, L10n> = {
   top1: l10n('1-е место', '1-ше місце', '1st place'),
   cosmos: l10n('Космос', 'Космос', 'Cosmos'),
   blades: l10n('Клинки', 'Клинки', 'Blades'),
+  inferno: l10n('Пламя', 'Полум\'я', 'Inferno'),
 }
 
 const NATURE_LABELS: Record<string, L10n> = {
@@ -56,7 +57,7 @@ const ART_LABELS: Record<string, L10n> = {
   demonring: l10n('Демоническое кольцо', 'Демонічне кільце', 'Demon ring'),
 }
 
-const DRAWN = new Set<string>([...NATURE_FRAMES, ...EFFECT_FRAMES, ...ART_FRAMES, 'aot', 'kny', 'tg', 'dn', 'top1', 'cosmos', 'blades'])
+const DRAWN = new Set<string>([...NATURE_FRAMES, ...EFFECT_FRAMES, ...ART_FRAMES, 'aot', 'kny', 'tg', 'dn', 'top1', 'cosmos', 'blades', 'inferno'])
 
 const ALL: Frame[] = [
   ...AWARD_FRAMES.map((id) => ({ id, kind: 'award' as const, label: AWARD_LABELS[id] })),
@@ -69,9 +70,9 @@ const ALL: Frame[] = [
 
 export const FRAMES: Frame[] = ALL.filter((one) => DRAWN.has(one.id))
 
-const ART = '41'
+const ART = '44'
 
-const MOVING = new Set<string>(EFFECT_FRAMES)
+const MOVING = new Set<string>([...EFFECT_FRAMES, 'inferno'])
 
 const suffixOf = (id: string, size?: 'xs' | 'sm' | 'md' | boolean) =>
   size === 'xs' ? (MOVING.has(id) ? '-xs' : '-sm') : size === true || size === 'sm' ? '-sm' : size === 'md' ? '-md' : ''

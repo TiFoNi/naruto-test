@@ -23,9 +23,10 @@ const MARGIN = 1.04
 
 const args = process.argv.slice(2)
 const only = args.find((arg) => arg.startsWith('--only='))?.slice('--only='.length).split(',')
+const forcedQuality = Number(args.find((arg) => arg.startsWith('--quality='))?.slice('--quality='.length)) || 0
 const [id, from, fpsArg, alphaArg] = args.filter((arg) => !arg.startsWith('--'))
 if (!id || !/^[a-z0-9-]+$/.test(id) || !from) {
-  console.error('usage: node scripts/build-frame-anim.mjs <id> <frames-dir> [fps] [alpha-quality] [--only=-xs,-md]')
+  console.error('usage: node scripts/build-frame-anim.mjs <id> <frames-dir> [fps] [alpha-quality] [--only=-xs,-md] [--quality=90]')
   process.exit(1)
 }
 const fps = Number(fpsArg) || 24
@@ -96,7 +97,7 @@ for (const size of (still ? STILL_SIZES : SIZES).filter((one) => !only || only.i
   const strip = Buffer.concat(resized)
   const pages = resized.length
   await sharp(strip, { raw: { width: size.side, height: size.side * pages, channels: 4, pageHeight: size.side } })
-    .webp({ quality: ownAlpha && !still ? Math.min(size.quality, 75) : size.quality, alphaQuality, effort: 4, smartSubsample: true, loop: 0, ...(pages > 1 ? { delay: Array(pages).fill(delay) } : {}) })
+    .webp({ quality: forcedQuality || (ownAlpha && !still ? Math.min(size.quality, 75) : size.quality), alphaQuality, effort: 4, smartSubsample: true, loop: 0, ...(pages > 1 ? { delay: Array(pages).fill(delay) } : {}) })
     .toFile(into)
   const kb = Math.round((await fs.stat(into)).size / 1024)
   console.log(`${path.basename(into).padEnd(18)} ${size.side}px ${pages} frame${pages > 1 ? 's' : ''} ${kb}K`)

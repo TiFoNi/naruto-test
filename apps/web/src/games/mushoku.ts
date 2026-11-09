@@ -5,7 +5,7 @@ type Character = Entity & {
   nameEn: string
   gender: string
   race: string
-  role: string
+  role: string[]
   affiliations: string[]
   debut: string
   debutIndex: number
@@ -16,7 +16,7 @@ const { list, exact } = cells<Character>()
 const columns: Column<Character>[] = [
   { title: l10n('Пол', 'Стать', 'Gender'), ...exact('gender') },
   { title: l10n('Раса', 'Раса', 'Race'), ...exact('race') },
-  { title: l10n('Занятие', 'Заняття', 'Occupation'), ...exact('role') },
+  { title: l10n('Занятие', 'Заняття', 'Occupation'), ...list('role') },
   { title: l10n('Принадлеж­ность', 'Належ­ність', 'Affiliation'), ...list('affiliations') },
   { title: l10n('Дебют в аниме', 'Дебют в аніме', 'Anime debut'), key: 'debutIndex', text: (g, { tv }) => tv(g.debut) },
 ]
