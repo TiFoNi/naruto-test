@@ -123,6 +123,7 @@ const GENDER_FIX = { Yamato: 'Женский', Bentham: 'Мужской' }
 const HAKI_FIX = {
   Sanji: ['Наблюдения', 'Вооружения', 'Королевская'],
   'Dracule Mihawk': ['Наблюдения', 'Вооружения', 'Королевская'],
+  'Benn Beckman': ['Наблюдения', 'Вооружения'],
 }
 
 const FRUIT_RULES = [
