@@ -61,6 +61,15 @@ const categoryIcon = (id: Category) =>
     <GamepadIcon />
   )
 
+const PINNED: string[] = ['tunes', 'shots']
+
+const pinOf = (game: GameMeta) => {
+  const at = PINNED.indexOf(game.id)
+  return at < 0 ? PINNED.length : at
+}
+
+const byCount = (one: GameMeta, two: GameMeta) => pinOf(one) - pinOf(two) || two.count - one.count
+
 const favourite = (games: GameMeta[], stats: Record<string, Stats>) => {
   const score = new Map<string, number>()
   for (const [key, value] of Object.entries(stats)) {
@@ -603,7 +612,7 @@ export default function Dashboard({ games: everyGame }: { games: GameMeta[] }) {
       )}
 
       {shown.map((category, index) => {
-        const list = games.filter((g) => g.category === category.id)
+        const list = games.filter((g) => g.category === category.id).sort(byCount)
 
         return (
           <section key={category.id} className="category" data-id={category.id} data-first={index === 0 ? '' : undefined}>
