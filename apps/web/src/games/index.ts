@@ -5,6 +5,7 @@ import { brawl } from './brawl'
 import { bc } from './bc'
 import { csm } from './csm'
 import { mushoku } from './mushoku'
+import { kuroko } from './kuroko'
 import { avatar } from './avatar'
 import { dn } from './dn'
 import { dota } from './dota'
@@ -28,7 +29,7 @@ import { tg } from './tg'
 import { HIDDEN_GAMES } from '@nanda/game'
 import type { Entity, Game, GameId } from './types'
 
-const ALL = [tunes, shots, naruto, onepiece, aot, bleach, kny, mha, jjk, csm, mushoku, tg, berserk, hxh, bc, jojo, se, ff, dn, avatar, marvel, dota, genshin, brawl, mk, manga, football] as unknown as Game<Entity>[]
+const ALL = [tunes, shots, naruto, onepiece, aot, bleach, kny, mha, jjk, csm, mushoku, kuroko, tg, berserk, hxh, bc, jojo, se, ff, dn, avatar, marvel, dota, genshin, brawl, mk, manga, football] as unknown as Game<Entity>[]
 
 const open = (admin: boolean) => ALL.filter((game) => admin || !HIDDEN_GAMES.includes(game.id))
 

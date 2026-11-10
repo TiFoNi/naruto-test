@@ -134,7 +134,7 @@ export default function Leaderboard({ gameId, mode }: { gameId: GameId; mode: Mo
   const boardKey = `${gameId}:${mode}`
   const scored = (board?.rows ?? []).some((row) => row.score !== undefined)
   const columns = scored ? [COLUMNS[0]!, SCORE, COLUMNS[1]!] : COLUMNS
-  const active = columns.find((c) => c.sort === sort) ?? columns[0]
+  const active = scored ? SCORE : (columns.find((c) => c.sort === sort) ?? columns[0])
   const all = board?.rows ?? []
   const waiting = !board && !error
   const standing = all.length > 0

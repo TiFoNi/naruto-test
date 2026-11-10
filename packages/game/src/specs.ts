@@ -23,6 +23,7 @@ export type GameId =
   | 'jjk'
   | 'csm'
   | 'mushoku'
+  | 'kuroko'
   | 'brawl'
   | 'shots'
   | 'tunes'
@@ -231,6 +232,19 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('debutIndex', 'order'),
     ],
   },
+  kuroko: {
+    featured: ['Tetsuya Kuroko', 'Taiga Kagami', 'Daiki Aomine', 'Seijūrō Akashi'],
+    data: 'kuroko',
+    images: 'kuroko',
+    columns: [
+      col('gender', 'exact'),
+      col('teams', 'list'),
+      col('position', 'exact'),
+      col('height', 'order'),
+      col('group', 'exact'),
+      col('episode', 'order'),
+    ],
+  },
   jjk: {
     featured: ['Yuji Itadori', 'Satoru Gojo', 'Megumi Fushiguro'],
     data: 'jjk',
@@ -409,7 +423,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
-export const HIDDEN_GAMES: GameId[] = []
+export const HIDDEN_GAMES: GameId[] = ['kuroko']
 
 export const OPEN_GAMES = GAME_IDS.filter((game) => !HIDDEN_GAMES.includes(game))
 

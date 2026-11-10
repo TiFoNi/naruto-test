@@ -29,7 +29,7 @@ export const GET = handle(async (request) => {
       for (const v of values) if (!seen.includes(v)) seen.push(v)
     }
   }
-  for (const key of Object.keys(options)) options[key].sort((a, b) => a.localeCompare(b, 'ru'))
+  for (const key of Object.keys(options)) options[key].sort((a, b) => String(a).localeCompare(String(b), 'ru', { numeric: true }))
 
   const config = await (await settings()).findOne({ game }, { projection: { _id: 0, game: 0 } })
   return json({ entities: list, options, updated: config?.updated ?? '', atlas: config?.atlas ?? '' })

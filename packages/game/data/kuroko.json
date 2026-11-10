@@ -1,0 +1,1084 @@
+[
+ {
+  "id": 3253,
+  "name": "Александра Гарсия",
+  "nameUk": "Александра Гарсія",
+  "nameEn": "Alexandra Garcia",
+  "aliases": "Алекс",
+  "gender": "Женский",
+  "teams": [
+   "Без команды"
+  ],
+  "position": "Тренер",
+  "height": 180,
+  "group": "Нет",
+  "episode": 44,
+  "answer": true,
+  "thumb": 0
+ },
+ {
+  "id": 2093,
+  "name": "Ацуши Мурасакибара",
+  "nameUk": "Ацуші Мурасакібара",
+  "nameEn": "Atsushi Murasakibara",
+  "aliases": "Ацуси",
+  "gender": "Мужской",
+  "teams": [
+   "Ёсен",
+   "Тейко"
+  ],
+  "position": "Центровой",
+  "height": 208,
+  "group": "Поколение чудес",
+  "episode": 26,
+  "answer": true,
+  "thumb": 1
+ },
+ {
+  "id": 3357,
+  "name": "Вэй Лю",
+  "nameUk": "Вей Лю",
+  "nameEn": "Wei Liu",
+  "gender": "Мужской",
+  "teams": [
+   "Ёсен"
+  ],
+  "position": "Лёгкий форвард",
+  "height": 203,
+  "group": "Нет",
+  "episode": 45,
+  "answer": true,
+  "thumb": 2
+ },
+ {
+  "id": 2069,
+  "name": "Гента Такеучи",
+  "nameUk": "Ґента Такеучі",
+  "nameEn": "Genta Takeuchi",
+  "gender": "Мужской",
+  "teams": [
+   "Кайджо"
+  ],
+  "position": "Тренер",
+  "height": 173,
+  "group": "Нет",
+  "episode": 3,
+  "answer": true,
+  "thumb": 3
+ },
+ {
+  "id": 58850,
+  "name": "Дайки Аомине",
+  "nameUk": "Дайкі Аоміне",
+  "nameEn": "Daiki Aomine",
+  "aliases": "Аоминэ",
+  "gender": "Мужской",
+  "teams": [
+   "Тоо",
+   "Тейко"
+  ],
+  "position": "Тяжёлый форвард",
+  "height": 192,
+  "group": "Поколение чудес",
+  "episode": 13,
+  "answer": true,
+  "thumb": 4
+ },
+ {
+  "id": 2239,
+  "name": "Дайсуке Наруми",
+  "nameUk": "Дайсуке Нарумі",
+  "nameEn": "Daisuke Narumi",
+  "gender": "Мужской",
+  "teams": [
+   "Джосей"
+  ],
+  "position": "Центровой",
+  "height": 194,
+  "group": "Нет",
+  "episode": 28,
+  "answer": true,
+  "thumb": 5
+ },
+ {
+  "id": 2051,
+  "name": "Джунпей Хьюга",
+  "nameUk": "Джюнпей Хюґа",
+  "nameEn": "Junpei Hyūga",
+  "aliases": "Дзюмпэй Хюга",
+  "gender": "Мужской",
+  "teams": [
+   "Сейрин"
+  ],
+  "position": "Атакующий защитник",
+  "height": 178,
+  "group": "Нет",
+  "episode": 1,
+  "answer": true,
+  "thumb": 6
+ },
+ {
+  "id": 3257,
+  "name": "Ёшинори Суса",
+  "nameUk": "Йошінорі Суса",
+  "nameEn": "Yoshinori Susa",
+  "gender": "Мужской",
+  "teams": [
+   "Тоо"
+  ],
+  "position": "Лёгкий форвард",
+  "height": 190,
+  "group": "Нет",
+  "episode": 15,
+  "answer": true,
+  "thumb": 7
+ },
+ {
+  "id": 2084,
+  "name": "Ёшитака Морияма",
+  "nameUk": "Йошітака Моріяма",
+  "nameEn": "Yoshitaka Moriyama",
+  "gender": "Мужской",
+  "teams": [
+   "Кайджо"
+  ],
+  "position": "Атакующий защитник",
+  "height": 181,
+  "group": "Нет",
+  "episode": 3,
+  "answer": true,
+  "thumb": 8
+ },
+ {
+  "id": 2931,
+  "name": "Кагетора Аида",
+  "nameUk": "Каґетора Аіда",
+  "nameEn": "Kagetora Aida",
+  "gender": "Мужской",
+  "teams": [
+   "Сейрин"
+  ],
+  "position": "Тренер",
+  "height": 181,
+  "group": "Нет",
+  "episode": 2,
+  "answer": true,
+  "thumb": 9
+ },
+ {
+  "id": 2321,
+  "name": "Казунари Такао",
+  "nameUk": "Казунарі Такао",
+  "nameEn": "Kazunari Takao",
+  "aliases": "Кадзунари",
+  "gender": "Мужской",
+  "teams": [
+   "Шутоку"
+  ],
+  "position": "Разыгрывающий",
+  "height": 176,
+  "group": "Нет",
+  "episode": 4,
+  "answer": true,
+  "thumb": 10
+ },
+ {
+  "id": 4997,
+  "name": "Казухиро Мочизуки",
+  "nameUk": "Казухіро Мочідзукі",
+  "nameEn": "Kazuhiro Mochizuki",
+  "gender": "Мужской",
+  "teams": [
+   "Фукуда Сого"
+  ],
+  "position": "Атакующий защитник",
+  "height": 183,
+  "group": "Нет",
+  "episode": 52,
+  "answer": true,
+  "thumb": 11
+ },
+ {
+  "id": 2953,
+  "name": "Казуя Хара",
+  "nameUk": "Казуя Хара",
+  "nameEn": "Kazuya Hara",
+  "gender": "Мужской",
+  "teams": [
+   "Кирисаки Даичи"
+  ],
+  "position": "Тяжёлый форвард",
+  "height": 188,
+  "group": "Нет",
+  "episode": 29,
+  "answer": true,
+  "thumb": 12
+ },
+ {
+  "id": 2063,
+  "name": "Кацунори Харасава",
+  "nameUk": "Кацунорі Харасава",
+  "nameEn": "Katsunori Harasawa",
+  "gender": "Мужской",
+  "teams": [
+   "Тоо"
+  ],
+  "position": "Тренер",
+  "height": 187,
+  "group": "Нет",
+  "episode": 16,
+  "answer": true,
+  "thumb": 13
+ },
+ {
+  "id": 3356,
+  "name": "Кеничи Окамура",
+  "nameUk": "Кенічі Окамура",
+  "nameEn": "Kenichi Okamura",
+  "gender": "Мужской",
+  "teams": [
+   "Ёсен"
+  ],
+  "position": "Тяжёлый форвард",
+  "height": 200,
+  "group": "Нет",
+  "episode": 45,
+  "answer": true,
+  "thumb": 14
+ },
+ {
+  "id": 3355,
+  "name": "Кенсуке Фукуи",
+  "nameUk": "Кенсуке Фукуї",
+  "nameEn": "Kensuke Fukui",
+  "gender": "Мужской",
+  "teams": [
+   "Ёсен"
+  ],
+  "position": "Разыгрывающий",
+  "height": 176,
+  "group": "Нет",
+  "episode": 45,
+  "answer": true,
+  "thumb": 15
+ },
+ {
+  "id": 2972,
+  "name": "Кентаро Сето",
+  "nameUk": "Кентаро Сето",
+  "nameEn": "Kentarō Seto",
+  "gender": "Мужской",
+  "teams": [
+   "Кирисаки Даичи"
+  ],
+  "position": "Центровой",
+  "height": 190,
+  "group": "Нет",
+  "episode": 29,
+  "answer": true,
+  "thumb": 16
+ },
+ {
+  "id": 2729,
+  "name": "Киёши Мияджи",
+  "nameUk": "Кійоші Міяджі",
+  "nameEn": "Kiyoshi Miyaji",
+  "gender": "Мужской",
+  "teams": [
+   "Шутоку"
+  ],
+  "position": "Лёгкий форвард",
+  "height": 191,
+  "group": "Нет",
+  "episode": 7,
+  "answer": true,
+  "thumb": 17
+ },
+ {
+  "id": 2989,
+  "name": "Коджи Кобори",
+  "nameUk": "Коджі Коборі",
+  "nameEn": "Kōji Kobori",
+  "gender": "Мужской",
+  "teams": [
+   "Кайджо"
+  ],
+  "position": "Центровой",
+  "height": 192,
+  "group": "Нет",
+  "episode": 3,
+  "answer": true,
+  "thumb": 18
+ },
+ {
+  "id": 2952,
+  "name": "Коджиро Фурухаши",
+  "nameUk": "Коджіро Фурухаші",
+  "nameEn": "Kōjirō Furuhashi",
+  "gender": "Мужской",
+  "teams": [
+   "Кирисаки Даичи"
+  ],
+  "position": "Лёгкий форвард",
+  "height": 186,
+  "group": "Нет",
+  "episode": 29,
+  "answer": true,
+  "thumb": 19
+ },
+ {
+  "id": 11557,
+  "name": "Кодзо Широгане",
+  "nameUk": "Кодзо Шіроґане",
+  "nameEn": "Kōzō Shirogane",
+  "gender": "Мужской",
+  "teams": [
+   "Тейко"
+  ],
+  "position": "Тренер",
+  "height": 176,
+  "group": "Нет",
+  "episode": 64,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 2243,
+  "name": "Коичи Кавахара",
+  "nameUk": "Коічі Кавахара",
+  "nameEn": "Kōichi Kawahara",
+  "gender": "Мужской",
+  "teams": [
+   "Сейрин"
+  ],
+  "position": "Лёгкий форвард",
+  "height": 175,
+  "group": "Нет",
+  "episode": 1,
+  "answer": true,
+  "thumb": 21
+ },
+ {
+  "id": 2242,
+  "name": "Коки Фурихата",
+  "nameUk": "Кокі Фуріхата",
+  "nameEn": "Kōki Furihata",
+  "gender": "Мужской",
+  "teams": [
+   "Сейрин"
+  ],
+  "position": "Разыгрывающий",
+  "height": 170,
+  "group": "Нет",
+  "episode": 1,
+  "answer": true,
+  "thumb": 22
+ },
+ {
+  "id": 2663,
+  "name": "Косуке Вакамацу",
+  "nameUk": "Косуке Вакамацу",
+  "nameEn": "Kōsuke Wakamatsu",
+  "gender": "Мужской",
+  "teams": [
+   "Тоо"
+  ],
+  "position": "Центровой",
+  "height": 193,
+  "group": "Нет",
+  "episode": 14,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 5660,
+  "name": "Котаро Хаяма",
+  "nameUk": "Котаро Хаяма",
+  "nameEn": "Kotarō Hayama",
+  "gender": "Мужской",
+  "teams": [
+   "Ракузан"
+  ],
+  "position": "Лёгкий форвард",
+  "height": 180,
+  "group": "Некоронованные короли",
+  "episode": 54,
+  "answer": true,
+  "thumb": 24
+ },
+ {
+  "id": 2357,
+  "name": "Макото Ханамия",
+  "nameUk": "Макото Ханамія",
+  "nameEn": "Makoto Hanamiya",
+  "gender": "Мужской",
+  "teams": [
+   "Кирисаки Даичи"
+  ],
+  "position": "Разыгрывающий",
+  "height": 179,
+  "group": "Некоронованные короли",
+  "episode": 29,
+  "answer": true,
+  "thumb": 25
+ },
+ {
+  "id": 2046,
+  "name": "Масааки Накатани",
+  "nameUk": "Масаакі Накатані",
+  "nameEn": "Masaaki Nakatani",
+  "gender": "Мужской",
+  "teams": [
+   "Шутоку"
+  ],
+  "position": "Тренер",
+  "height": 180,
+  "group": "Нет",
+  "episode": 7,
+  "answer": true,
+  "thumb": 26
+ },
+ {
+  "id": 3445,
+  "name": "Масако Араки",
+  "nameUk": "Масако Аракі",
+  "nameEn": "Masako Araki",
+  "gender": "Женский",
+  "teams": [
+   "Ёсен"
+  ],
+  "position": "Тренер",
+  "height": 170,
+  "group": "Нет",
+  "episode": 45,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 2082,
+  "name": "Мицухиро Хаякава",
+  "nameUk": "Міцухіро Хаякава",
+  "nameEn": "Mitsuhiro Hayakawa",
+  "gender": "Мужской",
+  "teams": [
+   "Кайджо"
+  ],
+  "position": "Тяжёлый форвард",
+  "height": 185,
+  "group": "Нет",
+  "episode": 3,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 12174,
+  "name": "Наото Санада",
+  "nameUk": "Наото Санада",
+  "nameEn": "Naoto Sanada",
+  "gender": "Мужской",
+  "teams": [
+   "Тейко"
+  ],
+  "position": "Тренер",
+  "height": 179,
+  "group": "Нет",
+  "episode": 63,
+  "answer": true,
+  "thumb": 29
+ },
+ {
+  "id": 2209,
+  "name": "Папа Мбай Сики",
+  "nameUk": "Папа Мбай Сікі",
+  "nameEn": "Papa Mbaye Siki",
+  "gender": "Мужской",
+  "teams": [
+   "Шинкё"
+  ],
+  "position": "Центровой",
+  "height": 200,
+  "group": "Нет",
+  "episode": 6,
+  "answer": true,
+  "thumb": 30
+ },
+ {
+  "id": 2086,
+  "name": "Рё Сакураи",
+  "nameUk": "Рьо Сакураї",
+  "nameEn": "Ryō Sakurai",
+  "gender": "Мужской",
+  "teams": [
+   "Тоо"
+  ],
+  "position": "Атакующий защитник",
+  "height": 175,
+  "group": "Нет",
+  "episode": 14,
+  "answer": true,
+  "thumb": 31
+ },
+ {
+  "id": 14941,
+  "name": "Рейджи Мочида",
+  "nameUk": "Рейджі Мочіда",
+  "nameEn": "Reiji Mochida",
+  "gender": "Мужской",
+  "teams": [
+   "Мейко"
+  ],
+  "position": "Атакующий защитник",
+  "height": 182,
+  "group": "Нет",
+  "episode": 66,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 5664,
+  "name": "Рео Мибучи",
+  "nameUk": "Рео Мібучі",
+  "nameEn": "Reo Mibuchi",
+  "aliases": "Мибути",
+  "gender": "Мужской",
+  "teams": [
+   "Ракузан"
+  ],
+  "position": "Атакующий защитник",
+  "height": 188,
+  "group": "Некоронованные короли",
+  "episode": 54,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 2043,
+  "name": "Рёта Кисе",
+  "nameUk": "Рьота Кісе",
+  "nameEn": "Ryōta Kise",
+  "aliases": "Рета Кисэ",
+  "gender": "Мужской",
+  "teams": [
+   "Кайджо",
+   "Тейко"
+  ],
+  "position": "Лёгкий форвард",
+  "height": 189,
+  "group": "Поколение чудес",
+  "episode": 2,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 2041,
+  "name": "Рико Аида",
+  "nameUk": "Ріко Аіда",
+  "nameEn": "Riko Aida",
+  "gender": "Женский",
+  "teams": [
+   "Сейрин"
+  ],
+  "position": "Тренер",
+  "height": 156,
+  "group": "Нет",
+  "episode": 1,
+  "answer": true,
+  "thumb": 35
+ },
+ {
+  "id": 2071,
+  "name": "Ринносуке Митобе",
+  "nameUk": "Рінносуке Мітобе",
+  "nameEn": "Rinnosuke Mitobe",
+  "gender": "Мужской",
+  "teams": [
+   "Сейрин"
+  ],
+  "position": "Центровой",
+  "height": 186,
+  "group": "Нет",
+  "episode": 1,
+  "answer": true,
+  "thumb": 36
+ },
+ {
+  "id": 2252,
+  "name": "Рюхей Касуга",
+  "nameUk": "Рюхей Касуґа",
+  "nameEn": "Ryūhei Kasuga",
+  "gender": "Мужской",
+  "teams": [
+   "Сейхо"
+  ],
+  "position": "Разыгрывающий",
+  "height": 179,
+  "group": "Нет",
+  "episode": 8,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 2254,
+  "name": "Сатоши Цучида",
+  "nameUk": "Сатоші Цучіда",
+  "nameEn": "Satoshi Tsuchida",
+  "gender": "Мужской",
+  "teams": [
+   "Сейрин"
+  ],
+  "position": "Тяжёлый форвард",
+  "height": 176,
+  "group": "Нет",
+  "episode": 1,
+  "answer": true,
+  "thumb": 38
+ },
+ {
+  "id": 2060,
+  "name": "Сацуки Момои",
+  "nameUk": "Сацукі Момої",
+  "nameEn": "Satsuki Momoi",
+  "gender": "Женский",
+  "teams": [
+   "Тоо",
+   "Тейко"
+  ],
+  "position": "Менеджер",
+  "height": 161,
+  "group": "Нет",
+  "episode": 13,
+  "answer": true,
+  "thumb": 39
+ },
+ {
+  "id": 2689,
+  "name": "Сейджуро Акаши",
+  "nameUk": "Сейджюро Акаші",
+  "nameEn": "Seijūrō Akashi",
+  "aliases": "Сэйдзюро Акаси Сейдзюро",
+  "gender": "Мужской",
+  "teams": [
+   "Ракузан",
+   "Тейко"
+  ],
+  "position": "Разыгрывающий",
+  "height": 173,
+  "group": "Поколение чудес",
+  "episode": 38,
+  "answer": true,
+  "thumb": 40
+ },
+ {
+  "id": 2022,
+  "name": "Тайга Кагами",
+  "nameUk": "Тайґа Каґамі",
+  "nameEn": "Taiga Kagami",
+  "gender": "Мужской",
+  "teams": [
+   "Сейрин"
+  ],
+  "position": "Тяжёлый форвард",
+  "height": 190,
+  "group": "Нет",
+  "episode": 1,
+  "answer": true,
+  "thumb": 41
+ },
+ {
+  "id": 2201,
+  "name": "Тайсуке Оцубо",
+  "nameUk": "Тайсуке Оцубо",
+  "nameEn": "Taisuke Ōtsubo",
+  "gender": "Мужской",
+  "teams": [
+   "Шутоку"
+  ],
+  "position": "Центровой",
+  "height": 198,
+  "group": "Нет",
+  "episode": 7,
+  "answer": true,
+  "thumb": 42
+ },
+ {
+  "id": 2091,
+  "name": "Тацуя Химуро",
+  "nameUk": "Тацуя Хімуро",
+  "nameEn": "Tatsuya Himuro",
+  "gender": "Мужской",
+  "teams": [
+   "Ёсен"
+  ],
+  "position": "Атакующий защитник",
+  "height": 183,
+  "group": "Нет",
+  "episode": 26,
+  "answer": true,
+  "thumb": 43
+ },
+ {
+  "id": 2081,
+  "name": "Теппей Киёши",
+  "nameUk": "Теппей Кійоші",
+  "nameEn": "Teppei Kiyoshi",
+  "aliases": "Киеси Киёси",
+  "gender": "Мужской",
+  "teams": [
+   "Сейрин",
+   "Шоэй"
+  ],
+  "position": "Центровой",
+  "height": 193,
+  "group": "Некоронованные короли",
+  "episode": 19,
+  "answer": true,
+  "thumb": 44
+ },
+ {
+  "id": 2023,
+  "name": "Тецуя Куроко",
+  "nameUk": "Тецуя Куроко",
+  "nameEn": "Tetsuya Kuroko",
+  "aliases": "Тэцуя",
+  "gender": "Мужской",
+  "teams": [
+   "Сейрин",
+   "Тейко"
+  ],
+  "position": "Неизвестна",
+  "height": 168,
+  "group": "Поколение чудес",
+  "episode": 1,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 2301,
+  "name": "Томоки Цугава",
+  "nameUk": "Томокі Цуґава",
+  "nameEn": "Tomoki Tsugawa",
+  "gender": "Мужской",
+  "teams": [
+   "Сейхо"
+  ],
+  "position": "Атакующий защитник",
+  "height": 180,
+  "group": "Нет",
+  "episode": 8,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 12007,
+  "name": "Томоя Иноуэ",
+  "nameUk": "Томоя Іноуе",
+  "nameEn": "Tomoya Inoue",
+  "gender": "Мужской",
+  "teams": [
+   "Камизаки"
+  ],
+  "position": "Тяжёлый форвард",
+  "height": 188,
+  "group": "Нет",
+  "episode": 64,
+  "answer": true,
+  "thumb": 47
+ },
+ {
+  "id": 4995,
+  "name": "Хидеки Ишида",
+  "nameUk": "Хідекі Ішіда",
+  "nameEn": "Hideki Ishida",
+  "gender": "Мужской",
+  "teams": [
+   "Фукуда Сого"
+  ],
+  "position": "Разыгрывающий",
+  "height": 180,
+  "group": "Нет",
+  "episode": 52,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 2251,
+  "name": "Хироши Фукуда",
+  "nameUk": "Хіроші Фукуда",
+  "nameEn": "Hiroshi Fukuda",
+  "gender": "Мужской",
+  "teams": [
+   "Сейрин"
+  ],
+  "position": "Центровой",
+  "height": 180,
+  "group": "Нет",
+  "episode": 1,
+  "answer": true,
+  "thumb": 49
+ },
+ {
+  "id": 2262,
+  "name": "Цутому Ивамура",
+  "nameUk": "Цутому Івамура",
+  "nameEn": "Tsutomu Iwamura",
+  "gender": "Мужской",
+  "teams": [
+   "Сейхо"
+  ],
+  "position": "Центровой",
+  "height": 187,
+  "group": "Нет",
+  "episode": 8,
+  "answer": true,
+  "thumb": 50
+ },
+ {
+  "id": 15419,
+  "name": "Чихиро Маюзуми",
+  "nameUk": "Чіхіро Маюдзумі",
+  "nameEn": "Chihiro Mayuzumi",
+  "aliases": "Тихиро Маюдзуми",
+  "gender": "Мужской",
+  "teams": [
+   "Ракузан"
+  ],
+  "position": "Тяжёлый форвард",
+  "height": 182,
+  "group": "Нет",
+  "episode": 54,
+  "answer": true,
+  "thumb": 51
+ },
+ {
+  "id": 11966,
+  "name": "Шигехиро Огивара",
+  "nameUk": "Шіґехіро Оґівара",
+  "nameEn": "Shigehiro Ogiwara",
+  "gender": "Мужской",
+  "teams": [
+   "Мейко"
+  ],
+  "position": "Лёгкий форвард",
+  "height": 177,
+  "group": "Нет",
+  "episode": 64,
+  "answer": true,
+  "thumb": 52
+ },
+ {
+  "id": 2170,
+  "name": "Шинджи Коганей",
+  "nameUk": "Шінджі Коґаней",
+  "nameEn": "Shinji Koganei",
+  "aliases": "Синдзи",
+  "gender": "Мужской",
+  "teams": [
+   "Сейрин"
+  ],
+  "position": "Лёгкий форвард",
+  "height": 170,
+  "group": "Нет",
+  "episode": 1,
+  "answer": true,
+  "thumb": 53
+ },
+ {
+  "id": 2728,
+  "name": "Шинсуке Кимура",
+  "nameUk": "Шінсуке Кімура",
+  "nameEn": "Shinsuke Kimura",
+  "gender": "Мужской",
+  "teams": [
+   "Шутоку"
+  ],
+  "position": "Тяжёлый форвард",
+  "height": 187,
+  "group": "Нет",
+  "episode": 7,
+  "answer": true,
+  "thumb": 54
+ },
+ {
+  "id": 2045,
+  "name": "Шинтаро Мидорима",
+  "nameUk": "Шінтаро Мідоріма",
+  "nameEn": "Shintarō Midorima",
+  "aliases": "Синтаро",
+  "gender": "Мужской",
+  "teams": [
+   "Шутоку",
+   "Тейко"
+  ],
+  "position": "Атакующий защитник",
+  "height": 195,
+  "group": "Поколение чудес",
+  "episode": 4,
+  "answer": true,
+  "thumb": 55
+ },
+ {
+  "id": 7788,
+  "name": "Шинья Накамура",
+  "nameUk": "Шінья Накамура",
+  "nameEn": "Shinya Nakamura",
+  "gender": "Мужской",
+  "teams": [
+   "Кайджо"
+  ],
+  "position": "Атакующий защитник",
+  "height": 181,
+  "group": "Нет",
+  "episode": 52,
+  "answer": true,
+  "thumb": 56
+ },
+ {
+  "id": 4633,
+  "name": "Шого Хайзаки",
+  "nameUk": "Шьоґо Хайдзакі",
+  "nameEn": "Shōgo Haizaki",
+  "aliases": "Сёго Хайдзаки",
+  "gender": "Мужской",
+  "teams": [
+   "Фукуда Сого",
+   "Тейко"
+  ],
+  "position": "Лёгкий форвард",
+  "height": 188,
+  "group": "Нет",
+  "episode": 50,
+  "answer": true,
+  "thumb": 57
+ },
+ {
+  "id": 2076,
+  "name": "Шоичи Имаёши",
+  "nameUk": "Шьоічі Імайоші",
+  "nameEn": "Shoichi Imayoshi",
+  "aliases": "Сёити Имаёси",
+  "gender": "Мужской",
+  "teams": [
+   "Тоо"
+  ],
+  "position": "Разыгрывающий",
+  "height": 180,
+  "group": "Нет",
+  "episode": 14,
+  "answer": true,
+  "thumb": 58
+ },
+ {
+  "id": 10523,
+  "name": "Шузо Ниджимура",
+  "nameUk": "Шюдзо Ніджімура",
+  "nameEn": "Shūzō Nijimura",
+  "aliases": "Сюдзо Нидзимура",
+  "gender": "Мужской",
+  "teams": [
+   "Тейко"
+  ],
+  "position": "Тяжёлый форвард",
+  "height": 179,
+  "group": "Нет",
+  "episode": 63,
+  "answer": true,
+  "thumb": 59
+ },
+ {
+  "id": 2169,
+  "name": "Шун Изуки",
+  "nameUk": "Шюн Ідзукі",
+  "nameEn": "Shun Izuki",
+  "aliases": "Сюн Идзуки",
+  "gender": "Мужской",
+  "teams": [
+   "Сейрин"
+  ],
+  "position": "Разыгрывающий",
+  "height": 174,
+  "group": "Нет",
+  "episode": 1,
+  "answer": true,
+  "thumb": 60
+ },
+ {
+  "id": 5896,
+  "name": "Эйджи Широгане",
+  "nameUk": "Ейджі Шіроґане",
+  "nameEn": "Eiji Shirogane",
+  "gender": "Мужской",
+  "teams": [
+   "Ракузан"
+  ],
+  "position": "Тренер",
+  "height": 178,
+  "group": "Нет",
+  "episode": 54,
+  "answer": true,
+  "thumb": 61
+ },
+ {
+  "id": 5662,
+  "name": "Эйкичи Нэбуя",
+  "nameUk": "Ейкічі Небуя",
+  "nameEn": "Eikichi Nebuya",
+  "gender": "Мужской",
+  "teams": [
+   "Ракузан"
+  ],
+  "position": "Центровой",
+  "height": 190,
+  "group": "Некоронованные короли",
+  "episode": 54,
+  "answer": true,
+  "thumb": 62
+ },
+ {
+  "id": 2032,
+  "name": "Юкинори Мацумото",
+  "nameUk": "Юкінорі Мацумото",
+  "nameEn": "Yukinori Matsumoto",
+  "gender": "Мужской",
+  "teams": [
+   "Сейхо"
+  ],
+  "position": "Тренер",
+  "height": 177,
+  "group": "Нет",
+  "episode": 9,
+  "answer": true,
+  "thumb": 63
+ },
+ {
+  "id": 2414,
+  "name": "Юкио Касамацу",
+  "nameUk": "Юкіо Касамацу",
+  "nameEn": "Yukio Kasamatsu",
+  "gender": "Мужской",
+  "teams": [
+   "Кайджо"
+  ],
+  "position": "Разыгрывающий",
+  "height": 178,
+  "group": "Нет",
+  "episode": 3,
+  "answer": true,
+  "thumb": 64
+ },
+ {
+  "id": 2213,
+  "name": "Юсуке Танимура",
+  "nameUk": "Юсуке Танімура",
+  "nameEn": "Yūsuke Tanimura",
+  "gender": "Мужской",
+  "teams": [
+   "Шинкё"
+  ],
+  "position": "Разыгрывающий",
+  "height": 185,
+  "group": "Нет",
+  "episode": 6,
+  "answer": true,
+  "thumb": 65
+ }
+]

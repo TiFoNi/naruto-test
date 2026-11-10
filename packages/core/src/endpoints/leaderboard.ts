@@ -60,7 +60,10 @@ export const GET = handle(async (request) => {
   if (!STAT_KEYS.includes(key) || !(sort in SORTS)) return fail(400, 'bad_request')
   const reversed = params.get('dir') === 'rev'
   const spec = SORTS[sort]
-  const order = { [spec.field]: reversed ? -spec.natural : spec.natural, ...spec.tie, _id: 1 }
+  const order: Order =
+    scored && sort === 'best'
+      ? { score: reversed ? 1 : -1, best: -1, solved: -1, _id: 1 }
+      : { [spec.field]: reversed ? -spec.natural : spec.natural, ...spec.tie, _id: 1 }
 
   const stats = found.doc.stats?.[key]
   const counted = day ? (stats?.day === day ? (stats.dayBest ?? 0) : 0) : (stats?.solved ?? 0)
