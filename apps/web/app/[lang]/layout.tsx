@@ -84,7 +84,7 @@ export default async function RootLayout({ children, params }: { children: React
         <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
       </head>
       <body>
-        <Providers games={await gameMeta()} lang={safe} dict={dictionary(safe)}>
+        <Providers games={await gameMeta({ hidden: true })} lang={safe} dict={dictionary(safe)}>
           {children}
         </Providers>
       </body>

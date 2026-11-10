@@ -12,14 +12,14 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
   const { lang } = await params
   if (!LANGS.some((one) => one.id === lang)) notFound()
 
-  const [games, schema] = await Promise.all([gameMeta(), homeSchema(lang as Lang)])
+  const [games, schema] = await Promise.all([gameMeta({ hidden: true }), homeSchema(lang as Lang)])
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <Dashboard games={games} />
       <div className="seo-only">
-        <HomeAbout lang={lang as Lang} games={games} />
+        <HomeAbout lang={lang as Lang} games={games.filter((game) => !game.hidden)} />
       </div>
     </>
   )

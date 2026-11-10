@@ -1,4 +1,5 @@
-import { GAMES } from './index'
+import { HIDDEN_GAMES } from '@nanda/game'
+import { ALL_GAMES, GAMES } from './index'
 import type { GameMeta } from './meta'
 
 const API = (process.env.API_ORIGIN ?? process.env.NEXT_PUBLIC_API_URL ?? '').replace(/\/+$/, '')
@@ -17,11 +18,11 @@ export async function apiJson<T>(path: string, fresh = FRESH): Promise<T | null>
   }
 }
 
-export async function gameMeta(): Promise<GameMeta[]> {
+export async function gameMeta({ hidden = false }: { hidden?: boolean } = {}): Promise<GameMeta[]> {
   const data = await apiJson<{ games: Row[] }>('meta', META_FRESH)
   const rows = new Map((data?.games ?? []).map((row) => [row.game, row]))
 
-  return GAMES.map((game) => {
+  return (hidden ? ALL_GAMES : GAMES).map((game) => {
     const row = rows.get(game.id)
     return {
       id: game.id,
@@ -34,6 +35,7 @@ export async function gameMeta(): Promise<GameMeta[]> {
       count: row?.count ?? 0,
       plays: row?.plays ?? 0,
       featured: row?.featured ?? [],
+      ...(HIDDEN_GAMES.includes(game.id) ? { hidden: true } : {}),
     }
   })
 }

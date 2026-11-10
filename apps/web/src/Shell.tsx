@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Avatar from './Avatar'
@@ -29,7 +29,7 @@ import { startAnimGate } from './animGate'
 import GemIcon from './GemIcon'
 import { MODE_XP, MODE_XP_AFTER, POOL_XP_BASE, TONE_HEX, TRIES_FACTOR, TRIES_REF, levelAt, manualXp, poolXpFactor, poolXp, poolXpPastCap, triesXp, triesXpPastCap, XP_CAPS, XP_DYNAMIC, type ModeId } from '@nanda/game'
 import { BRAND } from './brand'
-import { metaById, type GameMeta } from './games/meta'
+import { metaById, visibleGames, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
 import { BellIcon, ChatIcon, GoogleIcon, PencilIcon, ChevronIcon, CloseIcon, ExitIcon, GearIcon, GiftIcon, InfoIcon, MedalIcon, PodiumIcon, ShopIcon, TrophyIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { api } from './api'
@@ -977,8 +977,9 @@ const afterRange = (mode: ModeId) => {
 const xpRange = (base: number, mode: string, xpFor = poolXp) =>
   poolXpFactor(mode, POOL_XP_BASE) === 1 && poolXpFactor(mode, 1) === 1 ? base : `${xpFor(base, mode, 1)}–${xpFor(base, mode, POOL_XP_BASE * 9)}`
 
-export default function Shell({ children, games }: { children: ReactNode; games: GameMeta[] }) {
+export default function Shell({ children, games: everyGame }: { children: ReactNode; games: GameMeta[] }) {
   const { user, loading } = useAuth()
+  const games = useMemo(() => visibleGames(everyGame, Boolean(user?.admin)), [everyGame, user?.admin])
   const bar = useRef<HTMLElement>(null)
   const href = useHref()
   const { t } = useI18n()

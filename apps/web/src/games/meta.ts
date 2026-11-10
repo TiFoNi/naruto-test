@@ -13,6 +13,9 @@ export type GameMeta = {
   count: number
   plays: number
   featured: { id: number; image?: string }[]
+  hidden?: boolean
 }
+
+export const visibleGames = (list: GameMeta[], admin: boolean) => (admin ? list : list.filter((game) => !game.hidden))
 
 export const metaById = (list: GameMeta[], id: GameId) => list.find((g) => g.id === id) ?? list[0]

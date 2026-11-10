@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointer } from 'react'
 import { api } from './api'
 import { useAuth } from './auth'
-import type { GameMeta } from './games/meta'
+import { visibleGames, type GameMeta } from './games/meta'
 import type { Category } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import Quests, { QuestsGhost } from './Quests'
@@ -381,10 +381,11 @@ function TestsTile({ category, count }: { category: Category; count: number | nu
   )
 }
 
-export default function Dashboard({ games }: { games: GameMeta[] }) {
+export default function Dashboard({ games: everyGame }: { games: GameMeta[] }) {
   const { t } = useI18n()
   const href = useHref()
   const { user, loading } = useAuth()
+  const games = useMemo(() => visibleGames(everyGame, Boolean(user?.admin)), [everyGame, user?.admin])
   const [tests, setTests] = useState<Record<string, number> | null>(null)
 
   useEffect(() => {

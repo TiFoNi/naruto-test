@@ -35,6 +35,8 @@ const open = (admin: boolean) => ALL.filter((game) => admin || !HIDDEN_GAMES.inc
 
 export const GAMES = open(false)
 
+export const ALL_GAMES = open(true)
+
 export function showHiddenGames(admin: boolean) {
   const next = open(admin)
   if (next.length !== GAMES.length) GAMES.splice(0, GAMES.length, ...next)
