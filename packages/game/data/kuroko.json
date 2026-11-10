@@ -132,24 +132,6 @@
   "thumb": 6
  },
  {
-  "id": 3257,
-  "name": "Ёшинори Суса",
-  "nameUk": "Йошінорі Суса",
-  "nameEn": "Yoshinori Susa",
-  "gender": "Мужской",
-  "teams": [
-   "Тоо"
-  ],
-  "position": [
-   "Лёгкий форвард"
-  ],
-  "height": 190,
-  "group": "Нет",
-  "episode": 15,
-  "answer": true,
-  "thumb": 7
- },
- {
   "id": 2084,
   "name": "Ёшитака Морияма",
   "nameUk": "Йошітака Моріяма",
@@ -165,7 +147,7 @@
   "group": "Нет",
   "episode": 3,
   "answer": true,
-  "thumb": 8
+  "thumb": 7
  },
  {
   "id": 2931,
@@ -183,7 +165,7 @@
   "group": "Нет",
   "episode": 2,
   "answer": true,
-  "thumb": 9
+  "thumb": 8
  },
  {
   "id": 2321,
@@ -202,7 +184,7 @@
   "group": "Нет",
   "episode": 4,
   "answer": true,
-  "thumb": 10
+  "thumb": 9
  },
  {
   "id": 4997,
@@ -220,7 +202,7 @@
   "group": "Нет",
   "episode": 52,
   "answer": true,
-  "thumb": 11
+  "thumb": 10
  },
  {
   "id": 2953,
@@ -238,7 +220,7 @@
   "group": "Нет",
   "episode": 29,
   "answer": true,
-  "thumb": 12
+  "thumb": 11
  },
  {
   "id": 2063,
@@ -256,7 +238,7 @@
   "group": "Нет",
   "episode": 16,
   "answer": true,
-  "thumb": 13
+  "thumb": 12
  },
  {
   "id": 3356,
@@ -274,7 +256,7 @@
   "group": "Нет",
   "episode": 45,
   "answer": true,
-  "thumb": 14
+  "thumb": 13
  },
  {
   "id": 3355,
@@ -292,7 +274,7 @@
   "group": "Нет",
   "episode": 45,
   "answer": true,
-  "thumb": 15
+  "thumb": 14
  },
  {
   "id": 2972,
@@ -310,7 +292,7 @@
   "group": "Нет",
   "episode": 29,
   "answer": true,
-  "thumb": 16
+  "thumb": 15
  },
  {
   "id": 2729,
@@ -328,7 +310,7 @@
   "group": "Нет",
   "episode": 7,
   "answer": true,
-  "thumb": 17
+  "thumb": 16
  },
  {
   "id": 2989,
@@ -346,7 +328,7 @@
   "group": "Нет",
   "episode": 3,
   "answer": true,
-  "thumb": 18
+  "thumb": 17
  },
  {
   "id": 2952,
@@ -364,7 +346,7 @@
   "group": "Нет",
   "episode": 29,
   "answer": true,
-  "thumb": 19
+  "thumb": 18
  },
  {
   "id": 11557,
@@ -382,7 +364,7 @@
   "group": "Нет",
   "episode": 64,
   "answer": true,
-  "thumb": 20
+  "thumb": 19
  },
  {
   "id": 2243,
@@ -400,7 +382,7 @@
   "group": "Нет",
   "episode": 1,
   "answer": true,
-  "thumb": 21
+  "thumb": 20
  },
  {
   "id": 2242,
@@ -418,7 +400,7 @@
   "group": "Нет",
   "episode": 1,
   "answer": true,
-  "thumb": 22
+  "thumb": 21
  },
  {
   "id": 2663,
@@ -436,7 +418,7 @@
   "group": "Нет",
   "episode": 14,
   "answer": true,
-  "thumb": 23
+  "thumb": 22
  },
  {
   "id": 5660,
@@ -454,7 +436,7 @@
   "group": "Некоронованные короли",
   "episode": 54,
   "answer": true,
-  "thumb": 24
+  "thumb": 23
  },
  {
   "id": 2357,
@@ -472,25 +454,7 @@
   "group": "Некоронованные короли",
   "episode": 29,
   "answer": true,
-  "thumb": 25
- },
- {
-  "id": 2046,
-  "name": "Масааки Накатани",
-  "nameUk": "Масаакі Накатані",
-  "nameEn": "Masaaki Nakatani",
-  "gender": "Мужской",
-  "teams": [
-   "Шутоку"
-  ],
-  "position": [
-   "Тренер"
-  ],
-  "height": 180,
-  "group": "Нет",
-  "episode": 7,
-  "answer": true,
-  "thumb": 26
+  "thumb": 24
  },
  {
   "id": 3445,
@@ -508,7 +472,7 @@
   "group": "Нет",
   "episode": 45,
   "answer": true,
-  "thumb": 27
+  "thumb": 25
  },
  {
   "id": 2082,
@@ -526,25 +490,7 @@
   "group": "Нет",
   "episode": 3,
   "answer": true,
-  "thumb": 28
- },
- {
-  "id": 12174,
-  "name": "Наото Санада",
-  "nameUk": "Наото Санада",
-  "nameEn": "Naoto Sanada",
-  "gender": "Мужской",
-  "teams": [
-   "Тейко"
-  ],
-  "position": [
-   "Тренер"
-  ],
-  "height": 179,
-  "group": "Нет",
-  "episode": 63,
-  "answer": true,
-  "thumb": 29
+  "thumb": 26
  },
  {
   "id": 2209,
@@ -562,7 +508,7 @@
   "group": "Нет",
   "episode": 6,
   "answer": true,
-  "thumb": 30
+  "thumb": 27
  },
  {
   "id": 2086,
@@ -580,25 +526,7 @@
   "group": "Нет",
   "episode": 14,
   "answer": true,
-  "thumb": 31
- },
- {
-  "id": 14941,
-  "name": "Рейджи Мочида",
-  "nameUk": "Рейджі Мочіда",
-  "nameEn": "Reiji Mochida",
-  "gender": "Мужской",
-  "teams": [
-   "Мейко"
-  ],
-  "position": [
-   "Атакующий защитник"
-  ],
-  "height": 182,
-  "group": "Нет",
-  "episode": 66,
-  "answer": true,
-  "thumb": 32
+  "thumb": 28
  },
  {
   "id": 5664,
@@ -617,7 +545,7 @@
   "group": "Некоронованные короли",
   "episode": 54,
   "answer": true,
-  "thumb": 33
+  "thumb": 29
  },
  {
   "id": 2043,
@@ -637,7 +565,7 @@
   "group": "Поколение чудес",
   "episode": 2,
   "answer": true,
-  "thumb": 34
+  "thumb": 30
  },
  {
   "id": 2041,
@@ -655,7 +583,7 @@
   "group": "Нет",
   "episode": 1,
   "answer": true,
-  "thumb": 35
+  "thumb": 31
  },
  {
   "id": 2071,
@@ -674,7 +602,7 @@
   "group": "Нет",
   "episode": 1,
   "answer": true,
-  "thumb": 36
+  "thumb": 32
  },
  {
   "id": 2252,
@@ -692,7 +620,7 @@
   "group": "Нет",
   "episode": 8,
   "answer": true,
-  "thumb": 37
+  "thumb": 33
  },
  {
   "id": 2254,
@@ -710,7 +638,7 @@
   "group": "Нет",
   "episode": 1,
   "answer": true,
-  "thumb": 38
+  "thumb": 34
  },
  {
   "id": 2060,
@@ -729,7 +657,7 @@
   "group": "Нет",
   "episode": 13,
   "answer": true,
-  "thumb": 39
+  "thumb": 35
  },
  {
   "id": 2689,
@@ -749,7 +677,7 @@
   "group": "Поколение чудес",
   "episode": 38,
   "answer": true,
-  "thumb": 40
+  "thumb": 36
  },
  {
   "id": 2022,
@@ -767,7 +695,7 @@
   "group": "Нет",
   "episode": 1,
   "answer": true,
-  "thumb": 41
+  "thumb": 37
  },
  {
   "id": 2201,
@@ -785,7 +713,7 @@
   "group": "Нет",
   "episode": 7,
   "answer": true,
-  "thumb": 42
+  "thumb": 38
  },
  {
   "id": 2091,
@@ -803,7 +731,7 @@
   "group": "Нет",
   "episode": 26,
   "answer": true,
-  "thumb": 43
+  "thumb": 39
  },
  {
   "id": 2081,
@@ -823,7 +751,7 @@
   "group": "Некоронованные короли",
   "episode": 19,
   "answer": true,
-  "thumb": 44
+  "thumb": 40
  },
  {
   "id": 2023,
@@ -844,7 +772,7 @@
   "group": "Поколение чудес",
   "episode": 1,
   "answer": true,
-  "thumb": 45
+  "thumb": 41
  },
  {
   "id": 2301,
@@ -862,25 +790,7 @@
   "group": "Нет",
   "episode": 8,
   "answer": true,
-  "thumb": 46
- },
- {
-  "id": 12007,
-  "name": "Томоя Иноуэ",
-  "nameUk": "Томоя Іноуе",
-  "nameEn": "Tomoya Inoue",
-  "gender": "Мужской",
-  "teams": [
-   "Камизаки"
-  ],
-  "position": [
-   "Тяжёлый форвард"
-  ],
-  "height": 188,
-  "group": "Нет",
-  "episode": 64,
-  "answer": true,
-  "thumb": 47
+  "thumb": 42
  },
  {
   "id": 4995,
@@ -898,7 +808,7 @@
   "group": "Нет",
   "episode": 52,
   "answer": true,
-  "thumb": 48
+  "thumb": 43
  },
  {
   "id": 2251,
@@ -916,7 +826,7 @@
   "group": "Нет",
   "episode": 1,
   "answer": true,
-  "thumb": 49
+  "thumb": 44
  },
  {
   "id": 2262,
@@ -934,7 +844,7 @@
   "group": "Нет",
   "episode": 8,
   "answer": true,
-  "thumb": 50
+  "thumb": 45
  },
  {
   "id": 15419,
@@ -953,7 +863,7 @@
   "group": "Нет",
   "episode": 54,
   "answer": true,
-  "thumb": 51
+  "thumb": 46
  },
  {
   "id": 11966,
@@ -971,7 +881,7 @@
   "group": "Нет",
   "episode": 64,
   "answer": true,
-  "thumb": 52
+  "thumb": 47
  },
  {
   "id": 2170,
@@ -990,25 +900,7 @@
   "group": "Нет",
   "episode": 1,
   "answer": true,
-  "thumb": 53
- },
- {
-  "id": 2728,
-  "name": "Шинсуке Кимура",
-  "nameUk": "Шінсуке Кімура",
-  "nameEn": "Shinsuke Kimura",
-  "gender": "Мужской",
-  "teams": [
-   "Шутоку"
-  ],
-  "position": [
-   "Тяжёлый форвард"
-  ],
-  "height": 187,
-  "group": "Нет",
-  "episode": 7,
-  "answer": true,
-  "thumb": 54
+  "thumb": 48
  },
  {
   "id": 2045,
@@ -1028,25 +920,7 @@
   "group": "Поколение чудес",
   "episode": 4,
   "answer": true,
-  "thumb": 55
- },
- {
-  "id": 7788,
-  "name": "Шинья Накамура",
-  "nameUk": "Шінья Накамура",
-  "nameEn": "Shinya Nakamura",
-  "gender": "Мужской",
-  "teams": [
-   "Кайджо"
-  ],
-  "position": [
-   "Атакующий защитник"
-  ],
-  "height": 181,
-  "group": "Нет",
-  "episode": 52,
-  "answer": true,
-  "thumb": 56
+  "thumb": 49
  },
  {
   "id": 4633,
@@ -1066,7 +940,7 @@
   "group": "Нет",
   "episode": 50,
   "answer": true,
-  "thumb": 57
+  "thumb": 50
  },
  {
   "id": 2076,
@@ -1085,7 +959,7 @@
   "group": "Нет",
   "episode": 14,
   "answer": true,
-  "thumb": 58
+  "thumb": 51
  },
  {
   "id": 10523,
@@ -1104,7 +978,7 @@
   "group": "Нет",
   "episode": 63,
   "answer": true,
-  "thumb": 59
+  "thumb": 52
  },
  {
   "id": 2169,
@@ -1123,25 +997,7 @@
   "group": "Нет",
   "episode": 1,
   "answer": true,
-  "thumb": 60
- },
- {
-  "id": 5896,
-  "name": "Эйджи Широгане",
-  "nameUk": "Ейджі Шіроґане",
-  "nameEn": "Eiji Shirogane",
-  "gender": "Мужской",
-  "teams": [
-   "Ракузан"
-  ],
-  "position": [
-   "Тренер"
-  ],
-  "height": 178,
-  "group": "Нет",
-  "episode": 54,
-  "answer": true,
-  "thumb": 61
+  "thumb": 53
  },
  {
   "id": 5662,
@@ -1159,25 +1015,7 @@
   "group": "Некоронованные короли",
   "episode": 54,
   "answer": true,
-  "thumb": 62
- },
- {
-  "id": 2032,
-  "name": "Юкинори Мацумото",
-  "nameUk": "Юкінорі Мацумото",
-  "nameEn": "Yukinori Matsumoto",
-  "gender": "Мужской",
-  "teams": [
-   "Сейхо"
-  ],
-  "position": [
-   "Тренер"
-  ],
-  "height": 177,
-  "group": "Нет",
-  "episode": 9,
-  "answer": true,
-  "thumb": 63
+  "thumb": 54
  },
  {
   "id": 2414,
@@ -1195,24 +1033,6 @@
   "group": "Нет",
   "episode": 3,
   "answer": true,
-  "thumb": 64
- },
- {
-  "id": 2213,
-  "name": "Юсуке Танимура",
-  "nameUk": "Юсуке Танімура",
-  "nameEn": "Yūsuke Tanimura",
-  "gender": "Мужской",
-  "teams": [
-   "Шинкё"
-  ],
-  "position": [
-   "Разыгрывающий"
-  ],
-  "height": 185,
-  "group": "Нет",
-  "episode": 6,
-  "answer": true,
-  "thumb": 65
+  "thumb": 55
  }
 ]

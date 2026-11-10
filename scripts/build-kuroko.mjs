@@ -26,7 +26,6 @@ const SHINKYO = 'Шинкё'
 const SEIHO = 'Сейхо'
 const FUKUDA = 'Фукуда Сого'
 const MEIKO = 'Мейко'
-const KAMIZAKI = 'Камизаки'
 const JOSEI = 'Джосей'
 const SHOEI = 'Шоэй'
 
@@ -79,36 +78,26 @@ const CHARACTERS = [
   ['Kiyoshi Miyaji', 'Kiyoshi Miyaji', 'Киёши Мияджи', 'Кійоші Міяджі', M, [SHUTOKU], SF, 191, NONE, 7],
   ['Papa Mbaye Siki', 'Papa Mbai Siki', 'Папа Мбай Сики', 'Папа Мбай Сікі', M, [SHINKYO], C, 200, NONE, 6],
   ['Taisuke Ōtsubo', 'Taisuke Ootsubo', 'Тайсуке Оцубо', 'Тайсуке Оцубо', M, [SHUTOKU], C, 198, NONE, 7],
-  ['Yūsuke Tanimura', 'Yuusuke Tanimura', 'Юсуке Танимура', 'Юсуке Танімура', M, [SHINKYO], PG, 185, NONE, 6],
   ['Eikichi Nebuya', 'Eikichi Nebuya', 'Эйкичи Нэбуя', 'Ейкічі Небуя', M, [RAKUZAN], C, 190, UNCROWNED, 54],
   ['Tomoki Tsugawa', 'Tomoki Tsugawa', 'Томоки Цугава', 'Томокі Цуґава', M, [SEIHO], SG, 180, NONE, 8],
   ['Masako Araki', 'Masako Araki', 'Масако Араки', 'Масако Аракі', F, [YOSEN], COACH, 170, NONE, 45],
   ['Satoshi Tsuchida', 'Satoshi Tsuchida', 'Сатоши Цучида', 'Сатоші Цучіда', M, [SEIRIN], PF, 176, NONE, 1],
   ['Kōichi Kawahara', 'Kouichi Kawahara', 'Коичи Кавахара', 'Коічі Кавахара', M, [SEIRIN], SF, 175, NONE, 1],
-  ['Masaaki Nakatani', 'Masaaki Nakatani', 'Масааки Накатани', 'Масаакі Накатані', M, [SHUTOKU], COACH, 180, NONE, 7],
   ['Hiroshi Fukuda', 'Hiroshi Fukuda', 'Хироши Фукуда', 'Хіроші Фукуда', M, [SEIRIN], C, 180, NONE, 1],
   ['Ryūhei Kasuga', 'Ryuuhei Kasuga', 'Рюхей Касуга', 'Рюхей Касуґа', M, [SEIHO], PG, 179, NONE, 8],
   ['Genta Takeuchi', 'Genta Takeuchi', 'Гента Такеучи', 'Ґента Такеучі', M, [KAIJO], COACH, 173, NONE, 3],
-  ['Shinsuke Kimura', 'Shinsuke Kimura', 'Шинсуке Кимура', 'Шінсуке Кімура', M, [SHUTOKU], PF, 187, NONE, 7],
   ['Wei Liu', 'Wei Liu', 'Вэй Лю', 'Вей Лю', M, [YOSEN], SF, 203, NONE, 45],
   ['Kensuke Fukui', 'Kensuke Fukui', 'Кенсуке Фукуи', 'Кенсуке Фукуї', M, [YOSEN], PG, 176, NONE, 45],
   ['Shigehiro Ogiwara', 'Ogiwara Shigehiro', 'Шигехиро Огивара', 'Шіґехіро Оґівара', M, [MEIKO], SF, 177, NONE, 64],
-  ['Shinya Nakamura', 'Shinya Nakamura', 'Шинья Накамура', 'Шінья Накамура', M, [KAIJO], SG, 181, NONE, 52],
   ['Tsutomu Iwamura', 'Tsutomu Iwamura', 'Цутому Ивамура', 'Цутому Івамура', M, [SEIHO], C, 187, NONE, 8],
   ['Kōji Kobori', 'Hiroshi Kobori', 'Коджи Кобори', 'Коджі Коборі', M, [KAIJO], C, 192, NONE, 3],
   ['Kōjirō Furuhashi', 'Koujirou Furuhashi', 'Коджиро Фурухаши', 'Коджіро Фурухаші', M, [KIRISAKI], SF, 186, NONE, 29],
   ['Kentarō Seto', 'Kentarou Seto', 'Кентаро Сето', 'Кентаро Сето', M, [KIRISAKI], C, 190, NONE, 29],
-  ['Naoto Sanada', 'Naoto Sanada', 'Наото Санада', 'Наото Санада', M, [TEIKO], COACH, 179, NONE, 63],
-  ['Yukinori Matsumoto', 'Yukinori Matsumoto', 'Юкинори Мацумото', 'Юкінорі Мацумото', M, [SEIHO], COACH, 177, NONE, 9],
-  ['Yoshinori Susa', 'Yoshinori Susa', 'Ёшинори Суса', 'Йошінорі Суса', M, [TOO], SF, 190, NONE, 15],
   ['Daisuke Narumi', 'Daisuke Narumi', 'Дайсуке Наруми', 'Дайсуке Нарумі', M, [JOSEI], C, 194, NONE, 28],
   ['Kenichi Okamura', 'Kenichi Okamura', 'Кеничи Окамура', 'Кенічі Окамура', M, [YOSEN], PF, 200, NONE, 45],
   ['Hideki Ishida', 'Hideki Ishida', 'Хидеки Ишида', 'Хідекі Ішіда', M, [FUKUDA], PG, 180, NONE, 52],
   ['Kazuhiro Mochizuki', 'Kazuhiro Mochizuki', 'Казухиро Мочизуки', 'Казухіро Мочідзукі', M, [FUKUDA], SG, 183, NONE, 52],
-  ['Tomoya Inoue', 'Tomoya Inoue', 'Томоя Иноуэ', 'Томоя Іноуе', M, [KAMIZAKI], PF, 188, NONE, 64],
-  ['Eiji Shirogane', 'Eiji Shirogane', 'Эйджи Широгане', 'Ейджі Шіроґане', M, [RAKUZAN], COACH, 178, NONE, 54],
   ['Kōzō Shirogane', 'Kouzou Shirogane', 'Кодзо Широгане', 'Кодзо Шіроґане', M, [TEIKO], COACH, 176, NONE, 64],
-  ['Reiji Mochida', 'Reiji Mochida', 'Рейджи Мочида', 'Рейджі Мочіда', M, [MEIKO], SG, 182, NONE, 66],
 ]
 
 async function main() {
