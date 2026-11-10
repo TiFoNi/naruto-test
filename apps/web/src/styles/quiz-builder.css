@@ -2461,14 +2461,15 @@ body:has(.chat-bubble) .qb-foot {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 6px 10px;
+  gap: 6px 8px;
   margin-top: auto;
 }
 
 .qz-stats {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 7px;
+  white-space: nowrap;
   color: var(--text-3);
   font-size: 12.5px;
   font-weight: 700;
@@ -2477,12 +2478,12 @@ body:has(.chat-bubble) .qb-foot {
 .qz-stats > span {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .qz-stats svg {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
 }
 
 .qb .dropdown-head,
