@@ -1724,7 +1724,7 @@ button.lv-badge:focus-visible {
 
 .card-shelf > li {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   min-width: 0;
 }

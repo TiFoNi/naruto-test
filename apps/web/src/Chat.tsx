@@ -829,6 +829,7 @@ export default function Chat() {
           : ''
 
   const canReply = Boolean(user) && room === 'chat'
+  const reactable = (line: Line) => canReply && !line.bout
   const canModerate = Boolean(user?.admin) && room !== 'duel'
   const holdable = canReply || canModerate
 
@@ -872,7 +873,7 @@ export default function Chat() {
     onPointerUp: letGo,
     onPointerCancel: letGo,
     onDoubleClick: (event: React.MouseEvent) => {
-      if (!canReply || (event.target as HTMLElement).closest('button, a, .bout')) return
+      if (!reactable(line) || (event.target as HTMLElement).closest('button, a, .bout')) return
       window.getSelection()?.removeAllRanges()
       void react(line, QUICK_REACT)
     },
@@ -1027,7 +1028,7 @@ export default function Chat() {
                           return <p className={big ? `is-emoji is-emoji-${big}` : undefined}>{bodyOf(line)}</p>
                         })()
                       )}
-                      <ReactPills reacts={line.reacts} me={user?.id} active={canReply} onPick={(kind) => void react(line, kind)} />
+                      {!line.bout && <ReactPills reacts={line.reacts} me={user?.id} active={canReply} onPick={(kind) => void react(line, kind)} />}
                     </div>
                   </article>
                 )
@@ -1366,7 +1367,7 @@ export default function Chat() {
             role="menu"
             aria-label={t('chat.holdAct')}
           >
-            {canReply && reactBar(pointed.line)}
+            {reactable(pointed.line) && reactBar(pointed.line)}
             {canReply && (
               <button type="button" className="chat-menu-item" onClick={() => answer(pointed.line)}>
                 <ReplyIcon />
@@ -1410,7 +1411,7 @@ export default function Chat() {
               <b>{held.nickname}</b>
               {held.text}
             </blockquote>
-            {canReply && reactBar(held)}
+            {reactable(held) && reactBar(held)}
             {canReply && (
               <button type="button" className="chat-hold-item" onClick={() => answer(held)}>
                 <ReplyIcon />

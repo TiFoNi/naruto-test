@@ -42,6 +42,11 @@
 }
 
 .profile-grid {
+  position: relative;
+  min-width: 0;
+}
+
+.profile-grid:has(> .profile-stack) {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: start;
@@ -55,6 +60,45 @@
   gap: 14px;
 }
 
+.profile-grid:not(.is-edit) .slot-grow {
+  display: none;
+}
+
+.profile-grid .react-grid-layout {
+  position: relative;
+  margin-bottom: -14px;
+}
+
+.profile-grid .react-grid-item {
+  transition: none;
+}
+
+.profile-grid.is-moving .react-grid-item {
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    rotate 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.profile-grid .react-grid-item.react-draggable-dragging {
+  z-index: 60;
+  rotate: -0.6deg;
+  transition: rotate 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.profile-grid .react-grid-item.react-draggable-dragging > .card {
+  box-shadow: 0 24px 60px rgb(0 0 0 / 55%);
+}
+
+.profile-grid .react-resizable-handle {
+  display: none;
+}
+
+.profile-grid .react-grid-item.react-grid-placeholder {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .profile-slot {
   position: relative;
   display: flex;
@@ -65,29 +109,59 @@
 
 .profile-slot > .card {
   flex: 1 1 auto;
-  height: var(--slot-h, var(--mate-h, auto));
   min-height: 0;
 }
 
-.profile-slot.is-tall > .card {
-  overflow: hidden;
+.profile-grid .react-grid-item.profile-slot {
+  box-sizing: border-box;
+  padding-bottom: 14px;
 }
 
-.profile-slot.is-tall .activity,
-.profile-slot.is-tall .worlds {
+.profile-grid .react-grid-item.profile-slot > .card {
+  position: relative;
+  width: auto;
+  flex: 1 1 0;
+}
+
+.profile-grid .react-grid-item.profile-slot > .slot-grow {
+  bottom: 9px;
+}
+
+.react-grid-item.profile-slot :is(.world-shelf, .soon-badges, .card-shelf) {
+  align-content: start;
+}
+
+.react-grid-item.profile-slot[data-rows='1'] :is(.world-shelf, .soon-badges, .card-shelf) > li:nth-child(n + 5),
+.react-grid-item.profile-slot[data-rows='2'] :is(.world-shelf, .soon-badges, .card-shelf) > li:nth-child(n + 9),
+.react-grid-item.profile-slot[data-rows='3'] :is(.world-shelf, .soon-badges, .card-shelf) > li:nth-child(n + 13) {
+  display: none;
+}
+
+.react-grid-item .card-shelf {
+  row-gap: var(--card-gap);
+  padding-top: var(--card-pad);
+  padding-bottom: 0;
+}
+
+.react-grid-item.slot-activity .activity {
   flex: 1 1 0;
   height: auto;
+  max-height: none;
   min-height: 0;
 }
 
-.profile-slot.is-tall .world-shelf,
-.profile-slot.is-tall .soon-badges {
-  flex: 1 1 auto;
+.slot-facts .slot-grow {
+  display: none;
+}
+
+.react-grid-item.slot-facts .profile-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.react-grid-item.slot-facts .profile-card .profile-facts,
+.react-grid-item.slot-facts .profile-card .profile-facts .fact {
   min-height: 0;
-  margin-top: -6px;
-  padding-top: 6px;
-  overflow: hidden;
-  align-content: start;
 }
 
 .slot-grow {
@@ -99,7 +173,7 @@
   height: 12px;
   border-radius: 6px;
   cursor: ns-resize;
-  touch-action: pan-y;
+  touch-action: none;
   -webkit-touch-callout: none;
 }
 
@@ -149,8 +223,10 @@
 }
 
 .slot-bar {
+  flex: none;
+  height: 30px;
   cursor: grab;
-  touch-action: pan-y;
+  touch-action: none;
   user-select: none;
   -webkit-touch-callout: none;
 }
@@ -189,20 +265,6 @@
 .slot-bar button:hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
   color: var(--text);
-}
-
-.profile-slot {
-  transition: rotate 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.profile-slot.is-held {
-  z-index: 60;
-  will-change: translate;
-  rotate: -0.6deg;
-}
-
-.profile-slot.is-held > .card {
-  box-shadow: 0 24px 60px rgb(0 0 0 / 55%);
 }
 
 .slot-bar .slot-off .icon {
@@ -3845,10 +3907,6 @@ a.world-blank:hover .world-pic.is-empty {
   .profile-facts b.empty {
     font-size: 24px;
   }
-}
-
-.profile-slot li.is-off {
-  visibility: hidden;
 }
 
 .profile-hero-body .profile-hero-tiles.is-under > .hero-tile:not(.is-add) {

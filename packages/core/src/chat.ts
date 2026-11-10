@@ -304,7 +304,7 @@ export async function reactChat(doc: UserDoc, asked: unknown, kind: unknown): Pr
   const others = { $filter: { input: { $ifNull: ['$reacts', []] }, cond: { $ne: ['$$this.userId', userId] } } }
   const mine = { $literal: [{ userId, nick: doc.nickname ?? doc.username, kind }] }
   const done = await (await chatRoom()).findOneAndUpdate(
-    { _id: new ObjectId(asked), hidden: { $ne: true } },
+    { _id: new ObjectId(asked), hidden: { $ne: true }, bout: { $exists: false } },
     [{ $set: { reacts: kind ? { $concatArrays: [others, mine] } : others } }],
     { returnDocument: 'after', projection: { reacts: 1 } },
   )

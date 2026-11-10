@@ -50,20 +50,12 @@ import { ShowcaseCard } from './Bestiary'
 import { tornPoints } from './torn'
 import { useShelfSort } from './useShelfSort'
 import { afterHold } from './hold'
+import ProfileBoard, { type BoardSave } from './ProfileBoard'
 
-type Held = { block: ProfileBlock; x: number; y: number; dx: number; dy: number; w: number; h: number; ox: number; oy: number }
-
-type Sized = { block: ProfileBlock; y: number; from: number; roof: number; floor: number; stops: number[] | null; mates: number[]; bare: number }
-
-const BLOCK_MIN = 180
-const BLOCK_ROOF = 520
-const BLOCK_MAGNET = 10
 const UNPIN_POINTS = tornPoints(42, 9, 4)
   .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
   .join(' ')
 const ROW = 4
-const BLOCK_FULL = 900
-const CARDS_ROW = 60
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -213,192 +205,7 @@ export default function Profile({ id }: { id?: string }) {
   const [places, setPlaces] = useState(false)
   const [edit, setEdit] = useState(false)
   const [layout, setLayout] = useState<ProfileBlock[] | null>(null)
-  const [held, setHeld] = useState<Held | null>(null)
-  const [sized, setSized] = useState<Sized | null>(null)
-  const [sizes, setSizes] = useState<Record<string, number> | null>(null)
-  const [spots, setSpots] = useState<Record<string, number> | null>(null)
-  const list = useRef<ProfileBlock[]>(PROFILE_BLOCKS_DEFAULT)
-  const tall = useRef<Record<string, number>>({})
-  const side = useRef<Record<string, number>>({})
-
-  useEffect(() => {
-    if (!sized) return
-    const move = (event: PointerEvent) => {
-      const asked = sized.from + event.clientY - sized.y
-      const stop = sized.stops?.reduce((best, one) => (Math.abs(one - asked) < Math.abs(best - asked) ? one : best))
-      const mate = sized.mates.find((one) => Math.abs(one - asked) <= BLOCK_MAGNET)
-      const next = Math.round(
-        stop ?? Math.min(Math.max(sized.roof, sized.floor), Math.max(sized.floor, mate ?? asked)),
-      )
-      const whole = sized.stops ? next === sized.roof : sized.bare > 0 && Math.abs(next - sized.bare) <= BLOCK_MAGNET
-      const copy = { ...tall.current }
-      delete eyed.current[sized.block]
-      resized.current.add(sized.block)
-      if (whole && sized.block === 'cards') copy[sized.block] = BLOCK_FULL
-      else if (whole) delete copy[sized.block]
-      else copy[sized.block] = next
-      tall.current = copy
-      setSizes(copy)
-    }
-    const drop = () => {
-      setSized(null)
-      void api('profile', { action: 'blocks', blocks: list.current, sizes: tall.current, sides: side.current, seen: eyed.current })
-    }
-    window.addEventListener('pointermove', move)
-    window.addEventListener('pointerup', drop)
-    window.addEventListener('pointercancel', drop)
-    return () => {
-      window.removeEventListener('pointermove', move)
-      window.removeEventListener('pointerup', drop)
-      window.removeEventListener('pointercancel', drop)
-    }
-  }, [sized])
-
-  useEffect(() => {
-    if (!held) return
-    let moved = false
-    const move = (event: PointerEvent) => {
-      setHeld((was) => (was ? { ...was, x: event.clientX, y: event.clientY } : was))
-      if (!moved && Math.hypot(event.clientX - held.ox, event.clientY - held.oy) < 6) return
-      moved = true
-      const grid = document.querySelector('.profile-grid') as HTMLElement | null
-      if (!grid) return
-      const wide = getComputedStyle(grid).gridTemplateColumns.split(' ').length > 1
-      const box = grid.getBoundingClientRect()
-      const column = wide ? (event.clientX < box.left + box.width / 2 ? 0 : 1) : (side.current[held.block] ?? 0)
-      const rest = list.current.filter((one) => one !== held.block)
-      const mates = rest.filter((one) => (side.current[one] ?? 0) === column)
-      const spot = mates.findIndex((one) => {
-        const seat = document.querySelector(`.profile-slot[data-block="${one}"]`)?.getBoundingClientRect()
-        return seat ? event.clientY < seat.top + seat.height / 2 : false
-      })
-      const anchor = spot < 0 ? null : mates[spot]
-      const at = anchor
-        ? rest.indexOf(anchor)
-        : mates.length
-          ? rest.indexOf(mates[mates.length - 1]) + 1
-          : rest.length
-      const next = [...rest.slice(0, at), held.block, ...rest.slice(at)]
-      if (next.join() === list.current.join() && (side.current[held.block] ?? 0) === column) return
-      const seats = { ...side.current, [held.block]: column }
-      list.current = next
-      side.current = seats
-      setLayout(next)
-      setSpots(seats)
-    }
-    const drop = () => {
-      setHeld(null)
-      void api('profile', { action: 'blocks', blocks: list.current, sizes: tall.current, sides: side.current, seen: eyed.current })
-    }
-    window.addEventListener('pointermove', move)
-    window.addEventListener('pointerup', drop)
-    window.addEventListener('pointercancel', drop)
-    return () => {
-      window.removeEventListener('pointermove', move)
-      window.removeEventListener('pointerup', drop)
-      window.removeEventListener('pointercancel', drop)
-    }
-  }, [held?.block])
-  useLayoutEffect(() => {
-    if (document.querySelector('.is-sortable > .is-dragging, .profile-slot.is-held')) return
-    const even = () => {
-      const pair = (['worlds', 'awards'] as ProfileBlock[])
-        .map((block) => document.querySelector(`.profile-slot[data-block="${block}"]`) as HTMLElement | null)
-        .filter((slot): slot is HTMLElement => Boolean(slot))
-      for (const slot of pair) slot.style.removeProperty('--mate-h')
-      if (pair.length < 2 || pair.some((slot) => slot.style.getPropertyValue('--slot-h'))) return
-      const cards = pair.map((slot) => slot.querySelector('.card') as HTMLElement | null)
-      if (cards.some((card) => !card)) return
-      const highs = cards.map((card) => card!.offsetHeight)
-      const peak = Math.max(...highs)
-      highs.forEach((high, index) => high < peak && pair[index].style.setProperty('--mate-h', `${peak}px`))
-    }
-    even()
-    window.addEventListener('resize', even)
-    return () => window.removeEventListener('resize', even)
-  })
-
-  useLayoutEffect(() => {
-    if (document.querySelector('.is-sortable > .is-dragging, .profile-slot.is-held')) return
-    const match = () => {
-      const shelf = document.querySelector('.profile-slot[data-block="cards"] .card-shelf') as HTMLElement | null
-      if (!shelf) return
-      const peerBlock = (['awards', 'worlds'] as ProfileBlock[]).find((block) => document.querySelector(`.profile-slot[data-block="${block}"] > .card`))
-      const ladder = peerBlock ? ladderOf(peerBlock) : null
-      const peerShelf = peerBlock
-        ? (document.querySelector(`.profile-slot[data-block="${peerBlock}"] .soon-badges, .profile-slot[data-block="${peerBlock}"] .world-shelf`) as HTMLElement | null)
-        : null
-      const first = peerShelf?.firstElementChild as HTMLElement | null
-      const section = shelf.closest('.card') as HTMLElement | null
-      if (!ladder || !peerShelf || !first || !section) {
-        for (const key of ['--card-w', '--card-row', 'padding-top', 'padding-bottom']) shelf.style.removeProperty(key)
-        return
-      }
-      const outer = getComputedStyle(section)
-      const chrome = parseFloat(outer.paddingTop) + parseFloat(outer.paddingBottom) + parseFloat(outer.borderTopWidth) + parseFloat(outer.borderBottomWidth)
-      const least = ladder.steps[0] ?? ladder.own
-      const pitch = first.offsetHeight + (parseFloat(getComputedStyle(peerShelf).rowGap) || 0)
-      const gap = parseFloat(getComputedStyle(shelf).rowGap) || 0
-      const rows = Math.max(1, Math.ceil((eyed.current.cards ?? ROW) / ROW))
-      const row = Math.max(30, Math.floor((least + (rows - 1) * pitch - chrome - (rows - 1) * gap) / rows))
-      const sets: [string, string][] = [
-        ['--card-row', `${row}px`],
-        ['--card-w', `${Math.max(20, Math.floor(row * 0.75))}px`],
-        ['padding-top', '0px'],
-        ['padding-bottom', '0px'],
-      ]
-      for (const [key, value] of sets) if (shelf.style.getPropertyValue(key) !== value) shelf.style.setProperty(key, value)
-    }
-    const facts = () => {
-      const card = document.querySelector('.profile-slot[data-block="facts"] > .card') as HTMLElement | null
-      if (!card) return
-      const awards = document.querySelector('.profile-slot[data-block="awards"] > .card') as HTMLElement | null
-      if (!awards || tall.current.facts) {
-        card.style.removeProperty('height')
-        card.style.removeProperty('min-height')
-        delete card.dataset.fit
-        return
-      }
-      const ladder = ladderOf('awards')
-      if (!ladder) return
-      const least = ladder.steps[0] ?? ladder.own
-      const want = Math.round(least / 2)
-      card.dataset.fit = ''
-      card.style.removeProperty('height')
-      if (card.style.minHeight !== `${want}px`) card.style.minHeight = `${want}px`
-    }
-    match()
-    facts()
-    const both = () => {
-      match()
-      facts()
-    }
-    window.addEventListener('resize', both)
-    return () => window.removeEventListener('resize', both)
-  })
-
-  const lifted = useRef<string | null>(null)
-  useLayoutEffect(() => {
-    if (!held) {
-      if (lifted.current) {
-        const slot = document.querySelector(`.profile-slot[data-block="${lifted.current}"]`) as HTMLElement | null
-        if (slot) {
-          const from = slot.style.translate || '0 0'
-          slot.style.translate = ''
-          slot.animate([{ translate: from }, { translate: '0 0' }], { duration: 220, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' })
-        }
-        lifted.current = null
-      }
-      return
-    }
-    const slot = document.querySelector(`.profile-slot[data-block="${held.block}"]`) as HTMLElement | null
-    const card = slot?.querySelector(':scope > .card') as HTMLElement | null
-    if (!slot || !card) return
-    lifted.current = held.block
-    slot.style.translate = ''
-    const box = card.getBoundingClientRect()
-    slot.style.translate = `${held.x - held.dx - box.left}px ${held.y - held.dy - box.top}px`
-  }, [held])
+  const [board, setBoard] = useState<Omit<BoardSave, 'blocks'> | null>(null)
 
   useEffect(() => {
     if (!places) return
@@ -442,12 +249,9 @@ export default function Profile({ id }: { id?: string }) {
   const [lift, setLift] = useState<{ one: HeroTile; w: number; h: number } | null>(null)
   const liftAt = useRef({ x: 0, y: 0 })
   const liftBox = useRef<HTMLSpanElement | null>(null)
-  const snapper = useRef<() => void>(() => undefined)
   const pads = useRef<HTMLDivElement>(null)
   const [tight, setTight] = useState(false)
   const narrow = useNarrow()
-  const eyed = useRef<Record<string, number>>({})
-  const resized = useRef(new Set<string>())
 
   useEffect(() => {
     if (!skins && !tones) return
@@ -632,14 +436,6 @@ export default function Profile({ id }: { id?: string }) {
     }
   })
 
-  useLayoutEffect(() => {
-    if (document.querySelector('.is-sortable > .is-dragging, .profile-slot.is-held')) return
-    const snap = () => snapper.current()
-    snap()
-    window.addEventListener('resize', snap)
-    return () => window.removeEventListener('resize', snap)
-  })
-
   useEffect(() => {
     const strip = dyes.current
     if (!strip) return
@@ -685,7 +481,13 @@ export default function Profile({ id }: { id?: string }) {
 
   const keep = (next: ProfileBlock[]) => {
     setLayout(next)
-    void api('profile', { action: 'blocks', blocks: next, sizes: tall.current, sides: side.current, seen: eyed.current })
+    void api('profile', { action: 'blocks', blocks: next, sizes: boardSizes, sides: boardSides, seen: boardSeen })
+  }
+
+  const saveBoard = (next: BoardSave) => {
+    setLayout(next.blocks)
+    setBoard({ sides: next.sides, seen: next.seen, sizes: next.sizes })
+    void api('profile', { action: 'blocks', blocks: next.blocks, sizes: next.sizes, sides: next.sides, seen: next.seen })
   }
 
   const hide = (block: ProfileBlock) => keep(shown.filter((one) => one !== block))
@@ -829,158 +631,15 @@ export default function Profile({ id }: { id?: string }) {
     return { label: tileName('profile.characters', 'profile.charactersShort'), value: `${summary?.totals.solved ?? 0}` }
   }
 
-  const heights: Record<string, number> = sizes ?? summary?.blockSizes ?? {}
-  const grown: Record<string, number> = 'cards' in heights ? heights : { ...heights, cards: CARDS_ROW }
-  const seated = spots ?? summary?.blockSides ?? {}
-  const sideOf = (block: ProfileBlock, index: number) => seated[block] ?? index % 2
-  const columns = [0, 1].map((column) => shown.map((block, index) => ({ block, index })).filter(({ block, index }) => sideOf(block, index) === column))
-  tall.current = grown
-  side.current = Object.fromEntries(shown.map((block, index) => [block, sideOf(block, index)]))
-  list.current = shown
-
-  const cardOf = (block: ProfileBlock) =>
-    document.querySelector(`.profile-slot[data-block="${block}"] > .card`) as HTMLElement | null
-
-  const roofOf = () => {
-    const free = (['worlds', 'awards'] as ProfileBlock[])
-      .filter((one) => !grown[one])
-      .map((one) => cardOf(one)?.offsetHeight ?? 0)
-    const tallest = Math.max(0, ...free)
-    return tallest > BLOCK_MIN ? Math.round(tallest) : BLOCK_ROOF
-  }
-
-  const ladderOf = (block: ProfileBlock) => {
-    const card = cardOf(block)
-    const slot = card?.parentElement as HTMLElement | null
-    if (!card || !slot) return null
-    const kept = slot.style.getPropertyValue('--slot-h')
-    const mate = slot.style.getPropertyValue('--mate-h')
-    if (kept) slot.style.removeProperty('--slot-h')
-    if (mate) slot.style.removeProperty('--mate-h')
-    const own = card.offsetHeight
-    const list = card.querySelector('.world-shelf, .soon-badges, .card-shelf') as HTMLElement | null
-    const items = list ? ([...list.children] as HTMLElement[]) : []
-    const chrome = list ? own - list.offsetHeight : 0
-    const steps: number[] = []
-    if (list && items.length > 1) {
-      const base = items[0]!.offsetParent === list ? 0 : list.offsetTop
-      const topOf = (one: HTMLElement) => one.offsetTop - base
-      const tops = [...new Set(items.map(topOf))].sort((a, b) => a - b)
-      const rows = tops.filter((top, index) => index === 0 || top - tops[index - 1]! >= 2)
-      for (const top of rows.slice(0, -1)) {
-        const line = items.filter((one) => Math.abs(topOf(one) - top) < 2)
-        steps.push(Math.round(chrome + Math.max(...line.map((one) => topOf(one) + one.offsetHeight))))
-      }
-    }
-    if (kept) slot.style.setProperty('--slot-h', kept)
-    if (mate) slot.style.setProperty('--mate-h', mate)
-    return { own, steps: steps.filter((one) => one > 80 && one < own - 2) }
-  }
-
-  const naturalOf = (block: ProfileBlock) => {
-    const card = cardOf(block)
-    const slot = card?.parentElement as HTMLElement | null
-    if (!card || !slot) return 0
-    const held = slot.style.getPropertyValue('--slot-h')
-    const mate = slot.style.getPropertyValue('--mate-h')
-    if (held) slot.style.removeProperty('--slot-h')
-    if (mate) slot.style.removeProperty('--mate-h')
-    const own = card.offsetHeight
-    if (held) slot.style.setProperty('--slot-h', held)
-    if (mate) slot.style.setProperty('--mate-h', mate)
-    return own
-  }
-
-
-
-  snapper.current = () => {
-    document.querySelectorAll('.profile-slot li.is-off').forEach((one) => one.classList.remove('is-off'))
-    for (const [block, kept] of Object.entries(grown)) {
-      const card = cardOf(block as ProfileBlock)
-      const slot = card?.parentElement as HTMLElement | null
-      const shelf = card?.querySelector('.world-shelf, .soon-badges, .card-shelf') as HTMLElement | null
-      if (!card || !slot || !shelf) continue
-      const held = slot.style.getPropertyValue('--slot-h')
-      const mate = slot.style.getPropertyValue('--mate-h')
-      if (held) slot.style.removeProperty('--slot-h')
-      if (mate) slot.style.removeProperty('--mate-h')
-      const full = card.offsetHeight
-      const items = [...shelf.children] as HTMLElement[]
-      const first = items[0]
-      const cols = first ? items.filter((one) => Math.abs(one.offsetTop - first.offsetTop) < 2).length : 0
-      const row = first ? first.offsetHeight : 0
-      const gap = Math.round(parseFloat(getComputedStyle(shelf).rowGap)) || 0
-      const pad =
-        (Math.round(parseFloat(getComputedStyle(shelf).paddingTop)) || 0) + (block === 'cards' ? Math.round(parseFloat(getComputedStyle(shelf).paddingBottom)) || 0 : 0)
-      const chrome = Math.round(full - shelf.offsetHeight)
-      if (mate) slot.style.setProperty('--mate-h', mate)
-      if (!cols || !row) {
-        if (held) slot.style.setProperty('--slot-h', held)
-        continue
-      }
-      const seen =
-        eyed.current[block] ?? (resized.current.has(block) ? undefined : summary?.blockSeen?.[block]) ?? Math.max(1, Math.round((kept - chrome + gap) / (row + gap))) * cols
-      eyed.current[block] = seen
-      const rows = Math.max(1, Math.ceil(seen / cols))
-      const want = Math.min(full, Math.round(chrome + pad + rows * row + (rows - 1) * gap))
-      slot.style.setProperty('--slot-h', `${want}px`)
-      items.forEach((one, index) => one.classList.toggle('is-off', index >= rows * cols))
-    }
-  }
-
-  const stretch = (block: ProfileBlock) => (event: ReactPointerEvent<HTMLElement>) => {
-    if (!edit || event.button > 0) return
-    const card = cardOf(block)
-    if (!card) return
-    shutPops()
-    if (event.pointerType !== 'touch') event.preventDefault()
-    event.stopPropagation()
-    const { clientY } = event
-    afterHold(event, () => size(block, card, clientY))
-  }
-
-  const size = (block: ProfileBlock, card: HTMLElement, clientY: number) => {
-    const from = card.offsetHeight
-    const ladder = ladderOf(block)
-    if (!ladder) return
-    const base = block !== 'facts' && shown.includes('facts') ? naturalOf('facts') : 0
-
-    if (ladder.steps.length) {
-      const fit = ladder.steps.filter((one) => one >= base)
-      const stops = [...(fit.length ? fit : ladder.steps.slice(-1)), ladder.own]
-      setSized({ block, y: clientY, from, stops, floor: stops[0], roof: ladder.own, mates: [], bare: ladder.own })
-      return
-    }
-
-    const floor = base > 80 ? base : ladder.own > 80 ? ladder.own : BLOCK_MIN
-    const mates = [
-      ...shown
-        .filter((one) => one !== block)
-        .map((one) => cardOf(one)?.offsetHeight ?? 0),
-      ladder.own,
-    ].filter((one) => one > 0)
-    setSized({ block, y: clientY, from, stops: null, floor, roof: roofOf(), mates, bare: ladder.own })
-  }
+  const boardSides = board?.sides ?? summary?.blockSides ?? {}
+  const boardSeen = board?.seen ?? summary?.blockSeen ?? {}
+  const boardSizes = board?.sizes ?? summary?.blockSizes ?? {}
 
   const shutPops = () => {
     setPlaces(false)
     setTip(false)
     setWeek(false)
     setShop(null)
-  }
-
-  const grab = (block: ProfileBlock) => (event: ReactPointerEvent<HTMLElement>) => {
-    if (!edit || event.button > 0) return
-    const node = (event.currentTarget.closest('.profile-slot') as HTMLElement | null) ?? null
-    if (!node) return
-    shutPops()
-    const card = (node.querySelector(':scope > .card') as HTMLElement | null) ?? node
-    if (event.pointerType !== 'touch') event.preventDefault()
-    const { clientX: x, clientY: y } = event
-    afterHold(event, () => {
-      const box = card.getBoundingClientRect()
-      setHeld({ block, x, y, dx: x - box.left, dy: y - box.top, w: box.width, h: box.height, ox: x, oy: y })
-    })
   }
 
   const show = (block: ProfileBlock) => keep([...shown, block])
@@ -1968,40 +1627,36 @@ export default function Profile({ id }: { id?: string }) {
         </span>
       )}
 
-      <div className={`profile-grid ${edit ? 'is-edit' : ''}`}>
-        {columns.map((seats, column) => (
-          <div className="profile-stack" key={column}>
-            {seats.map(({ block, index }) => (
-                <div
-                  className={`profile-slot slot-${block} ${held?.block === block ? 'is-held' : ''} ${sized?.block === block ? 'is-sized' : ''} ${grown[block] ? 'is-tall' : ''}`}
-                  key={block}
-                  data-block={block}
-                  style={{ order: index, ...(grown[block] ? { '--slot-h': `${grown[block]}px` } : {}) } as CSSProperties}
-                >
-                  {edit && (
-                    <div className="slot-bar" onPointerDown={grab(block)}>
-                      <span className="slot-grip" aria-hidden>
-                        <GripIcon />
-                      </span>
-                      <b>{t(`profile.block.${block}` as UiKey)}</b>
-                      <button
-                        type="button"
-                        className="slot-off"
-                        aria-label={t('profile.blockHide')}
-                        onPointerDown={(event) => event.stopPropagation()}
-                        onClick={() => hide(block)}
-                      >
-                        <CloseIcon />
-                      </button>
-                    </div>
-                  )}
-                  {panels[block]}
-                  {edit && block !== 'facts' && <i className="slot-grow" onPointerDown={stretch(block)} aria-hidden />}
-                </div>
-              ))}
-          </div>
-        ))}
-      </div>
+      <ProfileBoard
+        blocks={shown.filter((block) => block !== 'cards' || deck.length > 0 || sorting)}
+        sides={boardSides}
+        seen={boardSeen}
+        sizes={boardSizes}
+        counts={{
+          worlds: shelf.length + (sorting ? blanks : Math.min(blanks, (ROW - (shelf.length % ROW)) % ROW)),
+          awards: sorting ? SHOWCASE_MAX : Math.min(SHOWCASE_MAX, Math.ceil(pinned.length / ROW) * ROW),
+          cards: sorting ? CARD_PINS_MAX : deck.length,
+        }}
+        edit={edit}
+        onStart={shutPops}
+        onSave={saveBoard}
+        render={(block) => (
+          <>
+            {edit && (
+              <div className="slot-bar">
+                <span className="slot-grip" aria-hidden>
+                  <GripIcon />
+                </span>
+                <b>{t(`profile.block.${block}` as UiKey)}</b>
+                <button type="button" className="slot-off" aria-label={t('profile.blockHide')} onClick={() => hide(block)}>
+                  <CloseIcon />
+                </button>
+              </div>
+            )}
+            {panels[block]}
+          </>
+        )}
+      />
 
 
       {edit && (
