@@ -154,6 +154,7 @@ function consistent(c) {
   const jutsu = new Set(c.jutsuTypes)
   if (c.kekkeiGenkai.some((k) => DOJUTSU_VALUES.includes(k))) jutsu.add(JUTSU.dojutsu)
   else jutsu.delete(JUTSU.dojutsu)
+  if (c.kekkeiGenkai.includes('Шаринган')) jutsu.add(JUTSU.genjutsu)
   if (c.attributes.includes('Мудрец')) jutsu.add(JUTSU.senjutsu)
   if (c.natureTypes.length) jutsu.add(JUTSU.ninjutsu)
   return { ...c, jutsuTypes: Object.values(JUTSU).filter((t) => jutsu.has(t)) }

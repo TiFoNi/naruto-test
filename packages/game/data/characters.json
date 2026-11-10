@@ -786,6 +786,7 @@
   "gender": "Мужской",
   "affiliations": [],
   "jutsuTypes": [
+   "Гендзюцу",
    "Додзюцу"
   ],
   "kekkeiGenkai": [
@@ -808,6 +809,7 @@
   "affiliations": [],
   "jutsuTypes": [
    "Ниндзюцу",
+   "Гендзюцу",
    "Додзюцу"
   ],
   "kekkeiGenkai": [
@@ -2801,6 +2803,7 @@
   ],
   "jutsuTypes": [
    "Ниндзюцу",
+   "Гендзюцу",
    "Додзюцу"
   ],
   "kekkeiGenkai": [
