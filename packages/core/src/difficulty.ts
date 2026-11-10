@@ -11,6 +11,7 @@ import {
   PACE_TARGET,
   SHOT_POINTS,
   autoTarget,
+  manualXp,
   TRIES_MIN_PLAYERS,
   TRIES_PRIOR,
   TRIES_REF,
@@ -226,7 +227,28 @@ let modeTargets = new Map<string, { target: number; faster: number | null }>()
 
 const targetOf = (key: string) => modeTargets.get(key)?.target ?? PACE_TARGET[baseMode(key)] ?? PACE.perMinute
 
-function buildPaces(rows: PaceRow[]) {
+function worldBonuses(map: Map<string, World>) {
+  const modes = new Map<string, { sum: number; players: number }>()
+  for (const [key, world] of map) {
+    if (world.players < TRIES_MIN_PLAYERS) continue
+    const mode = key.slice(key.indexOf('/') + 1)
+    const total = modes.get(mode) ?? { sum: 0, players: 0 }
+    total.sum += world.avg * world.players
+    total.players += world.players
+    modes.set(mode, total)
+  }
+  const out = new Map<string, number>()
+  for (const [key, world] of map) {
+    if (world.players < TRIES_MIN_PLAYERS) continue
+    const total = modes.get(key.slice(key.indexOf('/') + 1))
+    if (!total?.players) continue
+    const ratio = world.avg / (total.sum / total.players)
+    out.set(key, Math.min(PACE.worldBonusHigh, Math.max(PACE.worldBonusLow, ratio ** PACE.worldBonusPower)))
+  }
+  return out
+}
+
+function buildPaces(rows: PaceRow[], bonus: Map<string, number> = new Map()) {
   const totals = new Map<string, { active: number; won: number }>()
   for (const row of rows) {
     const key = paceKey(row._id.mode, row._id.bot)
@@ -246,7 +268,7 @@ function buildPaces(rows: PaceRow[]) {
     const whole = modes.get(key)
     if (!whole) continue
     const msPerWin = (row.active + PACE.priorWins * whole.msPerWin) / (row.won + PACE.priorWins)
-    const pace = paceFromTime(baseMode(key), msPerWin, targetOf(key))
+    const pace = paceFromTime(baseMode(key), msPerWin, targetOf(key) * (bonus.get(worldKey(row._id.game, key)) ?? 1))
     perWorld.set(worldKey(row._id.game, key), { ...pace, base: Math.min(pace.base, whole.base * PACE.spread), after: Math.min(pace.after, whole.after * PACE.spread) })
   }
   return { modes, perWorld }
@@ -259,8 +281,9 @@ export function refreshDifficulty() {
       const players = [...paceRows, ...duelRows]
       const capped = capPlayers(players)
       modeTargets = heavyTargets(players, capped)
-      const { modes, perWorld } = buildPaces(capped)
-      worlds = buildWorlds(triesRows)
+      const nextWorlds = buildWorlds(triesRows)
+      const { modes, perWorld } = buildPaces(capped, worldBonuses(nextWorlds))
+      worlds = nextWorlds
       modePaces = modes
       worldPaces = perWorld
       builtAt = Date.now()
@@ -305,7 +328,7 @@ const PACE_SPAN: Partial<Record<ModeId, readonly number[]>> = { shot: SHOT_POINT
 
 export function paceXp(mode: ModeId, manual: number, game?: string, bot = false) {
   const pace = paceOf(mode, game, bot)
-  if (!pace) return { base: manual, after: MODE_XP_AFTER[mode] }
+  if (!pace) return { base: manualXp(mode, manual), after: manualXp(mode, MODE_XP_AFTER[mode]) }
   return { base: roundXp((manual * pace.base) / (PACE_UNIT[mode] ?? MODE_XP[mode])), after: Math.max(1, Math.round(pace.after)) }
 }
 

@@ -724,11 +724,15 @@ export const PACE_MODES: ModeId[] = ['classic', 'blind', 'image', 'ability', 'pa
 
 export const LOGGED_MODES: ModeId[] = ['pair', 'shot', 'tune']
 
-export const PACE = { perMinute: 22, perMinuteAfter: 10, thinkCapMs: 60_000, guessCapMs: 45_000, duelCapMs: 10 * 60_000, playerRounds: 300, minWins: 200, priorWins: 100, spread: 3 } as const
+export const PACE = { perMinute: 22, perMinuteAfter: 10, thinkCapMs: 60_000, guessCapMs: 45_000, duelCapMs: 10 * 60_000, playerRounds: 300, worldBonusPower: 0.5, worldBonusLow: 0.75, worldBonusHigh: 1.35, minWins: 200, priorWins: 100, spread: 3 } as const
 
 export const DUEL_PACE_MODES: ModeId[] = ['who', 'grid', 'clue']
 
 export const PACE_TARGET: Partial<Record<ModeId, number>> = { classic: 35, blind: 45, image: 17, ability: 26, page: 28, odd: 26 }
+
+export const PACE_FALLBACK: Partial<Record<ModeId, number>> = { shot: 0.5 }
+
+export const manualXp = (mode: ModeId, value: number) => Math.max(1, Math.round(value * (PACE_FALLBACK[mode] ?? 1)))
 
 export const PACE_AUTO = { farmerPerMinute: 40, think: 1.9, thinkModes: ['classic', 'blind'] as ModeId[], heavyRounds: 100, minPlayers: 3, minRounds: 500, low: 14, high: 50 } as const
 
