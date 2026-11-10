@@ -70,8 +70,8 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
           : next,
       )
       if (data.stats) setStats(data.stats.key, data.stats.value)
+      setGained(data.xp ? (data.xp.gained ?? Math.max(0, data.xp.xp - xpNow.current)) : 0)
       if (data.xp) {
-        setGained(data.xp.gained ?? Math.max(0, data.xp.xp - xpNow.current))
         setXp(data.xp)
         void refreshFeed()
       }
