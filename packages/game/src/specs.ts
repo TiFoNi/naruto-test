@@ -662,11 +662,66 @@ export const scrapValue = (id: unknown) => {
   return cost ? Math.floor(cost * BANNER_SCRAP) : null
 }
 
+export const REACTIONS = ['like', 'laugh', 'heart', 'puke'] as const
+
+export type Reaction = (typeof REACTIONS)[number]
+
+export const PATRON_REACTIONS: Reaction[] = ['puke']
+
+export const isReaction = (value: unknown): value is Reaction => typeof value === 'string' && (REACTIONS as readonly string[]).includes(value)
+
 export type Sale = { id: string; off: number; from: number; to: number }
 
-export const SALES: Sale[] = [{ id: '1111', off: 0.11, from: Date.parse('2026-11-11T00:00:00+02:00'), to: Date.parse('2026-11-12T00:00:00+02:00') }]
+type YearlySale = { id: string; off: number; month: number; day: number; days: number }
 
-export const saleAt = (now: number) => SALES.find((one) => now >= one.from && now < one.to) ?? null
+export const YEARLY_SALES: YearlySale[] = [{ id: '1111', off: 0.11, month: 11, day: 11, days: 1 }]
+
+const SALE_ZONE = 'Europe/Kyiv'
+
+const zoneShift = (at: number) => {
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat('en-US', {
+      timeZone: SALE_ZONE,
+      hourCycle: 'h23',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    })
+      .formatToParts(at)
+      .map((part) => [part.type, part.value]),
+  )
+  return Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute, +parts.second) - at
+}
+
+const zoneMidnight = (year: number, month: number, day: number) => {
+  const wall = Date.UTC(year, month - 1, day)
+  return wall - zoneShift(wall - zoneShift(wall))
+}
+
+const windowOf = (one: YearlySale, year: number): Sale => ({
+  id: one.id,
+  off: one.off,
+  from: zoneMidnight(year, one.month, one.day),
+  to: zoneMidnight(year, one.month, one.day + one.days),
+})
+
+export const salesAround = (now: number) => {
+  const year = new Date(now).getUTCFullYear()
+  return [year - 1, year, year + 1].flatMap((each) => YEARLY_SALES.map((one) => windowOf(one, each)))
+}
+
+export const saleAt = (now: number) => salesAround(now).find((one) => now >= one.from && now < one.to) ?? null
+
+export const nextSaleEdge = (now: number) =>
+  salesAround(now)
+    .flatMap((one) => [one.from, one.to])
+    .filter((at) => at > now)
+    .sort((one, two) => one - two)[0]
+
+export const comingSale = (id: string, now: number) => salesAround(now).find((one) => one.id === id && one.to > now) ?? null
 
 export const salePrice = (cost: number, sale: Sale | null) => (sale ? Math.round(cost * (1 - sale.off)) : cost)
 

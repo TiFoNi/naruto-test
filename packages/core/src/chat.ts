@@ -1,9 +1,9 @@
 import { randomUUID } from 'node:crypto'
 import { ObjectId, type Collection } from 'mongodb'
-import { cardRank } from '@nanda/game'
+import { PATRON_REACTIONS, REACTIONS, cardRank, isReaction } from '@nanda/game'
 import { authSession } from './auth'
 import { cardKey } from './dex'
-import { cards, chatNews, chatRoom, pulse, users, type ChatBout, type ChatDoc, type ChatReply, type ChatTag, type UserDoc } from './db'
+import { cards, chatNews, chatRoom, pulse, users, type ChatBout, type ChatDoc, type ChatReact, type ChatReply, type ChatTag, type UserDoc } from './db'
 import { gameData, isGame } from './games'
 import { ownedTitles } from './profile'
 import { pushSubs, sendPush, type PushLang } from './push'
@@ -31,7 +31,16 @@ export type ChatLine = {
   everyone?: boolean
   reply?: { id: string; userId: string; nickname: string; text: string }
   bout?: BoutLine
+  reacts?: ReactLine[]
 }
+
+export type ReactLine = { kind: string; people: { id: string; nick: string }[] }
+
+export const reactsOf = (reacts: ChatReact[] = []): ReactLine[] =>
+  REACTIONS.map((kind) => ({
+    kind,
+    people: reacts.filter((one) => one.kind === kind).map((one) => ({ id: one.userId.toHexString(), nick: one.nick })),
+  })).filter((one) => one.people.length)
 
 export type BoutLine = {
   game: string
@@ -66,6 +75,7 @@ export const lineOf = (doc: ChatDoc): ChatLine => ({
     ? { reply: { id: doc.reply.id.toHexString(), userId: doc.reply.userId.toHexString(), nickname: doc.reply.nickname, text: doc.reply.text } }
     : {}),
   ...(doc.bout ? { bout: boutOf(doc.bout) } : {}),
+  ...(doc.reacts?.length ? { reacts: reactsOf(doc.reacts) } : {}),
 })
 
 export const TAGS_MAX = 3
@@ -273,6 +283,32 @@ export async function sendChat(doc: UserDoc, raw: unknown, picked?: unknown, rep
   const answered = reply && !reply.userId.equals(userId) && !tags.some((tag) => tag.id.equals(reply.userId))
   if (answered) void notifyTags(doc, done, [{ id: reply.userId, nick: reply.nickname }], true).catch(() => undefined)
   return done
+}
+
+export type ReactFail = 'bad' | 'muted' | 'patron' | 'too_fast' | 'gone'
+
+const REACT_PER_MINUTE = 10
+const reacted = new Map<string, number[]>()
+
+export async function reactChat(doc: UserDoc, asked: unknown, kind: unknown): Promise<{ id: string; reacts: ReactLine[] } | ReactFail> {
+  if (typeof asked !== 'string' || !ObjectId.isValid(asked)) return 'bad'
+  if (kind !== null && !isReaction(kind)) return 'bad'
+  if (muted(doc)) return 'muted'
+  if (kind !== null && PATRON_REACTIONS.includes(kind) && !ownedTitles(doc).includes(BOUT_TITLE)) return 'patron'
+  const userId = doc._id!
+  const key = userId.toHexString()
+  const now = Date.now()
+  const recent = (reacted.get(key) ?? []).filter((at) => now - at < 60_000)
+  if (recent.length >= REACT_PER_MINUTE) return 'too_fast'
+  reacted.set(key, [...recent, now])
+  const others = { $filter: { input: { $ifNull: ['$reacts', []] }, cond: { $ne: ['$$this.userId', userId] } } }
+  const mine = { $literal: [{ userId, nick: doc.nickname ?? doc.username, kind }] }
+  const done = await (await chatRoom()).findOneAndUpdate(
+    { _id: new ObjectId(asked), hidden: { $ne: true } },
+    [{ $set: { reacts: kind ? { $concatArrays: [others, mine] } : others } }],
+    { returnDocument: 'after', projection: { reacts: 1 } },
+  )
+  return done ? { id: asked, reacts: reactsOf(done.reacts) } : 'gone'
 }
 
 export const BOUT_OPEN_MS = 10 * 60_000

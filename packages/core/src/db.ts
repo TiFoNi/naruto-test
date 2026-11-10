@@ -588,7 +588,10 @@ export type ChatDoc = {
   everyone?: boolean
   reply?: ChatReply
   bout?: ChatBout
+  reacts?: ChatReact[]
 }
+
+export type ChatReact = { userId: ObjectId; nick: string; kind: string }
 
 export type ChatBout = {
   game: string

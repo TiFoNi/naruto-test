@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { SALES, saleAt, type Sale } from '@nanda/game'
+import { comingSale, nextSaleEdge, saleAt, type Sale } from '@nanda/game'
 
 const PREVIEW_KEY = 'nanda.sale-preview'
 const LONGEST = 2 ** 31 - 1
@@ -12,7 +12,7 @@ const previewSale = () => {
     const asked = new URLSearchParams(window.location.search).get('sale')
     if (asked !== null) sessionStorage.setItem(PREVIEW_KEY, asked)
     const id = sessionStorage.getItem(PREVIEW_KEY)
-    return SALES.find((one) => one.id === id) ?? null
+    return id ? comingSale(id, Date.now()) : null
   } catch {
     return null
   }
@@ -31,9 +31,7 @@ export function useSale(): Sale | null {
 
   useEffect(() => {
     if (!now) return
-    const next = SALES.flatMap((one) => [one.from, one.to])
-      .filter((at) => at > now)
-      .sort((one, two) => one - two)[0]
+    const next = nextSaleEdge(now)
     const wake = () => document.visibilityState === 'visible' && setNow(Date.now())
     document.addEventListener('visibilitychange', wake)
     const timer = next === undefined ? 0 : window.setTimeout(() => setNow(Date.now()), Math.min(LONGEST, next - now + 50))

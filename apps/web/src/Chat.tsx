@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
-import { TONE_HEX } from '@nanda/game'
+import { TONE_HEX, type Reaction } from '@nanda/game'
+import { QUICK_REACT, ReactBar, ReactPills, lockedFor, mineOf, useGrowUp, withReact, type ReactLine } from './ChatReacts'
 import Avatar from './Avatar'
 import { GAMES } from './games'
 import { api } from './api'
@@ -34,6 +35,7 @@ type Line = {
   everyone?: boolean
   reply?: { id: string; userId: string; nickname: string; text: string }
   bout?: Bout
+  reacts?: ReactLine[]
 }
 
 const BOUT_ERRORS: Record<string, UiKey> = {
@@ -279,6 +281,7 @@ export default function Chat() {
   const talkCode = talk?.code ?? null
   const [talkSeen, setTalkSeen] = useState('')
   const feed = useRef<HTMLDivElement>(null)
+  const growUp = useGrowUp(feed, lines)
   const nearEnd = useRef(true)
   const [away, setAway] = useState(false)
   const field = useRef<HTMLTextAreaElement>(null)
@@ -499,6 +502,12 @@ export default function Chat() {
           return kept.map((one) => (one.id === line.id ? line : one))
         })
       },
+      react: (data) => {
+        const got = data as { id?: string; reacts?: ReactLine[] } | null
+        if (!got?.id || roomRef.current !== 'chat') return
+        growUp(got.id)
+        setLines((kept) => kept.map((one) => (one.id === got.id ? { ...one, reacts: got.reacts } : one)))
+      },
       drop: (data) => {
         const gone = (data as { id?: string } | null)?.id
         if (gone && roomRef.current === 'chat') setLines((kept) => kept.filter((line) => line.id !== gone))
@@ -605,13 +614,17 @@ export default function Chat() {
     [],
   )
 
+  const refocus = () => requestAnimationFrame(() => field.current?.focus({ preventScroll: true }))
+
   const send = async () => {
     const body = text.trim()
     if (!body || sending) return
     setSending(true)
+    refocus()
     if (room === 'duel') {
       const result = talk ? await talk.say(body) : 'failed'
       setSending(false)
+      refocus()
       if (result === 'ok') {
         setText('')
         requestAnimationFrame(grow)
@@ -627,6 +640,7 @@ export default function Chat() {
       room === 'news' ? { text: body, channel: 'news' } : { text: body, tags, ...(replyTo ? { reply: replyTo.id } : {}) },
     )
     setSending(false)
+    refocus()
     if (ok && data.line) {
       typedAt.current = 0
       setText('')
@@ -665,6 +679,30 @@ export default function Chat() {
     }
     say(t(BOUT_ERRORS[data.error ?? ''] ?? 'chat.failed'), true)
   }
+
+  const setReacts = (id: string, reacts: ReactLine[] | undefined) => {
+    growUp(id)
+    setLines((kept) => kept.map((one) => (one.id === id ? { ...one, reacts } : one)))
+  }
+
+  const react = async (line: Line, kind: Reaction) => {
+    if (!user) return
+    setPointed(null)
+    setHeld(null)
+    const now = lines.find((one) => one.id === line.id) ?? line
+    const next = mineOf(now.reacts, user.id) === kind ? null : kind
+    if (next && lockedFor(next, patron)) return say(t('chat.reactPatron', { title: t('title.patron') }), true)
+    setReacts(line.id, withReact(now.reacts, next, user))
+    const { ok, data } = await api<{ reacts?: ReactLine[] }>('chat', { react: line.id, kind: next })
+    if (ok && data.reacts) return setReacts(line.id, data.reacts)
+    setReacts(line.id, now.reacts)
+    if (data.error === 'react_patron') return say(t('chat.reactPatron', { title: t('title.patron') }), true)
+    say(t(data.error === 'muted' ? 'chat.muted' : data.error === 'too_fast' ? 'chat.slow' : 'chat.reactFailed'), true)
+  }
+
+  const reactBar = (line: Line) => (
+    <ReactBar mine={mineOf((lines.find((one) => one.id === line.id) ?? line).reacts, user?.id)} patron={patron} onPick={(kind) => void react(line, kind)} />
+  )
 
   const moderate = async (body: Record<string, unknown>, done: () => void) => {
     setAsking(null)
@@ -833,6 +871,11 @@ export default function Chat() {
     },
     onPointerUp: letGo,
     onPointerCancel: letGo,
+    onDoubleClick: (event: React.MouseEvent) => {
+      if (!canReply || (event.target as HTMLElement).closest('button, a, .bout')) return
+      window.getSelection()?.removeAllRanges()
+      void react(line, QUICK_REACT)
+    },
     onContextMenu: (event: React.MouseEvent) => {
       if (!holdable) return
       event.preventDefault()
@@ -922,7 +965,7 @@ export default function Chat() {
                     key={line.id}
                     id={`chat-line-${line.id}`}
                     {...holdOn(line)}
-                    className={`chat-line ${holdable ? 'is-holdable' : ''} ${line.reply ? 'has-reply' : ''} ${glued ? 'is-glued' : ''} ${line.userId === user?.id ? 'is-mine' : ''} ${
+                    className={`chat-line ${holdable ? 'is-holdable' : ''} ${pointed?.line.id === line.id || held?.id === line.id ? 'is-pointed' : ''} ${line.reply ? 'has-reply' : ''} ${glued ? 'is-glued' : ''} ${line.userId === user?.id ? 'is-mine' : ''} ${
                       user && line.userId !== user.id && (line.everyone || line.tags?.some((tag) => tag.id === user.id)) ? 'is-tagged' : ''
                     }`}
                   >
@@ -984,6 +1027,7 @@ export default function Chat() {
                           return <p className={big ? `is-emoji is-emoji-${big}` : undefined}>{bodyOf(line)}</p>
                         })()
                       )}
+                      <ReactPills reacts={line.reacts} me={user?.id} active={canReply} onPick={(kind) => void react(line, kind)} />
                     </div>
                   </article>
                 )
@@ -1088,7 +1132,7 @@ export default function Chat() {
                     event.preventDefault()
                     void send()
                   }}
-                  disabled={sending}
+                  readOnly={sending}
                 />
                 {room === 'chat' && (
                   <div className="chat-faces">
@@ -1199,7 +1243,14 @@ export default function Chat() {
                     </>
                   )}
                 </div>
-                <button type="submit" className="primary chat-go" disabled={sending || !text.trim()} title={t('chat.send')} aria-label={t('chat.send')}>
+                <button
+                  type="submit"
+                  className="primary chat-go"
+                  disabled={sending || !text.trim()}
+                  title={t('chat.send')}
+                  aria-label={t('chat.send')}
+                  onPointerDown={(event) => event.preventDefault()}
+                >
                   <SendIcon />
                 </button>
               </form>
@@ -1315,6 +1366,7 @@ export default function Chat() {
             role="menu"
             aria-label={t('chat.holdAct')}
           >
+            {canReply && reactBar(pointed.line)}
             {canReply && (
               <button type="button" className="chat-menu-item" onClick={() => answer(pointed.line)}>
                 <ReplyIcon />
@@ -1358,6 +1410,7 @@ export default function Chat() {
               <b>{held.nickname}</b>
               {held.text}
             </blockquote>
+            {canReply && reactBar(held)}
             {canReply && (
               <button type="button" className="chat-hold-item" onClick={() => answer(held)}>
                 <ReplyIcon />

@@ -2,7 +2,7 @@ import type { ObjectId } from 'mongodb'
 import { chatRoom, coinLedger, duels, type ChatDoc, type DuelDoc } from './db'
 import { SEEN_EVERY_MS, duelShotKey, duelView, leaveDuel, scheduleBot, settle, sideOf } from './duels'
 import { friends, type FriendDoc } from './friends'
-import { lineOf } from './chat'
+import { lineOf, reactsOf } from './chat'
 
 export type Sender = (event: string, data: unknown) => void
 
@@ -297,6 +297,12 @@ async function startTalk() {
         return
       }
       const insert = (change as { operationType?: string }).operationType === 'insert'
+      const fields = Object.keys((change as { updateDescription?: { updatedFields?: object } }).updateDescription?.updatedFields ?? {})
+      if (!insert && fields.some((field) => field.startsWith('reacts'))) {
+        const reacts = reactsOf(doc.reacts)
+        for (const send of chatters) send('react', { id: doc._id.toHexString(), reacts })
+        return
+      }
       if (!insert && !doc.bout?.rival) return
       const line = lineOf(doc)
       for (const send of chatters) send(insert ? 'chat' : 'bout', line)
