@@ -5,7 +5,7 @@ type Character = Entity & {
   nameEn: string
   gender: string
   teams: string[]
-  position: string
+  position: string[]
   height: number
   group: string
   episode: number
@@ -19,7 +19,7 @@ const CM = { ru: 'см', uk: 'см', en: 'cm' } as const
 const columns: Column<Character>[] = [
   { title: l10n('Пол', 'Стать', 'Gender'), ...exact('gender') },
   { title: l10n('Команда', 'Команда', 'Team'), ...list('teams') },
-  { title: l10n('Позиция', 'Позиція', 'Position'), ...exact('position') },
+  { title: l10n('Позиция', 'Позиція', 'Position'), ...list('position') },
   { title: l10n('Рост', 'Зріст', 'Height'), key: 'height', text: (g, { lang }) => `${g.height} ${CM[lang]}` },
   { title: l10n('Группа', 'Група', 'Group'), ...exact('group') },
   { title: l10n('Дебют в аниме', 'Дебют в аніме', 'Anime debut'), key: 'episode', text: (g, { lang }) => `${EPISODE[lang]} ${g.episode}` },

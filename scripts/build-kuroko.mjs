@@ -37,14 +37,13 @@ const PF = 'Тяжёлый форвард'
 const C = 'Центровой'
 const COACH = 'Тренер'
 const MANAGER = 'Менеджер'
-const UNKNOWN = 'Неизвестна'
 
 const MIRACLES = 'Поколение чудес'
 const UNCROWNED = 'Некоронованные короли'
 const NONE = 'Нет'
 
 const CHARACTERS = [
-  ['Tetsuya Kuroko', 'Tetsuya Kuroko', 'Тецуя Куроко', 'Тецуя Куроко', M, [SEIRIN, TEIKO], UNKNOWN, 168, MIRACLES, 1, 'Тэцуя'],
+  ['Tetsuya Kuroko', 'Tetsuya Kuroko', 'Тецуя Куроко', 'Тецуя Куроко', M, [SEIRIN, TEIKO], [PG, SF], 168, MIRACLES, 1, 'Тэцуя'],
   ['Taiga Kagami', 'Taiga Kagami', 'Тайга Кагами', 'Тайґа Каґамі', M, [SEIRIN], PF, 190, NONE, 1],
   ['Daiki Aomine', 'Daiki Aomine', 'Дайки Аомине', 'Дайкі Аоміне', M, [TOO, TEIKO], PF, 192, MIRACLES, 13, 'Аоминэ'],
   ['Seijūrō Akashi', 'Seijuurou Akashi', 'Сейджуро Акаши', 'Сейджюро Акаші', M, [RAKUZAN, TEIKO], PG, 173, MIRACLES, 38, 'Сэйдзюро Акаси Сейдзюро'],
@@ -61,7 +60,7 @@ const CHARACTERS = [
   ['Shinji Koganei', 'Shinji Koganei', 'Шинджи Коганей', 'Шінджі Коґаней', M, [SEIRIN], SF, 170, NONE, 1, 'Синдзи'],
   ['Tatsuya Himuro', 'Tatsuya Himuro', 'Тацуя Химуро', 'Тацуя Хімуро', M, [YOSEN], SG, 183, NONE, 26],
   ['Shoichi Imayoshi', 'Shouichi Imayoshi', 'Шоичи Имаёши', 'Шьоічі Імайоші', M, [TOO], PG, 180, NONE, 14, 'Сёити Имаёси'],
-  ['Rinnosuke Mitobe', 'Rinnosuke Mitobe', 'Ринносуке Митобе', 'Рінносуке Мітобе', M, [SEIRIN], C, 186, NONE, 1],
+  ['Rinnosuke Mitobe', 'Rinnosuke Mitobe', 'Ринносуке Митобе', 'Рінносуке Мітобе', M, [SEIRIN], [C, PF], 186, NONE, 1],
   ['Alexandra Garcia', 'Alexandra Garcia', 'Александра Гарсия', 'Александра Гарсія', F, [], COACH, 180, NONE, 44, 'Алекс'],
   ['Makoto Hanamiya', 'Makoto Hanamiya', 'Макото Ханамия', 'Макото Ханамія', M, [KIRISAKI], PG, 179, UNCROWNED, 29],
   ['Ryō Sakurai', 'Ryou Sakurai', 'Рё Сакураи', 'Рьо Сакураї', M, [TOO], SG, 175, NONE, 14],
@@ -143,7 +142,7 @@ async function main() {
       ...(aliases ? { aliases } : {}),
       gender,
       teams: teams.length ? teams : ['Без команды'],
-      position,
+      position: [position].flat(),
       height,
       group,
       episode,

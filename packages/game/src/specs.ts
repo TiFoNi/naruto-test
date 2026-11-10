@@ -239,7 +239,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
     columns: [
       col('gender', 'exact'),
       col('teams', 'list'),
-      col('position', 'exact'),
+      col('position', 'list'),
       col('height', 'order'),
       col('group', 'exact'),
       col('episode', 'order'),
