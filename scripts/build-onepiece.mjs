@@ -120,7 +120,10 @@ const RACE_FIX = {
 
 const GENDER_FIX = { Yamato: 'Женский', Bentham: 'Мужской' }
 
-const HAKI_FIX = { Sanji: ['Наблюдения', 'Вооружения', 'Королевская'] }
+const HAKI_FIX = {
+  Sanji: ['Наблюдения', 'Вооружения', 'Королевская'],
+  'Dracule Mihawk': ['Наблюдения', 'Вооружения', 'Королевская'],
+}
 
 const FRUIT_RULES = [
   ['Парамеция', /Paramecia Devil Fruit Users$/],
