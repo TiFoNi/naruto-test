@@ -662,6 +662,14 @@ export const scrapValue = (id: unknown) => {
   return cost ? Math.floor(cost * BANNER_SCRAP) : null
 }
 
+export type Sale = { id: string; off: number; from: number; to: number }
+
+export const SALES: Sale[] = [{ id: '1111', off: 0.11, from: Date.parse('2026-11-11T00:00:00+02:00'), to: Date.parse('2026-11-12T00:00:00+02:00') }]
+
+export const saleAt = (now: number) => SALES.find((one) => now >= one.from && now < one.to) ?? null
+
+export const salePrice = (cost: number, sale: Sale | null) => (sale ? Math.round(cost * (1 - sale.off)) : cost)
+
 export const bundleFull = (one: Bundle) => (frameCost(one.frame) ?? 0) + (bannerCost(one.banner) ?? 0)
 
 export const TONES = ['naruto', 'onepiece', 'se', 'bc', 'genshin', 'jjk', 'manga', 'hxh', 'jojo', 'kny', 'marvel'] as const

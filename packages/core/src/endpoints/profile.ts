@@ -2,7 +2,7 @@ import { fail, handle, json, readJson } from '../http'
 import { quests, rounds, seasons, shotDays, shotRuns, streaks, tuneRuns } from '../db'
 import { claimTag, currentUser, lowerNickname, ownedTitles, parseNickname, toProfile, unauthorized } from '../profile'
 import { isFrame } from '../frames'
-import { CARD_PINS_MAX, GAME_IDS, bannerCost, bannerLooks, bundleOf, frameCost, heroTiles, isBanner, isTitle, isTone, profileBlocks, scrapValue } from '@nanda/game'
+import { CARD_PINS_MAX, GAME_IDS, bannerCost, bannerLooks, bundleOf, frameCost, heroTiles, isBanner, isTitle, isTone, profileBlocks, saleAt, salePrice, scrapValue } from '@nanda/game'
 
 const SHOWCASE_MAX = 8
 const BLOCK_MIN = 60
@@ -193,9 +193,11 @@ export const POST = handle(async (request) => {
     const frame = body.kind === 'frame' ? (typeof body.id === 'string' ? body.id : null) : (bundle?.frame ?? null)
     const banner = body.kind === 'banner' ? (typeof body.id === 'string' ? body.id : null) : (bundle?.banner ?? null)
 
-    const cost = bundle ? bundle.cost : body.kind === 'frame' ? frameCost(frame) : body.kind === 'banner' ? bannerCost(banner) : null
-    if (!cost) return fail(400, 'bad_request')
+    const full = bundle ? bundle.cost : body.kind === 'frame' ? frameCost(frame) : body.kind === 'banner' ? bannerCost(banner) : null
+    if (!full) return fail(400, 'bad_request')
     if ((frame && mineFrames.includes(frame)) || (banner && mineBanners.includes(banner))) return fail(409, 'owned')
+    const cost = salePrice(full, saleAt(Date.now()))
+    if (body.cost !== undefined && Number(body.cost) !== cost) return fail(409, 'price_changed')
 
     const doc = await found.collection.findOneAndUpdate(
       { _id: found.doc._id, coins: { $gte: cost } },

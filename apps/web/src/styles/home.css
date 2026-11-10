@@ -187,6 +187,20 @@
   letter-spacing: 0.04em;
 }
 
+.hero-daily-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--world-accent, var(--accent)) 18%, transparent);
+  letter-spacing: 0.04em;
+}
+
+.hero-daily-left .countdown {
+  font-variant-numeric: tabular-nums;
+}
+
 .hero-daily-kicker em .icon {
   width: 12px;
   height: 12px;

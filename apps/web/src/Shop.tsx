@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
-import { BANNER_COSTS, BANNER_RARITY, BUNDLES, FRAME_COSTS, FRAME_RARITY, RARITIES, bannerCost, frameCost, type Rarity } from '@nanda/game'
+import { BANNER_COSTS, BANNER_RARITY, BUNDLES, FRAME_COSTS, FRAME_RARITY, RARITIES, bannerCost, frameCost, salePrice, type Rarity } from '@nanda/game'
 import Avatar from './Avatar'
 import HeroPeek, { type PeekStats } from './HeroPeek'
 import BackButton from './BackButton'
@@ -17,6 +17,8 @@ import { CheckIcon, ChevronIcon } from './icons'
 import Rail from './Rail'
 import { useHref } from './router'
 import GemIcon from './GemIcon'
+import Countdown from './Countdown'
+import { offLabel, useSale } from './sale'
 
 type Kind = 'bundle' | 'frame' | 'banner'
 
@@ -87,7 +89,8 @@ export default function Shop() {
   const [busy, setBusy] = useState(false)
   const [slip, setSlip] = useState<UiKey | null>(null)
   const [stats, setStats] = useState<PeekStats | null>(null)
-  const [ask, setAsk] = useState<{ card: Card; kind: Kind; id?: string; cost: number } | null>(null)
+  const [ask, setAsk] = useState<{ card: Card; kind: Kind; id?: string; cost: number; full: number } | null>(null)
+  const sale = useSale()
 
   useEffect(() => setReady(true), [])
 
@@ -153,14 +156,14 @@ export default function Shop() {
   const hasBanner = (one: Card) => !one.banner || mineBanners.includes(one.banner)
   const hasAll = (one: Card) => hasFrame(one) && hasBanner(one)
 
-  const buy = async (kind: Kind, id?: string) => {
+  const buy = async (kind: Kind, id: string | undefined, cost: number) => {
     if (!id || busy) return
     setBusy(true)
     setSlip(null)
-    const { ok, data } = await api<{ error?: string }>('profile', { action: 'buy', kind, id })
+    const { ok, data } = await api<{ error?: string }>('profile', { action: 'buy', kind, id, cost })
     setAsk(null)
     if (ok) await refresh()
-    else setSlip(data.error === 'no_coins' ? 'shop.poor' : 'shop.failed')
+    else setSlip(data.error === 'no_coins' ? 'shop.poor' : data.error === 'price_changed' ? 'shop.priceChanged' : 'shop.failed')
     setBusy(false)
   }
 
@@ -178,7 +181,8 @@ export default function Shop() {
     const pair = one.kind === 'bundle' && !hasFrame(one) && !hasBanner(one)
     const kind: Kind = pair ? 'bundle' : !hasFrame(one) ? 'frame' : 'banner'
     const id = pair ? one.id : !hasFrame(one) ? one.frame : one.banner
-    const cost = pair ? one.cost : !hasFrame(one) ? (frameCost(one.frame) ?? 0) : (bannerCost(one.banner) ?? 0)
+    const full = pair ? one.cost : !hasFrame(one) ? (frameCost(one.frame) ?? 0) : (bannerCost(one.banner) ?? 0)
+    const cost = salePrice(full, sale)
     const poor = cost > (user?.coins ?? 0)
 
     const foot = (
@@ -195,11 +199,12 @@ export default function Shop() {
             type="button"
             className={`shop-go ${poor ? 'is-poor' : ''}`}
             disabled={busy || poor}
-            onClick={() => setAsk({ card: one, kind, id, cost })}
+            onClick={() => setAsk({ card: one, kind, id, cost, full })}
           >
             {t('shop.buy')}
             <i>
               <GemIcon sparkles={false} />
+              {cost !== full && <s>{full}</s>}
               {cost}
             </i>
           </button>
@@ -214,6 +219,7 @@ export default function Shop() {
 
     return (
       <div key={one.id} className={`shop-slot-card is-${one.rarity}`}>
+        {sale && !mine && <span className="shop-off">{offLabel(sale)}</span>}
         {one.kind === 'frame' ? (
           <button type="button" className="shop-tile is-frame" onClick={peek}>
             <Avatar className="shop-frame-face" id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={one.frame ?? null} medium />
@@ -271,6 +277,20 @@ export default function Shop() {
           </Link>
         </div>
       </header>
+
+      {sale && (
+        <section className="shop-sale">
+          <b className="shop-sale-off">{offLabel(sale)}</b>
+          <span className="shop-sale-text">
+            <strong>{t('sale.kicker')}</strong>
+            <em>{t('sale.shopLead')}</em>
+          </span>
+          <span className="shop-sale-left">
+            <em>{t('sale.left')}</em>
+            <Countdown until={sale.to} />
+          </span>
+        </section>
+      )}
 
       <Rail className="cat-rail shop-rail" trackClass="rail-chips" innerRef={tabs} trackRole="tablist">
         <span
@@ -375,6 +395,7 @@ export default function Shop() {
               <div className="shop-ask-sum">
                 <span className="shop-ask-cost">
                   <GemIcon sparkles={false} />
+                  {ask.cost !== ask.full && <s>{ask.full}</s>}
                   {ask.cost}
                 </span>
                 <em>{t('shop.left', { left: (user?.coins ?? 0) - ask.cost })}</em>
@@ -384,7 +405,7 @@ export default function Shop() {
                 <button type="button" className="ghost" disabled={busy} onClick={() => setAsk(null)}>
                   {t('shop.cancel')}
                 </button>
-                <button type="button" className="shop-go" disabled={busy} onClick={() => void buy(ask.kind, ask.id)}>
+                <button type="button" className="shop-go" disabled={busy} onClick={() => void buy(ask.kind, ask.id, ask.cost)}>
                   {t('shop.buy')}
                 </button>
               </div>

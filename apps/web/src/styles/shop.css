@@ -754,3 +754,131 @@
   border-color: color-mix(in srgb, #ffffff 18%, var(--line));
   color: var(--text);
 }
+
+.shop-off {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  right: 10px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #ff3d6e;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  box-shadow: 0 6px 16px rgb(255 61 110 / 40%);
+  pointer-events: none;
+}
+
+.shop-foot .shop-go i s,
+.shop-ask-cost s {
+  opacity: 0.55;
+  font-size: 0.82em;
+  text-decoration-thickness: 2px;
+}
+
+.shop-ask-cost s {
+  color: var(--text-3);
+}
+
+.shop-sale {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px 18px;
+  padding: 14px 18px;
+  border: 1px solid rgb(255 61 110 / 40%);
+  border-radius: 18px;
+  background:
+    radial-gradient(120% 160% at 0% 50%, rgb(255 61 110 / 28%), transparent 60%),
+    var(--card);
+}
+
+.shop-sale-off {
+  flex: none;
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ff7a9c, #ff3d6e 55%, #c8174a);
+  color: #ffffff;
+  font-family: var(--display);
+  font-size: 26px;
+  line-height: 1;
+  rotate: -4deg;
+  box-shadow: 0 10px 24px rgb(255 61 110 / 35%);
+}
+
+.shop-sale-text {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.shop-sale-text strong {
+  color: #ff8fab;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.shop-sale-text em {
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.shop-sale-left {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.shop-sale-left em {
+  color: var(--text-3);
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.shop-sale-left .countdown {
+  font-family: var(--display);
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 560px) {
+  .shop-sale {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 14px;
+  }
+
+  .shop-sale-off {
+    padding: 7px 11px;
+    font-size: 21px;
+  }
+
+  .shop-sale-text em {
+    font-size: 14px;
+  }
+
+  .shop-sale-left {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 11px;
+    border-top: 1px solid rgb(255 61 110 / 22%);
+  }
+
+  .shop-sale-left .countdown {
+    font-size: 19px;
+  }
+}

@@ -17,6 +17,8 @@ import { BallIcon, BookIcon, ChartIcon, CheckIcon, CloseIcon, GamepadIcon, Medal
 import { useBeforePaint } from './paint'
 import { searchGames } from './search'
 import { uiUrl } from './pics'
+import Countdown from './Countdown'
+import { offLabel, useSale } from './sale'
 
 const CATEGORIES: { id: Category; title: UiKey }[] = [
   { id: 'anime', title: 'dash.anime' },
@@ -95,6 +97,13 @@ type Slide = {
   cta: string
   href: string
   out?: boolean
+  until?: number
+}
+
+const TITLE_COPY: Record<string, { title: UiKey; lead: UiKey }> = {
+  manga: { title: 'dash.dailyTitleManga', lead: 'dash.dailyLeadManga' },
+  shots: { title: 'dash.dailyTitleShots', lead: 'dash.dailyLeadShots' },
+  tunes: { title: 'dash.dailyTitleTunes', lead: 'dash.dailyLeadTunes' },
 }
 
 const SPIN = 7000
@@ -120,26 +129,39 @@ function DailyCard({ games }: { games: GameMeta[] }) {
   const today = kyivToday()
   const loved = useMemo(() => favourite(games, stats), [games, stats])
   const shots = games.find((one) => one.id === 'shots')
+  const sale = useSale()
 
   const daily = (game: GameMeta, kicker: string): Slide => {
     const mode = (game.modes.find((one) => DAILY_XP_MODES.includes(one)) ?? 'classic') as ModeId
-    const titles = game.unit === 'manga'
+    const copy = TITLE_COPY[game.id]
     return {
       id: `${game.id}-${mode}`,
       accent: game.accent,
       art: uiUrl(`worlds/big/${game.id}.webp`),
       kicker,
       done: stats[dailyKey(game.id, mode)]?.lastDay === today,
-      title: titles ? t('dash.dailyTitleManga') : t('dash.dailyTitle', { world: l(game.label) }),
-      lead: t(titles ? 'dash.dailyLeadManga' : 'dash.dailyLead'),
+      title: copy ? t(copy.title) : t('dash.dailyTitle', { world: l(game.label) }),
+      lead: t(copy ? copy.lead : 'dash.dailyLead'),
       cta: t('dash.playDaily'),
       href: href.play(game.id, mode, true),
     }
   }
 
   const slides: Slide[] = []
+  if (sale)
+    slides.push({
+      id: `sale-${sale.id}`,
+      accent: '#ff3d6e',
+      art: '/promo/sale.webp',
+      kicker: t('sale.kicker'),
+      until: sale.to,
+      title: t('sale.title', { off: offLabel(sale) }),
+      lead: t('sale.lead'),
+      cta: t('sale.cta'),
+      href: href.shop,
+    })
   if (loved) slides.push(daily(loved, `${t('dash.dailyKicker')} · #${dailyNumber(today)}`))
-  if (shots)
+  if (shots && shots.id !== loved?.id)
     slides.push({
       id: 'shots',
       accent: shots.accent,
@@ -283,6 +305,11 @@ function DailyCard({ games }: { games: GameMeta[] }) {
             <span className="hero-daily-kicker">
               <i aria-hidden />
               {one.kicker}
+              {one.until && (
+                <span className="hero-daily-left">
+                  {t('sale.left')} <Countdown until={one.until} />
+                </span>
+              )}
               {one.done && (
                 <em>
                   <CheckIcon />
