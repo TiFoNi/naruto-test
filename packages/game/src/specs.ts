@@ -655,7 +655,7 @@ export const frameCost = (id: unknown) => (typeof id === 'string' ? (FRAME_COSTS
 
 export const bannerCost = (id: unknown) => (typeof id === 'string' ? (BANNER_COSTS[id] ?? null) : null)
 
-export const BANNER_SCRAP = 0.25
+export const BANNER_SCRAP = 0.5
 
 export const scrapValue = (id: unknown) => {
   const cost = bannerCost(id)

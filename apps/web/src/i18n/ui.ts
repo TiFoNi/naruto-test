@@ -1623,9 +1623,9 @@ const ui = {
   'profile.bannerScrap': { ru: 'Разломать на монеты', uk: 'Розламати на монети', en: 'Break into coins' },
   'profile.bannerScrapAsk': { ru: 'Разломать фон «{name}»?', uk: 'Розламати фон «{name}»?', en: 'Break the “{name}” banner?' },
   'profile.bannerScrapHint': {
-    ru: 'Фон исчезнет из коллекции, а ты получишь 25% его цены. Вернуть его можно будет только покупкой в магазине за полную цену.',
-    uk: 'Фон зникне з колекції, а ти отримаєш 25% його ціни. Повернути його можна буде лише купівлею в магазині за повну ціну.',
-    en: 'The banner leaves your collection and you get 25% of its price back. To get it again you’ll have to buy it in the shop at full price.',
+    ru: 'Фон исчезнет из коллекции, а ты получишь 50% его цены. Вернуть его можно будет только покупкой в магазине за полную цену.',
+    uk: 'Фон зникне з колекції, а ти отримаєш 50% його ціни. Повернути його можна буде лише купівлею в магазині за повну ціну.',
+    en: 'The banner leaves your collection and you get 50% of its price back. To get it again you’ll have to buy it in the shop at full price.',
   },
   'profile.bannerScrapAfter': { ru: 'Станет {coins}', uk: 'Стане {coins}', en: 'You’ll have {coins}' },
   'profile.bannerScrapYes': { ru: 'Разломать', uk: 'Розламати', en: 'Break' },
