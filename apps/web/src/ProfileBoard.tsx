@@ -28,16 +28,16 @@ const nearest = (list: number[], asked: number) => list.reduce((best, one) => (M
 
 export type BoardSave = { blocks: ProfileBlock[]; sides: Record<string, number>; seen: Record<string, number>; sizes: Record<string, number> }
 
-type Metrics = { base: number; step: number; row: number; gap: number; cardRow: number; cardW: number; cardGap: number; cardChrome: number; activity: number; facts: number }
+type Metrics = { base: number; step: number; row: number; gap: number; cardRow: number; cardW: number; cardGap: number; cardChrome: number; cardBase: number; cardStep: number; activity: number; facts: number }
 
-const FALLBACK: Metrics = { base: 246, step: 186, row: 170, gap: 16, cardRow: 170, cardW: 127, cardGap: 16, cardChrome: 36, activity: 337, facts: 123 }
+const FALLBACK: Metrics = { base: 246, step: 186, row: 170, gap: 16, cardRow: 170, cardW: 127, cardGap: 16, cardChrome: 36, cardBase: 246, cardStep: 186, activity: 337, facts: 123 }
 
 const unitsOf = (px: number) => Math.max(1, Math.round(px)) + GAP
 const isShelf = (block: ProfileBlock) => SHELVES.includes(block)
 
 const same = (one: Metrics, two: Metrics) => (Object.keys(one) as (keyof Metrics)[]).every((key) => Math.abs(one[key] - two[key]) < 1)
 
-function measure(box: HTMLElement): Metrics | null {
+function measure(box: HTMLElement, wide: boolean): Metrics | null {
   const ref = box.querySelector<HTMLElement>('.slot-awards .soon-badges, .slot-worlds .world-shelf')
   const cards = box.querySelector<HTMLElement>('.slot-cards .card-shelf')
   const listed = box.querySelector<HTMLElement>('.slot-activity .activity-card')
@@ -65,6 +65,8 @@ function measure(box: HTMLElement): Metrics | null {
   let cardW = 0
   let cardGap = gap
   let cardChrome = FALLBACK.cardChrome
+  let cardBase = 0
+  let cardStep = 0
   if (cards) {
     const seen = pick(cards)
     const outer = getComputedStyle(seen.card)
@@ -78,10 +80,12 @@ function measure(box: HTMLElement): Metrics | null {
       base = Math.round(chrome + row)
       step = row + gap
     }
-    cardRow = Math.max(30, Math.min(tallest, row))
+    cardRow = Math.max(30, wide ? Math.min(tallest, row) : tallest)
     cardW = Math.max(20, Math.floor(cardRow * 0.75))
-    cardGap = Math.max(0, Math.round(step - cardRow))
+    cardGap = wide ? Math.max(0, Math.round(step - cardRow)) : Math.round(gap)
     cardChrome = chrome
+    cardBase = wide ? base : Math.round(chrome + cardRow)
+    cardStep = wide ? step : cardRow + cardGap
   }
   if (!base) return null
   let activity = FALLBACK.activity
@@ -104,7 +108,7 @@ function measure(box: HTMLElement): Metrics | null {
     facts = Math.max(facts, told.offsetHeight)
     told.style.cssText = kept
   }
-  return { base, step, row, gap, cardRow, cardW, cardGap, cardChrome, activity, facts }
+  return { base, step, row, gap, cardRow, cardW, cardGap, cardChrome, cardBase: cardBase || base, cardStep: cardStep || step, activity, facts }
 }
 
 export default function ProfileBoard({
@@ -150,7 +154,7 @@ export default function ProfileBoard({
   useLayoutEffect(() => {
     const box = containerRef.current
     if (!box || !mounted || held.current) return
-    const next = measure(box)
+    const next = measure(box, wide)
     if (next) setMetrics((was) => (same(next, was) ? was : next))
   }, [shape, mounted, containerRef])
 
@@ -162,12 +166,14 @@ export default function ProfileBoard({
     if (px && block !== 'cards') return Math.min(most(block), Math.max(1, Math.round((px - metrics.base) / metrics.step) + 1))
     return block === 'cards' ? 1 : most(block)
   }
-  const shelfPx = (rows: number) => metrics.base + (rows - 1) * metrics.step
-  const rowsFor = (px: number) => Math.max(1, Math.round((px - metrics.base) / metrics.step) + 1)
+  const baseOf = (block: ProfileBlock) => (block === 'cards' ? metrics.cardBase : metrics.base)
+  const stepOf = (block: ProfileBlock) => (block === 'cards' ? metrics.cardStep : metrics.step)
+  const shelfPx = (rows: number, block: ProfileBlock) => baseOf(block) + (rows - 1) * stepOf(block)
+  const rowsFor = (px: number, block: ProfileBlock) => Math.max(1, Math.round((px - baseOf(block)) / stepOf(block)) + 1)
   const bar = edit ? BAR : 0
   const heightOf = (block: ProfileBlock) => {
     if (stretch?.block === block) return unitsOf(stretch.px) + bar
-    if (isShelf(block)) return unitsOf(shelfPx(rowsOf(block))) + bar
+    if (isShelf(block)) return unitsOf(shelfPx(rowsOf(block), block)) + bar
     if (block === 'facts') return unitsOf(metrics.facts) + bar
     return unitsOf(sizes[block] ?? metrics.activity) + bar
   }
@@ -182,7 +188,7 @@ export default function ProfileBoard({
   })
 
   const contentOf = (block: ProfileBlock) => {
-    if (isShelf(block)) return shelfPx(rowsOf(block))
+    if (isShelf(block)) return shelfPx(rowsOf(block), block)
     return sizes[block] ?? metrics.activity
   }
 
@@ -192,7 +198,7 @@ export default function ProfileBoard({
     event.stopPropagation()
     const from = event.clientY
     const base = contentOf(block)
-    const stops = isShelf(block) ? Array.from({ length: most(block) }, (_, at) => shelfPx(at + 1)) : null
+    const stops = isShelf(block) ? Array.from({ length: most(block) }, (_, at) => shelfPx(at + 1, block)) : null
     const pick = (y: number) => {
       const asked = base + y - from
       return stops ? nearest(stops, asked) : Math.round(Math.min(FREE_MAX, Math.max(FREE_MIN, asked)))
@@ -216,7 +222,7 @@ export default function ProfileBoard({
         const seenNext = { ...seen }
         const sizesNext = { ...sizes }
         if (isShelf(block)) {
-          seenNext[block] = rowsFor(px) * ROW
+          seenNext[block] = rowsFor(px, block) * ROW
           delete sizesNext[block]
         } else sizesNext[block] = px
         onSave({ blocks, sides, seen: seenNext, sizes: sizesNext })
@@ -242,7 +248,7 @@ export default function ProfileBoard({
     '--card-gap': `${metrics.cardGap}px`,
   } as CSSProperties
   const cardPad = (rows: number) => {
-    const inner = shelfPx(rows) - metrics.cardChrome
+    const inner = shelfPx(rows, 'cards') - metrics.cardChrome
     return Math.max(0, (inner - rows * metrics.cardRow - (rows - 1) * metrics.cardGap) / 2)
   }
 
@@ -269,10 +275,10 @@ export default function ProfileBoard({
               key={block}
               className={`profile-slot slot-${block} ${stretch?.block === block ? 'is-sized' : ''}`}
               data-block={block}
-              data-rows={isShelf(block) ? (stretch?.block === block ? rowsFor(stretch.px) : rowsOf(block)) : undefined}
+              data-rows={isShelf(block) ? (stretch?.block === block ? rowsFor(stretch.px, block) : rowsOf(block)) : undefined}
               style={
                 {
-                  ...(block === 'cards' ? { '--card-pad': `${cardPad(stretch?.block === block ? rowsFor(stretch.px) : rowsOf(block))}px` } : {}),
+                  ...(block === 'cards' ? { '--card-pad': `${cardPad(stretch?.block === block ? rowsFor(stretch.px, block) : rowsOf(block))}px` } : {}),
                 } as CSSProperties
               }
             >
