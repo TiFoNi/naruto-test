@@ -443,6 +443,11 @@ const ui = {
   'xp.colMode': { ru: 'Режим', uk: 'Режим', en: 'Mode' },
   'xp.colGame': { ru: 'За игру', uk: 'За гру', en: 'Per game' },
   'xp.poolNote': {
+    ru: 'В «По признакам» и «Вслепую» опыт зависит от числа персонажей во вселенной: чем их больше, тем больше опыта.',
+    uk: 'У «За ознаками» та «Наосліп» досвід залежить від кількості персонажів у всесвіті: що їх більше, то більше досвіду.',
+    en: 'In By traits and Blind, XP depends on how many characters the universe has: the more there are, the more XP you get.',
+  },
+  'xp.paceNote': {
     ru: 'Опыт зависит от того, сколько времени игроки обычно тратят на персонажа в этой вселенной и режиме: где угадывают дольше, за каждого дают больше. Внутри вселенной трудные персонажи дают больше, лёгкие — меньше. Режимы, где нужно думать («По признакам», «Вслепую»), за минуту дают больше, чем быстрые («По картинке»).',
     uk: 'Досвід залежить від того, скільки часу гравці зазвичай витрачають на персонажа в цьому всесвіті й режимі: де вгадують довше, за кожного дають більше. Усередині всесвіту важкі персонажі дають більше, легкі — менше. Режими, де треба думати («За ознаками», «Наосліп»), за хвилину дають більше, ніж швидкі («За картинкою»).',
     en: 'XP depends on how long players usually spend on a character in this universe and mode: where guessing takes longer, each character gives more. Within a universe, hard characters give more and easy ones less. Modes that need thinking (By traits, Blind) give more per minute than fast ones (By picture).',

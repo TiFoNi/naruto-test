@@ -418,15 +418,17 @@ export const MODE_IDS: ModeId[] = ['classic', 'blind', 'image', 'ability', 'page
 export const ABILITY_STAGES = 6
 export const ABILITY_HINT_AT = 5
 
+export const XP_DYNAMIC = false
+
 export const MODE_XP: Record<ModeId, number> = {
-  classic: 30,
-  blind: 50,
-  phrase: 10,
-  image: 5,
-  ability: 5,
-  page: 5,
-  odd: 8,
-  pair: 3,
+  classic: 55,
+  blind: 60,
+  phrase: 12,
+  image: 4,
+  ability: 8,
+  page: 3,
+  odd: 4,
+  pair: 4,
   shot: 12,
   tune: 12,
   who: 25,
@@ -435,11 +437,11 @@ export const MODE_XP: Record<ModeId, number> = {
 }
 
 export const MODE_XP_AFTER: Record<ModeId, number> = {
-  classic: 15,
-  blind: 25,
-  phrase: 1,
+  classic: 25,
+  blind: 30,
+  phrase: 4,
   image: 1,
-  ability: 1,
+  ability: 3,
   page: 1,
   odd: 1,
   pair: 1,

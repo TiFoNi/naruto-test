@@ -15,6 +15,7 @@ import {
   TRIES_MIN_PLAYERS,
   TRIES_PRIOR,
   TRIES_REF,
+  XP_DYNAMIC,
   paceFromTime,
   paceWithin,
   poolXp,
@@ -317,6 +318,7 @@ function charFactor(game: string, mode: ModeId, id: number) {
 export type SolveTarget = { game: string; id: number }
 
 export function solveXpFor(mode: ModeId, pool: number, target?: SolveTarget) {
+  if (!XP_DYNAMIC) return { base: poolXp(MODE_XP[mode], mode, pool), after: poolXpPastCap(MODE_XP_AFTER[mode], mode, pool), tries: null, factor: 1 }
   const pace = paceOf(mode, target?.game)
   const { tries, factor } = target && TRIES_REF[mode] ? charFactor(target.game, mode, target.id) : { tries: null, factor: 1 }
   if (pace) return { base: triesXp(mode, factor, pace.base), after: triesXpPastCap(mode, factor, 0, pace.after), tries, factor }
@@ -327,7 +329,7 @@ const PACE_UNIT: Partial<Record<ModeId, number>> = { shot: 9 }
 const PACE_SPAN: Partial<Record<ModeId, readonly number[]>> = { shot: SHOT_POINTS }
 
 export function paceXp(mode: ModeId, manual: number, game?: string, bot = false) {
-  const pace = paceOf(mode, game, bot)
+  const pace = XP_DYNAMIC ? paceOf(mode, game, bot) : null
   if (!pace) return { base: manualXp(mode, manual), after: manualXp(mode, MODE_XP_AFTER[mode]) }
   return { base: roundXp((manual * pace.base) / (PACE_UNIT[mode] ?? MODE_XP[mode])), after: Math.max(1, Math.round(pace.after)) }
 }
@@ -337,6 +339,7 @@ export type XpRate = { low: number; high: number; afterLow: number; afterHigh: n
 export function xpRates() {
   stale()
   const out: Partial<Record<ModeId, XpRate>> = {}
+  if (!XP_DYNAMIC) return out
   for (const [key, whole] of modePaces) {
     if (key.includes(':')) continue
     const mode = key as ModeId

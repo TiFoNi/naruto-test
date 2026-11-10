@@ -27,7 +27,7 @@ import { openChat } from './chatEvents'
 import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
 import { startAnimGate } from './animGate'
 import GemIcon from './GemIcon'
-import { MODE_XP, MODE_XP_AFTER, POOL_XP_BASE, TONE_HEX, TRIES_FACTOR, TRIES_REF, levelAt, manualXp, poolXpFactor, poolXp, poolXpPastCap, triesXp, triesXpPastCap, XP_CAPS, type ModeId } from '@nanda/game'
+import { MODE_XP, MODE_XP_AFTER, POOL_XP_BASE, TONE_HEX, TRIES_FACTOR, TRIES_REF, levelAt, manualXp, poolXpFactor, poolXp, poolXpPastCap, triesXp, triesXpPastCap, XP_CAPS, XP_DYNAMIC, type ModeId } from '@nanda/game'
 import { BRAND } from './brand'
 import { metaById, type GameMeta } from './games/meta'
 import { LANGS, useI18n, type UiKey } from './i18n'
@@ -237,13 +237,13 @@ function XpToday() {
                 {MODES.filter((mode) => mode.id !== 'clue').map((mode) => (
                   <tr key={mode.id}>
                     <td>{t(mode.label)}</td>
-                    <td>{liveRange(today.rates?.[mode.id], 'low', 'high') ?? (TRIES_REF[mode.id] ? `${triesXp(mode.id, TRIES_FACTOR.min)}–${triesXp(mode.id, TRIES_FACTOR.max)}` : xpRange(manualXp(mode.id, MODE_XP[mode.id]), mode.id))}</td>
-                    <td>{liveRange(today.rates?.[mode.id], 'afterLow', 'afterHigh') ?? (TRIES_REF[mode.id] ? afterRange(mode.id) : xpRange(manualXp(mode.id, MODE_XP_AFTER[mode.id]), mode.id, poolXpPastCap))}</td>
+                    <td>{liveRange(today.rates?.[mode.id], 'low', 'high') ?? (XP_DYNAMIC && TRIES_REF[mode.id] ? `${triesXp(mode.id, TRIES_FACTOR.min)}–${triesXp(mode.id, TRIES_FACTOR.max)}` : xpRange(manualXp(mode.id, MODE_XP[mode.id]), mode.id))}</td>
+                    <td>{liveRange(today.rates?.[mode.id], 'afterLow', 'afterHigh') ?? (XP_DYNAMIC && TRIES_REF[mode.id] ? afterRange(mode.id) : xpRange(manualXp(mode.id, MODE_XP_AFTER[mode.id]), mode.id, poolXpPastCap))}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <span className="xp-tip-note">{t('xp.poolNote')}</span>
+            <span className="xp-tip-note">{t(XP_DYNAMIC ? 'xp.paceNote' : 'xp.poolNote')}</span>
             <span className="xp-tip-note">{t('xp.duelNote')}</span>
             <span className="xp-tip-note">{t('xp.dailyNote', { cap: XP_CAPS.daily })}</span>
           </span>
