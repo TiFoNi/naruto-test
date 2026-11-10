@@ -6,6 +6,7 @@ import { api } from './api'
 import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
 import AdminNav from './AdminNav'
+import SquareCrop from './SquareCrop'
 import Thumb from './Thumb'
 
 type Row = Entity & Record<string, unknown>
@@ -508,14 +509,19 @@ function PictureDrop({
   const [busy, setBusy] = useState(false)
   const [over, setOver] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [pending, setPending] = useState<File | null>(null)
 
-  const send = async (files: FileList | null) => {
-    const picked = Array.from(files ?? []).filter((file) => file.type.startsWith('image/'))
-    if (!picked.length) return
+  const send = (files: FileList | null) => {
+    const picked = Array.from(files ?? []).find((file) => file.type.startsWith('image/'))
+    if (picked) setPending(picked)
+  }
+
+  const store = async (blob: Blob) => {
+    setPending(null)
     setBusy(true)
     setError(null)
     try {
-      onDone(await upload(game, row.id, 'portrait', picked.slice(0, 1)))
+      onDone(await upload(game, row.id, 'portrait', [new File([blob], 'portrait.webp', { type: 'image/webp' })]))
     } catch (problem) {
       setError((problem as Error).message)
     }
@@ -523,23 +529,35 @@ function PictureDrop({
   }
 
   return (
-    <label
-      className={`admin-pic ${over ? 'over' : ''} ${busy ? 'busy' : ''}`}
-      onDragOver={(e) => {
-        e.preventDefault()
-        setOver(true)
-      }}
-      onDragLeave={() => setOver(false)}
-      onDrop={(e) => {
-        e.preventDefault()
-        setOver(false)
-        void send(e.dataTransfer.files)
-      }}
-    >
-      <input type="file" accept="image/*" hidden disabled={busy} onChange={(e) => void send(e.target.files)} />
-      {children}
-      <span className="admin-pic-hint">{busy ? 'Загружаю…' : error ?? 'Заменить картинку'}</span>
-    </label>
+    <>
+      <label
+        className={`admin-pic ${over ? 'over' : ''} ${busy ? 'busy' : ''}`}
+        onDragOver={(e) => {
+          e.preventDefault()
+          setOver(true)
+        }}
+        onDragLeave={() => setOver(false)}
+        onDrop={(e) => {
+          e.preventDefault()
+          setOver(false)
+          send(e.dataTransfer.files)
+        }}
+      >
+        <input
+          type="file"
+          accept="image/*"
+          hidden
+          disabled={busy}
+          onChange={(e) => {
+            send(e.target.files)
+            e.target.value = ''
+          }}
+        />
+        {children}
+        <span className="admin-pic-hint">{busy ? 'Загружаю…' : error ?? 'Заменить картинку'}</span>
+      </label>
+      {pending && <SquareCrop file={pending} onCancel={() => setPending(null)} onDone={(blob) => void store(blob)} />}
+    </>
   )
 }
 
