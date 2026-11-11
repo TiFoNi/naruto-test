@@ -2808,6 +2808,28 @@
   "thumb": 78
  },
  {
+  "id": 295746,
+  "name": "Морганс",
+  "nameEn": "Morgans",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Пирожный остров",
+  "arcIndex": 28,
+  "answer": true,
+  "hidden": true,
+  "thumb": -1
+ },
+ {
   "id": 307364,
   "name": "Морли",
   "nameEn": "Morley",
@@ -4602,6 +4624,26 @@
   "arcIndex": 10,
   "answer": true,
   "thumb": 123
+ },
+ {
+  "id": 199923,
+  "name": "Элизабелло II",
+  "nameEn": "Elizabello II",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Другое"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Дрессроза",
+  "arcIndex": 26,
+  "answer": true,
+  "hidden": true,
+  "thumb": -1
  },
  {
   "id": 11838,

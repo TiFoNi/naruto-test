@@ -54,7 +54,7 @@ const PENDING = [
   "Charlotte Mont-d'Or", 'Charlotte Perospero', 'Charlotte Smoothie', 'Charlotte Chiffon', 'Karasu', 'Belo Betty', 'Morley',
   'Lindbergh', 'Ginny', 'Absalom', 'Jaguar D. Saul', 'Ulti', 'Black Maria', "Who's-Who", 'Aramaki', 'Road', 'Shiryu',
   'Charlotte Oven', 'Page One', 'Figarland Shamrock', 'Ethanbaron V. Nusjuro', 'Topman Warcury', 'Marcus Mars',
-  'Shepherd Ju Peter', 'Vegapunk/Lilith', 'Vegapunk/York', 'Avalo Pizarro',
+  'Shepherd Ju Peter', 'Vegapunk/Lilith', 'Vegapunk/York', 'Avalo Pizarro', 'Morgans', 'Elizabello II',
 ]
 
 ANSWERS.push(...PENDING)
@@ -362,6 +362,8 @@ const NAMES = {
   'Vegapunk/Lilith': 'Лилит',
   'Vegapunk/York': 'Йорк',
   'Avalo Pizarro': 'Авало Писарро',
+  Morgans: 'Морганс',
+  'Elizabello II': 'Элизабелло II',
   Iceburg: 'Айсбёрг',
   Urouge: 'Урог',
   Paulie: 'Паули',
