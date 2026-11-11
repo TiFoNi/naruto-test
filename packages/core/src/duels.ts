@@ -48,7 +48,7 @@ import { addXp, awardSolveXp, defaultNickname } from './profile'
 import { collectQuestsQuietly } from './quests'
 import { sendPush, type PushLang } from './push'
 import { duelSeed, focusFor, shotFor } from './crop'
-import { markSeasonDuel } from './season'
+import { markSeasonDuel, markSeasonSolved } from './season'
 import { openDex, cardXpFor } from './dex'
 
 export const MIN_GAP_MS = 800
@@ -977,6 +977,7 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   if (!turnMode(duel)) {
     await Promise.all(guessed.map((side) => openDex(side.userId, duel.game, duel.answerId, { mode: duel.mode as ModeId, xp: cardXpFor(duel.mode as ModeId, { pool }) })))
     if (guessed.length) await (await users()).updateMany({ _id: { $in: guessed.map((side) => side.userId) } }, { $inc: { duelSolved: 1 } })
+    await Promise.all(guessed.map((side) => markSeasonSolved(side.userId, at)))
   }
   await Promise.all(guessed.map(async (side) => awardSolveXp(await users(), side.userId, duel.mode as ModeId, 'endless', pool, duel.game && duel.answerId !== undefined ? { game: duel.game, id: duel.answerId } : undefined)))
   await Promise.all(masters.map((side) => collectQuestsQuietly(side.userId)))

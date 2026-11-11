@@ -93,6 +93,15 @@ export async function markSeasonDuel(userId: ObjectId, won: boolean, now = new D
   )
 }
 
+export async function markSeasonSolved(userId: ObjectId, now = new Date()) {
+  const season = seasonAt(now)
+  await (await seasons()).updateOne(
+    { _id: key(season.id, userId) },
+    { $inc: { solved: 1 }, $setOnInsert: { season: season.id, userId, xp: 0, days: [] } },
+    { upsert: true },
+  )
+}
+
 export const previousSeason = (now = new Date()): Season => seasonAt(new Date(seasonAt(now).from.getTime() - 86_400_000))
 
 export async function seasonStanding(seasonId: string, limit = 100) {

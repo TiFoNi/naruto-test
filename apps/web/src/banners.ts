@@ -9,7 +9,7 @@ const LIVE: Record<string, { spot?: string; clips: string[] }> = {
 
 export const isLive = (id: string) => id in LIVE
 
-const REDRAWN: Record<string, number> = { blockhome: 3, moonvortex: 3, moonfield: 2, ronaldo: 2 }
+const REDRAWN: Record<string, number> = { blockhome: 3, moonvortex: 3, moonfield: 2, ronaldo: 2, castle: 3, poppies: 3, pain: 3, levelup: 3, snakes: 3 }
 
 const SPOTS: Record<string, string> = { moonfield: 'center 88%' }
 

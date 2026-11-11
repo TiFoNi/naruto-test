@@ -1093,8 +1093,9 @@ export default function Profile({ id }: { id?: string }) {
                     <ul className="modes-list">
                       {MODES.filter((mode) => mode.id !== 'clue').map((mode) => {
                         const row = summary?.modes.find((item) => item.mode === mode.id)
-                        const played = row?.played ?? 0
-                        const share = percent(row?.won ?? 0, played)
+                        const duel = summary?.duels?.modes?.find((item) => item.mode === mode.id)
+                        const played = (row?.played ?? 0) + (duel?.played ?? 0)
+                        const share = percent((row?.won ?? 0) + (duel?.wins ?? 0), played)
                         return (
                           <li key={mode.id} className={played ? '' : 'is-empty'}>
                             <span className="mode-name">{t(mode.label)}</span>
