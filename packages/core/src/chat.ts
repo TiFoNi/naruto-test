@@ -409,6 +409,12 @@ export async function dropChat(id: unknown, channel: ChatChannel = 'chat') {
   return gone.matchedCount > 0
 }
 
+export async function dropOwnChat(doc: UserDoc, id: unknown) {
+  if (typeof id !== 'string' || !ObjectId.isValid(id)) return false
+  const gone = await (await chatRoom()).updateOne({ _id: new ObjectId(id), userId: doc._id!, hidden: { $ne: true } }, { $set: { hidden: true } })
+  return gone.matchedCount > 0
+}
+
 export async function muteChat(id: unknown, minutes: unknown) {
   if (typeof id !== 'string' || !ObjectId.isValid(id)) return null
   const span = typeof minutes === 'number' && Number.isFinite(minutes) ? Math.min(Math.max(Math.trunc(minutes), 0), 60 * 24 * 30) : 60

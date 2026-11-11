@@ -10,7 +10,7 @@ const LIVE: Record<string, { spot?: string; clips: string[] }> = {
 
 export const isLive = (id: string) => id in LIVE
 
-const REDRAWN: Record<string, number> = { blockhome: 3, moonvortex: 3, moonfield: 3, ronaldo: 2, castle: 3, poppies: 3, pain: 3, levelup: 3, snakes: 3, glowmeadow: 2, nighttree: 2 }
+const REDRAWN: Record<string, number> = { blockhome: 4, moonvortex: 3, moonfield: 3, ronaldo: 2, castle: 4, poppies: 4, pain: 4, levelup: 4, snakes: 4, glowmeadow: 2, nighttree: 2, itachi: 2, redmoon: 2, fireforce: 2, frieren: 2, wanted: 2, demon: 2, touch: 2 }
 
 const SPOTS: Record<string, string> = { moonfield: 'center 88%' }
 

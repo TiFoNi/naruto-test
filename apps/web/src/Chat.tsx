@@ -711,6 +711,15 @@ export default function Chat() {
     done()
   }
 
+  const drop = async (line: Line) => {
+    const gone = () => setLines((kept) => kept.filter((one) => one.id !== line.id))
+    if (user?.admin) return moderate({ drop: line.id, ...(room === 'news' ? { channel: 'news' } : {}) }, gone)
+    setAsking(null)
+    const { ok } = await api('chat', { drop: line.id })
+    if (!ok) return say(t('chat.failed'), true)
+    gone()
+  }
+
   const mate = async (line: Line, action: 'ask' | 'remove' | 'accept') => {
     setMenu(null)
     const { ok } = await api('friends', { action, id: line.userId })
@@ -831,6 +840,7 @@ export default function Chat() {
   const canReply = Boolean(user) && room === 'chat'
   const reactable = (line: Line) => canReply && !line.bout
   const canModerate = Boolean(user?.admin) && room !== 'duel'
+  const canDrop = (line: Line) => canModerate || (room === 'chat' && Boolean(user) && line.userId === user?.id)
   const holdable = canReply || canModerate
 
   const answer = (line: Line) => {
@@ -1374,7 +1384,7 @@ export default function Chat() {
                 {t('chat.reply')}
               </button>
             )}
-            {canModerate && (
+            {canDrop(pointed.line) && (
               <button
                 type="button"
                 className="chat-menu-item is-bad"
@@ -1418,7 +1428,7 @@ export default function Chat() {
                 {t('chat.reply')}
               </button>
             )}
-            {canModerate && (
+            {canDrop(held) && (
               <button
                 type="button"
                 className="chat-hold-item is-bad"
@@ -1505,11 +1515,7 @@ export default function Chat() {
                 <button
                   type="button"
                   className="primary"
-                  onClick={() =>
-                    void moderate({ drop: asking.line.id, ...(room === 'news' ? { channel: 'news' } : {}) }, () =>
-                      setLines((kept) => kept.filter((one) => one.id !== asking.line.id)),
-                    )
-                  }
+                  onClick={() => void drop(asking.line)}
                 >
                   {t('chat.dropYes')}
                 </button>

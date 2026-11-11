@@ -2,7 +2,7 @@ import { users } from '../db'
 import { fail, handle, json, readJson } from '../http'
 import { currentUser, touchVisit, unauthorized } from '../profile'
 import { adminSession } from '../admin'
-import { CHAT_MAX, NEWS_MAX, channelOf, chatPage, dropChat, joinBout, muteChat, reactChat, sendBout, sendChat, sendNews, type BoutFail, type ReactFail } from '../chat'
+import { CHAT_MAX, NEWS_MAX, channelOf, chatPage, dropChat, dropOwnChat, joinBout, muteChat, reactChat, sendBout, sendChat, sendNews, type BoutFail, type ReactFail } from '../chat'
 import { markTyping } from '../stream'
 
 const REACT_STATUS: Record<ReactFail, number> = { bad: 400, muted: 403, patron: 403, too_fast: 429, gone: 410 }
@@ -22,7 +22,8 @@ export const POST = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
 
-  const { text, channel, tags, reply, bout, join, react, kind } = (await readJson(request)) as {
+  const { text, channel, tags, reply, bout, join, react, kind, drop } = (await readJson(request)) as {
+    drop?: unknown
     react?: unknown
     kind?: unknown
     text?: unknown
@@ -32,6 +33,7 @@ export const POST = handle(async (request) => {
     bout?: unknown
     join?: unknown
   }
+  if (drop !== undefined) return (await dropOwnChat(found.doc, drop)) ? json({ dropped: drop }) : fail(404, 'not_found')
   if (react !== undefined) {
     const done = await reactChat(found.doc, react, kind ?? null)
     if (typeof done === 'string') return fail(REACT_STATUS[done], done === 'bad' ? 'bad_request' : done === 'patron' ? 'react_patron' : done)
