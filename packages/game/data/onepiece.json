@@ -63,26 +63,6 @@
   "thumb": 0
  },
  {
-  "id": 75437,
-  "name": "Аладин",
-  "nameEn": "Aladine",
-  "gender": "Мужской",
-  "races": [
-   "Русал"
-  ],
-  "affiliations": [
-   "Пираты Солнца"
-  ],
-  "fruits": [],
-  "haki": [],
-  "bounty": 0,
-  "arc": "Остров рыболюдей",
-  "arcIndex": 24,
-  "answer": true,
-  "hidden": true,
-  "thumb": -1
- },
- {
   "id": 1701,
   "name": "Альвида",
   "nameEn": "Alvida",
@@ -2720,25 +2700,6 @@
   "thumb": 71
  },
  {
-  "id": 3247,
-  "name": "Мистер 9",
-  "nameEn": "Mr. 9",
-  "gender": "Мужской",
-  "races": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Барок Воркс"
-  ],
-  "fruits": [],
-  "haki": [],
-  "bounty": 0,
-  "arc": "Реверс Маунтин",
-  "arcIndex": 6,
-  "answer": true,
-  "thumb": 72
- },
- {
   "id": 146906,
   "name": "Моне",
   "nameEn": "Monet",
@@ -3798,26 +3759,6 @@
   "thumb": -1
  },
  {
-  "id": 57973,
-  "name": "Сярли",
-  "nameEn": "Shyarly",
-  "gender": "Женский",
-  "races": [
-   "Русал"
-  ],
-  "affiliations": [
-   "Другое"
-  ],
-  "fruits": [],
-  "haki": [],
-  "bounty": 0,
-  "arc": "Остров рыболюдей",
-  "arcIndex": 24,
-  "answer": true,
-  "hidden": true,
-  "thumb": -1
- },
- {
   "id": 1684,
   "name": "Тасиги",
   "nameEn": "Tashigi",
@@ -4317,31 +4258,29 @@
   "thumb": 118
  },
  {
-  "id": 287669,
-  "name": "Шарлотта Брюле",
-  "nameEn": "Charlotte Brûlée",
+  "id": 57973,
+  "name": "Шарли",
+  "nameEn": "Shyarly",
   "gender": "Женский",
   "races": [
-   "Человек"
+   "Русал"
   ],
   "affiliations": [
-   "Пираты Большой Мамочки"
+   "Другое"
   ],
-  "fruits": [
-   "Парамеция"
-  ],
+  "fruits": [],
   "haki": [],
   "bounty": 0,
-  "arc": "Пирожный остров",
-  "arcIndex": 28,
+  "arc": "Остров рыболюдей",
+  "arcIndex": 24,
   "answer": true,
   "hidden": true,
   "thumb": -1
  },
  {
-  "id": 291326,
-  "name": "Шарлотта Галетт",
-  "nameEn": "Charlotte Galette",
+  "id": 287669,
+  "name": "Шарлотта Брюле",
+  "nameEn": "Charlotte Brûlée",
   "gender": "Женский",
   "races": [
    "Человек"
