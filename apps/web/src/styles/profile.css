@@ -551,26 +551,78 @@
 .frame-bar {
   position: fixed;
   z-index: 90;
-  bottom: max(16px, env(safe-area-inset-bottom));
+  bottom: max(18px, env(safe-area-inset-bottom));
   left: 50%;
   display: flex;
   width: max-content;
   max-width: calc(100vw - 24px);
   align-items: center;
-  gap: 12px;
-  padding: 10px;
-  border: 1px solid var(--line);
+  gap: 10px;
+  padding: 8px;
+  border: 1px solid color-mix(in srgb, #ffffff 9%, transparent);
   border-radius: 20px;
-  background: var(--card-solid);
-  box-shadow: 0 22px 56px rgb(0 0 0 / 55%);
+  background: color-mix(in srgb, var(--card-solid) 88%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 5%),
+    0 22px 56px rgb(0 0 0 / 55%);
   translate: -50% 0;
+  backdrop-filter: blur(14px);
 }
 
 .frame-bar .look-zoom {
-  width: 260px;
-  flex: 1 1 260px;
-  padding: 6px;
+  width: 330px;
+  flex: 1 1 330px;
+  gap: 8px;
+  padding: 0;
   border: 0;
+  background: none;
+}
+
+.frame-bar .look-step,
+.frame-tool {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.frame-sep {
+  flex: none;
+  width: 1px;
+  height: 26px;
+  background: var(--line);
+}
+
+.frame-tools {
+  display: flex;
+  flex: none;
+  gap: 6px;
+}
+
+.frame-tool {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: color-mix(in srgb, #ffffff 5%, transparent);
+  color: var(--text-2);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.frame-tool svg {
+  width: 18px;
+  height: 18px;
+}
+
+.frame-tool:hover:not(:disabled) {
+  background: color-mix(in srgb, #ffffff 10%, transparent);
+  color: var(--text);
+}
+
+.frame-tool:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
 
 .frame-bar .frame-acts {
@@ -581,8 +633,10 @@
   border: 0;
 }
 
-.frame-bar .frame-acts > span {
-  display: none;
+.frame-bar .frame-acts > button {
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 12px;
 }
 
 .profile-banner {
@@ -4149,4 +4203,96 @@ a.world-blank:hover .world-pic.is-empty {
 
 body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
   display: none;
+}
+
+.profile-more {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, #ffffff 16%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, #0d0f12 62%, transparent);
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 28%);
+  backdrop-filter: blur(10px);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.profile-more svg {
+  width: 20px;
+  height: 20px;
+}
+
+.profile-more:hover,
+.profile-more.is-open {
+  border-color: color-mix(in srgb, #ffffff 26%, transparent);
+  background-color: color-mix(in srgb, #1c1f25 72%, transparent);
+}
+
+.modes-pop:has(> .visit-menu) {
+  min-width: 0;
+  padding: 6px;
+  border-radius: 16px;
+}
+
+.visit-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.visit-menu > button {
+  display: flex;
+  width: 100%;
+  min-height: 42px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin: 0;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 11px;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.visit-menu > button svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--text-2);
+}
+
+.visit-menu > button:hover:not(:disabled) {
+  background: color-mix(in srgb, #ffffff 7%, transparent);
+}
+
+.visit-menu > button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.look-podium {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.look-podium .lb-step {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.look-podium .lb-step:active {
+  cursor: grabbing;
 }

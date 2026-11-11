@@ -104,13 +104,14 @@ export default function BannerFrame({
             <ZoomInIcon />
           </button>
         </div>
-        <div className="look-actions frame-acts">
-          <button type="button" className="look-reset" disabled={busy} title={l({ ru: 'Сбросить', uk: 'Скинути', en: 'Reset' })} aria-label={l({ ru: 'Сбросить', uk: 'Скинути', en: 'Reset' })} onClick={onReset}>
+        <i className="frame-sep" aria-hidden />
+        <div className="frame-tools">
+          <button type="button" className="frame-tool" disabled={busy} title={l({ ru: 'Сбросить', uk: 'Скинути', en: 'Reset' })} aria-label={l({ ru: 'Сбросить', uk: 'Скинути', en: 'Reset' })} onClick={onReset}>
             <RefreshIcon />
           </button>
           <button
             type="button"
-            className="look-reset"
+            className="frame-tool"
             disabled={busy}
             title={l({ ru: 'Кадр в лидерах', uk: 'Кадр у лідерах', en: 'Leaderboard frame' })}
             aria-label={l({ ru: 'Кадр в лидерах', uk: 'Кадр у лідерах', en: 'Leaderboard frame' })}
@@ -118,7 +119,9 @@ export default function BannerFrame({
           >
             <TrophyIcon />
           </button>
-          <span />
+        </div>
+        <i className="frame-sep" aria-hidden />
+        <div className="look-actions frame-acts">
           <button type="button" className="ghost look-icon" disabled={busy} aria-label={l({ ru: 'Отмена', uk: 'Скасувати', en: 'Cancel' })} onClick={onCancel}>
             <CloseIcon />
             <span>{l({ ru: 'Отмена', uk: 'Скасувати', en: 'Cancel' })}</span>

@@ -5,8 +5,9 @@ import { BANNER_ZOOM_MAX, type BannerLook, type BannerLooks, type LookPlace } fr
 import { lookStyle } from './BannerArt'
 import { api } from './api'
 import { useAuth } from './auth'
+import BoardFace from './BoardFace'
 import { bannerPic } from './banners'
-import { useI18n } from './i18n'
+import { useI18n, type UiKey } from './i18n'
 import type { L10n } from './i18n/langs'
 import { CheckIcon, CloseIcon, RefreshIcon, ZoomInIcon, ZoomOutIcon } from './icons'
 import { BOARD_MIN, STAGE_MIN, STAGE_RATIO, usePhoneRatio } from './ProfileStage'
@@ -24,8 +25,8 @@ const clamp = (value: number) => Math.min(100, Math.max(0, value))
 const ZOOM_STEP = 0.25
 
 export default function BannerTuner({ banner, looks, only, onClose }: { banner: string; looks: BannerLooks | null; only?: LookPlace; onClose: () => void }) {
-  const { l } = useI18n()
-  const { refresh } = useAuth()
+  const { l, t } = useI18n()
+  const { user, refresh } = useAuth()
   const [draft, setDraft] = useState<BannerLooks>(looks ?? {})
   const [current, setCurrent] = useState<LookPlace>(only ?? 'desktop')
   const tabs = only ? PLACES.filter((one) => one.key === only) : PLACES
@@ -91,6 +92,8 @@ export default function BannerTuner({ banner, looks, only, onClose }: { banner: 
       return next
     })
 
+  const board = current === 'board'
+
   const save = async () => {
     setBusy(true)
     const { ok } = await api('profile', { action: 'bannerLook', banner, look: Object.keys(draft).length ? draft : null })
@@ -112,13 +115,19 @@ export default function BannerTuner({ banner, looks, only, onClose }: { banner: 
           <CloseIcon />
         </button>
 
-        <h2>{l({ ru: 'Настройка фона', uk: 'Налаштування фону', en: 'Background setup' })}</h2>
+        <h2>{board ? l({ ru: 'Фон в лидерах', uk: 'Фон у лідерах', en: 'Leaderboard background' }) : l({ ru: 'Настройка фона', uk: 'Налаштування фону', en: 'Background setup' })}</h2>
         <p className="look-lead">
-          {l({
-            ru: 'Перетащи картинку, чтобы выбрать, что останется в кадре.',
-            uk: 'Перетягни картинку, щоб вибрати, що лишиться в кадрі.',
-            en: 'Drag the picture to choose what stays in view.',
-          })}
+          {board
+            ? l({
+                ru: 'Так твоя карточка выглядит в топ-3 лидеров. Перетащи фон, чтобы выбрать кадр.',
+                uk: 'Так твоя картка виглядає в топ-3 лідерів. Перетягни фон, щоб вибрати кадр.',
+                en: 'This is how your card looks in the top 3. Drag the background to frame it.',
+              })
+            : l({
+                ru: 'Перетащи картинку, чтобы выбрать, что останется в кадре.',
+                uk: 'Перетягни картинку, щоб вибрати, що лишиться в кадрі.',
+                en: 'Drag the picture to choose what stays in view.',
+              })}
         </p>
 
         {tabs.length > 1 && (
@@ -138,6 +147,41 @@ export default function BannerTuner({ banner, looks, only, onClose }: { banner: 
         </div>
         )}
 
+        {board && (
+          <ol className="lb-podium is-cards look-podium">
+            <li
+              className="lb-step gold has-art look-drag"
+              onPointerDown={press}
+              onPointerMove={move}
+              onPointerUp={release}
+              onPointerCancel={release}
+              role="presentation"
+            >
+              <span className="lb-step-art" aria-hidden>
+                <img ref={picture} src={bannerPic(banner)} alt="" draggable={false} style={lookStyle(banner, look)} onLoad={(event) => measure(event.currentTarget)} />
+              </span>
+              <span className="lb-step-face">
+                <BoardFace id={user?.id} nickname={user?.nickname ?? ''} avatar={user?.avatar ?? null} frame={user?.frame ?? null} big first />
+              </span>
+              <span className="lb-step-text">
+                <span className="lb-step-who">
+                  <b className="lb-step-name">{user?.nickname}</b>
+                  {user?.title && <i className={`player-title is-slim is-${user.title}`}>{t(`title.${user.title}` as UiKey)}</i>}
+                </span>
+                <span className="lb-step-sub">{(user?.xp ?? 0).toLocaleString()} XP</span>
+              </span>
+              <span className="lb-step-main">
+                <em>{user?.level ?? 1}</em>
+                <i className="lb-step-unit">{l({ ru: 'ур.', uk: 'рів.', en: 'lvl' })}</i>
+              </span>
+              <span className="lb-step-rank">
+                <i className="lb-step-top">{t('lb.topWord')} </i>1
+              </span>
+            </li>
+          </ol>
+        )}
+
+        {!board && (
         <div className="look-row has-phone">
           <figure className="look-card">
             <div
@@ -176,6 +220,7 @@ export default function BannerTuner({ banner, looks, only, onClose }: { banner: 
             <figcaption>{l({ ru: 'Телефон', uk: 'Телефон', en: 'Phone' })}</figcaption>
           </figure>
         </div>
+        )}
 
         <div className="look-zoom">
           <button
@@ -206,7 +251,6 @@ export default function BannerTuner({ banner, looks, only, onClose }: { banner: 
           >
             <ZoomInIcon />
           </button>
-          <b>×{look.z.toFixed(2).replace(/\.?0+$/, '')}</b>
         </div>
 
         <div className="look-actions">

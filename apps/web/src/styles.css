@@ -12553,14 +12553,6 @@ html[data-auth] .guest-note {
   color: var(--text);
 }
 
-.look-actions > .look-reset:hover:not(:disabled) svg {
-  transform: rotate(-90deg);
-}
-
-.look-actions > .look-reset svg {
-  transition: transform 0.25s;
-}
-
 .look-actions > .look-reset:disabled {
   opacity: 0.35;
   cursor: default;
