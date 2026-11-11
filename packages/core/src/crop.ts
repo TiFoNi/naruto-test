@@ -35,13 +35,13 @@ function keep<T>(store: Map<string, T>, key: string, value: T, limit: number) {
 }
 
 export async function imageBuffer(game: GameId, answerId: number) {
-  const key = `${game}:${answerId}`
+  const entity = (await gameData(game)).byId.get(answerId)
+  const tag = typeof entity?.image === 'string' ? `?v=${entity.image}` : ''
+  const key = `${game}:${answerId}${tag}`
   const known = sources.get(key)
   if (known) return known
 
   const pics = process.env.PICS_URL?.replace(/\/+$/, '') ?? ''
-  const entity = (await gameData(game)).byId.get(answerId)
-  const tag = typeof entity?.image === 'string' ? `?v=${entity.image}` : ''
   const url = `${pics}/${GAME_SPECS[game].images}/full/${answerId}.webp${tag}`
 
   const pending = fetch(url)
