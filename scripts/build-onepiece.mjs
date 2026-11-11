@@ -131,6 +131,7 @@ const RACE_RULES = [
   ['Хоми', /^Category:Homies$/],
   ['Биркан', /^Category:Birkans$/],
   ['Букканир', /^Category:Buccaneers$/],
+  ['Сателлит', /^Category:Satellites$/],
 ]
 
 const RACE_FIX = {
