@@ -2745,10 +2745,6 @@ button.fact-rank:hover {
   white-space: nowrap;
 }
 
-.soon-badges li.on:has(.award-art) b {
-  margin-top: -10%;
-  margin-bottom: 10%;
-}
 
 .soon-badges li small {
   overflow: hidden;

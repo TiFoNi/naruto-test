@@ -71,7 +71,9 @@ const isShelf = (block: ProfileBlock) => SHELVES.includes(block)
 
 const same = (one: Metrics, two: Metrics) => (Object.keys(one) as (keyof Metrics)[]).every((key) => Math.abs(one[key] - two[key]) < 1)
 
-const exact = (node: HTMLElement) => node.getBoundingClientRect().width / (parseFloat(getComputedStyle(document.body).zoom) || 1)
+const zoomOf = () => parseFloat(getComputedStyle(document.body).zoom) || 1
+
+const exact = (node: HTMLElement) => node.getBoundingClientRect().width / zoomOf()
 
 const halfOf = (shelf: HTMLElement) => {
   const slot = shelf.closest<HTMLElement>('.profile-slot')
@@ -88,9 +90,12 @@ const cellOf = (shelf: HTMLElement | null) => {
 }
 
 function measure(box: HTMLElement, wide: boolean): Metrics | null {
-  const ref =
-    box.querySelector<HTMLElement>('.profile-slot:not(.is-full).slot-awards .soon-badges, .profile-slot:not(.is-full).slot-worlds .world-shelf') ??
-    box.querySelector<HTMLElement>('.slot-awards .soon-badges, .slot-worlds .world-shelf')
+  const zoom = zoomOf()
+  const shelfOf = (block: string, list: string) =>
+    box.querySelector<HTMLElement>(`.profile-slot:not(.is-full).slot-${block} ${list}`) ?? box.querySelector<HTMLElement>(`.slot-${block} ${list}`)
+  const awardShelf = shelfOf('awards', '.soon-badges')
+  const worldShelf = shelfOf('worlds', '.world-shelf')
+  const ref = awardShelf ?? worldShelf
   const cards = box.querySelector<HTMLElement>('.slot-cards .card-shelf')
   const listed = box.querySelector<HTMLElement>('.slot-activity .activity-card')
   const pick = (shelf: HTMLElement) => {
@@ -98,9 +103,18 @@ function measure(box: HTMLElement, wide: boolean): Metrics | null {
     const first = shelf.firstElementChild as HTMLElement | null
     const outer = getComputedStyle(card)
     const tail = parseFloat(outer.paddingBottom) + parseFloat(outer.borderBottomWidth)
-    const top = shelf.getBoundingClientRect().top - card.getBoundingClientRect().top
+    const top = (shelf.getBoundingClientRect().top - card.getBoundingClientRect().top) / zoom
     return { card, first, tail, top, gap: parseFloat(getComputedStyle(shelf).rowGap) || 0 }
   }
+  const rowsOfShelf = (shelf: HTMLElement | null) => {
+    if (!shelf) return null
+    const seen = pick(shelf)
+    if (!seen.first) return null
+    const height = seen.first.offsetHeight
+    return { base: Math.round(seen.top + height + seen.tail), step: height + seen.gap }
+  }
+  const worldRows = rowsOfShelf(worldShelf)
+  const awardRows = rowsOfShelf(awardShelf)
   let base = 0
   let step = 0
   let row = 0
@@ -110,8 +124,8 @@ function measure(box: HTMLElement, wide: boolean): Metrics | null {
     if (!seen.first) return null
     row = seen.first.offsetHeight
     gap = seen.gap
-    base = Math.round(seen.top + row + seen.tail)
-    step = row + gap
+    base = Math.max(worldRows?.base ?? 0, awardRows?.base ?? 0) || Math.round(seen.top + row + seen.tail)
+    step = Math.max(worldRows?.step ?? 0, awardRows?.step ?? 0) || row + gap
   }
   let cardRow = row
   let cardW = 0
@@ -145,9 +159,9 @@ function measure(box: HTMLElement, wide: boolean): Metrics | null {
     const list = listed.querySelector<HTMLElement>('.activity, p')
     const outer = getComputedStyle(listed)
     const top = list?.getBoundingClientRect().top ?? listed.getBoundingClientRect().top
-    const head = top - listed.getBoundingClientRect().top
+    const head = (top - listed.getBoundingClientRect().top) / zoom
     const last = list?.lastElementChild ?? list
-    const content = last ? last.getBoundingClientRect().bottom - top + (list?.scrollTop ?? 0) : 0
+    const content = last ? (last.getBoundingClientRect().bottom - top) / zoom + (list?.scrollTop ?? 0) : 0
     const cap = list?.classList.contains('activity') ? ACTIVITY_LIST : content
     activity = Math.round(head + Math.min(content, cap) + parseFloat(outer.paddingBottom) + parseFloat(outer.borderBottomWidth))
   }
@@ -236,7 +250,7 @@ export default function ProfileBoard({
     const kept = seen[block]
     if (kept) return Math.min(most(block), Math.max(1, Math.ceil(kept / colsOf(block))))
     const px = sizes[block]
-    if (px && block !== 'cards') return Math.min(most(block), Math.max(1, Math.round((px - metrics.base) / metrics.step) + 1))
+    if (px && block !== 'cards') return Math.min(most(block), Math.max(1, Math.round((px - baseOf(block)) / stepOf(block)) + 1))
     return block === 'cards' ? 1 : most(block)
   }
   const baseOf = (block: ProfileBlock) => (block === 'cards' ? metrics.cardBase : metrics.base)
