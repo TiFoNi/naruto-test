@@ -373,10 +373,14 @@ const NAMES = {
 
 const AFFILIATION_OVERRIDES = { Magellan: ['Мировое правительство'], Izou: ['Пираты Белоуса', 'Вано'], Ulti: ['Пираты Зверей'], 'Page One': ['Пираты Зверей'] }
 
-function affiliationsOf(text) {
-  const found = AFFILIATION_RULES.filter(([, re]) => re.test(text)).map(([label]) => label)
-  if (found.length) return found
-  return [/pirates|crew|barto club/i.test(text) ? 'Другие пираты' : 'Другое']
+const matchAffiliations = (text) => AFFILIATION_RULES.filter(([, re]) => re.test(text)).map(([label]) => label)
+
+function affiliationsOf({ current, all }) {
+  const now = matchAffiliations(current)
+  if (now.length) return now
+  if (/pirates|crew|barto club/i.test(current)) return ['Другие пираты']
+  const past = matchAffiliations(all)
+  return past.length ? past : ['Другое']
 }
 
 const matchCategories = (rules, cats) => rules.filter(([, re]) => cats.some((c) => re.test(c))).map(([label]) => label)
@@ -467,7 +471,7 @@ function affiliationEntries(raw) {
     .map((e) => plain(stripTemplates(e)).trim())
     .filter(Boolean)
   const current = all.filter((e) => !PAST.test(e))
-  return current.length ? current : all
+  return { current: (current.length ? current : all).join('\n'), all: all.join('\n') }
 }
 
 function bounty(box) {
@@ -545,7 +549,7 @@ async function main() {
     const chapter = debutChapter(box)
     if (chapter === null) return console.warn('no debut chapter', name)
     const arcIndex = arcIndexOf(chapter)
-    const affiliationText = affiliationEntries(field(box, 'affiliation')).join('\n')
+    const affiliationText = affiliationEntries(field(box, 'affiliation'))
     const races = matchCategories(RACE_RULES, cats)
     result.push({
       id: page.id,
