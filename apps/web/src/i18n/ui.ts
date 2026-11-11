@@ -2025,6 +2025,8 @@ const ui = {
     en: 'Earn at least one stage first',
   },
   'ach.unpin': { ru: 'Открепить', uk: 'Відкріпити', en: 'Unpin' },
+  'ach.pinSwap': { ru: 'Закрепить этот цвет', uk: 'Закріпити цей колір', en: 'Pin this color' },
+  'ach.pinnedStep': { ru: 'Закреплено в профиле', uk: 'Закріплено в профілі', en: 'Pinned to profile' },
   'ach.myProfile': { ru: 'Мой профиль', uk: 'Мій профіль', en: 'My profile' },
   'ach.title': { ru: 'Достижения', uk: 'Досягнення', en: 'Achievements' },
   'ach.lead': {

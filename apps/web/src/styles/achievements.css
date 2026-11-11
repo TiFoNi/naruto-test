@@ -553,6 +553,23 @@
   font-weight: 700;
 }
 
+.award-steps-list li em {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.award-steps-list li .award-step-pin {
+  display: inline-grid;
+  place-items: center;
+  color: var(--tier);
+}
+
+.award-steps-list li .award-step-pin .icon {
+  width: 14px;
+  height: 14px;
+}
+
 
 .awards-hero {
   display: grid;

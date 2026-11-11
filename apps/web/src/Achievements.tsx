@@ -205,8 +205,10 @@ function AwardModal({
   const top = [...steps].reverse().find((step) => step.claimed)
   const waiting = award.done && !award.claimed
   const crown = waiting ? award : ([...steps].filter((step) => step.done).pop() ?? award)
-  const held = !!top && pinnedIds.includes(top.id)
-  const locked = !top || (full && !held)
+  const chosen = award.claimed && award.kind !== 'season' ? award : top
+  const pinnedStep = steps.find((step) => pinnedIds.includes(step.id))
+  const held = !!chosen && pinnedStep?.id === chosen.id
+  const locked = !chosen || (full && !pinnedStep)
   const percent = Math.min(Math.round((award.progress / award.target) * 100), 100)
 
   return (
@@ -263,7 +265,14 @@ function AwardModal({
                       {step.unit === 'percent' ? '%' : ''}
                     </b>
                     <span>{award.kind === 'season' ? '' : t(`achTier.${step.tier}` as UiKey)}</span>
-                    <em>+{step.xp} XP</em>
+                    <em>
+                      {step.id === pinnedStep?.id && (
+                        <span className="award-step-pin" title={t('ach.pinnedStep')}>
+                          <PinIcon />
+                        </span>
+                      )}
+                      +{step.xp} XP
+                    </em>
                   </button>
                 </li>
               ))}
@@ -301,10 +310,10 @@ function AwardModal({
               type="button"
               className="ghost"
               disabled={busy || locked}
-              title={locked ? t(!top ? 'ach.pinNone' : 'ach.pinFull') : undefined}
-              onClick={() => top && onPin(top.id)}
+              title={locked ? t(!chosen ? 'ach.pinNone' : 'ach.pinFull') : undefined}
+              onClick={() => chosen && onPin(chosen.id)}
             >
-              <PinIcon /> {t(held ? 'ach.unpin' : 'ach.pin')}
+              <PinIcon /> {t(held ? 'ach.unpin' : pinnedStep && steps.length > 1 ? 'ach.pinSwap' : 'ach.pin')}
             </button>
           )}
         </div>
@@ -404,7 +413,13 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
     void api('achievements', { pinned: next })
   }
 
-  const togglePin = (id: string) => savePins(pinned.includes(id) ? pinned.filter((p) => p !== id) : [...pinned, id].slice(0, PINNED_MAX))
+  const togglePin = (id: string) => {
+    if (pinned.includes(id)) return savePins(pinned.filter((p) => p !== id))
+    const family = list.find((one) => one.id === id)?.family
+    const sibling = family ? pinned.findIndex((p) => list.find((one) => one.id === p)?.family === family) : -1
+    if (sibling >= 0) return savePins(pinned.map((p, index) => (index === sibling ? id : p)))
+    savePins([...pinned, id].slice(0, PINNED_MAX))
+  }
 
   const grabPin = (id: string) => (event: ReactPointer<HTMLButtonElement>) => {
     if (event.button !== 0) return
