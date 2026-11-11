@@ -61,6 +61,8 @@ const ROW = 4
 const GLOW_CROP = 1.12
 const GLOW_WIDE = 1440
 const GLOW_GROW = 1.5
+const ZOOM_FROM = 2300
+const ZOOM_MIN = 1440 / ZOOM_FROM
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -427,21 +429,41 @@ export default function Profile({ id }: { id?: string }) {
   const heroBox = useRef<HTMLElement>(null)
 
   useLayoutEffect(() => {
+    if (!fresh) return
+    const body = document.body
+    const fit = () => {
+      const zoom = Math.max(ZOOM_MIN, window.innerWidth / ZOOM_FROM)
+      body.style.zoom = zoom === 1 ? '' : String(zoom)
+      body.style.setProperty('--page-zoom', String(zoom))
+    }
+    fit()
+    window.addEventListener('resize', fit)
+    return () => {
+      window.removeEventListener('resize', fit)
+      body.style.zoom = ''
+      body.style.removeProperty('--page-zoom')
+    }
+  }, [fresh])
+
+  useLayoutEffect(() => {
     const hero = heroBox.current
     const glow = hero?.querySelector<HTMLElement>('.profile-glow')
     const art = glow?.querySelector(':scope > :is(img, video)')
     if (!hero || !glow || !art || typeof ResizeObserver === 'undefined') return
     const fit = () => {
-      const top = Math.max(0, Math.round(hero.getBoundingClientRect().top + window.scrollY))
+      let top = 0
+      for (let node: HTMLElement | null = hero; node; node = node.offsetParent as HTMLElement | null) top += node.offsetTop
+      top = Math.max(0, Math.round(top + hero.clientTop))
       hero.style.setProperty('--glow-top', `${top}px`)
       const natural = mediaSize(art)
       if (!natural?.w || !natural.h) return
-      const stretch = GLOW_CROP + (Math.max(0, GLOW_WIDE - glow.clientWidth) / GLOW_WIDE) * GLOW_GROW
+      const stretch = GLOW_CROP + (Math.max(0, GLOW_WIDE - window.innerWidth) / GLOW_WIDE) * GLOW_GROW
       hero.style.setProperty('--glow-h', `${Math.round(((glow.clientWidth * natural.h) / natural.w) * stretch)}px`)
     }
     fit()
     const watch = new ResizeObserver(fit)
     watch.observe(hero)
+    watch.observe(glow)
     window.addEventListener('resize', fit)
     art.addEventListener('load', fit)
     art.addEventListener('loadedmetadata', fit)

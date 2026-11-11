@@ -466,7 +466,7 @@
   top: calc(-1 * (var(--glow-top, 120px) + var(--glow-lift, 0px)));
   left: 50%;
   overflow: hidden;
-  width: 100vw;
+  width: calc(100vw / var(--page-zoom, 1));
   height: var(--glow-h, 400px);
   translate: -50% 0;
   pointer-events: none;
@@ -517,7 +517,7 @@
   top: calc(-1 * var(--glow-top, 120px));
   left: 50%;
   display: grid;
-  width: 100vw;
+  width: calc(100vw / var(--page-zoom, 1));
   height: calc(100% + var(--glow-top, 120px));
   padding-top: var(--glow-top, 120px);
   place-items: center;

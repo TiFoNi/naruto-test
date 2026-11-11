@@ -35,6 +35,7 @@
     "cards": "node scripts/build-cards.mjs",
     "check:data": "node scripts/check-data.mjs",
     "frames": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/give-frames.mjs",
+    "banners": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/give-banners.mjs",
     "nicknames": "node --env-file-if-exists=.env.local scripts/backfill-nickname-lower.mjs",
     "names:uk": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/uk-names.mjs",
     "stars": "node scripts/stars.mjs",

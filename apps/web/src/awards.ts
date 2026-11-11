@@ -45,12 +45,12 @@ export function dropInvite(code: string) {
   return publish({ ...(cache ?? EMPTY), invites: (cache?.invites ?? []).filter((invite) => invite.code !== code) })
 }
 
-export function dropQuizzes() {
-  return publish({ ...(cache ?? EMPTY), quizzes: [] })
+export function dropQuizzes(id?: string) {
+  return publish({ ...(cache ?? EMPTY), quizzes: id ? (cache?.quizzes ?? []).filter((one) => one.id !== id) : [] })
 }
 
-export function dropComments() {
-  return publish({ ...(cache ?? EMPTY), comments: [] })
+export function dropComments(id?: string) {
+  return publish({ ...(cache ?? EMPTY), comments: id ? (cache?.comments ?? []).filter((one) => one.id !== id) : [] })
 }
 
 export function dropTitle() {
@@ -61,13 +61,13 @@ export function dropCoins() {
   return publish({ ...(cache ?? EMPTY), coins: null })
 }
 
-export function dropFrames() {
-  return publish({ ...(cache ?? EMPTY), frames: [] })
+export function dropFrames(id?: string) {
+  return publish({ ...(cache ?? EMPTY), frames: id ? (cache?.frames ?? []).filter((one) => one !== id) : [] })
 }
 
-export function dropMentions() {
+export function dropMentions(id?: string) {
   if (!cache?.mentions.length) return cache ?? EMPTY
-  return publish({ ...cache, mentions: [] })
+  return publish({ ...cache, mentions: id ? cache.mentions.filter((one) => one.id !== id) : [] })
 }
 
 export function dropRequest(id: string) {

@@ -57,12 +57,14 @@ export default function BannerFrame({
     if (!start) return
     const size = fitOf(start.from)
     if (!size) return
-    const dy = event.clientY - start.y
+    const zoom = Number(getComputedStyle(document.body).getPropertyValue('--page-zoom')) || 1
+    const dx = (event.clientX - start.x) / zoom
+    const dy = (event.clientY - start.y) / zoom
     const tall = focusRange(size.boxH, size.h) !== null
     const next = settle(
       {
         ...start.from,
-        x: start.from.x - ((event.clientX - start.x) / size.w) * 100,
+        x: start.from.x - (dx / size.w) * 100,
         y: start.from.y - (dy / size.h) * 100,
       },
       start.from,

@@ -252,7 +252,7 @@ export const POST = handle(async (request) => {
   }
 
   if (body.action === 'seenMentions') {
-    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $unset: { mentionNews: '' } }, { returnDocument: 'after' })
+    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, typeof body.id === 'string' ? { $pull: { mentionNews: { id: body.id } } } : { $unset: { mentionNews: '' } }, { returnDocument: 'after' })
     return json(toProfile(doc ?? found.doc))
   }
 
@@ -263,12 +263,12 @@ export const POST = handle(async (request) => {
   }
 
   if (body.action === 'seenQuizzes') {
-    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $unset: { quizNews: '' } }, { returnDocument: 'after' })
+    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, typeof body.id === 'string' ? { $pull: { quizNews: { id: body.id } } } : { $unset: { quizNews: '' } }, { returnDocument: 'after' })
     return json(toProfile(doc ?? found.doc))
   }
 
   if (body.action === 'seenComments') {
-    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $unset: { commentNews: '' } }, { returnDocument: 'after' })
+    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, typeof body.id === 'string' ? { $pull: { commentNews: { id: body.id } } } : { $unset: { commentNews: '' } }, { returnDocument: 'after' })
     return json(toProfile(doc ?? found.doc))
   }
 
@@ -284,10 +284,11 @@ export const POST = handle(async (request) => {
 
   if (body.action === 'seenFrames') {
     const owned = found.doc.frames ?? []
-    if (!owned.length) return json(toProfile(found.doc))
+    const picked = typeof body.id === 'string' ? owned.filter((frame) => frame === body.id) : owned
+    if (!picked.length) return json(toProfile(found.doc))
     const doc = await found.collection.findOneAndUpdate(
       { _id: found.doc._id },
-      { $addToSet: { framesSeen: { $each: owned } } },
+      { $addToSet: { framesSeen: { $each: picked } } },
       { returnDocument: 'after' },
     )
     return json(toProfile(doc ?? found.doc))

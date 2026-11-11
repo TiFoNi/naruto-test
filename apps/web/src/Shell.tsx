@@ -481,9 +481,9 @@ function Bell() {
     void refreshFeed()
   }
 
-  const seenFrames = () => {
-    dropFrames()
-    void api('profile', { action: 'seenFrames' }).catch(() => null)
+  const seenFrames = (id: string) => {
+    dropFrames(id)
+    void api('profile', { action: 'seenFrames', id }).catch(() => null)
   }
 
   const seenCoins = () => {
@@ -501,14 +501,14 @@ function Bell() {
     }
   }
 
-  const seenQuizzes = () => {
-    dropQuizzes()
-    void api('profile', { action: 'seenQuizzes' }).catch(() => null)
+  const seenQuizzes = (id: string) => {
+    dropQuizzes(id)
+    void api('profile', { action: 'seenQuizzes', id }).catch(() => null)
   }
 
-  const seenComments = () => {
-    dropComments()
-    void api('profile', { action: 'seenComments' }).catch(() => null)
+  const seenComments = (id: string) => {
+    dropComments(id)
+    void api('profile', { action: 'seenComments', id }).catch(() => null)
   }
 
   const seenTitle = () => {
@@ -516,9 +516,9 @@ function Bell() {
     void api('profile', { action: 'seenTitle' }).catch(() => null)
   }
 
-  const seenMentions = () => {
-    dropMentions()
-    void api('profile', { action: 'seenMentions' }).catch(() => null)
+  const seenMentions = (id: string) => {
+    dropMentions(id)
+    void api('profile', { action: 'seenMentions', id }).catch(() => null)
   }
 
   const googleDue = feed.linkGoogle && !googleHidden
@@ -629,7 +629,7 @@ function Bell() {
                   href={`${href.test(one.game as GameId, one.quizId)}#comments`}
                   onClick={() => {
                     setOpen(false)
-                    seenComments()
+                    seenComments(one.id)
                   }}
                   prefetch={false}
                 >
@@ -644,7 +644,7 @@ function Bell() {
                     </span>
                   </span>
                 </Link>
-                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={seenComments}>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={() => seenComments(one.id)}>
                   <CloseIcon />
                 </button>
               </li>
@@ -656,7 +656,7 @@ function Bell() {
                   href={href.myTests}
                   onClick={() => {
                     setOpen(false)
-                    seenQuizzes()
+                    seenQuizzes(one.id)
                   }}
                   prefetch={false}
                 >
@@ -671,7 +671,7 @@ function Bell() {
                     </span>
                   </span>
                 </Link>
-                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={seenQuizzes}>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={() => seenQuizzes(one.id)}>
                   <CloseIcon />
                 </button>
               </li>
@@ -754,7 +754,7 @@ function Bell() {
                   className="bell-card"
                   onClick={() => {
                     setOpen(false)
-                    seenMentions()
+                    seenMentions(one.id)
                     openChat(one.id)
                   }}
                 >
@@ -769,7 +769,7 @@ function Bell() {
                     </span>
                   </span>
                 </button>
-                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={seenMentions}>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={() => seenMentions(one.id)}>
                   <CloseIcon />
                 </button>
               </li>
@@ -846,7 +846,7 @@ function Bell() {
                   href={href.settings}
                   onClick={() => {
                     setOpen(false)
-                    seenFrames()
+                    seenFrames(frame.id)
                   }}
                   prefetch={false}
                 >
@@ -859,7 +859,7 @@ function Bell() {
                     </span>
                   </span>
                 </Link>
-                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={seenFrames}>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={() => seenFrames(frame.id)}>
                   <CloseIcon />
                 </button>
               </li>
@@ -1020,7 +1020,7 @@ export default function Shell({ children, games: everyGame }: { children: ReactN
     const header = bar.current
     if (!header) return document.documentElement.style.setProperty('--topbar-h', '0px')
     if (typeof ResizeObserver === 'undefined') return
-    const apply = () => document.documentElement.style.setProperty('--topbar-h', `${Math.round(header.getBoundingClientRect().height)}px`)
+    const apply = () => document.documentElement.style.setProperty('--topbar-h', `${Math.round(header.offsetHeight)}px`)
     apply()
     const watcher = new ResizeObserver(apply)
     watcher.observe(header)

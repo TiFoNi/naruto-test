@@ -183,7 +183,7 @@ html {
 
 body {
   margin: 0;
-  min-height: 100vh;
+  min-height: calc(100vh / var(--page-zoom, 1));
   overflow-x: clip;
   overscroll-behavior: none;
 }
@@ -233,7 +233,7 @@ h2 {
 
 .app {
   max-width: 1400px;
-  min-height: 100dvh;
+  min-height: calc(100dvh / var(--page-zoom, 1));
   margin: 0 auto;
   padding: calc(var(--topbar-h) + 10px) var(--gutter) 24px;
   display: flex;
@@ -246,7 +246,7 @@ h2 {
   flex: 1 0 auto;
   flex-direction: column;
   gap: 20px;
-  min-height: calc(100dvh - var(--topbar-h, 0px) - 54px);
+  min-height: calc(100dvh / var(--page-zoom, 1) - var(--topbar-h, 0px) - 54px);
 }
 
 .topbar {
