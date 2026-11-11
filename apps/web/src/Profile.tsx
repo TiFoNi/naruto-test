@@ -26,7 +26,9 @@ import BannerArt from './BannerArt'
 import BannerTuner from './BannerTuner'
 import GemIcon from './GemIcon'
 import ProfileStage, { useNarrow } from './ProfileStage'
-import { bannerPic, bannerSpot } from './banners'
+import { PHONE_LOOK, bannerPic, bannerSpot, spotLook } from './banners'
+import BannerFrame, { type FrameDevice } from './BannerFrame'
+import { isBeta } from './beta'
 import {
   CARD_PINS_MAX,
   HERO_TILES,
@@ -42,6 +44,7 @@ import {
   isTone,
   scrapValue,
   type Banner,
+  type BannerLook,
   type HeroTile,
   type ProfileBlock,
 } from '@nanda/game'
@@ -56,6 +59,10 @@ const UNPIN_POINTS = tornPoints(42, 9, 4)
   .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
   .join(' ')
 const ROW = 4
+const GLOW_BELOW = 50
+const NARROW_BELOW = 50
+const NARROW_FROM = 900
+const NARROW_GROW = 0.15
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -195,6 +202,7 @@ function FitLabel({ full, short }: { full: string; short: string }) {
 
 export default function Profile({ id }: { id?: string }) {
   const { user, refresh } = useAuth()
+  const beta = isBeta(user?.id)
   const own = !id
   const { t, l, lang } = useI18n()
   const href = useHref()
@@ -241,6 +249,11 @@ export default function Profile({ id }: { id?: string }) {
   const [skins, setSkins] = useState(false)
   const [scrap, setScrap] = useState<Banner | null>(null)
   const [tuning, setTuning] = useState(false)
+  const [framing, setFraming] = useState<{ key: FrameDevice; desktop: BannerLook; phone: BannerLook } | null>(null)
+  const [framingBusy, setFramingBusy] = useState(false)
+  useEffect(() => {
+    if (!edit) setFraming(null)
+  }, [edit])
   const [tones, setTones] = useState(false)
   const tonesRef = useRef<HTMLDivElement>(null)
   const skinsRef = useRef<HTMLDivElement>(null)
@@ -408,6 +421,28 @@ export default function Profile({ id }: { id?: string }) {
     { id: '#2b3038', accent: '#2b3038', label: l10n('Чёрный', 'Чорний', 'Black') },
   ]
 
+  const heroBox = useRef<HTMLElement>(null)
+
+  useLayoutEffect(() => {
+    const hero = heroBox.current
+    if (!hero?.querySelector('.profile-glow') || typeof ResizeObserver === 'undefined') return
+    const fit = () => {
+      const top = Math.max(0, Math.round(hero.getBoundingClientRect().top + window.scrollY))
+      hero.style.setProperty('--glow-top', `${top}px`)
+      const below = hero.offsetHeight + top
+      const height = narrow ? below + NARROW_BELOW + Math.max(0, NARROW_FROM - window.innerWidth) * NARROW_GROW : below + GLOW_BELOW
+      hero.style.setProperty('--glow-h', `${Math.round(height)}px`)
+    }
+    fit()
+    const watch = new ResizeObserver(fit)
+    watch.observe(hero)
+    window.addEventListener('resize', fit)
+    return () => {
+      watch.disconnect()
+      window.removeEventListener('resize', fit)
+    }
+  }, [summary?.banner, skin, narrow])
+
   useLayoutEffect(() => {
     showTone(tone)
     return () => showTone(null)
@@ -513,6 +548,17 @@ export default function Profile({ id }: { id?: string }) {
   const dropTile = (spot: number) => keepTiles(cells.map((item, index) => (index === spot ? null : item)))
 
   const banner = skin === undefined ? (isBanner(summary?.banner) ? summary.banner : null) : skin
+  const heroLooks = banner ? (own ? user?.bannerLooks?.[banner] : summary?.bannerLook) : null
+  const heroLook = framing ? framing[narrow ? 'phone' : 'desktop'] : narrow ? (heroLooks?.phone ?? PHONE_LOOK) : (heroLooks?.desktop ?? (banner ? spotLook(banner) : undefined))
+
+  const keepFraming = async () => {
+    if (!banner || !framing) return
+    setFramingBusy(true)
+    const { ok } = await api('profile', { action: 'bannerLook', banner, look: { ...(user?.bannerLooks?.[banner] ?? {}), desktop: framing.desktop, phone: framing.phone } })
+    if (ok) await refresh()
+    setFramingBusy(false)
+    if (ok) setFraming(null)
+  }
   const owned = BANNERS.filter((one) => (summary?.banners ?? []).includes(one))
 
   const keepBanner = (next: Banner | null) => {
@@ -1211,8 +1257,108 @@ export default function Profile({ id }: { id?: string }) {
       </div>
     ) : null
 
+  const heroId = (
+    <div className="profile-hero-id">
+      {own ? <AvatarPicker edit={edit} /> : <Avatar id={id} name={nickname} avatar={summary?.avatar} frame={summary?.frame} />}
+      <div className="profile-hero-main">
+        <div className="profile-hero-name" style={(nickHex ? { '--nick': nickHex } : {}) as CSSProperties}>
+          <span className="hero-nick-line">
+            <span className="hero-nick-who">
+              <h1 ref={nickBox}>{nickname}</h1>
+              {edit && (
+                <button
+                  type="button"
+                  className={`nick-dye ${dye ? 'is-open' : ''}`}
+                  title={t('profile.toneNick')}
+                  aria-label={t('profile.toneNick')}
+                  onClick={(event) => {
+                    setDyeAt(event.currentTarget)
+                    setDye((was) => !was)
+                  }}
+                >
+                  <PencilIcon />
+                </button>
+              )}
+            </span>
+          </span>
+          {tag && <i className="player-tag">#{tag}</i>}
+          {title && <i className={`player-title is-${title} is-under`}>{t(`title.${title}` as UiKey)}</i>}
+          {edit && dye && (
+            <TilePop at={dyeAt} wide={286} onClose={() => setDye(false)}>
+              <header>
+                <h2>{t('profile.toneNick')}</h2>
+              </header>
+              <ul className="tone-shop is-wrap">
+                <li>
+                  <button
+                    type="button"
+                    className={`tone-dot is-plain ${nickTone ? '' : 'on'}`}
+                    style={{ '--dot': '#ffffff' } as CSSProperties}
+                    aria-label={t('profile.toneNickPlain')}
+                    title={t('profile.toneNickPlain')}
+                    onClick={() => keepNick(null)}
+                  />
+                </li>
+                {dyeList.map((game) => (
+                  <li key={game.id}>
+                    <button
+                      type="button"
+                      className={`tone-dot ${nickTone === game.id ? 'on' : ''}`}
+                      style={{ '--dot': game.accent } as CSSProperties}
+                      aria-label={l(game.label)}
+                      title={l(game.label)}
+                      onClick={() => keepNick(nickTone === game.id ? null : game.id)}
+                    />
+                  </li>
+                ))}
+              </ul>
+  
+              {mine.length > 0 && (
+                <>
+                  <header>
+                    <h2>{t('profile.titlePick')}</h2>
+                  </header>
+                  <ul className="title-shop">
+                    <li>
+                      <button type="button" className={`title-pick ${title ? '' : 'on'}`} onClick={() => keepTitle(null)}>
+                        {t('profile.titleNone')}
+                      </button>
+                    </li>
+                    {mine.map((one) => (
+                      <li key={one}>
+                        <button
+                          type="button"
+                          className={`title-pick ${title === one ? 'on' : ''}`}
+                          onClick={() => keepTitle(title === one ? null : one)}
+                        >
+                          {t(`title.${one}` as UiKey)}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </TilePop>
+          )}
+        </div>
+  
+        <Link className="level-panel is-link" href={href.levels} prefetch={false}>
+          <div className="level-line">
+            <span className="level-xp">
+              <b>{summary?.level.into ?? 0}</b> <small>/ {summary?.level.need ?? 0} XP</small>
+            </span>
+            <span className="profile-hero-level">{t('nav.level', { level: summary?.level.level ?? 1 })}</span>
+          </div>
+          <div className="level-bar">
+            <i style={{ width: `${Math.round(((summary?.level.into ?? 0) / (summary?.level.need ?? 1)) * 100)}%` }} />
+          </div>
+        </Link>
+      </div>
+    </div>
+  )
+
   return (
-    <div className="profile" style={(toneHex ? { '--accent': toneHex } : {}) as CSSProperties}>
+    <div className={`profile ${beta ? 'is-beta' : ''} ${framing ? 'is-framing' : ''}`} style={(toneHex ? { '--accent': toneHex } : {}) as CSSProperties}>
       <div className="profile-top">
         <BackButton href={id ? href.board : href.home} anywhere={!!id}>
           {t(id ? 'nav.leaderboard' : 'play.back')}
@@ -1352,9 +1498,31 @@ export default function Profile({ id }: { id?: string }) {
           document.body,
         )}
 
-      {tuning && banner && <BannerTuner banner={banner} looks={user?.bannerLooks?.[banner] ?? null} onClose={() => setTuning(false)} />}
+      {tuning && banner && <BannerTuner banner={banner} looks={user?.bannerLooks?.[banner] ?? null} only={beta ? 'board' : undefined} onClose={() => setTuning(false)} />}
 
-      <section className="profile-hero">
+      <section ref={heroBox} className={beta ? `profile-hero is-bare ${banner ? 'has-art' : ''} ${framing ? 'is-framing' : ''}` : 'profile-hero'}>
+        {beta && !!banner && (
+          <span className="profile-glow" aria-hidden>
+            <BannerArt id={banner} look={{ desktop: heroLook }} place="profile" first focus />
+          </span>
+        )}
+        {beta && !!banner && framing && (
+          <BannerFrame
+            look={framing[framing.key]}
+            device={framing.key}
+            here={narrow ? 'phone' : 'desktop'}
+            onDevice={(key) => setFraming((was) => (was ? { ...was, key } : was))}
+            busy={framingBusy}
+            onChange={(look) => setFraming((was) => (was ? { ...was, [was.key]: look } : was))}
+            onReset={() => setFraming((was) => (was ? { ...was, [was.key]: was.key === 'phone' ? PHONE_LOOK : spotLook(banner) } : was))}
+            onBoard={() => {
+              setFraming(null)
+              setTuning(true)
+            }}
+            onCancel={() => setFraming(null)}
+            onSave={() => void keepFraming()}
+          />
+        )}
         {own && edit && (
           <div className="hero-acts">
             <div className={`banner-pick ${skins ? 'is-open' : ''}`} ref={skinsRef}>
@@ -1377,7 +1545,8 @@ export default function Profile({ id }: { id?: string }) {
                           className="look-open"
                           onClick={() => {
                             setSkins(false)
-                            setTuning(true)
+                            if (beta) setFraming({ key: narrow ? 'phone' : 'desktop', desktop: heroLooks?.desktop ?? spotLook(banner), phone: heroLooks?.phone ?? PHONE_LOOK })
+                            else setTuning(true)
                           }}
                         >
                           {t('profile.bannerTune')}
@@ -1473,135 +1642,42 @@ export default function Profile({ id }: { id?: string }) {
             </div>
           </div>
         )}
-        <ProfileStage
-          art={
-            <>
-              {!!banner && (
-                <span className="profile-art" aria-hidden>
-                  <BannerArt id={banner} look={own ? user?.bannerLooks?.[banner] : summary?.bannerLook} place="profile" first />
-                </span>
-              )}
-      
-              <div className="profile-banner" aria-hidden>
-                {!banner &&
-                  MARKS.map((mark) => (
-                  <em
-                    key={mark.left}
-                    style={
-                      {
-                        left: mark.left,
-                        top: mark.top,
-                        fontSize: mark.size,
-                        transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
-                      } as CSSProperties
-                    }
-                  >
-                      ?!
-                    </em>
-                  ))}
-              </div>
-            </>
-          }
-        >
-          <div className="profile-hero-id">
-            {own ? <AvatarPicker edit={edit} /> : <Avatar id={id} name={nickname} avatar={summary?.avatar} frame={summary?.frame} />}
-            <div className="profile-hero-main">
-              <div className="profile-hero-name" style={(nickHex ? { '--nick': nickHex } : {}) as CSSProperties}>
-                <span className="hero-nick-line">
-                  <span className="hero-nick-who">
-                    <h1 ref={nickBox}>{nickname}</h1>
-                    {edit && (
-                      <button
-                        type="button"
-                        className={`nick-dye ${dye ? 'is-open' : ''}`}
-                        title={t('profile.toneNick')}
-                        aria-label={t('profile.toneNick')}
-                        onClick={(event) => {
-                          setDyeAt(event.currentTarget)
-                          setDye((was) => !was)
-                        }}
-                      >
-                        <PencilIcon />
-                      </button>
-                    )}
+        {beta && narrow ? (
+          <div className="profile-hero-body is-center">{heroId}</div>
+        ) : (
+          <ProfileStage
+            art={
+              <>
+                {!beta && !!banner && (
+                  <span className="profile-art" aria-hidden>
+                    <BannerArt id={banner} look={own ? user?.bannerLooks?.[banner] : summary?.bannerLook} place="profile" first />
                   </span>
-                </span>
-                {tag && <i className="player-tag">#{tag}</i>}
-                {title && <i className={`player-title is-${title} is-under`}>{t(`title.${title}` as UiKey)}</i>}
-                {edit && dye && (
-                  <TilePop at={dyeAt} wide={286} onClose={() => setDye(false)}>
-                    <header>
-                      <h2>{t('profile.toneNick')}</h2>
-                    </header>
-                    <ul className="tone-shop is-wrap">
-                      <li>
-                        <button
-                          type="button"
-                          className={`tone-dot is-plain ${nickTone ? '' : 'on'}`}
-                          style={{ '--dot': '#ffffff' } as CSSProperties}
-                          aria-label={t('profile.toneNickPlain')}
-                          title={t('profile.toneNickPlain')}
-                          onClick={() => keepNick(null)}
-                        />
-                      </li>
-                      {dyeList.map((game) => (
-                        <li key={game.id}>
-                          <button
-                            type="button"
-                            className={`tone-dot ${nickTone === game.id ? 'on' : ''}`}
-                            style={{ '--dot': game.accent } as CSSProperties}
-                            aria-label={l(game.label)}
-                            title={l(game.label)}
-                            onClick={() => keepNick(nickTone === game.id ? null : game.id)}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-  
-                    {mine.length > 0 && (
-                      <>
-                        <header>
-                          <h2>{t('profile.titlePick')}</h2>
-                        </header>
-                        <ul className="title-shop">
-                          <li>
-                            <button type="button" className={`title-pick ${title ? '' : 'on'}`} onClick={() => keepTitle(null)}>
-                              {t('profile.titleNone')}
-                            </button>
-                          </li>
-                          {mine.map((one) => (
-                            <li key={one}>
-                              <button
-                                type="button"
-                                className={`title-pick ${title === one ? 'on' : ''}`}
-                                onClick={() => keepTitle(title === one ? null : one)}
-                              >
-                                {t(`title.${one}` as UiKey)}
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      </>
-                    )}
-                  </TilePop>
                 )}
-              </div>
-  
-              <Link className="level-panel is-link" href={href.levels} prefetch={false}>
-                <div className="level-line">
-                  <span className="level-xp">
-                    <b>{summary?.level.into ?? 0}</b> <small>/ {summary?.level.need ?? 0} XP</small>
-                  </span>
-                  <span className="profile-hero-level">{t('nav.level', { level: summary?.level.level ?? 1 })}</span>
+                <div className="profile-banner" aria-hidden>
+                  {!banner &&
+                    MARKS.map((mark) => (
+                    <em
+                      key={mark.left}
+                      style={
+                        {
+                          left: mark.left,
+                          top: mark.top,
+                          fontSize: mark.size,
+                          transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
+                        } as CSSProperties
+                      }
+                    >
+                        ?!
+                      </em>
+                    ))}
                 </div>
-                <div className="level-bar">
-                  <i style={{ width: `${Math.round(((summary?.level.into ?? 0) / (summary?.level.need ?? 1)) * 100)}%` }} />
-                </div>
-              </Link>
-            </div>
-          </div>
-          {!narrow && tilesBlock}
-        </ProfileStage>
+              </>
+            }
+          >
+            {heroId}
+            {!narrow && tilesBlock}
+          </ProfileStage>
+        )}
       </section>
 
       {narrow && tilesBlock && <div className="profile-hero-body is-under profile-tiles-out">{tilesBlock}</div>}

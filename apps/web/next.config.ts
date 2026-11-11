@@ -5,7 +5,7 @@ const upstream = (process.env.API_ORIGIN ?? process.env.NEXT_PUBLIC_API_URL ?? '
 const config: NextConfig = {
   transpilePackages: ['@nanda/game', '@nanda/core'],
   devIndicators: false,
-  allowedDevOrigins: ['192.168.0.38'],
+  allowedDevOrigins: ['192.168.0.38', '192.168.0.218'],
   agentRules: false,
   async rewrites() {
     return upstream ? [{ source: '/api/:path*', destination: `${upstream}/api/:path*` }] : []

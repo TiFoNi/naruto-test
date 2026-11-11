@@ -23,11 +23,12 @@ const clamp = (value: number) => Math.min(100, Math.max(0, value))
 
 const ZOOM_STEP = 0.25
 
-export default function BannerTuner({ banner, looks, onClose }: { banner: string; looks: BannerLooks | null; onClose: () => void }) {
+export default function BannerTuner({ banner, looks, only, onClose }: { banner: string; looks: BannerLooks | null; only?: LookPlace; onClose: () => void }) {
   const { l } = useI18n()
   const { refresh } = useAuth()
   const [draft, setDraft] = useState<BannerLooks>(looks ?? {})
-  const [current, setCurrent] = useState<LookPlace>('desktop')
+  const [current, setCurrent] = useState<LookPlace>(only ?? 'desktop')
+  const tabs = only ? PLACES.filter((one) => one.key === only) : PLACES
   const [busy, setBusy] = useState(false)
   const [natural, setNatural] = useState<{ w: number; h: number } | null>(null)
   const picture = useRef<HTMLImageElement>(null)
@@ -120,8 +121,9 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
           })}
         </p>
 
+        {tabs.length > 1 && (
         <div className="look-tabs" role="tablist">
-          {PLACES.map((place) => (
+          {tabs.map((place) => (
             <button
               key={place.key}
               type="button"
@@ -134,6 +136,7 @@ export default function BannerTuner({ banner, looks, onClose }: { banner: string
             </button>
           ))}
         </div>
+        )}
 
         <div className="look-row has-phone">
           <figure className="look-card">

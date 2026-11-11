@@ -29,5 +29,21 @@ export const boardSizes = (first: boolean, zoom = 1) => {
 
 export const bannerSpot = (id: string) => LIVE[id]?.spot ?? SPOTS[id]
 
+export const PHONE_LOOK = { x: 50, y: 35, z: 1 }
+
+const SPOT_WORDS: Record<string, number> = { left: 0, top: 0, center: 50, right: 100, bottom: 100 }
+
+const spotPart = (part: string | undefined, fallback: number) => {
+  if (!part) return fallback
+  if (part in SPOT_WORDS) return SPOT_WORDS[part]!
+  const value = parseFloat(part)
+  return Number.isFinite(value) ? value : fallback
+}
+
+export const spotLook = (id: string) => {
+  const [x, y] = (bannerSpot(id) ?? '50% 28%').trim().split(/\s+/)
+  return { x: spotPart(x, 50), y: spotPart(y, 28), z: 1 }
+}
+
 export const bannerClips = (id: string) =>
   (LIVE[id]?.clips ?? []).map((kind) => ({ src: file(id, '', kind), type: `video/${kind}` }))
