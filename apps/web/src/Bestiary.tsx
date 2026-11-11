@@ -12,7 +12,7 @@ import type { Entity, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { CloseIcon, FilterIcon, PinIcon, SearchIcon } from './icons'
 import { MODES } from './modes'
-import { CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_PINS_MAX, CARD_POINTS, CARD_RARITIES, CARD_STEPS, cardRank, type ModeId } from '@nanda/game'
+import { CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_POINTS, CARD_RARITIES, CARD_STEPS, cardPinsMax, cardRank, type ModeId } from '@nanda/game'
 import { PICTURELESS, cardUrl, hdUrl, miniUrl } from './pics'
 import { entityTerms, matchTier, searchKey } from './entity-match'
 import { useHref } from './router'
@@ -1430,7 +1430,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
           accent={accent}
           rank={rankOf(cards[focus.entity.id])}
           pin={
-            pins && open.has(focus.entity.id) && (pins.has(focus.entity.id) || pinCount < CARD_PINS_MAX)
+            pins && open.has(focus.entity.id) && (pins.has(focus.entity.id) || pinCount < cardPinsMax(user?.titles))
               ? { on: pins.has(focus.entity.id), toggle: () => void togglePin(focus.entity.id) }
               : undefined
           }

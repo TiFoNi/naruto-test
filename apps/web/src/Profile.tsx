@@ -15,7 +15,7 @@ import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
 import { ProfileGhost } from './PageSkeleton'
 import Rail from './Rail'
-import { ArrowIcon, CloseIcon, GearIcon, GripIcon, PaletteIcon, PencilIcon, PictureIcon, PlusIcon, SwordsIcon, TrophyIcon, UserCheckIcon, UserPlusIcon, UserWaitIcon } from './icons'
+import { ArrowIcon, CloseIcon, GearIcon, GripIcon, LockIcon, PaletteIcon, PencilIcon, PictureIcon, PlusIcon, SwordsIcon, TrophyIcon, UserCheckIcon, UserPlusIcon, UserWaitIcon } from './icons'
 import AwardIcon from './awardIcons'
 import { useHref, useNavigate } from './router'
 import { refreshFeed } from './awards'
@@ -31,6 +31,7 @@ import { bannerPic, bannerSpot, spotLook } from './banners'
 import BannerFrame from './BannerFrame'
 import {
   CARD_PINS_MAX,
+  cardPinsMax,
   HERO_TILES,
   HERO_TILES_DEFAULT,
   HERO_TILES_MAX,
@@ -58,7 +59,6 @@ import ProfileBoard, { type BoardSave } from './ProfileBoard'
 const UNPIN_POINTS = tornPoints(42, 9, 4)
   .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
   .join(' ')
-const ROW = 4
 const GLOW_CROP = 1.12
 const GLOW_WIDE = 1440
 const GLOW_GROW = 1.5
@@ -208,7 +208,9 @@ export default function Profile({ id }: { id?: string }) {
 
   const [summary, setSummary] = useState<Summary | null>(own ? knownSummary : null)
   const [adding, setAdding] = useState<HTMLElement | null>(null)
+  const [locked, setLocked] = useState<HTMLElement | null>(null)
   const blankAt = useRef<(HTMLButtonElement | null)[]>([])
+  const lockAt = useRef<(HTMLButtonElement | null)[]>([])
   const [places, setPlaces] = useState(false)
   const [edit, setEdit] = useState(false)
   const [layout, setLayout] = useState<ProfileBlock[] | null>(null)
@@ -723,7 +725,7 @@ export default function Profile({ id }: { id?: string }) {
 
   const tune = () => setEdit((was) => !was)
 
-  const panels: Record<ProfileBlock, ReactNode> = {
+  const panels: Record<ProfileBlock, ReactNode | ((cols: number) => ReactNode)> = {
     facts: (
       <section className="card profile-card">
         <div className="profile-facts">
@@ -807,7 +809,7 @@ export default function Profile({ id }: { id?: string }) {
         )}
       </section>
     ),
-    worlds: (
+    worlds: (cols: number) => (
       <section className="card worlds-card">
         <header>
           <h2>{t('profile.worlds')}</h2>
@@ -859,7 +861,7 @@ export default function Profile({ id }: { id?: string }) {
                 </li>
               )
             })}
-            {Array.from({ length: sorting ? blanks : Math.min(blanks, (ROW - (shelf.length % ROW)) % ROW) }, (_, index) => (
+            {Array.from({ length: sorting ? blanks : Math.min(blanks, (cols - (shelf.length % cols)) % cols) }, (_, index) => (
               <li key={`blank-${index}`} className="is-blank">
                 {own && user ? (
                   <Link
@@ -920,7 +922,23 @@ export default function Profile({ id }: { id?: string }) {
             </li>
           ))}
           {sorting &&
-            Array.from({ length: Math.max(0, CARD_PINS_MAX - deck.length) }, (_, index) => (
+            Array.from({ length: Math.max(0, CARD_PINS_MAX - deck.length) }, (_, index) =>
+              deck.length + index >= cardPinsMax(user?.titles) ? (
+                <li key={`blank-${index}`} className="is-blank">
+                  <button
+                    type="button"
+                    className={`card-blank is-locked ${locked && locked === lockAt.current[index] ? 'is-open' : ''}`}
+                    ref={(node) => {
+                      lockAt.current[index] = node
+                    }}
+                    aria-label={t('profile.cardsPatron')}
+                    title={t('profile.cardsPatron')}
+                    onClick={(event) => setLocked(event.currentTarget)}
+                  >
+                    <LockIcon />
+                  </button>
+                </li>
+              ) : (
               <li key={`blank-${index}`} className="is-blank">
                 <button
                   type="button"
@@ -937,6 +955,20 @@ export default function Profile({ id }: { id?: string }) {
               </li>
             ))}
         </ul>
+        {locked && (
+          <TilePop at={locked} wide={300} onClose={() => setLocked(null)}>
+            <div className="patron-slot">
+              <span className="patron-slot-mark" aria-hidden>
+                <LockIcon />
+              </span>
+              <h2>{t('profile.cardsPatron')}</h2>
+              <p>{t('profile.cardsPatronHint', { title: t('title.patron') })}</p>
+              <Link className="primary" href={href.support} prefetch={false} onClick={() => setLocked(null)}>
+                {t('profile.cardsPatronGo')}
+              </Link>
+            </div>
+          </TilePop>
+        )}
         {adding && (
           <TilePop at={adding} wide={300} onClose={() => setAdding(null)}>
             <header>
@@ -961,7 +993,7 @@ export default function Profile({ id }: { id?: string }) {
         )}
       </section>
     ),
-    awards: (
+    awards: (cols: number) => (
       <section className="card soon-card">
         <header>
           <h2>
@@ -978,7 +1010,7 @@ export default function Profile({ id }: { id?: string }) {
           )}
         </header>
         <ul className={`soon-badges ${sorting ? 'is-sortable' : ''}`} ref={awardSort.list} onClickCapture={holdLinks}>
-          {Array.from({ length: sorting ? SHOWCASE_MAX : Math.min(SHOWCASE_MAX, Math.ceil(awardSort.sorted.length / ROW) * ROW) }, (_, index) => {
+          {Array.from({ length: sorting ? SHOWCASE_MAX : Math.min(SHOWCASE_MAX, Math.ceil(awardSort.sorted.length / cols) * cols) }, (_, index) => {
             const award = awardSort.sorted[index]
             if (!award)
               return (
@@ -1750,15 +1782,23 @@ export default function Profile({ id }: { id?: string }) {
         sides={boardSides}
         seen={boardSeen}
         sizes={boardSizes}
-        counts={{
-          worlds: shelf.length + (sorting ? blanks : Math.min(blanks, (ROW - (shelf.length % ROW)) % ROW)),
-          awards: sorting ? SHOWCASE_MAX : Math.min(SHOWCASE_MAX, Math.ceil(pinned.length / ROW) * ROW),
-          cards: sorting ? CARD_PINS_MAX : deck.length,
-        }}
+        count={(block, cols) =>
+          block === 'worlds'
+            ? shelf.length + (sorting ? blanks : Math.min(blanks, (cols - (shelf.length % cols)) % cols))
+            : block === 'awards'
+              ? sorting
+                ? SHOWCASE_MAX
+                : Math.min(SHOWCASE_MAX, Math.ceil(pinned.length / cols) * cols)
+              : block === 'cards'
+                ? sorting
+                  ? CARD_PINS_MAX
+                  : deck.length
+                : undefined
+        }
         edit={edit}
         onStart={shutPops}
         onSave={saveBoard}
-        render={(block) => (
+        render={(block, cols) => (
           <>
             {edit && (
               <div className="slot-bar">
@@ -1771,7 +1811,10 @@ export default function Profile({ id }: { id?: string }) {
                 </button>
               </div>
             )}
-            {panels[block]}
+            {(() => {
+              const panel = panels[block]
+              return typeof panel === 'function' ? panel(cols) : panel
+            })()}
           </>
         )}
       />

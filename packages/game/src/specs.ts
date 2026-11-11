@@ -855,7 +855,11 @@ export const CARD_STEPS = [
   { level: 30, xp: 30 },
 ] as const
 
-export const CARD_PINS_MAX = 12
+export const CARD_PINS_MAX = 16
+
+export const CARD_PINS_FREE = 12
+
+export const cardPinsMax = (titles?: readonly string[] | null) => (titles?.includes('patron') ? CARD_PINS_MAX : CARD_PINS_FREE)
 
 export const CARD_MAX_LEVEL = CARD_STEPS[CARD_STEPS.length - 1]!.xp
 

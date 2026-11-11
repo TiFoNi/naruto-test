@@ -124,17 +124,72 @@
 }
 
 .profile-grid .react-grid-item.profile-slot > .slot-grow {
-  bottom: 9px;
+  bottom: 4px;
 }
 
 .react-grid-item.profile-slot :is(.world-shelf, .soon-badges, .card-shelf) {
   align-content: start;
 }
 
-.react-grid-item.profile-slot[data-rows='1'] :is(.world-shelf, .soon-badges, .card-shelf) > li:nth-child(n + 5),
-.react-grid-item.profile-slot[data-rows='2'] :is(.world-shelf, .soon-badges, .card-shelf) > li:nth-child(n + 9),
-.react-grid-item.profile-slot[data-rows='3'] :is(.world-shelf, .soon-badges, .card-shelf) > li:nth-child(n + 13) {
+.react-grid-item.profile-slot[data-shown='4'] :is(.world-shelf, .soon-badges, .card-shelf) > li:nth-child(n + 5),
+.react-grid-item.profile-slot[data-shown='8'] :is(.world-shelf, .soon-badges, .card-shelf) > li:nth-child(n + 9),
+.react-grid-item.profile-slot[data-shown='12'] :is(.world-shelf, .soon-badges, .card-shelf) > li:nth-child(n + 13) {
   display: none;
+}
+
+.react-grid-item.profile-slot.is-full :is(.world-shelf, .soon-badges) {
+  grid-template-columns: repeat(8, var(--shelf-cell, minmax(0, 200px)));
+  justify-content: space-between;
+}
+
+.react-grid-item.profile-slot.is-full .card-shelf {
+  grid-template-columns: repeat(8, minmax(var(--card-w, 0px), 1fr));
+}
+
+.profile-grid:not(.is-edit) .slot-widen {
+  display: none;
+}
+
+.slot-widen {
+  position: absolute;
+  z-index: 3;
+  top: 40px;
+  bottom: 14px;
+  width: 13px;
+  border-radius: 6px;
+  cursor: ew-resize;
+  touch-action: none;
+  -webkit-touch-callout: none;
+}
+
+.slot-widen.is-left {
+  left: -10px;
+}
+
+.slot-widen.is-right {
+  right: -10px;
+}
+
+.slot-widen::after {
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  width: 5px;
+  height: 46px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 45%, transparent);
+  content: '';
+  translate: 0 -50%;
+  transition: background 0.15s;
+}
+
+.slot-widen:hover::after,
+.profile-slot.is-widening .slot-widen::after {
+  background: var(--accent);
+}
+
+.profile-slot.is-widening > .card {
+  outline-color: var(--accent);
 }
 
 .react-grid-item .card-shelf {
@@ -170,7 +225,7 @@
   right: 12px;
   bottom: -5px;
   left: 12px;
-  height: 12px;
+  height: 13px;
   border-radius: 6px;
   cursor: ns-resize;
   touch-action: none;
@@ -179,14 +234,14 @@
 
 .slot-grow::after {
   position: absolute;
-  top: 50%;
+  top: 4px;
   left: 50%;
   width: 46px;
-  height: 4px;
+  height: 5px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--accent) 45%, transparent);
   content: '';
-  translate: -50% -50%;
+  translate: -50% 0;
   transition: background 0.15s;
 }
 
@@ -2688,6 +2743,11 @@ button.fact-rank:hover {
   line-height: 1.24;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.soon-badges li.on:has(.award-art) b {
+  margin-top: -10%;
+  margin-bottom: 10%;
 }
 
 .soon-badges li small {

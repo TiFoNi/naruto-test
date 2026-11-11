@@ -35,6 +35,13 @@ const ui = {
   'profile.cardsRemove': { ru: 'Убрать из профиля', uk: 'Прибрати з профілю', en: 'Remove from profile' },
   'profile.cardsPick': { ru: 'Из какой вселенной?', uk: 'З якого всесвіту?', en: 'Which world?' },
   'profile.cardsAdd': { ru: 'Закрепить карту', uk: 'Закріпити картку', en: 'Pin a card' },
+  'profile.cardsPatron': { ru: 'Слот только для меценатов', uk: 'Слот лише для меценатів', en: 'Patrons-only slot' },
+  'profile.cardsPatronHint': {
+    ru: 'Ещё 4 места для карт открываются с титулом «{title}». Он навсегда даётся за любую покупку монет — это поддержка проекта.',
+    uk: 'Ще 4 місця для карток відкриваються з титулом «{title}». Він назавжди дається за будь-яку покупку монет — це підтримка проєкту.',
+    en: '4 more card slots unlock with the “{title}” title. It is yours forever after any coin purchase — that is how you support the project.',
+  },
+  'profile.cardsPatronGo': { ru: 'Поддержать проект', uk: 'Підтримати проєкт', en: 'Support the project' },
   'dex.rarityFilter': { ru: 'Фильтр по редкости', uk: 'Фільтр за рідкістю', en: 'Filter by rarity' },
   'dex.search': { ru: 'Поиск по имени', uk: 'Пошук за ім’ям', en: 'Search by name' },
   'dex.searchClear': { ru: 'Очистить', uk: 'Очистити', en: 'Clear' },

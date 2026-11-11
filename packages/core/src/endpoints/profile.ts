@@ -2,7 +2,7 @@ import { fail, handle, json, readJson } from '../http'
 import { quests, rounds, seasons, shotDays, shotRuns, streaks, tuneRuns } from '../db'
 import { claimTag, currentUser, lowerNickname, ownedTitles, parseNickname, toProfile, unauthorized } from '../profile'
 import { isFrame } from '../frames'
-import { CARD_PINS_MAX, GAME_IDS, bannerCost, bannerLooks, bundleOf, frameCost, heroTiles, isBanner, isTitle, isTone, profileBlocks, saleAt, salePrice, scrapValue } from '@nanda/game'
+import { GAME_IDS, bannerCost, cardPinsMax, bannerLooks, bundleOf, frameCost, heroTiles, isBanner, isTitle, isTone, profileBlocks, saleAt, salePrice, scrapValue } from '@nanda/game'
 
 const SHOWCASE_MAX = 8
 const BLOCK_MIN = 60
@@ -81,7 +81,7 @@ export const POST = handle(async (request) => {
           return (GAME_IDS as string[]).includes(game!) && Number.isInteger(id) && (found.doc.dex?.[game!] ?? []).includes(id)
         }),
       ),
-    ].slice(0, CARD_PINS_MAX)
+    ].slice(0, cardPinsMax(ownedTitles(found.doc)))
     await found.collection.updateOne({ _id: found.doc._id }, { $set: { cardPins: pins } })
     return json({ pins })
   }
@@ -94,7 +94,7 @@ export const POST = handle(async (request) => {
     const pins = found.doc.cardPins ?? []
     if (body.on) {
       if (!(found.doc.dex?.[game] ?? []).includes(id)) return fail(403, 'not_yours')
-      if (!pins.includes(key) && pins.length >= CARD_PINS_MAX) return fail(409, 'pins_full')
+      if (!pins.includes(key) && pins.length >= cardPinsMax(ownedTitles(found.doc))) return fail(409, 'pins_full')
       await found.collection.updateOne({ _id: found.doc._id }, { $addToSet: { cardPins: key } })
     } else {
       await found.collection.updateOne({ _id: found.doc._id }, { $pull: { cardPins: key } })
@@ -235,7 +235,7 @@ export const POST = handle(async (request) => {
     )
     const sides = Object.fromEntries(
       Object.entries((body.sides ?? {}) as Record<string, unknown>)
-        .filter(([block, side]) => picked.includes(block as never) && (Number(side) === 0 || Number(side) === 1))
+        .filter(([block, side]) => picked.includes(block as never) && (Number(side) === 0 || Number(side) === 1 || (Number(side) === 2 && ['worlds', 'awards', 'cards'].includes(block))))
         .map(([block, side]) => [block, Number(side)]),
     )
     const seen = Object.fromEntries(

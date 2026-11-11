@@ -77,6 +77,7 @@ export default function TilePop({ at, onClose, wide = WIDE, children }: Props) {
   return createPortal(
     <div
       className="tile-sheet"
+      style={{ zoom: 1 / (parseFloat(getComputedStyle(document.body).zoom) || 1) }}
       role="presentation"
       onPointerDown={(event) => event.preventDefault()}
       onClick={onClose}
