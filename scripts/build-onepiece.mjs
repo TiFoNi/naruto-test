@@ -57,6 +57,8 @@ const PENDING = [
   'Shepherd Ju Peter', 'Vegapunk/Lilith', 'Vegapunk/York', 'Avalo Pizarro', 'Morgans', 'Elizabello II', 'Rimoshifu Killingham', 'Vegapunk/Atlas', 'Vegapunk/Shaka',
 ]
 
+const HIDDEN = []
+
 ANSWERS.push(...PENDING)
 
 const EN_NAMES = { 'Vegapunk/Lilith': 'Lilith', 'Vegapunk/York': 'York', 'Vegapunk/Atlas': 'Atlas', 'Vegapunk/Shaka': 'Shaka' }
@@ -565,7 +567,8 @@ async function main() {
       arc: ARCS[arcIndex][1],
       arcIndex,
       answer: ANSWERS.includes(name),
-      ...(pending ? { hidden: true, thumb: -1 } : {}),
+      ...(pending ? { thumb: -1 } : {}),
+      ...(HIDDEN.includes(name) ? { hidden: true } : {}),
     })
   })
 
@@ -576,7 +579,7 @@ async function main() {
 
   onlyAnswers(result)
   result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
-  const shown = result.filter((one) => !one.hidden)
+  const shown = result.filter((one) => !one.hidden && one.thumb !== -1)
   if (shown.every((one) => before.get(one.id)?.thumb >= 0)) for (const one of shown) one.thumb = before.get(one.id).thumb
   else await writeAtlas(shown, THUMBS, path.join(OUT_IMG, 'thumbs.webp'), OUT_ATLAS, 12, 96)
   await pruneImages(path.join(OUT_IMG, 'full'), shown)
