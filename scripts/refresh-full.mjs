@@ -14,8 +14,11 @@ if (!game || !dir || !mode || !GAME_SPECS[game]) {
 }
 
 const folder = GAME_SPECS[game].images
-const version = (buffer) => createHash('sha1').update(buffer).digest('hex').slice(0, 8)
+const salt = process.argv.find((arg) => arg.startsWith('--salt='))?.slice('--salt='.length) ?? ''
+const version = (buffer) => createHash('sha1').update(salt).update(buffer).digest('hex').slice(0, 8)
 const files = (await fs.readdir(dir)).filter((name) => /^\d+\.webp$/.test(name))
+const adminList = process.argv.find((arg) => arg.startsWith('--admin='))?.slice('--admin='.length)
+const adminIds = adminList ? new Set((await fs.readFile(adminList, 'utf8')).split(/\s+/).filter(Boolean)) : null
 
 if (mode === 'r2') {
   const { R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET } = process.env
@@ -37,7 +40,7 @@ if (mode === 'r2') {
           Body: await fs.readFile(path.join(dir, name)),
           ContentType: 'image/webp',
           CacheControl: 'public, max-age=31536000, immutable',
-          Metadata: { source: 'admin' },
+          ...(!adminIds || adminIds.has(name.replace('.webp', '')) ? { Metadata: { source: 'admin' } } : {}),
         }),
       )
       sent++
