@@ -22,7 +22,9 @@ const LIVE_FIELDS = { shots: ['frames', 'frameNames', 'answer', 'ver'] }
 
 const updatedAt = new Date()
 const only = process.argv.slice(2).find((arg) => !arg.startsWith('--'))
-const overwrite = process.argv.includes('--overwrite-admin')
+const overwriteArg = process.argv.find((arg) => arg === '--overwrite-admin' || arg.startsWith('--overwrite-admin='))
+const overwriteIds = overwriteArg?.includes('=') ? new Set(overwriteArg.split('=')[1].split(',').map(Number)) : null
+const overwriteFor = (id) => !!overwriteArg && (!overwriteIds || overwriteIds.has(id))
 let total = 0
 
 for (const [game, spec] of Object.entries(GAME_SPECS)) {
@@ -43,14 +45,15 @@ for (const [game, spec] of Object.entries(GAME_SPECS)) {
     const set = { ...entity, game, updatedAt }
     for (const field of owned) delete set[field]
     const live = byId.get(entity.id)
-    if (live && !overwrite) {
+    if (live && !overwriteFor(entity.id)) {
       for (const field of live.edited) {
         if (!(field in set)) continue
         if (JSON.stringify(set[field]) !== JSON.stringify(live[field])) kept.push(`${entity.name ?? entity.id}: ${field}`)
         delete set[field]
       }
     }
-    if (overwrite) return { updateOne: { filter: { game, id: entity.id }, update: { $set: set, $unset: { edited: '' }, ...(Object.keys(seeded).length ? { $setOnInsert: seeded } : {}) }, upsert: true } }
+    if (live && overwriteFor(entity.id))
+      return { updateOne: { filter: { game, id: entity.id }, update: { $set: set, $pull: { edited: { $in: Object.keys(set) } }, ...(Object.keys(seeded).length ? { $setOnInsert: seeded } : {}) }, upsert: true } }
 
     return {
       updateOne: {
@@ -71,7 +74,7 @@ for (const [game, spec] of Object.entries(GAME_SPECS)) {
   if (kept.length) {
     console.log(`    лишив правки з адмінки, хоча в JSON інакше (${kept.length}):`)
     for (const line of kept) console.log(`      ${line}`)
-    console.log('    щоб перезаписати їх даними з JSON — додай --overwrite-admin')
+    console.log('    щоб перезаписати їх даними з JSON — додай --overwrite-admin (усі) або --overwrite-admin=<id,id> (лише ці)')
   }
 }
 
