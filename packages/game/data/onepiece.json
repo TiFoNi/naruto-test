@@ -624,25 +624,6 @@
   "thumb": 28
  },
  {
-  "id": 2550,
-  "name": "Джонни",
-  "nameEn": "Johnny",
-  "gender": "Мужской",
-  "races": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Другое"
-  ],
-  "fruits": [],
-  "haki": [],
-  "bounty": 0,
-  "arc": "Барати",
-  "arcIndex": 3,
-  "answer": true,
-  "thumb": 29
- },
- {
   "id": 8549,
   "name": "Джюэлри Бонни",
   "nameEn": "Jewelry Bonney",
@@ -769,25 +750,6 @@
   "arcIndex": 12,
   "answer": true,
   "thumb": 35
- },
- {
-  "id": 2549,
-  "name": "Ёсаку",
-  "nameEn": "Yosaku",
-  "gender": "Мужской",
-  "races": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Другое"
-  ],
-  "fruits": [],
-  "haki": [],
-  "bounty": 0,
-  "arc": "Барати",
-  "arcIndex": 3,
-  "answer": true,
-  "thumb": 36
  },
  {
   "id": 291337,
@@ -1577,26 +1539,6 @@
   "thumb": 72
  },
  {
-  "id": 1821,
-  "name": "Моджи",
-  "nameEn": "Mohji",
-  "gender": "Мужской",
-  "races": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Кросс Гильдия",
-   "Пираты Багги"
-  ],
-  "fruits": [],
-  "haki": [],
-  "bounty": 0,
-  "arc": "Оранж-Таун",
-  "arcIndex": 1,
-  "answer": true,
-  "thumb": 73
- },
- {
   "id": 1969,
   "name": "Момоо",
   "nameEn": "Momoo",
@@ -1827,25 +1769,6 @@
   "thumb": 84
  },
  {
-  "id": 1952,
-  "name": "Пандамен",
-  "nameEn": "Pandaman",
-  "gender": "Мужской",
-  "races": [
-   "Неизвестно"
-  ],
-  "affiliations": [
-   "Другое"
-  ],
-  "fruits": [],
-  "haki": [],
-  "bounty": 0,
-  "arc": "Барати",
-  "arcIndex": 3,
-  "answer": true,
-  "thumb": 85
- },
- {
   "id": 8165,
   "name": "Паппаг",
   "nameEn": "Pappag",
@@ -1973,26 +1896,6 @@
   "arcIndex": 21,
   "answer": true,
   "thumb": 91
- },
- {
-  "id": 2183,
-  "name": "Ричи",
-  "nameEn": "Richie",
-  "gender": "Мужской",
-  "races": [
-   "Животное"
-  ],
-  "affiliations": [
-   "Кросс Гильдия",
-   "Пираты Багги"
-  ],
-  "fruits": [],
-  "haki": [],
-  "bounty": 0,
-  "arc": "Оранж-Таун",
-  "arcIndex": 1,
-  "answer": true,
-  "thumb": 92
  },
  {
   "id": 1528,

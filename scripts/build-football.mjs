@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { PUBLIC, ROOT, cachedJson, getJson, pool as pool_, pruneImages, writeAtlas, writeFullAndThumb } from './lib.mjs'
+import { dropDeleted } from './dropped.mjs'
 
 const CACHE = path.join(ROOT, '.cache', 'football')
 const THUMBS = path.join(CACHE, 'thumb')
@@ -474,6 +475,7 @@ const main = async () => {
     }
   }
 
+  dropDeleted(ready, 'football')
   await writeAtlas(ready, THUMBS, path.join(OUT_IMG, 'thumbs.webp'), OUT_ATLAS, 10, 96)
   await pruneImages(path.join(OUT_IMG, 'full'), ready)
   await pruneImages(path.join(OUT_IMG, 'card'), ready)

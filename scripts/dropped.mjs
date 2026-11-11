@@ -5,7 +5,7 @@ export const DROPPED = {
   tg: [2669, 14024, 14791, 165334],
   berserk: [],
   kny: [],
-  onepiece: [],
+  onepiece: [2549, 2550, 1821, 1952, 2183],
   mk: [],
   hxh: [],
   bc: [5988],
@@ -17,6 +17,7 @@ export const DROPPED = {
   manga: [],
   jjk: [4775],
   csm: [2573],
+  football: [47230],
 }
 
 export function onlyAnswers(list) {
