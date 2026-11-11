@@ -40,8 +40,26 @@ const ANSWERS = [
   'Galdino', 'Daz Bonez', 'Kalifa', 'Monet', 'Vergo', 'Trebol', 'Rebecca', 'Kyros', 'Rocks D. Xebec', 'Nerona Imu',
   'Jaygarcia Saturn', 'Koala', 'Hina', 'Uta', 'Kurozumi Kanjuro', 'Kouzuki Hiyori',
   'Chouchou', 'Karoo', 'Gaimon', 'Johnny', 'Yosaku', 'Jango', 'Mohji', 'Cabaji', 'Richie', 'Marianne', 'Gem', 'Mr. 9',
-  'Camie', 'Pappag', 'Duval', 'Baby 5', 'Senor Pink', 'Dalton', 'Yokozuna', 'Pandaman', 'Momoo', 'Zeus', 'Prometheus', 'Merry', 'Otohime', 'Fisher Tiger', 'Raizo', 'Izou',
+  'Camie', 'Pappag', 'Duval', 'Baby 5', 'Senor Pink', 'Dalton', 'Yokozuna', 'Pandaman', 'Zeus', 'Prometheus', 'Merry', 'Otohime', 'Fisher Tiger', 'Raizo', 'Izou',
 ]
+
+const PENDING = [
+  'Aladine', 'Stussy', 'Buffalo', 'Bellamy', 'Bepo', 'Boa Sandersonia', 'Boa Marigold', 'Brogy', 'Manmayer Gunko', 'Wadatsumi',
+  'Wyper', 'Van Augur', 'Vander Decken IX', 'Vasco Shot', 'Wicca', 'Vinsmoke Ichiji', 'Vinsmoke Niji', 'Vinsmoke Yonji',
+  'Viola', 'Gladius', 'Dellinger', 'Jesus Burgess', 'Giolla', 'Diamante', 'Donquixote Rosinante', 'Dorry', 'Igaram', 'Ideo',
+  'Inazuma', 'Caribou', 'Catarina Devon', 'Curly Dadan', 'Kikunojo', 'Kokoro', 'Crocus', 'Shimotsuki Kuina', 'Kureha',
+  'Laboon', 'Lao G', 'Leo', 'Charlotte Lola', 'Makino', 'Mansherry', 'Marguerite', 'Neptune', 'Nefertari Cobra', 'Nico Olvia',
+  'Oars', 'Pedro', 'Pekoms', 'Pell', 'Pica', 'Portgas D. Rouge', 'Satori', 'Sugar', 'Spandam', 'Sentomaru', 'Shakuyaku',
+  'Shyarly', 'Hajrudin', 'Gerd', 'Helmeppo', 'Tsuru', 'Chimney', 'Charlotte Brûlée', 'Charlotte Cracker', 'Charlotte Galette',
+  "Charlotte Mont-d'Or", 'Charlotte Perospero', 'Charlotte Smoothie', 'Charlotte Chiffon', 'Karasu', 'Belo Betty', 'Morley',
+  'Lindbergh', 'Ginny', 'Absalom', 'Jaguar D. Saul', 'Ulti', 'Black Maria', "Who's-Who", 'Aramaki', 'Road', 'Shiryu',
+  'Charlotte Oven', 'Page One', 'Figarland Shamrock', 'Ethanbaron V. Nusjuro', 'Topman Warcury', 'Marcus Mars',
+  'Shepherd Ju Peter', 'Vegapunk/Lilith', 'Vegapunk/York', 'Avalo Pizarro',
+]
+
+ANSWERS.push(...PENDING)
+
+const EN_NAMES = { 'Vegapunk/Lilith': 'Lilith', 'Vegapunk/York': 'York' }
 
 const MINOR = new Set(['Hyougoro', 'Sai', 'Leo', 'Mansherry', 'Gan Fall', 'Genzo', 'Hannyabal', 'Tom', 'Shakuyaku', 'Mikita', 'Zala'])
 
@@ -118,7 +136,7 @@ const RACE_FIX = {
   Pandaman: ['Неизвестно'],
 }
 
-const GENDER_FIX = { Yamato: 'Женский', Bentham: 'Мужской' }
+const GENDER_FIX = { Yamato: 'Женский', Bentham: 'Мужской', Dellinger: 'Мужской' }
 
 const HAKI_FIX = {
   Sanji: ['Наблюдения', 'Вооружения', 'Королевская'],
@@ -167,7 +185,8 @@ const AFFILIATION_RULES = [
   ['Минки', /mokomo dukedom|mink tribe/i],
   ['Галлей-Ла', /galley-la/i],
   ['Королевство Рюгу', /ryugu kingdom/i],
-  ['Дрессроза', /dressrosa|riku family|tontatta/i],
+  ['Тонтатта', /tontatta/i],
+  ['Дрессроза', /dressrosa|riku family/i],
 ]
 
 const NAMES = {
@@ -217,7 +236,6 @@ const NAMES = {
   Dalton: 'Далтон',
   Yokozuna: 'Ёкодзуна',
   Pandaman: 'Пандамен',
-  Momoo: 'Момоо',
   Zeus: 'Зевс',
   Prometheus: 'Прометей',
   Merry: 'Мэри',
@@ -245,17 +263,108 @@ const NAMES = {
   'Nefertari Cobra': 'Нефертари Кобра',
   'Bell-mère': 'Белл-мэр',
   "Who's-Who": 'Ху-из-Ху',
-  'Rocks D. Xebec': 'Рокс Д. Зибек',
+  'Rocks D. Xebec': 'Рокс Д. Шебек',
+  Aladine: 'Аладин',
+  Stussy: 'Стусси',
+  Buffalo: 'Баффало',
+  Bellamy: 'Беллами',
+  Bepo: 'Бепо',
+  'Boa Sandersonia': 'Боа Сандерсония',
+  'Boa Marigold': 'Боа Мариголд',
+  Brogy: 'Брогги',
+  'Manmayer Gunko': 'Манмаер Гунко',
+  Wadatsumi: 'Вадацуми',
+  Wyper: 'Вайпер',
+  'Van Augur': 'Ван Огер',
+  'Vander Decken IX': 'Вандер Деккен IX',
+  'Vasco Shot': 'Васко Шот',
+  Wicca: 'Викка',
+  'Vinsmoke Ichiji': 'Винсмок Ичиджи',
+  'Vinsmoke Niji': 'Винсмок Ниджи',
+  'Vinsmoke Yonji': 'Винсмок Йонджи',
+  Viola: 'Виола',
+  Gladius: 'Гладиус',
+  Dellinger: 'Деллинджер',
+  'Jesus Burgess': 'Джизус Бёрджесс',
+  Giolla: 'Джолла',
+  Diamante: 'Диаманте',
+  'Donquixote Rosinante': 'Донкихот Росинант (Корасон)',
+  Dorry: 'Дорри',
+  Igaram: 'Игарам',
+  Ideo: 'Идео',
+  Inazuma: 'Инадзума',
+  Caribou: 'Карибу',
+  'Catarina Devon': 'Катарина Девон',
+  'Curly Dadan': 'Кёрли Дадан',
+  Kikunojo: 'Кикуноджо',
+  Kokoro: 'Кокоро',
+  Crocus: 'Крокус',
+  Kureha: 'Куреха',
+  Laboon: 'Лабун',
+  'Lao G': 'Лао Джи',
+  Leo: 'Лео',
+  'Charlotte Lola': 'Шарлотта Лола',
+  Makino: 'Макино',
+  Mansherry: 'Маншерри',
+  Marguerite: 'Маргарет',
+  Neptune: 'Нептун',
+  'Nefertari Cobra': 'Нефертари Кобра',
+  Oars: 'Оарс',
+  Pedro: 'Педро',
+  Pekoms: 'Пекомс',
+  Pell: 'Пелл',
+  Pica: 'Пика',
+  'Portgas D. Rouge': 'Портгас Д. Руж',
+  Satori: 'Сатори',
+  Sugar: 'Сахарок',
+  Spandam: 'Спандам',
+  Sentomaru: 'Сэнтомару',
+  Shakuyaku: 'Сякуяку (Шакки)',
+  Shyarly: 'Сярли',
+  Hajrudin: 'Хайрудин',
+  Gerd: 'Герд',
+  Helmeppo: 'Хельмеппо',
+  Tsuru: 'Цуру',
+  Chimney: 'Чимни',
+  'Charlotte Brûlée': 'Шарлотта Брюле',
+  'Charlotte Cracker': 'Шарлотта Крекер',
+  'Charlotte Galette': 'Шарлотта Галетт',
+  "Charlotte Mont-d'Or": 'Шарлотта Мон-Дор',
+  'Charlotte Perospero': 'Шарлотта Перосперо',
+  'Charlotte Smoothie': 'Шарлотта Смузи',
+  'Charlotte Chiffon': 'Шарлотта Шифон',
+  Karasu: 'Карасу',
+  'Belo Betty': 'Бело Бетти',
+  Morley: 'Морли',
+  Lindbergh: 'Линдберг',
+  Ginny: 'Джинни',
+  Absalom: 'Абсалом',
+  'Jaguar D. Saul': 'Ягуар Д. Саул',
+  Ulti: 'Ульти',
+  'Black Maria': 'Блэк Мария',
+  "Who's-Who": 'Хуз Ху',
+  Aramaki: 'Арамаки (Рёкугю)',
+  Road: 'Роуд',
+  Shiryu: 'Ширю',
+  'Charlotte Oven': 'Шарлотта Овен',
+  'Page One': 'Пейдж Ван',
+  'Figarland Shamrock': 'Фигарланд Шемрок',
+  'Ethanbaron V. Nusjuro': 'Итанбарон В. Нусджуро',
+  'Topman Warcury': 'Топман Воркури',
+  'Marcus Mars': 'Маркус Марс',
+  'Shepherd Ju Peter': 'Шепард Джу Питер',
+  'Vegapunk/Lilith': 'Лилит',
+  'Vegapunk/York': 'Йорк',
+  'Avalo Pizarro': 'Авало Писарро',
   Iceburg: 'Айсбёрг',
   Urouge: 'Урог',
   Paulie: 'Паули',
-  Sugar: 'Шугар',
   'Shimotsuki Kuina': 'Куина',
   'X Drake': 'Икс Дрейк',
   'Nico Olvia': 'Нико Ольвия',
 }
 
-const AFFILIATION_OVERRIDES = { Magellan: ['Мировое правительство'], Izou: ['Пираты Белоуса', 'Вано'] }
+const AFFILIATION_OVERRIDES = { Magellan: ['Мировое правительство'], Izou: ['Пираты Белоуса', 'Вано'], Ulti: ['Пираты Зверей'], 'Page One': ['Пираты Зверей'] }
 
 function affiliationsOf(text) {
   const found = AFFILIATION_RULES.filter(([, re]) => re.test(text)).map(([label]) => label)
@@ -380,21 +489,30 @@ async function categoriesOf(titles) {
   return out
 }
 
+async function cachedFor(file, names, load) {
+  const kept = await cachedJson(CACHE, file, () => load(names))
+  const missing = names.filter((name) => !(name in kept))
+  if (!missing.length) return kept
+  const merged = { ...kept, ...(await load(missing)) }
+  await fs.writeFile(path.join(CACHE, file), JSON.stringify(merged))
+  return merged
+}
+
 async function main() {
   await fs.mkdir(path.join(CACHE, 'img'), { recursive: true })
   await fs.mkdir(THUMBS, { recursive: true })
   await fs.mkdir(path.join(OUT_IMG, 'full'), { recursive: true })
 
   const names = [...new Set([...ANSWERS, ...EXTRAS])]
-  const pages = await cachedJson(CACHE, 'pages.json', () => wikiPages(API, names))
+  const pages = await cachedFor('pages.json', names, (list) => wikiPages(API, list))
   const tabs = Object.fromEntries(names.map((n) => [n, pages[n]?.text?.match(/\{\{([^{}|]+ Tabs Top)\}\}/)?.[1]]).filter(([, t]) => t))
-  const templates = await cachedJson(CACHE, 'templates.json', async () => {
-    const res = await wikiQuery(API, Object.values(tabs).map((t) => `Template:${t}`), 'prop=revisions&rvprop=content&rvslots=main')
+  const templates = await cachedFor('templates.json', [...new Set(Object.values(tabs))], async (list) => {
+    const res = await wikiQuery(API, list.map((t) => `Template:${t}`), 'prop=revisions&rvprop=content&rvslots=main')
     return Object.fromEntries(Object.entries(res).map(([t, p]) => [t.replace(/^Template:/, ''), p.revisions?.[0]?.slots?.main?.['*'] ?? '']))
   })
-  const categories = await cachedJson(CACHE, 'categories.json', () => categoriesOf(names))
-  const images = await cachedJson(CACHE, 'images.json', async () => {
-    const res = await wikiQuery(API, names, 'prop=pageimages&piprop=original')
+  const categories = await cachedFor('categories.json', names, (list) => categoriesOf(list))
+  const images = await cachedFor('images.json', names, async (list) => {
+    const res = await wikiQuery(API, list, 'prop=pageimages&piprop=original')
     return Object.fromEntries(Object.entries(res).map(([t, p]) => [t, p.original?.source ?? null]))
   })
 
@@ -404,12 +522,15 @@ async function main() {
     if (!page?.text) return console.warn('missing page', name)
     const box = charBox(tabs[name] ? templates[tabs[name]] : page.text)
     if (!box) return console.warn('no char box', name)
-    const buf = await cachedDownload(path.join(CACHE, 'img'), String(page.id), [images[name]])
-    if (!buf) return console.warn('no image', name)
-    try {
-      await writeFullAndThumb(buf, path.join(OUT_IMG, 'full', `${page.id}.webp`), path.join(THUMBS, `${page.id}.webp`), 96)
-    } catch (e) {
-      return console.warn('image failed', name, e.message)
+    const pending = PENDING.includes(name)
+    if (!pending) {
+      const buf = await cachedDownload(path.join(CACHE, 'img'), String(page.id), [images[name]])
+      if (!buf) return console.warn('no image', name)
+      try {
+        await writeFullAndThumb(buf, path.join(OUT_IMG, 'full', `${page.id}.webp`), path.join(THUMBS, `${page.id}.webp`), 96)
+      } catch (e) {
+        return console.warn('image failed', name, e.message)
+      }
     }
     const cats = categories[name] ?? []
     const chapter = debutChapter(box)
@@ -420,7 +541,7 @@ async function main() {
     result.push({
       id: page.id,
       name: NAMES[name] ?? ruName(name, page.ru, transliterate),
-      nameEn: name,
+      nameEn: EN_NAMES[name] ?? name,
       gender: GENDER_FIX[name] ?? matchCategories(SEX_CATEGORIES, cats)[0] ?? 'Другое',
       races: RACE_FIX[name] ?? (races.length ? races : ['Человек']),
       affiliations: AFFILIATION_OVERRIDES[name] ?? affiliationsOf(affiliationText),
@@ -430,15 +551,21 @@ async function main() {
       arc: ARCS[arcIndex][1],
       arcIndex,
       answer: ANSWERS.includes(name),
+      ...(pending ? { hidden: true, thumb: -1 } : {}),
     })
   })
 
   dropDeleted(result, 'onepiece')
 
+  const before = await fs.readFile(OUT_JSON, 'utf8').then((raw) => new Map(JSON.parse(raw).map((one) => [one.id, one]))).catch(() => new Map())
+  for (const one of result) if (before.get(one.id)?.nameUk) one.nameUk = before.get(one.id).nameUk
+
   onlyAnswers(result)
   result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
-  await writeAtlas(result, THUMBS, path.join(OUT_IMG, 'thumbs.webp'), OUT_ATLAS, 12, 96)
-  await pruneImages(path.join(OUT_IMG, 'full'), result)
+  const shown = result.filter((one) => !one.hidden)
+  if (shown.every((one) => before.get(one.id)?.thumb >= 0)) for (const one of shown) one.thumb = before.get(one.id).thumb
+  else await writeAtlas(shown, THUMBS, path.join(OUT_IMG, 'thumbs.webp'), OUT_ATLAS, 12, 96)
+  await pruneImages(path.join(OUT_IMG, 'full'), shown)
   await fs.writeFile(OUT_JSON, JSON.stringify(result, null, 1))
   console.log(`wrote ${result.length} characters (${result.filter((c) => c.answer).length} answerable)`)
 }
