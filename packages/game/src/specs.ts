@@ -488,9 +488,11 @@ export type Banner = (typeof BANNERS)[number]
 
 export const isBanner = (value: unknown): value is Banner => (BANNERS as readonly string[]).includes(value as string)
 
-export type BannerLook = { x: number; y: number; z: number }
+export type BannerLook = { x: number; y: number; z: number; lift?: number }
 
 export const BANNER_ZOOM_MAX = 2.5
+
+export const BANNER_LIFT_MAX = 120
 
 const within = (value: unknown, low: number, high: number) =>
   typeof value === 'number' && Number.isFinite(value) ? Math.min(high, Math.max(low, value)) : null
@@ -508,7 +510,8 @@ export const bannerLook = (value: unknown): BannerLook | null => {
   const y = within(one.y, 0, 100)
   const z = within(one.z, 1, BANNER_ZOOM_MAX)
   if (x === null || y === null || z === null) return null
-  return { x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10, z: Math.round(z * 100) / 100 }
+  const lift = within(one.lift, 0, BANNER_LIFT_MAX)
+  return { x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10, z: Math.round(z * 100) / 100, ...(lift ? { lift: Math.round(lift) } : {}) }
 }
 
 export const bannerLooks = (value: unknown): BannerLooks | null => {

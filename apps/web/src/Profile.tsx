@@ -15,7 +15,7 @@ import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
 import { ProfileGhost } from './PageSkeleton'
 import Rail from './Rail'
-import { ArrowIcon, CloseIcon, DotsIcon, GearIcon, GripIcon, PaletteIcon, PencilIcon, PictureIcon, PlusIcon, SwordsIcon, TrophyIcon, UserCheckIcon, UserPlusIcon, UserWaitIcon } from './icons'
+import { ArrowIcon, CloseIcon, GearIcon, GripIcon, PaletteIcon, PencilIcon, PictureIcon, PlusIcon, SwordsIcon, TrophyIcon, UserCheckIcon, UserPlusIcon, UserWaitIcon } from './icons'
 import AwardIcon from './awardIcons'
 import { useHref, useNavigate } from './router'
 import { refreshFeed } from './awards'
@@ -103,7 +103,7 @@ type Summary = {
   cards?: { game: GameId; id: number; xp: number; image?: string; name: Named }[]
   tiles?: (string | null)[] | null
   banner?: string | null
-  bannerLook?: Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number }>> | null
+  bannerLook?: Partial<Record<'desktop' | 'tablet' | 'phone' | 'board', { x: number; y: number; z: number; lift?: number }>> | null
   banners?: string[]
   bannersGiven?: string[]
   tone?: string | null
@@ -229,8 +229,6 @@ export default function Profile({ id }: { id?: string }) {
   }, [places])
 
   const [tip, setTip] = useState(false)
-  const [acts, setActs] = useState(false)
-  const [actsAt, setActsAt] = useState<HTMLElement | null>(null)
   const modesRef = useRef<HTMLDivElement>(null)
   const [tipAt, setTipAt] = useState<HTMLElement | null>(null)
   const [weekAt, setWeekAt] = useState<HTMLElement | null>(null)
@@ -1397,71 +1395,59 @@ export default function Profile({ id }: { id?: string }) {
         </button>
         </div>
       )}
-        {!own && id && user && (() => {
-          const visit = (
-            <>
-        {friend === 'in' ? (
-          <>
-            <button type="button" className="ghost profile-friend" aria-label={t('friends.accept')} title={t('friends.accept')} onClick={() => void answerFriend(id, true)}>
-              <UserCheckIcon />
-              <span>{t('friends.accept')}</span>
-            </button>
-            <button type="button" className="ghost profile-friend" aria-label={t('friends.decline')} title={t('friends.decline')} onClick={() => void answerFriend(id, false)}>
-              <CloseIcon />
-              <span>{t('friends.decline')}</span>
-            </button>
-          </>
-        ) : (
-          <button
-            type="button"
-            className={`ghost profile-friend ${friend === 'friends' ? 'is-on' : ''}`}
-            aria-label={t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}
-            title={t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}
-            onClick={() => (friend === 'friends' ? setUnfriending(true) : void (friend === 'none' ? askFriend(id) : removeFriend(id)))}
-          >
-            {friend === 'friends' ? <UserCheckIcon /> : friend === 'out' ? <UserWaitIcon /> : <UserPlusIcon />}
-            <span>{t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}</span>
-          </button>
-        )}
-        <button
-          type="button"
-          className="ghost profile-duel"
-          disabled={calling}
-          aria-label={t('duel.challenge')}
-          title={t('duel.challenge')}
-          onClick={() => void challenge(id)}
-        >
-          <SwordsIcon />
-          <span>{t('duel.challenge')}</span>
-        </button>
-            </>
-          )
-          if (!fresh) return <div className="profile-banner-acts profile-visit-acts">{visit}</div>
-          return (
-            <div className="profile-banner-acts profile-visit-acts">
+        {!own && id && user && (
+          <div className={`profile-banner-acts profile-visit-acts ${fresh ? 'is-split' : ''}`}>
+            {fresh && (
               <button
                 type="button"
-                className={`profile-more ${acts ? 'is-open' : ''}`}
-                aria-expanded={acts}
-                aria-label={l({ ru: 'Действия', uk: 'Дії', en: 'Actions' })}
-                title={l({ ru: 'Действия', uk: 'Дії', en: 'Actions' })}
-                onClick={(event) => {
-                  setActsAt(event.currentTarget)
-                  setActs((was) => !was)
-                }}
+                className="profile-duel-main"
+                disabled={calling}
+                aria-label={t('duel.challenge')}
+                title={t('duel.challenge')}
+                onClick={() => void challenge(id)}
               >
-                <DotsIcon />
+                <SwordsIcon />
+                <span>{t('duel.challenge')}</span>
               </button>
-              {acts && (
-                <TilePop at={actsAt} wide={250} onClose={() => setActs(false)}>
-                  <div className="visit-menu" onClick={() => setActs(false)}>
-                    {visit}
-                  </div>
-                </TilePop>
-              )}
-            </div>
-          )
-        })()}
+            )}
+            {friend === 'in' ? (
+              <>
+                <button type="button" className="ghost profile-friend" aria-label={t('friends.accept')} title={t('friends.accept')} onClick={() => void answerFriend(id, true)}>
+                  <UserCheckIcon />
+                  <span>{t('friends.accept')}</span>
+                </button>
+                <button type="button" className="ghost profile-friend" aria-label={t('friends.decline')} title={t('friends.decline')} onClick={() => void answerFriend(id, false)}>
+                  <CloseIcon />
+                  <span>{t('friends.decline')}</span>
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
+                className={`ghost profile-friend ${friend === 'friends' ? 'is-on' : ''}`}
+                aria-label={t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}
+                title={t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}
+                onClick={() => (friend === 'friends' ? setUnfriending(true) : void (friend === 'none' ? askFriend(id) : removeFriend(id)))}
+              >
+                {friend === 'friends' ? <UserCheckIcon /> : friend === 'out' ? <UserWaitIcon /> : <UserPlusIcon />}
+                <span>{t(friend === 'friends' ? 'friends.remove' : friend === 'out' ? 'friends.cancel' : 'friends.add')}</span>
+              </button>
+            )}
+            {!fresh && (
+              <button
+                type="button"
+                className="ghost profile-duel"
+                disabled={calling}
+                aria-label={t('duel.challenge')}
+                title={t('duel.challenge')}
+                onClick={() => void challenge(id)}
+              >
+                <SwordsIcon />
+                <span>{t('duel.challenge')}</span>
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       {scrap &&
@@ -1543,7 +1529,7 @@ export default function Profile({ id }: { id?: string }) {
 
       <section ref={heroBox} className={fresh ? `profile-hero is-bare ${banner ? 'has-art' : ''} ${framing ? 'is-framing' : ''}` : 'profile-hero'}>
         {fresh && !!banner && (
-          <span className="profile-glow" aria-hidden>
+          <span className="profile-glow" aria-hidden style={{ '--glow-lift': `${heroLook?.lift ?? 0}px` } as CSSProperties}>
             <BannerArt id={banner} look={{ desktop: heroLook }} place="profile" first focus />
           </span>
         )}
@@ -1572,6 +1558,7 @@ export default function Profile({ id }: { id?: string }) {
                   onClick={() => setSkins(!skins)}
                 >
                   <PictureIcon />
+                  {fresh && <span className="hero-act-label">{t('profile.banner')}</span>}
                 </button>
                 {skins && (
                   <div className="modes-pop" role="dialog">
@@ -1653,6 +1640,7 @@ export default function Profile({ id }: { id?: string }) {
                   onClick={() => setTones(!tones)}
                 >
                   <PaletteIcon />
+                  {fresh && <span className="hero-act-label">{t('profile.toneTheme')}</span>}
                 </button>
                 {tones && (
                   <div className="modes-pop" role="dialog">

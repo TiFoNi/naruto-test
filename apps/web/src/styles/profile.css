@@ -463,7 +463,7 @@
 .profile-glow {
   position: absolute;
   z-index: -1;
-  top: calc(-1 * var(--glow-top, 120px));
+  top: calc(-1 * (var(--glow-top, 120px) + var(--glow-lift, 0px)));
   left: 50%;
   overflow: hidden;
   width: 100vw;
@@ -4205,80 +4205,65 @@ body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
   display: none;
 }
 
-.profile-more {
-  display: grid;
-  width: 40px;
+.profile-visit-acts.is-split {
+  gap: 8px;
+}
+
+.profile-duel-main {
+  display: inline-flex;
   height: 40px;
-  place-items: center;
-  border: 1px solid color-mix(in srgb, #ffffff 16%, transparent);
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0 16px;
+  border: 1px solid color-mix(in srgb, #ffffff 14%, transparent);
   border-radius: 12px;
-  background: color-mix(in srgb, #0d0f12 62%, transparent);
+  background: color-mix(in srgb, #0d0f12 74%, transparent);
   color: #ffffff;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 800;
+  white-space: nowrap;
   cursor: pointer;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 45%);
   box-shadow: 0 6px 18px rgb(0 0 0 / 28%);
   backdrop-filter: blur(10px);
   transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease;
+    transform 0.15s ease,
+    background-color 0.15s ease;
 }
 
-.profile-more svg {
-  width: 20px;
-  height: 20px;
+.profile-duel-main svg {
+  width: 16px;
+  height: 16px;
 }
 
-.profile-more:hover,
-.profile-more.is-open {
-  border-color: color-mix(in srgb, #ffffff 26%, transparent);
-  background-color: color-mix(in srgb, #1c1f25 72%, transparent);
+.profile-duel-main:hover:not(:disabled) {
+  border-color: color-mix(in srgb, #ffffff 24%, transparent);
+  background: color-mix(in srgb, #1a1d22 84%, transparent);
+  transform: translateY(-1px);
 }
 
-.modes-pop:has(> .visit-menu) {
-  min-width: 0;
-  padding: 6px;
-  border-radius: 16px;
+.profile-duel-main:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 
-.visit-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.profile.is-beta .profile-visit-acts.is-split .profile-friend {
+  background-color: color-mix(in srgb, #0d0f12 74%, transparent);
+  width: 40px;
+  min-height: 40px;
+  justify-content: center;
+  padding: 0;
 }
 
-.visit-menu > button {
-  display: flex;
-  width: 100%;
-  min-height: 42px;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  margin: 0;
-  padding: 0 12px;
-  border: 0;
-  border-radius: 11px;
-  background: none;
-  color: var(--text);
-  font: inherit;
-  font-size: 14px;
-  font-weight: 700;
-  text-align: left;
-  cursor: pointer;
+.profile.is-beta .profile-visit-acts.is-split .profile-friend > span {
+  display: none;
 }
 
-.visit-menu > button svg {
-  flex: none;
+.profile.is-beta .profile-visit-acts.is-split .profile-friend svg {
   width: 18px;
   height: 18px;
-  color: var(--text-2);
-}
-
-.visit-menu > button:hover:not(:disabled) {
-  background: color-mix(in srgb, #ffffff 7%, transparent);
-}
-
-.visit-menu > button:disabled {
-  opacity: 0.5;
-  cursor: default;
 }
 
 .look-podium {
@@ -4295,4 +4280,35 @@ body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
 
 .look-podium .lb-step:active {
   cursor: grabbing;
+}
+
+.profile.is-beta .hero-act {
+  display: inline-flex;
+  width: auto;
+  height: 40px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px 0 12px;
+  border: 1px solid color-mix(in srgb, #ffffff 16%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, #0d0f12 74%, transparent);
+  font-size: 20px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 32%);
+}
+
+.profile.is-beta .hero-act:hover,
+.profile.is-beta .hero-acts .banner-pick.is-open .hero-act {
+  border-color: color-mix(in srgb, #ffffff 26%, transparent);
+  background: color-mix(in srgb, #1a1d22 84%, transparent);
+}
+
+.hero-act-label {
+  font-size: 13.5px;
+  font-weight: 800;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 45%);
+}
+
+.profile.is-beta .hero-acts {
+  right: 0;
 }

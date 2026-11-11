@@ -1,3 +1,4 @@
+import type { BannerLook } from '@nanda/game'
 import { uiUrl } from './pics'
 
 const LIVE: Record<string, { spot?: string; clips: string[] }> = {
@@ -38,7 +39,7 @@ const spotPart = (part: string | undefined, fallback: number) => {
   return Number.isFinite(value) ? value : fallback
 }
 
-export const spotLook = (id: string) => {
+export const spotLook = (id: string): BannerLook => {
   const [x, y] = (bannerSpot(id) ?? '50% 28%').trim().split(/\s+/)
   return { x: spotPart(x, 50), y: spotPart(y, 28), z: 1 }
 }

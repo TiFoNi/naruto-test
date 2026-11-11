@@ -1,12 +1,14 @@
 'use client'
 
 import { useRef, type CSSProperties, type PointerEvent } from 'react'
-import { BANNER_ZOOM_MAX, type BannerLook } from '@nanda/game'
+import { BANNER_LIFT_MAX, BANNER_ZOOM_MAX, type BannerLook } from '@nanda/game'
 import { focusFit, focusRange } from './BannerArt'
 import { useI18n } from './i18n'
-import { CheckIcon, CloseIcon, RefreshIcon, TrophyIcon, ZoomInIcon, ZoomOutIcon } from './icons'
+import { CheckIcon, CloseIcon, DownIcon, RefreshIcon, TrophyIcon, UpIcon, ZoomInIcon, ZoomOutIcon } from './icons'
 
 const ZOOM_STEP = 0.25
+
+const LIFT_STEP = 20
 
 const ART = '.profile-glow > :is(img, video)'
 
@@ -55,16 +57,17 @@ export default function BannerFrame({
     if (!start) return
     const size = fitOf(start.from)
     if (!size) return
-    onChange(
-      settle(
-        {
-          ...start.from,
-          x: start.from.x - ((event.clientX - start.x) / size.w) * 100,
-          y: start.from.y - ((event.clientY - start.y) / size.h) * 100,
-        },
-        start.from,
-      ),
+    const dy = event.clientY - start.y
+    const tall = focusRange(size.boxH, size.h) !== null
+    const next = settle(
+      {
+        ...start.from,
+        x: start.from.x - ((event.clientX - start.x) / size.w) * 100,
+        y: start.from.y - (dy / size.h) * 100,
+      },
+      start.from,
     )
+    onChange(tall ? next : { ...next, lift: Math.round(Math.min(BANNER_LIFT_MAX, Math.max(0, (start.from.lift ?? 0) - dy))) })
   }
 
   const release = () => {
@@ -72,6 +75,10 @@ export default function BannerFrame({
   }
 
   const zoom = (value: number) => onChange(settle({ ...look, z: Math.min(BANNER_ZOOM_MAX, Math.max(1, Math.round(value * 100) / 100)) }, look))
+
+  const lift = look.lift ?? 0
+
+  const raise = (value: number) => onChange({ ...look, lift: Math.min(BANNER_LIFT_MAX, Math.max(0, value)) })
 
   const drag = { onPointerDown: press, onPointerMove: move, onPointerUp: release, onPointerCancel: release }
 
@@ -102,6 +109,29 @@ export default function BannerFrame({
           />
           <button type="button" className="look-step" aria-label={l({ ru: 'Приблизить', uk: 'Наблизити', en: 'Zoom in' })} disabled={look.z >= BANNER_ZOOM_MAX} onClick={() => zoom(look.z + ZOOM_STEP)}>
             <ZoomInIcon />
+          </button>
+        </div>
+        <i className="frame-sep" aria-hidden />
+        <div className="frame-tools">
+          <button
+            type="button"
+            className="frame-tool"
+            disabled={busy || lift >= BANNER_LIFT_MAX}
+            title={l({ ru: 'Фон выше', uk: 'Фон вище', en: 'Move background up' })}
+            aria-label={l({ ru: 'Фон выше', uk: 'Фон вище', en: 'Move background up' })}
+            onClick={() => raise(lift + LIFT_STEP)}
+          >
+            <UpIcon />
+          </button>
+          <button
+            type="button"
+            className="frame-tool"
+            disabled={busy || lift <= 0}
+            title={l({ ru: 'Фон ниже', uk: 'Фон нижче', en: 'Move background down' })}
+            aria-label={l({ ru: 'Фон ниже', uk: 'Фон нижче', en: 'Move background down' })}
+            onClick={() => raise(lift - LIFT_STEP)}
+          >
+            <DownIcon />
           </button>
         </div>
         <i className="frame-sep" aria-hidden />
