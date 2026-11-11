@@ -132,6 +132,7 @@ const RACE_FIX = {
   Yamato: ['Они'],
   Urouge: ['Биркан'],
   'Charlotte Pudding': ['Человек', 'Трёхглазый'],
+  Dellinger: ['Человек', 'Рыболюд'],
   'Nerona Imu': ['Неизвестно'],
   Pandaman: ['Неизвестно'],
 }
@@ -464,7 +465,9 @@ function affiliationEntries(raw) {
 }
 
 function bounty(box) {
-  const nums = [...field(box, 'bounty').matchAll(/\{\{B\}\}\s*([\d,]+)/g)].map((m) => Number(m[1].replace(/,/g, '')))
+  const raw = field(box, 'bounty')
+  if (raw.includes('★')) return 0
+  const nums = [...raw.matchAll(/\{\{B\}\}\s*([\d,]+)/g)].map((m) => Number(m[1].replace(/,/g, '')))
   return nums.length ? Math.max(...nums) : 0
 }
 

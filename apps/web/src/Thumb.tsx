@@ -1,5 +1,5 @@
 import type { Entity, Game } from './games/types'
-import { atlasUrl } from './pics'
+import { atlasUrl, miniUrl } from './pics'
 import { useI18n } from './i18n'
 
 type Props = { game: Game; entity: Entity; size?: number; className?: string }
@@ -10,6 +10,20 @@ export default function Thumb({ game, entity, size, className }: Props) {
   const { name } = useI18n()
   const { cols, rows } = game.atlas
   const tile = entity.thumb >= 0
+
+  if (!tile && entity.image) {
+    return (
+      <img
+        src={miniUrl(game.id, entity.id, entity.image)}
+        alt={name(entity)}
+        className={`thumb thumb-pic ${className ?? ''}`}
+        style={{ width: size, height: size }}
+        loading="lazy"
+        decoding="async"
+        draggable={false}
+      />
+    )
+  }
 
   if (!tile) {
     return (
