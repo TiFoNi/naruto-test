@@ -541,7 +541,7 @@ export default function Profile({ id }: { id?: string }) {
     return () => watch.disconnect()
   }, [nickname, edit, narrow, summary])
 
-  if (!summary && !failed) return <ProfileGhost />
+  if (!summary && !failed) return <ProfileGhost visit={!!id} />
 
   const shown = layout ?? ((summary?.blocks as ProfileBlock[] | null | undefined) ?? PROFILE_BLOCKS_DEFAULT)
   const rest = PROFILE_BLOCKS.filter((block) => !shown.includes(block))

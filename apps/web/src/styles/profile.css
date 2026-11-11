@@ -488,7 +488,7 @@
   z-index: 3;
   background:
     linear-gradient(90deg, rgb(13 15 18 / 20.0%) 0.00%, rgb(13 15 18 / 19.9%) 3.93%, rgb(13 15 18 / 19.5%) 7.86%, rgb(13 15 18 / 18.6%) 11.79%, rgb(13 15 18 / 17.1%) 15.71%, rgb(13 15 18 / 15.1%) 19.64%, rgb(13 15 18 / 12.6%) 23.57%, rgb(13 15 18 / 10.0%) 27.50%, rgb(13 15 18 / 7.4%) 31.43%, rgb(13 15 18 / 4.9%) 35.36%, rgb(13 15 18 / 2.9%) 39.29%, rgb(13 15 18 / 1.4%) 43.21%, rgb(13 15 18 / 0.5%) 47.14%, rgb(13 15 18 / 0.1%) 51.07%, rgb(13 15 18 / 0.0%) 55.00%),
-    linear-gradient(180deg, rgb(13 15 18 / 25.0%) 0.00px, rgb(13 15 18 / 24.9%) 10.71px, rgb(13 15 18 / 24.4%) 21.43px, rgb(13 15 18 / 23.3%) 32.14px, rgb(13 15 18 / 21.4%) 42.86px, rgb(13 15 18 / 18.8%) 53.57px, rgb(13 15 18 / 15.8%) 64.29px, rgb(13 15 18 / 12.5%) 75.00px, rgb(13 15 18 / 9.2%) 85.71px, rgb(13 15 18 / 6.2%) 96.43px, rgb(13 15 18 / 3.6%) 107.14px, rgb(13 15 18 / 1.7%) 117.86px, rgb(13 15 18 / 0.6%) 128.57px, rgb(13 15 18 / 0.1%) 139.29px, rgb(13 15 18 / 0.0%) 150.00px),
+    linear-gradient(180deg, rgb(13 15 18 / 55.0%) 0.00px, rgb(13 15 18 / 54.9%) 11.88px, rgb(13 15 18 / 54.1%) 23.75px, rgb(13 15 18 / 52.3%) 35.62px, rgb(13 15 18 / 49.3%) 47.50px, rgb(13 15 18 / 45.1%) 59.38px, rgb(13 15 18 / 39.9%) 71.25px, rgb(13 15 18 / 33.9%) 83.12px, rgb(13 15 18 / 27.5%) 95.00px, rgb(13 15 18 / 21.1%) 106.88px, rgb(13 15 18 / 15.1%) 118.75px, rgb(13 15 18 / 9.9%) 130.62px, rgb(13 15 18 / 5.7%) 142.50px, rgb(13 15 18 / 2.7%) 154.38px, rgb(13 15 18 / 0.9%) 166.25px, rgb(13 15 18 / 0.1%) 178.12px, rgb(13 15 18 / 0.0%) 190.00px),
     linear-gradient(0deg, rgb(13 15 18 / 35.0%) 0.00%, rgb(13 15 18 / 34.9%) 3.57%, rgb(13 15 18 / 34.2%) 7.14%, rgb(13 15 18 / 32.6%) 10.71%, rgb(13 15 18 / 29.9%) 14.29%, rgb(13 15 18 / 26.4%) 17.86%, rgb(13 15 18 / 22.1%) 21.43%, rgb(13 15 18 / 17.5%) 25.00%, rgb(13 15 18 / 12.9%) 28.57%, rgb(13 15 18 / 8.6%) 32.14%, rgb(13 15 18 / 5.1%) 35.71%, rgb(13 15 18 / 2.4%) 39.29%, rgb(13 15 18 / 0.8%) 42.86%, rgb(13 15 18 / 0.1%) 46.43%, rgb(13 15 18 / 0.0%) 50.00%),
     linear-gradient(rgb(13 15 18 / 12%), rgb(13 15 18 / 12%));
   inset: 0;
@@ -4311,4 +4311,97 @@ body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
 
 .profile.is-beta .hero-acts {
   right: 0;
+}
+
+.profile.is-beta .profile-top {
+  --top-w: calc(min(1400px, 100vw) - 2 * var(--gutter));
+  zoom: calc(1 / var(--page-zoom, 1));
+  width: var(--top-w);
+  margin-inline: calc((100% - var(--top-w)) / 2);
+}
+
+.sk-wide {
+  --accent: color-mix(in srgb, #ffffff 26%, transparent);
+  --accent-soft: color-mix(in srgb, #ffffff 7%, transparent);
+}
+
+.sk-wide .card {
+  pointer-events: none;
+}
+
+.sk-wide .profile-top .sk.ghost-tune {
+  width: 170px;
+  height: 30px;
+  border-radius: 999px;
+}
+
+.sk-wide .profile-hero-id > .avatar.sk {
+  border-radius: 50%;
+}
+
+.sk-wide .profile-hero-name .sk {
+  border-radius: 12px;
+}
+
+.sk-wide .sk.ghost-nick {
+  width: 280px;
+  height: 46px;
+}
+
+.sk-wide .sk.ghost-tag {
+  width: 110px;
+  height: 18px;
+}
+
+.sk-wide .sk.ghost-title {
+  width: 96px;
+  height: 26px;
+  border-radius: 999px;
+}
+
+.sk-wide .level-line .sk {
+  height: 16px;
+  border-radius: 8px;
+}
+
+.sk-wide .sk.ghost-xp {
+  width: 140px;
+}
+
+.sk-wide .sk.ghost-lvl {
+  width: 64px;
+}
+
+.sk-wide .profile-hero-tiles .hero-tile {
+  gap: 10px;
+  animation: none;
+}
+
+.sk-wide .profile-hero-tiles .hero-tile .sk.chip {
+  width: 70px;
+  height: 12px;
+  border-radius: 6px;
+}
+
+.sk-wide .profile-hero-tiles .hero-tile .sk.big {
+  width: 110px;
+  height: 34px;
+  border-radius: 10px;
+}
+
+.sk-wide .ghost-acts {
+  display: flex;
+  gap: 8px;
+}
+
+.sk-wide .sk.ghost-duel {
+  width: 176px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.sk-wide .sk.ghost-friend {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
 }

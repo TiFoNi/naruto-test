@@ -235,7 +235,7 @@ h2 {
   max-width: 1400px;
   min-height: calc(100dvh / var(--page-zoom, 1));
   margin: 0 auto;
-  padding: calc(var(--topbar-h) + 10px) var(--gutter) 24px;
+  padding: calc(var(--topbar-h) / var(--page-zoom, 1) + 10px) var(--gutter) 24px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -246,13 +246,14 @@ h2 {
   flex: 1 0 auto;
   flex-direction: column;
   gap: 20px;
-  min-height: calc(100dvh / var(--page-zoom, 1) - var(--topbar-h, 0px) - 54px);
+  min-height: calc((100dvh - var(--topbar-h, 0px)) / var(--page-zoom, 1) - 54px);
 }
 
 .topbar {
   position: fixed;
   inset: 0 0 auto;
   z-index: 40;
+  zoom: calc(1 / var(--page-zoom, 1));
   background: transparent;
   border-bottom: 1px solid transparent;
   transition:

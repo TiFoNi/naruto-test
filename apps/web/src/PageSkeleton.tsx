@@ -2,6 +2,7 @@
 
 import type { CSSProperties, ReactNode } from 'react'
 import BackButton from './BackButton'
+import ProfileStage, { useNarrow } from './ProfileStage'
 import { useI18n } from './i18n'
 import { useHref } from './router'
 import { HERO_TILES_MAX, PROFILE_BLOCKS_DEFAULT, hasDaily, type ModeId, type ProfileBlock } from '@nanda/game'
@@ -52,9 +53,42 @@ function PlayGhost({ mode }: { mode?: string }) {
   )
 }
 
-export function ProfileGhost() {
+function HeroGhost({ tiles }: { tiles: number }) {
+  return (
+    <section className="profile-hero is-bare">
+      <ProfileStage art={<div className="profile-banner" aria-hidden />}>
+        <div className="profile-hero-id">
+          <span className="avatar sk" />
+          <div className="profile-hero-main">
+            <div className="profile-hero-name">
+              <span className="sk ghost-nick" />
+              <span className="sk ghost-tag" />
+              <span className="sk ghost-title" />
+            </div>
+            <div className="level-line">
+              <span className="sk ghost-xp" />
+              <span className="sk ghost-lvl" />
+            </div>
+            <div className="level-bar" />
+          </div>
+        </div>
+        <div className="profile-hero-tiles">
+          {Array.from({ length: tiles }, (_, index) => (
+            <div key={index} className="hero-tile">
+              <span className="sk chip" />
+              <span className="sk big" />
+            </div>
+          ))}
+        </div>
+      </ProfileStage>
+    </section>
+  )
+}
+
+export function ProfileGhost({ visit = false }: { visit?: boolean }) {
   const { t } = useI18n()
   const href = useHref()
+  const narrow = useNarrow()
   const plan = { blocks: PROFILE_BLOCKS_DEFAULT.filter((block) => block === 'worlds' || block === 'awards'), sides: {} as Record<string, number>, sizes: {} as Record<string, number>, tiles: HERO_TILES_MAX }
   const cards: Record<ProfileBlock, ReactNode> = {
     worlds: (
@@ -127,8 +161,23 @@ export function ProfileGhost() {
   const seats = plan.blocks.map((block, index) => ({ block, index, side: plan.sides[block] ?? index % 2 }))
 
   return (
-    <div className="profile sk-profile">
-      <BackButton href={href.home}>{t('profile.back')}</BackButton>
+    <div className={`profile ${narrow ? 'sk-profile' : 'sk-wide is-beta'}`}>
+      {narrow ? (
+        <BackButton href={href.home}>{t('profile.back')}</BackButton>
+      ) : (
+        <div className="profile-top">
+          <BackButton href={visit ? href.board : href.home}>{t(visit ? 'nav.leaderboard' : 'play.back')}</BackButton>
+          {visit ? (
+            <span className="ghost-acts">
+              <span className="sk ghost-duel" />
+              <span className="sk ghost-friend" />
+            </span>
+          ) : (
+            <span className="sk ghost-tune" />
+          )}
+        </div>
+      )}
+      {narrow ? (
       <section className="profile-hero">
         <div className="profile-banner" aria-hidden />
         <div className="profile-hero-body">
@@ -158,6 +207,9 @@ export function ProfileGhost() {
           </div>
         </div>
       </section>
+      ) : (
+        <HeroGhost tiles={plan.tiles} />
+      )}
 
       <div className="profile-grid">
         {[0, 1].map((column) => (
