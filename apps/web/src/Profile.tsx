@@ -60,9 +60,6 @@ const UNPIN_POINTS = tornPoints(42, 9, 4)
   .join(' ')
 const ROW = 4
 const GLOW_BELOW = 50
-const NARROW_BELOW = 10
-const NARROW_FROM = 900
-const NARROW_GROW = 0.05
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -430,7 +427,7 @@ export default function Profile({ id }: { id?: string }) {
       const top = Math.max(0, Math.round(hero.getBoundingClientRect().top + window.scrollY))
       hero.style.setProperty('--glow-top', `${top}px`)
       const below = hero.offsetHeight + top
-      const height = narrow ? below + NARROW_BELOW + Math.max(0, NARROW_FROM - window.innerWidth) * NARROW_GROW : below + GLOW_BELOW
+      const height = narrow ? below : below + GLOW_BELOW
       hero.style.setProperty('--glow-h', `${Math.round(height)}px`)
     }
     fit()
