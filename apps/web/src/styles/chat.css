@@ -11,6 +11,7 @@
   border-radius: 20px;
   background: var(--card-solid);
   color: var(--accent);
+  color: oklch(from var(--accent) max(l, clamp(0, (0.45 - l) * 1000, 1)) calc(c * clamp(0, (l - 0.45) * 1000, 1)) h);
   cursor: pointer;
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--accent) 45%, var(--line)),
