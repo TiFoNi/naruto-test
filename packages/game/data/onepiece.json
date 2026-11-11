@@ -4376,26 +4376,6 @@
   "thumb": 120
  },
  {
-  "id": 5971,
-  "name": "Шарлотта Лола",
-  "nameEn": "Charlotte Lola",
-  "gender": "Женский",
-  "races": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Другие пираты"
-  ],
-  "fruits": [],
-  "haki": [],
-  "bounty": 0,
-  "arc": "Триллер Барк",
-  "arcIndex": 17,
-  "answer": true,
-  "hidden": true,
-  "thumb": -1
- },
- {
   "id": 287005,
   "name": "Шарлотта Мон-Дор",
   "nameEn": "Charlotte Mont-d'Or",
