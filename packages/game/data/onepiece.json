@@ -16,7 +16,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Триллер Барк",
-  "arcIndex": 14,
+  "arcIndex": 17,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -38,7 +38,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Маринфорд",
-  "arcIndex": 18,
+  "arcIndex": 21,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -58,7 +58,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Water 7",
-  "arcIndex": 12,
+  "arcIndex": 14,
   "answer": true,
   "thumb": 0
  },
@@ -77,7 +77,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Остров рыболюдей",
-  "arcIndex": 19,
+  "arcIndex": 24,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -123,8 +123,8 @@
    "Вооружения"
   ],
   "bounty": 0,
-  "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arc": "Ревери",
+  "arcIndex": 29,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -187,7 +187,7 @@
   "haki": [],
   "bounty": 200000000,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "thumb": 4
  },
@@ -211,7 +211,7 @@
   ],
   "bounty": 296000000,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "thumb": 5
  },
@@ -232,7 +232,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Панк Хазард",
-  "arcIndex": 20,
+  "arcIndex": 25,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -257,7 +257,7 @@
   ],
   "bounty": 195000000,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -281,8 +281,8 @@
    "Вооружения"
   ],
   "bounty": 457000000,
-  "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arc": "Ревери",
+  "arcIndex": 29,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -326,7 +326,7 @@
   "haki": [],
   "bounty": 32000000,
   "arc": "Литл Гарден",
-  "arcIndex": 7,
+  "arcIndex": 8,
   "answer": true,
   "thumb": 7
  },
@@ -345,7 +345,7 @@
   "haki": [],
   "bounty": 1500,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -370,7 +370,7 @@
   ],
   "bounty": 480000000,
   "arc": "Вано",
-  "arcIndex": 24,
+  "arcIndex": 30,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -395,7 +395,7 @@
   ],
   "bounty": 40000000,
   "arc": "Амазон Лили",
-  "arcIndex": 16,
+  "arcIndex": 19,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -420,7 +420,7 @@
   ],
   "bounty": 40000000,
   "arc": "Амазон Лили",
-  "arcIndex": 16,
+  "arcIndex": 19,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -446,7 +446,7 @@
   ],
   "bounty": 1659000000,
   "arc": "Амазон Лили",
-  "arcIndex": 16,
+  "arcIndex": 19,
   "answer": true,
   "thumb": 8
  },
@@ -470,7 +470,7 @@
   ],
   "bounty": 0,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "thumb": 9
  },
@@ -489,7 +489,7 @@
   "haki": [],
   "bounty": 1800000000,
   "arc": "Литл Гарден",
-  "arcIndex": 7,
+  "arcIndex": 8,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -511,7 +511,7 @@
   "haki": [],
   "bounty": 383000000,
   "arc": "Триллер Барк",
-  "arcIndex": 14,
+  "arcIndex": 17,
   "answer": true,
   "thumb": 10
  },
@@ -532,7 +532,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Панк Хазард",
-  "arcIndex": 20,
+  "arcIndex": 25,
   "answer": true,
   "thumb": 11
  },
@@ -556,7 +556,7 @@
   ],
   "bounty": 320000000,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "thumb": 12
  },
@@ -575,7 +575,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Остров рыболюдей",
-  "arcIndex": 19,
+  "arcIndex": 24,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -595,7 +595,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Скайпия",
-  "arcIndex": 11,
+  "arcIndex": 12,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -617,7 +617,7 @@
   "haki": [],
   "bounty": 64000000,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -639,7 +639,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Остров рыболюдей",
-  "arcIndex": 19,
+  "arcIndex": 24,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -661,7 +661,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Остров Драм",
-  "arcIndex": 8,
+  "arcIndex": 9,
   "answer": true,
   "thumb": 13
  },
@@ -682,7 +682,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Маринфорд",
-  "arcIndex": 18,
+  "arcIndex": 21,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -704,7 +704,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Панк Хазард",
-  "arcIndex": 20,
+  "arcIndex": 25,
   "answer": true,
   "thumb": 14
  },
@@ -726,7 +726,7 @@
   ],
   "bounty": 0,
   "arc": "Панк Хазард",
-  "arcIndex": 20,
+  "arcIndex": 25,
   "answer": true,
   "thumb": 15
  },
@@ -745,7 +745,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -765,7 +765,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "thumb": 16
  },
@@ -784,7 +784,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -804,7 +804,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -824,7 +824,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -844,7 +844,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "thumb": 17
  },
@@ -865,7 +865,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -907,7 +907,7 @@
   "haki": [],
   "bounty": 24000000,
   "arc": "Литл Гарден",
-  "arcIndex": 7,
+  "arcIndex": 8,
   "answer": true,
   "thumb": 19
  },
@@ -928,7 +928,7 @@
   "haki": [],
   "bounty": 320000000,
   "arc": "Триллер Барк",
-  "arcIndex": 14,
+  "arcIndex": 17,
   "answer": true,
   "thumb": 20
  },
@@ -948,8 +948,8 @@
   ],
   "haki": [],
   "bounty": 10000000,
-  "arc": "Реверс Маунтин",
-  "arcIndex": 6,
+  "arc": "Виски Пик",
+  "arcIndex": 7,
   "answer": true,
   "thumb": 21
  },
@@ -968,7 +968,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -990,7 +990,7 @@
   "haki": [],
   "bounty": 31000000,
   "arc": "Панк Хазард",
-  "arcIndex": 20,
+  "arcIndex": 25,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1035,7 +1035,7 @@
   "haki": [],
   "bounty": 75000000,
   "arc": "Алабаста",
-  "arcIndex": 9,
+  "arcIndex": 10,
   "answer": true,
   "thumb": 23
  },
@@ -1056,7 +1056,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Остров Драм",
-  "arcIndex": 8,
+  "arcIndex": 9,
   "answer": true,
   "thumb": 24
  },
@@ -1076,7 +1076,7 @@
   "haki": [],
   "bounty": 15000000,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1120,7 +1120,7 @@
   ],
   "bounty": 0,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "thumb": 26
  },
@@ -1144,7 +1144,7 @@
   ],
   "bounty": 1000000000,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "thumb": 27
  },
@@ -1168,7 +1168,7 @@
   ],
   "bounty": 20000000,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1191,7 +1191,7 @@
   ],
   "bounty": 1100000000,
   "arc": "Импел Даун",
-  "arcIndex": 17,
+  "arcIndex": 20,
   "answer": true,
   "thumb": 28
  },
@@ -1210,7 +1210,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Эгхед",
-  "arcIndex": 25,
+  "arcIndex": 31,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1232,7 +1232,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Панк Хазард",
-  "arcIndex": 20,
+  "arcIndex": 25,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1256,7 +1256,7 @@
   ],
   "bounty": 320000000,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "thumb": 30
  },
@@ -1280,7 +1280,7 @@
   ],
   "bounty": 99000000,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1325,7 +1325,7 @@
   ],
   "bounty": 340000000,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "thumb": 32
  },
@@ -1346,7 +1346,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1366,7 +1366,7 @@
   "haki": [],
   "bounty": 1800000000,
   "arc": "Литл Гарден",
-  "arcIndex": 7,
+  "arcIndex": 8,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1409,7 +1409,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "thumb": 34
  },
@@ -1428,7 +1428,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Water 7",
-  "arcIndex": 12,
+  "arcIndex": 14,
   "answer": true,
   "thumb": 35
  },
@@ -1447,7 +1447,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "thumb": 37
  },
@@ -1484,8 +1484,8 @@
   "fruits": [],
   "haki": [],
   "bounty": 0,
-  "arc": "Реверс Маунтин",
-  "arcIndex": 6,
+  "arc": "Виски Пик",
+  "arcIndex": 7,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1505,7 +1505,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1529,7 +1529,7 @@
   ],
   "bounty": 510000000,
   "arc": "Маринфорд",
-  "arcIndex": 18,
+  "arcIndex": 21,
   "answer": true,
   "thumb": 39
  },
@@ -1553,7 +1553,7 @@
   ],
   "bounty": 222000000,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "thumb": 40
  },
@@ -1574,8 +1574,8 @@
    "Королевская"
   ],
   "bounty": 0,
-  "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arc": "Ревери",
+  "arcIndex": 29,
   "answer": true,
   "thumb": 41
  },
@@ -1596,7 +1596,7 @@
   "haki": [],
   "bounty": 100000000,
   "arc": "Импел Даун",
-  "arcIndex": 17,
+  "arcIndex": 20,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1620,7 +1620,7 @@
   ],
   "bounty": 0,
   "arc": "Зоу",
-  "arcIndex": 22,
+  "arcIndex": 27,
   "answer": true,
   "thumb": 42
  },
@@ -1644,7 +1644,7 @@
   ],
   "bounty": 0,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "thumb": 43
  },
@@ -1669,7 +1669,7 @@
   ],
   "bounty": 0,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1690,7 +1690,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Эгхед",
-  "arcIndex": 25,
+  "arcIndex": 31,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1733,7 +1733,7 @@
   ],
   "bounty": 330000000,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "thumb": 45
  },
@@ -1758,7 +1758,7 @@
   ],
   "bounty": 4611100000,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "thumb": 46
  },
@@ -1782,7 +1782,7 @@
   ],
   "bounty": 0,
   "arc": "Water 7",
-  "arcIndex": 12,
+  "arcIndex": 14,
   "answer": true,
   "thumb": 47
  },
@@ -1806,7 +1806,7 @@
   ],
   "bounty": 0,
   "arc": "Water 7",
-  "arcIndex": 12,
+  "arcIndex": 14,
   "answer": true,
   "thumb": 48
  },
@@ -1827,7 +1827,7 @@
   "haki": [],
   "bounty": 350000000,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "thumb": 49
  },
@@ -1850,8 +1850,8 @@
    "Вооружения"
   ],
   "bounty": 400000000,
-  "arc": "Маринфорд",
-  "arcIndex": 18,
+  "arc": "После войны",
+  "arcIndex": 22,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1872,8 +1872,8 @@
   ],
   "haki": [],
   "bounty": 210000000,
-  "arc": "Остров рыболюдей",
-  "arcIndex": 19,
+  "arc": "Возвращение на Сабаоди",
+  "arcIndex": 23,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1892,8 +1892,8 @@
   "fruits": [],
   "haki": [],
   "bounty": 0,
-  "arc": "Реверс Маунтин",
-  "arcIndex": 6,
+  "arc": "Виски Пик",
+  "arcIndex": 7,
   "answer": true,
   "thumb": 50
  },
@@ -1914,7 +1914,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Маринфорд",
-  "arcIndex": 18,
+  "arcIndex": 21,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1933,8 +1933,8 @@
   "fruits": [],
   "haki": [],
   "bounty": 7800000,
-  "arc": "Эниес Лобби",
-  "arcIndex": 13,
+  "arc": "После Эниес Лобби",
+  "arcIndex": 16,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1957,7 +1957,7 @@
   ],
   "bounty": 0,
   "arc": "Вано",
-  "arcIndex": 24,
+  "arcIndex": 30,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -1980,7 +1980,7 @@
   ],
   "bounty": 200000000,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "thumb": 51
  },
@@ -2004,7 +2004,7 @@
   ],
   "bounty": 1390000000,
   "arc": "Вано",
-  "arcIndex": 24,
+  "arcIndex": 30,
   "answer": true,
   "thumb": 52
  },
@@ -2028,7 +2028,7 @@
   ],
   "bounty": 0,
   "arc": "Панк Хазард",
-  "arcIndex": 20,
+  "arcIndex": 25,
   "answer": true,
   "thumb": 53
  },
@@ -2047,7 +2047,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "thumb": 54
  },
@@ -2066,7 +2066,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Остров рыболюдей",
-  "arcIndex": 19,
+  "arcIndex": 24,
   "answer": true,
   "thumb": 55
  },
@@ -2111,7 +2111,7 @@
   ],
   "bounty": 0,
   "arc": "Панк Хазард",
-  "arcIndex": 20,
+  "arcIndex": 25,
   "answer": true,
   "thumb": 57
  },
@@ -2134,7 +2134,7 @@
   ],
   "bounty": 0,
   "arc": "Вано",
-  "arcIndex": 24,
+  "arcIndex": 30,
   "answer": true,
   "thumb": 58
  },
@@ -2153,7 +2153,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Вано",
-  "arcIndex": 24,
+  "arcIndex": 30,
   "answer": true,
   "thumb": 59
  },
@@ -2172,7 +2172,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Water 7",
-  "arcIndex": 12,
+  "arcIndex": 14,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2197,7 +2197,7 @@
   ],
   "bounty": 1965000000,
   "arc": "Литл Гарден",
-  "arcIndex": 7,
+  "arcIndex": 8,
   "answer": true,
   "thumb": 60
  },
@@ -2242,8 +2242,8 @@
    "Вооружения"
   ],
   "bounty": 0,
-  "arc": "Скайпия",
-  "arcIndex": 11,
+  "arc": "Лонг Ринг Лонг Лэнд",
+  "arcIndex": 13,
   "answer": true,
   "thumb": 61
  },
@@ -2267,7 +2267,7 @@
   ],
   "bounty": 1320000000,
   "arc": "Вано",
-  "arcIndex": 24,
+  "arcIndex": 30,
   "answer": true,
   "thumb": 62
  },
@@ -2306,7 +2306,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Остров Драм",
-  "arcIndex": 8,
+  "arcIndex": 9,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2350,7 +2350,7 @@
   ],
   "bounty": 0,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "thumb": 64
  },
@@ -2371,7 +2371,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Вано",
-  "arcIndex": 24,
+  "arcIndex": 30,
   "answer": true,
   "thumb": 65
  },
@@ -2390,7 +2390,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Алабаста",
-  "arcIndex": 9,
+  "arcIndex": 10,
   "answer": true,
   "thumb": 66
  },
@@ -2409,7 +2409,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Зоу",
-  "arcIndex": 22,
+  "arcIndex": 27,
   "answer": true,
   "thumb": 67
  },
@@ -2448,7 +2448,7 @@
   "haki": [],
   "bounty": 61000000,
   "arc": "Панк Хазард",
-  "arcIndex": 20,
+  "arcIndex": 25,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2470,7 +2470,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2490,7 +2490,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Эгхед",
-  "arcIndex": 25,
+  "arcIndex": 31,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2512,8 +2512,8 @@
    "Вооружения"
   ],
   "bounty": 316000000,
-  "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arc": "Ревери",
+  "arcIndex": 29,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2535,7 +2535,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Импел Даун",
-  "arcIndex": 17,
+  "arcIndex": 20,
   "answer": true,
   "thumb": 68
  },
@@ -2576,7 +2576,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Эльбаф",
-  "arcIndex": 26,
+  "arcIndex": 32,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2598,7 +2598,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2620,7 +2620,7 @@
   ],
   "bounty": 0,
   "arc": "Амазон Лили",
-  "arcIndex": 16,
+  "arcIndex": 19,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2640,7 +2640,7 @@
   "haki": [],
   "bounty": 29000000,
   "arc": "Литл Гарден",
-  "arcIndex": 7,
+  "arcIndex": 8,
   "answer": true,
   "thumb": 69
  },
@@ -2664,7 +2664,7 @@
   ],
   "bounty": 1374000000,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "thumb": 70
  },
@@ -2688,7 +2688,7 @@
   ],
   "bounty": 0,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2714,7 +2714,7 @@
   ],
   "bounty": 3996000000,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "nameUk": "Маршалл Д. Тіч (Чорна Борода)",
   "thumb": 71
@@ -2755,7 +2755,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Панк Хазард",
-  "arcIndex": 20,
+  "arcIndex": 25,
   "answer": true,
   "thumb": 75
  },
@@ -2846,8 +2846,8 @@
    "Вооружения"
   ],
   "bounty": 293000000,
-  "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arc": "Ревери",
+  "arcIndex": 29,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2905,7 +2905,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Остров рыболюдей",
-  "arcIndex": 19,
+  "arcIndex": 24,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2944,7 +2944,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Остров Драм",
-  "arcIndex": 8,
+  "arcIndex": 9,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2964,7 +2964,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Эниес Лобби",
-  "arcIndex": 13,
+  "arcIndex": 15,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -2985,8 +2985,8 @@
   ],
   "haki": [],
   "bounty": 930000000,
-  "arc": "Реверс Маунтин",
-  "arcIndex": 6,
+  "arc": "Виски Пик",
+  "arcIndex": 7,
   "answer": true,
   "thumb": 82
  },
@@ -3009,7 +3009,7 @@
   ],
   "bounty": 0,
   "arc": "Зоу",
-  "arcIndex": 22,
+  "arcIndex": 27,
   "answer": true,
   "thumb": 83
  },
@@ -3028,7 +3028,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Триллер Барк",
-  "arcIndex": 14,
+  "arcIndex": 17,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3050,7 +3050,7 @@
   ],
   "bounty": 0,
   "arc": "Остров рыболюдей",
-  "arcIndex": 19,
+  "arcIndex": 24,
   "answer": true,
   "thumb": 84
  },
@@ -3069,7 +3069,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Алабаста",
-  "arcIndex": 9,
+  "arcIndex": 10,
   "answer": true,
   "thumb": 86
  },
@@ -3091,7 +3091,7 @@
   ],
   "bounty": 382000000,
   "arc": "Зоу",
-  "arcIndex": 22,
+  "arcIndex": 27,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3116,7 +3116,7 @@
   ],
   "bounty": 290000000,
   "arc": "Вано",
-  "arcIndex": 24,
+  "arcIndex": 30,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3141,7 +3141,7 @@
   ],
   "bounty": 330000000,
   "arc": "Остров рыболюдей",
-  "arcIndex": 19,
+  "arcIndex": 24,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3163,7 +3163,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Алабаста",
-  "arcIndex": 9,
+  "arcIndex": 10,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3185,7 +3185,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Триллер Барк",
-  "arcIndex": 14,
+  "arcIndex": 17,
   "answer": true,
   "thumb": 87
  },
@@ -3209,7 +3209,7 @@
   ],
   "bounty": 99000000,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3229,7 +3229,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Маринфорд",
-  "arcIndex": 18,
+  "arcIndex": 21,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3255,7 +3255,7 @@
   ],
   "bounty": 550000000,
   "arc": "Остров Драм",
-  "arcIndex": 8,
+  "arcIndex": 9,
   "answer": true,
   "thumb": 88
  },
@@ -3274,7 +3274,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "thumb": 89
  },
@@ -3298,7 +3298,7 @@
   ],
   "bounty": 0,
   "arc": "Зоу",
-  "arcIndex": 22,
+  "arcIndex": 27,
   "answer": true,
   "thumb": 90
  },
@@ -3319,7 +3319,7 @@
   ],
   "bounty": 0,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "thumb": 91
  },
@@ -3343,7 +3343,7 @@
   ],
   "bounty": 0,
   "arc": "Water 7",
-  "arcIndex": 12,
+  "arcIndex": 14,
   "answer": true,
   "thumb": 93
  },
@@ -3365,7 +3365,7 @@
   ],
   "bounty": 0,
   "arc": "Вано",
-  "arcIndex": 24,
+  "arcIndex": 30,
   "answer": true,
   "thumb": 94
  },
@@ -3407,7 +3407,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3431,8 +3431,8 @@
    "Вооружения"
   ],
   "bounty": 0,
-  "arc": "Маринфорд",
-  "arcIndex": 18,
+  "arc": "После войны",
+  "arcIndex": 22,
   "answer": true,
   "thumb": 96
  },
@@ -3456,7 +3456,7 @@
   ],
   "bounty": 0,
   "arc": "Эниес Лобби",
-  "arcIndex": 13,
+  "arcIndex": 15,
   "answer": true,
   "thumb": 97
  },
@@ -3500,7 +3500,7 @@
   ],
   "bounty": 0,
   "arc": "Скайпия",
-  "arcIndex": 11,
+  "arcIndex": 12,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3522,7 +3522,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Панк Хазард",
-  "arcIndex": 20,
+  "arcIndex": 25,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3544,7 +3544,7 @@
   "haki": [],
   "bounty": 58000000,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "thumb": 99
  },
@@ -3588,7 +3588,7 @@
   ],
   "bounty": 0,
   "arc": "Остров рыболюдей",
-  "arcIndex": 19,
+  "arcIndex": 24,
   "answer": true,
   "thumb": 101
  },
@@ -3612,7 +3612,7 @@
   ],
   "bounty": 350000000,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "thumb": 102
  },
@@ -3655,7 +3655,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Water 7",
-  "arcIndex": 12,
+  "arcIndex": 14,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3680,7 +3680,7 @@
   ],
   "bounty": 0,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3706,7 +3706,7 @@
   ],
   "bounty": 0,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "thumb": 104
  },
@@ -3728,7 +3728,7 @@
   ],
   "bounty": 0,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3748,7 +3748,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3768,7 +3768,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Остров рыболюдей",
-  "arcIndex": 19,
+  "arcIndex": 24,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3812,7 +3812,7 @@
   "haki": [],
   "bounty": 1000,
   "arc": "Остров Драм",
-  "arcIndex": 8,
+  "arcIndex": 9,
   "answer": true,
   "thumb": 106
  },
@@ -3836,7 +3836,7 @@
   ],
   "bounty": 0,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3861,7 +3861,7 @@
   ],
   "bounty": 3000000000,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "thumb": 107
  },
@@ -3885,7 +3885,7 @@
   ],
   "bounty": 99000000,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "thumb": 108
  },
@@ -3909,7 +3909,7 @@
   ],
   "bounty": 400000000,
   "arc": "Вано",
-  "arcIndex": 24,
+  "arcIndex": 30,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -3931,7 +3931,7 @@
   "haki": [],
   "bounty": 108000000,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "thumb": 109
  },
@@ -3973,7 +3973,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Вано",
-  "arcIndex": 24,
+  "arcIndex": 30,
   "answer": true,
   "thumb": 111
  },
@@ -3991,8 +3991,8 @@
   "fruits": [],
   "haki": [],
   "bounty": 0,
-  "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arc": "Ревери",
+  "arcIndex": 29,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4012,7 +4012,7 @@
   "haki": [],
   "bounty": 230000000,
   "arc": "Амазон Лили",
-  "arcIndex": 16,
+  "arcIndex": 19,
   "answer": true,
   "thumb": 112
  },
@@ -4031,7 +4031,7 @@
   "haki": [],
   "bounty": 394000000,
   "arc": "Water 7",
-  "arcIndex": 12,
+  "arcIndex": 14,
   "answer": true,
   "thumb": 113
  },
@@ -4050,7 +4050,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Дрессроза",
-  "arcIndex": 21,
+  "arcIndex": 26,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4113,7 +4113,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Алабаста",
-  "arcIndex": 9,
+  "arcIndex": 10,
   "answer": true,
   "thumb": 115
  },
@@ -4132,7 +4132,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Остров рыболюдей",
-  "arcIndex": 19,
+  "arcIndex": 24,
   "answer": true,
   "thumb": 116
  },
@@ -4156,7 +4156,7 @@
   ],
   "bounty": 546000000,
   "arc": "Вано",
-  "arcIndex": 24,
+  "arcIndex": 30,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4178,7 +4178,7 @@
   "haki": [],
   "bounty": 300000000,
   "arc": "Панк Хазард",
-  "arcIndex": 20,
+  "arcIndex": 25,
   "answer": true,
   "thumb": 117
  },
@@ -4202,7 +4202,7 @@
   ],
   "bounty": 0,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4222,7 +4222,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Water 7",
-  "arcIndex": 12,
+  "arcIndex": 14,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4267,7 +4267,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4289,7 +4289,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4315,7 +4315,7 @@
   ],
   "bounty": 1057000000,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "thumb": 119
  },
@@ -4339,7 +4339,7 @@
   ],
   "bounty": 860000000,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4365,7 +4365,7 @@
   ],
   "bounty": 4388000000,
   "arc": "Остров рыболюдей",
-  "arcIndex": 19,
+  "arcIndex": 24,
   "answer": true,
   "nameUk": "Шарлотта Лінлін (Велика Матуся)",
   "thumb": 120
@@ -4385,7 +4385,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Триллер Барк",
-  "arcIndex": 14,
+  "arcIndex": 17,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4407,7 +4407,7 @@
   "haki": [],
   "bounty": 120000000,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4432,7 +4432,7 @@
   ],
   "bounty": 300000000,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4457,7 +4457,7 @@
   ],
   "bounty": 700000000,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4480,7 +4480,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Остров рыболюдей",
-  "arcIndex": 19,
+  "arcIndex": 24,
   "answer": true,
   "thumb": 121
  },
@@ -4504,7 +4504,7 @@
   ],
   "bounty": 932000000,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4524,7 +4524,7 @@
   "haki": [],
   "bounty": 0,
   "arc": "Пирожный остров",
-  "arcIndex": 23,
+  "arcIndex": 28,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4548,7 +4548,7 @@
   ],
   "bounty": 0,
   "arc": "Джая",
-  "arcIndex": 10,
+  "arcIndex": 11,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4572,7 +4572,7 @@
   ],
   "bounty": 0,
   "arc": "Импел Даун",
-  "arcIndex": 17,
+  "arcIndex": 20,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4617,7 +4617,7 @@
   ],
   "bounty": 5046000000,
   "arc": "Алабаста",
-  "arcIndex": 9,
+  "arcIndex": 10,
   "answer": true,
   "thumb": 123
  },
@@ -4638,7 +4638,7 @@
   "haki": [],
   "bounty": 100000000,
   "arc": "Импел Даун",
-  "arcIndex": 17,
+  "arcIndex": 20,
   "answer": true,
   "thumb": 124
  },
@@ -4661,7 +4661,7 @@
   ],
   "bounty": 0,
   "arc": "Скайпия",
-  "arcIndex": 11,
+  "arcIndex": 12,
   "answer": true,
   "thumb": 125
  },
@@ -4686,7 +4686,7 @@
   ],
   "bounty": 3000000000,
   "arc": "Сабаоди",
-  "arcIndex": 15,
+  "arcIndex": 18,
   "answer": true,
   "thumb": 126
  },
@@ -4707,7 +4707,7 @@
   ],
   "bounty": 0,
   "arc": "Эниес Лобби",
-  "arcIndex": 13,
+  "arcIndex": 15,
   "answer": true,
   "hidden": true,
   "thumb": -1
@@ -4733,7 +4733,7 @@
   ],
   "bounty": 0,
   "arc": "Вано",
-  "arcIndex": 24,
+  "arcIndex": 30,
   "answer": true,
   "thumb": 127
  }
