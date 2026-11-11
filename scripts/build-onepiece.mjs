@@ -54,12 +54,12 @@ const PENDING = [
   "Charlotte Mont-d'Or", 'Charlotte Perospero', 'Charlotte Smoothie', 'Charlotte Chiffon', 'Karasu', 'Belo Betty', 'Morley',
   'Lindbergh', 'Ginny', 'Absalom', 'Jaguar D. Saul', 'Ulti', 'Black Maria', "Who's-Who", 'Aramaki', 'Road', 'Shiryu',
   'Charlotte Oven', 'Page One', 'Figarland Shamrock', 'Ethanbaron V. Nusjuro', 'Topman Warcury', 'Marcus Mars',
-  'Shepherd Ju Peter', 'Vegapunk/Lilith', 'Vegapunk/York', 'Avalo Pizarro', 'Morgans', 'Elizabello II', 'Rimoshifu Killingham',
+  'Shepherd Ju Peter', 'Vegapunk/Lilith', 'Vegapunk/York', 'Avalo Pizarro', 'Morgans', 'Elizabello II', 'Rimoshifu Killingham', 'Vegapunk/Atlas', 'Vegapunk/Shaka',
 ]
 
 ANSWERS.push(...PENDING)
 
-const EN_NAMES = { 'Vegapunk/Lilith': 'Lilith', 'Vegapunk/York': 'York' }
+const EN_NAMES = { 'Vegapunk/Lilith': 'Lilith', 'Vegapunk/York': 'York', 'Vegapunk/Atlas': 'Atlas', 'Vegapunk/Shaka': 'Shaka' }
 
 const MINOR = new Set(['Hyougoro', 'Sai', 'Leo', 'Mansherry', 'Gan Fall', 'Genzo', 'Hannyabal', 'Tom', 'Shakuyaku', 'Mikita', 'Zala'])
 
@@ -366,6 +366,8 @@ const NAMES = {
   Morgans: 'Морганс',
   'Elizabello II': 'Элизабелло II',
   'Rimoshifu Killingham': 'Римосифу Киллингем',
+  'Vegapunk/Atlas': 'Атлас',
+  'Vegapunk/Shaka': 'Шака',
   Iceburg: 'Айсбёрг',
   Urouge: 'Урог',
   Paulie: 'Паули',

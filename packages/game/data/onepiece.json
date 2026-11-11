@@ -149,6 +149,26 @@
   "thumb": 2
  },
  {
+  "id": 337361,
+  "name": "Атлас",
+  "nameEn": "Atlas",
+  "gender": "Женский",
+  "races": [
+   "Сателлит"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Эгхед",
+  "arcIndex": 31,
+  "answer": true,
+  "hidden": true,
+  "thumb": -1
+ },
+ {
   "id": 319192,
   "name": "Багги",
   "nameEn": "Buggy",
@@ -4249,6 +4269,26 @@
   "bounty": 0,
   "arc": "Water 7",
   "arcIndex": 14,
+  "answer": true,
+  "hidden": true,
+  "thumb": -1
+ },
+ {
+  "id": 337360,
+  "name": "Шака",
+  "nameEn": "Shaka",
+  "gender": "Мужской",
+  "races": [
+   "Сателлит"
+  ],
+  "affiliations": [
+   "Флот"
+  ],
+  "fruits": [],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Эгхед",
+  "arcIndex": 31,
   "answer": true,
   "hidden": true,
   "thumb": -1
