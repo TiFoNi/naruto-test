@@ -3326,6 +3326,28 @@
   "thumb": 91
  },
  {
+  "id": 350409,
+  "name": "Римосифу Киллингем",
+  "nameEn": "Rimoshifu Killingham",
+  "gender": "Мужской",
+  "races": [
+   "Человек"
+  ],
+  "affiliations": [
+   "Мировое правительство"
+  ],
+  "fruits": [
+   "Зоан"
+  ],
+  "haki": [],
+  "bounty": 0,
+  "arc": "Эльбаф",
+  "arcIndex": 32,
+  "answer": true,
+  "hidden": true,
+  "thumb": -1
+ },
+ {
   "id": 1528,
   "name": "Роб Луччи",
   "nameEn": "Rob Lucci",
