@@ -28,7 +28,6 @@ import GemIcon from './GemIcon'
 import ProfileStage, { useNarrow } from './ProfileStage'
 import { bannerPic, bannerSpot, spotLook } from './banners'
 import BannerFrame from './BannerFrame'
-import { isBeta } from './beta'
 import {
   CARD_PINS_MAX,
   HERO_TILES,
@@ -201,7 +200,6 @@ function FitLabel({ full, short }: { full: string; short: string }) {
 
 export default function Profile({ id }: { id?: string }) {
   const { user, refresh } = useAuth()
-  const beta = isBeta(user?.id)
   const own = !id
   const { t, l, lang, name: nameOf } = useI18n()
   const named = (value: Named) => nameOf({ name: value.ru, nameUk: value.uk !== value.ru ? value.uk : undefined, nameEn: value.en })
@@ -265,7 +263,7 @@ export default function Profile({ id }: { id?: string }) {
   const pads = useRef<HTMLDivElement>(null)
   const [tight, setTight] = useState(false)
   const narrow = useNarrow()
-  const fresh = beta && !narrow
+  const fresh = !narrow
 
   useEffect(() => {
     if (narrow) setFraming(null)
@@ -1371,7 +1369,7 @@ export default function Profile({ id }: { id?: string }) {
   )
 
   return (
-    <div className={`profile ${fresh ? 'is-beta' : ''} ${beta && narrow ? 'is-tester' : ''} ${framing ? 'is-framing' : ''}`} style={(toneHex ? { '--accent': toneHex } : {}) as CSSProperties}>
+    <div className={`profile ${fresh ? 'is-beta' : ''} ${narrow ? 'is-tester' : ''} ${framing ? 'is-framing' : ''}`} style={(toneHex ? { '--accent': toneHex } : {}) as CSSProperties}>
       <div className="profile-top">
         <BackButton href={id ? href.board : href.home} anywhere={!!id}>
           {t(id ? 'nav.leaderboard' : 'play.back')}

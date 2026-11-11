@@ -57,6 +57,7 @@ const OVERRIDES = {
   'Hamura Ōtsutsuki': { kekkeiGenkai: ['Бьякуган', 'Тенсейган'] },
   'Black Zetsu': { kekkeiGenkai: ['Мокутон'], attributes: ['Сенсор'] },
   'Konohamaru Sarutobi': { jutsuTypes: [JUTSU.ninjutsu] },
+  Ao: { affiliations: ['Кири'] },
 }
 
 const WIKI_API = 'https://naruto.fandom.com/api.php'
