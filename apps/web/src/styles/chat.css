@@ -1975,3 +1975,9 @@ body:has(.chat-panel) .duel-dock {
   height: 20px;
   font-size: 11px;
 }
+
+.chat-bubble,
+.chat-panel,
+.chat-menu {
+  zoom: calc(1 / var(--page-zoom, 1));
+}

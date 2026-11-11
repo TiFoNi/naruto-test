@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { BANNER_COSTS, BANNER_RARITY, BUNDLES, FRAME_COSTS, FRAME_RARITY, RARITIES, bannerCost, frameCost, salePrice, type Rarity } from '@nanda/game'
 import Avatar from './Avatar'
 import HeroPeek, { type PeekStats } from './HeroPeek'
+import PagePeek from './PagePeek'
 import BackButton from './BackButton'
 import { api } from './api'
 import { useAuth } from './auth'
@@ -15,6 +16,7 @@ import { showTone } from './tone'
 import { useI18n, type UiKey } from './i18n'
 import { CheckIcon, ChevronIcon } from './icons'
 import Rail from './Rail'
+import { useNarrow } from './ProfileStage'
 import { useHref } from './router'
 import GemIcon from './GemIcon'
 import Countdown from './Countdown'
@@ -68,6 +70,7 @@ const TABS = [
 export default function Shop() {
   const { t, l } = useI18n()
   const href = useHref()
+  const narrow = useNarrow()
   const { user, refresh } = useAuth()
   const tabs = useRef<HTMLDivElement>(null)
   const [ink, setInk] = useState<{ x: number; y: number; w: number; h: number } | null>(null)
@@ -340,10 +343,14 @@ export default function Shop() {
       {ready &&
         card &&
         createPortal(
-          <div className="modal-backdrop shop-peek" onClick={() => setPick(null)} role="presentation">
-            <section className="shop-peek-box" role="dialog" aria-modal="true" aria-label={nameOf(card)}>
-              <HeroPeek user={user ?? null} stats={stats} banner={art} frame={worn} under={false} />
-            </section>
+          <div className={`modal-backdrop shop-peek ${narrow ? '' : 'is-page'}`} onClick={() => setPick(null)} role="presentation">
+            {narrow ? (
+              <section className="shop-peek-box" role="dialog" aria-modal="true" aria-label={nameOf(card)}>
+                <HeroPeek user={user ?? null} stats={stats} banner={art} frame={worn} under={false} />
+              </section>
+            ) : (
+              <PagePeek user={user ?? null} stats={stats} banner={art} frame={worn} />
+            )}
           </div>,
           document.body,
         )}

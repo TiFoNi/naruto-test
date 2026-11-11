@@ -882,3 +882,122 @@
     font-size: 19px;
   }
 }
+
+.shop-peek.is-page {
+  padding: 0;
+  cursor: pointer;
+}
+
+.peek-sheet {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100vw;
+  height: 100dvh;
+  background: var(--bg, #0d0f12);
+  animation: modal-in 0.18s ease;
+  pointer-events: none;
+}
+
+.peek-sheet .profile-glow {
+  top: calc(-1 * var(--glow-lift, 0px));
+  left: 0;
+  width: 100%;
+  translate: none;
+}
+
+.peek-column {
+  width: 1400px;
+  margin: 0 auto;
+  padding-right: 34px;
+  padding-left: 34px;
+}
+
+.peek-sheet .profile-hero.shop-mock {
+  position: static;
+  box-shadow: none;
+}
+
+.peek-board {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.peek-block {
+  width: auto;
+  max-width: none;
+  margin: 0;
+  justify-self: stretch;
+  display: grid;
+  gap: 18px;
+  padding: 18px 20px 22px;
+}
+
+.peek-block header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sk.peek-title {
+  width: 180px;
+  height: 22px;
+  border-radius: 8px;
+}
+
+.sk.peek-chip {
+  width: 64px;
+  height: 16px;
+  border-radius: 8px;
+}
+
+.peek-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.sk.peek-item {
+  aspect-ratio: 1;
+  border-radius: 16px;
+}
+
+.peek-board .sk {
+  animation: none;
+}
+
+.peek-close {
+  position: absolute;
+  z-index: 3;
+  top: 18px;
+  right: 20px;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, #ffffff 14%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, #0d0f12 74%, transparent);
+  color: #ffffff;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 800;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 28%);
+  backdrop-filter: blur(10px);
+}
+
+.peek-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+.peek-close:hover {
+  border-color: color-mix(in srgb, #ffffff 24%, transparent);
+  background: color-mix(in srgb, #1a1d22 84%, transparent);
+}

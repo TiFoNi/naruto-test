@@ -26,6 +26,7 @@ import BannerArt, { mediaSize } from './BannerArt'
 import BannerTuner from './BannerTuner'
 import GemIcon from './GemIcon'
 import ProfileStage, { useNarrow } from './ProfileStage'
+import { pageZoom } from './profile-zoom'
 import { bannerPic, bannerSpot, spotLook } from './banners'
 import BannerFrame from './BannerFrame'
 import {
@@ -61,8 +62,6 @@ const ROW = 4
 const GLOW_CROP = 1.12
 const GLOW_WIDE = 1440
 const GLOW_GROW = 1.5
-const ZOOM_FROM = 2300
-const ZOOM_MIN = 1440 / ZOOM_FROM
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -432,7 +431,7 @@ export default function Profile({ id }: { id?: string }) {
     if (!fresh) return
     const body = document.body
     const fit = () => {
-      const zoom = Math.max(ZOOM_MIN, window.innerWidth / ZOOM_FROM)
+      const zoom = pageZoom(window.innerWidth)
       body.style.zoom = zoom === 1 ? '' : String(zoom)
       body.style.setProperty('--page-zoom', String(zoom))
     }

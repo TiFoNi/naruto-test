@@ -20,7 +20,7 @@ export type PeekStats = {
   streak?: { current: number }
 }
 
-type Props = { user: User | null; stats: PeekStats | null; banner: string | null; frame: string | null; under?: boolean }
+type Props = { user: User | null; stats: PeekStats | null; banner: string | null; frame: string | null; under?: boolean; bare?: boolean }
 
 const DEFAULT_TILES: HeroTile[] = ['solved', 'awards', 'streak']
 
@@ -28,7 +28,7 @@ const share = (part: number, whole: number) => (whole ? Math.round((part / whole
 
 const medal = (place: number) => (place === 1 ? 'gold' : place === 2 ? 'silver' : place === 3 ? 'bronze' : '')
 
-export default function HeroPeek({ user, stats, banner, frame, under = true }: Props) {
+export default function HeroPeek({ user, stats, banner, frame, under = true, bare = false }: Props) {
   const { t } = useI18n()
   const pads = useRef<HTMLDivElement>(null)
   const [tight, setTight] = useState(false)
@@ -105,11 +105,11 @@ export default function HeroPeek({ user, stats, banner, frame, under = true }: P
 
   return (
     <>
-      <section className="profile-hero shop-mock">
+      <section className={bare ? 'profile-hero is-bare shop-mock' : 'profile-hero shop-mock'}>
         <ProfileStage
           art={
             <>
-              {!!banner && (
+              {!bare && !!banner && (
                 <span className="profile-art" aria-hidden>
                   <BannerArt id={banner} look={user?.bannerLooks?.[banner]} place="profile" />
                 </span>

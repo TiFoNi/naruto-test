@@ -85,11 +85,8 @@ function HeroGhost({ tiles }: { tiles: number }) {
   )
 }
 
-export function ProfileGhost({ visit = false }: { visit?: boolean }) {
-  const { t } = useI18n()
-  const href = useHref()
-  const narrow = useNarrow()
-  const plan = { blocks: PROFILE_BLOCKS_DEFAULT.filter((block) => block === 'worlds' || block === 'awards'), sides: {} as Record<string, number>, sizes: {} as Record<string, number>, tiles: HERO_TILES_MAX }
+function GhostBoard() {
+  const plan = { blocks: PROFILE_BLOCKS_DEFAULT.filter((block) => block === 'worlds' || block === 'awards'), sides: {} as Record<string, number>, sizes: {} as Record<string, number> }
   const cards: Record<ProfileBlock, ReactNode> = {
     worlds: (
       <section className="card worlds-card">
@@ -161,6 +158,33 @@ export function ProfileGhost({ visit = false }: { visit?: boolean }) {
   const seats = plan.blocks.map((block, index) => ({ block, index, side: plan.sides[block] ?? index % 2 }))
 
   return (
+    <div className="profile-grid">
+      {[0, 1].map((column) => (
+        <div className="profile-stack" key={column}>
+          {seats
+            .filter((seat) => seat.side === column)
+            .map(({ block, index }) => (
+              <div
+                className={`profile-slot slot-${block}`}
+                key={block}
+                style={{ order: index, ...(plan.sizes[block] ? { '--slot-h': `${plan.sizes[block]}px` } : {}) } as CSSProperties}
+              >
+                {cards[block]}
+              </div>
+            ))}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+export function ProfileGhost({ visit = false }: { visit?: boolean }) {
+  const { t } = useI18n()
+  const href = useHref()
+  const narrow = useNarrow()
+  const tiles = HERO_TILES_MAX
+
+  return (
     <div className={`profile ${narrow ? 'sk-profile' : 'sk-wide is-beta'}`}>
       {narrow ? (
         <BackButton href={href.home}>{t('profile.back')}</BackButton>
@@ -198,7 +222,7 @@ export function ProfileGhost({ visit = false }: { visit?: boolean }) {
             </div>
           </div>
           <div className="profile-hero-tiles">
-            {Array.from({ length: plan.tiles }, (_, index) => (
+            {Array.from({ length: tiles }, (_, index) => (
               <div key={index} className="hero-tile">
                 <span className="sk chip" />
                 <span className="sk big" />
@@ -208,26 +232,10 @@ export function ProfileGhost({ visit = false }: { visit?: boolean }) {
         </div>
       </section>
       ) : (
-        <HeroGhost tiles={plan.tiles} />
+        <HeroGhost tiles={tiles} />
       )}
 
-      <div className="profile-grid">
-        {[0, 1].map((column) => (
-          <div className="profile-stack" key={column}>
-            {seats
-              .filter((seat) => seat.side === column)
-              .map(({ block, index }) => (
-                <div
-                  className={`profile-slot slot-${block}`}
-                  key={block}
-                  style={{ order: index, ...(plan.sizes[block] ? { '--slot-h': `${plan.sizes[block]}px` } : {}) } as CSSProperties}
-                >
-                  {cards[block]}
-                </div>
-              ))}
-          </div>
-        ))}
-      </div>
+      <GhostBoard />
     </div>
   )
 }
