@@ -578,7 +578,7 @@ export const FRAME_RARITY: Record<string, Rarity> = {
 
 export const BANNER_RARITY: Record<string, Rarity> = {
   frog: 'common',
-  night: 'common',
+  night: 'rare',
   crows: 'common',
   blossom: 'common',
   fireflies: 'common',
@@ -587,7 +587,7 @@ export const BANNER_RARITY: Record<string, Rarity> = {
   tg: 'rare',
   dn: 'rare',
   sharingan: 'legend',
-  castle: 'rare',
+  castle: 'epic',
   poppies: 'rare',
   pain: 'epic',
   levelup: 'common',

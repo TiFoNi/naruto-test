@@ -30,7 +30,7 @@ export default function PagePeek({ user, stats, banner, frame }: { user: User | 
 
   const zoom = pageZoom(wide)
   const stretch = GLOW_CROP + (Math.max(0, GLOW_WIDE - wide) / GLOW_WIDE) * GLOW_GROW
-  const look = banner ? (user?.bannerLooks?.[banner]?.desktop ?? spotLook(banner)) : undefined
+  const look = banner ? spotLook(banner) : undefined
 
   return (
     <section className="peek-sheet">
@@ -38,7 +38,7 @@ export default function PagePeek({ user, stats, banner, frame }: { user: User | 
         <CloseIcon />
       </button>
       {!!banner && (
-        <span className="profile-glow" aria-hidden style={{ height: (wide / BANNER_RATIO) * stretch, '--glow-lift': `${look?.lift ?? 0}px` } as CSSProperties}>
+        <span className="profile-glow" aria-hidden style={{ height: (wide / BANNER_RATIO) * stretch }}>
           <BannerArt id={banner} look={{ desktop: look }} place="profile" focus />
         </span>
       )}
