@@ -60,6 +60,9 @@ const UNPIN_POINTS = tornPoints(42, 9, 4)
   .join(' ')
 const ROW = 4
 const GLOW_BELOW = 50
+const NARROW_BELOW = 50
+const NARROW_FROM = 900
+const NARROW_GROW = 0.15
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -427,7 +430,7 @@ export default function Profile({ id }: { id?: string }) {
       const top = Math.max(0, Math.round(hero.getBoundingClientRect().top + window.scrollY))
       hero.style.setProperty('--glow-top', `${top}px`)
       const below = hero.offsetHeight + top
-      const height = narrow ? below : below + GLOW_BELOW
+      const height = narrow ? below + NARROW_BELOW + Math.max(0, NARROW_FROM - window.innerWidth) * NARROW_GROW : below + GLOW_BELOW
       hero.style.setProperty('--glow-h', `${Math.round(height)}px`)
     }
     fit()
@@ -1639,42 +1642,38 @@ export default function Profile({ id }: { id?: string }) {
             </div>
           </div>
         )}
-        {beta && narrow ? (
-          <div className="profile-hero-body is-center">{heroId}</div>
-        ) : (
-          <ProfileStage
-            art={
-              <>
-                {!beta && !!banner && (
-                  <span className="profile-art" aria-hidden>
-                    <BannerArt id={banner} look={own ? user?.bannerLooks?.[banner] : summary?.bannerLook} place="profile" first />
-                  </span>
-                )}
-                <div className="profile-banner" aria-hidden>
-                  {!banner &&
-                    MARKS.map((mark) => (
-                    <em
-                      key={mark.left}
-                      style={
-                        {
-                          left: mark.left,
-                          top: mark.top,
-                          fontSize: mark.size,
-                          transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
-                        } as CSSProperties
-                      }
-                    >
-                        ?!
-                      </em>
-                    ))}
-                </div>
-              </>
-            }
-          >
-            {heroId}
-            {!narrow && tilesBlock}
-          </ProfileStage>
-        )}
+        <ProfileStage
+          art={
+            <>
+              {!beta && !!banner && (
+                <span className="profile-art" aria-hidden>
+                  <BannerArt id={banner} look={own ? user?.bannerLooks?.[banner] : summary?.bannerLook} place="profile" first />
+                </span>
+              )}
+              <div className="profile-banner" aria-hidden>
+                {!banner &&
+                  MARKS.map((mark) => (
+                  <em
+                    key={mark.left}
+                    style={
+                      {
+                        left: mark.left,
+                        top: mark.top,
+                        fontSize: mark.size,
+                        transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
+                      } as CSSProperties
+                    }
+                  >
+                      ?!
+                    </em>
+                  ))}
+              </div>
+            </>
+          }
+        >
+          {heroId}
+          {!narrow && tilesBlock}
+        </ProfileStage>
       </section>
 
       {narrow && tilesBlock && <div className="profile-hero-body is-under profile-tiles-out">{tilesBlock}</div>}
