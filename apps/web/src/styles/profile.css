@@ -4212,6 +4212,10 @@ a.world-blank:hover .world-pic.is-empty {
   }
 
   .profile.is-beta .profile-canvas .profile-hero-name {
+    zoom: 1.38;
+  }
+
+  .profile.is-beta .profile-canvas .level-line {
     zoom: 1.2;
   }
 }
