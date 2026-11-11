@@ -2434,26 +2434,6 @@
   "thumb": -1
  },
  {
-  "id": 197518,
-  "name": "Лао Джи",
-  "nameEn": "Lao G",
-  "gender": "Мужской",
-  "races": [
-   "Человек"
-  ],
-  "affiliations": [
-   "Семья Донкихот"
-  ],
-  "fruits": [],
-  "haki": [],
-  "bounty": 61000000,
-  "arc": "Панк Хазард",
-  "arcIndex": 25,
-  "answer": true,
-  "hidden": true,
-  "thumb": -1
- },
- {
   "id": 211604,
   "name": "Лео",
   "nameEn": "Leo",
