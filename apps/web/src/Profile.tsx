@@ -60,9 +60,9 @@ const UNPIN_POINTS = tornPoints(42, 9, 4)
   .join(' ')
 const ROW = 4
 const GLOW_BELOW = 50
-const NARROW_BELOW = 50
+const NARROW_BELOW = 10
 const NARROW_FROM = 900
-const NARROW_GROW = 0.15
+const NARROW_GROW = 0.05
 
 type Named = { ru: string; uk: string; en: string }
 
