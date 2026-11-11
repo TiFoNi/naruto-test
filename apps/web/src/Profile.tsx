@@ -203,7 +203,8 @@ export default function Profile({ id }: { id?: string }) {
   const { user, refresh } = useAuth()
   const beta = isBeta(user?.id)
   const own = !id
-  const { t, l, lang } = useI18n()
+  const { t, l, lang, name: nameOf } = useI18n()
+  const named = (value: Named) => nameOf({ name: value.ru, nameUk: value.uk !== value.ru ? value.uk : undefined, nameEn: value.en })
   const href = useHref()
 
   const [summary, setSummary] = useState<Summary | null>(own ? knownSummary : null)
@@ -769,7 +770,7 @@ export default function Profile({ id }: { id?: string }) {
                 <span className="activity-text">
                   <i>
                     {t(round.status === 'won' ? 'profile.won' : round.status === 'skipped' ? 'profile.gaveUp' : 'profile.lost', {
-                      name: round.name ? round.name[lang] : round.hidden ? t('profile.secret') : `#${round.answerId}`,
+                      name: round.name ? named(round.name) : round.hidden ? t('profile.secret') : `#${round.answerId}`,
                     })}
                   </i>
                   <small>
@@ -884,7 +885,7 @@ export default function Profile({ id }: { id?: string }) {
             >
               {edit && own ? (
                 <span className="card-edit">
-                  <ShowcaseCard game={card.game} id={card.id} image={card.image} label={l(card.name)} xp={card.xp} />
+                  <ShowcaseCard game={card.game} id={card.id} image={card.image} label={named(card.name)} xp={card.xp} />
                   <button type="button" className="card-unpin" aria-label={t('profile.cardsRemove')} title={t('profile.cardsRemove')} onClick={() => unpin(card)}>
                     <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
                       <polygon points={UNPIN_POINTS} vectorEffect="non-scaling-stroke" />
@@ -893,8 +894,8 @@ export default function Profile({ id }: { id?: string }) {
                   </button>
                 </span>
               ) : (
-                <Link href={own || !id ? href.bestiary(card.game) : href.playerBestiary(id, card.game)} prefetch={false} aria-label={l(card.name)}>
-                  <ShowcaseCard game={card.game} id={card.id} image={card.image} label={l(card.name)} xp={card.xp} />
+                <Link href={own || !id ? href.bestiary(card.game) : href.playerBestiary(id, card.game)} prefetch={false} aria-label={named(card.name)}>
+                  <ShowcaseCard game={card.game} id={card.id} image={card.image} label={named(card.name)} xp={card.xp} />
                 </Link>
               )}
             </li>
