@@ -22,12 +22,12 @@ import { refreshFeed } from './awards'
 import { SHOWCASE_MAX } from './showcase'
 import { keepPerUser } from './session-cache'
 import { showTone } from './tone'
-import BannerArt from './BannerArt'
+import BannerArt, { mediaSize } from './BannerArt'
 import BannerTuner from './BannerTuner'
 import GemIcon from './GemIcon'
 import ProfileStage, { useNarrow } from './ProfileStage'
-import { PHONE_LOOK, bannerPic, bannerSpot, spotLook } from './banners'
-import BannerFrame, { type FrameDevice } from './BannerFrame'
+import { bannerPic, bannerSpot, spotLook } from './banners'
+import BannerFrame from './BannerFrame'
 import { isBeta } from './beta'
 import {
   CARD_PINS_MAX,
@@ -59,10 +59,9 @@ const UNPIN_POINTS = tornPoints(42, 9, 4)
   .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
   .join(' ')
 const ROW = 4
-const GLOW_BELOW = 50
-const NARROW_BELOW = 50
-const NARROW_FROM = 900
-const NARROW_GROW = 0.15
+const GLOW_CROP = 1.12
+const GLOW_WIDE = 1440
+const GLOW_GROW = 1.5
 
 type Named = { ru: string; uk: string; en: string }
 
@@ -249,7 +248,7 @@ export default function Profile({ id }: { id?: string }) {
   const [skins, setSkins] = useState(false)
   const [scrap, setScrap] = useState<Banner | null>(null)
   const [tuning, setTuning] = useState(false)
-  const [framing, setFraming] = useState<{ key: FrameDevice; desktop: BannerLook; phone: BannerLook } | null>(null)
+  const [framing, setFraming] = useState<BannerLook | null>(null)
   const [framingBusy, setFramingBusy] = useState(false)
   useEffect(() => {
     if (!edit) setFraming(null)
@@ -265,6 +264,11 @@ export default function Profile({ id }: { id?: string }) {
   const pads = useRef<HTMLDivElement>(null)
   const [tight, setTight] = useState(false)
   const narrow = useNarrow()
+  const fresh = beta && !narrow
+
+  useEffect(() => {
+    if (narrow) setFraming(null)
+  }, [narrow])
 
   useEffect(() => {
     if (!skins && !tones) return
@@ -425,23 +429,30 @@ export default function Profile({ id }: { id?: string }) {
 
   useLayoutEffect(() => {
     const hero = heroBox.current
-    if (!hero?.querySelector('.profile-glow') || typeof ResizeObserver === 'undefined') return
+    const glow = hero?.querySelector<HTMLElement>('.profile-glow')
+    const art = glow?.querySelector(':scope > :is(img, video)')
+    if (!hero || !glow || !art || typeof ResizeObserver === 'undefined') return
     const fit = () => {
       const top = Math.max(0, Math.round(hero.getBoundingClientRect().top + window.scrollY))
       hero.style.setProperty('--glow-top', `${top}px`)
-      const below = hero.offsetHeight + top
-      const height = narrow ? below + NARROW_BELOW + Math.max(0, NARROW_FROM - window.innerWidth) * NARROW_GROW : below + GLOW_BELOW
-      hero.style.setProperty('--glow-h', `${Math.round(height)}px`)
+      const natural = mediaSize(art)
+      if (!natural?.w || !natural.h) return
+      const stretch = GLOW_CROP + (Math.max(0, GLOW_WIDE - glow.clientWidth) / GLOW_WIDE) * GLOW_GROW
+      hero.style.setProperty('--glow-h', `${Math.round(((glow.clientWidth * natural.h) / natural.w) * stretch)}px`)
     }
     fit()
     const watch = new ResizeObserver(fit)
     watch.observe(hero)
     window.addEventListener('resize', fit)
+    art.addEventListener('load', fit)
+    art.addEventListener('loadedmetadata', fit)
     return () => {
       watch.disconnect()
       window.removeEventListener('resize', fit)
+      art.removeEventListener('load', fit)
+      art.removeEventListener('loadedmetadata', fit)
     }
-  }, [summary?.banner, skin, narrow])
+  }, [summary?.banner, skin, fresh])
 
   useLayoutEffect(() => {
     showTone(tone)
@@ -549,12 +560,12 @@ export default function Profile({ id }: { id?: string }) {
 
   const banner = skin === undefined ? (isBanner(summary?.banner) ? summary.banner : null) : skin
   const heroLooks = banner ? (own ? user?.bannerLooks?.[banner] : summary?.bannerLook) : null
-  const heroLook = framing ? framing[narrow ? 'phone' : 'desktop'] : narrow ? (heroLooks?.phone ?? PHONE_LOOK) : (heroLooks?.desktop ?? (banner ? spotLook(banner) : undefined))
+  const heroLook = framing ?? heroLooks?.desktop ?? (banner ? spotLook(banner) : undefined)
 
   const keepFraming = async () => {
     if (!banner || !framing) return
     setFramingBusy(true)
-    const { ok } = await api('profile', { action: 'bannerLook', banner, look: { ...(user?.bannerLooks?.[banner] ?? {}), desktop: framing.desktop, phone: framing.phone } })
+    const { ok } = await api('profile', { action: 'bannerLook', banner, look: { ...(user?.bannerLooks?.[banner] ?? {}), desktop: framing } })
     if (ok) await refresh()
     setFramingBusy(false)
     if (ok) setFraming(null)
@@ -1358,7 +1369,7 @@ export default function Profile({ id }: { id?: string }) {
   )
 
   return (
-    <div className={`profile ${beta ? 'is-beta' : ''} ${framing ? 'is-framing' : ''}`} style={(toneHex ? { '--accent': toneHex } : {}) as CSSProperties}>
+    <div className={`profile ${fresh ? 'is-beta' : ''} ${beta && narrow ? 'is-tester' : ''} ${framing ? 'is-framing' : ''}`} style={(toneHex ? { '--accent': toneHex } : {}) as CSSProperties}>
       <div className="profile-top">
         <BackButton href={id ? href.board : href.home} anywhere={!!id}>
           {t(id ? 'nav.leaderboard' : 'play.back')}
@@ -1498,23 +1509,20 @@ export default function Profile({ id }: { id?: string }) {
           document.body,
         )}
 
-      {tuning && banner && <BannerTuner banner={banner} looks={user?.bannerLooks?.[banner] ?? null} only={beta ? 'board' : undefined} onClose={() => setTuning(false)} />}
+      {tuning && banner && <BannerTuner banner={banner} looks={user?.bannerLooks?.[banner] ?? null} only={fresh ? 'board' : undefined} onClose={() => setTuning(false)} />}
 
-      <section ref={heroBox} className={beta ? `profile-hero is-bare ${banner ? 'has-art' : ''} ${framing ? 'is-framing' : ''}` : 'profile-hero'}>
-        {beta && !!banner && (
+      <section ref={heroBox} className={fresh ? `profile-hero is-bare ${banner ? 'has-art' : ''} ${framing ? 'is-framing' : ''}` : 'profile-hero'}>
+        {fresh && !!banner && (
           <span className="profile-glow" aria-hidden>
             <BannerArt id={banner} look={{ desktop: heroLook }} place="profile" first focus />
           </span>
         )}
-        {beta && !!banner && framing && (
+        {fresh && !!banner && framing && (
           <BannerFrame
-            look={framing[framing.key]}
-            device={framing.key}
-            here={narrow ? 'phone' : 'desktop'}
-            onDevice={(key) => setFraming((was) => (was ? { ...was, key } : was))}
+            look={framing}
             busy={framingBusy}
-            onChange={(look) => setFraming((was) => (was ? { ...was, [was.key]: look } : was))}
-            onReset={() => setFraming((was) => (was ? { ...was, [was.key]: was.key === 'phone' ? PHONE_LOOK : spotLook(banner) } : was))}
+            onChange={setFraming}
+            onReset={() => setFraming(spotLook(banner))}
             onBoard={() => {
               setFraming(null)
               setTuning(true)
@@ -1545,7 +1553,7 @@ export default function Profile({ id }: { id?: string }) {
                           className="look-open"
                           onClick={() => {
                             setSkins(false)
-                            if (beta) setFraming({ key: narrow ? 'phone' : 'desktop', desktop: heroLooks?.desktop ?? spotLook(banner), phone: heroLooks?.phone ?? PHONE_LOOK })
+                            if (fresh) setFraming(heroLooks?.desktop ?? spotLook(banner))
                             else setTuning(true)
                           }}
                         >
@@ -1645,7 +1653,7 @@ export default function Profile({ id }: { id?: string }) {
         <ProfileStage
           art={
             <>
-              {!beta && !!banner && (
+              {!fresh && !!banner && (
                 <span className="profile-art" aria-hidden>
                   <BannerArt id={banner} look={own ? user?.bannerLooks?.[banner] : summary?.bannerLook} place="profile" first />
                 </span>

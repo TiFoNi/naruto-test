@@ -8047,6 +8047,7 @@ html[data-auth] .guest-note {
   border-radius: 12px;
   background: linear-gradient(160deg, color-mix(in srgb, var(--social) 92%, #ffffff), var(--social));
   color: #ffffff;
+  color: oklch(from var(--social) clamp(0.22, (0.78 - l) * 1000, 1) 0 0);
   animation: support-nudge 7.5s ease-in-out infinite;
 }
 

@@ -29,8 +29,6 @@ export const boardSizes = (first: boolean, zoom = 1) => {
 
 export const bannerSpot = (id: string) => LIVE[id]?.spot ?? SPOTS[id]
 
-export const PHONE_LOOK = { x: 50, y: 35, z: 1 }
-
 const SPOT_WORDS: Record<string, number> = { left: 0, top: 0, center: 50, right: 100, bottom: 100 }
 
 const spotPart = (part: string | undefined, fallback: number) => {
