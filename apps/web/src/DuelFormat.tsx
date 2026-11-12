@@ -5,8 +5,8 @@ import { DUEL_TEAM_COUNTS, TEAM_MODES } from '@nanda/game'
 import BackButton from './BackButton'
 import { api } from './api'
 import { setActiveDuel } from './activeDuel'
-import { UserIcon } from './icons'
-import { useI18n } from './i18n'
+import { ArrowIcon, KeyIcon, UserIcon } from './icons'
+import { useI18n, type UiKey } from './i18n'
 import { useHref, useNavigate } from './router'
 
 const pips = (count: number) =>
@@ -24,6 +24,23 @@ export default function DuelFormat() {
   const [teams, setTeams] = useState(0)
   const [busy, setBusy] = useState(false)
   const [slip, setSlip] = useState<string | null>(null)
+  const [typed, setTyped] = useState('')
+  const [joining, setJoining] = useState(false)
+  const [missed, setMissed] = useState<UiKey | null>(null)
+
+  const enter = async () => {
+    const target = typed.trim().toUpperCase()
+    if (!/^[A-Z0-9]{6}$/.test(target)) return setMissed('duel.codeShort')
+    setJoining(true)
+    setMissed(null)
+    const { ok, status } = await api<{ duel?: { code: string } }>('duel', { action: 'join', code: target }).catch(() => ({ ok: false, status: 0 }))
+    if (ok) {
+      setActiveDuel(target)
+      return navigate.replace(href.duel(target))
+    }
+    setJoining(false)
+    setMissed(status === 404 ? 'duel.codeMissing' : status === 409 ? 'duel.full' : 'duel.codeFailed')
+  }
 
   const go = async (size: number, count: number) => {
     if (busy) return
@@ -88,6 +105,39 @@ export default function DuelFormat() {
       </div>
 
       {slip && <p className="duel-format-slip">{errorText(slip)}</p>}
+
+      <form
+        className="duel-code-join"
+        onSubmit={(event) => {
+          event.preventDefault()
+          void enter()
+        }}
+      >
+        <span className="duel-code-join-icon" aria-hidden>
+          <KeyIcon />
+        </span>
+        <span className="duel-code-join-copy">
+          <b>{t('duel.codeTitle')}</b>
+          <small>{missed ? <em>{t(missed)}</em> : t('duel.codeLead')}</small>
+        </span>
+        <input
+          className={`duel-code-input ${missed ? 'is-wrong' : ''}`}
+          value={typed}
+          onChange={(event) => {
+            setTyped(event.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6))
+            setMissed(null)
+          }}
+          placeholder="ABC123"
+          aria-label={t('duel.codePlaceholder')}
+          autoCapitalize="characters"
+          autoComplete="off"
+          spellCheck={false}
+        />
+        <button type="submit" className="primary" disabled={joining || busy || typed.length < 6}>
+          <span>{t('duel.codeGo')}</span>
+          <ArrowIcon />
+        </button>
+      </form>
     </div>
   )
 }

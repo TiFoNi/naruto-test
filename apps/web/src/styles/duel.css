@@ -4204,3 +4204,125 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 .duel-seat-nick:focus-visible b {
   color: var(--accent);
 }
+
+.duel-code-join {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--card);
+}
+
+.duel-code-join-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+}
+
+.duel-code-join-icon .icon {
+  width: 22px;
+  height: 22px;
+}
+
+.duel-code-join-copy {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.duel-code-join-copy b {
+  font-family: var(--display);
+  font-size: 16px;
+}
+
+.duel-code-join-copy small {
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+.duel-code-join-copy em {
+  color: #ff8085;
+  font-style: normal;
+}
+
+.duel-code-input {
+  flex: none;
+  width: 190px;
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-align: center;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.duel-code-input::placeholder {
+  color: color-mix(in srgb, var(--text-2) 30%, transparent);
+}
+
+.duel-code-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.duel-code-input.is-wrong {
+  border-color: color-mix(in srgb, #ff8085 60%, var(--line));
+}
+
+.duel-code-join .primary {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  margin: 0;
+  padding: 0 20px;
+  border-radius: 13px;
+  font-size: 14.5px;
+}
+
+.duel-code-join .primary .icon {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 760px) {
+  .duel-code-join {
+    flex-wrap: wrap;
+    gap: 12px 14px;
+    padding: 14px;
+  }
+
+  .duel-code-join-copy {
+    flex: 1 1 0;
+  }
+
+  .duel-code-input {
+    flex: 1 1 100%;
+    width: auto;
+  }
+
+  .duel-code-join .primary {
+    flex: 1 1 100%;
+    justify-content: center;
+  }
+}

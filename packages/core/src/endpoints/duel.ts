@@ -59,6 +59,11 @@ export const POST = handle(async (request) => {
     if (typeof body.to !== 'string' || !ObjectId.isValid(body.to)) return fail(400, 'bad_request')
     const target = await (await users()).findOne({ _id: new ObjectId(body.to) })
     if (!target || target._id!.equals(userId)) return fail(404, 'not_found')
+    const open = await openLobby(userId)
+    const lobby = open && !open.bot ? open : null
+    if (lobby && sideOf(lobby, target._id!)) return json({ duel: await duelView(lobby, userId) })
+    const invited = lobby ? await inviteTo(lobby, userId, body.to) : null
+    if (invited) return json({ duel: await duelView(invited, userId) })
     const duel = await createDuel(found.doc, target)
     return duel ? json({ duel: await duelView(duel, userId) }) : fail(400, 'bad_request')
   }
