@@ -13,17 +13,20 @@ const extraAliases = (game) => {
   return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : {}
 }
 
-const withAliases = (entity, extra) => {
-  const more = extra[entity.id]
-  if (!more) return entity
+const joinAliases = (...lists) => {
   const seen = new Set()
-  const merged = [entity.aliases, more]
+  return lists
     .filter(Boolean)
     .join(',')
     .split(',')
     .map((one) => one.trim())
     .filter((one) => one && !seen.has(one.toLowerCase()) && seen.add(one.toLowerCase()))
-  return { ...entity, aliases: merged.join(', ') }
+    .join(', ')
+}
+
+const withAliases = (entity, extra) => {
+  const more = extra[entity.id]
+  return more ? { ...entity, aliases: joinAliases(entity.aliases, more) } : entity
 }
 
 const uri = process.env.MONGODB_URI
@@ -67,6 +70,10 @@ for (const [game, spec] of Object.entries(GAME_SPECS)) {
     const live = byId.get(entity.id)
     if (live && !overwriteFor(entity.id)) {
       for (const field of live.edited) {
+        if (field === 'aliases' && 'aliases' in set) {
+          set.aliases = joinAliases(live.aliases, set.aliases)
+          continue
+        }
         if (!(field in set)) continue
         if (JSON.stringify(set[field]) !== JSON.stringify(live[field])) kept.push(`${entity.name ?? entity.id}: ${field}`)
         delete set[field]
