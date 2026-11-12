@@ -97,6 +97,8 @@ const HOUSE_FIX = {
   'Talisa Stark': ['Мейгир', 'Старк'],
   'Lysa Arryn': ['Талли', 'Аррен'],
   'Walda Bolton': ['Фрей', 'Болтон'],
+  'Cersei Lannister': ['Ланнистер', 'Баратеон'],
+  'Margaery Tyrell': ['Тирелл', 'Баратеон'],
 }
 
 const CULTURES = {

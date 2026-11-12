@@ -1018,7 +1018,8 @@
   "aliases": "margaery tyrell",
   "gender": "Женский",
   "houses": [
-   "Тирелл"
+   "Тирелл",
+   "Баратеон"
   ],
   "cultures": [
    "Жители Простора",
@@ -1785,7 +1786,8 @@
   "aliases": "cersei lannister",
   "gender": "Женский",
   "houses": [
-   "Ланнистер"
+   "Ланнистер",
+   "Баратеон"
   ],
   "cultures": [
    "Жители Запада",
