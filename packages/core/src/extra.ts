@@ -2,6 +2,7 @@ import { GAME_SPECS, SHOT_POINTS, type GameId, type ModeId } from '@nanda/game'
 import { abilitiesOf } from './abilities'
 import { phrasesOf } from './phrases'
 import { gameData } from './games'
+import { namedTraits } from './named-traits'
 
 const OPTIONS = 3
 
@@ -67,12 +68,13 @@ async function oddExtra(game: GameId, answerId: number, roll: number) {
 
   const marks = new Map(pool.map((entity) => [entity.id, traitsOf(game, entity as Record<string, unknown>)]))
   const mine = marks.get(answerId) ?? new Set<string>()
+  const named = namedTraits(game, pool)
 
   const shared = new Map<string, { id: number }[]>()
   for (const entity of pool) {
     if (entity.id === answerId) continue
     for (const trait of marks.get(entity.id) ?? []) {
-      if (mine.has(trait)) continue
+      if (mine.has(trait) || named.has(trait)) continue
       if (!shared.has(trait)) shared.set(trait, [])
       shared.get(trait)!.push(entity)
     }

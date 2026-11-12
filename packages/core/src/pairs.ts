@@ -1,5 +1,6 @@
 import { GAME_SPECS, type GameId } from '@nanda/game'
 import { gameData } from './games'
+import { namedTraits } from './named-traits'
 
 export type PairJoin = 'single' | 'and' | 'or'
 export type PairSide = 'left' | 'right' | 'both' | 'none'
@@ -24,6 +25,7 @@ async function traitsOf(game: GameId) {
   if (known) return known
 
   const columns = GAME_SPECS[game].columns.filter((one) => one.key !== 'gender' && one.kind !== 'order' && one.kind !== 'optionalOrder')
+  const named = namedTraits(game, pool)
   const found: Trait[] = []
 
   for (const column of columns) {
@@ -32,7 +34,7 @@ async function traitsOf(game: GameId) {
       const raw = (entity as unknown as Record<string, unknown>)[column.key]
       const list = Array.isArray(raw) ? raw.map(String) : raw ? [String(raw)] : []
       for (const value of new Set(list)) {
-        if (BLANK.test(value)) continue
+        if (BLANK.test(value) || named.has(`${column.key}:${value}`)) continue
         if (!seen.has(value)) seen.set(value, new Set())
         seen.get(value)!.add(entity.id)
       }
