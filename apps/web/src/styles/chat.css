@@ -995,8 +995,8 @@ body:has(.chat-panel) .duel-dock {
 }
 
 .chat-line.is-mine {
-  padding-right: 12px;
-  box-shadow: inset -3px 0 0 var(--accent);
+  padding-right: 9px;
+  border-right: 3px solid var(--accent);
 }
 
 .chat-line.is-mine .chat-tools {
@@ -1005,10 +1005,10 @@ body:has(.chat-panel) .duel-dock {
 
 .chat-line.is-tagged {
   margin-inline: -10px;
-  padding-inline: 10px 10px;
+  padding-inline: 7px 10px;
+  border-left: 3px solid var(--accent);
   border-radius: 12px;
   background: color-mix(in srgb, var(--accent) 8%, transparent);
-  box-shadow: inset 3px 0 0 var(--accent);
 }
 
 .chat-line.is-focus {
@@ -1407,7 +1407,7 @@ body:has(.chat-panel) .duel-dock {
 
 .chat-line.is-mine:has(.bout) {
   padding-right: 0;
-  box-shadow: none;
+  border-right: 0;
 }
 
 .bout-head {
