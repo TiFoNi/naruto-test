@@ -1,8 +1,8 @@
 'use client'
 
-import { useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import ReactGridLayout, { useContainerWidth, type Layout, type LayoutItem } from 'react-grid-layout'
-import { gridBounds } from 'react-grid-layout/core'
+import { gridBounds, transformStrategy } from 'react-grid-layout/core'
 import type { ProfileBlock } from '@nanda/game'
 
 const GAP = 14
@@ -227,8 +227,11 @@ export default function ProfileBoard({
   onStart?: () => void
   onSave: (next: BoardSave) => void
 }) {
-  const { width, containerRef, mounted } = useContainerWidth()
   const [metrics, setMetrics] = useState<Metrics>(FALLBACK)
+  const [zoom, setZoom] = useState(1)
+  const placing = useMemo(() => ({ ...transformStrategy, scale: zoom }), [zoom])
+  const { width, containerRef, mounted } = useContainerWidth()
+  useLayoutEffect(() => setZoom(zoomOf()), [width])
   const wide = width >= WIDE
   const held = useRef(false)
   const [stretch, setStretch] = useState<{ block: ProfileBlock; px: number } | null>(null)
@@ -398,6 +401,7 @@ export default function ProfileBoard({
           width={width}
           layout={layout}
           gridConfig={{ cols: wide ? 2 : 1, rowHeight: 1, margin: [GAP, 0], containerPadding: [0, 0] }}
+          positionStrategy={placing}
           dragConfig={{ enabled: edit, handle: '.slot-bar', cancel: '.slot-off', threshold: 4 }}
           constraints={[midway, gridBounds]}
           resizeConfig={{ enabled: false }}
