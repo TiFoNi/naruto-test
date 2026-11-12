@@ -398,7 +398,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('gender', 'exact'),
       col('element', 'exact'),
       col('weapon', 'exact'),
-      col('region', 'exact'),
+      col('region', 'list'),
       col('rarity', 'order'),
       col('year', 'order'),
     ],

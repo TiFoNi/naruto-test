@@ -133,7 +133,10 @@
   "gender": "Мужской",
   "element": "Пиро",
   "weapon": "Меч",
-  "region": "Мондштадт",
+  "region": [
+   "Мондштадт",
+   "Натлан"
+  ],
   "rarity": 4,
   "year": 2020,
   "answer": true,
@@ -483,7 +486,10 @@
   "gender": "Мужской",
   "element": "Анемо",
   "weapon": "Меч",
-  "region": "Инадзума",
+  "region": [
+   "Инадзума",
+   "Ли Юэ"
+  ],
   "rarity": 5,
   "year": 2021,
   "answer": true,
@@ -1211,7 +1217,10 @@
   "gender": "Мужской",
   "element": "Анемо",
   "weapon": "Катализатор",
-  "region": "Сумеру",
+  "region": [
+   "Сумеру",
+   "Инадзума"
+  ],
   "rarity": 5,
   "year": 2022,
   "answer": true,
@@ -1295,7 +1304,10 @@
   "gender": "Женский",
   "element": "Гео",
   "weapon": "Меч",
-  "region": "Инадзума",
+  "region": [
+   "Инадзума",
+   "Фонтейн"
+  ],
   "rarity": 5,
   "year": 2024,
   "answer": true,
@@ -1309,7 +1321,10 @@
   "gender": "Мужской",
   "element": "Пиро",
   "weapon": "Копьё",
-  "region": "Инадзума",
+  "region": [
+   "Инадзума",
+   "Мондштадт"
+  ],
   "rarity": 4,
   "year": 2021,
   "answer": true,

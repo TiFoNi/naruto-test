@@ -46,7 +46,13 @@ const REGIONS = {
 }
 
 const YEAR_FIX = { Mavuika: 2025, Citlali: 2025 }
-const REGION_FIX = { Arlecchino: 'Снежная', Tartaglia: 'Снежная', Zibai: 'Ли Юэ' }
+const REGION_FIX = { Arlecchino: 'Снежная', Tartaglia: 'Снежная', Zibai: 'Ли Юэ',
+  Bennett: ['Мондштадт', 'Натлан'],
+  Thoma: ['Инадзума', 'Мондштадт'],
+  Wanderer: ['Сумеру', 'Инадзума'],
+  Chiori: ['Инадзума', 'Фонтейн'],
+  'Kaedehara Kazuha': ['Инадзума', 'Ли Юэ'],
+}
 
 const GENDERS = { BOY: 'Мужской', MALE: 'Мужской', GIRL: 'Женский', LADY: 'Женский', LOLI: 'Женский' }
 

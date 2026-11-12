@@ -7,12 +7,12 @@ type Hero = Entity & {
   gender: string
   element: string
   weapon: string
-  region: string
+  region: string[]
   rarity: number
   year: number
 }
 
-const { exact } = cells<Hero>()
+const { exact, list } = cells<Hero>()
 
 const ELEMENT_ICONS: Record<string, Omit<Icon, 'label'>> = {
   Анемо: { symbol: '風', color: '#74c2a8' },
@@ -35,7 +35,7 @@ const columns: Column<Hero>[] = [
     icons: (g, { tv }) => [{ label: tv(g.element), ...ELEMENT_ICONS[g.element] }],
   },
   { title: l10n('Оружие', 'Зброя', 'Weapon'), ...exact('weapon') },
-  { title: l10n('Регион', 'Регіон', 'Region'), ...exact('region') },
+  { title: l10n('Регион', 'Регіон', 'Region'), ...list('region') },
   { title: l10n('Редкость', 'Рідкість', 'Rarity'), key: 'rarity', text: (g) => stars(g.rarity) },
   { title: l10n('Год выхода', 'Рік виходу', 'Release year'), key: 'year', text: (g) => String(g.year) },
 ]
