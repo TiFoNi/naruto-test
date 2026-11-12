@@ -886,41 +886,6 @@
   "thumb": 49
  },
  {
-  "id": 4764,
-  "name": "Кусака",
-  "nameEn": "Biter",
-  "aliases": "biter",
-  "gender": "Мужской",
-  "houses": [
-   "Без дома"
-  ],
-  "cultures": [
-   "Жители Королевских земель",
-   "Вестеросцы"
-  ],
-  "status": "Мёртв",
-  "season": 1,
-  "answer": true,
-  "thumb": 50
- },
- {
-  "id": 39654,
-  "name": "Кхоно",
-  "nameEn": "Qhono",
-  "aliases": "qhono",
-  "gender": "Мужской",
-  "houses": [
-   "Без дома"
-  ],
-  "cultures": [
-   "Дотракийцы"
-  ],
-  "status": "Мёртв",
-  "season": 6,
-  "answer": true,
-  "thumb": 51
- },
- {
   "id": 2254,
   "name": "Лансель Ланнистер",
   "nameEn": "Lancel Lannister",
@@ -936,7 +901,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 52
+  "thumb": 50
  },
  {
   "id": 31891,
@@ -954,7 +919,7 @@
   "status": "Мёртв",
   "season": 6,
   "answer": true,
-  "thumb": 53
+  "thumb": 51
  },
  {
   "id": 2140,
@@ -972,7 +937,7 @@
   "status": "Мёртв",
   "season": 6,
   "answer": true,
-  "thumb": 54
+  "thumb": 52
  },
  {
   "id": 2214,
@@ -991,7 +956,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 55
+  "thumb": 53
  },
  {
   "id": 26343,
@@ -1008,7 +973,7 @@
   "status": "Мёртв",
   "season": 4,
   "answer": true,
-  "thumb": 56
+  "thumb": 54
  },
  {
   "id": 12144,
@@ -1026,7 +991,7 @@
   "status": "Мёртв",
   "season": 3,
   "answer": true,
-  "thumb": 57
+  "thumb": 55
  },
  {
   "id": 2188,
@@ -1044,25 +1009,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 58
- },
- {
-  "id": 12863,
-  "name": "Лотар Фрей",
-  "nameEn": "Lothar Frey",
-  "aliases": "lothar frey",
-  "gender": "Мужской",
-  "houses": [
-   "Фрей"
-  ],
-  "cultures": [
-   "Речные люди",
-   "Вестеросцы"
-  ],
-  "status": "Мёртв",
-  "season": 3,
-  "answer": true,
-  "thumb": 59
+  "thumb": 56
  },
  {
   "id": 2941,
@@ -1079,7 +1026,7 @@
   "status": "Мёртв",
   "season": 3,
   "answer": true,
-  "thumb": 60
+  "thumb": 57
  },
  {
   "id": 3973,
@@ -1097,7 +1044,7 @@
   "status": "Мёртв",
   "season": 2,
   "answer": true,
-  "thumb": 61
+  "thumb": 58
  },
  {
   "id": 14964,
@@ -1115,7 +1062,7 @@
   "status": "Жив",
   "season": 2,
   "answer": true,
-  "thumb": 62
+  "thumb": 59
  },
  {
   "id": 4195,
@@ -1133,7 +1080,7 @@
   "status": "Мёртв",
   "season": 4,
   "answer": true,
-  "thumb": 63
+  "thumb": 60
  },
  {
   "id": 2186,
@@ -1150,7 +1097,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 64
+  "thumb": 61
  },
  {
   "id": 2206,
@@ -1169,7 +1116,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 65
+  "thumb": 62
  },
  {
   "id": 4370,
@@ -1186,7 +1133,7 @@
   "status": "Мёртв",
   "season": 2,
   "answer": true,
-  "thumb": 66
+  "thumb": 63
  },
  {
   "id": 2345,
@@ -1204,7 +1151,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 67
+  "thumb": 64
  },
  {
   "id": 9676,
@@ -1222,7 +1169,7 @@
   "status": "Жив",
   "season": 3,
   "answer": true,
-  "thumb": 68
+  "thumb": 65
  },
  {
   "id": 10930,
@@ -1240,7 +1187,7 @@
   "status": "Мёртв",
   "season": 3,
   "answer": true,
-  "thumb": 69
+  "thumb": 66
  },
  {
   "id": 2179,
@@ -1258,7 +1205,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 70
+  "thumb": 67
  },
  {
   "id": 11341,
@@ -1275,7 +1222,7 @@
   "status": "Мёртв",
   "season": 3,
   "answer": true,
-  "thumb": 71
+  "thumb": 68
  },
  {
   "id": 2261,
@@ -1292,7 +1239,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 72
+  "thumb": 69
  },
  {
   "id": 24248,
@@ -1311,7 +1258,7 @@
   "status": "Мёртв",
   "season": 5,
   "answer": true,
-  "thumb": 73
+  "thumb": 70
  },
  {
   "id": 24247,
@@ -1329,7 +1276,7 @@
   "status": "Мёртв",
   "season": 5,
   "answer": true,
-  "thumb": 74
+  "thumb": 71
  },
  {
   "id": 16146,
@@ -1347,7 +1294,7 @@
   "status": "Мёртв",
   "season": 4,
   "answer": true,
-  "thumb": 75
+  "thumb": 72
  },
  {
   "id": 5676,
@@ -1366,7 +1313,7 @@
   "status": "Мёртв",
   "season": 3,
   "answer": true,
-  "thumb": 76
+  "thumb": 73
  },
  {
   "id": 15485,
@@ -1383,7 +1330,7 @@
   "status": "Жив",
   "season": 3,
   "answer": true,
-  "thumb": 77
+  "thumb": 74
  },
  {
   "id": 23437,
@@ -1401,7 +1348,7 @@
   "status": "Мёртв",
   "season": 4,
   "answer": true,
-  "thumb": 78
+  "thumb": 75
  },
  {
   "id": 11338,
@@ -1418,7 +1365,7 @@
   "status": "Мёртв",
   "season": 3,
   "answer": true,
-  "thumb": 79
+  "thumb": 76
  },
  {
   "id": 5461,
@@ -1436,7 +1383,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 80
+  "thumb": 77
  },
  {
   "id": 2275,
@@ -1453,7 +1400,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 81
+  "thumb": 78
  },
  {
   "id": 2220,
@@ -1471,7 +1418,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 82
+  "thumb": 79
  },
  {
   "id": 4710,
@@ -1488,7 +1435,7 @@
   "status": "Мёртв",
   "season": 2,
   "answer": true,
-  "thumb": 83
+  "thumb": 80
  },
  {
   "id": 2265,
@@ -1506,7 +1453,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 84
+  "thumb": 81
  },
  {
   "id": 2187,
@@ -1523,7 +1470,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 85
+  "thumb": 82
  },
  {
   "id": 4704,
@@ -1541,7 +1488,7 @@
   "status": "Жив",
   "season": 2,
   "answer": true,
-  "thumb": 86
+  "thumb": 83
  },
  {
   "id": 2327,
@@ -1558,7 +1505,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 87
+  "thumb": 84
  },
  {
   "id": 8218,
@@ -1576,7 +1523,7 @@
   "status": "Мёртв",
   "season": 3,
   "answer": true,
-  "thumb": 88
+  "thumb": 85
  },
  {
   "id": 2239,
@@ -1593,7 +1540,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 89
+  "thumb": 86
  },
  {
   "id": 2200,
@@ -1611,7 +1558,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 90
+  "thumb": 87
  },
  {
   "id": 2798,
@@ -1629,7 +1576,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 91
+  "thumb": 88
  },
  {
   "id": 2138,
@@ -1647,7 +1594,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 92
+  "thumb": 89
  },
  {
   "id": 2124,
@@ -1665,7 +1612,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 93
+  "thumb": 90
  },
  {
   "id": 2122,
@@ -1683,7 +1630,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 94
+  "thumb": 91
  },
  {
   "id": 43922,
@@ -1701,7 +1648,7 @@
   "status": "Жив",
   "season": 6,
   "answer": true,
-  "thumb": 95
+  "thumb": 92
  },
  {
   "id": 2216,
@@ -1719,7 +1666,7 @@
   "status": "Жив",
   "season": 1,
   "answer": true,
-  "thumb": 96
+  "thumb": 93
  },
  {
   "id": 2185,
@@ -1737,25 +1684,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 97
- },
- {
-  "id": 4740,
-  "name": "Рорж",
-  "nameEn": "Rorge",
-  "aliases": "rorge",
-  "gender": "Мужской",
-  "houses": [
-   "Без дома"
-  ],
-  "cultures": [
-   "Жители Королевских земель",
-   "Вестеросцы"
-  ],
-  "status": "Мёртв",
-  "season": 1,
-  "answer": true,
-  "thumb": 98
+  "thumb": 94
  },
  {
   "id": 2197,
@@ -1773,7 +1702,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 99
+  "thumb": 95
  },
  {
   "id": 3143,
@@ -1791,7 +1720,7 @@
   "status": "Мёртв",
   "season": 2,
   "answer": true,
-  "thumb": 100
+  "thumb": 96
  },
  {
   "id": 2937,
@@ -1809,7 +1738,7 @@
   "status": "Мёртв",
   "season": 6,
   "answer": true,
-  "thumb": 101
+  "thumb": 97
  },
  {
   "id": 2174,
@@ -1827,7 +1756,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 102
+  "thumb": 98
  },
  {
   "id": 2128,
@@ -1845,7 +1774,7 @@
   "status": "Жив",
   "season": 1,
   "answer": true,
-  "thumb": 103
+  "thumb": 99
  },
  {
   "id": 3096,
@@ -1864,7 +1793,7 @@
   "status": "Мёртв",
   "season": 2,
   "answer": true,
-  "thumb": 104
+  "thumb": 100
  },
  {
   "id": 2104,
@@ -1882,7 +1811,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 105
+  "thumb": 101
  },
  {
   "id": 11939,
@@ -1899,7 +1828,7 @@
   "status": "Жив",
   "season": 3,
   "answer": true,
-  "thumb": 106
+  "thumb": 102
  },
  {
   "id": 2223,
@@ -1917,7 +1846,7 @@
   "status": "Мёртв",
   "season": 2,
   "answer": true,
-  "thumb": 107
+  "thumb": 103
  },
  {
   "id": 14952,
@@ -1934,7 +1863,7 @@
   "status": "Жив",
   "season": 3,
   "answer": true,
-  "thumb": 108
+  "thumb": 104
  },
  {
   "id": 2235,
@@ -1952,7 +1881,7 @@
   "status": "Жив",
   "season": 1,
   "answer": true,
-  "thumb": 109
+  "thumb": 105
  },
  {
   "id": 2100,
@@ -1970,7 +1899,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 110
+  "thumb": 106
  },
  {
   "id": 7671,
@@ -1988,7 +1917,7 @@
   "status": "Мёртв",
   "season": 2,
   "answer": true,
-  "thumb": 111
+  "thumb": 107
  },
  {
   "id": 2171,
@@ -2006,7 +1935,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 112
+  "thumb": 108
  },
  {
   "id": 24253,
@@ -2024,7 +1953,7 @@
   "status": "Мёртв",
   "season": 5,
   "answer": true,
-  "thumb": 113
+  "thumb": 109
  },
  {
   "id": 2091,
@@ -2042,7 +1971,7 @@
   "status": "Жив",
   "season": 1,
   "answer": true,
-  "thumb": 114
+  "thumb": 110
  },
  {
   "id": 2180,
@@ -2060,7 +1989,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 115
+  "thumb": 111
  },
  {
   "id": 9679,
@@ -2077,7 +2006,7 @@
   "status": "Жив",
   "season": 3,
   "answer": true,
-  "thumb": 116
+  "thumb": 112
  },
  {
   "id": 3183,
@@ -2094,7 +2023,7 @@
   "status": "Мёртв",
   "season": 3,
   "answer": true,
-  "thumb": 117
+  "thumb": 113
  },
  {
   "id": 27406,
@@ -2114,7 +2043,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 118
+  "thumb": 114
  },
  {
   "id": 7448,
@@ -2132,7 +2061,7 @@
   "status": "Мёртв",
   "season": 5,
   "answer": true,
-  "thumb": 119
+  "thumb": 115
  },
  {
   "id": 17064,
@@ -2151,25 +2080,7 @@
   "status": "Мёртв",
   "season": 4,
   "answer": true,
-  "thumb": 120
- },
- {
-  "id": 12342,
-  "name": "Уолдер Риверс",
-  "nameEn": "Walder Rivers",
-  "aliases": "walder rivers",
-  "gender": "Мужской",
-  "houses": [
-   "Без дома"
-  ],
-  "cultures": [
-   "Речные люди",
-   "Вестеросцы"
-  ],
-  "status": "Мёртв",
-  "season": 3,
-  "answer": true,
-  "thumb": 121
+  "thumb": 116
  },
  {
   "id": 2385,
@@ -2187,24 +2098,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 122
- },
- {
-  "id": 32630,
-  "name": "Уолкан",
-  "nameEn": "Wolkan",
-  "aliases": "wolkan",
-  "gender": "Мужской",
-  "houses": [
-   "Без дома"
-  ],
-  "cultures": [
-   "Вестеросцы"
-  ],
-  "status": "Жив",
-  "season": 6,
-  "answer": true,
-  "thumb": 123
+  "thumb": 117
  },
  {
   "id": 19844,
@@ -2221,7 +2115,7 @@
   "status": "Мёртв",
   "season": 4,
   "answer": true,
-  "thumb": 124
+  "thumb": 118
  },
  {
   "id": 2191,
@@ -2239,7 +2133,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 125
+  "thumb": 119
  },
  {
   "id": 2318,
@@ -2256,7 +2150,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 126
+  "thumb": 120
  },
  {
   "id": 3097,
@@ -2274,7 +2168,7 @@
   "status": "Мёртв",
   "season": 3,
   "answer": true,
-  "thumb": 127
+  "thumb": 121
  },
  {
   "id": 2041,
@@ -2292,7 +2186,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 128
+  "thumb": 122
  },
  {
   "id": 4601,
@@ -2310,7 +2204,7 @@
   "status": "Мёртв",
   "season": 2,
   "answer": true,
-  "thumb": 129
+  "thumb": 123
  },
  {
   "id": 2349,
@@ -2328,7 +2222,7 @@
   "status": "Жив",
   "season": 3,
   "answer": true,
-  "thumb": 130
+  "thumb": 124
  },
  {
   "id": 19202,
@@ -2346,7 +2240,7 @@
   "status": "Жив",
   "season": 4,
   "answer": true,
-  "thumb": 131
+  "thumb": 125
  },
  {
   "id": 11347,
@@ -2364,7 +2258,7 @@
   "status": "Жив",
   "season": 3,
   "answer": true,
-  "thumb": 132
+  "thumb": 126
  },
  {
   "id": 5695,
@@ -2382,7 +2276,7 @@
   "status": "Мёртв",
   "season": 6,
   "answer": true,
-  "thumb": 133
+  "thumb": 127
  },
  {
   "id": 25112,
@@ -2399,7 +2293,7 @@
   "status": "Жив",
   "season": 5,
   "answer": true,
-  "thumb": 134
+  "thumb": 128
  },
  {
   "id": 4541,
@@ -2416,7 +2310,7 @@
   "status": "Жив",
   "season": 1,
   "answer": true,
-  "thumb": 135
+  "thumb": 129
  },
  {
   "id": 2259,
@@ -2434,7 +2328,7 @@
   "status": "Мёртв",
   "season": 1,
   "answer": true,
-  "thumb": 136
+  "thumb": 130
  },
  {
   "id": 4278,
@@ -2452,6 +2346,6 @@
   "status": "Жив",
   "season": 2,
   "answer": true,
-  "thumb": 137
+  "thumb": 131
  }
 ]
