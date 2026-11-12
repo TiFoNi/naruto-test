@@ -1,9 +1,9 @@
 import { ObjectId } from 'mongodb'
-import { quizAttempts, quizLikes, quizzes, type QuizDoc } from '../db'
+import { quizAttempts, quizLikes, quizzes, users, type QuizDoc } from '../db'
 import { dropQuizComments } from '../quiz-comments'
 import { fail, handle, json, readJson } from '../http'
 import { uploadQuizCover } from '../images'
-import { roundOwner } from '../profile'
+import { ownedTitles, roundOwner } from '../profile'
 import { QUIZ_LIMITS, readQuiz, revised } from '../quizzes'
 
 const LIMIT = 8 * 1024 * 1024
@@ -15,6 +15,14 @@ async function account(request: Request) {
   return owner.guest ? null : owner.id
 }
 
+const LIVE = ['published', 'review'] as const
+
+async function publishRoom(userId: ObjectId, except?: ObjectId | null) {
+  const doc = await (await users()).findOne({ _id: userId }, { projection: { titles: 1 } })
+  const used = await (await quizzes()).countDocuments({ authorId: userId, official: { $ne: true }, status: { $in: [...LIVE] }, ...(except ? { _id: { $ne: except } } : {}) })
+  return { used, max: doc && ownedTitles(doc).includes('patron') ? null : QUIZ_LIMITS.publishFree }
+}
+
 const idOf = (raw: unknown) => (typeof raw === 'string' && ObjectId.isValid(raw) ? new ObjectId(raw) : null)
 
 export const GET = handle(async (request) => {
@@ -23,11 +31,11 @@ export const GET = handle(async (request) => {
   const collection = await quizzes()
   const id = idOf(new URL(request.url).searchParams.get('id'))
   if (id) {
-    const quiz = await collection.findOne({ _id: id, authorId: userId })
-    return quiz ? json({ quiz: view(quiz) }) : fail(404, 'not_found')
+    const quiz = await collection.findOne({ _id: id, authorId: userId, official: { $ne: true } })
+    return quiz ? json({ quiz: view(quiz), publish: await publishRoom(userId, id) }) : fail(404, 'not_found')
   }
 
-  const list = await collection.find({ authorId: userId }, { sort: { updatedAt: -1 } }).toArray()
+  const list = await collection.find({ authorId: userId, official: { $ne: true } }, { sort: { updatedAt: -1 } }).toArray()
   const ids = list.map((quiz) => quiz._id!)
   const count = async (rows: { _id: unknown; count: number }[]) => new Map(rows.map((row) => [String(row._id), row.count]))
   const plays = await count(
@@ -39,6 +47,7 @@ export const GET = handle(async (request) => {
   return json({
     quizzes: list.map((quiz) => view(quiz, plays.get(quiz._id!.toHexString()) ?? 0, likes.get(quiz._id!.toHexString()) ?? 0)),
     limit: QUIZ_LIMITS.ownQuizzes,
+    publish: await publishRoom(userId),
   })
 })
 
@@ -56,10 +65,15 @@ export const SAVE = handle(async (request) => {
   const now = new Date()
   const id = idOf(body.id)
 
+  if (submit) {
+    const room = await publishRoom(userId, id)
+    if (room.max !== null && room.used >= room.max) return json({ error: 'publish_limit', max: room.max }, 409)
+  }
+
   if (id) {
-    const before = await collection.findOne({ _id: id, authorId: userId }, { projection: { questions: 1 } })
+    const before = await collection.findOne({ _id: id, authorId: userId, official: { $ne: true } }, { projection: { questions: 1 } })
     const saved = await collection.findOneAndUpdate(
-      { _id: id, authorId: userId },
+      { _id: id, authorId: userId, official: { $ne: true } },
       { $set: { ...fields, ...revised(before?.questions, fields.questions, now), updatedAt: now } },
       { returnDocument: 'after' },
     )
@@ -68,10 +82,24 @@ export const SAVE = handle(async (request) => {
     return json({ quiz: view(saved) })
   }
 
-  if ((await collection.countDocuments({ authorId: userId })) >= QUIZ_LIMITS.ownQuizzes) return fail(409, 'too_many')
+  if ((await collection.countDocuments({ authorId: userId, official: { $ne: true } })) >= QUIZ_LIMITS.ownQuizzes) return fail(409, 'too_many')
   const doc: QuizDoc = { ...fields, authorId: userId, createdAt: now, updatedAt: now }
   const { insertedId } = await collection.insertOne(doc)
   return json({ quiz: view({ ...doc, _id: insertedId }) })
+})
+
+export const HIDE = handle(async (request) => {
+  const userId = await account(request)
+  if (!userId) return fail(401, 'login')
+  const id = idOf((await readJson(request)).id)
+  if (!id) return fail(400, 'bad_request')
+  const hidden = await (await quizzes()).findOneAndUpdate(
+    { _id: id, authorId: userId, official: { $ne: true }, status: { $in: [...LIVE] } },
+    { $set: { status: 'draft', updatedAt: new Date() } },
+    { returnDocument: 'after' },
+  )
+  if (!hidden) return fail(404, 'not_found')
+  return json({ quiz: view(hidden), publish: await publishRoom(userId) })
 })
 
 export const DROP = handle(async (request) => {
@@ -79,7 +107,7 @@ export const DROP = handle(async (request) => {
   if (!userId) return fail(401, 'login')
   const id = idOf((await readJson(request)).id)
   if (!id) return fail(400, 'bad_request')
-  const { deletedCount } = await (await quizzes()).deleteOne({ _id: id, authorId: userId })
+  const { deletedCount } = await (await quizzes()).deleteOne({ _id: id, authorId: userId, official: { $ne: true } })
   if (!deletedCount) return fail(404, 'not_found')
   await (await quizAttempts()).deleteMany({ quizId: id })
   await (await quizLikes()).deleteMany({ quizId: id })

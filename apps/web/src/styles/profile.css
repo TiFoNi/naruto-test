@@ -4560,3 +4560,141 @@ body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
 .profile-banner-acts:has(.hero-acts.is-bar .is-open) {
   z-index: 40;
 }
+
+.tests-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tests-card > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 34px;
+}
+
+.tests-card > header h2 {
+  margin: 0;
+}
+
+.tests-make {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 13px 0 11px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--card-2);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.tests-make:hover {
+  border-color: color-mix(in srgb, var(--text) 35%, var(--line));
+}
+
+.tests-make .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.tests-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.tests-stats > span {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 92px;
+  padding: 10px 12px;
+  border-radius: 18px;
+  background: var(--card-2);
+}
+
+.tests-stats b {
+  font-family: var(--display);
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.tests-stats small {
+  overflow: hidden;
+  color: var(--text-3);
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.tests-empty {
+  display: grid;
+  min-height: 92px;
+  margin: 0;
+  place-items: center;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  font-size: 13.5px;
+  text-align: center;
+}
+
+
+.facts-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.facts-card > header {
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+}
+
+.facts-card > header h2 {
+  margin: 0;
+}
+
+.profile-facts .fact {
+  justify-content: center;
+  gap: 4px;
+}
+
+.profile-facts .fact .fact-label,
+.profile-facts .fact-rank .fact-label {
+  color: var(--text-3);
+}
+
+.profile-facts .fact > b.fact-value {
+  display: block;
+  overflow: hidden;
+  font-size: 24px;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-facts .fact-rank > b.fact-value {
+  color: var(--place);
+}
+
+.profile-facts .fact > b.fact-value.empty {
+  color: var(--text-3);
+}

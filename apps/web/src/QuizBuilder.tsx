@@ -13,12 +13,12 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, Game, GameId } from './games/types'
 import { useI18n, type L10n, type UiKey } from './i18n'
-import { ArrowIcon, CheckIcon, CloseIcon, CopyIcon, DownIcon, GearIcon, PencilIcon, PictureIcon, PlayIcon, PlusIcon, SparkIcon, TextIcon, TrashIcon, UpIcon, UserIcon } from './icons'
+import { ArrowIcon, CheckIcon, CloseIcon, CopyIcon, CrownIcon, DownIcon, GearIcon, PencilIcon, PictureIcon, PlayIcon, PlusIcon, SparkIcon, TextIcon, TrashIcon, UpIcon, UserIcon } from './icons'
 import { abilityUrl, picsUrl } from './pics'
 import { coverUrl, type QuizCover, type QuizKind, type QuizLayout, type QuizAttempt, type QuizOption, type QuizQuestionView, type QuizStatus, type QuizValue, type QuizView } from './quiz'
 import { KIND_ICON } from './QuizList'
 import { QuizRun } from './QuizPlay'
-import { useHref } from './router'
+import { useHref, useNavigate } from './router'
 import Thumb from './Thumb'
 
 type Ability = { key: string; name: L10n }
@@ -73,6 +73,7 @@ const ERRORS: Record<string, UiKey> = {
   question_duplicate: 'qb.err.duplicate',
   login: 'qb.err.login',
   too_many: 'qb.err.tooMany',
+  publish_limit: 'qb.err.publishLimit',
 }
 
 export const KINDS: QuizKind[] = ['choice', 'name', 'bool', 'order', 'pairs']
@@ -859,9 +860,18 @@ function TryRun({ game, byId, quiz }: { game: Game; byId: Map<number, Entity>; q
   )
 }
 
-type Asking = { title: string; hint: string; action: string; danger: boolean; run: () => void }
+export type Asking = {
+  title: string
+  hint: string
+  action: string
+  danger: boolean
+  run: () => void
+  mark?: ReactNode
+  meter?: { used: number; max: number; label: string }
+  link?: { label: string; href: string }
+}
 
-function Ask({ ask, onClose }: { ask: Asking; onClose: () => void }) {
+export function Ask({ ask, onClose }: { ask: Asking; onClose: () => void }) {
   const { t } = useI18n()
   useEffect(() => {
     const keys = (event: KeyboardEvent) => event.key === 'Escape' && onClose()
@@ -874,12 +884,30 @@ function Ask({ ask, onClose }: { ask: Asking; onClose: () => void }) {
         <button type="button" className="modal-close" aria-label={t('profile.cancel')} onClick={onClose}>
           <CloseIcon />
         </button>
+        {ask.mark && <span className="qb-ask-mark">{ask.mark}</span>}
         <h2>{ask.title}</h2>
         <p>{ask.hint}</p>
+        {ask.meter && (
+          <div className="qb-ask-meter">
+            <span>
+              {Array.from({ length: ask.meter.max }, (_, at) => (
+                <i key={at} className={at < ask.meter!.used ? 'on' : ''} />
+              ))}
+            </span>
+            <small>{ask.meter.label}</small>
+          </div>
+        )}
         <div className="qb-ask-actions">
-          <button type="button" className="qb-ask-btn" onClick={onClose}>
-            {t('profile.cancel')}
-          </button>
+          {ask.link ? (
+            <Link className="qb-ask-btn is-gold" href={ask.link.href} onClick={onClose}>
+              <CrownIcon />
+              {ask.link.label}
+            </Link>
+          ) : (
+            <button type="button" className="qb-ask-btn" onClick={onClose}>
+              {t('profile.cancel')}
+            </button>
+          )}
           <button
             type="button"
             className={`qb-ask-btn ${ask.danger ? 'is-danger' : 'is-main'}`}
@@ -935,6 +963,7 @@ export default function QuizBuilder({
 }) {
   const { t } = useI18n()
   const href = useHref()
+  const navigate = useNavigate()
   const [quiz, setQuiz] = useState(draft)
   const [base, setBase] = useState(draft)
   const [sel, setSel] = useState(0)
@@ -1047,12 +1076,13 @@ export default function QuizBuilder({
     setBusy(true)
     setNote(null)
     setBadAt(null)
-    const { ok, status, data } = await api<{ quiz?: SavedDraft; error?: string; at?: number }>(endpoint, { ...quiz, submit }).catch(() => ({
+    const { ok, status, data } = await api<{ quiz?: SavedDraft; error?: string; at?: number; max?: number }>(endpoint, { ...quiz, submit }).catch(() => ({
       ok: false,
       status: 0,
-      data: {} as { quiz?: SavedDraft; error?: string; at?: number },
+      data: {} as { quiz?: SavedDraft; error?: string; at?: number; max?: number },
     }))
     setBusy(false)
+    if (!ok && data.error === 'publish_limit') return askLimit(typeof data.max === 'number' ? data.max : 3)
     if (!ok || !data.quiz) {
       const at = typeof data.at === 'number' ? data.at : null
       const key = status === 404 && mode === 'admin' ? null : ERRORS[data.error ?? '']
@@ -1071,6 +1101,18 @@ export default function QuizBuilder({
     } else setNote({ text: mode === 'admin' ? t('qb.saved') : t('qb.savedDraft'), bad: false })
     onSaved(saved)
   }
+
+  const askLimit = (max: number) =>
+    setAsk({
+      title: t('qb.limit.title'),
+      hint: t('qb.limit.hint', { max }),
+      action: t('qb.limit.mine'),
+      danger: false,
+      mark: <CrownIcon />,
+      meter: { used: max, max, label: t('qb.limit.meter', { used: max, max }) },
+      link: { label: t('qb.limit.patron'), href: href.support },
+      run: () => navigate(href.myTests),
+    })
 
   const saveChecked = (submit: boolean) => {
     if (mode !== 'user' || base.status !== 'published') return void save(submit)

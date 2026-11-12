@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb'
 import { CARD_PINS_MAX, GAME_IDS, OPEN_GAMES, STAT_KEYS, type GameId } from '@nanda/game'
 import { ACHIEVEMENTS, LIFE, familyOf, rarity } from '../achievements'
 import { PINNED_MAX } from './achievements'
-import { rounds, seasons, users, type UserDoc } from '../db'
+import { quizAttempts, quizLikes, quizzes, rounds, seasons, users, type UserDoc } from '../db'
 import { gameData } from '../games'
 import { showcaseOf } from '../dex'
 import { fail, handle, json } from '../http'
@@ -36,6 +36,34 @@ const shown = (doc: UserDoc) => {
 type Counted = { _id: string; played: number; won: number; guesses: number }
 
 const ZONE = 'Europe/Kyiv'
+
+async function authored(userId: ObjectId) {
+  const list = await (await quizzes())
+    .find({ authorId: userId, status: 'published' }, { projection: { title: 1, game: 1 }, sort: { createdAt: -1 } })
+    .toArray()
+  if (!list.length) return { published: 0, plays: 0, likes: 0, list: [] }
+  const ids = list.map((quiz) => quiz._id!)
+  const [played, hearts] = await Promise.all([
+    (await quizAttempts())
+      .aggregate<{ _id: ObjectId; count: number }>([{ $match: { quizId: { $in: ids }, finished: true } }, { $group: { _id: '$quizId', count: { $sum: 1 } } }])
+      .toArray(),
+    (await quizLikes())
+      .aggregate<{ _id: ObjectId; count: number }>([{ $match: { quizId: { $in: ids } } }, { $group: { _id: '$quizId', count: { $sum: 1 } } }])
+      .toArray(),
+  ])
+  const plays = new Map(played.map((row) => [row._id.toHexString(), row.count]))
+  const likes = new Map(hearts.map((row) => [row._id.toHexString(), row.count]))
+  const rows = list.map((quiz) => {
+    const id = quiz._id!.toHexString()
+    return { id, game: quiz.game, title: quiz.title, plays: plays.get(id) ?? 0, likes: likes.get(id) ?? 0 }
+  })
+  return {
+    published: rows.length,
+    plays: rows.reduce((sum, row) => sum + row.plays, 0),
+    likes: rows.reduce((sum, row) => sum + row.likes, 0),
+    list: rows,
+  }
+}
 
 async function history(userId: ObjectId) {
   const collection = await rounds()
@@ -273,6 +301,7 @@ export const GET = handle(async (request) => {
     }),
   )
 
+  const tests = await authored(doc._id!)
   const showcase = await showcaseOf(doc, CARD_PINS_MAX)
   const shelf = (
     await Promise.all(
@@ -313,6 +342,7 @@ export const GET = handle(async (request) => {
       }
     }),
     showcase: doc.showcase ?? [],
+    tests,
     cards: shelf,
     tiles: doc.tiles ?? null,
     banner: doc.banner ?? null,

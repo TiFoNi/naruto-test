@@ -243,6 +243,11 @@ export class GameController {
     return bridge(myQuizzes.SAVE, req, res)
   }
 
+  @Post('my/quizzes/hide')
+  myQuizHide(@Req() req: Request, @Res() res: Response) {
+    return bridge(myQuizzes.HIDE, req, res)
+  }
+
   @Post('my/quizzes/drop')
   myQuizDrop(@Req() req: Request, @Res() res: Response) {
     return bridge(myQuizzes.DROP, req, res)

@@ -45,6 +45,7 @@ type Metrics = {
   cardStep: number
   activity: number
   facts: number
+  quizzes: number
   worldCell: number
   awardCell: number
 }
@@ -62,6 +63,7 @@ const FALLBACK: Metrics = {
   cardStep: 186,
   activity: 337,
   facts: 123,
+  quizzes: 176,
   worldCell: 0,
   awardCell: 0,
 }
@@ -174,6 +176,15 @@ function measure(box: HTMLElement, wide: boolean): Metrics | null {
     facts = Math.max(facts, told.offsetHeight)
     told.style.cssText = kept
   }
+  let quizzes = FALLBACK.quizzes
+  const tested = box.querySelector<HTMLElement>('.slot-quizzes .profile-card')
+  if (tested) {
+    const kept = tested.style.cssText
+    tested.style.flex = 'none'
+    tested.style.height = 'auto'
+    quizzes = Math.max(FALLBACK.quizzes, tested.offsetHeight)
+    tested.style.cssText = kept
+  }
   return {
     base,
     step,
@@ -187,6 +198,7 @@ function measure(box: HTMLElement, wide: boolean): Metrics | null {
     cardStep: cardStep || step,
     activity,
     facts,
+    quizzes,
     worldCell: cellOf(box.querySelector<HTMLElement>('.slot-worlds .world-shelf')),
     awardCell: cellOf(box.querySelector<HTMLElement>('.slot-awards .soon-badges')),
   }
@@ -199,6 +211,7 @@ export default function ProfileBoard({
   sizes,
   count,
   edit,
+  content = '',
   render,
   onStart,
   onSave,
@@ -209,6 +222,7 @@ export default function ProfileBoard({
   sizes: Record<string, number>
   count: (block: ProfileBlock, cols: number) => number | undefined
   edit: boolean
+  content?: string
   render: (block: ProfileBlock, cols: number) => ReactNode
   onStart?: () => void
   onSave: (next: BoardSave) => void
@@ -237,7 +251,7 @@ export default function ProfileBoard({
   const colsOf = (block: ProfileBlock) => (fullOf(block) ? FULL_ROW : ROW)
   const counts = blocks.map((block) => count(block, colsOf(block)) ?? '')
 
-  const shape = `${width}|${edit}|${blocks.join()}|${counts.join()}|${JSON.stringify(sides)}|${metrics.worldCell}|${metrics.awardCell}`
+  const shape = `${width}|${edit}|${content}|${blocks.join()}|${counts.join()}|${JSON.stringify(sides)}|${metrics.worldCell}|${metrics.awardCell}`
   useLayoutEffect(() => {
     const box = containerRef.current
     if (!box || !mounted || held.current) return
@@ -261,7 +275,7 @@ export default function ProfileBoard({
   const heightOf = (block: ProfileBlock) => {
     if (stretch?.block === block) return unitsOf(stretch.px) + bar
     if (isShelf(block)) return unitsOf(shelfPx(rowsOf(block), block)) + bar
-    if (block === 'facts') return unitsOf(metrics.facts) + bar
+    if (block === 'facts' || block === 'quizzes') return unitsOf(Math.max(metrics.facts, blocks.includes('quizzes') ? metrics.quizzes : 0)) + bar
     return unitsOf(sizes[block] ?? metrics.activity) + bar
   }
 
@@ -412,7 +426,7 @@ export default function ProfileBoard({
                 }
               >
                 {render(block, colsOf(block))}
-                {edit && block !== 'facts' && <i className="slot-grow" onPointerDown={grow(block)} aria-hidden />}
+                {edit && block !== 'facts' && block !== 'quizzes' && <i className="slot-grow" onPointerDown={grow(block)} aria-hidden />}
                 {edit && wide && isShelf(block) && (full || sideOf(block) === 1) && (
                   <i className="slot-widen is-left" onPointerDown={widen(block, 'left')} aria-hidden />
                 )}

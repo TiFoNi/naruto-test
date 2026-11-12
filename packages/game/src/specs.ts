@@ -486,7 +486,7 @@ export type TitleId = (typeof TITLES)[number]
 
 export const isTitle = (value: unknown): value is TitleId => (TITLES as readonly string[]).includes(value as string)
 
-export const PROFILE_BLOCKS = ['worlds', 'awards', 'cards', 'facts', 'activity'] as const
+export const PROFILE_BLOCKS = ['worlds', 'awards', 'cards', 'facts', 'activity', 'quizzes'] as const
 
 export type ProfileBlock = (typeof PROFILE_BLOCKS)[number]
 

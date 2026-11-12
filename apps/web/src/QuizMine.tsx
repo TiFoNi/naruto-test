@@ -8,9 +8,9 @@ import BackButton from './BackButton'
 import { BRAND } from './brand'
 import { GAMES } from './games'
 import { useI18n, type UiKey } from './i18n'
-import { HeartIcon, PlusIcon, UsersIcon } from './icons'
+import { CrownIcon, EyeOffIcon, HeartIcon, PlusIcon, UsersIcon } from './icons'
 import { coverUrl } from './quiz'
-import type { SavedDraft } from './QuizBuilder'
+import { Ask, type Asking, type SavedDraft } from './QuizBuilder'
 import { useHref } from './router'
 import { uiUrl } from './pics'
 
@@ -22,14 +22,44 @@ export default function QuizMine() {
   const { user, loading } = useAuth()
   const [list, setList] = useState<Mine[] | null>(null)
   const [limit, setLimit] = useState(30)
+  const [publish, setPublish] = useState<{ used: number; max: number | null } | null>(null)
+  const [ask, setAsk] = useState<Asking | null>(null)
+  const [note, setNote] = useState<string | null>(null)
 
   useEffect(() => {
     if (!user) return
-    void api<{ quizzes?: Mine[]; limit?: number }>('my/quizzes').then(({ ok, data }) => {
+    void api<{ quizzes?: Mine[]; limit?: number; publish?: { used: number; max: number | null } }>('my/quizzes').then(({ ok, data }) => {
       setList(ok ? (data.quizzes ?? []) : [])
       if (data.limit) setLimit(data.limit)
+      if (data.publish) setPublish(data.publish)
     })
   }, [user])
+
+  useEffect(() => {
+    if (!note) return
+    const timer = window.setTimeout(() => setNote(null), 2400)
+    return () => window.clearTimeout(timer)
+  }, [note])
+
+  const hide = async (id: string) => {
+    const { ok, data } = await api<{ quiz?: Mine; publish?: { used: number; max: number | null } }>('my/quizzes/hide', { id })
+    if (!ok || !data.quiz) return
+    setList((was) => was?.map((one) => (one.id === id ? { ...one, status: 'draft' } : one)) ?? was)
+    if (data.publish) setPublish(data.publish)
+    setNote(t('qb.hidden'))
+  }
+
+  const askHide = (quiz: Mine) =>
+    setAsk({
+      title: t('qb.hideTitle'),
+      hint: t('qb.hideHint'),
+      action: t(quiz.status === 'review' ? 'qb.hideReview' : 'qb.hide'),
+      danger: false,
+      mark: <EyeOffIcon />,
+      run: () => void hide(quiz.id!),
+    })
+
+  const capped = !!publish && publish.max !== null && publish.used >= publish.max
 
   const back = (
     <div className="play-nav">
@@ -62,6 +92,25 @@ export default function QuizMine() {
         <div>
           <small className="qz-kicker">{list ? t('qb.mine.count', { count: list.length, max: limit }) : ' '}</small>
           <h1>{t('qb.mine')}</h1>
+          {publish && (
+            <span className={`qb-publish-meter ${publish.max === null ? 'is-free' : capped ? 'is-full' : ''}`}>
+              {publish.max === null ? (
+                <>
+                  <CrownIcon />
+                  {t('qb.limit.meterFree', { used: publish.used })} · {t('qb.limit.free')}
+                </>
+              ) : (
+                <>
+                  <span className="qb-publish-dots" aria-hidden>
+                    {Array.from({ length: publish.max }, (_, at) => (
+                      <i key={at} className={at < publish.used ? 'on' : ''} />
+                    ))}
+                  </span>
+                  {t('qb.limit.meter', { used: publish.used, max: publish.max })}
+                </>
+              )}
+            </span>
+          )}
         </div>
         <div className="qz-main-tools">
           {full ? (
@@ -74,6 +123,18 @@ export default function QuizMine() {
           )}
         </div>
       </div>
+
+      {capped && (
+        <div className="qb-limit-banner">
+          <span className="qb-limit-mark" aria-hidden>
+            <CrownIcon />
+          </span>
+          <p>{t('qb.limit.full')}</p>
+          <Link prefetch={false} className="qb-limit-go" href={href.support}>
+            {t('qb.limit.patron')}
+          </Link>
+        </div>
+      )}
 
       {list === null ? (
         <div className="qz-grid">
@@ -96,8 +157,10 @@ export default function QuizMine() {
           {list.map((quiz) => {
             const world = GAMES.find((one) => one.id === quiz.game)
             const art = coverUrl(quiz.game, quiz.cover)
+            const live = quiz.status === 'published' || quiz.status === 'review'
             return (
-              <Link prefetch={false} key={quiz.id} className="qz-card qb-mine-card" href={href.makeTest({ id: quiz.id })}>
+              <div key={quiz.id} className="qb-mine-item">
+              <Link prefetch={false} className="qz-card qb-mine-card" href={href.makeTest({ id: quiz.id })}>
                 <span className="qz-art">
                   {art ? <img src={art} alt="" loading="lazy" /> : <span className="qz-mark">{BRAND.mark}</span>}
                   <span className="qz-corner is-left">
@@ -130,10 +193,19 @@ export default function QuizMine() {
                   {quiz.status === 'rejected' && quiz.note && <span className="qb-mine-note">{t('qb.rejectNote', { note: quiz.note })}</span>}
                 </span>
               </Link>
+              {live && (
+                <button type="button" className="qb-mine-hide" onClick={() => askHide(quiz)}>
+                  <EyeOffIcon />
+                  <span>{t(quiz.status === 'review' ? 'qb.hideReview' : 'qb.hide')}</span>
+                </button>
+              )}
+              </div>
             )
           })}
         </div>
       )}
+      {note && <div className="qb-toast" role="status">{note}</div>}
+      {ask && <Ask ask={ask} onClose={() => setAsk(null)} />}
     </div>
   )
 }

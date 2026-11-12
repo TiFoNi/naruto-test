@@ -100,6 +100,7 @@ type Summary = {
   blockSeen?: Record<string, number>
   gamePlaces: { game: GameId; mode: string; position: number }[]
   showcase: string[]
+  tests?: { published: number; plays: number; likes: number; list: { id: string; game: string; title: string; plays: number; likes: number }[] }
   cards?: { game: GameId; id: number; xp: number; image?: string; name: Named }[]
   tiles?: (string | null)[] | null
   banner?: string | null
@@ -729,7 +730,10 @@ export default function Profile({ id }: { id?: string }) {
 
   const panels: Record<ProfileBlock, ReactNode | ((cols: number) => ReactNode)> = {
     facts: (
-      <section className="card profile-card">
+      <section className="card profile-card facts-card">
+        <header>
+          <h2>{t('profile.block.facts')}</h2>
+        </header>
         <div className="profile-facts">
           {best ? (
             <button
@@ -738,15 +742,13 @@ export default function Profile({ id }: { id?: string }) {
               aria-expanded={places}
               onClick={() => setPlaces((was) => !was)}
             >
-              <span>{t('profile.bestGame')}</span>
-              <p className="fact-place">
-                <b>#{best.position}</b>
-              </p>
+              <FitLabel full={t('profile.bestGame')} short={t('profile.bestGameShort')} />
+              <b className="fact-value">#{best.position}</b>
             </button>
           ) : (
             <div className="fact fact-rank">
-              <span>{t('profile.bestGame')}</span>
-              <b className="empty">—</b>
+              <FitLabel full={t('profile.bestGame')} short={t('profile.bestGameShort')} />
+              <b className="fact-value empty">—</b>
             </div>
           )}
 
@@ -769,15 +771,46 @@ export default function Profile({ id }: { id?: string }) {
           <div className="fact">
             <FitLabel full={t('profile.favourite')} short={t('profile.favouriteShort')} />
             {summary?.favourite ? (
-              <b className="small" title={l(gameLabel(summary.favourite)!)}>
+              <b className="fact-value" title={l(gameLabel(summary.favourite)!)}>
                 {l(gameLabel(summary.favourite)!)}
               </b>
             ) : (
-              <b className="empty">—</b>
+              <b className="fact-value empty">—</b>
             )}
           </div>
         </div>
 
+      </section>
+    ),
+    quizzes: (
+      <section className="card profile-card tests-card">
+        <header>
+          <h2>{t('quiz.title')}</h2>
+          {own && !summary?.tests?.published && (
+            <Link className="tests-make" href={href.makeTest()} prefetch={false}>
+              <PlusIcon />
+              {t('profile.testsMake')}
+            </Link>
+          )}
+        </header>
+        {summary?.tests?.published ? (
+          <div className="tests-stats">
+            <span>
+              <small>{t('profile.testsPublished')}</small>
+              <b>{summary.tests.published.toLocaleString(LOCALES[lang])}</b>
+            </span>
+            <span>
+              <small>{t('profile.testsPlays')}</small>
+              <b>{summary.tests.plays.toLocaleString(LOCALES[lang])}</b>
+            </span>
+            <span>
+              <small>{t('profile.testsLikes')}</small>
+              <b>{summary.tests.likes.toLocaleString(LOCALES[lang])}</b>
+            </span>
+          </div>
+        ) : (
+          <p className="tests-empty muted">{t('profile.testsNone')}</p>
+        )}
       </section>
     ),
     activity: (
@@ -1817,6 +1850,7 @@ export default function Profile({ id }: { id?: string }) {
         sides={boardSides}
         seen={boardSeen}
         sizes={boardSizes}
+        content={summary ? `${summary.tests?.published ?? 0}` : ''}
         count={(block, cols) =>
           block === 'worlds'
             ? shelf.length + (sorting ? blanks : Math.min(blanks, (cols - (shelf.length % cols)) % cols))

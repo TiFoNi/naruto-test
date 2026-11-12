@@ -137,6 +137,13 @@ function GhostBoard() {
         </div>
       </section>
     ),
+    quizzes: (
+      <section className="card profile-card tests-card">
+        <header>
+          <span className="sk title" />
+        </header>
+      </section>
+    ),
     activity: (
       <section className="card activity-card">
         <header>
