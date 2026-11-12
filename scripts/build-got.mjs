@@ -15,7 +15,7 @@ const M = 'Мужской'
 const F = 'Женский'
 const NO_HOUSE = 'Без дома'
 
-const EXCLUDE = new Set(["Night's Watch officer", 'High Septon (Tommen)', 'Bernadette', 'Boake', 'Aberdolf Strongbeard', 'Arys Oakheart', 'Boros Blount', 'Malakho', 'Alys Karstark', 'Wolkan', 'Lothar Frey', 'Walder Rivers', 'Biter', 'Rorge', 'Qhono'])
+const EXCLUDE = new Set(["Night's Watch officer", 'High Septon (Tommen)', 'Bernadette', 'Boake', 'Aberdolf Strongbeard', 'Arys Oakheart', 'Boros Blount', 'Malakho', 'Alys Karstark', 'Wolkan', 'Lothar Frey', 'Walder Rivers', 'Biter', 'Rorge', 'Qhono', 'Kovarro'])
 
 const FEMALE = new Set([
   'Daenerys Targaryen', 'Cersei Lannister', 'Sansa Stark', 'Arya Stark', 'Brienne of Tarth', 'Missandei', 'Melisandre', 'Gilly',
