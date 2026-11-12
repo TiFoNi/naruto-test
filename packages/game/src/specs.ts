@@ -899,7 +899,7 @@ export const ENDLESS_MODES: ModeId[] = ['pair', 'grid']
 
 export const hasDaily = (mode: ModeId) => !ENDLESS_MODES.includes(mode)
 
-export const ZOOM_LEVELS = [5.1, 3.7, 2.6, 1.9] as const
+export const ZOOM_LEVELS = [3.7, 2.6, 1.9] as const
 export const ZOOM_REVEAL = ZOOM_LEVELS.length
 export const zoomAt = (step: number) => (step >= ZOOM_LEVELS.length ? 1 : ZOOM_LEVELS[Math.max(0, step)])
 

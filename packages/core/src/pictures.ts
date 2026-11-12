@@ -25,8 +25,8 @@ export async function derive(source: Buffer, shape: Shape = 'square', detailed?:
 
   const side = Math.min(SQUARE, base.info.width, base.info.height)
   const full = square
-    ? await sharp(base.data).resize(side, side, { fit: 'cover', position: 'top' }).webp({ quality: 88 }).toBuffer()
-    : await sharp(base.data).resize({ ...FULL, fit: 'inside', withoutEnlargement: true }).webp({ quality: 88 }).toBuffer()
+    ? await sharp(base.data).resize(side, side, { fit: 'cover', position: 'top' }).webp({ quality: 100 }).toBuffer()
+    : await sharp(base.data).resize({ ...FULL, fit: 'inside', withoutEnlargement: true }).webp({ quality: 100 }).toBuffer()
 
   const card = tight
     ? await framed(trimmed.data, CARD.width, CARD.height, 82)
