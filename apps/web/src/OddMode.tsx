@@ -111,10 +111,10 @@ export default function OddMode({ game, active, stats, daily = false, challenge 
           </span>
         }
       >
-        {field && !over && (
-          <p className="ask-line">
-            <span className="ask-tag">{t('odd.lookIn')}</span>
-            <b>{field}</b>
+        {field && (
+          <p className={`ask-line ${over ? 'is-told' : ''}`}>
+            <span className="ask-tag">{over ? t('odd.sharedIn', { field }) : t('odd.lookIn')}</span>
+            <b>{over && round?.trait?.value ? tg(round.trait.value) : field}</b>
           </p>
         )}
 

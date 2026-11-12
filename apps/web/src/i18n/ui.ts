@@ -625,6 +625,7 @@ const ui = {
     en: 'Three of them share one trait — look for it under “{field}”.',
   },
   'odd.lookIn': { ru: 'Общая черта в графе', uk: 'Спільна риса у графі', en: 'Shared trait under' },
+  'odd.sharedIn': { ru: 'Общее у троих · {field}', uk: 'Спільне в трьох · {field}', en: 'Shared by three · {field}' },
   'play.oddPromptPlain': {
     ru: 'Троих что-то объединяет — клан, отряд, сила. Выбери того, кто выбивается.',
     uk: 'Трьох щось об’єднує — клан, загін, сила. Обери того, хто випадає.',
