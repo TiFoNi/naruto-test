@@ -72,7 +72,10 @@ export default function Support() {
       if (gone) return
       setLoaded(true)
       if (!ok) return
-      if (data.stars) setStars(true)
+      if (data.stars) {
+        setStars(true)
+        setWay('stars')
+      }
       if (data.packs?.length) setCharges(Object.fromEntries(data.packs.map((one) => [one.id, one])))
       if (data.coins?.length) {
         setCoins(data.coins)
