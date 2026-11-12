@@ -29,6 +29,21 @@ const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'hxh-atlas.json')
 const ANSWER_POOL_SIZE = 55
 const KEEP = 70
 const EXTRA = ['Neferpitou']
+const HIDDEN = new Set([
+  'Neon Nostrade',
+  'Cheetu',
+  'Battera',
+  'Flutter',
+  'Neferpitou',
+  'Komugi',
+  'Colt',
+  'Cheadle Yorkshire',
+  'Wing',
+  'Hanzo',
+  'Gotoh',
+  'Canary',
+  'Abengane',
+])
 const ALWAYS = new Set([
   'Alluka Zoldyck',
   'Silva Zoldyck',
@@ -254,6 +269,7 @@ async function main() {
       arc: ARCS[arcIndex][1],
       arcIndex,
       length,
+      ...(HIDDEN.has(name) ? { hidden: true } : {}),
     })
   })
 

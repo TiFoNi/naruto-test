@@ -13,7 +13,8 @@
   "arc": "Жадный остров",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 0
+  "thumb": 0,
+  "hidden": true
  },
  {
   "id": 2052,
@@ -83,7 +84,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 4
+  "thumb": 4,
+  "hidden": true
  },
  {
   "id": 2417,
@@ -209,7 +211,8 @@
   "arc": "Небесная арена",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 11
+  "thumb": 11,
+  "hidden": true
  },
  {
   "id": 2291,
@@ -261,7 +264,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 14
+  "thumb": 14,
+  "hidden": true
  },
  {
   "id": 1959,
@@ -447,7 +451,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 24
+  "thumb": 24,
+  "hidden": true
  },
  {
   "id": 30293,
@@ -520,7 +525,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 28
+  "thumb": 28,
+  "hidden": true
  },
  {
   "id": 2250,
@@ -536,7 +542,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 29
+  "thumb": 29,
+  "hidden": true
  },
  {
   "id": 2247,
@@ -809,7 +816,8 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 44
+  "thumb": 44,
+  "hidden": true
  },
  {
   "id": 2233,
@@ -828,7 +836,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 45
+  "thumb": 45,
+  "hidden": true
  },
  {
   "id": 2141,
@@ -1026,7 +1035,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 56
+  "thumb": 56,
+  "hidden": true
  },
  {
   "id": 2103,
@@ -1098,7 +1108,8 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 60
+  "thumb": 60,
+  "hidden": true
  },
  {
   "id": 72360,
@@ -1210,7 +1221,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 66
+  "thumb": 66,
+  "hidden": true
  },
  {
   "id": 2314,
@@ -1228,7 +1240,8 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 67
+  "thumb": 67,
+  "hidden": true
  },
  {
   "id": 2249,

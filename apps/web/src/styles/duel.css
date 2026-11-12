@@ -4256,8 +4256,10 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 }
 
 .duel-code-input {
+  box-sizing: border-box;
   flex: none;
   width: 190px;
+  min-width: 0;
   height: 48px;
   padding: 0 16px;
   border: 1px solid var(--line);
@@ -4318,7 +4320,8 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
   .duel-code-input {
     flex: 1 1 100%;
-    width: auto;
+    width: 100%;
+    max-width: 100%;
   }
 
   .duel-code-join .primary {
