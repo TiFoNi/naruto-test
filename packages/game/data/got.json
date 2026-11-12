@@ -1,0 +1,2364 @@
+[
+ {
+  "id": 2257,
+  "name": "Аллисер Торн",
+  "nameEn": "Alliser Thorne",
+  "aliases": "alliser thorne",
+  "gender": "Мужской",
+  "houses": [
+   "Торн"
+  ],
+  "cultures": [
+   "Жители Королевских земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 0
+ },
+ {
+  "id": 25107,
+  "name": "Арео Хотах",
+  "nameEn": "Areo Hotah",
+  "aliases": "areo hotah",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Норвошийцы"
+  ],
+  "status": "Мёртв",
+  "season": 5,
+  "answer": true,
+  "thumb": 1
+ },
+ {
+  "id": 2129,
+  "name": "Арья Старк",
+  "nameEn": "Arya Stark",
+  "aliases": "arya stark",
+  "gender": "Женский",
+  "houses": [
+   "Старк"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Жив",
+  "season": 1,
+  "answer": true,
+  "thumb": 2
+ },
+ {
+  "id": 2218,
+  "name": "Барристан Селми",
+  "nameEn": "Barristan Selmy",
+  "aliases": "barristan selmy",
+  "gender": "Мужской",
+  "houses": [
+   "Селми"
+  ],
+  "cultures": [
+   "Жители Штормовых земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 3
+ },
+ {
+  "id": 2125,
+  "name": "Бенджен Старк",
+  "nameEn": "Benjen Stark",
+  "aliases": "benjen stark",
+  "gender": "Мужской",
+  "houses": [
+   "Старк"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 4
+ },
+ {
+  "id": 2379,
+  "name": "Берик Дондаррион",
+  "nameEn": "Beric Dondarrion",
+  "aliases": "beric dondarrion",
+  "gender": "Мужской",
+  "houses": [
+   "Дондаррион"
+  ],
+  "cultures": [
+   "Жители Штормовых земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 5
+ },
+ {
+  "id": 2360,
+  "name": "Боуэн Марш",
+  "nameEn": "Bowen Marsh",
+  "aliases": "bowen marsh",
+  "gender": "Мужской",
+  "houses": [
+   "Марш"
+  ],
+  "cultures": [
+   "Болотные люди"
+  ],
+  "status": "Мёртв",
+  "season": 5,
+  "answer": true,
+  "thumb": 6
+ },
+ {
+  "id": 22351,
+  "name": "Бран Старк",
+  "nameEn": "Bran Stark",
+  "aliases": "bran stark",
+  "gender": "Мужской",
+  "houses": [
+   "Старк"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Жив",
+  "season": 1,
+  "answer": true,
+  "thumb": 7
+ },
+ {
+  "id": 4261,
+  "name": "Бриенна Тарт",
+  "nameEn": "Brienne of Tarth",
+  "aliases": "brienne of tarth",
+  "gender": "Женский",
+  "houses": [
+   "Тарт"
+  ],
+  "cultures": [
+   "Жители Штормовых земель"
+  ],
+  "status": "Жив",
+  "season": 2,
+  "answer": true,
+  "thumb": 8
+ },
+ {
+  "id": 2350,
+  "name": "Бринден Талли",
+  "nameEn": "Brynden Tully",
+  "aliases": "brynden tully",
+  "gender": "Мужской",
+  "houses": [
+   "Талли"
+  ],
+  "cultures": [
+   "Речные люди"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 9
+ },
+ {
+  "id": 25296,
+  "name": "Бродяжка",
+  "nameEn": "Waif",
+  "aliases": "waif",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Браавосцы"
+  ],
+  "status": "Мёртв",
+  "season": 5,
+  "answer": true,
+  "thumb": 10
+ },
+ {
+  "id": 2248,
+  "name": "Бронн",
+  "nameEn": "Bronn",
+  "aliases": "bronn",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вестеросцы"
+  ],
+  "status": "Жив",
+  "season": 1,
+  "answer": true,
+  "thumb": 11
+ },
+ {
+  "id": 2222,
+  "name": "Варис",
+  "nameEn": "Varys",
+  "aliases": "varys паук spider",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Лиссенийцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 12
+ },
+ {
+  "id": 2155,
+  "name": "Визерис Таргариен",
+  "nameEn": "Viserys Targaryen",
+  "aliases": "viserys targaryen",
+  "gender": "Мужской",
+  "houses": [
+   "Таргариен"
+  ],
+  "cultures": [
+   "Валирийцы",
+   "Жители Королевских земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 13
+ },
+ {
+  "id": 33609,
+  "name": "Вун Вун",
+  "nameEn": "Wun Weg Wun Dar Wun",
+  "aliases": "wun weg wun dar wun",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Великаны"
+  ],
+  "status": "Мёртв",
+  "season": 5,
+  "answer": true,
+  "thumb": 14
+ },
+ {
+  "id": 2343,
+  "name": "Горячий Пирожок",
+  "nameEn": "Hot Pie",
+  "aliases": "hot pie",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Жители Королевских земель"
+  ],
+  "status": "Жив",
+  "season": 1,
+  "answer": true,
+  "thumb": 15
+ },
+ {
+  "id": 2325,
+  "name": "Гренн",
+  "nameEn": "Grenn",
+  "aliases": "grenn",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вестеросцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 16
+ },
+ {
+  "id": 2196,
+  "name": "Григор Клиган",
+  "nameEn": "Gregor Clegane",
+  "aliases": "gregor clegane гора mountain",
+  "gender": "Мужской",
+  "houses": [
+   "Клиган"
+  ],
+  "cultures": [
+   "Жители Запада"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 17
+ },
+ {
+  "id": 9674,
+  "name": "Даарио Нахарис",
+  "nameEn": "Daario Naharis",
+  "aliases": "daario naharis",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Тирошийцы"
+  ],
+  "status": "Жив",
+  "season": 3,
+  "answer": true,
+  "thumb": 18
+ },
+ {
+  "id": 3164,
+  "name": "Давос Сиворт",
+  "nameEn": "Davos Seaworth",
+  "aliases": "davos seaworth",
+  "gender": "Мужской",
+  "houses": [
+   "Сиворт"
+  ],
+  "cultures": [
+   "Жители Королевских земель"
+  ],
+  "status": "Жив",
+  "season": 2,
+  "answer": true,
+  "thumb": 19
+ },
+ {
+  "id": 4715,
+  "name": "Дагмер",
+  "nameEn": "Dagmer",
+  "aliases": "dagmer",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Железнорождённые"
+  ],
+  "status": "Мёртв",
+  "season": 2,
+  "answer": true,
+  "thumb": 20
+ },
+ {
+  "id": 2157,
+  "name": "Дейенерис Таргариен",
+  "nameEn": "Daenerys Targaryen",
+  "aliases": "daenerys targaryen",
+  "gender": "Женский",
+  "houses": [
+   "Таргариен"
+  ],
+  "cultures": [
+   "Валирийцы",
+   "Дотракийцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 21
+ },
+ {
+  "id": 2103,
+  "name": "Джейме Ланнистер",
+  "nameEn": "Jaime Lannister",
+  "aliases": "jaime lannister",
+  "gender": "Мужской",
+  "houses": [
+   "Ланнистер"
+  ],
+  "cultures": [
+   "Жители Запада"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 22
+ },
+ {
+  "id": 2326,
+  "name": "Джендри Баратеон",
+  "nameEn": "Gendry Baratheon",
+  "aliases": "gendry baratheon",
+  "gender": "Мужской",
+  "houses": [
+   "Баратеон"
+  ],
+  "cultures": [
+   "Жители Королевских земель"
+  ],
+  "status": "Жив",
+  "season": 1,
+  "answer": true,
+  "thumb": 23
+ },
+ {
+  "id": 4585,
+  "name": "Джилли",
+  "nameEn": "Gilly",
+  "aliases": "gilly",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вольный народ"
+  ],
+  "status": "Жив",
+  "season": 2,
+  "answer": true,
+  "thumb": 24
+ },
+ {
+  "id": 2249,
+  "name": "Джиор Мормонт",
+  "nameEn": "Jeor Mormont",
+  "aliases": "jeor mormont",
+  "gender": "Мужской",
+  "houses": [
+   "Мормонт"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 25
+ },
+ {
+  "id": 19685,
+  "name": "Джон Ройс",
+  "nameEn": "Yohn Royce",
+  "aliases": "yohn royce",
+  "gender": "Мужской",
+  "houses": [
+   "Ройс"
+  ],
+  "cultures": [
+   "Жители Долины"
+  ],
+  "status": "Жив",
+  "season": 4,
+  "answer": true,
+  "thumb": 26
+ },
+ {
+  "id": 2123,
+  "name": "Джон Сноу",
+  "nameEn": "Jon Snow",
+  "aliases": "jon snow",
+  "gender": "Мужской",
+  "houses": [
+   "Старк",
+   "Таргариен"
+  ],
+  "cultures": [
+   "Северяне",
+   "Вольный народ"
+  ],
+  "status": "Жив",
+  "season": 1,
+  "answer": true,
+  "thumb": 27
+ },
+ {
+  "id": 2175,
+  "name": "Джорах Мормонт",
+  "nameEn": "Jorah Mormont",
+  "aliases": "jorah mormont",
+  "gender": "Мужской",
+  "houses": [
+   "Мормонт"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 2243,
+  "name": "Джори Кассель",
+  "nameEn": "Jory Cassel",
+  "aliases": "jory cassel",
+  "gender": "Мужской",
+  "houses": [
+   "Кассель"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 29
+ },
+ {
+  "id": 2106,
+  "name": "Джоффри Баратеон",
+  "nameEn": "Joffrey Baratheon",
+  "aliases": "joffrey baratheon",
+  "gender": "Мужской",
+  "houses": [
+   "Баратеон"
+  ],
+  "cultures": [
+   "Жители Королевских земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 30
+ },
+ {
+  "id": 37061,
+  "name": "Дикон Тарли",
+  "nameEn": "Dickon Tarly",
+  "aliases": "dickon tarly",
+  "gender": "Мужской",
+  "houses": [
+   "Тарли"
+  ],
+  "cultures": [
+   "Жители Простора"
+  ],
+  "status": "Мёртв",
+  "season": 6,
+  "answer": true,
+  "thumb": 31
+ },
+ {
+  "id": 4896,
+  "name": "Донтос Холлард",
+  "nameEn": "Dontos Hollard",
+  "aliases": "dontos hollard",
+  "gender": "Мужской",
+  "houses": [
+   "Холлард"
+  ],
+  "cultures": [
+   "Жители Королевских земель"
+  ],
+  "status": "Мёртв",
+  "season": 2,
+  "answer": true,
+  "thumb": 32
+ },
+ {
+  "id": 14592,
+  "name": "Доран Мартелл",
+  "nameEn": "Doran Martell",
+  "aliases": "doran martell",
+  "gender": "Мужской",
+  "houses": [
+   "Мартелл"
+  ],
+  "cultures": [
+   "Дорнийцы"
+  ],
+  "status": "Мёртв",
+  "season": 5,
+  "answer": true,
+  "thumb": 33
+ },
+ {
+  "id": 2322,
+  "name": "Дорея",
+  "nameEn": "Doreah",
+  "aliases": "doreah",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Лиссенийцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 34
+ },
+ {
+  "id": 2177,
+  "name": "Дрого",
+  "nameEn": "Drogo",
+  "aliases": "drogo",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Дотракийцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 35
+ },
+ {
+  "id": 25297,
+  "name": "Его Воробейшество",
+  "nameEn": "High Sparrow",
+  "aliases": "high sparrow верховный воробей",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вестеросцы"
+  ],
+  "status": "Мёртв",
+  "season": 5,
+  "answer": true,
+  "thumb": 36
+ },
+ {
+  "id": 9675,
+  "name": "Жойен Рид",
+  "nameEn": "Jojen Reed",
+  "aliases": "jojen reed",
+  "gender": "Мужской",
+  "houses": [
+   "Рид"
+  ],
+  "cultures": [
+   "Болотные люди"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 37
+ },
+ {
+  "id": 4927,
+  "name": "Игритт",
+  "nameEn": "Ygritte",
+  "aliases": "ygritte",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вольный народ"
+  ],
+  "status": "Мёртв",
+  "season": 2,
+  "answer": true,
+  "thumb": 38
+ },
+ {
+  "id": 2335,
+  "name": "Илин Пейн",
+  "nameEn": "Ilyn Payne",
+  "aliases": "ilyn payne",
+  "gender": "Мужской",
+  "houses": [
+   "Пейн"
+  ],
+  "cultures": [
+   "Жители Запада"
+  ],
+  "status": "Жив",
+  "season": 1,
+  "answer": true,
+  "thumb": 39
+ },
+ {
+  "id": 2320,
+  "name": "Ирри",
+  "nameEn": "Irri",
+  "aliases": "irri",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Дотракийцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 40
+ },
+ {
+  "id": 2250,
+  "name": "Йорен",
+  "nameEn": "Yoren",
+  "aliases": "yoren",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вестеросцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 41
+ },
+ {
+  "id": 11344,
+  "name": "Квиберн",
+  "nameEn": "Qyburn",
+  "aliases": "qyburn",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вестеросцы"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 42
+ },
+ {
+  "id": 2328,
+  "name": "Квото",
+  "nameEn": "Qotho",
+  "aliases": "qotho",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Дотракийцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 43
+ },
+ {
+  "id": 2119,
+  "name": "Кейтилин Старк",
+  "nameEn": "Catelyn Stark",
+  "aliases": "catelyn stark",
+  "gender": "Женский",
+  "houses": [
+   "Талли",
+   "Старк"
+  ],
+  "cultures": [
+   "Речные люди"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 44
+ },
+ {
+  "id": 2357,
+  "name": "Киван Ланнистер",
+  "nameEn": "Kevan Lannister",
+  "aliases": "kevan lannister",
+  "gender": "Мужской",
+  "houses": [
+   "Ланнистер"
+  ],
+  "cultures": [
+   "Жители Запада"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 45
+ },
+ {
+  "id": 4840,
+  "name": "Коварро",
+  "nameEn": "Kovarro",
+  "aliases": "kovarro",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Дотракийцы"
+  ],
+  "status": "Жив",
+  "season": 2,
+  "answer": true,
+  "thumb": 46
+ },
+ {
+  "id": 23748,
+  "name": "Король Ночи",
+  "nameEn": "Night King",
+  "aliases": "night king",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Первые люди",
+   "Белые Ходоки"
+  ],
+  "status": "Мёртв",
+  "season": 4,
+  "answer": true,
+  "thumb": 47
+ },
+ {
+  "id": 4589,
+  "name": "Крастер",
+  "nameEn": "Craster",
+  "aliases": "craster",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вольный народ"
+  ],
+  "status": "Мёртв",
+  "season": 2,
+  "answer": true,
+  "thumb": 48
+ },
+ {
+  "id": 4534,
+  "name": "Ксаро Ксоан Даксос",
+  "nameEn": "Xaro Xhoan Daxos",
+  "aliases": "xaro xhoan daxos",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Летнийцы",
+   "Квартийцы"
+  ],
+  "status": "Мёртв",
+  "season": 2,
+  "answer": true,
+  "thumb": 49
+ },
+ {
+  "id": 4764,
+  "name": "Кусака",
+  "nameEn": "Biter",
+  "aliases": "biter",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Жители Королевских земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 50
+ },
+ {
+  "id": 39654,
+  "name": "Кхоно",
+  "nameEn": "Qhono",
+  "aliases": "qhono",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Дотракийцы"
+  ],
+  "status": "Мёртв",
+  "season": 6,
+  "answer": true,
+  "thumb": 51
+ },
+ {
+  "id": 2254,
+  "name": "Лансель Ланнистер",
+  "nameEn": "Lancel Lannister",
+  "aliases": "lancel lannister",
+  "gender": "Мужской",
+  "houses": [
+   "Ланнистер"
+  ],
+  "cultures": [
+   "Жители Запада"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 52
+ },
+ {
+  "id": 31891,
+  "name": "Лианна Мормонт",
+  "nameEn": "Lyanna Mormont",
+  "aliases": "lyanna mormont",
+  "gender": "Женский",
+  "houses": [
+   "Мормонт"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 6,
+  "answer": true,
+  "thumb": 53
+ },
+ {
+  "id": 2140,
+  "name": "Лианна Старк",
+  "nameEn": "Lyanna Stark",
+  "aliases": "lyanna stark",
+  "gender": "Женский",
+  "houses": [
+   "Старк"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 6,
+  "answer": true,
+  "thumb": 54
+ },
+ {
+  "id": 2214,
+  "name": "Лиза Аррен",
+  "nameEn": "Lysa Arryn",
+  "aliases": "lysa arryn",
+  "gender": "Женский",
+  "houses": [
+   "Талли",
+   "Аррен"
+  ],
+  "cultures": [
+   "Речные люди"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 55
+ },
+ {
+  "id": 26343,
+  "name": "Листочек",
+  "nameEn": "Leaf",
+  "aliases": "leaf",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Дети Леса"
+  ],
+  "status": "Мёртв",
+  "season": 4,
+  "answer": true,
+  "thumb": 56
+ },
+ {
+  "id": 12144,
+  "name": "Локк",
+  "nameEn": "Locke",
+  "aliases": "locke",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 57
+ },
+ {
+  "id": 2188,
+  "name": "Лорас Тирелл",
+  "nameEn": "Loras Tyrell",
+  "aliases": "loras tyrell",
+  "gender": "Мужской",
+  "houses": [
+   "Тирелл"
+  ],
+  "cultures": [
+   "Жители Простора"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 58
+ },
+ {
+  "id": 12863,
+  "name": "Лотар Фрей",
+  "nameEn": "Lothar Frey",
+  "aliases": "lothar frey",
+  "gender": "Мужской",
+  "houses": [
+   "Фрей"
+  ],
+  "cultures": [
+   "Речные люди"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 59
+ },
+ {
+  "id": 2941,
+  "name": "Манс Налётчик",
+  "nameEn": "Mance Rayder",
+  "aliases": "mance rayder",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вольный народ"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 60
+ },
+ {
+  "id": 3973,
+  "name": "Маргери Тирелл",
+  "nameEn": "Margaery Tyrell",
+  "aliases": "margaery tyrell",
+  "gender": "Женский",
+  "houses": [
+   "Тирелл"
+  ],
+  "cultures": [
+   "Жители Простора"
+  ],
+  "status": "Мёртв",
+  "season": 2,
+  "answer": true,
+  "thumb": 61
+ },
+ {
+  "id": 14964,
+  "name": "Марея",
+  "nameEn": "Marei",
+  "aliases": "marei",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Жители Королевских земель"
+  ],
+  "status": "Жив",
+  "season": 2,
+  "answer": true,
+  "thumb": 62
+ },
+ {
+  "id": 4195,
+  "name": "Мейс Тирелл",
+  "nameEn": "Mace Tyrell",
+  "aliases": "mace tyrell",
+  "gender": "Мужской",
+  "houses": [
+   "Тирелл"
+  ],
+  "cultures": [
+   "Жители Простора"
+  ],
+  "status": "Мёртв",
+  "season": 4,
+  "answer": true,
+  "thumb": 63
+ },
+ {
+  "id": 2186,
+  "name": "Мейстер Лювин",
+  "nameEn": "Luwin",
+  "aliases": "luwin",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вестеросцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 64
+ },
+ {
+  "id": 2206,
+  "name": "Мейстер Эймон",
+  "nameEn": "Aemon",
+  "aliases": "aemon",
+  "gender": "Мужской",
+  "houses": [
+   "Таргариен"
+  ],
+  "cultures": [
+   "Валирийцы",
+   "Жители Королевских земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 65
+ },
+ {
+  "id": 4370,
+  "name": "Мелисандра",
+  "nameEn": "Melisandre",
+  "aliases": "melisandre",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Асшайцы"
+  ],
+  "status": "Мёртв",
+  "season": 2,
+  "answer": true,
+  "thumb": 66
+ },
+ {
+  "id": 2345,
+  "name": "Мерин Трэнт",
+  "nameEn": "Meryn Trant",
+  "aliases": "meryn trant",
+  "gender": "Мужской",
+  "houses": [
+   "Трант"
+  ],
+  "cultures": [
+   "Жители Штормовых земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 67
+ },
+ {
+  "id": 9676,
+  "name": "Мира Рид",
+  "nameEn": "Meera Reed",
+  "aliases": "meera reed",
+  "gender": "Женский",
+  "houses": [
+   "Рид"
+  ],
+  "cultures": [
+   "Болотные люди"
+  ],
+  "status": "Жив",
+  "season": 3,
+  "answer": true,
+  "thumb": 68
+ },
+ {
+  "id": 10930,
+  "name": "Миранда",
+  "nameEn": "Myranda",
+  "aliases": "myranda",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 69
+ },
+ {
+  "id": 2179,
+  "name": "Мирцелла Баратеон",
+  "nameEn": "Myrcella Baratheon",
+  "aliases": "myrcella baratheon",
+  "gender": "Женский",
+  "houses": [
+   "Баратеон"
+  ],
+  "cultures": [
+   "Жители Королевских земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 70
+ },
+ {
+  "id": 11341,
+  "name": "Миссандея",
+  "nameEn": "Missandei",
+  "aliases": "missandei",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Наатийцы"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 71
+ },
+ {
+  "id": 2261,
+  "name": "Мордейн",
+  "nameEn": "Mordane",
+  "aliases": "mordane",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вестеросцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 72
+ },
+ {
+  "id": 24248,
+  "name": "Нимерия Сэнд",
+  "nameEn": "Nymeria Sand",
+  "aliases": "nymeria sand",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Йи-тийцы",
+   "Дорнийцы"
+  ],
+  "status": "Мёртв",
+  "season": 5,
+  "answer": true,
+  "thumb": 73
+ },
+ {
+  "id": 24247,
+  "name": "Обара Сэнд",
+  "nameEn": "Obara Sand",
+  "aliases": "obara sand",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Дорнийцы"
+  ],
+  "status": "Мёртв",
+  "season": 5,
+  "answer": true,
+  "thumb": 74
+ },
+ {
+  "id": 16146,
+  "name": "Оберин Мартелл",
+  "nameEn": "Oberyn Martell",
+  "aliases": "oberyn martell",
+  "gender": "Мужской",
+  "houses": [
+   "Мартелл"
+  ],
+  "cultures": [
+   "Дорнийцы"
+  ],
+  "status": "Мёртв",
+  "season": 4,
+  "answer": true,
+  "thumb": 75
+ },
+ {
+  "id": 5676,
+  "name": "Оленна Тирелл",
+  "nameEn": "Olenna Tyrell",
+  "aliases": "olenna tyrell",
+  "gender": "Женский",
+  "houses": [
+   "Редвин",
+   "Тирелл"
+  ],
+  "cultures": [
+   "Жители Простора"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 76
+ },
+ {
+  "id": 15485,
+  "name": "Оливер",
+  "nameEn": "Olyvar",
+  "aliases": "olyvar",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вестеросцы"
+  ],
+  "status": "Жив",
+  "season": 3,
+  "answer": true,
+  "thumb": 77
+ },
+ {
+  "id": 23437,
+  "name": "Олли",
+  "nameEn": "Olly",
+  "aliases": "olly",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 4,
+  "answer": true,
+  "thumb": 78
+ },
+ {
+  "id": 11338,
+  "name": "Орелл",
+  "nameEn": "Orell",
+  "aliases": "orell",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вольный народ"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 79
+ },
+ {
+  "id": 5461,
+  "name": "Отелл Ярвик",
+  "nameEn": "Othell Yarwyck",
+  "aliases": "othell yarwyck",
+  "gender": "Мужской",
+  "houses": [
+   "Ярвик"
+  ],
+  "cultures": [
+   "Жители Запада"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 80
+ },
+ {
+  "id": 2275,
+  "name": "Оша",
+  "nameEn": "Osha",
+  "aliases": "osha",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вольный народ"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 81
+ },
+ {
+  "id": 2220,
+  "name": "Петир Бейлиш",
+  "nameEn": "Petyr Baelish",
+  "aliases": "petyr baelish мизинец littlefinger",
+  "gender": "Мужской",
+  "houses": [
+   "Бейлиш"
+  ],
+  "cultures": [
+   "Жители Долины"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 82
+ },
+ {
+  "id": 4710,
+  "name": "Пиат Прей",
+  "nameEn": "Pyat Pree",
+  "aliases": "pyat pree",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Квартийцы"
+  ],
+  "status": "Мёртв",
+  "season": 2,
+  "answer": true,
+  "thumb": 83
+ },
+ {
+  "id": 2265,
+  "name": "Пипар",
+  "nameEn": "Pypar",
+  "aliases": "pypar",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Речные люди"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 84
+ },
+ {
+  "id": 2187,
+  "name": "Пицель",
+  "nameEn": "Pycelle",
+  "aliases": "pycelle",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вестеросцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 85
+ },
+ {
+  "id": 4704,
+  "name": "Подрик Пейн",
+  "nameEn": "Podrick Payne",
+  "aliases": "podrick payne",
+  "gender": "Мужской",
+  "houses": [
+   "Пейн"
+  ],
+  "cultures": [
+   "Жители Запада"
+  ],
+  "status": "Жив",
+  "season": 2,
+  "answer": true,
+  "thumb": 86
+ },
+ {
+  "id": 2327,
+  "name": "Ракхаро",
+  "nameEn": "Rakharo",
+  "aliases": "rakharo",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Дотракийцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 87
+ },
+ {
+  "id": 8218,
+  "name": "Рамси Болтон",
+  "nameEn": "Ramsay Bolton",
+  "aliases": "ramsay bolton",
+  "gender": "Мужской",
+  "houses": [
+   "Болтон"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 88
+ },
+ {
+  "id": 2239,
+  "name": "Раст",
+  "nameEn": "Rast",
+  "aliases": "rast",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вестеросцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 89
+ },
+ {
+  "id": 2200,
+  "name": "Ренли Баратеон",
+  "nameEn": "Renly Baratheon",
+  "aliases": "renly baratheon",
+  "gender": "Мужской",
+  "houses": [
+   "Баратеон"
+  ],
+  "cultures": [
+   "Жители Штормовых земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 90
+ },
+ {
+  "id": 2798,
+  "name": "Рикард Карстарк",
+  "nameEn": "Rickard Karstark",
+  "aliases": "rickard karstark",
+  "gender": "Мужской",
+  "houses": [
+   "Карстарк"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 91
+ },
+ {
+  "id": 2138,
+  "name": "Рикон Старк",
+  "nameEn": "Rickon Stark",
+  "aliases": "rickon stark",
+  "gender": "Мужской",
+  "houses": [
+   "Старк"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 92
+ },
+ {
+  "id": 2124,
+  "name": "Робб Старк",
+  "nameEn": "Robb Stark",
+  "aliases": "robb stark",
+  "gender": "Мужской",
+  "houses": [
+   "Старк"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 93
+ },
+ {
+  "id": 2122,
+  "name": "Роберт Баратеон",
+  "nameEn": "Robert Baratheon",
+  "aliases": "robert baratheon",
+  "gender": "Мужской",
+  "houses": [
+   "Баратеон"
+  ],
+  "cultures": [
+   "Жители Штормовых земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 94
+ },
+ {
+  "id": 43922,
+  "name": "Робетт Гловер",
+  "nameEn": "Robett Glover",
+  "aliases": "robett glover",
+  "gender": "Мужской",
+  "houses": [
+   "Гловер"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Жив",
+  "season": 6,
+  "answer": true,
+  "thumb": 95
+ },
+ {
+  "id": 2216,
+  "name": "Робин Аррен",
+  "nameEn": "Robin Arryn",
+  "aliases": "robin arryn",
+  "gender": "Мужской",
+  "houses": [
+   "Аррен"
+  ],
+  "cultures": [
+   "Жители Долины"
+  ],
+  "status": "Жив",
+  "season": 1,
+  "answer": true,
+  "thumb": 96
+ },
+ {
+  "id": 2185,
+  "name": "Родрик Кассель",
+  "nameEn": "Rodrik Cassel",
+  "aliases": "rodrik cassel",
+  "gender": "Мужской",
+  "houses": [
+   "Кассель"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 97
+ },
+ {
+  "id": 4740,
+  "name": "Рорж",
+  "nameEn": "Rorge",
+  "aliases": "rorge",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Жители Королевских земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 98
+ },
+ {
+  "id": 2197,
+  "name": "Рос",
+  "nameEn": "Ros",
+  "aliases": "ros",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 99
+ },
+ {
+  "id": 3143,
+  "name": "Русе Болтон",
+  "nameEn": "Roose Bolton",
+  "aliases": "roose bolton",
+  "gender": "Мужской",
+  "houses": [
+   "Болтон"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 2,
+  "answer": true,
+  "thumb": 100
+ },
+ {
+  "id": 2937,
+  "name": "Рэндилл Тарли",
+  "nameEn": "Randyll Tarly",
+  "aliases": "randyll tarly",
+  "gender": "Мужской",
+  "houses": [
+   "Тарли"
+  ],
+  "cultures": [
+   "Жители Простора"
+  ],
+  "status": "Мёртв",
+  "season": 6,
+  "answer": true,
+  "thumb": 101
+ },
+ {
+  "id": 2174,
+  "name": "Сандор Клиган",
+  "nameEn": "Sandor Clegane",
+  "aliases": "sandor clegane пёс пес hound",
+  "gender": "Мужской",
+  "houses": [
+   "Клиган"
+  ],
+  "cultures": [
+   "Жители Запада"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 102
+ },
+ {
+  "id": 2128,
+  "name": "Санса Старк",
+  "nameEn": "Sansa Stark",
+  "aliases": "sansa stark",
+  "gender": "Женский",
+  "houses": [
+   "Старк"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Жив",
+  "season": 1,
+  "answer": true,
+  "thumb": 103
+ },
+ {
+  "id": 3096,
+  "name": "Селиса Баратеон",
+  "nameEn": "Selyse Baratheon",
+  "aliases": "selyse baratheon",
+  "gender": "Женский",
+  "houses": [
+   "Флорент",
+   "Баратеон"
+  ],
+  "cultures": [
+   "Жители Простора"
+  ],
+  "status": "Мёртв",
+  "season": 2,
+  "answer": true,
+  "thumb": 104
+ },
+ {
+  "id": 2104,
+  "name": "Серсея Ланнистер",
+  "nameEn": "Cersei Lannister",
+  "aliases": "cersei lannister",
+  "gender": "Женский",
+  "houses": [
+   "Ланнистер"
+  ],
+  "cultures": [
+   "Жители Запада"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 105
+ },
+ {
+  "id": 11939,
+  "name": "Серый Червь",
+  "nameEn": "Grey Worm",
+  "aliases": "grey worm",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Летнийцы"
+  ],
+  "status": "Жив",
+  "season": 3,
+  "answer": true,
+  "thumb": 106
+ },
+ {
+  "id": 2223,
+  "name": "Станнис Баратеон",
+  "nameEn": "Stannis Baratheon",
+  "aliases": "stannis baratheon",
+  "gender": "Мужской",
+  "houses": [
+   "Баратеон"
+  ],
+  "cultures": [
+   "Жители Штормовых земель"
+  ],
+  "status": "Мёртв",
+  "season": 2,
+  "answer": true,
+  "thumb": 107
+ },
+ {
+  "id": 14952,
+  "name": "Сэм",
+  "nameEn": "Sam",
+  "aliases": "sam",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вольный народ"
+  ],
+  "status": "Жив",
+  "season": 3,
+  "answer": true,
+  "thumb": 108
+ },
+ {
+  "id": 2235,
+  "name": "Сэмвелл Тарли",
+  "nameEn": "Samwell Tarly",
+  "aliases": "samwell tarly",
+  "gender": "Мужской",
+  "houses": [
+   "Тарли"
+  ],
+  "cultures": [
+   "Жители Простора"
+  ],
+  "status": "Жив",
+  "season": 1,
+  "answer": true,
+  "thumb": 109
+ },
+ {
+  "id": 2100,
+  "name": "Тайвин Ланнистер",
+  "nameEn": "Tywin Lannister",
+  "aliases": "tywin lannister",
+  "gender": "Мужской",
+  "houses": [
+   "Ланнистер"
+  ],
+  "cultures": [
+   "Жители Запада"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 110
+ },
+ {
+  "id": 7671,
+  "name": "Талиса Старк",
+  "nameEn": "Talisa Stark",
+  "aliases": "talisa stark",
+  "gender": "Женский",
+  "houses": [
+   "Мейгир",
+   "Старк"
+  ],
+  "cultures": [
+   "Волантийцы"
+  ],
+  "status": "Мёртв",
+  "season": 2,
+  "answer": true,
+  "thumb": 111
+ },
+ {
+  "id": 2171,
+  "name": "Теон Грейджой",
+  "nameEn": "Theon Greyjoy",
+  "aliases": "theon greyjoy",
+  "gender": "Мужской",
+  "houses": [
+   "Грейджой"
+  ],
+  "cultures": [
+   "Железнорождённые"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 112
+ },
+ {
+  "id": 24253,
+  "name": "Тиена Сэнд",
+  "nameEn": "Tyene Sand",
+  "aliases": "tyene sand",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Дорнийцы"
+  ],
+  "status": "Мёртв",
+  "season": 5,
+  "answer": true,
+  "thumb": 113
+ },
+ {
+  "id": 2091,
+  "name": "Тирион Ланнистер",
+  "nameEn": "Tyrion Lannister",
+  "aliases": "tyrion lannister бес imp",
+  "gender": "Мужской",
+  "houses": [
+   "Ланнистер"
+  ],
+  "cultures": [
+   "Жители Запада"
+  ],
+  "status": "Жив",
+  "season": 1,
+  "answer": true,
+  "thumb": 114
+ },
+ {
+  "id": 2180,
+  "name": "Томмен Баратеон",
+  "nameEn": "Tommen Baratheon",
+  "aliases": "tommen baratheon",
+  "gender": "Мужской",
+  "houses": [
+   "Баратеон"
+  ],
+  "cultures": [
+   "Жители Королевских земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 115
+ },
+ {
+  "id": 9679,
+  "name": "Тормунд",
+  "nameEn": "Tormund",
+  "aliases": "tormund",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вольный народ"
+  ],
+  "status": "Жив",
+  "season": 3,
+  "answer": true,
+  "thumb": 116
+ },
+ {
+  "id": 3183,
+  "name": "Торос",
+  "nameEn": "Thoros",
+  "aliases": "thoros",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Мирийцы"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 117
+ },
+ {
+  "id": 27406,
+  "name": "Трёхглазый ворон",
+  "nameEn": "Three-eyed Raven",
+  "aliases": "three-eyed raven бринден риверс brynden rivers",
+  "gender": "Мужской",
+  "houses": [
+   "Таргариен"
+  ],
+  "cultures": [
+   "Валирийцы",
+   "Жители Королевских земель",
+   "Речные люди"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 118
+ },
+ {
+  "id": 7448,
+  "name": "Тристан Мартелл",
+  "nameEn": "Trystane Martell",
+  "aliases": "trystane martell",
+  "gender": "Мужской",
+  "houses": [
+   "Мартелл"
+  ],
+  "cultures": [
+   "Дорнийцы"
+  ],
+  "status": "Мёртв",
+  "season": 5,
+  "answer": true,
+  "thumb": 119
+ },
+ {
+  "id": 17064,
+  "name": "Уолда Болтон",
+  "nameEn": "Walda Bolton",
+  "aliases": "walda bolton",
+  "gender": "Женский",
+  "houses": [
+   "Фрей",
+   "Болтон"
+  ],
+  "cultures": [
+   "Речные люди"
+  ],
+  "status": "Мёртв",
+  "season": 4,
+  "answer": true,
+  "thumb": 120
+ },
+ {
+  "id": 12342,
+  "name": "Уолдер Риверс",
+  "nameEn": "Walder Rivers",
+  "aliases": "walder rivers",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Речные люди"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 121
+ },
+ {
+  "id": 2385,
+  "name": "Уолдер Фрей",
+  "nameEn": "Walder Frey",
+  "aliases": "walder frey",
+  "gender": "Мужской",
+  "houses": [
+   "Фрей"
+  ],
+  "cultures": [
+   "Речные люди"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 122
+ },
+ {
+  "id": 32630,
+  "name": "Уолкан",
+  "nameEn": "Wolkan",
+  "aliases": "wolkan",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вестеросцы"
+  ],
+  "status": "Жив",
+  "season": 6,
+  "answer": true,
+  "thumb": 123
+ },
+ {
+  "id": 19844,
+  "name": "Хиздар зо Лорак",
+  "nameEn": "Hizdahr zo Loraq",
+  "aliases": "hizdahr zo loraq",
+  "gender": "Мужской",
+  "houses": [
+   "Лорак"
+  ],
+  "cultures": [
+   "Миэринцы"
+  ],
+  "status": "Мёртв",
+  "season": 4,
+  "answer": true,
+  "thumb": 124
+ },
+ {
+  "id": 2191,
+  "name": "Ходор",
+  "nameEn": "Hodor",
+  "aliases": "hodor",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 125
+ },
+ {
+  "id": 2318,
+  "name": "Шая",
+  "nameEn": "Shae",
+  "aliases": "shae",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Лоратийцы"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 126
+ },
+ {
+  "id": 3097,
+  "name": "Ширен Баратеон",
+  "nameEn": "Shireen Baratheon",
+  "aliases": "shireen baratheon",
+  "gender": "Женский",
+  "houses": [
+   "Баратеон"
+  ],
+  "cultures": [
+   "Жители Королевских земель"
+  ],
+  "status": "Мёртв",
+  "season": 3,
+  "answer": true,
+  "thumb": 127
+ },
+ {
+  "id": 2041,
+  "name": "Эддард Старк",
+  "nameEn": "Eddard Stark",
+  "aliases": "eddard stark",
+  "gender": "Мужской",
+  "houses": [
+   "Старк"
+  ],
+  "cultures": [
+   "Северяне"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 128
+ },
+ {
+  "id": 4601,
+  "name": "Эддисон Толлетт",
+  "nameEn": "Eddison Tollett",
+  "aliases": "eddison tollett",
+  "gender": "Мужской",
+  "houses": [
+   "Толлетт"
+  ],
+  "cultures": [
+   "Жители Долины"
+  ],
+  "status": "Мёртв",
+  "season": 2,
+  "answer": true,
+  "thumb": 129
+ },
+ {
+  "id": 2349,
+  "name": "Эдмур Талли",
+  "nameEn": "Edmure Tully",
+  "aliases": "edmure tully",
+  "gender": "Мужской",
+  "houses": [
+   "Талли"
+  ],
+  "cultures": [
+   "Речные люди"
+  ],
+  "status": "Жив",
+  "season": 3,
+  "answer": true,
+  "thumb": 130
+ },
+ {
+  "id": 19202,
+  "name": "Эллария Сэнд",
+  "nameEn": "Ellaria Sand",
+  "aliases": "ellaria sand",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Дорнийцы"
+  ],
+  "status": "Жив",
+  "season": 4,
+  "answer": true,
+  "thumb": 131
+ },
+ {
+  "id": 11347,
+  "name": "Энгай",
+  "nameEn": "Anguy",
+  "aliases": "anguy",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Жители Штормовых земель"
+  ],
+  "status": "Жив",
+  "season": 3,
+  "answer": true,
+  "thumb": 132
+ },
+ {
+  "id": 5695,
+  "name": "Эурон Грейджой",
+  "nameEn": "Euron Greyjoy",
+  "aliases": "euron greyjoy",
+  "gender": "Мужской",
+  "houses": [
+   "Грейджой"
+  ],
+  "cultures": [
+   "Железнорождённые"
+  ],
+  "status": "Мёртв",
+  "season": 6,
+  "answer": true,
+  "thumb": 133
+ },
+ {
+  "id": 25112,
+  "name": "Юнелла",
+  "nameEn": "Unella",
+  "aliases": "unella",
+  "gender": "Женский",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Вестеросцы"
+  ],
+  "status": "Жив",
+  "season": 5,
+  "answer": true,
+  "thumb": 134
+ },
+ {
+  "id": 4541,
+  "name": "Якен Хгар",
+  "nameEn": "Jaqen H'ghar",
+  "aliases": "jaqen h'ghar якен хгар",
+  "gender": "Мужской",
+  "houses": [
+   "Без дома"
+  ],
+  "cultures": [
+   "Лоратийцы"
+  ],
+  "status": "Жив",
+  "season": 1,
+  "answer": true,
+  "thumb": 135
+ },
+ {
+  "id": 2259,
+  "name": "Янос Слинт",
+  "nameEn": "Janos Slynt",
+  "aliases": "janos slynt",
+  "gender": "Мужской",
+  "houses": [
+   "Слинт"
+  ],
+  "cultures": [
+   "Жители Королевских земель"
+  ],
+  "status": "Мёртв",
+  "season": 1,
+  "answer": true,
+  "thumb": 136
+ },
+ {
+  "id": 4278,
+  "name": "Яра Грейджой",
+  "nameEn": "Yara Greyjoy",
+  "aliases": "yara greyjoy",
+  "gender": "Женский",
+  "houses": [
+   "Грейджой"
+  ],
+  "cultures": [
+   "Железнорождённые"
+  ],
+  "status": "Жив",
+  "season": 2,
+  "answer": true,
+  "thumb": 137
+ }
+]

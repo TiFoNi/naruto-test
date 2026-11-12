@@ -24,6 +24,7 @@ export type GameId =
   | 'csm'
   | 'mushoku'
   | 'kuroko'
+  | 'got'
   | 'brawl'
   | 'shots'
   | 'tunes'
@@ -232,6 +233,18 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
       col('debutIndex', 'order'),
     ],
   },
+  got: {
+    featured: ['Jon Snow', 'Daenerys Targaryen', 'Tyrion Lannister', 'Arya Stark'],
+    data: 'got',
+    images: 'got',
+    columns: [
+      col('gender', 'exact'),
+      col('houses', 'list'),
+      col('cultures', 'list'),
+      col('status', 'exact'),
+      col('season', 'order'),
+    ],
+  },
   kuroko: {
     featured: ['Tetsuya Kuroko', 'Taiga Kagami', 'Daiki Aomine', 'Seijūrō Akashi'],
     data: 'kuroko',
@@ -423,7 +436,7 @@ export const GAME_SPECS: Record<GameId, GameSpec> = {
 
 export const GAME_IDS = Object.keys(GAME_SPECS) as GameId[]
 
-export const HIDDEN_GAMES: GameId[] = []
+export const HIDDEN_GAMES: GameId[] = ['got']
 
 export const OPEN_GAMES = GAME_IDS.filter((game) => !HIDDEN_GAMES.includes(game))
 
