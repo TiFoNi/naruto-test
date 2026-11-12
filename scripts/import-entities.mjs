@@ -6,6 +6,25 @@ import { GAME_SPECS } from '../packages/game/src/specs.ts'
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const DATA = path.join(ROOT, 'packages', 'game', 'data')
+const ALIASES = path.join(DATA, 'aliases')
+
+const extraAliases = (game) => {
+  const file = path.join(ALIASES, `${game}.json`)
+  return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : {}
+}
+
+const withAliases = (entity, extra) => {
+  const more = extra[entity.id]
+  if (!more) return entity
+  const seen = new Set()
+  const merged = [entity.aliases, more]
+    .filter(Boolean)
+    .join(',')
+    .split(',')
+    .map((one) => one.trim())
+    .filter((one) => one && !seen.has(one.toLowerCase()) && seen.add(one.toLowerCase()))
+  return { ...entity, aliases: merged.join(', ') }
+}
 
 const uri = process.env.MONGODB_URI
 if (!uri) throw new Error('MONGODB_URI не задано')
@@ -35,7 +54,8 @@ for (const [game, spec] of Object.entries(GAME_SPECS)) {
     continue
   }
 
-  const list = JSON.parse(fs.readFileSync(file, 'utf8'))
+  const extra = extraAliases(game)
+  const list = JSON.parse(fs.readFileSync(file, 'utf8')).map((entity) => withAliases(entity, extra))
   const owned = LIVE_FIELDS[game] ?? []
   const touched = await entities.find({ game, 'edited.0': { $exists: true } }).toArray()
   const byId = new Map(touched.map((doc) => [doc.id, doc]))
