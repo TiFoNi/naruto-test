@@ -4527,3 +4527,36 @@ body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
   font-weight: 600;
   white-space: nowrap;
 }
+
+.hero-acts.is-bar {
+  position: static;
+  gap: 8px;
+}
+
+.hero-acts.is-bar .hero-act {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  backdrop-filter: none;
+}
+
+.hero-acts.is-bar .hero-act:hover,
+.hero-acts.is-bar .banner-pick.is-open .hero-act {
+  border-color: var(--accent);
+  background: var(--card);
+  color: var(--accent);
+}
+
+.hero-acts.is-bar > .banner-pick {
+  position: static;
+}
+
+.hero-acts.is-bar .modes-pop {
+  top: calc(100% + 8px);
+  right: 0;
+  left: auto;
+}
+
+.profile-banner-acts:has(.hero-acts.is-bar .is-open) {
+  z-index: 40;
+}

@@ -1352,6 +1352,129 @@ export default function Profile({ id }: { id?: string }) {
       </div>
     ) : null
 
+  const heroActs =
+    own && edit ? (
+          <div className={`hero-acts ${narrow ? 'is-bar' : ''}`}>
+            <div className={`banner-pick ${skins ? 'is-open' : ''}`} ref={skinsRef}>
+                <button
+                  type="button"
+                  className="hero-act"
+                  aria-label={t('profile.banner')}
+                  title={t('profile.banner')}
+                  onClick={() => setSkins(!skins)}
+                >
+                  <PictureIcon />
+                  {fresh && <span className="hero-act-label">{t('profile.banner')}</span>}
+                </button>
+                {skins && (
+                  <div className="modes-pop" role="dialog">
+                    <header>
+                      <h2>{t('profile.banner')}</h2>
+                      {banner && (
+                        <button
+                          type="button"
+                          className="look-open"
+                          onClick={() => {
+                            setSkins(false)
+                            if (fresh) setFraming(heroLooks?.desktop ?? spotLook(banner))
+                            else setTuning(true)
+                          }}
+                        >
+                          {t('profile.bannerTune')}
+                          <PencilIcon />
+                        </button>
+                      )}
+                    </header>
+                    <ul className="banner-shop">
+                      <li>
+                        <button type="button" className={`banner-face is-none ${banner ? '' : 'on'}`} onClick={() => keepBanner(null)}>
+                          <i aria-hidden>
+                            {MARKS.map((mark) => (
+                              <em
+                                key={mark.left}
+                                style={
+                                  {
+                                    left: mark.left,
+                                    top: mark.top,
+                                    fontSize: Math.round(mark.size * 0.3),
+                                    transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
+                                  } as CSSProperties
+                                }
+                              >
+                                ?!
+                              </em>
+                            ))}
+                          </i>
+                          <span>{t('profile.bannerNone')}</span>
+                        </button>
+                      </li>
+                      {owned.map((one) => {
+                        const refund = refundOf(one)
+                        return (
+                          <li key={one} className="banner-slot">
+                            <button type="button" className={`banner-face ${banner === one ? 'on' : ''}`} onClick={() => keepBanner(one)}>
+                              <img src={bannerPic(one)} alt="" />
+                              <span>{t(`banner.${one}` as UiKey)}</span>
+                            </button>
+                            {refund && (
+                              <button
+                                type="button"
+                                className="banner-scrap"
+                                aria-label={t('profile.bannerScrap')}
+                                title={t('profile.bannerScrap')}
+                                onClick={() => {
+                                  setSkins(false)
+                                  setScrap(one)
+                                }}
+                              >
+                                <CloseIcon />
+                              </button>
+                            )}
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </div>
+                )}
+            </div>
+            <div className={`banner-pick tone-pick ${tones ? 'is-open' : ''}`} ref={tonesRef}>
+                <button
+                  type="button"
+                  className="hero-act"
+                  aria-label={t('profile.toneTheme')}
+                  title={t('profile.toneTheme')}
+                  onClick={() => setTones(!tones)}
+                >
+                  <PaletteIcon />
+                  {fresh && <span className="hero-act-label">{t('profile.toneTheme')}</span>}
+                </button>
+                {tones && (
+                  <div className="modes-pop" role="dialog">
+                    <header>
+                      <h2>{t('profile.toneTheme')}</h2>
+                    </header>
+                    <Rail className="tone-rail" trackClass="tone-track" innerRef={dyes}>
+                      <ul className="tone-shop">
+                        {dyeList.map((game) => (
+                          <li key={game.id}>
+                            <button
+                              type="button"
+                              className={`tone-dot ${tone === game.id ? 'on' : ''}`}
+                              style={{ '--dot': game.accent } as CSSProperties}
+                              aria-label={l(game.label)}
+                              title={l(game.label)}
+                              onClick={() => keepTone(tone === game.id ? null : game.id)}
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                    </Rail>
+                  </div>
+                )}
+            </div>
+          </div>
+    ) : null
+
   const heroId = (
     <div className="profile-hero-id">
       {own ? <AvatarPicker edit={edit} /> : <Avatar id={id} name={nickname} avatar={summary?.avatar} frame={summary?.frame} />}
@@ -1460,6 +1583,7 @@ export default function Profile({ id }: { id?: string }) {
         </BackButton>
         {own && (
         <div className="profile-banner-acts">
+        {narrow && heroActs}
         <button
           type="button"
           className={`profile-tune is-chip ${edit ? 'on' : 'is-gear'}`}
@@ -1630,127 +1754,7 @@ export default function Profile({ id }: { id?: string }) {
             onSave={() => void keepFraming()}
           />
         )}
-        {own && edit && (
-          <div className="hero-acts">
-            <div className={`banner-pick ${skins ? 'is-open' : ''}`} ref={skinsRef}>
-                <button
-                  type="button"
-                  className="hero-act"
-                  aria-label={t('profile.banner')}
-                  title={t('profile.banner')}
-                  onClick={() => setSkins(!skins)}
-                >
-                  <PictureIcon />
-                  {fresh && <span className="hero-act-label">{t('profile.banner')}</span>}
-                </button>
-                {skins && (
-                  <div className="modes-pop" role="dialog">
-                    <header>
-                      <h2>{t('profile.banner')}</h2>
-                      {banner && (
-                        <button
-                          type="button"
-                          className="look-open"
-                          onClick={() => {
-                            setSkins(false)
-                            if (fresh) setFraming(heroLooks?.desktop ?? spotLook(banner))
-                            else setTuning(true)
-                          }}
-                        >
-                          {t('profile.bannerTune')}
-                          <PencilIcon />
-                        </button>
-                      )}
-                    </header>
-                    <ul className="banner-shop">
-                      <li>
-                        <button type="button" className={`banner-face is-none ${banner ? '' : 'on'}`} onClick={() => keepBanner(null)}>
-                          <i aria-hidden>
-                            {MARKS.map((mark) => (
-                              <em
-                                key={mark.left}
-                                style={
-                                  {
-                                    left: mark.left,
-                                    top: mark.top,
-                                    fontSize: Math.round(mark.size * 0.3),
-                                    transform: `translate(-50%, -50%) rotate(${mark.tilt}deg)`,
-                                  } as CSSProperties
-                                }
-                              >
-                                ?!
-                              </em>
-                            ))}
-                          </i>
-                          <span>{t('profile.bannerNone')}</span>
-                        </button>
-                      </li>
-                      {owned.map((one) => {
-                        const refund = refundOf(one)
-                        return (
-                          <li key={one} className="banner-slot">
-                            <button type="button" className={`banner-face ${banner === one ? 'on' : ''}`} onClick={() => keepBanner(one)}>
-                              <img src={bannerPic(one)} alt="" />
-                              <span>{t(`banner.${one}` as UiKey)}</span>
-                            </button>
-                            {refund && (
-                              <button
-                                type="button"
-                                className="banner-scrap"
-                                aria-label={t('profile.bannerScrap')}
-                                title={t('profile.bannerScrap')}
-                                onClick={() => {
-                                  setSkins(false)
-                                  setScrap(one)
-                                }}
-                              >
-                                <CloseIcon />
-                              </button>
-                            )}
-                          </li>
-                        )
-                      })}
-                    </ul>
-                  </div>
-                )}
-            </div>
-            <div className={`banner-pick tone-pick ${tones ? 'is-open' : ''}`} ref={tonesRef}>
-                <button
-                  type="button"
-                  className="hero-act"
-                  aria-label={t('profile.toneTheme')}
-                  title={t('profile.toneTheme')}
-                  onClick={() => setTones(!tones)}
-                >
-                  <PaletteIcon />
-                  {fresh && <span className="hero-act-label">{t('profile.toneTheme')}</span>}
-                </button>
-                {tones && (
-                  <div className="modes-pop" role="dialog">
-                    <header>
-                      <h2>{t('profile.toneTheme')}</h2>
-                    </header>
-                    <Rail className="tone-rail" trackClass="tone-track" innerRef={dyes}>
-                      <ul className="tone-shop">
-                        {dyeList.map((game) => (
-                          <li key={game.id}>
-                            <button
-                              type="button"
-                              className={`tone-dot ${tone === game.id ? 'on' : ''}`}
-                              style={{ '--dot': game.accent } as CSSProperties}
-                              aria-label={l(game.label)}
-                              title={l(game.label)}
-                              onClick={() => keepTone(tone === game.id ? null : game.id)}
-                            />
-                          </li>
-                        ))}
-                      </ul>
-                    </Rail>
-                  </div>
-                )}
-            </div>
-          </div>
-        )}
+        {!narrow && heroActs}
         <ProfileStage
           art={
             <>
