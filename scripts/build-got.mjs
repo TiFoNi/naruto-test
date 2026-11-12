@@ -10,6 +10,7 @@ const OUT_IMG = path.join(PUBLIC, 'got')
 const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'got.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'got-atlas.json')
 const MIN_EPISODES = 5
+const INCLUDE = new Set(['Syrio Forel', 'Balon Greyjoy', 'Mirri Maz Duur'])
 
 const M = 'Мужской'
 const F = 'Женский'
@@ -22,7 +23,7 @@ const FEMALE = new Set([
   'Catelyn Stark', 'Margaery Tyrell', 'Shae', 'Olenna Tyrell', 'Ygritte', 'Yara Greyjoy', 'Osha', 'Meera Reed', 'Myrcella Baratheon',
   'Ros', 'Irri', 'Ellaria Sand', 'Selyse Baratheon', 'Doreah', 'Talisa Stark', 'Waif', 'Shireen Baratheon', 'Lyanna Mormont',
   'Tyene Sand', 'Myranda', 'Marei', 'Obara Sand', 'Nymeria Sand', 'Unella', 'Mordane', 'Lysa Arryn', 'Walda Bolton',
-  'Leaf', 'Lyanna Stark',
+  'Leaf', 'Lyanna Stark', 'Mirri Maz Duur',
 ])
 
 const NAMES = {
@@ -134,6 +135,7 @@ const CULTURES = {
   Qartheen: 'Квартийцы',
   'Children of the Forest': 'Дети Леса',
   Giants: 'Великаны',
+  Lhazareen: 'Лхазарейцы',
 }
 
 const CULTURE_FIX = { Rast: ['Вестеросцы'] }
@@ -186,6 +188,7 @@ async function main() {
 
   const picked = titles.filter((title) => {
     if (EXCLUDE.has(title)) return false
+    if (INCLUDE.has(title)) return true
     const text = pages[title]?.text ?? ''
     const at = text.search(/\{\{Character/i)
     if (at < 0) return false
@@ -193,10 +196,16 @@ async function main() {
     return episodes >= MIN_EPISODES
   })
 
-  const images = await cachedJson(CACHE, 'images.json', async () => {
-    const res = await wikiQuery(API, picked, 'prop=pageimages&piprop=original')
+  const lookImages = async (titles) => {
+    const res = await wikiQuery(API, titles, 'prop=pageimages&piprop=original')
     return Object.fromEntries(Object.entries(res).map(([title, page]) => [title, page.original?.source ?? null]))
-  })
+  }
+  const images = await cachedJson(CACHE, 'images.json', () => lookImages(picked))
+  const unseen = picked.filter((title) => !(title in images))
+  if (unseen.length) {
+    Object.assign(images, await lookImages(unseen))
+    await fs.writeFile(path.join(CACHE, 'images.json'), JSON.stringify(images))
+  }
 
   const result = []
   await pool(picked, 6, async (title) => {
