@@ -26,7 +26,7 @@ import BannerArt, { mediaSize } from './BannerArt'
 import BannerTuner from './BannerTuner'
 import GemIcon from './GemIcon'
 import ProfileStage, { useNarrow } from './ProfileStage'
-import { pageZoom } from './profile-zoom'
+import { liveZoom, pageZoom } from './profile-zoom'
 import { bannerPic, bannerSpot, spotLook } from './banners'
 import BannerFrame from './BannerFrame'
 import {
@@ -634,6 +634,7 @@ export default function Profile({ id }: { id?: string }) {
     const cell = event.currentTarget
     const row = cell.parentElement
     const box = cell.getBoundingClientRect()
+    const zoom = liveZoom()
     const grip = { x: event.clientX - box.left, y: event.clientY - box.top }
     const start = { x: event.clientX, y: event.clientY }
     const base = cells.slice()
@@ -648,7 +649,7 @@ export default function Profile({ id }: { id?: string }) {
       })
 
     const place = (step: PointerEvent) => {
-      liftAt.current = { x: step.clientX - grip.x, y: step.clientY - grip.y }
+      liftAt.current = { x: (step.clientX - grip.x) / zoom, y: (step.clientY - grip.y) / zoom }
       const node = liftBox.current
       if (node) node.style.transform = `translate3d(${liftAt.current.x}px, ${liftAt.current.y}px, 0)`
     }
@@ -658,7 +659,7 @@ export default function Profile({ id }: { id?: string }) {
       if (!moved) {
         moved = true
         setGrabbed(spot)
-        setLift({ one, w: box.width, h: box.height })
+        setLift({ one, w: box.width / zoom, h: box.height / zoom })
       }
 
       place(step)
@@ -687,8 +688,8 @@ export default function Profile({ id }: { id?: string }) {
       if (held) {
         moved = true
         setGrabbed(spot)
-        setLift({ one, w: box.width, h: box.height })
-        liftAt.current = { x: start.x - grip.x, y: start.y - grip.y }
+        setLift({ one, w: box.width / zoom, h: box.height / zoom })
+        liftAt.current = { x: (start.x - grip.x) / zoom, y: (start.y - grip.y) / zoom }
       }
       window.addEventListener('pointermove', move)
       window.addEventListener('pointerup', drop)

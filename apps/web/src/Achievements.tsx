@@ -10,6 +10,7 @@ import Rail from './Rail'
 import AwardIcon from './awardIcons'
 import { useAuth } from './auth'
 import { AWARDS_FILTER, putAwards } from './awards'
+import { liveZoom } from './profile-zoom'
 import { useHref } from './router'
 import { keepPerUser } from './session-cache'
 
@@ -426,6 +427,7 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
     const row = shelf.current
     if (!row) return
     const box = event.currentTarget.getBoundingClientRect()
+    const zoom = liveZoom()
     const grip = { x: event.clientX - box.left, y: event.clientY - box.top }
     const start = { x: event.clientX, y: event.clientY }
     let order = [...pinned]
@@ -438,7 +440,7 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
       })
 
     const place = (step: PointerEvent) => {
-      liftAt.current = { x: step.clientX - grip.x, y: step.clientY - grip.y }
+      liftAt.current = { x: (step.clientX - grip.x) / zoom, y: (step.clientY - grip.y) / zoom }
       const node = liftBox.current
       if (node) node.style.transform = `translate3d(${liftAt.current.x}px, ${liftAt.current.y}px, 0)`
     }
@@ -448,7 +450,7 @@ export default function Achievements({ id, nickname }: { id?: string; nickname?:
       if (!moved) {
         moved = true
         setHeld(id)
-        setLift({ id, size: box.width })
+        setLift({ id, size: box.width / zoom })
       }
 
       place(step)

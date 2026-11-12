@@ -2,13 +2,14 @@
 
 import { useLayoutEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { afterHold } from './hold'
+import { liveZoom } from './profile-zoom'
 
 const START_PX = 6
 const SLIDE_MS = 220
 
 type Frame = { left: number; right: number; top: number; bottom: number }
 
-type Grab = { id: string; pointer: number; x: number; y: number; dx: number; dy: number; live: boolean; box: DOMRect; frame: Frame }
+type Grab = { id: string; pointer: number; x: number; y: number; dx: number; dy: number; live: boolean; zoom: number; box: { left: number; top: number }; frame: Frame }
 
 export function useShelfSort<T>(items: T[], keyOf: (item: T) => string, enabled: boolean, commit: (next: T[]) => void) {
   const [order, setOrder] = useState<string[] | null>(null)
@@ -37,16 +38,17 @@ export function useShelfSort<T>(items: T[], keyOf: (item: T) => string, enabled:
     return { node, box, left, top, x: left + width / 2, y: top + height / 2 }
   }
 
-  const measure = (): { box: DOMRect; frame: Frame } | null => {
+  const measure = (zoom: number): { box: { left: number; top: number }; frame: Frame } | null => {
     const shelf = list.current
     if (!shelf) return null
-    const box = shelf.getBoundingClientRect()
+    const seen = shelf.getBoundingClientRect()
+    const box = { left: seen.left / zoom, top: seen.top / zoom, right: seen.right / zoom, bottom: seen.bottom / zoom }
     const pad = getComputedStyle(shelf)
     const card = shelf.closest('.card') as HTMLElement | null
     const cardBox = card?.getBoundingClientRect()
-    const bottom = cardBox && card ? cardBox.bottom - parseFloat(getComputedStyle(card).paddingBottom) : Infinity
+    const bottom = cardBox && card ? cardBox.bottom / zoom - parseFloat(getComputedStyle(card).paddingBottom) : Infinity
     return {
-      box,
+      box: { left: box.left, top: box.top },
       frame: {
         left: box.left + parseFloat(pad.paddingLeft),
         right: box.right - parseFloat(pad.paddingRight),
@@ -67,13 +69,14 @@ export function useShelfSort<T>(items: T[], keyOf: (item: T) => string, enabled:
     before.current = null
     follow()
     if (!was) return
+    const zoom = grab.current?.zoom ?? liveZoom()
     for (const [id, rect] of was) {
       if (id === grab.current?.id) continue
       const node = nodeOf(id)
       if (!node) continue
       const now = node.getBoundingClientRect()
-      const dx = rect.left - now.left
-      const dy = rect.top - now.top
+      const dx = (rect.left - now.left) / zoom
+      const dy = (rect.top - now.top) / zoom
       if (dx || dy) node.animate([{ translate: `${dx}px ${dy}px` }, { translate: '0 0' }], { duration: SLIDE_MS, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' })
     }
   })
@@ -100,19 +103,21 @@ export function useShelfSort<T>(items: T[], keyOf: (item: T) => string, enabled:
   const begin = (node: HTMLElement, press: { pointerId: number; clientX: number; clientY: number }, held: boolean) => {
     const id = node.dataset.sort!
     const rect = node.getBoundingClientRect()
-    const bounds = measure()
+    const zoom = liveZoom()
+    const bounds = measure(zoom)
     if (!bounds) return
     grab.current = {
       id,
       pointer: press.pointerId,
-      x: press.clientX,
-      y: press.clientY,
-      dx: press.clientX - rect.left,
-      dy: press.clientY - rect.top,
+      x: press.clientX / zoom,
+      y: press.clientY / zoom,
+      dx: (press.clientX - rect.left) / zoom,
+      dy: (press.clientY - rect.top) / zoom,
       live: held,
+      zoom,
       ...bounds,
     }
-    pointer.current = { x: press.clientX, y: press.clientY }
+    pointer.current = { x: press.clientX / zoom, y: press.clientY / zoom }
     if (held) {
       list.current?.classList.add('is-live')
       setDragging(id)
@@ -158,7 +163,7 @@ export function useShelfSort<T>(items: T[], keyOf: (item: T) => string, enabled:
     const move = (moved: PointerEvent) => {
       const held = grab.current
       if (!held || moved.pointerId !== held.pointer) return
-      pointer.current = { x: moved.clientX, y: moved.clientY }
+      pointer.current = { x: moved.clientX / held.zoom, y: moved.clientY / held.zoom }
       if (held.live) moved.preventDefault()
       if (!frame) frame = requestAnimationFrame(tick)
     }
