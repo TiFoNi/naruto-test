@@ -1,5 +1,21 @@
 [
  {
+  "id": 2271,
+  "name": "Абенгане",
+  "nameEn": "Abengane",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "nen": "Материализация",
+  "affiliations": [],
+  "status": "Жив",
+  "arc": "Жадный остров",
+  "arcIndex": 3,
+  "answer": true,
+  "thumb": 0
+ },
+ {
   "id": 2052,
   "name": "Айзек Нетеро",
   "nameEn": "Isaac Netero",
@@ -15,8 +31,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 0,
-  "anime": true
+  "thumb": 1
  },
  {
   "id": 2035,
@@ -34,8 +49,7 @@
   "arc": "Выборы председателя",
   "arcIndex": 5,
   "answer": true,
-  "anime": true,
-  "thumb": 1
+  "thumb": 2
  },
  {
   "id": 65658,
@@ -53,8 +67,23 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 2,
-  "anime": false
+  "thumb": 3
+ },
+ {
+  "id": 2269,
+  "name": "Батера",
+  "nameEn": "Battera",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "nen": "Нет",
+  "affiliations": [],
+  "status": "Жив",
+  "arc": "Йоркшин",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 4
  },
  {
   "id": 2417,
@@ -64,7 +93,7 @@
   "species": [
    "Человек"
   ],
-  "nen": "Нет",
+  "nen": "Материализация",
   "affiliations": [
    "Ассоциация охотников"
   ],
@@ -72,8 +101,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 3,
-  "anime": true
+  "thumb": 5
  },
  {
   "id": 29453,
@@ -91,8 +119,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 4,
-  "anime": false
+  "thumb": 6
  },
  {
   "id": 2267,
@@ -110,8 +137,7 @@
   "arc": "Небесная арена",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 5,
-  "anime": true
+  "thumb": 7
  },
  {
   "id": 2170,
@@ -121,7 +147,7 @@
   "species": [
    "Человек"
   ],
-  "nen": "Нет",
+  "nen": "Материализация",
   "affiliations": [
    "Труппа Призраков"
   ],
@@ -129,8 +155,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 6,
-  "anime": true
+  "thumb": 8
  },
  {
   "id": 96718,
@@ -148,8 +173,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 7,
-  "anime": false
+  "thumb": 9
  },
  {
   "id": 2337,
@@ -167,8 +191,25 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 8,
-  "anime": true
+  "thumb": 10
+ },
+ {
+  "id": 1977,
+  "name": "Винг",
+  "nameEn": "Wing",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "nen": "Усиление",
+  "affiliations": [
+   "Ассоциация охотников"
+  ],
+  "status": "Жив",
+  "arc": "Небесная арена",
+  "arcIndex": 1,
+  "answer": true,
+  "thumb": 11
  },
  {
   "id": 2291,
@@ -184,8 +225,7 @@
   "arc": "Жадный остров",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 9,
-  "anime": true
+  "thumb": 12
  },
  {
   "id": 87205,
@@ -203,8 +243,25 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 10,
-  "anime": true
+  "thumb": 13
+ },
+ {
+  "id": 2327,
+  "name": "Гото",
+  "nameEn": "Gotoh",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "nen": "Усиление",
+  "affiliations": [
+   "Семья Золдик"
+  ],
+  "status": "Мёртв",
+  "arc": "Экзамен на охотника",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 14
  },
  {
   "id": 1959,
@@ -223,8 +280,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 11,
-  "anime": true
+  "thumb": 15
  },
  {
   "id": 1968,
@@ -242,8 +298,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 12,
-  "anime": true
+  "thumb": 16
  },
  {
   "id": 2282,
@@ -261,8 +316,7 @@
   "arc": "Небесная арена",
   "arcIndex": 1,
   "answer": true,
-  "anime": true,
-  "thumb": 13
+  "thumb": 17
  },
  {
   "id": 3302,
@@ -280,8 +334,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 14,
-  "anime": true
+  "thumb": 18
  },
  {
   "id": 2032,
@@ -301,8 +354,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 15,
-  "anime": true
+  "thumb": 19
  },
  {
   "id": 98235,
@@ -320,8 +372,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 16,
-  "anime": false
+  "thumb": 20
  },
  {
   "id": 1990,
@@ -341,8 +392,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 17,
-  "anime": true
+  "thumb": 21
  },
  {
   "id": 2034,
@@ -361,8 +411,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 18,
-  "anime": true
+  "thumb": 22
  },
  {
   "id": 30450,
@@ -380,8 +429,25 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 19,
-  "anime": false
+  "thumb": 23
+ },
+ {
+  "id": 2326,
+  "name": "Канария",
+  "nameEn": "Canary",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "nen": "Нет",
+  "affiliations": [
+   "Семья Золдик"
+  ],
+  "status": "Жив",
+  "arc": "Экзамен на охотника",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 24
  },
  {
   "id": 30293,
@@ -399,8 +465,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 20,
-  "anime": false
+  "thumb": 25
  },
  {
   "id": 1940,
@@ -419,8 +484,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 21,
-  "anime": true
+  "thumb": 26
  },
  {
   "id": 2048,
@@ -438,8 +502,41 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 22,
-  "anime": true
+  "thumb": 27
+ },
+ {
+  "id": 2572,
+  "name": "Кольт",
+  "nameEn": "Colt",
+  "gender": "Мужской",
+  "species": [
+   "Муравей-химера"
+  ],
+  "nen": "Нет",
+  "affiliations": [
+   "Муравьи-химеры"
+  ],
+  "status": "Жив",
+  "arc": "Муравьи-химеры",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 28
+ },
+ {
+  "id": 2250,
+  "name": "Комуги",
+  "nameEn": "Komugi",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "nen": "Усиление",
+  "affiliations": [],
+  "status": "Мёртв",
+  "arc": "Муравьи-химеры",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 29
  },
  {
   "id": 2247,
@@ -457,8 +554,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 23,
-  "anime": true
+  "thumb": 30
  },
  {
   "id": 87212,
@@ -477,8 +573,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 24,
-  "anime": true
+  "thumb": 31
  },
  {
   "id": 2077,
@@ -497,8 +592,7 @@
   "arc": "Небесная арена",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 25,
-  "anime": true
+  "thumb": 32
  },
  {
   "id": 2338,
@@ -516,8 +610,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 26,
-  "anime": true
+  "thumb": 33
  },
  {
   "id": 1961,
@@ -535,8 +628,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 27,
-  "anime": true
+  "thumb": 34
  },
  {
   "id": 2016,
@@ -554,8 +646,7 @@
   "arc": "Небесная арена",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 28,
-  "anime": true
+  "thumb": 35
  },
  {
   "id": 2339,
@@ -573,8 +664,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 29,
-  "anime": true
+  "thumb": 36
  },
  {
   "id": 2344,
@@ -593,8 +683,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 30,
-  "anime": true
+  "thumb": 37
  },
  {
   "id": 2223,
@@ -612,8 +701,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 31,
-  "anime": true
+  "thumb": 38
  },
  {
   "id": 3289,
@@ -631,8 +719,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 32,
-  "anime": true
+  "thumb": 39
  },
  {
   "id": 2033,
@@ -650,8 +737,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "anime": true,
-  "thumb": 33
+  "thumb": 40
  },
  {
   "id": 2046,
@@ -669,8 +755,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 34,
-  "anime": true
+  "thumb": 41
  },
  {
   "id": 72296,
@@ -688,8 +773,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 35,
-  "anime": false
+  "thumb": 42
  },
  {
   "id": 2004,
@@ -707,8 +791,44 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 36,
-  "anime": true
+  "thumb": 43
+ },
+ {
+  "id": 2159,
+  "name": "Неон Ностраде",
+  "nameEn": "Neon Nostrade",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "nen": "Специализация",
+  "affiliations": [
+   "Мафия"
+  ],
+  "status": "Мёртв",
+  "arc": "Йоркшин",
+  "arcIndex": 2,
+  "answer": true,
+  "thumb": 44
+ },
+ {
+  "id": 2233,
+  "name": "Неферпиту",
+  "nameEn": "Neferpitou",
+  "gender": "Другое",
+  "species": [
+   "Муравей-химера"
+  ],
+  "nen": "Специализация",
+  "affiliations": [
+   "Муравьи-химеры",
+   "Гвардия Короля"
+  ],
+  "status": "Мёртв",
+  "arc": "Муравьи-химеры",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 45
  },
  {
   "id": 2141,
@@ -726,8 +846,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 37,
-  "anime": true
+  "thumb": 46
  },
  {
   "id": 2201,
@@ -745,8 +864,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 38,
-  "anime": true
+  "thumb": 47
  },
  {
   "id": 2026,
@@ -764,8 +882,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 39,
-  "anime": true
+  "thumb": 48
  },
  {
   "id": 3212,
@@ -783,8 +900,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 40,
-  "anime": true
+  "thumb": 49
  },
  {
   "id": 2136,
@@ -802,8 +918,7 @@
   "arc": "Жадный остров",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 41,
-  "anime": true
+  "thumb": 50
  },
  {
   "id": 2313,
@@ -821,8 +936,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 42,
-  "anime": true
+  "thumb": 51
  },
  {
   "id": 2030,
@@ -840,8 +954,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "anime": true,
-  "thumb": 43
+  "thumb": 52
  },
  {
   "id": 2092,
@@ -859,8 +972,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 44,
-  "anime": true
+  "thumb": 53
  },
  {
   "id": 2089,
@@ -878,8 +990,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 45,
-  "anime": true
+  "thumb": 54
  },
  {
   "id": 2099,
@@ -897,8 +1008,25 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 46,
-  "anime": true
+  "thumb": 55
+ },
+ {
+  "id": 2329,
+  "name": "Флаттер",
+  "nameEn": "Flutter",
+  "gender": "Мужской",
+  "species": [
+   "Муравей-химера"
+  ],
+  "nen": "Материализация",
+  "affiliations": [
+   "Муравьи-химеры"
+  ],
+  "status": "Мёртв",
+  "arc": "Муравьи-химеры",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 56
  },
  {
   "id": 2103,
@@ -916,8 +1044,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 47,
-  "anime": true
+  "thumb": 57
  },
  {
   "id": 30295,
@@ -935,8 +1062,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 48,
-  "anime": false
+  "thumb": 58
  },
  {
   "id": 30291,
@@ -954,8 +1080,25 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 49,
-  "anime": false
+  "thumb": 59
+ },
+ {
+  "id": 2226,
+  "name": "Ханзо",
+  "nameEn": "Hanzo",
+  "gender": "Мужской",
+  "species": [
+   "Человек"
+  ],
+  "nen": "Трансформация",
+  "affiliations": [
+   "Ассоциация охотников"
+  ],
+  "status": "Жив",
+  "arc": "Экзамен на охотника",
+  "arcIndex": 0,
+  "answer": true,
+  "thumb": 60
  },
  {
   "id": 72360,
@@ -973,8 +1116,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 50,
-  "anime": false
+  "thumb": 61
  },
  {
   "id": 2042,
@@ -994,8 +1136,7 @@
   "arc": "Экзамен на охотника",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 51,
-  "anime": true
+  "thumb": 62
  },
  {
   "id": 1974,
@@ -1013,8 +1154,7 @@
   "arc": "Жадный остров",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 52,
-  "anime": true
+  "thumb": 63
  },
  {
   "id": 28024,
@@ -1033,8 +1173,7 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 53,
-  "anime": false
+  "thumb": 64
  },
  {
   "id": 30452,
@@ -1053,8 +1192,43 @@
   "arc": "Тёмный континент",
   "arcIndex": 6,
   "answer": true,
-  "thumb": 54,
-  "anime": false
+  "thumb": 65
+ },
+ {
+  "id": 3533,
+  "name": "Чидл Йоркшир",
+  "nameEn": "Cheadle Yorkshire",
+  "gender": "Женский",
+  "species": [
+   "Человек"
+  ],
+  "nen": "Нет",
+  "affiliations": [
+   "Ассоциация охотников"
+  ],
+  "status": "Жив",
+  "arc": "Муравьи-химеры",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 66
+ },
+ {
+  "id": 2314,
+  "name": "Чита",
+  "nameEn": "Cheetu",
+  "gender": "Мужской",
+  "species": [
+   "Муравей-химера"
+  ],
+  "nen": "Материализация",
+  "affiliations": [
+   "Муравьи-химеры"
+  ],
+  "status": "Мёртв",
+  "arc": "Муравьи-химеры",
+  "arcIndex": 4,
+  "answer": true,
+  "thumb": 67
  },
  {
   "id": 2249,
@@ -1073,8 +1247,7 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 55,
-  "anime": true
+  "thumb": 68
  },
  {
   "id": 2240,
@@ -1093,8 +1266,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 56,
-  "anime": true
+  "thumb": 69
  },
  {
   "id": 2125,
@@ -1112,8 +1284,7 @@
   "arc": "Йоркшин",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 57,
-  "anime": true
+  "thumb": 70
  },
  {
   "id": 2050,
@@ -1131,7 +1302,6 @@
   "arc": "Муравьи-химеры",
   "arcIndex": 4,
   "answer": true,
-  "thumb": 58,
-  "anime": true
+  "thumb": 71
  }
 ]

@@ -28,7 +28,26 @@ const OUT_JSON = path.join(ROOT, 'packages', 'game', 'data', 'hxh.json')
 const OUT_ATLAS = path.join(ROOT, 'packages', 'game', 'data', 'hxh-atlas.json')
 const ANSWER_POOL_SIZE = 55
 const KEEP = 70
-const ALWAYS = new Set(['Alluka Zoldyck', 'Silva Zoldyck', 'Milluki Zoldyck', 'Zushi'])
+const EXTRA = ['Neferpitou']
+const ALWAYS = new Set([
+  'Alluka Zoldyck',
+  'Silva Zoldyck',
+  'Milluki Zoldyck',
+  'Zushi',
+  'Neon Nostrade',
+  'Cheetu',
+  'Battera',
+  'Flutter',
+  'Neferpitou',
+  'Komugi',
+  'Colt',
+  'Cheadle Yorkshire',
+  'Wing',
+  'Hanzo',
+  'Gotoh',
+  'Canary',
+  'Abengane',
+])
 
 const ARCS = [
   [1, 'Экзамен на охотника'],
@@ -79,6 +98,8 @@ const SPECIES_OVERRIDES = { Kite: ['Человек'], 'Palm Siberia': ['Чело
 const AFFILIATION_FIX = {
   'Biscuit Krueger': ['Ассоциация охотников'],
   'Morena Prudo': ['Мафия'],
+  Wing: ['Ассоциация охотников'],
+  'Neon Nostrade': ['Мафия'],
   'Hinrigh Biganduffno': ['Мафия'],
   'Tserriednich Hui Guo Rou': ['Королевство Какин', 'Мафия'],
   'Zhang Lei Hui Guo Rou': ['Королевство Какин', 'Мафия'],
@@ -100,7 +121,17 @@ const NAMES = {
   Shalnark: 'Шалнарк',
   Biscuit: 'Бисквит',
   'Biscuit Krueger': 'Бисквит Крюгер',
-  Neferpitou: 'Нефелпиту',
+  Neferpitou: 'Неферпиту',
+  'Neon Nostrade': 'Неон Ностраде',
+  Cheetu: 'Чита',
+  Battera: 'Батера',
+  Flutter: 'Флаттер',
+  Colt: 'Кольт',
+  Wing: 'Винг',
+  Hanzo: 'Ханзо',
+  Gotoh: 'Гото',
+  Canary: 'Канария',
+  Abengane: 'Абенгане',
   Shaiapouf: 'Шайяпуф',
   Menthuthuyoupi: 'Ментутуюпи',
   'Silva Zoldyck': 'Силва Золдик',
@@ -168,6 +199,12 @@ async function main() {
     ...new Set([...(await categoryMembers(API, 'Male characters')), ...(await categoryMembers(API, 'Female characters'))]),
   ])
   const pages = await cachedJson(CACHE, 'pages.json', () => wikiPages(API, names))
+  const fresh = EXTRA.filter((title) => !pages[title])
+  if (fresh.length) {
+    Object.assign(pages, await wikiPages(API, fresh))
+    await fs.writeFile(path.join(CACHE, 'pages.json'), JSON.stringify(pages))
+  }
+  for (const title of EXTRA) if (!names.includes(title)) names.push(title)
   const candidates = names.filter((n) => pages[n]?.text && /\{\{Hunterpedia:Character/i.test(pages[n].text) && debutChapter(pages[n].text) !== null)
   const categories = await cachedJson(CACHE, 'categories.json', async () => {
     const res = await wikiQuery(API, candidates, 'prop=categories&cllimit=500')
@@ -177,6 +214,15 @@ async function main() {
     const res = await wikiQuery(API, candidates, 'prop=pageimages&piprop=original')
     return Object.fromEntries(Object.entries(res).map(([t, p]) => [t, p.original?.source ?? null]))
   })
+  const unseen = candidates.filter((title) => !(title in categories) || !(title in images))
+  if (unseen.length) {
+    const cats = await wikiQuery(API, unseen, 'prop=categories&cllimit=500')
+    for (const [t, p] of Object.entries(cats)) categories[t] = (p.categories ?? []).map((c) => c.title)
+    const pics = await wikiQuery(API, unseen, 'prop=pageimages&piprop=original')
+    for (const [t, p] of Object.entries(pics)) images[t] = p.original?.source ?? null
+    await fs.writeFile(path.join(CACHE, 'categories.json'), JSON.stringify(categories))
+    await fs.writeFile(path.join(CACHE, 'images.json'), JSON.stringify(images))
+  }
 
   const result = []
   await pool(candidates, 8, async (name) => {
