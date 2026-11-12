@@ -8,7 +8,7 @@ export type ReactLine = { kind: Reaction; people: { id: string; nick: string }[]
 
 export type Me = { id: string; nickname: string }
 
-export const REACT_FACE: Record<Reaction, string> = { like: '👍', laugh: '😂', puke: '🤮', heart: '❤️' }
+export const REACT_FACE: Record<Reaction, string> = { like: '👍', laugh: '😂', puke: '🤮', heart: '❤️', meh: '😑' }
 
 export const QUICK_REACT: Reaction = 'like'
 

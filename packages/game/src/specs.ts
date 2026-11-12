@@ -678,11 +678,11 @@ export const scrapValue = (id: unknown) => {
   return cost ? Math.floor(cost * BANNER_SCRAP) : null
 }
 
-export const REACTIONS = ['like', 'laugh', 'heart', 'puke'] as const
+export const REACTIONS = ['like', 'laugh', 'heart', 'puke', 'meh'] as const
 
 export type Reaction = (typeof REACTIONS)[number]
 
-export const PATRON_REACTIONS: Reaction[] = ['puke']
+export const PATRON_REACTIONS: Reaction[] = ['puke', 'meh']
 
 export const isReaction = (value: unknown): value is Reaction => typeof value === 'string' && (REACTIONS as readonly string[]).includes(value)
 

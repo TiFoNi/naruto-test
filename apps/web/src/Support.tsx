@@ -3,16 +3,17 @@
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { COIN_PACKS, type PayCoin } from '@nanda/game'
+import { COIN_PACKS, CARD_PINS_FREE, CARD_PINS_MAX, PATRON_REACTIONS, type PayCoin } from '@nanda/game'
 
 type CoinRow = PayCoin & { least?: number | null }
 
 type PackRow = { id: string; charge: number; fee: number }
 import { api } from './api'
 import { useAuth } from './auth'
+import { REACT_FACE } from './ChatReacts'
 import BackButton from './BackButton'
 import { useI18n } from './i18n'
-import { CoinIcon, StarIcon } from './icons'
+import { CardsIcon, CoinIcon, CrownIcon, StarIcon, SwordsIcon } from './icons'
 import GemIcon from './GemIcon'
 
 const PACK_GEMS: Record<string, 1 | 2 | 3> = { small: 1, mid: 2, big: 3 }
@@ -30,6 +31,7 @@ export default function Support() {
   const href = useHref()
   const router = useRouter()
   const { user, refresh } = useAuth()
+  const patron = !!user?.titles?.includes('patron')
   const [picked, setPicked] = useState<string>('mid')
   const [coins, setCoins] = useState<CoinRow[]>([])
   const [coin, setCoin] = useState<string>('')
@@ -188,6 +190,42 @@ export default function Support() {
                 </span>
               </button>
             ))}
+          </section>
+
+          <section className="patron-offer">
+            <header className="patron-offer-head">
+              <span className="patron-offer-mark" aria-hidden>
+                <CrownIcon />
+              </span>
+              <div>
+                <h2>
+                  {t(patron ? 'support.patronHave' : 'support.patronHead')} <i className="player-title is-patron">{t('title.patron')}</i>
+                </h2>
+                <p>{t(patron ? 'support.patronHaveLead' : 'support.patronLead')}</p>
+              </div>
+            </header>
+            <ul className="patron-offer-perks">
+              <li>
+                <CrownIcon />
+                {t('support.patronBadge')}
+              </li>
+              <li>
+                <CardsIcon />
+                {t('support.patronCards', { extra: CARD_PINS_MAX - CARD_PINS_FREE, all: CARD_PINS_MAX, base: CARD_PINS_FREE })}
+              </li>
+              <li>
+                <SwordsIcon />
+                {t('support.patronDuel')}
+              </li>
+              <li>
+                <span className="patron-offer-face" aria-hidden>
+                  {PATRON_REACTIONS.map((kind) => (
+                    <span key={kind}>{REACT_FACE[kind]}</span>
+                  ))}
+                </span>
+                {t('support.patronReact')}
+              </li>
+            </ul>
           </section>
         </div>
 
