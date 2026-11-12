@@ -2757,7 +2757,20 @@ button.fact-rank:hover {
   white-space: nowrap;
 }
 
-.soon-badges li > a {
+.soon-badges li > .soon-open {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.soon-badges.is-sortable li > .soon-open {
+  cursor: grab;
+}
+
+.soon-badges li > :is(a, .soon-open) {
   display: flex;
   flex-direction: column;
   gap: inherit;
@@ -2766,14 +2779,15 @@ button.fact-rank:hover {
   text-decoration: none;
 }
 
-.soon-badges li > a .soon-mark {
+.soon-badges li > :is(a, .soon-open) .soon-mark {
   transition:
     border-color 0.18s ease,
     color 0.18s ease,
     transform 0.18s ease;
 }
 
-.soon-badges li.on > a:hover .soon-mark {
+.soon-badges li.on > :is(a, .soon-open):hover .soon-mark,
+.soon-badges li.on > .soon-open[aria-expanded='true'] .soon-mark {
   border-color: var(--tier, var(--accent));
   transform: translateY(-3px);
 }
@@ -4460,4 +4474,56 @@ body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
   width: 40px;
   height: 40px;
   border-radius: 12px;
+}
+
+.award-tip {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 2px;
+}
+
+.award-tip p {
+  margin: 0;
+  color: var(--text);
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.award-tip dl {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.award-tip dl > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.award-tip dt {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-3);
+  font-size: 12.5px;
+}
+
+.award-tip dt .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.award-tip dd {
+  margin: 0;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
 }

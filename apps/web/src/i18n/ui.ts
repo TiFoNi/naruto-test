@@ -2059,6 +2059,8 @@ const ui = {
   'ach.rewardTitle': { ru: 'Награда', uk: 'Нагорода', en: 'Reward' },
   'ach.rarityTitle': { ru: 'Редкость', uk: 'Рідкість', en: 'Rarity' },
   'ach.gotTitle': { ru: 'Получено', uk: 'Отримано', en: 'Earned on' },
+  'ach.shareTitle': { ru: 'Есть у', uk: 'Є у', en: 'Held by' },
+  'ach.shareOf': { ru: '{share}% игроков', uk: '{share}% гравців', en: '{share}% of players' },
   'ach.progressTitle': { ru: 'Прогресс', uk: 'Прогрес', en: 'Progress' },
   'ach.all': { ru: 'Все', uk: 'Усі', en: 'All' },
   'ach.done': { ru: 'Полученные', uk: 'Отримані', en: 'Earned' },

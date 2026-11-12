@@ -640,7 +640,20 @@ export async function grantSeasonTrophies(standing: { userId: ObjectId }[], seas
   return standing.length
 }
 
-export async function rarity() {
+const RARITY_MS = 10 * 60 * 1000
+let rarityKept: { at: number; value: Promise<{ total: number; share: Record<string, number> }> } | null = null
+
+export function rarity() {
+  if (rarityKept && Date.now() - rarityKept.at < RARITY_MS) return rarityKept.value
+  const value = countRarity()
+  rarityKept = { at: Date.now(), value }
+  value.catch(() => {
+    if (rarityKept?.value === value) rarityKept = null
+  })
+  return value
+}
+
+async function countRarity() {
   const collection = await users()
   const total = await collection.countDocuments({})
   if (!total) return { total: 0, share: {} as Record<string, number> }

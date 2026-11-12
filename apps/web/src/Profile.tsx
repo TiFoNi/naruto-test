@@ -15,7 +15,7 @@ import type { UiKey } from './i18n/ui'
 import { MODES } from './modes'
 import { ProfileGhost } from './PageSkeleton'
 import Rail from './Rail'
-import { ArrowIcon, CloseIcon, GearIcon, GripIcon, LockIcon, PaletteIcon, PencilIcon, PictureIcon, PlusIcon, SwordsIcon, TrophyIcon, UserCheckIcon, UserPlusIcon, UserWaitIcon } from './icons'
+import { ArrowIcon, CalendarIcon, CloseIcon, GearIcon, GripIcon, LockIcon, PaletteIcon, PencilIcon, PictureIcon, PlusIcon, SwordsIcon, TrophyIcon, UserCheckIcon, UserPlusIcon, UsersIcon, UserWaitIcon } from './icons'
 import AwardIcon from './awardIcons'
 import { useHref, useNavigate } from './router'
 import { refreshFeed } from './awards'
@@ -67,7 +67,7 @@ type Named = { ru: string; uk: string; en: string }
 
 type Summary = {
   since: string
-  pinned: { id: string | null; family: string | null; tier: string; at: string | null; hidden?: boolean }[]
+  pinned: { id: string | null; family: string | null; tier: string; at: string | null; rarity?: number | null; hidden?: boolean }[]
   awards: number
   awardsTotal: number
   level: Level
@@ -209,6 +209,7 @@ export default function Profile({ id }: { id?: string }) {
   const [summary, setSummary] = useState<Summary | null>(own ? knownSummary : null)
   const [adding, setAdding] = useState<HTMLElement | null>(null)
   const [locked, setLocked] = useState<HTMLElement | null>(null)
+  const [awardTip, setAwardTip] = useState<{ at: HTMLElement; id: string | null; got: string | null; share: number | null; secret: boolean } | null>(null)
   const blankAt = useRef<(HTMLButtonElement | null)[]>([])
   const lockAt = useRef<(HTMLButtonElement | null)[]>([])
   const [places, setPlaces] = useState(false)
@@ -1038,25 +1039,54 @@ export default function Profile({ id }: { id?: string }) {
                 {...(award.id ? awardSort.handle(award.id) : {})}
                 className={`on tier-${award.tier} ${awardSort.dragging && awardSort.dragging === award.id ? 'is-dragging' : ''}`}
               >
-                {user ? (
-                  <Link href={own || !id ? `${href.achievements}?filter=done` : href.playerAwards(id)} prefetch={false}>
-                    <span className="soon-mark" aria-hidden>
-                      {award.family ? <AwardIcon family={award.family} award={award.id} /> : <TrophyIcon />}
-                    </span>
-                    <b>{secret ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
-                  </Link>
-                ) : (
-                  <>
-                    <span className="soon-mark" aria-hidden>
-                      {award.family ? <AwardIcon family={award.family} award={award.id} /> : <TrophyIcon />}
-                    </span>
-                    <b>{secret ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
-                  </>
-                )}
+                <button
+                  type="button"
+                  className="soon-open"
+                  aria-expanded={awardTip?.id === award.id && !!awardTip}
+                  onClick={(event) => {
+                    if (sorting) return
+                    const at = event.currentTarget
+                    setAwardTip((was) => (was?.at === at ? null : { at, id: award.id, got: award.at, share: award.rarity ?? null, secret }))
+                  }}
+                >
+                  <span className="soon-mark" aria-hidden>
+                    {award.family ? <AwardIcon family={award.family} award={award.id} /> : <TrophyIcon />}
+                  </span>
+                  <b>{secret ? t('ach.secret') : t(`ach.${award.id}` as UiKey)}</b>
+                </button>
               </li>
             )
           })}
         </ul>
+        {awardTip && (
+          <TilePop at={awardTip.at} wide={270} onClose={() => setAwardTip(null)}>
+            <div className="award-tip">
+              <p>{awardTip.secret ? t('ach.secretHint') : t(`ach.${awardTip.id}.hint` as UiKey)}</p>
+              {(awardTip.got || awardTip.share != null) && (
+                <dl>
+                  {awardTip.got && (
+                    <div>
+                      <dt>
+                        <CalendarIcon />
+                        {t('ach.gotTitle')}
+                      </dt>
+                      <dd>{new Date(awardTip.got).toLocaleDateString(LOCALES[lang], { day: 'numeric', month: 'short', year: 'numeric' })}</dd>
+                    </div>
+                  )}
+                  {awardTip.share != null && (
+                    <div>
+                      <dt>
+                        <UsersIcon />
+                        {t('ach.shareTitle')}
+                      </dt>
+                      <dd>{t('ach.shareOf', { share: awardTip.share.toLocaleString(LOCALES[lang]) })}</dd>
+                    </div>
+                  )}
+                </dl>
+              )}
+            </div>
+          </TilePop>
+        )}
       </section>
     ),
   }

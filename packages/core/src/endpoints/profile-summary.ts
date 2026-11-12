@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { CARD_PINS_MAX, GAME_IDS, OPEN_GAMES, STAT_KEYS, type GameId } from '@nanda/game'
-import { ACHIEVEMENTS, LIFE, familyOf } from '../achievements'
+import { ACHIEVEMENTS, LIFE, familyOf, rarity } from '../achievements'
 import { PINNED_MAX } from './achievements'
 import { rounds, seasons, users, type UserDoc } from '../db'
 import { gameData } from '../games'
@@ -291,6 +291,8 @@ export const GET = handle(async (request) => {
   const xp = doc.xp ?? 0
   const level = levelOf(xp)
 
+  const { share } = await rarity()
+
   return json({
     id: doc._id!.toHexString(),
     nickname: doc.nickname ?? defaultNickname(doc.username),
@@ -306,6 +308,7 @@ export const GET = handle(async (request) => {
         family: familyOf(id),
         tier: TIERS.get(id)!,
         at: veiled ? null : (doc.awards?.[id] ?? null),
+        rarity: veiled ? null : (share[id] ?? 0),
         hidden: veiled,
       }
     }),
