@@ -203,6 +203,23 @@ export async function touchPulse(key: string) {
   return countPulse()
 }
 
+const SEEN_FIELD = { chat: 'chatSeen', news: 'newsSeen' } as const
+
+const later = (one: string | undefined, two: string | undefined) => ((one ?? '') > (two ?? '') ? one : two) || undefined
+
+export async function markSeen(userId: string, channel: ChatChannel, id: unknown) {
+  if (typeof id !== 'string' || !/^[0-9a-f]{24}$/.test(id) || !ObjectId.isValid(userId)) return false
+  await (await users()).updateOne({ _id: new ObjectId(userId) }, { $max: { [SEEN_FIELD[channel]]: id } })
+  return true
+}
+
+export async function seenOf(request: Request, local: string | null) {
+  const session = await authSession(request).catch(() => null)
+  if (!session?.id || !ObjectId.isValid(session.id)) return { chat: local ?? undefined, news: undefined }
+  const doc = await (await users()).findOne({ _id: new ObjectId(session.id) }, { projection: { chatSeen: 1, newsSeen: 1 } })
+  return { chat: later(local ?? undefined, doc?.chatSeen), news: doc?.newsSeen }
+}
+
 export async function freshSince(seen: unknown) {
   if (typeof seen !== 'string' || !ObjectId.isValid(seen)) return false
   const found = await (await chatRoom()).findOne(

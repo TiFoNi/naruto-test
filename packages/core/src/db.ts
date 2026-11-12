@@ -21,6 +21,8 @@ export type UserDoc = {
   dex?: Record<string, number[]>
   mentionPush?: boolean
   mentionNews?: MentionNews[]
+  chatSeen?: string
+  newsSeen?: string
   bonusDay?: string
   levelsTaken?: number[]
   chatMutedUntil?: Date | null

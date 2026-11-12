@@ -2,7 +2,8 @@ import { users } from '../db'
 import { fail, handle, json, readJson } from '../http'
 import { currentUser, touchVisit, unauthorized } from '../profile'
 import { adminSession } from '../admin'
-import { CHAT_MAX, NEWS_MAX, channelOf, chatPage, dropChat, dropOwnChat, joinBout, muteChat, reactChat, sendBout, sendChat, sendNews, type BoutFail, type ReactFail } from '../chat'
+import { authSession } from '../auth'
+import { CHAT_MAX, NEWS_MAX, channelOf, chatPage, dropChat, dropOwnChat, joinBout, markSeen, muteChat, reactChat, sendBout, sendChat, sendNews, type BoutFail, type ReactFail } from '../chat'
 import { markTyping } from '../stream'
 
 const REACT_STATUS: Record<ReactFail, number> = { bad: 400, muted: 403, patron: 403, too_fast: 429, gone: 410 }
@@ -19,6 +20,14 @@ export const GET = handle(async (request) => {
 })
 
 export const POST = handle(async (request) => {
+  const url = new URL(request.url)
+  if (url.searchParams.has('seen')) {
+    const session = await authSession(request).catch(() => null)
+    if (!session?.id) return unauthorized()
+    const done = await markSeen(session.id, channelOf(url.searchParams.get('channel')), url.searchParams.get('seen'))
+    return done ? json({ ok: true }) : fail(400, 'bad_request')
+  }
+
   const found = await currentUser(request)
   if (!found) return unauthorized()
 

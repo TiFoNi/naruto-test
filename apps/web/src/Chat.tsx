@@ -206,6 +206,19 @@ const keepSeen = (id: string) => {
     /* приватний режим */
   }
 }
+
+const SHARE_SEEN_MS = 1500
+const shared: Record<'chat' | 'news', string> = { chat: '', news: '' }
+const sharing: Record<'chat' | 'news', number> = { chat: 0, news: 0 }
+
+const shareSeen = (channel: 'chat' | 'news', id: string) => {
+  if (!id || id <= shared[channel]) return
+  shared[channel] = id
+  window.clearTimeout(sharing[channel])
+  sharing[channel] = window.setTimeout(() => {
+    void api(`chat?seen=${shared[channel]}&channel=${channel}`, {}).catch(() => null)
+  }, SHARE_SEEN_MS)
+}
 const KEEP = 300
 
 const clock = (at: number) => new Date(at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -304,14 +317,33 @@ export default function Chat() {
     const who = whoAmI()
     if (who) ask.set('who', who)
     if (!present()) ask.set('idle', '1')
-    const { ok, data } = await api<{ online?: number; fresh?: boolean; news?: string | null }>(`pulse?${ask.toString()}`)
+    const { ok, data } = await api<{ online?: number; fresh?: boolean; news?: string | null; seen?: { chat?: string; news?: string } }>(`pulse?${ask.toString()}`)
     if (!ok) return
     if (typeof data.online === 'number') setOnline(data.online)
     setFresh(Boolean(data.fresh))
     setNewsTop(data.news ?? '')
+    const told = data.seen
+    if (told?.chat && told.chat > lastSeen()) {
+      shared.chat = told.chat
+      keepSeen(told.chat)
+    }
+    if (told?.news && told.news > readKey(NEWS_KEY)) {
+      shared.news = told.news
+      keepKey(NEWS_KEY, told.news)
+      setNewsSeen(told.news)
+    }
   }, [])
 
   useEffect(() => setNewsSeen(readKey(NEWS_KEY)), [])
+
+  useEffect(() => {
+    const synced = (event: StorageEvent) => {
+      if (event.key === NEWS_KEY) setNewsSeen(readKey(NEWS_KEY))
+      if (event.key === SEEN_KEY) void beat()
+    }
+    window.addEventListener('storage', synced)
+    return () => window.removeEventListener('storage', synced)
+  }, [beat])
 
   useEffect(() => {
     if (talkCode) return setRoom('duel')
@@ -460,11 +492,13 @@ export default function Chat() {
     if (room === 'news') {
       if (last.id > readKey(NEWS_KEY)) keepKey(NEWS_KEY, last.id)
       setNewsSeen(readKey(NEWS_KEY))
+      if (user) shareSeen('news', last.id)
       return
     }
     keepSeen(last.id)
     setFresh(false)
-  }, [open, lines, room, talk])
+    if (user) shareSeen('chat', last.id)
+  }, [open, lines, room, talk, user])
 
   useEffect(() => {
     if (!open) return
