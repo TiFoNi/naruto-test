@@ -5,7 +5,10 @@ import { normalize, tight } from './util'
 export type EntityTerms = { terms: string[]; tight: string[] }
 
 export const entityTerms = (entity: Entity): EntityTerms => {
-  const terms = [entity.name, entity.nameUk ?? ruToUk(entity.name), entity.nameEn, entity.aliases].filter((one): one is string => !!one).map(normalize)
+  const terms = [entity.name, entity.nameUk ?? ruToUk(entity.name), entity.nameEn, ...(entity.aliases?.split(',') ?? [])]
+    .map((one) => one?.trim())
+    .filter((one): one is string => !!one)
+    .map(normalize)
   return { terms, tight: terms.map(tight) }
 }
 

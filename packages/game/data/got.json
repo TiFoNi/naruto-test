@@ -12,6 +12,9 @@
    "Жители Королевских земель",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Ночной дозор"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -29,6 +32,9 @@
   "cultures": [
    "Норвошийцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 5,
   "answer": true,
@@ -38,7 +44,7 @@
   "id": 2129,
   "name": "Арья Старк",
   "nameEn": "Arya Stark",
-  "aliases": "arya stark",
+  "aliases": "arya stark, Арри, Никто, Аррі, Ніхто, arry, no one",
   "gender": "Женский",
   "houses": [
    "Старк"
@@ -46,6 +52,9 @@
   "cultures": [
    "Северяне",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Безликие"
   ],
   "status": "Жив",
   "season": 1,
@@ -56,7 +65,7 @@
   "id": 2218,
   "name": "Барристан Селми",
   "nameEn": "Barristan Selmy",
-  "aliases": "barristan selmy",
+  "aliases": "barristan selmy, Барристан Смелый, Барістан Сміливий, barristan the bold",
   "gender": "Мужской",
   "houses": [
    "Селми"
@@ -64,6 +73,9 @@
   "cultures": [
    "Жители Штормовых земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Королевская гвардия"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -83,6 +95,9 @@
    "Железнорождённые",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 2,
   "answer": true,
@@ -101,6 +116,9 @@
    "Северяне",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Ночной дозор"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -110,7 +128,7 @@
   "id": 2379,
   "name": "Берик Дондаррион",
   "nameEn": "Beric Dondarrion",
-  "aliases": "beric dondarrion",
+  "aliases": "beric dondarrion, Молниеносный лорд, Блискавичний лорд, lightning lord",
   "gender": "Мужской",
   "houses": [
    "Дондаррион"
@@ -118,6 +136,9 @@
   "cultures": [
    "Жители Штормовых земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Братство без знамён"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -137,6 +158,9 @@
    "Болотные люди",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Ночной дозор"
+  ],
   "status": "Мёртв",
   "season": 5,
   "answer": true,
@@ -146,7 +170,7 @@
   "id": 22351,
   "name": "Бран Старк",
   "nameEn": "Bran Stark",
-  "aliases": "bran stark",
+  "aliases": "bran stark, Бран Сломленный, Трёхглазый ворон, Бран Зламаний, Триокий ворон, bran the broken, three-eyed raven",
   "gender": "Мужской",
   "houses": [
    "Старк"
@@ -154,6 +178,9 @@
   "cultures": [
    "Северяне",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Жив",
   "season": 1,
@@ -164,7 +191,7 @@
   "id": 4261,
   "name": "Бриенна Тарт",
   "nameEn": "Brienne of Tarth",
-  "aliases": "brienne of tarth",
+  "aliases": "brienne of tarth, Бриенна Красавица, Леди Бриенна, Брієнна Красуня, brienne the beauty, lady brienne",
   "gender": "Женский",
   "houses": [
    "Тарт"
@@ -172,6 +199,11 @@
   "cultures": [
    "Жители Штормовых земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Королевская гвардия",
+   "Малый совет",
+   "Радужная гвардия"
   ],
   "status": "Жив",
   "season": 2,
@@ -182,7 +214,7 @@
   "id": 2350,
   "name": "Бринден Талли",
   "nameEn": "Brynden Tully",
-  "aliases": "brynden tully",
+  "aliases": "brynden tully, Чёрная Рыба, Чорна Риба, blackfish",
   "gender": "Мужской",
   "houses": [
    "Талли"
@@ -190,6 +222,9 @@
   "cultures": [
    "Речные люди",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 3,
@@ -200,13 +235,16 @@
   "id": 25296,
   "name": "Бродяжка",
   "nameEn": "Waif",
-  "aliases": "waif",
+  "aliases": "waif, Бродяжка, waif",
   "gender": "Женский",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Браавосцы"
+  ],
+  "orgs": [
+   "Безликие"
   ],
   "status": "Мёртв",
   "season": 5,
@@ -225,6 +263,10 @@
   "cultures": [
    "Вестеросцы"
   ],
+  "orgs": [
+   "Малый совет",
+   "Городская стража"
+  ],
   "status": "Жив",
   "season": 1,
   "answer": true,
@@ -234,13 +276,16 @@
   "id": 2222,
   "name": "Варис",
   "nameEn": "Varys",
-  "aliases": "varys паук spider",
+  "aliases": "varys, Паук, Павук, spider, master of whisperers",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Лиссенийцы"
+  ],
+  "orgs": [
+   "Малый совет"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -251,7 +296,7 @@
   "id": 2155,
   "name": "Визерис Таргариен",
   "nameEn": "Viserys Targaryen",
-  "aliases": "viserys targaryen",
+  "aliases": "viserys targaryen, Король-попрошайка, Король-жебрак, beggar king",
   "gender": "Мужской",
   "houses": [
    "Таргариен"
@@ -260,6 +305,9 @@
    "Валирийцы",
    "Жители Королевских земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -270,13 +318,16 @@
   "id": 33609,
   "name": "Вун Вун",
   "nameEn": "Wun Weg Wun Dar Wun",
-  "aliases": "wun weg wun dar wun",
+  "aliases": "wun weg wun dar wun, Вун Вун, Великан, Велетень, wun wun, giant",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Великаны"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 5,
@@ -287,7 +338,7 @@
   "id": 2343,
   "name": "Горячий Пирожок",
   "nameEn": "Hot Pie",
-  "aliases": "hot pie",
+  "aliases": "hot pie, Пирожок, Пиріжок, hot pie",
   "gender": "Мужской",
   "houses": [
    "Без дома"
@@ -295,6 +346,9 @@
   "cultures": [
    "Жители Королевских земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Жив",
   "season": 1,
@@ -313,6 +367,9 @@
   "cultures": [
    "Вестеросцы"
   ],
+  "orgs": [
+   "Ночной дозор"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -322,7 +379,7 @@
   "id": 2196,
   "name": "Григор Клиган",
   "nameEn": "Gregor Clegane",
-  "aliases": "gregor clegane гора mountain",
+  "aliases": "gregor clegane, Гора, Скачущая Гора, mountain, the mountain",
   "gender": "Мужской",
   "houses": [
    "Клиган"
@@ -330,6 +387,9 @@
   "cultures": [
    "Жители Запада",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Королевская гвардия"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -348,6 +408,9 @@
   "cultures": [
    "Тирошийцы"
   ],
+  "orgs": [
+   "Вторые сыновья"
+  ],
   "status": "Жив",
   "season": 3,
   "answer": true,
@@ -357,7 +420,7 @@
   "id": 3164,
   "name": "Давос Сиворт",
   "nameEn": "Davos Seaworth",
-  "aliases": "davos seaworth",
+  "aliases": "davos seaworth, Луковый рыцарь, Цибулевий лицар, onion knight",
   "gender": "Мужской",
   "houses": [
    "Сиворт"
@@ -365,6 +428,9 @@
   "cultures": [
    "Жители Королевских земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Малый совет"
   ],
   "status": "Жив",
   "season": 2,
@@ -375,7 +441,7 @@
   "id": 4715,
   "name": "Дагмер",
   "nameEn": "Dagmer",
-  "aliases": "dagmer",
+  "aliases": "dagmer, Расщеплённая Челюсть, Розколота Щелепа, cleftjaw",
   "gender": "Мужской",
   "houses": [
    "Без дома"
@@ -383,6 +449,9 @@
   "cultures": [
    "Железнорождённые",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 2,
@@ -393,7 +462,7 @@
   "id": 2157,
   "name": "Дейенерис Таргариен",
   "nameEn": "Daenerys Targaryen",
-  "aliases": "daenerys targaryen",
+  "aliases": "daenerys targaryen, Дени, Кхалиси, Матерь драконов, Бурерождённая, Неопалимая, Разрушительница оков, Мхиса, Дені, Кхалісі, Мати драконів, Бурероджена, Неопалима, Руйнівниця кайданів, dany, khaleesi, mother of dragons, stormborn, unburnt, breaker of chains, mhysa",
   "gender": "Женский",
   "houses": [
    "Таргариен"
@@ -401,6 +470,9 @@
   "cultures": [
    "Валирийцы",
    "Дотракийцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -411,7 +483,7 @@
   "id": 2103,
   "name": "Джейме Ланнистер",
   "nameEn": "Jaime Lannister",
-  "aliases": "jaime lannister",
+  "aliases": "jaime lannister, Цареубийца, Цареубивця, kingslayer",
   "gender": "Мужской",
   "houses": [
    "Ланнистер"
@@ -419,6 +491,10 @@
   "cultures": [
    "Жители Запада",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Королевская гвардия",
+   "Малый совет"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -429,7 +505,7 @@
   "id": 2326,
   "name": "Джендри Баратеон",
   "nameEn": "Gendry Baratheon",
-  "aliases": "gendry baratheon",
+  "aliases": "gendry baratheon, Бастард Роберта, Кузнец, Коваль, blacksmith",
   "gender": "Мужской",
   "houses": [
    "Баратеон"
@@ -437,6 +513,9 @@
   "cultures": [
    "Жители Королевских земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Братство без знамён"
   ],
   "status": "Жив",
   "season": 1,
@@ -447,13 +526,16 @@
   "id": 4585,
   "name": "Джилли",
   "nameEn": "Gilly",
-  "aliases": "gilly",
+  "aliases": "gilly, Лилли, Ліллі, gilly",
   "gender": "Женский",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Вольный народ"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Жив",
   "season": 2,
@@ -464,7 +546,7 @@
   "id": 2249,
   "name": "Джиор Мормонт",
   "nameEn": "Jeor Mormont",
-  "aliases": "jeor mormont",
+  "aliases": "jeor mormont, Старый Медведь, Лорд-командующий, Старий Ведмідь, Лорд-командувач, old bear, lord commander",
   "gender": "Мужской",
   "houses": [
    "Мормонт"
@@ -472,6 +554,9 @@
   "cultures": [
    "Северяне",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Ночной дозор"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -482,7 +567,7 @@
   "id": 19685,
   "name": "Джон Ройс",
   "nameEn": "Yohn Royce",
-  "aliases": "yohn royce",
+  "aliases": "yohn royce, Бронзовый Джон, Бронзовий Джон, bronze yohn",
   "gender": "Мужской",
   "houses": [
    "Ройс"
@@ -490,6 +575,9 @@
   "cultures": [
    "Жители Долины",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Жив",
   "season": 4,
@@ -500,7 +588,7 @@
   "id": 2123,
   "name": "Джон Сноу",
   "nameEn": "Jon Snow",
-  "aliases": "jon snow",
+  "aliases": "jon snow, Бастард, Лорд Сноу, Лорд-командующий, Лорд-командувач, lord commander, Король Севера, Белый Волк, Эйгон Таргариен, Король Півночі, Білий Вовк, Ейгон Таргарієн, bastard, lord snow, king in the north, white wolf, aegon targaryen",
   "gender": "Мужской",
   "houses": [
    "Старк",
@@ -510,6 +598,9 @@
    "Северяне",
    "Вольный народ",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Ночной дозор"
   ],
   "status": "Жив",
   "season": 1,
@@ -529,6 +620,9 @@
    "Северяне",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Королевская гвардия"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -547,6 +641,9 @@
    "Северяне",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -556,7 +653,7 @@
   "id": 2106,
   "name": "Джоффри Баратеон",
   "nameEn": "Joffrey Baratheon",
-  "aliases": "joffrey baratheon",
+  "aliases": "joffrey baratheon, Джофф, joff",
   "gender": "Мужской",
   "houses": [
    "Баратеон"
@@ -564,6 +661,9 @@
   "cultures": [
    "Жители Королевских земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -583,6 +683,9 @@
    "Жители Простора",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 6,
   "answer": true,
@@ -600,6 +703,9 @@
   "cultures": [
    "Жители Королевских земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 2,
@@ -619,6 +725,9 @@
    "Дорнийцы",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 5,
   "answer": true,
@@ -636,6 +745,9 @@
   "cultures": [
    "Лиссенийцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -645,13 +757,16 @@
   "id": 2177,
   "name": "Дрого",
   "nameEn": "Drogo",
-  "aliases": "drogo",
+  "aliases": "drogo, Кхал Дрого, Кхал, khal drogo, khal",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Дотракийцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -662,13 +777,16 @@
   "id": 25297,
   "name": "Его Воробейшество",
   "nameEn": "High Sparrow",
-  "aliases": "high sparrow верховный воробей",
+  "aliases": "high sparrow, Верховный воробей, Верховний горобець, Його Горобейшість, high sparrow",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Вера Семерых"
   ],
   "status": "Мёртв",
   "season": 5,
@@ -688,6 +806,9 @@
    "Болотные люди",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 3,
   "answer": true,
@@ -705,6 +826,9 @@
   "cultures": [
    "Вольный народ"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 2,
   "answer": true,
@@ -714,7 +838,7 @@
   "id": 2335,
   "name": "Илин Пейн",
   "nameEn": "Ilyn Payne",
-  "aliases": "ilyn payne",
+  "aliases": "ilyn payne, Королевский палач, Королівський кат, king’s justice",
   "gender": "Мужской",
   "houses": [
    "Пейн"
@@ -722,6 +846,9 @@
   "cultures": [
    "Жители Запада",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Жив",
   "season": 1,
@@ -740,6 +867,9 @@
   "cultures": [
    "Дотракийцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -757,6 +887,9 @@
   "cultures": [
    "Вестеросцы"
   ],
+  "orgs": [
+   "Ночной дозор"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -766,13 +899,17 @@
   "id": 11344,
   "name": "Квиберн",
   "nameEn": "Qyburn",
-  "aliases": "qyburn",
+  "aliases": "qyburn, Мейстер Квиберн, Мейстер Квіберн, maester qyburn",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Малый совет",
+   "Мейстеры"
   ],
   "status": "Мёртв",
   "season": 3,
@@ -791,6 +928,9 @@
   "cultures": [
    "Дотракийцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -800,7 +940,7 @@
   "id": 2119,
   "name": "Кейтилин Старк",
   "nameEn": "Catelyn Stark",
-  "aliases": "catelyn stark",
+  "aliases": "catelyn stark, Кейт, Кет, cat",
   "gender": "Женский",
   "houses": [
    "Талли",
@@ -809,6 +949,9 @@
   "cultures": [
    "Речные люди",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -828,6 +971,9 @@
    "Жители Запада",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Малый совет"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -837,7 +983,7 @@
   "id": 23748,
   "name": "Король Ночи",
   "nameEn": "Night King",
-  "aliases": "night king",
+  "aliases": "night king, Король Ночи, Нічний король, Король Ночі, night king",
   "gender": "Мужской",
   "houses": [
    "Без дома"
@@ -845,6 +991,9 @@
   "cultures": [
    "Первые люди",
    "Белые Ходоки"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 4,
@@ -862,6 +1011,9 @@
   ],
   "cultures": [
    "Вольный народ"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 2,
@@ -881,6 +1033,9 @@
    "Летнийцы",
    "Квартийцы"
   ],
+  "orgs": [
+   "Тринадцать"
+  ],
   "status": "Мёртв",
   "season": 2,
   "answer": true,
@@ -899,6 +1054,9 @@
    "Жители Запада",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Вера Семерых"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -908,7 +1066,7 @@
   "id": 31891,
   "name": "Лианна Мормонт",
   "nameEn": "Lyanna Mormont",
-  "aliases": "lyanna mormont",
+  "aliases": "lyanna mormont, Леди Мормонт, Леді Мормонт, lady mormont",
   "gender": "Женский",
   "houses": [
    "Мормонт"
@@ -916,6 +1074,9 @@
   "cultures": [
    "Северяне",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 6,
@@ -934,6 +1095,9 @@
   "cultures": [
    "Северяне",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 6,
@@ -954,6 +1118,9 @@
    "Речные люди",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -963,13 +1130,16 @@
   "id": 26343,
   "name": "Листочек",
   "nameEn": "Leaf",
-  "aliases": "leaf",
+  "aliases": "leaf, Листочек, Листочок, leaf, child of the forest",
   "gender": "Женский",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Дети Леса"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 4,
@@ -989,6 +1159,9 @@
    "Северяне",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Ночной дозор"
+  ],
   "status": "Мёртв",
   "season": 3,
   "answer": true,
@@ -998,7 +1171,7 @@
   "id": 2188,
   "name": "Лорас Тирелл",
   "nameEn": "Loras Tyrell",
-  "aliases": "loras tyrell",
+  "aliases": "loras tyrell, Рыцарь Цветов, Лицар Квітів, knight of flowers",
   "gender": "Мужской",
   "houses": [
    "Тирелл"
@@ -1006,6 +1179,10 @@
   "cultures": [
    "Жители Простора",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Радужная гвардия",
+   "Вера Семерых"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1016,13 +1193,16 @@
   "id": 2941,
   "name": "Манс Налётчик",
   "nameEn": "Mance Rayder",
-  "aliases": "mance rayder",
+  "aliases": "mance rayder, Король за Стеной, Король за Стіною, king beyond the wall",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Вольный народ"
+  ],
+  "orgs": [
+   "Ночной дозор"
   ],
   "status": "Мёртв",
   "season": 3,
@@ -1043,6 +1223,9 @@
    "Жители Простора",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 2,
   "answer": true,
@@ -1060,6 +1243,9 @@
   "cultures": [
    "Жители Королевских земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Жив",
   "season": 2,
@@ -1079,6 +1265,9 @@
    "Жители Простора",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Малый совет"
+  ],
   "status": "Мёртв",
   "season": 4,
   "answer": true,
@@ -1088,13 +1277,16 @@
   "id": 2186,
   "name": "Мейстер Лювин",
   "nameEn": "Luwin",
-  "aliases": "luwin",
+  "aliases": "luwin, Мейстер Лювин, Мейстер Лювін, maester luwin",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Мейстеры"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1105,7 +1297,7 @@
   "id": 2206,
   "name": "Мейстер Эймон",
   "nameEn": "Aemon",
-  "aliases": "aemon",
+  "aliases": "aemon, Эймон Таргариен, Мейстер Эймон, Еймон Таргарієн, aemon targaryen, maester aemon",
   "gender": "Мужской",
   "houses": [
    "Таргариен"
@@ -1114,6 +1306,10 @@
    "Валирийцы",
    "Жители Королевских земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Ночной дозор",
+   "Мейстеры"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1124,13 +1320,16 @@
   "id": 4370,
   "name": "Мелисандра",
   "nameEn": "Melisandre",
-  "aliases": "melisandre",
+  "aliases": "melisandre, Красная женщина, Красная жрица, Червона жінка, Червона жриця, red woman, red priestess",
   "gender": "Женский",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Асшайцы"
+  ],
+  "orgs": [
+   "Жрецы Владыки Света"
   ],
   "status": "Мёртв",
   "season": 2,
@@ -1150,6 +1349,9 @@
    "Жители Штормовых земель",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Королевская гвардия"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -1167,6 +1369,9 @@
   "cultures": [
    "Болотные люди",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Жив",
   "season": 3,
@@ -1186,6 +1391,9 @@
    "Северяне",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 3,
   "answer": true,
@@ -1195,13 +1403,16 @@
   "id": 2341,
   "name": "Мирри Маз Дуур",
   "nameEn": "Mirri Maz Duur",
-  "aliases": "mirri maz duur",
+  "aliases": "mirri maz duur, Мейега, Ведьма, Відьма, maegi, witch",
   "gender": "Женский",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Лхазарейцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1221,6 +1432,9 @@
    "Жители Королевских земель",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -1230,13 +1444,16 @@
   "id": 11341,
   "name": "Миссандея",
   "nameEn": "Missandei",
-  "aliases": "missandei",
+  "aliases": "missandei, Миссандея из Наата, Міссандея, missandei of naath",
   "gender": "Женский",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Наатийцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 3,
@@ -1247,13 +1464,16 @@
   "id": 2261,
   "name": "Мордейн",
   "nameEn": "Mordane",
-  "aliases": "mordane",
+  "aliases": "mordane, Септа Мордейн, septa mordane",
   "gender": "Женский",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Вера Семерых"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1274,6 +1494,9 @@
    "Дорнийцы",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 5,
   "answer": true,
@@ -1292,6 +1515,9 @@
    "Дорнийцы",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 5,
   "answer": true,
@@ -1301,7 +1527,7 @@
   "id": 16146,
   "name": "Оберин Мартелл",
   "nameEn": "Oberyn Martell",
-  "aliases": "oberyn martell",
+  "aliases": "oberyn martell, Красный Змей, Червоний Змій, red viper",
   "gender": "Мужской",
   "houses": [
    "Мартелл"
@@ -1309,6 +1535,11 @@
   "cultures": [
    "Дорнийцы",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Малый совет",
+   "Вторые сыновья",
+   "Мейстеры"
   ],
   "status": "Мёртв",
   "season": 4,
@@ -1319,7 +1550,7 @@
   "id": 5676,
   "name": "Оленна Тирелл",
   "nameEn": "Olenna Tyrell",
-  "aliases": "olenna tyrell",
+  "aliases": "olenna tyrell, Королева Шипов, Королева Терну, queen of thorns",
   "gender": "Женский",
   "houses": [
    "Редвин",
@@ -1328,6 +1559,9 @@
   "cultures": [
    "Жители Простора",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 3,
@@ -1345,6 +1579,9 @@
   ],
   "cultures": [
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Жив",
   "season": 3,
@@ -1364,6 +1601,9 @@
    "Северяне",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Ночной дозор"
+  ],
   "status": "Мёртв",
   "season": 4,
   "answer": true,
@@ -1380,6 +1620,9 @@
   ],
   "cultures": [
    "Вольный народ"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 3,
@@ -1399,6 +1642,9 @@
    "Жители Запада",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Ночной дозор"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -1416,6 +1662,9 @@
   "cultures": [
    "Вольный народ"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -1425,7 +1674,7 @@
   "id": 2220,
   "name": "Петир Бейлиш",
   "nameEn": "Petyr Baelish",
-  "aliases": "petyr baelish мизинец littlefinger",
+  "aliases": "petyr baelish, Мизинец, Мізинчик, littlefinger",
   "gender": "Мужской",
   "houses": [
    "Бейлиш"
@@ -1433,6 +1682,9 @@
   "cultures": [
    "Жители Долины",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Малый совет"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1443,13 +1695,16 @@
   "id": 4710,
   "name": "Пиат Прей",
   "nameEn": "Pyat Pree",
-  "aliases": "pyat pree",
+  "aliases": "pyat pree, Колдун, Чаклун, warlock",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Квартийцы"
+  ],
+  "orgs": [
+   "Тринадцать"
   ],
   "status": "Мёртв",
   "season": 2,
@@ -1460,7 +1715,7 @@
   "id": 2265,
   "name": "Пипар",
   "nameEn": "Pypar",
-  "aliases": "pypar",
+  "aliases": "pypar, Пип, Піп, pyp",
   "gender": "Мужской",
   "houses": [
    "Без дома"
@@ -1468,6 +1723,9 @@
   "cultures": [
    "Речные люди",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Ночной дозор"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1478,13 +1736,17 @@
   "id": 2187,
   "name": "Пицель",
   "nameEn": "Pycelle",
-  "aliases": "pycelle",
+  "aliases": "pycelle, Великий мейстер, Великий мейстер, grand maester",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Малый совет",
+   "Мейстеры"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1504,6 +1766,9 @@
    "Жители Запада",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Королевская гвардия"
+  ],
   "status": "Жив",
   "season": 2,
   "answer": true,
@@ -1521,6 +1786,9 @@
   "cultures": [
    "Дотракийцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -1530,7 +1798,7 @@
   "id": 8218,
   "name": "Рамси Болтон",
   "nameEn": "Ramsay Bolton",
-  "aliases": "ramsay bolton",
+  "aliases": "ramsay bolton, Рамси Сноу, Бастард Болтонов, Рамсі Сноу, ramsay snow",
   "gender": "Мужской",
   "houses": [
    "Болтон"
@@ -1538,6 +1806,9 @@
   "cultures": [
    "Северяне",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 3,
@@ -1556,6 +1827,9 @@
   "cultures": [
    "Вестеросцы"
   ],
+  "orgs": [
+   "Ночной дозор"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -1565,7 +1839,7 @@
   "id": 2200,
   "name": "Ренли Баратеон",
   "nameEn": "Renly Baratheon",
-  "aliases": "renly baratheon",
+  "aliases": "renly baratheon, Король Ренли, king renly",
   "gender": "Мужской",
   "houses": [
    "Баратеон"
@@ -1573,6 +1847,9 @@
   "cultures": [
    "Жители Штормовых земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Малый совет"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1592,6 +1869,9 @@
    "Северяне",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -1610,6 +1890,9 @@
    "Северяне",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -1619,7 +1902,7 @@
   "id": 2124,
   "name": "Робб Старк",
   "nameEn": "Robb Stark",
-  "aliases": "robb stark",
+  "aliases": "robb stark, Молодой Волк, Король Севера, Молодий Вовк, Король Півночі, young wolf, king in the north",
   "gender": "Мужской",
   "houses": [
    "Старк"
@@ -1627,6 +1910,9 @@
   "cultures": [
    "Северяне",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1637,7 +1923,7 @@
   "id": 2122,
   "name": "Роберт Баратеон",
   "nameEn": "Robert Baratheon",
-  "aliases": "robert baratheon",
+  "aliases": "robert baratheon, Король Роберт, Узурпатор, Король Роберт, usurper, king robert",
   "gender": "Мужской",
   "houses": [
    "Баратеон"
@@ -1645,6 +1931,9 @@
   "cultures": [
    "Жители Штормовых земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1664,6 +1953,9 @@
    "Северяне",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Жив",
   "season": 6,
   "answer": true,
@@ -1673,7 +1965,7 @@
   "id": 2216,
   "name": "Робин Аррен",
   "nameEn": "Robin Arryn",
-  "aliases": "robin arryn",
+  "aliases": "robin arryn, Милый Робин, Милий Робін, sweetrobin",
   "gender": "Мужской",
   "houses": [
    "Аррен"
@@ -1681,6 +1973,9 @@
   "cultures": [
    "Жители Долины",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Жив",
   "season": 1,
@@ -1700,6 +1995,9 @@
    "Северяне",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -1717,6 +2015,9 @@
   "cultures": [
    "Северяне",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1736,6 +2037,9 @@
    "Северяне",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 2,
   "answer": true,
@@ -1754,6 +2058,9 @@
    "Жители Простора",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 6,
   "answer": true,
@@ -1763,7 +2070,7 @@
   "id": 2174,
   "name": "Сандор Клиган",
   "nameEn": "Sandor Clegane",
-  "aliases": "sandor clegane пёс пес hound",
+  "aliases": "sandor clegane, Пёс, Пес, hound",
   "gender": "Мужской",
   "houses": [
    "Клиган"
@@ -1771,6 +2078,10 @@
   "cultures": [
    "Жители Запада",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Королевская гвардия",
+   "Братство без знамён"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1781,7 +2092,7 @@
   "id": 2128,
   "name": "Санса Старк",
   "nameEn": "Sansa Stark",
-  "aliases": "sansa stark",
+  "aliases": "sansa stark, Пташка, Королева Севера, Алейна, Королева Півночі, little bird, queen in the north, alayne",
   "gender": "Женский",
   "houses": [
    "Старк"
@@ -1789,6 +2100,9 @@
   "cultures": [
    "Северяне",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Жив",
   "season": 1,
@@ -1809,6 +2123,9 @@
    "Жители Простора",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 2,
   "answer": true,
@@ -1818,7 +2135,7 @@
   "id": 2104,
   "name": "Серсея Ланнистер",
   "nameEn": "Cersei Lannister",
-  "aliases": "cersei lannister",
+  "aliases": "cersei lannister, Королева Серсея, Королева-регентша, Королева-регентка, queen cersei, queen regent",
   "gender": "Женский",
   "houses": [
    "Ланнистер",
@@ -1827,6 +2144,9 @@
   "cultures": [
    "Жители Запада",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Малый совет"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1837,13 +2157,16 @@
   "id": 11939,
   "name": "Серый Червь",
   "nameEn": "Grey Worm",
-  "aliases": "grey worm",
+  "aliases": "grey worm, Сірий Черв’як, Сірий Хробак, grey worm, torgo nudho",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Летнийцы"
+  ],
+  "orgs": [
+   "Безупречные"
   ],
   "status": "Жив",
   "season": 3,
@@ -1854,13 +2177,16 @@
   "id": 2236,
   "name": "Сирио Форель",
   "nameEn": "Syrio Forel",
-  "aliases": "syrio forel",
+  "aliases": "syrio forel, Первый меч Браавоса, Перший меч Браавосу, first sword of braavos",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Браавосцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1871,7 +2197,7 @@
   "id": 2223,
   "name": "Станнис Баратеон",
   "nameEn": "Stannis Baratheon",
-  "aliases": "stannis baratheon",
+  "aliases": "stannis baratheon, Король Станнис, king stannis",
   "gender": "Мужской",
   "houses": [
    "Баратеон"
@@ -1879,6 +2205,9 @@
   "cultures": [
    "Жители Штормовых земель",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Малый совет"
   ],
   "status": "Мёртв",
   "season": 2,
@@ -1897,6 +2226,9 @@
   "cultures": [
    "Вольный народ"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Жив",
   "season": 3,
   "answer": true,
@@ -1906,7 +2238,7 @@
   "id": 2235,
   "name": "Сэмвелл Тарли",
   "nameEn": "Samwell Tarly",
-  "aliases": "samwell tarly",
+  "aliases": "samwell tarly, Сэм, Сэм Убийца, Сем, Сем Вбивця, sam, sam the slayer",
   "gender": "Мужской",
   "houses": [
    "Тарли"
@@ -1914,6 +2246,11 @@
   "cultures": [
    "Жители Простора",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Ночной дозор",
+   "Малый совет",
+   "Мейстеры"
   ],
   "status": "Жив",
   "season": 1,
@@ -1924,7 +2261,7 @@
   "id": 2100,
   "name": "Тайвин Ланнистер",
   "nameEn": "Tywin Lannister",
-  "aliases": "tywin lannister",
+  "aliases": "tywin lannister, Лорд Тайвин, Десница, Правиця, lord tywin, hand of the king",
   "gender": "Мужской",
   "houses": [
    "Ланнистер"
@@ -1932,6 +2269,9 @@
   "cultures": [
    "Жители Запада",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Малый совет"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1951,6 +2291,9 @@
   "cultures": [
    "Волантийцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 2,
   "answer": true,
@@ -1960,7 +2303,7 @@
   "id": 2171,
   "name": "Теон Грейджой",
   "nameEn": "Theon Greyjoy",
-  "aliases": "theon greyjoy",
+  "aliases": "theon greyjoy, Вонючка, Перевёртыш, Смердюк, Перевертень, reek, turncloak",
   "gender": "Мужской",
   "houses": [
    "Грейджой"
@@ -1968,6 +2311,9 @@
   "cultures": [
    "Железнорождённые",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -1987,6 +2333,9 @@
    "Дорнийцы",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 5,
   "answer": true,
@@ -1996,7 +2345,7 @@
   "id": 2091,
   "name": "Тирион Ланнистер",
   "nameEn": "Tyrion Lannister",
-  "aliases": "tyrion lannister бес imp",
+  "aliases": "tyrion lannister, Бес, Полумуж, Десница, Біс, Півчоловік, Правиця, imp, halfman, hand of the king, hand of the queen",
   "gender": "Мужской",
   "houses": [
    "Ланнистер"
@@ -2004,6 +2353,9 @@
   "cultures": [
    "Жители Запада",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Малый совет"
   ],
   "status": "Жив",
   "season": 1,
@@ -2023,6 +2375,9 @@
    "Жители Королевских земель",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -2032,13 +2387,16 @@
   "id": 9679,
   "name": "Тормунд",
   "nameEn": "Tormund",
-  "aliases": "tormund",
+  "aliases": "tormund, Великанья Смерть, Тормунд Великанья Смерть, Погибель Велетнів, giantsbane, tormund giantsbane",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Вольный народ"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Жив",
   "season": 3,
@@ -2049,13 +2407,17 @@
   "id": 3183,
   "name": "Торос",
   "nameEn": "Thoros",
-  "aliases": "thoros",
+  "aliases": "thoros, Торос из Мира, Торос з Міру, thoros of myr",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Мирийцы"
+  ],
+  "orgs": [
+   "Братство без знамён",
+   "Жрецы Владыки Света"
   ],
   "status": "Мёртв",
   "season": 3,
@@ -2066,7 +2428,7 @@
   "id": 27406,
   "name": "Трёхглазый ворон",
   "nameEn": "Three-eyed Raven",
-  "aliases": "three-eyed raven бринден риверс brynden rivers",
+  "aliases": "three-eyed raven, Бринден Риверс, Брінден Ріверс, Трёхглазый ворон, Триокий ворон, brynden rivers, three-eyed raven",
   "gender": "Мужской",
   "houses": [
    "Таргариен"
@@ -2076,6 +2438,9 @@
    "Жители Королевских земель",
    "Речные люди",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -2095,6 +2460,9 @@
    "Дорнийцы",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 5,
   "answer": true,
@@ -2104,7 +2472,7 @@
   "id": 17064,
   "name": "Уолда Болтон",
   "nameEn": "Walda Bolton",
-  "aliases": "walda bolton",
+  "aliases": "walda bolton, Толстая Уолда, Товста Волда, fat walda, walda frey",
   "gender": "Женский",
   "houses": [
    "Фрей",
@@ -2113,6 +2481,9 @@
   "cultures": [
    "Речные люди",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 4,
@@ -2123,7 +2494,7 @@
   "id": 2385,
   "name": "Уолдер Фрей",
   "nameEn": "Walder Frey",
-  "aliases": "walder frey",
+  "aliases": "walder frey, Поздний лорд Фрей, Пізній лорд Фрей, late lord frey",
   "gender": "Мужской",
   "houses": [
    "Фрей"
@@ -2131,6 +2502,9 @@
   "cultures": [
    "Речные люди",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -2149,6 +2523,9 @@
   "cultures": [
    "Миэринцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 4,
   "answer": true,
@@ -2158,7 +2535,7 @@
   "id": 2191,
   "name": "Ходор",
   "nameEn": "Hodor",
-  "aliases": "hodor",
+  "aliases": "hodor, Уиллис, Вілліс, wylis",
   "gender": "Мужской",
   "houses": [
    "Без дома"
@@ -2166,6 +2543,9 @@
   "cultures": [
    "Северяне",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -2183,6 +2563,9 @@
   ],
   "cultures": [
    "Лоратийцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -2202,6 +2585,9 @@
    "Жители Королевских земель",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Мёртв",
   "season": 3,
   "answer": true,
@@ -2211,7 +2597,7 @@
   "id": 2041,
   "name": "Эддард Старк",
   "nameEn": "Eddard Stark",
-  "aliases": "eddard stark",
+  "aliases": "eddard stark, Нед, Десница, Правиця, ned, hand of the king",
   "gender": "Мужской",
   "houses": [
    "Старк"
@@ -2219,6 +2605,9 @@
   "cultures": [
    "Северяне",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Малый совет"
   ],
   "status": "Мёртв",
   "season": 1,
@@ -2229,7 +2618,7 @@
   "id": 4601,
   "name": "Эддисон Толлетт",
   "nameEn": "Eddison Tollett",
-  "aliases": "eddison tollett",
+  "aliases": "eddison tollett, Скорбный Эдд, Скорботний Едд, Лорд-командующий, Лорд-командувач, lord commander, dolorous edd, edd",
   "gender": "Мужской",
   "houses": [
    "Толлетт"
@@ -2237,6 +2626,9 @@
   "cultures": [
    "Жители Долины",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Ночной дозор"
   ],
   "status": "Мёртв",
   "season": 2,
@@ -2256,6 +2648,9 @@
    "Речные люди",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Без организации"
+  ],
   "status": "Жив",
   "season": 3,
   "answer": true,
@@ -2273,6 +2668,9 @@
   "cultures": [
    "Дорнийцы",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Жив",
   "season": 4,
@@ -2292,6 +2690,9 @@
    "Жители Штормовых земель",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Братство без знамён"
+  ],
   "status": "Жив",
   "season": 3,
   "answer": true,
@@ -2301,7 +2702,7 @@
   "id": 5695,
   "name": "Эурон Грейджой",
   "nameEn": "Euron Greyjoy",
-  "aliases": "euron greyjoy",
+  "aliases": "euron greyjoy, Вороний Глаз, Вороняче Око, crow’s eye",
   "gender": "Мужской",
   "houses": [
    "Грейджой"
@@ -2309,6 +2710,9 @@
   "cultures": [
    "Железнорождённые",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Мёртв",
   "season": 6,
@@ -2319,13 +2723,16 @@
   "id": 25112,
   "name": "Юнелла",
   "nameEn": "Unella",
-  "aliases": "unella",
+  "aliases": "unella, Септа Унелла, septa unella",
   "gender": "Женский",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Вера Семерых"
   ],
   "status": "Жив",
   "season": 5,
@@ -2336,13 +2743,16 @@
   "id": 4541,
   "name": "Якен Хгар",
   "nameEn": "Jaqen H'ghar",
-  "aliases": "jaqen h'ghar якен хгар",
+  "aliases": "jaqen h'ghar, якен хгар, Человек без лица, Людина без обличчя, faceless man",
   "gender": "Мужской",
   "houses": [
    "Без дома"
   ],
   "cultures": [
    "Лоратийцы"
+  ],
+  "orgs": [
+   "Безликие"
   ],
   "status": "Жив",
   "season": 1,
@@ -2362,6 +2772,11 @@
    "Жители Королевских земель",
    "Вестеросцы"
   ],
+  "orgs": [
+   "Ночной дозор",
+   "Городская стража",
+   "Малый совет"
+  ],
   "status": "Мёртв",
   "season": 1,
   "answer": true,
@@ -2379,6 +2794,9 @@
   "cultures": [
    "Железнорождённые",
    "Вестеросцы"
+  ],
+  "orgs": [
+   "Без организации"
   ],
   "status": "Жив",
   "season": 2,

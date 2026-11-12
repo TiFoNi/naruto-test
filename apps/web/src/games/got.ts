@@ -7,6 +7,7 @@ type Character = Entity & {
   gender: string
   houses: string[]
   cultures: string[]
+  orgs: string[]
   status: string
   season: number
 }
@@ -19,6 +20,7 @@ const columns: Column<Character>[] = [
   { title: l10n('Пол', 'Стать', 'Gender'), ...exact('gender') },
   { title: l10n('Дом', 'Дім', 'House'), ...list('houses') },
   { title: l10n('Культура', 'Культура', 'Culture'), ...list('cultures') },
+  { title: l10n('Организация', 'Організація', 'Organization'), ...list('orgs') },
   { title: l10n('Статус', 'Статус', 'Status'), ...exact('status') },
   { title: l10n('Дебют', 'Дебют', 'Debut'), key: 'season', text: (g, { lang }) => `${SEASON[lang]} ${g.season}` },
 ]
@@ -28,9 +30,9 @@ export const got: Game<Character> = {
   label: l10n('Игра престолов', 'Гра престолів', 'Game of Thrones'),
   category: 'screen',
   description: l10n(
-    'Персонажи сериала «Игра престолов»: дом, культура, статус и сезон дебюта.',
-    'Персонажі серіалу «Гра престолів»: дім, культура, статус і сезон дебюту.',
-    'Game of Thrones characters: house, culture, status and debut season.',
+    'Персонажи сериала «Игра престолов»: дом, культура, организация, статус и сезон дебюта.',
+    'Персонажі серіалу «Гра престолів»: дім, культура, організація, статус і сезон дебюту.',
+    'Game of Thrones characters: house, culture, organization, status and debut season.',
   ),
   accent: '#c8a24a',
   modes: ['classic', 'blind', 'image', 'odd', 'pair'],
