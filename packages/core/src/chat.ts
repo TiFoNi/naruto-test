@@ -138,15 +138,21 @@ async function notifyTags(doc: UserDoc, line: ChatLine, tags: ChatTag[], reply =
   if (tagged.size > 5000) tagged.clear()
 }
 
+const NEWS_LANES = 16
+
 async function notifyEveryone(line: ChatLine) {
   const ids = await (await pushSubs()).distinct('userId')
   const muted = new Set(
     (await (await users()).find({ _id: { $in: ids }, mentionPush: false }, { projection: { _id: 1 } }).toArray()).map((one) => one._id!.toHexString()),
   )
-  for (const id of ids) {
-    if (muted.has(id.toHexString())) continue
-    await sendPush(id, (lang) => ({ title: PUSH_TEXT[lang].all, body: line.text.slice(0, 140), url: `/${lang}?chat=news`, tag: 'news' })).catch(() => undefined)
+  const queue = ids.filter((id) => !muted.has(id.toHexString()))
+  const send = async () => {
+    for (let id = queue.shift(); id; id = queue.shift())
+      await sendPush(id, (lang) => ({ title: PUSH_TEXT[lang].all, body: line.text.slice(0, 140), url: `/${lang}?chat=news`, tag: 'news' }), { urgency: 'normal', ttl: 6 * 60 * 60 }).catch(
+        () => undefined,
+      )
   }
+  await Promise.all(Array.from({ length: NEWS_LANES }, send))
 }
 
 export type ChatChannel = 'chat' | 'news'

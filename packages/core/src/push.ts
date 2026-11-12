@@ -13,6 +13,12 @@ export type PushPayload = { title: string; body: string; url: string; tag?: stri
 
 export type PushLang = 'ru' | 'uk' | 'en'
 
+export type PushUrgency = 'very-low' | 'low' | 'normal' | 'high'
+
+export type PushOptions = { urgency?: PushUrgency; ttl?: number }
+
+const HOUR = 60 * 60
+
 const LANGS: PushLang[] = ['ru', 'uk', 'en']
 
 type WebPush = typeof import('web-push')
@@ -69,7 +75,7 @@ async function sender() {
   return cache.__webPush
 }
 
-export async function sendPush(userId: ObjectId, make: (lang: PushLang) => PushPayload) {
+export async function sendPush(userId: ObjectId, make: (lang: PushLang) => PushPayload, { urgency = 'high', ttl = HOUR }: PushOptions = {}) {
   const lib = await sender()
   if (!lib) return
   const collection = await pushSubs()
@@ -78,13 +84,13 @@ export async function sendPush(userId: ObjectId, make: (lang: PushLang) => PushP
 
   const doc = await (await users()).findOne({ _id: userId }, { projection: { lang: 1 } })
   const lang = LANGS.includes(doc?.lang as PushLang) ? (doc?.lang as PushLang) : 'ru'
-  const body = JSON.stringify(make(lang))
+  const body = JSON.stringify({ ...make(lang), at: Date.now() })
   const gone: string[] = []
 
   await Promise.all(
     subs.map(async (sub) => {
       try {
-        await lib.sendNotification({ endpoint: sub.endpoint, keys: sub.keys }, body, { TTL: 600 })
+        await lib.sendNotification({ endpoint: sub.endpoint, keys: sub.keys }, body, { TTL: ttl, urgency })
       } catch (error) {
         const status = (error as { statusCode?: number }).statusCode
         if (status === 400 || status === 403 || status === 404 || status === 410) gone.push(sub.endpoint)

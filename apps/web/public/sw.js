@@ -11,6 +11,7 @@ self.addEventListener('activate', (event) =>
     (async () => {
       const names = await caches.keys()
       await Promise.all(names.filter((name) => name !== OFFLINE).map((name) => caches.delete(name)))
+      if (self.registration.navigationPreload) await self.registration.navigationPreload.enable().catch(() => undefined)
       await self.clients.claim()
     })(),
   ),
@@ -18,7 +19,15 @@ self.addEventListener('activate', (event) =>
 
 self.addEventListener('fetch', (event) => {
   if (event.request.mode !== 'navigate') return
-  event.respondWith(fetch(event.request).catch(async () => (await caches.match(FALLBACK)) ?? Response.error()))
+  event.respondWith(
+    (async () => {
+      try {
+        return (await event.preloadResponse) || (await fetch(event.request))
+      } catch {
+        return (await caches.match(FALLBACK)) ?? Response.error()
+      }
+    })(),
+  )
 })
 
 self.addEventListener('push', (event) => {
@@ -36,6 +45,7 @@ self.addEventListener('push', (event) => {
     badge: '/badge-96.png',
     tag: data.tag || 'nanda',
     renotify: true,
+    timestamp: data.at || Date.now(),
     data: { url: data.url || '/' },
   }
 
@@ -64,11 +74,18 @@ self.addEventListener('notificationclick', (event) => {
   const target = new URL(event.notification.data?.url || '/', self.location.origin).href
 
   event.waitUntil(
-    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
-      for (const client of list) {
-        if (client.url === target && 'focus' in client) return client.focus()
+    (async () => {
+      const list = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+      const same = list.find((client) => client.url === target)
+      if (same) return same.focus()
+      const ours = list.find((client) => 'navigate' in client && new URL(client.url).origin === self.location.origin)
+      if (ours) {
+        try {
+          const shown = await ours.focus()
+          return await (shown || ours).navigate(target)
+        } catch {}
       }
       return self.clients.openWindow(target)
-    }),
+    })(),
   )
 })
