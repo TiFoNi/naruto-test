@@ -283,6 +283,7 @@ export default function Chat() {
   const feed = useRef<HTMLDivElement>(null)
   const growUp = useGrowUp(feed, lines)
   const nearEnd = useRef(true)
+  const anchor = useRef<number | null>(null)
   const [away, setAway] = useState(false)
   const field = useRef<HTMLTextAreaElement>(null)
 
@@ -399,6 +400,8 @@ export default function Chat() {
     if (typeof data.online === 'number') setOnline(data.online)
     setMore(Boolean(data.more))
     if (!before) return setLines(data.lines.slice(-KEEP))
+    const box = feed.current
+    anchor.current = box ? box.scrollHeight - box.scrollTop : null
     setLines((kept) => {
       const known = new Set(kept.map((line) => line.id))
       return [...data.lines!.filter((line) => !known.has(line.id)), ...kept]
@@ -529,6 +532,13 @@ export default function Chat() {
     return () => document.removeEventListener('visibilitychange', back)
   }, [open, catchUp])
 
+  useLayoutEffect(() => {
+    const box = feed.current
+    if (!box || anchor.current === null) return
+    box.scrollTop = box.scrollHeight - anchor.current
+    anchor.current = null
+  }, [lines])
+
   useEffect(() => {
     if (!open) return
     const box = feed.current
@@ -614,7 +624,12 @@ export default function Chat() {
     [],
   )
 
-  const refocus = () => requestAnimationFrame(() => field.current?.focus({ preventScroll: true }))
+  const focusField = (box = field.current) => {
+    if (!box || document.activeElement === box || window.matchMedia('(pointer: coarse)').matches) return
+    box.focus({ preventScroll: true })
+  }
+
+  const refocus = () => requestAnimationFrame(() => focusField())
 
   const send = async () => {
     const body = text.trim()
@@ -626,7 +641,7 @@ export default function Chat() {
       setSending(false)
       refocus()
       if (result === 'ok') {
-        setText('')
+        setText((now) => (now.trim() === body ? '' : now))
         requestAnimationFrame(grow)
         nearEnd.current = true
         return
@@ -643,7 +658,7 @@ export default function Chat() {
     refocus()
     if (ok && data.line) {
       typedAt.current = 0
-      setText('')
+      setText((now) => (now.trim() === body ? '' : now))
       setReplyTo(null)
       setPicked([])
       setAtAsk(null)
@@ -753,7 +768,7 @@ export default function Chat() {
     setText(next)
     requestAnimationFrame(() => {
       if (!box) return
-      box.focus()
+      focusField(box)
       const at = Math.min(start + emoji.length, next.length)
       box.setSelectionRange(at, at)
       grow()
@@ -779,7 +794,7 @@ export default function Chat() {
     if (pick.id) setPicked((was) => (was.some((one) => one.id === pick.id) ? was : [...was, pick]))
     requestAnimationFrame(() => {
       if (!box) return
-      box.focus()
+      focusField(box)
       const at = start + chunk.length
       box.setSelectionRange(at, at)
       grow()
@@ -848,7 +863,7 @@ export default function Chat() {
     setPointed(null)
     setHeld(null)
     setReplyTo(line)
-    requestAnimationFrame(() => field.current?.focus())
+    requestAnimationFrame(() => focusField())
   }
 
   const jump = (id: string) => {
@@ -902,6 +917,9 @@ export default function Chat() {
     const left = box.scrollHeight - box.scrollTop - box.clientHeight
     nearEnd.current = left < 80
     setAway(left > 320)
+  }
+
+  const shut = () => {
     setMenu(null)
     setPointed(null)
   }
@@ -959,7 +977,7 @@ export default function Chat() {
           </header>
 
           <div className="chat-feed-wrap">
-            <div className="chat-feed" ref={feed} onScroll={watch}>
+            <div className="chat-feed" ref={feed} onScroll={watch} onWheel={shut} onTouchMove={shut}>
               {more && room !== 'duel' && (
                 <button type="button" className="chat-earlier" disabled={loading} onClick={() => void load(lines[0]?.id)}>
                   {t('chat.earlier')}
@@ -1143,7 +1161,6 @@ export default function Chat() {
                     event.preventDefault()
                     void send()
                   }}
-                  readOnly={sending}
                 />
                 {room === 'chat' && (
                   <div className="chat-faces">
