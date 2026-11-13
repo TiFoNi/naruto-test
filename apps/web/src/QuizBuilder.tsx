@@ -854,18 +854,8 @@ function BracketEditor({
 
       <div className="qb-bracket-sizes" role="radiogroup" aria-label={t('qb.entries.size')}>
         {ENTRY_SIZES.map((one) => {
-          const tight = entries.length > one
           return (
-            <button
-              key={one}
-              type="button"
-              role="radio"
-              aria-checked={size === one}
-              className={size === one ? 'on' : ''}
-              disabled={tight}
-              title={tight ? t('qb.entries.tooMany', { count: entries.length - one }) : undefined}
-              onClick={() => onSize(one)}
-            >
+            <button key={one} type="button" role="radio" aria-checked={size === one} className={size === one ? 'on' : ''} onClick={() => onSize(one)}>
               <b>{one}</b>
             </button>
           )
@@ -1173,6 +1163,12 @@ function writeStored(draft: Draft, value: Draft | null) {
   } catch {}
 }
 
+export function forgetNewDraft(game: string) {
+  try {
+    window.localStorage.removeItem(`qb:new:${game}`)
+  } catch {}
+}
+
 const stripped = (quiz: Draft) => JSON.stringify({ ...quiz, status: undefined, note: undefined })
 
 export default function QuizBuilder({
@@ -1370,6 +1366,19 @@ export default function QuizBuilder({
     onDropped(quiz.id)
   }
 
+  const resize = (next: number) => {
+    if (next === size) return
+    if (entries.length <= next) return patch({ size: next })
+    const extra = entries.length - next
+    setAsk({
+      title: t('qb.entries.shrinkTitle', { size: next }),
+      hint: t('qb.entries.shrinkHint', { count: extra }),
+      action: t('qb.entries.shrinkOk', { count: extra }),
+      danger: true,
+      run: () => patch({ size: next, entries: entries.slice(0, next) }),
+    })
+  }
+
   const drop = () => setAsk({ title: t('qb.deleteConfirm'), hint: t('qb.deleteHint'), action: t('qb.delete'), danger: true, run: () => void remove() })
 
   const outline = (
@@ -1399,7 +1408,7 @@ export default function QuizBuilder({
 
   const editor = bracket ? (
     ready ? (
-      <BracketEditor game={game} byId={byId} entries={entries} size={size} onSize={(next) => patch({ size: next })} onAdd={addEntry} onEdit={editEntry} onDrop={dropEntry} />
+      <BracketEditor game={game} byId={byId} entries={entries} size={size} onSize={resize} onAdd={addEntry} onEdit={editEntry} onDrop={dropEntry} />
     ) : (
       <div className="qb-card qb-loading" />
     )

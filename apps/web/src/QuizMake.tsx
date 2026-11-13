@@ -10,7 +10,7 @@ import { CATEGORIES, type GameId } from './games/types'
 import { useI18n } from './i18n'
 import { CloseIcon, SearchIcon } from './icons'
 import Rail from './Rail'
-import QuizBuilder, { freshDraft, QUIZ_WORLDS, type Draft, type SavedDraft } from './QuizBuilder'
+import QuizBuilder, { forgetNewDraft, freshDraft, QUIZ_WORLDS, type Draft, type SavedDraft } from './QuizBuilder'
 import { CATEGORY_TITLES } from './QuizList'
 import { useHref, useNavigate } from './router'
 import { uiUrl } from './pics'
@@ -150,6 +150,7 @@ export default function QuizMake({ id, game }: { id?: string; game?: string }) {
         {back}
         <WorldPicker
           onPick={(picked) => {
+            forgetNewDraft(picked)
             window.history.replaceState(null, '', href.makeTest({ game: picked }))
             setDraft(freshDraft(picked))
           }}
