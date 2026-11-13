@@ -410,8 +410,10 @@
   }
 
   .mates-acts .primary,
-  .mates-acts .mates-duel {
-    flex: 1;
+  .mates-acts .mates-duel,
+  .mates-rows .mates-acts .ghost {
+    flex: 1 1 0;
+    min-width: 0;
     justify-content: center;
   }
 }
