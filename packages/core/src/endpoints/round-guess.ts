@@ -5,7 +5,7 @@ import { automated, fail, handle, json, readJson, robot } from '../http'
 import { oneTry } from '@nanda/game'
 import { humanCheck } from '../human'
 import { rememberLang, roundOwner, touchVisit } from '../profile'
-import { finishRound, roundLimit, roundView } from '../rounds'
+import { finishRound, readDevice, roundLimit, roundView } from '../rounds'
 
 const MAX_GUESSES = 300
 const MIN_GAP_MS = 800
@@ -25,6 +25,7 @@ export const POST = handle(async (request) => {
   const collection = await rounds()
   const _id = new ObjectId(body.roundId)
   const now = new Date()
+  const device = readDevice(body.device)
   const updated = await collection.findOneAndUpdate(
     {
       _id,
@@ -33,8 +34,9 @@ export const POST = handle(async (request) => {
       guesses: { $ne: entityId },
       [`guesses.${MAX_GUESSES}`]: { $exists: false },
       $or: [{ lastGuessAt: { $exists: false } }, { lastGuessAt: { $lte: new Date(now.getTime() - MIN_GAP_MS) } }],
+      ...(device ? { $and: [{ $or: [{ device: { $exists: false } }, { device }] }] } : {}),
     },
-    { $push: { guesses: entityId }, $set: { lastGuessAt: now }, $min: { startedAt: now } },
+    { $push: { guesses: entityId }, $set: { lastGuessAt: now, ...(device ? { device } : {}) }, $min: { startedAt: now } },
     { returnDocument: 'after' },
   )
 
@@ -42,6 +44,7 @@ export const POST = handle(async (request) => {
     const round = await collection.findOne({ _id, userId })
     if (!round || !isGame(round.game)) return fail(404, 'not_found')
     if (round.status !== 'active') return fail(409, 'round_over')
+    if (device && round.device && round.device !== device) return fail(409, round.daily ? 'elsewhere_daily' : 'elsewhere')
     if (!(await gameData(round.game as never)).byId.has(entityId)) return fail(400, 'bad_request')
     if (round.guesses.includes(entityId)) return fail(409, 'duplicate')
     return fail(429, 'too_fast')

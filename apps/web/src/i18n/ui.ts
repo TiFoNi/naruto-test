@@ -582,6 +582,8 @@ const ui = {
   'err.not_found': { ru: 'Раунд не найден', uk: 'Раунд не знайдено', en: 'Round not found' },
   'err.duel_full': { ru: 'В этой комнате уже двое игроков', uk: 'У цій кімнаті вже двоє гравців', en: 'This room already has two players' },
   'err.duplicate': { ru: 'Этого персонажа ты уже называл', uk: 'Цього персонажа ти вже називав', en: 'You already guessed this one' },
+  'err.elsewhere': { ru: 'Этот раунд уже идёт на другом устройстве. Можно закончить его там и начать новый здесь — тот раунд засчитается как сдача.', uk: 'Цей раунд уже йде на іншому пристрої. Можна завершити його там і почати новий тут — той раунд зарахується як здача.', en: 'This round is already in progress on another device. You can end it there and start a new one here — that round will count as given up.' },
+  'err.elsewhere_daily': { ru: 'Ежедневная загадка уже идёт на другом устройстве. Можно продолжить её здесь — там она закроется.', uk: 'Щоденна загадка вже йде на іншому пристрої. Можна продовжити її тут — там вона закриється.', en: 'The daily puzzle is already in progress on another device. You can continue it here — it will close there.' },
   'err.round_over': { ru: 'Раунд уже закончен', uk: 'Раунд уже закінчено', en: 'The round is already over' },
   'err.network': { ru: 'Нет связи с сервером', uk: 'Немає зв’язку з сервером', en: 'Cannot reach the server' },
 
@@ -835,6 +837,8 @@ const ui = {
     uk: 'Введи будь-якого персонажа — клітинки підкажуть, наскільки ти близько.',
     en: 'Enter any character — the tiles will tell you how close you are.',
   },
+  'play.takeOver': { ru: 'Закончить там и начать здесь', uk: 'Завершити там і почати тут', en: 'End there and start here' },
+  'play.takeOverDaily': { ru: 'Продолжить здесь', uk: 'Продовжити тут', en: 'Continue here' },
   'play.retry': { ru: 'Повторить', uk: 'Повторити', en: 'Retry' },
   'play.classicTitle': { ru: 'Кто загадан?', uk: 'Хто загаданий?', en: 'Who is it?' },
   'play.abilityTitle': { ru: 'Чья это способность?', uk: 'Чия це здібність?', en: 'Whose ability is this?' },
