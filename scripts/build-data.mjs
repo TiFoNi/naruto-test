@@ -4,6 +4,7 @@ import sharp from 'sharp'
 import { PUBLIC, keepNotable, pruneImages } from './lib.mjs'
 import { AFFILIATIONS, ARCS, CLASSIFICATIONS, JUTSU, KEKKEI_GENKAI, NAMES, NATURES, OTHER_SEX, SEX, transliterate } from './ru.mjs'
 import { dropDeleted, onlyAnswers } from './dropped.mjs'
+import { NARUTO_EXTRA } from './naruto-extra.mjs'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
 const CACHE = path.join(ROOT, '.cache')
@@ -486,6 +487,9 @@ async function main() {
   await keepUkrainian(result)
   await writeAtlas(result)
   await pruneImages(path.join(OUT_IMG, 'full'), result)
+  const known = new Set(result.map((c) => c.id))
+  result.push(...NARUTO_EXTRA.filter((c) => !known.has(c.id)))
+  result.sort((a, b) => a.name.localeCompare(b.name, 'ru'))
   await fs.writeFile(OUT_JSON, JSON.stringify(result, null, 1))
   console.log(`wrote ${result.length} characters (${result.filter((c) => c.answer).length} answerable)`)
 }
