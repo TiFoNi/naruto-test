@@ -332,6 +332,10 @@ export function subscribeChat(send: Sender) {
   }
 }
 
+export function ringPlay(userId: ObjectId, play: { device: string | null }) {
+  for (const send of bells.get(userId.toHexString()) ?? []) send('play', play)
+}
+
 export function ringRound(userId: ObjectId, round: { id: string; device: string | null }) {
   for (const send of bells.get(userId.toHexString()) ?? []) send('round', round)
 }

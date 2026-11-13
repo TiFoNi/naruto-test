@@ -46,6 +46,7 @@ import * as profile from '@nanda/core/endpoints/profile'
 import * as roundCurrent from '@nanda/core/endpoints/round-current'
 import * as roundGuess from '@nanda/core/endpoints/round-guess'
 import * as roundGiveup from '@nanda/core/endpoints/round-giveup'
+import * as playHold from '@nanda/core/endpoints/play-hold'
 import * as roundImage from '@nanda/core/endpoints/round-image'
 import * as roundVoice from '@nanda/core/endpoints/round-voice'
 import { bridge, toWebRequest } from './web-bridge'
@@ -396,6 +397,11 @@ export class GameController {
   @Post('round/giveup')
   giveUp(@Req() req: Request, @Res() res: Response) {
     return bridge(roundGiveup.POST, req, res)
+  }
+
+  @Post('play/hold')
+  playHold(@Req() req: Request, @Res() res: Response) {
+    return bridge(playHold.POST, req, res)
   }
 
   @Get('round/voice')

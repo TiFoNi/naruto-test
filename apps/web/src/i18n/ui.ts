@@ -768,6 +768,18 @@ const ui = {
     en: 'You are already playing in another tab:',
   },
   'lock.take': { ru: 'Играть здесь', uk: 'Грати тут', en: 'Play here' },
+  'lock.device': {
+    ru: 'У тебя уже идёт угадывание на другом устройстве ({name}):',
+    uk: 'У тебе вже йде вгадування на іншому пристрої ({name}):',
+    en: 'You are already playing on another device ({name}):',
+  },
+  'lock.deviceUnknown': { ru: 'другой браузер', uk: 'інший браузер', en: 'another browser' },
+  'lock.moveHere': { ru: 'Перенести сюда', uk: 'Перенести сюди', en: 'Move here' },
+  'lock.moveHint': {
+    ru: 'Введённые ответы перенесутся, а там игра встанет на паузу.',
+    uk: 'Введені відповіді перенесуться, а там гра стане на паузу.',
+    en: 'Your guesses carry over, and the other device pauses.',
+  },
   'play.zoomFull': { ru: 'полный кадр', uk: 'повний кадр', en: 'full frame' },
   'play.zoomLast': { ru: 'последнее приближение', uk: 'останнє наближення', en: 'last zoom level' },
   'play.tries': { ru: 'Твои попытки', uk: 'Твої спроби', en: 'Your guesses' },

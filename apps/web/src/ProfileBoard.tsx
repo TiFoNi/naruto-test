@@ -9,6 +9,7 @@ const GAP = 14
 const BAR = 40
 const ROW = 4
 const WIDE = 1000
+const PHONE = 520
 const ACTIVITY_LIST = 260
 const FREE_MIN = 150
 const FREE_MAX = 900
@@ -305,6 +306,7 @@ export default function ProfileBoard({
   const heightOf = (block: ProfileBlock) => {
     if (stretch?.block === block) return unitsOf(stretch.px) + bar
     if (isShelf(block)) return unitsOf(shelfPx(rowsOf(block), block)) + bar
+    if ((block === 'facts' || block === 'quizzes') && width < PHONE) return unitsOf(metrics.base) + bar
     if (block === 'facts' || block === 'quizzes') return unitsOf(Math.max(metrics.facts, blocks.includes('quizzes') ? metrics.quizzes : 0)) + bar
     return unitsOf(sizes[block] ?? metrics.activity) + bar
   }

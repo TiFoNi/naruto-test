@@ -477,6 +477,7 @@ const cache = globalThis as typeof globalThis & {
   __challengesIndexed?: Promise<unknown>
   __seasonsIndexed?: Promise<unknown>
   __streaksIndexed?: Promise<unknown>
+  __playsIndexed?: Promise<unknown>
   __shotsIndexed?: Promise<unknown>
   __shotDaysIndexed?: Promise<unknown>
   __tunesIndexed?: Promise<unknown>
@@ -526,6 +527,18 @@ export async function streaks(): Promise<Collection<StreakDoc>> {
     throw error
   })
   await cache.__streaksIndexed
+  return collection
+}
+
+export type PlayDoc = { _id: ObjectId; device: string; name: string | null; game: string; mode: string; daily: boolean; seenAt: Date }
+
+export async function plays(): Promise<Collection<PlayDoc>> {
+  const collection = (await database()).collection<PlayDoc>('plays')
+  cache.__playsIndexed ??= collection.createIndex({ seenAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 }).catch((error) => {
+    cache.__playsIndexed = undefined
+    throw error
+  })
+  await cache.__playsIndexed
   return collection
 }
 

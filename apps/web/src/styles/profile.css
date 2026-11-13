@@ -4571,7 +4571,6 @@ body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 34px;
 }
 
 .tests-card > header h2 {
@@ -4584,6 +4583,7 @@ body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
   align-items: center;
   gap: 7px;
   height: 34px;
+  margin-block: -6px;
   padding: 0 13px 0 11px;
   border: 1px solid var(--line);
   border-radius: 11px;
@@ -4664,7 +4664,6 @@ body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
 .facts-card > header {
   display: flex;
   align-items: center;
-  min-height: 34px;
 }
 
 .facts-card > header h2 {
@@ -4700,4 +4699,72 @@ body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
 
 .react-grid-item:has(.places-pop) {
   z-index: 40;
+}
+
+@media (max-width: 560px) {
+  .profile .card .profile-facts .fact,
+  .profile-facts .fact {
+    gap: 4px;
+    min-height: 0;
+    padding: 10px 12px;
+    border-radius: 16px;
+    background: var(--card-2);
+  }
+
+  .profile .card .profile-facts .fact {
+    background: rgba(255, 255, 255, 0.045);
+  }
+
+  .profile-facts {
+    gap: 8px;
+  }
+
+  .profile-facts .fact .fact-label {
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+  }
+
+  .profile-facts .fact > b.fact-value {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    max-width: 100%;
+    font-size: 20px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .profile-grid .profile-card {
+    padding: 18px 12px;
+  }
+
+  .tests-stats {
+    flex: 1 1 auto;
+    gap: 8px;
+  }
+
+  .tests-empty {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .tests-stats > span {
+    align-items: center;
+    gap: 4px;
+    min-height: 0;
+    padding: 10px 4px;
+    border-radius: 16px;
+    text-align: center;
+  }
+
+  .tests-stats b {
+    font-size: 22px;
+  }
+
+  .tests-stats small {
+    max-width: 100%;
+    font-size: 9.5px;
+    letter-spacing: 0.02em;
+  }
 }
