@@ -225,7 +225,7 @@ export default function QuizList({ category }: { category: string }) {
             <input value={query} placeholder={t('quiz.search')} onChange={(event) => setQuery(event.target.value)} />
           </label>
 
-          {present.length > 1 && (
+          {(list === null || present.length > 1) && (
             <div className="qz-group">
               <h4>{t('quiz.side.world')}</h4>
               <AdminSelect<GameId | 'all'>

@@ -8,7 +8,7 @@ export const QUIZ_XP_PER_ANSWER = 10
 export const QUIZ_XP_BRACKET = 30
 const BRACKET_PAID = -1
 
-export const QUIZ_LIMITS = { title: 80, text: 300, option: 90, note: 1000, minOptions: 2, maxOptions: 8, maxPairs: 6, minQuestions: 3, maxQuestions: 30, ownQuizzes: 30, publishFree: 3, bracketMin: 16, bracketMax: 64, bracketSizes: [16, 32, 64] }
+export const QUIZ_LIMITS = { title: 80, text: 300, option: 90, note: 1000, minOptions: 2, maxOptions: 8, maxPairs: 6, minQuestions: 3, maxQuestions: 30, ownQuizzes: 30, publishFree: 3, bracketMin: 8, bracketMax: 128, bracketSizes: [8, 16, 32, 64, 128] }
 
 const STATUSES: QuizStatus[] = ['draft', 'review', 'published', 'rejected']
 

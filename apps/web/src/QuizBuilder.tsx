@@ -64,8 +64,8 @@ const MAX_OPTIONS = 8
 const MAX_PAIRS = 6
 const MAX_QUESTIONS = 30
 const MIN_QUESTIONS = 3
-const MAX_ENTRIES = 64
-const ENTRY_SIZES = [16, 32, 64]
+const MAX_ENTRIES = 128
+const ENTRY_SIZES = [8, 16, 32, 64, 128]
 
 const entryReady = (entry: BracketEntry) => (entry.kind === 'image' ? !!entry.key && !!entry.text.trim() : entry.id !== undefined)
 

@@ -4704,7 +4704,7 @@ body:has(.chat-bubble) .qb {
 
 .qb-bracket-sizes {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
   margin: 16px 0 0;
 }
@@ -4955,5 +4955,19 @@ body:has(.chat-bubble) .qb {
   .qb-qpic-pick svg {
     width: 16px;
     height: 16px;
+  }
+}
+
+@container (max-width: 520px) {
+  .qb-bracket-sizes {
+    gap: 6px;
+  }
+
+  .qb-bracket-sizes button {
+    padding: 10px 4px;
+  }
+
+  .qb-bracket-sizes button b {
+    font-size: 19px;
   }
 }

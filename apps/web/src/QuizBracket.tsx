@@ -59,7 +59,7 @@ const stageOf = (run: Run): { key: UiKey; values?: Record<string, number> } => {
   if (left === 2) return { key: 'quiz.bracket.final' }
   if (left === 4) return { key: 'quiz.bracket.semi' }
   if (left === 8) return { key: 'quiz.bracket.quarter' }
-  return { key: 'quiz.bracket.round', values: { n: left / 2 } }
+  return { key: 'quiz.bracket.round', values: { n: left / 2, m: left } }
 }
 
 export const entryArt = (game: Game, byId: Map<number, Entity>, entry: QuizOption) => {
