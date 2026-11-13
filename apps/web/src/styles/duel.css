@@ -1785,6 +1785,20 @@
   aspect-ratio: 1;
 }
 
+.who-ghost {
+  background: var(--card-2-solid);
+}
+
+.who-ghost-mark {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  width: 100%;
+  color: var(--text-3);
+  font-family: var(--display);
+  font-size: 28px;
+}
+
 .who-thumb {
   width: 100%;
   height: 100%;

@@ -10,8 +10,11 @@ const RETRY_MAX_MS = 10_000
 const loaded = new Set<string>()
 const pending = new Map<string, Promise<void>>()
 
-async function fetchInto(game: Game) {
-  const { ok, data } = await api<{ entities?: Entity[]; updated?: string; atlas?: string }>(`entities?game=${game.id}`)
+const FRESH_TRIES = 3
+const FRESH_GAP_MS = 4_000
+
+async function fetchInto(game: Game, fresh = false) {
+  const { ok, data } = await api<{ entities?: Entity[]; updated?: string; atlas?: string }>(`entities?game=${game.id}${fresh ? `&fresh=${Date.now()}` : ''}`)
   if (!ok || !Array.isArray(data.entities)) throw new Error('entities')
   game.entities = data.entities
   game.updated = data.updated
@@ -54,4 +57,36 @@ export function useEntities(game: Game | null | undefined) {
   }, [game])
 
   return ready
+}
+
+export function useKnown(game: Game | null | undefined, ids: number[], ready: boolean) {
+  const [version, setVersion] = useState(0)
+  const missing = ready && game ? ids.filter((id) => !game.entities.some((one) => one.id === id)).join(',') : ''
+
+  useEffect(() => {
+    if (!game || !missing) return
+    let alive = true
+    let tries = 0
+    let timer = 0
+    const load = () => {
+      tries += 1
+      fetchInto(game, true)
+        .then(() => {
+          if (!alive) return
+          setVersion((was) => was + 1)
+          const still = missing.split(',').some((id) => !game.entities.some((one) => one.id === Number(id)))
+          if (still && tries < FRESH_TRIES) timer = window.setTimeout(load, FRESH_GAP_MS)
+        })
+        .catch(() => {
+          if (alive && tries < FRESH_TRIES) timer = window.setTimeout(load, FRESH_GAP_MS)
+        })
+    }
+    load()
+    return () => {
+      alive = false
+      window.clearTimeout(timer)
+    }
+  }, [game, missing])
+
+  return version
 }

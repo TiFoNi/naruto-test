@@ -71,10 +71,10 @@ export const SAVE = handle(async (request) => {
   }
 
   if (id) {
-    const before = await collection.findOne({ _id: id, authorId: userId, official: { $ne: true } }, { projection: { questions: 1 } })
+    const before = await collection.findOne({ _id: id, authorId: userId, official: { $ne: true } }, { projection: { questions: 1, entries: 1 } })
     const saved = await collection.findOneAndUpdate(
       { _id: id, authorId: userId, official: { $ne: true } },
-      { $set: { ...fields, ...revised(before?.questions, fields.questions, now), updatedAt: now } },
+      { $set: { ...fields, ...revised(before, fields, now), updatedAt: now } },
       { returnDocument: 'after' },
     )
     if (!saved) return fail(404, 'not_found')

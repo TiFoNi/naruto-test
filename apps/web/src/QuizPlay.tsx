@@ -14,6 +14,7 @@ import { useI18n, type UiKey } from './i18n'
 import { ArrowIcon, CheckIcon, CloseIcon, HeartIcon, RefreshIcon } from './icons'
 import { coverUrl, type QuizQuestionView, type QuizValue, type QuizView } from './quiz'
 import QuizComments from './QuizComments'
+import BracketRun from './QuizBracket'
 import QuizTile, { QuizChip, type TileState } from './QuizTile'
 import { useHref } from './router'
 
@@ -556,19 +557,7 @@ const filled = (question: QuizQuestionView, value: QuizValue | undefined) => {
   return value.length > 0
 }
 
-export function QuizRun({
-  game,
-  byId,
-  quiz,
-  busy,
-  error,
-  top,
-  after,
-  likeNote,
-  moreHref,
-  onSend,
-  onLike,
-}: {
+type RunProps = {
   game: Game
   byId: Map<number, Entity>
   quiz: QuizView
@@ -580,7 +569,17 @@ export function QuizRun({
   moreHref?: string
   onSend: (body: Record<string, unknown>) => void
   onLike?: () => void
-}) {
+}
+
+export function QuizRun(props: RunProps) {
+  if (props.quiz.format === 'bracket') {
+    const { onLike, quiz } = props
+    return <BracketRun {...props} like={onLike ? <LikeButton quiz={quiz} onLike={onLike} /> : null} />
+  }
+  return <QuestionsRun {...props} />
+}
+
+function QuestionsRun({ game, byId, quiz, busy, error, top, after, likeNote, moreHref, onSend, onLike }: RunProps) {
   const { t } = useI18n()
   const [draft, setDraft] = useState<QuizValue[]>(() => (quiz.layout === 'list' ? quiz.questions.map(() => null) : []))
   const attempt = quiz.attempt

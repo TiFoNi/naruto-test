@@ -118,7 +118,7 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
       return onStrike(id)
     }
     if (!myTurn) return
-    setAsk(standing.find((other) => other !== id) ?? id)
+    setAsk(standing.find((other) => other !== id && byId.has(other)) ?? id)
   }
 
   const reason = () => {
@@ -265,8 +265,27 @@ export default function WhoBoard({ game, byId, duel, busy, onPick, onPass, onStr
       <ol className={`who-grid ${choosing ? (youPicked ? 'who-waiting' : 'who-choosing') : ''}`} ref={grid} style={{ ['--board' as string]: board }}>
         {cards.map((id) => {
           const entity = byId.get(id)
-          if (!entity) return null
           const off = struck.has(id)
+          if (!entity)
+            return (
+              <li key={id} className={off ? 'off' : ''}>
+                <button type="button" className="who-card" aria-label={t('who.unknown')} disabled={over || choosing} onClick={() => tap(id)}>
+                  <span className="who-flip">
+                    <span className="who-face who-front who-ghost">
+                      <span className="who-ghost-mark" aria-hidden>
+                        ?
+                      </span>
+                      <span className="who-name">
+                        <span>{t('who.unknown')}</span>
+                      </span>
+                    </span>
+                    <span className="who-face who-back" aria-hidden>
+                      ?
+                    </span>
+                  </span>
+                </button>
+              </li>
+            )
           return (
             <li
               key={id}

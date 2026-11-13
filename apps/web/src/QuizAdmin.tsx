@@ -99,7 +99,7 @@ export default function QuizAdmin() {
                     <b>{one.title}</b>
                     <small>
                       <span className={`qb-status is-${one.status}`}>{t(`qb.status.${one.status}` as UiKey)}</span>
-                      {world ? l(world.label) : one.game} · {one.questions.length} вопр.
+                      {world ? l(world.label) : one.game} · {one.format === 'bracket' ? `${one.entries?.length ?? 0} уч.` : `${one.questions.length} вопр.`}
                       {one.author && <> · {one.author.nickname}</>}
                     </small>
                   </button>

@@ -12,6 +12,8 @@ export type QuizCover = { kind: 'entity'; id: number } | { kind: 'upload'; key: 
 
 export type QuizLayout = 'steps' | 'list'
 
+export type QuizFormat = 'questions' | 'bracket'
+
 export type QuizStatus = 'draft' | 'review' | 'published' | 'rejected'
 
 export type QuizAuthor = { id: string; nickname: string; tag: string | null }
@@ -24,6 +26,7 @@ export type QuizCard = {
   title: string
   cover: QuizCover
   layout: QuizLayout
+  format?: QuizFormat
   count: number
   kinds: QuizKind[]
   mine?: { finished: boolean; score: number; answered: number; changed?: boolean } | null
@@ -52,9 +55,12 @@ export type QuizAttempt = {
   results?: { right: boolean; partial?: boolean; correct?: number[] | number }[]
   reveal?: boolean
   xp?: number | null
+  champion?: number | null
+  voters?: number
+  standings?: { champion: number; wins: number; games: number }[]
 }
 
-export type QuizView = QuizCard & { questions: QuizQuestionView[]; attempt: QuizAttempt | null; liked?: boolean }
+export type QuizView = QuizCard & { questions: QuizQuestionView[]; entries?: QuizOption[]; attempt: QuizAttempt | null; liked?: boolean }
 
 export const coverUrl = (game: GameId, cover: QuizCover) =>
   !cover ? null : cover.kind === 'upload' ? picsUrl(cover.key, cover.ver) : fullUrl(game, cover.id)

@@ -312,6 +312,8 @@ export type QuizDoc = {
   title: string
   cover: QuizCover
   layout: 'steps' | 'list'
+  format?: QuizFormat
+  entries?: QuizOption[]
   status: QuizStatus
   official: boolean
   authorId?: ObjectId
@@ -323,6 +325,8 @@ export type QuizDoc = {
 }
 
 export type QuizStatus = 'draft' | 'review' | 'published' | 'rejected'
+
+export type QuizFormat = 'questions' | 'bracket'
 
 export type QuizValue = number[] | number | null
 
@@ -341,6 +345,8 @@ export type QuizAttemptDoc = {
   runs?: number
   xp?: number
   paid?: number[]
+  champion?: number
+  bracket?: [number, number][]
 }
 
 export type StreakDoc = {

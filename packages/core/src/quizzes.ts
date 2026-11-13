@@ -2,11 +2,13 @@ import { ObjectId } from 'mongodb'
 import { isGame, gameData } from './games'
 import { abilityByKey } from './abilities'
 import { addLevelXp } from './profile'
-import { quizAttempts, quizzes, users, type QuizAttemptDoc, type QuizCover, type QuizDoc, type QuizOption, type QuizQuestion, type QuizStatus, type QuizValue } from './db'
+import { quizAttempts, quizzes, users, type QuizAttemptDoc, type QuizCover, type QuizDoc, type QuizFormat, type QuizOption, type QuizQuestion, type QuizStatus, type QuizValue } from './db'
 
 export const QUIZ_XP_PER_ANSWER = 10
+export const QUIZ_XP_BRACKET = 30
+const BRACKET_PAID = -1
 
-export const QUIZ_LIMITS = { title: 80, text: 300, option: 90, note: 1000, minOptions: 2, maxOptions: 8, maxPairs: 6, minQuestions: 3, maxQuestions: 30, ownQuizzes: 30, publishFree: 3 }
+export const QUIZ_LIMITS = { title: 80, text: 300, option: 90, note: 1000, minOptions: 2, maxOptions: 8, maxPairs: 6, minQuestions: 3, maxQuestions: 30, ownQuizzes: 30, publishFree: 3, bracketMin: 16, bracketMax: 64, bracketSizes: [16, 32, 64] }
 
 const STATUSES: QuizStatus[] = ['draft', 'review', 'published', 'rejected']
 
@@ -161,6 +163,24 @@ function looseQuestion(raw: unknown, known: Set<number>) {
   return { ...base, multi: question.multi === true, options, correct }
 }
 
+export const isBracket = (quiz: Pick<QuizDoc, 'format'>) => quiz.format === 'bracket'
+
+function readEntry(raw: unknown, known: Set<number>): QuizOption | null {
+  const entry = raw as Record<string, unknown>
+  if (entry?.kind === 'entity') {
+    const id = whole(entry.id)
+    return known.has(id) ? { kind: 'entity', id } : null
+  }
+  if (entry?.kind === 'image') {
+    const key = typeof entry.key === 'string' && /^quizzes\/[\w-]+\.webp$/.test(entry.key) ? entry.key : ''
+    const text = clean(entry.text, QUIZ_LIMITS.option)
+    return key && text ? { kind: 'image', key, ver: clean(entry.ver, 16), text } : null
+  }
+  return null
+}
+
+const entryKey = (entry: QuizOption) => (entry.kind === 'entity' ? `e:${entry.id}` : entry.kind === 'image' ? `i:${entry.key}` : '')
+
 export async function readQuiz(
   raw: unknown,
   loose = false,
@@ -178,6 +198,30 @@ export async function readQuiz(
   const known = new Set(byId.keys())
 
   const cover = readPicture(body.cover, known)
+  const note = block(body.note, QUIZ_LIMITS.note)
+
+  if (body.format === 'bracket') {
+    const raw = Array.isArray(body.entries) ? body.entries : []
+    if (raw.length > QUIZ_LIMITS.bracketMax) return { error: 'entries' }
+    const entries: QuizOption[] = []
+    const seen = new Set<string>()
+    for (const [at, one] of raw.entries()) {
+      const entry = readEntry(one, known)
+      if (!entry || seen.has(entryKey(entry))) {
+        if (!loose) return { error: entry ? 'entry_duplicate' : 'entry', at }
+        complete = false
+        continue
+      }
+      seen.add(entryKey(entry))
+      entries.push(entry)
+    }
+    if (!QUIZ_LIMITS.bracketSizes.includes(entries.length)) {
+      if (!loose) return { error: 'entries' }
+      complete = false
+    }
+    const format: QuizFormat = 'bracket'
+    return { quiz: { game, title, cover, layout: 'steps', format, entries, status, official: true, questions: [], note }, complete }
+  }
 
   const list = Array.isArray(body.questions) ? body.questions : []
   if (list.length > QUIZ_LIMITS.maxQuestions || (list.length < QUIZ_LIMITS.minQuestions && !loose)) return { error: 'questions' }
@@ -193,7 +237,7 @@ export async function readQuiz(
     }
   }
 
-  return { quiz: { game, title, cover, layout, status, official: true, questions, note: block(body.note, QUIZ_LIMITS.note) }, complete }
+  return { quiz: { game, title, cover, layout, format: 'questions', entries: [], status, official: true, questions, note }, complete }
 }
 
 const optionView = (option: QuizOption) => {
@@ -298,12 +342,21 @@ export function quizCard(quiz: QuizDoc) {
     title: quiz.title,
     cover: quiz.cover,
     layout: quiz.layout,
-    count: quiz.questions.length,
+    format: quiz.format ?? 'questions',
+    count: isBracket(quiz) ? (quiz.entries?.length ?? 0) : quiz.questions.length,
     kinds: kindsOf(quiz),
   }
 }
 
+function bracketAttemptView(quiz: QuizDoc, attempt: QuizAttemptDoc | null) {
+  if (!attempt) return null
+  const total = quiz.entries?.length ?? 0
+  const base = { answered: 0, finished: attempt.finished, score: 0, total, answers: [] }
+  return attempt.finished ? { ...base, champion: attempt.champion ?? null, xp: attempt.xp ?? 0 } : base
+}
+
 export function attemptView(quiz: QuizDoc, attempt: QuizAttemptDoc | null) {
+  if (isBracket(quiz)) return bracketAttemptView(quiz, attempt)
   if (!attempt) return null
   const base = { answered: attempt.answers.length, finished: attempt.finished, score: attempt.score, total: quiz.questions.length }
   if (!attempt.finished) return { ...base, answers: quiz.layout === 'list' ? [] : attempt.answers }
@@ -320,7 +373,70 @@ export function attemptView(quiz: QuizDoc, attempt: QuizAttemptDoc | null) {
 }
 
 export function quizView(quiz: QuizDoc, attempt: QuizAttemptDoc | null) {
+  if (isBracket(quiz)) return { ...quizCard(quiz), questions: [], entries: (quiz.entries ?? []).map(optionView), attempt: attemptView(quiz, attempt) }
   return { ...quizCard(quiz), questions: quiz.questions.map((_, at) => questionView(quiz, at)), attempt: attemptView(quiz, attempt) }
+}
+
+export async function bracketStandings(quiz: QuizDoc) {
+  const size = quiz.entries?.length ?? 0
+  const collection = await quizAttempts()
+  const match = { quizId: quiz._id!, champion: { $exists: true } }
+  const [picked, fights] = await Promise.all([
+    collection.aggregate<{ _id: number; count: number }>([{ $match: match }, { $group: { _id: '$champion', count: { $sum: 1 } } }]).toArray(),
+    collection
+      .aggregate<{ _id: { winner: number; loser: number }; count: number }>([
+        { $match: match },
+        { $unwind: '$bracket' },
+        { $group: { _id: { winner: { $arrayElemAt: ['$bracket', 0] }, loser: { $arrayElemAt: ['$bracket', 1] } }, count: { $sum: 1 } } },
+      ])
+      .toArray(),
+  ])
+  const rows = Array.from({ length: size }, () => ({ champion: 0, wins: 0, games: 0 }))
+  for (const one of picked) if (rows[one._id]) rows[one._id]!.champion = one.count
+  for (const one of fights) {
+    const winner = rows[one._id.winner]
+    const loser = rows[one._id.loser]
+    if (winner) {
+      winner.wins += one.count
+      winner.games += one.count
+    }
+    if (loser) loser.games += one.count
+  }
+  return { voters: picked.reduce((sum, one) => sum + one.count, 0), standings: rows }
+}
+
+export function readBracket(quiz: QuizDoc, championRaw: unknown, matchesRaw: unknown) {
+  const size = quiz.entries?.length ?? 0
+  const champion = whole(championRaw)
+  if (!(champion >= 0 && champion < size) || !Array.isArray(matchesRaw) || matchesRaw.length !== size - 1) return null
+  const lost = new Set<number>()
+  const matches: [number, number][] = []
+  for (const pair of matchesRaw) {
+    if (!Array.isArray(pair) || pair.length !== 2) return null
+    const winner = whole(pair[0])
+    const loser = whole(pair[1])
+    if (!(winner >= 0 && winner < size && loser >= 0 && loser < size) || winner === loser) return null
+    if (lost.has(winner) || lost.has(loser)) return null
+    lost.add(loser)
+    matches.push([winner, loser])
+  }
+  return lost.size === size - 1 && !lost.has(champion) ? { champion, matches } : null
+}
+
+export async function finishBracket(quiz: QuizDoc, userId: ObjectId, champion: number, matches: [number, number][], guest: boolean) {
+  const collection = await quizAttempts()
+  const _id = attemptId(quiz._id!, userId)
+  const done = await collection.findOneAndUpdate(
+    { _id, finished: false },
+    { $set: { champion, bracket: matches, finished: true, score: 0, total: quiz.entries?.length ?? 0, finishedAt: new Date() }, $inc: { runs: 1 } },
+    { returnDocument: 'after' },
+  )
+  if (!done) return done
+  const earns = !guest && !quiz.authorId?.equals(userId) && !done.paid?.includes(BRACKET_PAID)
+  const xp = earns ? QUIZ_XP_BRACKET : 0
+  await collection.updateOne({ _id }, { $set: { xp }, ...(earns ? { $addToSet: { paid: BRACKET_PAID } } : {}) })
+  if (xp > 0) await addLevelXp(await users(), userId, xp)
+  return { ...done, xp }
 }
 
 export const attemptId = (quizId: ObjectId, userId: ObjectId) => `${quizId.toHexString()}:${userId.toHexString()}`
@@ -357,8 +473,10 @@ export async function restartAttempt(quiz: QuizDoc, userId: ObjectId) {
   )
 }
 
-export const revised = (before: QuizQuestion[] | undefined, after: QuizQuestion[], now: Date) =>
-  before && JSON.stringify(before) !== JSON.stringify(after) ? { revisedAt: now } : {}
+export const revised = (before: Pick<QuizDoc, 'questions' | 'entries'> | null | undefined, after: Pick<QuizDoc, 'questions' | 'entries'>, now: Date) =>
+  before && (JSON.stringify(before.questions) !== JSON.stringify(after.questions) || JSON.stringify(before.entries ?? []) !== JSON.stringify(after.entries ?? []))
+    ? { revisedAt: now }
+    : {}
 
 export const staleAttempt = (quiz: QuizDoc, attempt: QuizAttemptDoc | null | undefined) => Boolean(attempt && quiz.revisedAt && attempt.startedAt < quiz.revisedAt)
 
@@ -366,6 +484,6 @@ export async function renewAttempt(quiz: QuizDoc, userId: ObjectId) {
   if (!quiz.revisedAt) return
   await (await quizAttempts()).updateOne(
     { _id: attemptId(quiz._id!, userId), startedAt: { $lt: quiz.revisedAt } },
-    { $set: { answers: [], finished: false, score: 0, total: quiz.questions.length, startedAt: new Date() }, $unset: { finishedAt: '', xp: '', paid: '' } },
+    { $set: { answers: [], finished: false, score: 0, total: quiz.questions.length, startedAt: new Date() }, $unset: { finishedAt: '', xp: '', paid: '', champion: '', bracket: '' } },
   )
 }

@@ -4,7 +4,7 @@ import { isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
 import { roundOwner } from '../profile'
 import { commentCounts } from '../quiz-comments'
-import { attemptId, finishAttempt, publishedQuiz, quizAuthors, quizCard, quizView, readValue, renewAttempt, restartAttempt, staleAttempt } from '../quizzes'
+import { attemptId, bracketStandings, finishAttempt, finishBracket, isBracket, publishedQuiz, quizAuthors, quizCard, quizView, readBracket, readValue, renewAttempt, restartAttempt, staleAttempt } from '../quizzes'
 
 async function liked(quiz: QuizDoc, userId: ObjectId) {
   const likes = await quizLikes()
@@ -12,11 +12,16 @@ async function liked(quiz: QuizDoc, userId: ObjectId) {
   return { likes: count, liked: mine > 0 }
 }
 
-const fullView = async (quiz: QuizDoc, attempt: QuizAttemptDoc | null, userId: ObjectId) => ({
-  ...quizView(quiz, attempt),
-  ...(await liked(quiz, userId)),
-  author: quiz.authorId ? ((await quizAuthors([quiz])).get(quiz.authorId.toHexString()) ?? null) : null,
-})
+const fullView = async (quiz: QuizDoc, attempt: QuizAttemptDoc | null, userId: ObjectId) => {
+  const view = quizView(quiz, attempt)
+  const tally = isBracket(quiz) && attempt?.finished ? await bracketStandings(quiz) : null
+  return {
+    ...view,
+    ...(tally && view.attempt ? { attempt: { ...view.attempt, ...tally } } : {}),
+    ...(await liked(quiz, userId)),
+    author: quiz.authorId ? ((await quizAuthors([quiz])).get(quiz.authorId.toHexString()) ?? null) : null,
+  }
+}
 
 export const LIST = handle(async (request) => {
   const owner = await roundOwner(request)
@@ -118,6 +123,17 @@ export const PLAY = handle(async (request) => {
     },
     { upsert: true },
   )
+
+  if (body.action === 'bracket') {
+    if (!isBracket(quiz)) return fail(400, 'bad_request')
+    const run = readBracket(quiz, body.champion, body.matches)
+    if (!run) return fail(400, 'bad_answer')
+    const done = await finishBracket(quiz, owner.id, run.champion, run.matches, owner.guest)
+    if (!done) return fail(409, 'answered')
+    return reply()
+  }
+
+  if (isBracket(quiz)) return fail(400, 'bad_request')
 
   if (body.action === 'answer') {
     if (quiz.layout !== 'steps') return fail(400, 'bad_request')

@@ -179,7 +179,7 @@ export default function QuizMine() {
                   )}
                   <b>{quiz.title || t('qb.newTitle')}</b>
                   <span className="qz-foot">
-                    <small>{t('quiz.questions', { count: quiz.questions.length })}</small>
+                    <small>{quiz.format === 'bracket' ? t('quiz.bracket.count', { count: quiz.entries?.length ?? 0 }) : t('quiz.questions', { count: quiz.questions.length })}</small>
                     {quiz.status === 'published' && (
                       <span className="qz-stats">
                         <span>

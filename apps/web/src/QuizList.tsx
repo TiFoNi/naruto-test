@@ -47,6 +47,11 @@ export function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
         <span className="qz-corner is-left">
           {quiz.mine?.changed ? (
             <em className="qz-badge is-changed">{t('quiz.badge.changed')}</em>
+          ) : status === 'done' && quiz.format === 'bracket' ? (
+            <em className="qz-badge is-score is-top">
+              <CheckIcon />
+              {t('quiz.bracket.done')}
+            </em>
           ) : status === 'done' ? (
             <em className={`qz-badge is-score ${grade}`}>
               <CheckIcon />
@@ -67,7 +72,9 @@ export function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
         <b>{quiz.title}</b>
         {quiz.author && <em className="qz-author">{t('qb.by', { name: quiz.author.nickname })}</em>}
         <small>
-          {t('quiz.questions', { count: quiz.count })} · {t(quiz.layout === 'steps' ? 'quiz.layout.steps' : 'quiz.layout.list')}
+          {quiz.format === 'bracket'
+            ? `${t('quiz.bracket.count', { count: quiz.count })} · ${t('quiz.bracket.kind')}`
+            : `${t('quiz.questions', { count: quiz.count })} · ${t(quiz.layout === 'steps' ? 'quiz.layout.steps' : 'quiz.layout.list')}`}
         </small>
         <span className="qz-foot">
           <span className="qz-kinds">

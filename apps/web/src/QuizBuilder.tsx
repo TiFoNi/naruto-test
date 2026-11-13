@@ -15,9 +15,10 @@ import type { Entity, Game, GameId } from './games/types'
 import { useI18n, type L10n, type UiKey } from './i18n'
 import { ArrowIcon, CheckIcon, CloseIcon, CopyIcon, CrownIcon, DownIcon, GearIcon, PencilIcon, PictureIcon, PlayIcon, PlusIcon, SparkIcon, TextIcon, TrashIcon, UpIcon, UserIcon } from './icons'
 import { abilityUrl, picsUrl } from './pics'
-import { coverUrl, type QuizCover, type QuizKind, type QuizLayout, type QuizAttempt, type QuizOption, type QuizQuestionView, type QuizStatus, type QuizValue, type QuizView } from './quiz'
+import { coverUrl, type QuizCover, type QuizFormat, type QuizKind, type QuizLayout, type QuizAttempt, type QuizOption, type QuizQuestionView, type QuizStatus, type QuizValue, type QuizView } from './quiz'
 import { KIND_ICON } from './QuizList'
 import { QuizRun } from './QuizPlay'
+import { entryArt } from './QuizBracket'
 import { useHref, useNavigate } from './router'
 import Thumb from './Thumb'
 
@@ -43,10 +44,15 @@ export type Draft = {
   title: string
   cover: QuizCover
   layout: QuizLayout
+  format?: QuizFormat
+  entries?: BracketEntry[]
+  size?: number
   status: QuizStatus
   note?: string
   questions: DraftQuestion[]
 }
+
+export type BracketEntry = Extract<DraftOption, { kind: 'entity' | 'image' }>
 
 export type SavedDraft = Draft & { id: string; updatedAt?: string; official?: boolean }
 
@@ -58,6 +64,10 @@ const MAX_OPTIONS = 8
 const MAX_PAIRS = 6
 const MAX_QUESTIONS = 30
 const MIN_QUESTIONS = 3
+const MAX_ENTRIES = 64
+const ENTRY_SIZES = [16, 32, 64]
+
+const entryReady = (entry: BracketEntry) => (entry.kind === 'image' ? !!entry.key && !!entry.text.trim() : entry.id !== undefined)
 
 const ERRORS: Record<string, UiKey> = {
   game: 'qb.err.game',
@@ -73,6 +83,9 @@ const ERRORS: Record<string, UiKey> = {
   question_duplicate: 'qb.err.duplicate',
   login: 'qb.err.login',
   too_many: 'qb.err.tooMany',
+  entries: 'qb.err.entries',
+  entry: 'qb.err.entry',
+  entry_duplicate: 'qb.err.entryDuplicate',
   publish_limit: 'qb.err.publishLimit',
 }
 
@@ -693,6 +706,17 @@ function Settings({
         </div>
 
         <div className="qb-fields">
+          <div className="quiz-admin-field">
+            <span className="quiz-admin-label">{t('qb.kind.label')}</span>
+            <div className="qb-formats">
+              {(['questions', 'bracket'] as const).map((format) => (
+                <button key={format} type="button" className={(quiz.format ?? 'questions') === format ? 'on' : ''} onClick={() => patch({ format })}>
+                  <b>{t(`qb.kind.${format}` as UiKey)}</b>
+                  <small>{t(`qb.kind.${format}Hint` as UiKey)}</small>
+                </button>
+              ))}
+            </div>
+          </div>
           <label className="quiz-admin-field">
             <span className="quiz-admin-label">{t('qb.titleLabel')}</span>
             <input className={`quiz-admin-input qb-title-input ${quiz.title.trim() ? '' : 'is-missing'}`} maxLength={80} value={quiz.title} placeholder={t('qb.titlePh')} onChange={(event) => patch({ title: event.target.value })} />
@@ -712,6 +736,7 @@ function Settings({
               }))}
             />
           </div>
+          {quiz.format !== 'bracket' && (
           <div className="quiz-admin-field">
             <span className="quiz-admin-label">{t('qb.format')}</span>
             <div className="qb-formats">
@@ -723,6 +748,7 @@ function Settings({
               ))}
             </div>
           </div>
+          )}
           {mode === 'admin' && (
             <>
               {author}
@@ -752,6 +778,162 @@ function Settings({
           </button>
         </footer>
       )}
+    </section>
+  )
+}
+
+function BracketEditor({
+  game,
+  byId,
+  entries,
+  size,
+  onSize,
+  onAdd,
+  onEdit,
+  onDrop,
+}: {
+  game: Game
+  byId: Map<number, Entity>
+  entries: BracketEntry[]
+  size: number
+  onSize: (size: number) => void
+  onAdd: (entry: BracketEntry) => void
+  onEdit: (at: number, entry: BracketEntry) => void
+  onDrop: (at: number) => void
+}) {
+  const { t, name } = useI18n()
+  const path = useContext(UploadPath)
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null)
+  const [failed, setFailed] = useState(0)
+  const room = Math.max(0, size - entries.length)
+  const full = room === 0
+  const taken = useMemo(() => new Set(entries.flatMap((entry) => (entry.kind === 'entity' && entry.id !== undefined ? [entry.id] : []))), [entries])
+
+  const upload = async (files: FileList | null) => {
+    const list = [...(files ?? [])].slice(0, room)
+    if (!list.length) return
+    setFailed(0)
+    let missed = 0
+    for (const [at, file] of list.entries()) {
+      setProgress({ done: at, total: list.length })
+      const saved = await uploadPicture(path, file)
+      if (saved) onAdd({ kind: 'image', ...saved, text: '' })
+      else missed++
+    }
+    setProgress(null)
+    setFailed(missed)
+  }
+
+  const picker = (className: string, label: ReactNode) => (
+    <label className={`${className} ${progress ? 'is-busy' : ''}`}>
+      {label}
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        disabled={!!progress || full}
+        onChange={(event) => {
+          void upload(event.target.files)
+          event.target.value = ''
+        }}
+      />
+    </label>
+  )
+
+  return (
+    <section className="qb-card qb-bracket">
+      <header className="qb-card-head">
+        <span className="qb-num">
+          <PictureIcon />
+        </span>
+        <div className="qb-card-title">
+          <small>{t('qb.entries.lead')}</small>
+          <b>{t('qb.entries.title')}</b>
+        </div>
+      </header>
+
+      <div className="qb-bracket-sizes" role="radiogroup" aria-label={t('qb.entries.size')}>
+        {ENTRY_SIZES.map((one) => {
+          const tight = entries.length > one
+          return (
+            <button
+              key={one}
+              type="button"
+              role="radio"
+              aria-checked={size === one}
+              className={size === one ? 'on' : ''}
+              disabled={tight}
+              title={tight ? t('qb.entries.tooMany', { count: entries.length - one }) : undefined}
+              onClick={() => onSize(one)}
+            >
+              <b>{one}</b>
+            </button>
+          )
+        })}
+      </div>
+
+
+      <div className={`qb-bracket-tools ${full ? 'is-full' : ''}`}>
+        {picker('quiz-btn qb-bracket-upload', <>
+          <PlusIcon />
+          {progress ? t('qb.entries.uploading', { done: progress.done + 1, total: progress.total }) : t('qb.entries.upload')}
+        </>)}
+        <div className="qb-bracket-search">
+          {full ? (
+            <span className="qb-bracket-full">
+              <CheckIcon />
+              {t('qb.entries.allFilled')}
+            </span>
+          ) : (
+            <CharacterSearch
+              game={game}
+              exclude={taken}
+              compact
+              pickOnly
+              strict
+              placeholder={t('qb.entries.character')}
+              onPick={(one) => onAdd({ kind: 'entity', id: one.id })}
+            />
+          )}
+        </div>
+      </div>
+      {failed > 0 && <p className="quiz-admin-hint is-error">{t('qb.entries.failed', { count: failed })}</p>}
+
+      <ol className="qb-bracket-grid">
+        {entries.map((entry, at) => {
+          const art = entryReady(entry) ? entryArt(game, byId, entry.kind === 'image' ? { kind: 'image', key: entry.key!, ver: entry.ver ?? '', text: entry.text } : { kind: 'entity', id: entry.id! }) : null
+          const entity = entry.kind === 'entity' && entry.id !== undefined ? byId.get(entry.id) : undefined
+          return (
+            <li key={entry.kind === 'image' ? `i:${entry.key}:${at}` : `e:${entry.id}`}>
+              <span className="qb-bracket-art">{art ? <img src={art} alt="" loading="lazy" /> : null}</span>
+              <span className="qb-bracket-no">{at + 1}</span>
+              <button type="button" className="qb-bracket-drop" aria-label={t('qb.entries.remove')} title={t('qb.entries.remove')} onClick={() => onDrop(at)}>
+                <CloseIcon />
+              </button>
+              {entry.kind === 'image' ? (
+                <input
+                  className={`quiz-admin-input ${entry.text.trim() ? '' : 'is-missing'}`}
+                  maxLength={90}
+                  placeholder={t('qb.entries.captionPh')}
+                  value={entry.text}
+                  onChange={(event) => onEdit(at, { ...entry, text: event.target.value })}
+                />
+              ) : (
+                <b className="qb-bracket-name">{entity ? name(entity) : `#${entry.id}`}</b>
+              )}
+            </li>
+          )
+        })}
+        {Array.from({ length: room }, (_, at) => (
+          <li key={`slot-${at}`} className="is-slot">
+            {picker('qb-bracket-slot', <>
+              <PlusIcon />
+              <small>{entries.length + at + 1}</small>
+            </>)}
+            <span className="qb-bracket-spacer" aria-hidden />
+          </li>
+        ))}
+      </ol>
     </section>
   )
 }
@@ -789,6 +971,51 @@ function playable(question: DraftQuestion, at: number): { view: QuizQuestionView
 
 const same = (value: QuizValue, solution: number[] | number) =>
   Array.isArray(solution) ? Array.isArray(value) && value.length === solution.length && value.every((one, i) => one === solution[i]) : value === solution
+
+function BracketTry({ game, byId, quiz }: { game: Game; byId: Map<number, Entity>; quiz: Draft }) {
+  const { t } = useI18n()
+  const entries = useMemo(() => (quiz.entries ?? []).filter(entryReady).map((entry) => viewOption(entry)), [quiz.entries])
+  const [attempt, setAttempt] = useState<QuizAttempt | null>(null)
+  const [liked, setLiked] = useState(false)
+
+  const send = (body: Record<string, unknown>) => {
+    if (body.action === 'restart') return setAttempt(null)
+    if (body.action !== 'bracket') return
+    const standings = entries.map(() => ({ champion: 0, wins: 0, games: 0 }))
+    for (const [winner, loser] of body.matches as [number, number][]) {
+      standings[winner]!.wins++
+      standings[winner]!.games++
+      standings[loser]!.games++
+    }
+    const champion = body.champion as number
+    standings[champion]!.champion = 1
+    setAttempt({ answered: 0, finished: true, score: 0, total: entries.length, answers: [], champion, voters: 1, standings, xp: null })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const view: QuizView = {
+    id: quiz.id ?? 'preview',
+    game: quiz.game,
+    title: quiz.title,
+    cover: quiz.cover,
+    layout: 'steps',
+    format: 'bracket',
+    count: entries.length,
+    kinds: [],
+    questions: [],
+    entries,
+    attempt,
+    liked,
+    likes: liked ? 1 : 0,
+  }
+
+  return (
+    <div className="qb-try">
+      <p className="qb-try-note">{t('qb.try.note')}</p>
+      <QuizRun game={game} byId={byId} quiz={view} busy={false} error="" likeNote="" onSend={send} onLike={() => setLiked((was) => !was)} />
+    </div>
+  )
+}
 
 function TryRun({ game, byId, quiz }: { game: Game; byId: Map<number, Entity>; quiz: Draft }) {
   const { t } = useI18n()
@@ -1024,17 +1251,25 @@ export default function QuizBuilder({
 
   const patch = (next: Partial<Draft>) => setQuiz((current) => ({ ...current, ...next }))
   const setQuestions = (questions: DraftQuestion[]) => patch({ questions })
-  const issues = quiz.questions.map(issueOf)
-  const enough = quiz.questions.length >= MIN_QUESTIONS
-  const issueCount = issues.filter(Boolean).length + (quiz.title.trim() ? 0 : 1) + (enough ? 0 : 1)
+  const bracket = quiz.format === 'bracket'
+  const entries = quiz.entries ?? []
+  const size = quiz.size ?? ENTRY_SIZES.find((one) => one >= entries.length) ?? MAX_ENTRIES
+  const entriesOk = entries.length === size && entries.every(entryReady)
+  const issues = bracket ? [] : quiz.questions.map(issueOf)
+  const enough = bracket ? entriesOk : quiz.questions.length >= MIN_QUESTIONS
+  const coverOk = !!quiz.cover
+  const issueCount = issues.filter(Boolean).length + (quiz.title.trim() ? 0 : 1) + (coverOk ? 0 : 1) + (enough ? 0 : 1)
   const current = Math.max(0, Math.min(sel, quiz.questions.length - 1))
   const titleOk = !!quiz.title.trim()
   const questionsOk = enough && issues.every((one) => !one)
   const steps = [
-    { key: 'qb.step.main' as UiKey, ok: titleOk },
-    { key: 'qb.step.questions' as UiKey, ok: questionsOk },
-    { key: 'qb.step.check' as UiKey, ok: titleOk && questionsOk },
+    { key: 'qb.step.main' as UiKey, ok: titleOk && coverOk },
+    { key: (bracket ? 'qb.step.entries' : 'qb.step.questions') as UiKey, ok: questionsOk },
+    { key: 'qb.step.check' as UiKey, ok: titleOk && coverOk && questionsOk },
   ]
+  const addEntry = (entry: BracketEntry) => setQuiz((was) => ({ ...was, entries: [...(was.entries ?? []), entry].slice(0, was.size ?? size) }))
+  const editEntry = (at: number, entry: BracketEntry) => setQuiz((was) => ({ ...was, entries: (was.entries ?? []).map((one, i) => (i === at ? entry : one)) }))
+  const dropEntry = (at: number) => setQuiz((was) => ({ ...was, entries: (was.entries ?? []).filter((_, i) => i !== at) }))
   const go = (next: number) => {
     setStep(next)
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -1060,6 +1295,8 @@ export default function QuizBuilder({
 
   const firstProblem = () => {
     if (!quiz.title.trim()) return { at: null, key: 'qb.err.title' as UiKey }
+    if (!quiz.cover) return { at: null, key: 'qb.err.cover' as UiKey }
+    if (bracket) return entriesOk ? null : { at: null, key: 'qb.err.entries' as UiKey, step: 1 }
     const at = issues.findIndex(Boolean)
     return at >= 0 ? { at, key: issues[at]! } : null
   }
@@ -1067,7 +1304,7 @@ export default function QuizBuilder({
   const save = async (submit = false) => {
     const problem = mode === 'admin' || submit ? firstProblem() : null
     if (problem) {
-      if (problem.at === null) go(0)
+      if (problem.at === null) go('step' in problem ? (problem.step ?? 0) : 0)
       else openQuestion(problem.at)
       setBadAt(problem.at)
       const reason = t(problem.key, { max: 30 })
@@ -1160,7 +1397,13 @@ export default function QuizBuilder({
     </div>
   )
 
-  const editor = !quiz.questions.length ? (
+  const editor = bracket ? (
+    ready ? (
+      <BracketEditor game={game} byId={byId} entries={entries} size={size} onSize={(next) => patch({ size: next })} onAdd={addEntry} onEdit={editEntry} onDrop={dropEntry} />
+    ) : (
+      <div className="qb-card qb-loading" />
+    )
+  ) : !quiz.questions.length ? (
     <div className="qb-card qb-empty-q">
       {outline}
       <p>{t('qb.noQuestions')}</p>
@@ -1197,7 +1440,7 @@ export default function QuizBuilder({
     />
   )
 
-  const checks = quiz.questions.length + 2
+  const checks = (bracket ? 0 : quiz.questions.length) + 3
   const checklist = (
     <section className="qb-card qb-checklist">
       <header className="qb-card-head">
@@ -1226,17 +1469,27 @@ export default function QuizBuilder({
             <ArrowIcon />
           </button>
         </li>
-        <li className={enough ? 'is-ok' : 'is-bad'}>
-          <button type="button" onClick={() => go(1)}>
-            <i>{enough ? <CheckIcon /> : <CloseIcon />}</i>
+        <li className={coverOk ? 'is-ok' : 'is-bad'}>
+          <button type="button" onClick={() => go(0)}>
+            <i>{coverOk ? <CheckIcon /> : <CloseIcon />}</i>
             <span>
-              <b>{t('qb.step.questions')}</b>
-              <small>{enough ? quiz.questions.length : t('qb.err.fewQuestions')}</small>
+              <b>{t('qb.check.cover')}</b>
+              <small>{coverOk ? t('qb.check.coverOk') : t('qb.err.cover')}</small>
             </span>
             <ArrowIcon />
           </button>
         </li>
-        {quiz.questions.map((question, at) => (
+        <li className={enough ? 'is-ok' : 'is-bad'}>
+          <button type="button" onClick={() => go(1)}>
+            <i>{enough ? <CheckIcon /> : <CloseIcon />}</i>
+            <span>
+              <b>{t(bracket ? 'qb.step.entries' : 'qb.step.questions')}</b>
+              <small>{bracket ? (enough ? entries.length : t('qb.err.entries')) : enough ? quiz.questions.length : t('qb.err.fewQuestions')}</small>
+            </span>
+            <ArrowIcon />
+          </button>
+        </li>
+        {!bracket && quiz.questions.map((question, at) => (
           <li key={at} className={issues[at] ? 'is-bad' : 'is-ok'}>
             <button type="button" onClick={() => openQuestion(at)}>
               <i>{issues[at] ? <CloseIcon /> : <CheckIcon />}</i>
@@ -1255,7 +1508,11 @@ export default function QuizBuilder({
   const review =
     titleOk && questionsOk ? (
       ready ? (
-        <TryRun key={JSON.stringify(quiz.questions)} game={game} byId={byId} quiz={quiz} />
+        bracket ? (
+          <BracketTry key={JSON.stringify(quiz.entries)} game={game} byId={byId} quiz={quiz} />
+        ) : (
+          <TryRun key={JSON.stringify(quiz.questions)} game={game} byId={byId} quiz={quiz} />
+        )
       ) : (
         <div className="qb-card qb-loading" />
       )

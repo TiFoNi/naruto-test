@@ -45,10 +45,10 @@ export const SAVE = handle(async (request) => {
   const now = new Date()
   if (typeof body.id === 'string' && ObjectId.isValid(body.id)) {
     const { official: _official, ...fields } = read.quiz
-    const before = await collection.findOne({ _id: new ObjectId(body.id) }, { projection: { status: 1, questions: 1 } })
+    const before = await collection.findOne({ _id: new ObjectId(body.id) }, { projection: { status: 1, questions: 1, entries: 1 } })
     const saved = await collection.findOneAndUpdate(
       { _id: new ObjectId(body.id) },
-      { $set: { ...fields, ...revised(before?.questions, fields.questions, now), updatedAt: now } },
+      { $set: { ...fields, ...revised(before, fields, now), updatedAt: now } },
       { returnDocument: 'after' },
     )
     if (!saved) return missing()

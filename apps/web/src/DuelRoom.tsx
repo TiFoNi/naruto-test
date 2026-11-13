@@ -35,7 +35,7 @@ import type { Guess } from './useRound'
 import { SwordsIcon, TrophyIcon } from './icons'
 import { fullUrl } from './pics'
 import { api, apiSrc } from './api'
-import { useEntities } from './entities'
+import { useEntities, useKnown } from './entities'
 import { shareDuelTalk } from './duelTalk'
 
 const AUTO_NEXT_MS = 3000
@@ -138,8 +138,9 @@ export default function DuelRoom({ code, onRestart }: { code: string; onRestart?
   const table = duel?.mode === 'classic' || duel?.mode === 'blind'
   const filtered = duel?.anime === true
   const loaded = useEntities(game)
-  const view = useMemo(() => (game ? onlyView(game, filtered) : null), [game, game?.entities, filtered, loaded])
-  const byId = useMemo(() => new Map((game?.entities ?? []).map((e) => [e.id, e])), [game, game?.entities, loaded])
+  const known = useKnown(game, duel?.mode === 'who' ? (duel.cards ?? []) : [], loaded)
+  const view = useMemo(() => (game ? onlyView(game, filtered) : null), [game, game?.entities, filtered, loaded, known])
+  const byId = useMemo(() => new Map((game?.entities ?? []).map((e) => [e.id, e])), [game, game?.entities, loaded, known])
 
   const guesses: Guess[] = useMemo(() => {
     const done = (duel?.you?.guesses ?? [])
