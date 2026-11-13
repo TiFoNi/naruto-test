@@ -597,7 +597,6 @@ export type ChatDoc = {
   reply?: ChatReply
   bout?: ChatBout
   reacts?: ChatReact[]
-  admin?: boolean
 }
 
 export type ChatReact = { userId: ObjectId; nick: string; kind: string }

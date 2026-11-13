@@ -14,7 +14,7 @@ import { onChatOpen } from './chatEvents'
 import { useDuelTalk } from './duelTalk'
 import { useAuth } from './auth'
 import { useI18n, type UiKey } from './i18n'
-import { CardsIcon, ChatIcon, CloseIcon, DownIcon, InfoIcon, MuteIcon, ReplyIcon, SendIcon, ShieldIcon, SmileIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
+import { CardsIcon, ChatIcon, CloseIcon, DownIcon, InfoIcon, MuteIcon, ReplyIcon, SendIcon, SmileIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { useHref, useNavigate } from './router'
 import { openStream } from './stream'
 import { uiUrl } from './pics'
@@ -34,7 +34,6 @@ type Line = {
   tags?: { id: string; nick: string }[]
   everyone?: boolean
   reply?: { id: string; userId: string; nickname: string; text: string; gone?: boolean }
-  admin?: true
   bout?: Bout
   reacts?: ReactLine[]
 }
@@ -1077,12 +1076,6 @@ export default function Chat() {
                           >
                             {line.nickname}
                           </Link>
-                          {line.admin && (
-                            <i className="chat-admin" title={t('chat.adminHint')}>
-                              <ShieldIcon />
-                              {t('chat.admin')}
-                            </i>
-                          )}
                           {line.title && <i className={`player-title is-slim is-${line.title}`}>{t(`title.${line.title}` as UiKey)}</i>}
                           <time dateTime={new Date(line.at).toISOString()}>{clock(line.at)}</time>
                         </header>

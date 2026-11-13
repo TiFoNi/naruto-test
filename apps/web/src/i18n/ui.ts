@@ -1346,8 +1346,6 @@ const ui = {
   'chat.rule.private': { ru: 'Никому не давай пароль, почту, коды и личные данные. Админы их никогда не спрашивают.', uk: 'Нікому не давай пароль, пошту, коди й особисті дані. Адміни ніколи їх не питають.', en: 'Never share your password, email, codes or personal data. Admins never ask for them.' },
   'chat.rulesFoot': { ru: 'За нарушения сообщения удаляются, а автору может прилететь наказание: мут в чате, снятие из рейтинга, скрытие или удаление его тестов, а за серьёзные или повторные нарушения — блокировка аккаунта.', uk: 'За порушення повідомлення видаляються, а автору може прилетіти покарання: мут у чаті, зняття з рейтингу, приховування чи видалення його тестів, а за серйозні чи повторні порушення — блокування акаунта.', en: 'Rule-breaking messages get deleted, and the author may be punished: a chat mute, removal from the leaderboards, hiding or deleting their tests, and for serious or repeated cases an account ban.' },
   'chat.rulesOk': { ru: 'Понятно', uk: 'Зрозуміло', en: 'Got it' },
-  'chat.admin': { ru: 'Админ', uk: 'Адмін', en: 'Admin' },
-  'chat.adminHint': { ru: 'Официальное сообщение от команды NandaGuessr', uk: 'Офіційне повідомлення від команди NandaGuessr', en: 'Official message from the NandaGuessr team' },
   'chat.close': { ru: 'Закрыть чат', uk: 'Закрити чат', en: 'Close chat' },
   'chat.roomAll': { ru: 'Общий', uk: 'Загальний', en: 'General' },
   'chat.duelAlone': { ru: 'Вы тут один, писать пока некому', uk: 'Ви тут самі, поки нікому писати', en: 'You are alone here, nobody to write to yet' },

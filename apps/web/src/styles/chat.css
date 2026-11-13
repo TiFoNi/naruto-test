@@ -2004,24 +2004,6 @@ body:has(.chat-panel) .duel-dock {
   zoom: calc(1 / var(--page-zoom, 1));
 }
 
-.chat-admin {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  padding: 1px 7px 1px 5px;
-  border-radius: 99px;
-  background: color-mix(in srgb, var(--accent) 18%, transparent);
-  color: var(--accent);
-  font-size: 11px;
-  font-style: normal;
-  font-weight: 800;
-}
-
-.chat-admin svg {
-  width: 11px;
-  height: 11px;
-}
-
 .card.modal.chat-ask.chat-rules,
 .card.modal.chat-ask.chat-rules h2,
 .card.modal.chat-ask.chat-rules li,
