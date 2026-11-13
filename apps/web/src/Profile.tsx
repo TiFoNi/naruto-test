@@ -526,7 +526,15 @@ export default function Profile({ id }: { id?: string }) {
     if (!nick || !body || typeof ResizeObserver === 'undefined') return
     const fit = () => {
       nick.style.removeProperty('--nick-room')
-      if (narrow) return
+      nick.style.removeProperty('--nick-fit')
+      if (narrow) {
+        const line = nick.closest<HTMLElement>('.hero-nick-line')
+        const dye = nick.parentElement?.querySelector<HTMLElement>('.nick-dye')
+        const room = (line?.clientWidth ?? 0) - (dye ? dye.offsetWidth + 7 : 0) - 4
+        const need = nick.scrollWidth
+        if (room > 0 && need > room) nick.style.setProperty('--nick-fit', String(Math.max(0.55, room / need)))
+        return
+      }
       const tiles = body.querySelector<HTMLElement>(':scope > .profile-hero-tiles')
       const box = nick.getBoundingClientRect()
       if (!tiles || tiles.getBoundingClientRect().top < box.bottom) return
@@ -539,9 +547,14 @@ export default function Profile({ id }: { id?: string }) {
       nick.style.setProperty('--nick-room', `${Math.max(0, Math.floor((edge - box.left) / scale))}px`)
     }
     fit()
+    let alive = true
+    void document.fonts?.ready.then(() => alive && fit())
     const watch = new ResizeObserver(fit)
     watch.observe(body)
-    return () => watch.disconnect()
+    return () => {
+      alive = false
+      watch.disconnect()
+    }
   }, [nickname, edit, narrow, summary])
 
   if (!summary && !failed) return <ProfileGhost visit={!!id} />
