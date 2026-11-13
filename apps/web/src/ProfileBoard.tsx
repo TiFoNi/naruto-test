@@ -121,10 +121,10 @@ function measure(box: HTMLElement, wide: boolean): Metrics | null {
   let step = 0
   let row = 0
   let gap = 0
-  if (ref) {
-    const seen = pick(ref)
-    if (!seen.first) return null
-    row = seen.first.offsetHeight
+  const shelf = ref ? pick(ref) : null
+  if (shelf?.first) {
+    const seen = shelf
+    row = seen.first!.offsetHeight
     gap = seen.gap
     base = Math.max(worldRows?.base ?? 0, awardRows?.base ?? 0) || Math.round(seen.top + row + seen.tail)
     step = Math.max(worldRows?.step ?? 0, awardRows?.step ?? 0) || row + gap
@@ -142,7 +142,7 @@ function measure(box: HTMLElement, wide: boolean): Metrics | null {
     const inner = getComputedStyle(cards)
     const column = (halfOf(cards) - parseFloat(inner.paddingLeft) - parseFloat(inner.paddingRight) - (ROW - 1) * (parseFloat(inner.columnGap) || 0)) / ROW
     const tallest = Math.floor(column / 0.75)
-    if (!ref) {
+    if (!base) {
       row = tallest
       gap = seen.gap
       base = Math.round(chrome + row)
@@ -155,7 +155,12 @@ function measure(box: HTMLElement, wide: boolean): Metrics | null {
     cardBase = wide ? base : Math.round(chrome + cardRow)
     cardStep = wide ? step : cardRow + cardGap
   }
-  if (!base) return null
+  if (!base) {
+    base = FALLBACK.base
+    step = FALLBACK.step
+    row = row || FALLBACK.row
+    gap = gap || FALLBACK.gap
+  }
   let activity = FALLBACK.activity
   if (listed) {
     const list = listed.querySelector<HTMLElement>('.activity, p')
