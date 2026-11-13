@@ -9,7 +9,7 @@ import { BRAND } from './brand'
 import { GAMES } from './games'
 import { CATEGORIES, type Category, type GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { ChatIcon, CheckIcon, GridIcon, HeartIcon, LinkIcon, PencilIcon, PlusIcon, SearchIcon, SortIcon, UsersIcon } from './icons'
+import { ChatIcon, CheckIcon, CrownIcon, GridIcon, HeartIcon, LinkIcon, PencilIcon, PlusIcon, SearchIcon, SortIcon, UsersIcon } from './icons'
 import { coverUrl, type QuizCard, type QuizKind, type QuizLayout } from './quiz'
 import { useHref } from './router'
 import { uiUrl } from './pics'
@@ -19,15 +19,20 @@ const KINDS_SHOWN = 3
 type Status = 'all' | 'new' | 'going' | 'done'
 type Sort = 'new' | 'popular' | 'liked' | 'short' | 'long'
 
-const KINDS: QuizKind[] = ['choice', 'name', 'bool', 'order', 'pairs']
+type ListKind = QuizKind | 'bracket'
 
-export const KIND_ICON: Record<QuizKind, ReactNode> = {
+const KINDS: ListKind[] = ['choice', 'name', 'bool', 'order', 'pairs', 'bracket']
+
+export const KIND_ICON: Record<ListKind, ReactNode> = {
   choice: <GridIcon />,
   name: <SearchIcon />,
   bool: <CheckIcon />,
   order: <SortIcon />,
   pairs: <LinkIcon />,
+  bracket: <CrownIcon />,
 }
+
+const kindsOf = (quiz: QuizCard): ListKind[] => (quiz.format === 'bracket' ? ['bracket'] : quiz.kinds)
 
 const statusOf = (quiz: QuizCard): Exclude<Status, 'all'> =>
   quiz.mine?.finished ? 'done' : quiz.mine && quiz.mine.answered > 0 ? 'going' : 'new'
@@ -38,6 +43,7 @@ export function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
   const art = coverUrl(quiz.game, quiz.cover)
   const status = statusOf(quiz)
   const share = quiz.mine?.finished && quiz.count ? quiz.mine.score / quiz.count : 0
+  const kinds = kindsOf(quiz)
   const grade = share === 1 ? 'is-top' : share >= 0.6 ? 'is-good' : 'is-low'
 
   return (
@@ -78,14 +84,14 @@ export function Card({ quiz, href }: { quiz: QuizCard; href: string }) {
         </small>
         <span className="qz-foot">
           <span className="qz-kinds">
-            {(quiz.kinds.length > KINDS_SHOWN ? quiz.kinds.slice(0, KINDS_SHOWN - 1) : quiz.kinds).map((kind) => (
+            {(kinds.length > KINDS_SHOWN ? kinds.slice(0, KINDS_SHOWN - 1) : kinds).map((kind) => (
               <i key={kind} title={t(`quiz.kind.${kind}` as UiKey)}>
                 {KIND_ICON[kind]}
               </i>
             ))}
-            {quiz.kinds.length > KINDS_SHOWN && (
-              <i className="is-more" title={quiz.kinds.slice(KINDS_SHOWN - 1).map((kind) => t(`quiz.kind.${kind}` as UiKey)).join(', ')}>
-                +{quiz.kinds.length - KINDS_SHOWN + 1}
+            {kinds.length > KINDS_SHOWN && (
+              <i className="is-more" title={kinds.slice(KINDS_SHOWN - 1).map((kind) => t(`quiz.kind.${kind}` as UiKey)).join(', ')}>
+                +{kinds.length - KINDS_SHOWN + 1}
               </i>
             )}
           </span>
@@ -136,7 +142,7 @@ export default function QuizList({ category }: { category: string }) {
   const [query, setQuery] = useState('')
   const [status, setStatus] = useState<Status>('all')
   const [layout, setLayout] = useState<QuizLayout | null>(null)
-  const [kinds, setKinds] = useState<Set<QuizKind>>(new Set())
+  const [kinds, setKinds] = useState<Set<ListKind>>(new Set())
   const [sort, setSort] = useState<Sort>('new')
   const [panel, setPanel] = useState(false)
 
@@ -154,7 +160,7 @@ export default function QuizList({ category }: { category: string }) {
         (world === 'all' || quiz.game === world) &&
         (status === 'all' || statusOf(quiz) === status) &&
         (!layout || quiz.layout === layout) &&
-        [...kinds].every((kind) => quiz.kinds.includes(kind)) &&
+        [...kinds].every((kind) => kindsOf(quiz).includes(kind)) &&
         (!needle || quiz.title.toLowerCase().includes(needle)),
     )
     if (sort === 'popular') return [...rows].sort((a, b) => (b.plays ?? 0) - (a.plays ?? 0))
@@ -176,7 +182,7 @@ export default function QuizList({ category }: { category: string }) {
     setKinds(new Set())
     setSort('new')
   }
-  const toggleKind = (kind: QuizKind) =>
+  const toggleKind = (kind: ListKind) =>
     setKinds((current) => {
       const next = new Set(current)
       if (next.has(kind)) next.delete(kind)
