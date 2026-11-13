@@ -25,6 +25,7 @@ import { shownTone, watchTone } from './tone'
 import HumanCheck from './HumanCheck'
 import { AWARDS_FILTER, dropComments, dropCoins, dropFrames, dropQuizzes, dropTitle, dropInvite, dropMentions, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed, type FriendAsk } from './awards'
 import { openChat } from './chatEvents'
+import { pushRound } from './roundPush'
 import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
 import { startAnimGate } from './animGate'
 import GemIcon from './GemIcon'
@@ -508,7 +509,7 @@ function Bell() {
     const stop = watchFeed(setFeed)
     const tick = () => document.visibilityState === 'visible' && void refreshFeed()
     const timer = setInterval(tick, POLL_MS)
-    const close = openStream('stream/notify', { invite: () => void refreshFeed() })
+    const close = openStream('stream/notify', { invite: () => void refreshFeed(), round: pushRound })
     document.addEventListener('visibilitychange', tick)
     window.addEventListener('focus', tick)
     return () => {

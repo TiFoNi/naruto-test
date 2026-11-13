@@ -6,6 +6,7 @@ import { refreshFeed } from './awards'
 import type { Entity, Game, Judgement } from './games/types'
 import type { ModeId } from './modes'
 import type { Stats } from './stats'
+import { watchRoundPush } from './roundPush'
 
 export type RoundView = {
   id: string
@@ -162,6 +163,13 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
   useEffect(() => () => clearTimeout(coolTimer.current), [])
 
   const live = active && !!round && !over && !busy
+  const roundId = round?.id
+  useEffect(() => {
+    if (!active || !roundId) return
+    return watchRoundPush((push) => {
+      if (push.id === roundId && push.device !== deviceId()) void load()
+    })
+  }, [active, roundId, load])
   useEffect(() => {
     if (!live) return
     const sync = () => {
@@ -188,7 +196,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
   }
 
   const giveUp = () => {
-    if (round && !over && !busy) request('round/giveup', { roundId: round.id })
+    if (round && !over && !busy) request('round/giveup', { roundId: round.id, device: deviceId() })
   }
 
   const refilter = (anime: boolean) => {

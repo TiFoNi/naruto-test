@@ -332,6 +332,10 @@ export function subscribeChat(send: Sender) {
   }
 }
 
+export function ringRound(userId: ObjectId, round: { id: string; device: string | null }) {
+  for (const send of bells.get(userId.toHexString()) ?? []) send('round', round)
+}
+
 export function subscribeBell(userId: ObjectId, send: Sender) {
   const key = userId.toHexString()
   const set = bells.get(key) ?? new Set<Sender>()

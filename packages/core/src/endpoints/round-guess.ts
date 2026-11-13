@@ -6,6 +6,7 @@ import { oneTry } from '@nanda/game'
 import { humanCheck } from '../human'
 import { rememberLang, roundOwner, touchVisit } from '../profile'
 import { finishRound, readDevice, readDeviceName, roundLimit, roundView } from '../rounds'
+import { ringRound } from '../stream'
 
 const MAX_GUESSES = 300
 const MIN_GAP_MS = 800
@@ -59,13 +60,19 @@ export const POST = handle(async (request) => {
     await touchVisit(people, userId)
     await rememberLang(people, userId, request)
   }
+  const ring = () => !owner.guest && ringRound(userId, { id: String(_id), device })
   if (entityId !== updated.answerId) {
     const limit = await roundLimit(updated)
     const spent = limit !== null && updated.guesses.length >= limit
-    if (!oneTry(updated.game, updated.mode) && !spent) return json({ round: await roundView(updated, false) })
+    if (!oneTry(updated.game, updated.mode) && !spent) {
+      ring()
+      return json({ round: await roundView(updated, false) })
+    }
     const missed = await finishRound(people, updated, false)
+    ring()
     return json({ round: await roundView(missed.round, false), stats: missed.stats })
   }
   const result = await finishRound(people, updated, true)
+  ring()
   return json({ round: await roundView(result.round, false), stats: result.stats, ...(result.xp ? { xp: result.xp } : {}) })
 })
