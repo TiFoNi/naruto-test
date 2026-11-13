@@ -362,6 +362,7 @@ export type StreakDoc = {
   left?: number
   right?: number
   ask?: { parts: { key: string; value: string }[]; join: string }
+  asked?: string[]
   answer?: string
   status: 'playing' | 'over'
   createdAt: Date

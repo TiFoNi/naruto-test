@@ -5,7 +5,7 @@ import { rounds, type RoundDoc, type UserDoc } from './db'
 import { gameData, isGame, isMode, knows } from './games'
 import { applyDailyResult, applyResult, applySkip, awardSolveXp, defaultNickname } from './profile'
 import { abilityByKey } from './abilities'
-import { modeFits, modePool, oddOptions, oddTrait, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
+import { modeFits, modePool, oddOptions, oddPast, oddTrait, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { findChallenge, recordSolve } from './challenges'
 import { collectQuestsQuietly } from './quests'
 import { markSeasonPlay } from './season'
@@ -16,6 +16,8 @@ import { cardXpFor, openDex } from './dex'
 
 const RECENT_SHARE = 0.25
 const RECENT_MAX = 200
+
+const ODD_MEMORY = 8
 
 const recentWindow = (pool: number) => Math.max(1, Math.min(RECENT_MAX, Math.floor(pool * RECENT_SHARE)))
 
@@ -36,13 +38,13 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, 
   const shown = animeOnly ? whole.filter((one) => one.anime !== false) : whole
   const pool = shown.length ? shown : whole
   const recent = await collection
-    .find({ userId, game, mode }, { projection: { answerId: 1 }, sort: { createdAt: -1 }, limit: recentWindow(pool.length) })
+    .find({ userId, game, mode }, { projection: { answerId: 1, extra: 1 }, sort: { createdAt: -1 }, limit: recentWindow(pool.length) })
     .toArray()
   const seen = new Set(recent.map((r) => r.answerId))
   const fresh = pool.filter((e) => !seen.has(e.id))
   const choices = fresh.length ? fresh : pool
   const answer = choices[Math.floor(Math.random() * choices.length)]
-  const extra = await roundExtra(game, mode, answer.id)
+  const extra = await roundExtra(game, mode, answer.id, Math.random(), mode === 'odd' ? oddPast(recent.slice(0, ODD_MEMORY).map((one) => one.extra)) : undefined)
   const doc: RoundDoc = {
     userId,
     game,

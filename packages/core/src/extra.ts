@@ -62,7 +62,11 @@ const onlyOdd = (marks: Map<number, Set<string>>, four: { id: number }[], answer
   return true
 }
 
-async function oddExtra(game: GameId, answerId: number, roll: number) {
+export type OddPast = { keys: string[]; traits: string[] }
+
+const keyOfTrait = (trait: string) => trait.slice(0, trait.indexOf(':'))
+
+async function oddExtra(game: GameId, answerId: number, roll: number, past: OddPast = { keys: [], traits: [] }) {
   const { pool } = await gameData(game)
   if (pool.length < 8) return undefined
 
@@ -83,6 +87,16 @@ async function oddExtra(game: GameId, answerId: number, roll: number) {
   const traits = [...shared].filter(([, members]) => members.length >= 3)
   if (!traits.length) return undefined
 
+  const byKey = new Map<string, [string, { id: number }[]][]>()
+  for (const one of traits) {
+    const key = keyOfTrait(one[0])
+    if (!byKey.has(key)) byKey.set(key, [])
+    byKey.get(key)!.push(one)
+  }
+  const keys = [...byKey.keys()]
+  const freshKeys = keys.filter((key) => !past.keys.includes(key))
+  const columns = freshKeys.length ? freshKeys : keys
+
   const random = seeded(roll)
   const draw = <T>(list: T[], count: number) => {
     const copy = [...list]
@@ -95,13 +109,21 @@ async function oddExtra(game: GameId, answerId: number, roll: number) {
 
   let fallback: string | undefined
   for (let tries = 0; tries < ODD_TRIES; tries++) {
-    const [trait, members] = traits[Math.floor(random() * traits.length)]
+    const inColumn = byKey.get(columns[Math.floor(random() * columns.length)])!
+    const unseen = inColumn.filter(([trait]) => !past.traits.includes(trait))
+    const options = unseen.length ? unseen : inColumn
+    const [trait, members] = options[Math.floor(random() * options.length)]
     const four = draw([...draw(members, 3), { id: answerId }], 4)
     const extra = `${four.map((one) => one.id).join(',')}|${trait}`
     fallback ??= extra
     if (onlyOdd(marks, four, answerId)) return extra
   }
   return fallback
+}
+
+export const oddPast = (extras: (string | undefined | null)[], keep = 2): OddPast => {
+  const traits = extras.map((extra) => extra?.split('|')[1]).filter((one): one is string => !!one && one.includes(':'))
+  return { keys: [...new Set(traits.slice(0, keep).map(keyOfTrait))], traits }
 }
 
 export const oddOptions = (extra: string | undefined) => {
@@ -116,10 +138,10 @@ export const oddTrait = (extra: string | undefined) => {
   return at < 0 ? undefined : { key: raw.slice(0, at), value: raw.slice(at + 1) }
 }
 
-export async function roundExtra(game: GameId, mode: ModeId, answerId: number, roll = Math.random()) {
+export async function roundExtra(game: GameId, mode: ModeId, answerId: number, roll = Math.random(), past?: OddPast) {
   if (mode === 'shot') return shotExtra(game, answerId, roll)
   if (mode === 'page') return pageExtra(game, answerId, roll)
-  if (mode === 'odd') return oddExtra(game, answerId, roll)
+  if (mode === 'odd') return oddExtra(game, answerId, roll, past)
   if (mode === 'phrase') {
     const list = phrasesOf(answerId)
     return list.length ? String(Math.floor(roll * list.length)) : undefined

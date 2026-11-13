@@ -28,10 +28,18 @@ const same = (one: StreakDoc, next: { left: number; right: number; ask: { parts:
   tag(one.ask) === tag(next.ask) ||
   (one.left !== undefined && one.right !== undefined && [one.left, one.right].includes(next.left) && [one.left, one.right].includes(next.right))
 
+const PAIR_MEMORY = 2
+
+const askedKeys = (last?: StreakDoc) => last?.asked ?? (last?.ask?.parts ?? []).map((part) => part.key)
+
+const remember = (last: StreakDoc | undefined, next: { ask: { parts: { key: string }[] } }) =>
+  [...new Set([...next.ask.parts.map((part) => part.key), ...askedKeys(last)])].slice(0, PAIR_MEMORY)
+
 async function ask(game: GameId, level: number, last?: StreakDoc) {
+  const avoid = askedKeys(last)
   let spare = null
   for (let tries = 0; tries < 8; tries++) {
-    const round = await pairRound(game, level, Math.random)
+    const round = await pairRound(game, level, Math.random, avoid)
     if (!round) continue
     if (!last || !same(last, round)) return round
     spare ??= round
@@ -57,6 +65,7 @@ export async function pairRun(userId: ObjectId, game: GameId, guest: boolean, fr
     left: next.left,
     right: next.right,
     ask: next.ask,
+    asked: remember(found ?? undefined, next),
     answer: next.answer,
     status: 'playing',
     createdAt: found?.createdAt ?? now,
@@ -117,7 +126,7 @@ export async function pairAnswer(userId: ObjectId, game: GameId, pick: PairSide)
 
   await collection.updateOne(
     { _id: found._id },
-    { $set: { streak, best, left: next.left, right: next.right, ask: next.ask, answer: next.answer, updatedAt: now } },
+    { $set: { streak, best, left: next.left, right: next.right, ask: next.ask, asked: remember(found, next), answer: next.answer, updatedAt: now } },
   )
   return { right: true, answer: found.answer as PairSide, streak, best, question: { left: next.left, right: next.right, ask: next.ask } }
 }

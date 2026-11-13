@@ -50,20 +50,22 @@ const nested = (one: Set<number>, two: Set<number>) => [...one].every((id) => tw
 
 const pick = <T>(list: T[], roll: () => number) => list[Math.floor(roll() * list.length)]
 
-function spread(traits: Trait[], roll: () => number) {
+function spread(traits: Trait[], roll: () => number, avoid: string[] = []) {
   const byKey = new Map<string, Trait[]>()
   for (const trait of traits) {
     if (!byKey.has(trait.key)) byKey.set(trait.key, [])
     byKey.get(trait.key)!.push(trait)
   }
-  const key = pick([...byKey.keys()], roll)
+  const keys = [...byKey.keys()]
+  const fresh = keys.filter((key) => !avoid.includes(key))
+  const key = pick(fresh.length ? fresh : keys, roll)
   return key ? pick(byKey.get(key)!, roll) : undefined
 }
 
-function blend(traits: Trait[], roll: () => number): { ask: PairAsk; who: Set<number> } | null {
+function blend(traits: Trait[], roll: () => number, avoid: string[]): { ask: PairAsk; who: Set<number> } | null {
   for (let tries = 0; tries < TRIES; tries++) {
-    const one = pick(traits, roll)
-    const two = pick(traits, roll)
+    const one = spread(traits, roll, avoid)
+    const two = spread(traits, roll, avoid)
     if (!one || !two || one === two || nested(one.who, two.who) || nested(two.who, one.who)) continue
 
     if (one.key === two.key) {
@@ -81,7 +83,7 @@ function blend(traits: Trait[], roll: () => number): { ask: PairAsk; who: Set<nu
 
 const alike = (traits: Trait[], one: number, two: number) => traits.some((trait) => trait.who.has(one) && trait.who.has(two))
 
-export async function pairRound(game: GameId, level: number, roll: () => number): Promise<PairRound | null> {
+export async function pairRound(game: GameId, level: number, roll: () => number, avoid: string[] = []): Promise<PairRound | null> {
   const traits = await traitsOf(game)
   if (traits.length < 3) return null
   const { pool } = await gameData(game)
@@ -95,10 +97,10 @@ export async function pairRound(game: GameId, level: number, roll: () => number)
   const shaped = plain
     ? (() => {
         const fit = traits.filter((trait) => (easy ? trait.who.size / pool.length >= COMMON : true))
-        const trait = spread(fit.length ? fit : traits, roll)
+        const trait = spread(fit.length ? fit : traits, roll, avoid)
         return trait && { ask: { parts: [{ key: trait.key, value: trait.value }], join: 'single' as const }, who: trait.who }
       })()
-    : blend(traits, roll)
+    : blend(traits, roll, avoid)
 
   if (!shaped) return null
   const { ask, who } = shaped

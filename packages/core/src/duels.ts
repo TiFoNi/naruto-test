@@ -39,7 +39,7 @@ import {
 import { abilityByKey } from './abilities'
 import { duelRounds, duels, users, type DuelDoc, type DuelLogRow, type DuelPlayer, type DuelTalk, type UserDoc } from './db'
 import { tidy } from './chat'
-import { modePool, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
+import { modePool, oddPast, optionsOf, phraseAt, phraseCount, roundExtra } from './extra'
 import { gameData, isGame, isMode, type Entity } from './games'
 import { matchesFacet, planGrid } from './grid'
 import { BLACK, GREY, cleanCount, cleanWord, clueBoard, clueSizes, clueWinner, kindFor, sideLeft, teamKey } from './clue'
@@ -468,7 +468,7 @@ async function roundStart(duel: DuelDoc) {
   const pool = shown.length ? shown : whole
   const fresh = pool.filter((e) => e.id !== duel.answerId)
   const answer = (fresh.length ? fresh : pool)[randomInt(fresh.length || pool.length)]
-  const extra = await roundExtra(duel.game as GameId, duel.mode as ModeId, answer.id)
+  const extra = await roundExtra(duel.game as GameId, duel.mode as ModeId, answer.id, Math.random(), duel.mode === 'odd' ? oddPast([duel.extra]) : undefined)
   const startedAt = new Date()
   const limit = duel.seconds || DUEL_DEFAULT.seconds
   return {
