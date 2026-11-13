@@ -296,6 +296,16 @@ function AccountMenu({
   const inside = section === 'profile' || section === 'settings' || section === 'friends'
   const [asks, setAsks] = useState(0)
   const rewards = user?.rewards ?? 0
+  const [ready, setReady] = useState(0)
+
+  useEffect(() => {
+    if (!user) return setReady(0)
+    void freshFeed().then((feed) => setReady(feed.awards.length))
+    const stop = watchFeed((feed) => setReady(feed.awards.length))
+    return () => {
+      stop()
+    }
+  }, [user])
 
   useEffect(() => {
     const stop = watchFeed((feed) => setAsks(feed.requests.length))
@@ -330,9 +340,10 @@ function AccountMenu({
           {t('nav.levels')}
           {rewards > 0 && <span className="account-claim">{t('levels.claimHint')}</span>}
         </Link>
-        <Link href={href.achievements} onClick={() => setOpen(false)} prefetch={false}>
-          <TrophyIcon />
+        <Link href={ready > 0 ? `${href.achievements}?filter=ready` : href.achievements} onClick={() => setOpen(false)} prefetch={false} className={ready > 0 ? 'is-reward' : undefined}>
+          {ready > 0 ? <GiftIcon /> : <TrophyIcon />}
           {t('ach.title')}
+          {ready > 0 && <span className="account-claim">{t('levels.claimHint')}</span>}
         </Link>
         <Link href={href.friends} onClick={() => setOpen(false)} prefetch={false}>
           <UsersIcon />
