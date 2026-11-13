@@ -1355,6 +1355,7 @@ const ui = {
   'chat.react.laugh': { ru: 'Смешно', uk: 'Смішно', en: 'Funny' },
   'chat.react.puke': { ru: 'Фу', uk: 'Фу', en: 'Gross' },
   'chat.react.heart': { ru: 'Сердечко', uk: 'Сердечко', en: 'Heart' },
+  'chat.react.cry': { ru: 'Грустно', uk: 'Сумно', en: 'Sad' },
   'chat.react.meh': { ru: 'Ну такое', uk: 'Ну таке', en: 'Meh' },
   'chat.reactPatron': {
     ru: 'Эта реакция доступна обладателям титула «{title}»',

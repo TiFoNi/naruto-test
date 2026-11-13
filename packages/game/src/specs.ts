@@ -679,7 +679,7 @@ export const scrapValue = (id: unknown) => {
   return cost ? Math.floor(cost * BANNER_SCRAP) : null
 }
 
-export const REACTIONS = ['like', 'laugh', 'heart', 'puke', 'meh'] as const
+export const REACTIONS = ['like', 'laugh', 'heart', 'cry', 'puke', 'meh'] as const
 
 export type Reaction = (typeof REACTIONS)[number]
 
