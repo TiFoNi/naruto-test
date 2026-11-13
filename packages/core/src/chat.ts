@@ -29,7 +29,7 @@ export type ChatLine = {
   at: number
   tags?: { id: string; nick: string }[]
   everyone?: boolean
-  reply?: { id: string; userId: string; nickname: string; text: string }
+  reply?: { id: string; userId: string; nickname: string; text: string; gone?: boolean }
   bout?: BoutLine
   reacts?: ReactLine[]
 }
@@ -58,7 +58,7 @@ const boutOf = (bout: ChatBout): BoutLine => ({
   ...(bout.levels ? { levels: bout.levels } : {}),
 })
 
-export const lineOf = (doc: ChatDoc): ChatLine => ({
+export const lineOf = (doc: ChatDoc, gone?: Set<string>): ChatLine => ({
   id: doc._id!.toHexString(),
   userId: doc.userId.toHexString(),
   nickname: doc.nickname,
@@ -72,7 +72,14 @@ export const lineOf = (doc: ChatDoc): ChatLine => ({
   ...(doc.tags?.length ? { tags: doc.tags.map((tag) => ({ id: tag.id.toHexString(), nick: tag.nick })) } : {}),
   ...(doc.everyone ? { everyone: true } : {}),
   ...(doc.reply
-    ? { reply: { id: doc.reply.id.toHexString(), userId: doc.reply.userId.toHexString(), nickname: doc.reply.nickname, text: doc.reply.text } }
+    ? {
+        reply: {
+          id: doc.reply.id.toHexString(),
+          userId: doc.reply.userId.toHexString(),
+          nickname: doc.reply.nickname,
+          ...(gone?.has(doc.reply.id.toHexString()) ? { text: '', gone: true } : { text: doc.reply.text }),
+        },
+      }
     : {}),
   ...(doc.bout ? { bout: boutOf(doc.bout) } : {}),
   ...(doc.reacts?.length ? { reacts: reactsOf(doc.reacts) } : {}),
@@ -246,6 +253,10 @@ export async function chatPage(before?: string, limit = PAGE, channel: ChatChann
     .find({ hidden: { $ne: true }, ...older }, { sort: { _id: -1 }, limit: size + 1 })
     .toArray()
   const page = found.slice(0, size)
+  const asked = page.flatMap((doc) => (doc.reply ? [doc.reply.id] : []))
+  const gone = new Set(
+    asked.length ? (await room.find({ _id: { $in: asked }, hidden: true }, { projection: { _id: 1 } }).toArray()).map((one) => one._id!.toHexString()) : [],
+  )
   const faces = await freshFaces(page)
   const fresh = (doc: ChatDoc): ChatDoc => {
     const now = faces.get(doc.userId.toHexString())
@@ -253,7 +264,7 @@ export async function chatPage(before?: string, limit = PAGE, channel: ChatChann
       ? { ...doc, nickname: now.nickname ?? doc.nickname, tag: now.tag ?? doc.tag, avatar: now.avatar ?? null, frame: now.frame ?? null, title: now.title ?? null, nickTone: now.nickTone ?? null }
       : doc
   }
-  return { lines: page.reverse().map((doc) => lineOf(fresh(doc))), more: found.length > size }
+  return { lines: page.reverse().map((doc) => lineOf(fresh(doc), gone)), more: found.length > size }
 }
 
 export type ChatFail = 'empty' | 'muted' | 'too_fast'

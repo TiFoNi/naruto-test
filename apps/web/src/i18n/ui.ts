@@ -1356,6 +1356,7 @@ const ui = {
   'chat.replyTo': { ru: 'Ответ {name}', uk: 'Відповідь {name}', en: 'Replying to {name}' },
   'chat.replyCancel': { ru: 'Отменить ответ', uk: 'Скасувати відповідь', en: 'Cancel reply' },
   'chat.replyJump': { ru: 'Показать сообщение', uk: 'Показати повідомлення', en: 'Show message' },
+  'chat.replyDeleted': { ru: 'Сообщение удалено', uk: 'Повідомлення видалено', en: 'Message deleted' },
   'chat.replyGone': { ru: 'Это сообщение уже не в чате', uk: 'Цього повідомлення вже нема в чаті', en: 'That message is no longer in the chat' },
   'chat.replyFrom': { ru: '{name} ответил тебе', uk: '{name} відповів тобі', en: '{name} replied to you' },
   'chat.roomDuel': { ru: 'Дуэль', uk: 'Дуель', en: 'Duel' },

@@ -200,6 +200,12 @@ function FitLabel({ full, short }: { full: string; short: string }) {
   )
 }
 
+
+const dim = (hex: string) => {
+  const full = hex.length === 4 ? `#${[...hex.slice(1)].map((one) => one + one).join('')}` : hex
+  const [r, g, b] = [1, 3, 5].map((at) => parseInt(full.slice(at, at + 2), 16) / 255)
+  return 0.2126 * r! + 0.7152 * g! + 0.0722 * b! < 0.28
+}
 export default function Profile({ id }: { id?: string }) {
   const { user, refresh } = useAuth()
   const own = !id
@@ -420,6 +426,7 @@ export default function Profile({ id }: { id?: string }) {
   const saidTone = summary?.tone
   const tone = paint === undefined ? (isTone(saidTone) ? saidTone : null) : paint
   const toneHex = GAMES.find((game) => game.id === tone)?.accent ?? (tone && TONE_HEX.test(tone) ? tone : undefined)
+  const toneText = toneHex && dim(toneHex) ? '#ffffff' : toneHex
   const saidNick = summary?.nickTone
   const nickTone = ink === undefined ? (isTone(saidNick) ? saidNick : null) : ink
   const nickHex = GAMES.find((game) => game.id === nickTone)?.accent ?? (nickTone && TONE_HEX.test(nickTone) ? nickTone : undefined)
@@ -1622,7 +1629,7 @@ export default function Profile({ id }: { id?: string }) {
   )
 
   return (
-    <div className={`profile ${fresh ? 'is-beta' : ''} ${narrow ? 'is-tester' : ''} ${framing ? 'is-framing' : ''}`} style={(toneHex ? { '--accent': toneHex } : {}) as CSSProperties}>
+    <div className={`profile ${fresh ? 'is-beta' : ''} ${narrow ? 'is-tester' : ''} ${framing ? 'is-framing' : ''}`} style={(toneHex ? { '--accent': toneHex, '--accent-text': toneText } : {}) as CSSProperties}>
       <div className="profile-top">
         <BackButton href={id ? href.board : href.home} anywhere={!!id}>
           {t(id ? 'nav.leaderboard' : 'play.back')}

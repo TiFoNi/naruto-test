@@ -1282,6 +1282,11 @@ body:has(.chat-panel) .duel-dock {
   white-space: nowrap;
 }
 
+.chat-thread span.is-gone {
+  color: var(--text-3);
+  font-style: italic;
+}
+
 .chat-thread:hover b,
 .chat-thread:hover span {
   color: var(--text);

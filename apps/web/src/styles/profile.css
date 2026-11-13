@@ -189,7 +189,7 @@
 }
 
 .profile-slot.is-widening > .card {
-  outline-color: var(--accent);
+  outline-color: var(--accent-text, var(--accent));
 }
 
 .react-grid-item .card-shelf {
@@ -250,7 +250,7 @@
 }
 
 .profile-slot.is-sized > .card {
-  outline-color: var(--accent);
+  outline-color: var(--accent-text, var(--accent));
 }
 
 .profile-grid.is-edit .profile-slot > .card {
@@ -376,7 +376,7 @@
 }
 
 .profile-tune.on {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .profile-tune.is-chip {
@@ -1095,7 +1095,7 @@
 }
 
 .banner-face.on {
-  border-color: var(--accent);
+  border-color: var(--accent-text, var(--accent));
 }
 
 .banner-slot {
@@ -1110,7 +1110,7 @@
 }
 
 .modes-pop .banner-slot:hover .banner-face.on {
-  border-color: var(--accent);
+  border-color: var(--accent-text, var(--accent));
 }
 
 .modes-pop .banner-face img {
@@ -1190,7 +1190,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 22px;
   line-height: 1;
@@ -1251,7 +1251,7 @@
 }
 
 .hero-acts .banner-pick.is-open .hero-act {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   background: color-mix(in srgb, #0d0f12 68%, transparent);
 }
 
@@ -1446,7 +1446,7 @@
 }
 
 .profile-hero-tiles > .hero-tile.is-add:hover:not(.is-open) > .hero-tile-open {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .hero-tile.is-add .hero-tile-open {
@@ -1660,7 +1660,7 @@
 .title-pick.on {
   border-color: color-mix(in srgb, var(--accent) 45%, transparent);
   background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .hero-nick-line {
@@ -1735,7 +1735,7 @@
   padding: 4px 12px;
   border-radius: 999px;
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 12.5px;
   font-weight: 800;
 }
@@ -2355,7 +2355,7 @@ button.fact-rank:hover {
 .places-list li b {
   flex: none;
   min-width: 46px;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 19px;
 }
@@ -2463,7 +2463,7 @@ button.fact-rank:hover {
   height: 44px;
   border-radius: 14px;
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .streak-flame svg {
@@ -2663,7 +2663,7 @@ button.fact-rank:hover {
 .level-rank b {
   font-family: var(--display);
   font-size: 14px;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .level-xp b {
@@ -2810,7 +2810,7 @@ button.fact-rank:hover {
 
 .soon-badges li.free > a:hover .soon-mark {
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   transform: translateY(-3px);
 }
 
@@ -3474,9 +3474,9 @@ button.fact-rank:hover {
 }
 
 .world-shelf li.is-seat.is-swap .world-pic.is-empty {
-  border-color: var(--accent);
+  border-color: var(--accent-text, var(--accent));
   background: color-mix(in srgb, var(--accent) 12%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 button.world-pic.is-empty {
@@ -3489,24 +3489,24 @@ button.world-pic.is-empty {
 button.world-pic.is-empty:hover {
   border-color: color-mix(in srgb, var(--accent) 60%, transparent);
   background: color-mix(in srgb, var(--accent) 8%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   transform: translateY(-3px);
 }
 
 .world-shelf li.is-seat.is-aim .world-pic.is-empty {
   border-style: solid;
-  border-color: var(--accent);
+  border-color: var(--accent-text, var(--accent));
   background: color-mix(in srgb, var(--accent) 14%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   animation: world-seat 1.6s ease-in-out infinite;
 }
 
 .world-shelf li.is-seat.is-aim .world-line b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .world-shelf.is-aiming li:not(.is-seat):hover .world-pic {
-  border-color: var(--accent);
+  border-color: var(--accent-text, var(--accent));
 }
 
 .world-shelf.is-board {
@@ -3669,7 +3669,7 @@ button.world-pic.is-empty:hover {
 
 a.world-blank:hover .world-pic.is-empty {
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   transform: translateY(-3px);
 }
 
@@ -4542,9 +4542,9 @@ body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
 
 .hero-acts.is-bar .hero-act:hover,
 .hero-acts.is-bar .banner-pick.is-open .hero-act {
-  border-color: var(--accent);
+  border-color: var(--accent-text, var(--accent));
   background: var(--card);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .hero-acts.is-bar > .banner-pick {

@@ -33,7 +33,7 @@ type Line = {
   at: number
   tags?: { id: string; nick: string }[]
   everyone?: boolean
-  reply?: { id: string; userId: string; nickname: string; text: string }
+  reply?: { id: string; userId: string; nickname: string; text: string; gone?: boolean }
   bout?: Bout
   reacts?: ReactLine[]
 }
@@ -229,6 +229,8 @@ let lastInput = Date.now()
 
 const present = () => document.visibilityState === 'visible' && (document.hasFocus() || Date.now() - lastInput < IDLE_MS)
 
+
+const goneReply = (line: Line, id: string): Line => (line.reply?.id === id ? { ...line, reply: { ...line.reply, text: '', gone: true } } : line)
 export default function Chat() {
   const { t, l } = useI18n()
   const href = useHref()
@@ -547,7 +549,7 @@ export default function Chat() {
       },
       drop: (data) => {
         const gone = (data as { id?: string } | null)?.id
-        if (gone && roomRef.current === 'chat') setLines((kept) => kept.filter((line) => line.id !== gone))
+        if (gone && roomRef.current === 'chat') setLines((kept) => kept.filter((line) => line.id !== gone).map((line) => goneReply(line, gone)))
       },
       typing: (data) => {
         const people = (data as { people?: { id: string; nickname: string }[] } | null)?.people
@@ -761,7 +763,7 @@ export default function Chat() {
   }
 
   const drop = async (line: Line) => {
-    const gone = () => setLines((kept) => kept.filter((one) => one.id !== line.id))
+    const gone = () => setLines((kept) => kept.filter((one) => one.id !== line.id).map((one) => goneReply(one, line.id)))
     if (user?.admin) return moderate({ drop: line.id, ...(room === 'news' ? { channel: 'news' } : {}) }, gone)
     setAsking(null)
     const { ok } = await api('chat', { drop: line.id })
@@ -1036,7 +1038,7 @@ export default function Chat() {
                       <button type="button" className="chat-thread" onClick={() => jump(line.reply!.id)} title={t('chat.replyJump')}>
                         <i aria-hidden />
                         <b>{line.reply.nickname}</b>
-                        <span>{line.reply.text}</span>
+                        <span className={line.reply.gone ? 'is-gone' : ''}>{line.reply.gone ? t('chat.replyDeleted') : line.reply.text}</span>
                       </button>
                     )}
                     {glued ? (
