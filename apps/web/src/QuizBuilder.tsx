@@ -48,7 +48,7 @@ export type Draft = {
   questions: DraftQuestion[]
 }
 
-export type SavedDraft = Draft & { id: string; updatedAt?: string }
+export type SavedDraft = Draft & { id: string; updatedAt?: string; official?: boolean }
 
 type Mode = 'admin' | 'user'
 

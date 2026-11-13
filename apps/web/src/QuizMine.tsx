@@ -60,6 +60,8 @@ export default function QuizMine() {
     })
 
   const capped = !!publish && publish.max !== null && publish.used >= publish.max
+  const own = list?.filter((one) => !one.official).length ?? 0
+  const live = list?.filter((one) => one.status === 'published').length ?? 0
 
   const back = (
     <div className="play-nav">
@@ -83,21 +85,21 @@ export default function QuizMine() {
     )
   }
 
-  const full = (list?.length ?? 0) >= limit
+  const full = own >= limit
 
   return (
     <div className="quiz-page qz-page">
       {back}
       <div className="qz-main-top">
         <div>
-          <small className="qz-kicker">{list ? t('qb.mine.count', { count: list.length, max: limit }) : ' '}</small>
+          <small className="qz-kicker">{list ? t('qb.mine.count', { count: own, max: limit }) : ' '}</small>
           <h1>{t('qb.mine')}</h1>
           {publish && (
             <span className={`qb-publish-meter ${publish.max === null ? 'is-free' : capped ? 'is-full' : ''}`}>
               {publish.max === null ? (
                 <>
                   <CrownIcon />
-                  {t('qb.limit.meterFree', { used: publish.used })} · {t('qb.limit.free')}
+                  {t('qb.limit.meterFree', { used: live })} · {t('qb.limit.free')}
                 </>
               ) : (
                 <>
@@ -157,14 +159,15 @@ export default function QuizMine() {
           {list.map((quiz) => {
             const world = GAMES.find((one) => one.id === quiz.game)
             const art = coverUrl(quiz.game, quiz.cover)
-            const live = quiz.status === 'published' || quiz.status === 'review'
+            const shown = !quiz.official && (quiz.status === 'published' || quiz.status === 'review')
             return (
               <div key={quiz.id} className="qb-mine-item">
-              <Link prefetch={false} className="qz-card qb-mine-card" href={href.makeTest({ id: quiz.id })}>
+              <Link prefetch={false} className="qz-card qb-mine-card" href={quiz.official ? `${href.adminQuizzes}?id=${quiz.id}` : href.makeTest({ id: quiz.id })}>
                 <span className="qz-art">
                   {art ? <img src={art} alt="" loading="lazy" /> : <span className="qz-mark">{BRAND.mark}</span>}
                   <span className="qz-corner is-left">
                     <em className={`qz-badge qb-status is-${quiz.status}`}>{t(`qb.status.${quiz.status}` as UiKey)}</em>
+                    {quiz.official && <em className="qz-badge qb-official">{t('qb.official')}</em>}
                   </span>
                 </span>
                 <span className="qz-info">
@@ -193,7 +196,7 @@ export default function QuizMine() {
                   {quiz.status === 'rejected' && quiz.note && <span className="qb-mine-note">{t('qb.rejectNote', { note: quiz.note })}</span>}
                 </span>
               </Link>
-              {live && (
+              {shown && (
                 <button type="button" className="qb-mine-hide" onClick={() => askHide(quiz)}>
                   <EyeOffIcon />
                   <span>{t(quiz.status === 'review' ? 'qb.hideReview' : 'qb.hide')}</span>

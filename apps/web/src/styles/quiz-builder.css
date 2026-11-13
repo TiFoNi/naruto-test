@@ -4536,3 +4536,15 @@ body:has(.chat-bubble) .qb {
     text-align: center;
   }
 }
+
+.qz-badge.qb-official {
+  border-color: rgb(242 193 64 / 60%);
+  background: rgb(242 193 64 / 90%);
+  color: #2a1d02;
+}
+
+.qb-mine-card .qz-corner.is-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}

@@ -44,11 +44,20 @@ export default function QuizAdmin() {
     void load()
   }, [load])
 
+  useEffect(() => {
+    if (!list) return
+    const wanted = new URLSearchParams(window.location.search).get('id')
+    const found = wanted && list.find((one) => one.id === wanted)
+    if (!found) return
+    show(found)
+    window.history.replaceState(null, '', window.location.pathname)
+  }, [list])
+
   const waiting = useMemo(() => (list ?? []).filter((one) => one.status === 'review').length, [list])
   const shown = useMemo(
     () =>
       (list ?? []).filter((one) =>
-        filter === 'review' ? one.status === 'review' : filter === 'official' ? !one.author : filter === 'players' ? !!one.author : true,
+        filter === 'review' ? one.status === 'review' : filter === 'official' ? !!one.official : filter === 'players' ? !one.official : true,
       ),
     [list, filter],
   )

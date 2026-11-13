@@ -2828,6 +2828,7 @@ const ui = {
     en: 'Publishing limit reached. Unpublish a quiz to send a new one, or become a Patron — no limits.',
   },
   'qb.limit.free': { ru: 'Без ограничений', uk: 'Без обмежень', en: 'No limit' },
+  'qb.official': { ru: 'Официальный', uk: 'Офіційний', en: 'Official' },
   'qb.hide': { ru: 'Снять с публикации', uk: 'Зняти з публікації', en: 'Unpublish' },
   'qb.hideReview': { ru: 'Отозвать с проверки', uk: 'Відкликати з перевірки', en: 'Withdraw from review' },
   'qb.hideTitle': { ru: 'Снять тест с публикации?', uk: 'Зняти тест з публікації?', en: 'Unpublish this quiz?' },

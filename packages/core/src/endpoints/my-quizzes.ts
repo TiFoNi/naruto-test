@@ -35,7 +35,7 @@ export const GET = handle(async (request) => {
     return quiz ? json({ quiz: view(quiz), publish: await publishRoom(userId, id) }) : fail(404, 'not_found')
   }
 
-  const list = await collection.find({ authorId: userId, official: { $ne: true } }, { sort: { updatedAt: -1 } }).toArray()
+  const list = await collection.find({ authorId: userId }, { sort: { updatedAt: -1 } }).toArray()
   const ids = list.map((quiz) => quiz._id!)
   const count = async (rows: { _id: unknown; count: number }[]) => new Map(rows.map((row) => [String(row._id), row.count]))
   const plays = await count(
