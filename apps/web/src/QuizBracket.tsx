@@ -53,6 +53,34 @@ const advance = (run: Run, winner: number, loser: number): Run => {
   return { round: shuffled(next), next: [], at: 0, matches, playIn: false }
 }
 
+const keyOf = (id: string, entries: QuizOption[]) => {
+  let hash = 0
+  for (const char of JSON.stringify(entries)) hash = (hash * 31 + char.charCodeAt(0)) | 0
+  return `bk:${id}:${entries.length}:${(hash >>> 0).toString(36)}`
+}
+
+const whole = (list: unknown, size: number): list is number[] =>
+  Array.isArray(list) && list.every((one) => Number.isInteger(one) && one >= 0 && one < size)
+
+const readRun = (key: string, size: number): Run | null => {
+  try {
+    const raw = JSON.parse(localStorage.getItem(key) ?? 'null') as Run | null
+    if (!raw || !whole(raw.round, size) || !whole(raw.next, size) || !Array.isArray(raw.matches)) return null
+    if (!raw.matches.every((pair) => whole(pair, size) && pair.length === 2)) return null
+    if (!Number.isInteger(raw.at) || raw.at < 0 || raw.at % 2 || raw.at >= raw.round.length) return null
+    return { round: raw.round, next: raw.next, at: raw.at, matches: raw.matches, playIn: !!raw.playIn }
+  } catch {
+    return null
+  }
+}
+
+const keepRun = (key: string, run: Run | null) => {
+  try {
+    if (run && run.round.length > 1) localStorage.setItem(key, JSON.stringify(run))
+    else localStorage.removeItem(key)
+  } catch {}
+}
+
 const stageOf = (run: Run): { key: UiKey; values?: Record<string, number> } => {
   if (run.playIn) return { key: 'quiz.bracket.playin' }
   const left = run.round.length
@@ -168,13 +196,19 @@ export default function BracketRun({ game, byId, quiz, busy, error, top, after, 
   const [picked, setPicked] = useState<number | null>(null)
   const timer = useRef(0)
   const finished = !!quiz.attempt?.finished
+  const saveKey = useMemo(() => keyOf(quiz.id, entries), [quiz.id, entries])
 
   useEffect(() => {
     if (finished) {
+      keepRun(saveKey, null)
       setRun(null)
       setPicked(null)
-    } else if (!run && entries.length > 1) setRun(begin(entries.length))
-  }, [finished, run, entries.length])
+    } else if (!run && entries.length > 1) setRun(readRun(saveKey, entries.length) ?? begin(entries.length))
+  }, [finished, run, entries.length, saveKey])
+
+  useEffect(() => {
+    if (run && !finished) keepRun(saveKey, run)
+  }, [run, finished, saveKey])
 
   useEffect(() => () => window.clearTimeout(timer.current), [])
 
