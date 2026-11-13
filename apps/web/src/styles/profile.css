@@ -214,8 +214,7 @@
   flex-direction: column;
 }
 
-.react-grid-item.slot-facts .profile-card .profile-facts,
-.react-grid-item.slot-facts .profile-card .profile-facts .fact {
+.react-grid-item.slot-facts .profile-card .profile-facts {
   min-height: 0;
 }
 
@@ -4697,4 +4696,8 @@ body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
 
 .profile-facts .fact > b.fact-value.empty {
   color: var(--text-3);
+}
+
+.react-grid-item:has(.places-pop) {
+  z-index: 40;
 }

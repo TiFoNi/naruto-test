@@ -1,6 +1,6 @@
 'use client'
 
-import { useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import ReactGridLayout, { useContainerWidth, type Layout, type LayoutItem } from 'react-grid-layout'
 import { gridBounds, transformStrategy } from 'react-grid-layout/core'
 import type { ProfileBlock } from '@nanda/game'
@@ -254,7 +254,29 @@ export default function ProfileBoard({
   const colsOf = (block: ProfileBlock) => (fullOf(block) ? FULL_ROW : ROW)
   const counts = blocks.map((block) => count(block, colsOf(block)) ?? '')
 
-  const shape = `${width}|${edit}|${content}|${blocks.join()}|${counts.join()}|${JSON.stringify(sides)}|${metrics.worldCell}|${metrics.awardCell}`
+  const [grown, setGrown] = useState(0)
+
+  useEffect(() => {
+    const box = containerRef.current
+    if (!box || !mounted || typeof ResizeObserver === 'undefined') return
+    const watched = [...box.querySelectorAll<HTMLElement>('.slot-facts .profile-facts, .slot-quizzes .profile-card > :last-child')]
+    if (!watched.length) return
+    const sizes = new Map<Element, number>()
+    const watcher = new ResizeObserver((entries) => {
+      let moved = false
+      for (const entry of entries) {
+        const next = Math.round(entry.contentRect.height)
+        if (sizes.has(entry.target) && sizes.get(entry.target) !== next) moved = true
+        sizes.set(entry.target, next)
+      }
+      if (moved) setGrown((was) => was + 1)
+    })
+    for (const one of watched) watcher.observe(one)
+    void document.fonts?.ready.then(() => setGrown((was) => was + 1))
+    return () => watcher.disconnect()
+  }, [mounted, containerRef, blocks.join()])
+
+  const shape = `${width}|${edit}|${content}|${grown}|${blocks.join()}|${counts.join()}|${JSON.stringify(sides)}|${metrics.worldCell}|${metrics.awardCell}`
   useLayoutEffect(() => {
     const box = containerRef.current
     if (!box || !mounted || held.current) return
