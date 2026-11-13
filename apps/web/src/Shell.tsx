@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Avatar from './Avatar'
@@ -181,6 +182,119 @@ function MiniMe() {
   )
 }
 
+const TIP_GAP = 10
+const TIP_EDGE = 12
+const TIP_LEAST = 220
+
+type TipSpot = { top?: number; bottom?: number; right: number; maxHeight: number }
+
+function XpHint({ label, children }: { label: string; children: ReactNode }) {
+  const hint = useRef<HTMLSpanElement>(null)
+  const tip = useRef<HTMLSpanElement>(null)
+  const leave = useRef(0)
+  const [spot, setSpot] = useState<TipSpot | null>(null)
+  const [pinned, setPinned] = useState(false)
+
+  const place = () => {
+    const box = hint.current?.getBoundingClientRect()
+    if (!box) return
+    const right = Math.max(TIP_EDGE, window.innerWidth - box.right - 4)
+    const below = window.innerHeight - box.bottom - TIP_GAP - TIP_EDGE
+    const above = box.top - TIP_GAP - TIP_EDGE
+    setSpot(
+      below >= TIP_LEAST || below >= above
+        ? { top: box.bottom + TIP_GAP, right, maxHeight: below }
+        : { bottom: window.innerHeight - box.top + TIP_GAP, right, maxHeight: above },
+    )
+  }
+
+  const show = () => {
+    window.clearTimeout(leave.current)
+    place()
+  }
+
+  const hide = () => {
+    window.clearTimeout(leave.current)
+    leave.current = window.setTimeout(() => {
+      if (!pinned) setSpot(null)
+    }, 160)
+  }
+
+  useEffect(() => () => window.clearTimeout(leave.current), [])
+
+  useEffect(() => {
+    if (!spot) return
+    const follow = (event: Event) => {
+      if (tip.current && event.target instanceof Node && tip.current.contains(event.target)) return
+      place()
+    }
+    const away = (event: PointerEvent) => {
+      const target = event.target as Node
+      if (hint.current?.contains(target) || tip.current?.contains(target)) return
+      setPinned(false)
+      setSpot(null)
+    }
+    window.addEventListener('scroll', follow, true)
+    window.addEventListener('resize', follow)
+    document.addEventListener('pointerdown', away)
+    return () => {
+      window.removeEventListener('scroll', follow, true)
+      window.removeEventListener('resize', follow)
+      document.removeEventListener('pointerdown', away)
+    }
+  }, [spot])
+
+  return (
+    <span
+      ref={hint}
+      className={`xp-hint ${spot ? 'is-open' : ''}`}
+      tabIndex={0}
+      role="button"
+      aria-label={label}
+      aria-expanded={!!spot}
+      onMouseEnter={show}
+      onMouseLeave={hide}
+      onFocus={show}
+      onBlur={() => {
+        if (!pinned && !tip.current?.matches(':hover')) hide()
+      }}
+      onClick={() => {
+        if (pinned) {
+          setPinned(false)
+          setSpot(null)
+        } else {
+          setPinned(true)
+          show()
+        }
+      }}
+      onKeyDown={(event) => {
+        if (event.key === 'Escape') {
+          setPinned(false)
+          setSpot(null)
+        }
+      }}
+    >
+      <InfoIcon />
+      {spot &&
+        createPortal(
+          <span
+            ref={tip}
+            className="xp-tip"
+            role="tooltip"
+            style={{ top: spot.top, bottom: spot.bottom, right: spot.right, maxHeight: spot.maxHeight }}
+            onMouseEnter={show}
+            onMouseLeave={hide}
+            onClick={(event) => event.stopPropagation()}
+            onPointerDown={(event) => event.stopPropagation()}
+          >
+            {children}
+          </span>,
+          document.body,
+        )}
+    </span>
+  )
+}
+
 function XpToday() {
   const { t } = useI18n()
   const { user } = useAuth()
@@ -206,25 +320,7 @@ function XpToday() {
       <div className="xp-today-total">
         <b>{today.earned}</b>
         <span>{today.earned > today.cap ? t('xp.fromGamesOver') : t('xp.fromGames', { cap: today.cap })}</span>
-        <span
-          className="xp-hint"
-          tabIndex={0}
-          role="button"
-          aria-label={t('xp.rules')}
-          onFocus={(event) => {
-            const room = window.innerHeight - event.currentTarget.getBoundingClientRect().bottom - 26
-            event.currentTarget.style.setProperty('--tip-room', `${Math.round(room)}px`)
-          }}
-          onMouseDown={(event) => {
-            if ((event.target as Element).closest('.xp-tip')) return
-            event.preventDefault()
-            const hint = event.currentTarget
-            if (document.activeElement === hint) hint.blur()
-            else hint.focus()
-          }}
-        >
-          <InfoIcon />
-          <span className="xp-tip" role="tooltip">
+        <XpHint label={t('xp.rules')}>
             <b>{t('xp.rules')}</b>
             <table>
               <thead>
@@ -247,8 +343,7 @@ function XpToday() {
             <span className="xp-tip-note">{t(XP_DYNAMIC ? 'xp.paceNote' : 'xp.poolNote')}</span>
             <span className="xp-tip-note">{t('xp.duelNote')}</span>
             <span className="xp-tip-note">{t('xp.dailyNote', { cap: XP_CAPS.daily })}</span>
-          </span>
-        </span>
+        </XpHint>
       </div>
       <ul className="xp-today-list">
         {today.sources.map(({ source, earned, cap }) => {

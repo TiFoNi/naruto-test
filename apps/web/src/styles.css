@@ -9617,21 +9617,19 @@ html[data-auth] .guest-note {
 }
 
 .xp-hint:hover,
+.xp-hint.is-open,
 .xp-hint:focus-visible {
   color: var(--accent-text, var(--accent));
   outline: none;
 }
 
 .xp-tip {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: -4px;
-  z-index: 30;
-  display: none;
+  position: fixed;
+  z-index: 400;
+  display: flex;
   flex-direction: column;
   gap: 8px;
   width: 248px;
-  max-height: max(180px, var(--tip-room, calc(100dvh - 240px)));
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
@@ -9647,12 +9645,6 @@ html[data-auth] .guest-note {
   text-transform: none;
   letter-spacing: 0;
   cursor: default;
-}
-
-.xp-hint:hover .xp-tip,
-.xp-hint:focus .xp-tip,
-.xp-hint:focus-within .xp-tip {
-  display: flex;
 }
 
 .xp-tip b {

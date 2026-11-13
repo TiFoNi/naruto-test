@@ -271,6 +271,7 @@ const WESTEROSI = 'Вестеросцы'
 const REGIONS = new Set(['Северяне', 'Жители Королевских земель', 'Жители Запада', 'Речные люди', 'Жители Штормовых земель', 'Жители Простора', 'Дорнийцы', 'Железнорождённые', 'Жители Долины', 'Болотные люди'])
 const withWesterosi = (list) => (list.some((one) => REGIONS.has(one)) && !list.includes(WESTEROSI) ? [...list, WESTEROSI] : list)
 const ALIVE_FIX = new Set(['Jon Snow'])
+const DEAD_FIX = new Set(['Ellaria Sand', 'Olyvar'])
 
 const clean = (value) =>
   (value ?? '')
@@ -361,7 +362,7 @@ async function main() {
       houses: HOUSE_FIX[title] ?? (houses.length ? [houses[0]] : [NO_HOUSE]),
       cultures: withWesterosi(CULTURE_FIX[title] ?? [...new Set(cultures)]),
       orgs: ORGS[title] ?? [NO_ORG],
-      status: ALIVE_FIX.has(title) || !clean(field(box, 'Death')).length ? 'Жив' : 'Мёртв',
+      status: ALIVE_FIX.has(title) || (!DEAD_FIX.has(title) && !clean(field(box, 'Death')).length) ? 'Жив' : 'Мёртв',
       season: Number(field(box, 'Season').match(/Season (\d)/)?.[1] ?? 0),
       answer: true,
     })
