@@ -4909,3 +4909,51 @@ body:has(.chat-bubble) .qb {
 .quiz-admin .qb-bracket-search .search .search-box {
   height: 44px;
 }
+
+@container (max-width: 520px) {
+  .qb-qrow {
+    flex-direction: column;
+  }
+
+  .qb-qrow .qb-text {
+    order: -1;
+    min-height: 96px;
+  }
+
+  .qb-qpic,
+  .qb-qpic .qb-qpic-box {
+    width: 100%;
+  }
+
+  .qb-qpic .qb-qpic-box {
+    height: auto;
+    border-radius: 14px;
+  }
+
+  .qb-qpic.has-pic .qb-qpic-box {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .qb-qpic-box.is-empty {
+    padding: 8px;
+  }
+
+  .qb-qpic-picks {
+    align-self: stretch;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+    padding: 0;
+  }
+
+  .qb-qpic-pick {
+    height: 40px;
+    font-size: 13px;
+  }
+
+  .qb-qpic-pick svg {
+    width: 16px;
+    height: 16px;
+  }
+}
