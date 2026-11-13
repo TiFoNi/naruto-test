@@ -4012,3 +4012,31 @@ textarea.quiz-admin-input {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.quiz-admin-image-search {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.quiz-admin-option .quiz-admin-image .quiz-admin-image-base {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--qa-h, 40px);
+  height: var(--qa-h, 40px);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-3);
+}
+
+.quiz-admin-option .quiz-admin-image .quiz-admin-image-base svg {
+  width: 20px;
+  height: 20px;
+}
+
+.quiz-admin-option .quiz-admin-image .quiz-admin-image-base:hover:not(:disabled),
+.quiz-admin-option .quiz-admin-image .quiz-admin-image-base.on {
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  color: var(--text);
+}

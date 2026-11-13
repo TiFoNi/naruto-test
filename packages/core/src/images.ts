@@ -285,3 +285,18 @@ export async function uploadQuizCover(source: Buffer, wide = false) {
   await put(key, cover)
   return { key, ver: version(cover) }
 }
+
+export async function copyQuizPicture(game: GameId, id: number) {
+  const key = `quizzes/${randomBytes(8).toString('hex')}.webp`
+  await s3().send(
+    new CopyObjectCommand({
+      Bucket: bucket(),
+      Key: key,
+      CopySource: `${bucket()}/${GAME_SPECS[game].images}/full/${id}.webp`,
+      MetadataDirective: 'REPLACE',
+      ContentType: 'image/webp',
+      CacheControl: CACHE,
+    }),
+  )
+  return { key, ver: randomBytes(4).toString('hex') }
+}

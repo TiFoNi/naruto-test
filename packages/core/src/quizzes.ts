@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb'
 import { isGame, gameData } from './games'
 import { abilityByKey } from './abilities'
 import { addLevelXp } from './profile'
+import { copyQuizPicture } from './images'
 import { quizAttempts, quizzes, users, type QuizAttemptDoc, type QuizCover, type QuizDoc, type QuizFormat, type QuizOption, type QuizQuestion, type QuizStatus, type QuizValue } from './db'
 
 export const QUIZ_XP_PER_ANSWER = 10
@@ -486,4 +487,13 @@ export async function renewAttempt(quiz: QuizDoc, userId: ObjectId) {
     { _id: attemptId(quiz._id!, userId), startedAt: { $lt: quiz.revisedAt } },
     { $set: { answers: [], finished: false, score: 0, total: quiz.questions.length, startedAt: new Date() }, $unset: { finishedAt: '', xp: '', paid: '', champion: '', bracket: '' } },
   )
+}
+
+export async function snapPicture(form: FormData | null) {
+  const game = form?.get('game')
+  const id = Number(form?.get('entity'))
+  if (typeof game !== 'string' || !isGame(game) || !Number.isInteger(id)) return null
+  const entity = (await gameData(game)).byId.get(id)
+  if (!entity) return { error: 'not_found' as const }
+  return { ...(await copyQuizPicture(game, id)), text: entity.name }
 }

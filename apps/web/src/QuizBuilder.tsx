@@ -93,20 +93,22 @@ export const KINDS: QuizKind[] = ['choice', 'name', 'bool', 'order', 'pairs']
 
 export const QUIZ_WORLDS = GAMES.filter((one) => one.modes.some((mode) => mode !== 'tune' && mode !== 'shot'))
 
-const blankChoice = (): DraftQuestion => ({ kind: 'choice', text: '', multi: false, options: [{ kind: 'entity' }, { kind: 'entity' }, { kind: 'entity' }, { kind: 'entity' }], correct: [] })
+const blankImage = (): DraftOption => ({ kind: 'image', text: '' })
+
+const blankChoice = (): DraftQuestion => ({ kind: 'choice', text: '', multi: false, options: [blankImage(), blankImage(), blankImage(), blankImage()], correct: [] })
 
 const blank = (kind: QuizKind, text = ''): DraftQuestion => {
   if (kind === 'name') return { kind, text }
   if (kind === 'bool') return { kind, text }
-  if (kind === 'order') return { kind, text, options: [{ kind: 'entity' }, { kind: 'entity' }, { kind: 'entity' }] }
-  if (kind === 'pairs') return { kind, text, left: [{ kind: 'entity' }, { kind: 'entity' }], right: [{ kind: 'text', text: '' }, { kind: 'text', text: '' }] }
+  if (kind === 'order') return { kind, text, options: [blankImage(), blankImage(), blankImage()] }
+  if (kind === 'pairs') return { kind, text, left: [blankImage(), blankImage()], right: [{ kind: 'text', text: '' }, { kind: 'text', text: '' }] }
   return { ...(blankChoice() as Extract<DraftQuestion, { kind: 'choice' }>), text }
 }
 
 const blankOption = (kind: DraftOption['kind']): DraftOption =>
   kind === 'text' || kind === 'image' ? { kind, text: '' } : kind === 'ability' ? { kind: 'ability' } : { kind: 'entity' }
 
-const nextOption = (list: DraftOption[]): DraftOption => blankOption(list.at(-1)?.kind ?? 'entity')
+const nextOption = (list: DraftOption[]): DraftOption => blankOption(list.at(-1)?.kind ?? 'image')
 
 export const freshDraft = (game: GameId): Draft => ({ game, title: '', cover: null, layout: 'steps', status: 'draft', questions: [blankChoice()] })
 
@@ -162,6 +164,15 @@ const hasAnswers = (question: DraftQuestion) => {
   return question.options.some(optionFilled)
 }
 
+async function snapPicture(path: string, game: string, id: number) {
+  const form = new FormData()
+  form.append('game', game)
+  form.append('entity', String(id))
+  const answer = await fetch(apiUrl(path), { method: 'POST', body: form, credentials: 'include' }).catch(() => null)
+  const data = (await answer?.json().catch(() => ({}))) as { key?: string; ver?: string; text?: string } | undefined
+  return answer?.ok && data?.key ? { key: data.key, ver: data.ver ?? '', text: data.text ?? '' } : null
+}
+
 async function uploadPicture(path: string, file: File, wide = false) {
   const form = new FormData()
   form.append('file', file)
@@ -187,22 +198,53 @@ function useUpload(wide: boolean, onDone: (saved: { key: string; ver: string }) 
   return { busy, failed, pick }
 }
 
-function ImageOption({ option, onChange }: { option: Extract<DraftOption, { kind: 'image' }>; onChange: (option: DraftOption) => void }) {
+function ImageOption({ game, option, onChange }: { game: Game; option: Extract<DraftOption, { kind: 'image' }>; onChange: (option: DraftOption) => void }) {
   const { t } = useI18n()
+  const path = useContext(UploadPath)
   const { busy, failed, pick } = useUpload(false, (saved) => onChange({ ...option, ...saved }))
+  const [searching, setSearching] = useState(false)
+  const [copying, setCopying] = useState(false)
+  const [missed, setMissed] = useState(false)
+
+  const copy = (id: number) => {
+    setSearching(false)
+    setCopying(true)
+    setMissed(false)
+    void snapPicture(path, game.id, id)
+      .then((saved) => (saved ? onChange({ kind: 'image', key: saved.key, ver: saved.ver, text: saved.text }) : setMissed(true)))
+      .finally(() => setCopying(false))
+  }
+
+  const working = busy || copying
   return (
     <div className="quiz-admin-image">
-      <label className={`quiz-admin-image-pick ${option.key ? 'has-pic' : ''} ${busy ? 'is-busy' : ''}`} title={t('qb.coverUpload')}>
-        {option.key ? <img src={picsUrl(option.key, option.ver ?? '')} alt="" /> : <span>{busy ? '…' : '+'}</span>}
-        <input type="file" accept="image/*" disabled={busy} onChange={(event) => void pick(event.target.files?.[0])} />
+      <label className={`quiz-admin-image-pick ${option.key ? 'has-pic' : ''} ${working ? 'is-busy' : ''}`} title={t('qb.coverUpload')}>
+        {option.key ? <img src={picsUrl(option.key, option.ver ?? '')} alt="" /> : <span>{working ? '…' : '+'}</span>}
+        <input type="file" accept="image/*" disabled={working} onChange={(event) => void pick(event.target.files?.[0])} />
       </label>
-      <input
-        className="quiz-admin-input"
-        maxLength={90}
-        placeholder={failed ? t('qb.uploadFailed') : t('qb.captionPh')}
-        value={option.text}
-        onChange={(event) => onChange({ ...option, text: event.target.value })}
-      />
+      <button
+        type="button"
+        className={`qb-icon quiz-admin-image-base ${searching ? 'on' : ''}`}
+        disabled={working}
+        title={t('qb.pic.character')}
+        aria-label={t('qb.pic.character')}
+        onClick={() => setSearching((was) => !was)}
+      >
+        {searching ? <CloseIcon /> : <UserIcon />}
+      </button>
+      {searching ? (
+        <div className="quiz-admin-image-search">
+          <CharacterSearch game={game} exclude={new Set()} compact pickOnly strict placeholder={t('qb.searchPh')} onPick={(one) => copy(one.id)} />
+        </div>
+      ) : (
+        <input
+          className="quiz-admin-input"
+          maxLength={90}
+          placeholder={failed || missed ? t('qb.uploadFailed') : t('qb.captionPh')}
+          value={option.text}
+          onChange={(event) => onChange({ ...option, text: event.target.value })}
+        />
+      )}
     </div>
   )
 }
@@ -293,7 +335,7 @@ function OptionField({
           <input className={`quiz-admin-input ${dup ? 'is-dup' : ''}`} maxLength={90} placeholder={t('qb.optTextPh')} value={option.text} onChange={(event) => onChange({ kind: 'text', text: event.target.value })} />
         )}
         {option.kind === 'entity' && <EntityPick game={game} byId={byId} id={option.id} taken={taken} onPick={(id) => onChange({ kind: 'entity', id })} />}
-        {option.kind === 'image' && <ImageOption option={option} onChange={onChange} />}
+        {option.kind === 'image' && <ImageOption game={game} option={option} onChange={onChange} />}
         {option.kind === 'ability' && (
           <div className="quiz-admin-ability">
             <EntityPick game={game} byId={byId} id={option.hero} onPick={(hero) => onChange({ kind: 'ability', hero })} />
@@ -324,7 +366,7 @@ function AnswerType({ game, list, label, onPick }: { game: Game; list: DraftOpti
   const guard = useGuard()
   const value = typeOf(list)
   const kinds = [
-    { value: 'entity' as const, label: t(unitsKey(game)), icon: <UserIcon /> },
+    ...(value === 'entity' ? [{ value: 'entity' as const, label: t(unitsKey(game)), icon: <UserIcon /> }] : []),
     ...(game.id === 'dota' ? [{ value: 'ability' as const, label: t('qb.units.ability'), icon: <SparkIcon /> }] : []),
     { value: 'image' as const, label: t('qb.units.image'), icon: <PictureIcon /> },
     { value: 'text' as const, label: t('qb.units.text'), icon: <TextIcon /> },
@@ -595,6 +637,7 @@ function QuestionEditor({
   const { t } = useI18n()
   const guard = useGuard()
   const [picking, setPicking] = useState(false)
+  const path = useContext(UploadPath)
 
   useEffect(() => {
     if (picking) document.querySelector<HTMLInputElement>('.qb-qpic-search input')?.focus()
@@ -643,8 +686,8 @@ function QuestionEditor({
             strict
             placeholder={t('qb.searchPh')}
             onPick={(one) => {
-              onChange({ ...question, picture: { kind: 'entity', id: one.id } })
               setPicking(false)
+              void snapPicture(path, game.id, one.id).then((saved) => saved && onChange({ ...question, picture: { kind: 'upload', key: saved.key, ver: saved.ver } }))
             }}
           />
           <button type="button" className="qb-icon" onClick={() => setPicking(false)} aria-label={t('profile.cancel')}>
@@ -807,7 +850,22 @@ function BracketEditor({
   const [failed, setFailed] = useState(0)
   const room = Math.max(0, size - entries.length)
   const full = room === 0
-  const taken = useMemo(() => new Set(entries.flatMap((entry) => (entry.kind === 'entity' && entry.id !== undefined ? [entry.id] : []))), [entries])
+  const taken = useMemo(() => {
+    const names = new Set(entries.flatMap((entry) => (entry.kind === 'image' ? [entry.text.trim().toLowerCase()] : [])))
+    const ids = entries.flatMap((entry) => (entry.kind === 'entity' && entry.id !== undefined ? [entry.id] : []))
+    const named = [...byId.values()].filter((one) => names.has(one.name.trim().toLowerCase())).map((one) => one.id)
+    return new Set([...ids, ...named])
+  }, [entries, byId])
+  const [snapping, setSnapping] = useState(0)
+
+  const snap = (id: number) => {
+    if (room - snapping <= 0) return
+    setFailed(0)
+    setSnapping((was) => was + 1)
+    void snapPicture(path, game.id, id)
+      .then((saved) => (saved ? onAdd({ kind: 'image', key: saved.key, ver: saved.ver, text: saved.text }) : setFailed(1)))
+      .finally(() => setSnapping((was) => was - 1))
+  }
 
   const upload = async (files: FileList | null) => {
     const list = [...(files ?? [])].slice(0, room)
@@ -882,7 +940,7 @@ function BracketEditor({
               pickOnly
               strict
               placeholder={t('qb.entries.character')}
-              onPick={(one) => onAdd({ kind: 'entity', id: one.id })}
+              onPick={(one) => snap(one.id)}
             />
           )}
         </div>

@@ -4,7 +4,7 @@ import { quizAttempts, quizLikes, quizzes, users, type QuizDoc } from '../db'
 import { dropQuizComments } from '../quiz-comments'
 import { fail, handle, json, readJson } from '../http'
 import { uploadQuizCover } from '../images'
-import { quizAuthors, readQuiz, revised } from '../quizzes'
+import { quizAuthors, readQuiz, revised, snapPicture } from '../quizzes'
 
 const LIMIT = 8 * 1024 * 1024
 
@@ -79,6 +79,8 @@ type Upload = { size: number; arrayBuffer: () => Promise<ArrayBuffer> }
 export const COVER = handle(async (request) => {
   if (!(await adminSession(request))) return missing()
   const form = await request.formData().catch(() => null)
+  const snap = await snapPicture(form)
+  if (snap) return 'key' in snap ? json(snap) : fail(404, 'not_found')
   const file = form?.get('file') as unknown as Upload | null
   if (!file || typeof file === 'string' || !file.size) return fail(400, 'no_file')
   if (file.size > LIMIT) return fail(413, 'too_large')
