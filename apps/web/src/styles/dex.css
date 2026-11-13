@@ -1853,7 +1853,7 @@ button.lv-badge:focus-visible {
 .card-shelf .card-blank:not(.is-locked).is-open,
 .card-shelf .card-blank:not(.is-locked):hover {
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .card-shelf .sk.card-ghost {

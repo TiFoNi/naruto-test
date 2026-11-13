@@ -55,6 +55,7 @@ import { tornPoints } from './torn'
 import { useShelfSort } from './useShelfSort'
 import { afterHold } from './hold'
 import ProfileBoard, { type BoardSave } from './ProfileBoard'
+import { dimHex } from './util'
 
 const UNPIN_POINTS = tornPoints(42, 9, 4)
   .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
@@ -200,12 +201,6 @@ function FitLabel({ full, short }: { full: string; short: string }) {
   )
 }
 
-
-const dim = (hex: string) => {
-  const full = hex.length === 4 ? `#${[...hex.slice(1)].map((one) => one + one).join('')}` : hex
-  const [r, g, b] = [1, 3, 5].map((at) => parseInt(full.slice(at, at + 2), 16) / 255)
-  return 0.2126 * r! + 0.7152 * g! + 0.0722 * b! < 0.28
-}
 export default function Profile({ id }: { id?: string }) {
   const { user, refresh } = useAuth()
   const own = !id
@@ -426,7 +421,7 @@ export default function Profile({ id }: { id?: string }) {
   const saidTone = summary?.tone
   const tone = paint === undefined ? (isTone(saidTone) ? saidTone : null) : paint
   const toneHex = GAMES.find((game) => game.id === tone)?.accent ?? (tone && TONE_HEX.test(tone) ? tone : undefined)
-  const toneText = toneHex && dim(toneHex) ? '#ffffff' : toneHex
+  const toneText = toneHex && dimHex(toneHex) ? '#ffffff' : toneHex
   const saidNick = summary?.nickTone
   const nickTone = ink === undefined ? (isTone(saidNick) ? saidNick : null) : ink
   const nickHex = GAMES.find((game) => game.id === nickTone)?.accent ?? (nickTone && TONE_HEX.test(nickTone) ? nickTone : undefined)

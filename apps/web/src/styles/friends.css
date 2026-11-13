@@ -65,7 +65,7 @@
 }
 
 .mates-field:focus-within > svg {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .mates-field input {
@@ -305,7 +305,7 @@
 }
 
 .mates-who:hover b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .mates-acts {
@@ -386,7 +386,7 @@
   margin-bottom: 4px;
   border-radius: 17px;
   background: color-mix(in srgb, var(--accent) 16%, var(--card-2));
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .mates-mark svg {
@@ -598,7 +598,7 @@
 }
 
 .mates-ticket-stub b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 28px;
   line-height: 1.1;

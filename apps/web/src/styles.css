@@ -374,7 +374,7 @@ a.bell {
 
 a.bell.active {
   border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .bell-box {
@@ -548,7 +548,7 @@ a.bell.active {
   padding: 0 5px;
   border-radius: 9px;
   background: color-mix(in srgb, var(--accent) 18%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 11px;
   letter-spacing: 0;
 }
@@ -838,7 +838,7 @@ a {
 
 .brand-name em {
   font-style: normal;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .account {
@@ -1426,7 +1426,7 @@ main,
 }
 
 .legend .arrow {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .swatch {
@@ -2114,7 +2114,7 @@ main,
 .login-lead h1 em {
   display: block;
   font-style: normal;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .login-lead p {
@@ -2683,7 +2683,7 @@ main,
 }
 
 .xp-today-total b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 30px;
   line-height: 1;
@@ -2721,7 +2721,7 @@ main,
 }
 
 .xp-today-list li b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 12px;
   font-weight: 800;
 }
@@ -2852,7 +2852,7 @@ main,
   place-items: center;
   container-type: inline-size;
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-weight: 800;
 }
@@ -2933,7 +2933,7 @@ main,
 .eyebrow {
   display: inline-block;
   margin-bottom: 12px;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-weight: 800;
   font-size: 14px;
 }
@@ -2969,7 +2969,7 @@ main,
 
 .features li::before {
   content: '✦';
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 0.9em;
   line-height: 1;
 }
@@ -3122,7 +3122,7 @@ main,
 
 .mode-icon.big {
   font-size: 26px;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .how-grid {
@@ -3272,7 +3272,7 @@ button.ghost.small {
 .duel-head h1 .icon,
 .lb-head h1 .icon,
 .duels h1 .icon {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .game-stats {
@@ -5410,7 +5410,7 @@ html[data-auth] .guest-note {
   height: 32px;
   border-radius: 10px;
   background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 17px;
 }
 
@@ -5422,7 +5422,7 @@ html[data-auth] .guest-note {
 
 .guest-note-cta {
   flex: none;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 13.5px;
   font-weight: 800;
   text-decoration: none;
@@ -5558,7 +5558,7 @@ html[data-auth] .guest-note {
 }
 
 .auth-terms a {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   text-decoration: none;
   transition: color 0.15s ease;
 }
@@ -5588,7 +5588,7 @@ html[data-auth] .guest-note {
   height: 82px;
   border-radius: 26px;
   background: color-mix(in srgb, var(--accent) 16%, #14161a);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 38px;
   transform: rotate(-4deg);
 }
@@ -5633,7 +5633,7 @@ html[data-auth] .guest-note {
   padding: 0;
   border: none;
   background: transparent;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font: inherit;
   cursor: pointer;
 }
@@ -5717,7 +5717,7 @@ html[data-auth] .guest-note {
 .admin-filters button.on {
   border-color: transparent;
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-weight: 700;
 }
 
@@ -5868,7 +5868,7 @@ html[data-auth] .guest-note {
 }
 
 .admin-tabs b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .admin-chips button {
@@ -6190,7 +6190,7 @@ html[data-auth] .guest-note {
 .streak-week li.on span {
   border: none;
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-weight: 800;
 }
 
@@ -6442,7 +6442,7 @@ html[data-auth] .guest-note {
   margin: 0 auto 4px;
   border-radius: 16px;
   background: color-mix(in srgb, var(--accent) 14%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .quest-swap-art > svg:first-child {
@@ -6504,7 +6504,7 @@ html[data-auth] .guest-note {
 
 .quest-xp {
   flex: none;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 14px;
   font-weight: 800;
@@ -6608,7 +6608,7 @@ html[data-auth] .guest-note {
   height: 30px;
   border-radius: 10px;
   background: color-mix(in srgb, var(--accent) 18%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .bonus.is-claimed .bonus-gift {
@@ -6632,7 +6632,7 @@ html[data-auth] .guest-note {
 }
 
 .bonus-label b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .bonus-coins {
@@ -7069,7 +7069,7 @@ html[data-auth] .guest-note {
 }
 
 .play-tries b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .play-tries.is-low b {
@@ -7164,7 +7164,7 @@ html[data-auth] .guest-note {
 }
 
 .play-stats .hot b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .play-legend {
@@ -7217,7 +7217,7 @@ html[data-auth] .guest-note {
 
 .legend-badge.arrow {
   background: var(--card-2);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .play-actions {
@@ -7627,7 +7627,7 @@ html[data-auth] .guest-note {
 }
 
 .zoom-steps .now b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .tries {
@@ -7732,7 +7732,7 @@ html[data-auth] .guest-note {
   height: 22px;
   border-radius: 7px;
   background: color-mix(in srgb, var(--accent) 18%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 11px;
   font-style: normal;
@@ -7801,7 +7801,7 @@ html[data-auth] .guest-note {
 .streak-week li.on span {
   border: none;
   background: color-mix(in srgb, var(--accent) 18%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .back .icon {
@@ -7885,7 +7885,7 @@ html[data-auth] .guest-note {
 }
 
 .footer-col a:hover {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .footer-socials {
@@ -8194,7 +8194,7 @@ html[data-auth] .guest-note {
 }
 
 .footer-legal a:hover {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .footer-disclaimer {
@@ -8229,7 +8229,7 @@ html[data-auth] .guest-note {
 }
 
 .sources-list a:hover {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .sources-list small {
@@ -8702,7 +8702,7 @@ html[data-auth] .guest-note {
   border-radius: 11px;
   border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
   background: color-mix(in srgb, var(--accent) 12%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 16px;
   cursor: pointer;
   transition: background .15s, transform .15s;
@@ -8846,7 +8846,7 @@ html[data-auth] .guest-note {
 }
 
 .grid-row.header .head-pick.on {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .facet-tip {
@@ -9209,7 +9209,7 @@ html[data-auth] .guest-note {
 }
 
 .is-wrapped .grid-row .cell .cell-label.on {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   opacity: 1;
 }
 
@@ -9408,7 +9408,7 @@ html[data-auth] .guest-note {
   place-items: center;
   border-radius: 11px;
   background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 17px;
 }
 
@@ -9618,7 +9618,7 @@ html[data-auth] .guest-note {
 
 .xp-hint:hover,
 .xp-hint:focus-visible {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   outline: none;
 }
 
@@ -10176,7 +10176,7 @@ html[data-auth] .guest-note {
   height: 24px;
   border-radius: 8px;
   background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 12px;
   font-style: normal;
@@ -10470,7 +10470,7 @@ html[data-auth] .guest-note {
   margin-bottom: 4px;
   border-radius: 15px;
   background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .ava-mark svg {
@@ -10537,7 +10537,7 @@ html[data-auth] .guest-note {
 .ask-line.is-told b {
   max-width: 100%;
   overflow: hidden;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -10701,7 +10701,7 @@ html[data-auth] .guest-note {
 }
 
 .pair-fresh {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 14px;
   font-style: normal;
   font-weight: 800;
@@ -10993,7 +10993,7 @@ html[data-auth] .guest-note {
 }
 
 .shot-fresh {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 14px;
   font-style: normal;
   font-weight: 800;
@@ -11127,7 +11127,7 @@ html[data-auth] .guest-note {
 .topbar-coins .icon {
   width: 17px;
   height: 17px;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .topbar-coins:hover,
@@ -11137,7 +11137,7 @@ html[data-auth] .guest-note {
 
 .bonus-coins {
   margin-left: 8px;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .rail {
@@ -11801,7 +11801,7 @@ html[data-auth] .guest-note {
 }
 
 .support-fine a:hover {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .support-pack.is-shut {
@@ -12494,7 +12494,7 @@ html[data-auth] .guest-note {
 
 .look-step:hover:not(:disabled) {
   background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .look-step:disabled {
@@ -12586,7 +12586,7 @@ html[data-auth] .guest-note {
   place-items: center;
   border-radius: 11px;
   background: color-mix(in srgb, var(--accent) 14%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 14px;
   font-variant-numeric: tabular-nums;
@@ -12790,7 +12790,7 @@ html[data-auth] .ssr-skel {
   margin-bottom: 4px;
   border-radius: 14px;
   background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .round-elsewhere-mark svg {

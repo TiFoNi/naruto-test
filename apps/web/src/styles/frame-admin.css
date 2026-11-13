@@ -96,7 +96,7 @@
 }
 
 .frame-admin-knobs label b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .frame-admin-knobs input {

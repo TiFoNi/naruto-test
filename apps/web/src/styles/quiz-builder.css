@@ -259,7 +259,7 @@
 .qb-add-btn:hover:not(:disabled),
 .qb-add-btn.on {
   border-color: color-mix(in srgb, var(--accent) 60%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .qb-add-btn:disabled {
@@ -312,7 +312,7 @@
   height: 40px;
   border-radius: 12px;
   background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 17px;
   font-weight: 800;
@@ -417,7 +417,7 @@
 }
 
 .qb-kinds button.on svg {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .qb .qb-text {
@@ -514,7 +514,7 @@
   padding: 0;
   border: 0;
   background: none;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font: inherit;
   font-size: 13px;
   font-weight: 700;
@@ -1458,7 +1458,7 @@
 .qz-action.is-accent {
   border-color: color-mix(in srgb, var(--accent) 45%, transparent);
   background: color-mix(in srgb, var(--accent) 10%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .qz-action.is-accent:hover {
@@ -2574,7 +2574,7 @@ body:has(.chat-bubble) .qb-foot {
 
 .qb-chip.is-add:hover:not(:disabled) {
   border-color: color-mix(in srgb, var(--accent) 60%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .qb-chip.is-add svg {
@@ -2890,7 +2890,7 @@ body:has(.chat-bubble) .qb-foot {
 }
 
 .qb-try-done strong {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 56px;
   line-height: 1;
@@ -2970,7 +2970,7 @@ body:has(.chat-bubble) .qb-foot {
 .qb-otype button.on {
   border-color: color-mix(in srgb, var(--accent) 60%, transparent);
   background: color-mix(in srgb, var(--accent) 14%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .qb-otype svg {
@@ -3080,7 +3080,7 @@ body:has(.chat-bubble) .qb-foot {
 }
 
 .qb-atype-list button.on svg {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .qb-atype-pair {
@@ -4077,7 +4077,7 @@ body:has(.chat-bubble) .qb {
 }
 
 .qb-seg .cat-tab.active svg {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .qb-pane .qb-icon {
@@ -4744,7 +4744,7 @@ body:has(.chat-bubble) .qb {
 }
 
 .qb-bracket-sizes button.on b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .qb-bracket-sizes button:disabled {
@@ -4801,7 +4801,7 @@ body:has(.chat-bubble) .qb {
 
 .qb-bracket-slot:hover {
   background: color-mix(in srgb, var(--accent) 10%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .qb-bracket-slot .icon {

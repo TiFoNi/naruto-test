@@ -826,7 +826,7 @@
 }
 
 .admin-nav-tabs a.on svg {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   opacity: 1;
 }
 

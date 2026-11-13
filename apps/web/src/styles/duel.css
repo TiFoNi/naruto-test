@@ -11,7 +11,7 @@
 }
 
 .ability-hint b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .duel-hud {
@@ -828,7 +828,7 @@
 
 .duel-mode.active .duel-mode-icon {
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .duel-mode.off {
@@ -970,7 +970,7 @@
   padding: 2px 7px;
   border-radius: 7px;
   background: color-mix(in srgb, var(--accent) 18%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -1068,7 +1068,7 @@
   border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line));
   border-radius: 10px;
   background: color-mix(in srgb, var(--accent) 12%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -1277,7 +1277,7 @@
 }
 
 .duel-final-score b.is-you {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .duel-final-actions {
@@ -1834,7 +1834,7 @@
 }
 
 .who-info:hover {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .who-grid li.off .who-info {
@@ -3454,7 +3454,7 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .duel-seat:hover:not(:disabled) .duel-hole {
   background: color-mix(in srgb, var(--accent) 22%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .duel-team li.is-lead {
@@ -3743,7 +3743,7 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .duel-format-pick > b {
   flex: none;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 20px;
   font-weight: 600;
@@ -3883,7 +3883,7 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .duel-format-card.on .duel-pips i {
   background: color-mix(in srgb, var(--accent) 22%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .duel-format-row.is-off {
@@ -4218,7 +4218,7 @@ html[data-duel='play'] .duel-ghosts .sk-play {
 
 .duel-seat-nick:hover b,
 .duel-seat-nick:focus-visible b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .duel-code-join {
@@ -4240,7 +4240,7 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   height: 46px;
   border-radius: 50%;
   background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .duel-code-join-icon .icon {

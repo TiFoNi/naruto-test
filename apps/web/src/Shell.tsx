@@ -39,6 +39,7 @@ import type { GameId } from './games/types'
 import { MODES } from './modes'
 import { useBeforePaint } from './paint'
 import { useHref, useNavigate, useVisitTracker } from './router'
+import { dimHex } from './util'
 
 const GOOGLE_HIDE_KEY = 'google-hide'
 
@@ -1007,7 +1008,10 @@ export default function Shell({ children, games: everyGame }: { children: ReactN
     const root = document.documentElement
     const signed = user ? true : loading && root.dataset.auth === '1'
     const shown = games.find((one) => one.id === tone)?.accent ?? (tone && TONE_HEX.test(tone) ? tone : BRAND.accent)
-    root.style.setProperty('--accent', signed && game ? game.accent : shown)
+    const accent = signed && game ? game.accent : shown
+    root.style.setProperty('--accent', accent)
+    root.style.setProperty('--accent-text', dimHex(accent) ? '#ffffff' : accent)
+    root.style.setProperty('--on-accent', dimHex(accent) ? '#ffffff' : '#1a1206')
   }, [user, loading, game?.accent, games, tone])
 
   useEffect(() => {

@@ -640,9 +640,11 @@ export const BANNER_COSTS: Record<string, number> = priced(BANNER_RARITY, 'banne
 
 const RANK: Record<Rarity, number> = { common: 0, rare: 1, epic: 2, legend: 3 }
 
+export const BUNDLE_OFF = 0.07
+
 const pair = (frame: string, banner: string) => {
   const tier = RANK[FRAME_RARITY[frame]] >= RANK[BANNER_RARITY[banner]] ? FRAME_RARITY[frame] : BANNER_RARITY[banner]
-  return { frame, banner, rarity: tier, cost: FRAME_COSTS[frame]! + BANNER_COSTS[banner]! }
+  return { frame, banner, rarity: tier, cost: Math.round(((FRAME_COSTS[frame]! + BANNER_COSTS[banner]!) * (1 - BUNDLE_OFF)) / 10) * 10 }
 }
 
 export const BUNDLES = [

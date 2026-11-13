@@ -364,7 +364,7 @@
 
 .passkey-row label svg {
   font-size: 17px;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .passkey-empty {

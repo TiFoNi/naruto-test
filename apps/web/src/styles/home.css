@@ -905,7 +905,7 @@ html[data-auth][data-checking] .hero-guest {
   height: 30px;
   border-radius: 9px;
   background: color-mix(in srgb, var(--accent) 15%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 15px;
   padding: 7px;
   box-sizing: border-box;

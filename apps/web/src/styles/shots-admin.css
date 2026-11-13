@@ -51,7 +51,7 @@
   border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
   border-radius: 11px;
   background: color-mix(in srgb, var(--accent) 14%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-weight: 800;
 }
 
@@ -201,7 +201,7 @@
   aspect-ratio: 16 / 9;
   border: 1px dashed color-mix(in srgb, var(--accent) 45%, var(--line));
   border-radius: 9px;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 20px;
   cursor: pointer;
   transition:
@@ -282,5 +282,5 @@
 .shots-view figcaption button:hover,
 .shots-view figcaption a:hover {
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }

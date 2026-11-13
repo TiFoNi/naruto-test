@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
-import { BANNER_COSTS, BANNER_RARITY, BUNDLES, FRAME_COSTS, FRAME_RARITY, RARITIES, bannerCost, frameCost, salePrice, type Rarity } from '@nanda/game'
+import { BANNER_COSTS, BANNER_RARITY, BUNDLE_OFF, BUNDLES, FRAME_COSTS, FRAME_RARITY, RARITIES, bannerCost, frameCost, salePrice, type Rarity } from '@nanda/game'
 import Avatar from './Avatar'
 import HeroPeek, { type PeekStats } from './HeroPeek'
 import PagePeek from './PagePeek'
@@ -184,8 +184,8 @@ export default function Shop() {
     const pair = one.kind === 'bundle' && !hasFrame(one) && !hasBanner(one)
     const kind: Kind = pair ? 'bundle' : !hasFrame(one) ? 'frame' : 'banner'
     const id = pair ? one.id : !hasFrame(one) ? one.frame : one.banner
-    const full = pair ? one.cost : !hasFrame(one) ? (frameCost(one.frame) ?? 0) : (bannerCost(one.banner) ?? 0)
-    const cost = salePrice(full, sale)
+    const full = pair ? (one.full ?? one.cost) : !hasFrame(one) ? (frameCost(one.frame) ?? 0) : (bannerCost(one.banner) ?? 0)
+    const cost = salePrice(pair ? one.cost : full, sale)
     const poor = cost > (user?.coins ?? 0)
 
     const foot = (
@@ -222,7 +222,7 @@ export default function Shop() {
 
     return (
       <div key={one.id} className={`shop-slot-card is-${one.rarity}`}>
-        {sale && !mine && <span className="shop-off">{offLabel(sale)}</span>}
+        {sale && !mine ? <span className="shop-off">{offLabel(sale)}</span> : pair && <span className="shop-off">−{Math.round(BUNDLE_OFF * 100)}%</span>}
         {one.kind === 'frame' ? (
           <button type="button" className="shop-tile is-frame" onClick={peek}>
             <Avatar className="shop-frame-face" id={user?.id} name={user?.nickname ?? '?'} avatar={user?.avatar} frame={one.frame ?? null} medium />

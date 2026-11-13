@@ -91,7 +91,7 @@
   padding: 4px 10px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--accent) 15%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 13px;
   font-style: normal;
@@ -376,7 +376,7 @@
   font-family: var(--display);
   font-size: 28px;
   line-height: 1;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .quiz-score > b small {
@@ -682,7 +682,7 @@ textarea.quiz-admin-input {
   height: var(--qa-h);
   border-radius: 10px;
   background: color-mix(in srgb, var(--accent) 15%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-style: normal;
 }
@@ -1207,7 +1207,7 @@ textarea.quiz-admin-input {
   height: var(--qa-h);
   border-radius: 10px;
   background: color-mix(in srgb, var(--accent) 15%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
 }
 
@@ -1473,7 +1473,7 @@ textarea.quiz-admin-input {
   padding: 5px 12px;
   border-radius: 99px;
   background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 12px;
   font-style: normal;
@@ -1685,7 +1685,7 @@ textarea.quiz-admin-input {
 }
 
 .quiz-recap-head strong {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-family: var(--display);
   font-size: 46px;
   line-height: 0.9;
@@ -2007,7 +2007,7 @@ textarea.quiz-admin-input {
 
 .qz-badge.is-going {
   box-shadow: inset 0 0 0 1px var(--accent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .qz-badge.is-changed {
@@ -2259,7 +2259,7 @@ textarea.quiz-admin-input {
   border: 0;
   border-radius: 10px;
   background: none;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font: inherit;
   font-size: 14px;
   font-weight: 800;
@@ -2503,7 +2503,7 @@ textarea.quiz-admin-input {
 
 .quiz-btn.quiz-hero-again:hover:not(:disabled) {
   transform: none;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .quiz-hero-again .is-short {
@@ -2549,7 +2549,7 @@ textarea.quiz-admin-input {
   padding: 6px 12px;
   border-radius: 99px;
   background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 13.5px;
   font-weight: 800;
 }
@@ -2564,7 +2564,7 @@ textarea.quiz-admin-input {
 .qz-kicker {
   display: block;
   margin-bottom: 4px;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -2840,7 +2840,7 @@ textarea.quiz-admin-input {
 
 .quiz-btn.quiz-like.is-on {
   border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .quiz-btn.quiz-like.is-on svg {
@@ -2913,7 +2913,7 @@ textarea.quiz-admin-input {
 .quiz-hint.is-pill svg {
   width: 16px;
   height: 16px;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .quiz-hint.is-pill b {
@@ -3215,7 +3215,7 @@ textarea.quiz-admin-input {
 .qc-spoiler.is-on {
   border-color: color-mix(in srgb, var(--accent) 50%, transparent);
   background: color-mix(in srgb, var(--accent) 10%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .qc-spoiler.is-on i {
@@ -3247,7 +3247,7 @@ textarea.quiz-admin-input {
   width: 16px;
   height: 16px;
   flex: none;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .qc-replying span {
@@ -3313,7 +3313,7 @@ textarea.quiz-admin-input {
 }
 
 .qc-guest a {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-weight: 800;
   text-decoration: none;
 }
@@ -3389,7 +3389,7 @@ textarea.quiz-admin-input {
   padding: 2px 7px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 11px;
   font-style: normal;
   font-weight: 800;
@@ -3484,7 +3484,7 @@ textarea.quiz-admin-input {
 
 .qc-veil:hover {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .qc-acts {
@@ -3607,7 +3607,7 @@ textarea.quiz-admin-input {
 }
 
 .bk-arena-head b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -3821,7 +3821,7 @@ textarea.quiz-admin-input {
   padding: 3px 12px;
   border-radius: 99px;
   background: color-mix(in srgb, var(--accent) 18%, transparent);
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-size: 13px;
   font-style: normal;
   font-weight: 800;

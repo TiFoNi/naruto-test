@@ -184,7 +184,7 @@
 }
 
 .zoom-ring.is-first em {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .zoom-hint {

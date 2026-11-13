@@ -176,7 +176,7 @@
 }
 
 .diff-detail-head h2 span {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .diff-detail-head p {
@@ -245,7 +245,7 @@
 }
 
 .diff-stats > .main dd {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .diff-wait {
@@ -289,7 +289,7 @@
 
 .diff-characters th button em {
   font-style: normal;
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .diff-characters th:first-child,
@@ -393,7 +393,7 @@
 }
 
 .diff-main.hard .diff-value b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .diff-main.easy .diff-track i {
@@ -419,7 +419,7 @@
 }
 
 .diff-pace b {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
   font-weight: 700;
 }
 

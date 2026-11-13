@@ -42,7 +42,7 @@
 }
 
 .activity-table td a:hover {
-  color: var(--accent);
+  color: var(--accent-text, var(--accent));
 }
 
 .activity-table td.is-hot {
