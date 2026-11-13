@@ -12772,3 +12772,48 @@ html[data-auth] .ssr-skel {
 .is-sortable.is-live > [data-sort] {
   will-change: translate;
 }
+
+.round-elsewhere {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 22px 20px;
+  text-align: center;
+}
+
+.round-elsewhere-mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 4px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+}
+
+.round-elsewhere-mark svg {
+  width: 22px;
+  height: 22px;
+}
+
+.round-elsewhere b {
+  font-family: var(--display);
+  font-size: 19px;
+  line-height: 1.2;
+}
+
+.round-elsewhere p {
+  max-width: 360px;
+  margin: 0;
+  color: var(--text-2);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.round-elsewhere .primary {
+  width: 100%;
+  max-width: 360px;
+  margin-top: 8px;
+}
