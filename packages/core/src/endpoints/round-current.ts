@@ -1,10 +1,8 @@
-import type { RoundDoc } from '../db'
 import { fail, handle, json, readJson } from '../http'
-import { hasMode, statsKey } from '@nanda/game'
-import { users } from '../db'
+import { hasMode } from '@nanda/game'
 import { gameData, isGame, isMode } from '../games'
-import { applySkip, roundOwner, unauthorized } from '../profile'
-import { activeRound, busyElsewhere, challengeRound, claimRound, dailyRound, elsewhereView, readDevice, readDeviceName, refilterRound, roundView, skipRound } from '../rounds'
+import { roundOwner, unauthorized } from '../profile'
+import { activeRound, challengeRound, claimRound, dailyRound, readDevice, readDeviceName, refilterRound, roundView } from '../rounds'
 import { isCode } from '../challenges'
 
 export const POST = handle(async (request) => {
@@ -25,19 +23,10 @@ export const POST = handle(async (request) => {
   const device = readDevice(body.device)
   const deviceName = readDeviceName(body.deviceName)
   const endless = body.swap === true ? refilterRound : activeRound
-  let round: RoundDoc =
+  const found =
     daily === true
       ? await dailyRound(owner.id, game, mode, owner.guest)
       : await endless(owner.id, game, mode, owner.guest, body.anime === true)
-  if (busyElsewhere(round, device)) {
-    if (body.take !== true) return json(elsewhereView(round), 409)
-    if (daily !== true) {
-      const people = await users()
-      await skipRound(round, people)
-      await applySkip(people, owner.id, statsKey(game, mode))
-      round = await activeRound(owner.id, game, mode, owner.guest, body.anime === true)
-    }
-  }
-  round = await claimRound(round, device, deviceName)
+  const round = await claimRound(found, device, deviceName)
   return json({ round: await roundView(round), guest: owner.guest }, 200, owner.cookie)
 })

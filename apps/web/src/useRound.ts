@@ -74,14 +74,6 @@ const deviceName = () => {
   return [os, browser].filter(Boolean).join(' · ')
 }
 
-export type Elsewhere = { name: string | null; at: string }
-
-let elsewhereInfo: Elsewhere | null = null
-
-export const lastElsewhere = () => elsewhereInfo
-
-export const isElsewhere = (error: string | null) => error === 'elsewhere' || error === 'elsewhere_daily'
-
 export function useRound(game: Game, mode: ModeId, active: boolean, daily = false, challenge?: string) {
   const { user, setStats, setXp, expire } = useAuth()
   const [round, setRound] = useState<RoundView | null>(null)
@@ -101,11 +93,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
     ({ ok, status, data }: { ok: boolean; status: number; data: RoundResponse & { error?: string } }) => {
       if (status === 401) return expire()
       if (status === 429 && data.error === 'too_fast') return
-      if (!ok || !data.round) {
-        const where = (data as { where?: Elsewhere }).where
-        if (where) elsewhereInfo = where
-        return setError(data.error ?? 'server')
-      }
+      if (!ok || !data.round) return setError(data.error ?? 'server')
       setError(null)
       const next = data.round
       setRound((prev) =>
@@ -140,17 +128,13 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
 
   const loading = useRef(false)
 
-  const taking = useRef(false)
-
   const load = useCallback(async () => {
     if (loading.current) return
     loading.current = true
-    const take = taking.current
-    taking.current = false
     try {
       await request(
         'round/current',
-        challenge ? { challenge } : { game: game.id, mode, daily, anime: !daily && animeOnly(game.id), device: deviceId(), deviceName: deviceName(), ...(take ? { take: true } : {}) },
+        challenge ? { challenge } : { game: game.id, mode, daily, anime: !daily && animeOnly(game.id), device: deviceId(), deviceName: deviceName() },
       )
     } finally {
       loading.current = false
@@ -176,6 +160,20 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
   const yesterday = round?.yesterdayId != null ? byId.get(round.yesterdayId) : undefined
 
   useEffect(() => () => clearTimeout(coolTimer.current), [])
+
+  const live = active && !!round && !over && !busy
+  useEffect(() => {
+    if (!live) return
+    const sync = () => {
+      if (document.visibilityState === 'visible') void load()
+    }
+    document.addEventListener('visibilitychange', sync)
+    window.addEventListener('focus', sync)
+    return () => {
+      document.removeEventListener('visibilitychange', sync)
+      window.removeEventListener('focus', sync)
+    }
+  }, [live, load])
 
   const guess = (entity: Entity) => {
     if (!round || over || busy || cooling || exclude.has(entity.id)) return
@@ -203,13 +201,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
     setError(null)
   }
 
-  const retry = () => {
-    if (isElsewhere(error)) {
-      taking.current = true
-      setRound(null)
-    }
-    setError(null)
-  }
+  const retry = () => setError(null)
 
   return { round, guesses, exclude, over, won, skipped, answer, yesterday, gained, busy: busy || cooling, error, guess, giveUp, refilter, next, retry }
 }
