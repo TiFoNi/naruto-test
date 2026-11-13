@@ -12817,3 +12817,12 @@ html[data-auth] .ssr-skel {
   max-width: 360px;
   margin-top: 8px;
 }
+
+.round-elsewhere-where {
+  padding: 4px 12px;
+  border-radius: 99px;
+  background: color-mix(in srgb, #ffffff 6%, transparent);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+}

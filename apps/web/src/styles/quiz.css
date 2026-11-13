@@ -4000,3 +4000,15 @@ textarea.quiz-admin-input {
 
 
 }
+
+.bk-arena-title {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--text);
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

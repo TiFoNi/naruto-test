@@ -836,6 +836,8 @@ const ui = {
     en: 'Enter any character — the tiles will tell you how close you are.',
   },
   'play.elsewhereTitle': { ru: 'Раунд идёт на другом устройстве', uk: 'Раунд іде на іншому пристрої', en: 'This round is open on another device' },
+  'play.elsewhereWhere': { ru: '{name} · последний ход {at}', uk: '{name} · останній хід {at}', en: '{name} · last move {at}' },
+  'play.elsewhereUnknown': { ru: 'Другой браузер', uk: 'Інший браузер', en: 'Another browser' },
   'play.elsewhereHint': { ru: 'Если начать здесь, тот раунд засчитается как сдача.', uk: 'Якщо почати тут, той раунд зарахується як здача.', en: 'Starting here will count that round as given up.' },
   'play.elsewhereDailyTitle': { ru: 'Загадка дня идёт на другом устройстве', uk: 'Загадка дня йде на іншому пристрої', en: 'The daily puzzle is open on another device' },
   'play.elsewhereDaily': { ru: 'Её можно продолжить здесь — там она закроется.', uk: 'Її можна продовжити тут — там вона закриється.', en: 'You can continue it here — it will close there.' },

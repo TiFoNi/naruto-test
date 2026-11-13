@@ -126,6 +126,7 @@ export type RoundDoc = {
   createdAt: Date
   finishedAt?: Date
   device?: string
+  deviceName?: string
 }
 
 export type DuelPlayer = {

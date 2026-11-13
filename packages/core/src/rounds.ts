@@ -303,8 +303,15 @@ export const readDevice = (raw: unknown) => (typeof raw === 'string' && /^[a-z0-
 export const busyElsewhere = (round: RoundDoc, device: string | null) =>
   Boolean(device && round.status === 'active' && !round.challenge && round.device && round.device !== device && round.guesses.length > 0)
 
-export async function claimRound(round: RoundDoc, device: string | null) {
+export const readDeviceName = (raw: unknown) => (typeof raw === 'string' ? raw.replace(/[^\p{L}\p{N} ·.-]/gu, '').trim().slice(0, 40) || null : null)
+
+export const elsewhereView = (round: RoundDoc) => ({
+  error: round.daily ? 'elsewhere_daily' : 'elsewhere',
+  where: { name: round.deviceName ?? null, at: (round.lastGuessAt ?? round.createdAt).toISOString() },
+})
+
+export async function claimRound(round: RoundDoc, device: string | null, deviceName: string | null = null) {
   if (!device || round.device === device || round.status !== 'active') return round
-  await (await rounds()).updateOne({ _id: round._id, status: 'active' }, { $set: { device } })
-  return { ...round, device }
+  await (await rounds()).updateOne({ _id: round._id, status: 'active' }, { $set: { device, ...(deviceName ? { deviceName } : {}) } })
+  return { ...round, device, ...(deviceName ? { deviceName } : {}) }
 }

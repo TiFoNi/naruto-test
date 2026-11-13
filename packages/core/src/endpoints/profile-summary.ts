@@ -3,7 +3,7 @@ import { CARD_PINS_MAX, GAME_IDS, OPEN_GAMES, STAT_KEYS, type GameId } from '@na
 import { ACHIEVEMENTS, LIFE, familyOf, rarity } from '../achievements'
 import { PINNED_MAX } from './achievements'
 import { quizAttempts, quizLikes, quizzes, rounds, seasons, users, type UserDoc } from '../db'
-import { gameData } from '../games'
+import { gameData, isGame } from '../games'
 import { showcaseOf } from '../dex'
 import { fail, handle, json } from '../http'
 import { currentUser, defaultNickname, ensureTag, unauthorized } from '../profile'
@@ -250,6 +250,18 @@ async function stillHidden(viewerId: ObjectId, recent: Recent[]) {
   return new Set(live.map(liveKey).filter((key) => key && !played.has(key)))
 }
 
+
+const favouriteOf = (stats: Record<string, { solved?: number; skipped?: number } | undefined>) => {
+  const score = new Map<string, number>()
+  for (const [key, value] of Object.entries(stats)) {
+    const game = key.split('_')[0]!
+    if (!isGame(game)) continue
+    score.set(game, (score.get(game) ?? 0) + (value?.solved ?? 0) + (value?.skipped ?? 0))
+  }
+  const [best] = [...score].filter(([, played]) => played > 0).sort((one, two) => two[1] - one[1])
+  return best?.[0] ?? null
+}
+
 export const GET = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return unauthorized()
@@ -387,7 +399,7 @@ export const GET = handle(async (request) => {
         })),
     },
     challenges: { solved: doc.challengeStats?.solved ?? 0 },
-    favourite: games.find((row) => row.solved > 0)?.game ?? null,
+    favourite: favouriteOf(doc.stats ?? {}) ?? games.find((row) => row.solved > 0)?.game ?? null,
     rank: await place(doc._id!),
     gamePlaces: await gamePlaces(doc),
     streak,

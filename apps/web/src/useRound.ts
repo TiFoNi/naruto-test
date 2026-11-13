@@ -55,6 +55,31 @@ const deviceId = () => {
   }
 }
 
+const deviceName = () => {
+  const agent = navigator.userAgent
+  const os = /iPhone/.test(agent) ? 'iPhone' : /iPad/.test(agent) ? 'iPad' : /Android/.test(agent) ? 'Android' : /Mac OS X/.test(agent) ? 'Mac' : /Windows/.test(agent) ? 'Windows' : /Linux/.test(agent) ? 'Linux' : ''
+  const browser = /YaBrowser/.test(agent)
+    ? 'Yandex'
+    : /Edg\//.test(agent)
+      ? 'Edge'
+      : /OPR\//.test(agent)
+        ? 'Opera'
+        : /Firefox|FxiOS/.test(agent)
+          ? 'Firefox'
+          : /Chrome|CriOS/.test(agent)
+            ? 'Chrome'
+            : /Safari/.test(agent)
+              ? 'Safari'
+              : ''
+  return [os, browser].filter(Boolean).join(' · ')
+}
+
+export type Elsewhere = { name: string | null; at: string }
+
+let elsewhereInfo: Elsewhere | null = null
+
+export const lastElsewhere = () => elsewhereInfo
+
 export const isElsewhere = (error: string | null) => error === 'elsewhere' || error === 'elsewhere_daily'
 
 export function useRound(game: Game, mode: ModeId, active: boolean, daily = false, challenge?: string) {
@@ -76,7 +101,11 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
     ({ ok, status, data }: { ok: boolean; status: number; data: RoundResponse & { error?: string } }) => {
       if (status === 401) return expire()
       if (status === 429 && data.error === 'too_fast') return
-      if (!ok || !data.round) return setError(data.error ?? 'server')
+      if (!ok || !data.round) {
+        const where = (data as { where?: Elsewhere }).where
+        if (where) elsewhereInfo = where
+        return setError(data.error ?? 'server')
+      }
       setError(null)
       const next = data.round
       setRound((prev) =>
@@ -121,7 +150,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
     try {
       await request(
         'round/current',
-        challenge ? { challenge } : { game: game.id, mode, daily, anime: !daily && animeOnly(game.id), device: deviceId(), ...(take ? { take: true } : {}) },
+        challenge ? { challenge } : { game: game.id, mode, daily, anime: !daily && animeOnly(game.id), device: deviceId(), deviceName: deviceName(), ...(take ? { take: true } : {}) },
       )
     } finally {
       loading.current = false
@@ -157,7 +186,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
     clearTimeout(coolTimer.current)
     coolTimer.current = setTimeout(() => setCooling(false), GUESS_GAP_MS)
     setPending(entity)
-    request('round/guess', { roundId: round.id, entityId: entity.id, game: game.id, device: deviceId() })
+    request('round/guess', { roundId: round.id, entityId: entity.id, game: game.id, device: deviceId(), deviceName: deviceName() })
   }
 
   const giveUp = () => {
@@ -166,7 +195,7 @@ export function useRound(game: Game, mode: ModeId, active: boolean, daily = fals
 
   const refilter = (anime: boolean) => {
     if (daily || challenge || !round || over || busy) return
-    void request('round/current', { game: game.id, mode, daily: false, anime, swap: true, device: deviceId() })
+    void request('round/current', { game: game.id, mode, daily: false, anime, swap: true, device: deviceId(), deviceName: deviceName() })
   }
 
   const next = () => {

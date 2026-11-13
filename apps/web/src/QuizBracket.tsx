@@ -295,6 +295,7 @@ export default function BracketRun({ game, byId, quiz, busy, error, top, after, 
       {top}
       <section className="bk-arena" aria-label={t('quiz.bracket.match', { at: done + 1, total })}>
         <header className="bk-arena-head">
+          <span className="bk-arena-title">{quiz.title}</span>
           <b>{t(stage.key, stage.values)}</b>
           <span className="bk-dots" aria-hidden style={{ '--per': Math.ceil(fights / Math.ceil(fights / DOTS_ROW)) } as CSSProperties}>
             {Array.from({ length: fights }, (_, at) => (
