@@ -487,7 +487,17 @@ export default function Chat() {
     }
   }, [beat])
 
+  const [looking, setLooking] = useState(true)
+
   useEffect(() => {
+    const look = () => setLooking(document.visibilityState === 'visible')
+    look()
+    document.addEventListener('visibilitychange', look)
+    return () => document.removeEventListener('visibilitychange', look)
+  }, [])
+
+  useEffect(() => {
+    if (!looking) return
     if (open && room === 'duel') {
       setTalkSeen(talk?.lines.at(-1)?.id ?? '')
       return
@@ -503,7 +513,7 @@ export default function Chat() {
     keepSeen(last.id)
     setFresh(false)
     if (user) shareSeen('chat', last.id)
-  }, [open, lines, room, talk, user])
+  }, [open, lines, room, talk, user, looking])
 
   useEffect(() => {
     if (!open) return
