@@ -2003,3 +2003,97 @@ body:has(.chat-panel) .duel-dock {
 .chat-menu {
   zoom: calc(1 / var(--page-zoom, 1));
 }
+
+.chat-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 7px 1px 5px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.chat-admin svg {
+  width: 11px;
+  height: 11px;
+}
+
+.card.modal.chat-ask.chat-rules,
+.card.modal.chat-ask.chat-rules h2,
+.card.modal.chat-ask.chat-rules li,
+.card.modal.chat-ask.chat-rules li span,
+.card.modal.chat-ask.chat-rules .chat-rules-foot {
+  text-align: left;
+}
+
+.card.modal.chat-ask.chat-rules {
+  width: min(480px, 100%);
+}
+
+.chat-rules h2 {
+  margin-bottom: 14px;
+}
+
+.chat-rules ol {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chat-rules li {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+.chat-rules li b {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: 13px;
+}
+
+.chat-rules li span {
+  padding-top: 3px;
+}
+
+.chat-rules-foot {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: color-mix(in srgb, #ffffff 4%, transparent);
+  color: var(--text-2);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.chat-rules .chat-ask-row {
+  margin-top: 16px;
+}
+
+.chat-rules-ok {
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #1a1206;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}

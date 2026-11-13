@@ -32,6 +32,7 @@ export type ChatLine = {
   reply?: { id: string; userId: string; nickname: string; text: string; gone?: boolean }
   bout?: BoutLine
   reacts?: ReactLine[]
+  admin?: true
 }
 
 export type ReactLine = { kind: string; people: { id: string; nick: string }[] }
@@ -83,6 +84,7 @@ export const lineOf = (doc: ChatDoc, gone?: Set<string>): ChatLine => ({
     : {}),
   ...(doc.bout ? { bout: boutOf(doc.bout) } : {}),
   ...(doc.reacts?.length ? { reacts: reactsOf(doc.reacts) } : {}),
+  ...(doc.admin ? { admin: true as const } : {}),
 })
 
 export const TAGS_MAX = 3
@@ -297,7 +299,7 @@ const authorOf = (doc: UserDoc) => ({
   nickTone: doc.nickTone ?? null,
 })
 
-export async function sendChat(doc: UserDoc, raw: unknown, picked?: unknown, replyTo?: unknown): Promise<ChatLine | ChatFail> {
+export async function sendChat(doc: UserDoc, raw: unknown, picked?: unknown, replyTo?: unknown, admin = false): Promise<ChatLine | ChatFail> {
   const text = tidy(raw)
   if (!text) return 'empty'
   if (muted(doc)) return 'muted'
@@ -306,7 +308,7 @@ export async function sendChat(doc: UserDoc, raw: unknown, picked?: unknown, rep
   const userId = doc._id!
   if (!(await pace(room, userId, text))) return 'too_fast'
 
-  const line: ChatDoc = { ...authorOf(doc), text, at: new Date() }
+  const line: ChatDoc = { ...authorOf(doc), text, at: new Date(), ...(admin ? { admin: true } : {}) }
   const tags = await readTags(doc, text, picked)
   if (tags.length) line.tags = tags
   const reply = await readReply(room, replyTo)

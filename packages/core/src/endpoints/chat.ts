@@ -59,7 +59,7 @@ export const POST = handle(async (request) => {
     const news = await sendNews(found.doc, text)
     return news === 'empty' ? fail(400, 'bad_request') : json({ line: news })
   }
-  const line = await sendChat(found.doc, text, tags, reply)
+  const line = await sendChat(found.doc, text, tags, reply, Boolean(await adminSession(request)))
   if (line === 'empty') return fail(400, 'bad_request')
   if (line === 'muted') return fail(403, 'muted')
   if (line === 'too_fast') return fail(429, 'too_fast')

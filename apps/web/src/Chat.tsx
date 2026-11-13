@@ -14,7 +14,7 @@ import { onChatOpen } from './chatEvents'
 import { useDuelTalk } from './duelTalk'
 import { useAuth } from './auth'
 import { useI18n, type UiKey } from './i18n'
-import { CardsIcon, ChatIcon, CloseIcon, DownIcon, MuteIcon, ReplyIcon, SendIcon, SmileIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
+import { CardsIcon, ChatIcon, CloseIcon, DownIcon, InfoIcon, MuteIcon, ReplyIcon, SendIcon, ShieldIcon, SmileIcon, SwordsIcon, UserIcon, UsersIcon } from './icons'
 import { useHref, useNavigate } from './router'
 import { openStream } from './stream'
 import { uiUrl } from './pics'
@@ -34,6 +34,7 @@ type Line = {
   tags?: { id: string; nick: string }[]
   everyone?: boolean
   reply?: { id: string; userId: string; nickname: string; text: string; gone?: boolean }
+  admin?: true
   bout?: Bout
   reacts?: ReactLine[]
 }
@@ -230,6 +231,8 @@ let lastInput = Date.now()
 const present = () => document.visibilityState === 'visible' && (document.hasFocus() || Date.now() - lastInput < IDLE_MS)
 
 
+
+const RULES = ['chat.rule.respect', 'chat.rule.personal', 'chat.rule.politics', 'chat.rule.spam', 'chat.rule.admins', 'chat.rule.private'] as const
 const goneReply = (line: Line, id: string): Line => (line.reply?.id === id ? { ...line, reply: { ...line.reply, text: '', gone: true } } : line)
 export default function Chat() {
   const { t, l } = useI18n()
@@ -249,6 +252,7 @@ export default function Chat() {
   const [menu, setMenu] = useState<{ line: Line; x: number; y: number; above: number } | null>(null)
   const [held, setHeld] = useState<Line | null>(null)
   const [replyTo, setReplyTo] = useState<Line | null>(null)
+  const [rules, setRules] = useState(false)
   const [pointed, setPointed] = useState<{ line: Line; x: number; y: number } | null>(null)
   const pointBox = useRef<HTMLDivElement>(null)
   const [pointAt, setPointAt] = useState<{ x: number; y: number } | null>(null)
@@ -1007,6 +1011,9 @@ export default function Chat() {
               ))}
             </div>
             {online > 0 && <em className="chat-online">{t('chat.online', { count: online })}</em>}
+            <button type="button" className="chat-x" aria-label={t('chat.rules')} title={t('chat.rules')} onClick={() => setRules(true)}>
+              <InfoIcon />
+            </button>
             <button type="button" className="chat-x" aria-label={t('chat.close')} onClick={close}>
               <CloseIcon />
             </button>
@@ -1070,6 +1077,12 @@ export default function Chat() {
                           >
                             {line.nickname}
                           </Link>
+                          {line.admin && (
+                            <i className="chat-admin" title={t('chat.adminHint')}>
+                              <ShieldIcon />
+                              {t('chat.admin')}
+                            </i>
+                          )}
                           {line.title && <i className={`player-title is-slim is-${line.title}`}>{t(`title.${line.title}` as UiKey)}</i>}
                           <time dateTime={new Date(line.at).toISOString()}>{clock(line.at)}</time>
                         </header>
@@ -1510,6 +1523,31 @@ export default function Chat() {
             <button type="button" className="chat-hold-item is-quiet" onClick={() => setHeld(null)}>
               {t('chat.cancel')}
             </button>
+          </section>
+        </div>
+      )}
+
+      {rules && (
+        <div className="modal-backdrop" onClick={() => setRules(false)} role="presentation">
+          <section className="card modal chat-ask chat-rules" role="dialog" aria-modal="true" aria-label={t('chat.rules')} onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="modal-close" aria-label={t('chat.cancel')} onClick={() => setRules(false)}>
+              <CloseIcon />
+            </button>
+            <h2>{t('chat.rules')}</h2>
+            <ol>
+              {RULES.map((key, at) => (
+                <li key={key}>
+                  <b>{at + 1}</b>
+                  <span>{t(key)}</span>
+                </li>
+              ))}
+            </ol>
+            <p className="chat-rules-foot">{t('chat.rulesFoot')}</p>
+            <div className="chat-ask-row">
+              <button type="button" className="chat-rules-ok" onClick={() => setRules(false)}>
+                {t('chat.rulesOk')}
+              </button>
+            </div>
           </section>
         </div>
       )}
