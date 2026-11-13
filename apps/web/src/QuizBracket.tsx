@@ -266,6 +266,7 @@ export default function BracketRun({ game, byId, quiz, busy, error, top, after, 
               <i key={at} className={at < now ? 'is-done' : at === now ? 'is-now' : ''} />
             ))}
           </span>
+          <h2>{t('quiz.bracket.ask')}</h2>
         </header>
         <div className="bk-pair" key={done}>
           <Fighter game={game} byId={byId} entry={entries[pair[0]]!} state={picked === null ? '' : picked === pair[0] ? 'won' : 'lost'} onPick={() => choose(0)} />

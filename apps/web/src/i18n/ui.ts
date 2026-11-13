@@ -2844,6 +2844,7 @@ const ui = {
   'quiz.bracket.round': { ru: '1/{n} финала', uk: '1/{n} фіналу', en: 'Round of {n}' },
   'quiz.bracket.match': { ru: 'Бой {at} из {total}', uk: 'Бій {at} з {total}', en: 'Match {at} of {total}' },
   'quiz.bracket.champShare': { ru: '{share}% игроков выбирают его победителем', uk: '{share}% гравців обирають його переможцем', en: '{share}% of players pick it as the winner' },
+  'quiz.bracket.ask': { ru: 'Выбери одного из двух', uk: 'Обери одного з двох', en: 'Pick one of the two' },
   'quiz.bracket.winner': { ru: 'Твой победитель', uk: 'Твій переможець', en: 'Your winner' },
   'quiz.bracket.again': { ru: 'Пройти ещё раз', uk: 'Пройти ще раз', en: 'Play again' },
   'quiz.bracket.everyone': { ru: 'Выбор всех игроков', uk: 'Вибір усіх гравців', en: 'Everyone’s picks' },

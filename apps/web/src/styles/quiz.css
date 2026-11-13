@@ -3614,6 +3614,20 @@ textarea.quiz-admin-input {
   text-transform: uppercase;
 }
 
+.bk-arena-head h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 26px;
+  line-height: 1.15;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .bk-arena-head h2 {
+    font-size: 21px;
+  }
+}
+
 .bk-dots {
   display: flex;
   flex-wrap: wrap;
