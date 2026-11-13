@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import type { Entity, Game } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { CrownIcon, RefreshIcon } from './icons'
@@ -24,6 +24,7 @@ type Props = {
 type Run = { round: number[]; next: number[]; at: number; matches: [number, number][]; playIn: boolean }
 
 const PICK_MS = 480
+const DOTS_ROW = 16
 
 const shuffled = (list: number[]) => {
   const order = [...list]
@@ -261,7 +262,7 @@ export default function BracketRun({ game, byId, quiz, busy, error, top, after, 
       <section className="bk-arena" aria-label={t('quiz.bracket.match', { at: done + 1, total })}>
         <header className="bk-arena-head">
           <b>{t(stage.key, stage.values)}</b>
-          <span className="bk-dots" aria-hidden>
+          <span className="bk-dots" aria-hidden style={{ '--per': Math.ceil(fights / Math.ceil(fights / DOTS_ROW)) } as CSSProperties}>
             {Array.from({ length: fights }, (_, at) => (
               <i key={at} className={at < now ? 'is-done' : at === now ? 'is-now' : ''} />
             ))}

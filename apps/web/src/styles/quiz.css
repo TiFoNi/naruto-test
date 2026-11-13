@@ -3629,15 +3629,14 @@ textarea.quiz-admin-input {
 }
 
 .bk-dots {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(var(--per), minmax(0, 30px));
   justify-content: center;
   gap: 6px;
-  max-width: 100%;
+  width: 100%;
 }
 
 .bk-dots i {
-  width: 30px;
   height: 7px;
   border-radius: 99px;
   background: color-mix(in srgb, var(--text-3) 22%, transparent);
@@ -3980,8 +3979,12 @@ textarea.quiz-admin-input {
     font-size: 13px;
   }
 
+  .bk-dots {
+    grid-template-columns: repeat(var(--per), minmax(0, 18px));
+    gap: 4px;
+  }
+
   .bk-dots i {
-    width: 18px;
     height: 6px;
   }
 
