@@ -927,9 +927,9 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
     .map((team) => ({ team, total: Math.max(0, ...squad(duel, team).map((side) => side.wins ?? 0)) + (points.get(team) ?? 0) }))
   const top = Math.max(0, ...totals.map((one) => one.total))
   const leaders = totals.filter((one) => one.total === top)
-  const target = winsNeeded(duel) * Math.max(1, totals.length - 1)
-  const matchTeam = duel.bot ? winnerTeam : leaders.length === 1 && top >= target ? leaders[0]!.team : null
-  const matchDone = duel.bot ? true : matchTeam !== null
+  const lastRound = duel.round >= (duel.best ?? DUEL_DEFAULT.best)
+  const matchTeam = duel.bot ? winnerTeam : lastRound && leaders.length === 1 ? leaders[0]!.team : null
+  const matchDone = duel.bot ? true : lastRound
   const masters = matchTeam === null ? [] : duel.players.filter((side) => teamOf(duel, side) === matchTeam)
   const solvedAt = champs.reduce<Date | null>((latest, side) => (side.solvedAt && (!latest || side.solvedAt > latest) ? side.solvedAt : latest), null)
   const ms = solvedAt && duel.startedAt ? solvedAt.getTime() - duel.startedAt.getTime() : null
