@@ -109,6 +109,25 @@
   "anime": true
  },
  {
+  "id": 2342,
+  "name": "Киитиро Осорэда",
+  "nameEn": "Kiichiro Osoreda",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "hidden": true,
+  "answer": true,
+  "thumb": 6,
+  "anime": true
+ },
+ {
   "id": 1780,
   "name": "Лайт Ягами",
   "nameEn": "Light Yagami",
@@ -124,7 +143,26 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 6,
+  "thumb": 7,
+  "anime": true
+ },
+ {
+  "id": 1886,
+  "name": "Линд Л. Тейлор",
+  "nameEn": "Lind L. Tailor",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "hidden": true,
+  "answer": true,
+  "thumb": 8,
   "anime": true
  },
  {
@@ -143,7 +181,7 @@
   "arc": "Наследники L",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 7,
+  "thumb": 9,
   "anime": true
  },
  {
@@ -161,7 +199,7 @@
   "arc": "Второй Кира",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 8,
+  "thumb": 10,
   "anime": true
  },
  {
@@ -179,7 +217,7 @@
   "arc": "Наследники L",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 9,
+  "thumb": 11,
   "anime": true
  },
  {
@@ -197,7 +235,7 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 10,
+  "thumb": 12,
   "anime": true
  },
  {
@@ -216,7 +254,7 @@
   "arc": "Наследники L",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 11,
+  "thumb": 13,
   "anime": true
  },
  {
@@ -234,7 +272,7 @@
   "arc": "Второй Кира",
   "arcIndex": 1,
   "answer": true,
-  "thumb": 12,
+  "thumb": 14,
   "anime": true
  },
  {
@@ -252,7 +290,7 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 13,
+  "thumb": 15,
   "anime": true
  },
  {
@@ -270,7 +308,7 @@
   "arc": "Ёцуба",
   "arcIndex": 2,
   "answer": true,
-  "thumb": 14,
+  "thumb": 16,
   "anime": true
  },
  {
@@ -288,7 +326,7 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 15,
+  "thumb": 17,
   "anime": true
  },
  {
@@ -306,7 +344,7 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 16,
+  "thumb": 18,
   "anime": true
  },
  {
@@ -324,7 +362,7 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 17,
+  "thumb": 19,
   "anime": true
  },
  {
@@ -342,7 +380,26 @@
   "arc": "Наследники L",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 18,
+  "thumb": 20,
+  "anime": true
+ },
+ {
+  "id": 2201,
+  "name": "Синго Мидо",
+  "nameEn": "Shingo Mido",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Вне организаций"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Ёцуба",
+  "arcIndex": 2,
+  "hidden": true,
+  "answer": true,
+  "thumb": 21,
   "anime": true
  },
  {
@@ -360,7 +417,26 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 19,
+  "thumb": 22,
+  "anime": true
+ },
+ {
+  "id": 2190,
+  "name": "Стивен Джеванни",
+  "nameEn": "Stephen Gevanni",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "SPK"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "hidden": true,
+  "answer": true,
+  "thumb": 23,
   "anime": true
  },
  {
@@ -378,7 +454,7 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 20,
+  "thumb": 24,
   "anime": true
  },
  {
@@ -396,7 +472,7 @@
   "arc": "Наследники L",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 21,
+  "thumb": 25,
   "anime": true
  },
  {
@@ -414,7 +490,7 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 22,
+  "thumb": 26,
   "anime": true
  },
  {
@@ -432,7 +508,7 @@
   "arc": "Наследники L",
   "arcIndex": 3,
   "answer": true,
-  "thumb": 23,
+  "thumb": 27,
   "anime": true
  },
  {
@@ -450,7 +526,45 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 24,
+  "thumb": 28,
+  "anime": true
+ },
+ {
+  "id": 1833,
+  "name": "Хирокадзу Укита",
+  "nameEn": "Hirokazu Ukita",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "Опергруппа"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Мёртв",
+  "arc": "Знакомство",
+  "arcIndex": 0,
+  "hidden": true,
+  "answer": true,
+  "thumb": 29,
+  "anime": true
+ },
+ {
+  "id": 2181,
+  "name": "Энтони Рестер",
+  "nameEn": "Anthony Rester",
+  "gender": "Мужской",
+  "species": "Человек",
+  "orgs": [
+   "SPK"
+  ],
+  "note": "Не владел",
+  "eyes": "Нет",
+  "status": "Жив",
+  "arc": "Наследники L",
+  "arcIndex": 3,
+  "hidden": true,
+  "answer": true,
+  "thumb": 30,
   "anime": true
  },
  {
@@ -470,7 +584,7 @@
   "arc": "Знакомство",
   "arcIndex": 0,
   "answer": true,
-  "thumb": 25,
+  "thumb": 31,
   "anime": true
  }
 ]

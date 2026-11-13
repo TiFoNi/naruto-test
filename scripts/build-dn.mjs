@@ -106,7 +106,10 @@ const KEEP_ONLY = new Set([
   'Anthony Rester',
   'Hitoshi Demegawa',
   'Lind L. Tailor',
+  'Kiichiro Osoreda',
 ])
+
+const HIDDEN = new Set(['Hirokazu Ukita', 'Anthony Rester', 'Stephen Gevanni', 'Shingo Mido', 'Lind L. Tailor', 'Kiichiro Osoreda'])
 
 const ALIASES = {
   'L (character)': 'Л Эл Ел Лоулайт Ryuzaki Рюдзаки Рюдзакі Lawliet',
@@ -270,14 +273,15 @@ async function main() {
       arc: ARCS[arcIndex][1],
       arcIndex,
       length,
+      ...(HIDDEN.has(name) ? { hidden: true } : {}),
     })
   })
 
   result.sort((a, b) => b.length - a.length)
   let picked = 0
   for (const c of result) {
-    c.answer = picked < ANSWER_POOL_SIZE
-    if (c.answer) picked++
+    c.answer = c.hidden || picked < ANSWER_POOL_SIZE
+    if (c.answer && !c.hidden) picked++
     delete c.length
   }
   const kept = keepNotable(result, KEEP)
