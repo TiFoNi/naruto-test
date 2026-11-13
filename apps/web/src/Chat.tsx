@@ -1219,7 +1219,6 @@ export default function Chat() {
                     <button
                       type="button"
                       className={`chat-face-open ${throwing ? 'is-on' : ''}`}
-                      title={t('chat.boutThrow')}
                       aria-label={t('chat.boutThrow')}
                       aria-expanded={throwing}
                       disabled={sending}
@@ -1229,6 +1228,9 @@ export default function Chat() {
                       }}
                     >
                       <CardsIcon />
+                      <span className="chat-face-tip" aria-hidden>
+                        {t('chat.boutThrow')}
+                      </span>
                     </button>
                     {throwing && !patron && (
                       <>
@@ -1262,7 +1264,6 @@ export default function Chat() {
                   <button
                     type="button"
                     className={`chat-face-open ${faces ? 'is-on' : ''}`}
-                    title={t('chat.emoji')}
                     aria-label={t('chat.emoji')}
                     aria-expanded={faces}
                     onClick={() => {
@@ -1271,6 +1272,9 @@ export default function Chat() {
                     }}
                   >
                     <SmileIcon />
+                    <span className="chat-face-tip" aria-hidden>
+                      {t('chat.emoji')}
+                    </span>
                   </button>
                   {faces && (
                     <>

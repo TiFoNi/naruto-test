@@ -108,12 +108,37 @@ const CLUB_NAMES = {
   'CF Montréal': ['Монреаль', 'Монреаль'],
   'PSV Eindhoven': ['ПСВ', 'ПСВ'],
   'Sporting CP': ['Спортинг', 'Спортінг'],
+  'Sporting de Gijón': ['Спортинг Хихон', 'Спортінг Хіхон'],
+  'Olympique Lyonnais': ['Олимпик Лион', 'Олімпік Ліон'],
+  'Olympique Alès': ['Олимпик Алес', 'Олімпік Алес'],
+  'Borussia Mönchengladbach': ['Боруссия Мёнхенгладбах', 'Боруссія Менхенгладбах'],
+  'Borussia Neunkirchen': ['Боруссия Нойнкирхен', 'Боруссія Нойнкірхен'],
+  'Racing Club': ['Расинг Авельянеда', 'Расінг Авельянеда'],
+  'Racing de Santander': ['Расинг Сантандер', 'Расінг Сантандер'],
+  'Racing Club de Ferrol': ['Расинг Ферроль', 'Расінг Ферроль'],
+  'Racing Club de France': ['Расинг Париж', 'Расінг Париж'],
+  'NK Inter Zaprešić': ['Интер Запрешич', 'Інтер Запрешич'],
+  'FC Arsenal Tula': ['Арсенал Тула', 'Арсенал Тула'],
+  'FC Dinamo Minsk': ['Динамо Минск', 'Динамо Мінськ'],
+  'FC Dinamo Bucharest': ['Динамо Бухарест', 'Динамо Бухарест'],
+  'FC Dinamo Batumi': ['Динамо Батуми', 'Динамо Батумі'],
+  'FC Dinamo Sukhumi': ['Динамо Сухуми', 'Динамо Сухумі'],
+  'FC Dynamo Saint Petersburg': ['Динамо Санкт-Петербург', 'Динамо Санкт-Петербург'],
+  'FC Dynamo Stavropol': ['Динамо Ставрополь', 'Динамо Ставрополь'],
+  'Dynamo Dresden': ['Динамо Дрезден', 'Динамо Дрезден'],
+  'SK Dynamo České Budějovice': ['Динамо Ческе-Будеёвице', 'Динамо Ческе-Будейовіце'],
+  'Vitória S.C.': ['Витория Гимарайнш', 'Віторія Гімарайнш'],
+  'Vitória F.C.': ['Витория Сетубал', 'Віторія Сетубал'],
+  'E.C. Vitória': ['Витория Салвадор', 'Віторія Салвадор'],
+  'Barcelona S.C.': ['Барселона Гуаякиль', 'Барселона Гуаякіль'],
+  'America Football Club': ['Америка Рио', 'Америка Ріо'],
+  'Associação Atlética Internacional': ['Интернасьонал Лимейра', 'Інтернасьонал Лімейра'],
 }
 
 const ARABIC_ARTICLE = /^(Ан|Ас|Ад|Аш|Ат|Аз|Ар|Ац)-/
 
 const tidyClub = (name) => {
-  const plain = name.replace(/\s*\([^)]*\)\s*$/, '').trim()
+  const plain = name.replace(/\s*\([^)]*\)\s*$/, '').replace(/^ФК «(.+)»$/, '$1').trim()
   return plain.replace(ARABIC_ARTICLE, 'Аль-')
 }
 
@@ -205,6 +230,7 @@ const NATIONAL = ['Q6979593', 'Q135408445']
 const CLUB = ['Q476028', 'Q847017', 'Q15944511', 'Q103229495', 'Q20639856']
 
 const YOUTH = /молодёжн|молодежн|юношеск|олимпийск|olympic|under-?\s?\d|u-?\d|b-?team|второй состав/
+const RESERVE = /\s(b|c|ii|iii)$|castilla$|atlètic$|^bilbao athletic$|^jong\s|reserves?$|\su-?\d{2}$/
 const NOT_A_CLUB = /women|жіноч|женск|college|university|універси|универси|academy|академ|pilots|school|шкільн/
 
 const isNational = async (qid) => {
@@ -231,6 +257,7 @@ const isClub = async (qid) => {
   const data = await entity(qid)
   const label = `${data.labels.ru ?? ''} ${data.labels.en ?? ''}`.toLowerCase()
   if (/сборн|national team/.test(label) || YOUTH.test(label) || NOT_A_CLUB.test(label)) return false
+  if (RESERVE.test((data.labels.en ?? '').toLowerCase().trim()) || /\sб$/.test((data.labels.ru ?? '').toLowerCase().trim())) return false
 
   const sports = ids(data.claims.P641)
   if (sports.length && !sports.includes('Q2736')) return false
@@ -247,39 +274,50 @@ const year = (claim) => {
 
 const PLAYING_AGE = 42
 
-async function clubOf(player, birth) {
-  const teams = (player.claims.P54 ?? []).filter((c) => c.rank !== 'deprecated' && id(c))
-  const scored = []
-  for (const team of teams) {
+const MOST_CLUBS = 3
+const FREE = 'Без клуба'
+
+async function clubsOf(player, birth) {
+  const now = new Date().getFullYear()
+  const stints = []
+  for (const team of (player.claims.P54 ?? []).filter((c) => c.rank !== 'deprecated' && id(c))) {
     const qid = id(team)
     if (!(await isClub(qid))) continue
-    const started = team.qualifiers?.P580?.[0]?.time ?? ''
-    const ended = team.qualifiers?.P582?.[0]?.time ?? null
     const data = await entity(qid)
-    scored.push({
+    stints.push({
       qid,
       preferred: team.rank === 'preferred',
       known: !!data.labels.ru,
-      started,
-      ended,
-      years: started && ended ? Number(ended.slice(1, 5)) - Number(started.slice(1, 5)) : 0,
+      started: team.qualifiers?.P580?.[0]?.time ?? '',
+      ended: team.qualifiers?.P582?.[0]?.time ?? null,
     })
   }
-  if (!scored.length) return { qid: null, active: false }
+  if (!stints.length) return { current: null, past: [] }
 
-  const retired = new Date().getFullYear() - birth > PLAYING_AGE
-  if (!retired) {
-    const open = scored.filter((t) => !t.ended && (t.started || t.preferred))
-    const current =
-      open.sort((a, b) => Number(b.preferred) - Number(a.preferred) || b.started.localeCompare(a.started)).find((t) => t.known) ??
-      open[0]
-    if (current) return { qid: current.qid, active: true }
+  const retired = now - birth > PLAYING_AGE
+  const open = retired ? [] : stints.filter((t) => !t.ended && (t.started || t.preferred))
+  const current =
+    open.sort((a, b) => Number(b.preferred) - Number(a.preferred) || b.started.localeCompare(a.started)).find((t) => t.known) ?? open[0] ?? null
+
+  const totals = new Map()
+  for (const t of stints) {
+    if (t.qid === current?.qid) continue
+    const from = t.started ? Number(t.started.slice(1, 5)) : null
+    const to = t.ended ? Number(t.ended.slice(1, 5)) : null
+    const one = totals.get(t.qid) ?? { qid: t.qid, known: t.known, years: 0, last: '' }
+    one.years += from !== null && to !== null ? Math.max(0, to - from) : 0
+    const last = t.ended ?? t.started
+    if (last > one.last) one.last = last
+    totals.set(t.qid, one)
   }
-
-  const byYears = [...scored].sort((a, b) => b.years - a.years || (b.ended ?? '').localeCompare(a.ended ?? ''))
-  const longest = byYears.find((t) => t.known) ?? byYears[0]
-  return { qid: longest.qid, active: false }
+  const ranked = [...totals.values()].sort((a, b) => b.years - a.years || b.last.localeCompare(a.last))
+  const named = ranked.filter((t) => t.known).length ? ranked.filter((t) => t.known) : ranked
+  const solid = named.filter((t) => t.years > 0)
+  const past = solid.length || current ? solid : named.slice(0, 1)
+  return { current: current?.qid ?? null, past: past.map((t) => t.qid) }
 }
+
+const clubList = (current, past) => [...new Set([...(current && current !== FREE ? [current] : []), ...past])].slice(0, MOST_CLUBS)
 
 const viewsUrl = (project, title) =>
   `https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/${project}/all-access/user/${encodeURIComponent(title.replace(/ /g, '_'))}/monthly/${VIEWS_FROM}/${VIEWS_TO}`
@@ -414,8 +452,13 @@ const main = async () => {
     }
     if (!country || REGIONS.has(country)) continue
 
-    const club = await clubOf(player, birth)
-    const clubName = club.qid ? await remember(club.qid, null) : null
+    const career = await clubsOf(player, birth)
+    const current = career.current ? await remember(career.current, null) : null
+    const past = []
+    for (const qid of career.past) {
+      const name = await remember(qid, null)
+      if (name && name !== current && !past.includes(name)) past.push(name)
+    }
 
     const part = PART_OF.get(country)
     if (!part) console.log('невідома частина світу:', country)
@@ -430,8 +473,9 @@ const main = async () => {
       country,
       part: part ?? EUROPE,
       roles,
-      club: clubName ?? 'Неизвестно',
-      status: club.active ? PLAYING : RETIRED,
+      clubs: clubList(current, past),
+      past,
+      status: current ? PLAYING : RETIRED,
       birth,
       image,
       answer: true,
@@ -443,7 +487,11 @@ const main = async () => {
   const floor = entities.at(-1)?.fame ?? 0
   for (const player of entities) {
     delete player.fame
-    Object.assign(player, FIXES[player.id])
+    const { club, ...fix } = FIXES[player.id] ?? {}
+    Object.assign(player, fix)
+    if (club) player.clubs = clubList(club, player.past)
+    if (!player.clubs.length) player.clubs = ['Неизвестно']
+    delete player.past
   }
 
   const active = entities.filter((e) => e.status === PLAYING).length

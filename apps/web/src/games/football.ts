@@ -6,7 +6,7 @@ type Player = Entity & {
   country: string
   part: string
   roles: string[]
-  club: string
+  clubs: string[]
   status: string
   birth: number
 }
@@ -17,7 +17,7 @@ const columns: Column<Player>[] = [
   { title: l10n('Страна', 'Країна', 'Country'), ...exact('country') },
   { title: l10n('Часть света', 'Частина світу', 'Region'), ...exact('part') },
   { title: l10n('Позиция', 'Позиція', 'Position'), ...list('roles') },
-  { title: l10n('Клуб', 'Клуб', 'Club'), ...exact('club') },
+  { title: l10n('Клубы', 'Клуби', 'Clubs'), ...list('clubs') },
   { title: l10n('Карьера', 'Кар’єра', 'Career'), ...exact('status') },
   { title: l10n('Год рождения', 'Рік народження', 'Born'), key: 'birth', text: (g) => String(g.birth) },
 ]
