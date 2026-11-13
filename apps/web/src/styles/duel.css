@@ -3630,6 +3630,8 @@ html[data-duel='play'] .duel-ghosts .sk-play {
   border: 0;
   background: none;
   flex: 1 1 auto;
+  align-items: center;
+  min-height: 52px;
   padding: 0;
   gap: 10px;
 }

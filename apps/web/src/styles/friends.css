@@ -192,6 +192,12 @@
   box-shadow: 0 14px 30px rgb(0 0 0 / 35%);
 }
 
+.mates-rows li {
+  position: relative;
+  overflow: hidden;
+}
+
+.mates-rows li > *:not(.mates-art),
 .mates-grid li > *:not(.mates-art) {
   position: relative;
   z-index: 1;
@@ -228,11 +234,14 @@
   font-size: 15.5px;
 }
 
+.mates-rows li.has-art .mates-name b,
+.mates-rows li.has-art .mates-name small,
 .mates-grid li.has-art .mates-name b,
 .mates-grid li.has-art .mates-name small {
   text-shadow: 0 1px 6px rgb(0 0 0 / 70%);
 }
 
+.mates-rows li.has-art .mates-acts .ghost,
 .mates-grid li.has-art .mates-acts button {
   background: rgb(10 12 16 / 55%);
   backdrop-filter: blur(6px);
