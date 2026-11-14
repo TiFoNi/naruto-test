@@ -220,6 +220,7 @@ const shareSeen = (channel: 'chat' | 'news', id: string) => {
   }, SHARE_SEEN_MS)
 }
 const KEEP = 300
+const HUNT_PAGES = 12
 
 const clock = (at: number) => new Date(at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 
@@ -295,6 +296,7 @@ export default function Chat() {
   const [picked, setPicked] = useState<MentionPick[]>([])
   const [tagCount, setTagCount] = useState(0)
   const [focusLine, setFocusLine] = useState<string | null>(null)
+  const [hunting, setHunting] = useState(false)
   const talk = useDuelTalk()
   const talkCode = talk?.code ?? null
   const [talkSeen, setTalkSeen] = useState('')
@@ -426,23 +428,29 @@ export default function Chat() {
 
   const load = useCallback(async (before?: string) => {
     const asked = roomRef.current
-    if (asked === 'duel') return
+    if (asked === 'duel') return null
     setLoading(true)
     const query = new URLSearchParams()
     if (before) query.set('before', before)
     if (asked === 'news') query.set('channel', 'news')
     const { ok, data } = await api<{ lines?: Line[]; more?: boolean; online?: number }>(`chat${query.toString() ? `?${query.toString()}` : ''}`)
     setLoading(false)
-    if (!ok || !data.lines || roomRef.current !== asked) return
+    if (!ok || !data.lines || roomRef.current !== asked) return null
     if (typeof data.online === 'number') setOnline(data.online)
     setMore(Boolean(data.more))
-    if (!before) return setLines(data.lines.slice(-KEEP))
+    if (!before) {
+      setLines(data.lines.slice(-KEEP))
+      return { lines: data.lines.slice(-KEEP), more: Boolean(data.more) }
+    }
     const box = feed.current
     anchor.current = box ? box.scrollHeight - box.scrollTop : null
+    let merged: Line[] = []
     setLines((kept) => {
       const known = new Set(kept.map((line) => line.id))
-      return [...data.lines!.filter((line) => !known.has(line.id)), ...kept]
+      merged = [...data.lines!.filter((line) => !known.has(line.id)), ...kept]
+      return merged
     })
+    return { lines: merged, more: Boolean(data.more) }
   }, [])
 
   const catchUp = useCallback(async () => {
@@ -915,9 +923,25 @@ export default function Chat() {
     requestAnimationFrame(() => focusField())
   }
 
-  const jump = (id: string) => {
-    if (!shownIds.has(id)) return say(t('chat.replyGone'))
-    setFocusLine(id)
+  const jump = async (id: string) => {
+    if (shownIds.has(id)) return setFocusLine(id)
+    if (room === 'duel' || hunting) return say(t('chat.replyGone'))
+    setHunting(true)
+    try {
+      let older = lines[0]?.id
+      let left = more
+      for (let page = 0; page < HUNT_PAGES && left && older; page++) {
+        const got = await load(older)
+        if (!got) break
+        if (got.lines.some((line) => line.id === id)) return setFocusLine(id)
+        if (got.lines[0]?.id === older) break
+        older = got.lines[0]?.id
+        left = got.more
+      }
+      say(t(left ? 'chat.replyFar' : 'chat.replyGone'))
+    } finally {
+      setHunting(false)
+    }
   }
 
   const letGo = () => {
@@ -1051,7 +1075,7 @@ export default function Chat() {
                     }`}
                   >
                     {line.reply && (
-                      <button type="button" className="chat-thread" onClick={() => jump(line.reply!.id)} title={t('chat.replyJump')}>
+                      <button type="button" className="chat-thread" onClick={() => void jump(line.reply!.id)} title={t('chat.replyJump')}>
                         <i aria-hidden />
                         <b>{line.reply.nickname}</b>
                         <span className={line.reply.gone ? 'is-gone' : ''}>{line.reply.gone ? t('chat.replyDeleted') : line.reply.text}</span>
@@ -1141,7 +1165,7 @@ export default function Chat() {
               {replyTo && room === 'chat' && (
                 <div className="chat-reply-bar">
                   <ReplyIcon />
-                  <button type="button" className="chat-reply-what" onClick={() => jump(replyTo.id)}>
+                  <button type="button" className="chat-reply-what" onClick={() => void jump(replyTo.id)}>
                     <b>{t('chat.replyTo', { name: replyTo.nickname })}</b>
                     <span>{replyTo.text}</span>
                   </button>

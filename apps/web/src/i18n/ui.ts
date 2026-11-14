@@ -1379,6 +1379,7 @@ const ui = {
   'chat.replyCancel': { ru: 'Отменить ответ', uk: 'Скасувати відповідь', en: 'Cancel reply' },
   'chat.replyJump': { ru: 'Показать сообщение', uk: 'Показати повідомлення', en: 'Show message' },
   'chat.replyDeleted': { ru: 'Сообщение удалено', uk: 'Повідомлення видалено', en: 'Message deleted' },
+  'chat.replyFar': { ru: 'Это сообщение слишком давнее, к нему не перейти', uk: 'Це повідомлення надто давнє, до нього не перейти', en: 'That message is too old to jump to' },
   'chat.replyGone': { ru: 'Это сообщение уже не в чате', uk: 'Цього повідомлення вже нема в чаті', en: 'That message is no longer in the chat' },
   'chat.replyFrom': { ru: '{name} ответил тебе', uk: '{name} відповів тобі', en: '{name} replied to you' },
   'chat.roomDuel': { ru: 'Дуэль', uk: 'Дуель', en: 'Duel' },
