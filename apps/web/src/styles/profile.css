@@ -2996,6 +2996,14 @@ button.fact-rank:hover {
     translate: 0 8px;
   }
 
+  .profile-hero-name h1:not(.profile-canvas *) {
+    font-size: calc(clamp(24px, 3.3vw, 42px) * var(--nick-fit, 1));
+  }
+
+  .profile-hero-name .player-tag:not(.profile-canvas *) {
+    font-size: 11.5px;
+  }
+
   .profile-banner:not(.profile-canvas *) {
     height: 138px;
   }
@@ -4730,7 +4738,9 @@ body:has(.profile:is(.is-beta, .is-tester)) .backdrop-blob {
     -webkit-line-clamp: 2;
     line-clamp: 2;
     max-width: 100%;
+    padding-bottom: 0.08em;
     font-size: 20px;
+    line-height: 1.25;
     white-space: normal;
     overflow-wrap: anywhere;
   }

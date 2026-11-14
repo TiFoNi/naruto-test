@@ -201,6 +201,53 @@ function FitLabel({ full, short }: { full: string; short: string }) {
   )
 }
 
+const VALUE_MIN = 12
+const VALUE_SAFE = 4
+
+function useFitValues() {
+  const box = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const root = box.current
+    if (!root) return
+    const fit = () => {
+      for (const tile of root.querySelectorAll<HTMLElement>('.fact')) {
+        const value = tile.querySelector<HTMLElement>('.fact-value')
+        if (!value) continue
+        value.style.fontSize = ''
+        value.style.webkitLineClamp = 'unset'
+        const full = parseFloat(getComputedStyle(value).fontSize)
+        const pad = getComputedStyle(tile)
+        const room =
+          tile.clientHeight -
+          parseFloat(pad.paddingTop) -
+          parseFloat(pad.paddingBottom) -
+          parseFloat(pad.rowGap || '0') -
+          (tile.querySelector<HTMLElement>('.fact-label')?.offsetHeight ?? 0) -
+          VALUE_SAFE
+        if (room <= 0) {
+          value.style.webkitLineClamp = ''
+          continue
+        }
+        let size = full
+        while (size > VALUE_MIN && value.scrollHeight > room) {
+          size -= 1
+          value.style.fontSize = `${size}px`
+        }
+        if (size === full) value.style.fontSize = ''
+        value.style.webkitLineClamp = ''
+      }
+    }
+    fit()
+    const watcher = new ResizeObserver(fit)
+    watcher.observe(root)
+    void document.fonts?.ready.then(fit)
+    return () => watcher.disconnect()
+  })
+
+  return box
+}
+
 export default function Profile({ id }: { id?: string }) {
   const { user, refresh } = useAuth()
   const own = !id
@@ -216,6 +263,7 @@ export default function Profile({ id }: { id?: string }) {
   const lockAt = useRef<(HTMLButtonElement | null)[]>([])
   const [places, setPlaces] = useState(false)
   const [edit, setEdit] = useState(false)
+  const factsBox = useFitValues()
   const [layout, setLayout] = useState<ProfileBlock[] | null>(null)
   const [board, setBoard] = useState<Omit<BoardSave, 'blocks'> | null>(null)
 
@@ -749,7 +797,7 @@ export default function Profile({ id }: { id?: string }) {
         <header>
           <h2>{t('profile.block.facts')}</h2>
         </header>
-        <div className="profile-facts">
+        <div className="profile-facts" ref={factsBox}>
           {best ? (
             <button
               type="button"
