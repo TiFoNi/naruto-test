@@ -173,24 +173,23 @@ function measure(box: HTMLElement, wide: boolean): Metrics | null {
     const cap = list?.classList.contains('activity') ? ACTIVITY_LIST : content
     activity = Math.round(head + Math.min(content, cap) + parseFloat(outer.paddingBottom) + parseFloat(outer.borderBottomWidth))
   }
-  let facts = Math.round(base / 2)
+  const ownHeight = (card: HTMLElement) => {
+    const kept = card.style.cssText
+    card.style.flex = 'none'
+    card.style.height = 'auto'
+    const outer = getComputedStyle(card)
+    const inner = [...card.children].reduce((sum, one) => sum + (one as HTMLElement).offsetHeight, 0)
+    const gaps = (parseFloat(outer.rowGap) || 0) * Math.max(0, card.children.length - 1)
+    const chrome =
+      parseFloat(outer.paddingTop) + parseFloat(outer.paddingBottom) + parseFloat(outer.borderTopWidth) + parseFloat(outer.borderBottomWidth)
+    const tall = Math.ceil(Math.max(card.offsetHeight, card.scrollHeight, inner + gaps + chrome))
+    card.style.cssText = kept
+    return tall
+  }
   const told = box.querySelector<HTMLElement>('.slot-facts .profile-card')
-  if (told) {
-    const kept = told.style.cssText
-    told.style.flex = 'none'
-    told.style.height = 'auto'
-    facts = Math.max(facts, told.offsetHeight)
-    told.style.cssText = kept
-  }
-  let quizzes = FALLBACK.quizzes
+  const facts = told ? ownHeight(told) : FALLBACK.facts
   const tested = box.querySelector<HTMLElement>('.slot-quizzes .profile-card')
-  if (tested) {
-    const kept = tested.style.cssText
-    tested.style.flex = 'none'
-    tested.style.height = 'auto'
-    quizzes = Math.max(FALLBACK.quizzes, tested.offsetHeight)
-    tested.style.cssText = kept
-  }
+  const quizzes = tested ? ownHeight(tested) : 0
   return {
     base,
     step,
@@ -306,8 +305,10 @@ export default function ProfileBoard({
   const heightOf = (block: ProfileBlock) => {
     if (stretch?.block === block) return unitsOf(stretch.px) + bar
     if (isShelf(block)) return unitsOf(shelfPx(rowsOf(block), block)) + bar
-    if ((block === 'facts' || block === 'quizzes') && width < PHONE) return unitsOf(metrics.base) + bar
-    if (block === 'facts' || block === 'quizzes') return unitsOf(Math.max(metrics.facts, blocks.includes('quizzes') ? metrics.quizzes : 0)) + bar
+    if (block === 'facts' || block === 'quizzes') {
+      const pair = Math.max(blocks.includes('facts') ? metrics.facts : 0, blocks.includes('quizzes') ? metrics.quizzes : 0) || FALLBACK.facts
+      return unitsOf(width < PHONE ? Math.max(metrics.base, pair) : pair) + bar
+    }
     return unitsOf(sizes[block] ?? metrics.activity) + bar
   }
 
