@@ -9,6 +9,7 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
+import { RefreshIcon, UpIcon } from './icons'
 import { useHref, useNavigate } from './router'
 
 const SLOTS = ARENA_HERO_SLOTS + ARENA_SUMMON_SLOTS
@@ -441,16 +442,29 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     <div className="ar-shopbar">
       <button
         type="button"
-        className="ar-shop-btn is-up"
+        className="ar-pip is-up"
         disabled={waiting || shopTop || view.chakra < view.upCost}
+        title={shopTop ? t('arena.tavernTop') : t('arena.upgrade', { n: view.tavernTier + 1 })}
         onClick={() => send({ action: 'up' })}
       >
-        <span>{shopTop ? t('arena.tavernTop') : t('arena.upgrade', { n: view.tavernTier + 1 })}</span>
+        <UpIcon />
         {!shopTop && <i className="ar-cost">{view.upCost}</i>}
       </button>
-      <b className="ar-shop-lvl">{t('arena.tavernLevel', { n: view.tavernTier })}</b>
-      <button type="button" className="ar-shop-btn" disabled={waiting || view.chakra < view.rollCost} onClick={() => send({ action: 'roll' })}>
-        <span>{t('arena.reroll')}</span>
+
+      <span className="ar-rank" title={t('arena.tavernLevel', { n: view.tavernTier })}>
+        {Array.from({ length: ARENA_TIERS }, (_, i) => (
+          <i key={i} className={i < view.tavernTier ? 'is-on' : ''} />
+        ))}
+      </span>
+
+      <button
+        type="button"
+        className="ar-pip"
+        disabled={waiting || view.chakra < view.rollCost}
+        title={t('arena.reroll')}
+        onClick={() => send({ action: 'roll' })}
+      >
+        <RefreshIcon />
         <i className="ar-cost">{view.rollCost}</i>
       </button>
     </div>
