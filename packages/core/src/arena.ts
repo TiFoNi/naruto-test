@@ -12,7 +12,6 @@ import {
   ARENA_TRIPLE,
   ARENA_ROLL_COST,
   ARENA_UP_MIN,
-  arenaBonus,
   arenaPower,
   arenaTierAt,
   arenaUpCost,
@@ -117,11 +116,10 @@ const baseOf = (id: number) => {
   return { atk: row[1], hp: row[2] }
 }
 
-export const statsOf = (id: number, rarity: CardRarity, triple = false) => {
+export const statsOf = (id: number, _rarity: CardRarity, triple = false) => {
   const base = baseOf(id)
-  const gain = arenaBonus(rarity)
   const mul = triple ? 2 : 1
-  return { atk: (base.atk + gain.atk) * mul, hp: (base.hp + gain.hp) * mul }
+  return { atk: base.atk * mul, hp: base.hp * mul }
 }
 
 const makeCard = (id: number, rarity: CardRarity, summon: boolean, seq: number, triple = false): ArenaCard => {
