@@ -137,9 +137,6 @@
 }
 
 .arena-card .lv-badge.is-hp {
-  right: auto;
-  left: -4px;
-  rotate: 6deg;
   --scrap: #ebe5dc;
   --lv-ink: #2f8f45;
   color: #1f7536;
@@ -151,6 +148,9 @@
 }
 
 .arena-card .lv-badge.is-atk {
+  right: auto;
+  left: -4px;
+  rotate: 6deg;
   --scrap: #ebe5dc;
   --lv-ink: #b03c3c;
   color: #9c2222;
