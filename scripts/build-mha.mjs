@@ -84,7 +84,9 @@ const SIDES = [
 const AFFILIATIONS = [
   ['Класс 1-A', ['Class 1-A']],
   ['Класс 1-B', ['Class 1-B']],
-  ['Ю-Эй', ['U.A. Students', 'Former U.A. Students', 'U.A. Staff', 'Hero Teachers', 'U.A. High School Students']],
+  ['Ю-Эй', ['U.A. Students', 'Former U.A. Students', 'U.A. Staff', 'U.A. High School Students']],
+  ['Кэцубуцу', ['Ketsubutsu Students', 'Ketsubutsu Teachers']],
+  ['Шикетсу', ['Shiketsu Students', 'Shiketsu Teachers']],
   ['Лига злодеев', ['League of Villains']],
   ['Фронт освобождения', ['Paranormal Liberation Front']],
   ['Шиэ Хассайкай', ['Shie Hassaikai']],
