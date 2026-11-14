@@ -271,7 +271,7 @@ const WESTEROSI = 'Вестеросцы'
 const REGIONS = new Set(['Северяне', 'Жители Королевских земель', 'Жители Запада', 'Речные люди', 'Жители Штормовых земель', 'Жители Простора', 'Дорнийцы', 'Железнорождённые', 'Жители Долины', 'Болотные люди'])
 const withWesterosi = (list) => (list.some((one) => REGIONS.has(one)) && !list.includes(WESTEROSI) ? [...list, WESTEROSI] : list)
 const ALIVE_FIX = new Set(['Jon Snow'])
-const DEAD_FIX = new Set(['Ellaria Sand', 'Olyvar'])
+const DEAD_FIX = new Set(['Ellaria Sand', 'Olyvar', 'Unella'])
 
 const clean = (value) =>
   (value ?? '')

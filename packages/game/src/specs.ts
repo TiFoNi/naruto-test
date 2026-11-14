@@ -1204,3 +1204,39 @@ export const POLL = {
     },
   ] as PollGroup[],
 }
+
+export const ARENA_GAMES: GameId[] = ['naruto']
+
+export const ARENA_HP = 40
+export const ARENA_HERO_SLOTS = 4
+export const ARENA_SUMMON_SLOTS = 3
+export const ARENA_HAND = 6
+export const ARENA_TAVERN = 5
+export const ARENA_CHAKRA_MAX = 10
+export const ARENA_CHAKRA_START = 4
+export const ARENA_CARD_COST = 3
+export const ARENA_SELL_BACK = 1
+export const ARENA_TIERS = 6
+export const ARENA_TRIPLE = 3
+
+export const arenaTierAt = (turn: number) => Math.min(ARENA_TIERS, Math.floor((turn + 1) / 2))
+
+export const arenaPower = (tier: number) => Math.max(1, Math.min(ARENA_TIERS, tier)) * 2
+
+const ARENA_GAIN: { atk: number; hp: number }[] = [
+  { atk: 0, hp: 0 },
+  { atk: 1, hp: 1 },
+  { atk: 1, hp: 2 },
+  { atk: 2, hp: 3 },
+  { atk: 3, hp: 4 },
+  { atk: 4, hp: 5 },
+]
+
+export const arenaBonus = (rarity: CardRarity) => ARENA_GAIN[CARD_RARITIES.indexOf(rarity)] ?? ARENA_GAIN[0]!
+export const ARENA_SUMMON_MARK = 'Призыв'
+
+export const ARENA_BAN_MARK = 'Хвостатый зверь'
+
+export const arenaStat = (rarity: CardRarity) => CARD_RARITIES.indexOf(rarity) + 1
+
+export const arenaCost = () => ARENA_CARD_COST

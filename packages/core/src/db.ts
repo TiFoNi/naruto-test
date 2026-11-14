@@ -1,4 +1,5 @@
 import { MongoClient, type Collection, type ObjectId } from 'mongodb'
+import type { CardRarity } from '@nanda/game'
 
 export type UserDoc = {
   _id?: ObjectId
@@ -478,6 +479,7 @@ const cache = globalThis as typeof globalThis & {
   __seasonsIndexed?: Promise<unknown>
   __streaksIndexed?: Promise<unknown>
   __playsIndexed?: Promise<unknown>
+  __arenasIndexed?: Promise<unknown>
   __shotsIndexed?: Promise<unknown>
   __shotDaysIndexed?: Promise<unknown>
   __tunesIndexed?: Promise<unknown>
@@ -539,6 +541,57 @@ export async function plays(): Promise<Collection<PlayDoc>> {
     throw error
   })
   await cache.__playsIndexed
+  return collection
+}
+
+export type ArenaCard = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean }
+
+export type ArenaSide = { heroes: ArenaCard[]; summons: ArenaCard[] }
+
+export type ArenaStep = {
+  from: string
+  to: string | null
+  damage: number
+  dead: boolean
+  foe: boolean
+  hp: number
+  foeHp: number
+  mine: ArenaCard[]
+  theirs: ArenaCard[]
+}
+
+export type ArenaDoc = {
+  _id: ObjectId
+  game: string
+  status: 'playing' | 'won' | 'lost'
+  turn: number
+  chakra: number
+  cap: number
+  hp: number
+  foeHp: number
+  seq: number
+  pool: number[]
+  ranks: Record<number, CardRarity>
+  foeRanks: Record<number, CardRarity>
+  summons: number[]
+  tavern: number[]
+  hand: ArenaCard[]
+  board: ArenaSide
+  foeBoard: ArenaSide
+  steps: ArenaStep[]
+  opened?: { hp: number; foeHp: number }
+  clash?: { mine: ArenaCard[]; theirs: ArenaCard[] }
+  startedAt: Date
+  updatedAt: Date
+}
+
+export async function arenas(): Promise<Collection<ArenaDoc>> {
+  const collection = (await database()).collection<ArenaDoc>('arenas')
+  cache.__arenasIndexed ??= collection.createIndex({ updatedAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 7 }).catch((error) => {
+    cache.__arenasIndexed = undefined
+    throw error
+  })
+  await cache.__arenasIndexed
   return collection
 }
 

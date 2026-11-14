@@ -1,6 +1,7 @@
 import Bestiary from '@/src/Bestiary'
 import GameAccent from '@/src/GameAccent'
 import '@/src/styles/dex.css'
+import '@/src/styles/arena.css'
 
 type Params = { params: Promise<{ lang: string; game: string }> }
 

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import type { GameId } from '@nanda/game'
-import { ShowcaseCard } from './Bestiary'
+import { ShowcaseCard } from './DexCard'
 import { GAMES } from './games'
 import { useI18n } from './i18n'
 import { useHref } from './router'

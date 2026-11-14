@@ -1,7 +1,8 @@
 .dex,
 .dex-zoom,
 .card-shelf,
-.bout {
+.bout,
+.ar {
   --ink: #ece8e4;
   --scrap: #ebe5dc;
   --scrap-dark: #1c1a1f;
@@ -2150,4 +2151,33 @@ button.lv-badge:focus-visible {
     background: none;
     box-shadow: none;
   }
+}
+
+.dex-top {
+  display: grid;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-inline: 10px;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.dex-top:has(.arena-panel.is-playing) {
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .dex-top {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+.dex.has-arena > .play-nav,
+.dex.has-arena .dex-head,
+.dex.has-arena .dex-filter,
+.dex.has-arena .dex-top,
+.dex.has-arena .dex-board {
+  max-width: 1400px;
 }

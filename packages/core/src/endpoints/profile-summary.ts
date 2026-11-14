@@ -296,7 +296,12 @@ export const GET = handle(async (request) => {
     .sort((a, b) => b.played - a.played)
 
   const active = streakOf([...past.days.map((row) => row._id), ...(doc.visit?.days ?? [])])
-  const streak = { ...active, best: Math.max(active.best, doc.visit?.best ?? 0) }
+  const fresh = doc.visit?.lastDay === today() || doc.visit?.lastDay === shiftDay(today(), -1)
+  const streak = {
+    ...active,
+    current: Math.max(active.current, fresh ? (doc.visit?.streak ?? 0) : 0),
+    best: Math.max(active.best, doc.visit?.best ?? 0),
+  }
 
   const sealed = other ? await stillHidden(found.doc._id!, past.recent) : new Set<string>()
 

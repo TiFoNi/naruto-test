@@ -50,7 +50,7 @@ import {
   type ProfileBlock,
 } from '@nanda/game'
 import { uiUrl } from './pics'
-import { ShowcaseCard } from './Bestiary'
+import { ShowcaseCard } from './DexCard'
 import { tornPoints } from './torn'
 import { useShelfSort } from './useShelfSort'
 import { afterHold } from './hold'

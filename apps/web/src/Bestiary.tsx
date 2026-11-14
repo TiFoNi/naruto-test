@@ -12,17 +12,17 @@ import type { Entity, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { CloseIcon, FilterIcon, PinIcon, SearchIcon } from './icons'
 import { MODES } from './modes'
-import { CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_POINTS, CARD_RARITIES, CARD_STEPS, cardPinsMax, cardRank, type ModeId } from '@nanda/game'
+import { ARENA_GAMES, CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_POINTS, CARD_RARITIES, CARD_STEPS, cardPinsMax, cardRank, type ModeId } from '@nanda/game'
 import { PICTURELESS, cardUrl, hdUrl, miniUrl } from './pics'
 import { entityTerms, matchTier, searchKey } from './entity-match'
 import { useHref } from './router'
 import { random, torn, tornPoints } from './torn'
+import { BACK_TURN, BADGE_POINTS, BackSheet, CardGlow, DexImg, PicEdge, SHEET_POINTS, lengthOf } from './DexCard'
+import ArenaPanel from './ArenaPanel'
 
 const SHORT: Record<string, { ru: string; uk: string; en: string }> = {
   'naruto:195': { ru: 'Демон. Статуя Внешнего Пути', uk: 'Демон. Статуя Зовнішнього Шляху', en: 'Statue of the Outer Path' },
 }
-
-const lengthOf = (label: string) => (label.length > 26 ? 'is-longer' : label.length > 16 ? 'is-long' : '')
 
 const tilt = (id: number) => (((id * 7919) % 9) - 4) * 0.55
 
@@ -452,54 +452,6 @@ const lift = (entity: Entity, node: HTMLElement): Focus => {
   }
 }
 
-const BACK_POINTS = tornPoints(24, 5)
-  .map(([x, y]) => `${(x * 3).toFixed(1)},${(y * 4).toFixed(1)}`)
-  .join(' ')
-
-const BACK_CLIP = torn(24, 5)
-
-const HALO_PX = [0, 0, 5, 6.5, 8, 10.5, 12]
-
-const UNIT = 2.4
-
-const CardGlow = ({ seed, tier, turn }: { seed: number; tier?: number; turn: number }) => {
-  const id = useId()
-  const paper = tornPoints(seed, 4)
-    .map(([x, y]) => `${(x * 3).toFixed(1)},${(y * 4).toFixed(1)}`)
-    .join(' ')
-  const halo = (tier ? HALO_PX[tier]! : 0) * UNIT
-  const drop = 6 * UNIT
-  const shapes = (
-    <>
-      {tier && tier > 1 && <polygon points={BACK_POINTS} transform={`rotate(${turn} 150 200) translate(12 8)`} />}
-      <polygon points={paper} />
-    </>
-  )
-  return (
-    <svg className="card-glow" viewBox="0 0 300 400" preserveAspectRatio="none" aria-hidden>
-      <defs>
-        <filter id={`${id}halo`} x="-60%" y="-60%" width="220%" height="220%">
-          <feGaussianBlur stdDeviation={halo / 2} />
-        </filter>
-        <filter id={`${id}shade`} x="-60%" y="-60%" width="220%" height="220%">
-          <feGaussianBlur stdDeviation={4 * UNIT} />
-        </filter>
-      </defs>
-      {halo > 0 && (
-        <g className="card-glow-halo" filter={`url(#${id}halo)`}>
-          {shapes}
-          <g transform={`translate(0 ${drop})`} opacity={0.55}>
-            {shapes}
-          </g>
-        </g>
-      )}
-      <g className="card-glow-shade" filter={`url(#${id}shade)`} transform={`translate(0 ${drop})`}>
-        {shapes}
-      </g>
-    </svg>
-  )
-}
-
 const CHIP_POINTS = tornPoints(24, 7, 6)
   .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
   .join(' ')
@@ -593,59 +545,6 @@ const RarityChip = ({ tier, count, on, step, onToggle }: { tier: number; count: 
       <span aria-hidden>{name}</span>
       <b aria-hidden>{count}</b>
     </button>
-  )
-}
-
-const DexImg = ({ src }: { src: string }) => {
-  const [shown, setShown] = useState(false)
-  const check = useCallback((node: HTMLImageElement | null) => {
-    if (node?.complete && node.naturalWidth) setShown(true)
-  }, [])
-  return <img ref={check} className={shown ? 'is-in' : ''} src={src} alt="" loading="lazy" decoding="async" draggable={false} onLoad={() => setShown(true)} />
-}
-
-const PicEdge = ({ seed }: { seed: number }) => {
-  const points = tornPoints(seed, 3, 7)
-    .map(([x, y]) => `${(x * 2.58).toFixed(1)},${(y * 2.88).toFixed(1)}`)
-    .join(' ')
-  return (
-    <svg className="dex-pic-edge" viewBox="0 0 258 288" preserveAspectRatio="none" aria-hidden>
-      <polygon points={points} className="is-soft" />
-      <polygon points={points} />
-    </svg>
-  )
-}
-
-const SHEET_POINTS = tornPoints(31, 2.5, 8)
-  .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
-  .join(' ')
-
-const BADGE_POINTS = tornPoints(7, 9, 5)
-  .map(([x, y]) => `${(x * 1.3).toFixed(1)},${y.toFixed(1)}`)
-  .join(' ')
-
-const BACK_TURN = 7
-
-const BackSheet = ({ turn = BACK_TURN }: { turn?: number }) => {
-  const id = useId()
-  const points = BACK_POINTS
-  return (
-    <i className="lv-back" style={{ '--turn': `${turn}deg` } as CSSProperties}>
-      <svg viewBox="0 0 300 400" preserveAspectRatio="none" aria-hidden>
-        <defs>
-          <radialGradient id={id} cx="50%" cy="0%" r="110%">
-            <stop offset="0%" className="lv-back-top" />
-            <stop offset="78%" className="lv-back-bottom" />
-          </radialGradient>
-          <filter id={`${id}glow`} x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation={3 * UNIT} />
-          </filter>
-        </defs>
-        <polygon className="lv-back-glow" points={points} filter={`url(#${id}glow)`} />
-        <polygon points={points} fill={`url(#${id})`} />
-      </svg>
-      <i className="lv-back-light" style={{ clipPath: BACK_CLIP }} />
-    </i>
   )
 }
 
@@ -890,45 +789,6 @@ const DexHelp = ({ modes }: { modes: ModeId[] }) => {
     </DexTip>
   )
 }
-
-export const ShowcaseCard = memo(function ShowcaseCard({
-  game,
-  id,
-  image,
-  label,
-  xp,
-  level,
-}: {
-  game: GameId
-  id: number
-  image?: string
-  label: string
-  xp: number
-  level?: number
-}) {
-  const rank = cardRank(xp)
-  const tier = level === 0 ? 0 : rank.tier
-  return (
-    <span className={`dex-scrap ${tier ? `lv-${tier + 1}` : ''} ${level === 0 ? 'is-closed' : ''}`}>
-      {tier > 0 && <CardGlow seed={id} tier={tier + 1} turn={BACK_TURN} />}
-      {tier > 0 && <BackSheet />}
-      <i className="dex-paper" style={{ clipPath: torn(id, 4) }} />
-      <span className="dex-pic" style={{ clipPath: torn(id * 3 + 1, 3, 7) }}>
-        <DexImg src={cardUrl(game, id, image)} />
-        <PicEdge seed={id * 3 + 1} />
-      </span>
-      <b className={lengthOf(label)}>
-        <span>{label}</span>
-      </b>
-      <span className="lv-badge" aria-hidden>
-        <svg viewBox="0 0 130 100" preserveAspectRatio="none">
-          <polygon points={BADGE_POINTS} />
-        </svg>
-        <b>{level ?? rank.level}</b>
-      </span>
-    </span>
-  )
-})
 
 const CardSheet = ({
   rank,
@@ -1243,7 +1103,15 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
       else next.add(tier)
       return next
     })
-  const cast = useMemo(() => (game?.entities ?? []).filter((one) => one.answer), [game, ready])
+  const listed = useMemo(() => (game?.entities ?? []).filter((one) => one.answer), [game, ready])
+  const numbers = useMemo(() => new Map(listed.map((one, at) => [one.id, at])), [listed])
+  const cast = useMemo(() => {
+    const arcOf = (one: Entity) => (one as unknown as { arcIndex?: number }).arcIndex ?? 0
+    const rank = (one: Entity) => (open.has(one.id) ? cardRank(cards[one.id]?.xp ?? 0).tier : -1)
+    return [...listed].sort(
+      (a, b) => rank(b) - rank(a) || arcOf(a) - arcOf(b) || (numbers.get(a.id) ?? 0) - (numbers.get(b.id) ?? 0),
+    )
+  }, [listed, numbers, open, cards])
   const terms = useMemo(() => new Map(cast.map((entity) => [entity.id, entityTerms(entity)])), [cast])
   const pictures = !PICTURELESS.has(gameId)
   const label = (entity: Entity) => SHORT[`${gameId}:${entity.id}`]?.[lang] ?? name(entity)
@@ -1267,6 +1135,8 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   const matches = (entity: Entity) => !tiers || tiers.get(entity.id)! >= 0
   const dimmed = (entity: Entity) => (only.size > 0 && !(open.has(entity.id) && only.has(tierOf(entity)))) || !matches(entity)
   const hasRarity = counts.some((count, tier) => tier > 0 && count > 0)
+  const arenaOn = ARENA_GAMES.includes(gameId as never) && !owner && !!user?.admin
+
   const jump = () => {
     const visible = cast.filter((entity) => !dimmed(entity))
     const first = tiers ? [...visible].sort((a, b) => tiers.get(a.id)! - tiers.get(b.id)!)[0] : visible[0]
@@ -1274,7 +1144,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   }
 
   return (
-    <div className="dex" style={{ '--dex': accent } as CSSProperties}>
+    <div className={`dex ${arenaOn ? 'has-arena' : ''}`} style={{ '--dex': accent } as CSSProperties}>
       <div className="play-nav">
         {owner ? (
           <BackButton href={href.player(owner)}>{nickname ?? t('profile.back')}</BackButton>
@@ -1297,6 +1167,13 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
           </p>
         )}
       </header>
+
+      {arenaOn && (
+        <div className="dex-top">
+          <ArenaPanel game={game} />
+        </div>
+      )}
+
 
       {(checking || user || owner) && (
         <div className={`dex-filter ${filtering ? 'is-filtering' : ''}`}>
@@ -1408,7 +1285,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                   <DexTile
                     entity={entity}
                     game={game.id}
-                    place={place}
+                    place={numbers.get(entity.id) ?? place}
                     state={open.has(entity.id) ? (pictures ? 'open' : 'text') : 'locked'}
                     pictures={pictures}
                     label={label(entity)}

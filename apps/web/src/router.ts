@@ -39,6 +39,7 @@ export function hrefs(lang: Lang) {
     challenge: (code: string) => at(`/c/${code}`),
     world: (game: GameId) => at(`/play/${game}`),
     bestiary: (game: GameId) => at(`/play/${game}/bestiary`),
+    arena: (game: GameId) => at(`/play/${game}/arena`),
     tests: (category: Category) => at(`/tests/${category}`),
     test: (game: GameId, id: string) => at(`/play/${game}/tests/${id}`),
     myTests: at('/tests/mine'),
