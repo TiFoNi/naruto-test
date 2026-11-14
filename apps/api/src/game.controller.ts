@@ -19,6 +19,7 @@ import * as adminActivity from '@nanda/core/endpoints/admin-activity'
 import * as adminDifficulty from '@nanda/core/endpoints/admin-difficulty'
 import * as adminQuizzes from '@nanda/core/endpoints/admin-quizzes'
 import * as myQuizzes from '@nanda/core/endpoints/my-quizzes'
+import * as adminArena from '@nanda/core/endpoints/admin-arena'
 import * as adminZoom from '@nanda/core/endpoints/admin-zoom'
 import * as adminTitles from '@nanda/core/endpoints/admin-titles'
 import * as framesTune from '@nanda/core/endpoints/frames-tune'
@@ -138,6 +139,16 @@ export class GameController {
   @Post('admin/zoom')
   adminZoomSave(@Req() req: Request, @Res() res: Response) {
     return bridge(adminZoom.POST, req, res)
+  }
+
+  @Get('admin/arena')
+  adminArenaList(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminArena.GET, req, res)
+  }
+
+  @Post('admin/arena')
+  adminArenaSave(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminArena.POST, req, res)
   }
 
   @Get('frames/tune')

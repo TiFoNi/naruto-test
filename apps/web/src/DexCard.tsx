@@ -124,6 +124,7 @@ export function DexFace({
   image,
   label,
   tier,
+  seed,
   className = '',
   children,
 }: {
@@ -132,17 +133,19 @@ export function DexFace({
   image?: string
   label: string
   tier: number
+  seed?: number
   className?: string
   children?: ReactNode
 }) {
+  const shape = seed ?? id
   return (
     <span className={`dex-scrap ${tier ? `lv-${tier + 1}` : ''} ${className}`.trim()}>
-      {tier > 0 && <CardGlow seed={id} tier={tier + 1} turn={BACK_TURN} />}
+      {tier > 0 && <CardGlow seed={shape} tier={tier + 1} turn={BACK_TURN} />}
       {tier > 0 && <BackSheet />}
-      <i className="dex-paper" style={{ clipPath: torn(id, 4) }} />
-      <span className="dex-pic" style={{ clipPath: torn(id * 3 + 1, 3, 7) }}>
+      <i className="dex-paper" style={{ clipPath: torn(shape, 4) }} />
+      <span className="dex-pic" style={{ clipPath: torn(shape * 3 + 1, 3, 7) }}>
         <DexImg src={cardUrl(game, id, image)} />
-        <PicEdge seed={id * 3 + 1} />
+        <PicEdge seed={shape * 3 + 1} />
       </span>
       <b className={lengthOf(label)}>
         <span>{label}</span>

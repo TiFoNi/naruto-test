@@ -1219,7 +1219,13 @@ export const ARENA_SELL_BACK = 1
 export const ARENA_TIERS = 6
 export const ARENA_TRIPLE = 3
 
+export const ARENA_ROLL_COST = 1
+export const ARENA_UP_MIN = 1
+const ARENA_UP_COST = [4, 5, 6, 7, 8]
+
 export const arenaTierAt = (turn: number) => Math.min(ARENA_TIERS, Math.floor((turn + 1) / 2))
+
+export const arenaUpCost = (tavern: number) => ARENA_UP_COST[Math.max(1, tavern) - 1] ?? 0
 
 export const arenaPower = (tier: number) => Math.max(1, Math.min(ARENA_TIERS, tier)) * 2
 

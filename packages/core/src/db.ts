@@ -550,6 +550,7 @@ export type ArenaSide = { heroes: ArenaCard[]; summons: ArenaCard[] }
 
 export type ArenaStep = {
   from: string
+  all?: string[]
   to: string | null
   damage: number
   dead: boolean
@@ -578,6 +579,10 @@ export type ArenaDoc = {
   hand: ArenaCard[]
   board: ArenaSide
   foeBoard: ArenaSide
+  shopTier?: number
+  up?: number
+  foeShop?: number
+  foeUp?: number
   steps: ArenaStep[]
   opened?: { hp: number; foeHp: number }
   clash?: { mine: ArenaCard[]; theirs: ArenaCard[] }

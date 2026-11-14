@@ -10,9 +10,12 @@ import {
   ARENA_SUMMON_MARK,
   ARENA_TIERS,
   ARENA_TRIPLE,
+  ARENA_ROLL_COST,
+  ARENA_UP_MIN,
   arenaBonus,
   arenaPower,
   arenaTierAt,
+  arenaUpCost,
   ARENA_SUMMON_SLOTS,
   ARENA_TAVERN,
   CARD_RARITIES,
@@ -22,7 +25,7 @@ import {
   type GameId,
 } from '@nanda/game'
 import tiers from '@nanda/game/data/arena-naruto.json'
-import { arenas, type ArenaCard, type ArenaDoc, type ArenaSide } from './db'
+import { arenas, entities, type ArenaCard, type ArenaDoc, type ArenaSide } from './db'
 import { cardsOf, dexOf } from './dex'
 import { gameData } from './games'
 
@@ -30,6 +33,7 @@ const ARENA_ROUNDS = 12
 
 export type ArenaStep = {
   from: string
+  all?: string[]
   to: string | null
   damage: number
   dead: boolean
@@ -62,6 +66,8 @@ const drop = (side: ArenaSide) => {
   side.summons = side.summons.filter((card) => card.hp > 0)
 }
 
+const bash = (crew: ArenaCard[]) => crew.reduce((sum, card) => sum + card.atk, 0)
+
 const marked = <T extends { id: number }>(pool: T[], mark: string) =>
   new Set(pool.filter((one) => ((one as unknown as { attributes?: string[] }).attributes ?? []).includes(mark)).map((one) => one.id))
 
@@ -75,13 +81,47 @@ export async function bannedIds(game: GameId) {
   return marked(pool, ARENA_BAN_MARK)
 }
 
-export const tierOf = (id: number) => Number((tiers as Record<string, number>)[String(id)] ?? 2)
+const sheet = tiers as unknown as Record<string, [number, number, number] | undefined>
+
+const CACHE_MS = 15_000
+let edits: Record<string, [number, number, number]> = {}
+let readAt = 0
+
+export const forgetArenaSheet = () => {
+  readAt = 0
+}
+
+export async function loadArenaSheet(game: GameId) {
+  if (Date.now() - readAt < CACHE_MS) return
+  const rows = await (await entities())
+    .find({ game, arena: { $exists: true } }, { projection: { _id: 0, id: 1, arena: 1 } })
+    .toArray()
+  const next: Record<string, [number, number, number]> = {}
+  for (const row of rows as { id: number; arena?: unknown }[]) {
+    const cell = row.arena
+    if (Array.isArray(cell) && cell.length >= 3 && cell.every((one) => typeof one === 'number')) next[String(row.id)] = cell.slice(0, 3) as [number, number, number]
+  }
+  edits = next
+  readAt = Date.now()
+}
+
+const rowOf = (id: number) => edits[String(id)] ?? sheet[String(id)]
+
+export const tierOf = (id: number) => rowOf(id)?.[0] ?? 2
+
+export const arenaSheet = () => ({ book: sheet, edits })
+
+const baseOf = (id: number) => {
+  const row = rowOf(id)
+  if (!row) return { atk: arenaPower(2), hp: arenaPower(2) }
+  return { atk: row[1], hp: row[2] }
+}
 
 export const statsOf = (id: number, rarity: CardRarity, triple = false) => {
-  const base = arenaPower(tierOf(id))
+  const base = baseOf(id)
   const gain = arenaBonus(rarity)
   const mul = triple ? 2 : 1
-  return { atk: (base + gain.atk) * mul, hp: (base + gain.hp) * mul }
+  return { atk: (base.atk + gain.atk) * mul, hp: (base.hp + gain.hp) * mul }
 }
 
 const makeCard = (id: number, rarity: CardRarity, summon: boolean, seq: number, triple = false): ArenaCard => {
@@ -109,18 +149,23 @@ export async function ownedRarity(userId: ObjectId, game: GameId) {
   return ranks
 }
 
-const roll = (pool: number[], turn: number) => {
-  const top = arenaTierAt(turn)
-  const fit = pool.filter((id) => tierOf(id) <= top)
-  const list = fit.length >= ARENA_TAVERN ? fit : pool.filter((id) => tierOf(id) <= Math.min(ARENA_TIERS, top + 1))
-  return shuffled(list.length ? list : pool).slice(0, Math.min(ARENA_TAVERN, list.length || pool.length))
+export const tavernOf = (doc: ArenaDoc) => doc.shopTier ?? arenaTierAt(doc.turn)
+
+export const upCostOf = (doc: ArenaDoc) => (tavernOf(doc) >= ARENA_TIERS ? 0 : (doc.up ?? arenaUpCost(tavernOf(doc))))
+
+const roll = (pool: number[], top: number) => {
+  let list = pool.filter((id) => tierOf(id) <= top)
+  for (let up = top + 1; list.length < ARENA_TAVERN && up <= ARENA_TIERS; up++) list = pool.filter((id) => tierOf(id) <= up)
+  if (!list.length) list = pool
+  return shuffled(list).slice(0, Math.min(ARENA_TAVERN, list.length))
 }
 
 export async function startArena(userId: ObjectId, game: GameId) {
+  await loadArenaSheet(game)
   const ranks = await ownedRarity(userId, game)
   const { pool } = await gameData(game)
   const [summons, banned] = await Promise.all([summonIds(game), bannedIds(game)])
-  const everyone = pool.map((one) => one.id).filter((id) => !banned.has(id) && !summons.has(id))
+  const everyone = pool.map((one) => one.id).filter((id) => !banned.has(id) && !summons.has(id) && tierOf(id) > 0)
   if (everyone.length < ARENA_TAVERN) return null
 
   const doc: ArenaDoc = {
@@ -141,6 +186,8 @@ export async function startArena(userId: ObjectId, game: GameId) {
     hand: [],
     board: blankSide(),
     foeBoard: blankSide(),
+    shopTier: 1,
+    up: arenaUpCost(1),
     steps: [],
     startedAt: new Date(),
     updatedAt: new Date(),
@@ -150,13 +197,16 @@ export async function startArena(userId: ObjectId, game: GameId) {
   return doc
 }
 
-export const freeSlot = (side: ArenaSide, summon: boolean) =>
-  summon ? side.summons.length < ARENA_SUMMON_SLOTS : side.heroes.length < ARENA_HERO_SLOTS
+const ARENA_SLOTS = ARENA_HERO_SLOTS + ARENA_SUMMON_SLOTS
 
-const place = (side: ArenaSide, card: ArenaCard) => {
-  if (card.summon) side.summons.push(card)
-  else side.heroes.push(card)
+const relay = (side: ArenaSide, line: ArenaCard[]) => {
+  side.heroes = line.slice(0, ARENA_HERO_SLOTS)
+  side.summons = line.slice(ARENA_HERO_SLOTS)
 }
+
+export const freeSlot = (side: ArenaSide) => onBoard(side).length < ARENA_SLOTS
+
+const place = (side: ArenaSide, card: ArenaCard) => relay(side, [...onBoard(side), card])
 
 export function buyCard(doc: ArenaDoc, at: number) {
   const id = doc.tavern[at]
@@ -178,8 +228,7 @@ function fuse(doc: ArenaDoc, id: number) {
   if (found.length < ARENA_TRIPLE) return
   const burn = new Set(found.slice(0, ARENA_TRIPLE).map((card) => card.uid))
   doc.hand = doc.hand.filter((card) => !burn.has(card.uid))
-  doc.board.heroes = doc.board.heroes.filter((card) => !burn.has(card.uid))
-  doc.board.summons = doc.board.summons.filter((card) => !burn.has(card.uid))
+  relay(doc.board, onBoard(doc.board).filter((card) => !burn.has(card.uid)))
   doc.seq += 1
   const first = found[0]!
   doc.hand.push(makeCard(id, first.rarity, first.summon, doc.seq, true))
@@ -191,8 +240,7 @@ export function sellCard(doc: ArenaDoc, uid: string) {
   else {
     const line = onBoard(doc.board)
     if (!line.some((card) => card.uid === uid)) return false
-    doc.board.heroes = doc.board.heroes.filter((card) => card.uid !== uid)
-    doc.board.summons = doc.board.summons.filter((card) => card.uid !== uid)
+    relay(doc.board, line.filter((card) => card.uid !== uid))
   }
   doc.chakra = Math.min(doc.chakra + ARENA_SELL_BACK, ARENA_CHAKRA_MAX)
   return true
@@ -204,8 +252,7 @@ export function moveCard(doc: ArenaDoc, uid: string, at: number) {
   if (from < 0 || !Number.isInteger(at) || at < 0 || at >= line.length) return false
   const [card] = line.splice(from, 1)
   line.splice(Math.min(at, line.length), 0, card!)
-  doc.board.heroes = line.filter((one) => !one.summon)
-  doc.board.summons = line.filter((one) => one.summon)
+  relay(doc.board, line)
   return true
 }
 
@@ -213,24 +260,76 @@ export function playCard(doc: ArenaDoc, uid: string) {
   const at = doc.hand.findIndex((card) => card.uid === uid)
   if (at < 0) return false
   const card = doc.hand[at]!
-  if (!freeSlot(doc.board, card.summon)) return false
+  if (!freeSlot(doc.board)) return false
   doc.hand.splice(at, 1)
   place(doc.board, card)
   return true
 }
 
+export function rollTavern(doc: ArenaDoc) {
+  if (doc.chakra < ARENA_ROLL_COST) return false
+  doc.chakra -= ARENA_ROLL_COST
+  doc.tavern = roll(doc.pool, tavernOf(doc))
+  return true
+}
+
+export function upTavern(doc: ArenaDoc) {
+  const now = tavernOf(doc)
+  if (now >= ARENA_TIERS) return false
+  const cost = upCostOf(doc)
+  if (doc.chakra < cost) return false
+  doc.chakra -= cost
+  doc.shopTier = now + 1
+  doc.up = arenaUpCost(now + 1)
+  return true
+}
+
+const worth = (doc: ArenaDoc, id: number) => {
+  const { atk, hp } = statsOf(id, rarityOf(doc.foeRanks, id))
+  return atk + hp
+}
+
+const weakest = (side: ArenaSide) =>
+  onBoard(side)
+    .slice()
+    .sort((a, b) => a.atk + a.hp - (b.atk + b.hp))[0]
+
 function botTurn(doc: ArenaDoc) {
   let left = Math.min(ARENA_CHAKRA_START + doc.turn - 1, ARENA_CHAKRA_MAX)
-  const offers = roll(doc.pool, doc.turn)
-  for (const id of offers) {
-    const rarity = rarityOf(doc.foeRanks, id)
-    const cost = arenaCost()
-    const summon = doc.summons.includes(id)
-    if (cost > left || !freeSlot(doc.foeBoard, summon)) continue
+  let tier = doc.foeShop ?? arenaTierAt(doc.turn)
+  let up = doc.foeUp ?? arenaUpCost(tier)
+  const cost = arenaCost()
+
+  if (tier < ARENA_TIERS && left >= up && (left - up >= cost || !freeSlot(doc.foeBoard))) {
+    left -= up
+    tier += 1
+    up = arenaUpCost(tier)
+  } else if (tier < ARENA_TIERS) {
+    up = Math.max(ARENA_UP_MIN, up - 1)
+  }
+
+  let offers = roll(doc.pool, tier).sort((a, b) => worth(doc, b) - worth(doc, a))
+  while (left >= cost) {
+    const id = offers.shift()
+    if (id === undefined) {
+      if (left < cost + ARENA_ROLL_COST) break
+      left -= ARENA_ROLL_COST
+      offers = roll(doc.pool, tier).sort((a, b) => worth(doc, b) - worth(doc, a))
+      continue
+    }
+    if (!freeSlot(doc.foeBoard)) {
+      const poorest = weakest(doc.foeBoard)
+      if (!poorest || poorest.atk + poorest.hp >= worth(doc, id)) break
+      relay(doc.foeBoard, onBoard(doc.foeBoard).filter((card) => card.uid !== poorest.uid))
+      left += ARENA_SELL_BACK
+    }
     left -= cost
     doc.seq += 1
-    place(doc.foeBoard, makeCard(id, rarity, summon, doc.seq))
+    place(doc.foeBoard, makeCard(id, rarityOf(doc.foeRanks, id), doc.summons.includes(id), doc.seq))
   }
+
+  doc.foeShop = tier
+  doc.foeUp = up
 }
 
 const copySide = (side: ArenaSide): ArenaSide => ({ heroes: side.heroes.map((one) => ({ ...one })), summons: side.summons.map((one) => ({ ...one })) })
@@ -297,9 +396,23 @@ function fight(doc: ArenaDoc) {
 
   if (!over()) {
     const ourTurn = alive(ours).length > 0
-    for (const card of ourTurn ? alive(ours) : alive(foes)) {
-      if (over()) break
-      swing(card, ourTurn ? foes : ours, !ourTurn)
+    const crew = ourTurn ? alive(ours) : alive(foes)
+    if (crew.length) {
+      const damage = bash(crew)
+      if (ourTurn) doc.foeHp = Math.max(0, doc.foeHp - damage)
+      else doc.hp = Math.max(0, doc.hp - damage)
+      steps.push({
+        from: crew[0]!.uid,
+        all: crew.map((card) => card.uid),
+        to: null,
+        damage,
+        dead: false,
+        foe: !ourTurn,
+        hp: doc.hp,
+        foeHp: doc.foeHp,
+        mine: onBoard(ours).map((one) => ({ ...one })),
+        theirs: onBoard(foes).map((one) => ({ ...one })),
+      })
     }
   }
 
@@ -318,7 +431,9 @@ export function endTurn(doc: ArenaDoc) {
   doc.turn += 1
   doc.cap = Math.min(ARENA_CHAKRA_START + doc.turn - 1, ARENA_CHAKRA_MAX)
   doc.chakra = doc.cap
-  doc.tavern = roll(doc.pool, doc.turn)
+  doc.shopTier = tavernOf(doc)
+  doc.up = Math.max(ARENA_UP_MIN, upCostOf(doc) - 1)
+  doc.tavern = roll(doc.pool, doc.shopTier)
   return doc
 }
 
@@ -327,6 +442,9 @@ export const arenaView = (doc: ArenaDoc) => ({
   turn: doc.turn,
   chakra: doc.chakra,
   chakraMax: doc.cap,
+  tavernTier: tavernOf(doc),
+  upCost: upCostOf(doc),
+  rollCost: ARENA_ROLL_COST,
   hp: doc.hp,
   foeHp: doc.foeHp,
   tavern: doc.tavern.map((id) => {

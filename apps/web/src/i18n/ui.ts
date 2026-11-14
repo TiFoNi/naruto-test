@@ -79,6 +79,10 @@ const ui = {
   'arena.skip': { ru: 'Пропустить', uk: 'Пропустити', en: 'Skip' },
   'arena.next': { ru: 'Дальше', uk: 'Далі', en: 'Next' },
   'arena.chakra': { ru: 'Чакра', uk: 'Чакра', en: 'Chakra' },
+  'arena.reroll': { ru: 'Обновить', uk: 'Оновити', en: 'Refresh' },
+  'arena.upgrade': { ru: 'Таверна {n}', uk: 'Таверна {n}', en: 'Tavern {n}' },
+  'arena.tavernTop': { ru: 'Макс. таверна', uk: 'Макс. таверна', en: 'Max tavern' },
+  'arena.tavernLevel': { ru: 'Таверна {n} ур.', uk: 'Таверна {n} рів.', en: 'Tavern lvl {n}' },
   'arena.ruleLine': {
     ru: '{heroes} бойца и {summons} призыва на столе · {hp} жизней · {cost} чакры за карту',
     uk: '{heroes} бійці та {summons} призиви на столі · {hp} життів · {cost} чакри за картку',

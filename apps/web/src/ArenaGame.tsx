@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react'
-import { ARENA_CARD_COST, ARENA_CHAKRA_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS } from '@nanda/game'
+import { ARENA_CARD_COST, ARENA_CHAKRA_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS, ARENA_TIERS } from '@nanda/game'
 import { api } from './api'
 import { ArenaFace, type ArenaView, type Card, type Side } from './ArenaCard'
 import { useAuth } from './auth'
@@ -174,39 +174,51 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     const one = beats.current[step]
     if (!one) return
 
-    const from = document.querySelector<HTMLElement>(`.ar-row.is-packed [data-uid="${one.from}"]`)
+    const crew = one.all?.length ? one.all : [one.from]
+    const movers = crew
+      .map((uid) => document.querySelector<HTMLElement>(`.ar-row.is-packed [data-uid="${uid}"]`))
+      .filter((node): node is HTMLElement => !!node)
     const aim = one.to
       ? document.querySelector<HTMLElement>(`.ar-row.is-packed [data-uid="${one.to}"]`)
       : document.querySelector<HTMLElement>(`[data-hero="${one.foe ? 'me' : 'foe'}"]`)
 
     const land = setTimeout(() => setHit(true), IMPACT_MS)
     let next: ReturnType<typeof setTimeout> | undefined
-    let run: Animation | undefined
     let zone: HTMLElement | null = null
+    const plays: Animation[] = []
 
-    if (from && aim) {
-      const a = from.getBoundingClientRect()
+    if (movers.length && aim) {
       const b = aim.getBoundingClientRect()
-      const dx = Math.round(b.left + b.width / 2 - (a.left + a.width / 2))
-      const dy = Math.round(b.top + b.height / 2 - (a.top + a.height / 2))
-      from.style.zIndex = '6'
-      zone = from.closest<HTMLElement>('.ar-half')
+      zone = movers[0]!.closest<HTMLElement>('.ar-half')
       if (zone) zone.style.zIndex = '7'
-      run = from.animate(
-        [
-          { transform: 'translate(0, 0)', easing: 'cubic-bezier(0.3, 0.7, 0.4, 1)' },
-          { transform: `translate(${-dx * 0.08}px, ${-dy * 0.08}px)`, offset: 0.16, easing: 'cubic-bezier(0.6, 0, 0.85, 0.4)' },
-          { transform: `translate(${dx * 0.9}px, ${dy * 0.9}px)`, offset: 0.43, easing: 'linear' },
-          { transform: `translate(${dx * 0.88}px, ${dy * 0.88}px)`, offset: 0.56, easing: 'cubic-bezier(0.4, 0, 0.25, 1)' },
-          { transform: 'translate(0, 0)' },
-        ],
-        { duration: FLY_MS, easing: 'linear' },
-      )
+      for (const node of movers) {
+        const a = node.getBoundingClientRect()
+        const dx = Math.round(b.left + b.width / 2 - (a.left + a.width / 2))
+        const dy = Math.round(b.top + b.height / 2 - (a.top + a.height / 2))
+        node.style.zIndex = '6'
+        const play = node.animate(
+          [
+            { transform: 'translate(0, 0)', easing: 'cubic-bezier(0.3, 0.7, 0.4, 1)' },
+            { transform: `translate(${-dx * 0.08}px, ${-dy * 0.08}px)`, offset: 0.16, easing: 'cubic-bezier(0.6, 0, 0.85, 0.4)' },
+            { transform: `translate(${dx * 0.9}px, ${dy * 0.9}px)`, offset: 0.43, easing: 'linear' },
+            { transform: `translate(${dx * 0.88}px, ${dy * 0.88}px)`, offset: 0.56, easing: 'cubic-bezier(0.4, 0, 0.25, 1)' },
+            { transform: 'translate(0, 0)' },
+          ],
+          { duration: FLY_MS, easing: 'linear' },
+        )
+        plays.push(play)
+      }
+    }
+
+    const run = plays[0]
+
+    const clear = () => {
+      for (const node of movers) node.style.zIndex = ''
+      if (zone) zone.style.zIndex = ''
     }
 
     const done = () => {
-      if (from) from.style.zIndex = ''
-      if (zone) zone.style.zIndex = ''
+      clear()
       next = setTimeout(() => {
         if (step >= beats.current.length - 1) {
           setFight(false)
@@ -225,9 +237,8 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     return () => {
       clearTimeout(land)
       if (next) clearTimeout(next)
-      run?.cancel()
-      if (from) from.style.zIndex = ''
-      if (zone) zone.style.zIndex = ''
+      for (const play of plays) play.cancel()
+      clear()
     }
   }, [fight, step, lead])
 
@@ -361,6 +372,26 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     </ul>
   )
 
+  const shopTop = view.tavernTier >= ARENA_TIERS
+  const shopBar = () => (
+    <div className="ar-shopbar">
+      <button
+        type="button"
+        className="ar-shop-btn is-up"
+        disabled={waiting || shopTop || view.chakra < view.upCost}
+        onClick={() => send({ action: 'up' })}
+      >
+        <span>{shopTop ? t('arena.tavernTop') : t('arena.upgrade', { n: view.tavernTier + 1 })}</span>
+        {!shopTop && <i className="ar-cost">{view.upCost}</i>}
+      </button>
+      <b className="ar-shop-lvl">{t('arena.tavernLevel', { n: view.tavernTier })}</b>
+      <button type="button" className="ar-shop-btn" disabled={waiting || view.chakra < view.rollCost} onClick={() => send({ action: 'roll' })}>
+        <span>{t('arena.reroll')}</span>
+        <i className="ar-cost">{view.rollCost}</i>
+      </button>
+    </div>
+  )
+
   const shop = () => (
     <ul className="ar-row is-shop">
       {view.tavern.map((one, i) => {
@@ -419,7 +450,14 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
               className={`ar-half is-top ${selling ? 'is-selling' : ''} ${selling && spot?.zone === 'shop' ? 'is-over' : ''}`}
             >
               <div className="ar-plate">{fight && <Plate mark="B" name={t('arena.foe')} hp={foeHp} foe />}</div>
-              {fight ? packed(theirs) : shop()}
+              {fight ? (
+                packed(theirs)
+              ) : (
+                <>
+                  {shopBar()}
+                  {shop()}
+                </>
+              )}
             </div>
             <i className="ar-line" aria-hidden />
             <div

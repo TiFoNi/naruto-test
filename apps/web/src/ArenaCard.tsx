@@ -10,6 +10,7 @@ export type Side = { heroes: Card[]; summons: Card[] }
 export type Offer = { id: number; rarity: CardRarity; cost: number; atk: number; hp: number; summon: boolean; tier: number }
 export type Step = {
   from: string
+  all?: string[]
   to: string | null
   damage: number
   dead: boolean
@@ -24,6 +25,9 @@ export type ArenaView = {
   turn: number
   chakra: number
   chakraMax: number
+  tavernTier: number
+  upCost: number
+  rollCost: number
   hp: number
   foeHp: number
   tavern: Offer[]
@@ -34,6 +38,10 @@ export type ArenaView = {
   opened: { hp: number; foeHp: number } | null
   clash: { mine: Card[]; theirs: Card[] } | null
 }
+
+const ARENA_SHAPE = 7
+
+const oneWord = (name: string) => name.replace(/\(.*?\)/g, '').trim().split(/[\s/]+/)[0] || name
 
 export const tierOf = (rarity: CardRarity) => CARD_RARITIES.indexOf(rarity)
 
@@ -57,7 +65,7 @@ export const ArenaFace = memo(function ArenaFace({
   if (!entity) return <span className="arena-slot" aria-hidden />
   return (
     <span className={`arena-card ${summon ? 'is-summon' : ''} ${triple ? 'is-triple' : ''}`}>
-      <DexFace game={game} id={entity.id} image={entity.image} label={entity.name} tier={tierOf(rarity)}>
+      <DexFace game={game} id={entity.id} image={entity.image} label={oneWord(entity.name)} tier={tierOf(rarity)} seed={ARENA_SHAPE}>
         <StatBadge kind="atk" value={atk} />
         <StatBadge kind="hp" value={hp} />
       </DexFace>

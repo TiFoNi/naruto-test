@@ -1,5 +1,5 @@
 import { ARENA_GAMES, type GameId } from '@nanda/game'
-import { arenaOf, arenaView, buyCard, endTurn, moveCard, playCard, sellCard, startArena } from '../arena'
+import { arenaOf, arenaView, buyCard, endTurn, moveCard, playCard, rollTavern, sellCard, startArena, upTavern } from '../arena'
 import { arenas } from '../db'
 import { isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
@@ -40,6 +40,8 @@ export const POST = handle(async (request) => {
     play: () => playCard(doc, String(body.uid)),
     sell: () => sellCard(doc, String(body.uid)),
     move: () => moveCard(doc, String(body.uid), Number(body.at)),
+    roll: () => rollTavern(doc),
+    up: () => upTavern(doc),
     end: () => Boolean(endTurn(doc)),
   }
   const run = act[String(action)]
