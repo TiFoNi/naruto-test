@@ -48,7 +48,6 @@ export const tierOf = (rarity: CardRarity) => CARD_RARITIES.indexOf(rarity)
 export const ArenaFace = memo(function ArenaFace({
   game,
   entity,
-  rarity,
   atk,
   hp,
   summon,
@@ -56,7 +55,7 @@ export const ArenaFace = memo(function ArenaFace({
 }: {
   game: GameId
   entity?: Entity
-  rarity: CardRarity
+  rarity?: CardRarity
   atk: number
   hp: number
   summon: boolean
@@ -65,7 +64,7 @@ export const ArenaFace = memo(function ArenaFace({
   if (!entity) return <span className="arena-slot" aria-hidden />
   return (
     <span className={`arena-card ${summon ? 'is-summon' : ''} ${triple ? 'is-triple' : ''}`}>
-      <DexFace game={game} id={entity.id} image={entity.image} label={oneWord(entity.name)} tier={tierOf(rarity)} seed={ARENA_SHAPE}>
+      <DexFace game={game} id={entity.id} image={entity.image} label={oneWord(entity.name)} tier={0} seed={ARENA_SHAPE}>
         <StatBadge kind="atk" value={atk} />
         <StatBadge kind="hp" value={hp} />
       </DexFace>

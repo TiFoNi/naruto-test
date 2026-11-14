@@ -18,8 +18,24 @@ const FLY_MS = 1100
 const IMPACT_MS = 470
 const GAP_MS = 260
 
-type Grab = { kind: 'hand' | 'board' | 'shop'; uid: string; at: number; card: Card; w: number; dx: number; dy: number }
+type Kind = 'hand' | 'board' | 'shop'
 type Spot = { zone: 'shop' | 'hand' | 'slot'; at: number }
+type Cell = { node: HTMLElement; mid: number }
+type Hold = {
+  kind: Kind
+  uid: string
+  at: number
+  node: HTMLElement
+  nest: HTMLElement | null
+  x: number
+  y: number
+  live: boolean
+  cells: Cell[]
+  span: number
+  from: number
+  to: number
+  slot: number
+}
 
 const line = (side: Side) => [...side.heroes, ...side.summons]
 
@@ -59,14 +75,12 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const [step, setStep] = useState(-1)
   const [hit, setHit] = useState(false)
   const [lead, setLead] = useState(false)
-  const shelf = useRef(new Map<string, DOMRect>())
+
   const [waiting, setWaiting] = useState(false)
-  const [grab, setGrab] = useState<Grab | null>(null)
-  const [spot, setSpot] = useState<Spot | null>(null)
-  const [point, setPoint] = useState({ x: 0, y: 0 })
+  const [dragging, setDragging] = useState<Kind | null>(null)
+  const hold = useRef<Hold | null>(null)
 
   const queue = useRef<Promise<unknown>>(Promise.resolve())
-  const moved = useRef(false)
   const beats = useRef<ArenaView['steps']>([])
 
   const byId = useMemo(() => new Map((game?.entities ?? []).map((one) => [one.id, one])), [game, ready])
@@ -116,14 +130,18 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   )
 
   const play = useCallback(
-    (uid: string) => {
+    (uid: string, at = -1) => {
       setView((now) => {
         if (!now) return now
         const card = now.hand.find((one) => one.uid === uid)
-        if (!card || line(now.board).length >= SLOTS) return now
-        return { ...now, hand: now.hand.filter((one) => one.uid !== uid), board: split([...line(now.board), card]) }
+        const cards = line(now.board)
+        if (!card || cards.length >= SLOTS) return now
+        const next = [...cards]
+        next.splice(at < 0 ? next.length : Math.min(at, next.length), 0, card)
+        return { ...now, hand: now.hand.filter((one) => one.uid !== uid), board: split(next) }
       })
       send({ action: 'play', uid })
+      if (at >= 0) send({ action: 'move', uid, at })
     },
     [send],
   )
@@ -242,55 +260,124 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     }
   }, [fight, step, lead])
 
-  useLayoutEffect(() => {
-    const cards = [...document.querySelectorAll<HTMLElement>('.ar-row.is-shop [data-shelf]')]
-    const spots = new Map<string, DOMRect>()
-    for (const node of cards) {
-      const key = `${node.dataset.shelf}:${cards.filter((one) => one.dataset.shelf === node.dataset.shelf).indexOf(node)}`
-      const box = node.getBoundingClientRect()
-      spots.set(key, box)
-      const was = shelf.current.get(key)
-      if (!was) continue
-      const dx = was.left - box.left
-      if (Math.abs(dx) < 1) continue
-      node.style.transition = 'none'
-      node.style.translate = `${dx}px 0`
-      void node.offsetWidth
-      node.style.transition = 'translate 0.32s cubic-bezier(0.22, 1, 0.36, 1)'
-      node.style.translate = '0px 0px'
-    }
-    shelf.current = spots
-  })
-
-  const take = (kind: Grab['kind'], card: Card, at: number) => (event: ReactPointerEvent<HTMLElement>) => {
+  const take = (kind: Kind, card: Card, at: number) => (event: ReactPointerEvent<HTMLElement>) => {
     if (event.button !== 0 || fight || waiting) return
-    const box = event.currentTarget.getBoundingClientRect()
-    moved.current = false
-    setPoint({ x: event.clientX, y: event.clientY })
-    setGrab({ kind, uid: card.uid, at, card, w: box.width, dx: event.clientX - box.left - box.width / 2, dy: event.clientY - box.top - box.height / 2 })
+    hold.current = {
+      kind,
+      uid: card.uid,
+      at,
+      node: event.currentTarget,
+      nest: event.currentTarget.closest<HTMLElement>('.ar-half, .ar-hand'),
+      x: event.clientX,
+      y: event.clientY,
+      live: false,
+      cells: [],
+      span: 160,
+      from: -1,
+      to: -1,
+      slot: -1,
+    }
   }
 
+  const place = useCallback((one: Hold) => {
+    for (const [i, cell] of one.cells.entries()) {
+      if (i === one.from) continue
+      let dx = 0
+      if (one.kind === 'board' && one.to >= 0) {
+        if (i > one.from && i <= one.to) dx = -one.span
+        else if (i < one.from && i >= one.to) dx = one.span
+      }
+      if (one.kind === 'hand' && one.slot >= 0) dx = i < one.slot ? -one.span / 2 : one.span / 2
+      cell.node.style.translate = dx ? `${Math.round(dx)}px 0` : ''
+    }
+  }, [])
+
   useEffect(() => {
-    if (!grab) return
-    const start = { ...point }
+    const begin = (one: Hold) => {
+      one.live = true
+      one.cells = [...document.querySelectorAll<HTMLElement>('.ar-half.is-bot .ar-row [data-uid]')].map((node) => {
+        const box = node.getBoundingClientRect()
+        return { node, mid: box.left + box.width / 2 }
+      })
+      const first = one.cells[0]
+      one.span = one.cells.length > 1 ? one.cells[1]!.mid - first!.mid : (first?.node.getBoundingClientRect().width ?? 142) + 18
+      one.from = one.cells.findIndex((cell) => cell.node.dataset.uid === one.uid)
+      one.to = one.from
+      one.node.classList.add('is-flying')
+      if (one.nest) one.nest.style.zIndex = '70'
+      setDragging(one.kind)
+    }
+
+    const clean = (one: Hold) => {
+      const nodes = [one.node, ...one.cells.map((cell) => cell.node)]
+      for (const node of nodes) {
+        node.style.transition = 'none'
+        node.style.translate = ''
+      }
+      void one.node.offsetWidth
+      for (const node of nodes) node.style.transition = ''
+      one.node.classList.remove('is-flying')
+      if (one.nest) one.nest.style.zIndex = ''
+      setDragging(null)
+    }
+
     const move = (event: globalThis.PointerEvent) => {
-      if (!moved.current && Math.hypot(event.clientX - start.x, event.clientY - start.y) < GRAB_PX) return
-      moved.current = true
-      setPoint({ x: event.clientX, y: event.clientY })
-      setSpot(spotAt(event.clientX, event.clientY))
+      const one = hold.current
+      if (!one) return
+      const dx = event.clientX - one.x
+      const dy = event.clientY - one.y
+      if (!one.live) {
+        if (Math.hypot(dx, dy) < GRAB_PX) return
+        begin(one)
+      }
+      one.node.style.translate = `${Math.round(dx)}px ${Math.round(dy)}px`
+      const over = spotAt(event.clientX, event.clientY)
+      if (one.kind === 'board' && one.from >= 0) {
+        let to = one.from
+        if (over?.zone === 'slot') {
+          const mid = one.cells[one.from]!.mid + dx
+          while (to > 0 && mid < one.cells[to - 1]!.mid) to -= 1
+          while (to < one.cells.length - 1 && mid > one.cells[to + 1]!.mid) to += 1
+        }
+        if (to !== one.to) {
+          one.to = to
+          place(one)
+        }
+      }
+      if (one.kind === 'hand') {
+        let slot = -1
+        if (over?.zone === 'slot' && one.cells.length < SLOTS) {
+          slot = one.cells.filter((cell) => cell.mid < event.clientX).length
+        }
+        if (slot !== one.slot) {
+          one.slot = slot
+          place(one)
+        }
+      }
     }
+
     const up = (event: globalThis.PointerEvent) => {
-      const where = moved.current ? spotAt(event.clientX, event.clientY) : null
-      if (!moved.current) {
-        if (grab.kind === 'shop') buy(grab.at)
-        else if (grab.kind === 'hand') play(grab.uid)
-      } else if (where?.zone === 'slot' && grab.kind === 'hand') play(grab.uid)
-      else if (where?.zone === 'slot' && grab.kind === 'board') shift(grab.uid, where.at)
-      else if (where?.zone === 'hand' && grab.kind === 'shop') buy(grab.at)
-      else if (where?.zone === 'shop' && grab.kind !== 'shop') sell(grab.uid)
-      setGrab(null)
-      setSpot(null)
+      const one = hold.current
+      hold.current = null
+      if (!one) return
+      if (!one.live) {
+        if (one.kind === 'shop') buy(one.at)
+        else if (one.kind === 'hand') play(one.uid)
+        return
+      }
+      const over = spotAt(event.clientX, event.clientY)
+      if (one.kind === 'board') {
+        if (over?.zone === 'shop') sell(one.uid)
+        else if (one.to >= 0 && one.to !== one.from) shift(one.uid, one.to)
+      } else if (one.kind === 'hand') {
+        if (over?.zone === 'shop') sell(one.uid)
+        else if (over?.zone === 'slot') play(one.uid, one.slot)
+      } else if (over?.zone === 'hand' || over?.zone === 'slot') {
+        buy(one.at)
+      }
+      requestAnimationFrame(() => clean(one))
     }
+
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', up)
     window.addEventListener('pointercancel', up)
@@ -299,7 +386,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       window.removeEventListener('pointerup', up)
       window.removeEventListener('pointercancel', up)
     }
-  }, [grab, point, buy, play, sell, shift])
+  }, [place, buy, play, sell, shift])
 
   if (!game) return <div className="card center muted">{t('err.not_found')}</div>
   if (!checked || !ready) return <p className="ar-note">{t('arena.loading')}</p>
@@ -328,10 +415,10 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const theirs = at >= 0 ? line(view.foeBoard) : line(view.foeBoard)
   const myHp = state ? state.hp : at >= 0 ? (view.opened?.hp ?? view.hp) : view.hp
   const foeHp = state ? state.foeHp : at >= 0 ? (view.opened?.foeHp ?? view.foeHp) : view.foeHp
-  const dragging = !!grab && moved.current
   const freeAt = line(view.board).length < SLOTS ? line(view.board).length : -1
-  const selling = dragging && grab.kind !== 'shop'
-  const buying = dragging && grab.kind === 'shop'
+  const stable = line(view.board)
+  const selling = dragging === 'board' || dragging === 'hand'
+  const buying = dragging === 'shop'
 
   const packed = (cards: Card[]) => (
     <ul className="ar-row is-packed">
@@ -343,29 +430,6 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
             <span data-uid={card.uid} className={`ar-move ${hit && now?.to === card.uid ? 'is-struck' : ''}`}>
               <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} />
             </span>
-          </li>
-        )
-      })}
-    </ul>
-  )
-
-  const slots = (cards: Card[]) => (
-    <ul className="ar-row">
-      {Array.from({ length: SLOTS }, (_, i) => {
-        const card = cards[i]
-        const open = dragging && ((grab.kind === 'hand' && i === freeAt) || (grab.kind === 'board' && i < Math.max(cards.length, 1)))
-        return (
-          <li
-            key={card ? card.uid : `slot${i}`}
-            data-zone={open ? 'slot' : undefined}
-            data-at={i}
-            className={`${card ? 'is-held' : 'is-free'} ${open ? 'is-target' : ''} ${open && spot?.zone === 'slot' && spot.at === i ? 'is-over' : ''}`}
-          >
-            {card ? (
-              <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
-                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} />
-              </span>
-            ) : null}
           </li>
         )
       })}
@@ -400,8 +464,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         return (
           <li
             key={`${one.id}:${i}`}
-            data-shelf={one.id}
-            className={`is-held ${poor ? 'is-poor' : ''} ${grab?.kind === 'shop' && grab.at === i && dragging ? 'is-ghost' : ''}`}
+            className={`is-held ${poor ? 'is-poor' : ''}`}
           >
             <span className="ar-move" onPointerDown={poor ? undefined : take('shop', card, i)}>
               <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} />
@@ -446,8 +509,8 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         <>
           <section className="ar-board">
             <div
-              data-zone={selling ? 'shop' : undefined}
-              className={`ar-half is-top ${selling ? 'is-selling' : ''} ${selling && spot?.zone === 'shop' ? 'is-over' : ''}`}
+              data-zone={fight ? undefined : 'shop'}
+              className={`ar-half is-top ${selling ? 'is-selling' : ''}`}
             >
               <div className="ar-plate">{fight && <Plate mark="B" name={t('arena.foe')} hp={foeHp} foe />}</div>
               {fight ? (
@@ -461,13 +524,23 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
             </div>
             <i className="ar-line" aria-hidden />
             <div
-              data-zone={dragging && grab.kind === 'hand' && freeAt >= 0 ? 'slot' : undefined}
+              data-zone={fight ? undefined : 'slot'}
               data-at={freeAt}
-              className={`ar-half is-bot ${dragging && grab.kind === 'hand' && freeAt >= 0 ? 'is-landing' : ''} ${
-                dragging && grab.kind === 'hand' && spot?.zone === 'slot' ? 'is-over' : ''
-              }`}
+              className="ar-half is-bot"
             >
-              {fight ? packed(mine) : slots(mine)}
+              {fight ? (
+                packed(mine)
+              ) : (
+                <ul className="ar-row">
+                  {stable.map((card, i) => (
+                    <li key={card.uid}>
+                      <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
+                        <ArenaFace game={game.id} entity={byId.get(card.id)} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
               <div className="ar-plate">{fight && <Plate mark="T" name={t('arena.you')} hp={myHp} />}</div>
             </div>
           </section>
@@ -475,15 +548,11 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
           <div className="ar-foot">
             <div
               data-zone={buying ? 'hand' : undefined}
-              className={`ar-hand ${buying ? 'is-taking' : ''} ${buying && spot?.zone === 'hand' ? 'is-over' : ''}`}
+              className={`ar-hand ${buying ? 'is-taking' : ''}`}
             >
               <ul>
                 {view.hand.map((card, i) => (
-                  <li
-                    key={card.uid}
-                    className={grab?.uid === card.uid && dragging ? 'is-ghost' : ''}
-                    style={{ '--at': i - (view.hand.length - 1) / 2 } as CSSProperties}
-                  >
+                  <li key={card.uid}>
                     <span className="ar-move" onPointerDown={take('hand', card, i)}>
                       <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} />
                     </span>
@@ -525,11 +594,6 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         </>
       )}
 
-      {dragging && (
-        <span className="ar-fly" style={{ width: grab.w, left: point.x - grab.dx, top: point.y - grab.dy } as CSSProperties} aria-hidden>
-          <ArenaFace game={game.id} entity={byId.get(grab.card.id)} rarity={grab.card.rarity} atk={grab.card.atk} hp={grab.card.hp} summon={grab.card.summon} triple={grab.card.triple} />
-        </span>
-      )}
     </div>
   )
 }
