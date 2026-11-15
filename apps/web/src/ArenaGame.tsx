@@ -26,8 +26,8 @@ const FLY_MS = 1100
 const IMPACT_MS = 470
 const GAP_MS = 260
 const DEATH_MS = 1100
-const LEAVE_MS = 300
-const LEAVE_STEP_MS = 55
+const LEAVE_MS = 320
+const LEAVE_STEP_MS = 45
 
 const cutOf = (seed: number) => {
   const next = randomOf(seed)
@@ -181,10 +181,10 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const [dragging, setDragging] = useState<Kind | null>(null)
   const [over, setOver] = useState<Spot['zone'] | null>(null)
   const [deal, setDeal] = useState(0)
-  const dealt = useRef<number[]>([])
-  const shown = useRef<ArenaView['tavern']>([])
+  const [seenOffers, setSeenOffers] = useState('')
+  const [dealWait, setDealWait] = useState(0)
+  const [seenTavern, setSeenTavern] = useState<ArenaView['tavern']>([])
   const [leaving, setLeaving] = useState<ArenaView['tavern'] | null>(null)
-  const leaveTimer = useRef(0)
   const overNow = useRef<Spot['zone'] | null>(null)
   const hold = useRef<Hold | null>(null)
 
@@ -307,27 +307,29 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   }, [send])
 
   const offers = view?.tavern.map((one) => one.id).join(',') ?? ''
-  useEffect(() => {
+  if (view && offers !== seenOffers) {
     const next = offers ? offers.split(',').map(Number) : []
-    const left = [...dealt.current]
+    const left = seenOffers ? seenOffers.split(',').map(Number) : []
     const fresh = next.some((id) => {
       const at = left.indexOf(id)
       if (at < 0) return true
       left.splice(at, 1)
       return false
     })
+    setSeenOffers(offers)
+    setSeenTavern(view.tavern)
     if (fresh) {
-      const gone = shown.current
       setDeal((was) => was + 1)
-      if (gone.length) {
-        setLeaving(gone)
-        window.clearTimeout(leaveTimer.current)
-        leaveTimer.current = window.setTimeout(() => setLeaving(null), LEAVE_MS + gone.length * LEAVE_STEP_MS)
-      }
+      setLeaving(seenTavern.length ? seenTavern : null)
+      setDealWait(seenTavern.length ? LEAVE_MS + (seenTavern.length - 1) * LEAVE_STEP_MS : 0)
     }
-    dealt.current = next
-    shown.current = view?.tavern ?? []
-  }, [offers])
+  }
+
+  useEffect(() => {
+    if (!leaving) return
+    const timer = window.setTimeout(() => setLeaving(null), LEAVE_MS + leaving.length * LEAVE_STEP_MS + 40)
+    return () => window.clearTimeout(timer)
+  }, [leaving])
 
   const finishing = useRef(finish)
   finishing.current = finish
@@ -719,7 +721,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
           const one = view.tavern[i]
           const gone = old[i]
           const back = gone && (
-            <span className="ar-old" aria-hidden>
+            <span className="ar-old" style={{ '--j': old.length - 1 - i } as CSSProperties} aria-hidden>
               <ArenaFace game={game.id} entity={byId.get(gone.id)} rarity={gone.rarity} atk={gone.atk} hp={gone.hp} summon={gone.summon} tier={gone.tier} />
             </span>
           )
@@ -736,7 +738,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
           return (
             <li
               key={`${deal}:${one.id}:${nth}`}
-              style={{ '--i': i, '--wait': gone ? `${LEAVE_MS}ms` : '0ms' } as CSSProperties}
+              style={{ '--i': i, '--wait': `${dealWait}ms` } as CSSProperties}
               className={`is-held ${poor ? 'is-poor' : ''}`}
             >
               {back}

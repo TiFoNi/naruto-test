@@ -1838,18 +1838,13 @@
   text-transform: uppercase;
 }
 
-.ar-row.is-shop {
-  perspective: 1200px;
-}
-
 .ar-row.is-shop li {
   position: relative;
 }
 
 .ar-row.is-shop li > .ar-move {
-  backface-visibility: hidden;
-  animation: ar-flip-in 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) both;
-  animation-delay: calc(var(--wait, 0ms) + var(--i, 0) * 55ms);
+  animation: ar-swipe-in 0.52s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  animation-delay: calc(var(--wait, 0ms) + var(--i, 0) * 70ms);
 }
 
 .ar-old {
@@ -1857,29 +1852,32 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  backface-visibility: hidden;
-  animation: ar-flip-out 0.3s cubic-bezier(0.6, 0, 0.8, 0.4) both;
-  animation-delay: calc(var(--i, 0) * 55ms);
+  animation: ar-swipe-out 0.32s ease-in both;
+  animation-delay: calc(var(--j, 0) * 45ms);
 }
 
 .ar-row.is-shop li.is-gone {
   pointer-events: none;
 }
 
-@keyframes ar-flip-out {
+@keyframes ar-swipe-out {
   from {
-    transform: rotateY(0deg);
+    opacity: 1;
+    transform: none;
   }
   to {
-    transform: rotateY(90deg);
+    opacity: 0;
+    transform: translateX(calc(var(--cw) * 0.55));
   }
 }
 
-@keyframes ar-flip-in {
+@keyframes ar-swipe-in {
   from {
-    transform: rotateY(-90deg);
+    opacity: 0;
+    transform: translateX(calc(var(--cw) * -0.55));
   }
   to {
-    transform: rotateY(0deg);
+    opacity: 1;
+    transform: none;
   }
 }
