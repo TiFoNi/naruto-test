@@ -155,6 +155,14 @@ const sword = (
   </g>
 )
 
+export function SwordIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`} viewBox="0 0 48 48" fill="currentColor" stroke="none">
+      <g transform="translate(0 1.5) rotate(45 24 22.5)">{sword}</g>
+    </svg>
+  )
+}
+
 export function SwordsIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`} viewBox="-1.2 -1.2 50.4 50.4" fill="currentColor" stroke="none">

@@ -871,6 +871,38 @@ export const CARD_STEPS = [
   { level: 30, xp: 30 },
 ] as const
 
+export const CARD_UP = [15, 30, 60, 200, 400, 0] as const
+
+export const DUST_CRAFT = 1
+
+export const DUST_SCRAP = 0.25
+
+export const CARD_POWER = [1, 1.2, 1.4, 1.6, 1.8, 2] as const
+
+export const CARD_UPS_DAY = 4
+
+export const SHARDS_DAY = 3000
+
+export const HUNT_MAX = 3
+
+export const HUNT_PITY = 4
+
+export const HUNT_SHARD = 1
+
+export const HUNT_WEIGHT = 3
+
+export const rankOf = (rarity: CardRarity) => Math.max(0, CARD_RARITIES.indexOf(rarity))
+
+export const cardUp = (rank: number) => CARD_UP[Math.max(0, Math.min(CARD_UP.length - 1, rank))]!
+
+export const cardPower = (rank: number) => CARD_POWER[Math.max(0, Math.min(CARD_POWER.length - 1, rank))]!
+
+export const dustFor = (shards: number) => Math.floor(Math.max(0, shards) * DUST_SCRAP)
+
+export const cardShardBase = (mode: ModeId) => Math.max(1, Math.min(3, CARD_POINTS[mode] ?? 1))
+
+export const cardShards = (mode: ModeId) => cardShardBase(mode)
+
 export const CARD_PINS_MAX = 16
 
 export const CARD_PINS_FREE = 12
@@ -1220,6 +1252,8 @@ export const ARENA_TIERS = 6
 export const ARENA_TRIPLE = 3
 
 export const ARENA_ROLL_COST = 1
+
+export const arenaTurnSec = (turn: number) => Math.min(60, 30 + Math.max(0, turn - 1) * 5)
 export const ARENA_UP_MIN = 1
 const ARENA_UP_COST = [4, 5, 6, 7, 8]
 
@@ -1242,6 +1276,10 @@ export const arenaBonus = (rarity: CardRarity) => ARENA_GAIN[CARD_RARITIES.index
 export const ARENA_SUMMON_MARK = 'Призыв'
 
 export const ARENA_BAN_MARK = 'Хвостатый зверь'
+
+export const ARENA_PARKED: Partial<Record<GameId, number[]>> = { naruto: [29, 267] }
+
+export const ARENA_BUM: [number, number, number] = [1, 2, 3]
 
 export const arenaStat = (rarity: CardRarity) => CARD_RARITIES.indexOf(rarity) + 1
 

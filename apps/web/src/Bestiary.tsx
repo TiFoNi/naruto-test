@@ -10,15 +10,14 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { CloseIcon, FilterIcon, PinIcon, SearchIcon } from './icons'
+import { CloseIcon, FilterIcon, PinIcon, SearchIcon, SparkIcon } from './icons'
 import { MODES } from './modes'
-import { ARENA_GAMES, CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_POINTS, CARD_RARITIES, CARD_STEPS, cardPinsMax, cardRank, type ModeId } from '@nanda/game'
+import { CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_POINTS, CARD_STEPS, cardRank, CARD_UP, cardShardBase, cardPower, HUNT_SHARD, CARD_RARITIES, CARD_UPS_DAY, HUNT_MAX, cardPinsMax, type CardRarity, type ModeId } from '@nanda/game'
 import { PICTURELESS, cardUrl, hdUrl, miniUrl } from './pics'
 import { entityTerms, matchTier, searchKey } from './entity-match'
 import { useHref } from './router'
 import { random, torn, tornPoints } from './torn'
-import { BACK_TURN, BADGE_POINTS, BackSheet, CardGlow, DexImg, PicEdge, SHEET_POINTS, lengthOf } from './DexCard'
-import ArenaPanel from './ArenaPanel'
+import { BACK_TURN, BADGE_POINTS, BackSheet, CardGlow, DexImg, PicEdge, SHEET_POINTS, lengthOf, DexFace } from './DexCard'
 
 const SHORT: Record<string, { ru: string; uk: string; en: string }> = {
   'naruto:195': { ru: 'Демон. Статуя Внешнего Пути', uk: 'Демон. Статуя Зовнішнього Шляху', en: 'Statue of the Outer Path' },
@@ -452,6 +451,10 @@ const lift = (entity: Entity, node: HTMLElement): Focus => {
   }
 }
 
+const UNPIN_POINTS = tornPoints(42, 9, 4)
+  .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
+  .join(' ')
+
 const CHIP_POINTS = tornPoints(24, 7, 6)
   .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
   .join(' ')
@@ -468,12 +471,14 @@ type TileProps = {
   pictures: boolean
   label: string
   tier: number
+  bar?: { now: number; need: number }
+  tag?: string | null
   lifted: boolean
   lockedLabel: string
   onOpen: (focus: Focus) => void
 }
 
-const DexTile = memo(function DexTile({ entity, game, place, state, pictures, label, tier, lifted, lockedLabel, onOpen }: TileProps) {
+const DexTile = memo(function DexTile({ entity, game, place, state, pictures, label, tier, bar, tag, lifted, lockedLabel, onOpen }: TileProps) {
   if (state === 'text')
     return (
       <span className="dex-scrap is-text">
@@ -515,6 +520,16 @@ const DexTile = memo(function DexTile({ entity, game, place, state, pictures, la
       <b className={lengthOf(label)}>
         <span>{label}</span>
       </b>
+      {tag && (
+        <u className="dex-tag" aria-hidden>
+          {tag}
+        </u>
+      )}
+      {bar && bar.need > 0 && (
+        <s className="dex-bar" aria-hidden>
+          <i style={{ width: `${Math.min(100, Math.round((bar.now / bar.need) * 100))}%` }} />
+        </s>
+      )}
     </button>
   )
 })
@@ -658,11 +673,38 @@ const useTilt = (face: React.RefObject<HTMLDivElement | null>, ready: () => bool
   return { dragged, rest }
 }
 
-type CardStats = { xp: number; modes: Record<string, { n: number; xp: number }> }
+type CardStats = { xp: number; rarity?: CardRarity; power?: number; modes: Record<string, { n: number; xp: number }> }
 
-type Rank = ReturnType<typeof cardRank> & { modes: CardStats['modes'] }
+type Grade = {
+  rank: number
+  rarity: CardRarity
+  shards: number
+  up: number
+  power: number
+  spare: number
+  ready: boolean
+  craft: { price: number; back: number; spare: number }
+}
 
-const rankOf = (stats?: CardStats): Rank => ({ ...cardRank(stats?.xp ?? 0), modes: stats?.modes ?? {} })
+type Vault = {
+  dust: number
+  ups: { used: number; max: number }
+  shards: { got: number; max: number }
+  hunt: number[]
+  pity: { now: number; max: number }
+  cards: Record<number, Grade>
+}
+
+type Rank = { tier: number; rarity: CardRarity; power: number; modes: CardStats['modes'] }
+
+type OldRank = ReturnType<typeof cardRank> & { modes: CardStats['modes'] }
+
+const oldRank = (stats?: CardStats): OldRank => ({ ...cardRank(stats?.xp ?? 0), modes: stats?.modes ?? {} })
+
+const rankOf = (stats?: CardStats): Rank => {
+  const rarity = stats?.rarity ?? CARD_RARITIES[0]!
+  return { tier: CARD_RARITIES.indexOf(rarity), rarity, power: stats?.power ?? 1, modes: stats?.modes ?? {} }
+}
 
 const DexTip = ({ glyph, label, tone, children }: { glyph: string; label: string; tone?: string; children: ReactNode }) => {
   const { t } = useI18n()
@@ -750,7 +792,7 @@ const DexSoon = () => {
   )
 }
 
-const DexHelp = ({ modes }: { modes: ModeId[] }) => {
+const OldHelp = ({ modes }: { modes: ModeId[] }) => {
   const { t } = useI18n()
   const groups = [...new Set(modes.map((mode) => CARD_POINTS[mode] ?? 0))]
     .filter((points) => points > 0)
@@ -790,13 +832,210 @@ const DexHelp = ({ modes }: { modes: ModeId[] }) => {
   )
 }
 
+const DexHelp = ({ modes }: { modes: ModeId[] }) => {
+  const { t } = useI18n()
+  const groups = [...new Set(modes.map((mode) => cardShardBase(mode)))]
+    .sort((a, b) => b - a)
+    .map((points) => ({
+      points,
+      names: MODES.filter((mode) => modes.includes(mode.id) && cardShardBase(mode.id) === points).map((mode) => t(mode.label)),
+    }))
+
+  return (
+    <DexTip glyph="?" label={t('dex.help')}>
+      <p>{t('dex.help2.open')}</p>
+
+      <span className="dex-help-label">{t('dex.help2.points')}</span>
+      <ul className="dex-help-points">
+        {groups.map((group) => (
+          <li key={group.points}>
+            <b>{group.points}</b>
+            <span>{group.names.join(', ')}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="dex-help-note">{t('dex.help2.daily')}</p>
+
+      <span className="dex-help-label">{t('dex.help.more')}</span>
+      <ul className="dex-help-points">
+        <li>
+          <b>+{HUNT_SHARD}</b>
+          <span>{t('dex.help.hunt')}</span>
+        </li>
+        <li>
+          <b>+3</b>
+          <span>{t('dex.help.quest')}</span>
+        </li>
+        <li>
+          <b>1:1</b>
+          <span>{t('dex.help.craft')}</span>
+        </li>
+      </ul>
+
+      <span className="dex-help-label">{t('dex.help2.rarity')}</span>
+      <p className="dex-help-note">{t('dex.help.levels', { ups: CARD_UPS_DAY })}</p>
+      <ul className="dex-help-rarities">
+        {CARD_RARITIES.map((rarity, tier) => (
+          <li key={tier} className={`lv-${tier + 1}`}>
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+              <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
+            </svg>
+            <span>{t(`card.rarity.${rarity}` as UiKey)}</span>
+            <em>
+              {tier > 0 ? `${CARD_UP[tier - 1]} · ` : ''}×{cardPower(tier)}
+            </em>
+          </li>
+        ))}
+      </ul>
+      <p className="dex-help-note">{t('dex.help.dust')}</p>
+      <p className="dex-help-note">{t('dex.help2.tap')}</p>
+    </DexTip>
+  )
+}
+
 const CardSheet = ({
+  rank,
+  grade,
+  dust,
+  ups,
+  busy,
+  out,
+  onRaise,
+  onCraft,
+  onClose,
+  onGone,
+}: {
+  rank: Rank
+  grade?: Grade
+  dust: number
+  ups: { used: number; max: number }
+  busy: boolean
+  out: boolean
+  onRaise: () => void
+  onCraft: (n: number) => void
+  onClose: () => void
+  onGone: () => void
+}) => {
+  const { t } = useI18n()
+  const [want, setWant] = useState(10)
+  const finds = Object.entries(rank.modes)
+    .map(([mode, one]) => ({ mode: MODES.find((item) => item.id === mode), ...one }))
+    .filter((one) => one.mode && one.xp > 0)
+    .sort((a, b) => b.xp - a.xp)
+
+  const top = rank.tier >= CARD_RARITIES.length - 1
+  const shards = grade?.shards ?? 0
+  const need = grade?.up ?? 0
+  const share = top ? 1 : Math.min(1, shards / Math.max(1, need))
+  const left = Math.max(0, need - shards)
+  const price = grade?.craft.price ?? 0
+  const affordable = price ? Math.floor(dust / price) : 0
+  const take = Math.max(1, want)
+  const weekly = ups.used < ups.max
+
+  useEffect(() => {
+    if (!out) return
+    const timer = window.setTimeout(onGone, 320)
+    return () => window.clearTimeout(timer)
+  }, [out, onGone])
+
+  return (
+    <div className={`lv-sheet ${out ? 'is-out' : ''}`} role="dialog" aria-label={t('card.stats')} onPointerDown={(event) => event.stopPropagation()}>
+      <svg className="lv-sheet-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+        <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
+      </svg>
+      <button type="button" className="lv-sheet-x" aria-label={t('dex.close')} onClick={onClose}>
+        <CloseIcon />
+      </button>
+
+      <ul className="lv-path" aria-hidden>
+        {CARD_RARITIES.map((rarity, tier) => (
+          <li key={rarity} className={`lv-${tier + 1} ${tier === rank.tier ? 'is-on' : ''} ${tier < rank.tier ? 'is-past' : ''}`}>
+            {t(`card.rarity.${rarity}` as UiKey)}
+          </li>
+        ))}
+      </ul>
+
+      <b className="lv-sheet-level">{t(`card.rarity.${rank.rarity}` as UiKey)}</b>
+      <div className="lv-sheet-xp">
+        <span>{t('card.shards')}</span>
+        <em>
+          {shards}
+          {!top && <i> / {need}</i>}
+        </em>
+      </div>
+      <span className="lv-sheet-bar" aria-hidden>
+        <i style={{ width: `${Math.round(share * 100)}%` }} />
+      </span>
+      <small className="lv-sheet-next">{top ? t('card.max') : t('card.power', { power: rank.power })}</small>
+
+      {!top && (
+        <div className="lv-raise">
+          <span className={grade?.ready ? 'is-done' : ''}>
+            {t('card.needShards')}
+            <em>
+              {shards} / {need}
+            </em>
+          </span>
+          <span className={weekly ? 'is-done' : ''}>
+            {t('card.dayUps')}
+            <em>
+              {ups.used} / {ups.max}
+            </em>
+          </span>
+          <button type="button" className="lv-go" disabled={busy || !grade?.ready || !weekly} onClick={onRaise}>
+            {t('card.raise')}
+          </button>
+          {!grade?.ready && <small>{t('card.needMore', { n: left })}</small>}
+        </div>
+      )}
+
+      {!!price && !top && (
+        <div className="lv-craft">
+          <span>{t('card.craft', { price })}</span>
+          <div className="lv-craft-row">
+            <button type="button" onClick={() => setWant((was) => Math.max(1, was - 5))} aria-label="-">
+              −
+            </button>
+            <b>{take}</b>
+            <button type="button" onClick={() => setWant((was) => Math.min(Math.max(1, affordable), was + 5))} aria-label="+">
+              +
+            </button>
+            <button type="button" className="lv-go" disabled={busy || dust < take * price} onClick={() => onCraft(take)}>
+              {t('card.craftGo', { cost: take * price })}
+            </button>
+          </div>
+        </div>
+      )}
+
+
+      <div className="lv-sheet-where">
+        <span>{t('card.where')}</span>
+        {finds.length ? (
+          <ul>
+            {finds.map((one) => (
+              <li key={one.mode!.id}>
+                <i aria-hidden>{one.mode!.icon}</i>
+                <span>{t(one.mode!.label)}</span>
+                <em>{one.n}</em>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>{t('card.never')}</p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+const OldSheet = ({
   rank,
   out,
   onClose,
   onGone,
 }: {
-  rank: Rank
+  rank: OldRank
   out: boolean
   onClose: () => void
   onGone: () => void
@@ -862,7 +1101,14 @@ const DexZoom = ({
   label,
   accent,
   rank,
+  old,
+  grade,
+  vault,
+  busy,
   pin,
+  onRaise,
+  onScrap,
+  onCraft,
   onClosed,
 }: {
   focus: Focus
@@ -870,17 +1116,26 @@ const DexZoom = ({
   label: string
   accent: string
   rank?: Rank
+  old?: OldRank
+  grade?: Grade
+  vault?: Vault | null
+  busy?: boolean
   pin?: { on: boolean; toggle: () => void }
+  onRaise?: () => void
+  onScrap?: (n: number) => void
+  onCraft?: (n: number) => void
   onClosed: () => void
 }) => {
   const { t } = useI18n()
   const [sheet, setSheet] = useState<'in' | 'out' | null>(null)
+  const [scrapping, setScrapping] = useState(false)
+  const [scrapN, setScrapN] = useState(4)
   const [seen, setSeen] = useState(false)
   const hide = () => setSheet((was) => (was ? 'out' : null))
   const gone = useCallback(() => setSheet(null), [])
   const [away, setAway] = useState(false)
-  const tier = rank ? rank.tier + 1 : undefined
-  const level = rank?.level
+  const tier = old ? old.tier + 1 : rank ? rank.tier + 1 : undefined
+  const badge = old ? old.level : grade ? (grade.up ? `${grade.shards}/${grade.up}` : '★') : rank ? '•' : undefined
   const card = useRef<HTMLDivElement>(null)
   const shade = useRef<HTMLDivElement>(null)
   const shut = useRef<HTMLButtonElement>(null)
@@ -963,10 +1218,27 @@ const DexZoom = ({
               <PinIcon />
             </button>
           )}
-          {level !== undefined && (
+          {grade && grade.shards >= 4 && onScrap && (
             <button
               type="button"
-              className={`lv-badge ${sheet === 'in' ? 'is-on' : ''} ${seen ? '' : 'is-calling'}`}
+              className="dex-zoom-scrap"
+              aria-label={t('card.scrapOpen')}
+              title={t('card.scrapOpen')}
+              onClick={() => {
+                setScrapN(grade.shards - (grade.shards % 4))
+                setScrapping(true)
+              }}
+            >
+              <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
+              </svg>
+              <SparkIcon />
+            </button>
+          )}
+          {badge !== undefined && (
+            <button
+              type="button"
+              className={`lv-badge ${old ? '' : 'is-shards'} ${sheet === 'in' ? 'is-on' : ''} ${seen ? '' : 'is-calling'}`}
               aria-label={t('card.stats')}
               aria-expanded={sheet === 'in'}
               onClick={() => {
@@ -978,7 +1250,7 @@ const DexZoom = ({
               <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
                 <polygon points={BADGE_POINTS} />
               </svg>
-              <b>{level}</b>
+              <b>{badge}</b>
             </button>
           )}
           <i className="dex-paper" style={{ clipPath: torn(entity.id, 4) }} />
@@ -1008,7 +1280,57 @@ const DexZoom = ({
             </span>
           </b>
         </div>
-        {sheet && rank && <CardSheet rank={rank} out={sheet === 'out'} onClose={hide} onGone={gone} />}
+        {sheet && old && <OldSheet rank={old} out={sheet === 'out'} onClose={hide} onGone={gone} />}
+        {sheet && rank && !old && (
+          <CardSheet
+            rank={rank}
+            grade={grade}
+            dust={vault?.dust ?? 0}
+            ups={vault?.ups ?? { used: 0, max: CARD_UPS_DAY }}
+            busy={!!busy}
+            out={sheet === 'out'}
+            onRaise={() => onRaise?.()}
+            onCraft={(n) => onCraft?.(n)}
+            onClose={hide}
+            onGone={gone}
+          />
+        )}
+
+        {scrapping && grade && (
+          <div className="dex-scrap-modal" role="dialog" aria-label={t('card.scrapOpen')} onPointerDown={(event) => event.stopPropagation()}>
+            <svg className="lv-sheet-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+              <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
+            </svg>
+            <b>{t('card.scrapTitle')}</b>
+            <p>{t('card.scrapHint', { have: grade.shards })}</p>
+            <div className="lv-craft-row">
+              <button type="button" onClick={() => setScrapN((was) => Math.max(4, was - 4))} aria-label="-">
+                −
+              </button>
+              <b>{scrapN}</b>
+              <button type="button" onClick={() => setScrapN((was) => Math.min(grade.shards - (grade.shards % 4), was + 4))} aria-label="+">
+                +
+              </button>
+              <span className="dex-scrap-gain">→ {Math.floor(scrapN / 4)} {t('card.dustUnit')}</span>
+            </div>
+            <div className="dex-scrap-act">
+              <button type="button" className="lv-scrap" onClick={() => setScrapping(false)}>
+                {t('card.cancel')}
+              </button>
+              <button
+                type="button"
+                className="lv-go"
+                disabled={!!busy || scrapN < 4}
+                onClick={() => {
+                  onScrap?.(scrapN)
+                  setScrapping(false)
+                }}
+              >
+                {t('card.scrapGo')}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
       <button ref={shut} type="button" className={`dex-zoom-close ${away ? 'is-leaving' : ''}`} onClick={close} aria-label={t('dex.close')}>
         <CloseIcon />
@@ -1043,6 +1365,11 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   const [nickname, setNickname] = useState<string | null>(null)
   const remembered = useRemembered(gameId)
   const [focus, setFocus] = useState<Focus | null>(null)
+  const [fromHunt, setFromHunt] = useState(false)
+  const openTile = useCallback((one: Focus) => {
+    setFromHunt(false)
+    setFocus(one)
+  }, [])
   const release = useCallback(() => setFocus(null), [])
 
   const [cards, setCards] = useState<Record<number, CardStats>>({})
@@ -1083,7 +1410,64 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
     }
   }, [game, user, owner])
 
-  const tierOf = (entity: Entity) => cardRank(cards[entity.id]?.xp ?? 0).tier
+  const fresh = !!user?.admin && !owner
+  const [vault, setVault] = useState<Vault | null>(null)
+  const [busy, setBusy] = useState(false)
+
+  const loadVault = useCallback(async () => {
+    if (!game || owner || !fresh) return
+    const { ok, data } = await api<{ bestiary?: Vault }>(`bestiary?game=${game.id}`)
+    if (ok && data.bestiary) setVault(data.bestiary)
+  }, [game, owner, fresh])
+
+  useEffect(() => {
+    if (user) void loadVault()
+  }, [user, loadVault])
+
+  const act = useCallback(
+    async (body: Record<string, unknown>) => {
+      if (!game || busy) return
+      setBusy(true)
+      const { ok, data } = await api<{ bestiary?: Vault }>('bestiary', { game: game.id, ...body })
+      if (data.bestiary) setVault(data.bestiary)
+      if (ok) {
+        const fresh = await api<{ cards?: Record<number, CardStats> }>(`dex?game=${game.id}`)
+        if (fresh.ok && fresh.data.cards) setCards(fresh.data.cards)
+      }
+      setBusy(false)
+    },
+    [game, busy],
+  )
+
+  const [onlyReady, setOnlyReady] = useState(false)
+  const [picking, setPicking] = useState<number | null>(null)
+  const grid = useRef<HTMLOListElement>(null)
+  const [cell, setCell] = useState(0)
+
+  useEffect(() => {
+    const node = grid.current
+    if (!node) return
+    const measure = () => {
+      const first = node.querySelector('li')
+      if (first) setCell(first.offsetWidth)
+    }
+    measure()
+    const watch = new ResizeObserver(measure)
+    watch.observe(node)
+    return () => watch.disconnect()
+  }, [])
+  const hunted = new Set(vault?.hunt ?? [])
+
+  const saveHunt = (next: number[]) => {
+    setVault((was) => (was ? { ...was, hunt: next } : was))
+    if (game) void api('bestiary', { game: game.id, action: 'hunt', ids: next })
+  }
+
+  const toggleHunt = (id: number) =>
+    saveHunt(hunted.has(id) ? [...hunted].filter((one) => one !== id) : [...hunted, id].slice(-HUNT_MAX))
+
+
+  const tierOf = (entity: Entity) => (fresh ? rankOf(cards[entity.id]).tier : oldRank(cards[entity.id]).tier)
   const [only, setOnly] = useState<Set<number>>(new Set())
   const [panel, setPanel] = useState<'filter' | 'search' | null>(null)
   const [touched, setTouched] = useState(false)
@@ -1107,11 +1491,11 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   const numbers = useMemo(() => new Map(listed.map((one, at) => [one.id, at])), [listed])
   const cast = useMemo(() => {
     const arcOf = (one: Entity) => (one as unknown as { arcIndex?: number }).arcIndex ?? 0
-    const rank = (one: Entity) => (open.has(one.id) ? cardRank(cards[one.id]?.xp ?? 0).tier : -1)
+    const rank = (one: Entity) => (open.has(one.id) ? (fresh ? rankOf(cards[one.id]).tier : oldRank(cards[one.id]).tier) : -1)
     return [...listed].sort(
       (a, b) => rank(b) - rank(a) || arcOf(a) - arcOf(b) || (numbers.get(a.id) ?? 0) - (numbers.get(b.id) ?? 0),
     )
-  }, [listed, numbers, open, cards])
+  }, [listed, numbers, open, cards, fresh])
   const terms = useMemo(() => new Map(cast.map((entity) => [entity.id, entityTerms(entity)])), [cast])
   const pictures = !PICTURELESS.has(gameId)
   const label = (entity: Entity) => SHORT[`${gameId}:${entity.id}`]?.[lang] ?? name(entity)
@@ -1129,13 +1513,14 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   const loading = cast.length === 0
   const counts = CARD_RARITIES.map(() => 0)
   if (Object.keys(cards).length) for (const entity of cast) if (open.has(entity.id)) counts[tierOf(entity)]!++
+  const readyCount = vault ? Object.values(vault.cards).filter((one) => one.ready).length : 0
   const key = searchKey(deferred)
   const needle = key.q
   const tiers = needle ? new Map(cast.map((entity) => [entity.id, open.has(entity.id) ? matchTier(terms.get(entity.id)!, key) : -1])) : null
   const matches = (entity: Entity) => !tiers || tiers.get(entity.id)! >= 0
-  const dimmed = (entity: Entity) => (only.size > 0 && !(open.has(entity.id) && only.has(tierOf(entity)))) || !matches(entity)
-  const hasRarity = counts.some((count, tier) => tier > 0 && count > 0)
-  const arenaOn = ARENA_GAMES.includes(gameId as never) && !owner && !!user?.admin
+  const dimmed = (entity: Entity) =>
+    (only.size > 0 && !(open.has(entity.id) && only.has(tierOf(entity)))) || (onlyReady && !vault?.cards[entity.id]?.ready) || !matches(entity)
+  const hasRarity = fresh ? open.size > 0 : counts.some((count, tier) => tier > 0 && count > 0)
 
   const jump = () => {
     const visible = cast.filter((entity) => !dimmed(entity))
@@ -1144,7 +1529,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   }
 
   return (
-    <div className={`dex ${arenaOn ? 'has-arena' : ''}`} style={{ '--dex': accent } as CSSProperties}>
+    <div className="dex" style={{ '--dex': accent, ...(cell ? { '--dex-cell': `${cell}px` } : {}) } as CSSProperties}>
       <div className="play-nav">
         {owner ? (
           <BackButton href={href.player(owner)}>{nickname ?? t('profile.back')}</BackButton>
@@ -1154,10 +1539,37 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
       </div>
 
       <header className="dex-head">
-        <div className="dex-title">
-          <h1>{owner ? t('dex.titleOf', { world: l(game.label) }) : t('dex.title')}</h1>
-          <DexHelp modes={game.modes} />
-          <DexSoon />
+        <div className="dex-head-row">
+          <div className="dex-head-main">
+            <div className="dex-title">
+              <h1>{owner ? t('dex.titleOf', { world: l(game.label) }) : t('dex.title')}</h1>
+              {fresh ? <DexHelp modes={game.modes} /> : <OldHelp modes={game.modes} />}
+              {!fresh && <DexSoon />}
+            </div>
+            {fresh && open.size > 0 && (
+              <p className="dex-tally">
+                {t('dex.tally', { got: open.size, total: listed.length })}
+                {counts[4]! > 0 && <> · {t('dex.tallyLegend', { n: counts[4]! })}</>}
+                {counts[5]! > 0 && <> · {t('dex.tallyMythic', { n: counts[5]! })}</>}
+              </p>
+            )}
+          </div>
+          {fresh && !vault && (
+            <div className="dex-purse" aria-hidden>
+              <span className="sk dex-coin-sk" />
+            </div>
+          )}
+          {vault && !owner && (
+            <div className="dex-purse">
+              <span className="dex-coin">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                  <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
+                </svg>
+                <small>{t('dex.dust')}</small>
+                <b>{vault.dust.toLocaleString('uk')}</b>
+              </span>
+            </div>
+          )}
         </div>
         {!owner && !user && !checking && (
           <p className="dex-count">
@@ -1168,17 +1580,122 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
         )}
       </header>
 
-      {arenaOn && (
-        <div className="dex-top">
-          <ArenaPanel game={game} />
+
+      {fresh && !vault && (
+        <div className="dex-vault" aria-hidden>
+          <span className="sk dex-vault-sk" />
         </div>
       )}
 
+      {vault && !owner && open.size > 0 && (
+        <>
+          <div className="dex-vault">
+            <section className="dex-hunt">
+              <svg className="dex-hunt-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                <defs>
+                  <radialGradient id="hunt-light" cx="38%" cy="32%" r="85%">
+                    <stop offset="0%" stopColor="#f3eee6" />
+                    <stop offset="62%" stopColor="#e6dfd3" />
+                    <stop offset="100%" stopColor="#d6cdbd" />
+                  </radialGradient>
+                </defs>
+                <polygon points={SHEET_POINTS} fill="url(#hunt-light)" vectorEffect="non-scaling-stroke" />
+              </svg>
+              <div className="dex-hunt-text">
+                <b>{t('dex.hunt')}</b>
+                <p>{t('dex.huntHint', { max: HUNT_MAX })}</p>
+                <dl className="dex-stats">
+                  <div>
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                      <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
+                    </svg>
+                    <dt>{t('dex.statShards')}</dt>
+                    <dd>
+                      {vault.shards.got.toLocaleString('uk')} / {vault.shards.max.toLocaleString('uk')}
+                    </dd>
+                  </div>
+                  <div>
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                      <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
+                    </svg>
+                    <dt>{t('dex.statUps')}</dt>
+                    <dd>
+                      {vault.ups.used} / {vault.ups.max}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+              <div className="dex-hunt-side">
+              <span className="dex-hunt-tray" style={{ clipPath: torn(6110, 5) }} aria-hidden />
+              <ul className="dex-hunt-list">
+                {Array.from({ length: HUNT_MAX }, (_, slot) => {
+                  const id = vault.hunt[slot]
+                  const entity = id ? listed.find((one) => one.id === id) : undefined
+                  const grade = id ? vault.cards[id] : undefined
+                  return (
+                    <li key={slot} className={entity ? 'is-on' : 'is-empty'}>
+                      {entity ? (
+                        <span key="card" className={`card-edit dex-hunt-card ${fromHunt && focus?.entity.id === entity.id ? 'is-lifted' : ''}`} style={{ rotate: `${(slot - 1) * 2.5}deg` } as CSSProperties}>
+                          <button
+                            type="button"
+                            className="dex-hunt-open"
+                            aria-label={label(entity)}
+                            onClick={(event) => {
+                              const face = event.currentTarget.querySelector<HTMLElement>('.dex-scrap')
+                              if (!face) return
+                              setFromHunt(true)
+                              setFocus(lift(entity, face))
+                            }}
+                          >
+                            <DexFace game={game.id} id={entity.id} image={entity.image} label={label(entity)} tier={grade?.rank ?? 0} />
+                          </button>
+                          <button type="button" className="card-unpin" aria-label={t('dex.huntDrop')} title={t('dex.huntDrop')} onClick={() => toggleHunt(entity.id)}>
+                            <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                              <polygon points={UNPIN_POINTS} vectorEffect="non-scaling-stroke" />
+                            </svg>
+                            <CloseIcon />
+                          </button>
+                        </span>
+                      ) : (
+                        <button
+                          key="blank"
+                          type="button"
+                          className={`dex-hunt-blank ${picking === slot ? 'is-picking' : ''}`}
+                          style={{ rotate: `${(slot - 1) * 2.5}deg` } as CSSProperties}
+                          onClick={() => setPicking((was) => (was === slot ? null : slot))}
+                        >
+                          <span className="dex-hunt-hole" style={{ clipPath: torn(7300 + slot * 17, 4) }} aria-hidden />
+                          <i aria-hidden>+</i>
+                          <small>{t(picking === slot ? 'dex.huntPick' : 'dex.huntEmpty')}</small>
+                        </button>
+                      )}
+                    </li>
+                  )
+                })}
+              </ul>
+              </div>
+            </section>
+
+          </div>
+
+        </>
+      )}
 
       {(checking || user || owner) && (
         <div className={`dex-filter ${filtering ? 'is-filtering' : ''}`}>
           {open.size > 0 && (
             <>
+              {vault && !owner && (
+                <div className={`dex-acts ${panel ? 'is-away' : ''}`} inert={!!panel}>
+                  <button type="button" className={`dex-act is-ready ${onlyReady ? 'is-on' : ''}`} aria-pressed={onlyReady} onClick={() => setOnlyReady((was) => !was)}>
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                      <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
+                    </svg>
+                    <span>{t('dex.ready')}</span>
+                    {readyCount > 0 && <i>{readyCount}</i>}
+                  </button>
+                </div>
+              )}
               <div className="dex-filter-stage">
                 {hasRarity && (
                   <div
@@ -1266,7 +1783,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
 
       <div className="dex-board">
         <InkFrame />
-        <ol className="dex-grid" aria-busy={loading || undefined}>
+        <ol ref={grid} className="dex-grid" aria-busy={loading || undefined}>
           {loading
             ? Array.from({ length: remembered || 24 }, (_, slot) => (
                 <li key={slot} style={{ '--tilt': `${tilt(slot + 1)}deg` } as CSSProperties}>
@@ -1290,9 +1807,24 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                     pictures={pictures}
                     label={label(entity)}
                     tier={open.has(entity.id) ? tierOf(entity) : 0}
-                    lifted={focus?.entity.id === entity.id}
+                    bar={
+                      vault?.cards[entity.id]
+                        ? { now: vault.cards[entity.id]!.shards, need: vault.cards[entity.id]!.up }
+                        : undefined
+                    }
+                    tag={
+                      vault?.cards[entity.id]?.ready
+                        ? t('dex.tagRaise')
+                        : hunted.has(entity.id)
+                          ? t('dex.tagHunt')
+                          : null
+                    }
+                    lifted={!fromHunt && focus?.entity.id === entity.id}
                     lockedLabel={t('dex.locked')}
-                    onOpen={setFocus}
+                    onOpen={picking !== null ? (one) => {
+                      setPicking(null)
+                      if (!hunted.has(one.entity.id)) toggleHunt(one.entity.id)
+                    } : openTile}
                   />
                 </li>
               ))}
@@ -1306,6 +1838,13 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
           label={label(focus.entity)}
           accent={accent}
           rank={rankOf(cards[focus.entity.id])}
+          old={fresh ? undefined : oldRank(cards[focus.entity.id])}
+          grade={vault?.cards[focus.entity.id]}
+          vault={vault}
+          busy={busy}
+          onRaise={() => void act({ action: 'raise', id: focus.entity.id })}
+          onScrap={(n) => void act({ action: 'scrap', id: focus.entity.id, n })}
+          onCraft={(n) => void act({ action: 'craft', id: focus.entity.id, n })}
           pin={
             pins && open.has(focus.entity.id) && (pins.has(focus.entity.id) || pinCount < cardPinsMax(user?.titles))
               ? { on: pins.has(focus.entity.id), toggle: () => void togglePin(focus.entity.id) }

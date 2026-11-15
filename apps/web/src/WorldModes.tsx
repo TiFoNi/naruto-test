@@ -1,14 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { GRID_GAMES, dailyKey, hasDaily, statsKey } from '@nanda/game'
+import { ARENA_GAMES, GRID_GAMES, dailyKey, hasDaily, statsKey } from '@nanda/game'
 import BackButton from './BackButton'
 import DexStrip from './DexStrip'
 import { useAuth } from './auth'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
-import { CalendarIcon, CheckIcon, CloseIcon } from './icons'
+import { CalendarIcon, CheckIcon, CloseIcon, SwordsIcon } from './icons'
 import { MODES } from './modes'
 import { useHref } from './router'
 import { emptyStats, kyivToday } from './stats'
@@ -101,6 +101,20 @@ export default function WorldModes({ game: gameId }: { game: string }) {
           )
         })}
 
+        {user?.admin && ARENA_GAMES.includes(game.id) && (
+          <article className="world-card">
+            <Link className="world-card-main" href={href.arena(game.id)} prefetch={false}>
+              <span className="world-card-mark" aria-hidden>
+                <SwordsIcon />
+              </span>
+              <b className="world-card-name">{t('arena.title')}</b>
+              <small className="world-card-desc">{t('arena.desc')}</small>
+            </Link>
+            <div className="world-card-foot">
+              <span className="world-card-stat">{t('arena.adminOnly')}</span>
+            </div>
+          </article>
+        )}
       </div>
     </div>
   )

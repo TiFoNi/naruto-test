@@ -1,8 +1,9 @@
 import { ObjectId } from 'mongodb'
 import { isGame } from '../games'
-import { cardsOf, dexOf } from '../dex'
+import { cardsOf, dexOf, gradesOf } from '../dex'
 import { users } from '../db'
 import { fail, handle, json } from '../http'
+import { adminSession } from '../admin'
 import { currentUser, unauthorized } from '../profile'
 
 export const GET = handle(async (request) => {
@@ -13,7 +14,8 @@ export const GET = handle(async (request) => {
   const found = await currentUser(request)
   if (!wanted) {
     if (!found) return json({ ids: [], guest: true })
-    const [ids, cards] = await Promise.all([dexOf(found.doc._id!, game), cardsOf(found.doc._id!, game)])
+    const fresh = !!(await adminSession(request))
+    const [ids, cards] = await Promise.all([dexOf(found.doc._id!, game), fresh ? gradesOf(found.doc._id!, game) : cardsOf(found.doc._id!, game)])
     const all = found.doc.cardPins ?? []
     return json({ ids, cards, pins: all.filter((key) => key.startsWith(`${game}:`)).map((key) => Number(key.split(':')[1])), pinCount: all.length })
   }

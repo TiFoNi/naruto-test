@@ -38,6 +38,12 @@ export function nextReset(now = new Date()) {
 
 const dayNumber = (day: string) => Date.parse(`${day}T00:00:00Z`) / DAY_MS
 
+export const thisWeek = (now = new Date()) => {
+  const day = today(now)
+  const monday = shiftDay(day, -((Date.parse(`${day}T00:00:00Z`) / DAY_MS + 3) % 7))
+  return monday
+}
+
 export const shiftDay = (day: string, delta: number) => new Date((dayNumber(day) + delta) * DAY_MS).toISOString().slice(0, 10)
 
 

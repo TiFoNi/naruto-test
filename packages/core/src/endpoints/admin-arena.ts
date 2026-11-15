@@ -1,4 +1,4 @@
-import { ARENA_BAN_MARK, ARENA_GAMES, ARENA_SUMMON_MARK, ARENA_TIERS, type GameId } from '@nanda/game'
+import { ARENA_BAN_MARK, ARENA_BUM, ARENA_GAMES, ARENA_PARKED, ARENA_SUMMON_MARK, ARENA_TIERS, type GameId } from '@nanda/game'
 import { arenaSheet, forgetArenaSheet, loadArenaSheet, tierOf } from '../arena'
 import { entities } from '../db'
 import { isGame } from '../games'
@@ -34,7 +34,7 @@ export const GET = handle(async (request) => {
       tier: cell[0],
       atk: cell[1],
       hp: cell[2],
-      locked: marks.includes(ARENA_BAN_MARK) || marks.includes(ARENA_SUMMON_MARK),
+      locked: marks.includes(ARENA_BAN_MARK) || marks.includes(ARENA_SUMMON_MARK) || (ARENA_PARKED[game] ?? []).includes(one.id),
       edited: !!edits[String(one.id)],
     }
   })
@@ -45,11 +45,38 @@ export const GET = handle(async (request) => {
 export const POST = handle(async (request) => {
   if (!(await adminSession(request))) return missing()
 
-  const body = (await readJson(request)) as { game?: unknown; id?: unknown; tier?: unknown; atk?: unknown; hp?: unknown; reset?: unknown }
+  const body = (await readJson(request)) as { game?: unknown; id?: unknown; tier?: unknown; atk?: unknown; hp?: unknown; reset?: unknown; unpark?: unknown }
   if (!playable(body.game)) return fail(400, 'bad_request')
+  const collection = await entities()
+
+  if (body.unpark) {
+    forgetArenaSheet()
+    await loadArenaSheet(body.game)
+    const { book, edits } = arenaSheet()
+    const parked = ARENA_PARKED[body.game] ?? []
+    const rows = await collection
+      .find({ game: body.game, hidden: { $ne: true } }, { projection: { _id: 0, id: 1, attributes: 1 } })
+      .toArray()
+    const lift = rows
+      .map((row) => row as unknown as { id: number; attributes?: string[] })
+      .filter((row) => {
+        const marks = row.attributes ?? []
+        if (marks.includes(ARENA_BAN_MARK) || marks.includes(ARENA_SUMMON_MARK) || parked.includes(row.id)) return false
+        const cell = edits[String(row.id)] ?? book[String(row.id)]
+        return (cell?.[0] ?? 2) === 0
+      })
+      .map((row) => row.id)
+    const back = lift.filter((one) => (book[String(one)]?.[0] ?? 0) > 0)
+    const bum = lift.filter((one) => !back.includes(one))
+    if (back.length) await collection.updateMany({ game: body.game, id: { $in: back } }, { $unset: { arena: '' }, $set: { updatedAt: new Date() } })
+    if (bum.length) await collection.updateMany({ game: body.game, id: { $in: bum } }, { $set: { arena: [...ARENA_BUM], updatedAt: new Date() } })
+    forgetArenaSheet()
+    await loadArenaSheet(body.game)
+    return json({ lifted: lift.length })
+  }
+
   const id = whole(body.id, 1e9)
   if (id === null) return fail(400, 'bad_request')
-  const collection = await entities()
 
   if (body.reset) {
     const cleared = await collection.updateOne({ game: body.game, id }, { $unset: { arena: '' }, $set: { updatedAt: new Date() } })

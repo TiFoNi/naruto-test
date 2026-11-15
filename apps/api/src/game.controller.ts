@@ -20,6 +20,7 @@ import * as adminDifficulty from '@nanda/core/endpoints/admin-difficulty'
 import * as adminQuizzes from '@nanda/core/endpoints/admin-quizzes'
 import * as myQuizzes from '@nanda/core/endpoints/my-quizzes'
 import * as adminArena from '@nanda/core/endpoints/admin-arena'
+import * as bestiary from '@nanda/core/endpoints/bestiary'
 import * as adminZoom from '@nanda/core/endpoints/admin-zoom'
 import * as adminTitles from '@nanda/core/endpoints/admin-titles'
 import * as framesTune from '@nanda/core/endpoints/frames-tune'
@@ -139,6 +140,16 @@ export class GameController {
   @Post('admin/zoom')
   adminZoomSave(@Req() req: Request, @Res() res: Response) {
     return bridge(adminZoom.POST, req, res)
+  }
+
+  @Get('bestiary')
+  bestiaryState(@Req() req: Request, @Res() res: Response) {
+    return bridge(bestiary.GET, req, res)
+  }
+
+  @Post('bestiary')
+  bestiaryAct(@Req() req: Request, @Res() res: Response) {
+    return bridge(bestiary.POST, req, res)
   }
 
   @Get('admin/arena')

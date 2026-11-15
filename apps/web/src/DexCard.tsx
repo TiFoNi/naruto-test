@@ -1,8 +1,9 @@
 'use client'
 
 import { memo, useCallback, useId, useState, type CSSProperties, type ReactNode } from 'react'
-import { cardRank } from '@nanda/game'
+import { CARD_RARITIES, cardRank, type CardRarity } from '@nanda/game'
 import type { GameId } from './games/types'
+import { HeartIcon, SwordIcon } from './icons'
 import { cardUrl } from './pics'
 import { torn, tornPoints } from './torn'
 
@@ -114,6 +115,7 @@ export const StatBadge = ({ kind, value }: { kind: 'atk' | 'hp'; value: number }
     <svg viewBox="0 0 130 100" preserveAspectRatio="none">
       <polygon points={BADGE_POINTS} />
     </svg>
+    <i className="lv-mark">{kind === 'atk' ? <SwordIcon /> : <HeartIcon />}</i>
     <b>{value}</b>
   </span>
 )
@@ -160,26 +162,33 @@ export const ShowcaseCard = memo(function ShowcaseCard({
   id,
   image,
   label,
-  xp,
+  xp = 0,
+  rarity,
   level,
+  badge = true,
 }: {
   game: GameId
   id: number
   image?: string
   label: string
-  xp: number
+  xp?: number
+  rarity?: CardRarity
   level?: number
+  badge?: boolean
 }) {
-  const rank = cardRank(xp)
+  const past = cardRank(xp)
+  const rank = rarity ? { tier: Math.max(0, CARD_RARITIES.indexOf(rarity)), level: level ?? 1 } : { tier: past.tier, level: past.level }
   const tier = level === 0 ? 0 : rank.tier
   return (
     <DexFace game={game} id={id} image={image} label={label} tier={tier} className={level === 0 ? 'is-closed' : ''}>
-      <span className="lv-badge" aria-hidden>
-        <svg viewBox="0 0 130 100" preserveAspectRatio="none">
-          <polygon points={BADGE_POINTS} />
-        </svg>
-        <b>{level ?? rank.level}</b>
-      </span>
+      {badge && (
+        <span className="lv-badge" aria-hidden>
+          <svg viewBox="0 0 130 100" preserveAspectRatio="none">
+            <polygon points={BADGE_POINTS} />
+          </svg>
+          <b>{level ?? rank.level}</b>
+        </span>
+      )}
     </DexFace>
   )
 })

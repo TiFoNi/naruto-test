@@ -19,9 +19,6 @@
 
 .dex > .play-nav {
   width: 100%;
-  max-width: 1120px;
-  margin-inline: auto;
-  padding-inline: 10px;
 }
 
 .dex-head {
@@ -29,9 +26,7 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  max-width: 1120px;
   margin: 0 auto;
-  padding-inline: 10px;
 }
 
 .dex-filter {
@@ -41,9 +36,7 @@
   gap: 14px;
   min-height: 40px;
   width: 100%;
-  max-width: 1120px;
   margin: 0 auto -4px;
-  padding-inline: 10px;
 }
 
 .dex-filter-toggle.is-search {
@@ -742,7 +735,6 @@
 
   position: relative;
   width: 100%;
-  max-width: 1120px;
   margin: 0 auto;
   padding: calc(var(--edge) + 22px) calc(var(--edge) + 6px) calc(var(--edge) + 16px);
   background: radial-gradient(
@@ -1408,6 +1400,14 @@ button.dex-scrap:focus-visible {
   transform: translateZ(20px);
 }
 
+.dex-zoom-card .lv-badge.is-shards {
+  width: auto;
+  min-width: 52px;
+  padding: 0 12px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lv-4 .dex-zoom-pic::after,
   .lv-5 .dex-zoom-pic::after,
@@ -1759,14 +1759,30 @@ button.lv-badge:focus-visible {
 .card-shelf .dex-scrap {
   transition:
     transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.5s cubic-bezier(0.22, 1, 0.36, 1),
     filter 0.5s cubic-bezier(0.22, 1, 0.36, 1),
     rotate 0.5s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.35s ease;
 }
 
 @media (hover: hover) {
-  .card-shelf a:hover .dex-scrap {
+  .card-shelf > li:hover .card-unpin,
+  .dex-hunt-card:hover .card-unpin {
+    translate: 0 -6px;
+  }
+
+  .card-shelf > li .dex-scrap:hover,
+  .dex-hunt-card .dex-scrap:hover {
+    transform: none;
+  }
+
+  .card-shelf > li:hover .dex-scrap {
     rotate: 0deg;
+    translate: 0 -6px;
+    filter:
+      drop-shadow(0 12px 14px rgb(0 0 0 / 55%))
+      drop-shadow(0 0 1px color-mix(in srgb, var(--dex) 80%, transparent))
+      drop-shadow(0 0 7px color-mix(in srgb, var(--dex) 30%, transparent));
   }
 }
 
@@ -1969,6 +1985,7 @@ button.lv-badge:focus-visible {
     opacity 0.35s ease,
     scale 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     rotate 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.5s cubic-bezier(0.22, 1, 0.36, 1),
     color 0.3s ease;
 }
 
@@ -1986,7 +2003,7 @@ button.lv-badge:focus-visible {
 .card-unpin polygon {
   fill: #ebe5dc;
   stroke: #1b1a1e;
-  stroke-width: 2px;
+  stroke-width: 1.5px;
   stroke-linejoin: round;
   transition: stroke 0.3s ease;
 }
@@ -2156,9 +2173,7 @@ button.lv-badge:focus-visible {
 .dex-top {
   display: grid;
   width: 100%;
-  max-width: 1120px;
   margin: 0 auto;
-  padding-inline: 10px;
   gap: 16px;
   grid-template-columns: minmax(0, 1fr);
 }
@@ -2174,10 +2189,738 @@ button.lv-badge:focus-visible {
 
 }
 
-.dex.has-arena > .play-nav,
-.dex.has-arena .dex-head,
-.dex.has-arena .dex-filter,
-.dex.has-arena .dex-top,
-.dex.has-arena .dex-board {
-  max-width: 1400px;
+
+
+.lv-path {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 10px;
+  padding: 0;
+  gap: 4px;
+  list-style: none;
+}
+
+.lv-path li {
+  padding: 3px 8px;
+  border: 1px solid color-mix(in srgb, var(--lv-c, #8a93a0) 45%, transparent);
+  border-radius: 6px;
+  color: color-mix(in srgb, var(--lv-c, #8a93a0) 70%, #1b1a1e);
+  font-size: 10.5px;
+  font-weight: 800;
+  opacity: 0.4;
+}
+
+.lv-path li.is-past {
+  opacity: 0.75;
+}
+
+.lv-path li.is-on {
+  background: color-mix(in srgb, var(--lv-c, #8a93a0) 70%, transparent);
+  color: #15100a;
+  opacity: 1;
+}
+
+.lv-raise,
+.lv-craft {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(27, 26, 30, 0.25);
+  gap: 6px;
+}
+
+.lv-raise span,
+.lv-craft span {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.lv-raise span.is-done {
+  font-weight: 800;
+}
+
+.lv-raise em,
+.lv-craft em {
+  font-style: normal;
+  font-weight: 800;
+}
+
+.lv-go {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: #e8591f;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.lv-go:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.lv-craft-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lv-craft-row button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(27, 26, 30, 0.25);
+  border-radius: 7px;
+  background: none;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.lv-craft-row .lv-go {
+  width: auto;
+  flex: 1;
+  height: 28px;
+  padding: 0 10px;
+}
+
+.lv-craft-row b {
+  min-width: 26px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.lv-scrap {
+  margin-top: 8px;
+  padding: 7px 10px;
+  border: 1px solid rgba(27, 26, 30, 0.3);
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+
+
+
+
+
+.dex-head-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.dex-head-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dex-tally {
+  margin: 0;
+  color: var(--dex, #ff8a1f);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.dex-purse {
+  display: flex;
+  gap: 14px;
+}
+
+.dex-coin {
+  position: relative;
+  display: flex;
+  min-width: 128px;
+  flex-direction: column;
+  padding: 9px 16px 10px;
+  color: #f4f1ea;
+  gap: 2px;
+}
+
+.dex-coin svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.dex-coin polygon {
+  fill: #0d0f13;
+  stroke: rgba(244, 241, 234, 0.85);
+  stroke-width: 2px;
+}
+
+.dex-coin small,
+.dex-coin b {
+  position: relative;
+}
+
+.dex-coin small {
+  color: rgba(244, 241, 234, 0.6);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dex-coin b {
+  font-family: var(--display);
+  font-size: 19px;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.dex-coin.is-ups b {
+  color: var(--dex, #ff8a1f);
+}
+
+.dex-vault {
+  display: grid;
+  width: 100%;
+  margin: 6px auto 0;
+  align-items: stretch;
+  gap: 22px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.dex-hunt {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  padding: 36px 60px 34px 54px;
+  color: #1b1a1e;
+  gap: 22px;
+}
+
+.dex-hunt-paper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
+}
+
+
+
+.dex-hunt-text {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dex-hunt-text > b {
+  font-family: var(--display);
+  font-size: 22px;
+}
+
+.dex-hunt-text > p {
+  max-width: 560px;
+  margin: 0;
+  color: rgba(27, 26, 30, 0.72);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+
+
+
+
+
+
+
+.dex-hunt-list {
+  position: relative;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  gap: 14px;
+  list-style: none;
+}
+
+.dex-hunt-list li {
+  width: var(--dex-cell, 118px);
+}
+
+.dex-hunt-list .dex-hunt-blank {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  gap: 6px;
+}
+
+.dex-hunt-card {
+  display: block;
+  width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.dex-act {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 22px;
+  border: 0;
+  background: none;
+  color: #f4f1ea;
+  cursor: pointer;
+  font-family: var(--display);
+  font-size: 15px;
+}
+
+.dex-act svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.dex-act polygon {
+  fill: #0d0f13;
+  stroke: rgba(244, 241, 234, 0.85);
+  stroke-width: 2px;
+}
+
+.dex-act span {
+  position: relative;
+}
+
+.dex-act.is-ready.is-on polygon {
+  fill: #ff7a1a;
+}
+
+.dex-act.is-ready.is-on {
+  color: #1b1a1e;
+}
+
+.dex-act i {
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  display: grid;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ff7a1a;
+  color: #1b1a1e;
+  font-family: var(--display);
+  font-size: 12px;
+  font-style: normal;
+  place-items: center;
+}
+
+.dex-act:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+
+.dex-acts {
+  display: flex;
+  flex: none;
+  align-items: center;
+  margin-right: auto;
+  gap: 12px;
+  transition:
+    opacity 0.2s ease,
+    translate 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dex-acts.is-away {
+  display: none;
+}
+
+.dex-filter:has(.dex-acts) {
+  margin-top: 18px;
+  margin-bottom: 6px;
+}
+
+.dex-hunt-blank {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  justify-content: center;
+  color: rgba(235, 229, 220, 0.75) !important;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.35));
+  transition: scale 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dex-hunt-blank:hover {
+  scale: 1.04;
+}
+
+.dex-hunt-hole {
+  position: absolute;
+  inset: 0;
+  background: #1b1a1f;
+}
+
+.dex-hunt-blank.is-picking .dex-hunt-hole {
+  background: #4a2a10;
+}
+
+.dex-hunt-blank.is-picking {
+  color: #ffb36b !important;
+}
+
+.dex-hunt-blank i {
+  position: relative;
+  font-family: var(--display);
+  font-size: 34px;
+  font-style: normal;
+  line-height: 1;
+}
+
+.dex-hunt-blank small {
+  position: relative;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 800;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+@media (max-width: 860px) {
+  .dex-vault {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+
+.dex-stats {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto 0 0;
+  padding-top: 16px;
+  gap: 14px;
+}
+
+.dex-stats div {
+  position: relative;
+  display: flex;
+  min-width: 118px;
+  flex-direction: column;
+  padding: 13px 18px 14px;
+  gap: 4px;
+}
+
+.dex-stats svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.dex-stats polygon {
+  fill: rgba(255, 255, 255, 0.35);
+  stroke: #1b1a1e;
+  stroke-width: 1.6px;
+}
+
+.dex-stats dt,
+.dex-stats dd {
+  position: relative;
+}
+
+.dex-stats dt {
+  color: rgba(27, 26, 30, 0.55);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dex-stats dd {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 19px;
+  line-height: 1.15;
+}
+
+.dex-hunt-paper {
+  rotate: -0.35deg;
+}
+
+.dex-hunt-side {
+  position: relative;
+  flex: none;
+  align-self: center;
+}
+
+.dex-hunt-tray {
+  position: absolute;
+  inset: -26px -30px -24px;
+  background: rgba(27, 26, 30, 0.09);
+  rotate: 0.8deg;
+}
+
+.dex-hunt-text,
+.dex-hunt-list {
+  z-index: 1;
+}
+
+.dex-hunt-list li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+
+
+
+
+.dex-hunt-card {
+  position: relative;
+}
+
+
+.dex-hunt-open {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.dex-hunt-card .card-unpin {
+  top: -9px;
+  right: -10px;
+  width: 31px;
+}
+
+.dex-hunt-open .dex-scrap {
+  transition:
+    translate 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .dex-hunt-card:hover .dex-scrap {
+    translate: 0 -6px;
+    filter:
+      drop-shadow(0 12px 14px rgb(0 0 0 / 45%))
+      drop-shadow(0 0 1px color-mix(in srgb, var(--dex) 80%, transparent))
+      drop-shadow(0 0 7px color-mix(in srgb, var(--dex) 30%, transparent));
+  }
+}
+
+.dex-hunt-card.is-lifted {
+  visibility: hidden;
+}
+
+@media (max-width: 860px) {
+  .dex-vault {
+    grid-template-columns: 1fr;
+  }
+
+  .dex-hunt {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 28px 30px 30px;
+    gap: 26px;
+  }
+
+  .dex-hunt-side {
+    align-self: stretch;
+    margin-inline: 14px;
+  }
+
+  .dex-hunt-list {
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .dex-hunt-list li {
+    width: auto;
+    min-width: 0;
+    max-width: var(--dex-cell, 118px);
+    flex: 1 1 0;
+  }
+
+  .dex-hunt-card,
+  .dex-hunt-open {
+    display: block;
+    width: 100%;
+  }
+
+  .dex-stats {
+    margin-top: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dex-hunt {
+    padding: 24px 22px 26px;
+  }
+
+  .dex-hunt-blank small {
+    font-size: 10px;
+  }
+
+  .dex-hunt-blank i {
+    font-size: 26px;
+  }
+}
+
+.dex-vault-sk {
+  width: 100%;
+  height: calc(var(--dex-cell, 118px) * 4 / 3 + 72px);
+  border-radius: 10px;
+}
+
+.dex-coin-sk {
+  width: 128px;
+  height: 58px;
+  border-radius: 8px;
+}
+
+@media (max-width: 860px) {
+  .dex-vault-sk {
+    height: calc(var(--dex-cell, 80px) * 4 / 3 + 230px);
+  }
+}
+
+
+
+
+.dex-zoom-scrap {
+  position: absolute;
+  bottom: -12px;
+  left: -14px;
+  z-index: 6;
+  display: grid;
+  width: 46px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #1b1a1e;
+  cursor: pointer;
+  place-items: center;
+  rotate: 6deg;
+  transform: translateZ(20px);
+  transition:
+    rotate 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dex-zoom-scrap svg:first-child {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 8px rgb(0 0 0 / 45%));
+}
+
+.dex-zoom-scrap polygon {
+  fill: #ebe5dc;
+  stroke: #1b1a1e;
+  stroke-width: 1.5px;
+}
+
+.dex-zoom-scrap .icon {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.dex-zoom-scrap:hover {
+  rotate: -3deg;
+  scale: 1.06;
+}
+
+.dex-scrap-modal {
+  position: absolute;
+  bottom: 18%;
+  left: 50%;
+  z-index: 20;
+  display: flex;
+  width: min(300px, 88%);
+  flex-direction: column;
+  padding: 20px 20px 18px;
+  color: #1b1a1e;
+  gap: 10px;
+  translate: -50% 0;
+}
+
+.dex-scrap-modal > b,
+.dex-scrap-modal > p,
+.dex-scrap-modal > div {
+  position: relative;
+}
+
+.dex-scrap-modal > b {
+  font-family: var(--display);
+  font-size: 17px;
+}
+
+.dex-scrap-modal > p {
+  margin: 0;
+  color: rgba(27, 26, 30, 0.7);
+  font-size: 12.5px;
+  line-height: 1.35;
+}
+
+.dex-scrap-gain {
+  margin-left: 6px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.dex-scrap-act {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.dex-scrap-act .lv-scrap {
+  margin: 0;
 }

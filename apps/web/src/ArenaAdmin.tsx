@@ -63,6 +63,11 @@ export default function ArenaAdmin() {
     [gameId],
   )
 
+  const unpark = useCallback(async () => {
+    await api('admin/arena', { game: gameId, unpark: true })
+    await load()
+  }, [gameId, load])
+
   const move = useCallback(
     (id: number, tier: number) => {
       setMenu(null)
@@ -141,6 +146,11 @@ export default function ArenaAdmin() {
                   <b>{tier === 0 ? 'Поза пулом' : `Тір ${tier}`}</b>
                   <small>{BANDS[tier]}</small>
                   <i>{rows.length}</i>
+                  {tier === 0 && rows.some((row) => !row.locked) && (
+                    <button type="button" className="ara-unpark" onClick={() => void unpark()}>
+                      Повернути решту в пул
+                    </button>
+                  )}
                 </header>
                 <ul>
                   {rows.map((row) => {

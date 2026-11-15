@@ -1,3 +1,4 @@
+import { adminUser } from './admin'
 import type { ObjectId } from 'mongodb'
 import { OPEN_GAMES, hasDaily, levelAt, modesOf } from '@nanda/game'
 import { quests, rounds, users } from './db'
@@ -177,6 +178,8 @@ export async function swapQuest(userId: ObjectId, id: string) {
   return changed.modifiedCount > 0
 }
 
+const QUEST_SHARDS = 3
+
 export async function collectQuests(userId: ObjectId) {
   const stored = await (await quests()).findOne({ _id: `${today()}:${userId.toHexString()}` }, { projection: { claimed: 1 } })
   if (stored?.claimed?.includes('bonus')) return { xp: 0, coins: 0 }
@@ -195,6 +198,17 @@ export async function collectQuests(userId: ObjectId) {
 
 export async function collectQuestsQuietly(userId: ObjectId) {
   await collectQuests(userId).catch((error) => console.error('[quests] collect failed', error))
+}
+
+async function shardChest(userId: ObjectId) {
+  if (!(await adminUser(userId))) return null
+  const { addShards } = await import('./bestiary')
+  const holder = await (await users()).findOne({ _id: userId }, { projection: { dex: 1 } })
+  const owned = Object.entries(holder?.dex ?? {}).flatMap(([game, ids]) => (ids ?? []).map((id) => ({ game, id })))
+  if (!owned.length) return null
+  const pick = owned[Math.floor(Math.random() * owned.length)]!
+  await addShards(userId, pick.game, pick.id, QUEST_SHARDS, 'quest')
+  return { ...pick, shards: QUEST_SHARDS }
 }
 
 export async function claimQuest(userId: ObjectId, id: string) {
@@ -227,5 +241,6 @@ export async function claimQuest(userId: ObjectId, id: string) {
   const coins = once ? BONUS_COINS : 0
   await (await users()).updateOne({ _id: userId }, { $inc: coins ? { xp: award, coins } : { xp: award } })
   await addSeasonXp(userId, award)
-  return { xp: award, coins }
+  const chest = await shardChest(userId)
+  return { xp: award, coins, ...(chest ? { chest } : {}) }
 }

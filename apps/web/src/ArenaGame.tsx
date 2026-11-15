@@ -4,16 +4,23 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, typ
 import { ARENA_CARD_COST, ARENA_CHAKRA_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS, ARENA_TIERS } from '@nanda/game'
 import { api } from './api'
 import { ArenaFace, type ArenaView, type Card, type Side } from './ArenaCard'
+import { BADGE_POINTS } from './DexCard'
 import { useAuth } from './auth'
 import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
 import { RefreshIcon, UpIcon } from './icons'
+import BackButton from './BackButton'
+import { tornPoints } from './torn'
 import { useHref, useNavigate } from './router'
 
 const SLOTS = ARENA_HERO_SLOTS + ARENA_SUMMON_SLOTS
 const GRAB_PX = 5
+
+const CHIP = tornPoints(24, 7, 6)
+  .map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`)
+  .join(' ')
 
 const FLY_MS = 1100
 const IMPACT_MS = 470
@@ -78,6 +85,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const [lead, setLead] = useState(false)
 
   const [waiting, setWaiting] = useState(false)
+  const [clock, setClock] = useState<number | null>(null)
   const [dragging, setDragging] = useState<Kind | null>(null)
   const hold = useRef<Hold | null>(null)
 
@@ -122,7 +130,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       setView((now) => {
         if (!now || now.chakra < ARENA_CARD_COST || !now.tavern[at]) return now
         const one = now.tavern[at]!
-        const card: Card = { uid: `new${at}:${now.turn}:${now.hand.length}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon }
+        const card: Card = { uid: `new${at}:${now.turn}:${now.hand.length}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier }
         return { ...now, chakra: now.chakra - ARENA_CARD_COST, hand: [...now.hand, card], tavern: now.tavern.filter((_, i) => i !== at) }
       })
       send({ action: 'buy', at })
@@ -181,6 +189,36 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     },
     [send],
   )
+
+  const finish = useCallback(() => {
+    send({ action: 'end' }, true, (next) => {
+      beats.current = next.steps ?? []
+      if (!next.steps?.length) return
+      setFight(true)
+      setStep(0)
+      setHit(false)
+      setLead(true)
+    })
+  }, [send])
+
+  const recruiting = !!view && view.status === 'playing' && !fight
+  useEffect(() => {
+    if (!recruiting || !view) {
+      setClock(null)
+      return
+    }
+    const ends = Date.now() + view.turnSec * 1000
+    setClock(view.turnSec)
+    const tick = window.setInterval(() => {
+      const left = Math.max(0, Math.ceil((ends - Date.now()) / 1000))
+      setClock(left)
+      if (left <= 0) {
+        window.clearInterval(tick)
+        finish()
+      }
+    }, 250)
+    return () => window.clearInterval(tick)
+  }, [recruiting, view?.turn, view?.turnSec, finish])
 
   useEffect(() => {
     if (!fight || !lead) return
@@ -429,7 +467,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         return (
           <li key={card.uid} className={`is-held ${gone ? 'is-out' : ''}`}>
             <span data-uid={card.uid} className={`ar-move ${hit && now?.to === card.uid ? 'is-struck' : ''}`}>
-              <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} />
+              <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} />
             </span>
           </li>
         )
@@ -442,16 +480,27 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     <div className="ar-shopbar">
       <button
         type="button"
-        className="ar-pip is-up"
+        className="ar-tool is-up"
         disabled={waiting || shopTop || view.chakra < view.upCost}
         title={shopTop ? t('arena.tavernTop') : t('arena.upgrade', { n: view.tavernTier + 1 })}
         onClick={() => send({ action: 'up' })}
       >
-        <UpIcon />
-        {!shopTop && <i className="ar-cost">{view.upCost}</i>}
+        <span>
+          <UpIcon />
+          {shopTop ? t('arena.tavernTop') : t('arena.upgrade', { n: view.tavernTier + 1 })}
+          {!shopTop && (
+            <em className="ar-price">
+              <i />
+              {view.upCost}
+            </em>
+          )}
+        </span>
       </button>
 
-      <span className="ar-rank" title={t('arena.tavernLevel', { n: view.tavernTier })}>
+      <span className="ar-tier is-bar" title={t('arena.tavernLevel', { n: view.tavernTier })}>
+        <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
+          <polygon points={BADGE_POINTS} vectorEffect="non-scaling-stroke" />
+        </svg>
         {Array.from({ length: ARENA_TIERS }, (_, i) => (
           <i key={i} className={i < view.tavernTier ? 'is-on' : ''} />
         ))}
@@ -459,13 +508,19 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
 
       <button
         type="button"
-        className="ar-pip"
+        className="ar-tool"
         disabled={waiting || view.chakra < view.rollCost}
         title={t('arena.reroll')}
         onClick={() => send({ action: 'roll' })}
       >
-        <RefreshIcon />
-        <i className="ar-cost">{view.rollCost}</i>
+        <span>
+          <RefreshIcon />
+          {t('arena.reroll')}
+          <em className="ar-price">
+            <i />
+            {view.rollCost}
+          </em>
+        </span>
       </button>
     </div>
   )
@@ -474,14 +529,14 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     <ul className="ar-row is-shop">
       {view.tavern.map((one, i) => {
         const poor = one.cost > view.chakra
-        const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon }
+        const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier }
         return (
           <li
             key={`${one.id}:${i}`}
             className={`is-held ${poor ? 'is-poor' : ''}`}
           >
             <span className="ar-move" onPointerDown={poor ? undefined : take('shop', card, i)}>
-              <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} />
+              <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} />
             </span>
           </li>
         )
@@ -492,13 +547,20 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   return (
     <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''}`} style={{ '--dex': game.accent } as CSSProperties}>
       <div className="ar-top">
-        <button type="button" className="ar-leave" onClick={() => send({ action: 'quit' }, true)}>
-          {t('arena.quit')}
+        <BackButton href={href.world(game.id)}>{l(game.label)}</BackButton>
+        <span className="ar-top-gap" />
+        <span className={`ar-chip ar-phase ${fight ? 'is-fight' : ''}`}>
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+            <polygon points={CHIP} vectorEffect="non-scaling-stroke" />
+          </svg>
+          <span>{t('arena.turn', { n: view.turn })}</span>
+        </span>
+        <button type="button" className="ar-chip ar-leave" onClick={() => send({ action: 'quit' }, true)}>
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+            <polygon points={CHIP} vectorEffect="non-scaling-stroke" />
+          </svg>
+          <span>{t('arena.quit')}</span>
         </button>
-        <b className="ar-name">
-          {t('arena.title')} · {l(game.label)}
-        </b>
-        <span className={`ar-phase ${fight ? 'is-fight' : ''}`}>{t('arena.turn', { n: view.turn })}</span>
       </div>
 
       {done ? (
@@ -515,8 +577,11 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
               <b>{view.foeHp}</b>
             </span>
           </div>
-          <button type="button" className="ar-go" onClick={() => send({ action: 'quit' }, true)}>
-            {t('arena.again')}
+          <button type="button" className="ar-chip ar-go" onClick={() => send({ action: 'quit' }, true)}>
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+              <polygon points={CHIP} vectorEffect="non-scaling-stroke" />
+            </svg>
+            <span>{t('arena.again')}</span>
           </button>
         </div>
       ) : (
@@ -536,7 +601,19 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                 </>
               )}
             </div>
-            <i className="ar-line" aria-hidden />
+            <div className={`ar-line ${clock !== null && !fight ? 'is-ticking' : ''} ${clock !== null && clock <= 5 ? 'is-late' : ''}`}>
+              {clock !== null && !fight && (
+                <>
+                  <span className="ar-fuse" style={{ '--dur': `${view.turnSec}s` } as CSSProperties} key={`fuse-${view.turn}`} aria-hidden />
+                  <span className="ar-clock">
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                      <polygon points={CHIP} vectorEffect="non-scaling-stroke" />
+                    </svg>
+                    <b>{clock}</b>
+                  </span>
+                </>
+              )}
+            </div>
             <div
               data-zone={fight ? undefined : 'slot'}
               data-at={freeAt}
@@ -549,7 +626,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                   {stable.map((card, i) => (
                     <li key={card.uid}>
                       <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
-                        <ArenaFace game={game.id} entity={byId.get(card.id)} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} />
+                        <ArenaFace game={game.id} entity={byId.get(card.id)} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} />
                       </span>
                     </li>
                   ))}
@@ -568,7 +645,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                 {view.hand.map((card, i) => (
                   <li key={card.uid}>
                     <span className="ar-move" onPointerDown={take('hand', card, i)}>
-                      <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} />
+                      <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} />
                     </span>
                   </li>
                 ))}
@@ -576,27 +653,13 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
             </div>
 
             <div className="ar-side">
-              <button
-                type="button"
-                className="ar-go"
-                disabled={waiting || fight}
-                onClick={() =>
-                  send({ action: 'end' }, true, (next) => {
-                    beats.current = next.steps ?? []
-                    if (!next.steps?.length) return
-                    setFight(true)
-                    setStep(0)
-                    setHit(false)
-                    setLead(true)
-                  })
-                }
-              >
-                {t('arena.end')}
-              </button>
               <div className="ar-chakra">
-                <b>
-                  {view.chakra}/{view.chakraMax}
-                </b>
+                <span className="ar-chakra-head">
+                  <small>{t('arena.chakra')}</small>
+                  <b>
+                    {view.chakra} / {view.chakraMax}
+                  </b>
+                </span>
                 <span className="ar-crystals" aria-hidden>
                   {Array.from({ length: ARENA_CHAKRA_MAX }, (_, i) => (
                     <i key={i} className={i < view.chakra ? 'is-full' : i < view.chakraMax ? 'is-spent' : ''} />

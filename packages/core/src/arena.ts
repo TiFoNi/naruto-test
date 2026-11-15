@@ -15,17 +15,17 @@ import {
   arenaPower,
   arenaTierAt,
   arenaUpCost,
+  arenaTurnSec,
   ARENA_SUMMON_SLOTS,
   ARENA_TAVERN,
   CARD_RARITIES,
   arenaCost,
-  cardRank,
   type CardRarity,
   type GameId,
 } from '@nanda/game'
 import tiers from '@nanda/game/data/arena-naruto.json'
 import { arenas, entities, type ArenaCard, type ArenaDoc, type ArenaSide } from './db'
-import { cardsOf, dexOf } from './dex'
+import { dexOf, gradesOf } from './dex'
 import { gameData } from './games'
 
 const ARENA_ROUNDS = 12
@@ -65,7 +65,7 @@ const drop = (side: ArenaSide) => {
   side.summons = side.summons.filter((card) => card.hp > 0)
 }
 
-const bash = (crew: ArenaCard[]) => crew.reduce((sum, card) => sum + card.atk, 0)
+const bash = (crew: ArenaCard[]) => crew.reduce((sum, card) => sum + tierOf(card.id), 0)
 
 const marked = <T extends { id: number }>(pool: T[], mark: string) =>
   new Set(pool.filter((one) => ((one as unknown as { attributes?: string[] }).attributes ?? []).includes(mark)).map((one) => one.id))
@@ -116,14 +116,14 @@ const baseOf = (id: number) => {
   return { atk: row[1], hp: row[2] }
 }
 
-export const statsOf = (id: number, _rarity: CardRarity, triple = false) => {
+export const statsOf = (id: number, _rarity: CardRarity, triple = false, power = 1) => {
   const base = baseOf(id)
-  const mul = triple ? 2 : 1
-  return { atk: base.atk * mul, hp: base.hp * mul }
+  const mul = (triple ? 2 : 1) * (power || 1)
+  return { atk: Math.round(base.atk * mul), hp: Math.round(base.hp * mul) }
 }
 
-const makeCard = (id: number, rarity: CardRarity, summon: boolean, seq: number, triple = false): ArenaCard => {
-  const { atk, hp } = statsOf(id, rarity, triple)
+const makeCard = (id: number, rarity: CardRarity, summon: boolean, seq: number, triple = false, power = 1): ArenaCard => {
+  const { atk, hp } = statsOf(id, rarity, triple, power)
   return { uid: `${seq}`, id, rarity, atk, hp, max: hp, summon, ...(triple ? { triple: true } : {}) }
 }
 
@@ -140,27 +140,53 @@ const foeRanks = (mine: Record<number, CardRarity>, ids: number[]) => {
   return out
 }
 
+const foePowers = (mine: Record<number, number>, ids: number[]) => {
+  const spread = Object.values(mine)
+  const out: Record<number, number> = {}
+  for (const id of ids) out[id] = spread.length ? pickOne(spread) : 1
+  return out
+}
+
 export async function ownedRarity(userId: ObjectId, game: GameId) {
-  const [owned, cards, banned] = await Promise.all([dexOf(userId, game), cardsOf(userId, game), bannedIds(game)])
+  const [owned, cards, banned] = await Promise.all([dexOf(userId, game), gradesOf(userId, game), bannedIds(game)])
   const ranks: Record<number, CardRarity> = {}
-  for (const id of owned) if (!banned.has(id)) ranks[id] = cardRank(cards[id]?.xp ?? 0).rarity
+  for (const id of owned) if (!banned.has(id)) ranks[id] = cards[id]?.rarity ?? CARD_RARITIES[0]!
   return ranks
+}
+
+export async function ownedPower(userId: ObjectId, game: GameId) {
+  const cards = await gradesOf(userId, game)
+  const out: Record<number, number> = {}
+  for (const [id, card] of Object.entries(cards)) out[Number(id)] = card.power ?? 1
+  return out
 }
 
 export const tavernOf = (doc: ArenaDoc) => doc.shopTier ?? arenaTierAt(doc.turn)
 
 export const upCostOf = (doc: ArenaDoc) => (tavernOf(doc) >= ARENA_TIERS ? 0 : (doc.up ?? arenaUpCost(tavernOf(doc))))
 
+const TAVERN_MAIN = 3
+const TAVERN_BELOW = 2
+
 const roll = (pool: number[], top: number) => {
-  let list = pool.filter((id) => tierOf(id) <= top)
-  for (let up = top + 1; list.length < ARENA_TAVERN && up <= ARENA_TIERS; up++) list = pool.filter((id) => tierOf(id) <= up)
-  if (!list.length) list = pool
-  return shuffled(list).slice(0, Math.min(ARENA_TAVERN, list.length))
+  const at = (tier: number, weight: number) => pool.filter((id) => tierOf(id) === tier).map((id) => ({ id, weight }))
+  let bag = [...at(top, TAVERN_MAIN), ...at(top - 1, TAVERN_BELOW)]
+  for (let down = top - 2; bag.length < ARENA_TAVERN && down >= 1; down--) bag.push(...at(down, 1))
+  for (let up = top + 1; bag.length < ARENA_TAVERN && up <= ARENA_TIERS; up++) bag.push(...at(up, 1))
+  if (!bag.length) bag = pool.map((id) => ({ id, weight: 1 }))
+  const picked: number[] = []
+  while (picked.length < ARENA_TAVERN && bag.length) {
+    let left = Math.random() * bag.reduce((sum, one) => sum + one.weight, 0)
+    const index = Math.max(0, bag.findIndex((one) => (left -= one.weight) < 0))
+    picked.push(bag[index]!.id)
+    bag.splice(index, 1)
+  }
+  return picked
 }
 
 export async function startArena(userId: ObjectId, game: GameId) {
   await loadArenaSheet(game)
-  const ranks = await ownedRarity(userId, game)
+  const [ranks, powers] = await Promise.all([ownedRarity(userId, game), ownedPower(userId, game)])
   const { pool } = await gameData(game)
   const [summons, banned] = await Promise.all([summonIds(game), bannedIds(game)])
   const everyone = pool.map((one) => one.id).filter((id) => !banned.has(id) && !summons.has(id) && tierOf(id) > 0)
@@ -178,7 +204,9 @@ export async function startArena(userId: ObjectId, game: GameId) {
     seq: 0,
     pool: everyone,
     ranks,
+    powers,
     foeRanks: foeRanks(ranks, everyone),
+    foePowers: foePowers(powers, everyone),
     summons: [...summons],
     tavern: [],
     hand: [],
@@ -214,7 +242,7 @@ export function buyCard(doc: ArenaDoc, at: number) {
   if (doc.chakra < cost) return false
   doc.chakra -= cost
   doc.seq += 1
-  doc.hand.push(makeCard(id, rarity, doc.summons.includes(id), doc.seq))
+  doc.hand.push(makeCard(id, rarity, doc.summons.includes(id), doc.seq, false, powerOf(doc.powers, id)))
   doc.tavern.splice(at, 1)
   fuse(doc, id)
   return true
@@ -229,7 +257,7 @@ function fuse(doc: ArenaDoc, id: number) {
   relay(doc.board, onBoard(doc.board).filter((card) => !burn.has(card.uid)))
   doc.seq += 1
   const first = found[0]!
-  doc.hand.push(makeCard(id, first.rarity, first.summon, doc.seq, true))
+  doc.hand.push(makeCard(id, first.rarity, first.summon, doc.seq, true, powerOf(doc.powers, id)))
 }
 
 export function sellCard(doc: ArenaDoc, uid: string) {
@@ -282,8 +310,10 @@ export function upTavern(doc: ArenaDoc) {
   return true
 }
 
+const powerOf = (map: Record<number, number> | undefined, id: number) => map?.[id] ?? 1
+
 const worth = (doc: ArenaDoc, id: number) => {
-  const { atk, hp } = statsOf(id, rarityOf(doc.foeRanks, id))
+  const { atk, hp } = statsOf(id, rarityOf(doc.foeRanks, id), false, powerOf(doc.foePowers, id))
   return atk + hp
 }
 
@@ -323,7 +353,7 @@ function botTurn(doc: ArenaDoc) {
     }
     left -= cost
     doc.seq += 1
-    place(doc.foeBoard, makeCard(id, rarityOf(doc.foeRanks, id), doc.summons.includes(id), doc.seq))
+    place(doc.foeBoard, makeCard(id, rarityOf(doc.foeRanks, id), doc.summons.includes(id), doc.seq, false, powerOf(doc.foePowers, id)))
   }
 
   doc.foeShop = tier
@@ -435,6 +465,10 @@ export function endTurn(doc: ArenaDoc) {
   return doc
 }
 
+const ranked = (card: ArenaCard) => ({ ...card, tier: tierOf(card.id) })
+
+const rankedSide = (side: ArenaSide) => ({ heroes: side.heroes.map(ranked), summons: side.summons.map(ranked) })
+
 export const arenaView = (doc: ArenaDoc) => ({
   status: doc.status,
   turn: doc.turn,
@@ -443,19 +477,21 @@ export const arenaView = (doc: ArenaDoc) => ({
   tavernTier: tavernOf(doc),
   upCost: upCostOf(doc),
   rollCost: ARENA_ROLL_COST,
+  turnSec: arenaTurnSec(doc.turn),
   hp: doc.hp,
   foeHp: doc.foeHp,
   tavern: doc.tavern.map((id) => {
     const rarity = rarityOf(doc.ranks, id)
-    const { atk, hp } = statsOf(id, rarity)
-    return { id, rarity, cost: arenaCost(), atk, hp, summon: doc.summons.includes(id), tier: tierOf(id) }
+    const power = powerOf(doc.powers, id)
+    const { atk, hp } = statsOf(id, rarity, false, power)
+    return { id, rarity, cost: arenaCost(), atk, hp, summon: doc.summons.includes(id), tier: tierOf(id), power }
   }),
-  hand: doc.hand,
-  board: doc.board,
-  foeBoard: doc.foeBoard,
-  steps: doc.steps ?? [],
+  hand: doc.hand.map(ranked),
+  board: rankedSide(doc.board),
+  foeBoard: rankedSide(doc.foeBoard),
+  steps: (doc.steps ?? []).map((step) => ({ ...step, mine: step.mine.map(ranked), theirs: step.theirs.map(ranked) })),
   opened: doc.opened ?? null,
-  clash: doc.clash ?? null,
+  clash: doc.clash ? { mine: doc.clash.mine.map(ranked), theirs: doc.clash.theirs.map(ranked) } : null,
 })
 
 export const tiersOf = (ranks: Record<number, CardRarity>) =>

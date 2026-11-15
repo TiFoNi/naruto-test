@@ -1,8 +1,9 @@
 import type { ObjectId } from 'mongodb'
-import { CARD_MAX_LEVEL, cardPoints, type ModeId } from '@nanda/game'
+import { CARD_MAX_LEVEL, HUNT_SHARD, cardPoints, cardShards, type ModeId } from '@nanda/game'
+import { adminUser } from './admin'
 import { cards, users } from './db'
 
-export type CardGain = { mode: ModeId; xp: number }
+export type CardGain = { mode: ModeId; xp: number; daily?: boolean }
 
 export const cardXpFor = (mode: ModeId, { daily = false }: { daily?: boolean; pool?: number } = {}) => cardPoints(mode, daily)
 
@@ -12,6 +13,14 @@ export async function openDex(userId: ObjectId, game: string | undefined, id: nu
   if (!game || !Number.isInteger(id)) return
   await (await users()).updateOne({ _id: userId }, { $addToSet: { [`dex.${game}`]: id } })
   if (!gain || gain.xp <= 0) return
+  if (!gain.daily && (await adminUser(userId))) {
+    const { addShards, huntOf } = await import('./bestiary')
+    await addShards(userId, game, id!, cardShards(gain.mode), gain.mode)
+    const hunted = await huntOf(userId, game)
+    for (const target of hunted) if (target !== id) await addShards(userId, game, target, HUNT_SHARD, 'hunt')
+    if (hunted.includes(id!)) await (await users()).updateOne({ _id: userId }, { $set: { [`pity.${game}`]: 0 } })
+    else await (await users()).updateOne({ _id: userId }, { $inc: { [`pity.${game}`]: 1 } })
+  }
   const mode = `modes.${gain.mode}`
   await (await cards()).updateOne(
     { _id: cardKey(userId, game, id!) },
@@ -46,6 +55,17 @@ export async function dexOf(userId: ObjectId, game: string) {
 export async function cardsOf(userId: ObjectId, game: string) {
   const list = await (await cards()).find({ userId, game }, { projection: { entityId: 1, xp: 1, modes: 1 } }).toArray()
   return Object.fromEntries(list.map((one) => [one.entityId, { xp: one.xp, modes: one.modes ?? {} }]))
+}
+
+export async function gradesOf(userId: ObjectId, game: string) {
+  const { gradeOf } = await import('./bestiary')
+  const list = await (await cards()).find({ userId, game }, { projection: { entityId: 1, xp: 1, rank: 1, shards: 1, modes: 1 } }).toArray()
+  return Object.fromEntries(
+    list.map((one) => {
+      const grade = gradeOf(one)
+      return [one.entityId, { xp: one.xp, rarity: grade.rarity, power: grade.power, modes: one.modes ?? {} }]
+    }),
+  )
 }
 
 export async function showcaseOf(user: { _id?: ObjectId; cardPins?: string[]; dex?: Record<string, number[]> }, limit: number) {

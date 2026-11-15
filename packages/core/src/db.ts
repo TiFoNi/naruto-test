@@ -16,6 +16,11 @@ export type UserDoc = {
   xp?: number
   coins?: number
   coinsNews?: { coins: number; at: Date }
+  dust?: number
+  ups?: { week: string; n: number }
+  hunt?: Record<string, number[]>
+  shardDay?: Record<string, { day: string; n: number }>
+  pity?: Record<string, number>
   titleNews?: string | null
   quizNews?: QuizNews[]
   commentNews?: CommentNews[]
@@ -574,6 +579,8 @@ export type ArenaDoc = {
   pool: number[]
   ranks: Record<number, CardRarity>
   foeRanks: Record<number, CardRarity>
+  powers?: Record<number, number>
+  foePowers?: Record<number, number>
   summons: number[]
   tavern: number[]
   hand: ArenaCard[]
@@ -850,6 +857,10 @@ export type CardDoc = {
   game: string
   entityId: number
   xp: number
+  rank?: number
+  shards?: number
+  craft?: { week: string; n: number }
+  log?: { at: Date; from: string; n: number }[]
   modes: Record<string, { n: number; xp: number }>
   updatedAt: Date
 }
