@@ -26,6 +26,73 @@ const CHIP = tornPoints(24, 7, 6)
 const FLY_MS = 1100
 const IMPACT_MS = 470
 const GAP_MS = 260
+const DEATH_MS = 1100
+
+const cutOf = (seed: number) => {
+  const next = randomOf(seed)
+  const from = 58 + next() * 20
+  const to = 22 + next() * 20
+  const flip = next() > 0.5
+  const a = flip ? to : from
+  const b = flip ? from : to
+  const dy = ((b - a) / 100) * (4 / 3)
+  const size = Math.hypot(1, dy)
+  return {
+    a,
+    b,
+    nx: dy / size,
+    ny: -1 / size,
+    upper: `polygon(-30% -30%, 130% -30%, 130% ${b}%, -30% ${a}%)`,
+    lower: `polygon(-30% ${a}%, 130% ${b}%, 130% 130%, -30% 130%)`,
+  }
+}
+
+const Wound = ({ a, b }: { a: number; b: number }) => (
+  <svg className="ar-wound" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+    <line className="is-gash" x1="-4" y1={a} x2="104" y2={b} />
+    <line className="is-core" x1="-4" y1={a} x2="104" y2={b} />
+    {Array.from({ length: 8 }, (_, i) => {
+      const x = 6 + i * 12.5
+      const y = a + ((b - a) * (x + 4)) / 108
+      return <circle key={i} className="is-spark" cx={x} cy={y} r="1.6" style={{ '--x': `${(i % 2 ? 1 : -1) * (6 + i)}px`, '--y': `${-5 - i}px`, animationDelay: `${i * 0.02}s` } as CSSProperties} />
+    })}
+  </svg>
+)
+
+const Slash = ({ seed }: { seed: number }) => {
+  const cut = cutOf(seed)
+  return <Wound a={cut.a} b={cut.b} />
+}
+
+const randomOf = (seed: number) => {
+  let state = (Math.abs(seed) % 2147483646) + 1
+  return () => {
+    state = (state * 16807) % 2147483647
+    return state / 2147483647
+  }
+}
+
+const tearOf = (seed: number) => {
+  const next = randomOf(seed)
+  const top = 45 + next() * 10
+  const bottom = top + (next() - 0.5) * 8
+  const cut: [number, number][] = []
+  const steps = 12
+  for (let i = 0; i <= steps; i++) {
+    const share = i / steps
+    const x = top + (bottom - top) * share + (next() - 0.5) * 7 + (i % 2 ? 2 : -2)
+    cut.push([x, -15 + share * 130])
+  }
+  const pts = (list: [number, number][]) => list.map(([x, y]) => `${x.toFixed(1)}% ${y.toFixed(1)}%`).join(',')
+  const lean = (bottom - top) / 130
+  return {
+    left: `polygon(-30% -15%, ${pts(cut)}, -30% 115%)`,
+    right: `polygon(${pts(cut)}, 130% 115%, 130% -15%)`,
+    lean: Math.max(-0.8, Math.min(0.8, lean)),
+  }
+}
+
+const seedOf = (uid: string) => [...uid].reduce((sum, ch) => sum * 31 + ch.charCodeAt(0), 7) % 100000
 
 type Kind = 'hand' | 'board' | 'shop'
 type Spot = { zone: 'shop' | 'hand' | 'slot'; at: number }
@@ -50,18 +117,36 @@ const line = (side: Side) => [...side.heroes, ...side.summons]
 
 const split = (cards: Card[]): Side => ({ heroes: cards.slice(0, ARENA_HERO_SLOTS), summons: cards.slice(ARENA_HERO_SLOTS) })
 
-const spotAt = (x: number, y: number): Spot | null => {
-  for (const node of document.elementsFromPoint(x, y)) {
-    const zone = (node as HTMLElement).dataset?.zone
-    if (zone === 'shop' || zone === 'hand' || zone === 'slot') return { zone, at: Number((node as HTMLElement).dataset.at ?? -1) }
+const ZONE_SHARE = 0.18
+
+const spotOf = (card: HTMLElement): Spot | null => {
+  const box = card.getBoundingClientRect()
+  const area = Math.max(1, box.width * box.height)
+  let best: Spot | null = null
+  let most = ZONE_SHARE
+  for (const node of document.querySelectorAll<HTMLElement>('[data-zone]')) {
+    const zone = node.dataset.zone
+    if (zone !== 'shop' && zone !== 'hand' && zone !== 'slot') continue
+    const room = node.getBoundingClientRect()
+    const w = Math.min(box.right, room.right) - Math.max(box.left, room.left)
+    const h = Math.min(box.bottom, room.bottom) - Math.max(box.top, room.top)
+    if (w <= 0 || h <= 0) continue
+    const share = (w * h) / area
+    if (share > most) {
+      most = share
+      best = { zone, at: Number(node.dataset.at ?? -1) }
+    }
   }
-  return null
+  return best
 }
 
-function Hero({ who, name, id, avatar, frame, hp }: { who: 'me' | 'foe'; name: string; id?: string; avatar?: string | null; frame?: string | null; hp: number }) {
+function Hero({ who, name, id, avatar, frame, hp, struck }: { who: 'me' | 'foe'; name: string; id?: string; avatar?: string | null; frame?: string | null; hp: number; struck?: boolean }) {
   return (
-    <div data-hero={who} className={`ar-me is-${who}`}>
-      <Avatar id={id} name={name} avatar={avatar} frame={frame} className="ar-me-face" />
+    <div data-hero={who} className={`ar-me is-${who} ${struck ? 'is-struck' : ''}`}>
+      <span className="ar-me-ring">
+        <Avatar id={id} name={name} avatar={avatar} frame={frame} className="ar-me-face" />
+        {struck && <Slash seed={who === 'me' ? 3 : 8} />}
+      </span>
       <span className="ar-me-hp">
         <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
           <polygon points={BADGE_POINTS} />
@@ -91,6 +176,8 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const [waiting, setWaiting] = useState(false)
   const [clock, setClock] = useState<number | null>(null)
   const [dragging, setDragging] = useState<Kind | null>(null)
+  const [over, setOver] = useState<Spot['zone'] | null>(null)
+  const overNow = useRef<Spot['zone'] | null>(null)
   const hold = useRef<Hold | null>(null)
 
   const queue = useRef<Promise<unknown>>(Promise.resolve())
@@ -282,6 +369,12 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     }
 
     const run = plays[0]
+    const prior = step > 0 ? beats.current[step - 1] : null
+    const was = prior
+      ? [...prior.mine, ...prior.theirs].map((card) => card.uid)
+      : [...document.querySelectorAll<HTMLElement>('.ar-row.is-packed [data-uid]')].map((node) => node.dataset.uid ?? '')
+    const left = new Set([...one.mine, ...one.theirs].map((card) => card.uid))
+    const died = was.some((uid) => uid && !left.has(uid))
 
     const clear = () => {
       for (const node of movers) node.style.zIndex = ''
@@ -299,7 +392,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         }
         setStep((was) => was + 1)
         setHit(false)
-      }, GAP_MS)
+      }, GAP_MS + (died ? DEATH_MS : 0))
     }
 
     if (run) run.addEventListener('finish', done)
@@ -384,7 +477,14 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         begin(one)
       }
       one.node.style.translate = `${Math.round(dx)}px ${Math.round(dy)}px`
-      const over = spotAt(event.clientX, event.clientY)
+      const over = spotOf(one.node)
+      const zone = over?.zone ?? null
+      if (zone !== overNow.current) {
+        overNow.current = zone
+        setOver(zone)
+      }
+      const box = one.node.getBoundingClientRect()
+      const centre = box.left + box.width / 2
       if (one.kind === 'board' && one.from >= 0) {
         let to = one.from
         if (over?.zone === 'slot') {
@@ -400,7 +500,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       if (one.kind === 'hand') {
         let slot = -1
         if (over?.zone === 'slot' && one.cells.length < SLOTS) {
-          slot = one.cells.filter((cell) => cell.mid < event.clientX).length
+          slot = one.cells.filter((cell) => cell.mid < centre).length
         }
         if (slot !== one.slot) {
           one.slot = slot
@@ -409,7 +509,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       }
     }
 
-    const up = (event: globalThis.PointerEvent) => {
+    const up = () => {
       const one = hold.current
       hold.current = null
       if (!one) return
@@ -418,7 +518,9 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         else if (one.kind === 'hand') play(one.uid)
         return
       }
-      const over = spotAt(event.clientX, event.clientY)
+      const over = spotOf(one.node)
+      overNow.current = null
+      setOver(null)
       if (one.kind === 'board') {
         if (over?.zone === 'shop') sell(one.uid)
         else if (one.to >= 0 && one.to !== one.from) shift(one.uid, one.to)
@@ -463,6 +565,9 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
 
   const health = new Map<string, number>()
   if (at >= 0) for (const one of state ? [...state.mine, ...state.theirs] : [...line(view.board), ...line(view.foeBoard)]) health.set(one.uid, one.hp)
+  const before = at > 0 ? steps[at - 1]! : null
+  const standing = new Set((before ? [...before.mine, ...before.theirs] : [...line(view.board), ...line(view.foeBoard)]).map((one) => one.uid))
+  const heroHit = hit && now && !now.to ? (now.foe ? 'me' : 'foe') : null
 
   const mine = at >= 0 ? line(view.board) : line(view.board)
   const theirs = at >= 0 ? line(view.foeBoard) : line(view.foeBoard)
@@ -477,11 +582,39 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     <ul className="ar-row is-packed">
       {cards.map((card) => {
         const hp = health.get(card.uid)
-        const gone = at >= 0 && hp === undefined
+        const dying = hit && hp === undefined && standing.has(card.uid)
+        const gone = at >= 0 && hp === undefined && !dying
+        const struck = hit && now?.to === card.uid
+        const face = (
+          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} />
+        )
+        const clips = dying ? tearOf(seedOf(card.uid)) : null
+        const cut = struck && !dying ? cutOf(seedOf(card.uid)) : null
         return (
-          <li key={card.uid} className={`is-held ${gone ? 'is-out' : ''}`}>
-            <span data-uid={card.uid} className={`ar-move ${hit && now?.to === card.uid ? 'is-struck' : ''}`}>
-              <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} />
+          <li key={card.uid} className={`is-held ${gone ? 'is-out' : ''} ${dying ? 'is-dying' : ''}`}>
+            <span data-uid={card.uid} className={`ar-move ${struck ? 'is-struck' : ''}`}>
+              {clips ? (
+                <span className="ar-tear" style={{ '--lean': clips.lean } as CSSProperties}>
+                  <span className="ar-tear-half is-left" style={{ clipPath: clips.left }}>
+                    {face}
+                  </span>
+                  <span className="ar-tear-half is-right" style={{ clipPath: clips.right }}>
+                    {face}
+                  </span>
+                </span>
+              ) : cut ? (
+                <span className="ar-cut" style={{ '--nx': cut.nx, '--ny': cut.ny } as CSSProperties}>
+                  <span className="ar-cut-half is-upper" style={{ clipPath: cut.upper }}>
+                    {face}
+                  </span>
+                  <span className="ar-cut-half is-lower" style={{ clipPath: cut.lower }}>
+                    {face}
+                  </span>
+                </span>
+              ) : (
+                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} />
+              )}
+              {struck && <Slash seed={seedOf(card.uid)} />}
             </span>
           </li>
         )
@@ -606,14 +739,17 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         </div>
       ) : (
         <>
-          <div className="ar-crown">{fight ? <Hero who="foe" name={t('arena.foe')} hp={foeHp} /> : shopBar()}</div>
+          <div className="ar-crown">{fight ? <Hero who="foe" name={t('arena.foe')} hp={foeHp} struck={heroHit === 'foe'} /> : shopBar()}</div>
 
           <section className="ar-board">
-            <div
-              data-zone={fight ? undefined : 'shop'}
-              className={`ar-half is-top ${selling ? 'is-selling' : ''}`}
-            >
-              {fight ? packed(theirs) : shop()}
+            <div className="ar-half is-top">
+              {fight ? (
+                packed(theirs)
+              ) : (
+                <div data-zone="shop" className={`ar-sell ${selling ? 'is-selling' : ''} ${selling && over === 'shop' ? 'is-over' : ''}`}>
+                  {shop()}
+                </div>
+              )}
             </div>
             <div className="ar-mid">
               <i className="ar-line" aria-hidden />
@@ -630,13 +766,12 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
             )}
             </div>
             <div
-              data-zone={fight ? undefined : 'slot'}
-              data-at={freeAt}
               className="ar-half is-bot"
             >
               {fight ? (
                 packed(mine)
               ) : (
+                <div data-zone="slot" data-at={freeAt} className={`ar-sell is-drop ${dragging === 'hand' || dragging === 'shop' ? 'is-selling' : ''} ${(dragging === 'hand' || dragging === 'shop') && over === 'slot' ? 'is-over' : ''}`}>
                 <ul className="ar-row">
                   {stable.map((card, i) => (
                     <li key={card.uid}>
@@ -646,17 +781,17 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                     </li>
                   ))}
                 </ul>
+                </div>
               )}
             </div>
           </section>
 
           <div className="ar-foot">
-            </div>
             <div
               data-zone={buying ? 'hand' : undefined}
               className={`ar-hand ${buying ? 'is-taking' : ''} ${fight ? 'is-away' : ''}`}
             >
-              {fight && user && <Hero who="me" name={user.nickname} id={user.id} avatar={user.avatar} frame={user.frame} hp={myHp} />}
+              {fight && user && <Hero who="me" name={user.nickname} id={user.id} avatar={user.avatar} frame={user.frame} hp={myHp} struck={heroHit === 'me'} />}
               <ul>
                 {view.hand.map((card, i) => (
                   <li key={card.uid}>
@@ -695,6 +830,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                   ))}
                 </span>
               </div>
+            </div>
           </div>
         </>
       )}
