@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { ABILITY_HINT_AT, ABILITY_STAGES, HUNT_PITY, HUNT_WEIGHT, PHRASE_EVERY, PHRASE_VOICE_AT, ZOOM_LEVELS, ZOOM_REVEAL, dailyKey, guessLimit, zoomAt, judgeAll, statsKey, type GameId, type ModeId } from '@nanda/game'
+import { ABILITY_HINT_AT, ABILITY_STAGES, HUNT_PITY, HUNT_WEIGHT, shardGame, PHRASE_EVERY, PHRASE_VOICE_AT, ZOOM_LEVELS, ZOOM_REVEAL, dailyKey, guessLimit, zoomAt, judgeAll, statsKey, type GameId, type ModeId } from '@nanda/game'
 import { dailyAnswer, nextReset, pastAnswer, shiftDay, today } from './daily'
 import { rounds, users, type RoundDoc, type UserDoc } from './db'
 import { gameData, isGame, isMode, knows } from './games'
@@ -16,6 +16,7 @@ import { cardXpFor, openDex } from './dex'
 
 const RECENT_SHARE = 0.25
 const RECENT_MAX = 200
+const HUNT_GAP = 3
 
 const ODD_MEMORY = 8
 
@@ -43,7 +44,7 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, 
   const seen = new Set(recent.map((r) => r.answerId))
   const fresh = pool.filter((e) => !seen.has(e.id))
   const choices = fresh.length ? fresh : pool
-  const answer = guest ? choices[Math.floor(Math.random() * choices.length)]! : await huntPick(userId, game, choices)
+  const answer = guest ? choices[Math.floor(Math.random() * choices.length)]! : shardGame(game) ? await huntPick(userId, game, pool, choices, recent.slice(0, HUNT_GAP).map((one) => one.answerId)) : choices[Math.floor(Math.random() * choices.length)]!
   const extra = await roundExtra(game, mode, answer.id, Math.random(), mode === 'odd' ? oddPast(recent.slice(0, ODD_MEMORY).map((one) => one.extra)) : undefined)
   const doc: RoundDoc = {
     userId,
@@ -61,18 +62,19 @@ export async function activeRound(userId: ObjectId, game: GameId, mode: ModeId, 
   return { ...doc, _id: insertedId }
 }
 
-async function huntPick<T extends { id: number }>(userId: ObjectId, game: GameId, choices: T[]) {
+async function huntPick<T extends { id: number }>(userId: ObjectId, game: GameId, pool: T[], choices: T[], last: number[]) {
   const { huntOf } = await import('./bestiary')
   const hunted = await huntOf(userId, game)
   if (!hunted.length) return choices[Math.floor(Math.random() * choices.length)]!
 
-  const marked = choices.filter((one) => hunted.includes(one.id))
+  const marked = pool.filter((one) => hunted.includes(one.id) && !last.includes(one.id))
   if (!marked.length) return choices[Math.floor(Math.random() * choices.length)]!
+  const rest = choices.filter((one) => !hunted.includes(one.id))
 
   const doc = await (await users()).findOne({ _id: userId }, { projection: { [`pity.${game}`]: 1 } })
   if ((doc?.pity?.[game] ?? 0) >= HUNT_PITY) return marked[Math.floor(Math.random() * marked.length)]!
 
-  const weighted = [...choices, ...marked.flatMap((one) => Array.from({ length: HUNT_WEIGHT - 1 }, () => one))]
+  const weighted = [...rest, ...marked.flatMap((one) => Array.from({ length: HUNT_WEIGHT }, () => one))]
   return weighted[Math.floor(Math.random() * weighted.length)]!
 }
 

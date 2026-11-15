@@ -44,6 +44,7 @@ import {
   isHeroTile,
   isTone,
   scrapValue,
+  shardGame,
   type Banner,
   type BannerLook,
   type HeroTile,
@@ -1004,7 +1005,7 @@ export default function Profile({ id }: { id?: string }) {
             >
               {edit && own ? (
                 <span className="card-edit">
-                  <ShowcaseCard game={card.game} id={card.id} image={card.image} label={named(card.name)} xp={card.xp} badge={!user?.admin} />
+                  <ShowcaseCard game={card.game} id={card.id} image={card.image} label={named(card.name)} xp={card.xp} badge={!user?.admin || !shardGame(card.game)} />
                   <button type="button" className="card-unpin" aria-label={t('profile.cardsRemove')} title={t('profile.cardsRemove')} onClick={() => unpin(card)}>
                     <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
                       <polygon points={UNPIN_POINTS} vectorEffect="non-scaling-stroke" />
@@ -1014,7 +1015,7 @@ export default function Profile({ id }: { id?: string }) {
                 </span>
               ) : (
                 <Link href={own || !id ? href.bestiary(card.game) : href.playerBestiary(id, card.game)} prefetch={false} aria-label={named(card.name)}>
-                  <ShowcaseCard game={card.game} id={card.id} image={card.image} label={named(card.name)} xp={card.xp} badge={!user?.admin} />
+                  <ShowcaseCard game={card.game} id={card.id} image={card.image} label={named(card.name)} xp={card.xp} badge={!user?.admin || !shardGame(card.game)} />
                 </Link>
               )}
             </li>

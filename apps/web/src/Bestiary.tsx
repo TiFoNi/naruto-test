@@ -10,9 +10,9 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { Entity, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { CloseIcon, FilterIcon, PinIcon, SearchIcon, SparkIcon } from './icons'
+import { CloseIcon, FilterIcon, MinusIcon, PinIcon, PlusIcon, SearchIcon, SparkIcon } from './icons'
 import { MODES } from './modes'
-import { CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_POINTS, CARD_STEPS, cardRank, CARD_UP, cardShardBase, cardPower, HUNT_SHARD, CARD_RARITIES, CARD_UPS_DAY, HUNT_MAX, cardPinsMax, type CardRarity, type ModeId } from '@nanda/game'
+import { CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_POINTS, CARD_STEPS, cardRank, CARD_UP, cardShardBase, cardPower, HUNT_SHARD, CARD_RARITIES, CARD_UPS_DAY, HUNT_MAX, cardPinsMax, shardGame, type CardRarity, type ModeId } from '@nanda/game'
 import { PICTURELESS, cardUrl, hdUrl, miniUrl } from './pics'
 import { entityTerms, matchTier, searchKey } from './entity-match'
 import { useHref } from './router'
@@ -623,7 +623,7 @@ const useTilt = (face: React.RefObject<HTMLDivElement | null>, ready: () => bool
     }
 
     const down = (event: PointerEvent) => {
-      if (!ready() || (event.target as Element).closest('.lv-badge, .dex-zoom-pin')) return
+      if (!ready() || (event.target as Element).closest('.lv-badge, .dex-zoom-pin, .dex-zoom-scrap')) return
       const box = node.getBoundingClientRect()
       grab = { id: event.pointerId, x: event.clientX, y: event.clientY, width: box.width, height: box.height }
       dragged.current = false
@@ -893,6 +893,18 @@ const DexHelp = ({ modes }: { modes: ModeId[] }) => {
   )
 }
 
+const Stepper = ({ value, onLess, onMore }: { value: number; onLess: () => void; onMore: () => void }) => (
+  <div className="lv-stepper">
+    <button type="button" onClick={onLess} aria-label="−">
+      <MinusIcon />
+    </button>
+    <b>{value}</b>
+    <button type="button" onClick={onMore} aria-label="+">
+      <PlusIcon />
+    </button>
+  </div>
+)
+
 const CardSheet = ({
   rank,
   grade,
@@ -917,7 +929,6 @@ const CardSheet = ({
   onGone: () => void
 }) => {
   const { t } = useI18n()
-  const [want, setWant] = useState(10)
   const finds = Object.entries(rank.modes)
     .map(([mode, one]) => ({ mode: MODES.find((item) => item.id === mode), ...one }))
     .filter((one) => one.mode && one.xp > 0)
@@ -927,10 +938,8 @@ const CardSheet = ({
   const shards = grade?.shards ?? 0
   const need = grade?.up ?? 0
   const share = top ? 1 : Math.min(1, shards / Math.max(1, need))
-  const left = Math.max(0, need - shards)
   const price = grade?.craft.price ?? 0
-  const affordable = price ? Math.floor(dust / price) : 0
-  const take = Math.max(1, want)
+  const lack = Math.max(0, need - shards)
   const weekly = ups.used < ups.max
 
   useEffect(() => {
@@ -947,14 +956,6 @@ const CardSheet = ({
       <button type="button" className="lv-sheet-x" aria-label={t('dex.close')} onClick={onClose}>
         <CloseIcon />
       </button>
-
-      <ul className="lv-path" aria-hidden>
-        {CARD_RARITIES.map((rarity, tier) => (
-          <li key={rarity} className={`lv-${tier + 1} ${tier === rank.tier ? 'is-on' : ''} ${tier < rank.tier ? 'is-past' : ''}`}>
-            {t(`card.rarity.${rarity}` as UiKey)}
-          </li>
-        ))}
-      </ul>
 
       <b className="lv-sheet-level">{t(`card.rarity.${rank.rarity}` as UiKey)}</b>
       <div className="lv-sheet-xp">
@@ -977,37 +978,29 @@ const CardSheet = ({
               {shards} / {need}
             </em>
           </span>
-          <span className={weekly ? 'is-done' : ''}>
-            {t('card.dayUps')}
-            <em>
-              {ups.used} / {ups.max}
-            </em>
-          </span>
           <button type="button" className="lv-go" disabled={busy || !grade?.ready || !weekly} onClick={onRaise}>
             {t('card.raise')}
           </button>
-          {!grade?.ready && <small>{t('card.needMore', { n: left })}</small>}
         </div>
       )}
 
-      {!!price && !top && (
+      {!!price && !top && lack > 0 && (
         <div className="lv-craft">
-          <span>{t('card.craft', { price })}</span>
-          <div className="lv-craft-row">
-            <button type="button" onClick={() => setWant((was) => Math.max(1, was - 5))} aria-label="-">
-              −
-            </button>
-            <b>{take}</b>
-            <button type="button" onClick={() => setWant((was) => Math.min(Math.max(1, affordable), was + 5))} aria-label="+">
-              +
-            </button>
-            <button type="button" className="lv-go" disabled={busy || dust < take * price} onClick={() => onCraft(take)}>
-              {t('card.craftGo', { cost: take * price })}
-            </button>
-          </div>
+          <span>
+            {t('card.craftTitle', { n: lack })}
+            <em>
+              {t('dex.dust')}: {dust.toLocaleString('uk')}
+            </em>
+          </span>
+          <button type="button" className="lv-go lv-buy" disabled={busy || dust < lack * price} onClick={() => onCraft(lack)}>
+            {t('card.craftGo')}
+            <i>
+              <SparkIcon />
+              {lack * price}
+            </i>
+          </button>
         </div>
       )}
-
 
       <div className="lv-sheet-where">
         <span>{t('card.where')}</span>
@@ -1128,7 +1121,7 @@ const DexZoom = ({
 }) => {
   const { t } = useI18n()
   const [sheet, setSheet] = useState<'in' | 'out' | null>(null)
-  const [scrapping, setScrapping] = useState(false)
+  const [scrap, setScrap] = useState<'in' | 'out' | null>(null)
   const [scrapN, setScrapN] = useState(4)
   const [seen, setSeen] = useState(false)
   const hide = () => setSheet((was) => (was ? 'out' : null))
@@ -1194,6 +1187,10 @@ const DexZoom = ({
   }, [travel, close, focus.tilt])
 
   const { entity } = focus
+  const scrapTop = grade ? grade.shards - (grade.shards % 4) : 0
+  const canScrap = scrapTop >= 4
+  const picked = Math.max(4, Math.min(scrapN, scrapTop))
+  const shutScrap = () => setScrap((was) => (was ? 'out' : null))
 
   return createPortal(
     <div className="dex-zoom" role="dialog" aria-modal="true" aria-label={label} style={{ '--dex': accent } as CSSProperties}>
@@ -1218,15 +1215,18 @@ const DexZoom = ({
               <PinIcon />
             </button>
           )}
-          {grade && grade.shards >= 4 && onScrap && (
+          {grade && onScrap && canScrap && (
             <button
               type="button"
-              className="dex-zoom-scrap"
-              aria-label={t('card.scrapOpen')}
-              title={t('card.scrapOpen')}
+              className={`dex-zoom-scrap ${scrap === 'in' ? 'is-on' : ''}`}
+              aria-label={t('card.scrapTitle')}
+              title={t('card.scrapTitle')}
+              aria-expanded={scrap === 'in'}
               onClick={() => {
-                setScrapN(grade.shards - (grade.shards % 4))
-                setScrapping(true)
+                if (scrap === 'in') return shutScrap()
+                setScrapN(scrapTop)
+                hide()
+                setScrap('in')
               }}
             >
               <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
@@ -1243,6 +1243,7 @@ const DexZoom = ({
               aria-expanded={sheet === 'in'}
               onClick={() => {
                 setSeen(true)
+                shutScrap()
                 if (sheet === 'in') hide()
                 else setSheet('in')
               }}
@@ -1296,39 +1297,34 @@ const DexZoom = ({
           />
         )}
 
-        {scrapping && grade && (
-          <div className="dex-scrap-modal" role="dialog" aria-label={t('card.scrapOpen')} onPointerDown={(event) => event.stopPropagation()}>
+        {scrap && grade && (
+          <div
+            className={`dex-scrap-pop ${scrap === 'out' ? 'is-out' : ''}`}
+            role="dialog"
+            aria-label={t('card.scrapTitle')}
+            onPointerDown={(event) => event.stopPropagation()}
+            onAnimationEnd={() => scrap === 'out' && setScrap(null)}
+          >
             <svg className="lv-sheet-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
               <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
             </svg>
+            <button type="button" className="lv-sheet-x" aria-label={t('dex.close')} onClick={shutScrap}>
+              <CloseIcon />
+            </button>
             <b>{t('card.scrapTitle')}</b>
-            <p>{t('card.scrapHint', { have: grade.shards })}</p>
-            <div className="lv-craft-row">
-              <button type="button" onClick={() => setScrapN((was) => Math.max(4, was - 4))} aria-label="-">
-                −
-              </button>
-              <b>{scrapN}</b>
-              <button type="button" onClick={() => setScrapN((was) => Math.min(grade.shards - (grade.shards % 4), was + 4))} aria-label="+">
-                +
-              </button>
-              <span className="dex-scrap-gain">→ {Math.floor(scrapN / 4)} {t('card.dustUnit')}</span>
-            </div>
-            <div className="dex-scrap-act">
-              <button type="button" className="lv-scrap" onClick={() => setScrapping(false)}>
-                {t('card.cancel')}
-              </button>
-              <button
-                type="button"
-                className="lv-go"
-                disabled={!!busy || scrapN < 4}
-                onClick={() => {
-                  onScrap?.(scrapN)
-                  setScrapping(false)
-                }}
-              >
-                {t('card.scrapGo')}
-              </button>
-            </div>
+            <Stepper value={picked} onLess={() => setScrapN(Math.max(4, picked - 4))} onMore={() => setScrapN(Math.min(scrapTop, picked + 4))} />
+            <p>{t('card.scrapGet', { n: picked, dust: Math.floor(picked / 4) })}</p>
+            <button
+              type="button"
+              className="lv-go"
+              disabled={!!busy || picked < 4}
+              onClick={() => {
+                onScrap?.(picked)
+                shutScrap()
+              }}
+            >
+              {t('card.scrapGo')}
+            </button>
           </div>
         )}
       </div>
@@ -1410,7 +1406,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
     }
   }, [game, user, owner])
 
-  const fresh = !!user?.admin && !owner
+  const fresh = !!user?.admin && !owner && !!game && shardGame(game.id)
   const [vault, setVault] = useState<Vault | null>(null)
   const [busy, setBusy] = useState(false)
 

@@ -883,6 +883,10 @@ export const CARD_UPS_DAY = 4
 
 export const SHARDS_DAY = 3000
 
+export const SHARD_GAMES: readonly string[] = ['naruto']
+
+export const shardGame = (game: string) => SHARD_GAMES.includes(game)
+
 export const HUNT_MAX = 3
 
 export const HUNT_PITY = 4

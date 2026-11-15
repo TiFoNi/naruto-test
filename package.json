@@ -40,6 +40,8 @@
     "names:uk": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/uk-names.mjs",
     "stars": "node scripts/stars.mjs",
     "coins": "node scripts/grant-coins.mjs",
+    "dust:split": "node --env-file-if-exists=.env.local scripts/dust-per-world.mjs",
+    "dust:admins": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/grant-admin-dust.mjs",
     "entities": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/import-entities.mjs",
     "mini": "node --experimental-strip-types scripts/build-mini.mjs",
     "pics": "node --env-file-if-exists=.env.local scripts/upload-pics.mjs",

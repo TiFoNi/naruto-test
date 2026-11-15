@@ -16,7 +16,7 @@ export type UserDoc = {
   xp?: number
   coins?: number
   coinsNews?: { coins: number; at: Date }
-  dust?: number
+  dust?: Partial<Record<string, number>>
   ups?: { week: string; n: number }
   hunt?: Record<string, number[]>
   shardDay?: Record<string, { day: string; n: number }>

@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { CARD_MAX_LEVEL, HUNT_SHARD, cardPoints, cardShards, type ModeId } from '@nanda/game'
+import { CARD_MAX_LEVEL, HUNT_SHARD, cardPoints, cardShards, shardGame, type ModeId } from '@nanda/game'
 import { adminUser } from './admin'
 import { cards, users } from './db'
 
@@ -13,12 +13,12 @@ export async function openDex(userId: ObjectId, game: string | undefined, id: nu
   if (!game || !Number.isInteger(id)) return
   await (await users()).updateOne({ _id: userId }, { $addToSet: { [`dex.${game}`]: id } })
   if (!gain || gain.xp <= 0) return
-  if (!gain.daily && (await adminUser(userId))) {
+  if (!gain.daily && shardGame(game) && (await adminUser(userId))) {
     const { addShards, huntOf } = await import('./bestiary')
-    await addShards(userId, game, id!, cardShards(gain.mode), gain.mode)
     const hunted = await huntOf(userId, game)
-    for (const target of hunted) if (target !== id) await addShards(userId, game, target, HUNT_SHARD, 'hunt')
-    if (hunted.includes(id!)) await (await users()).updateOne({ _id: userId }, { $set: { [`pity.${game}`]: 0 } })
+    const target = hunted.includes(id!)
+    await addShards(userId, game, id!, cardShards(gain.mode) + (target ? HUNT_SHARD : 0), target ? `${gain.mode}+hunt` : gain.mode)
+    if (target) await (await users()).updateOne({ _id: userId }, { $set: { [`pity.${game}`]: 0 } })
     else await (await users()).updateOne({ _id: userId }, { $inc: { [`pity.${game}`]: 1 } })
   }
   const mode = `modes.${gain.mode}`

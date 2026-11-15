@@ -1,6 +1,6 @@
 import { adminUser } from './admin'
 import type { ObjectId } from 'mongodb'
-import { OPEN_GAMES, hasDaily, levelAt, modesOf } from '@nanda/game'
+import { OPEN_GAMES, hasDaily, levelAt, modesOf, shardGame } from '@nanda/game'
 import { quests, rounds, users } from './db'
 import { dayOf, today } from './daily'
 import { addSeasonXp } from './season'
@@ -204,7 +204,7 @@ async function shardChest(userId: ObjectId) {
   if (!(await adminUser(userId))) return null
   const { addShards } = await import('./bestiary')
   const holder = await (await users()).findOne({ _id: userId }, { projection: { dex: 1 } })
-  const owned = Object.entries(holder?.dex ?? {}).flatMap(([game, ids]) => (ids ?? []).map((id) => ({ game, id })))
+  const owned = Object.entries(holder?.dex ?? {}).filter(([game]) => shardGame(game)).flatMap(([game, ids]) => (ids ?? []).map((id) => ({ game, id })))
   if (!owned.length) return null
   const pick = owned[Math.floor(Math.random() * owned.length)]!
   await addShards(userId, pick.game, pick.id, QUEST_SHARDS, 'quest')

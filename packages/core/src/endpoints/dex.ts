@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb'
+import { shardGame } from '@nanda/game'
 import { isGame } from '../games'
 import { cardsOf, dexOf, gradesOf } from '../dex'
 import { users } from '../db'
@@ -14,7 +15,7 @@ export const GET = handle(async (request) => {
   const found = await currentUser(request)
   if (!wanted) {
     if (!found) return json({ ids: [], guest: true })
-    const fresh = !!(await adminSession(request))
+    const fresh = shardGame(game) && !!(await adminSession(request))
     const [ids, cards] = await Promise.all([dexOf(found.doc._id!, game), fresh ? gradesOf(found.doc._id!, game) : cardsOf(found.doc._id!, game)])
     const all = found.doc.cardPins ?? []
     return json({ ids, cards, pins: all.filter((key) => key.startsWith(`${game}:`)).map((key) => Number(key.split(':')[1])), pinCount: all.length })

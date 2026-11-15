@@ -1,4 +1,4 @@
-import { CARD_UPS_DAY, DUST_CRAFT, SHARDS_DAY, HUNT_MAX, HUNT_PITY, dustFor, type GameId } from '@nanda/game'
+import { CARD_UPS_DAY, DUST_CRAFT, SHARDS_DAY, HUNT_MAX, HUNT_PITY, dustFor, shardGame, type GameId } from '@nanda/game'
 import { craftCard, gradeOf, huntOf, raiseCard, scrapCard, setHunt, shardRoom } from '../bestiary'
 import { today } from '../daily'
 import { cards, users } from '../db'
@@ -19,7 +19,7 @@ const stateOf = async (userId: Parameters<typeof huntOf>[0], where: GameId) => {
   ])
   const room = await shardRoom(userId, where)
   return {
-    dust: doc?.dust ?? 0,
+    dust: doc?.dust?.[where] ?? 0,
     ups: { used: doc?.ups?.week === today() ? (doc.ups?.n ?? 0) : 0, max: CARD_UPS_DAY },
     hunt,
     shards: { got: room.got, max: SHARDS_DAY },
@@ -51,6 +51,7 @@ export const GET = handle(async (request) => {
   if (!(await adminSession(request))) return fail(404, 'not_found')
   const where = new URL(request.url).searchParams.get('game')
   if (!game(where)) return fail(400, 'bad_request')
+  if (!shardGame(where)) return fail(404, 'not_found')
   return json({ bestiary: await stateOf(found.doc._id!, where) })
 })
 
@@ -62,6 +63,7 @@ export const POST = handle(async (request) => {
   const body = (await readJson(request)) as { game?: unknown; action?: unknown; id?: unknown; ids?: unknown; n?: unknown }
   const where = body.game
   if (!game(where)) return fail(400, 'bad_request')
+  if (!shardGame(where)) return fail(404, 'not_found')
   const id = Number(body.id)
 
   if (body.action === 'hunt') {

@@ -118,8 +118,8 @@ export async function scrapCard(userId: ObjectId, game: string, id: number, want
 
   const spent = Math.round(dust / DUST_SCRAP_RATE)
   await (await cards()).updateOne({ _id: cardKey(userId, game, id) }, { $inc: { shards: -spent }, $set: { updatedAt: new Date() } })
-  const holder = await (await users()).findOneAndUpdate({ _id: userId }, { $inc: { dust } }, { returnDocument: 'after', projection: { dust: 1 } })
-  return { ok: true as const, dust, left: holder?.dust ?? dust }
+  const holder = await (await users()).findOneAndUpdate({ _id: userId }, { $inc: { [`dust.${game}`]: dust } }, { returnDocument: 'after', projection: { dust: 1 } })
+  return { ok: true as const, dust, left: holder?.dust?.[game] ?? dust }
 }
 
 export async function craftCard(userId: ObjectId, game: string, id: number, want: number) {
@@ -132,10 +132,12 @@ export async function craftCard(userId: ObjectId, game: string, id: number, want
   if ((await shardRoom(userId, game)).left < n) return { ok: false as const, why: 'day_cap' }
 
   const cost = price * n
-  const holder = await (await users()).findOne({ _id: userId }, { projection: { dust: 1 } })
-  if ((holder?.dust ?? 0) < cost) return { ok: false as const, why: 'dust' }
-
-  await (await users()).updateOne({ _id: userId }, { $inc: { dust: -cost } })
+  const holder = await (await users()).findOneAndUpdate(
+    { _id: userId, [`dust.${game}`]: { $gte: cost } },
+    { $inc: { [`dust.${game}`]: -cost } },
+    { returnDocument: 'after', projection: { dust: 1 } },
+  )
+  if (!holder) return { ok: false as const, why: 'dust' }
   await takeShards(userId, game, n)
   await (await cards()).updateOne(
     { _id: cardKey(userId, game, id) },
@@ -147,7 +149,7 @@ export async function craftCard(userId: ObjectId, game: string, id: number, want
     },
     { upsert: true },
   )
-  return { ok: true as const, shards: n, cost, dust: (holder?.dust ?? 0) - cost }
+  return { ok: true as const, shards: n, cost, dust: holder.dust?.[game] ?? 0 }
 }
 
 export const powerOf = (card?: Pick<CardDoc, 'rank' | 'shards'> | null) => gradeOf(card).power
