@@ -201,24 +201,29 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     })
   }, [send])
 
+  const finishing = useRef(finish)
+  finishing.current = finish
+
   const recruiting = !!view && view.status === 'playing' && !fight
+  const turn = view?.turn
+  const turnSec = view?.turnSec ?? 30
   useEffect(() => {
-    if (!recruiting || !view) {
+    if (!recruiting) {
       setClock(null)
       return
     }
-    const ends = Date.now() + view.turnSec * 1000
-    setClock(view.turnSec)
+    const ends = Date.now() + turnSec * 1000
+    setClock(turnSec)
     const tick = window.setInterval(() => {
       const left = Math.max(0, Math.ceil((ends - Date.now()) / 1000))
       setClock(left)
       if (left <= 0) {
         window.clearInterval(tick)
-        finish()
+        finishing.current()
       }
     }, 250)
     return () => window.clearInterval(tick)
-  }, [recruiting, view?.turn, view?.turnSec, finish])
+  }, [recruiting, turn, turnSec])
 
   useEffect(() => {
     if (!fight || !lead) return
@@ -601,19 +606,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                 </>
               )}
             </div>
-            <div className={`ar-line ${clock !== null && !fight ? 'is-ticking' : ''} ${clock !== null && clock <= 5 ? 'is-late' : ''}`}>
-              {clock !== null && !fight && (
-                <>
-                  <span className="ar-fuse" style={{ '--dur': `${view.turnSec}s` } as CSSProperties} key={`fuse-${view.turn}`} aria-hidden />
-                  <span className="ar-clock">
-                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
-                      <polygon points={CHIP} vectorEffect="non-scaling-stroke" />
-                    </svg>
-                    <b>{clock}</b>
-                  </span>
-                </>
-              )}
-            </div>
+            <i className="ar-line" aria-hidden />
             <div
               data-zone={fight ? undefined : 'slot'}
               data-at={freeAt}
@@ -653,6 +646,12 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
             </div>
 
             <div className="ar-side">
+              {clock !== null && !fight && (
+                <div className={`ar-time ${clock <= 5 ? 'is-late' : ''}`}>
+                  <small>{t('arena.time')}</small>
+                  <b>{clock}</b>
+                </div>
+              )}
               <div className="ar-chakra">
                 <span className="ar-chakra-head">
                   <small>{t('arena.chakra')}</small>

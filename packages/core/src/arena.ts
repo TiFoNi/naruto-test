@@ -15,7 +15,7 @@ import {
   arenaPower,
   arenaTierAt,
   arenaUpCost,
-  arenaTurnSec,
+  ARENA_TURN_SEC,
   ARENA_SUMMON_SLOTS,
   ARENA_TAVERN,
   CARD_RARITIES,
@@ -168,7 +168,9 @@ export const upCostOf = (doc: ArenaDoc) => (tavernOf(doc) >= ARENA_TIERS ? 0 : (
 const TAVERN_MAIN = 3
 const TAVERN_BELOW = 2
 
-const roll = (pool: number[], top: number) => {
+const roll = (all: number[], top: number, seen: number[] = []) => {
+  const fresh = all.filter((id) => !seen.includes(id))
+  const pool = fresh.filter((id) => Math.abs(tierOf(id) - top) <= 1).length >= ARENA_TAVERN ? fresh : all
   const at = (tier: number, weight: number) => pool.filter((id) => tierOf(id) === tier).map((id) => ({ id, weight }))
   let bag = [...at(top, TAVERN_MAIN), ...at(top - 1, TAVERN_BELOW)]
   for (let down = top - 2; bag.length < ARENA_TAVERN && down >= 1; down--) bag.push(...at(down, 1))
@@ -295,7 +297,7 @@ export function playCard(doc: ArenaDoc, uid: string) {
 export function rollTavern(doc: ArenaDoc) {
   if (doc.chakra < ARENA_ROLL_COST) return false
   doc.chakra -= ARENA_ROLL_COST
-  doc.tavern = roll(doc.pool, tavernOf(doc))
+  doc.tavern = roll(doc.pool, tavernOf(doc), doc.tavern)
   return true
 }
 
@@ -461,7 +463,7 @@ export function endTurn(doc: ArenaDoc) {
   doc.chakra = doc.cap
   doc.shopTier = tavernOf(doc)
   doc.up = Math.max(ARENA_UP_MIN, upCostOf(doc) - 1)
-  doc.tavern = roll(doc.pool, doc.shopTier)
+  doc.tavern = roll(doc.pool, doc.shopTier, doc.tavern)
   return doc
 }
 
@@ -477,7 +479,7 @@ export const arenaView = (doc: ArenaDoc) => ({
   tavernTier: tavernOf(doc),
   upCost: upCostOf(doc),
   rollCost: ARENA_ROLL_COST,
-  turnSec: arenaTurnSec(doc.turn),
+  turnSec: ARENA_TURN_SEC,
   hp: doc.hp,
   foeHp: doc.foeHp,
   tavern: doc.tavern.map((id) => {

@@ -1253,7 +1253,7 @@ export const ARENA_TRIPLE = 3
 
 export const ARENA_ROLL_COST = 1
 
-export const arenaTurnSec = (turn: number) => Math.min(60, 30 + Math.max(0, turn - 1) * 5)
+export const ARENA_TURN_SEC = 30
 export const ARENA_UP_MIN = 1
 const ARENA_UP_COST = [4, 5, 6, 7, 8]
 

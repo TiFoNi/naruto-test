@@ -143,6 +143,7 @@ const ui = {
   'arena.fightDone': { ru: 'Ударов в бою: {count}', uk: 'Ударів у бою: {count}', en: 'Strikes this fight: {count}' },
   'arena.skip': { ru: 'Пропустить', uk: 'Пропустити', en: 'Skip' },
   'arena.next': { ru: 'Дальше', uk: 'Далі', en: 'Next' },
+  'arena.time': { ru: 'Время', uk: 'Час', en: 'Time' },
   'arena.chakra': { ru: 'Чакра', uk: 'Чакра', en: 'Chakra' },
   'arena.reroll': { ru: 'Обновить', uk: 'Оновити', en: 'Refresh' },
   'arena.upgrade': { ru: 'Таверна {n}', uk: 'Таверна {n}', en: 'Tavern {n}' },
