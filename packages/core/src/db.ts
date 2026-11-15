@@ -571,8 +571,10 @@ export type ArenaDoc = {
   game: string
   status: 'playing' | 'won' | 'lost'
   turn: number
+  coins: number
+  coinCap: number
   chakra: number
-  cap: number
+  chakraCap: number
   hp: number
   foeHp: number
   seq: number

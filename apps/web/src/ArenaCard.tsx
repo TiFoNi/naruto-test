@@ -25,9 +25,12 @@ export type ArenaView = {
   turn: number
   chakra: number
   chakraMax: number
+  coins: number
+  coinsMax: number
   tavernTier: number
   upCost: number
   rollCost: number
+  seq: number
   turnSec: number
   hp: number
   foeHp: number

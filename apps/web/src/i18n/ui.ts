@@ -132,6 +132,7 @@ const ui = {
   'arena.skip': { ru: 'Пропустить', uk: 'Пропустити', en: 'Skip' },
   'arena.next': { ru: 'Дальше', uk: 'Далі', en: 'Next' },
   'arena.time': { ru: 'Время', uk: 'Час', en: 'Time' },
+  'arena.coins': { ru: 'Монеты', uk: 'Монети', en: 'Coins' },
   'arena.chakra': { ru: 'Чакра', uk: 'Чакра', en: 'Chakra' },
   'arena.reroll': { ru: 'Обновить', uk: 'Оновити', en: 'Refresh' },
   'arena.upgrade': { ru: 'Таверна {n}', uk: 'Таверна {n}', en: 'Tavern {n}' },

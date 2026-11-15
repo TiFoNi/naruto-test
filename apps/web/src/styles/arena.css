@@ -307,7 +307,9 @@
   display: flex;
   width: 100%;
   max-width: 1420px;
-  min-height: calc(100dvh - var(--topbar-h, 64px) - 16px);
+  height: calc(100dvh - var(--topbar-h, 64px) - 16px);
+  --cw: clamp(78px, calc((100dvh - 300px) * 0.1875), 142px);
+  --zone: calc(var(--cw) * 4 / 3 + 20px);
   margin: 0 auto;
   flex-direction: column;
   padding: 8px 16px 14px;
@@ -336,54 +338,15 @@
 
 
 
-.ar-hero {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  flex: none;
-  padding: 5px 14px 5px 5px;
-  border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 12%, rgba(0, 0, 0, 0.25));
-}
 
-.ar-hero.is-foe {
-  border-color: rgba(232, 160, 90, 0.26);
-  background: rgba(232, 160, 90, 0.12);
-}
 
-.ar-hero b {
-  font-size: 15px;
-}
 
-.ar-hero-face {
-  display: grid;
-  width: 36px;
-  height: 36px;
-  flex: none;
-  place-items: center;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--accent) 26%, transparent);
-  color: var(--accent-text, var(--accent));
-  font-family: var(--display);
-  font-size: 14px;
-}
 
-.ar-hero.is-foe .ar-hero-face {
-  background: rgba(232, 160, 90, 0.26);
-  color: #e8a05a;
-}
 
-.ar-hero-hp {
-  color: #e8656a;
-  font-family: var(--display);
-  font-size: 24px;
-  line-height: 1;
-}
 
 .ar-row {
   display: flex;
-  min-height: 190px;
+  min-height: calc(var(--cw) * 4 / 3 + 2px);
   align-items: center;
   justify-content: center;
   margin: 0;
@@ -393,12 +356,12 @@
 }
 
 .ar-row li {
-  width: 142px;
+  width: var(--cw);
   flex: none;
 }
 
 .ar-row.is-shop li {
-  width: 142px;
+  width: var(--cw);
 }
 
 .ar.is-dragging .ar-buy {
@@ -434,18 +397,11 @@
   display: grid;
   align-items: end;
   gap: 12px;
-  grid-template-columns: 220px minmax(0, 1fr) 220px;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   flex: none;
-  min-height: 226px;
 }
 
-.ar-foot > .ar-hero {
-  justify-self: center;
-  align-self: end;
-  grid-column: 2;
-  grid-row: 1;
-  margin-bottom: 6px;
-}
+
 
 .ar-hand {
   display: flex;
@@ -453,14 +409,14 @@
   justify-content: center;
   align-items: flex-end;
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 1;
 }
 
 .ar-hand ul {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  min-height: 214px;
+  min-height: calc(var(--cw) * 4 / 3 + 20px);
   margin: 0;
   padding: 0;
   gap: 14px;
@@ -468,7 +424,7 @@
 }
 
 .ar-hand li {
-  width: 142px;
+  width: var(--cw);
   flex: none;
 }
 
@@ -502,8 +458,8 @@
   justify-self: end;
   align-self: end;
   grid-column: 3;
-  grid-row: 1 / span 2;
-  width: 100%;
+  grid-row: 1;
+  width: min(100%, 270px);
   padding-bottom: 10px;
 }
 
@@ -512,38 +468,9 @@
 
 
 
-.ar-crystals {
-  display: flex;
-  gap: 6px;
-  flex: 1 1 auto;
-  justify-content: flex-end;
-}
 
-.ar-crystals i {
-  display: block;
-  width: 11px;
-  height: 11px;
-  border: 1px solid rgba(120, 180, 255, 0.25);
-  border-radius: 3px;
-  background: rgba(120, 180, 255, 0.07);
-  rotate: 45deg;
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
 
-.ar-crystals i.is-full {
-  border-color: #8fd2ff;
-  background: linear-gradient(145deg, #9ddcff, #3b8ef0);
-  box-shadow:
-    0 0 10px rgba(80, 160, 255, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.55);
-}
 
-.ar-crystals i.is-spent {
-  border-color: rgba(120, 180, 255, 0.45);
-  background: rgba(70, 140, 230, 0.2);
-}
 
 .ar-over {
   display: flex;
@@ -622,7 +549,6 @@
     justify-items: center;
   }
 
-  .ar-foot > .ar-hero,
   .ar-hand,
   .ar-side {
     grid-column: 1;
@@ -710,29 +636,15 @@
 .ar-board {
   position: relative;
   display: grid;
-  flex: 1 1 auto;
+  flex: 1 1 0;
   grid-template-rows: 1fr 1px 1fr;
+  min-height: 0;
   align-items: stretch;
   padding: 14px 20px;
 }
 
-.ar-plate {
-  position: absolute;
-  left: 0;
-  right: 0;
-  display: flex;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-}
 
-.ar-half.is-top .ar-plate {
-  top: 10px;
-}
 
-.ar-half.is-bot .ar-plate {
-  bottom: 10px;
-}
 
 .ar-half {
   position: relative;
@@ -743,6 +655,16 @@
   justify-content: center;
   gap: 16px;
   width: 100%;
+}
+
+.ar-half.is-top {
+  justify-content: flex-end;
+  padding-bottom: 26px;
+}
+
+.ar-half.is-bot {
+  justify-content: flex-start;
+  padding-top: 26px;
 }
 
 
@@ -785,7 +707,7 @@
 }
 
 .ar-row.is-packed {
-  min-height: 190px;
+  min-height: calc(var(--cw) * 4 / 3 + 2px);
   align-items: center;
 }
 
@@ -851,7 +773,7 @@
 }
 
 @media (hover: hover) {
-  .ar:not(.is-fighting):not(.is-dragging) .ar-move:hover .dex-scrap {
+  .ar:not(.is-fighting):not(.is-dragging) li:not(.is-poor) > .ar-move:hover .dex-scrap {
     rotate: 0deg;
     translate: 0 -4px;
     filter:
@@ -1007,29 +929,11 @@
   background: #1b1a1e;
 }
 
-.ar-tier.is-t1 {
-  --tier: #ebe5dc;
-}
 
-.ar-tier.is-t2 {
-  --tier: #e3a571;
-}
 
-.ar-tier.is-t3 {
-  --tier: #d3d9e2;
-}
 
-.ar-tier.is-t4 {
-  --tier: #f5c451;
-}
 
-.ar-tier.is-t5 {
-  --tier: #b597ff;
-}
 
-.ar-tier.is-t6 {
-  --tier: #f26d78;
-}
 
 .ar-top {
   align-items: center;
@@ -1053,7 +957,7 @@
   place-items: center;
 }
 
-.ar-chip svg {
+.ar-chip > svg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1168,32 +1072,9 @@
 
 
 
-.ar-chakra-head {
-  position: relative;
-  display: flex;
-  width: 100%;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-}
 
-.ar-chakra-head small {
-  color: rgba(244, 241, 234, 0.55);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
 
-.ar-chakra-head b {
-  color: #8fd0ff;
-  font-family: var(--display);
-  font-size: 18px;
-}
 
-.ar-chakra .ar-crystals {
-  position: relative;
-}
 
 .ar-tool {
   display: inline-flex;
@@ -1254,34 +1135,268 @@
   gap: 5px;
 }
 
-.ar-price i {
-  display: block;
-  width: 8px;
-  height: 8px;
-  border-radius: 2px;
-  background: linear-gradient(160deg, #8fd0ff, #3f86f0);
-  box-shadow: 0 0 6px rgba(111, 192, 255, 0.6);
-  rotate: 45deg;
+
+
+
+
+
+
+
+.ar-clock {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  z-index: 4;
+  padding: 10px 16px;
+  translate: 0 -50%;
 }
 
-.ar-chakra {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+.ar-clock > span {
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
 }
 
-.ar-chakra-head {
-  justify-content: flex-start;
+.ar-clock .icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
 }
 
-.ar-time {
+.ar-clock b {
+  min-width: 2ch;
+  font-size: 22px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.ar-clock.is-late {
+  color: #ff8f8f;
+}
+
+.ar-clock.is-late b {
+  animation: ar-beat 1s ease-in-out infinite;
+}
+
+.ar-clock.is-late polygon {
+  fill: #3b1416;
+  stroke: #ef6b6b;
+}
+
+
+
+
+
+
+
+
+
+.ar-mid {
+  position: relative;
   display: flex;
-  align-items: baseline;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .ar {
+    height: auto;
+    min-height: calc(100dvh - var(--topbar-h, 64px) - 16px);
+    --cw: 86px;
+  }
+}
+
+.ar-me {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ar-me .ar-me-hp {
+  margin-top: -18px;
+}
+
+.ar-hand .ar-me {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+.ar-me .ar-me-face {
+  width: clamp(84px, calc(var(--cw) * 0.9), 128px);
+  height: clamp(84px, calc(var(--cw) * 0.9), 128px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.55);
+  font-size: 48px;
+}
+
+.ar-me-hp {
+  position: relative;
+  z-index: 3;
+  display: inline-flex;
+  height: 36px;
+  min-width: 62px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 11px 0 10px;
+  color: #1f7536;
+  gap: 4px;
+  rotate: -3deg;
+}
+
+.ar-me-hp svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 8px rgb(0 0 0 / 55%));
+}
+
+.ar-me-hp polygon {
+  fill: #ebe5dc;
+  stroke: #2f8f45;
+  stroke-width: 6;
+  stroke-linejoin: round;
+}
+
+.ar-me-hp .icon {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  color: #2f8f45;
+  fill: currentColor;
+  stroke: none;
+}
+
+.ar-me-hp b {
+  position: relative;
+  font-family: var(--display);
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 900px) {
+  .ar-hand {
+    grid-row: auto;
+  }
+
+  .ar-hand {
+    justify-content: center;
+  }
+}
+
+.ar-crown {
+  display: flex;
+  height: var(--zone);
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.ar-crown .ar-shopbar {
+  margin-bottom: 0;
+}
+
+.ar-hand {
+  position: relative;
+}
+
+.ar-hand ul {
+  min-height: var(--zone);
+}
+
+.ar-hand.is-away ul {
+  visibility: hidden;
+}
+
+@media (max-width: 900px) {
+  .ar-crown {
+    height: auto;
+    padding: 10px 0;
+  }
+}
+
+.ar-shopbar .ar-tool {
+  position: relative;
+  height: 46px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: #1b1a1e;
+  rotate: -2deg;
+  transition:
+    translate 0.15s ease,
+    rotate 0.2s ease;
+}
+
+.ar-shopbar .ar-tool:last-child {
+  rotate: 2deg;
+}
+
+.ar-shopbar .ar-tool > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 7px rgb(0 0 0 / 45%));
+}
+
+.ar-shopbar .ar-tool polygon {
+  fill: #ebe5dc;
+  stroke: #1b1a1e;
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
+}
+
+.ar-shopbar .ar-tool:hover:not(:disabled),
+.ar-shopbar .ar-tool.is-up:hover:not(:disabled) {
+  border: 0;
+  background: none;
+  translate: 0 -2px;
+  rotate: 0deg;
+}
+
+.ar-shopbar .ar-tool > span {
+  position: relative;
   gap: 10px;
 }
 
-.ar-time small {
+.ar-shopbar .ar-tool .icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.6;
+}
+
+.ar-shopbar .ar-price {
+  margin-left: 0;
+  padding-left: 10px;
+  border-left: 1.5px dashed rgba(27, 26, 30, 0.3);
+  color: #1b1a1e;
+  font-family: var(--display);
+  font-size: 17px;
+}
+
+
+.ar-purse {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ar-purse-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ar-purse-head small {
   color: rgba(244, 241, 234, 0.55);
   font-size: 11px;
   font-weight: 800;
@@ -1289,16 +1404,107 @@
   text-transform: uppercase;
 }
 
-.ar-time b {
-  min-width: 2ch;
-  color: #f4f1ea;
+.ar-purse-head b {
   font-family: var(--display);
-  font-size: 28px;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
+  font-size: 22px;
 }
 
-.ar-time.is-late b {
-  color: #ff6b6b;
-  animation: ar-beat 1s ease-in-out infinite;
+.ar-purse.is-coins .ar-purse-head b {
+  color: #f5c451;
+}
+
+.ar-purse.is-chakra .ar-purse-head b {
+  color: #7cc4ff;
+}
+
+.ar-purse-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ar-purse-head small {
+  font-size: 12px;
+}
+
+
+.ar-coin {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border: 1.5px solid #8a5a0a;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffe9a3 0%, #f5c451 45%, #c98a1a 100%);
+}
+
+.ar-coin::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28%;
+  height: 28%;
+  border: 1px solid #8a5a0a;
+  background: #0d0f13;
+  translate: -50% -50%;
+}
+
+.ar-coin,
+.ar-orb {
+  box-sizing: border-box;
+}
+
+.ar-purse-row .ar-coin,
+.ar-purse-row .ar-orb,
+.ar-price .ar-coin {
+  width: 20px;
+  height: 20px;
+}
+
+.ar-purse-row .ar-coin:not(.is-full) {
+  filter: grayscale(1);
+  opacity: 0.25;
+}
+
+.ar-purse-row .ar-coin.is-spent {
+  opacity: 0.45;
+}
+
+.ar-orb {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 36% 34%, #e6f5ff 0 18%, transparent 19%),
+    radial-gradient(circle at 50% 50%, #7cc4ff 0 68%, #2f6fd6 70%);
+  box-shadow: 0 0 8px rgba(124, 196, 255, 0.45);
+}
+
+.ar-orb:not(.is-full) {
+  box-shadow: none;
+  filter: grayscale(1);
+  opacity: 0.25;
+}
+
+.ar-orb.is-spent {
+  opacity: 0.45;
+}
+
+
+.ar-shopbar .ar-price {
+  gap: 6px;
+}
+
+.ar-crown:has(.ar-me) {
+  align-items: flex-start;
+}
+
+.ar-hand .ar-me {
+  top: auto;
+  bottom: 0;
+  translate: -50% 0;
 }

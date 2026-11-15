@@ -37,7 +37,7 @@ export const POST = handle(async (request) => {
 
   const act: Record<string, () => boolean> = {
     buy: () => buyCard(doc, Number(body.at)),
-    play: () => playCard(doc, String(body.uid)),
+    play: () => playCard(doc, String(body.uid), body.at === undefined ? -1 : Number(body.at)),
     sell: () => sellCard(doc, String(body.uid)),
     move: () => moveCard(doc, String(body.uid), Number(body.at)),
     roll: () => rollTavern(doc),

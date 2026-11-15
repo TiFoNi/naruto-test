@@ -2,6 +2,8 @@ import type { ObjectId } from 'mongodb'
 import {
   ARENA_CHAKRA_MAX,
   ARENA_CHAKRA_START,
+  ARENA_COIN_MAX,
+  ARENA_COIN_START,
   ARENA_SELL_BACK,
   ARENA_HAND,
   ARENA_HERO_SLOTS,
@@ -128,7 +130,15 @@ const makeCard = (id: number, rarity: CardRarity, summon: boolean, seq: number, 
 }
 
 export async function arenaOf(userId: ObjectId) {
-  return (await arenas()).findOne({ _id: userId })
+  const doc = await (await arenas()).findOne({ _id: userId })
+  if (doc && doc.coins === undefined) {
+    const old = doc as ArenaDoc & { cap?: number }
+    doc.coins = old.chakra ?? ARENA_COIN_START
+    doc.coinCap = old.cap ?? ARENA_COIN_START
+    doc.chakraCap = Math.min(ARENA_CHAKRA_START + doc.turn - 1, ARENA_CHAKRA_MAX)
+    doc.chakra = doc.chakraCap
+  }
+  return doc
 }
 
 const rarityOf = (ranks: Record<number, CardRarity>, id: number): CardRarity => ranks[id] ?? 'paper'
@@ -199,8 +209,10 @@ export async function startArena(userId: ObjectId, game: GameId) {
     game,
     status: 'playing',
     turn: 1,
+    coins: ARENA_COIN_START,
+    coinCap: ARENA_COIN_START,
     chakra: ARENA_CHAKRA_START,
-    cap: ARENA_CHAKRA_START,
+    chakraCap: ARENA_CHAKRA_START,
     hp: ARENA_HP,
     foeHp: ARENA_HP,
     seq: 0,
@@ -241,8 +253,8 @@ export function buyCard(doc: ArenaDoc, at: number) {
   if (id === undefined || doc.hand.length >= ARENA_HAND) return false
   const rarity = rarityOf(doc.ranks, id)
   const cost = arenaCost()
-  if (doc.chakra < cost) return false
-  doc.chakra -= cost
+  if (doc.coins < cost) return false
+  doc.coins -= cost
   doc.seq += 1
   doc.hand.push(makeCard(id, rarity, doc.summons.includes(id), doc.seq, false, powerOf(doc.powers, id)))
   doc.tavern.splice(at, 1)
@@ -270,7 +282,7 @@ export function sellCard(doc: ArenaDoc, uid: string) {
     if (!line.some((card) => card.uid === uid)) return false
     relay(doc.board, line.filter((card) => card.uid !== uid))
   }
-  doc.chakra = Math.min(doc.chakra + ARENA_SELL_BACK, ARENA_CHAKRA_MAX)
+  doc.coins = Math.min(doc.coins + ARENA_SELL_BACK, ARENA_COIN_MAX)
   return true
 }
 
@@ -284,19 +296,21 @@ export function moveCard(doc: ArenaDoc, uid: string, at: number) {
   return true
 }
 
-export function playCard(doc: ArenaDoc, uid: string) {
+export function playCard(doc: ArenaDoc, uid: string, to = -1) {
   const at = doc.hand.findIndex((card) => card.uid === uid)
   if (at < 0) return false
   const card = doc.hand[at]!
   if (!freeSlot(doc.board)) return false
   doc.hand.splice(at, 1)
-  place(doc.board, card)
+  const line = onBoard(doc.board)
+  line.splice(Number.isInteger(to) && to >= 0 ? Math.min(to, line.length) : line.length, 0, card)
+  relay(doc.board, line)
   return true
 }
 
 export function rollTavern(doc: ArenaDoc) {
-  if (doc.chakra < ARENA_ROLL_COST) return false
-  doc.chakra -= ARENA_ROLL_COST
+  if (doc.coins < ARENA_ROLL_COST) return false
+  doc.coins -= ARENA_ROLL_COST
   doc.tavern = roll(doc.pool, tavernOf(doc), doc.tavern)
   return true
 }
@@ -305,8 +319,8 @@ export function upTavern(doc: ArenaDoc) {
   const now = tavernOf(doc)
   if (now >= ARENA_TIERS) return false
   const cost = upCostOf(doc)
-  if (doc.chakra < cost) return false
-  doc.chakra -= cost
+  if (doc.coins < cost) return false
+  doc.coins -= cost
   doc.shopTier = now + 1
   doc.up = arenaUpCost(now + 1)
   return true
@@ -325,7 +339,7 @@ const weakest = (side: ArenaSide) =>
     .sort((a, b) => a.atk + a.hp - (b.atk + b.hp))[0]
 
 function botTurn(doc: ArenaDoc) {
-  let left = Math.min(ARENA_CHAKRA_START + doc.turn - 1, ARENA_CHAKRA_MAX)
+  let left = Math.min(ARENA_COIN_START + doc.turn - 1, ARENA_COIN_MAX)
   let tier = doc.foeShop ?? arenaTierAt(doc.turn)
   let up = doc.foeUp ?? arenaUpCost(tier)
   const cost = arenaCost()
@@ -459,8 +473,10 @@ export function endTurn(doc: ArenaDoc) {
   fight(doc)
   if (doc.status !== 'playing') return doc
   doc.turn += 1
-  doc.cap = Math.min(ARENA_CHAKRA_START + doc.turn - 1, ARENA_CHAKRA_MAX)
-  doc.chakra = doc.cap
+  doc.coinCap = Math.min(ARENA_COIN_START + doc.turn - 1, ARENA_COIN_MAX)
+  doc.coins = doc.coinCap
+  doc.chakraCap = Math.min(ARENA_CHAKRA_START + doc.turn - 1, ARENA_CHAKRA_MAX)
+  doc.chakra = doc.chakraCap
   doc.shopTier = tavernOf(doc)
   doc.up = Math.max(ARENA_UP_MIN, upCostOf(doc) - 1)
   doc.tavern = roll(doc.pool, doc.shopTier, doc.tavern)
@@ -474,8 +490,11 @@ const rankedSide = (side: ArenaSide) => ({ heroes: side.heroes.map(ranked), summ
 export const arenaView = (doc: ArenaDoc) => ({
   status: doc.status,
   turn: doc.turn,
+  seq: doc.seq,
+  coins: doc.coins,
+  coinsMax: doc.coinCap,
   chakra: doc.chakra,
-  chakraMax: doc.cap,
+  chakraMax: doc.chakraCap,
   tavernTier: tavernOf(doc),
   upCost: upCostOf(doc),
   rollCost: ARENA_ROLL_COST,

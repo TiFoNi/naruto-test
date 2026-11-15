@@ -1,16 +1,17 @@
 'use client'
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react'
-import { ARENA_CARD_COST, ARENA_CHAKRA_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS, ARENA_TIERS } from '@nanda/game'
+import { ARENA_CARD_COST, ARENA_CHAKRA_MAX, ARENA_COIN_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS, ARENA_TIERS } from '@nanda/game'
 import { api } from './api'
 import { ArenaFace, type ArenaView, type Card, type Side } from './ArenaCard'
 import { BADGE_POINTS } from './DexCard'
+import Avatar from './Avatar'
 import { useAuth } from './auth'
 import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n } from './i18n'
-import { RefreshIcon, UpIcon } from './icons'
+import { ClockIcon, HeartIcon, RefreshIcon, UpIcon } from './icons'
 import BackButton from './BackButton'
 import { tornPoints } from './torn'
 import { useHref, useNavigate } from './router'
@@ -47,7 +48,7 @@ type Hold = {
 
 const line = (side: Side) => [...side.heroes, ...side.summons]
 
-const split = (cards: Card[]): Side => ({ heroes: cards.filter((one) => !one.summon), summons: cards.filter((one) => one.summon) })
+const split = (cards: Card[]): Side => ({ heroes: cards.slice(0, ARENA_HERO_SLOTS), summons: cards.slice(ARENA_HERO_SLOTS) })
 
 const spotAt = (x: number, y: number): Spot | null => {
   for (const node of document.elementsFromPoint(x, y)) {
@@ -57,14 +58,17 @@ const spotAt = (x: number, y: number): Spot | null => {
   return null
 }
 
-function Plate({ mark, name, hp, foe }: { mark: string; name: string; hp: number; foe?: boolean }) {
+function Hero({ who, name, id, avatar, frame, hp }: { who: 'me' | 'foe'; name: string; id?: string; avatar?: string | null; frame?: string | null; hp: number }) {
   return (
-    <div data-hero={foe ? 'foe' : 'me'} className={`ar-hero ${foe ? 'is-foe' : ''}`}>
-      <span className="ar-hero-face" aria-hidden>
-        {mark}
+    <div data-hero={who} className={`ar-me is-${who}`}>
+      <Avatar id={id} name={name} avatar={avatar} frame={frame} className="ar-me-face" />
+      <span className="ar-me-hp">
+        <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
+          <polygon points={BADGE_POINTS} />
+        </svg>
+        <HeartIcon />
+        <b>{hp}</b>
       </span>
-      <b>{name}</b>
-      <span className="ar-hero-hp">{hp}</span>
     </div>
   )
 }
@@ -90,6 +94,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const hold = useRef<Hold | null>(null)
 
   const queue = useRef<Promise<unknown>>(Promise.resolve())
+  const pending = useRef(0)
   const beats = useRef<ArenaView['steps']>([])
 
   const byId = useMemo(() => new Map((game?.entities ?? []).map((one) => [one.id, one])), [game, ready])
@@ -109,11 +114,15 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const send = useCallback(
     (body: Record<string, unknown>, slow = false, after?: (next: ArenaView) => void) => {
       if (slow) setWaiting(true)
+      pending.current += 1
       queue.current = queue.current
         .then(async () => {
-          const { data } = await api<{ arena?: ArenaView | null }>('arena', body)
+          const reply = await api<{ arena?: ArenaView | null }>('arena', body).finally(() => {
+            pending.current -= 1
+          })
+          const { data } = reply
           if (data.arena === null) return go(href.bestiary(gameId as GameId))
-          if (data.arena) {
+          if (data.arena && (pending.current === 0 || after)) {
             setView(data.arena)
             after?.(data.arena)
           }
@@ -129,10 +138,10 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const buy = useCallback(
     (at: number) => {
       setView((now) => {
-        if (!now || now.chakra < ARENA_CARD_COST || !now.tavern[at]) return now
+        if (!now || now.coins < ARENA_CARD_COST || !now.tavern[at]) return now
         const one = now.tavern[at]!
-        const card: Card = { uid: `new${at}:${now.turn}:${now.hand.length}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier }
-        return { ...now, chakra: now.chakra - ARENA_CARD_COST, hand: [...now.hand, card], tavern: now.tavern.filter((_, i) => i !== at) }
+        const card: Card = { uid: `${now.seq + 1}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier }
+        return { ...now, seq: now.seq + 1, coins: now.coins - ARENA_CARD_COST, hand: [...now.hand, card], tavern: now.tavern.filter((_, i) => i !== at) }
       })
       send({ action: 'buy', at })
     },
@@ -150,8 +159,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         next.splice(at < 0 ? next.length : Math.min(at, next.length), 0, card)
         return { ...now, hand: now.hand.filter((one) => one.uid !== uid), board: split(next) }
       })
-      send({ action: 'play', uid })
-      if (at >= 0) send({ action: 'move', uid, at })
+      send(at >= 0 ? { action: 'play', uid, at } : { action: 'play', uid })
     },
     [send],
   )
@@ -164,7 +172,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         const left = line(now.board).filter((one) => one.uid !== uid)
         return {
           ...now,
-          chakra: Math.min(now.chakra + ARENA_SELL_BACK, ARENA_CHAKRA_MAX),
+          coins: Math.min(now.coins + ARENA_SELL_BACK, ARENA_COIN_MAX),
           hand: inHand ? now.hand.filter((one) => one.uid !== uid) : now.hand,
           board: inHand ? now.board : split(left),
         }
@@ -487,16 +495,19 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       <button
         type="button"
         className="ar-tool is-up"
-        disabled={waiting || shopTop || view.chakra < view.upCost}
+        disabled={waiting || shopTop || view.coins < view.upCost}
         title={shopTop ? t('arena.tavernTop') : t('arena.upgrade', { n: view.tavernTier + 1 })}
+        aria-label={shopTop ? t('arena.tavernTop') : t('arena.upgrade', { n: view.tavernTier + 1 })}
         onClick={() => send({ action: 'up' })}
       >
+        <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
+          <polygon points={BADGE_POINTS} vectorEffect="non-scaling-stroke" />
+        </svg>
         <span>
           <UpIcon />
-          {shopTop ? t('arena.tavernTop') : t('arena.upgrade', { n: view.tavernTier + 1 })}
           {!shopTop && (
             <em className="ar-price">
-              <i />
+              <i className="ar-coin" />
               {view.upCost}
             </em>
           )}
@@ -515,15 +526,18 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       <button
         type="button"
         className="ar-tool"
-        disabled={waiting || view.chakra < view.rollCost}
+        disabled={waiting || view.coins < view.rollCost}
         title={t('arena.reroll')}
+        aria-label={t('arena.reroll')}
         onClick={() => send({ action: 'roll' })}
       >
+        <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
+          <polygon points={BADGE_POINTS} vectorEffect="non-scaling-stroke" />
+        </svg>
         <span>
           <RefreshIcon />
-          {t('arena.reroll')}
           <em className="ar-price">
-            <i />
+            <i className="ar-coin" />
             {view.rollCost}
           </em>
         </span>
@@ -534,7 +548,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const shop = () => (
     <ul className="ar-row is-shop">
       {view.tavern.map((one, i) => {
-        const poor = one.cost > view.chakra
+        const poor = one.cost > view.coins
         const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier }
         return (
           <li
@@ -592,22 +606,29 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         </div>
       ) : (
         <>
+          <div className="ar-crown">{fight ? <Hero who="foe" name={t('arena.foe')} hp={foeHp} /> : shopBar()}</div>
+
           <section className="ar-board">
             <div
               data-zone={fight ? undefined : 'shop'}
               className={`ar-half is-top ${selling ? 'is-selling' : ''}`}
             >
-              <div className="ar-plate">{fight && <Plate mark="B" name={t('arena.foe')} hp={foeHp} foe />}</div>
-              {fight ? (
-                packed(theirs)
-              ) : (
-                <>
-                  {shopBar()}
-                  {shop()}
-                </>
-              )}
+              {fight ? packed(theirs) : shop()}
             </div>
-            <i className="ar-line" aria-hidden />
+            <div className="ar-mid">
+              <i className="ar-line" aria-hidden />
+              {clock !== null && !fight && (
+              <span className={`ar-chip ar-clock ${clock <= 5 ? 'is-late' : ''}`} title={t('arena.time')}>
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                  <polygon points={CHIP} vectorEffect="non-scaling-stroke" />
+                </svg>
+                <span>
+                  <ClockIcon />
+                  <b>{clock}</b>
+                </span>
+              </span>
+            )}
+            </div>
             <div
               data-zone={fight ? undefined : 'slot'}
               data-at={freeAt}
@@ -626,15 +647,16 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                   ))}
                 </ul>
               )}
-              <div className="ar-plate">{fight && <Plate mark="T" name={t('arena.you')} hp={myHp} />}</div>
             </div>
           </section>
 
           <div className="ar-foot">
+            </div>
             <div
               data-zone={buying ? 'hand' : undefined}
-              className={`ar-hand ${buying ? 'is-taking' : ''}`}
+              className={`ar-hand ${buying ? 'is-taking' : ''} ${fight ? 'is-away' : ''}`}
             >
+              {fight && user && <Hero who="me" name={user.nickname} id={user.id} avatar={user.avatar} frame={user.frame} hp={myHp} />}
               <ul>
                 {view.hand.map((card, i) => (
                   <li key={card.uid}>
@@ -647,26 +669,32 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
             </div>
 
             <div className="ar-side">
-              {clock !== null && !fight && (
-                <div className={`ar-time ${clock <= 5 ? 'is-late' : ''}`}>
-                  <small>{t('arena.time')}</small>
-                  <b>{clock}</b>
-                </div>
-              )}
-              <div className="ar-chakra">
-                <span className="ar-chakra-head">
+              <div className="ar-purse is-coins">
+                <span className="ar-purse-head">
+                  <small>{t('arena.coins')}</small>
+                  <b>
+                    {view.coins} / {view.coinsMax}
+                  </b>
+                </span>
+                <span className="ar-purse-row" aria-hidden>
+                  {Array.from({ length: ARENA_COIN_MAX }, (_, i) => (
+                    <i key={i} className={`ar-coin ${i < view.coins ? 'is-full' : i < view.coinsMax ? 'is-spent' : ''}`} />
+                  ))}
+                </span>
+              </div>
+              <div className="ar-purse is-chakra">
+                <span className="ar-purse-head">
                   <small>{t('arena.chakra')}</small>
                   <b>
                     {view.chakra} / {view.chakraMax}
                   </b>
                 </span>
-                <span className="ar-crystals" aria-hidden>
+                <span className="ar-purse-row" aria-hidden>
                   {Array.from({ length: ARENA_CHAKRA_MAX }, (_, i) => (
-                    <i key={i} className={i < view.chakra ? 'is-full' : i < view.chakraMax ? 'is-spent' : ''} />
+                    <i key={i} className={`ar-orb ${i < view.chakra ? 'is-full' : i < view.chakraMax ? 'is-spent' : ''}`} />
                   ))}
                 </span>
               </div>
-            </div>
           </div>
         </>
       )}
