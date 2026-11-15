@@ -712,26 +712,10 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     </div>
   )
 
-  const shop = () => {
-    const old = leaving ?? []
-    const count = Math.max(old.length, view.tavern.length)
-    return (
-      <ul className={`ar-row is-shop ${leaving ? 'is-turning' : ''}`}>
-        {Array.from({ length: count }, (_, i) => {
-          const one = view.tavern[i]
-          const gone = old[i]
-          const back = gone && (
-            <span className="ar-old" style={{ '--j': old.length - 1 - i } as CSSProperties} aria-hidden>
-              <ArenaFace game={game.id} entity={byId.get(gone.id)} rarity={gone.rarity} atk={gone.atk} hp={gone.hp} summon={gone.summon} tier={gone.tier} />
-            </span>
-          )
-          if (!one) {
-            return (
-              <li key={`out${deal}:${i}`} className="is-gone" style={{ '--i': i } as CSSProperties}>
-                {back}
-              </li>
-            )
-          }
+  const shop = () => (
+    <div className="ar-shop-stack">
+      <ul className="ar-row is-shop">
+        {view.tavern.map((one, i) => {
           const nth = view.tavern.slice(0, i).filter((other) => other.id === one.id).length
           const poor = one.cost > view.coins
           const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier }
@@ -741,7 +725,6 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
               style={{ '--i': i, '--wait': `${dealWait}ms` } as CSSProperties}
               className={`is-held ${poor ? 'is-poor' : ''}`}
             >
-              {back}
               <span className="ar-move" onPointerDown={poor ? undefined : take('shop', card, i)}>
                 <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} />
               </span>
@@ -749,8 +732,19 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
           )
         })}
       </ul>
-    )
-  }
+      {leaving && (
+        <ul className="ar-row is-shop is-old" aria-hidden>
+          {leaving.map((one, i) => (
+            <li key={`out${deal}:${i}`} style={{ '--j': leaving.length - 1 - i } as CSSProperties}>
+              <span className="ar-old">
+                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} />
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
 
   return (
     <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''}`} style={{ '--dex': game.accent } as CSSProperties}>

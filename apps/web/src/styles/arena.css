@@ -308,7 +308,7 @@
   width: 100%;
   max-width: 1420px;
   height: calc(100dvh - var(--topbar-h, 64px) - 16px);
-  --cw: clamp(56px, min(calc((100dvh - 340px) * 0.1875), calc((min(100vw, 1420px) - 240px) / 7.8)), 142px);
+  --cw: clamp(56px, min(calc((100dvh - 400px) * 0.1875), calc((min(100vw, 1420px) - 240px) / 7.8)), 142px);
   --zone: calc(var(--cw) * 4 / 3 + 20px);
   margin: 0 auto;
   flex-direction: column;
@@ -661,12 +661,12 @@
 
 .ar-half.is-top {
   justify-content: flex-end;
-  padding-bottom: 26px;
+  padding-bottom: 35px;
 }
 
 .ar-half.is-bot {
   justify-content: flex-start;
-  padding-top: 26px;
+  padding-top: 35px;
 }
 
 
@@ -1591,11 +1591,11 @@
   display: flex;
   box-sizing: border-box;
   width: min(100%, calc(var(--cw) * 7 + 18px * 6 + 44px + 34px));
-  min-height: calc(var(--cw) * 4 / 3 + 26px);
+  min-height: calc(var(--cw) * 4 / 3 + 44px);
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 12px 22px;
+  padding: 21px 22px;
   border-radius: 22px;
   transition:
     background 0.18s ease;
@@ -1848,16 +1848,10 @@
 }
 
 .ar-old {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
+  display: block;
   pointer-events: none;
   animation: ar-swipe-out 0.32s ease-in both;
   animation-delay: calc(var(--j, 0) * 45ms);
-}
-
-.ar-row.is-shop li.is-gone {
-  pointer-events: none;
 }
 
 @keyframes ar-swipe-out {
@@ -1880,4 +1874,16 @@
     opacity: 1;
     transform: none;
   }
+}
+
+.ar-shop-stack {
+  position: relative;
+  width: 100%;
+}
+
+.ar-row.is-shop.is-old {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
 }
