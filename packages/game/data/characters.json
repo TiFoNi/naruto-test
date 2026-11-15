@@ -2814,34 +2814,6 @@
   "hidden": true
  },
  {
-  "id": 1229,
-  "name": "Тоби (Зецу)",
-  "gender": "Мужской",
-  "affiliations": [
-   "Акацуки"
-  ],
-  "jutsuTypes": [
-   "Ниндзюцу"
-  ],
-  "kekkeiGenkai": [
-   "Мокутон"
-  ],
-  "natureTypes": [
-   "Дотон",
-   "Суйтон",
-   "Катон",
-   "Футон",
-   "Райтон"
-  ],
-  "attributes": [],
-  "debutChapter": 602,
-  "arc": "Война: кульминация",
-  "arcIndex": 18,
-  "answer": true,
-  "nameEn": "Tobi (Zetsu)",
-  "thumb": 97
- },
- {
   "id": 1066,
   "name": "Тобирама Сенджу",
   "gender": "Мужской",
