@@ -308,7 +308,7 @@
   width: 100%;
   max-width: 1420px;
   height: calc(100dvh - var(--topbar-h, 64px) - 16px);
-  --cw: clamp(56px, min(calc((100dvh - 340px) * 0.1875), calc((min(100vw, 1420px) - 200px) / 7.8)), 142px);
+  --cw: clamp(56px, min(calc((100dvh - 340px) * 0.1875), calc((min(100vw, 1420px) - 240px) / 7.8)), 142px);
   --zone: calc(var(--cw) * 4 / 3 + 20px);
   margin: 0 auto;
   flex-direction: column;
@@ -1590,7 +1590,7 @@
 .ar-sell {
   display: flex;
   box-sizing: border-box;
-  width: min(100%, calc(var(--cw) * 7 + 18px * 6 + 44px));
+  width: min(100%, calc(var(--cw) * 7 + 18px * 6 + 44px + 34px));
   min-height: calc(var(--cw) * 4 / 3 + 26px);
   align-items: center;
   justify-content: center;
@@ -1792,5 +1792,94 @@
 
   .ar-foot {
     padding-top: 58px;
+  }
+}
+
+.ar-sell.is-drop {
+  gap: 34px;
+}
+
+.ar-sell.is-drop > .ar-row {
+  width: auto;
+}
+
+.ar-row.is-heroes {
+  min-width: var(--cw);
+}
+
+.ar-row.is-summons {
+  position: relative;
+  flex: none;
+}
+
+.ar-row.is-summons::before {
+  content: '';
+  position: absolute;
+  top: 8%;
+  bottom: 8%;
+  left: -18px;
+  border-left: 1.5px dashed rgba(244, 241, 234, 0.18);
+}
+
+.ar-row.is-summons li.is-empty {
+  aspect-ratio: 3 / 4;
+}
+
+.ar-summon-slot {
+  display: grid;
+  height: 100%;
+  border: 1.5px dashed rgba(244, 241, 234, 0.2);
+  border-radius: 10px;
+  color: rgba(244, 241, 234, 0.35);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  place-items: center;
+  text-transform: uppercase;
+}
+
+.ar-row.is-shop {
+  perspective: 1200px;
+}
+
+.ar-row.is-shop li {
+  position: relative;
+}
+
+.ar-row.is-shop li > .ar-move {
+  backface-visibility: hidden;
+  animation: ar-flip-in 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  animation-delay: calc(var(--wait, 0ms) + var(--i, 0) * 55ms);
+}
+
+.ar-old {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  backface-visibility: hidden;
+  animation: ar-flip-out 0.3s cubic-bezier(0.6, 0, 0.8, 0.4) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+.ar-row.is-shop li.is-gone {
+  pointer-events: none;
+}
+
+@keyframes ar-flip-out {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(90deg);
+  }
+}
+
+@keyframes ar-flip-in {
+  from {
+    transform: rotateY(-90deg);
+  }
+  to {
+    transform: rotateY(0deg);
   }
 }

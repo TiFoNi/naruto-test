@@ -1244,8 +1244,8 @@ export const POLL = {
 export const ARENA_GAMES: GameId[] = ['naruto']
 
 export const ARENA_HP = 40
-export const ARENA_HERO_SLOTS = 4
-export const ARENA_SUMMON_SLOTS = 3
+export const ARENA_HERO_SLOTS = 5
+export const ARENA_SUMMON_SLOTS = 2
 export const ARENA_HAND = 6
 export const ARENA_TAVERN = 5
 export const ARENA_COIN_MAX = 10

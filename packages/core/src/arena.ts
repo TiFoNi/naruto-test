@@ -237,14 +237,13 @@ export async function startArena(userId: ObjectId, game: GameId) {
   return doc
 }
 
-const ARENA_SLOTS = ARENA_HERO_SLOTS + ARENA_SUMMON_SLOTS
-
 const relay = (side: ArenaSide, line: ArenaCard[]) => {
-  side.heroes = line.slice(0, ARENA_HERO_SLOTS)
-  side.summons = line.slice(ARENA_HERO_SLOTS)
+  side.heroes = line.filter((card) => !card.summon).slice(0, ARENA_HERO_SLOTS)
+  side.summons = line.filter((card) => card.summon).slice(0, ARENA_SUMMON_SLOTS)
 }
 
-export const freeSlot = (side: ArenaSide) => onBoard(side).length < ARENA_SLOTS
+export const freeSlot = (side: ArenaSide, summon = false) =>
+  summon ? side.summons.length < ARENA_SUMMON_SLOTS : side.heroes.length < ARENA_HERO_SLOTS
 
 const place = (side: ArenaSide, card: ArenaCard) => relay(side, [...onBoard(side), card])
 
@@ -287,12 +286,11 @@ export function sellCard(doc: ArenaDoc, uid: string) {
 }
 
 export function moveCard(doc: ArenaDoc, uid: string, at: number) {
-  const line = onBoard(doc.board)
-  const from = line.findIndex((card) => card.uid === uid)
-  if (from < 0 || !Number.isInteger(at) || at < 0 || at >= line.length) return false
-  const [card] = line.splice(from, 1)
-  line.splice(Math.min(at, line.length), 0, card!)
-  relay(doc.board, line)
+  const group = doc.board.heroes.some((card) => card.uid === uid) ? doc.board.heroes : doc.board.summons
+  const from = group.findIndex((card) => card.uid === uid)
+  if (from < 0 || !Number.isInteger(at) || at < 0 || at >= group.length) return false
+  const [card] = group.splice(from, 1)
+  group.splice(Math.min(at, group.length), 0, card!)
   return true
 }
 
@@ -300,11 +298,10 @@ export function playCard(doc: ArenaDoc, uid: string, to = -1) {
   const at = doc.hand.findIndex((card) => card.uid === uid)
   if (at < 0) return false
   const card = doc.hand[at]!
-  if (!freeSlot(doc.board)) return false
+  if (!freeSlot(doc.board, card.summon)) return false
   doc.hand.splice(at, 1)
-  const line = onBoard(doc.board)
-  line.splice(Number.isInteger(to) && to >= 0 ? Math.min(to, line.length) : line.length, 0, card)
-  relay(doc.board, line)
+  const group = card.summon ? doc.board.summons : doc.board.heroes
+  group.splice(Number.isInteger(to) && to >= 0 ? Math.min(to, group.length) : group.length, 0, card)
   return true
 }
 

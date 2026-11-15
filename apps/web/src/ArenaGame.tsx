@@ -16,7 +16,6 @@ import BackButton from './BackButton'
 import { tornPoints } from './torn'
 import { useHref, useNavigate } from './router'
 
-const SLOTS = ARENA_HERO_SLOTS + ARENA_SUMMON_SLOTS
 const GRAB_PX = 5
 
 const CHIP = tornPoints(24, 7, 6)
@@ -27,6 +26,8 @@ const FLY_MS = 1100
 const IMPACT_MS = 470
 const GAP_MS = 260
 const DEATH_MS = 1100
+const LEAVE_MS = 300
+const LEAVE_STEP_MS = 55
 
 const cutOf = (seed: number) => {
   const next = randomOf(seed)
@@ -111,11 +112,14 @@ type Hold = {
   from: number
   to: number
   slot: number
+  summon: boolean
 }
 
 const line = (side: Side) => [...side.heroes, ...side.summons]
 
-const split = (cards: Card[]): Side => ({ heroes: cards.slice(0, ARENA_HERO_SLOTS), summons: cards.slice(ARENA_HERO_SLOTS) })
+const split = (cards: Card[]): Side => ({ heroes: cards.filter((one) => !one.summon), summons: cards.filter((one) => one.summon) })
+
+const roomOf = (summon: boolean) => (summon ? ARENA_SUMMON_SLOTS : ARENA_HERO_SLOTS)
 
 const ZONE_SHARE = 0.18
 
@@ -145,7 +149,6 @@ function Hero({ who, name, id, avatar, frame, hp, struck }: { who: 'me' | 'foe';
     <div data-hero={who} className={`ar-me is-${who} ${struck ? 'is-struck' : ''}`}>
       <span className="ar-me-ring">
         <Avatar id={id} name={name} avatar={avatar} frame={frame} className="ar-me-face" />
-        {struck && <Slash seed={who === 'me' ? 3 : 8} />}
       </span>
       <span className="ar-me-hp">
         <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
@@ -177,6 +180,11 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const [clock, setClock] = useState<number | null>(null)
   const [dragging, setDragging] = useState<Kind | null>(null)
   const [over, setOver] = useState<Spot['zone'] | null>(null)
+  const [deal, setDeal] = useState(0)
+  const dealt = useRef<number[]>([])
+  const shown = useRef<ArenaView['tavern']>([])
+  const [leaving, setLeaving] = useState<ArenaView['tavern'] | null>(null)
+  const leaveTimer = useRef(0)
   const overNow = useRef<Spot['zone'] | null>(null)
   const hold = useRef<Hold | null>(null)
 
@@ -240,11 +248,12 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       setView((now) => {
         if (!now) return now
         const card = now.hand.find((one) => one.uid === uid)
-        const cards = line(now.board)
-        if (!card || cards.length >= SLOTS) return now
-        const next = [...cards]
-        next.splice(at < 0 ? next.length : Math.min(at, next.length), 0, card)
-        return { ...now, hand: now.hand.filter((one) => one.uid !== uid), board: split(next) }
+        if (!card) return now
+        const group = card.summon ? [...now.board.summons] : [...now.board.heroes]
+        if (group.length >= roomOf(card.summon)) return now
+        group.splice(at < 0 ? group.length : Math.min(at, group.length), 0, card)
+        const board = card.summon ? { ...now.board, summons: group } : { ...now.board, heroes: group }
+        return { ...now, hand: now.hand.filter((one) => one.uid !== uid), board }
       })
       send(at >= 0 ? { action: 'play', uid, at } : { action: 'play', uid })
     },
@@ -273,13 +282,13 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     (uid: string, at: number) => {
       setView((now) => {
         if (!now) return now
-        const cards = line(now.board)
-        const from = cards.findIndex((one) => one.uid === uid)
+        const summon = now.board.summons.some((one) => one.uid === uid)
+        const next = summon ? [...now.board.summons] : [...now.board.heroes]
+        const from = next.findIndex((one) => one.uid === uid)
         if (from < 0 || from === at) return now
-        const next = [...cards]
         const [card] = next.splice(from, 1)
         next.splice(Math.min(at, next.length), 0, card!)
-        return { ...now, board: split(next) }
+        return { ...now, board: summon ? { ...now.board, summons: next } : { ...now.board, heroes: next } }
       })
       send({ action: 'move', uid, at })
     },
@@ -296,6 +305,29 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       setLead(true)
     })
   }, [send])
+
+  const offers = view?.tavern.map((one) => one.id).join(',') ?? ''
+  useEffect(() => {
+    const next = offers ? offers.split(',').map(Number) : []
+    const left = [...dealt.current]
+    const fresh = next.some((id) => {
+      const at = left.indexOf(id)
+      if (at < 0) return true
+      left.splice(at, 1)
+      return false
+    })
+    if (fresh) {
+      const gone = shown.current
+      setDeal((was) => was + 1)
+      if (gone.length) {
+        setLeaving(gone)
+        window.clearTimeout(leaveTimer.current)
+        leaveTimer.current = window.setTimeout(() => setLeaving(null), LEAVE_MS + gone.length * LEAVE_STEP_MS)
+      }
+    }
+    dealt.current = next
+    shown.current = view?.tavern ?? []
+  }, [offers])
 
   const finishing = useRef(finish)
   finishing.current = finish
@@ -422,6 +454,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       from: -1,
       to: -1,
       slot: -1,
+      summon: card.summon,
     }
   }
 
@@ -441,7 +474,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   useEffect(() => {
     const begin = (one: Hold) => {
       one.live = true
-      one.cells = [...document.querySelectorAll<HTMLElement>('.ar-half.is-bot .ar-row [data-uid]')].map((node) => {
+      one.cells = [...document.querySelectorAll<HTMLElement>(`.ar-half.is-bot .ar-row.${one.summon ? 'is-summons' : 'is-heroes'} [data-uid]`)].map((node) => {
         const box = node.getBoundingClientRect()
         return { node, mid: box.left + box.width / 2 }
       })
@@ -499,7 +532,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       }
       if (one.kind === 'hand') {
         let slot = -1
-        if (over?.zone === 'slot' && one.cells.length < SLOTS) {
+        if (over?.zone === 'slot' && one.cells.length < roomOf(one.summon)) {
           slot = one.cells.filter((cell) => cell.mid < centre).length
         }
         if (slot !== one.slot) {
@@ -573,8 +606,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const theirs = at >= 0 ? line(view.foeBoard) : line(view.foeBoard)
   const myHp = state ? state.hp : at >= 0 ? (view.opened?.hp ?? view.hp) : view.hp
   const foeHp = state ? state.foeHp : at >= 0 ? (view.opened?.foeHp ?? view.foeHp) : view.foeHp
-  const freeAt = line(view.board).length < SLOTS ? line(view.board).length : -1
-  const stable = line(view.board)
+  const freeAt = view.board.heroes.length < ARENA_HERO_SLOTS ? view.board.heroes.length : -1
   const selling = dragging === 'board' || dragging === 'hand'
   const buying = dragging === 'shop'
 
@@ -678,24 +710,45 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     </div>
   )
 
-  const shop = () => (
-    <ul className="ar-row is-shop">
-      {view.tavern.map((one, i) => {
-        const poor = one.cost > view.coins
-        const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier }
-        return (
-          <li
-            key={`${one.id}:${i}`}
-            className={`is-held ${poor ? 'is-poor' : ''}`}
-          >
-            <span className="ar-move" onPointerDown={poor ? undefined : take('shop', card, i)}>
-              <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} />
+  const shop = () => {
+    const old = leaving ?? []
+    const count = Math.max(old.length, view.tavern.length)
+    return (
+      <ul className={`ar-row is-shop ${leaving ? 'is-turning' : ''}`}>
+        {Array.from({ length: count }, (_, i) => {
+          const one = view.tavern[i]
+          const gone = old[i]
+          const back = gone && (
+            <span className="ar-old" aria-hidden>
+              <ArenaFace game={game.id} entity={byId.get(gone.id)} rarity={gone.rarity} atk={gone.atk} hp={gone.hp} summon={gone.summon} tier={gone.tier} />
             </span>
-          </li>
-        )
-      })}
-    </ul>
-  )
+          )
+          if (!one) {
+            return (
+              <li key={`out${deal}:${i}`} className="is-gone" style={{ '--i': i } as CSSProperties}>
+                {back}
+              </li>
+            )
+          }
+          const nth = view.tavern.slice(0, i).filter((other) => other.id === one.id).length
+          const poor = one.cost > view.coins
+          const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier }
+          return (
+            <li
+              key={`${deal}:${one.id}:${nth}`}
+              style={{ '--i': i, '--wait': gone ? `${LEAVE_MS}ms` : '0ms' } as CSSProperties}
+              className={`is-held ${poor ? 'is-poor' : ''}`}
+            >
+              {back}
+              <span className="ar-move" onPointerDown={poor ? undefined : take('shop', card, i)}>
+                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} />
+              </span>
+            </li>
+          )
+        })}
+      </ul>
+    )
+  }
 
   return (
     <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''}`} style={{ '--dex': game.accent } as CSSProperties}>
@@ -772,8 +825,8 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                 packed(mine)
               ) : (
                 <div data-zone="slot" data-at={freeAt} className={`ar-sell is-drop ${dragging === 'hand' || dragging === 'shop' ? 'is-selling' : ''} ${(dragging === 'hand' || dragging === 'shop') && over === 'slot' ? 'is-over' : ''}`}>
-                <ul className="ar-row">
-                  {stable.map((card, i) => (
+                <ul className="ar-row is-heroes">
+                  {view.board.heroes.map((card, i) => (
                     <li key={card.uid}>
                       <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
                         <ArenaFace game={game.id} entity={byId.get(card.id)} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} />
@@ -781,6 +834,24 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                     </li>
                   ))}
                 </ul>
+                {view.board.summons.length > 0 && (
+                <ul className="ar-row is-summons">
+                  {Array.from({ length: ARENA_SUMMON_SLOTS }, (_, i) => {
+                    const card = view.board.summons[i]
+                    return card ? (
+                      <li key={card.uid}>
+                        <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
+                          <ArenaFace game={game.id} entity={byId.get(card.id)} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} />
+                        </span>
+                      </li>
+                    ) : (
+                      <li key={`empty${i}`} className="is-empty">
+                        <span className="ar-summon-slot">{t('arena.summonSlot')}</span>
+                      </li>
+                    )
+                  })}
+                </ul>
+                )}
                 </div>
               )}
             </div>
