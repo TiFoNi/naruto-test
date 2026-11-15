@@ -96,9 +96,10 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
 
   const load = useCallback(async () => {
     const { data } = await api<{ arena?: ArenaView | null }>('arena')
-    setView(data.arena ?? null)
+    const now = data.arena ?? (await api<{ arena?: ArenaView | null }>('arena', { action: 'start', game: gameId })).data.arena ?? null
+    setView(now)
     setChecked(true)
-  }, [])
+  }, [gameId])
 
   useEffect(() => {
     if (user) void load()
@@ -582,7 +583,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
               <b>{view.foeHp}</b>
             </span>
           </div>
-          <button type="button" className="ar-chip ar-go" onClick={() => send({ action: 'quit' }, true)}>
+          <button type="button" className="ar-chip ar-go" onClick={() => send({ action: 'start', game: gameId }, true)}>
             <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
               <polygon points={CHIP} vectorEffect="non-scaling-stroke" />
             </svg>
