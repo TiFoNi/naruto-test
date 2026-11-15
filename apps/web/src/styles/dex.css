@@ -2264,12 +2264,6 @@ button.lv-badge:focus-visible {
   gap: 6px;
 }
 
-.dex-tally {
-  margin: 0;
-  color: var(--dex, #ff8a1f);
-  font-size: 14px;
-  font-weight: 800;
-}
 
 .dex-purse {
   display: flex;
@@ -2387,16 +2381,13 @@ button.lv-badge:focus-visible {
 }
 
 .dex-hunt-list .dex-hunt-blank {
-  display: flex;
+  display: block;
   width: 100%;
-  flex-direction: column;
-  align-items: center;
   padding: 0;
   border: 0;
   background: none;
   color: inherit;
   cursor: pointer;
-  gap: 6px;
 }
 
 .dex-hunt-card {
@@ -2485,48 +2476,11 @@ button.lv-badge:focus-visible {
   margin-bottom: 6px;
 }
 
-.dex-hunt-blank {
-  position: relative;
-  aspect-ratio: 3 / 4;
-  justify-content: center;
-  color: rgba(235, 229, 220, 0.75) !important;
-  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.35));
-  transition: scale 0.18s cubic-bezier(0.22, 1, 0.36, 1);
-}
 
-.dex-hunt-blank:hover {
-  scale: 1.04;
-}
 
-.dex-hunt-hole {
-  position: absolute;
-  inset: 0;
-  background: #1b1a1f;
-}
 
-.dex-hunt-blank.is-picking .dex-hunt-hole {
-  background: #4a2a10;
-}
 
-.dex-hunt-blank.is-picking {
-  color: #ffb36b !important;
-}
 
-.dex-hunt-blank i {
-  position: relative;
-  font-family: var(--display);
-  font-size: 34px;
-  font-style: normal;
-  line-height: 1;
-}
-
-.dex-hunt-blank small {
-  position: relative;
-  padding: 0 8px;
-  font-size: 11px;
-  font-weight: 800;
-  text-align: center;
-}
 
 @media (max-width: 860px) {
   .dex-vault {
@@ -2643,10 +2597,6 @@ button.lv-badge:focus-visible {
 @media (hover: hover) {
   .dex-hunt-card:hover .dex-scrap {
     translate: 0 -6px;
-    filter:
-      drop-shadow(0 12px 14px rgb(0 0 0 / 45%))
-      drop-shadow(0 0 1px color-mix(in srgb, var(--dex) 80%, transparent))
-      drop-shadow(0 0 7px color-mix(in srgb, var(--dex) 30%, transparent));
   }
 }
 
@@ -2699,20 +2649,9 @@ button.lv-badge:focus-visible {
     padding: 24px 22px 26px;
   }
 
-  .dex-hunt-blank small {
-    font-size: 10px;
-  }
 
-  .dex-hunt-blank i {
-    font-size: 26px;
-  }
 }
 
-.dex-vault-sk {
-  width: 100%;
-  height: calc(var(--dex-cell, 118px) * 4 / 3 + 72px);
-  border-radius: 10px;
-}
 
 .dex-coin-sk {
   width: 128px;
@@ -2720,11 +2659,6 @@ button.lv-badge:focus-visible {
   border-radius: 8px;
 }
 
-@media (max-width: 860px) {
-  .dex-vault-sk {
-    height: calc(var(--dex-cell, 80px) * 4 / 3 + 230px);
-  }
-}
 
 .dex-zoom-scrap {
   position: absolute;
@@ -2929,4 +2863,53 @@ button.lv-badge:focus-visible {
 .lv-buy:disabled i {
   border-color: rgba(27, 26, 30, 0.2);
   color: inherit;
+}
+
+.dex-stats .dex-stat-sk {
+  display: inline-block;
+  width: 5.5em;
+  height: 0.8em;
+  border: 0;
+  border-radius: 6px;
+  background: rgba(27, 26, 30, 0.12);
+  vertical-align: middle;
+  animation: dex-stat-wait 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes dex-stat-wait {
+  to {
+    opacity: 0.45;
+  }
+}
+
+.dex-hunt-blank.is-waiting {
+  cursor: default;
+}
+
+
+.dex-hunt-blank {
+  transition: scale 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dex-hunt-blank:not(:disabled):hover {
+  scale: 1.04;
+}
+
+.dex-hunt-blank .dex-scrap.is-locked em {
+  font-size: clamp(28px, 3vw, 40px);
+}
+
+.dex-hunt-blank .dex-scrap.is-locked small {
+  color: #b9b2bd;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.dex-hunt-blank.is-picking .dex-scrap.is-locked .dex-paper {
+  background: #4a2a10;
+}
+
+.dex-hunt-blank.is-picking .dex-scrap.is-locked em,
+.dex-hunt-blank.is-picking .dex-scrap.is-locked small {
+  color: #ffb36b;
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Fragment, memo, useCallback, useDeferredValue, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
+import { Fragment, memo, useCallback, useDeferredValue, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import BackButton from './BackButton'
 import { api } from './api'
@@ -1336,6 +1336,8 @@ const DexZoom = ({
   )
 }
 
+const huntSeed = (slot: number) => 7300 + slot * 17
+const ADMIN_KEY = 'dex-admin'
 const SIZE_KEY = 'dex-size:'
 const noop = () => () => {}
 const useRemembered = (game: string) =>
@@ -1371,6 +1373,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   const [cards, setCards] = useState<Record<number, CardStats>>({})
   const [pins, setPins] = useState<Set<number> | null>(null)
   const [pinCount, setPinCount] = useState(0)
+  const [dexReady, setDexReady] = useState(false)
 
   const togglePin = async (id: number) => {
     if (!pins || !game) return
@@ -1400,6 +1403,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
       setPins(owner ? null : new Set(data.pins ?? []))
       setPinCount(data.pinCount ?? 0)
       setNickname(data.nickname ?? null)
+      setDexReady(true)
     })
     return () => {
       alive = false
@@ -1407,7 +1411,26 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
   }, [game, user, owner])
 
   const fresh = !!user?.admin && !owner && !!game && shardGame(game.id)
+  const [wasAdmin, setWasAdmin] = useState(false)
+  useLayoutEffect(() => {
+    try {
+      setWasAdmin(localStorage.getItem(ADMIN_KEY) === '1')
+    } catch {
+      setWasAdmin(false)
+    }
+  }, [])
+  useEffect(() => {
+    if (checking) return
+    try {
+      if (user?.admin) localStorage.setItem(ADMIN_KEY, '1')
+      else localStorage.removeItem(ADMIN_KEY)
+    } catch {
+      return
+    }
+  }, [user, checking])
   const [vault, setVault] = useState<Vault | null>(null)
+  const shown = vault && dexReady ? vault : null
+  const waiting = (!vault || !dexReady) && !owner && !!game && shardGame(game.id) && (fresh || (checking && wasAdmin))
   const [busy, setBusy] = useState(false)
 
   const loadVault = useCallback(async () => {
@@ -1542,15 +1565,8 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
               {fresh ? <DexHelp modes={game.modes} /> : <OldHelp modes={game.modes} />}
               {!fresh && <DexSoon />}
             </div>
-            {fresh && open.size > 0 && (
-              <p className="dex-tally">
-                {t('dex.tally', { got: open.size, total: listed.length })}
-                {counts[4]! > 0 && <> · {t('dex.tallyLegend', { n: counts[4]! })}</>}
-                {counts[5]! > 0 && <> · {t('dex.tallyMythic', { n: counts[5]! })}</>}
-              </p>
-            )}
           </div>
-          {fresh && !vault && (
+          {waiting && (
             <div className="dex-purse" aria-hidden>
               <span className="sk dex-coin-sk" />
             </div>
@@ -1577,15 +1593,9 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
       </header>
 
 
-      {fresh && !vault && (
-        <div className="dex-vault" aria-hidden>
-          <span className="sk dex-vault-sk" />
-        </div>
-      )}
-
-      {vault && !owner && open.size > 0 && (
+      {!owner && (waiting || (vault && open.size > 0)) && (
         <>
-          <div className="dex-vault">
+          <div className="dex-vault" aria-busy={!shown || undefined}>
             <section className="dex-hunt">
               <svg className="dex-hunt-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
                 <defs>
@@ -1606,18 +1616,14 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                       <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
                     </svg>
                     <dt>{t('dex.statShards')}</dt>
-                    <dd>
-                      {vault.shards.got.toLocaleString('uk')} / {vault.shards.max.toLocaleString('uk')}
-                    </dd>
+                    <dd>{shown ? `${shown.shards.got.toLocaleString('uk')} / ${shown.shards.max.toLocaleString('uk')}` : <span className="sk dex-stat-sk" />}</dd>
                   </div>
                   <div>
                     <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
                       <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
                     </svg>
                     <dt>{t('dex.statUps')}</dt>
-                    <dd>
-                      {vault.ups.used} / {vault.ups.max}
-                    </dd>
+                    <dd>{shown ? `${shown.ups.used} / ${shown.ups.max}` : <span className="sk dex-stat-sk" />}</dd>
                   </div>
                 </dl>
               </div>
@@ -1625,9 +1631,9 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
               <span className="dex-hunt-tray" style={{ clipPath: torn(6110, 5) }} aria-hidden />
               <ul className="dex-hunt-list">
                 {Array.from({ length: HUNT_MAX }, (_, slot) => {
-                  const id = vault.hunt[slot]
+                  const id = shown?.hunt[slot]
                   const entity = id ? listed.find((one) => one.id === id) : undefined
-                  const grade = id ? vault.cards[id] : undefined
+                  const grade = id ? shown?.cards[id] : undefined
                   return (
                     <li key={slot} className={entity ? 'is-on' : 'is-empty'}>
                       {entity ? (
@@ -1643,9 +1649,9 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                               setFocus(lift(entity, face))
                             }}
                           >
-                            <DexFace game={game.id} id={entity.id} image={entity.image} label={label(entity)} tier={grade?.rank ?? 0} />
+                            <DexFace game={game.id} id={entity.id} image={entity.image} label={label(entity)} tier={grade?.rank ?? 0} seed={huntSeed(slot)} />
                           </button>
-                          <button type="button" className="card-unpin" aria-label={t('dex.huntDrop')} title={t('dex.huntDrop')} onClick={() => toggleHunt(entity.id)}>
+                          <button type="button" className="card-unpin" aria-label={t('dex.huntDrop')} onClick={() => toggleHunt(entity.id)}>
                             <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
                               <polygon points={UNPIN_POINTS} vectorEffect="non-scaling-stroke" />
                             </svg>
@@ -1656,13 +1662,16 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                         <button
                           key="blank"
                           type="button"
-                          className={`dex-hunt-blank ${picking === slot ? 'is-picking' : ''}`}
+                          className={`dex-hunt-blank ${picking === slot ? 'is-picking' : ''} ${shown ? '' : 'is-waiting'}`}
                           style={{ rotate: `${(slot - 1) * 2.5}deg` } as CSSProperties}
+                          disabled={!shown}
                           onClick={() => setPicking((was) => (was === slot ? null : slot))}
                         >
-                          <span className="dex-hunt-hole" style={{ clipPath: torn(7300 + slot * 17, 4) }} aria-hidden />
-                          <i aria-hidden>+</i>
-                          <small>{t(picking === slot ? 'dex.huntPick' : 'dex.huntEmpty')}</small>
+                          <span className="dex-scrap is-locked">
+                            <i className="dex-paper" style={{ clipPath: torn(huntSeed(slot), 4) }} />
+                            {shown && <em aria-hidden>+</em>}
+                            {shown && <small>{t(picking === slot ? 'dex.huntPick' : 'dex.huntEmpty')}</small>}
+                          </span>
                         </button>
                       )}
                     </li>
