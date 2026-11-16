@@ -879,7 +879,7 @@ export const DUST_SCRAP = 0.25
 
 export const CARD_POWER = [1, 1.2, 1.4, 1.6, 1.8, 2] as const
 
-export const CARD_UPS_DAY = 4
+export const CARD_UPS_DAY = 15
 
 export const SHARDS_DAY = 3000
 
