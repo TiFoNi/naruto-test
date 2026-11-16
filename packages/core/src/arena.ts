@@ -222,13 +222,14 @@ const TURN_GRACE_MS = 1500
 const FIGHT_GEN_MS = 700
 const FIGHT_HEAL_MS = 650
 const FIGHT_CALL_MS = 300
+const FIGHT_CLAY_MS = 450
 
 const replayMs = (steps: ArenaStep[]) => {
   let total = FIGHT_LEAD_MS
   let standing = Infinity
   for (const step of steps) {
     const now = step.mine.length + step.theirs.length
-    total += FIGHT_STEP_MS + (now < standing && standing !== Infinity ? FIGHT_DEATH_MS : 0) + (step.charm || step.skip ? FIGHT_GEN_MS : 0) + (step.heals ? FIGHT_HEAL_MS : 0) + (step.summoned || step.risen ? FIGHT_CALL_MS : 0)
+    total += FIGHT_STEP_MS + (now < standing && standing !== Infinity ? FIGHT_DEATH_MS : 0) + (step.charm || step.skip ? FIGHT_GEN_MS : 0) + (step.heals ? FIGHT_HEAL_MS : 0) + (step.summoned || step.risen ? FIGHT_CALL_MS : 0) + (step.shot === 'clay' ? FIGHT_CLAY_MS : 0)
     standing = now
   }
   return Math.round(total * FIGHT_SHARE)

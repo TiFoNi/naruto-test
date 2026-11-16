@@ -30,6 +30,9 @@ const SHOT_MS = 380
 const HEAL_DELAY_MS = 520
 const HEAL_HOLD_MS = 650
 const GEN_HOLD_MS = 700
+const CLAY_FLY_MS = 820
+const CLAY_GAP_MS = 150
+const CLAY_HOLD_MS = 450
 
 const CLAY_BIRD =
   '<svg viewBox="0 0 64 40"><path class="is-wing is-back" d="M26 17 C 24 8, 18 3, 8 1.5 C 12 4, 14 7, 15 10 C 12 9.5, 10 10, 9 11 C 13 12, 16 13.5, 18 15 C 21 14, 24 15, 26 17 Z"/><path class="is-tail" d="M3 19 L 12 16 L 11 19.5 L 16 18.5 L 13 22 L 15 26 L 3 22.5 Z"/><path class="is-body" d="M11 22 C 17 13.5, 33 11, 45 15 C 49 13.5, 53 13, 57 14.6 L 63.5 16.6 L 57 18.6 C 53.5 23.5, 43 27.5, 29.5 27.5 C 21 27.5, 15 25.5, 11 22 Z"/><path class="is-belly" d="M16 23.5 C 24 26, 36 26, 46 22.5 C 40 26.5, 25 27.5, 16 23.5 Z"/><path class="is-seam" d="M33 13.5 C 34 17, 34 21, 32.5 26 M 44 15 C 45 18, 45 21, 44 24"/><path class="is-wing" d="M29 18 C 32 7, 41 1, 54 0.5 C 50 2.5, 48 4.5, 46.5 7 C 49 6.5, 51 6.8, 52.5 7.5 C 48 9, 45 11, 43.5 13 C 46 13, 47.5 13.5, 48.5 14.2 C 43 15, 39 17, 35.5 20.5 Z"/><circle class="is-eye" cx="52.5" cy="15.8" r="1.4"/></svg>'
@@ -544,7 +547,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       ? document.querySelector<HTMLElement>(`.ar-row.is-packed [data-uid="${one.to}"]`)
       : document.querySelector<HTMLElement>(`[data-hero="${one.foe ? 'me' : 'foe'}"]`)
 
-    const land = setTimeout(() => setHit(true), IMPACT_MS)
+    const land = setTimeout(() => setHit(true), one.shot === 'clay' ? CLAY_FLY_MS : IMPACT_MS)
     let next: ReturnType<typeof setTimeout> | undefined
     let zone: HTMLElement | null = null
     const plays: Animation[] = []
@@ -595,7 +598,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
               { transform: `translate(${dx * 0.75 + ox * 0.5}px, ${dy * 0.75 + rise * 0.7}px) scale(${face}, 1) rotate(14deg)`, offset: 0.72 },
               { transform: `translate(${dx + ox}px, ${dy + oy}px) scale(${1.1 * face}, 1.1) rotate(48deg)`, opacity: 1 },
             ],
-            { duration: 420, delay: i * 85, easing: 'cubic-bezier(0.4, 0, 0.6, 1)', fill: 'both' },
+            { duration: CLAY_FLY_MS, delay: i * CLAY_GAP_MS, easing: 'cubic-bezier(0.4, 0, 0.6, 1)', fill: 'both' },
           )
           flight.onfinish = () => {
             bird.remove()
@@ -641,7 +644,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       plays.push(
         movers[0]!.animate(
           [{ transform: 'none' }, { transform: `translate(${-Math.sign(dx) * 4}px, ${-Math.sign(dy) * 8}px) scale(0.97)`, offset: 0.3 }, { transform: 'none' }],
-          { duration: FLY_MS, easing: 'ease-out' },
+          { duration: FLY_MS + (one.shot === 'clay' ? CLAY_HOLD_MS : 0), easing: 'ease-out' },
         ),
       )
     } else if (movers.length && aim) {
