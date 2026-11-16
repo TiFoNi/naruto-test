@@ -37,6 +37,25 @@ const CLAY_HOLD_MS = 450
 const CLAY_BIRD =
   '<svg viewBox="0 0 64 40"><path class="is-wing is-back" d="M26 17 C 24 8, 18 3, 8 1.5 C 12 4, 14 7, 15 10 C 12 9.5, 10 10, 9 11 C 13 12, 16 13.5, 18 15 C 21 14, 24 15, 26 17 Z"/><path class="is-tail" d="M3 19 L 12 16 L 11 19.5 L 16 18.5 L 13 22 L 15 26 L 3 22.5 Z"/><path class="is-body" d="M11 22 C 17 13.5, 33 11, 45 15 C 49 13.5, 53 13, 57 14.6 L 63.5 16.6 L 57 18.6 C 53.5 23.5, 43 27.5, 29.5 27.5 C 21 27.5, 15 25.5, 11 22 Z"/><path class="is-belly" d="M16 23.5 C 24 26, 36 26, 46 22.5 C 40 26.5, 25 27.5, 16 23.5 Z"/><path class="is-seam" d="M33 13.5 C 34 17, 34 21, 32.5 26 M 44 15 C 45 18, 45 21, 44 24"/><path class="is-wing" d="M29 18 C 32 7, 41 1, 54 0.5 C 50 2.5, 48 4.5, 46.5 7 C 49 6.5, 51 6.8, 52.5 7.5 C 48 9, 45 11, 43.5 13 C 46 13, 47.5 13.5, 48.5 14.2 C 43 15, 39 17, 35.5 20.5 Z"/><circle class="is-eye" cx="52.5" cy="15.8" r="1.4"/></svg>'
 
+const BURST = Array.from({ length: 18 }, (_, i) => {
+  const r = i % 2 ? 24 : 48 - ((i * 7) % 3) * 7
+  const a = (i / 18) * Math.PI * 2
+  return `${(Math.cos(a) * r).toFixed(1)},${(Math.sin(a) * r).toFixed(1)}`
+}).join(' ')
+
+const BlastFx = () => (
+  <span className="ar-blast" aria-hidden>
+    <i className="ar-blast-flash" />
+    <svg className="ar-blast-star" viewBox="-50 -50 100 100">
+      <polygon points={BURST} />
+    </svg>
+    <b className="ar-blast-word">БУМ!</b>
+    {Array.from({ length: 7 }, (_, i) => (
+      <i key={i} className="ar-blast-puff" style={{ '--a': `${i * 51 + 20}deg`, '--s': `${0.7 + (i % 3) * 0.2}` } as CSSProperties} />
+    ))}
+  </span>
+)
+
 type TipInfo = { id: number; taunt?: boolean; cleave?: boolean; shot?: string | null; poison?: boolean; sound?: boolean; medic?: boolean; fury?: boolean; guard?: string | null; dodge?: number }
 
 const TIP_W = 240
@@ -609,17 +628,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
             ],
             { duration: CLAY_FLY_MS, delay: i * CLAY_GAP_MS, easing: 'cubic-bezier(0.4, 0, 0.6, 1)', fill: 'both' },
           )
-          flight.onfinish = () => {
-            bird.remove()
-            const boom = document.createElement('div')
-            boom.className = 'ar-clay-boom is-small is-live'
-            boom.innerHTML = '<i class="is-flash"></i>' + Array.from({ length: 6 }, (_, k) => `<i class="is-puff" style="--a:${k * 60 + 15}deg"></i>`).join('')
-            boom.style.left = `${sx + dx + ox}px`
-            boom.style.top = `${sy + dy + oy}px`
-            document.body.appendChild(boom)
-            extra.push(boom)
-            window.setTimeout(() => boom.remove(), 1000)
-          }
+          flight.onfinish = () => bird.remove()
         })
       } else {
         const shot = document.createElement('div')
@@ -1002,10 +1011,12 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} />
         )
         const clips = dying ? tearOf(seedOf(card.uid)) : null
-        const cut = struck && !dying ? cutOf(seedOf(card.uid)) : null
+        const blasted = struck && now?.shot === 'clay'
+        const blastAt = blasted ? [now?.to, ...(now?.splash ?? [])].indexOf(card.uid) * CLAY_GAP_MS : 0
+        const cut = struck && !dying && !blasted ? cutOf(seedOf(card.uid)) : null
         return (
           <li key={card.uid} className={`is-held ${gone ? 'is-out' : ''} ${dying ? 'is-dying' : ''}`}>
-            <span data-uid={card.uid} className={`ar-move ${dazedNow.has(card.uid) ? 'is-stunned' : ''} ${raised ? 'is-warding' : ''} ${called ? 'is-called' : ''} ${risen ? 'is-risen' : ''} ${mended ? 'is-mended' : ''} ${helping ? 'is-helping' : ''} ${struck ? 'is-struck' : ''} ${dodging ? 'is-dodging' : ''} ${charmed ? 'is-charmed' : ''} ${dazed ? 'is-dazed' : ''} ${struck && now?.venom ? 'is-venom' : ''}`}>
+            <span data-uid={card.uid} className={`ar-move ${dazedNow.has(card.uid) ? 'is-stunned' : ''} ${raised ? 'is-warding' : ''} ${called ? 'is-called' : ''} ${risen ? 'is-risen' : ''} ${mended ? 'is-mended' : ''} ${helping ? 'is-helping' : ''} ${struck ? 'is-struck' : ''} ${blasted ? 'is-blasted' : ''} ${dodging ? 'is-dodging' : ''} ${charmed ? 'is-charmed' : ''} ${dazed ? 'is-dazed' : ''} ${struck && now?.venom ? 'is-venom' : ''}`} style={blasted ? ({ '--at': `${blastAt}ms` } as CSSProperties) : undefined}>
               {clips ? (
                 <span className="ar-tear" style={{ '--lean': clips.lean } as CSSProperties}>
                   <span className="ar-tear-half is-left" style={{ clipPath: clips.left }}>
@@ -1027,7 +1038,8 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
               ) : (
                 <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} />
               )}
-              {struck && <Slash seed={seedOf(card.uid)} />}
+              {struck && !blasted && <Slash seed={seedOf(card.uid)} />}
+              {blasted && <BlastFx />}
               {(charmed || dazed) && <GenFx />}
               {(charmed || dazed) && (
                 <b className="ar-status-word" aria-hidden>
