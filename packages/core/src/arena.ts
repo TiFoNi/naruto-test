@@ -101,6 +101,36 @@ const skills = new Map<number, [ArenaAbility, CardRarity][]>(
 
 export const poisonOf = (id: number) => venoms.has(id)
 
+const callers = new Map<number, number>(Object.entries(((traits as Record<string, unknown>).summon as Record<string, number> | undefined) ?? {}).map(([id, beast]) => [Number(id), beast]))
+const furies = new Set<number>(((traits as Record<string, unknown>).fury as number[] | undefined) ?? [])
+const wardens = new Map<number, string>(Object.entries(((traits as Record<string, unknown>).ward as Record<string, string> | undefined) ?? {}).map(([id, reach]) => [Number(id), reach]))
+
+export const beastOf = (id: number) => callers.get(id) ?? null
+
+export const furyOf = (id: number) => furies.has(id)
+
+export const wardOf = (id: number) => wardens.get(id) ?? null
+
+const looks = new Map<number, string>(Object.entries(((traits as Record<string, unknown>).wardLook as Record<string, string> | undefined) ?? {}).map(([id, look]) => [Number(id), look]))
+
+const lookOf = (id: number) => looks.get(id) ?? 'sand'
+
+export const costOf = (id: number, key: ArenaAbility) => {
+  if (key !== 'summon') return ARENA_ABILITIES[key]
+  const beast = beastOf(id)
+  const row = beast === null ? undefined : rowOf(beast)
+  return row ? Math.max(1, Math.round((row[1] + row[2]) / 5)) : ARENA_ABILITIES.summon
+}
+
+const SLOTS_OF: Partial<Record<string, number>> = { summon: 1, limbo: 2 }
+
+const callsFor = (side: ArenaSide) => side.summons.length + onBoard(side).reduce((sum, one) => sum + (one.armed ?? []).reduce((all, key) => all + (SLOTS_OF[key] ?? 0), 0), 0)
+
+const guards = (card: ArenaCard) => !!card.ghost || tauntOf(card.id)
+
+const skillView = (id: number, rarity: CardRarity) =>
+  skillsOf(id, rarity).map((key) => ({ key, cost: costOf(id, key), ...(key === 'summon' ? { beast: beastOf(id) } : {}) }))
+
 export const skillsOf = (id: number, rarity: CardRarity) =>
   (skills.get(id) ?? []).filter(([, need]) => CARD_RARITIES.indexOf(rarity) >= CARD_RARITIES.indexOf(need)).map(([key]) => key)
 
@@ -112,7 +142,7 @@ export function toggleAbility(doc: ArenaDoc, uid: string, key: string) {
   if (!card || !(key in ARENA_ABILITIES)) return false
   const ability = key as ArenaAbility
   if (!skillsOf(card.id, card.rarity).includes(ability)) return false
-  const cost = ARENA_ABILITIES[ability]
+  const cost = costOf(card.id, ability)
   const armed = card.armed ?? []
   if (armed.includes(ability)) {
     card.armed = armed.filter((one) => one !== ability)
@@ -120,6 +150,7 @@ export function toggleAbility(doc: ArenaDoc, uid: string, key: string) {
     return true
   }
   if (doc.chakra < cost) return false
+  if (callsFor(doc.board) + (SLOTS_OF[ability] ?? 0) > ARENA_SUMMON_SLOTS) return false
   card.armed = [...armed, ability]
   doc.chakra -= cost
   return true
@@ -129,8 +160,9 @@ function botAbilities(doc: ArenaDoc) {
   let left = doc.chakraCap
   for (const card of shuffled(onBoard(doc.foeBoard))) {
     for (const ability of skillsOf(card.id, card.rarity)) {
-      const cost = ARENA_ABILITIES[ability]
+      const cost = costOf(card.id, ability)
       if (left < cost) continue
+      if (callsFor(doc.foeBoard) + (SLOTS_OF[ability] ?? 0) > ARENA_SUMMON_SLOTS) continue
       left -= cost
       card.armed = [...(card.armed ?? []), ability]
     }
@@ -365,7 +397,7 @@ export function sellCard(doc: ArenaDoc, uid: string) {
     const line = onBoard(doc.board)
     const sold = line.find((card) => card.uid === uid)
     if (!sold) return false
-    for (const ability of sold.armed ?? []) doc.chakra = Math.min(doc.chakra + (ARENA_ABILITIES[ability as ArenaAbility] ?? 0), doc.chakraCap)
+    for (const ability of sold.armed ?? []) doc.chakra = Math.min(doc.chakra + (ability in ARENA_ABILITIES ? costOf(sold.id, ability as ArenaAbility) : 0), doc.chakraCap)
     relay(doc.board, line.filter((card) => card.uid !== uid))
   }
   doc.coins = Math.min(doc.coins + ARENA_SELL_BACK, ARENA_COIN_MAX)
@@ -520,6 +552,41 @@ function fight(doc: ArenaDoc) {
     theirs: onBoard(foes).map((one) => ({ ...one })),
   })
 
+  const start = new Map([...onBoard(ours), ...onBoard(foes)].map((one) => [one.uid, one.atk]))
+  const raisers = new Map<ArenaSide, ArenaCard>()
+  const graves: { side: ArenaSide; card: ArenaCard; at: number; by: ArenaCard }[] = []
+
+  const bury = () => {
+    for (const side of [ours, foes]) {
+      const by = raisers.get(side)
+      if (!by) continue
+      const fallen = side.heroes.filter((one) => one.hp <= 0)
+      if (!fallen.length) continue
+      raisers.delete(side)
+      const card = fallen.find((one) => one !== by)
+      if (!card) continue
+      const at = side.heroes.slice(0, side.heroes.indexOf(card)).filter((one) => one.hp > 0).length
+      graves.push({ side, card, at, by })
+    }
+    drop(ours)
+    drop(foes)
+  }
+
+  const rise = () => {
+    for (const { side, card, at, by } of graves.splice(0)) {
+      card.hp = card.max
+      card.atk = start.get(card.uid) ?? card.atk
+      card.stun = false
+      card.burn = 0
+      card.bound = null
+      card.link = null
+      card.ward = false
+      card.dodge = 0
+      side.heroes.splice(Math.min(at, side.heroes.length), 0, card)
+      steps.push({ from: by.uid, to: card.uid, risen: card.uid, ability: 'revive', damage: 0, dead: false, foe: side === foes, ...snap() })
+    }
+  }
+
   const strongest = (list: ArenaCard[]) => list.slice().sort((a, b) => b.atk + b.hp - (a.atk + a.hp))[0]
 
   for (const [team, rivals, foe] of [
@@ -541,9 +608,9 @@ function fight(doc: ArenaDoc) {
           target.hp -= AMATERASU_HIT
           target.burn = (target.burn ?? 0) + AMATERASU_BURN
           const dead = target.hp <= 0
-          drop(ours)
-          drop(foes)
+          bury()
           steps.push({ from: card.uid, to: target.uid, ability, damage: AMATERASU_HIT, dead, foe, ...snap() })
+          rise()
         } else if (ability === 'mind') {
           const target = alive(rivals)
             .filter((one) => !one.bound)
@@ -556,8 +623,43 @@ function fight(doc: ArenaDoc) {
           card.swap = true
         } else if (ability === 'sonic') {
           card.sonic = true
+        } else if (ability === 'summon') {
+          const beast = beastOf(card.id)
+          if (beast === null || team.summons.length >= ARENA_SUMMON_SLOTS) continue
+          const { atk, hp } = statsOf(beast, card.rarity, !!card.triple, powerOf(foe ? doc.foePowers : doc.powers, card.id))
+          doc.seq += 1
+          const spawn: ArenaCard = { uid: `${doc.seq}`, id: beast, rarity: card.rarity, atk, hp, max: hp, summon: true }
+          team.summons.push(spawn)
+          steps.push({ from: card.uid, to: spawn.uid, summoned: spawn.uid, ability, damage: 0, dead: false, foe, ...snap() })
+        } else if (ability === 'limbo') {
+          for (let i = 0; i < 2 && team.summons.length < ARENA_SUMMON_SLOTS; i++) {
+            const hp = Math.ceil(card.max / 2)
+            doc.seq += 1
+            const spawn: ArenaCard = { uid: `${doc.seq}`, id: card.id, rarity: card.rarity, atk: Math.ceil(card.atk / 2), hp, max: hp, summon: true, ghost: true }
+            team.summons.push(spawn)
+            steps.push({ from: card.uid, to: spawn.uid, summoned: spawn.uid, ability, damage: 0, dead: false, foe, ...snap() })
+          }
+        } else if (ability === 'revive') {
+          raisers.set(team, card)
         }
       }
+    }
+  }
+
+  for (const [team, foe] of [
+    [ours, false],
+    [foes, true],
+  ] as const) {
+    for (const card of alive(team)) {
+      const reach = wardOf(card.id)
+      if (!reach) continue
+      const at = team.heroes.indexOf(card)
+      const covered =
+        reach === 'all' ? alive(team) : reach === 'near' ? [team.heroes[at - 1], team.heroes[at + 1]].filter((one): one is ArenaCard => !!one && one.hp > 0) : [card]
+      const fresh = covered.filter((one) => !one.ward)
+      if (!fresh.length) continue
+      for (const one of fresh) one.ward = lookOf(card.id)
+      steps.push({ from: card.uid, to: null, wards: fresh.map((one) => one.uid), ability: 'ward', damage: 0, dead: false, foe, ...snap() })
     }
   }
 
@@ -573,9 +675,9 @@ function fight(doc: ArenaDoc) {
       card.hp -= card.burn
       const dead = card.hp <= 0
       if (dead) for (const one of [...onBoard(ours), ...onBoard(foes)]) if (one.uid === card.uid) release(one)
-      drop(ours)
-      drop(foes)
+      bury()
       steps.push({ from: card.uid, to: card.uid, ability: 'burn', damage: card.burn, dead, foe, ...snap() })
+      rise()
       if (dead) return
     }
     if (card.bound) {
@@ -595,12 +697,20 @@ function fight(doc: ArenaDoc) {
       steps.push({ from: card.uid, to: null, skip: true, damage: 0, dead: false, foe, ...snap() })
       return
     }
+    strike(card, side, foe, false)
+    if (furyOf(card.id) && card.hp > 0 && doc.hp && doc.foeHp && alive(side).length) strike(card, side, foe, true)
+  }
+
+  const strike = (card: ArenaCard, side: ArenaSide, foe: boolean, again: boolean) => {
+    const blow = card.atk
     const targets = alive(side)
     let to: string | null = null
     let dead = false
     const splash: string[] = []
     const dodged: string[] = []
     const sapped: string[] = []
+    const warded: string[] = []
+    const raged: string[] = []
     let venom = false
     let swapFrom: string | undefined
     let swapTo: string | undefined
@@ -623,6 +733,11 @@ function fight(doc: ArenaDoc) {
     const harm = (one: ArenaCard, damage: number) => {
       if (damage <= 0) return
       if (one.link) release(one)
+      if (one.ward) {
+        one.ward = false
+        warded.push(one.uid)
+        return
+      }
       if (one.swap) {
         one.swap = false
         const mates = alive(foe ? foes : ours).filter((other) => other.uid !== card.uid)
@@ -642,37 +757,52 @@ function fight(doc: ArenaDoc) {
         one.hp = 0
         venom = true
       }
+      if (furyOf(one.id) && one.hp > 0) {
+        one.atk += 1
+        raged.push(one.uid)
+      }
       if (card.sonic) sap(one)
       mend(one)
     }
     if (!targets.length) {
-      if (foe) doc.hp = Math.max(0, doc.hp - card.atk)
-      else doc.foeHp = Math.max(0, doc.foeHp - card.atk)
+      if (foe) doc.hp = Math.max(0, doc.hp - blow)
+      else doc.foeHp = Math.max(0, doc.foeHp - blow)
     } else {
-      const guards = targets.filter((one) => tauntOf(one.id))
-      const target = pickOne(guards.length ? guards : targets)
+      const walls = targets.filter(guards)
+      const target = pickOne(walls.length ? walls : targets)
       if (cleaveOf(card.id)) {
         const at = targets.indexOf(target)
         for (const near of [targets[at - 1], targets[at + 1]]) {
           if (!near) continue
-          harm(near, card.atk)
+          harm(near, blow)
           splash.push(near.uid)
         }
       }
-      harm(target, card.atk)
+      harm(target, blow)
       if (!shotOf(card.id) && target.atk > 0 && swapFrom !== target.uid) {
-        card.hp -= target.atk
-        if (poisonOf(target.id)) card.hp = 0
-        mend(card)
+        if (card.ward) {
+          card.ward = false
+          warded.push(card.uid)
+        } else {
+          card.hp -= target.atk
+          if (poisonOf(target.id)) card.hp = 0
+          if (furyOf(card.id) && card.hp > 0) {
+            card.atk += 1
+            raged.push(card.uid)
+          }
+          mend(card)
+        }
       }
       to = target.uid
       dead = target.hp <= 0
     }
-    drop(ours)
-    drop(foes)
+    bury()
     steps.push({
       from: card.uid,
       to,
+      ...(again ? { again } : {}),
+      ...(warded.length ? { warded } : {}),
+      ...(raged.length ? { raged } : {}),
       ...(splash.length ? { splash } : {}),
       ...(to && shotOf(card.id) ? { shot: shotOf(card.id)! } : {}),
       ...(dodged.length ? { dodged } : {}),
@@ -680,7 +810,7 @@ function fight(doc: ArenaDoc) {
       ...(venom ? { venom } : {}),
       ...(swapFrom && swapTo ? { swapFrom, swapTo } : {}),
       ...(Object.keys(heals).length ? { heals } : {}),
-      damage: card.atk,
+      damage: blow,
       dead,
       foe,
       hp: doc.hp,
@@ -688,6 +818,7 @@ function fight(doc: ArenaDoc) {
       mine: onBoard(ours).map((one) => ({ ...one })),
       theirs: onBoard(foes).map((one) => ({ ...one })),
     })
+    rise()
   }
 
   const empty = () => !alive(ours).length || !alive(foes).length
@@ -766,7 +897,7 @@ export function endTurn(doc: ArenaDoc) {
   return doc
 }
 
-const ranked = (card: ArenaCard) => ({ ...card, tier: tierOf(card.id), taunt: tauntOf(card.id), cleave: cleaveOf(card.id), shot: shotOf(card.id), poison: poisonOf(card.id), sound: soundOf(card.id), medic: medicOf(card.id), skills: skillsOf(card.id, card.rarity).map((key) => ({ key, cost: ARENA_ABILITIES[key] })), armed: card.armed ?? [] })
+const ranked = (card: ArenaCard) => ({ ...card, tier: tierOf(card.id), taunt: guards(card), cleave: cleaveOf(card.id), shot: shotOf(card.id), poison: poisonOf(card.id), sound: soundOf(card.id), medic: medicOf(card.id), fury: furyOf(card.id), guard: wardOf(card.id), skills: skillView(card.id, card.rarity), armed: card.armed ?? [] })
 
 const rankedSide = (side: ArenaSide) => ({ heroes: side.heroes.map(ranked), summons: side.summons.map(ranked) })
 
@@ -793,7 +924,7 @@ export const arenaView = (doc: ArenaDoc) => ({
     const rarity = rarityOf(doc.ranks, id)
     const power = powerOf(doc.powers, id)
     const { atk, hp } = statsOf(id, rarity, false, power)
-    return { id, rarity, cost: arenaCost(), atk, hp, summon: doc.summons.includes(id), tier: tierOf(id), taunt: tauntOf(id), cleave: cleaveOf(id), shot: shotOf(id), poison: poisonOf(id), sound: soundOf(id), medic: medicOf(id), skills: skillsOf(id, rarity).map((key) => ({ key, cost: ARENA_ABILITIES[key] })), power }
+    return { id, rarity, cost: arenaCost(), atk, hp, summon: doc.summons.includes(id), tier: tierOf(id), taunt: tauntOf(id), cleave: cleaveOf(id), shot: shotOf(id), poison: poisonOf(id), sound: soundOf(id), medic: medicOf(id), fury: furyOf(id), guard: wardOf(id), skills: skillView(id, rarity), power }
   }),
   hand: doc.hand.map(ranked),
   board: rankedSide(doc.board),

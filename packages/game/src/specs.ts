@@ -1253,7 +1253,7 @@ export const ARENA_COIN_START = 3
 export const ARENA_CHAKRA_MAX = 10
 export const ARENA_CHAKRA_START = 1
 
-export const ARENA_ABILITIES = { genjutsu: 2, amaterasu: 4, swap: 3, mind: 3, sonic: 1 } as const
+export const ARENA_ABILITIES = { genjutsu: 2, amaterasu: 4, swap: 3, mind: 3, sonic: 1, summon: 3, revive: 3, limbo: 5 } as const
 
 export type ArenaAbility = keyof typeof ARENA_ABILITIES
 export const ARENA_CARD_COST = 3

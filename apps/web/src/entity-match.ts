@@ -25,14 +25,20 @@ export const fold = (text: string) =>
 
 const plain = (text: string) => normalize(text.toLowerCase().replace(/ё/g, 'е'))
 
-export type EntityTerms = { terms: string[]; tight: string[] }
+type Terms = { terms: string[]; tight: string[] }
 
-export const entityTerms = (entity: Entity): EntityTerms => {
-  const names = [entity.name, entity.nameUk ?? ruToUk(entity.name), entity.nameEn, ...(entity.aliases?.split(',') ?? [])]
-    .map((one) => one?.trim())
-    .filter((one): one is string => !!one)
+export type EntityTerms = Terms & { names: Terms; tags: Terms }
+
+const termsOf = (list: (string | undefined)[]): Terms => {
+  const names = list.map((one) => one?.trim()).filter((one): one is string => !!one)
   const terms = [...new Set([...names.map(fold), ...names.map(plain)])]
   return { terms, tight: terms.map(tight) }
+}
+
+export const entityTerms = (entity: Entity): EntityTerms => {
+  const names = termsOf([entity.name, entity.nameUk ?? ruToUk(entity.name), entity.nameEn])
+  const tags = termsOf(entity.aliases?.split(',') ?? [])
+  return { terms: [...names.terms, ...tags.terms], tight: [...names.tight, ...tags.tight], names, tags }
 }
 
 export const searchKey = (query: string) => {
@@ -45,11 +51,16 @@ const begins = (terms: string[], q: string) => !!q && terms.some((term) => term.
 
 const wordBegins = (terms: string[], q: string) => !!q && terms.some((term) => term.split(/[^\p{L}\p{N}]+/u).some((word) => word.startsWith(q)))
 
-export const matchTier = ({ terms, tight: tights }: EntityTerms, { q, raw, squeezed }: ReturnType<typeof searchKey>) =>
+const tierIn = ({ terms, tight: tights }: Terms, { q, raw, squeezed }: ReturnType<typeof searchKey>) =>
   begins(terms, q) || begins(terms, raw)
     ? 0
-    : wordBegins(terms, q) || wordBegins(terms, raw)
+    : wordBegins(terms, q) || wordBegins(terms, raw) || (squeezed && tights.some((term) => term.startsWith(squeezed)))
       ? 1
-      : squeezed && tights.some((term) => term.startsWith(squeezed))
-        ? 1
-        : -1
+      : -1
+
+export const matchTier = ({ names, tags }: EntityTerms, key: ReturnType<typeof searchKey>) => {
+  const own = tierIn(names, key)
+  if (own >= 0) return own
+  const tag = tierIn(tags, key)
+  return tag < 0 ? -1 : tag + 2
+}

@@ -4,12 +4,12 @@ import { torn } from './torn'
 import { useI18n, type UiKey } from './i18n'
 import { memo, type CSSProperties } from 'react'
 import { CARD_RARITIES, type CardRarity } from '@nanda/game'
-import { BADGE_POINTS, DexFace, StatBadge } from './DexCard'
+import { BACK_POINTS, BADGE_POINTS, DexFace, StatBadge } from './DexCard'
 import type { Entity, GameId } from './games/types'
 
-export type Card = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; tier?: number; taunt?: boolean; cleave?: boolean; shot?: string | null; spell?: string; dodge?: number; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; skills?: { key: string; cost: number }[]; armed?: string[] }
+export type Card = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; tier?: number; taunt?: boolean; cleave?: boolean; shot?: string | null; spell?: string; dodge?: number; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; fury?: boolean; guard?: string | null; ward?: string | false; ghost?: boolean; skills?: { key: string; cost: number; beast?: number | null }[]; armed?: string[] }
 export type Side = { heroes: Card[]; summons: Card[] }
-export type Offer = { id: number; rarity: CardRarity; cost: number; atk: number; hp: number; summon: boolean; tier: number; taunt?: boolean; cleave?: boolean; shot?: string | null; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; skills?: { key: string; cost: number }[] }
+export type Offer = { id: number; rarity: CardRarity; cost: number; atk: number; hp: number; summon: boolean; tier: number; taunt?: boolean; cleave?: boolean; shot?: string | null; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; fury?: boolean; guard?: string | null; skills?: { key: string; cost: number; beast?: number | null }[] }
 export type Step = {
   from: string
   all?: string[]
@@ -23,6 +23,12 @@ export type Step = {
   venom?: boolean
   ability?: string
   heals?: Record<string, number>
+  wards?: string[]
+  warded?: string[]
+  raged?: string[]
+  summoned?: string
+  risen?: string
+  again?: boolean
   damage: number
   dead: boolean
   foe: boolean
@@ -61,6 +67,19 @@ export type ArenaView = {
 
 const ARENA_SHAPE = 43
 
+export const Ward = ({ breaking = false }: { look?: string; breaking?: boolean }) => (
+  <span className={`ar-ward ${breaking ? 'is-breaking' : ''}`} aria-hidden>
+    <i className="ar-ward-edge">
+      <svg viewBox="0 0 300 400" preserveAspectRatio="none">
+        <polygon points={BACK_POINTS} />
+      </svg>
+    </i>
+    <i className="ar-ward-film" style={{ clipPath: torn(ARENA_SHAPE, 4) }}>
+      <i className="ar-ward-shine" />
+    </i>
+  </span>
+)
+
 const oneWord = (name: string) => name.replace(/\(.*?\)/g, '').trim().split(/[\s/]+/)[0] || name
 
 export const tierOf = (rarity: CardRarity) => CARD_RARITIES.indexOf(rarity)
@@ -82,6 +101,10 @@ export const ArenaFace = memo(function ArenaFace({
   sound,
   poison,
   medic,
+  fury,
+  guard,
+  shield,
+  ghost,
 }: {
   game: GameId
   entity?: Entity
@@ -99,12 +122,16 @@ export const ArenaFace = memo(function ArenaFace({
   sound?: boolean
   poison?: boolean
   medic?: boolean
+  fury?: boolean
+  guard?: string | null
+  shield?: string | false
+  ghost?: boolean
 }) {
   const { t } = useI18n()
   if (!entity) return <span className="arena-slot" aria-hidden />
   return (
     <span
-      className={`arena-card ${summon ? 'is-summon' : ''} ${triple ? 'is-triple' : ''}`}
+      className={`arena-card ${summon ? 'is-summon' : ''} ${triple ? 'is-triple' : ''} ${shield ? 'is-shielded' : ''} ${ghost ? 'is-ghost' : ''}`}
       style={{ '--tilt': `${(((entity.id * 7919) % 9) - 4) * 0.55}deg` } as CSSProperties}
     >
       <DexFace game={game} id={entity.id} image={entity.image} label={oneWord(entity.name)} tier={Math.max(0, tierOf(rarity ?? 'paper'))} seed={ARENA_SHAPE}>
@@ -125,7 +152,10 @@ export const ArenaFace = memo(function ArenaFace({
         {sound && <span className="ar-taunt is-sound">{t('arena.sound')}</span>}
         {poison && <span className="ar-taunt is-poison">{t('arena.poison')}</span>}
         {medic && <span className="ar-taunt is-medic">{t('arena.medic')}</span>}
+        {fury && <span className="ar-taunt is-fury">{t('arena.fury')}</span>}
+        {guard && <span className="ar-taunt is-guard">{t('arena.guard')}</span>}
         {!!dodge && <span className="ar-taunt is-dodge">{t('arena.dodge')}</span>}
+        {shield && <Ward look={shield} />}
         <StatBadge kind="atk" value={atk} />
         <StatBadge kind="hp" value={hp} />
       </DexFace>
