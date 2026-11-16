@@ -50,7 +50,6 @@ const ui = {
   'dex.huntAdd': { ru: 'В охоту', uk: 'У полювання', en: 'Hunt it' },
   'dex.huntDrop': { ru: 'Снять с охоты', uk: 'Зняти з полювання', en: 'Stop hunting' },
   'dex.statShards': { ru: 'Осколков сегодня', uk: 'Осколків сьогодні', en: 'Shards today' },
-  'dex.statUps': { ru: 'Повышений сегодня', uk: 'Підвищень сьогодні', en: 'Upgrades today' },
   'dex.ready': { ru: 'Готовы к апу', uk: 'Готові до апу', en: 'Ready to upgrade' },
   'dex.tagRaise': { ru: 'Повысить!', uk: 'Підвищити!', en: 'Upgrade!' },
   'dex.tagHunt': { ru: 'Цель', uk: 'Ціль', en: 'Target' },
@@ -99,9 +98,9 @@ const ui = {
   'dex.help2.rarity': { ru: 'Редкость', uk: 'Рідкість', en: 'Rarity' },
   'dex.help.rarity': { ru: 'Очко — это уровень, максимум {max}', uk: 'Очко — це рівень, максимум {max}', en: 'One point is one level, up to {max}' },
   'dex.help.levels': {
-    ru: 'Набери осколки и повысь редкость — осколки списываются, больше ничего не нужно. Не больше {ups} повышений в день. Справа — сколько осколков нужно и сила карты в арене.',
-    uk: 'Набери осколки й підвищ рідкість — осколки списуються, більше нічого не треба. Не більше {ups} підвищень на день. Праворуч — скільки осколків треба і сила картки в арені.',
-    en: 'Collect shards and raise the rarity — the shards are spent, nothing else needed. Up to {ups} upgrades a day. On the right: shards needed and arena power.',
+    ru: 'Набери осколки и повысь редкость — осколки списываются, больше ничего не нужно. Справа — сколько осколков нужно и сила карты в арене.',
+    uk: 'Набери осколки й підвищ рідкість — осколки списуються, більше нічого не треба. Праворуч — скільки осколків треба і сила картки в арені.',
+    en: 'Collect shards and raise the rarity — the shards are spent, nothing else needed. On the right: shards needed and arena power.',
   },
   'dex.help.dust': {
     ru: 'Любые осколки можно распылить в пыль за 25% — например, 100 осколков Наруто дадут 25 пыли. У каждой вселенной своя пыль — она вливается в любую карту этой вселенной 1:1.',

@@ -1,6 +1,5 @@
-import { CARD_UPS_DAY, DUST_CRAFT, SHARDS_DAY, HUNT_MAX, HUNT_PITY, dustFor, shardGame, type GameId } from '@nanda/game'
+import { DUST_CRAFT, SHARDS_DAY, HUNT_MAX, HUNT_PITY, dustFor, shardGame, type GameId } from '@nanda/game'
 import { craftCard, gradeOf, huntOf, raiseCard, scrapCard, setHunt, shardRoom } from '../bestiary'
-import { today } from '../daily'
 import { cards, users } from '../db'
 import { isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
@@ -11,7 +10,7 @@ const game = (value: unknown): value is GameId => isGame(value)
 
 const stateOf = async (userId: Parameters<typeof huntOf>[0], where: GameId) => {
   const [doc, list, hunt] = await Promise.all([
-    (await users()).findOne({ _id: userId }, { projection: { dust: 1, ups: 1, pity: 1 } }),
+    (await users()).findOne({ _id: userId }, { projection: { dust: 1, pity: 1 } }),
     (await cards())
       .find({ userId, game: where }, { projection: { entityId: 1, rank: 1, shards: 1, craft: 1, xp: 1 } })
       .toArray(),
@@ -20,7 +19,6 @@ const stateOf = async (userId: Parameters<typeof huntOf>[0], where: GameId) => {
   const room = await shardRoom(userId, where)
   return {
     dust: doc?.dust?.[where] ?? 0,
-    ups: { used: doc?.ups?.week === today() ? (doc.ups?.n ?? 0) : 0, max: CARD_UPS_DAY },
     hunt,
     shards: { got: room.got, max: SHARDS_DAY },
     pity: { now: Math.min(HUNT_PITY, doc?.pity?.[where] ?? 0), max: HUNT_PITY },

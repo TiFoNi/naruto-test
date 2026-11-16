@@ -12,7 +12,7 @@ import type { Entity, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { CloseIcon, FilterIcon, MinusIcon, PinIcon, PlusIcon, SearchIcon, SparkIcon } from './icons'
 import { MODES } from './modes'
-import { CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_POINTS, CARD_STEPS, cardRank, CARD_UP, cardShardBase, cardPower, HUNT_SHARD, CARD_RARITIES, CARD_UPS_DAY, HUNT_MAX, cardPinsMax, shardGame, type CardRarity, type ModeId } from '@nanda/game'
+import { CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_POINTS, CARD_STEPS, cardRank, CARD_UP, cardShardBase, cardPower, HUNT_SHARD, CARD_RARITIES, HUNT_MAX, cardPinsMax, shardGame, type CardRarity, type ModeId } from '@nanda/game'
 import { PICTURELESS, cardUrl, hdUrl, miniUrl } from './pics'
 import { entityTerms, matchTier, searchKey } from './entity-match'
 import { useHref } from './router'
@@ -688,7 +688,6 @@ type Grade = {
 
 type Vault = {
   dust: number
-  ups: { used: number; max: number }
   shards: { got: number; max: number }
   hunt: number[]
   pity: { now: number; max: number }
@@ -873,7 +872,7 @@ const DexHelp = ({ modes }: { modes: ModeId[] }) => {
       </ul>
 
       <span className="dex-help-label">{t('dex.help2.rarity')}</span>
-      <p className="dex-help-note">{t('dex.help.levels', { ups: CARD_UPS_DAY })}</p>
+      <p className="dex-help-note">{t('dex.help.levels')}</p>
       <ul className="dex-help-rarities">
         {CARD_RARITIES.map((rarity, tier) => (
           <li key={tier} className={`lv-${tier + 1}`}>
@@ -909,7 +908,6 @@ const CardSheet = ({
   rank,
   grade,
   dust,
-  ups,
   busy,
   out,
   onRaise,
@@ -920,7 +918,6 @@ const CardSheet = ({
   rank: Rank
   grade?: Grade
   dust: number
-  ups: { used: number; max: number }
   busy: boolean
   out: boolean
   onRaise: () => void
@@ -940,7 +937,6 @@ const CardSheet = ({
   const share = top ? 1 : Math.min(1, shards / Math.max(1, need))
   const price = grade?.craft.price ?? 0
   const lack = Math.max(0, need - shards)
-  const weekly = ups.used < ups.max
 
   useEffect(() => {
     if (!out) return
@@ -978,7 +974,7 @@ const CardSheet = ({
               {shards} / {need}
             </em>
           </span>
-          <button type="button" className="lv-go" disabled={busy || !grade?.ready || !weekly} onClick={onRaise}>
+          <button type="button" className="lv-go" disabled={busy || !grade?.ready} onClick={onRaise}>
             {t('card.raise')}
           </button>
         </div>
@@ -1287,7 +1283,6 @@ const DexZoom = ({
             rank={rank}
             grade={grade}
             dust={vault?.dust ?? 0}
-            ups={vault?.ups ?? { used: 0, max: CARD_UPS_DAY }}
             busy={!!busy}
             out={sheet === 'out'}
             onRaise={() => onRaise?.()}
@@ -1617,13 +1612,6 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
                     </svg>
                     <dt>{t('dex.statShards')}</dt>
                     <dd>{shown ? `${shown.shards.got.toLocaleString('uk')} / ${shown.shards.max.toLocaleString('uk')}` : <span className="sk dex-stat-sk" />}</dd>
-                  </div>
-                  <div>
-                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
-                      <polygon points={CHIP_POINTS} vectorEffect="non-scaling-stroke" />
-                    </svg>
-                    <dt>{t('dex.statUps')}</dt>
-                    <dd>{shown ? `${shown.ups.used} / ${shown.ups.max}` : <span className="sk dex-stat-sk" />}</dd>
                   </div>
                 </dl>
               </div>

@@ -29,6 +29,17 @@ const DEATH_MS = 1100
 const SHOT_MS = 380
 const HEAL_DELAY_MS = 520
 const HEAL_HOLD_MS = 650
+const GEN_HOLD_MS = 700
+
+const CLAY_BIRD =
+  '<svg viewBox="0 0 64 40"><path class="is-wing is-back" d="M26 17 C 24 8, 18 3, 8 1.5 C 12 4, 14 7, 15 10 C 12 9.5, 10 10, 9 11 C 13 12, 16 13.5, 18 15 C 21 14, 24 15, 26 17 Z"/><path class="is-tail" d="M3 19 L 12 16 L 11 19.5 L 16 18.5 L 13 22 L 15 26 L 3 22.5 Z"/><path class="is-body" d="M11 22 C 17 13.5, 33 11, 45 15 C 49 13.5, 53 13, 57 14.6 L 63.5 16.6 L 57 18.6 C 53.5 23.5, 43 27.5, 29.5 27.5 C 21 27.5, 15 25.5, 11 22 Z"/><path class="is-belly" d="M16 23.5 C 24 26, 36 26, 46 22.5 C 40 26.5, 25 27.5, 16 23.5 Z"/><path class="is-seam" d="M33 13.5 C 34 17, 34 21, 32.5 26 M 44 15 C 45 18, 45 21, 44 24"/><path class="is-wing" d="M29 18 C 32 7, 41 1, 54 0.5 C 50 2.5, 48 4.5, 46.5 7 C 49 6.5, 51 6.8, 52.5 7.5 C 48 9, 45 11, 43.5 13 C 46 13, 47.5 13.5, 48.5 14.2 C 43 15, 39 17, 35.5 20.5 Z"/><circle class="is-eye" cx="52.5" cy="15.8" r="1.4"/></svg>'
+
+const GenFx = () => (
+  <span className="ar-gen" aria-hidden>
+    <i className="ar-gen-ripple" />
+    <i className="ar-gen-ripple is-late" />
+  </span>
+)
 
 const SHOTS: Record<string, string> = {
   kunai:
@@ -60,17 +71,51 @@ const cutOf = (seed: number) => {
   }
 }
 
-const Wound = ({ a, b }: { a: number; b: number }) => (
-  <svg className="ar-wound" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
-    <line className="is-gash" x1="-4" y1={a} x2="104" y2={b} />
-    <line className="is-core" x1="-4" y1={a} x2="104" y2={b} />
-    {Array.from({ length: 8 }, (_, i) => {
-      const x = 6 + i * 12.5
-      const y = a + ((b - a) * (x + 4)) / 108
-      return <circle key={i} className="is-spark" cx={x} cy={y} r="1.6" style={{ '--x': `${(i % 2 ? 1 : -1) * (6 + i)}px`, '--y': `${-5 - i}px`, animationDelay: `${i * 0.02}s` } as CSSProperties} />
-    })}
-  </svg>
-)
+const SLASH_FROM = -24
+const SLASH_SPAN = 148
+
+const lens = (a: number, b: number, width: number) => {
+  const dx = SLASH_SPAN
+  const dy = b - a
+  const size = Math.hypot(dx, dy)
+  const nx = -dy / size
+  const ny = dx / size
+  const at = (t: number, side: number) => {
+    const bulge = Math.sin(Math.PI * t) ** 0.7 * width * side
+    return `${(SLASH_FROM + dx * t + nx * bulge).toFixed(2)},${(a + dy * t + ny * bulge).toFixed(2)}`
+  }
+  const steps = [0, 0.08, 0.2, 0.35, 0.5, 0.65, 0.8, 0.92, 1]
+  return [...steps.map((t) => at(t, 1)), ...[...steps].reverse().map((t) => at(t, -1))].join(' ')
+}
+
+const Wound = ({ a, b }: { a: number; b: number }) => {
+  const dy = b - a
+  const size = Math.hypot(SLASH_SPAN, dy)
+  return (
+    <svg className="ar-wound" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+      <polygon className="is-glow" points={lens(a, b, 7)} />
+      <polygon className="is-blade" points={lens(a, b, 2.6)} />
+      <polygon className="is-core" points={lens(a, b, 0.9)} />
+      {Array.from({ length: 12 }, (_, i) => {
+        const t = 0.12 + (i / 11) * 0.76
+        const x = SLASH_FROM + SLASH_SPAN * t
+        const y = a + dy * t
+        const side = i % 2 ? 1 : -1
+        const push = 7 + ((i * 7) % 5) * 2
+        return (
+          <circle
+            key={i}
+            className="is-spark"
+            cx={x}
+            cy={y}
+            r={0.9 + (i % 3) * 0.45}
+            style={{ '--x': `${((-dy / size) * push * side + (i % 2 ? 3 : -3)).toFixed(1)}px`, '--y': `${((SLASH_SPAN / size) * push * side).toFixed(1)}px`, animationDelay: `${0.04 + t * 0.09}s` } as CSSProperties}
+          />
+        )
+      })}
+    </svg>
+  )
+}
 
 const Slash = ({ seed }: { seed: number }) => {
   const cut = cutOf(seed)
@@ -505,7 +550,19 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
     const plays: Animation[] = []
 
     const extra: HTMLElement[] = []
-    if (one.charm || one.skip || one.wards || one.summoned || one.risen) {
+    if ((one.summoned || one.risen) && movers[0]) {
+      plays.push(
+        movers[0].animate(
+          [
+            { transform: 'none' },
+            { transform: 'translateY(-16px) scale(1.06)', offset: 0.2 },
+            { transform: 'translateY(-16px) scale(1.06)', offset: 0.8 },
+            { transform: 'none' },
+          ],
+          { duration: FLY_MS + 300, easing: 'ease-in-out' },
+        ),
+      )
+    } else if (one.charm || one.skip || one.wards || one.summoned || one.risen) {
       if (movers[0]) plays.push(movers[0].animate([{ transform: 'none' }, { transform: 'scale(1.04)', offset: 0.3 }, { transform: 'none' }], { duration: FLY_MS, easing: 'ease-out' }))
     } else if (one.shot && movers.length === 1 && aim) {
       const from = movers[0]!.getBoundingClientRect()
@@ -517,32 +574,69 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       const angle = (Math.atan2(dy, dx) * 180) / Math.PI
       const spin = one.shot === 'paper' ? 900 : 0
       const lift = one.shot === 'clay' ? -Math.min(140, Math.hypot(dx, dy) * 0.4) : 0
-      const shot = document.createElement('div')
-      shot.className = `ar-shot is-${one.shot}`
-      shot.innerHTML = SHOTS[one.shot] ?? SHOTS.kunai!
-      shot.style.left = `${sx}px`
-      shot.style.top = `${sy}px`
-      document.body.appendChild(shot)
-      extra.push(shot)
-      const flight = shot.animate(
-        [
-          { transform: `translate(-50%, -50%) rotate(${angle}deg)`, opacity: 0 },
-          { opacity: 1, offset: 0.12 },
-          { transform: `translate(-50%, -50%) translate(${dx / 2}px, ${dy / 2 + lift}px) rotate(${angle + spin / 2}deg)`, offset: 0.5 },
-          { transform: `translate(-50%, -50%) translate(${dx}px, ${dy}px) rotate(${angle + spin}deg)`, opacity: 1 },
-        ],
-        { duration: SHOT_MS, delay: IMPACT_MS - SHOT_MS, easing: 'cubic-bezier(0.35, 0.1, 0.65, 1)', fill: 'both' },
-      )
-      flight.onfinish = () => {
-        shot.remove()
-        if (one.shot !== 'clay') return
-        const boom = document.createElement('div')
-        boom.className = 'ar-boom'
-        boom.style.left = `${sx + dx}px`
-        boom.style.top = `${sy + dy}px`
-        document.body.appendChild(boom)
-        extra.push(boom)
-        boom.animate([{ transform: 'translate(-50%, -50%) scale(0.3)', opacity: 1 }, { transform: 'translate(-50%, -50%) scale(1.7)', opacity: 0 }], { duration: 480, easing: 'ease-out', fill: 'forwards' }).onfinish = () => boom.remove()
+      if (one.shot === 'clay') {
+        const face = dx < 0 ? -1 : 1
+        for (let i = 0; i < 3; i++) {
+          const ox = (i - 1) * 16
+          const oy = (i - 1) * -13
+          const rise = -Math.min(110, Math.hypot(dx, dy) * 0.32) - i * 16
+          const bird = document.createElement('div')
+          bird.className = 'ar-clay-bird is-live'
+          bird.innerHTML = CLAY_BIRD
+          bird.style.left = `${sx}px`
+          bird.style.top = `${sy}px`
+          document.body.appendChild(bird)
+          extra.push(bird)
+          const flight = bird.animate(
+            [
+              { transform: `translate(0, 0) scale(${0.4 * face}, 0.4) rotate(-14deg)`, opacity: 0 },
+              { opacity: 1, offset: 0.15 },
+              { transform: `translate(${dx * 0.35}px, ${dy * 0.35 + rise}px) scale(${face}, 1) rotate(-10deg)`, offset: 0.45 },
+              { transform: `translate(${dx * 0.75 + ox * 0.5}px, ${dy * 0.75 + rise * 0.7}px) scale(${face}, 1) rotate(14deg)`, offset: 0.72 },
+              { transform: `translate(${dx + ox}px, ${dy + oy}px) scale(${1.1 * face}, 1.1) rotate(48deg)`, opacity: 1 },
+            ],
+            { duration: 420, delay: i * 85, easing: 'cubic-bezier(0.4, 0, 0.6, 1)', fill: 'both' },
+          )
+          flight.onfinish = () => {
+            bird.remove()
+            const boom = document.createElement('div')
+            boom.className = 'ar-clay-boom is-small is-live'
+            boom.innerHTML = '<i class="is-flash"></i>' + Array.from({ length: 6 }, (_, k) => `<i class="is-puff" style="--a:${k * 60 + 15}deg"></i>`).join('')
+            boom.style.left = `${sx + dx + ox}px`
+            boom.style.top = `${sy + dy + oy}px`
+            document.body.appendChild(boom)
+            extra.push(boom)
+            window.setTimeout(() => boom.remove(), 1000)
+          }
+        }
+      } else {
+        const shot = document.createElement('div')
+        shot.className = `ar-shot is-${one.shot}`
+        shot.innerHTML = SHOTS[one.shot] ?? SHOTS.kunai!
+        shot.style.left = `${sx}px`
+        shot.style.top = `${sy}px`
+        document.body.appendChild(shot)
+        extra.push(shot)
+        const flight = shot.animate(
+          [
+            { transform: `translate(-50%, -50%) rotate(${angle}deg)`, opacity: 0 },
+            { opacity: 1, offset: 0.12 },
+            { transform: `translate(-50%, -50%) translate(${dx / 2}px, ${dy / 2 + lift}px) rotate(${angle + spin / 2}deg)`, offset: 0.5 },
+            { transform: `translate(-50%, -50%) translate(${dx}px, ${dy}px) rotate(${angle + spin}deg)`, opacity: 1 },
+          ],
+          { duration: SHOT_MS, delay: IMPACT_MS - SHOT_MS, easing: 'cubic-bezier(0.35, 0.1, 0.65, 1)', fill: 'both' },
+        )
+        flight.onfinish = () => {
+          shot.remove()
+          if (one.shot !== 'clay') return
+          const boom = document.createElement('div')
+          boom.className = 'ar-boom'
+          boom.style.left = `${sx + dx}px`
+          boom.style.top = `${sy + dy}px`
+          document.body.appendChild(boom)
+          extra.push(boom)
+          boom.animate([{ transform: 'translate(-50%, -50%) scale(0.3)', opacity: 1 }, { transform: 'translate(-50%, -50%) scale(1.7)', opacity: 0 }], { duration: 480, easing: 'ease-out', fill: 'forwards' }).onfinish = () => boom.remove()
+        }
       }
       plays.push(
         movers[0]!.animate(
@@ -597,7 +691,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         }
         setStep((was) => was + 1)
         setHit(false)
-      }, GAP_MS + (died ? DEATH_MS : 0) + (one.heals ? HEAL_HOLD_MS : 0))
+      }, GAP_MS + (died ? DEATH_MS : 0) + (one.heals ? HEAL_HOLD_MS : 0) + (one.charm || one.skip ? GEN_HOLD_MS : 0))
     }
 
     if (run) run.addEventListener('finish', done)
@@ -798,6 +892,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const health = new Map<string, number>()
   const guard = new Map<string, number>()
   const shield = new Map<string, string | false>()
+  const dazedNow = new Set<string>()
   const lastWard = new Map<string, string>()
   const power = new Map<string, number>()
   if (at >= 0) {
@@ -808,6 +903,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
     if (state) for (const one of [...state.mine, ...state.theirs]) {
       guard.set(one.uid, one.dodge ?? 0)
       shield.set(one.uid, one.ward || false)
+      if (one.stun) dazedNow.add(one.uid)
       power.set(one.uid, one.atk)
     }
     else for (const uid of view.armed ?? []) guard.set(uid, 1)
@@ -815,6 +911,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const before = at > 0 ? steps[at - 1]! : null
   if (before) for (const one of [...before.mine, ...before.theirs]) if (one.ward) lastWard.set(one.uid, one.ward)
   const standing = new Set((before ? [...before.mine, ...before.theirs] : [...line(view.board), ...line(view.foeBoard)]).map((one) => one.uid))
+  const usedWard = new Set(steps.slice(0, hit ? at + 1 : Math.max(0, at)).filter((one) => one.wards).map((one) => one.from))
   const heroHit = hit && now && !now.to && now.damage > 0 ? (now.foe ? 'me' : 'foe') : null
 
   const withCalls = (base: Card[], pick: (one: Step) => Card[]) => {
@@ -857,13 +954,13 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         const again = hit && !!now?.again && now.from === card.uid
         const struck = hit && !dodging && !blocked && !!now?.damage && (now?.to === card.uid || !!now?.splash?.includes(card.uid))
         const face = (
-          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} />
+          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} />
         )
         const clips = dying ? tearOf(seedOf(card.uid)) : null
         const cut = struck && !dying ? cutOf(seedOf(card.uid)) : null
         return (
           <li key={card.uid} className={`is-held ${gone ? 'is-out' : ''} ${dying ? 'is-dying' : ''}`}>
-            <span data-uid={card.uid} className={`ar-move ${raised ? 'is-warding' : ''} ${called ? 'is-called' : ''} ${risen ? 'is-risen' : ''} ${mended ? 'is-mended' : ''} ${helping ? 'is-helping' : ''} ${struck ? 'is-struck' : ''} ${dodging ? 'is-dodging' : ''} ${charmed ? 'is-charmed' : ''} ${dazed ? 'is-dazed' : ''} ${struck && now?.venom ? 'is-venom' : ''}`}>
+            <span data-uid={card.uid} className={`ar-move ${dazedNow.has(card.uid) ? 'is-stunned' : ''} ${raised ? 'is-warding' : ''} ${called ? 'is-called' : ''} ${risen ? 'is-risen' : ''} ${mended ? 'is-mended' : ''} ${helping ? 'is-helping' : ''} ${struck ? 'is-struck' : ''} ${dodging ? 'is-dodging' : ''} ${charmed ? 'is-charmed' : ''} ${dazed ? 'is-dazed' : ''} ${struck && now?.venom ? 'is-venom' : ''}`}>
               {clips ? (
                 <span className="ar-tear" style={{ '--lean': clips.lean } as CSSProperties}>
                   <span className="ar-tear-half is-left" style={{ clipPath: clips.left }}>
@@ -883,10 +980,10 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                   </span>
                 </span>
               ) : (
-                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} />
+                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} />
               )}
               {struck && <Slash seed={seedOf(card.uid)} />}
-              {(charmed || dazed) && <i className="ar-spiral" aria-hidden />}
+              {(charmed || dazed) && <GenFx />}
               {(charmed || dazed) && (
                 <b className="ar-status-word" aria-hidden>
                   {t(charmed ? 'arena.charm' : 'arena.dazed')}
@@ -1057,6 +1154,22 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   return (
     <>
     <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''} ${waitLeft !== null ? 'is-waiting' : ''}`} style={{ '--dex': game.accent } as CSSProperties}>
+      <svg className="ar-defs" aria-hidden>
+        <filter id="ar-gen-melt">
+          <feTurbulence type="fractalNoise" baseFrequency="0.02 0.06" numOctaves="2" seed="9">
+            <animate attributeName="baseFrequency" dur="2.4s" values="0.02 0.06;0.03 0.08;0.02 0.06" repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" scale="7" />
+        </filter>
+        <filter id="ar-gen-warp">
+          <feTurbulence type="fractalNoise" baseFrequency="0.02 0.05" numOctaves="2" seed="4">
+            <animate attributeName="baseFrequency" dur="1.1s" values="0.02 0.05;0.035 0.09;0.02 0.05" repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" scale="14">
+            <animate attributeName="scale" dur="1.1s" values="0;16;10;0" repeatCount="indefinite" />
+          </feDisplacementMap>
+        </filter>
+      </svg>
       <div className="ar-top">
         <BackButton href={href.world(game.id)}>{l(game.label)}</BackButton>
         <span className="ar-top-gap" />

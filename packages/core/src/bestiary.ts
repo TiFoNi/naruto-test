@@ -1,7 +1,6 @@
 import type { ObjectId } from 'mongodb'
 import {
   CARD_RARITIES,
-  CARD_UPS_DAY,
   SHARDS_DAY,
   HUNT_MAX,
   DUST_CRAFT,
@@ -96,17 +95,11 @@ export async function raiseCard(userId: ObjectId, game: string, id: number) {
   const grade = gradeOf(card)
   if (!grade.ready) return { ok: false as const, why: 'not_ready' }
 
-  const day = today()
-  const holder = await (await users()).findOne({ _id: userId }, { projection: { ups: 1 } })
-  const used = holder?.ups?.week === day ? (holder.ups?.n ?? 0) : 0
-  if (used >= CARD_UPS_DAY) return { ok: false as const, why: 'day_limit' }
-
   await (await cards()).updateOne(
     { _id: cardKey(userId, game, id) },
     { $set: { rank: grade.rank + 1, shards: Math.max(0, grade.shards - grade.up), updatedAt: new Date() } },
   )
-  await (await users()).updateOne({ _id: userId }, { $set: { ups: { week: day, n: used + 1 } } })
-  return { ok: true as const, rank: grade.rank + 1, ups: { day, n: used + 1 } }
+  return { ok: true as const, rank: grade.rank + 1 }
 }
 
 export async function scrapCard(userId: ObjectId, game: string, id: number, want: number) {
@@ -123,13 +116,11 @@ export async function scrapCard(userId: ObjectId, game: string, id: number, want
 }
 
 export async function craftCard(userId: ObjectId, game: string, id: number, want: number) {
-  const n = Math.max(1, Math.min(SHARDS_DAY, Math.floor(want)))
+  const n = Math.max(1, Math.floor(Number.isFinite(want) ? want : 1))
   const card = await cardOf(userId, game, id)
   const grade = gradeOf(card)
   const price = DUST_CRAFT
   if (grade.rank >= CARD_RARITIES.length - 1) return { ok: false as const, why: 'top' }
-
-  if ((await shardRoom(userId, game)).left < n) return { ok: false as const, why: 'day_cap' }
 
   const cost = price * n
   const holder = await (await users()).findOneAndUpdate(
@@ -138,7 +129,6 @@ export async function craftCard(userId: ObjectId, game: string, id: number, want
     { returnDocument: 'after', projection: { dust: 1 } },
   )
   if (!holder) return { ok: false as const, why: 'dust' }
-  await takeShards(userId, game, n)
   await (await cards()).updateOne(
     { _id: cardKey(userId, game, id) },
     {
