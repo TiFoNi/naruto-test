@@ -131,6 +131,7 @@ export const ArenaFace = memo(function ArenaFace({
   if (!entity) return <span className="arena-slot" aria-hidden />
   return (
     <span
+      data-tip={JSON.stringify({ id: entity.id, taunt, cleave, shot, poison, sound, medic, fury, guard, dodge, charm })}
       className={`arena-card ${summon ? 'is-summon' : ''} ${triple ? 'is-triple' : ''} ${shield ? 'is-shielded' : ''} ${ghost ? 'is-ghost' : ''}`}
       style={{ '--tilt': `${(((entity.id * 7919) % 9) - 4) * 0.55}deg` } as CSSProperties}
     >
@@ -147,7 +148,6 @@ export const ArenaFace = memo(function ArenaFace({
         )}
         {taunt && <span className="ar-taunt">{t('arena.taunt')}</span>}
         {cleave && <span className="ar-taunt is-cleave">{t('arena.cleave')}</span>}
-        {shot && <span className="ar-taunt is-ranged">{t('arena.ranged')}</span>}
         {charm && <span className="ar-taunt is-charm">{t('arena.charm')}</span>}
         {sound && <span className="ar-taunt is-sound">{t('arena.sound')}</span>}
         {poison && <span className="ar-taunt is-poison">{t('arena.poison')}</span>}

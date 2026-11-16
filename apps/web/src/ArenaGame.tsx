@@ -37,6 +37,10 @@ const CLAY_HOLD_MS = 450
 const CLAY_BIRD =
   '<svg viewBox="0 0 64 40"><path class="is-wing is-back" d="M26 17 C 24 8, 18 3, 8 1.5 C 12 4, 14 7, 15 10 C 12 9.5, 10 10, 9 11 C 13 12, 16 13.5, 18 15 C 21 14, 24 15, 26 17 Z"/><path class="is-tail" d="M3 19 L 12 16 L 11 19.5 L 16 18.5 L 13 22 L 15 26 L 3 22.5 Z"/><path class="is-body" d="M11 22 C 17 13.5, 33 11, 45 15 C 49 13.5, 53 13, 57 14.6 L 63.5 16.6 L 57 18.6 C 53.5 23.5, 43 27.5, 29.5 27.5 C 21 27.5, 15 25.5, 11 22 Z"/><path class="is-belly" d="M16 23.5 C 24 26, 36 26, 46 22.5 C 40 26.5, 25 27.5, 16 23.5 Z"/><path class="is-seam" d="M33 13.5 C 34 17, 34 21, 32.5 26 M 44 15 C 45 18, 45 21, 44 24"/><path class="is-wing" d="M29 18 C 32 7, 41 1, 54 0.5 C 50 2.5, 48 4.5, 46.5 7 C 49 6.5, 51 6.8, 52.5 7.5 C 48 9, 45 11, 43.5 13 C 46 13, 47.5 13.5, 48.5 14.2 C 43 15, 39 17, 35.5 20.5 Z"/><circle class="is-eye" cx="52.5" cy="15.8" r="1.4"/></svg>'
 
+type TipInfo = { id: number; taunt?: boolean; cleave?: boolean; shot?: string | null; poison?: boolean; sound?: boolean; medic?: boolean; fury?: boolean; guard?: string | null; dodge?: number }
+
+const TIP_W = 240
+
 const GenFx = () => (
   <span className="ar-gen" aria-hidden>
     <i className="ar-gen-ripple" />
@@ -241,6 +245,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const [hit, setHit] = useState(false)
   const [healing, setHealing] = useState(false)
   const [lead, setLead] = useState(false)
+  const [tip, setTip] = useState<{ info: TipInfo; x: number; y: number } | null>(null)
 
   const [waiting, setWaiting] = useState(false)
   const [clock, setClock] = useState<number | null>(null)
@@ -914,6 +919,39 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const before = at > 0 ? steps[at - 1]! : null
   if (before) for (const one of [...before.mine, ...before.theirs]) if (one.ward) lastWard.set(one.uid, one.ward)
   const standing = new Set((before ? [...before.mine, ...before.theirs] : [...line(view.board), ...line(view.foeBoard)]).map((one) => one.uid))
+  const skillsBy = new Map<number, NonNullable<Card['skills']>>()
+  for (const one of [...view.tavern, ...view.hand, ...line(view.board), ...line(view.foeBoard), ...steps.flatMap((step) => [...step.mine, ...step.theirs])]) if (one.skills?.length && !skillsBy.has(one.id)) skillsBy.set(one.id, one.skills)
+
+  const peek = (event: ReactPointerEvent<HTMLElement>) => {
+    if (dragging) return
+    const node = (event.target as HTMLElement).closest<HTMLElement>('.arena-card[data-tip]')
+    if (!node) {
+      if (tip) setTip(null)
+      return
+    }
+    const info = JSON.parse(node.dataset.tip ?? '{}') as TipInfo
+    const box = node.getBoundingClientRect()
+    const x = box.right + 12 + TIP_W > window.innerWidth ? box.left - 12 - TIP_W : box.right + 12
+    const y = Math.max(8, Math.min(box.top, window.innerHeight - 220))
+    if (tip && tip.info.id === info.id && tip.x === x && tip.y === y) return
+    setTip({ info, x, y })
+  }
+
+  const tipLines = (info: TipInfo) => {
+    const lines: [string, string][] = [[t(info.shot ? 'arena.ranged' : 'arena.melee'), t(info.shot ? 'arena.tip.ranged' : 'arena.tip.melee')]]
+    if (info.taunt) lines.push([t('arena.taunt'), t('arena.tip.taunt')])
+    if (info.cleave) lines.push([t('arena.cleave'), t('arena.tip.cleave')])
+    if (info.poison) lines.push([t('arena.poison'), t('arena.tip.poison')])
+    if (info.sound) lines.push([t('arena.sound'), t('arena.tip.sound')])
+    if (info.medic) lines.push([t('arena.medic'), t('arena.tip.medic')])
+    if (info.fury) lines.push([t('arena.fury'), t('arena.tip.fury')])
+    if (info.guard) lines.push([t('arena.guard'), t(`arena.tip.guard.${info.guard}` as UiKey)])
+    if (info.dodge) lines.push([t('arena.dodge'), t('arena.tip.dodge')])
+    for (const skill of skillsBy.get(info.id) ?? [])
+      lines.push([`${t(`arena.skill.${skill.key}` as UiKey)} · ${t('arena.tip.chakra', { n: skill.cost })}`, t(`arena.skill.${skill.key}.hint` as UiKey, { beast: (skill.beast && byId.get(skill.beast)?.name) || '' })])
+    return lines
+  }
+
   const usedWard = new Set(steps.slice(0, hit ? at + 1 : Math.max(0, at)).filter((one) => one.wards).map((one) => one.from))
   const heroHit = hit && now && !now.to && now.damage > 0 ? (now.foe ? 'me' : 'foe') : null
 
@@ -1156,7 +1194,20 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
 
   return (
     <>
-    <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''} ${waitLeft !== null ? 'is-waiting' : ''}`} style={{ '--dex': game.accent } as CSSProperties}>
+    <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''} ${waitLeft !== null ? 'is-waiting' : ''}`} style={{ '--dex': game.accent } as CSSProperties} onPointerOver={peek} onPointerLeave={() => setTip(null)}>
+      {tip && !dragging && (
+        <div className="ar-tip" style={{ left: tip.x, top: tip.y, width: TIP_W }} aria-hidden>
+          <b className="ar-tip-name">{byId.get(tip.info.id)?.name}</b>
+          <ul>
+            {tipLines(tip.info).map(([head, text]) => (
+              <li key={head}>
+                <em>{head}</em>
+                <span>{text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <svg className="ar-defs" aria-hidden>
         <filter id="ar-gen-melt">
           <feTurbulence type="fractalNoise" baseFrequency="0.02 0.06" numOctaves="2" seed="9">
