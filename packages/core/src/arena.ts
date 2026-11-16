@@ -329,15 +329,28 @@ export function upTavern(doc: ArenaDoc) {
 
 const powerOf = (map: Record<number, number> | undefined, id: number) => map?.[id] ?? 1
 
+const BOT_TAUNTS = 2
+const BOT_TAUNT_BONUS = 4
+
+const guardsOf = (side: ArenaSide) => onBoard(side).filter((card) => tauntOf(card.id)).length
+
+const bonusOf = (side: ArenaSide, id: number, owned = false) => {
+  if (!tauntOf(id)) return 0
+  const have = guardsOf(side) - (owned ? 1 : 0)
+  return have < BOT_TAUNTS ? BOT_TAUNT_BONUS : 0
+}
+
 const worth = (doc: ArenaDoc, id: number) => {
   const { atk, hp } = statsOf(id, rarityOf(doc.foeRanks, id), false, powerOf(doc.foePowers, id))
-  return atk + hp
+  return atk + hp + bonusOf(doc.foeBoard, id)
 }
+
+const valueOf = (side: ArenaSide, card: ArenaCard) => card.atk + card.hp + bonusOf(side, card.id, true)
 
 const weakest = (side: ArenaSide) =>
   onBoard(side)
     .slice()
-    .sort((a, b) => a.atk + a.hp - (b.atk + b.hp))[0]
+    .sort((a, b) => valueOf(side, a) - valueOf(side, b))[0]
 
 function botTurn(doc: ArenaDoc) {
   let left = Math.min(ARENA_COIN_START + doc.turn - 1, ARENA_COIN_MAX)
@@ -364,7 +377,7 @@ function botTurn(doc: ArenaDoc) {
     }
     if (!freeSlot(doc.foeBoard)) {
       const poorest = weakest(doc.foeBoard)
-      if (!poorest || poorest.atk + poorest.hp >= worth(doc, id)) break
+      if (!poorest || valueOf(doc.foeBoard, poorest) >= worth(doc, id)) break
       relay(doc.foeBoard, onBoard(doc.foeBoard).filter((card) => card.uid !== poorest.uid))
       left += ARENA_SELL_BACK
     }

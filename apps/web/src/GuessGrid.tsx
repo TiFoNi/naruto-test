@@ -260,7 +260,7 @@ export default function GuessGrid({
               title={name(g)}
               style={{ animationDelay: `${row < (firstBatch.current ?? 0) ? Math.min(row * ROW_STEP, MAX_ROW_DELAY) : 0}s` }}
             >
-              <Thumb game={game} entity={g} className="portrait-thumb" />
+              <Thumb game={game} entity={g} className="portrait-thumb" sharp />
               <span className="portrait-name">{name(g)}</span>
             </div>
             {game.columns.map((col, i) => {
