@@ -665,6 +665,15 @@ const done = (side: DuelPlayer) => Boolean(side.solvedAt || side.gaveUp)
 
 const turnMode = (duel: DuelDoc) => duel.mode === 'who' || duel.mode === 'grid' || duel.mode === 'clue'
 
+function hopeless(duel: DuelDoc) {
+  if (turnMode(duel) || duel.players.length !== 2) return false
+  if (lineUp(duel).some((team) => squad(duel, team).length !== 1)) return false
+  const solver = duel.players.find((side) => side.solvedAt)
+  const rival = duel.players.find((side) => side !== solver)
+  if (!solver || !rival || done(rival)) return false
+  return rival.guesses.length >= solver.guesses.length - 1
+}
+
 function decide(duel: DuelDoc) {
   if (turnMode(duel)) {
     const solver = duel.players.find((side) => side.solvedAt)
@@ -915,7 +924,7 @@ export async function cluePass(duel: DuelDoc, userId: ObjectId) {
 export async function settle(duel: DuelDoc): Promise<DuelDoc> {
   if (duel.status !== 'playing') return duel
   const timeUp = duel.endsAt ? Date.now() >= duel.endsAt.getTime() : false
-  const over = turnMode(duel) ? duel.players.some(done) : duel.players.every(done)
+  const over = turnMode(duel) ? duel.players.some(done) : duel.players.every(done) || hopeless(duel)
   if (!timeUp && !over) return duel
   const winnerTeam = decide(duel)
   const points = roundPoints(duel)
@@ -927,9 +936,13 @@ export async function settle(duel: DuelDoc): Promise<DuelDoc> {
     .map((team) => ({ team, total: Math.max(0, ...squad(duel, team).map((side) => side.wins ?? 0)) + (points.get(team) ?? 0) }))
   const top = Math.max(0, ...totals.map((one) => one.total))
   const leaders = totals.filter((one) => one.total === top)
-  const lastRound = duel.round >= (duel.best ?? DUEL_DEFAULT.best)
-  const matchTeam = duel.bot ? winnerTeam : lastRound && leaders.length === 1 ? leaders[0]!.team : null
-  const matchDone = duel.bot ? true : lastRound
+  const best = duel.best ?? DUEL_DEFAULT.best
+  const lastRound = duel.round >= best
+  const runnerUp = Math.max(0, ...totals.filter((one) => one.total !== top || leaders.length > 1).map((one) => one.total))
+  const reach = Math.max(1, totals.length - 1) * Math.max(0, best - duel.round)
+  const clinched = leaders.length === 1 && top - runnerUp > reach
+  const matchTeam = duel.bot ? winnerTeam : (lastRound || clinched) && leaders.length === 1 ? leaders[0]!.team : null
+  const matchDone = duel.bot ? true : lastRound || clinched
   const masters = matchTeam === null ? [] : duel.players.filter((side) => teamOf(duel, side) === matchTeam)
   const solvedAt = champs.reduce<Date | null>((latest, side) => (side.solvedAt && (!latest || side.solvedAt > latest) ? side.solvedAt : latest), null)
   const ms = solvedAt && duel.startedAt ? solvedAt.getTime() - duel.startedAt.getTime() : null
