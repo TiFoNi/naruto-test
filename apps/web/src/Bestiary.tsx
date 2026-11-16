@@ -1686,8 +1686,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
         </>
       )}
 
-      {(checking || user || owner) && (
-        <div className={`dex-filter ${filtering ? 'is-filtering' : ''}`}>
+      <div className={`dex-filter ${filtering ? 'is-filtering' : ''}`}>
           {open.size > 0 && (
             <>
               {vault && !owner && (
@@ -1783,8 +1782,7 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
               )}
             </>
           )}
-        </div>
-      )}
+      </div>
 
       <div className="dex-board">
         <InkFrame />

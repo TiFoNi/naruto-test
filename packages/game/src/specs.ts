@@ -1254,6 +1254,8 @@ export const ARENA_CHAKRA_MAX = 10
 export const ARENA_CHAKRA_START = 1
 export const ARENA_CARD_COST = 3
 export const ARENA_SELL_BACK = 1
+export const ARENA_SPELL_COST = 1
+export const ARENA_SPELL_CHANCE = 0.5
 export const ARENA_TIERS = 6
 export const ARENA_TRIPLE = 3
 

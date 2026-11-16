@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react'
 import { ARENA_CARD_COST, ARENA_CHAKRA_MAX, ARENA_COIN_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS, ARENA_TIERS } from '@nanda/game'
 import { api } from './api'
-import { ArenaFace, type ArenaView, type Card, type Side } from './ArenaCard'
+import { ArenaFace, SpellFace, type ArenaView, type Card, type Side } from './ArenaCard'
 import { BADGE_POINTS } from './DexCard'
 import Avatar from './Avatar'
 import { useAuth } from './auth'
@@ -26,6 +26,16 @@ const FLY_MS = 1100
 const IMPACT_MS = 470
 const GAP_MS = 260
 const DEATH_MS = 1100
+const SHOT_MS = 380
+
+const SHOTS: Record<string, string> = {
+  kunai:
+    '<svg viewBox="0 0 40 40"><path d="M39 20 L22 14.5 L22 25.5 Z" fill="#d4dbe4" stroke="#1b1a1e" stroke-width="1.6" stroke-linejoin="round"/><rect x="9" y="18" width="13" height="4" rx="1.5" fill="#1b1a1e"/><circle cx="5.5" cy="20" r="3.6" fill="none" stroke="#1b1a1e" stroke-width="2"/></svg>',
+  senbon: '<svg viewBox="0 0 40 40"><path d="M3 20 L37 20" stroke="#eef3f8" stroke-width="2.2" stroke-linecap="round"/><path d="M29 20 L38 20" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/></svg>',
+  clay: '<svg viewBox="0 0 40 40"><path d="M5 23 C11 12 19 12 23 18 C27 11 33 9 38 13 C34 18 30 22 26 24 C21 29 13 31 5 23 Z" fill="#f3f0e9" stroke="#8b8478" stroke-width="1.6" stroke-linejoin="round"/><circle cx="31" cy="15" r="1.5" fill="#1b1a1e"/></svg>',
+  wind: '<svg viewBox="0 0 40 40"><path d="M12 3 C33 9 36 31 12 37 C26 28 26 12 12 3 Z" fill="rgba(214,244,234,0.95)"/></svg>',
+  paper: '<svg viewBox="0 0 40 40"><path d="M20 2 L24.5 15.5 L38 20 L24.5 24.5 L20 38 L15.5 24.5 L2 20 L15.5 15.5 Z" fill="#f7f3eb" stroke="#9b958a" stroke-width="1.3" stroke-linejoin="round"/></svg>',
+}
 const LEAVE_MS = 320
 const LEAVE_STEP_MS = 45
 
@@ -75,21 +85,20 @@ const randomOf = (seed: number) => {
 
 const tearOf = (seed: number) => {
   const next = randomOf(seed)
-  const top = 45 + next() * 10
-  const bottom = top + (next() - 0.5) * 8
+  const left = 45 + next() * 10
+  const right = left + (next() - 0.5) * 8
   const cut: [number, number][] = []
   const steps = 12
   for (let i = 0; i <= steps; i++) {
     const share = i / steps
-    const x = top + (bottom - top) * share + (next() - 0.5) * 7 + (i % 2 ? 2 : -2)
-    cut.push([x, -15 + share * 130])
+    const y = left + (right - left) * share + (next() - 0.5) * 6 + (i % 2 ? 2 : -2)
+    cut.push([-15 + share * 130, y])
   }
   const pts = (list: [number, number][]) => list.map(([x, y]) => `${x.toFixed(1)}% ${y.toFixed(1)}%`).join(',')
-  const lean = (bottom - top) / 130
   return {
-    left: `polygon(-30% -15%, ${pts(cut)}, -30% 115%)`,
-    right: `polygon(${pts(cut)}, 130% 115%, 130% -15%)`,
-    lean: Math.max(-0.8, Math.min(0.8, lean)),
+    left: `polygon(-30% -30%, 130% -30%, ${pts([...cut].reverse())})`,
+    right: `polygon(${pts(cut)}, 130% 130%, -30% 130%)`,
+    lean: 0,
   }
 }
 
@@ -113,6 +122,8 @@ type Hold = {
   to: number
   slot: number
   summon: boolean
+  spell: boolean
+  aim: string | null
 }
 
 const line = (side: Side) => [...side.heroes, ...side.summons]
@@ -178,13 +189,18 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
 
   const [waiting, setWaiting] = useState(false)
   const [clock, setClock] = useState<number | null>(null)
+  const [waitLeft, setWaitLeft] = useState<number | null>(null)
+  const skew = useRef(0)
   const [dragging, setDragging] = useState<Kind | null>(null)
   const [over, setOver] = useState<Spot['zone'] | null>(null)
+  const [aimed, setAimed] = useState<string | null>(null)
   const [deal, setDeal] = useState(0)
   const [seenOffers, setSeenOffers] = useState('')
   const [dealWait, setDealWait] = useState(0)
   const [seenTavern, setSeenTavern] = useState<ArenaView['tavern']>([])
+  const [seenSpell, setSeenSpell] = useState<ArenaView['spellOffer']>(null)
   const [leaving, setLeaving] = useState<ArenaView['tavern'] | null>(null)
+  const [leavingSpell, setLeavingSpell] = useState<ArenaView['spellOffer']>(null)
   const overNow = useRef<Spot['zone'] | null>(null)
   const hold = useRef<Hold | null>(null)
 
@@ -194,10 +210,15 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
 
   const byId = useMemo(() => new Map((game?.entities ?? []).map((one) => [one.id, one])), [game, ready])
 
+  const opening = useRef<Promise<ArenaView | null> | null>(null)
   const load = useCallback(async () => {
-    const { data } = await api<{ arena?: ArenaView | null }>('arena')
-    const now = data.arena ?? (await api<{ arena?: ArenaView | null }>('arena', { action: 'start', game: gameId })).data.arena ?? null
-    setView(now)
+    opening.current ??= (async () => {
+      const { data } = await api<{ arena?: ArenaView | null }>('arena')
+      return data.arena ?? (await api<{ arena?: ArenaView | null }>('arena', { action: 'start', game: gameId })).data.arena ?? null
+    })()
+    const now = await opening.current
+    if (now) skew.current = now.now - Date.now()
+    setView((was) => was ?? now)
     setChecked(true)
   }, [gameId])
 
@@ -218,6 +239,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
           const { data } = reply
           if (data.arena === null) return go(href.bestiary(gameId as GameId))
           if (data.arena && (pending.current === 0 || after)) {
+            skew.current = data.arena.now - Date.now()
             setView(data.arena)
             after?.(data.arena)
           }
@@ -232,10 +254,19 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
 
   const buy = useCallback(
     (at: number) => {
+      if (at < 0) {
+        setView((now) => {
+          if (!now?.spellOffer || now.coins < now.spellOffer.cost) return now
+          const card: Card = { uid: `${now.seq + 1}`, id: 0, rarity: 'paper', atk: 0, hp: 0, max: 0, summon: false, spell: now.spellOffer.kind }
+          return { ...now, seq: now.seq + 1, coins: now.coins - now.spellOffer.cost, hand: [...now.hand, card], spellOffer: null }
+        })
+        send({ action: 'spell' })
+        return
+      }
       setView((now) => {
         if (!now || now.coins < ARENA_CARD_COST || !now.tavern[at]) return now
         const one = now.tavern[at]!
-        const card: Card = { uid: `${now.seq + 1}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt }
+        const card: Card = { uid: `${now.seq + 1}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt, cleave: one.cleave, shot: one.shot }
         return { ...now, seq: now.seq + 1, coins: now.coins - ARENA_CARD_COST, hand: [...now.hand, card], tavern: now.tavern.filter((_, i) => i !== at) }
       })
       send({ action: 'buy', at })
@@ -256,6 +287,20 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         return { ...now, hand: now.hand.filter((one) => one.uid !== uid), board }
       })
       send(at >= 0 ? { action: 'play', uid, at } : { action: 'play', uid })
+    },
+    [send],
+  )
+
+  const cast = useCallback(
+    (uid: string, target: string) => {
+      setView((now) => {
+        if (!now) return now
+        const spell = now.hand.find((one) => one.uid === uid)
+        if (!spell?.spell) return now
+        const bless = (list: Card[]) => list.map((one) => (one.uid === target ? { ...one, dodge: (one.dodge ?? 0) + 1 } : one))
+        return { ...now, hand: now.hand.filter((one) => one.uid !== uid), board: { heroes: bless(now.board.heroes), summons: bless(now.board.summons) } }
+      })
+      send({ action: 'cast', uid, target })
     },
     [send],
   )
@@ -318,42 +363,57 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     })
     setSeenOffers(offers)
     setSeenTavern(view.tavern)
+    setSeenSpell(view.spellOffer)
     if (fresh) {
       setDeal((was) => was + 1)
+      const gone = seenTavern.length + (seenSpell ? 1 : 0)
       setLeaving(seenTavern.length ? seenTavern : null)
-      setDealWait(seenTavern.length ? LEAVE_MS + (seenTavern.length - 1) * LEAVE_STEP_MS : 0)
+      setLeavingSpell(seenTavern.length ? seenSpell : null)
+      setDealWait(gone ? LEAVE_MS + (gone - 1) * LEAVE_STEP_MS : 0)
     }
   }
 
   useEffect(() => {
     if (!leaving) return
-    const timer = window.setTimeout(() => setLeaving(null), LEAVE_MS + leaving.length * LEAVE_STEP_MS + 40)
+    const timer = window.setTimeout(() => {
+      setLeaving(null)
+      setLeavingSpell(null)
+    }, LEAVE_MS + (leaving.length + 1) * LEAVE_STEP_MS + 40)
     return () => window.clearTimeout(timer)
   }, [leaving])
 
   const finishing = useRef(finish)
   finishing.current = finish
 
-  const recruiting = !!view && view.status === 'playing' && !fight
-  const turn = view?.turn
-  const turnSec = view?.turnSec ?? 30
+  const playing = !!view && view.status === 'playing' && !fight
+  const turnEndsAt = view?.turnEndsAt ?? 0
+  const fightEndsAt = view?.fightEndsAt ?? 0
   useEffect(() => {
-    if (!recruiting) {
+    if (!playing) {
       setClock(null)
+      setWaitLeft(null)
       return
     }
-    const ends = Date.now() + turnSec * 1000
-    setClock(turnSec)
-    const tick = window.setInterval(() => {
-      const left = Math.max(0, Math.ceil((ends - Date.now()) / 1000))
+    let fired = false
+    const step = () => {
+      const now = Date.now() + skew.current
+      if (fightEndsAt > now) {
+        setWaitLeft(Math.ceil((fightEndsAt - now) / 1000))
+        setClock(null)
+        return
+      }
+      setWaitLeft(null)
+      const left = Math.max(0, Math.ceil((turnEndsAt - now) / 1000))
       setClock(left)
-      if (left <= 0) {
-        window.clearInterval(tick)
+      if (left <= 0 && !fired) {
+        fired = true
         finishing.current()
       }
-    }, 250)
-    return () => window.clearInterval(tick)
-  }, [recruiting, turn, turnSec])
+    }
+    step()
+    const timer = window.setInterval(step, 250)
+    return () => window.clearInterval(timer)
+  }, [playing, turnEndsAt, fightEndsAt])
 
   useEffect(() => {
     if (!fight || !lead) return
@@ -379,7 +439,51 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     let zone: HTMLElement | null = null
     const plays: Animation[] = []
 
-    if (movers.length && aim) {
+    const extra: HTMLElement[] = []
+    if (one.shot && movers.length === 1 && aim) {
+      const from = movers[0]!.getBoundingClientRect()
+      const to = aim.getBoundingClientRect()
+      const sx = from.left + from.width / 2
+      const sy = from.top + from.height / 2
+      const dx = to.left + to.width / 2 - sx
+      const dy = to.top + to.height / 2 - sy
+      const angle = (Math.atan2(dy, dx) * 180) / Math.PI
+      const spin = one.shot === 'paper' ? 900 : 0
+      const lift = one.shot === 'clay' ? -Math.min(140, Math.hypot(dx, dy) * 0.4) : 0
+      const shot = document.createElement('div')
+      shot.className = `ar-shot is-${one.shot}`
+      shot.innerHTML = SHOTS[one.shot] ?? SHOTS.kunai!
+      shot.style.left = `${sx}px`
+      shot.style.top = `${sy}px`
+      document.body.appendChild(shot)
+      extra.push(shot)
+      const flight = shot.animate(
+        [
+          { transform: `translate(-50%, -50%) rotate(${angle}deg)`, opacity: 0 },
+          { opacity: 1, offset: 0.12 },
+          { transform: `translate(-50%, -50%) translate(${dx / 2}px, ${dy / 2 + lift}px) rotate(${angle + spin / 2}deg)`, offset: 0.5 },
+          { transform: `translate(-50%, -50%) translate(${dx}px, ${dy}px) rotate(${angle + spin}deg)`, opacity: 1 },
+        ],
+        { duration: SHOT_MS, delay: IMPACT_MS - SHOT_MS, easing: 'cubic-bezier(0.35, 0.1, 0.65, 1)', fill: 'both' },
+      )
+      flight.onfinish = () => {
+        shot.remove()
+        if (one.shot !== 'clay') return
+        const boom = document.createElement('div')
+        boom.className = 'ar-boom'
+        boom.style.left = `${sx + dx}px`
+        boom.style.top = `${sy + dy}px`
+        document.body.appendChild(boom)
+        extra.push(boom)
+        boom.animate([{ transform: 'translate(-50%, -50%) scale(0.3)', opacity: 1 }, { transform: 'translate(-50%, -50%) scale(1.7)', opacity: 0 }], { duration: 480, easing: 'ease-out', fill: 'forwards' }).onfinish = () => boom.remove()
+      }
+      plays.push(
+        movers[0]!.animate(
+          [{ transform: 'none' }, { transform: `translate(${-Math.sign(dx) * 4}px, ${-Math.sign(dy) * 8}px) scale(0.97)`, offset: 0.3 }, { transform: 'none' }],
+          { duration: FLY_MS, easing: 'ease-out' },
+        ),
+      )
+    } else if (movers.length && aim) {
       const b = aim.getBoundingClientRect()
       zone = movers[0]!.closest<HTMLElement>('.ar-half')
       if (zone) zone.style.zIndex = '7'
@@ -436,12 +540,13 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       clearTimeout(land)
       if (next) clearTimeout(next)
       for (const play of plays) play.cancel()
+      for (const node of extra) node.remove()
       clear()
     }
   }, [fight, step, lead])
 
   const take = (kind: Kind, card: Card, at: number) => (event: ReactPointerEvent<HTMLElement>) => {
-    if (event.button !== 0 || fight || waiting) return
+    if (event.button !== 0 || fight || waiting || waitLeft !== null) return
     hold.current = {
       kind,
       uid: card.uid,
@@ -457,6 +562,8 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       to: -1,
       slot: -1,
       summon: card.summon,
+      spell: !!card.spell,
+      aim: null,
     }
   }
 
@@ -532,6 +639,19 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
           place(one)
         }
       }
+      if (one.kind === 'hand' && one.spell) {
+        const spot = [...document.querySelectorAll<HTMLElement>('.ar-half.is-bot .ar-row [data-uid]')].find((node) => {
+          const room = node.getBoundingClientRect()
+          const midY = box.top + box.height / 2
+          return centre >= room.left && centre <= room.right && midY >= room.top && midY <= room.bottom
+        })
+        const aim = spot?.dataset.uid ?? null
+        if (aim !== one.aim) {
+          one.aim = aim
+          setAimed(aim)
+        }
+        return
+      }
       if (one.kind === 'hand') {
         let slot = -1
         if (over?.zone === 'slot' && one.cells.length < roomOf(one.summon)) {
@@ -550,7 +670,14 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       if (!one) return
       if (!one.live) {
         if (one.kind === 'shop') buy(one.at)
-        else if (one.kind === 'hand') play(one.uid)
+        else if (one.kind === 'hand' && !one.spell) play(one.uid)
+        return
+      }
+      if (one.kind === 'hand' && one.spell) {
+        setAimed(null)
+        if (one.aim) cast(one.uid, one.aim)
+        else if (spotOf(one.node)?.zone === 'shop') sell(one.uid)
+        requestAnimationFrame(() => clean(one))
         return
       }
       const over = spotOf(one.node)
@@ -576,7 +703,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       window.removeEventListener('pointerup', up)
       window.removeEventListener('pointercancel', up)
     }
-  }, [place, buy, play, sell, shift])
+  }, [place, buy, play, sell, shift, cast])
 
   if (!game) return <div className="card center muted">{t('err.not_found')}</div>
   if (!checked || !ready) return <p className="ar-note">{t('arena.loading')}</p>
@@ -599,7 +726,12 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const state = at < 0 ? null : hit ? now : at > 0 ? steps[at - 1]! : null
 
   const health = new Map<string, number>()
-  if (at >= 0) for (const one of state ? [...state.mine, ...state.theirs] : [...line(view.board), ...line(view.foeBoard)]) health.set(one.uid, one.hp)
+  const guard = new Map<string, number>()
+  if (at >= 0) {
+    for (const one of state ? [...state.mine, ...state.theirs] : [...line(view.board), ...line(view.foeBoard)]) health.set(one.uid, one.hp)
+    if (state) for (const one of [...state.mine, ...state.theirs]) guard.set(one.uid, one.dodge ?? 0)
+    else for (const uid of view.armed ?? []) guard.set(uid, 1)
+  }
   const before = at > 0 ? steps[at - 1]! : null
   const standing = new Set((before ? [...before.mine, ...before.theirs] : [...line(view.board), ...line(view.foeBoard)]).map((one) => one.uid))
   const heroHit = hit && now && !now.to ? (now.foe ? 'me' : 'foe') : null
@@ -618,15 +750,16 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         const hp = health.get(card.uid)
         const dying = hit && hp === undefined && standing.has(card.uid)
         const gone = at >= 0 && hp === undefined && !dying
-        const struck = hit && now?.to === card.uid
+        const dodging = hit && !!now?.dodged?.includes(card.uid)
+        const struck = hit && !dodging && (now?.to === card.uid || !!now?.splash?.includes(card.uid))
         const face = (
-          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} />
+          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} dodge={guard.get(card.uid) ?? card.dodge} />
         )
         const clips = dying ? tearOf(seedOf(card.uid)) : null
         const cut = struck && !dying ? cutOf(seedOf(card.uid)) : null
         return (
           <li key={card.uid} className={`is-held ${gone ? 'is-out' : ''} ${dying ? 'is-dying' : ''}`}>
-            <span data-uid={card.uid} className={`ar-move ${struck ? 'is-struck' : ''}`}>
+            <span data-uid={card.uid} className={`ar-move ${struck ? 'is-struck' : ''} ${dodging ? 'is-dodging' : ''}`}>
               {clips ? (
                 <span className="ar-tear" style={{ '--lean': clips.lean } as CSSProperties}>
                   <span className="ar-tear-half is-left" style={{ clipPath: clips.left }}>
@@ -646,9 +779,18 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                   </span>
                 </span>
               ) : (
-                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} />
+                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} dodge={guard.get(card.uid) ?? card.dodge} />
               )}
               {struck && <Slash seed={seedOf(card.uid)} />}
+              {dodging && (
+                <>
+                  <i className="ar-poof" aria-hidden />
+                  <img className="ar-log" src="/spells/kawarimi.webp" alt="" aria-hidden draggable={false} />
+                  <b className="ar-dodge-word" aria-hidden>
+                    {t('arena.dodgeHit')}
+                  </b>
+                </>
+              )}
             </span>
           </li>
         )
@@ -718,7 +860,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         {view.tavern.map((one, i) => {
           const nth = view.tavern.slice(0, i).filter((other) => other.id === one.id).length
           const poor = one.cost > view.coins
-          const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt }
+          const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt, cleave: one.cleave, shot: one.shot }
           return (
             <li
               key={`${deal}:${one.id}:${nth}`}
@@ -726,28 +868,49 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
               className={`is-held ${poor ? 'is-poor' : ''}`}
             >
               <span className="ar-move" onPointerDown={poor ? undefined : take('shop', card, i)}>
-                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} />
+                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} />
               </span>
             </li>
           )
         })}
+        {view.spellOffer && (
+          <li key={`spell${deal}`} style={{ '--i': view.tavern.length, '--wait': `${dealWait}ms` } as CSSProperties} className={`is-held is-spell ${view.spellOffer.cost > view.coins ? 'is-poor' : ''}`}>
+            <span
+              className="ar-move"
+              onPointerDown={
+                view.spellOffer.cost > view.coins
+                  ? undefined
+                  : take('shop', { uid: 'spell', id: 0, rarity: 'paper', atk: 0, hp: 0, max: 0, summon: false, spell: view.spellOffer.kind }, -1)
+              }
+            >
+              <SpellFace kind={view.spellOffer.kind} cost={view.spellOffer.cost} />
+            </span>
+          </li>
+        )}
       </ul>
       {leaving && (
         <ul className="ar-row is-shop is-old" aria-hidden>
           {leaving.map((one, i) => (
-            <li key={`out${deal}:${i}`} style={{ '--j': leaving.length - 1 - i } as CSSProperties}>
+            <li key={`out${deal}:${i}`} style={{ '--j': leaving.length - i - (leavingSpell ? 0 : 1) } as CSSProperties}>
               <span className="ar-old">
-                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} />
+                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} />
               </span>
             </li>
           ))}
+          {leavingSpell && (
+            <li key={`out${deal}:spell`} style={{ '--j': 0 } as CSSProperties}>
+              <span className="ar-old">
+                <SpellFace kind={leavingSpell.kind} cost={leavingSpell.cost} />
+              </span>
+            </li>
+          )}
         </ul>
       )}
     </div>
   )
 
   return (
-    <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''}`} style={{ '--dex': game.accent } as CSSProperties}>
+    <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''} ${waitLeft !== null ? 'is-waiting' : ''}`} style={{ '--dex': game.accent } as CSSProperties}>
       <div className="ar-top">
         <BackButton href={href.world(game.id)}>{l(game.label)}</BackButton>
         <span className="ar-top-gap" />
@@ -802,6 +965,17 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
             </div>
             <div className="ar-mid">
               <i className="ar-line" aria-hidden />
+              {waitLeft !== null && (
+                <span className="ar-chip ar-clock is-wait" title={t('arena.waiting')}>
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                    <polygon points={CHIP} vectorEffect="non-scaling-stroke" />
+                  </svg>
+                  <span>
+                    {t('arena.waiting')}
+                    <b>{waitLeft}</b>
+                  </span>
+                </span>
+              )}
               {clock !== null && !fight && (
               <span className={`ar-chip ar-clock ${clock <= 5 ? 'is-late' : ''}`} title={t('arena.time')}>
                 <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
@@ -823,9 +997,9 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                 <div data-zone="slot" data-at={freeAt} className={`ar-sell is-drop ${dragging === 'hand' || dragging === 'shop' ? 'is-selling' : ''} ${(dragging === 'hand' || dragging === 'shop') && over === 'slot' ? 'is-over' : ''}`}>
                 <ul className="ar-row is-heroes">
                   {view.board.heroes.map((card, i) => (
-                    <li key={card.uid}>
+                    <li key={card.uid} className={aimed === card.uid ? 'is-aimed' : ''}>
                       <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
-                        <ArenaFace game={game.id} entity={byId.get(card.id)} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} />
+                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} dodge={card.dodge} />
                       </span>
                     </li>
                   ))}
@@ -837,7 +1011,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                     return card ? (
                       <li key={card.uid}>
                         <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
-                          <ArenaFace game={game.id} entity={byId.get(card.id)} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} />
+                          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} dodge={card.dodge} />
                         </span>
                       </li>
                     ) : (
@@ -860,7 +1034,11 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                 {view.hand.map((card, i) => (
                   <li key={card.uid}>
                     <span className="ar-move" onPointerDown={take('hand', card, i)}>
-                      <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} />
+                      {card.spell ? (
+                        <SpellFace kind={card.spell} />
+                      ) : (
+                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} dodge={card.dodge} />
+                      )}
                     </span>
                   </li>
                 ))}

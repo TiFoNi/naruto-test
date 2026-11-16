@@ -5,6 +5,8 @@ import {
   ARENA_COIN_MAX,
   ARENA_COIN_START,
   ARENA_SELL_BACK,
+  ARENA_SPELL_CHANCE,
+  ARENA_SPELL_COST,
   ARENA_HAND,
   ARENA_HERO_SLOTS,
   ARENA_HP,
@@ -85,8 +87,14 @@ export async function bannedIds(game: GameId) {
 
 const sheet = tiers as unknown as Record<string, [number, number, number] | undefined>
 const taunts = new Set<number>((traits as { taunt?: number[] }).taunt ?? [])
+const cleavers = new Set<number>((traits as { cleave?: number[] }).cleave ?? [])
+const shooters = new Map<number, string>(Object.entries((traits as { ranged?: Record<string, string> }).ranged ?? {}).map(([id, kind]) => [Number(id), kind]))
 
 export const tauntOf = (id: number) => taunts.has(id)
+
+export const cleaveOf = (id: number) => cleavers.has(id)
+
+export const shotOf = (id: number) => shooters.get(id) ?? null
 
 const CACHE_MS = 15_000
 let edits: Record<string, [number, number, number]> = {}
@@ -133,8 +141,37 @@ const makeCard = (id: number, rarity: CardRarity, summon: boolean, seq: number, 
   return { uid: `${seq}`, id, rarity, atk, hp, max: hp, summon, ...(triple ? { triple: true } : {}) }
 }
 
+const FIGHT_LEAD_MS = 1600
+const FIGHT_STEP_MS = 1360
+const FIGHT_DEATH_MS = 1100
+const FIGHT_SHARE = 0.85
+const TURN_GRACE_MS = 1500
+
+const replayMs = (steps: ArenaStep[]) => {
+  let total = FIGHT_LEAD_MS
+  let standing = Infinity
+  for (const step of steps) {
+    const now = step.mine.length + step.theirs.length
+    total += FIGHT_STEP_MS + (now < standing && standing !== Infinity ? FIGHT_DEATH_MS : 0)
+    standing = now
+  }
+  return Math.round(total * FIGHT_SHARE)
+}
+
+const turnFrom = (at: number) => new Date(at + ARENA_TURN_SEC * 1000)
+
+export const inFight = (doc: ArenaDoc) => !!doc.fightEndsAt && Date.now() < doc.fightEndsAt.getTime()
+
+export function tick(doc: ArenaDoc) {
+  if (doc.status !== 'playing' || inFight(doc) || !doc.turnEndsAt) return false
+  if (Date.now() < doc.turnEndsAt.getTime() + TURN_GRACE_MS) return false
+  endTurn(doc)
+  return true
+}
+
 export async function arenaOf(userId: ObjectId) {
   const doc = await (await arenas()).findOne({ _id: userId })
+  if (doc && !doc.turnEndsAt) doc.turnEndsAt = turnFrom(Date.now())
   if (doc && doc.coins === undefined) {
     const old = doc as ArenaDoc & { cap?: number }
     doc.coins = old.chakra ?? ARENA_COIN_START
@@ -237,6 +274,9 @@ export async function startArena(userId: ObjectId, game: GameId) {
     updatedAt: new Date(),
   }
   doc.tavern = roll(doc.pool, 1)
+  doc.spellOffer = offerSpell()
+  doc.turnEndsAt = turnFrom(Date.now())
+  doc.fightEndsAt = null
   await (await arenas()).replaceOne({ _id: userId }, doc, { upsert: true })
   return doc
 }
@@ -298,10 +338,35 @@ export function moveCard(doc: ArenaDoc, uid: string, at: number) {
   return true
 }
 
+export const SPELLS = ['kawarimi'] as const
+
+const offerSpell = () => (Math.random() < ARENA_SPELL_CHANCE ? SPELLS[0] : null)
+
+export function buySpell(doc: ArenaDoc) {
+  const spell = doc.spellOffer
+  if (!spell || doc.hand.length >= ARENA_HAND || doc.coins < ARENA_SPELL_COST) return false
+  doc.coins -= ARENA_SPELL_COST
+  doc.seq += 1
+  doc.hand.push({ uid: `${doc.seq}`, id: 0, rarity: 'paper', atk: 0, hp: 0, max: 0, summon: false, spell })
+  doc.spellOffer = null
+  return true
+}
+
+export function castSpell(doc: ArenaDoc, uid: string, target: string) {
+  const at = doc.hand.findIndex((card) => card.uid === uid && card.spell)
+  if (at < 0) return false
+  const aim = onBoard(doc.board).find((card) => card.uid === target)
+  if (!aim) return false
+  if (doc.hand[at]!.spell === 'kawarimi') aim.dodge = (aim.dodge ?? 0) + 1
+  doc.hand.splice(at, 1)
+  return true
+}
+
 export function playCard(doc: ArenaDoc, uid: string, to = -1) {
   const at = doc.hand.findIndex((card) => card.uid === uid)
   if (at < 0) return false
   const card = doc.hand[at]!
+  if (card.spell) return false
   if (!freeSlot(doc.board, card.summon)) return false
   doc.hand.splice(at, 1)
   const group = card.summon ? doc.board.summons : doc.board.heroes
@@ -313,6 +378,7 @@ export function rollTavern(doc: ArenaDoc) {
   if (doc.coins < ARENA_ROLL_COST) return false
   doc.coins -= ARENA_ROLL_COST
   doc.tavern = roll(doc.pool, tavernOf(doc), doc.tavern)
+  doc.spellOffer = offerSpell()
   return true
 }
 
@@ -406,14 +472,33 @@ function fight(doc: ArenaDoc) {
     const targets = alive(side)
     let to: string | null = null
     let dead = false
+    const splash: string[] = []
+    const dodged: string[] = []
+    const harm = (one: ArenaCard, damage: number) => {
+      if (damage <= 0) return
+      if ((one.dodge ?? 0) > 0) {
+        one.dodge = (one.dodge ?? 0) - 1
+        dodged.push(one.uid)
+        return
+      }
+      one.hp -= damage
+    }
     if (!targets.length) {
       if (foe) doc.hp = Math.max(0, doc.hp - card.atk)
       else doc.foeHp = Math.max(0, doc.foeHp - card.atk)
     } else {
       const guards = targets.filter((one) => tauntOf(one.id))
       const target = pickOne(guards.length ? guards : targets)
-      target.hp -= card.atk
-      card.hp -= target.atk
+      if (cleaveOf(card.id)) {
+        const at = targets.indexOf(target)
+        for (const near of [targets[at - 1], targets[at + 1]]) {
+          if (!near) continue
+          harm(near, card.atk)
+          splash.push(near.uid)
+        }
+      }
+      harm(target, card.atk)
+      if (!shotOf(card.id)) card.hp -= target.atk
       to = target.uid
       dead = target.hp <= 0
     }
@@ -422,6 +507,9 @@ function fight(doc: ArenaDoc) {
     steps.push({
       from: card.uid,
       to,
+      ...(splash.length ? { splash } : {}),
+      ...(to && shotOf(card.id) ? { shot: shotOf(card.id)! } : {}),
+      ...(dodged.length ? { dodged } : {}),
       damage: card.atk,
       dead,
       foe,
@@ -485,7 +573,12 @@ function fight(doc: ArenaDoc) {
 export function endTurn(doc: ArenaDoc) {
   if (doc.status !== 'playing') return doc
   botTurn(doc)
+  doc.armed = [...onBoard(doc.board), ...onBoard(doc.foeBoard)].filter((card) => (card.dodge ?? 0) > 0).map((card) => card.uid)
   fight(doc)
+  for (const card of [...onBoard(doc.board), ...onBoard(doc.foeBoard)]) delete card.dodge
+  const settled = Date.now() + replayMs(doc.steps ?? [])
+  doc.fightEndsAt = new Date(settled)
+  doc.turnEndsAt = turnFrom(settled)
   if (doc.status !== 'playing') return doc
   doc.turn += 1
   doc.coinCap = Math.min(ARENA_COIN_START + doc.turn - 1, ARENA_COIN_MAX)
@@ -495,10 +588,11 @@ export function endTurn(doc: ArenaDoc) {
   doc.shopTier = tavernOf(doc)
   doc.up = Math.max(ARENA_UP_MIN, upCostOf(doc) - 1)
   doc.tavern = roll(doc.pool, doc.shopTier, doc.tavern)
+  doc.spellOffer = offerSpell()
   return doc
 }
 
-const ranked = (card: ArenaCard) => ({ ...card, tier: tierOf(card.id), taunt: tauntOf(card.id) })
+const ranked = (card: ArenaCard) => ({ ...card, tier: tierOf(card.id), taunt: tauntOf(card.id), cleave: cleaveOf(card.id), shot: shotOf(card.id) })
 
 const rankedSide = (side: ArenaSide) => ({ heroes: side.heroes.map(ranked), summons: side.summons.map(ranked) })
 
@@ -511,6 +605,11 @@ export const arenaView = (doc: ArenaDoc) => ({
   chakra: doc.chakra,
   chakraMax: doc.chakraCap,
   tavernTier: tavernOf(doc),
+  spellOffer: doc.spellOffer ? { kind: doc.spellOffer, cost: ARENA_SPELL_COST } : null,
+  now: Date.now(),
+  turnEndsAt: doc.turnEndsAt?.getTime() ?? Date.now() + ARENA_TURN_SEC * 1000,
+  fightEndsAt: doc.fightEndsAt?.getTime() ?? null,
+  armed: doc.armed ?? [],
   upCost: upCostOf(doc),
   rollCost: ARENA_ROLL_COST,
   turnSec: ARENA_TURN_SEC,
@@ -520,7 +619,7 @@ export const arenaView = (doc: ArenaDoc) => ({
     const rarity = rarityOf(doc.ranks, id)
     const power = powerOf(doc.powers, id)
     const { atk, hp } = statsOf(id, rarity, false, power)
-    return { id, rarity, cost: arenaCost(), atk, hp, summon: doc.summons.includes(id), tier: tierOf(id), taunt: tauntOf(id), power }
+    return { id, rarity, cost: arenaCost(), atk, hp, summon: doc.summons.includes(id), tier: tierOf(id), taunt: tauntOf(id), cleave: cleaveOf(id), shot: shotOf(id), power }
   }),
   hand: doc.hand.map(ranked),
   board: rankedSide(doc.board),
