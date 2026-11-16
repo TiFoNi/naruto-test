@@ -549,7 +549,7 @@ export async function plays(): Promise<Collection<PlayDoc>> {
   return collection
 }
 
-export type ArenaCard = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; spell?: string; dodge?: number }
+export type ArenaCard = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; spell?: string; dodge?: number; stun?: boolean; armed?: string[]; burn?: number; swap?: boolean; bound?: string | null; link?: string | null; sonic?: boolean }
 
 export type ArenaSide = { heroes: ArenaCard[]; summons: ArenaCard[] }
 
@@ -560,6 +560,14 @@ export type ArenaStep = {
   splash?: string[]
   shot?: string
   dodged?: string[]
+  charm?: boolean
+  skip?: boolean
+  sapped?: string[]
+  venom?: boolean
+  ability?: string
+  heals?: Record<string, number>
+  swapFrom?: string
+  swapTo?: string
   damage: number
   dead: boolean
   foe: boolean

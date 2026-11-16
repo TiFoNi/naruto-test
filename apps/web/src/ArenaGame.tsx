@@ -10,7 +10,7 @@ import { useAuth } from './auth'
 import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
-import { useI18n } from './i18n'
+import { useI18n, type UiKey } from './i18n'
 import { ClockIcon, HeartIcon, RefreshIcon, UpIcon } from './icons'
 import BackButton from './BackButton'
 import { tornPoints } from './torn'
@@ -27,6 +27,8 @@ const IMPACT_MS = 470
 const GAP_MS = 260
 const DEATH_MS = 1100
 const SHOT_MS = 380
+const HEAL_DELAY_MS = 520
+const HEAL_HOLD_MS = 650
 
 const SHOTS: Record<string, string> = {
   kunai:
@@ -185,6 +187,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const [fight, setFight] = useState(false)
   const [step, setStep] = useState(-1)
   const [hit, setHit] = useState(false)
+  const [healing, setHealing] = useState(false)
   const [lead, setLead] = useState(false)
 
   const [waiting, setWaiting] = useState(false)
@@ -194,6 +197,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const [dragging, setDragging] = useState<Kind | null>(null)
   const [over, setOver] = useState<Spot['zone'] | null>(null)
   const [aimed, setAimed] = useState<string | null>(null)
+  const [spelling, setSpelling] = useState(false)
   const [deal, setDeal] = useState(0)
   const [seenOffers, setSeenOffers] = useState('')
   const [dealWait, setDealWait] = useState(0)
@@ -205,6 +209,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const hold = useRef<Hold | null>(null)
 
   const queue = useRef<Promise<unknown>>(Promise.resolve())
+  const viewNow = useRef<ArenaView | null>(null)
   const pending = useRef(0)
   const beats = useRef<ArenaView['steps']>([])
 
@@ -266,7 +271,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       setView((now) => {
         if (!now || now.coins < ARENA_CARD_COST || !now.tavern[at]) return now
         const one = now.tavern[at]!
-        const card: Card = { uid: `${now.seq + 1}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt, cleave: one.cleave, shot: one.shot }
+        const card: Card = { uid: `${now.seq + 1}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt, cleave: one.cleave, shot: one.shot, charm: one.charm, sound: one.sound, poison: one.poison, medic: one.medic }
         return { ...now, seq: now.seq + 1, coins: now.coins - ARENA_CARD_COST, hand: [...now.hand, card], tavern: now.tavern.filter((_, i) => i !== at) }
       })
       send({ action: 'buy', at })
@@ -297,10 +302,34 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         if (!now) return now
         const spell = now.hand.find((one) => one.uid === uid)
         if (!spell?.spell) return now
-        const bless = (list: Card[]) => list.map((one) => (one.uid === target ? { ...one, dodge: (one.dodge ?? 0) + 1 } : one))
+        if (line(now.board).some((one) => one.uid === target && (one.dodge ?? 0) > 0)) return now
+        const bless = (list: Card[]) => list.map((one) => (one.uid === target ? { ...one, dodge: 1 } : one))
         return { ...now, hand: now.hand.filter((one) => one.uid !== uid), board: { heroes: bless(now.board.heroes), summons: bless(now.board.summons) } }
       })
       send({ action: 'cast', uid, target })
+    },
+    [send],
+  )
+
+  const toggleSkill = useCallback(
+    (uid: string, key: string) => {
+      setView((now) => {
+        if (!now) return now
+        const card = line(now.board).find((one) => one.uid === uid)
+        const skill = card?.skills?.find((one) => one.key === key)
+        if (!card || !skill) return now
+        const armed = card.armed ?? []
+        const on = armed.includes(key)
+        if (!on && now.chakra < skill.cost) return now
+        const next = on ? armed.filter((one) => one !== key) : [...armed, key]
+        const swap = (list: Card[]) => list.map((one) => (one.uid === uid ? { ...one, armed: next } : one))
+        return {
+          ...now,
+          chakra: on ? Math.min(now.chakra + skill.cost, now.chakraMax) : now.chakra - skill.cost,
+          board: { heroes: swap(now.board.heroes), summons: swap(now.board.summons) },
+        }
+      })
+      send({ action: 'ability', uid, key })
     },
     [send],
   )
@@ -382,6 +411,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     return () => window.clearTimeout(timer)
   }, [leaving])
 
+  viewNow.current = view
   const finishing = useRef(finish)
   finishing.current = finish
 
@@ -416,6 +446,15 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   }, [playing, turnEndsAt, fightEndsAt])
 
   useEffect(() => {
+    if (!hit) {
+      setHealing(false)
+      return
+    }
+    const timer = window.setTimeout(() => setHealing(true), HEAL_DELAY_MS)
+    return () => window.clearTimeout(timer)
+  }, [hit, step])
+
+  useEffect(() => {
     if (!fight || !lead) return
     const timer = setTimeout(() => setLead(false), 1600)
     return () => clearTimeout(timer)
@@ -440,7 +479,9 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
     const plays: Animation[] = []
 
     const extra: HTMLElement[] = []
-    if (one.shot && movers.length === 1 && aim) {
+    if (one.charm || one.skip) {
+      if (movers[0]) plays.push(movers[0].animate([{ transform: 'none' }, { transform: 'scale(1.04)', offset: 0.3 }, { transform: 'none' }], { duration: FLY_MS, easing: 'ease-out' }))
+    } else if (one.shot && movers.length === 1 && aim) {
       const from = movers[0]!.getBoundingClientRect()
       const to = aim.getBoundingClientRect()
       const sx = from.left + from.width / 2
@@ -530,7 +571,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         }
         setStep((was) => was + 1)
         setHit(false)
-      }, GAP_MS + (died ? DEATH_MS : 0))
+      }, GAP_MS + (died ? DEATH_MS : 0) + (one.heals ? HEAL_HOLD_MS : 0))
     }
 
     if (run) run.addEventListener('finish', done)
@@ -594,6 +635,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       one.node.classList.add('is-flying')
       if (one.nest) one.nest.style.zIndex = '70'
       setDragging(one.kind)
+      setSpelling(one.spell)
     }
 
     const clean = (one: Hold) => {
@@ -607,6 +649,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       one.node.classList.remove('is-flying')
       if (one.nest) one.nest.style.zIndex = ''
       setDragging(null)
+      setSpelling(false)
     }
 
     const move = (event: globalThis.PointerEvent) => {
@@ -645,7 +688,9 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
           const midY = box.top + box.height / 2
           return centre >= room.left && centre <= room.right && midY >= room.top && midY <= room.bottom
         })
-        const aim = spot?.dataset.uid ?? null
+        const board = viewNow.current?.board
+        const taken = !!spot && !!board && line(board).some((one) => one.uid === spot.dataset.uid && (one.dodge ?? 0) > 0)
+        const aim = taken ? null : (spot?.dataset.uid ?? null)
         if (aim !== one.aim) {
           one.aim = aim
           setAimed(aim)
@@ -676,7 +721,6 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       if (one.kind === 'hand' && one.spell) {
         setAimed(null)
         if (one.aim) cast(one.uid, one.aim)
-        else if (spotOf(one.node)?.zone === 'shop') sell(one.uid)
         requestAnimationFrame(() => clean(one))
         return
       }
@@ -727,9 +771,16 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
 
   const health = new Map<string, number>()
   const guard = new Map<string, number>()
+  const power = new Map<string, number>()
   if (at >= 0) {
-    for (const one of state ? [...state.mine, ...state.theirs] : [...line(view.board), ...line(view.foeBoard)]) health.set(one.uid, one.hp)
-    if (state) for (const one of [...state.mine, ...state.theirs]) guard.set(one.uid, one.dodge ?? 0)
+    for (const one of state ? [...state.mine, ...state.theirs] : [...line(view.board), ...line(view.foeBoard)]) {
+      const late = hit && !healing ? (now?.heals?.[one.uid] ?? 0) : 0
+      health.set(one.uid, one.hp - late)
+    }
+    if (state) for (const one of [...state.mine, ...state.theirs]) {
+      guard.set(one.uid, one.dodge ?? 0)
+      power.set(one.uid, one.atk)
+    }
     else for (const uid of view.armed ?? []) guard.set(uid, 1)
   }
   const before = at > 0 ? steps[at - 1]! : null
@@ -741,7 +792,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
   const myHp = state ? state.hp : at >= 0 ? (view.opened?.hp ?? view.hp) : view.hp
   const foeHp = state ? state.foeHp : at >= 0 ? (view.opened?.foeHp ?? view.foeHp) : view.foeHp
   const freeAt = view.board.heroes.length < ARENA_HERO_SLOTS ? view.board.heroes.length : -1
-  const selling = dragging === 'board' || dragging === 'hand'
+  const selling = (dragging === 'board' || dragging === 'hand') && !spelling
   const buying = dragging === 'shop'
 
   const packed = (cards: Card[]) => (
@@ -751,15 +802,20 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         const dying = hit && hp === undefined && standing.has(card.uid)
         const gone = at >= 0 && hp === undefined && !dying
         const dodging = hit && !!now?.dodged?.includes(card.uid)
+        const charmed = hit && !!now?.charm && now.to === card.uid
+        const dazed = hit && !!now?.skip && now.from === card.uid
+        const sapped = hit && !!now?.sapped?.includes(card.uid)
+        const mended = hit && healing && !!now?.heals?.[card.uid]
+        const helping = hit && healing && !!card.medic && !!now?.heals && Object.keys(now.heals).some((uid) => cards.some((one) => one.uid === uid) && uid !== card.uid)
         const struck = hit && !dodging && (now?.to === card.uid || !!now?.splash?.includes(card.uid))
         const face = (
-          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} dodge={guard.get(card.uid) ?? card.dodge} />
+          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} dodge={guard.get(card.uid) ?? card.dodge} />
         )
         const clips = dying ? tearOf(seedOf(card.uid)) : null
         const cut = struck && !dying ? cutOf(seedOf(card.uid)) : null
         return (
           <li key={card.uid} className={`is-held ${gone ? 'is-out' : ''} ${dying ? 'is-dying' : ''}`}>
-            <span data-uid={card.uid} className={`ar-move ${struck ? 'is-struck' : ''} ${dodging ? 'is-dodging' : ''}`}>
+            <span data-uid={card.uid} className={`ar-move ${mended ? 'is-mended' : ''} ${helping ? 'is-helping' : ''} ${struck ? 'is-struck' : ''} ${dodging ? 'is-dodging' : ''} ${charmed ? 'is-charmed' : ''} ${dazed ? 'is-dazed' : ''} ${struck && now?.venom ? 'is-venom' : ''}`}>
               {clips ? (
                 <span className="ar-tear" style={{ '--lean': clips.lean } as CSSProperties}>
                   <span className="ar-tear-half is-left" style={{ clipPath: clips.left }}>
@@ -779,9 +835,26 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                   </span>
                 </span>
               ) : (
-                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} dodge={guard.get(card.uid) ?? card.dodge} />
+                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} dodge={guard.get(card.uid) ?? card.dodge} />
               )}
               {struck && <Slash seed={seedOf(card.uid)} />}
+              {(charmed || dazed) && <i className="ar-spiral" aria-hidden />}
+              {(charmed || dazed) && (
+                <b className="ar-status-word" aria-hidden>
+                  {t(charmed ? 'arena.charm' : 'arena.dazed')}
+                </b>
+              )}
+              {sapped && (
+                <b className="ar-sap" aria-hidden>
+                  −1
+                </b>
+              )}
+              {mended && (
+                <b className="ar-heal" aria-hidden>
+                  +{now?.heals?.[card.uid]}
+                  <HeartIcon />
+                </b>
+              )}
               {dodging && (
                 <>
                   <i className="ar-poof" aria-hidden />
@@ -860,7 +933,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         {view.tavern.map((one, i) => {
           const nth = view.tavern.slice(0, i).filter((other) => other.id === one.id).length
           const poor = one.cost > view.coins
-          const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt, cleave: one.cleave, shot: one.shot }
+          const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt, cleave: one.cleave, shot: one.shot, charm: one.charm, sound: one.sound, poison: one.poison, medic: one.medic }
           return (
             <li
               key={`${deal}:${one.id}:${nth}`}
@@ -868,7 +941,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
               className={`is-held ${poor ? 'is-poor' : ''}`}
             >
               <span className="ar-move" onPointerDown={poor ? undefined : take('shop', card, i)}>
-                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} />
+                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} charm={one.charm} sound={one.sound} poison={one.poison} medic={one.medic} />
               </span>
             </li>
           )
@@ -893,7 +966,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
           {leaving.map((one, i) => (
             <li key={`out${deal}:${i}`} style={{ '--j': leaving.length - i - (leavingSpell ? 0 : 1) } as CSSProperties}>
               <span className="ar-old">
-                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} />
+                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} charm={one.charm} sound={one.sound} poison={one.poison} medic={one.medic} />
               </span>
             </li>
           ))}
@@ -994,12 +1067,37 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
               {fight ? (
                 packed(mine)
               ) : (
-                <div data-zone="slot" data-at={freeAt} className={`ar-sell is-drop ${dragging === 'hand' || dragging === 'shop' ? 'is-selling' : ''} ${(dragging === 'hand' || dragging === 'shop') && over === 'slot' ? 'is-over' : ''}`}>
+                <div data-zone="slot" data-at={freeAt} className={`ar-sell is-drop ${(dragging === 'hand' && !spelling) || dragging === 'shop' ? 'is-selling' : ''} ${((dragging === 'hand' && !spelling) || dragging === 'shop') && over === 'slot' ? 'is-over' : ''}`}>
                 <ul className="ar-row is-heroes">
                   {view.board.heroes.map((card, i) => (
                     <li key={card.uid} className={aimed === card.uid ? 'is-aimed' : ''}>
+                      {!!card.skills?.length && (
+                        <span className="ar-skills">
+                          {card.skills.map((skill) => {
+                            const on = !!card.armed?.includes(skill.key)
+                            return (
+                              <button
+                                key={skill.key}
+                                type="button"
+                                className={`ar-skill ${on ? 'is-on' : ''}`}
+                                disabled={!on && view.chakra < skill.cost}
+                                title={`${t(`arena.skill.${skill.key}` as UiKey)}: ${t(`arena.skill.${skill.key}.hint` as UiKey)}`}
+                                aria-label={t(`arena.skill.${skill.key}` as UiKey)}
+                                onPointerDown={(event) => event.stopPropagation()}
+                                onClick={() => toggleSkill(card.uid, skill.key)}
+                              >
+                                <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
+                                  <polygon points={BADGE_POINTS} vectorEffect="non-scaling-stroke" />
+                                </svg>
+                                <i className="ar-orb is-full" />
+                                <b>{skill.cost}</b>
+                              </button>
+                            )
+                          })}
+                        </span>
+                      )}
                       <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
-                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} dodge={card.dodge} />
+                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} dodge={card.dodge} />
                       </span>
                     </li>
                   ))}
@@ -1011,7 +1109,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                     return card ? (
                       <li key={card.uid}>
                         <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
-                          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} dodge={card.dodge} />
+                          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} dodge={card.dodge} />
                         </span>
                       </li>
                     ) : (
@@ -1037,7 +1135,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                       {card.spell ? (
                         <SpellFace kind={card.spell} />
                       ) : (
-                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} dodge={card.dodge} />
+                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} dodge={card.dodge} />
                       )}
                     </span>
                   </li>

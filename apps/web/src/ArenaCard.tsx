@@ -7,9 +7,9 @@ import { CARD_RARITIES, type CardRarity } from '@nanda/game'
 import { BADGE_POINTS, DexFace, StatBadge } from './DexCard'
 import type { Entity, GameId } from './games/types'
 
-export type Card = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; tier?: number; taunt?: boolean; cleave?: boolean; shot?: string | null; spell?: string; dodge?: number }
+export type Card = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; tier?: number; taunt?: boolean; cleave?: boolean; shot?: string | null; spell?: string; dodge?: number; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; skills?: { key: string; cost: number }[]; armed?: string[] }
 export type Side = { heroes: Card[]; summons: Card[] }
-export type Offer = { id: number; rarity: CardRarity; cost: number; atk: number; hp: number; summon: boolean; tier: number; taunt?: boolean; cleave?: boolean; shot?: string | null }
+export type Offer = { id: number; rarity: CardRarity; cost: number; atk: number; hp: number; summon: boolean; tier: number; taunt?: boolean; cleave?: boolean; shot?: string | null; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; skills?: { key: string; cost: number }[] }
 export type Step = {
   from: string
   all?: string[]
@@ -17,6 +17,12 @@ export type Step = {
   splash?: string[]
   shot?: string
   dodged?: string[]
+  charm?: boolean
+  skip?: boolean
+  sapped?: string[]
+  venom?: boolean
+  ability?: string
+  heals?: Record<string, number>
   damage: number
   dead: boolean
   foe: boolean
@@ -72,6 +78,10 @@ export const ArenaFace = memo(function ArenaFace({
   cleave,
   shot,
   dodge,
+  charm,
+  sound,
+  poison,
+  medic,
 }: {
   game: GameId
   entity?: Entity
@@ -85,6 +95,10 @@ export const ArenaFace = memo(function ArenaFace({
   cleave?: boolean
   shot?: string | null
   dodge?: number
+  charm?: boolean
+  sound?: boolean
+  poison?: boolean
+  medic?: boolean
 }) {
   const { t } = useI18n()
   if (!entity) return <span className="arena-slot" aria-hidden />
@@ -107,6 +121,10 @@ export const ArenaFace = memo(function ArenaFace({
         {taunt && <span className="ar-taunt">{t('arena.taunt')}</span>}
         {cleave && <span className="ar-taunt is-cleave">{t('arena.cleave')}</span>}
         {shot && <span className="ar-taunt is-ranged">{t('arena.ranged')}</span>}
+        {charm && <span className="ar-taunt is-charm">{t('arena.charm')}</span>}
+        {sound && <span className="ar-taunt is-sound">{t('arena.sound')}</span>}
+        {poison && <span className="ar-taunt is-poison">{t('arena.poison')}</span>}
+        {medic && <span className="ar-taunt is-medic">{t('arena.medic')}</span>}
         {!!dodge && <span className="ar-taunt is-dodge">{t('arena.dodge')}</span>}
         <StatBadge kind="atk" value={atk} />
         <StatBadge kind="hp" value={hp} />

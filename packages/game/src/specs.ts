@@ -1249,9 +1249,13 @@ export const ARENA_SUMMON_SLOTS = 2
 export const ARENA_HAND = 6
 export const ARENA_TAVERN = 5
 export const ARENA_COIN_MAX = 10
-export const ARENA_COIN_START = 4
+export const ARENA_COIN_START = 3
 export const ARENA_CHAKRA_MAX = 10
 export const ARENA_CHAKRA_START = 1
+
+export const ARENA_ABILITIES = { genjutsu: 2, amaterasu: 4, swap: 3, mind: 3, sonic: 1 } as const
+
+export type ArenaAbility = keyof typeof ARENA_ABILITIES
 export const ARENA_CARD_COST = 3
 export const ARENA_SELL_BACK = 1
 export const ARENA_SPELL_COST = 1
@@ -1263,7 +1267,7 @@ export const ARENA_ROLL_COST = 1
 
 export const ARENA_TURN_SEC = 30
 export const ARENA_UP_MIN = 1
-const ARENA_UP_COST = [4, 5, 6, 7, 8]
+const ARENA_UP_COST = [5, 7, 8, 9, 10]
 
 export const arenaTierAt = (turn: number) => Math.min(ARENA_TIERS, Math.floor((turn + 1) / 2))
 
