@@ -26,6 +26,7 @@ import {
   type GameId,
 } from '@nanda/game'
 import tiers from '@nanda/game/data/arena-naruto.json'
+import traits from '@nanda/game/data/arena-naruto-traits.json'
 import { arenas, entities, type ArenaCard, type ArenaDoc, type ArenaSide } from './db'
 import { dexOf, gradesOf } from './dex'
 import { gameData } from './games'
@@ -83,6 +84,9 @@ export async function bannedIds(game: GameId) {
 }
 
 const sheet = tiers as unknown as Record<string, [number, number, number] | undefined>
+const taunts = new Set<number>((traits as { taunt?: number[] }).taunt ?? [])
+
+export const tauntOf = (id: number) => taunts.has(id)
 
 const CACHE_MS = 15_000
 let edits: Record<string, [number, number, number]> = {}
@@ -393,7 +397,8 @@ function fight(doc: ArenaDoc) {
       if (foe) doc.hp = Math.max(0, doc.hp - card.atk)
       else doc.foeHp = Math.max(0, doc.foeHp - card.atk)
     } else {
-      const target = pickOne(targets)
+      const guards = targets.filter((one) => tauntOf(one.id))
+      const target = pickOne(guards.length ? guards : targets)
       target.hp -= card.atk
       card.hp -= target.atk
       to = target.uid
@@ -480,7 +485,7 @@ export function endTurn(doc: ArenaDoc) {
   return doc
 }
 
-const ranked = (card: ArenaCard) => ({ ...card, tier: tierOf(card.id) })
+const ranked = (card: ArenaCard) => ({ ...card, tier: tierOf(card.id), taunt: tauntOf(card.id) })
 
 const rankedSide = (side: ArenaSide) => ({ heroes: side.heroes.map(ranked), summons: side.summons.map(ranked) })
 
@@ -502,7 +507,7 @@ export const arenaView = (doc: ArenaDoc) => ({
     const rarity = rarityOf(doc.ranks, id)
     const power = powerOf(doc.powers, id)
     const { atk, hp } = statsOf(id, rarity, false, power)
-    return { id, rarity, cost: arenaCost(), atk, hp, summon: doc.summons.includes(id), tier: tierOf(id), power }
+    return { id, rarity, cost: arenaCost(), atk, hp, summon: doc.summons.includes(id), tier: tierOf(id), taunt: tauntOf(id), power }
   }),
   hand: doc.hand.map(ranked),
   board: rankedSide(doc.board),

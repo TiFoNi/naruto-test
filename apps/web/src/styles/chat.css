@@ -2121,3 +2121,51 @@ body:has(.chat-panel) .duel-dock {
   font-weight: 800;
   cursor: pointer;
 }
+
+.chat-rooms {
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chat-rooms::-webkit-scrollbar {
+  display: none;
+}
+
+.chat-rooms button {
+  flex: none;
+  white-space: nowrap;
+}
+
+.chat-online,
+.chat-x {
+  flex: none;
+  white-space: nowrap;
+}
+
+.chat-online-short {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .chat-head {
+    gap: 8px;
+    padding: 0 8px 0 12px;
+  }
+
+  .chat-rooms {
+    gap: 14px;
+  }
+
+  .chat-rooms button {
+    font-size: 14.5px;
+  }
+
+  .chat-online-full {
+    display: none;
+  }
+
+  .chat-online-short {
+    display: inline;
+  }
+}

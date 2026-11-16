@@ -1,13 +1,14 @@
 'use client'
 
+import { useI18n } from './i18n'
 import { memo, type CSSProperties } from 'react'
 import { CARD_RARITIES, type CardRarity } from '@nanda/game'
 import { BADGE_POINTS, DexFace, StatBadge } from './DexCard'
 import type { Entity, GameId } from './games/types'
 
-export type Card = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; tier?: number }
+export type Card = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; tier?: number; taunt?: boolean }
 export type Side = { heroes: Card[]; summons: Card[] }
-export type Offer = { id: number; rarity: CardRarity; cost: number; atk: number; hp: number; summon: boolean; tier: number }
+export type Offer = { id: number; rarity: CardRarity; cost: number; atk: number; hp: number; summon: boolean; tier: number; taunt?: boolean }
 export type Step = {
   from: string
   all?: string[]
@@ -57,6 +58,7 @@ export const ArenaFace = memo(function ArenaFace({
   summon,
   triple,
   tier,
+  taunt,
 }: {
   game: GameId
   entity?: Entity
@@ -66,7 +68,9 @@ export const ArenaFace = memo(function ArenaFace({
   summon: boolean
   triple?: boolean
   tier?: number
+  taunt?: boolean
 }) {
+  const { t } = useI18n()
   if (!entity) return <span className="arena-slot" aria-hidden />
   return (
     <span
@@ -84,6 +88,7 @@ export const ArenaFace = memo(function ArenaFace({
             ))}
           </span>
         )}
+        {taunt && <span className="ar-taunt">{t('arena.taunt')}</span>}
         <StatBadge kind="atk" value={atk} />
         <StatBadge kind="hp" value={hp} />
       </DexFace>

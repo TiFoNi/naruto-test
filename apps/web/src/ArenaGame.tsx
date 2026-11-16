@@ -235,7 +235,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
       setView((now) => {
         if (!now || now.coins < ARENA_CARD_COST || !now.tavern[at]) return now
         const one = now.tavern[at]!
-        const card: Card = { uid: `${now.seq + 1}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier }
+        const card: Card = { uid: `${now.seq + 1}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt }
         return { ...now, seq: now.seq + 1, coins: now.coins - ARENA_CARD_COST, hand: [...now.hand, card], tavern: now.tavern.filter((_, i) => i !== at) }
       })
       send({ action: 'buy', at })
@@ -620,7 +620,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         const gone = at >= 0 && hp === undefined && !dying
         const struck = hit && now?.to === card.uid
         const face = (
-          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} />
+          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} />
         )
         const clips = dying ? tearOf(seedOf(card.uid)) : null
         const cut = struck && !dying ? cutOf(seedOf(card.uid)) : null
@@ -646,7 +646,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                   </span>
                 </span>
               ) : (
-                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} />
+                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} />
               )}
               {struck && <Slash seed={seedOf(card.uid)} />}
             </span>
@@ -718,7 +718,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
         {view.tavern.map((one, i) => {
           const nth = view.tavern.slice(0, i).filter((other) => other.id === one.id).length
           const poor = one.cost > view.coins
-          const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier }
+          const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt }
           return (
             <li
               key={`${deal}:${one.id}:${nth}`}
@@ -726,7 +726,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
               className={`is-held ${poor ? 'is-poor' : ''}`}
             >
               <span className="ar-move" onPointerDown={poor ? undefined : take('shop', card, i)}>
-                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} />
+                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} />
               </span>
             </li>
           )
@@ -737,7 +737,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
           {leaving.map((one, i) => (
             <li key={`out${deal}:${i}`} style={{ '--j': leaving.length - 1 - i } as CSSProperties}>
               <span className="ar-old">
-                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} />
+                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} />
               </span>
             </li>
           ))}
@@ -825,7 +825,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                   {view.board.heroes.map((card, i) => (
                     <li key={card.uid}>
                       <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
-                        <ArenaFace game={game.id} entity={byId.get(card.id)} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} />
+                        <ArenaFace game={game.id} entity={byId.get(card.id)} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} />
                       </span>
                     </li>
                   ))}
@@ -837,7 +837,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                     return card ? (
                       <li key={card.uid}>
                         <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
-                          <ArenaFace game={game.id} entity={byId.get(card.id)} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} />
+                          <ArenaFace game={game.id} entity={byId.get(card.id)} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} />
                         </span>
                       </li>
                     ) : (
@@ -860,7 +860,7 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
                 {view.hand.map((card, i) => (
                   <li key={card.uid}>
                     <span className="ar-move" onPointerDown={take('hand', card, i)}>
-                      <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} />
+                      <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} />
                     </span>
                   </li>
                 ))}

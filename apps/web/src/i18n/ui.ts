@@ -133,6 +133,7 @@ const ui = {
   'arena.next': { ru: 'Дальше', uk: 'Далі', en: 'Next' },
   'arena.time': { ru: 'Время', uk: 'Час', en: 'Time' },
   'arena.summonSlot': { ru: 'Призыв', uk: 'Призив', en: 'Summon' },
+  'arena.taunt': { ru: 'Провокация', uk: 'Провокація', en: 'Taunt' },
   'arena.coins': { ru: 'Монеты', uk: 'Монети', en: 'Coins' },
   'arena.chakra': { ru: 'Чакра', uk: 'Чакра', en: 'Chakra' },
   'arena.reroll': { ru: 'Обновить', uk: 'Оновити', en: 'Refresh' },

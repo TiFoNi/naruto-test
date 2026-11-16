@@ -1909,3 +1909,23 @@
     width: 100%;
   }
 }
+
+.ar-taunt {
+  position: absolute;
+  top: 10%;
+  right: -7%;
+  left: -7%;
+  z-index: 5;
+  padding: 4px 0;
+  background: #1b1a1e;
+  clip-path: polygon(0% 12%, 9% 0%, 22% 7%, 37% 1%, 52% 6%, 68% 0%, 83% 5%, 97% 1%, 100% 22%, 98.5% 48%, 100% 78%, 96% 100%, 81% 94%, 66% 100%, 50% 95%, 35% 100%, 20% 93%, 7% 100%, 1% 84%, 2% 52%, 0.5% 30%);
+  color: #ebe5dc;
+  font-size: clamp(8px, calc(var(--cw, 120px) * 0.085), 12px);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  rotate: -6deg;
+  pointer-events: none;
+}

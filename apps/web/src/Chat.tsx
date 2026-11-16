@@ -1043,7 +1043,12 @@ export default function Chat() {
                 </button>
               ))}
             </div>
-            {online > 0 && <em className="chat-online">{t('chat.online', { count: online })}</em>}
+            {online > 0 && (
+              <em className="chat-online" title={t('chat.online', { count: online })}>
+                <span className="chat-online-full">{t('chat.online', { count: online })}</span>
+                <span className="chat-online-short">{online}</span>
+              </em>
+            )}
             <button type="button" className="chat-x" aria-label={t('chat.rules')} title={t('chat.rules')} onClick={() => setRules(true)}>
               <InfoIcon />
             </button>
