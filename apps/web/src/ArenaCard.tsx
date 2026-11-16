@@ -26,7 +26,7 @@ export type Step = {
   wards?: string[]
   warded?: string[]
   raged?: string[]
-  summoned?: string
+  summoned?: string[]
   risen?: string
   again?: boolean
   damage: number

@@ -593,10 +593,11 @@ function fight(doc: ArenaDoc) {
 
   const strongest = (list: ArenaCard[]) => list.slice().sort((a, b) => b.atk + b.hp - (a.atk + a.hp))[0]
 
-  for (const [team, rivals, foe] of [
+  const sides = [
     [ours, foes, false],
     [foes, ours, true],
-  ] as const) {
+  ] as const
+  for (const [team, rivals, foe] of weStart ? sides : [sides[1], sides[0]]) {
     for (const card of alive(team)) {
       if (soundOf(card.id)) card.sonic = true
       for (const ability of card.armed ?? []) {
@@ -634,26 +635,22 @@ function fight(doc: ArenaDoc) {
           doc.seq += 1
           const spawn: ArenaCard = { uid: `${doc.seq}`, id: beast, rarity: card.rarity, atk, hp, max: hp, summon: true }
           team.summons.push(spawn)
-          steps.push({ from: card.uid, to: spawn.uid, summoned: spawn.uid, ability, damage: 0, dead: false, foe, ...snap() })
+          steps.push({ from: card.uid, to: spawn.uid, summoned: [spawn.uid], ability, damage: 0, dead: false, foe, ...snap() })
         } else if (ability === 'limbo') {
+          const clones: string[] = []
           for (let i = 0; i < 2 && team.summons.length < ARENA_SUMMON_SLOTS; i++) {
             const hp = Math.ceil(card.max / 2)
             doc.seq += 1
             const spawn: ArenaCard = { uid: `${doc.seq}`, id: card.id, rarity: card.rarity, atk: Math.ceil(card.atk / 2), hp, max: hp, summon: true, ghost: true }
             team.summons.push(spawn)
-            steps.push({ from: card.uid, to: spawn.uid, summoned: spawn.uid, ability, damage: 0, dead: false, foe, ...snap() })
+            clones.push(spawn.uid)
           }
+          if (clones.length) steps.push({ from: card.uid, to: clones[0]!, summoned: clones, ability, damage: 0, dead: false, foe, ...snap() })
         } else if (ability === 'revive') {
           raisers.set(team, card)
         }
       }
     }
-  }
-
-  for (const [team, foe] of [
-    [ours, false],
-    [foes, true],
-  ] as const) {
     for (const card of alive(team)) {
       const reach = wardOf(card.id)
       if (!reach) continue

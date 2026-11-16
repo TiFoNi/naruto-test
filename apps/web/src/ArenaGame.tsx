@@ -583,11 +583,15 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       const spin = one.shot === 'paper' ? 900 : 0
       const lift = one.shot === 'clay' ? -Math.min(140, Math.hypot(dx, dy) * 0.4) : 0
       if (one.shot === 'clay') {
-        const face = dx < 0 ? -1 : 1
-        for (let i = 0; i < 3; i++) {
-          const ox = (i - 1) * 16
-          const oy = (i - 1) * -13
-          const rise = -Math.min(110, Math.hypot(dx, dy) * 0.32) - i * 16
+        const prey = [one.to, ...(one.splash ?? [])]
+          .map((uid) => (uid ? document.querySelector<HTMLElement>(`.ar-row.is-packed [data-uid="${uid}"]`) : null))
+          .filter((node): node is HTMLElement => !!node)
+        prey.forEach((node, i) => {
+          const spot = node.getBoundingClientRect()
+          const ox = spot.left + spot.width / 2 - sx - dx
+          const oy = spot.top + spot.height / 2 - sy - dy
+          const face = dx + ox < 0 ? -1 : 1
+          const rise = -Math.min(110, Math.hypot(dx + ox, dy + oy) * 0.32) - i * 16
           const bird = document.createElement('div')
           bird.className = 'ar-clay-bird is-live'
           bird.innerHTML = CLAY_BIRD
@@ -599,8 +603,8 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
             [
               { transform: `translate(0, 0) scale(${0.4 * face}, 0.4) rotate(-14deg)`, opacity: 0 },
               { opacity: 1, offset: 0.15 },
-              { transform: `translate(${dx * 0.35}px, ${dy * 0.35 + rise}px) scale(${face}, 1) rotate(-10deg)`, offset: 0.45 },
-              { transform: `translate(${dx * 0.75 + ox * 0.5}px, ${dy * 0.75 + rise * 0.7}px) scale(${face}, 1) rotate(14deg)`, offset: 0.72 },
+              { transform: `translate(${(dx + ox) * 0.35}px, ${(dy + oy) * 0.35 + rise}px) scale(${face}, 1) rotate(-10deg)`, offset: 0.45 },
+              { transform: `translate(${(dx + ox) * 0.75}px, ${(dy + oy) * 0.75 + rise * 0.7}px) scale(${face}, 1) rotate(14deg)`, offset: 0.72 },
               { transform: `translate(${dx + ox}px, ${dy + oy}px) scale(${1.1 * face}, 1.1) rotate(48deg)`, opacity: 1 },
             ],
             { duration: CLAY_FLY_MS, delay: i * CLAY_GAP_MS, easing: 'cubic-bezier(0.4, 0, 0.6, 1)', fill: 'both' },
@@ -616,7 +620,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
             extra.push(boom)
             window.setTimeout(() => boom.remove(), 1000)
           }
-        }
+        })
       } else {
         const shot = document.createElement('div')
         shot.className = `ar-shot is-${one.shot}`
@@ -990,7 +994,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         const blocked = hit && !!now?.warded?.includes(card.uid)
         const raised = hit && !!now?.wards?.includes(card.uid)
         const raging = hit && !!now?.raged?.includes(card.uid)
-        const called = hit && now?.summoned === card.uid
+        const called = hit && !!now?.summoned?.includes(card.uid)
         const risen = hit && now?.risen === card.uid
         const again = hit && !!now?.again && now.from === card.uid
         const struck = hit && !dodging && !blocked && !!now?.damage && (now?.to === card.uid || !!now?.splash?.includes(card.uid))
