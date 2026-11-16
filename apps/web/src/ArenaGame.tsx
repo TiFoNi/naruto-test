@@ -854,12 +854,9 @@ export default function ArenaGame({ game: gameId }: { game: string }) {
           </section>
 
           <div className="ar-foot">
-            <div
-              data-zone={buying ? 'hand' : undefined}
-              className={`ar-hand ${buying ? 'is-taking' : ''} ${fight ? 'is-away' : ''}`}
-            >
+            <div className={`ar-hand ${fight ? 'is-away' : ''}`}>
               {fight && user && <Hero who="me" name={user.nickname} id={user.id} avatar={user.avatar} frame={user.frame} hp={myHp} struck={heroHit === 'me'} />}
-              <ul>
+              <ul data-zone={buying ? 'hand' : undefined} className={`ar-hand-zone ${buying ? 'is-taking' : ''} ${buying && over === 'hand' ? 'is-over' : ''}`}>
                 {view.hand.map((card, i) => (
                   <li key={card.uid}>
                     <span className="ar-move" onPointerDown={take('hand', card, i)}>

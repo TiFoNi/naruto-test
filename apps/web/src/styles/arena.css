@@ -581,16 +581,6 @@
 
 
 
-.ar-hand.is-taking {
-  border-radius: 18px;
-  outline: 2px dashed color-mix(in srgb, var(--accent) 55%, transparent);
-  outline-offset: 6px;
-}
-
-.ar-hand.is-over {
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
-}
-
 .ar.is-dragging {
   cursor: grabbing;
   user-select: none;
@@ -624,15 +614,6 @@
 .ar-hand {
   border-radius: 18px;
   transition: background 0.15s ease;
-}
-
-.ar-hand.is-taking {
-  outline: 2px dashed color-mix(in srgb, var(--accent) 55%, transparent);
-  outline-offset: 4px;
-}
-
-.ar-hand.is-over {
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .ar-board {
@@ -1886,4 +1867,45 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
+}
+
+.ar-hand ul.ar-hand-zone {
+  position: relative;
+  box-sizing: border-box;
+  min-width: calc(var(--cw) * 0.82 * 5 + 14px * 4 + 44px);
+  min-height: calc(var(--cw) * 0.82 * 4 / 3 + 42px);
+  align-items: center;
+  padding: 21px 22px;
+  border-radius: 22px;
+  transition: background 0.18s ease;
+}
+
+.ar-hand-zone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect x='1.5' y='1.5' width='calc(100%25 - 3px)' height='calc(100%25 - 3px)' rx='21' ry='21' fill='none' stroke='%23ff8a1f' stroke-width='3' stroke-dasharray='16 14' stroke-linecap='round'/%3E%3C/svg%3E");
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+
+.ar-hand-zone.is-taking::before {
+  opacity: 0.5;
+}
+
+.ar-hand-zone.is-over::before {
+  opacity: 1;
+}
+
+.ar-hand-zone.is-over {
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
+}
+
+@media (max-width: 640px) {
+  .ar-hand ul.ar-hand-zone {
+    min-width: 0;
+    width: 100%;
+  }
 }
