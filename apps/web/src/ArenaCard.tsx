@@ -4,7 +4,8 @@ import { torn } from './torn'
 import { useI18n, type UiKey } from './i18n'
 import { memo, type CSSProperties } from 'react'
 import { CARD_RARITIES, type CardRarity } from '@nanda/game'
-import { BACK_POINTS, BADGE_POINTS, DexFace, StatBadge } from './DexCard'
+import { BACK_POINTS, BADGE_POINTS, DexFace } from './DexCard'
+import { HeartIcon } from './icons'
 import type { Entity, GameId } from './games/types'
 
 export type Card = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; tier?: number; taunt?: boolean; cleave?: boolean; shot?: string | null; spell?: string; dodge?: number; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; fury?: boolean; guard?: string | null; ward?: string | false; ghost?: boolean; stun?: boolean; skills?: { key: string; cost: number; beast?: number | null }[]; armed?: string[] }
@@ -156,8 +157,19 @@ export const ArenaFace = memo(function ArenaFace({
         {guard && <span className="ar-taunt is-guard">{t('arena.guard')}</span>}
         {!!dodge && <span className="ar-taunt is-dodge">{t('arena.dodge')}</span>}
         {shield && <Ward look={shield} />}
-        <StatBadge kind="atk" value={atk} />
-        <StatBadge kind="hp" value={hp} />
+        <span className="ar-stats">
+          <span className="is-atk">
+            <svg className="icon" viewBox="0 0 24 24" aria-hidden>
+              <path d="M12 1 L14 10 L23 12 L14 14 L12 23 L10 14 L1 12 L10 10 Z" />
+              <circle cx="12" cy="12" r="2.2" className="is-hole" />
+            </svg>
+            <b>{atk}</b>
+          </span>
+          <span className="is-hp">
+            <HeartIcon />
+            <b>{hp}</b>
+          </span>
+        </span>
       </DexFace>
     </span>
   )

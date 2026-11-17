@@ -59,6 +59,8 @@ const BlastFx = () => (
 type TipInfo = { id: number; taunt?: boolean; cleave?: boolean; shot?: string | null; poison?: boolean; sound?: boolean; medic?: boolean; fury?: boolean; guard?: string | null; dodge?: number }
 
 const TIP_W = 240
+const TIP_HOVER_MS = 250
+const TIP_PRESS_MS = 350
 
 const GenFx = () => (
   <span className="ar-gen" aria-hidden>
@@ -249,7 +251,7 @@ function Hero({ who, name, id, avatar, frame, hp, struck }: { who: 'me' | 'foe';
   )
 }
 
-export default function ArenaGame({ game: gameId, demo = false }: { game: string; demo?: boolean }) {
+export default function ArenaGame({ game: gameId, demo = false }: { game: string; demo?: 'fight' | 'shop' | false }) {
   const { t, l } = useI18n()
   const href = useHref()
   const go = useNavigate()
@@ -265,6 +267,10 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const [healing, setHealing] = useState(false)
   const [lead, setLead] = useState(false)
   const [tip, setTip] = useState<{ info: TipInfo; x: number; y: number } | null>(null)
+  const tipTimer = useRef<number | undefined>(undefined)
+  const tipFor = useRef<HTMLElement | null>(null)
+  const tipStart = useRef({ x: 0, y: 0 })
+  const tipped = useRef(false)
 
   const [waiting, setWaiting] = useState(false)
   const [clock, setClock] = useState<number | null>(null)
@@ -306,7 +312,25 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
 
   const replay = useCallback(() => {
     void import('./arena-fx.json').then((mod) => {
-      const next = mod.default as unknown as ArenaView
+      const base = mod.default as unknown as ArenaView
+      if (demo === 'shop') {
+        const heroes = base.board.heroes
+        setView({
+          ...base,
+          steps: [],
+          coins: 6,
+          coinsMax: 6,
+          chakra: 4,
+          chakraMax: 4,
+          tavern: base.foeBoard.heroes.map((one) => ({ ...one, cost: 3, tier: one.tier ?? 1 })),
+          hand: heroes.slice(0, 3),
+          board: { heroes: heroes.slice(3), summons: [] },
+          turnEndsAt: Date.now() + 9e8,
+        })
+        setChecked(true)
+        return
+      }
+      const next = base
       beats.current = next.steps
       setView(next)
       setChecked(true)
@@ -315,16 +339,47 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       setHit(false)
       setLead(true)
     })
-  }, [])
+  }, [demo])
+
+  const found = useRef<ArenaView | null>(null)
+  const [lobby, setLobby] = useState<'new' | 'resume' | null>(null)
 
   useEffect(() => {
-    if (demo) replay()
-    else if (user) void load()
-    else if (!loading) setChecked(true)
-  }, [demo, replay, user, loading, load])
+    if (demo) {
+      replay()
+      return
+    }
+    if (!user) {
+      if (!loading) setChecked(true)
+      return
+    }
+    let alive = true
+    void api<{ arena?: ArenaView | null }>('arena').then(({ data }) => {
+      if (!alive) return
+      found.current = data.arena ?? null
+      setLobby(found.current?.status === 'playing' ? 'resume' : 'new')
+      setChecked(true)
+    })
+    return () => {
+      alive = false
+    }
+  }, [demo, replay, user, loading])
+
+  const enter = useCallback(() => {
+    const now = found.current
+    setLobby(null)
+    if (now?.status === 'playing') {
+      skew.current = now.now - Date.now()
+      opening.current = Promise.resolve(now)
+      setView(now)
+      return
+    }
+    opening.current = null
+    void load()
+  }, [load])
 
   useEffect(() => {
-    if (!demo || fight || !view) return
+    if (demo !== 'fight' || fight || !view) return
     const timer = window.setTimeout(replay, 2500)
     return () => window.clearTimeout(timer)
   }, [demo, fight, view, replay])
@@ -857,6 +912,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       hold.current = null
       if (!one) return
       if (!one.live) {
+        if (tipped.current) return
         if (one.kind === 'shop') buy(one.at)
         else if (one.kind === 'hand' && !one.spell) play(one.uid)
         return
@@ -902,6 +958,17 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   if (!game) return <div className="card center muted">{t('err.not_found')}</div>
   if (!checked || !ready) return <p className="ar-note">{t('arena.loading')}</p>
   if (!user?.admin && !demo) return <div className="card center muted">{t('err.not_found')}</div>
+  if (lobby && !demo)
+    return (
+      <div className="ar-lobby">
+        <button type="button" className="ar-lobby-play" onClick={enter}>
+          <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
+            <polygon points={BADGE_POINTS} vectorEffect="non-scaling-stroke" />
+          </svg>
+          <b>{t(lobby === 'resume' ? 'arena.resume' : 'arena.start')}</b>
+        </button>
+      </div>
+    )
   if (!view)
     return (
       <div className="card center muted locked">
@@ -944,20 +1011,58 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const skillsBy = new Map<number, NonNullable<Card['skills']>>()
   for (const one of [...view.tavern, ...view.hand, ...line(view.board), ...line(view.foeBoard), ...steps.flatMap((step) => [...step.mine, ...step.theirs])]) if (one.skills?.length && !skillsBy.has(one.id)) skillsBy.set(one.id, one.skills)
 
-  const peek = (event: ReactPointerEvent<HTMLElement>) => {
-    if (dragging) return
-    const from = event.target as HTMLElement
-    const node = from.closest<HTMLElement>('.arena-card[data-tip]') ?? from.closest<HTMLElement>('.ar-move, li')?.querySelector<HTMLElement>('.arena-card[data-tip]') ?? null
-    if (!node) {
-      if (tip) setTip(null)
-      return
-    }
+  const cardAt = (target: EventTarget | null) => {
+    const from = target as HTMLElement | null
+    if (!from?.closest) return null
+    return from.closest<HTMLElement>('.arena-card[data-tip]') ?? from.closest<HTMLElement>('.ar-move, li')?.querySelector<HTMLElement>('.arena-card[data-tip]') ?? null
+  }
+
+  const showTip = (node: HTMLElement) => {
+    if (!node.isConnected || hold.current?.live) return
     const info = JSON.parse(node.dataset.tip ?? '{}') as TipInfo
     const box = node.getBoundingClientRect()
     const x = box.right + 12 + TIP_W > window.innerWidth ? box.left - 12 - TIP_W : box.right + 12
     const y = Math.max(8, Math.min(box.top, window.innerHeight - 220))
-    if (tip && tip.info.id === info.id && tip.x === x && tip.y === y) return
     setTip({ info, x, y })
+  }
+
+  const hideTip = () => {
+    window.clearTimeout(tipTimer.current)
+    tipFor.current = null
+    if (tip) setTip(null)
+  }
+
+  const peek = (event: ReactPointerEvent<HTMLElement>) => {
+    if (event.pointerType !== 'mouse' || dragging || hold.current) return
+    const node = cardAt(event.target)
+    if (node === tipFor.current) return
+    hideTip()
+    if (!node) return
+    tipFor.current = node
+    tipTimer.current = window.setTimeout(() => showTip(node), TIP_HOVER_MS)
+  }
+
+  const press = (event: ReactPointerEvent<HTMLElement>) => {
+    hideTip()
+    tipped.current = false
+    if (event.pointerType === 'mouse') return
+    const node = cardAt(event.target)
+    if (!node) return
+    tipFor.current = node
+    tipStart.current = { x: event.clientX, y: event.clientY }
+    tipTimer.current = window.setTimeout(() => {
+      tipped.current = true
+      showTip(node)
+    }, TIP_PRESS_MS)
+  }
+
+  const slide = (event: ReactPointerEvent<HTMLElement>) => {
+    if (event.pointerType === 'mouse' || !tipFor.current) return
+    if (Math.hypot(event.clientX - tipStart.current.x, event.clientY - tipStart.current.y) > 8) hideTip()
+  }
+
+  const lift = (event: ReactPointerEvent<HTMLElement>) => {
+    if (event.pointerType !== 'mouse') hideTip()
   }
 
   const tipLines = (info: TipInfo) => {
@@ -1222,7 +1327,17 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
 
   return (
     <>
-    <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''} ${waitLeft !== null ? 'is-waiting' : ''}`} style={{ '--dex': game.accent } as CSSProperties} onPointerOver={peek} onPointerLeave={() => setTip(null)}>
+    <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''} ${waitLeft !== null ? 'is-waiting' : ''}`} style={{ '--dex': game.accent } as CSSProperties} onPointerOver={peek} onPointerDown={press} onPointerMove={slide} onPointerUp={lift} onPointerCancel={lift} onPointerLeave={hideTip} onContextMenu={(event) => event.preventDefault()}>
+      <div className="ar-rotate" aria-live="polite">
+        <svg viewBox="0 0 64 64" aria-hidden>
+          <g className="is-phone">
+            <rect x="21" y="12" width="22" height="40" rx="4" />
+            <path d="M29 47 H 35" />
+          </g>
+        </svg>
+        <b>{t('arena.rotate')}</b>
+        <span>{t('arena.rotateHint')}</span>
+      </div>
       {tip && !dragging && (
         <div className="ar-tip" style={{ left: tip.x, top: tip.y, width: TIP_W }} aria-hidden>
           <svg className="ar-tip-paper" viewBox="0 0 100 100" preserveAspectRatio="none">

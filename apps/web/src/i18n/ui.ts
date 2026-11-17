@@ -123,6 +123,8 @@ const ui = {
   'arena.tavernPrice': { ru: 'Таверна · {cost} чакры за карту', uk: 'Таверна · {cost} чакри за картку', en: 'Tavern · {cost} chakra a card' },
   'arena.quit': { ru: 'Сдаться', uk: 'Здатися', en: 'Give up' },
   'arena.resume': { ru: 'Продолжить бой', uk: 'Продовжити бій', en: 'Resume' },
+  'arena.rotate': { ru: 'Поверни экран', uk: 'Поверни екран', en: 'Rotate your screen' },
+  'arena.rotateHint': { ru: 'Арена играется только горизонтально', uk: 'Арена грається лише горизонтально', en: 'The arena is played in landscape only' },
   'arena.gone': { ru: 'Бой уже закончился', uk: 'Бій уже скінчився', en: 'That match is over' },
   'arena.toDex': { ru: 'В бестиарий', uk: 'До бестіарію', en: 'To the bestiary' },
   'arena.phaseShop': { ru: 'найм', uk: 'найм', en: 'recruit' },
