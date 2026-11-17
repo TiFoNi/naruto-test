@@ -563,7 +563,7 @@ function fight(doc: ArenaDoc) {
   const bury = () => {
     for (const side of [ours, foes]) {
       const by = raisers.get(side)
-      if (!by) continue
+      if (!by || by.stun) continue
       const fallen = side.heroes.filter((one) => one.hp <= 0)
       if (!fallen.length) continue
       raisers.delete(side)
@@ -719,7 +719,7 @@ function fight(doc: ArenaDoc) {
     const mend = (one: ArenaCard) => {
       if (one.hp <= 0) return
       const team = onBoard(ours).includes(one) ? ours : foes
-      const medics = alive(team).filter((other) => other !== one && medicOf(other.id)).length
+      const medics = alive(team).filter((other) => other !== one && !other.stun && medicOf(other.id)).length
       if (!medics || one.hp >= one.max) return
       const before = one.hp
       one.hp = Math.min(one.max, one.hp + medics)
@@ -758,7 +758,7 @@ function fight(doc: ArenaDoc) {
         one.hp = 0
         venom = true
       }
-      if (furyOf(one.id) && one.hp > 0) {
+      if (furyOf(one.id) && one.hp > 0 && !one.stun) {
         one.atk += 1
         raged.push(one.uid)
       }
@@ -780,7 +780,7 @@ function fight(doc: ArenaDoc) {
         }
       }
       harm(target, blow)
-      if (!shotOf(card.id) && target.atk > 0 && swapFrom !== target.uid) {
+      if (!shotOf(card.id) && target.atk > 0 && swapFrom !== target.uid && !target.stun) {
         if (card.ward) {
           card.ward = false
           warded.push(card.uid)
