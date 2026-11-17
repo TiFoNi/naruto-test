@@ -4,7 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, typ
 import { ARENA_CARD_COST, ARENA_CHAKRA_MAX, ARENA_COIN_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS, ARENA_TIERS } from '@nanda/game'
 import { api } from './api'
 import { ArenaFace, SpellFace, Ward, type ArenaView, type Card, type Side, type Step } from './ArenaCard'
-import { BADGE_POINTS } from './DexCard'
+import { BADGE_POINTS, SHEET_POINTS } from './DexCard'
 import Avatar from './Avatar'
 import { useAuth } from './auth'
 import { useEntities } from './entities'
@@ -283,6 +283,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const [leavingSpell, setLeavingSpell] = useState<ArenaView['spellOffer']>(null)
   const overNow = useRef<Spot['zone'] | null>(null)
   const hold = useRef<Hold | null>(null)
+  const endLater = useRef(false)
 
   const queue = useRef<Promise<unknown>>(Promise.resolve())
   const viewNow = useRef<ArenaView | null>(null)
@@ -535,7 +536,8 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       setClock(left)
       if (left <= 0 && !fired) {
         fired = true
-        finishing.current()
+        if (hold.current) endLater.current = true
+        else finishing.current()
       }
     }
     step()
@@ -850,7 +852,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       }
     }
 
-    const up = () => {
+    const release = () => {
       const one = hold.current
       hold.current = null
       if (!one) return
@@ -878,6 +880,13 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         buy(one.at)
       }
       requestAnimationFrame(() => clean(one))
+    }
+
+    const up = () => {
+      release()
+      if (!endLater.current) return
+      endLater.current = false
+      finishing.current()
     }
 
     window.addEventListener('pointermove', move)
@@ -937,7 +946,8 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
 
   const peek = (event: ReactPointerEvent<HTMLElement>) => {
     if (dragging) return
-    const node = (event.target as HTMLElement).closest<HTMLElement>('.arena-card[data-tip]')
+    const from = event.target as HTMLElement
+    const node = from.closest<HTMLElement>('.arena-card[data-tip]') ?? from.closest<HTMLElement>('.ar-move, li')?.querySelector<HTMLElement>('.arena-card[data-tip]') ?? null
     if (!node) {
       if (tip) setTip(null)
       return
@@ -951,17 +961,19 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   }
 
   const tipLines = (info: TipInfo) => {
-    const lines: [string, string][] = [[t(info.shot ? 'arena.ranged' : 'arena.melee'), t(info.shot ? 'arena.tip.ranged' : 'arena.tip.melee')]]
-    if (info.taunt) lines.push([t('arena.taunt'), t('arena.tip.taunt')])
-    if (info.cleave) lines.push([t('arena.cleave'), t('arena.tip.cleave')])
-    if (info.poison) lines.push([t('arena.poison'), t('arena.tip.poison')])
-    if (info.sound) lines.push([t('arena.sound'), t('arena.tip.sound')])
-    if (info.medic) lines.push([t('arena.medic'), t('arena.tip.medic')])
-    if (info.fury) lines.push([t('arena.fury'), t('arena.tip.fury')])
-    if (info.guard) lines.push([t('arena.guard'), t(`arena.tip.guard.${info.guard}` as UiKey)])
-    if (info.dodge) lines.push([t('arena.dodge'), t('arena.tip.dodge')])
+    const lines: { kind: string; head: string; text: string; cost?: number }[] = [
+      { kind: info.shot ? 'ranged' : 'melee', head: t(info.shot ? 'arena.ranged' : 'arena.melee'), text: t(info.shot ? 'arena.tip.ranged' : 'arena.tip.melee') },
+    ]
+    if (info.taunt) lines.push({ kind: 'taunt', head: t('arena.taunt'), text: t('arena.tip.taunt') })
+    if (info.cleave) lines.push({ kind: 'cleave', head: t('arena.cleave'), text: t('arena.tip.cleave') })
+    if (info.poison) lines.push({ kind: 'poison', head: t('arena.poison'), text: t('arena.tip.poison') })
+    if (info.sound) lines.push({ kind: 'sound', head: t('arena.sound'), text: t('arena.tip.sound') })
+    if (info.medic) lines.push({ kind: 'medic', head: t('arena.medic'), text: t('arena.tip.medic') })
+    if (info.fury) lines.push({ kind: 'fury', head: t('arena.fury'), text: t('arena.tip.fury') })
+    if (info.guard) lines.push({ kind: 'guard', head: t('arena.guard'), text: t(`arena.tip.guard.${info.guard}` as UiKey) })
+    if (info.dodge) lines.push({ kind: 'dodge', head: t('arena.dodge'), text: t('arena.tip.dodge') })
     for (const skill of skillsBy.get(info.id) ?? [])
-      lines.push([`${t(`arena.skill.${skill.key}` as UiKey)} · ${t('arena.tip.chakra', { n: skill.cost })}`, t(`arena.skill.${skill.key}.hint` as UiKey, { beast: (skill.beast && byId.get(skill.beast)?.name) || '' })])
+      lines.push({ kind: 'skill', head: t(`arena.skill.${skill.key}` as UiKey), text: t(`arena.skill.${skill.key}.hint` as UiKey, { beast: (skill.beast && byId.get(skill.beast)?.name) || '' }), cost: skill.cost })
     return lines
   }
 
@@ -1213,12 +1225,23 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
     <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''} ${waitLeft !== null ? 'is-waiting' : ''}`} style={{ '--dex': game.accent } as CSSProperties} onPointerOver={peek} onPointerLeave={() => setTip(null)}>
       {tip && !dragging && (
         <div className="ar-tip" style={{ left: tip.x, top: tip.y, width: TIP_W }} aria-hidden>
+          <svg className="ar-tip-paper" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
+          </svg>
           <b className="ar-tip-name">{byId.get(tip.info.id)?.name}</b>
           <ul>
-            {tipLines(tip.info).map(([head, text]) => (
-              <li key={head}>
-                <em>{head}</em>
-                <span>{text}</span>
+            {tipLines(tip.info).map((line) => (
+              <li key={line.kind + line.head}>
+                <em className={`ar-tip-tag is-${line.kind}`}>
+                  {line.head}
+                  {line.cost !== undefined && (
+                    <span className="ar-tip-cost">
+                      <i className="ar-orb is-full" />
+                      {line.cost}
+                    </span>
+                  )}
+                </em>
+                <span>{line.text}</span>
               </li>
             ))}
           </ul>

@@ -2816,32 +2816,48 @@
   position: fixed;
   z-index: 120;
   display: grid;
-  gap: 8px;
-  padding: 14px 16px 16px;
-  background: #ebe5dc;
-  clip-path: polygon(0% 2%, 8% 0%, 22% 1.5%, 40% 0%, 58% 1.2%, 76% 0%, 92% 1.5%, 100% 0%, 99% 30%, 100% 62%, 99% 100%, 84% 98.5%, 64% 100%, 44% 98.8%, 24% 100%, 6% 98.5%, 0% 100%, 1% 66%, 0% 34%);
+  gap: 10px;
+  padding: 16px 18px 18px;
   color: #1b1a1e;
-  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.55));
+  rotate: -1deg;
   pointer-events: none;
-  animation: ar-tip-in 0.14s ease-out;
+  animation: ar-tip-in 0.16s ease-out;
+}
+
+.ar-tip-paper {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 6px rgb(0 0 0 / 70%)) drop-shadow(0 14px 22px rgb(0 0 0 / 70%));
+}
+
+.ar-tip-paper polygon {
+  fill: #ebe5dc;
+  stroke: #1b1a1e;
+  stroke-width: 2px;
+  stroke-linejoin: round;
 }
 
 @keyframes ar-tip-in {
   from {
     opacity: 0;
-    translate: 0 4px;
+    scale: 0.92;
+    rotate: -4deg;
   }
 }
 
 .ar-tip-name {
   font-family: var(--display);
-  font-size: 17px;
-  line-height: 1.1;
+  font-size: 19px;
+  line-height: 1.05;
 }
 
 .ar-tip ul {
   display: grid;
-  gap: 8px;
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -2849,18 +2865,95 @@
 
 .ar-tip li {
   display: grid;
-  gap: 2px;
+  justify-items: start;
+  gap: 4px;
 }
 
-.ar-tip em {
-  font-size: 11px;
+.ar-tip-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  background: #1b1a1e;
+  clip-path: polygon(0% 12%, 9% 0%, 22% 7%, 37% 1%, 52% 6%, 68% 0%, 83% 5%, 97% 1%, 100% 22%, 98.5% 48%, 100% 78%, 96% 100%, 81% 94%, 66% 100%, 50% 95%, 35% 100%, 20% 93%, 7% 100%, 1% 84%, 2% 52%, 0.5% 30%);
+  color: #ebe5dc;
+  font-size: 12px;
   font-style: normal;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
   text-transform: uppercase;
+  rotate: -2deg;
 }
 
-.ar-tip span {
+.ar-tip li:nth-child(even) .ar-tip-tag {
+  rotate: 1.5deg;
+}
+
+.ar-tip-tag.is-melee {
+  background: #4a3f36;
+}
+
+.ar-tip-tag.is-ranged {
+  background: #1f4c57;
+  color: #e3f3f5;
+}
+
+.ar-tip-tag.is-cleave {
+  background: #7a1f24;
+  color: #f6e7e2;
+}
+
+.ar-tip-tag.is-fury {
+  background: #9b2c1f;
+  color: #fbe9e4;
+}
+
+.ar-tip-tag.is-poison {
+  background: #3f6b22;
+  color: #eaf7d8;
+}
+
+.ar-tip-tag.is-sound {
+  background: #2f3a4f;
+  color: #e3eaf6;
+}
+
+.ar-tip-tag.is-medic {
+  background: #2e7d5b;
+  color: #e7fbef;
+}
+
+.ar-tip-tag.is-guard {
+  background: #d9d2c3;
+  color: #1b1a1e;
+}
+
+.ar-tip-tag.is-dodge {
+  background: #6b4a26;
+  color: #f3e6cf;
+}
+
+.ar-tip-tag.is-skill {
+  background: #4b2a6b;
+  color: #efe2ff;
+}
+
+.ar-tip-cost {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: 0;
+}
+
+.ar-tip-cost .ar-orb {
+  width: 10px;
+  height: 10px;
+}
+
+.ar-tip li > span {
   font-size: 13px;
   line-height: 1.3;
   opacity: 0.85;
