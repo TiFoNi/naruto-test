@@ -67,7 +67,7 @@ export async function addShards(userId: ObjectId, game: string, id: number, want
   const n = await takeShards(userId, game, want)
   if (n <= 0) return
   const stamp = { at: new Date(), from, n }
-  await (await cards()).updateOne(
+  const card = await (await cards()).findOneAndUpdate(
     { _id: cardKey(userId, game, id) },
     {
       $setOnInsert: { userId, game, entityId: id, xp: 0, rank: 0, modes: {} },
@@ -75,8 +75,13 @@ export async function addShards(userId: ObjectId, game: string, id: number, want
       $push: { log: { $each: [stamp], $position: 0, $slice: LOG_KEEP } },
       $set: { updatedAt: new Date() },
     },
-    { upsert: true },
+    { upsert: true, returnDocument: 'after', projection: { rank: 1, shards: 1 } },
   )
+  if ((card?.rank ?? 0) < CARD_RARITIES.length - 1) return
+  const dust = dustFor(card?.shards ?? 0)
+  if (dust <= 0) return
+  await (await cards()).updateOne({ _id: cardKey(userId, game, id) }, { $inc: { shards: -Math.round(dust / DUST_SCRAP_RATE) } })
+  await (await users()).updateOne({ _id: userId }, { $inc: { [`dust.${game}`]: dust } })
 }
 
 export async function huntOf(userId: ObjectId, game: string) {
