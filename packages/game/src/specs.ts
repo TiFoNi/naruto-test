@@ -871,13 +871,15 @@ export const CARD_STEPS = [
   { level: 30, xp: 30 },
 ] as const
 
-export const CARD_UP = [15, 30, 60, 200, 400, 0] as const
+export const CARD_UP = [10, 20, 40, 100, 200, 0] as const
 
 export const DUST_CRAFT = 1
 
-export const DUST_SCRAP = 0.25
+export const DUST_PER = 3
 
-export const CARD_POWER = [1, 1.2, 1.4, 1.6, 1.8, 2] as const
+export const DUST_SCRAP = 1 / DUST_PER
+
+export const CARD_POWER = [1, 1.1, 1.2, 1.3, 1.4, 1.5] as const
 
 
 export const SHARDS_DAY = 3000
@@ -892,7 +894,7 @@ export const HUNT_PITY = 4
 
 export const HUNT_SHARD = 1
 
-export const HUNT_WEIGHT = 3
+export const HUNT_WEIGHT = 5
 
 export const rankOf = (rarity: CardRarity) => Math.max(0, CARD_RARITIES.indexOf(rarity))
 
@@ -900,9 +902,9 @@ export const cardUp = (rank: number) => CARD_UP[Math.max(0, Math.min(CARD_UP.len
 
 export const cardPower = (rank: number) => CARD_POWER[Math.max(0, Math.min(CARD_POWER.length - 1, rank))]!
 
-export const dustFor = (shards: number) => Math.floor(Math.max(0, shards) * DUST_SCRAP)
+export const dustFor = (shards: number) => Math.floor(Math.max(0, shards) / DUST_PER)
 
-export const cardShardBase = (mode: ModeId) => Math.max(1, Math.min(3, CARD_POINTS[mode] ?? 1))
+export const cardShardBase = (mode: ModeId) => Math.max(1, Math.min(4, CARD_POINTS[mode] ?? 1))
 
 export const cardShards = (mode: ModeId) => cardShardBase(mode)
 
@@ -1183,7 +1185,7 @@ export const LEVEL_MID = 1
 export const LEVEL_LAST = 300
 export const LEVEL_CHAPTER = 50
 
-export const LEVEL_CHAPTER_COINS = [25, 30, 35, 40, 45, 50]
+export const LEVEL_CHAPTER_COINS = [10, 20, 30, 35, 45, 50]
 
 export const LEVEL_PILE_SPOTS = [5, 15, 35, 45]
 
@@ -1242,7 +1244,7 @@ export const POLL = {
 
 export const ARENA_GAMES: GameId[] = ['naruto']
 
-export const ARENA_HP = 40
+export const ARENA_HP = 30
 export const ARENA_HERO_SLOTS = 5
 export const ARENA_SUMMON_SLOTS = 2
 export const ARENA_HAND = 6
@@ -1252,7 +1254,28 @@ export const ARENA_COIN_START = 3
 export const ARENA_CHAKRA_MAX = 10
 export const ARENA_CHAKRA_START = 1
 
-export const ARENA_ABILITIES = { genjutsu: 2, amaterasu: 4, swap: 3, mind: 3, sonic: 1, summon: 3, revive: 3, limbo: 5 } as const
+export const ARENA_ABILITIES = { genjutsu: 2, amaterasu: 4, swap: 3, mind: 3, sonic: 1, summon: 3, revive: 3, limbo: 5, clay: 2, sacrifice: 3 } as const
+
+export const ARENA_CLANS = {
+  konoha: { need: 2, cap: 5 },
+  akatsuki: { need: 3, cap: 5 },
+  oto: { need: 2, cap: 5 },
+  kumo: { need: 2, cap: 5 },
+  kiri: { need: 3, cap: 5 },
+  suna: { need: 3, cap: 5 },
+  iwa: { need: 3, cap: 5 },
+  root: { need: 2, cap: 5 },
+  otsutsuki: { need: 2, cap: 5 },
+  uchiha: { need: 2, cap: 5 },
+  hyuga: { need: 3, cap: 5 },
+  ishc: { need: 2, cap: 5 },
+  hokage: { need: 2, cap: 5 },
+  youth: { need: 2, cap: 4 },
+} as const
+
+export const ARENA_ROTATION = 6
+
+export type ArenaClan = keyof typeof ARENA_CLANS
 
 export type ArenaAbility = keyof typeof ARENA_ABILITIES
 export const ARENA_CARD_COST = 3
@@ -1265,6 +1288,10 @@ export const ARENA_TRIPLE = 3
 export const ARENA_ROLL_COST = 1
 
 export const ARENA_TURN_SEC = 30
+export const ARENA_TURN_STEP = 5
+export const ARENA_TURN_MAX = 75
+
+export const arenaTurnSec = (turn: number) => Math.min(ARENA_TURN_MAX, ARENA_TURN_SEC + ARENA_TURN_STEP * (Math.max(1, turn) - 1))
 export const ARENA_UP_MIN = 1
 const ARENA_UP_COST = [5, 7, 8, 9, 10]
 

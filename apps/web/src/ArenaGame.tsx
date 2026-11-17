@@ -1,9 +1,10 @@
 'use client'
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react'
-import { ARENA_CARD_COST, ARENA_CHAKRA_MAX, ARENA_COIN_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS, ARENA_TIERS } from '@nanda/game'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { type CardRarity, ARENA_CARD_COST, ARENA_HAND, ARENA_CHAKRA_MAX, ARENA_COIN_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS, ARENA_TIERS } from '@nanda/game'
 import { api } from './api'
-import { ArenaFace, SpellFace, Ward, type ArenaView, type Card, type Side, type Step } from './ArenaCard'
+import { AmaterasuFx } from './AmaterasuFx'
+import { ArenaFace, SpellFace, Ward, tierOf, type ArenaView, type Card, type Side, type Step } from './ArenaCard'
 import { BADGE_POINTS, SHEET_POINTS } from './DexCard'
 import Avatar from './Avatar'
 import { useAuth } from './auth'
@@ -56,9 +57,117 @@ const BlastFx = () => (
   </span>
 )
 
-type TipInfo = { id: number; taunt?: boolean; cleave?: boolean; shot?: string | null; poison?: boolean; sound?: boolean; medic?: boolean; fury?: boolean; guard?: string | null; dodge?: number }
+type TipInfo = { id: number; rarity?: CardRarity; shot?: string | null; dodge?: number }
 
-const TIP_W = 240
+type TipLine = { kind: string; head: string; text: string; cost?: number; need?: CardRarity; on?: boolean }
+
+const SCENES: [string, UiKey][] = [
+  ['amaterasu', 'arena.skill.amaterasu'],
+  ['meteor', 'arena.myth.meteor'],
+  ['blast', 'arena.myth.blast'],
+  ['clay', 'arena.skill.clay'],
+  ['seal', 'arena.myth.seal'],
+  ['katsuyu', 'arena.medic'],
+  ['summon', 'arena.skill.summon'],
+  ['limbo', 'arena.skill.limbo'],
+  ['mirror', 'arena.myth.mirror'],
+  ['raikiri', 'arena.myth.raikiri'],
+  ['gates', 'arena.myth.gates'],
+  ['rasen', 'arena.myth.rasen'],
+  ['flash', 'arena.myth.flash'],
+  ['reaper', 'arena.myth.reaper'],
+  ['jashin', 'arena.myth.jashin'],
+  ['kamui', 'arena.myth.kamui'],
+  ['rebirth', 'arena.myth.rebirth'],
+  ['sacrifice', 'arena.skill.sacrifice'],
+  ['revive', 'arena.skill.revive'],
+  ['genjutsu', 'arena.skill.genjutsu'],
+  ['mind', 'arena.skill.mind'],
+  ['counter', 'arena.counter'],
+  ['curse', 'arena.clan.oto'],
+  ['ward', 'arena.guard'],
+  ['poison', 'arena.poison'],
+  ['sound', 'arena.sound'],
+  ['medic', 'arena.medic'],
+  ['fury', 'arena.fury'],
+  ['cleave', 'arena.myth.cleave'],
+  ['shots', 'arena.ranged'],
+]
+
+const FlameGallery = ({ children }: { children: ReactNode }) => {
+  const [round, setRound] = useState(0)
+  useEffect(() => {
+    const timer = window.setInterval(() => setRound((was) => was + 1), 3200)
+    return () => window.clearInterval(timer)
+  }, [])
+  return (
+    <div key={round} className="ar-ama-gallery">
+      {children}
+    </div>
+  )
+}
+
+const CASTS = new Set(['amaterasu', 'meteor', 'seal', 'blast', 'reaper', 'burn', 'gatesOpen'])
+
+const METEOR_FALL_MS = 700
+
+const HOLD_MS: Record<string, number> = { mind: 700, gatesOpen: 600, gates: 300, amaterasu: 600, burn: 300, meteor: 700, seal: 600, blast: 400, raikiri: 400, reaper: 300 }
+
+const holdOf = (step: Step) => (step.ability ? (HOLD_MS[step.ability] ?? 0) : 0) + (step.swapFrom ? 400 : 0) + (step.dodged?.length ? 300 : 0)
+
+const AMA_STYLE = 'a' as const
+
+const SWAP_AT = 0.4
+const SWAP_FADE = 0.58
+const SWAP_GONE = 0.68
+const SWAP_HOME = 0.9
+
+const RAYS = ['M50.0 50.0 L58.7 52.3 L66.8 56.3 L76.3 55.8 L83.8 62.1 L93.1 37.6 L103.9 51.4', 'M50.0 50.0 L52.8 58.3 L63.4 61.1 L65.4 71.2 L74.7 74.7 L73.8 86.6 L77.7 94.5', 'M50.0 50.0 L52.6 57.1 L48.5 65.1 L50.2 72.7 L62.7 77.5 L49.5 87.9 L69.7 91.0', 'M50.0 50.0 L46.6 56.5 L37.0 56.8 L37.0 67.8 L32.6 73.7 L16.2 64.3 L10.9 70.2', 'M50.0 50.0 L40.5 50.5 L30.9 49.2 L22.5 58.2 L12.7 41.5 L2.2 47.6 L-5.7 36.2', 'M50.0 50.0 L44.8 44.2 L38.2 39.8 L32.0 35.0 L25.0 31.4 L22.9 21.9 L25.3 10.3', 'M50.0 50.0 L47.3 41.6 L44.3 33.3 L50.6 23.6 L42.6 15.6 L35.8 8.3 L38.9 -1.7', 'M50.0 50.0 L56.7 47.4 L57.3 37.7 L68.5 39.2 L75.6 37.2 L68.1 19.1 L87.6 29.3']
+
+const ARCS = ['M29.9 2.0 L35.0 5.4 L40.2 1.7 L45.4 2.1 L50.6 2.7 L55.7 2.0', 'M98.0 15.2 L99.0 20.2 L100.3 25.2 L94.8 30.3 L96.4 35.3 L98.0 40.3', 'M39.3 98.0 L33.5 99.5 L27.6 94.3 L21.7 101.9 L15.9 101.7 L10.0 98.0', 'M2.0 67.6 L-0.7 62.3 L-1.9 56.9 L2.2 51.6 L-1.5 46.3 L2.0 41.0', 'M15.5 2.0 L19.7 -1.8 L24.0 1.7 L28.3 1.5 L32.6 4.7 L36.8 2.0', 'M98.0 33.6 L98.0 38.9 L99.3 44.3 L97.7 49.7 L96.2 55.1 L98.0 60.5', 'M91.8 98.0 L85.4 100.7 L79.0 99.7 L72.6 96.5 L66.3 95.8 L59.9 98.0', 'M2.0 39.9 L4.1 36.1 L1.2 32.3 L4.8 28.5 L1.1 24.7 L2.0 20.9', 'M57.7 2.0 L63.7 -2.0 L69.6 -0.3 L75.6 5.3 L81.6 1.8 L87.6 2.0', 'M98.0 58.9 L94.6 63.6 L99.0 68.3 L100.2 73.1 L96.2 77.8 L98.0 82.5']
+
+const ChidoriFx = () => (
+  <span className="ar-chidori" aria-hidden>
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+      {ARCS.map((d, i) => (
+        <path key={i} d={d} style={{ '--i': i } as CSSProperties} />
+      ))}
+    </svg>
+  </span>
+)
+
+const RaikiriFx = () => (
+  <span className="ar-raikiri" aria-hidden>
+    <i className="ar-raikiri-flash" />
+    <i className="ar-raikiri-ring" />
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+      {RAYS.map((d, i) => (
+        <path key={i} d={d} style={{ '--i': i % 3 } as CSSProperties} />
+      ))}
+    </svg>
+  </span>
+)
+
+const GatesFx = ({ lasting = false }: { lasting?: boolean }) => (
+  <span className={`ar-gates ${lasting ? 'is-lasting' : ''}`} aria-hidden>
+    <i className="ar-gates-glow" />
+    {Array.from({ length: lasting ? 7 : 12 }, (_, i) => (
+      <i key={i} className="ar-gates-steam" style={{ '--x': `${4 + ((i * 37) % 92)}%`, '--d': `${-((i * 130) % 1000)}ms`, '--s': `${0.7 + ((i * 11) % 5) / 8}` } as CSSProperties} />
+    ))}
+  </span>
+)
+
+const RinneganFx = () => (
+  <span className="ar-rinnegan" aria-hidden>
+    <i />
+    <i />
+    <i />
+  </span>
+)
+
+const TECH = new Set(['raikiri', 'gates', 'gatesOpen', 'rasen', 'meteor', 'clay', 'amaterasu', 'seal'])
+
+const TIP_W = 270
 const TIP_HOVER_MS = 250
 const TIP_PRESS_MS = 350
 
@@ -181,7 +290,7 @@ const seedOf = (uid: string) => [...uid].reduce((sum, ch) => sum * 31 + ch.charC
 
 type Kind = 'hand' | 'board' | 'shop'
 type Spot = { zone: 'shop' | 'hand' | 'slot'; at: number }
-type Cell = { node: HTMLElement; mid: number }
+type Cell = { node: HTMLElement; mid: number; chip: HTMLElement | null }
 type Hold = {
   kind: Kind
   uid: string
@@ -251,7 +360,7 @@ function Hero({ who, name, id, avatar, frame, hp, struck }: { who: 'me' | 'foe';
   )
 }
 
-export default function ArenaGame({ game: gameId, demo = false }: { game: string; demo?: 'fight' | 'shop' | false }) {
+export default function ArenaGame({ game: gameId, demo = false }: { game: string; demo?: 'fight' | 'shop' | 'gallery' | 'flame' | false }) {
   const { t, l } = useI18n()
   const href = useHref()
   const go = useNavigate()
@@ -279,6 +388,16 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const [dragging, setDragging] = useState<Kind | null>(null)
   const [over, setOver] = useState<Spot['zone'] | null>(null)
   const [aimed, setAimed] = useState<string | null>(null)
+  const [pledging, setPledging] = useState<string | null>(null)
+  const [cheer, setCheer] = useState<{ to: string[]; label: string; at: number } | null>(null)
+  const tipBox = useRef<HTMLDivElement | null>(null)
+
+  useLayoutEffect(() => {
+    const node = tipBox.current
+    if (!node) return
+    const box = node.getBoundingClientRect()
+    if (box.bottom > window.innerHeight - 8) node.style.top = `${Math.max(8, window.innerHeight - 8 - box.height)}px`
+  }, [tip])
   const [spelling, setSpelling] = useState(false)
   const [deal, setDeal] = useState(0)
   const [seenOffers, setSeenOffers] = useState('')
@@ -310,10 +429,12 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
     setChecked(true)
   }, [gameId])
 
+  const [scene, setScene] = useState(SCENES[0]![0])
+
   const replay = useCallback(() => {
-    void import('./arena-fx.json').then((mod) => {
-      const base = mod.default as unknown as ArenaView
-      if (demo === 'shop') {
+    const source = demo === 'gallery' ? import('./arena-fx-gallery.json').then((mod) => (mod.default as unknown as Record<string, ArenaView>)[scene]!) : import('./arena-fx.json').then((mod) => mod.default as unknown as ArenaView)
+    void source.then((base) => {
+      if (demo === 'shop' || demo === 'flame') {
         const heroes = base.board.heroes
         setView({
           ...base,
@@ -339,7 +460,21 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       setHit(false)
       setLead(true)
     })
-  }, [demo])
+  }, [demo, scene])
+
+  const cryKey = view?.cried ? `${view.cried.from}:${view.cried.to.join(',')}` : ''
+  const lastCry = useRef('')
+  useEffect(() => {
+    if (!cryKey || cryKey === lastCry.current || !view?.cried) return
+    lastCry.current = cryKey
+    const { to, atk, hp } = view.cried
+    if (to.length) setCheer({ to, label: atk && hp ? `+${atk}/+${hp}` : atk ? `+${atk}` : `+${hp} ♥`, at: Date.now() })
+  }, [cryKey, view?.cried])
+  useEffect(() => {
+    if (!cheer) return
+    const timer = window.setTimeout(() => setCheer(null), 1300)
+    return () => window.clearTimeout(timer)
+  }, [cheer])
 
   const found = useRef<ArenaView | null>(null)
   const [lobby, setLobby] = useState<'new' | 'resume' | null>(null)
@@ -379,7 +514,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   }, [load])
 
   useEffect(() => {
-    if (demo !== 'fight' || fight || !view) return
+    if ((demo !== 'fight' && demo !== 'gallery') || fight || !view) return
     const timer = window.setTimeout(replay, 2500)
     return () => window.clearTimeout(timer)
   }, [demo, fight, view, replay])
@@ -432,6 +567,36 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
     [send],
   )
 
+  const buyPlay = useCallback(
+    (at: number, slot: number) => {
+      setView((now) => {
+        if (!now || now.coins < ARENA_CARD_COST || !now.tavern[at]) return now
+        const one = now.tavern[at]!
+        const card: Card = { uid: `${now.seq + 1}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt, cleave: one.cleave, shot: one.shot, charm: one.charm, sound: one.sound, poison: one.poison, medic: one.medic, fury: one.fury, guard: one.guard, skills: one.skills }
+        const group = card.summon ? [...now.board.summons] : [...now.board.heroes]
+        if (group.length >= roomOf(card.summon)) return now
+        group.splice(slot < 0 ? group.length : Math.min(slot, group.length), 0, card)
+        const board = card.summon ? { ...now.board, summons: group } : { ...now.board, heroes: group }
+        return { ...now, seq: now.seq + 1, coins: now.coins - ARENA_CARD_COST, tavern: now.tavern.filter((_, i) => i !== at), board }
+      })
+      send(slot >= 0 ? { action: 'buy', at, play: true, to: slot } : { action: 'buy', at, play: true })
+    },
+    [send],
+  )
+
+  const buyCast = useCallback(
+    (target: string) => {
+      setView((now) => {
+        if (!now?.spellOffer || now.coins < now.spellOffer.cost) return now
+        if (line(now.board).some((one) => one.uid === target && (one.dodge ?? 0) > 0)) return now
+        const bless = (list: Card[]) => list.map((one) => (one.uid === target ? { ...one, dodge: 1 } : one))
+        return { ...now, coins: now.coins - now.spellOffer.cost, spellOffer: null, board: { heroes: bless(now.board.heroes), summons: bless(now.board.summons) } }
+      })
+      send({ action: 'spell', target })
+    },
+    [send],
+  )
+
   const play = useCallback(
     (uid: string, at = -1) => {
       setView((now) => {
@@ -465,7 +630,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   )
 
   const toggleSkill = useCallback(
-    (uid: string, key: string) => {
+    (uid: string, key: string, target?: string) => {
       setView((now) => {
         if (!now) return now
         const card = line(now.board).find((one) => one.uid === uid)
@@ -476,14 +641,14 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         if (!on && now.chakra < skill.cost) return now
         if (!on && callsOf(now.board) + (SLOTS_OF[key] ?? 0) > ARENA_SUMMON_SLOTS) return now
         const next = on ? armed.filter((one) => one !== key) : [...armed, key]
-        const swap = (list: Card[]) => list.map((one) => (one.uid === uid ? { ...one, armed: next } : one))
+        const swap = (list: Card[]) => list.map((one) => (one.uid === uid ? { ...one, armed: next, aim: on ? undefined : (target ?? one.aim) } : one))
         return {
           ...now,
           chakra: on ? Math.min(now.chakra + skill.cost, now.chakraMax) : now.chakra - skill.cost,
           board: { heroes: swap(now.board.heroes), summons: swap(now.board.summons) },
         }
       })
-      send({ action: 'ability', uid, key })
+      send(target ? { action: 'ability', uid, key, target } : { action: 'ability', uid, key })
     },
     [send],
   )
@@ -628,12 +793,13 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       ? document.querySelector<HTMLElement>(`.ar-row.is-packed [data-uid="${one.to}"]`)
       : document.querySelector<HTMLElement>(`[data-hero="${one.foe ? 'me' : 'foe'}"]`)
 
-    const land = setTimeout(() => setHit(true), one.shot === 'clay' ? CLAY_FLY_MS : IMPACT_MS)
+    const land = setTimeout(() => setHit(true), one.shot === 'clay' ? CLAY_FLY_MS : one.ability === 'meteor' ? METEOR_FALL_MS : IMPACT_MS)
     let next: ReturnType<typeof setTimeout> | undefined
     let zone: HTMLElement | null = null
     const plays: Animation[] = []
 
     const extra: HTMLElement[] = []
+    const pulled: HTMLElement[] = []
     if ((one.summoned || one.risen) && movers[0]) {
       plays.push(
         movers[0].animate(
@@ -646,7 +812,70 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           { duration: FLY_MS + 300, easing: 'ease-in-out' },
         ),
       )
-    } else if (one.charm || one.skip || one.wards || one.summoned || one.risen) {
+    } else if (one.ability && CASTS.has(one.ability)) {
+      if (movers[0] && one.ability !== 'burn')
+        plays.push(movers[0].animate([{ transform: 'none' }, { transform: 'translateY(-18px) scale(1.08)', offset: 0.3 }, { transform: 'translateY(-18px) scale(1.08)', offset: 0.65 }, { transform: 'none' }], { duration: FLY_MS, easing: 'ease-in-out' }))
+      if (one.ability === 'meteor') {
+        const prey = (one.splash ?? []).map((uid) => document.querySelector<HTMLElement>(`.ar-row.is-packed [data-uid="${uid}"]`)).filter((node): node is HTMLElement => !!node)
+        if (prey.length) {
+          const boxes = prey.map((node) => node.getBoundingClientRect())
+          const cx = boxes.reduce((sum, box) => sum + box.left + box.width / 2, 0) / boxes.length
+          const cy = boxes.reduce((sum, box) => sum + box.top + box.height / 2, 0) / boxes.length
+          const size = boxes[0]!.width * 1.1
+          const rock = document.createElement('div')
+          rock.className = 'ar-meteor-big'
+          rock.style.left = `${cx}px`
+          rock.style.top = `${cy}px`
+          rock.style.width = `${size}px`
+          rock.innerHTML = '<i class="ar-meteor-tail"></i><i class="ar-meteor-core"></i>'
+          document.body.appendChild(rock)
+          extra.push(rock)
+          rock.animate(
+            [
+              { transform: `translate(-50%, -50%) translate(${size * 4.5}px, ${-size * 5.5}px) scale(0.55) rotate(0deg)`, opacity: 0 },
+              { opacity: 1, offset: 0.1 },
+              { transform: 'translate(-50%, -50%) translate(0, 0) scale(1) rotate(-25deg)', opacity: 1 },
+            ],
+            { duration: METEOR_FALL_MS, easing: 'cubic-bezier(0.55, 0, 0.95, 0.5)', fill: 'forwards' },
+          ).onfinish = () => {
+            rock.remove()
+            const boom = document.createElement('div')
+            boom.className = 'ar-meteor-impact'
+            boom.style.left = `${cx}px`
+            boom.style.top = `${cy}px`
+            boom.style.width = `${size * 4}px`
+            boom.innerHTML = '<i class="ar-meteor-flash"></i><i class="ar-meteor-ring"></i><i class="ar-meteor-ring is-late"></i>' + Array.from({ length: 12 }, (_, i) => `<i class="ar-meteor-chunk" style="--a:${i * 30 + ((i * 17) % 20)}deg;--d:${0.6 + ((i * 7) % 5) / 8}"></i>`).join('')
+            document.body.appendChild(boom)
+            extra.push(boom)
+            const board = document.querySelector<HTMLElement>('.ar-board')
+            board?.animate([{ translate: '0 0' }, { translate: '-6px 4px' }, { translate: '5px -3px' }, { translate: '-3px 2px' }, { translate: '0 0' }], { duration: 380, easing: 'ease-out' })
+            window.setTimeout(() => boom.remove(), 1200)
+          }
+        }
+      }
+      if (one.ability === 'seal' && movers[0]) {
+        const hole = movers[0].getBoundingClientRect()
+        for (const uid of one.sealed ?? []) {
+          const node = document.querySelector<HTMLElement>(`.ar-row.is-packed [data-uid="${uid}"]`)
+          if (!node) continue
+          const box = node.getBoundingClientRect()
+          const dx = hole.left + hole.width / 2 - (box.left + box.width / 2)
+          const dy = hole.top + hole.height / 2 - (box.top + box.height / 2)
+          node.style.zIndex = '8'
+          pulled.push(node)
+          plays.push(
+            node.animate(
+              [
+                { transform: 'none', filter: 'none', opacity: 1 },
+                { transform: `translate(${dx * 0.15}px, ${dy * 0.15}px) rotate(-8deg) scale(0.95)`, filter: 'brightness(0.7) saturate(0.4)', offset: 0.35 },
+                { transform: `translate(${dx}px, ${dy}px) rotate(220deg) scale(0.05)`, filter: 'brightness(0.3) saturate(0)', opacity: 0.2 },
+              ],
+              { duration: FLY_MS + 300, delay: IMPACT_MS, easing: 'cubic-bezier(0.55, 0, 0.8, 0.4)', fill: 'forwards' },
+            ),
+          )
+        }
+      }
+    } else if (one.charm || one.skip || one.wards || one.summoned || one.risen || one.ability === 'mind') {
       if (movers[0]) plays.push(movers[0].animate([{ transform: 'none' }, { transform: 'scale(1.04)', offset: 0.3 }, { transform: 'none' }], { duration: FLY_MS, easing: 'ease-out' }))
     } else if (one.shot && movers.length === 1 && aim) {
       const from = movers[0]!.getBoundingClientRect()
@@ -745,6 +974,36 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       }
     }
 
+    if (one.swapFrom && one.swapTo) {
+      const sasuke = document.querySelector<HTMLElement>(`.ar-row.is-packed [data-uid="${one.swapFrom}"]`)
+      const foe = document.querySelector<HTMLElement>(`.ar-row.is-packed [data-uid="${one.swapTo}"]`)
+      if (sasuke && foe) {
+        const a = sasuke.getBoundingClientRect()
+        const b = foe.getBoundingClientRect()
+        const jump = `translate(${b.left - a.left}px, ${b.top - a.top}px)`
+        sasuke.style.zIndex = '5'
+        pulled.push(sasuke)
+        plays.push(
+          sasuke.animate(
+            [
+              { transform: 'none', opacity: 1, filter: 'none', offset: 0, easing: 'step-end' },
+              { transform: jump, opacity: 1, filter: 'drop-shadow(0 0 12px rgba(160, 90, 255, 0.95))', offset: SWAP_AT, easing: 'step-end' },
+              { transform: jump, opacity: 1, filter: 'drop-shadow(0 0 8px rgba(160, 90, 255, 0.7))', offset: SWAP_FADE, easing: 'ease-in' },
+              { transform: `${jump} scale(0.7)`, opacity: 0, filter: 'drop-shadow(0 0 16px rgba(160, 90, 255, 1)) brightness(1.6)', offset: SWAP_GONE, easing: 'step-end' },
+              { transform: 'scale(0.85)', opacity: 0, filter: 'drop-shadow(0 0 16px rgba(160, 90, 255, 1)) brightness(1.6)', offset: SWAP_GONE + 0.01, easing: 'ease-out' },
+              { transform: 'none', opacity: 1, filter: 'drop-shadow(0 0 6px rgba(160, 90, 255, 0.6))', offset: SWAP_HOME },
+              { transform: 'none', opacity: 1, filter: 'none', offset: 1 },
+            ],
+            { duration: FLY_MS },
+          ),
+        )
+      }
+    }
+    if ((one.ability === 'raikiri' || one.ability === 'gates') && movers[0]) {
+      const glow = one.ability === 'raikiri' ? 'rgba(110, 190, 255, 0.95)' : 'rgba(255, 60, 40, 0.95)'
+      plays.push(movers[0].animate([{ filter: 'none' }, { filter: `drop-shadow(0 0 10px ${glow}) drop-shadow(0 0 22px ${glow})`, offset: 0.2 }, { filter: `drop-shadow(0 0 14px ${glow}) drop-shadow(0 0 30px ${glow})`, offset: 0.5 }, { filter: 'none' }], { duration: FLY_MS, easing: 'ease-out', composite: 'add' }))
+    }
+
     const run = plays[0]
     const prior = step > 0 ? beats.current[step - 1] : null
     const was = prior
@@ -769,7 +1028,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         }
         setStep((was) => was + 1)
         setHit(false)
-      }, GAP_MS + (died ? DEATH_MS : 0) + (one.heals ? HEAL_HOLD_MS : 0) + (one.charm || one.skip ? GEN_HOLD_MS : 0))
+      }, GAP_MS + (died ? DEATH_MS : 0) + (one.heals ? HEAL_HOLD_MS : 0) + (one.charm || one.skip ? GEN_HOLD_MS : 0) + holdOf(one))
     }
 
     if (run) run.addEventListener('finish', done)
@@ -780,12 +1039,19 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       if (next) clearTimeout(next)
       for (const play of plays) play.cancel()
       for (const node of extra) node.remove()
+      for (const node of pulled) node.style.zIndex = ''
       clear()
     }
   }, [fight, step, lead])
 
   const take = (kind: Kind, card: Card, at: number) => (event: ReactPointerEvent<HTMLElement>) => {
     if (event.button !== 0 || fight || waiting || waitLeft !== null) return
+    if (pledging) {
+      event.stopPropagation()
+      if (kind === 'board' && !card.summon && card.uid !== pledging) toggleSkill(pledging, 'sacrifice', card.uid)
+      setPledging(null)
+      return
+    }
     hold.current = {
       kind,
       uid: card.uid,
@@ -814,8 +1080,9 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         if (i > one.from && i <= one.to) dx = -one.span
         else if (i < one.from && i >= one.to) dx = one.span
       }
-      if (one.kind === 'hand' && one.slot >= 0) dx = i < one.slot ? -one.span / 2 : one.span / 2
+      if ((one.kind === 'hand' || one.kind === 'shop') && one.slot >= 0) dx = i < one.slot ? -one.span / 2 : one.span / 2
       cell.node.style.translate = dx ? `${Math.round(dx)}px 0` : ''
+      if (cell.chip) cell.chip.style.translate = dx ? `${Math.round(dx)}px 0` : ''
     }
   }, [])
 
@@ -824,7 +1091,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       one.live = true
       one.cells = [...document.querySelectorAll<HTMLElement>(`.ar-half.is-bot .ar-row.${one.summon ? 'is-summons' : 'is-heroes'} [data-uid]`)].map((node) => {
         const box = node.getBoundingClientRect()
-        return { node, mid: box.left + box.width / 2 }
+        return { node, mid: box.left + box.width / 2, chip: node.parentElement?.querySelector<HTMLElement>(':scope > .ar-skills') ?? null }
       })
       const first = one.cells[0]
       one.span = one.cells.length > 1 ? one.cells[1]!.mid - first!.mid : (first?.node.getBoundingClientRect().width ?? 142) + 18
@@ -837,7 +1104,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
     }
 
     const clean = (one: Hold) => {
-      const nodes = [one.node, ...one.cells.map((cell) => cell.node)]
+      const nodes = [one.node, ...one.cells.flatMap((cell) => (cell.chip ? [cell.node, cell.chip] : [cell.node]))]
       for (const node of nodes) {
         node.style.transition = 'none'
         node.style.translate = ''
@@ -880,7 +1147,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           place(one)
         }
       }
-      if (one.kind === 'hand' && one.spell) {
+      if ((one.kind === 'hand' || one.kind === 'shop') && one.spell) {
         const spot = [...document.querySelectorAll<HTMLElement>('.ar-half.is-bot .ar-row [data-uid]')].find((node) => {
           const room = node.getBoundingClientRect()
           const midY = box.top + box.height / 2
@@ -895,7 +1162,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         }
         return
       }
-      if (one.kind === 'hand') {
+      if (one.kind === 'hand' || one.kind === 'shop') {
         let slot = -1
         if (over?.zone === 'slot' && one.cells.length < roomOf(one.summon)) {
           slot = one.cells.filter((cell) => cell.mid < centre).length
@@ -924,6 +1191,15 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         return
       }
       const over = spotOf(one.node)
+      if (one.kind === 'shop' && one.spell) {
+        setAimed(null)
+        overNow.current = null
+        setOver(null)
+        if (one.aim) buyCast(one.aim)
+        else if (over?.zone === 'hand') buy(one.at)
+        requestAnimationFrame(() => clean(one))
+        return
+      }
       overNow.current = null
       setOver(null)
       if (one.kind === 'board') {
@@ -932,7 +1208,9 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       } else if (one.kind === 'hand') {
         if (over?.zone === 'shop') sell(one.uid)
         else if (over?.zone === 'slot') play(one.uid, one.slot)
-      } else if (over?.zone === 'hand' || over?.zone === 'slot') {
+      } else if (over?.zone === 'slot' && one.cells.length < roomOf(one.summon)) {
+        buyPlay(one.at, one.slot)
+      } else if (over?.zone === 'hand') {
         buy(one.at)
       }
       requestAnimationFrame(() => clean(one))
@@ -953,7 +1231,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       window.removeEventListener('pointerup', up)
       window.removeEventListener('pointercancel', up)
     }
-  }, [place, buy, play, sell, shift, cast])
+  }, [place, buy, buyPlay, buyCast, play, sell, shift, cast])
 
   if (!game) return <div className="card center muted">{t('err.not_found')}</div>
   if (!checked || !ready) return <p className="ar-note">{t('arena.loading')}</p>
@@ -969,6 +1247,26 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         </button>
       </div>
     )
+  if (demo === 'flame' && view) {
+    const sample = [...view.board.heroes, ...view.hand][0]!
+    return (
+      <FlameGallery>
+        {(['a', 'b', 'c', 'd'] as const).flatMap((variant, i) =>
+          [false, true].map((lasting) => (
+            <figure key={variant + lasting}>
+              <span className="ar-move">
+                <ArenaFace game={game.id} entity={byId.get(sample.id)} rarity={sample.rarity} atk={sample.atk} hp={sample.hp} summon={false} tier={sample.tier} />
+                <AmaterasuFx variant={variant} lasting={lasting} />
+              </span>
+              <figcaption>
+                {i + 1} · {lasting ? 'горить' : 'спалах'}
+              </figcaption>
+            </figure>
+          )),
+        )}
+      </FlameGallery>
+    )
+  }
   if (!view)
     return (
       <div className="card center muted locked">
@@ -990,6 +1288,9 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const guard = new Map<string, number>()
   const shield = new Map<string, string | false>()
   const dazedNow = new Set<string>()
+  const burnNow = new Set<string>()
+  const gatedNow = new Set<string>()
+  const boundNow = new Set<string>()
   const lastWard = new Map<string, string>()
   const power = new Map<string, number>()
   if (at >= 0) {
@@ -1001,6 +1302,9 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       guard.set(one.uid, one.dodge ?? 0)
       shield.set(one.uid, one.ward || false)
       if (one.stun) dazedNow.add(one.uid)
+      if (one.burn) burnNow.add(one.uid)
+      if (one.gated) gatedNow.add(one.uid)
+      if (one.bound || one.link) boundNow.add(one.uid)
       power.set(one.uid, one.atk)
     }
     else for (const uid of view.armed ?? []) guard.set(uid, 1)
@@ -1022,7 +1326,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
     const info = JSON.parse(node.dataset.tip ?? '{}') as TipInfo
     const box = node.getBoundingClientRect()
     const x = box.right + 12 + TIP_W > window.innerWidth ? box.left - 12 - TIP_W : box.right + 12
-    const y = Math.max(8, Math.min(box.top, window.innerHeight - 220))
+    const y = Math.max(8, box.top)
     setTip({ info, x, y })
   }
 
@@ -1043,6 +1347,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   }
 
   const press = (event: ReactPointerEvent<HTMLElement>) => {
+    if (pledging) setPledging(null)
     hideTip()
     tipped.current = false
     if (event.pointerType === 'mouse') return
@@ -1065,25 +1370,59 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
     if (event.pointerType !== 'mouse') hideTip()
   }
 
+  const statsText = (atk: number, hp: number) => [atk ? t('arena.stat.atk', { n: atk }) : '', hp ? t('arena.stat.hp', { n: hp }) : ''].filter(Boolean).join(t('arena.stat.and'))
+
+  const namesOf = (ids: number[]) => ids.map((id) => (byId.get(id)?.name ?? '').split(' ')[0]).join(', ')
+
+  const captainText = (scope: string, atk: number, hp: number) =>
+    scope === 'all'
+        ? t('arena.tip.captain.all', { stats: statsText(atk, hp) })
+        : t('arena.tip.captain.clan', { clan: t(`arena.clan.${scope}` as UiKey), stats: statsText(atk, hp) })
+
   const tipLines = (info: TipInfo) => {
-    const lines: { kind: string; head: string; text: string; cost?: number }[] = [
-      { kind: info.shot ? 'ranged' : 'melee', head: t(info.shot ? 'arena.ranged' : 'arena.melee'), text: t(info.shot ? 'arena.tip.ranged' : 'arena.tip.melee') },
-    ]
-    if (info.taunt) lines.push({ kind: 'taunt', head: t('arena.taunt'), text: t('arena.tip.taunt') })
-    if (info.cleave) lines.push({ kind: 'cleave', head: t('arena.cleave'), text: t('arena.tip.cleave') })
-    if (info.poison) lines.push({ kind: 'poison', head: t('arena.poison'), text: t('arena.tip.poison') })
-    if (info.sound) lines.push({ kind: 'sound', head: t('arena.sound'), text: t('arena.tip.sound') })
-    if (info.medic) lines.push({ kind: 'medic', head: t('arena.medic'), text: t('arena.tip.medic') })
-    if (info.fury) lines.push({ kind: 'fury', head: t('arena.fury'), text: t('arena.tip.fury') })
-    if (info.guard) lines.push({ kind: 'guard', head: t('arena.guard'), text: t(`arena.tip.guard.${info.guard}` as UiKey) })
-    if (info.dodge) lines.push({ kind: 'dodge', head: t('arena.dodge'), text: t('arena.tip.dodge') })
-    for (const skill of skillsBy.get(info.id) ?? [])
-      lines.push({ kind: 'skill', head: t(`arena.skill.${skill.key}` as UiKey), text: t(`arena.skill.${skill.key}.hint` as UiKey, { beast: (skill.beast && byId.get(skill.beast)?.name) || '' }), cost: skill.cost })
-    return lines
+    const lines: TipLine[] = []
+    const short = (atk: number, hp: number) => (atk && hp ? `+${atk}/+${hp}` : atk ? t('arena.short.atk', { n: atk }) : t('arena.short.hp', { n: hp }))
+    const have = tierOf(info.rarity ?? 'paper')
+    const costs = new Map((skillsBy.get(info.id) ?? []).map((one) => [one.key, one]))
+    for (const row of view.kits?.[info.id] ?? []) {
+      if (row.key === 'captain') {
+        lines.push({ kind: 'extra', head: t('arena.captain'), text: `${row.scope === 'all' ? t('arena.short.all') : t(`arena.clan.${row.scope}` as UiKey)} ${short(row.atk ?? 0, row.hp ?? 0)}` })
+        continue
+      }
+      if (row.key === 'cry') {
+        lines.push({ kind: 'extra', head: t('arena.cry'), text: `${t(`arena.cry.${row.scope}` as UiKey)} ${short(row.atk ?? 0, row.hp ?? 0)}` })
+        continue
+      }
+      if (row.key === 'counter') {
+        const vs = row.ids?.length ? namesOf(row.ids) : row.scope === 'tailed' ? t('arena.counter.tailed') : t(`arena.clan.${row.scope}` as UiKey)
+        const mul = `×${String(row.n ?? 1).replace('.', ',')}`
+        lines.push({ kind: 'extra', head: t('arena.counter'), text: `${vs} ${mul}${row.with?.length ? ` (${t('arena.short.with', { names: namesOf(row.with) })})` : ''}` })
+        continue
+      }
+      if (row.key.startsWith('team.')) {
+        lines.push({ kind: 'extra', head: t(`arena.team.${row.key.slice(5)}` as UiKey), text: `${t('arena.short.with', { names: namesOf((row.ids ?? []).filter((id) => id !== info.id)) })} ${short(row.atk ?? 0, row.hp ?? 0)}` })
+        continue
+      }
+      if (!row.need) continue
+      const on = have >= tierOf(row.need)
+      const [group, name = ''] = row.key.split('.') as [string, string | undefined]
+      const base = { need: row.need, on }
+      if (group === 'clan') lines.push({ ...base, kind: 'clan', head: t(`arena.clan.${name}` as UiKey), text: t(`arena.tip.clan.${name}` as UiKey) })
+      else if (group === 'up') lines.push({ ...base, kind: 'up', head: t('arena.up'), text: t(`arena.tip.up.${name}` as UiKey) })
+      else if (group === 'myth') lines.push({ ...base, kind: 'myth', head: t(`arena.myth.${name}` as UiKey), text: t(`arena.tip.myth.${name}` as UiKey) })
+      else if (group === 'skill') {
+        const skill = costs.get(name)
+        lines.push({ ...base, kind: 'skill', head: t(`arena.skill.${name}` as UiKey), text: t(`arena.skill.${name}.hint` as UiKey, { beast: (skill?.beast && byId.get(skill.beast)?.name) || '' }), cost: skill?.cost })
+      } else if (group === 'guard') lines.push({ ...base, kind: 'guard', head: t('arena.guard'), text: t('arena.tip.guard.self') })
+      else if (group === 'medic') lines.push({ ...base, kind: 'medic', head: t('arena.medic'), text: t('arena.tip.medic', { n: row.n ?? 1 }) })
+      else lines.push({ ...base, kind: group, head: t(`arena.${group}` as UiKey), text: t(`arena.tip.${group}` as UiKey) })
+    }
+    if (info.dodge) lines.push({ kind: 'extra', head: t('arena.dodge'), text: t('arena.tip.dodge') })
+    return lines.sort((a, b) => Number(a.kind === 'extra') - Number(b.kind === 'extra'))
   }
 
   const usedWard = new Set(steps.slice(0, hit ? at + 1 : Math.max(0, at)).filter((one) => one.wards).map((one) => one.from))
-  const heroHit = hit && now && !now.to && now.damage > 0 ? (now.foe ? 'me' : 'foe') : null
+  const heroHit = hit && now && !now.to && now.damage > 0 && !now.splash?.length ? (now.foe ? 'me' : 'foe') : null
 
   const withCalls = (base: Card[], pick: (one: Step) => Card[]) => {
     if (at < 0) return base
@@ -1103,7 +1442,9 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const foeHp = state ? state.foeHp : at >= 0 ? (view.opened?.foeHp ?? view.foeHp) : view.foeHp
   const freeAt = view.board.heroes.length < ARENA_HERO_SLOTS ? view.board.heroes.length : -1
   const selling = (dragging === 'board' || dragging === 'hand') && !spelling
-  const buying = dragging === 'shop'
+  const held = hold.current
+  const boardOpen = (dragging === 'hand' || dragging === 'shop') && !spelling && !!held && (held.summon ? view.board.summons.length < ARENA_SUMMON_SLOTS : view.board.heroes.length < ARENA_HERO_SLOTS)
+  const buying = dragging === 'shop' && view.hand.length < ARENA_HAND
 
   const packed = (cards: Card[]) => (
     <ul className="ar-row is-packed">
@@ -1112,8 +1453,11 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         const dying = hit && hp === undefined && standing.has(card.uid)
         const gone = at >= 0 && hp === undefined && !dying
         const dodging = hit && !!now?.dodged?.includes(card.uid)
+        const phasing = dodging && card.mythic === 'kamui'
         const charmed = hit && !!now?.charm && now.to === card.uid
         const dazed = hit && !!now?.skip && now.from === card.uid
+        const seized = hit && now?.ability === 'mind' && (now.to === card.uid || now.from === card.uid)
+        const dozing = hit && now?.ability === 'mind' && now.to === card.uid
         const sapped = hit && !!now?.sapped?.includes(card.uid)
         const mended = hit && healing && !!now?.heals?.[card.uid]
         const helping = hit && healing && !!card.medic && !!now?.heals && Object.keys(now.heals).some((uid) => cards.some((one) => one.uid === uid) && uid !== card.uid)
@@ -1123,17 +1467,30 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         const called = hit && !!now?.summoned?.includes(card.uid)
         const risen = hit && now?.risen === card.uid
         const again = hit && !!now?.again && now.from === card.uid
-        const struck = hit && !dodging && !blocked && !!now?.damage && (now?.to === card.uid || !!now?.splash?.includes(card.uid))
+        const mirrored = hit && now?.swapFrom === card.uid
+        const sealed = hit && !!now?.sealed?.includes(card.uid)
+        const cursing = hit && !!now?.cursed?.includes(card.uid)
+        const countered = hit && !!now?.countered?.includes(card.uid)
+        const tech = hit && now?.from === card.uid && !!now?.ability && TECH.has(now.ability) ? now.ability : null
+        const struck = hit && !dodging && !blocked && !mirrored && !!now?.damage && (now?.to === card.uid || !!now?.splash?.includes(card.uid) || now?.swapTo === card.uid)
         const face = (
           <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} />
         )
-        const clips = dying ? tearOf(seedOf(card.uid)) : null
-        const blasted = struck && now?.shot === 'clay'
+        const swallowed = !!now?.sealed?.includes(card.uid)
+        const clips = dying && !swallowed ? tearOf(seedOf(card.uid)) : null
+        const blasted = struck && (now?.shot === 'clay' || now?.ability === 'blast')
+        const burning = hit && (now?.ability === 'amaterasu' ? now.to === card.uid : now?.ability === 'burn' && now.from === card.uid)
+        const falling = hit && now?.ability === 'meteor' && !!now.splash?.includes(card.uid)
+        const shocked = hit && now?.ability === 'raikiri' && now.to === card.uid
+        const charging = !hit && now?.ability === 'raikiri' && now.from === card.uid
+        const opened = now?.ability === 'gatesOpen' && now.from === card.uid
+        const multiplied = hit && (now?.ability === 'raikiri' || now?.ability === 'gates') && now.to === card.uid ? (now.ability === 'raikiri' ? 2 : 3) : 0
+        const warped = hit && (now?.swapFrom === card.uid || now?.swapTo === card.uid)
         const blastAt = blasted ? [now?.to, ...(now?.splash ?? [])].indexOf(card.uid) * CLAY_GAP_MS : 0
-        const cut = struck && !dying && !blasted ? cutOf(seedOf(card.uid)) : null
+        const cut = struck && !dying && !blasted && !burning && !falling ? cutOf(seedOf(card.uid)) : null
         return (
           <li key={card.uid} className={`is-held ${gone ? 'is-out' : ''} ${dying ? 'is-dying' : ''}`}>
-            <span data-uid={card.uid} className={`ar-move ${dazedNow.has(card.uid) ? 'is-stunned' : ''} ${raised ? 'is-warding' : ''} ${called ? 'is-called' : ''} ${risen ? 'is-risen' : ''} ${mended ? 'is-mended' : ''} ${helping ? 'is-helping' : ''} ${struck ? 'is-struck' : ''} ${blasted ? 'is-blasted' : ''} ${dodging ? 'is-dodging' : ''} ${charmed ? 'is-charmed' : ''} ${dazed ? 'is-dazed' : ''} ${struck && now?.venom ? 'is-venom' : ''}`} style={blasted ? ({ '--at': `${blastAt}ms` } as CSSProperties) : undefined}>
+            <span data-uid={card.uid} className={`ar-move ${dazedNow.has(card.uid) ? 'is-stunned' : ''} ${raised ? 'is-warding' : ''} ${called ? 'is-called' : ''} ${risen ? 'is-risen' : ''} ${mended ? 'is-mended' : ''} ${helping ? 'is-helping' : ''} ${struck ? 'is-struck' : ''} ${blasted ? 'is-blasted' : ''} ${dodging && !phasing ? 'is-dodging' : ''} ${phasing ? 'is-phasing' : ''} ${boundNow.has(card.uid) || seized ? 'is-bound' : ''} ${charmed || dozing ? 'is-charmed' : ''} ${dazed ? 'is-dazed' : ''} ${struck && now?.venom ? 'is-venom' : ''}`} style={blasted ? ({ '--at': `${blastAt}ms` } as CSSProperties) : undefined}>
               {clips ? (
                 <span className="ar-tear" style={{ '--lean': clips.lean } as CSSProperties}>
                   <span className="ar-tear-half is-left" style={{ clipPath: clips.left }}>
@@ -1155,7 +1512,22 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
               ) : (
                 <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} />
               )}
-              {struck && !blasted && <Slash seed={seedOf(card.uid)} />}
+              {struck && !blasted && !burning && !falling && <Slash seed={seedOf(card.uid)} />}
+              {shocked && <RaikiriFx />}
+              {charging && <ChidoriFx />}
+              {(opened || gatedNow.has(card.uid)) && !dying && <GatesFx lasting={!opened} />}
+              {opened && hit && (
+                <b className="ar-gates-cost" aria-hidden>
+                  −½ <HeartIcon />
+                </b>
+              )}
+              {!!multiplied && (
+                <b className={`ar-mult ${multiplied === 2 ? 'is-blue' : 'is-green'}`} aria-hidden>
+                  ×{multiplied}
+                </b>
+              )}
+              {warped && <RinneganFx />}
+              {burning ? <AmaterasuFx variant={AMA_STYLE} /> : burnNow.has(card.uid) && !dying && <AmaterasuFx variant={AMA_STYLE} lasting />}
               {blasted && <BlastFx />}
               {(charmed || dazed) && <GenFx />}
               {(charmed || dazed) && (
@@ -1171,6 +1543,31 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
               {raging && (
                 <b className="ar-rage" aria-hidden>
                   +1
+                </b>
+              )}
+              {cursing && (
+                <b className="ar-rage is-curse" aria-hidden>
+                  +3
+                </b>
+              )}
+              {mirrored && (
+                <b className="ar-dodge-word is-mirror" aria-hidden>
+                  {t('arena.mirrored')}
+                </b>
+              )}
+              {countered && (
+                <b className="ar-status-word is-counter" aria-hidden>
+                  {t('arena.countered')}
+                </b>
+              )}
+              {sealed && (
+                <b className="ar-dodge-word is-sealed" aria-hidden>
+                  {t('arena.sealed')}
+                </b>
+              )}
+              {tech && (
+                <b className="ar-status-word is-tech" aria-hidden>
+                  {t(tech === 'clay' || tech === 'amaterasu' ? (`arena.skill.${tech}` as UiKey) : tech === 'gatesOpen' ? 'arena.myth.gates' : (`arena.myth.${tech}` as UiKey))}
                 </b>
               )}
               {blocked && (
@@ -1198,7 +1595,21 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                   <HeartIcon />
                 </b>
               )}
-              {dodging && (
+              {dozing && <GenFx />}
+              {dozing && (
+                <b className="ar-status-word" aria-hidden>
+                  {t('arena.asleep')}
+                </b>
+              )}
+              {(boundNow.has(card.uid) || seized) && !dying && <b className="ar-bound-tag">{t('arena.asleep')}</b>}
+              {phasing && (
+                <>
+                  <b className="ar-dodge-word is-kamui" aria-hidden>
+                    {t('arena.myth.kamui')}
+                  </b>
+                </>
+              )}
+              {dodging && !phasing && (
                 <>
                   <i className="ar-poof" aria-hidden />
                   <img className="ar-log" src="/spells/kawarimi.webp" alt="" aria-hidden draggable={false} />
@@ -1328,6 +1739,15 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   return (
     <>
     <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''} ${waitLeft !== null ? 'is-waiting' : ''}`} style={{ '--dex': game.accent } as CSSProperties} onPointerOver={peek} onPointerDown={press} onPointerMove={slide} onPointerUp={lift} onPointerCancel={lift} onPointerLeave={hideTip} onContextMenu={(event) => event.preventDefault()}>
+      {demo === 'gallery' && (
+        <nav className="ar-fx-pick">
+          {SCENES.map(([key, label]) => (
+            <button key={key} type="button" className={key === scene ? 'is-on' : ''} onClick={() => setScene(key)}>
+              {t(label)}
+            </button>
+          ))}
+        </nav>
+      )}
       <div className="ar-rotate" aria-live="polite">
         <svg viewBox="0 0 64 64" aria-hidden>
           <g className="is-phone">
@@ -1339,26 +1759,35 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         <span>{t('arena.rotateHint')}</span>
       </div>
       {tip && !dragging && (
-        <div className="ar-tip" style={{ left: tip.x, top: tip.y, width: TIP_W }} aria-hidden>
+        <div ref={tipBox} className="ar-tip" style={{ left: tip.x, top: tip.y, width: TIP_W }} aria-hidden>
           <svg className="ar-tip-paper" viewBox="0 0 100 100" preserveAspectRatio="none">
             <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
           </svg>
           <b className="ar-tip-name">{byId.get(tip.info.id)?.name}</b>
+          <small className="ar-tip-class">{t(tip.info.shot ? 'arena.ranged' : 'arena.melee')}</small>
           <ul>
-            {tipLines(tip.info).map((line) => (
-              <li key={line.kind + line.head}>
-                <em className={`ar-tip-tag is-${line.kind}`}>
-                  {line.head}
-                  {line.cost !== undefined && (
-                    <span className="ar-tip-cost">
-                      <i className="ar-orb is-full" />
-                      {line.cost}
-                    </span>
-                  )}
-                </em>
-                <span>{line.text}</span>
-              </li>
-            ))}
+            {tipLines(tip.info).map((line, i) =>
+              line.kind === 'extra' ? (
+                <li key={i} className="is-extra">
+                  <b>{line.head}</b> {line.text}
+                </li>
+              ) : (
+                <li key={i} className={line.on === false ? 'is-locked' : ''}>
+                  {line.need && <small className={`ar-tip-need is-${line.need}`}>{t(`card.rarity.${line.need}` as UiKey)}</small>}
+                  <span>
+                    <b className="ar-tip-head">{line.head}</b>
+                    {line.cost !== undefined && (
+                      <span className="ar-tip-cost">
+                        <i className="ar-orb is-full" />
+                        {line.cost}
+                      </span>
+                    )}
+                    {' — '}
+                    {line.text}
+                  </span>
+                </li>
+              ),
+            )}
           </ul>
         </div>
       )}
@@ -1366,6 +1795,12 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         <filter id="ar-gen-melt">
           <feTurbulence type="fractalNoise" baseFrequency="0.02 0.06" numOctaves="2" seed="9">
             <animate attributeName="baseFrequency" dur="2.4s" values="0.02 0.06;0.03 0.08;0.02 0.06" repeatCount="indefinite" />
+          </feTurbulence>
+          <feDisplacementMap in="SourceGraphic" scale="7" />
+        </filter>
+        <filter id="ar-kamui-warp">
+          <feTurbulence type="fractalNoise" baseFrequency="0.015 0.04" numOctaves="2" seed="11">
+            <animate attributeName="baseFrequency" dur="1.6s" values="0.015 0.04;0.025 0.06;0.015 0.04" repeatCount="indefinite" />
           </feTurbulence>
           <feDisplacementMap in="SourceGraphic" scale="7" />
         </filter>
@@ -1443,6 +1878,14 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                   </span>
                 </span>
               )}
+              {pledging && !fight && (
+                <span className="ar-chip ar-pledge">
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                    <polygon points={CHIP} vectorEffect="non-scaling-stroke" />
+                  </svg>
+                  <span>{t('arena.skill.sacrifice.pick')}</span>
+                </span>
+              )}
               {clock !== null && !fight && (
               <span className={`ar-chip ar-clock ${clock <= 5 ? 'is-late' : ''}`} title={t('arena.time')}>
                 <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
@@ -1461,10 +1904,10 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
               {fight ? (
                 packed(mine)
               ) : (
-                <div data-zone="slot" data-at={freeAt} className={`ar-sell is-drop ${(dragging === 'hand' && !spelling) || dragging === 'shop' ? 'is-selling' : ''} ${((dragging === 'hand' && !spelling) || dragging === 'shop') && over === 'slot' ? 'is-over' : ''}`}>
+                <div data-zone="slot" data-at={freeAt} className={`ar-sell is-drop ${boardOpen ? 'is-selling' : ''} ${boardOpen && over === 'slot' ? 'is-over' : ''}`}>
                 <ul className="ar-row is-heroes">
                   {view.board.heroes.map((card, i) => (
-                    <li key={card.uid} className={aimed === card.uid ? 'is-aimed' : ''}>
+                    <li key={card.uid} className={`${aimed === card.uid ? 'is-aimed' : ''} ${pledging && pledging !== card.uid ? 'is-pickable' : ''} ${view.board.heroes.some((one) => one.aim === card.uid && one.armed?.includes('sacrifice')) ? 'is-pledged' : ''}`}>
                       {!!card.skills?.length && (
                         <span className="ar-skills">
                           {card.skills.map((skill) => {
@@ -1478,7 +1921,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                                 title={`${t(`arena.skill.${skill.key}` as UiKey)}: ${t(`arena.skill.${skill.key}.hint` as UiKey, { beast: (skill.beast && byId.get(skill.beast)?.name) || '' })}`}
                                 aria-label={t(`arena.skill.${skill.key}` as UiKey)}
                                 onPointerDown={(event) => event.stopPropagation()}
-                                onClick={() => toggleSkill(card.uid, skill.key)}
+                                onClick={() => (skill.key === 'sacrifice' && !on ? setPledging(pledging === card.uid ? null : card.uid) : toggleSkill(card.uid, skill.key))}
                               >
                                 <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
                                   <polygon points={BADGE_POINTS} vectorEffect="non-scaling-stroke" />
@@ -1490,8 +1933,14 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                           })}
                         </span>
                       )}
+                      {card.captain && <b className="ar-captain">{t('arena.captain')}</b>}
+                      {cheer?.to.includes(card.uid) && (
+                        <b key={cheer.at} className="ar-cheer" aria-hidden>
+                          {cheer.label}
+                        </b>
+                      )}
                       <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
-                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={card.guard} dodge={card.dodge} />
+                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={card.guard} dodge={card.dodge} boost={card.boost} />
                       </span>
                     </li>
                   ))}
@@ -1517,6 +1966,70 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                 </div>
               )}
             </div>
+            <aside className={`ar-synergy ${fight ? 'is-fight' : ''}`} aria-label={t('arena.synergy')}>
+              <svg className="ar-synergy-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
+              </svg>
+              {!!view.clans?.length && (
+                <p className="ar-synergy-match">
+                  {t('arena.matchClans')}: {view.clans.map((one) => t(`arena.clan.${one}` as UiKey)).join(', ')}
+                </p>
+              )}
+              <span className="ar-synergy-top">
+                <b className="ar-synergy-head">{t('arena.synergy')}</b>
+                <small className="ar-synergy-note">{t('arena.synergy.from')}</small>
+              </span>
+              {view.synergy?.length || view.crew?.captain || view.crew?.teams.length ? (
+                <ul>
+                  {view.crew?.captain && (
+                    <li className="is-captain is-on">
+                      <span className="ar-synergy-name">
+                        <em>{t('arena.captain')}</em>
+                        <strong className="ar-synergy-who">{(byId.get(view.crew.captain.id)?.name ?? '').split(' ')[0]}</strong>
+                      </span>
+                      <small>{captainText(view.crew.captain.scope, view.crew.captain.atk, view.crew.captain.hp)}</small>
+                    </li>
+                  )}
+                  {(view.synergy ?? []).map((one) => (
+                    <li key={one.clan} data-clan={one.clan} className={one.count >= one.need ? 'is-on' : ''}>
+                      <span className="ar-synergy-name">
+                        <em>{t(`arena.clan.${one.clan}` as UiKey)}</em>
+                        <b>
+                          {Math.min(one.count, one.cap)}/{one.cap}
+                        </b>
+                      </span>
+                      <span className="ar-synergy-bar" aria-hidden>
+                        {Array.from({ length: one.cap }, (_, i) => (
+                          <i key={i} className={i < one.count ? 'is-full' : ''} />
+                        ))}
+                      </span>
+                      <small>{t(`arena.tip.clan.${one.clan}` as UiKey)}</small>
+                    </li>
+                  ))}
+                  {(view.crew?.teams ?? []).map((one) => (
+                    <li key={one.key} className={`is-team ${one.on ? 'is-on' : ''}`}>
+                      <span className="ar-synergy-name">
+                        <em>{t(`arena.team.${one.key}` as UiKey)}</em>
+                        <b>
+                          {one.have}/{one.ids.length}
+                        </b>
+                      </span>
+                      <span className="ar-synergy-bar" aria-hidden>
+                        {one.ids.map((id, i) => (
+                          <i key={id} className={i < one.have ? 'is-full' : ''} />
+                        ))}
+                      </span>
+                      <small>
+                        {t('arena.tip.team', { names: namesOf(one.ids), stats: statsText(one.atk, one.hp) })}
+                        {!one.on && one.have === one.ids.length && ` ${t('arena.crew.apart')}`}
+                      </small>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="ar-synergy-none">{t('arena.synergy.none')}</p>
+              )}
+              </aside>
           </section>
 
           <div className="ar-foot">

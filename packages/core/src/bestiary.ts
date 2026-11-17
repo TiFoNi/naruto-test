@@ -6,6 +6,7 @@ import {
   DUST_CRAFT,
   cardPower,
   dustFor,
+  DUST_PER,
   cardUp,
   type CardRarity,
 } from '@nanda/game'
@@ -25,7 +26,6 @@ export type CardGrade = {
 
 const LOG_KEEP = 8
 
-const DUST_SCRAP_RATE = 0.25
 
 export const gradeOf = (card?: { rank?: number; shards?: number; xp?: number } | null): CardGrade => {
   const rank = Math.max(0, Math.min(CARD_RARITIES.length - 1, card?.rank ?? 0))
@@ -80,7 +80,7 @@ export async function addShards(userId: ObjectId, game: string, id: number, want
   if ((card?.rank ?? 0) < CARD_RARITIES.length - 1) return
   const dust = dustFor(card?.shards ?? 0)
   if (dust <= 0) return
-  await (await cards()).updateOne({ _id: cardKey(userId, game, id) }, { $inc: { shards: -Math.round(dust / DUST_SCRAP_RATE) } })
+  await (await cards()).updateOne({ _id: cardKey(userId, game, id) }, { $inc: { shards: -dust * DUST_PER } })
   await (await users()).updateOne({ _id: userId }, { $inc: { [`dust.${game}`]: dust } })
 }
 
@@ -114,7 +114,7 @@ export async function scrapCard(userId: ObjectId, game: string, id: number, want
   const dust = dustFor(take)
   if (dust <= 0) return { ok: false as const, why: 'nothing' }
 
-  const spent = Math.round(dust / DUST_SCRAP_RATE)
+  const spent = dust * DUST_PER
   await (await cards()).updateOne({ _id: cardKey(userId, game, id) }, { $inc: { shards: -spent }, $set: { updatedAt: new Date() } })
   const holder = await (await users()).findOneAndUpdate({ _id: userId }, { $inc: { [`dust.${game}`]: dust } }, { returnDocument: 'after', projection: { dust: 1 } })
   return { ok: true as const, dust, left: holder?.dust?.[game] ?? dust }

@@ -12,7 +12,7 @@ import type { Entity, GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
 import { CloseIcon, FilterIcon, MinusIcon, PinIcon, PlusIcon, SearchIcon, SparkIcon } from './icons'
 import { MODES } from './modes'
-import { CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_POINTS, CARD_STEPS, cardRank, CARD_UP, cardShardBase, cardPower, HUNT_SHARD, CARD_RARITIES, HUNT_MAX, cardPinsMax, shardGame, type CardRarity, type ModeId } from '@nanda/game'
+import { DUST_PER, CARD_DAILY_FACTOR, CARD_MAX_LEVEL, CARD_POINTS, CARD_STEPS, cardRank, CARD_UP, cardShardBase, cardPower, HUNT_SHARD, CARD_RARITIES, HUNT_MAX, cardPinsMax, shardGame, type CardRarity, type ModeId } from '@nanda/game'
 import { PICTURELESS, cardUrl, hdUrl, miniUrl } from './pics'
 import { entityTerms, matchTier, searchKey } from './entity-match'
 import { useHref } from './router'
@@ -1118,7 +1118,7 @@ const DexZoom = ({
   const { t } = useI18n()
   const [sheet, setSheet] = useState<'in' | 'out' | null>(null)
   const [scrap, setScrap] = useState<'in' | 'out' | null>(null)
-  const [scrapN, setScrapN] = useState(4)
+  const [scrapN, setScrapN] = useState(DUST_PER)
   const [seen, setSeen] = useState(false)
   const hide = () => setSheet((was) => (was ? 'out' : null))
   const gone = useCallback(() => setSheet(null), [])
@@ -1183,9 +1183,9 @@ const DexZoom = ({
   }, [travel, close, focus.tilt])
 
   const { entity } = focus
-  const scrapTop = grade ? grade.shards - (grade.shards % 4) : 0
-  const canScrap = scrapTop >= 4
-  const picked = Math.max(4, Math.min(scrapN, scrapTop))
+  const scrapTop = grade ? grade.shards - (grade.shards % DUST_PER) : 0
+  const canScrap = scrapTop >= DUST_PER
+  const picked = Math.max(DUST_PER, Math.min(scrapN, scrapTop))
   const shutScrap = () => setScrap((was) => (was ? 'out' : null))
 
   return createPortal(
@@ -1307,12 +1307,12 @@ const DexZoom = ({
               <CloseIcon />
             </button>
             <b>{t('card.scrapTitle')}</b>
-            <Stepper value={picked} onLess={() => setScrapN(Math.max(4, picked - 4))} onMore={() => setScrapN(Math.min(scrapTop, picked + 4))} />
-            <p>{t('card.scrapGet', { n: picked, dust: Math.floor(picked / 4) })}</p>
+            <Stepper value={picked} onLess={() => setScrapN(Math.max(DUST_PER, picked - DUST_PER))} onMore={() => setScrapN(Math.min(scrapTop, picked + DUST_PER))} />
+            <p>{t('card.scrapGet', { n: picked, dust: Math.floor(picked / DUST_PER) })}</p>
             <button
               type="button"
               className="lv-go"
-              disabled={!!busy || picked < 4}
+              disabled={!!busy || picked < DUST_PER}
               onClick={() => {
                 onScrap?.(picked)
                 shutScrap()

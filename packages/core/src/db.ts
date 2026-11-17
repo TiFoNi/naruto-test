@@ -549,7 +549,7 @@ export async function plays(): Promise<Collection<PlayDoc>> {
   return collection
 }
 
-export type ArenaCard = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; spell?: string; dodge?: number; stun?: boolean; armed?: string[]; burn?: number; swap?: boolean; bound?: string | null; link?: string | null; sonic?: boolean; ward?: string | false; ghost?: boolean }
+export type ArenaCard = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; spell?: string; dodge?: number; stun?: boolean; armed?: string[]; burn?: number; swap?: boolean; bound?: string | null; link?: string | null; sonic?: boolean; ward?: string | false; ghost?: boolean; aim?: string; clay?: boolean; opened?: boolean; cursed?: boolean; reborn?: boolean; mirror?: boolean; gated?: boolean; mist?: boolean; boost?: { atk: number; hp: number } }
 
 export type ArenaSide = { heroes: ArenaCard[]; summons: ArenaCard[] }
 
@@ -574,6 +574,9 @@ export type ArenaStep = {
   summoned?: string[]
   risen?: string
   again?: boolean
+  sealed?: string[]
+  cursed?: string[]
+  countered?: string[]
   damage: number
   dead: boolean
   foe: boolean
@@ -612,6 +615,9 @@ export type ArenaDoc = {
   spellOffer?: string | null
   up?: number
   foeShop?: number
+  foePlan?: 'rush' | 'greedy' | 'steady'
+  clans?: string[]
+  cried?: { from: string; to: string[]; atk: number; hp: number } | null
   foeUp?: number
   steps: ArenaStep[]
   opened?: { hp: number; foeHp: number }

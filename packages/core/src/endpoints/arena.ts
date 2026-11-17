@@ -1,5 +1,5 @@
 import { ARENA_GAMES, type GameId } from '@nanda/game'
-import { arenaOf, arenaView, buyCard, buySpell, castSpell, endTurn, inFight, tick, toggleAbility, moveCard, playCard, rollTavern, sellCard, startArena, upTavern } from '../arena'
+import { arenaOf, arenaView, buyAndCast, buyAndPlay, buyCard, buySpell, castSpell, endTurn, inFight, tick, toggleAbility, moveCard, playCard, rollTavern, sellCard, startArena, upTavern } from '../arena'
 import { arenas } from '../db'
 import { isGame } from '../games'
 import { fail, handle, json, readJson } from '../http'
@@ -53,10 +53,10 @@ export const POST = handle(async (request) => {
   }
 
   const act: Record<string, () => boolean> = {
-    buy: () => buyCard(doc, Number(body.at)),
-    spell: () => buySpell(doc),
+    buy: () => (body.play ? buyAndPlay(doc, Number(body.at), body.to === undefined ? -1 : Number(body.to)) : buyCard(doc, Number(body.at))),
+    spell: () => (body.target ? buyAndCast(doc, String(body.target)) : buySpell(doc)),
     cast: () => castSpell(doc, String(body.uid), String(body.target)),
-    ability: () => toggleAbility(doc, String(body.uid), String(body.key)),
+    ability: () => toggleAbility(doc, String(body.uid), String(body.key), body.target === undefined ? undefined : String(body.target)),
     play: () => playCard(doc, String(body.uid), body.at === undefined ? -1 : Number(body.at)),
     sell: () => sellCard(doc, String(body.uid)),
     move: () => moveCard(doc, String(body.uid), Number(body.at)),

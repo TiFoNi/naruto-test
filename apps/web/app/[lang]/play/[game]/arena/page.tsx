@@ -8,7 +8,7 @@ type Params = { params: Promise<{ lang: string; game: string }>; searchParams: P
 export default async function ArenaPage({ params, searchParams }: Params) {
   const { game } = await params
   const fx = (await searchParams).fx
-  const demo = process.env.NODE_ENV !== 'production' && fx !== undefined ? (fx === 'shop' ? 'shop' : 'fight') : false
+  const demo = process.env.NODE_ENV !== 'production' && fx !== undefined ? (fx === 'shop' ? 'shop' : fx === 'gallery' ? 'gallery' : fx === 'flame' ? 'flame' : 'fight') : false
   return (
     <>
       <GameAccent game={game} />
