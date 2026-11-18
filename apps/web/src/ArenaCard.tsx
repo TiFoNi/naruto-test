@@ -8,7 +8,7 @@ import { BACK_POINTS, BADGE_POINTS, DexFace } from './DexCard'
 import { HeartIcon } from './icons'
 import type { Entity, GameId } from './games/types'
 
-export type Card = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; tier?: number; taunt?: boolean; cleave?: boolean; shot?: string | null; spell?: string; dodge?: number; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; fury?: boolean; scorch?: boolean; bomb?: boolean; guard?: string | null; ward?: string | false; ghost?: boolean; stun?: boolean; skills?: { key: string; cost: number; beast?: number | null }[]; armed?: string[]; heal?: number; mythic?: string | null; clan?: string | null; boost?: { atk: number; hp: number }; aim?: string; captain?: boolean; burn?: number; gated?: boolean; bound?: string | null; link?: string | null; clone?: boolean; fake?: boolean }
+export type Card = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; tier?: number; taunt?: boolean; cleave?: boolean; shot?: string | null; spell?: string; dodge?: number; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; fury?: boolean; scorch?: boolean; bomb?: boolean; guard?: string | null; ward?: string | false; ghost?: boolean; stun?: boolean; skills?: { key: string; cost: number; beast?: number | null }[]; armed?: string[]; heal?: number; mythic?: string | null; clan?: string | null; boost?: { atk: number; hp: number }; aim?: string; captain?: boolean; burn?: number; gated?: boolean; bound?: string | null; link?: string | null; clone?: boolean; fake?: boolean; away?: number; art?: string; shade?: boolean; chained?: number }
 export type Side = { heroes: Card[]; summons: Card[] }
 export type Offer = { id: number; rarity: CardRarity; cost: number; atk: number; hp: number; summon: boolean; tier: number; taunt?: boolean; cleave?: boolean; shot?: string | null; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; fury?: boolean; scorch?: boolean; bomb?: boolean; guard?: string | null; skills?: { key: string; cost: number; beast?: number | null }[]; heal?: number; mythic?: string | null; clan?: string | null }
 export type Step = {
@@ -126,6 +126,8 @@ export const ArenaFace = memo(function ArenaFace({
   frost,
   clone,
   fake,
+  away,
+  art,
   ghost,
   boost,
 }: {
@@ -145,6 +147,8 @@ export const ArenaFace = memo(function ArenaFace({
   sound?: boolean
   poison?: boolean
   medic?: boolean
+  away?: boolean
+  art?: string
   clone?: boolean
   fake?: boolean
   frost?: boolean
@@ -161,10 +165,10 @@ export const ArenaFace = memo(function ArenaFace({
   return (
     <span
       data-tip={JSON.stringify({ id: entity.id, rarity: rarity ?? 'paper', shot, dodge })}
-      className={`arena-card ${summon ? 'is-summon' : ''} ${triple ? 'is-triple' : ''} ${shield ? 'is-shielded' : ''} ${ghost ? 'is-ghost' : ''} ${fake ? 'is-fake' : ''}`}
+      className={`arena-card ${summon ? 'is-summon' : ''} ${triple ? 'is-triple' : ''} ${shield ? 'is-shielded' : ''} ${ghost ? 'is-ghost' : ''} ${fake ? 'is-fake' : ''} ${away ? 'is-away' : ''}`}
       style={{ '--tilt': `${(((entity.id * 7919) % 9) - 4) * 0.55}deg` } as CSSProperties}
     >
-      <DexFace game={game} id={entity.id} image={entity.image} label={oneWord(entity.name)} tier={Math.max(0, tierOf(rarity ?? 'paper'))} seed={ARENA_SHAPE}>
+      <DexFace game={game} id={entity.id} image={entity.image} src={art ? `/arena/${art}.webp` : undefined} label={art ? t(`arena.art.${art}` as UiKey) : oneWord(entity.name)} tier={Math.max(0, tierOf(rarity ?? 'paper'))} seed={ARENA_SHAPE}>
         {!!tier && (
           <span className={`ar-tier is-t${tier}`} aria-hidden>
             <svg viewBox="0 0 130 100" preserveAspectRatio="none">

@@ -240,6 +240,18 @@
         "sacrifice",
         "mythic"
       ]
+    ],
+    "878": [
+      [
+        "shadow",
+        "gold"
+      ]
+    ],
+    "877": [
+      [
+        "shadow",
+        "gold"
+      ]
     ]
   },
   "sound": [
@@ -572,7 +584,29 @@
     "1337": "slash",
     "1344": "rasen",
     "1359": "revive2",
-    "1019": "slash"
+    "1019": "slash",
+    "940": "dimension",
+    "935": "sixpaths",
+    "936": "tenseigan",
+    "928": "shed",
+    "1223": "lava",
+    "259": "coffin",
+    "5": "hellfist",
+    "684": "paperbomb",
+    "1042": "puppet",
+    "374": "rebirth",
+    "739": "gates2",
+    "368": "salamander",
+    "521": "curse",
+    "326": "benihisago",
+    "641": "benihisago",
+    "1093": "izanagi",
+    "1208": "wind",
+    "1341": "chains",
+    "1066": "edo",
+    "1310": "koto",
+    "6": "armor",
+    "925": "jinton"
   },
   "tailed": [
     1,
@@ -718,26 +752,6 @@
         1344,
         1307,
         374
-      ],
-      "atk": 2,
-      "hp": 2
-    },
-    {
-      "key": "inoshikacho",
-      "ids": [
-        1365,
-        878,
-        40
-      ],
-      "atk": 2,
-      "hp": 2
-    },
-    {
-      "key": "inoshikacho2",
-      "ids": [
-        1367,
-        877,
-        42
       ],
       "atk": 2,
       "hp": 2
@@ -892,8 +906,8 @@
         6,
         636
       ],
-      "atk": 1,
-      "hp": 1
+      "atk": 3,
+      "hp": 3
     },
     {
       "key": "goldsilver",

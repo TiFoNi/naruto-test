@@ -116,13 +116,13 @@ const FlameGallery = ({ children }: { children: ReactNode }) => {
   )
 }
 
-const CASTS = new Set(['amaterasu', 'meteor', 'seal', 'blast', 'reaper', 'burn', 'gatesOpen'])
+const CASTS = new Set(['amaterasu', 'meteor', 'seal', 'blast', 'reaper', 'burn', 'gatesOpen', 'lava', 'coffin', 'benihisago', 'jinton'])
 
 const METEOR_FALL_MS = 700
 
 const BONUS_KEY = 'arena.bonus'
 
-const HOLD_MS: Record<string, number> = { mind: 700, gatesOpen: 600, gates: 300, amaterasu: 600, burn: 300, meteor: 700, seal: 600, blast: 400, raikiri: 400, reaper: 300 }
+const HOLD_MS: Record<string, number> = { jinton: 600, koto: 700, chains: 600, shadow: 900, dimension: 600, lava: 500, coffin: 600, benihisago: 600, mind: 700, gatesOpen: 600, gates: 300, amaterasu: 600, burn: 300, meteor: 700, seal: 600, blast: 400, raikiri: 400, reaper: 300 }
 
 const holdOf = (step: Step) => (step.ability ? (HOLD_MS[step.ability] ?? 0) : 0) + (step.swapFrom ? 400 : 0) + (step.dodged?.length ? 300 : 0)
 
@@ -909,7 +909,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           }
         }
       }
-      if (one.ability === 'seal' && movers[0]) {
+      if ((one.ability === 'seal' || one.ability === 'benihisago') && movers[0]) {
         const hole = movers[0].getBoundingClientRect()
         for (const uid of one.sealed ?? []) {
           const node = document.querySelector<HTMLElement>(`.ar-row.is-packed [data-uid="${uid}"]`)
@@ -931,6 +931,33 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           )
         }
       }
+    } else if (one.ability === 'shadow' && movers[0] && aim) {
+      const from = movers[0].getBoundingClientRect()
+      const to = aim.getBoundingClientRect()
+      const sx = from.left + from.width / 2
+      const sy = from.top + from.height * 0.92
+      const tx = to.left + to.width / 2
+      const ty = to.top + to.height * 0.92
+      const strip = document.createElement('div')
+      strip.className = 'ar-shadow-bind'
+      strip.style.left = `${sx}px`
+      strip.style.top = `${sy}px`
+      strip.style.width = `${Math.hypot(tx - sx, ty - sy)}px`
+      strip.style.transform = `translateY(-50%) rotate(${(Math.atan2(ty - sy, tx - sx) * 180) / Math.PI}deg)`
+      strip.innerHTML = '<i></i><i></i>'
+      document.body.appendChild(strip)
+      extra.push(strip)
+      strip.animate(
+        [
+          { clipPath: 'inset(0 100% 0 0)', opacity: 0.4 },
+          { clipPath: 'inset(0 0% 0 0)', opacity: 1, offset: 0.4 },
+          { clipPath: 'inset(0 0% 0 0)', opacity: 1, offset: 0.82 },
+          { clipPath: 'inset(0 0% 0 0)', opacity: 0 },
+        ],
+        { duration: FLY_MS + 900, easing: 'cubic-bezier(0.3, 0.7, 0.4, 1)', fill: 'forwards' },
+      )
+      plays.push(movers[0].animate([{ transform: 'none' }, { transform: 'translateY(4px) scale(0.97)', offset: 0.25 }, { transform: 'translateY(4px) scale(0.97)', offset: 0.85 }, { transform: 'none' }], { duration: FLY_MS + 900, easing: 'ease-in-out' }))
+      plays.push(aim.animate([{ transform: 'none', filter: 'none' }, { transform: 'none', filter: 'none', offset: 0.38 }, { transform: 'translateX(-3px)', filter: 'brightness(0.55)', offset: 0.44 }, { transform: 'translateX(3px)', filter: 'brightness(0.55)', offset: 0.5 }, { transform: 'none', filter: 'brightness(0.7)' }], { duration: FLY_MS + 900, easing: 'ease-out' }))
     } else if (one.charm || one.skip || one.wards || one.summoned || one.risen || one.ability === 'mind') {
       if (movers[0]) plays.push(movers[0].animate([{ transform: 'none' }, { transform: 'scale(1.04)', offset: 0.3 }, { transform: 'none' }], { duration: FLY_MS, easing: 'ease-out' }))
     } else if (one.shot && movers.length === 1 && aim) {
@@ -1348,6 +1375,9 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const burnNow = new Set<string>()
   const gatedNow = new Set<string>()
   const boundNow = new Set<string>()
+  const shadeNow = new Set<string>()
+  const chainNow = new Set<string>()
+  const holdNow = new Set<string>()
   const lastWard = new Map<string, string>()
   const power = new Map<string, number>()
   if (at >= 0) {
@@ -1362,6 +1392,11 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       if (one.burn) burnNow.add(one.uid)
       if (one.gated) gatedNow.add(one.uid)
       if (one.bound || one.link) boundNow.add(one.uid)
+      if (one.chained) chainNow.add(one.uid)
+      if (one.shade) {
+        shadeNow.add(one.uid)
+        if (one.bound) holdNow.add(one.bound)
+      }
       power.set(one.uid, one.atk)
     }
     else for (const uid of view.armed ?? []) guard.set(uid, 1)
@@ -1544,7 +1579,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         const tech = hit && now?.from === card.uid && !!now?.ability && TECH.has(now.ability) ? now.ability : null
         const struck = hit && !dodging && !blocked && !mirrored && !!now?.damage && (now?.to === card.uid || !!now?.splash?.includes(card.uid) || now?.swapTo === card.uid)
         const face = (
-          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} fake={card.fake} />
+          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} fake={card.fake} away={!!card.away} art={card.art} />
         )
         const swallowed = !!now?.sealed?.includes(card.uid)
         const clips = dying && !swallowed ? tearOf(seedOf(card.uid)) : null
@@ -1580,7 +1615,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                   </span>
                 </span>
               ) : (
-                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} fake={card.fake} />
+                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} fake={card.fake} away={!!card.away} art={card.art} />
               )}
               {struck && !blasted && !burning && !falling && <Slash seed={seedOf(card.uid)} />}
               {shocked && <RaikiriFx />}
@@ -1671,7 +1706,10 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                   {t('arena.asleep')}
                 </b>
               )}
-              {(boundNow.has(card.uid) || seized) && !dying && <b className="ar-bound-tag">{t('arena.asleep')}</b>}
+              {chainNow.has(card.uid) && !dying && <b className="ar-bound-tag is-chain">{t('arena.chained')}</b>}
+              {(boundNow.has(card.uid) || seized) && !dying && (
+                <b className={`ar-bound-tag ${shadeNow.has(card.uid) || holdNow.has(card.uid) ? 'is-shadow' : ''}`}>{t(shadeNow.has(card.uid) ? 'arena.held' : holdNow.has(card.uid) ? 'arena.holding' : 'arena.asleep')}</b>
+              )}
               {phasing && (
                 <>
                   <b className="ar-dodge-word is-kamui" aria-hidden>

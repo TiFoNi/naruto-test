@@ -124,6 +124,7 @@ export function DexFace({
   game,
   id,
   image,
+  src,
   label,
   tier,
   seed,
@@ -133,6 +134,7 @@ export function DexFace({
   game: GameId
   id: number
   image?: string
+  src?: string
   label: string
   tier: number
   seed?: number
@@ -146,7 +148,7 @@ export function DexFace({
       {tier > 0 && <BackSheet />}
       <i className="dex-paper" style={{ clipPath: torn(shape, 4) }} />
       <span className="dex-pic" style={{ clipPath: torn(shape * 3 + 1, 3, 7) }}>
-        <DexImg src={cardUrl(game, id, image)} />
+        <DexImg src={src ?? cardUrl(game, id, image)} />
         <PicEdge seed={shape * 3 + 1} />
       </span>
       <b className={lengthOf(label)}>
