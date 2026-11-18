@@ -295,7 +295,7 @@ export default function ProfileBoard({
     if (kept) return Math.min(most(block), Math.max(1, Math.ceil(kept / colsOf(block))))
     const px = sizes[block]
     if (px && block !== 'cards') return Math.min(most(block), Math.max(1, Math.round((px - baseOf(block)) / stepOf(block)) + 1))
-    return block === 'cards' ? 1 : most(block)
+    return most(block)
   }
   const baseOf = (block: ProfileBlock) => (block === 'cards' ? metrics.cardBase : metrics.base)
   const stepOf = (block: ProfileBlock) => (block === 'cards' ? metrics.cardStep : metrics.step)
