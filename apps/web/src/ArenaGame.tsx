@@ -12,7 +12,7 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { ClockIcon, HeartIcon, RefreshIcon, UpIcon } from './icons'
+import { ClockIcon, CloseIcon, HeartIcon, RefreshIcon, UpIcon } from './icons'
 import BackButton from './BackButton'
 import { tornPoints } from './torn'
 import { useHref, useNavigate } from './router'
@@ -110,6 +110,8 @@ const FlameGallery = ({ children }: { children: ReactNode }) => {
 const CASTS = new Set(['amaterasu', 'meteor', 'seal', 'blast', 'reaper', 'burn', 'gatesOpen'])
 
 const METEOR_FALL_MS = 700
+
+const BONUS_KEY = 'arena.bonus'
 
 const HOLD_MS: Record<string, number> = { mind: 700, gatesOpen: 600, gates: 300, amaterasu: 600, burn: 300, meteor: 700, seal: 600, blast: 400, raikiri: 400, reaper: 300 }
 
@@ -389,6 +391,19 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const [over, setOver] = useState<Spot['zone'] | null>(null)
   const [aimed, setAimed] = useState<string | null>(null)
   const [pledging, setPledging] = useState<string | null>(null)
+  const [bonusOpen, setBonusOpen] = useState(() => {
+    try {
+      return window.localStorage.getItem(BONUS_KEY) !== 'closed'
+    } catch {
+      return true
+    }
+  })
+  const toggleBonus = useCallback((open: boolean) => {
+    setBonusOpen(open)
+    try {
+      window.localStorage.setItem(BONUS_KEY, open ? 'open' : 'closed')
+    } catch {}
+  }, [])
   const [cheer, setCheer] = useState<{ to: string[]; label: string; at: number } | null>(null)
   const tipBox = useRef<HTMLDivElement | null>(null)
 
@@ -1966,7 +1981,19 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                 </div>
               )}
             </div>
+            {!bonusOpen && (
+              <button type="button" className="ar-chip ar-synergy-open" onPointerDown={(event) => event.stopPropagation()} onClick={() => toggleBonus(true)}>
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+                  <polygon points={CHIP} vectorEffect="non-scaling-stroke" />
+                </svg>
+                <span>{t('arena.synergy')}</span>
+              </button>
+            )}
+            {bonusOpen && (
             <aside className={`ar-synergy ${fight ? 'is-fight' : ''}`} aria-label={t('arena.synergy')}>
+              <button type="button" className="ar-synergy-x" aria-label={t('dex.close')} onPointerDown={(event) => event.stopPropagation()} onClick={() => toggleBonus(false)}>
+                <CloseIcon />
+              </button>
               <svg className="ar-synergy-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
                 <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
               </svg>
@@ -2030,6 +2057,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                 <p className="ar-synergy-none">{t('arena.synergy.none')}</p>
               )}
               </aside>
+            )}
           </section>
 
           <div className="ar-foot">

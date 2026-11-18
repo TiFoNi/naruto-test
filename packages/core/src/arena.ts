@@ -376,7 +376,7 @@ const baseOf = (id: number) => {
   return { atk: row[1], hp: row[2] }
 }
 
-export const ARENA_HP_MUL = 2
+export const ARENA_HP_MUL = 1.5
 
 export const statsOf = (id: number, rarity: CardRarity, triple = false, power = 1) => {
   const base = baseOf(id)
