@@ -4875,14 +4875,15 @@
   height: 24px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
-  background: rgb(27 26 30 / 10%);
+  outline: none;
+  background: none;
   color: #1b1a1e;
+  opacity: 0.6;
   cursor: pointer;
 }
 
 .ar-synergy-x:hover {
-  background: rgb(27 26 30 / 20%);
+  opacity: 1;
 }
 
 .ar-synergy-x .icon {

@@ -940,6 +940,7 @@ function fight(doc: ArenaDoc) {
             continue
           }
           one.hp -= BLAST_HIT
+          wake(one, BLAST_HIT)
           killers.set(one.uid, echo.card)
         }
         const dead = hit.some((one) => one.hp <= 0)
@@ -959,6 +960,17 @@ function fight(doc: ArenaDoc) {
     if (!ino.link) return
     for (const one of [...onBoard(ours), ...onBoard(foes)]) if (one.bound === ino.uid) one.bound = null
     ino.link = null
+  }
+
+  const inoOf = (one: ArenaCard) => (one.bound ? [...alive(ours), ...alive(foes)].find((other) => other.uid === one.bound) : undefined)
+
+  const dreaming = (one: ArenaCard) => !!inoOf(one)
+
+  const wake = (one: ArenaCard, damage: number) => {
+    const ino = inoOf(one)
+    if (!ino || damage <= 0) return
+    ino.hp -= damage
+    release(ino)
   }
 
   const swing = (card: ArenaCard | undefined, side: ArenaSide, foe: boolean) => {
@@ -1074,6 +1086,7 @@ function fight(doc: ArenaDoc) {
       const taken = armor(one, halved)
       one.hp -= taken
       killers.set(one.uid, card)
+      wake(one, taken)
       if (poisonOf(card.id, card.rarity)) {
         one.hp = 0
         venom = true
@@ -1094,8 +1107,10 @@ function fight(doc: ArenaDoc) {
       if (foe) doc.hp = Math.max(0, doc.hp - blow)
       else doc.foeHp = Math.max(0, doc.foeHp - blow)
     } else {
-      const walls = targets.filter(guards)
-      const target = pickOne(walls.length ? walls : targets)
+      const awake = targets.filter((one) => !dreaming(one))
+      const pool = awake.length ? awake : targets
+      const walls = pool.filter(guards)
+      const target = pickOne(walls.length ? walls : pool)
       const at = targets.indexOf(target)
       const near = [targets[at - 1], targets[at + 1]].filter((one): one is ArenaCard => !!one)
       const wide = first && own === 'rasen' ? targets.filter((one) => one !== target) : cleaveOf(card.id, card.rarity) || clay ? near : own === 'slash' ? near.slice(-1) : []
@@ -1187,6 +1202,7 @@ function fight(doc: ArenaDoc) {
               continue
             }
             one.hp -= METEOR_HIT
+            wake(one, METEOR_HIT)
             killers.set(one.uid, card)
           }
           const dead = hit.some((one) => one.hp <= 0)
