@@ -718,6 +718,15 @@ export function RefreshIcon({ className }: IconProps) {
   )
 }
 
+export function SnowIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={`icon ${className ?? ''}`}>
+      <path d="M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7" />
+      <path d="m9.5 3.5 2.5 2 2.5-2M9.5 20.5l2.5-2 2.5 2M3.6 10.2l3-1.1-.5-3.1M20.4 13.8l-3 1.1.5 3.1M6.1 18l.5-3.1-3-1.1M17.9 6l-.5 3.1 3 1.1" />
+    </svg>
+  )
+}
+
 export function SwapIcon({ className }: IconProps) {
   return (
     <svg {...base} className={`icon ${className ?? ''}`}>

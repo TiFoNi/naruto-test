@@ -12,7 +12,11 @@
     421,
     259,
     5,
-    1063
+    1063,
+    1038,
+    725,
+    835,
+    428
   ],
   "ranged": {
     "1216": "kunai",
@@ -29,7 +33,9 @@
     1042,
     368,
     928,
-    577
+    577,
+    818,
+    809
   ],
   "abilities": {
     "1307": [
@@ -252,7 +258,8 @@
     "1359": 1,
     "148": 1,
     "903": 1,
-    "608": 2
+    "608": 2,
+    "135": 1
   },
   "summon": {
     "259": 1127,
@@ -278,13 +285,17 @@
   "fury": [
     739,
     344,
-    210
+    210,
+    637,
+    1372
   ],
   "ward": {
     "259": "self",
     "1373": "near",
     "653": "near",
-    "1063": "all"
+    "1063": "all",
+    "605": "self",
+    "844": "self"
   },
   "wardLook": {
     "259": "sand",
@@ -297,37 +308,76 @@
     "6": "kumo",
     "8": "oto",
     "13": "konoha",
-    "15": "root",
-    "40": "ishc",
-    "42": "ishc",
+    "15": [
+      "root",
+      "konoha"
+    ],
+    "40": [
+      "ishc",
+      "konoha"
+    ],
+    "42": [
+      "ishc",
+      "konoha"
+    ],
     "80": "kiri",
     "107": "suna",
     "135": "kumo",
     "148": "suna",
     "152": "kiri",
     "190": "kumo",
-    "193": "akatsuki",
-    "210": "youth",
+    "193": [
+      "akatsuki",
+      "iwa"
+    ],
+    "210": [
+      "youth",
+      "konoha"
+    ],
     "212": "konoha",
     "259": "suna",
     "293": "konoha",
     "326": "kumo",
-    "344": "youth",
+    "344": [
+      "youth",
+      "konoha"
+    ],
     "348": "konoha",
     "356": "kiri",
     "363": "iwa",
     "374": "konoha",
-    "376": "hokage",
+    "376": [
+      "hokage",
+      "konoha"
+    ],
     "377": "konoha",
     "388": "akatsuki",
-    "421": "akatsuki",
+    "421": [
+      "akatsuki",
+      "kiri"
+    ],
     "428": "kiri",
     "430": "oto",
-    "435": "hyuga",
-    "436": "hyuga",
-    "437": "hyuga",
-    "439": "hyuga",
-    "444": "hyuga",
+    "435": [
+      "hyuga",
+      "konoha"
+    ],
+    "436": [
+      "hyuga",
+      "konoha"
+    ],
+    "437": [
+      "hyuga",
+      "konoha"
+    ],
+    "439": [
+      "hyuga",
+      "konoha"
+    ],
+    "444": [
+      "hyuga",
+      "konoha"
+    ],
     "466": "konoha",
     "477": "konoha",
     "515": "konoha",
@@ -349,7 +399,10 @@
     "653": "iwa",
     "684": "akatsuki",
     "725": "iwa",
-    "739": "youth",
+    "739": [
+      "youth",
+      "konoha"
+    ],
     "749": "kumo",
     "809": "konoha",
     "811": "konoha",
@@ -358,9 +411,18 @@
     "835": "konoha",
     "844": "iwa",
     "861": "akatsuki",
-    "865": "hokage",
-    "877": "ishc",
-    "878": "ishc",
+    "865": [
+      "hokage",
+      "konoha"
+    ],
+    "877": [
+      "ishc",
+      "konoha"
+    ],
+    "878": [
+      "ishc",
+      "konoha"
+    ],
     "886": "konoha",
     "898": "kumo",
     "903": "konoha",
@@ -375,47 +437,107 @@
     "950": "suna",
     "967": "suna",
     "983": "iwa",
-    "1008": "root",
+    "1008": [
+      "root",
+      "konoha"
+    ],
     "1015": "oto",
     "1019": "kumo",
     "1034": "konoha",
-    "1036": "hokage",
+    "1036": [
+      "hokage",
+      "konoha"
+    ],
     "1037": "konoha",
     "1038": "konoha",
-    "1042": "akatsuki",
-    "1063": "hokage",
-    "1066": "hokage",
-    "1093": "root",
+    "1042": [
+      "akatsuki",
+      "suna"
+    ],
+    "1063": [
+      "hokage",
+      "konoha"
+    ],
+    "1066": [
+      "hokage",
+      "konoha"
+    ],
+    "1093": [
+      "root",
+      "konoha"
+    ],
     "1110": "konoha",
     "1122": "konoha",
     "1203": "oto",
     "1208": "suna",
-    "1216": "youth",
+    "1216": [
+      "youth",
+      "konoha"
+    ],
     "1223": "kiri",
     "1227": "konoha",
     "1265": "oto",
-    "1280": "hokage",
-    "1289": "uchiha",
-    "1293": "akatsuki",
+    "1280": [
+      "hokage",
+      "konoha"
+    ],
+    "1289": [
+      "uchiha",
+      "konoha"
+    ],
+    "1293": [
+      "akatsuki",
+      "uchiha"
+    ],
     "1296": "uchiha",
-    "1299": "akatsuki",
-    "1300": "uchiha",
-    "1303": "akatsuki",
-    "1307": "uchiha",
-    "1310": "uchiha",
+    "1299": [
+      "akatsuki",
+      "uchiha"
+    ],
+    "1300": [
+      "uchiha",
+      "konoha"
+    ],
+    "1303": [
+      "akatsuki",
+      "uchiha"
+    ],
+    "1307": [
+      "uchiha",
+      "oto"
+    ],
+    "1310": [
+      "uchiha",
+      "konoha"
+    ],
     "1325": "konoha",
     "1335": "kiri",
     "1336": "konoha",
     "1337": "konoha",
     "1341": "konoha",
-    "1344": "hokage",
+    "1344": [
+      "hokage",
+      "konoha"
+    ],
     "1356": "akatsuki",
     "1359": "oto",
-    "1364": "root",
-    "1365": "ishc",
-    "1367": "ishc",
+    "1364": [
+      "root",
+      "konoha"
+    ],
+    "1365": [
+      "ishc",
+      "konoha"
+    ],
+    "1367": [
+      "ishc",
+      "konoha"
+    ],
     "1372": "konoha",
-    "1373": "root",
+    "1373": [
+      "root",
+      "konoha"
+    ],
     "1376": "suna",
     "1397": "konoha",
     "1425": "akatsuki",
@@ -805,6 +927,81 @@
       ],
       "atk": 2,
       "hp": 2
+    },
+    {
+      "key": "gate",
+      "ids": [
+        348,
+        571
+      ],
+      "atk": 2,
+      "hp": 2
+    },
+    {
+      "key": "advisors",
+      "ids": [
+        811,
+        1336
+      ],
+      "atk": 2,
+      "hp": 2
+    },
+    {
+      "key": "konohamaru",
+      "ids": [
+        477,
+        1037,
+        618
+      ],
+      "atk": 2,
+      "hp": 2
+    },
+    {
+      "key": "hiashihanabi",
+      "ids": [
+        436,
+        435
+      ],
+      "atk": 2,
+      "hp": 2
+    },
+    {
+      "key": "hizashineji",
+      "ids": [
+        439,
+        444
+      ],
+      "atk": 2,
+      "hp": 2
+    },
+    {
+      "key": "samui",
+      "ids": [
+        1019,
+        596,
+        920
+      ],
+      "atk": 2,
+      "hp": 2
+    },
+    {
+      "key": "rootduo",
+      "ids": [
+        1364,
+        15
+      ],
+      "atk": 2,
+      "hp": 2
+    },
+    {
+      "key": "ame",
+      "ids": [
+        1356,
+        684,
+        861
+      ],
+      "atk": 2,
+      "hp": 2
     }
   ],
   "counters": [
@@ -957,39 +1154,9 @@
       0,
       2
     ],
-    "1426": [
-      "random",
-      1,
-      1
-    ],
-    "1425": [
-      "random",
-      1,
-      1
-    ],
-    "749": [
-      "random",
-      1,
-      0
-    ],
-    "1325": [
-      "weakest",
-      1,
-      1
-    ],
     "212": [
       "near",
       0,
-      1
-    ],
-    "107": [
-      "near",
-      1,
-      1
-    ],
-    "80": [
-      "random",
-      1,
       1
     ],
     "1373": [
@@ -1002,15 +1169,96 @@
       1,
       1
     ],
-    "1034": [
-      "near",
-      2,
-      0
-    ],
     "15": [
       "random",
       1,
       1
+    ],
+    "811": [
+      "konoha",
+      1,
+      1
+    ],
+    "1336": [
+      "konoha",
+      1,
+      1
+    ],
+    "886": [
+      "konoha",
+      2,
+      0
     ]
-  }
+  },
+  "kin": {
+    "ishc": [
+      [
+        1365,
+        1367
+      ],
+      [
+        877,
+        878
+      ],
+      [
+        40,
+        42
+      ]
+    ]
+  },
+  "scorch": [
+    950
+  ],
+  "bomb": [
+    1376
+  ],
+  "grow": {
+    "1325": [
+      "konoha",
+      1,
+      1
+    ],
+    "749": [
+      "kumo",
+      2,
+      0
+    ],
+    "107": [
+      "suna",
+      1,
+      1
+    ]
+  },
+  "feed": {
+    "1425": [
+      "akatsuki",
+      1,
+      1
+    ],
+    "1015": [
+      "oto",
+      1,
+      1
+    ],
+    "80": [
+      "kiri",
+      1,
+      1
+    ],
+    "1300": [
+      "uchiha",
+      1,
+      1
+    ]
+  },
+  "avenge": {
+    "1426": [
+      "akatsuki",
+      1,
+      1
+    ]
+  },
+  "echo": [
+    1034
+  ]
 }

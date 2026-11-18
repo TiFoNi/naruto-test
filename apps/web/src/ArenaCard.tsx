@@ -8,9 +8,9 @@ import { BACK_POINTS, BADGE_POINTS, DexFace } from './DexCard'
 import { HeartIcon } from './icons'
 import type { Entity, GameId } from './games/types'
 
-export type Card = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; tier?: number; taunt?: boolean; cleave?: boolean; shot?: string | null; spell?: string; dodge?: number; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; fury?: boolean; guard?: string | null; ward?: string | false; ghost?: boolean; stun?: boolean; skills?: { key: string; cost: number; beast?: number | null }[]; armed?: string[]; heal?: number; mythic?: string | null; clan?: string | null; boost?: { atk: number; hp: number }; aim?: string; captain?: boolean; burn?: number; gated?: boolean; bound?: string | null; link?: string | null }
+export type Card = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; tier?: number; taunt?: boolean; cleave?: boolean; shot?: string | null; spell?: string; dodge?: number; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; fury?: boolean; scorch?: boolean; bomb?: boolean; guard?: string | null; ward?: string | false; ghost?: boolean; stun?: boolean; skills?: { key: string; cost: number; beast?: number | null }[]; armed?: string[]; heal?: number; mythic?: string | null; clan?: string | null; boost?: { atk: number; hp: number }; aim?: string; captain?: boolean; burn?: number; gated?: boolean; bound?: string | null; link?: string | null }
 export type Side = { heroes: Card[]; summons: Card[] }
-export type Offer = { id: number; rarity: CardRarity; cost: number; atk: number; hp: number; summon: boolean; tier: number; taunt?: boolean; cleave?: boolean; shot?: string | null; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; fury?: boolean; guard?: string | null; skills?: { key: string; cost: number; beast?: number | null }[]; heal?: number; mythic?: string | null; clan?: string | null }
+export type Offer = { id: number; rarity: CardRarity; cost: number; atk: number; hp: number; summon: boolean; tier: number; taunt?: boolean; cleave?: boolean; shot?: string | null; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; fury?: boolean; scorch?: boolean; bomb?: boolean; guard?: string | null; skills?: { key: string; cost: number; beast?: number | null }[]; heal?: number; mythic?: string | null; clan?: string | null }
 export type Step = {
   from: string
   all?: string[]
@@ -73,6 +73,7 @@ export type ArenaView = {
   kits?: Record<string, LadderRow[]>
   clans?: string[]
   cried?: { from: string; to: string[]; atk: number; hp: number } | null
+  frozen?: boolean
   crew?: { captain: { id: number; scope: string; atk: number; hp: number } | null; teams: { key: string; ids: number[]; atk: number; hp: number; have: number; on: boolean }[] }
 }
 export type Synergy = { clan: string; count: number; need: number; cap: number; ready: number }
@@ -80,8 +81,8 @@ export type LadderRow = { need?: CardRarity; key: string; n?: number; scope?: st
 
 const ARENA_SHAPE = 43
 
-export const Ward = ({ breaking = false }: { look?: string; breaking?: boolean }) => (
-  <span className={`ar-ward ${breaking ? 'is-breaking' : ''}`} aria-hidden>
+export const Ward = ({ breaking = false, frost = false }: { look?: string; breaking?: boolean; frost?: boolean }) => (
+  <span className={`ar-ward ${breaking ? 'is-breaking' : ''} ${frost ? 'is-frost' : ''}`} aria-hidden>
     <i className="ar-ward-edge">
       <svg viewBox="0 0 300 400" preserveAspectRatio="none">
         <polygon points={BACK_POINTS} />
@@ -115,8 +116,11 @@ export const ArenaFace = memo(function ArenaFace({
   poison,
   medic,
   fury,
+  scorch,
+  bomb,
   guard,
   shield,
+  frost,
   ghost,
   boost,
 }: {
@@ -136,7 +140,10 @@ export const ArenaFace = memo(function ArenaFace({
   sound?: boolean
   poison?: boolean
   medic?: boolean
+  frost?: boolean
   fury?: boolean
+  scorch?: boolean
+  bomb?: boolean
   guard?: string | null
   shield?: string | false
   ghost?: boolean
@@ -168,9 +175,11 @@ export const ArenaFace = memo(function ArenaFace({
         {poison && <span className="ar-taunt is-poison">{t('arena.poison')}</span>}
         {medic && <span className="ar-taunt is-medic">{t('arena.medic')}</span>}
         {fury && <span className="ar-taunt is-fury">{t('arena.fury')}</span>}
+        {scorch && <span className="ar-taunt is-scorch">{t('arena.scorch')}</span>}
+        {bomb && <span className="ar-taunt is-bomb">{t('arena.bomb')}</span>}
         {guard && <span className="ar-taunt is-guard">{t('arena.guard')}</span>}
         {!!dodge && <span className="ar-taunt is-dodge">{t('arena.dodge')}</span>}
-        {shield && <Ward look={shield} />}
+        {shield ? <Ward look={shield} /> : frost ? <Ward frost /> : null}
         <span className="ar-stats">
           <span className={`is-atk ${boost?.atk ? 'is-boosted' : ''}`}>
             <svg className="icon" viewBox="0 0 24 24" aria-hidden>

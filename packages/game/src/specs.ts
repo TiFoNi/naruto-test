@@ -1257,18 +1257,18 @@ export const ARENA_CHAKRA_START = 1
 export const ARENA_ABILITIES = { genjutsu: 2, amaterasu: 4, swap: 3, mind: 3, sonic: 1, summon: 3, revive: 3, limbo: 5, clay: 2, sacrifice: 3 } as const
 
 export const ARENA_CLANS = {
-  konoha: { need: 2, cap: 5 },
+  konoha: { need: 2, cap: 4 },
   akatsuki: { need: 3, cap: 5 },
   oto: { need: 2, cap: 5 },
   kumo: { need: 2, cap: 5 },
   kiri: { need: 3, cap: 5 },
   suna: { need: 3, cap: 5 },
   iwa: { need: 3, cap: 5 },
-  root: { need: 2, cap: 5 },
+  root: { need: 3, cap: 5 },
   otsutsuki: { need: 2, cap: 5 },
   uchiha: { need: 2, cap: 5 },
   hyuga: { need: 3, cap: 5 },
-  ishc: { need: 2, cap: 5 },
+  ishc: { need: 3, cap: 3 },
   hokage: { need: 2, cap: 5 },
   youth: { need: 2, cap: 4 },
 } as const

@@ -743,6 +743,16 @@
   }
 }
 
+.ar-row li > .ar-skills {
+  transition: translate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .ar:not(.is-fighting):not(.is-dragging) li:not(.is-poor):has(> .ar-move:hover) > .ar-skills {
+    translate: 0 -4px;
+  }
+}
+
 .ar-row li,
 .ar-hand li {
   align-self: center;
@@ -2480,6 +2490,16 @@
   color: #fbe9e4;
 }
 
+.ar-taunt.is-scorch {
+  background: #c4561a;
+  color: #fff1e4;
+}
+
+.ar-taunt.is-bomb {
+  background: #3b3530;
+  color: #ffd27a;
+}
+
 .ar-taunt.is-guard {
   background: #d9d2c3;
   color: #1b1a1e;
@@ -2907,6 +2927,16 @@
 .ar-tip-tag.is-fury {
   background: #9b2c1f;
   color: #fbe9e4;
+}
+
+.ar-tip-tag.is-scorch {
+  background: #c4561a;
+  color: #fff1e4;
+}
+
+.ar-tip-tag.is-bomb {
+  background: #3b3530;
+  color: #ffd27a;
 }
 
 .ar-tip-tag.is-poison {
@@ -4824,10 +4854,49 @@
 .ar-synergy li.is-on[data-clan='youth'] { --clan: #2f8a3a; }
 
 .ar-synergy-match {
-  margin: 0;
+  position: relative;
+  order: 9;
+  margin: 10px 0 0;
+  padding-top: 8px;
+  border-top: 1.5px dashed rgba(27, 26, 30, 0.22);
   color: #5d574f;
-  font-size: 11.5px;
+  font-size: 11px;
   line-height: 1.3;
+}
+
+.ar-synergy-match > b {
+  display: block;
+  margin-bottom: 5px;
+  color: #1b1a1e;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ar-synergy-match > span {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.ar-synergy-match i {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.ar-synergy-match i.is-live {
+  background: #2f2b28;
+  color: #f4efe6;
+}
+
+.ar-synergy-match i.is-out {
+  background: rgba(27, 26, 30, 0.07);
+  color: rgba(27, 26, 30, 0.42);
+  text-decoration: line-through;
+  cursor: help;
 }
 
 .ar-cheer {
@@ -4929,6 +4998,51 @@
   }
 }
 
-.ar-synergy-match {
-  padding-right: 26px;
+
+.ar-shopbar .ar-tool.is-frozen polygon {
+  fill: #cfe8ff;
+  stroke: #1b4a7a;
+}
+
+.ar-shopbar .ar-tool.is-frozen {
+  color: #1b4a7a;
+}
+
+.ar-row.is-shop li > .ar-skills {
+  animation: ar-swipe-in 0.52s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  animation-delay: calc(var(--wait, 0ms) + var(--i, 0) * 70ms);
+}
+
+.ar-skill.is-static {
+  cursor: help;
+}
+
+.ar-skill.is-static:hover {
+  translate: none;
+}
+
+.ar-ward.is-frost .ar-ward-edge svg {
+  filter: drop-shadow(0 0 4px rgba(120, 205, 255, 0.95)) drop-shadow(0 0 10px rgba(90, 180, 255, 0.6));
+  animation:
+    ar-ward-in 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.3) backwards,
+    ar-frost-glow 2.2s ease-in-out 0.5s infinite;
+}
+
+.ar-ward.is-frost .ar-ward-edge polygon {
+  fill: rgba(150, 215, 255, 0.16);
+  stroke: #bfe8ff;
+}
+
+.ar-ward.is-frost .ar-ward-film {
+  background: linear-gradient(165deg, rgba(210, 240, 255, 0.22), rgba(170, 220, 255, 0.06) 45%, rgba(200, 235, 255, 0.18));
+}
+
+.ar-ward.is-frost .ar-ward-shine {
+  background: linear-gradient(100deg, rgba(220, 245, 255, 0) 0%, rgba(220, 245, 255, 0.55) 50%, rgba(220, 245, 255, 0) 100%);
+}
+
+@keyframes ar-frost-glow {
+  50% {
+    filter: drop-shadow(0 0 7px rgba(150, 220, 255, 1)) drop-shadow(0 0 18px rgba(100, 185, 255, 0.85));
+  }
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
-import { type CardRarity, ARENA_CARD_COST, ARENA_HAND, ARENA_CHAKRA_MAX, ARENA_COIN_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS, ARENA_TIERS } from '@nanda/game'
+import { type CardRarity, ARENA_CLANS, ARENA_CARD_COST, ARENA_HAND, ARENA_CHAKRA_MAX, ARENA_COIN_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS, ARENA_TIERS } from '@nanda/game'
 import { api } from './api'
 import { AmaterasuFx } from './AmaterasuFx'
 import { ArenaFace, SpellFace, Ward, tierOf, type ArenaView, type Card, type Side, type Step } from './ArenaCard'
@@ -12,7 +12,7 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { ClockIcon, CloseIcon, HeartIcon, RefreshIcon, UpIcon } from './icons'
+import { ClockIcon, CloseIcon, HeartIcon, RefreshIcon, SnowIcon, UpIcon } from './icons'
 import BackButton from './BackButton'
 import { tornPoints } from './torn'
 import { useHref, useNavigate } from './router'
@@ -574,7 +574,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       setView((now) => {
         if (!now || now.coins < ARENA_CARD_COST || !now.tavern[at]) return now
         const one = now.tavern[at]!
-        const card: Card = { uid: `${now.seq + 1}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt, cleave: one.cleave, shot: one.shot, charm: one.charm, sound: one.sound, poison: one.poison, medic: one.medic, fury: one.fury, guard: one.guard }
+        const card: Card = { uid: `${now.seq + 1}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt, cleave: one.cleave, shot: one.shot, charm: one.charm, sound: one.sound, poison: one.poison, medic: one.medic, fury: one.fury, scorch: one.scorch, bomb: one.bomb, guard: one.guard }
         return { ...now, seq: now.seq + 1, coins: now.coins - ARENA_CARD_COST, hand: [...now.hand, card], tavern: now.tavern.filter((_, i) => i !== at) }
       })
       send({ action: 'buy', at })
@@ -587,7 +587,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       setView((now) => {
         if (!now || now.coins < ARENA_CARD_COST || !now.tavern[at]) return now
         const one = now.tavern[at]!
-        const card: Card = { uid: `${now.seq + 1}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt, cleave: one.cleave, shot: one.shot, charm: one.charm, sound: one.sound, poison: one.poison, medic: one.medic, fury: one.fury, guard: one.guard, skills: one.skills }
+        const card: Card = { uid: `${now.seq + 1}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt, cleave: one.cleave, shot: one.shot, charm: one.charm, sound: one.sound, poison: one.poison, medic: one.medic, fury: one.fury, scorch: one.scorch, bomb: one.bomb, guard: one.guard, skills: one.skills }
         const group = card.summon ? [...now.board.summons] : [...now.board.heroes]
         if (group.length >= roomOf(card.summon)) return now
         group.splice(slot < 0 ? group.length : Math.min(slot, group.length), 0, card)
@@ -1428,7 +1428,9 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       else if (group === 'skill') {
         const skill = costs.get(name)
         lines.push({ ...base, kind: 'skill', head: t(`arena.skill.${name}` as UiKey), text: t(`arena.skill.${name}.hint` as UiKey, { beast: (skill?.beast && byId.get(skill.beast)?.name) || '' }), cost: skill?.cost })
-      } else if (group === 'guard') lines.push({ ...base, kind: 'guard', head: t('arena.guard'), text: t('arena.tip.guard.self') })
+      } else if (group === 'grow' || group === 'feed' || group === 'avenge')
+        lines.push({ ...base, kind: group, head: t(`arena.${group}` as UiKey), text: t(`arena.tip.${group}` as UiKey, { clan: t(`arena.clan.${row.scope}` as UiKey), stats: short(row.atk ?? 0, row.hp ?? 0) }) })
+      else if (group === 'guard') lines.push({ ...base, kind: 'guard', head: t('arena.guard'), text: t('arena.tip.guard.self') })
       else if (group === 'medic') lines.push({ ...base, kind: 'medic', head: t('arena.medic'), text: t('arena.tip.medic', { n: row.n ?? 1 }) })
       else lines.push({ ...base, kind: group, head: t(`arena.${group}` as UiKey), text: t(`arena.tip.${group}` as UiKey) })
     }
@@ -1489,7 +1491,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         const tech = hit && now?.from === card.uid && !!now?.ability && TECH.has(now.ability) ? now.ability : null
         const struck = hit && !dodging && !blocked && !mirrored && !!now?.damage && (now?.to === card.uid || !!now?.splash?.includes(card.uid) || now?.swapTo === card.uid)
         const face = (
-          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} />
+          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} />
         )
         const swallowed = !!now?.sealed?.includes(card.uid)
         const clips = dying && !swallowed ? tearOf(seedOf(card.uid)) : null
@@ -1525,7 +1527,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                   </span>
                 </span>
               ) : (
-                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} />
+                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} />
               )}
               {struck && !blasted && !burning && !falling && <Slash seed={seedOf(card.uid)} />}
               {shocked && <RaikiriFx />}
@@ -1693,24 +1695,58 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           </em>
         </span>
       </button>
+
+      <button
+        type="button"
+        className={`ar-tool is-freeze ${view.frozen ? 'is-frozen' : ''}`}
+        disabled={waiting}
+        aria-pressed={!!view.frozen}
+        title={t(view.frozen ? 'arena.unfreeze' : 'arena.freeze')}
+        aria-label={t(view.frozen ? 'arena.unfreeze' : 'arena.freeze')}
+        onClick={() => send({ action: 'freeze' })}
+      >
+        <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
+          <polygon points={BADGE_POINTS} vectorEffect="non-scaling-stroke" />
+        </svg>
+        <span>
+          <SnowIcon />
+        </span>
+      </button>
     </div>
   )
 
   const shop = () => (
     <div className="ar-shop-stack">
-      <ul className="ar-row is-shop">
+      <ul className={`ar-row is-shop ${view.frozen ? 'is-frozen' : ''}`}>
         {view.tavern.map((one, i) => {
           const nth = view.tavern.slice(0, i).filter((other) => other.id === one.id).length
           const poor = one.cost > view.coins
-          const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt, cleave: one.cleave, shot: one.shot, charm: one.charm, sound: one.sound, poison: one.poison, medic: one.medic, fury: one.fury, guard: one.guard }
+          const card: Card = { uid: `shop${i}`, id: one.id, rarity: one.rarity, atk: one.atk, hp: one.hp, max: one.hp, summon: one.summon, tier: one.tier, taunt: one.taunt, cleave: one.cleave, shot: one.shot, charm: one.charm, sound: one.sound, poison: one.poison, medic: one.medic, fury: one.fury, scorch: one.scorch, bomb: one.bomb, guard: one.guard }
           return (
             <li
               key={`${deal}:${one.id}:${nth}`}
               style={{ '--i': i, '--wait': `${dealWait}ms` } as CSSProperties}
               className={`is-held ${poor ? 'is-poor' : ''}`}
             >
+              {!!one.skills?.length && (
+                <span className="ar-skills is-shop">
+                  {one.skills.map((skill) => (
+                    <span
+                      key={skill.key}
+                      className="ar-skill is-static"
+                      title={`${t(`arena.skill.${skill.key}` as UiKey)}: ${t(`arena.skill.${skill.key}.hint` as UiKey, { beast: (skill.beast && byId.get(skill.beast)?.name) || '' })}`}
+                    >
+                      <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
+                        <polygon points={BADGE_POINTS} vectorEffect="non-scaling-stroke" />
+                      </svg>
+                      <i className="ar-orb is-full" />
+                      <b>{skill.cost}</b>
+                    </span>
+                  ))}
+                </span>
+              )}
               <span className="ar-move" onPointerDown={poor ? undefined : take('shop', card, i)}>
-                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} charm={one.charm} sound={one.sound} poison={one.poison} medic={one.medic} fury={one.fury} guard={one.guard} />
+                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} charm={one.charm} sound={one.sound} poison={one.poison} medic={one.medic} fury={one.fury} scorch={one.scorch} bomb={one.bomb} guard={one.guard} frost={view.frozen} />
               </span>
             </li>
           )
@@ -1735,7 +1771,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           {leaving.map((one, i) => (
             <li key={`out${deal}:${i}`} style={{ '--j': leaving.length - i - (leavingSpell ? 0 : 1) } as CSSProperties}>
               <span className="ar-old">
-                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} charm={one.charm} sound={one.sound} poison={one.poison} medic={one.medic} fury={one.fury} guard={one.guard} />
+                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} charm={one.charm} sound={one.sound} poison={one.poison} medic={one.medic} fury={one.fury} scorch={one.scorch} bomb={one.bomb} guard={one.guard} />
               </span>
             </li>
           ))}
@@ -1955,7 +1991,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                         </b>
                       )}
                       <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
-                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={card.guard} dodge={card.dodge} boost={card.boost} />
+                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={card.guard} dodge={card.dodge} boost={card.boost} />
                       </span>
                     </li>
                   ))}
@@ -1967,7 +2003,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                     return card ? (
                       <li key={card.uid}>
                         <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
-                          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={card.guard} dodge={card.dodge} />
+                          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={card.guard} dodge={card.dodge} />
                         </span>
                       </li>
                     ) : (
@@ -1998,9 +2034,19 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                 <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
               </svg>
               {!!view.clans?.length && (
-                <p className="ar-synergy-match">
-                  {t('arena.matchClans')}: {view.clans.map((one) => t(`arena.clan.${one}` as UiKey)).join(', ')}
-                </p>
+                <div className="ar-synergy-match">
+                  <b>{t('arena.matchClans')}</b>
+                  <span>
+                    {Object.keys(ARENA_CLANS).map((one) => {
+                      const live = view.clans!.includes(one)
+                      return (
+                        <i key={one} className={live ? 'is-live' : 'is-out'} title={live ? undefined : t('arena.clanOut')}>
+                          {t(`arena.clan.${one}` as UiKey)}
+                        </i>
+                      )
+                    })}
+                  </span>
+                </div>
               )}
               <span className="ar-synergy-top">
                 <b className="ar-synergy-head">{t('arena.synergy')}</b>
@@ -2070,7 +2116,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                       {card.spell ? (
                         <SpellFace kind={card.spell} />
                       ) : (
-                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} guard={card.guard} dodge={card.dodge} />
+                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={card.guard} dodge={card.dodge} />
                       )}
                     </span>
                   </li>
