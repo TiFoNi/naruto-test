@@ -404,7 +404,8 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       window.localStorage.setItem(BONUS_KEY, open ? 'open' : 'closed')
     } catch {}
   }, [])
-  const [cheer, setCheer] = useState<{ to: string[]; label: string; at: number } | null>(null)
+  const [cheer, setCheer] = useState<{ labels: Record<string, string>; at: number } | null>(null)
+  const [pendingCheer, setPendingCheer] = useState<{ labels: Record<string, string>; at: number } | null>(null)
   const tipBox = useRef<HTMLDivElement | null>(null)
 
   useLayoutEffect(() => {
@@ -477,14 +478,27 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
     })
   }, [demo, scene])
 
-  const cryKey = view?.cried ? `${view.cried.from}:${view.cried.to.join(',')}` : ''
-  const lastCry = useRef('')
+  const buffAt = view?.buffAt ?? 0
+  const lastBuff = useRef<number | null>(null)
   useEffect(() => {
-    if (!cryKey || cryKey === lastCry.current || !view?.cried) return
-    lastCry.current = cryKey
-    const { to, atk, hp } = view.cried
-    if (to.length) setCheer({ to, label: atk && hp ? `+${atk}/+${hp}` : atk ? `+${atk}` : `+${hp} ♥`, at: Date.now() })
-  }, [cryKey, view?.cried])
+    if (!view) return
+    if (lastBuff.current === null) {
+      lastBuff.current = buffAt
+      return
+    }
+    if (buffAt === lastBuff.current) return
+    lastBuff.current = buffAt
+    const list = view.buffs ?? []
+    if (list.length) setPendingCheer({ labels: Object.fromEntries(list.map(({ to, atk, hp }) => [to, atk && hp ? `+${atk}/+${hp}` : atk ? `+${atk}` : `+${hp} ♥`])), at: Date.now() })
+  }, [buffAt, view])
+  useEffect(() => {
+    if (!pendingCheer || fight) return
+    const timer = window.setTimeout(() => {
+      setCheer({ ...pendingCheer, at: Date.now() })
+      setPendingCheer(null)
+    }, 120)
+    return () => window.clearTimeout(timer)
+  }, [pendingCheer, fight])
   useEffect(() => {
     if (!cheer) return
     const timer = window.setTimeout(() => setCheer(null), 1300)
@@ -1985,10 +1999,13 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                         </span>
                       )}
                       {card.captain && <b className="ar-captain">{t('arena.captain')}</b>}
-                      {cheer?.to.includes(card.uid) && (
-                        <b key={cheer.at} className="ar-cheer" aria-hidden>
-                          {cheer.label}
-                        </b>
+                      {cheer?.labels[card.uid] && (
+                        <>
+                          <b key={cheer.at} className="ar-cheer" aria-hidden>
+                            {cheer.labels[card.uid]}
+                          </b>
+                          <i key={`f${cheer.at}`} className="ar-buff-flash" aria-hidden />
+                        </>
                       )}
                       <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
                         <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={card.guard} dodge={card.dodge} boost={card.boost} />

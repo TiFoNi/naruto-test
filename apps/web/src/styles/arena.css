@@ -4933,6 +4933,32 @@
   position: relative;
 }
 
+.ar-buff-flash {
+  position: absolute;
+  inset: 2% 4%;
+  z-index: 11;
+  border-radius: 8px;
+  background: radial-gradient(ellipse at 50% 55%, rgba(140, 255, 170, 0.55), rgba(140, 255, 170, 0) 70%);
+  box-shadow: 0 0 22px 4px rgba(125, 255, 158, 0.55);
+  pointer-events: none;
+  animation: ar-buff-flash 0.9s ease-out forwards;
+}
+
+@keyframes ar-buff-flash {
+  0% {
+    opacity: 0;
+    scale: 0.92;
+  }
+  25% {
+    opacity: 1;
+    scale: 1.03;
+  }
+  100% {
+    opacity: 0;
+    scale: 1;
+  }
+}
+
 .ar-synergy-x {
   position: absolute;
   top: 8px;

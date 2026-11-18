@@ -619,6 +619,8 @@ export type ArenaDoc = {
   clans?: string[]
   frozen?: boolean
   cried?: { from: string; to: string[]; atk: number; hp: number } | null
+  buffs?: { to: string; atk: number; hp: number }[] | null
+  buffAt?: number
   foeUp?: number
   steps: ArenaStep[]
   opened?: { hp: number; foeHp: number }

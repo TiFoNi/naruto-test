@@ -265,7 +265,7 @@ const oneClanStats = (aura: Aura, tier: number) => {
   if (aura.clan === 'otsutsuki') return { atk: more, hp: more }
   if (aura.clan === 'uchiha') return { atk: more, hp: 0 }
   if (aura.clan === 'hyuga') return { atk: 1, hp: 0 }
-  if (aura.clan === 'ishc') return { atk: 0, hp: more * 2 }
+  if (aura.clan === 'ishc') return { atk: 0, hp: more }
   return { atk: 0, hp: 0 }
 }
 
@@ -720,58 +720,68 @@ export function castSpell(doc: ArenaDoc, uid: string, target: string) {
   return true
 }
 
-const feast = (side: ArenaSide, card: ArenaCard) => {
+type Buff = { to: string; atk: number; hp: number }
+
+const bless = (one: ArenaCard, atk: number, hp: number, out: Buff[]) => {
+  one.atk += atk
+  one.hp += hp
+  one.max += hp
+  out.push({ to: one.uid, atk, hp })
+}
+
+const pulse = (doc: ArenaDoc, list: Buff[]) => {
+  const sum = new Map<string, Buff>()
+  for (const one of list) {
+    const was = sum.get(one.to) ?? { to: one.to, atk: 0, hp: 0 }
+    sum.set(one.to, { to: one.to, atk: was.atk + one.atk, hp: was.hp + one.hp })
+  }
+  doc.buffs = [...sum.values()].filter((one) => one.atk || one.hp)
+  doc.buffAt = (doc.buffAt ?? 0) + 1
+}
+
+const feast = (side: ArenaSide, card: ArenaCard, out: Buff[]) => {
   if (card.summon) return
   for (const one of side.heroes) {
     if (one.uid === card.uid) continue
     const rule = engine(feeders, one)
-    if (!rule || !inClan(card.id, rule[0])) continue
-    one.atk += rule[1]
-    one.hp += rule[2]
-    one.max += rule[2]
+    if (rule && inClan(card.id, rule[0])) bless(one, rule[1], rule[2], out)
   }
 }
 
-const growAll = (side: ArenaSide) => {
+const growAll = (side: ArenaSide, out: Buff[]) => {
   for (const one of side.heroes) {
     const rule = engine(growers, one)
     if (!rule) continue
     const kin = side.heroes.filter((other) => other.uid !== one.uid && inClan(other.id, rule[0]))
-    if (!kin.length) continue
-    const lucky = pickOne(kin)
-    lucky.atk += rule[1]
-    lucky.hp += rule[2]
-    lucky.max += rule[2]
+    if (kin.length) bless(pickOne(kin), rule[1], rule[2], out)
   }
 }
 
-const shout = (doc: ArenaDoc, card: ArenaCard) => {
-  feast(doc.board, card)
+const echoing = (side: ArenaSide) => side.heroes.some((one) => doublers.has(one.id) && !one.summon && reachOf(one.rarity, BRONZE))
+
+const shout = (doc: ArenaDoc, card: ArenaCard, side: ArenaSide = doc.board) => {
+  const out: Buff[] = []
+  feast(side, card, out)
   const cry = cries.get(card.id)
-  if (!cry || card.summon) return
-  const [reach, atk, hp] = cry
-  const mates = doc.board.heroes.filter((one) => one.uid !== card.uid)
-  const at = doc.board.heroes.indexOf(card)
-  const kin = reach in ARENA_CLANS ? mates.filter((one) => inClan(one.id, reach)) : mates
-  const times = doc.board.heroes.some((one) => doublers.has(one.id) && !one.summon && reachOf(one.rarity, BRONZE)) ? 2 : 1
-  const chosen: ArenaCard[] = []
-  for (let round = 0; round < times; round++)
-    chosen.push(
-      ...(reach === 'near'
-        ? [doc.board.heroes[at - 1], doc.board.heroes[at + 1]].filter((one): one is ArenaCard => !!one)
-        : reach === 'weakest'
-          ? mates.slice().sort((a, b) => a.atk + a.hp - (b.atk + b.hp)).slice(0, 1)
-          : kin.length
-            ? [pickOne(kin)]
-            : []),
-    )
-  for (const one of chosen) {
-    one.atk += atk
-    one.hp += hp
-    one.max += hp
+  if (cry && !card.summon) {
+    const [reach, atk, hp] = cry
+    const mates = side.heroes.filter((one) => one.uid !== card.uid)
+    const at = side.heroes.indexOf(card)
+    const kin = reach in ARENA_CLANS ? mates.filter((one) => inClan(one.id, reach)) : mates
+    const times = echoing(side) ? 2 : 1
+    for (let round = 0; round < times; round++) {
+      const chosen =
+        reach === 'near'
+          ? [side.heroes[at - 1], side.heroes[at + 1]].filter((one): one is ArenaCard => !!one)
+          : reach === 'weakest'
+            ? mates.slice().sort((a, b) => a.atk + a.hp - (b.atk + b.hp)).slice(0, 1)
+            : kin.length
+              ? [pickOne(kin)]
+              : []
+      for (const one of chosen) bless(one, atk, hp, out)
+    }
   }
-  const stack = reach === 'near' || reach === 'weakest' ? times : 1
-  doc.cried = { from: card.uid, to: [...new Set(chosen.map((one) => one.uid))], atk: atk * stack, hp: hp * stack }
+  if (side === doc.board && out.length) pulse(doc, out)
 }
 
 export function playCard(doc: ArenaDoc, uid: string, to = -1) {
@@ -826,6 +836,7 @@ const BOT_TEAM = 5
 const BOT_CAPTAIN = 3
 const BOT_COUNTER = 6
 const BOT_TAUNT = 4
+const BOT_ENGINE = 6
 
 const permutations = <T>(list: T[]): T[][] =>
   list.length <= 1 ? [list] : list.flatMap((one, at) => permutations([...list.slice(0, at), ...list.slice(at + 1)]).map((rest) => [one, ...rest]))
@@ -846,7 +857,7 @@ const arrange = (side: ArenaSide) => {
   return score
 }
 
-const cardValue = (doc: ArenaDoc, card: ArenaCard, side: ArenaSide) => {
+const cardValue = (doc: ArenaDoc, card: ArenaCard, side: ArenaSide, fresh = false) => {
   const base = card.atk * 2 + card.hp
   const others = side.heroes.filter((one) => one.uid !== card.uid)
   const kin = others.filter((one) => clansOf(one.id).some((clan) => inClan(card.id, clan))).length
@@ -854,7 +865,15 @@ const cardValue = (doc: ArenaDoc, card: ArenaCard, side: ArenaSide) => {
   const captain = captains.has(card.id) ? BOT_CAPTAIN : 0
   const counter = doc.board.heroes.some((foe) => counters.some((rule) => rule.by.includes(card.id) && hits(rule, foe))) ? BOT_COUNTER : 0
   const taunt = guards(card) && others.filter(guards).length < 2 ? BOT_TAUNT : 0
-  return base + kin * BOT_CLAN + team * BOT_TEAM + captain + counter + taunt + skillsOf(card.id, card.rarity).length * 3
+  const cry = cries.get(card.id)
+  const shouts = fresh && cry ? (cry[1] * 2 + cry[2]) * (cry[0] === 'near' ? 2 : 1) * (echoing(side) ? 2 : 1) : 0
+  const motor = [growers, feeders, avengers].some((map) => engine(map, card)) ? BOT_ENGINE : 0
+  const echo = doublers.has(card.id) ? others.filter((one) => cries.has(one.id)).length * 2 + BOT_ENGINE : 0
+  const fed = others.filter((one) => {
+    const rule = engine(feeders, one)
+    return !!rule && inClan(card.id, rule[0])
+  }).length * 3
+  return base + kin * BOT_CLAN + team * BOT_TEAM + captain + counter + taunt + skillsOf(card.id, card.rarity).length * 3 + shouts + motor + echo + fed
 }
 
 const noisy = (value: number) => value * (1 - BOT_NOISE + Math.random() * BOT_NOISE * 2)
@@ -885,7 +904,7 @@ function botTurn(doc: ArenaDoc) {
   const priced = (id: number) => {
     doc.seq += 1
     const card = makeCard(id, rarityOf(doc.foeRanks, id), doc.summons.includes(id), doc.seq, false, powerOf(doc.foePowers, id))
-    return { id, card, value: noisy(cardValue(doc, card, doc.foeBoard)) }
+    return { id, card, value: noisy(cardValue(doc, card, doc.foeBoard, true)) }
   }
   let offers = roll(doc.pool, tier).map(priced).sort((a, b) => b.value - a.value)
   let rolls = plan === 'rush' ? 3 : 1
@@ -906,7 +925,7 @@ function botTurn(doc: ArenaDoc) {
     }
     left -= cost
     place(doc.foeBoard, pick.card)
-    feast(doc.foeBoard, pick.card)
+    shout(doc, pick.card, doc.foeBoard)
   }
 
   arrange(doc.foeBoard)
@@ -1272,13 +1291,13 @@ function fight(doc: ArenaDoc) {
       harm(target, blow)
       const heat = scorchOf(card.id, card.rarity)
       if (heat && target.hp > 0 && !warded.includes(target.uid) && !dodged.includes(target.uid)) target.burn = Math.max(target.burn ?? 0, heat)
-      if (!shotOf(card.id) && target.atk > 0 && swapFrom !== target.uid && !target.stun && card.hp > 0) {
+      if ((shotOf(card.id) ? target.atk >= 2 : target.atk > 0) && swapFrom !== target.uid && !target.stun && card.hp > 0) {
         if (card.ward) {
           card.ward = false
           warded.push(card.uid)
         } else {
           const reply = counterOf(target, onBoard(sideOf(target)), card)
-          const back = armor(card, Math.round(target.atk * reply.mul))
+          const back = armor(card, Math.round((shotOf(card.id) ? Math.floor(target.atk / 2) : target.atk) * reply.mul))
           if (reply.mul > 1) countered.push(card.uid)
           card.hp -= back
           killers.set(card.uid, target)
@@ -1509,8 +1528,6 @@ export function endTurn(doc: ArenaDoc) {
   if (doc.status !== 'playing') return doc
   botTurn(doc)
   botAbilities(doc)
-  growAll(doc.board)
-  growAll(doc.foeBoard)
   doc.armed = [...onBoard(doc.board), ...onBoard(doc.foeBoard)].filter((card) => (card.dodge ?? 0) > 0).map((card) => card.uid)
   fight(doc)
   for (const card of [...onBoard(doc.board), ...onBoard(doc.foeBoard)]) {
@@ -1526,6 +1543,7 @@ export function endTurn(doc: ArenaDoc) {
       card.max += VETERAN_HP
     }
   doc.cried = null
+  doc.buffs = null
   const settled = Date.now() + replayMs(doc.steps ?? [])
   doc.fightEndsAt = new Date(settled)
   doc.turnEndsAt = turnFrom(settled, doc.turn + 1)
@@ -1537,6 +1555,10 @@ export function endTurn(doc: ArenaDoc) {
   doc.chakra = doc.chakraCap
   doc.shopTier = tavernOf(doc)
   doc.up = Math.max(ARENA_UP_MIN, upCostOf(doc) - 1)
+  const grown: Buff[] = []
+  growAll(doc.board, grown)
+  growAll(doc.foeBoard, [])
+  if (grown.length) pulse(doc, grown)
   const kept = doc.frozen ? doc.tavern : []
   doc.tavern = [...kept, ...roll(doc.pool, doc.shopTier, doc.tavern)].slice(0, Math.max(ARENA_TAVERN, kept.length))
   if (!doc.frozen || !doc.spellOffer) doc.spellOffer = offerSpell()
@@ -1630,6 +1652,8 @@ export const arenaView = (doc: ArenaDoc) => ({
   synergy: synergyOf(doc.board),
   clans: doc.clans ?? [],
   cried: doc.cried ?? null,
+  buffs: doc.buffs ?? null,
+  buffAt: doc.buffAt ?? 0,
   frozen: !!doc.frozen,
   crew: crewOf(doc.board),
   kits: kitsOf([...doc.tavern, ...doc.hand.filter((card) => !card.spell).map((card) => card.id), ...onBoard(doc.board).map((card) => card.id), ...onBoard(doc.foeBoard).map((card) => card.id), ...(doc.steps ?? []).flatMap((step) => [...step.mine, ...step.theirs].map((card) => card.id))]),

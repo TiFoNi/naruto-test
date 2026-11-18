@@ -73,6 +73,8 @@ export type ArenaView = {
   kits?: Record<string, LadderRow[]>
   clans?: string[]
   cried?: { from: string; to: string[]; atk: number; hp: number } | null
+  buffs?: { to: string; atk: number; hp: number }[] | null
+  buffAt?: number
   frozen?: boolean
   crew?: { captain: { id: number; scope: string; atk: number; hp: number } | null; teams: { key: string; ids: number[]; atk: number; hp: number; have: number; on: boolean }[] }
 }
