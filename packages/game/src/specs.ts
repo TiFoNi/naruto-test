@@ -1244,38 +1244,45 @@ export const POLL = {
 
 export const ARENA_GAMES: GameId[] = ['naruto']
 
-export const ARENA_HP = 30
+export const ARENA_HP = 40
 export const ARENA_HERO_SLOTS = 5
 export const ARENA_SUMMON_SLOTS = 2
 export const ARENA_HAND = 6
+
+export const ARENA_SKILL_CAP = 3
 export const ARENA_TAVERN = 5
 export const ARENA_COIN_MAX = 10
 export const ARENA_COIN_START = 3
 export const ARENA_CHAKRA_MAX = 10
 export const ARENA_CHAKRA_START = 1
 
-export const ARENA_ABILITIES = { genjutsu: 2, amaterasu: 4, swap: 3, mind: 3, sonic: 1, summon: 3, revive: 3, limbo: 5, clay: 2, sacrifice: 3 } as const
+export const ARENA_ABILITIES = { genjutsu: 2, amaterasu: 5, swap: 3, mind: 4, sonic: 1, summon: 3, revive: 3, limbo: 5, clay: 2, sacrifice: 3 } as const
 
-export const ARENA_CLANS = {
-  konoha: { need: 2, cap: 4 },
-  akatsuki: { need: 3, cap: 5 },
-  oto: { need: 2, cap: 5 },
-  kumo: { need: 2, cap: 5 },
-  kiri: { need: 3, cap: 5 },
-  suna: { need: 3, cap: 5 },
-  iwa: { need: 3, cap: 5 },
-  root: { need: 3, cap: 5 },
-  otsutsuki: { need: 2, cap: 5 },
-  uchiha: { need: 2, cap: 5 },
-  hyuga: { need: 3, cap: 5 },
-  ishc: { need: 3, cap: 3 },
-  hokage: { need: 2, cap: 5 },
-  youth: { need: 2, cap: 4 },
-} as const
+export type ArenaClan = 'konoha' | 'akatsuki' | 'oto' | 'kumo' | 'kiri' | 'suna' | 'iwa' | 'root' | 'otsutsuki' | 'uchiha' | 'hyuga' | 'ishc' | 'hokage' | 'youth'
+
+export type ArenaClanRule = { need: number; cap: number; grow?: readonly [number, number]; full?: number }
+
+export const ARENA_FULL_BONUS = 2
+
+export const ARENA_CLANS: Record<ArenaClan, ArenaClanRule> = {
+  konoha: { need: 2, cap: 5 },
+  akatsuki: { need: 3, cap: 5, grow: [1, 0], full: 4 },
+  oto: { need: 2, cap: 5, full: 4 },
+  kumo: { need: 2, cap: 5, grow: [1, 0], full: 4 },
+  kiri: { need: 2, cap: 5, full: 4 },
+  suna: { need: 3, cap: 5, full: 4 },
+  iwa: { need: 3, cap: 5, full: 4 },
+  root: { need: 3, cap: 5, full: 4 },
+  otsutsuki: { need: 2, cap: 5, grow: [1, 1], full: 4 },
+  uchiha: { need: 2, cap: 5, grow: [1, 1], full: 4 },
+  hyuga: { need: 3, cap: 5, full: 4 },
+  ishc: { need: 3, cap: 3, grow: [1, 1], full: 3 },
+  hokage: { need: 2, cap: 5, grow: [1, 2], full: 4 },
+  youth: { need: 2, cap: 4, full: 4 },
+}
 
 export const ARENA_ROTATION = 6
 
-export type ArenaClan = keyof typeof ARENA_CLANS
 
 export type ArenaAbility = keyof typeof ARENA_ABILITIES
 export const ARENA_CARD_COST = 3

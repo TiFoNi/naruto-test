@@ -8,7 +8,7 @@ import { BACK_POINTS, BADGE_POINTS, DexFace } from './DexCard'
 import { HeartIcon } from './icons'
 import type { Entity, GameId } from './games/types'
 
-export type Card = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; tier?: number; taunt?: boolean; cleave?: boolean; shot?: string | null; spell?: string; dodge?: number; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; fury?: boolean; scorch?: boolean; bomb?: boolean; guard?: string | null; ward?: string | false; ghost?: boolean; stun?: boolean; skills?: { key: string; cost: number; beast?: number | null }[]; armed?: string[]; heal?: number; mythic?: string | null; clan?: string | null; boost?: { atk: number; hp: number }; aim?: string; captain?: boolean; burn?: number; gated?: boolean; bound?: string | null; link?: string | null }
+export type Card = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; tier?: number; taunt?: boolean; cleave?: boolean; shot?: string | null; spell?: string; dodge?: number; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; fury?: boolean; scorch?: boolean; bomb?: boolean; guard?: string | null; ward?: string | false; ghost?: boolean; stun?: boolean; skills?: { key: string; cost: number; beast?: number | null }[]; armed?: string[]; heal?: number; mythic?: string | null; clan?: string | null; boost?: { atk: number; hp: number }; aim?: string; captain?: boolean; burn?: number; gated?: boolean; bound?: string | null; link?: string | null; clone?: boolean; fake?: boolean }
 export type Side = { heroes: Card[]; summons: Card[] }
 export type Offer = { id: number; rarity: CardRarity; cost: number; atk: number; hp: number; summon: boolean; tier: number; taunt?: boolean; cleave?: boolean; shot?: string | null; charm?: boolean; sound?: boolean; poison?: boolean; medic?: boolean; fury?: boolean; scorch?: boolean; bomb?: boolean; guard?: string | null; skills?: { key: string; cost: number; beast?: number | null }[]; heal?: number; mythic?: string | null; clan?: string | null }
 export type Step = {
@@ -73,7 +73,8 @@ export type ArenaView = {
   kits?: Record<string, LadderRow[]>
   clans?: string[]
   cried?: { from: string; to: string[]; atk: number; hp: number } | null
-  buffs?: { to: string; atk: number; hp: number }[] | null
+  buffs?: { to: string; atk: number; hp: number; coin?: number; chakra?: number }[] | null
+  discover?: Offer[]
   buffAt?: number
   frozen?: boolean
   crew?: { captain: { id: number; scope: string; atk: number; hp: number } | null; teams: { key: string; ids: number[]; atk: number; hp: number; have: number; on: boolean }[] }
@@ -123,6 +124,8 @@ export const ArenaFace = memo(function ArenaFace({
   guard,
   shield,
   frost,
+  clone,
+  fake,
   ghost,
   boost,
 }: {
@@ -142,6 +145,8 @@ export const ArenaFace = memo(function ArenaFace({
   sound?: boolean
   poison?: boolean
   medic?: boolean
+  clone?: boolean
+  fake?: boolean
   frost?: boolean
   fury?: boolean
   scorch?: boolean
@@ -156,7 +161,7 @@ export const ArenaFace = memo(function ArenaFace({
   return (
     <span
       data-tip={JSON.stringify({ id: entity.id, rarity: rarity ?? 'paper', shot, dodge })}
-      className={`arena-card ${summon ? 'is-summon' : ''} ${triple ? 'is-triple' : ''} ${shield ? 'is-shielded' : ''} ${ghost ? 'is-ghost' : ''}`}
+      className={`arena-card ${summon ? 'is-summon' : ''} ${triple ? 'is-triple' : ''} ${shield ? 'is-shielded' : ''} ${ghost ? 'is-ghost' : ''} ${fake ? 'is-fake' : ''}`}
       style={{ '--tilt': `${(((entity.id * 7919) % 9) - 4) * 0.55}deg` } as CSSProperties}
     >
       <DexFace game={game} id={entity.id} image={entity.image} label={oneWord(entity.name)} tier={Math.max(0, tierOf(rarity ?? 'paper'))} seed={ARENA_SHAPE}>
@@ -181,6 +186,7 @@ export const ArenaFace = memo(function ArenaFace({
         {bomb && <span className="ar-taunt is-bomb">{t('arena.bomb')}</span>}
         {guard && <span className="ar-taunt is-guard">{t('arena.guard')}</span>}
         {!!dodge && <span className="ar-taunt is-dodge">{t('arena.dodge')}</span>}
+        {clone && <span className="ar-taunt is-clone">{t('arena.clone')}</span>}
         {shield ? <Ward look={shield} /> : frost ? <Ward frost /> : null}
         <span className="ar-stats">
           <span className={`is-atk ${boost?.atk ? 'is-boosted' : ''}`}>

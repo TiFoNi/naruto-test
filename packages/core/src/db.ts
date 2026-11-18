@@ -549,7 +549,7 @@ export async function plays(): Promise<Collection<PlayDoc>> {
   return collection
 }
 
-export type ArenaCard = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; spell?: string; dodge?: number; stun?: boolean; armed?: string[]; burn?: number; swap?: boolean; bound?: string | null; link?: string | null; sonic?: boolean; ward?: string | false; ghost?: boolean; aim?: string; clay?: boolean; opened?: boolean; cursed?: boolean; reborn?: boolean; mirror?: boolean; gated?: boolean; mist?: boolean; boost?: { atk: number; hp: number }; vet?: number }
+export type ArenaCard = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; spell?: string; dodge?: number; stun?: boolean; armed?: string[]; burn?: number; swap?: boolean; bound?: string | null; link?: string | null; sonic?: boolean; ward?: string | false; ghost?: boolean; aim?: string; clay?: boolean; opened?: boolean; cursed?: boolean; reborn?: boolean; mirror?: boolean; gated?: boolean; mist?: boolean; boost?: { atk: number; hp: number }; vet?: number; clone?: boolean; fake?: boolean }
 
 export type ArenaSide = { heroes: ArenaCard[]; summons: ArenaCard[] }
 
@@ -616,10 +616,12 @@ export type ArenaDoc = {
   up?: number
   foeShop?: number
   foePlan?: 'rush' | 'greedy' | 'steady'
+  foeClan?: string | null
   clans?: string[]
   frozen?: boolean
   cried?: { from: string; to: string[]; atk: number; hp: number } | null
-  buffs?: { to: string; atk: number; hp: number }[] | null
+  buffs?: { to: string; atk: number; hp: number; coin?: number; chakra?: number }[] | null
+  discover?: number[] | null
   buffAt?: number
   foeUp?: number
   steps: ArenaStep[]
