@@ -1561,9 +1561,10 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         : t('arena.tip.captain.clan', { clan: t(`arena.clan.${scope}` as UiKey), stats: statsText(atk, hp) })
 
   const clanExtra = (clan: string) => {
-    const rule = (ARENA_CLANS as Record<string, { grow?: readonly [number, number]; full?: number }>)[clan]
+    const rule = (ARENA_CLANS as Record<string, { grow?: readonly [number, number]; every?: number; full?: number }>)[clan]
     if (!rule) return ''
-    const grow = rule.grow ? t('arena.clanGrow', { stats: `+${rule.grow[0]}/+${rule.grow[1]}` }) : ''
+    const stats = rule.grow ? `+${rule.grow[0]}/+${rule.grow[1]}` : ''
+    const grow = !rule.grow ? '' : rule.every && rule.every > 1 ? t('arena.clanGrowEvery', { n: rule.every, stats }) : t('arena.clanGrow', { stats })
     const full = rule.full ? t('arena.clanFull', { n: rule.full, b: ARENA_FULL_BONUS }) : ''
     return [grow, full].filter(Boolean).join(' ')
   }

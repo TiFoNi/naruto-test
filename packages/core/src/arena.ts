@@ -278,6 +278,7 @@ const oneClanStats = (aura: Aura, tier: number) => {
   if (aura.clan === 'hyuga') return { atk: 1, hp: 1 }
   if (aura.clan === 'kiri') return { atk: 1, hp: 2 }
   if (aura.clan === 'ishc') return { atk: 2, hp: 4 }
+  if (aura.clan === 'youth') return { atk: 0, hp: 2 }
   return { atk: 0, hp: 0 }
 }
 
@@ -827,12 +828,12 @@ const growAll = (side: ArenaSide, out: Buff[], tavern: number) => {
   }
 }
 
-const clanGrow = (side: ArenaSide, out: Buff[]) => {
+const clanGrow = (side: ArenaSide, turn: number, out: Buff[]) => {
   const { out: auras } = aurasOf(side)
   for (const one of side.heroes)
     for (const aura of auras.get(one.uid) ?? []) {
-      const grow = ARENA_CLANS[aura.clan].grow
-      if (grow) bless(one, grow[0], grow[1], out)
+      const { grow, every = 1 } = ARENA_CLANS[aura.clan]
+      if (grow && turn % every === 0) bless(one, grow[0], grow[1], out)
     }
 }
 
@@ -1914,8 +1915,8 @@ export function endTurn(doc: ArenaDoc) {
   doc.shopTier = tavernOf(doc)
   doc.up = Math.max(ARENA_UP_MIN, upCostOf(doc) - 1)
   const grown: Buff[] = []
-  clanGrow(doc.board, grown)
-  clanGrow(doc.foeBoard, [])
+  clanGrow(doc.board, doc.turn, grown)
+  clanGrow(doc.foeBoard, doc.turn, [])
   for (const one of doc.board.heroes) {
     const gain = !one.summon && reach(one.rarity, BRONZE) ? earners.get(one.id) : undefined
     if (!gain) continue

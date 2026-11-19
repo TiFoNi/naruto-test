@@ -1260,13 +1260,13 @@ export const ARENA_ABILITIES = { genjutsu: 2, amaterasu: 5, swap: 3, mind: 4, so
 
 export type ArenaClan = 'konoha' | 'akatsuki' | 'oto' | 'kumo' | 'kiri' | 'suna' | 'iwa' | 'root' | 'otsutsuki' | 'uchiha' | 'hyuga' | 'ishc' | 'hokage' | 'youth'
 
-export type ArenaClanRule = { need: number; cap: number; grow?: readonly [number, number]; full?: number }
+export type ArenaClanRule = { need: number; cap: number; grow?: readonly [number, number]; every?: number; full?: number }
 
 export const ARENA_FULL_BONUS = 2
 
 export const ARENA_CLANS: Record<ArenaClan, ArenaClanRule> = {
   konoha: { need: 2, cap: 5, full: 5 },
-  akatsuki: { need: 3, cap: 5, grow: [1, 0], full: 4 },
+  akatsuki: { need: 3, cap: 5, grow: [1, 0], every: 2, full: 4 },
   oto: { need: 2, cap: 5, full: 4 },
   kumo: { need: 2, cap: 5, grow: [1, 1], full: 4 },
   kiri: { need: 2, cap: 5, full: 4 },
@@ -1275,8 +1275,8 @@ export const ARENA_CLANS: Record<ArenaClan, ArenaClanRule> = {
   root: { need: 3, cap: 5, full: 4 },
   otsutsuki: { need: 2, cap: 5, grow: [1, 1], full: 4 },
   uchiha: { need: 2, cap: 5, grow: [1, 1], full: 4 },
-  hyuga: { need: 3, cap: 5, full: 4 },
-  ishc: { need: 3, cap: 3, grow: [1, 1] },
+  hyuga: { need: 2, cap: 5, full: 4 },
+  ishc: { need: 2, cap: 3, grow: [1, 1], full: 3 },
   hokage: { need: 2, cap: 5 },
   youth: { need: 2, cap: 4, full: 3 },
 }
