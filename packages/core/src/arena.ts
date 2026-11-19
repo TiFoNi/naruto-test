@@ -759,7 +759,6 @@ const enchant = (doc: ArenaDoc, spell: string, aim: ArenaCard) => {
   }
   if (spell === 'clone') {
     if (aim.summon || aim.clone || !doc.board.heroes.includes(aim)) return false
-    if (doc.board.heroes.length + doc.board.heroes.filter((one) => one.clone).length >= ARENA_HERO_SLOTS) return false
     aim.clone = true
     return true
   }
@@ -1059,7 +1058,7 @@ function botTurn(doc: ArenaDoc) {
   const spell = offerSpell()
   const star = doc.foeBoard.heroes.slice().sort((x, y) => y.atk * 2 + y.hp - (x.atk * 2 + x.hp))[0]
   if (spell && star && left >= ARENA_SPELL_COST && Math.random() < BOT_SPELL_CHANCE) {
-    if (spell === 'clone' && doc.foeBoard.heroes.length < ARENA_HERO_SLOTS) star.clone = true
+    if (spell === 'clone') star.clone = true
     else if (!star.dodge) star.dodge = 1
   }
 
@@ -1107,14 +1106,19 @@ function fight(doc: ArenaDoc) {
     }
   }
 
+  const twinOf = (one: ArenaCard): ArenaCard => ({ ...one, uid: `${one.uid}~`, hp: 1, max: 1, fake: true, clone: false, armed: [], ward: false, dodge: 0, aim: undefined, mist: false, bound: null, link: null, shade: false, chained: 0, burn: 0, stun: false })
+  const waiting = new Map<ArenaSide, ArenaCard[]>()
   for (const side of [ours, foes]) {
     const line: ArenaCard[] = []
+    const late: ArenaCard[] = []
     for (const one of side.heroes) {
       line.push(one)
-      if (one.clone && line.length < ARENA_HERO_SLOTS)
-        line.push({ ...one, uid: `${one.uid}~`, hp: 1, max: 1, fake: true, clone: false, armed: [], ward: false, dodge: 0, aim: undefined, mist: false })
+      if (!one.clone) continue
+      if (side.heroes.length + line.filter((other) => other.fake).length < ARENA_HERO_SLOTS) line.push(twinOf(one))
+      else late.push(one)
     }
     side.heroes = line.slice(0, ARENA_HERO_SLOTS)
+    if (late.length) waiting.set(side, late)
   }
 
   const crewSize = (side: ArenaSide) => onBoard(side).length
@@ -1223,6 +1227,12 @@ function fight(doc: ArenaDoc) {
               mate.max += rule[2] * k
             }
         }
+        const late = waiting.get(side)
+        const owner = late?.find((one) => one.hp > 0 && side.heroes.includes(one))
+        if (late && owner) {
+          late.splice(late.indexOf(owner), 1)
+          graves.push({ side, card: twinOf(owner), at, by: owner, hp: 1, kind: 'clone' })
+        }
       }
     }
     drop(ours)
@@ -1246,7 +1256,7 @@ function fight(doc: ArenaDoc) {
         side.heroes.splice(Math.min(at, side.heroes.length), 0, card)
         worn.set(card.uid, firstWorn.get(card.uid) ?? { atk: 0, hp: 0 })
         regear()
-        steps.push({ from: by.uid, to: card.uid, risen: card.uid, ability: kind, damage: 0, dead: false, foe: isFoe(side), ...snap() })
+        steps.push({ from: by.uid, to: card.uid, ...(kind === 'clone' ? { summoned: [card.uid] } : { risen: card.uid }), ability: kind, damage: 0, dead: false, foe: isFoe(side), ...snap() })
         continue
       }
       const echo = echoes.shift()

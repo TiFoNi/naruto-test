@@ -92,12 +92,38 @@ const SCENES: [string, UiKey][] = [
   ['fury', 'arena.fury'],
   ['cleave', 'arena.myth.cleave'],
   ['shots', 'arena.ranged'],
+  ['dimension', 'arena.myth.dimension'],
+  ['sixpaths', 'arena.myth.sixpaths'],
+  ['tenseigan', 'arena.myth.tenseigan'],
+  ['shed', 'arena.myth.shed'],
+  ['lava', 'arena.myth.lava'],
+  ['coffin', 'arena.myth.coffin'],
+  ['hellfist', 'arena.myth.hellfist'],
+  ['paperbomb', 'arena.myth.paperbomb'],
+  ['puppet', 'arena.myth.puppet'],
+  ['gates2', 'arena.myth.gates2'],
+  ['salamander', 'arena.myth.salamander'],
+  ['jugo', 'arena.myth.curse'],
+  ['benihisago', 'arena.myth.benihisago'],
+  ['izanagi', 'arena.myth.izanagi'],
+  ['wind', 'arena.myth.wind'],
+  ['chains', 'arena.myth.chains'],
+  ['edo', 'arena.myth.edo'],
+  ['koto', 'arena.myth.koto'],
+  ['armor', 'arena.myth.armor'],
+  ['jinton', 'arena.myth.jinton'],
+  ['shadow', 'arena.skill.shadow'],
+  ['clone', 'arena.spell.clone'],
+  ['kawarimi', 'arena.spell.kawarimi'],
+  ['scorch', 'arena.scorch'],
+  ['bomb', 'arena.bomb'],
+  ['slash', 'arena.slash'],
 ]
 
 const spellFits = (kind: string, board: { heroes: Card[]; summons: Card[] }, target: string) => {
   const aim = [...board.heroes, ...board.summons].find((one) => one.uid === target)
   if (!aim) return false
-  if (kind === 'clone') return !aim.summon && !aim.clone && board.heroes.includes(aim) && board.heroes.length + board.heroes.filter((one) => one.clone).length < ARENA_HERO_SLOTS
+  if (kind === 'clone') return !aim.summon && !aim.clone && board.heroes.includes(aim)
   return (aim.dodge ?? 0) <= 0
 }
 
@@ -1264,8 +1290,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       if (!one) return
       if (!one.live) {
         if (tipped.current) return
-        if (one.kind === 'shop') buy(one.at)
-        else if (one.kind === 'hand' && !one.spell) play(one.uid)
+        if (one.kind === 'hand' && !one.spell) play(one.uid)
         return
       }
       if (one.kind === 'hand' && one.spell) {
