@@ -33,11 +33,13 @@ const Defs = ({ id, freq, scale }: { id: string; freq: string; scale: number }) 
   </defs>
 )
 
-export const AmaterasuFx = ({ variant, lasting = false }: { variant: 'a' | 'b' | 'c' | 'd'; lasting?: boolean }) => {
-  const id = `ama-${variant}-${lasting ? 'l' : 'i'}`
+const TONES: Record<'fire' | 'lava', [string, string, string]> = { fire: ['#ffd23a', '#ff8f1f', '#ff4d0a'], lava: ['#ffb020', '#2a0802', '#d42a04'] }
+
+export const AmaterasuFx = ({ variant, lasting = false, tone }: { variant: 'a' | 'b' | 'c' | 'd'; lasting?: boolean; tone?: 'fire' | 'lava' }) => {
+  const id = `ama-${variant}-${lasting ? 'l' : 'i'}${tone ? `-${tone}` : ''}`
   if (variant === 'a')
     return (
-      <span className={`ama ama-a ${lasting ? 'is-lasting' : ''}`} aria-hidden>
+      <span className={`ama ama-a ${lasting ? 'is-lasting' : ''} ${tone ? `is-${tone}` : ''}`} aria-hidden>
         <svg className="ama-defs" width="0" height="0">
           <filter id={`${id}-goo`}>
             <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
@@ -49,7 +51,7 @@ export const AmaterasuFx = ({ variant, lasting = false }: { variant: 'a' | 'b' |
           {Array.from({ length: 40 }, (_, i) => {
             const spread = ((i * 41) % 100) / 100
             const x = 50 + (spread - 0.5) * 80 * (0.5 + ((i * 7) % 5) / 10)
-            return <i key={i} style={{ '--x': `${x}%`, '--d': `${-((i * 97) % 1100)}ms`, '--s': `${0.55 + ((i * 13) % 7) / 12}`, '--c': i % 4 === 0 ? '#4a1677' : '#06020a' } as CSSProperties} />
+            return <i key={i} style={{ '--x': `${x}%`, '--d': `${-((i * 97) % 1100)}ms`, '--s': `${0.55 + ((i * 13) % 7) / 12}`, '--c': tone ? (i % 4 === 0 ? TONES[tone][0] : i % 3 === 0 ? TONES[tone][1] : TONES[tone][2]) : i % 4 === 0 ? '#4a1677' : '#06020a' } as CSSProperties} />
           })}
         </span>
         <Embers />

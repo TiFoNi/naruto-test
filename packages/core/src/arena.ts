@@ -489,9 +489,9 @@ const FIGHT_HEAL_MS = 650
 const FIGHT_CALL_MS = 300
 const FIGHT_CLAY_MS = 450
 
-const FIGHT_HOLD_MS: Record<string, number> = { jinton: 600, koto: 700, chains: 600, shadow: 900, dimension: 600, lava: 500, coffin: 600, benihisago: 600, mind: 700, gatesOpen: 600, gates: 300, amaterasu: 600, burn: 300, meteor: 700, seal: 600, blast: 400, raikiri: 400, reaper: 300 }
+const FIGHT_HOLD_MS: Record<string, number> = { jinton: 600, koto: 700, chains: 600, shadow: 900, dimension: 600, lava: 700, coffin: 700, benihisago: 600, mind: 700, gatesOpen: 600, gates: 300, amaterasu: 600, burn: 300, meteor: 700, seal: 600, blast: 400, raikiri: 400, reaper: 300 }
 
-const holdMs = (step: ArenaStep) => (step.ability ? (FIGHT_HOLD_MS[step.ability] ?? 0) : 0) + (step.swapFrom ? 400 : 0) + (step.dodged?.length ? 300 : 0)
+const holdMs = (step: ArenaStep) => (step.ability ? (FIGHT_HOLD_MS[step.ability] ?? 0) : 0) + (step.swapFrom ? 400 : 0) + (step.dodged?.length ? 300 : 0) + (step.marks?.some(([, key]) => key === 'izanagi') ? 900 : 0)
 
 const replayMs = (steps: ArenaStep[]) => {
   let total = FIGHT_LEAD_MS
@@ -1075,7 +1075,10 @@ function fight(doc: ArenaDoc) {
   const foes = copySide(doc.foeBoard)
   doc.opened = { hp: doc.hp, foeHp: doc.foeHp }
 
+  const marks: [string, string][] = []
+  const mark = (uid: string, key: string) => marks.push([uid, key])
   const snap = () => ({
+    ...(marks.length ? { marks: marks.splice(0) } : {}),
     hp: doc.hp,
     foeHp: doc.foeHp,
     mine: onBoard(ours).map((one) => ({ ...one })),
@@ -1109,15 +1112,17 @@ function fight(doc: ArenaDoc) {
   const twinOf = (one: ArenaCard): ArenaCard => ({ ...one, uid: `${one.uid}~`, hp: 1, max: 1, fake: true, clone: false, armed: [], ward: false, dodge: 0, aim: undefined, mist: false, bound: null, link: null, shade: false, chained: 0, burn: 0, stun: false })
   const waiting = new Map<ArenaSide, ArenaCard[]>()
   for (const side of [ours, foes]) {
-    const line: ArenaCard[] = []
     const late: ArenaCard[] = []
-    for (const one of side.heroes) {
-      line.push(one)
-      if (!one.clone) continue
-      if (side.heroes.length + line.filter((other) => other.fake).length < ARENA_HERO_SLOTS) line.push(twinOf(one))
-      else late.push(one)
+    for (const one of side.heroes.filter((card) => card.clone)) {
+      if (side.heroes.length < ARENA_HERO_SLOTS) {
+        const twin = twinOf(one)
+        side.heroes.splice(side.heroes.indexOf(one) + 1, 0, twin)
+        steps.push({ from: one.uid, to: twin.uid, summoned: [twin.uid], ability: 'clone', damage: 0, dead: false, foe: side === foes, ...snap() })
+      } else {
+        late.push(one)
+        steps.push({ from: one.uid, to: null, ability: 'clone', damage: 0, dead: false, foe: side === foes, ...snap() })
+      }
     }
-    side.heroes = line.slice(0, ARENA_HERO_SLOTS)
     if (late.length) waiting.set(side, late)
   }
 
@@ -1191,6 +1196,7 @@ function fight(doc: ArenaDoc) {
         if (own === 'izanagi' && !card.reborn && !card.stun) {
           card.reborn = true
           card.hp = 1
+          mark(card.uid, 'izanagi')
           continue
         }
         if ((own === 'rebirth' || own === 'shed') && !card.reborn && !card.stun) {
@@ -1323,15 +1329,20 @@ function fight(doc: ArenaDoc) {
       if (dead) return
     }
     if (card.away) {
+      steps.push({ from: card.uid, to: null, skip: true, ability: 'away', damage: 0, dead: false, foe, ...snap() })
       card.away -= 1
       return
     }
     if (card.chained) {
+      steps.push({ from: card.uid, to: null, skip: true, ability: 'chained', damage: 0, dead: false, foe, ...snap() })
       card.chained -= 1
       return
     }
     if (card.bound) {
-      if ([...alive(ours), ...alive(foes)].some((one) => one.uid === card.bound)) return
+      if ([...alive(ours), ...alive(foes)].some((one) => one.uid === card.bound)) {
+        steps.push({ from: card.uid, to: null, skip: true, ability: card.shade ? 'held' : 'asleep', damage: 0, dead: false, foe, ...snap() })
+        return
+      }
       card.bound = null
     }
     if (card.link && [...alive(ours), ...alive(foes)].some((one) => one.uid === card.link)) return
@@ -1389,6 +1400,7 @@ function fight(doc: ArenaDoc) {
       const add = (clanOn(one, 'oto') ? CURSE_ATK : 0) + (myth(one) === 'curse' ? JUGO_CURSE : 0)
       if (!add || one.cursed || one.hp <= 0 || one.stun || one.hp * 2 >= one.max) return
       one.cursed = true
+      if (myth(one) === 'curse') mark(one.uid, 'curse')
       one.atk += add
       cursed.push(one.uid)
     }
@@ -1402,7 +1414,10 @@ function fight(doc: ArenaDoc) {
       const damage = Math.round(raw * edge.mul)
       if (edge.mul > 1) countered.push(one.uid)
       if (one.link) release(one)
-      if (one.ward && (edge.pierce || PIERCERS.has(myth(card) ?? ''))) one.ward = false
+      if (one.ward && (edge.pierce || PIERCERS.has(myth(card) ?? ''))) {
+        if (PIERCERS.has(myth(card) ?? '')) mark(card.uid, myth(card)!)
+        one.ward = false
+      }
       if (one.ward) {
         one.ward = false
         warded.push(one.uid)
@@ -1432,6 +1447,7 @@ function fight(doc: ArenaDoc) {
       }
       if (myth(one) === 'armor' && !one.parried && !one.stun && one.hp > 0) {
         one.parried = true
+        mark(one.uid, 'armor')
         dodged.push(one.uid)
         return
       }
@@ -1472,6 +1488,8 @@ function fight(doc: ArenaDoc) {
       const gust = first && (own === 'rasen' || own === 'wind')
       const wide = gust ? targets.filter((one) => one !== target && !one.away) : cleaveOf(card.id, card.rarity) || clay ? near : cut ? near.slice(-1) : []
       const edge = gust ? Math.ceil(blow / 3) : cut === 2 && !cleaveOf(card.id, card.rarity) && !clay ? blow : Math.ceil(blow / 2)
+      if (wide.length && own === 'wind' && gust) mark(card.uid, 'wind')
+      else if (wide.length && cut && !cleaveOf(card.id, card.rarity) && !clay) mark(card.uid, 'slash')
       for (const one of wide) {
         harm(one, edge)
         splash.push(one.uid)
@@ -1486,6 +1504,7 @@ function fight(doc: ArenaDoc) {
             warded.push(victim.uid)
           } else {
             victim.hp = 0
+            mark(card.uid, 'salamander')
             killers.set(victim.uid, card)
             splash.push(victim.uid)
             venom = true
@@ -1493,9 +1512,18 @@ function fight(doc: ArenaDoc) {
         }
       }
       const heat = scorchOf(card.id, card.rarity)
-      if (heat && target.hp > 0 && !warded.includes(target.uid) && !dodged.includes(target.uid)) target.burn = Math.max(target.burn ?? 0, heat)
+      if (heat && target.hp > 0 && !warded.includes(target.uid) && !dodged.includes(target.uid)) {
+        if (!target.burn) {
+          mark(card.uid, 'scorch')
+          target.scorched = true
+        }
+        target.burn = Math.max(target.burn ?? 0, heat)
+      }
       if ((shotOf(card.id) ? target.atk >= 2 : target.atk > 0) && swapFrom !== target.uid && !target.stun && !(target.shade && target.bound) && card.hp > 0) {
-        if (card.ward && PIERCERS.has(myth(target) ?? '')) card.ward = false
+        if (card.ward && PIERCERS.has(myth(target) ?? '')) {
+          mark(target.uid, myth(target)!)
+          card.ward = false
+        }
         if (card.ward) {
           card.ward = false
           warded.push(card.uid)
@@ -1655,7 +1683,11 @@ function fight(doc: ArenaDoc) {
       if (myth(card) === 'lava') {
         const hit = alive(rivals)
         if (hit.length) {
-          for (const one of hit) one.burn = Math.max(one.burn ?? 0, LAVA_BURN)
+          for (const one of hit) {
+            one.burn = Math.max(one.burn ?? 0, LAVA_BURN)
+            one.molten = true
+            one.scorched = false
+          }
           steps.push({ from: card.uid, to: null, splash: hit.map((one) => one.uid), ability: 'lava', damage: 0, dead: false, foe, ...snap() })
         }
       }
@@ -1678,10 +1710,12 @@ function fight(doc: ArenaDoc) {
         doc.seq += 1
         const spawn: ArenaCard = { uid: `${doc.seq}`, id: card.id, rarity: card.rarity, atk: PUPPET_STATS[0], hp: PUPPET_STATS[1], max: PUPPET_STATS[1], summon: true, art: 'kazekage' }
         team.summons.push(spawn)
+        mark(card.uid, 'puppet')
         steps.push({ from: card.uid, to: spawn.uid, summoned: [spawn.uid], ability: 'summon', damage: 0, dead: false, foe, ...snap() })
       }
       if (myth(card) === 'gates2' && !card.gated) {
         card.gated = true
+        mark(card.uid, 'gates2')
         steps.push({ from: card.uid, to: null, ability: 'gatesOpen', damage: 0, dead: false, foe, ...snap() })
       }
       for (const ability of card.armed ?? []) {
@@ -1695,6 +1729,8 @@ function fight(doc: ArenaDoc) {
           if (!target) continue
           target.hp -= AMATERASU_HIT
           target.burn = (target.burn ?? 0) + AMATERASU_BURN
+          target.molten = false
+          target.scorched = false
           killers.set(target.uid, card)
           const dead = target.hp <= 0
           bury()
@@ -1763,6 +1799,7 @@ function fight(doc: ArenaDoc) {
     const blessed = sage ? alive(team).filter((one) => !one.ward) : []
     if (sage && blessed.length) {
       for (const one of blessed) one.ward = 'wood'
+      mark(sage.uid, 'sixpaths')
       steps.push({ from: sage.uid, to: null, wards: blessed.map((one) => one.uid), ability: 'ward', damage: 0, dead: false, foe, ...snap() })
     }
     const sandy = alive(team).filter((one) => clanOn(one, 'suna'))

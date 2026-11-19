@@ -4,6 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, typ
 import { type CardRarity, ARENA_CLANS, ARENA_FULL_BONUS, ARENA_SKILL_CAP, ARENA_CARD_COST, ARENA_HAND, ARENA_CHAKRA_MAX, ARENA_COIN_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS, ARENA_TIERS } from '@nanda/game'
 import { api } from './api'
 import { AmaterasuFx } from './AmaterasuFx'
+import { IzanagiFx } from './ArenaElementFx'
 import { ArenaFace, SpellFace, Ward, tierOf, type ArenaView, type Card, type Side, type Step } from './ArenaCard'
 import { BADGE_POINTS, SHEET_POINTS } from './DexCard'
 import Avatar from './Avatar'
@@ -146,11 +147,13 @@ const CASTS = new Set(['amaterasu', 'meteor', 'seal', 'blast', 'reaper', 'burn',
 
 const METEOR_FALL_MS = 700
 
+const COFFIN_FILL_MS = 750
+
 const BONUS_KEY = 'arena.bonus'
 
-const HOLD_MS: Record<string, number> = { jinton: 600, koto: 700, chains: 600, shadow: 900, dimension: 600, lava: 500, coffin: 600, benihisago: 600, mind: 700, gatesOpen: 600, gates: 300, amaterasu: 600, burn: 300, meteor: 700, seal: 600, blast: 400, raikiri: 400, reaper: 300 }
+const HOLD_MS: Record<string, number> = { jinton: 600, koto: 700, chains: 600, shadow: 900, dimension: 600, lava: 700, coffin: 700, benihisago: 600, mind: 700, gatesOpen: 600, gates: 300, amaterasu: 600, burn: 300, meteor: 700, seal: 600, blast: 400, raikiri: 400, reaper: 300 }
 
-const holdOf = (step: Step) => (step.ability ? (HOLD_MS[step.ability] ?? 0) : 0) + (step.swapFrom ? 400 : 0) + (step.dodged?.length ? 300 : 0)
+const holdOf = (step: Step) => (step.ability ? (HOLD_MS[step.ability] ?? 0) : 0) + (step.swapFrom ? 400 : 0) + (step.dodged?.length ? 300 : 0) + (step.marks?.some(([, key]) => key === 'izanagi') ? 900 : 0)
 
 const AMA_STYLE = 'a' as const
 
@@ -202,7 +205,57 @@ const RinneganFx = () => (
   </span>
 )
 
-const TECH = new Set(['raikiri', 'gates', 'gatesOpen', 'rasen', 'meteor', 'clay', 'amaterasu', 'seal'])
+const LABEL: Record<string, UiKey> = {
+  raikiri: 'arena.myth.raikiri',
+  gates: 'arena.myth.gates',
+  gatesOpen: 'arena.myth.gates',
+  gates2: 'arena.myth.gates2',
+  rasen: 'arena.myth.rasen',
+  meteor: 'arena.myth.meteor',
+  clay: 'arena.skill.clay',
+  amaterasu: 'arena.skill.amaterasu',
+  seal: 'arena.myth.seal',
+  dimension: 'arena.myth.dimension',
+  chains: 'arena.myth.chains',
+  koto: 'arena.myth.koto',
+  lava: 'arena.myth.lava',
+  coffin: 'arena.myth.coffin',
+  benihisago: 'arena.myth.benihisago',
+  jinton: 'arena.myth.jinton',
+  genjutsu: 'arena.skill.genjutsu',
+  shadow: 'arena.skill.shadow',
+  mind: 'arena.skill.mind',
+  limbo: 'arena.skill.limbo',
+  summon: 'arena.skill.summon',
+  clone: 'arena.spell.clone',
+  sacrifice: 'arena.skill.sacrifice',
+  izanagi: 'arena.myth.izanagi',
+  armor: 'arena.myth.armor',
+  curse: 'arena.myth.curse',
+  tenseigan: 'arena.myth.tenseigan',
+  hellfist: 'arena.myth.hellfist',
+  wind: 'arena.myth.wind',
+  slash: 'arena.myth.slash',
+  salamander: 'arena.myth.salamander',
+  scorch: 'arena.scorch',
+  puppet: 'arena.myth.puppet',
+  sixpaths: 'arena.myth.sixpaths',
+}
+
+const RISEN: Record<string, UiKey> = { rebirth: 'arena.myth.rebirth', shed: 'arena.myth.shed', revive: 'arena.skill.revive', sacrifice: 'arena.skill.sacrifice' }
+
+const SKIPPED: Record<string, UiKey> = { away: 'arena.banished', chained: 'arena.chained', held: 'arena.held', asleep: 'arena.asleep' }
+
+const CHARMED: Record<string, UiKey> = { dimension: 'arena.banished', chains: 'arena.chained', koto: 'arena.controlled' }
+
+const labelOf = (key: string, mythic?: string | null): UiKey | null => (key === 'gatesOpen' && mythic === 'gates2' ? LABEL.gates2! : (LABEL[key] ?? null))
+
+const ChainsFx = () => (
+  <span className="ar-chains" aria-hidden>
+    <i />
+    <i />
+  </span>
+)
 
 const TIP_W = 270
 const TIP_HOVER_MS = 250
@@ -875,7 +928,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       ? document.querySelector<HTMLElement>(`.ar-row.is-packed [data-uid="${one.to}"]`)
       : document.querySelector<HTMLElement>(`[data-hero="${one.foe ? 'me' : 'foe'}"]`)
 
-    const land = setTimeout(() => setHit(true), one.shot === 'clay' ? CLAY_FLY_MS : one.ability === 'meteor' ? METEOR_FALL_MS : IMPACT_MS)
+    const land = setTimeout(() => setHit(true), one.shot === 'clay' ? CLAY_FLY_MS : one.ability === 'meteor' ? METEOR_FALL_MS : one.ability === 'coffin' ? COFFIN_FILL_MS : IMPACT_MS)
     let next: ReturnType<typeof setTimeout> | undefined
     let zone: HTMLElement | null = null
     const plays: Animation[] = []
@@ -984,7 +1037,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       )
       plays.push(movers[0].animate([{ transform: 'none' }, { transform: 'translateY(4px) scale(0.97)', offset: 0.25 }, { transform: 'translateY(4px) scale(0.97)', offset: 0.85 }, { transform: 'none' }], { duration: FLY_MS + 900, easing: 'ease-in-out' }))
       plays.push(aim.animate([{ transform: 'none', filter: 'none' }, { transform: 'none', filter: 'none', offset: 0.38 }, { transform: 'translateX(-3px)', filter: 'brightness(0.55)', offset: 0.44 }, { transform: 'translateX(3px)', filter: 'brightness(0.55)', offset: 0.5 }, { transform: 'none', filter: 'brightness(0.7)' }], { duration: FLY_MS + 900, easing: 'ease-out' }))
-    } else if (one.charm || one.skip || one.wards || one.summoned || one.risen || one.ability === 'mind') {
+    } else if (one.charm || one.skip || one.wards || one.summoned || one.risen || one.ability === 'mind' || one.ability === 'clone') {
       if (movers[0]) plays.push(movers[0].animate([{ transform: 'none' }, { transform: 'scale(1.04)', offset: 0.3 }, { transform: 'none' }], { duration: FLY_MS, easing: 'ease-out' }))
     } else if (one.shot && movers.length === 1 && aim) {
       const from = movers[0]!.getBoundingClientRect()
@@ -1403,6 +1456,9 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const shadeNow = new Set<string>()
   const chainNow = new Set<string>()
   const holdNow = new Set<string>()
+  const awayNow = new Set<string>()
+  const moltenNow = new Set<string>()
+  const scorchNow = new Set<string>()
   const lastWard = new Map<string, string>()
   const power = new Map<string, number>()
   if (at >= 0) {
@@ -1418,6 +1474,9 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       if (one.gated) gatedNow.add(one.uid)
       if (one.bound || one.link) boundNow.add(one.uid)
       if (one.chained) chainNow.add(one.uid)
+      if (one.away) awayNow.add(one.uid)
+      if (one.burn && one.molten) moltenNow.add(one.uid)
+      if (one.burn && one.scorched) scorchNow.add(one.uid)
       if (one.shade) {
         shadeNow.add(one.uid)
         if (one.bound) holdNow.add(one.bound)
@@ -1427,7 +1486,12 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
     else for (const uid of view.armed ?? []) guard.set(uid, 1)
   }
   const before = at > 0 ? steps[at - 1]! : null
-  if (before) for (const one of [...before.mine, ...before.theirs]) if (one.ward) lastWard.set(one.uid, one.ward)
+  if (before)
+    for (const one of [...before.mine, ...before.theirs]) {
+      if (one.ward) lastWard.set(one.uid, one.ward)
+      if (one.burn && one.molten) moltenNow.add(one.uid)
+      if (one.burn && one.scorched) scorchNow.add(one.uid)
+    }
   const standing = new Set((before ? [...before.mine, ...before.theirs] : [...line(view.board), ...line(view.foeBoard)]).map((one) => one.uid))
   const skillsBy = new Map<number, NonNullable<Card['skills']>>()
   for (const one of [...view.tavern, ...view.hand, ...line(view.board), ...line(view.foeBoard), ...steps.flatMap((step) => [...step.mine, ...step.theirs])]) if (one.skills?.length && !skillsBy.has(one.id)) skillsBy.set(one.id, one.skills)
@@ -1584,6 +1648,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         const gone = at >= 0 && hp === undefined && !dying
         const dodging = hit && !!now?.dodged?.includes(card.uid)
         const phasing = dodging && card.mythic === 'kamui'
+        const sparking = dodging && !!now?.marks?.some(([uid, key]) => uid === card.uid && key === 'armor')
         const charmed = hit && !!now?.charm && now.to === card.uid
         const dazed = hit && !!now?.skip && now.from === card.uid
         const seized = hit && now?.ability === 'mind' && (now.to === card.uid || now.from === card.uid)
@@ -1601,10 +1666,18 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         const sealed = hit && !!now?.sealed?.includes(card.uid)
         const cursing = hit && !!now?.cursed?.includes(card.uid)
         const countered = hit && !!now?.countered?.includes(card.uid)
-        const tech = hit && now?.from === card.uid && !!now?.ability && TECH.has(now.ability) ? now.ability : null
+        const tech = hit && now?.from === card.uid && !now?.skip && !!now?.ability ? labelOf(now.ability, card.mythic) : null
+        const marked = hit ? now?.marks?.find(([uid]) => uid === card.uid)?.[1] : undefined
+        const word = (marked ? labelOf(marked) : null) ?? (tech === 'arena.spell.clone' && !now?.summoned ? 'arena.cloneWait' : tech)
+        const skipWord = dazed && now?.ability ? (SKIPPED[now.ability] ?? null) : null
+        const charmWord = charmed && now?.ability ? (CHARMED[now.ability] ?? null) : null
+        const entombed = !lead && now?.ability === 'coffin' && now.to === card.uid && !now.warded?.length
+        const melting = hit && now?.ability === 'lava' && !!now.splash?.includes(card.uid)
+        const toneOf = (uid: string) => (now?.ability === 'amaterasu' && now.to === uid ? undefined : melting || moltenNow.has(uid) ? 'lava' : scorchNow.has(uid) ? 'fire' : undefined)
+        const undone = hit && marked === 'izanagi'
         const struck = hit && !dodging && !blocked && !mirrored && !!now?.damage && (now?.to === card.uid || !!now?.splash?.includes(card.uid) || now?.swapTo === card.uid)
         const face = (
-          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} fake={card.fake} away={!!card.away} art={card.art} />
+          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} kamui={card.mythic === 'kamui'} shield={shield.get(card.uid)} ghost={card.ghost} fake={card.fake} away={!!card.away} art={card.art} />
         )
         const swallowed = !!now?.sealed?.includes(card.uid)
         const clips = dying && !swallowed ? tearOf(seedOf(card.uid)) : null
@@ -1617,10 +1690,10 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         const multiplied = hit && (now?.ability === 'raikiri' || now?.ability === 'gates') && now.to === card.uid ? (now.ability === 'raikiri' ? 2 : 3) : 0
         const warped = hit && (now?.swapFrom === card.uid || now?.swapTo === card.uid)
         const blastAt = blasted ? [now?.to, ...(now?.splash ?? [])].indexOf(card.uid) * CLAY_GAP_MS : 0
-        const cut = struck && !dying && !blasted && !burning && !falling ? cutOf(seedOf(card.uid)) : null
+        const cut = struck && !dying && !blasted && !burning && !falling && !entombed ? cutOf(seedOf(card.uid)) : null
         return (
           <li key={card.uid} className={`is-held ${gone ? 'is-out' : ''} ${dying ? 'is-dying' : ''}`}>
-            <span data-uid={card.uid} className={`ar-move ${dazedNow.has(card.uid) ? 'is-stunned' : ''} ${raised ? 'is-warding' : ''} ${called ? 'is-called' : ''} ${risen ? 'is-risen' : ''} ${mended ? 'is-mended' : ''} ${helping ? 'is-helping' : ''} ${struck ? 'is-struck' : ''} ${blasted ? 'is-blasted' : ''} ${dodging && !phasing ? 'is-dodging' : ''} ${phasing ? 'is-phasing' : ''} ${boundNow.has(card.uid) || seized ? 'is-bound' : ''} ${charmed || dozing ? 'is-charmed' : ''} ${dazed ? 'is-dazed' : ''} ${struck && now?.venom ? 'is-venom' : ''}`} style={blasted ? ({ '--at': `${blastAt}ms` } as CSSProperties) : undefined}>
+            <span data-uid={card.uid} className={`ar-move ${dazedNow.has(card.uid) ? 'is-stunned' : ''} ${awayNow.has(card.uid) ? 'is-banished' : ''} ${chainNow.has(card.uid) ? 'is-chained' : ''} ${shadeNow.has(card.uid) ? 'is-shaded' : ''} ${raised ? 'is-warding' : ''} ${called ? 'is-called' : ''} ${risen ? 'is-risen' : ''} ${mended ? 'is-mended' : ''} ${helping ? 'is-helping' : ''} ${struck ? 'is-struck' : ''} ${blasted ? 'is-blasted' : ''} ${dodging && !phasing && !sparking ? 'is-dodging' : ''} ${phasing ? 'is-phasing' : ''} ${sparking ? 'is-sparking' : ''} ${boundNow.has(card.uid) || seized ? 'is-bound' : ''} ${charmed || dozing ? 'is-charmed' : ''} ${dazed ? 'is-dazed' : ''} ${struck && now?.venom ? 'is-venom' : ''}`} style={blasted ? ({ '--at': `${blastAt}ms` } as CSSProperties) : undefined}>
               {clips ? (
                 <span className="ar-tear" style={{ '--lean': clips.lean } as CSSProperties}>
                   <span className="ar-tear-half is-left" style={{ clipPath: clips.left }}>
@@ -1640,7 +1713,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                   </span>
                 </span>
               ) : (
-                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} shield={shield.get(card.uid)} ghost={card.ghost} fake={card.fake} away={!!card.away} art={card.art} />
+                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} kamui={card.mythic === 'kamui'} shield={shield.get(card.uid)} ghost={card.ghost} fake={card.fake} away={!!card.away} art={card.art} />
               )}
               {struck && !blasted && !burning && !falling && <Slash seed={seedOf(card.uid)} />}
               {shocked && <RaikiriFx />}
@@ -1657,12 +1730,17 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                 </b>
               )}
               {warped && <RinneganFx />}
-              {burning ? <AmaterasuFx variant={AMA_STYLE} /> : burnNow.has(card.uid) && !dying && <AmaterasuFx variant={AMA_STYLE} lasting />}
+              {burning || melting ? <AmaterasuFx variant={AMA_STYLE} tone={toneOf(card.uid)} /> : burnNow.has(card.uid) && !dying && <AmaterasuFx variant={AMA_STYLE} lasting tone={toneOf(card.uid)} />}
               {blasted && <BlastFx />}
-              {(charmed || dazed) && <GenFx />}
+              {entombed && <Ward sand breaking={hit} />}
+              {undone && <IzanagiFx />}
+              {chainNow.has(card.uid) && !dying && <ChainsFx />}
+              {awayNow.has(card.uid) && !dying && <i className="ar-void" aria-hidden />}
+              {((charmed && (!now?.ability || now.ability === 'genjutsu' || now.ability === 'koto')) || (dazed && !now?.ability)) && <GenFx />}
+              {charmed && now?.ability === 'dimension' && <RinneganFx />}
               {(charmed || dazed) && (
                 <b className="ar-status-word" aria-hidden>
-                  {t(charmed ? 'arena.charm' : 'arena.dazed')}
+                  {t(charmWord ?? skipWord ?? (charmed ? 'arena.charm' : 'arena.dazed'))}
                 </b>
               )}
               {sapped && (
@@ -1695,9 +1773,9 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                   {t('arena.sealed')}
                 </b>
               )}
-              {tech && (
+              {word && !charmed && !dazed && (
                 <b className="ar-status-word is-tech" aria-hidden>
-                  {t(tech === 'clay' || tech === 'amaterasu' ? (`arena.skill.${tech}` as UiKey) : tech === 'gatesOpen' ? 'arena.myth.gates' : (`arena.myth.${tech}` as UiKey))}
+                  {t(word)}
                 </b>
               )}
               {blocked && (
@@ -1711,7 +1789,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
               {called && <i className="ar-poof" aria-hidden />}
               {risen && (
                 <b className="ar-dodge-word is-risen" aria-hidden>
-                  {t('arena.risen')}
+                  {t((now?.ability && RISEN[now.ability]) || 'arena.risen')}
                 </b>
               )}
               {again && (
@@ -1732,6 +1810,8 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                 </b>
               )}
               {chainNow.has(card.uid) && !dying && <b className="ar-bound-tag is-chain">{t('arena.chained')}</b>}
+              {awayNow.has(card.uid) && !dying && <b className="ar-bound-tag is-away">{t('arena.banished')}</b>}
+              {dazedNow.has(card.uid) && !dying && !chainNow.has(card.uid) && !awayNow.has(card.uid) && <b className="ar-bound-tag is-gen">{t('arena.charm')}</b>}
               {(boundNow.has(card.uid) || seized) && !dying && (
                 <b className={`ar-bound-tag ${shadeNow.has(card.uid) || holdNow.has(card.uid) ? 'is-shadow' : ''}`}>{t(shadeNow.has(card.uid) ? 'arena.held' : holdNow.has(card.uid) ? 'arena.holding' : 'arena.asleep')}</b>
               )}
@@ -1742,7 +1822,16 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                   </b>
                 </>
               )}
-              {dodging && !phasing && (
+              {sparking && (
+                <span className="ar-spark" aria-hidden>
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <path d="M18 4 L30 30 L22 32 L36 60 L28 61 L44 96" />
+                    <path d="M82 6 L70 28 L78 31 L62 58 L71 60 L56 94" />
+                    <path d="M50 0 L46 18 L54 20 L48 40" />
+                  </svg>
+                </span>
+              )}
+              {dodging && !phasing && !sparking && (
                 <>
                   <i className="ar-poof" aria-hidden />
                   <img className="ar-log" src="/spells/kawarimi.webp" alt="" aria-hidden draggable={false} />
