@@ -1153,7 +1153,7 @@ export default function Shell({ children, games: everyGame }: { children: ReactN
 
   return (
     <div className={`app ${stage ? 'is-stage' : ''}`}>
-      <Background />
+      {!stage && <Background />}
       <AwardFilters />
       {!bare && (
         <header ref={bar} className={`topbar ${scrolled ? 'is-solid' : ''}`}>
@@ -1237,7 +1237,7 @@ export default function Shell({ children, games: everyGame }: { children: ReactN
 
       {!bare && !stage && <Footer />}
       {!bare && !stage && <InstallBanner />}
-      {!bare && !naming && <Chat />}
+      {!bare && !naming && !stage && <Chat />}
       {user && <DuelDock />}
       <HumanCheck />
     </div>

@@ -419,6 +419,7 @@ const ui = {
   'arena.turn': { ru: 'Ход {n}', uk: 'Хід {n}', en: 'Turn {n}' },
   'arena.you': { ru: 'Ты', uk: 'Ти', en: 'You' },
   'arena.foe': { ru: 'Бот', uk: 'Бот', en: 'Bot' },
+  'arena.merchant': { ru: 'Торговец', uk: 'Торговець', en: 'Merchant' },
   'arena.hand': { ru: 'Рука', uk: 'Рука', en: 'Hand' },
   'arena.handEmpty': { ru: 'Пусто — купи карту в таверне', uk: 'Порожньо — купи картку в таверні', en: 'Empty — buy a card in the tavern' },
   'arena.tavern': { ru: 'Таверна', uk: 'Таверна', en: 'Tavern' },

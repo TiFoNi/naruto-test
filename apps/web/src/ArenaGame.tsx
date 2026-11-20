@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
-import { type CardRarity, ARENA_CLANS, ARENA_FULL_BONUS, ARENA_SKILL_CAP, ARENA_CARD_COST, ARENA_HAND, ARENA_CHAKRA_MAX, ARENA_COIN_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS, ARENA_TIERS } from '@nanda/game'
+import { type CardRarity, ARENA_CLANS, ARENA_FULL_BONUS, ARENA_SKILL_CAP, ARENA_CARD_COST, ARENA_HAND, ARENA_COIN_MAX, ARENA_HERO_SLOTS, ARENA_SELL_BACK, ARENA_SUMMON_SLOTS, ARENA_TIERS } from '@nanda/game'
 import { api } from './api'
 import { AmaterasuFx } from './AmaterasuFx'
 import { IzanagiFx } from './ArenaElementFx'
@@ -13,7 +13,7 @@ import { useEntities } from './entities'
 import { GAMES } from './games'
 import type { GameId } from './games/types'
 import { useI18n, type UiKey } from './i18n'
-import { ClockIcon, CloseIcon, HeartIcon, RefreshIcon, SnowIcon, UpIcon } from './icons'
+import { BookIcon, ClockIcon, CloseIcon, HeartIcon, RefreshIcon, SnowIcon, UpIcon } from './icons'
 import BackButton from './BackButton'
 import { tornPoints } from './torn'
 import { useHref, useNavigate } from './router'
@@ -149,7 +149,6 @@ const METEOR_FALL_MS = 700
 
 const COFFIN_FILL_MS = 750
 
-const BONUS_KEY = 'arena.bonus'
 
 const HOLD_MS: Record<string, number> = { jinton: 600, koto: 700, chains: 600, shadow: 900, dimension: 600, lava: 700, coffin: 700, benihisago: 600, mind: 700, gatesOpen: 600, gates: 300, amaterasu: 600, burn: 300, meteor: 700, seal: 600, blast: 400, raikiri: 400, reaper: 300 }
 
@@ -413,8 +412,12 @@ const roomOf = (summon: boolean) => (summon ? ARENA_SUMMON_SLOTS : ARENA_HERO_SL
 
 const ZONE_SHARE = 0.18
 
+const MERCHANT_PIC = '/avatars/fox.webp?v=1'
 const STAGE_W = 1600
+const STAGE_COMPACT_W = 1400
 const STAGE_H = 900
+const STAGE_MIN_H = 620
+const COMPACT_BELOW = 520
 let stageScale = 1
 const unscale = (n: number) => Math.round(n / stageScale)
 
@@ -439,19 +442,27 @@ const spotOf = (card: HTMLElement): Spot | null => {
   return best
 }
 
-function Hero({ who, name, id, avatar, frame, hp, struck }: { who: 'me' | 'foe'; name: string; id?: string; avatar?: string | null; frame?: string | null; hp: number; struck?: boolean }) {
+function Hero({ who, name, id, avatar, frame, pic, hp, struck }: { who: 'me' | 'foe' | 'shop'; name: string; id?: string; avatar?: string | null; frame?: string | null; pic?: string; hp?: number; struck?: boolean }) {
   return (
-    <div data-hero={who} className={`ar-me is-${who} ${struck ? 'is-struck' : ''}`}>
+    <div data-hero={who === 'shop' ? undefined : who} className={`ar-me is-${who} ${struck ? 'is-struck' : ''}`}>
       <span className="ar-me-ring">
-        <Avatar id={id} name={name} avatar={avatar} frame={frame} className="ar-me-face" />
+        {pic ? (
+          <span className="avatar has-pic ar-me-face" aria-hidden>
+            <img src={pic} alt="" decoding="async" />
+          </span>
+        ) : (
+          <Avatar id={id} name={name} avatar={avatar} frame={frame} className="ar-me-face" />
+        )}
       </span>
-      <span className="ar-me-hp">
-        <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
-          <polygon points={BADGE_POINTS} />
-        </svg>
-        <HeartIcon />
-        <b>{hp}</b>
-      </span>
+      {hp !== undefined && (
+        <span className="ar-me-hp">
+          <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
+            <polygon points={BADGE_POINTS} />
+          </svg>
+          <HeartIcon />
+          <b>{hp}</b>
+        </span>
+      )}
     </div>
   )
 }
@@ -485,29 +496,37 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const [over, setOver] = useState<Spot['zone'] | null>(null)
   const [aimed, setAimed] = useState<string | null>(null)
   const [pledging, setPledging] = useState<string | null>(null)
-  const [bonusOpen, setBonusOpen] = useState(() => {
-    try {
-      return window.localStorage.getItem(BONUS_KEY) !== 'closed'
-    } catch {
-      return true
-    }
-  })
-  const toggleBonus = useCallback((open: boolean) => {
-    setBonusOpen(open)
-    try {
-      window.localStorage.setItem(BONUS_KEY, open ? 'open' : 'closed')
-    } catch {}
+  const [bonusOpen, setBonusOpen] = useState(false)
+  const [bonusLeaving, setBonusLeaving] = useState(false)
+  const closeBonus = useCallback(() => {
+    setBonusLeaving(true)
+    window.setTimeout(() => {
+      setBonusOpen(false)
+      setBonusLeaving(false)
+    }, 180)
   }, [])
+  useEffect(() => {
+    if (!bonusOpen) return
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeBonus()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [bonusOpen, closeBonus])
   const [cheer, setCheer] = useState<{ labels: Record<string, string>; at: number } | null>(null)
   const [pendingCheer, setPendingCheer] = useState<{ labels: Record<string, string>; at: number } | null>(null)
   const tipBox = useRef<HTMLDivElement | null>(null)
   const [scale, setScale] = useState(1)
+  const [stage, setStage] = useState({ w: STAGE_W, h: STAGE_H })
 
   useLayoutEffect(() => {
     const fit = () => {
-      const next = Math.min(window.innerWidth / STAGE_W, window.innerHeight / STAGE_H)
+      const width = window.innerHeight < COMPACT_BELOW ? STAGE_COMPACT_W : STAGE_W
+      const height = Math.round(Math.min(STAGE_H, Math.max(STAGE_MIN_H, (width * window.innerHeight) / window.innerWidth)))
+      const next = Math.min(window.innerWidth / width, window.innerHeight / height)
       stageScale = next
       setScale(next)
+      setStage({ w: width, h: height })
     }
     fit()
     window.addEventListener('resize', fit)
@@ -1870,6 +1889,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const shopTop = view.tavernTier >= ARENA_TIERS
   const shopBar = () => (
     <div className="ar-shopbar">
+      <span className="ar-shop-side is-left">
       <button
         type="button"
         className="ar-tool is-up"
@@ -1900,6 +1920,11 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           <i key={i} className={i < view.tavernTier ? 'is-on' : ''} />
         ))}
       </span>
+      </span>
+
+      <Hero who="shop" name={t('arena.merchant')} pic={MERCHANT_PIC} />
+
+      <span className="ar-shop-side is-right">
 
       <button
         type="button"
@@ -1940,6 +1965,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           <SnowIcon />
         </span>
       </button>
+      </span>
     </div>
   )
 
@@ -2016,7 +2042,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   )
 
   return (
-    <div className="ar-stage" style={{ '--stage-s': scale, '--dex': game.accent } as CSSProperties}>
+    <div className={`ar-stage ${stage.w < STAGE_W ? 'is-compact' : ''}`} style={{ '--stage-s': scale, '--stage-w': `${stage.w}px`, '--stage-h': `${stage.h}px`, '--dex': game.accent } as CSSProperties}>
     <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''} ${waitLeft !== null ? 'is-waiting' : ''}`} style={{ '--dex': game.accent } as CSSProperties} onPointerOver={peek} onPointerDown={press} onPointerMove={slide} onPointerUp={lift} onPointerCancel={lift} onPointerLeave={hideTip} onContextMenu={(event) => event.preventDefault()}>
       {demo === 'gallery' && (
         <nav className="ar-fx-pick">
@@ -2205,101 +2231,37 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                 </div>
               )}
             </div>
-            {!bonusOpen && (
-              <button type="button" className="ar-chip ar-synergy-open" onPointerDown={(event) => event.stopPropagation()} onClick={() => toggleBonus(true)}>
-                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
-                  <polygon points={CHIP} vectorEffect="non-scaling-stroke" />
-                </svg>
-                <span>{t('arena.synergy')}</span>
-              </button>
-            )}
-            {bonusOpen && (
-            <aside className={`ar-synergy ${fight ? 'is-fight' : ''}`} aria-label={t('arena.synergy')}>
-              <button type="button" className="ar-synergy-x" aria-label={t('dex.close')} onPointerDown={(event) => event.stopPropagation()} onClick={() => toggleBonus(false)}>
-                <CloseIcon />
-              </button>
-              <svg className="ar-synergy-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
-                <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
-              </svg>
-              {!!view.clans?.length && (
-                <div className="ar-synergy-match">
-                  <b>{t('arena.matchClans')}</b>
-                  <span>
-                    {Object.keys(ARENA_CLANS).map((one) => {
-                      const live = view.clans!.includes(one)
-                      return (
-                        <i key={one} className={live ? 'is-live' : 'is-out'} title={live ? undefined : t('arena.clanOut')}>
-                          {t(`arena.clan.${one}` as UiKey)}
-                        </i>
-                      )
-                    })}
-                  </span>
-                </div>
-              )}
-              <span className="ar-synergy-top">
-                <b className="ar-synergy-head">{t('arena.synergy')}</b>
-                <small className="ar-synergy-note">{t('arena.synergy.from')}</small>
-              </span>
-              {view.synergy?.length || view.crew?.captain || view.crew?.teams.length ? (
-                <ul>
-                  {view.crew?.captain && (
-                    <li className="is-captain is-on">
-                      <span className="ar-synergy-name">
-                        <em>{t('arena.captain')}</em>
-                        <strong className="ar-synergy-who">{(byId.get(view.crew.captain.id)?.name ?? '').split(' ')[0]}</strong>
-                      </span>
-                      <small>{captainText(view.crew.captain.scope, view.crew.captain.atk, view.crew.captain.hp)}</small>
-                    </li>
-                  )}
-                  {(view.synergy ?? []).map((one) => (
-                    <li key={one.clan} data-clan={one.clan} className={one.count >= one.need ? 'is-on' : ''}>
-                      <span className="ar-synergy-name">
-                        <em>{t(`arena.clan.${one.clan}` as UiKey)}</em>
-                        <b>
-                          {Math.min(one.count, one.cap)}/{one.cap}
-                        </b>
-                      </span>
-                      <span className="ar-synergy-bar" aria-hidden>
-                        {Array.from({ length: one.cap }, (_, i) => (
-                          <i key={i} className={i < one.count ? 'is-full' : ''} />
-                        ))}
-                      </span>
-                      <small>{[t(`arena.tip.clan.${one.clan}` as UiKey), clanExtra(one.clan)].filter(Boolean).join(' ')}</small>
-                    </li>
-                  ))}
-                  {(view.crew?.teams ?? []).map((one) => (
-                    <li key={one.key} className={`is-team ${one.on ? 'is-on' : ''}`}>
-                      <span className="ar-synergy-name">
-                        <em>{t(`arena.team.${one.key}` as UiKey)}</em>
-                        <b>
-                          {one.have}/{one.ids.length}
-                        </b>
-                      </span>
-                      <span className="ar-synergy-bar" aria-hidden>
-                        {one.ids.map((id, i) => (
-                          <i key={id} className={i < one.have ? 'is-full' : ''} />
-                        ))}
-                      </span>
-                      <small>
-                        {t('arena.tip.team', { names: namesOf(one.ids), stats: statsText(one.atk, one.hp) })}
-                        {!one.on && one.have === one.ids.length && ` ${t('arena.crew.apart')}`}
-                      </small>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="ar-synergy-none">{t('arena.synergy.none')}</p>
-              )}
-              </aside>
-            )}
           </section>
 
           <div className="ar-foot">
+            <div className={`ar-stock is-chakra ${fight ? 'is-hidden' : ''}`} aria-hidden={fight || undefined}>
+              <span className="ar-purse is-chakra" aria-label={t('arena.chakra')} title={t('arena.chakra')}>
+                <i className="ar-orb is-full" aria-hidden />
+                <b>
+                  {view.chakra}
+                  <small>/{view.chakraMax}</small>
+                </b>
+              </span>
+            </div>
+
+            <div className="ar-me-spot">
+              <Hero who="me" name={user?.nickname ?? ''} id={user?.id} avatar={user?.avatar} frame={user?.frame} hp={myHp} struck={heroHit === 'me'} />
+            </div>
+
+            <div className="ar-dock-right">
+              <div className={`ar-stock is-coins ${fight ? 'is-hidden' : ''}`} aria-hidden={fight || undefined}>
+              <span className="ar-purse is-coins" aria-label={t('arena.coins')} title={t('arena.coins')}>
+                <i className="ar-coin is-full" aria-hidden />
+                <b>
+                  {view.coins}
+                  <small>/{view.coinsMax}</small>
+                </b>
+              </span>
+              </div>
             <div className={`ar-hand ${fight ? 'is-away' : ''}`}>
-              {fight && user && <Hero who="me" name={user.nickname} id={user.id} avatar={user.avatar} frame={user.frame} hp={myHp} struck={heroHit === 'me'} />}
               <ul data-zone={buying ? 'hand' : undefined} className={`ar-hand-zone ${buying ? 'is-taking' : ''} ${buying && over === 'hand' ? 'is-over' : ''}`}>
                 {view.hand.map((card, i) => (
-                  <li key={card.uid}>
+                  <li key={card.uid} style={{ '--h': i - (view.hand.length - 1) / 2, '--h2': (i - (view.hand.length - 1) / 2) ** 2 } as CSSProperties}>
                     <span className="ar-move" onPointerDown={take('hand', card, i)}>
                       {card.spell ? (
                         <SpellFace kind={card.spell} />
@@ -2310,37 +2272,8 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                   </li>
                 ))}
               </ul>
-            </div>
-
-            <div className={`ar-side ${fight ? 'is-hidden' : ''}`} aria-hidden={fight || undefined}>
-              <div className="ar-purse is-coins">
-                <span className="ar-purse-head">
-                  <small>{t('arena.coins')}</small>
-                  <b>
-                    {view.coins} / {view.coinsMax}
-                  </b>
-                </span>
-                <span className="ar-purse-row" aria-hidden>
-                  {Array.from({ length: ARENA_COIN_MAX }, (_, i) => (
-                    <i key={i} className={`ar-coin ${i < view.coins ? 'is-full' : i < view.coinsMax ? 'is-spent' : ''}`} />
-                  ))}
-                </span>
               </div>
-              <div className="ar-purse is-chakra">
-                <span className="ar-purse-head">
-                  <small>{t('arena.chakra')}</small>
-                  <b>
-                    {view.chakra} / {view.chakraMax}
-                  </b>
-                </span>
-                <span className="ar-purse-row" aria-hidden>
-                  {Array.from({ length: ARENA_CHAKRA_MAX }, (_, i) => (
-                    <i key={i} className={`ar-orb ${i < view.chakra ? 'is-full' : i < view.chakraMax ? 'is-spent' : ''}`} />
-                  ))}
-                </span>
-                <small className={`ar-purse-note ${armedCount >= ARENA_SKILL_CAP ? 'is-full' : ''}`}>{t('arena.skillsUsed', { n: armedCount, cap: ARENA_SKILL_CAP })}</small>
-              </div>
-            </div>
+          </div>
           </div>
         </>
       )}
@@ -2360,6 +2293,93 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         </div>
       )}
     </div>
+      <button type="button" className={`ar-book ${bonusOpen ? 'is-open' : ''}`} aria-label={t('arena.synergy')} onClick={() => (bonusOpen ? closeBonus() : setBonusOpen(true))}>
+        <BookIcon />
+      </button>
+      {bonusOpen && (
+        <>
+        <div className={`ar-synergy-shade ${bonusLeaving ? 'is-leaving' : ''}`} role="presentation" onClick={closeBonus} />
+        <aside className={`ar-synergy ${bonusLeaving ? 'is-leaving' : ''}`} aria-label={t('arena.synergy')}>
+        <button type="button" className="ar-synergy-x" aria-label={t('dex.close')} onClick={closeBonus}>
+          <CloseIcon />
+        </button>
+          <svg className="ar-synergy-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+            <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
+          </svg>
+          <div className="ar-synergy-scroll">
+          {!!view.clans?.length && (
+            <div className="ar-synergy-match">
+              <b>{t('arena.matchClans')}</b>
+              <span>
+                {Object.keys(ARENA_CLANS).map((one) => {
+                  const live = view.clans!.includes(one)
+                  return (
+                    <i key={one} className={live ? 'is-live' : 'is-out'} title={live ? undefined : t('arena.clanOut')}>
+                      {t(`arena.clan.${one}` as UiKey)}
+                    </i>
+                  )
+                })}
+              </span>
+            </div>
+          )}
+          <span className="ar-synergy-top">
+            <b className="ar-synergy-head">{t('arena.synergy')}</b>
+            <small className="ar-synergy-note">{t('arena.synergy.from')}</small>
+          </span>
+          {view.synergy?.length || view.crew?.captain || view.crew?.teams.length ? (
+            <ul>
+              {view.crew?.captain && (
+                <li className="is-captain is-on">
+                  <span className="ar-synergy-name">
+                    <em>{t('arena.captain')}</em>
+                    <strong className="ar-synergy-who">{(byId.get(view.crew.captain.id)?.name ?? '').split(' ')[0]}</strong>
+                  </span>
+                  <small>{captainText(view.crew.captain.scope, view.crew.captain.atk, view.crew.captain.hp)}</small>
+                </li>
+              )}
+              {(view.synergy ?? []).map((one) => (
+                <li key={one.clan} data-clan={one.clan} className={one.count >= one.need ? 'is-on' : ''}>
+                  <span className="ar-synergy-name">
+                    <em>{t(`arena.clan.${one.clan}` as UiKey)}</em>
+                    <b>
+                      {Math.min(one.count, one.cap)}/{one.cap}
+                    </b>
+                  </span>
+                  <span className="ar-synergy-bar" aria-hidden>
+                    {Array.from({ length: one.cap }, (_, i) => (
+                      <i key={i} className={i < one.count ? 'is-full' : ''} />
+                    ))}
+                  </span>
+                  <small>{[t(`arena.tip.clan.${one.clan}` as UiKey), clanExtra(one.clan)].filter(Boolean).join(' ')}</small>
+                </li>
+              ))}
+              {(view.crew?.teams ?? []).map((one) => (
+                <li key={one.key} className={`is-team ${one.on ? 'is-on' : ''}`}>
+                  <span className="ar-synergy-name">
+                    <em>{t(`arena.team.${one.key}` as UiKey)}</em>
+                    <b>
+                      {one.have}/{one.ids.length}
+                    </b>
+                  </span>
+                  <span className="ar-synergy-bar" aria-hidden>
+                    {one.ids.map((id, i) => (
+                      <i key={id} className={i < one.have ? 'is-full' : ''} />
+                    ))}
+                  </span>
+                  <small>
+                    {t('arena.tip.team', { names: namesOf(one.ids), stats: statsText(one.atk, one.hp) })}
+                    {!one.on && one.have === one.ids.length && ` ${t('arena.crew.apart')}`}
+                  </small>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="ar-synergy-none">{t('arena.synergy.none')}</p>
+          )}
+            </div>
+        </aside>
+        </>
+      )}
       <div className="ar-rotate" aria-live="polite">
         <svg viewBox="0 0 64 64" aria-hidden>
           <g className="is-phone">
