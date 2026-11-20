@@ -1662,7 +1662,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
 
   const packed = (cards: Card[]) => (
     <ul className="ar-row is-packed">
-      {cards.map((card) => {
+      {cards.map((card, slot) => {
         const hp = health.get(card.uid)
         const dying = hit && hp === undefined && standing.has(card.uid)
         const gone = at >= 0 && hp === undefined && !dying
@@ -1712,7 +1712,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         const blastAt = blasted ? [now?.to, ...(now?.splash ?? [])].indexOf(card.uid) * CLAY_GAP_MS : 0
         const cut = struck && !dying && !blasted && !burning && !falling && !entombed ? cutOf(seedOf(card.uid)) : null
         return (
-          <li key={card.uid} className={`is-held ${gone ? 'is-out' : ''} ${dying ? 'is-dying' : ''}`}>
+          <li key={card.uid} style={{ '--slot': slot - (cards.length - 1) / 2 } as CSSProperties} className={`is-held ${gone ? 'is-out' : ''} ${dying ? 'is-dying' : ''}`}>
             <span data-uid={card.uid} className={`ar-move ${dazedNow.has(card.uid) ? 'is-stunned' : ''} ${awayNow.has(card.uid) ? 'is-banished' : ''} ${chainNow.has(card.uid) ? 'is-chained' : ''} ${shadeNow.has(card.uid) ? 'is-shaded' : ''} ${raised ? 'is-warding' : ''} ${called ? 'is-called' : ''} ${risen ? 'is-risen' : ''} ${mended ? 'is-mended' : ''} ${helping ? 'is-helping' : ''} ${struck ? 'is-struck' : ''} ${blasted ? 'is-blasted' : ''} ${dodging && !phasing && !sparking ? 'is-dodging' : ''} ${phasing ? 'is-phasing' : ''} ${sparking ? 'is-sparking' : ''} ${boundNow.has(card.uid) || seized ? 'is-bound' : ''} ${charmed || dozing ? 'is-charmed' : ''} ${dazed ? 'is-dazed' : ''} ${struck && now?.venom ? 'is-venom' : ''}`} style={blasted ? ({ '--at': `${blastAt}ms` } as CSSProperties) : undefined}>
               {clips ? (
                 <span className="ar-tear" style={{ '--lean': clips.lean } as CSSProperties}>
@@ -1953,7 +1953,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           return (
             <li
               key={`${deal}:${one.id}:${nth}`}
-              style={{ '--i': i, '--wait': `${dealWait}ms` } as CSSProperties}
+              style={{ '--i': i, '--slot': i - (view.tavern.length - (view.spellOffer ? 0 : 1)) / 2, '--wait': `${dealWait}ms` } as CSSProperties}
               className={`is-held ${poor ? 'is-poor' : ''}`}
             >
               {!!one.skills?.length && (
@@ -1980,7 +1980,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           )
         })}
         {view.spellOffer && (
-          <li key={`spell${deal}`} style={{ '--i': view.tavern.length, '--wait': `${dealWait}ms` } as CSSProperties} className={`is-held is-spell ${view.spellOffer.cost > view.coins ? 'is-poor' : ''}`}>
+          <li key={`spell${deal}`} style={{ '--i': view.tavern.length, '--slot': view.tavern.length / 2, '--wait': `${dealWait}ms` } as CSSProperties} className={`is-held is-spell ${view.spellOffer.cost > view.coins ? 'is-poor' : ''}`}>
             <span
               className="ar-move"
               onPointerDown={
@@ -2143,7 +2143,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                 <div data-zone="slot" data-at={freeAt} className={`ar-sell is-drop ${boardOpen ? 'is-selling' : ''} ${boardOpen && over === 'slot' ? 'is-over' : ''}`}>
                 <ul className="ar-row is-heroes">
                   {view.board.heroes.map((card, i) => (
-                    <li key={card.uid} className={`${aimed === card.uid ? 'is-aimed' : ''} ${pledging && pledging !== card.uid ? 'is-pickable' : ''} ${view.board.heroes.some((one) => one.aim === card.uid && one.armed?.includes('sacrifice')) ? 'is-pledged' : ''}`}>
+                    <li key={card.uid} style={{ '--slot': i - (view.board.heroes.length - 1) / 2 } as CSSProperties} className={`${aimed === card.uid ? 'is-aimed' : ''} ${pledging && pledging !== card.uid ? 'is-pickable' : ''} ${view.board.heroes.some((one) => one.aim === card.uid && one.armed?.includes('sacrifice')) ? 'is-pledged' : ''}`}>
                       {!!card.skills?.length && (
                         <span className="ar-skills">
                           {card.skills.map((skill) => {

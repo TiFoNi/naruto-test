@@ -311,7 +311,7 @@
   display: flex;
   width: 1600px;
   height: 900px;
-  --cw: 104px;
+  --cw: 114px;
   --zone: calc(var(--cw) * 4 / 3 + 20px);
   margin: 0;
   flex-direction: column;
@@ -5324,5 +5324,35 @@ html:has(.app.is-stage .ar) .topbar {
   from {
     opacity: 0;
     transform: scale(0.97);
+  }
+}
+
+.ar .ar-row li {
+  perspective: 1000px;
+  perspective-origin: calc(50% - var(--slot, 0) * (var(--cw) + 18px)) -20%;
+}
+
+.ar .ar-row li > .ar-move {
+  transform-origin: 50% 100%;
+  rotate: x 28deg;
+  transition: rotate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ar .ar-row li > .ar-move::before {
+  content: '';
+  position: absolute;
+  right: 4%;
+  bottom: -6px;
+  left: 4%;
+  height: 34%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 60%), transparent);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .ar:not(.is-fighting):not(.is-dragging) .ar-row li:not(.is-poor) > .ar-move:hover {
+    rotate: x 6deg;
   }
 }
