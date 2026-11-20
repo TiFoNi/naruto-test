@@ -566,7 +566,7 @@ const rotate = (all: number[]) => {
     const picked = shuffled(options).slice(0, ARENA_ROTATION)
     const keep = new Set<string>([...fixed, ...picked])
     const ids = all.filter((id) => !clansOf(id).length || clansOf(id).some((clan) => keep.has(clan)))
-    const thin = Array.from({ length: ARENA_TIERS }, (_, i) => ids.filter((id) => tierOf(id) === i + 1).length).some((n) => n < ROTATION_FLOOR)
+    const thin = Array.from({ length: ARENA_TIERS }, (_, i) => ids.filter((id) => tierOf(id) === i + 1)).some((row) => row.length < ROTATION_FLOOR || row.filter((id) => !inClan(id, 'konoha')).length < ARENA_TAVERN - KONOHA_CAP)
     if (!thin) return { ids, clans: [...keep] }
   }
   return { ids: all, clans: [...fixed, ...options] }
@@ -595,6 +595,7 @@ const TAVERN_BELOW = 2
 const TAVERN_FAR = 1
 
 const KONOHA_WEIGHT = 0.5
+const KONOHA_CAP = 3
 
 const leanOf = (id: number, active: string[]) => {
   const own = clansOf(id)
@@ -603,18 +604,25 @@ const leanOf = (id: number, active: string[]) => {
 
 const roll = (all: number[], top: number, seen: number[] = [], active: string[] = []) => {
   const fresh = all.filter((id) => !seen.includes(id))
-  const pool = fresh.filter((id) => Math.abs(tierOf(id) - top) <= 1).length >= ARENA_TAVERN ? fresh : all
-  const at = (tier: number, weight: number) => pool.filter((id) => tierOf(id) === tier).map((id) => ({ id, weight: weight * leanOf(id, active) }))
+  const pool = fresh.filter((id) => tierOf(id) <= top).length >= ARENA_TAVERN ? fresh : all
+  const weigh = (ids: number[], weight: number) => ids.map((id) => ({ id, weight: weight * leanOf(id, active) }))
+  const at = (tier: number, weight: number, from = pool) => weigh(from.filter((id) => tierOf(id) === tier), weight)
   let bag = [...at(top, TAVERN_MAIN), ...at(top - 1, TAVERN_BELOW), ...at(top - 2, TAVERN_FAR)]
   for (let down = top - 3; bag.length < ARENA_TAVERN && down >= 1; down--) bag.push(...at(down, 1))
-  for (let up = top + 1; bag.length < ARENA_TAVERN && up <= ARENA_TIERS; up++) bag.push(...at(up, 1))
-  if (!bag.length) bag = pool.map((id) => ({ id, weight: 1 }))
+  if (bag.length < ARENA_TAVERN) bag.push(...weigh(all.filter((id) => tierOf(id) <= top && !bag.some((one) => one.id === id)), 1))
   const picked: number[] = []
-  while (picked.length < ARENA_TAVERN && bag.length) {
+  let spare: typeof bag = []
+  while (picked.length < ARENA_TAVERN) {
+    if (!bag.length) bag = spare.filter((one) => !picked.includes(one.id))
+    if (!bag.length) break
     let left = Math.random() * bag.reduce((sum, one) => sum + one.weight, 0)
     const index = Math.max(0, bag.findIndex((one) => (left -= one.weight) < 0))
     picked.push(bag[index]!.id)
     bag.splice(index, 1)
+    if (picked.filter((id) => inClan(id, 'konoha')).length < KONOHA_CAP) continue
+    spare = [...spare, ...bag.filter((one) => inClan(one.id, 'konoha'))]
+    bag = bag.filter((one) => !inClan(one.id, 'konoha'))
+    if (!bag.length) bag = weigh(all.filter((id) => tierOf(id) <= top && !inClan(id, 'konoha') && !picked.includes(id)), 1)
   }
   return picked
 }
