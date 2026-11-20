@@ -1102,6 +1102,7 @@ export default function Shell({ children, games: everyGame }: { children: ReactN
   const bare = section === 'login' || gated
   const game = section === 'play' ? metaById(games, gameId as never) : null
   const peek = section === 'leaderboard'
+  const stage = section === 'play' && modeId === 'arena'
   const tone = useSyncExternalStore(watchTone, shownTone, () => null)
   useSyncExternalStore(watchTune, tuneStamp, () => 0)
 
@@ -1151,7 +1152,7 @@ export default function Shell({ children, games: everyGame }: { children: ReactN
   }, [loading, user])
 
   return (
-    <div className="app">
+    <div className={`app ${stage ? 'is-stage' : ''}`}>
       <Background />
       <AwardFilters />
       {!bare && (
@@ -1234,8 +1235,8 @@ export default function Shell({ children, games: everyGame }: { children: ReactN
         )}
       </main>
 
-      {!bare && <Footer />}
-      {!bare && <InstallBanner />}
+      {!bare && !stage && <Footer />}
+      {!bare && !stage && <InstallBanner />}
       {!bare && !naming && <Chat />}
       {user && <DuelDock />}
       <HumanCheck />

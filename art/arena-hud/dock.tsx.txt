@@ -1,0 +1,44 @@
+const DOCK_STYLE = Object.fromEntries(['left', 'plank-l', 'center', 'plank-r', 'right'].map((part) => [`--hud-${part}`, `url(/arena/hud/${part}.webp)`])) as CSSProperties
+
+type DockProps = { name: string; id?: string; avatar?: string | null; hp: number; struck?: boolean; coins: number; coinsMax: number; chakra: number; chakraMax: number; skills: string; fight: boolean; labels: { coins: string; chakra: string; health: string } }
+
+function Well({ kind, value, max, label }: { kind: 'coins' | 'chakra' | 'hp'; value: number; max: number; label: string }) {
+  const fill = max > 0 ? Math.max(0, Math.min(1, value / max)) : 0
+  return (
+    <span className={`ar-dock-well is-${kind} ${fill === 0 ? 'is-empty' : ''}`} style={{ '--fill': fill } as CSSProperties} title={`${label}: ${value} / ${max}`} aria-label={`${label}: ${value} / ${max}`}>
+      <span className="ar-dock-liquid" aria-hidden>
+        <svg className="ar-dock-wave" viewBox="0 0 200 12" preserveAspectRatio="none">
+          <path d="M0 6 Q25 0 50 6 T100 6 T150 6 T200 6 V12 H0 Z" />
+        </svg>
+        <svg className="ar-dock-wave is-back" viewBox="0 0 200 12" preserveAspectRatio="none">
+          <path d="M0 6 Q25 12 50 6 T100 6 T150 6 T200 6 V12 H0 Z" />
+        </svg>
+      </span>
+      <b aria-hidden>
+        {value}
+        {kind !== 'hp' && <small>/{max}</small>}
+      </b>
+    </span>
+  )
+}
+
+function Dock({ name, id, avatar, hp, struck, coins, coinsMax, chakra, chakraMax, skills, fight, labels }: DockProps) {
+  return (
+    <div className={`ar-dock ${fight ? 'is-fight' : ''}`} style={DOCK_STYLE}>
+      <i className="ar-dock-end" aria-hidden />
+      <i className="ar-dock-plank" aria-hidden />
+      <div className="ar-dock-mid">
+        <span data-hero="me" className={`ar-dock-face ${struck ? 'is-struck' : ''}`}>
+          <Avatar id={id} name={name} avatar={avatar} className="ar-me-face" />
+        </span>
+        <Well kind="coins" value={coins} max={coinsMax} label={labels.coins} />
+        <Well kind="chakra" value={chakra} max={chakraMax} label={labels.chakra} />
+        <Well kind="hp" value={hp} max={ARENA_HP} label={labels.health} />
+        <small className="ar-dock-skills">{skills}</small>
+      </div>
+      <i className="ar-dock-plank is-right" aria-hidden />
+      <i className="ar-dock-end is-right" aria-hidden />
+    </div>
+  )
+}
+

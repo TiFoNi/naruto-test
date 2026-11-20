@@ -413,6 +413,11 @@ const roomOf = (summon: boolean) => (summon ? ARENA_SUMMON_SLOTS : ARENA_HERO_SL
 
 const ZONE_SHARE = 0.18
 
+const STAGE_W = 1600
+const STAGE_H = 900
+let stageScale = 1
+const unscale = (n: number) => Math.round(n / stageScale)
+
 const spotOf = (card: HTMLElement): Spot | null => {
   const box = card.getBoundingClientRect()
   const area = Math.max(1, box.width * box.height)
@@ -496,6 +501,18 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const [cheer, setCheer] = useState<{ labels: Record<string, string>; at: number } | null>(null)
   const [pendingCheer, setPendingCheer] = useState<{ labels: Record<string, string>; at: number } | null>(null)
   const tipBox = useRef<HTMLDivElement | null>(null)
+  const [scale, setScale] = useState(1)
+
+  useLayoutEffect(() => {
+    const fit = () => {
+      const next = Math.min(window.innerWidth / STAGE_W, window.innerHeight / STAGE_H)
+      stageScale = next
+      setScale(next)
+    }
+    fit()
+    window.addEventListener('resize', fit)
+    return () => window.removeEventListener('resize', fit)
+  }, [])
 
   useLayoutEffect(() => {
     const node = tipBox.current
@@ -998,12 +1015,14 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           const dy = hole.top + hole.height / 2 - (box.top + box.height / 2)
           node.style.zIndex = '8'
           pulled.push(node)
+          const lx = dx / stageScale
+          const ly = dy / stageScale
           plays.push(
             node.animate(
               [
                 { transform: 'none', filter: 'none', opacity: 1 },
-                { transform: `translate(${dx * 0.15}px, ${dy * 0.15}px) rotate(-8deg) scale(0.95)`, filter: 'brightness(0.7) saturate(0.4)', offset: 0.35 },
-                { transform: `translate(${dx}px, ${dy}px) rotate(220deg) scale(0.05)`, filter: 'brightness(0.3) saturate(0)', opacity: 0.2 },
+                { transform: `translate(${lx * 0.15}px, ${ly * 0.15}px) rotate(-8deg) scale(0.95)`, filter: 'brightness(0.7) saturate(0.4)', offset: 0.35 },
+                { transform: `translate(${lx}px, ${ly}px) rotate(220deg) scale(0.05)`, filter: 'brightness(0.3) saturate(0)', opacity: 0.2 },
               ],
               { duration: FLY_MS + 300, delay: IMPACT_MS, easing: 'cubic-bezier(0.55, 0, 0.8, 0.4)', fill: 'forwards' },
             ),
@@ -1119,8 +1138,8 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       if (zone) zone.style.zIndex = '7'
       for (const node of movers) {
         const a = node.getBoundingClientRect()
-        const dx = Math.round(b.left + b.width / 2 - (a.left + a.width / 2))
-        const dy = Math.round(b.top + b.height / 2 - (a.top + a.height / 2))
+        const dx = unscale(b.left + b.width / 2 - (a.left + a.width / 2))
+        const dy = unscale(b.top + b.height / 2 - (a.top + a.height / 2))
         node.style.zIndex = '6'
         const play = node.animate(
           [
@@ -1142,7 +1161,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       if (sasuke && foe) {
         const a = sasuke.getBoundingClientRect()
         const b = foe.getBoundingClientRect()
-        const jump = `translate(${b.left - a.left}px, ${b.top - a.top}px)`
+        const jump = `translate(${unscale(b.left - a.left)}px, ${unscale(b.top - a.top)}px)`
         sasuke.style.zIndex = '5'
         pulled.push(sasuke)
         plays.push(
@@ -1244,8 +1263,8 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         else if (i < one.from && i >= one.to) dx = one.span
       }
       if ((one.kind === 'hand' || one.kind === 'shop') && one.slot >= 0) dx = i < one.slot ? -one.span / 2 : one.span / 2
-      cell.node.style.translate = dx ? `${Math.round(dx)}px 0` : ''
-      if (cell.chip) cell.chip.style.translate = dx ? `${Math.round(dx)}px 0` : ''
+      cell.node.style.translate = dx ? `${unscale(dx)}px 0` : ''
+      if (cell.chip) cell.chip.style.translate = dx ? `${unscale(dx)}px 0` : ''
     }
   }, [])
 
@@ -1289,7 +1308,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         if (Math.hypot(dx, dy) < GRAB_PX) return
         begin(one)
       }
-      one.node.style.translate = `${Math.round(dx)}px ${Math.round(dy)}px`
+      one.node.style.translate = `${unscale(dx)}px ${unscale(dy)}px`
       const over = spotOf(one.node)
       const zone = over?.zone ?? null
       if (zone !== overNow.current) {
@@ -1909,7 +1928,10 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         aria-pressed={!!view.frozen}
         title={t(view.frozen ? 'arena.unfreeze' : 'arena.freeze')}
         aria-label={t(view.frozen ? 'arena.unfreeze' : 'arena.freeze')}
-        onClick={() => send({ action: 'freeze' })}
+        onClick={() => {
+          setView((now) => (now ? { ...now, frozen: !now.frozen } : now))
+          send({ action: 'freeze' })
+        }}
       >
         <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
           <polygon points={BADGE_POINTS} vectorEffect="non-scaling-stroke" />
@@ -1994,7 +2016,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   )
 
   return (
-    <>
+    <div className="ar-stage" style={{ '--stage-s': scale, '--dex': game.accent } as CSSProperties}>
     <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''} ${waitLeft !== null ? 'is-waiting' : ''}`} style={{ '--dex': game.accent } as CSSProperties} onPointerOver={peek} onPointerDown={press} onPointerMove={slide} onPointerUp={lift} onPointerCancel={lift} onPointerLeave={hideTip} onContextMenu={(event) => event.preventDefault()}>
       {demo === 'gallery' && (
         <nav className="ar-fx-pick">
@@ -2004,49 +2026,6 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
             </button>
           ))}
         </nav>
-      )}
-      <div className="ar-rotate" aria-live="polite">
-        <svg viewBox="0 0 64 64" aria-hidden>
-          <g className="is-phone">
-            <rect x="21" y="12" width="22" height="40" rx="4" />
-            <path d="M29 47 H 35" />
-          </g>
-        </svg>
-        <b>{t('arena.rotate')}</b>
-        <span>{t('arena.rotateHint')}</span>
-      </div>
-      {tip && !dragging && (
-        <div ref={tipBox} className="ar-tip" style={{ left: tip.x, top: tip.y, width: TIP_W }} aria-hidden>
-          <svg className="ar-tip-paper" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
-          </svg>
-          <b className="ar-tip-name">{byId.get(tip.info.id)?.name}</b>
-          <small className="ar-tip-class">{t(tip.info.shot ? 'arena.ranged' : 'arena.melee')}</small>
-          <ul>
-            {tipLines(tip.info).map((line, i) =>
-              line.kind === 'extra' ? (
-                <li key={i} className="is-extra">
-                  <b>{line.head}</b> {line.text}
-                </li>
-              ) : (
-                <li key={i} className={line.on === false ? 'is-locked' : ''}>
-                  {line.need && <small className={`ar-tip-need is-${line.need}`}>{t(`card.rarity.${line.need}` as UiKey)}</small>}
-                  <span>
-                    <b className="ar-tip-head">{line.head}</b>
-                    {line.cost !== undefined && (
-                      <span className="ar-tip-cost">
-                        <i className="ar-orb is-full" />
-                        {line.cost}
-                      </span>
-                    )}
-                    {' — '}
-                    {line.text}
-                  </span>
-                </li>
-              ),
-            )}
-          </ul>
-        </div>
       )}
       <svg className="ar-defs" aria-hidden>
         <filter id="ar-gen-melt">
@@ -2381,6 +2360,49 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         </div>
       )}
     </div>
-    </>
+      <div className="ar-rotate" aria-live="polite">
+        <svg viewBox="0 0 64 64" aria-hidden>
+          <g className="is-phone">
+            <rect x="21" y="12" width="22" height="40" rx="4" />
+            <path d="M29 47 H 35" />
+          </g>
+        </svg>
+        <b>{t('arena.rotate')}</b>
+        <span>{t('arena.rotateHint')}</span>
+      </div>
+      {tip && !dragging && (
+        <div ref={tipBox} className="ar-tip" style={{ left: tip.x, top: tip.y, width: TIP_W }} aria-hidden>
+          <svg className="ar-tip-paper" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <polygon points={SHEET_POINTS} vectorEffect="non-scaling-stroke" />
+          </svg>
+          <b className="ar-tip-name">{byId.get(tip.info.id)?.name}</b>
+          <small className="ar-tip-class">{t(tip.info.shot ? 'arena.ranged' : 'arena.melee')}</small>
+          <ul>
+            {tipLines(tip.info).map((line, i) =>
+              line.kind === 'extra' ? (
+                <li key={i} className="is-extra">
+                  <b>{line.head}</b> {line.text}
+                </li>
+              ) : (
+                <li key={i} className={line.on === false ? 'is-locked' : ''}>
+                  {line.need && <small className={`ar-tip-need is-${line.need}`}>{t(`card.rarity.${line.need}` as UiKey)}</small>}
+                  <span>
+                    <b className="ar-tip-head">{line.head}</b>
+                    {line.cost !== undefined && (
+                      <span className="ar-tip-cost">
+                        <i className="ar-orb is-full" />
+                        {line.cost}
+                      </span>
+                    )}
+                    {' — '}
+                    {line.text}
+                  </span>
+                </li>
+              ),
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
   )
 }

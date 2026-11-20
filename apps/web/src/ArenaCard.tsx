@@ -2,7 +2,7 @@
 
 import { torn } from './torn'
 import { useI18n, type UiKey } from './i18n'
-import { memo, type CSSProperties } from 'react'
+import { memo, useEffect, useState, type CSSProperties } from 'react'
 import { CARD_RARITIES, type CardRarity } from '@nanda/game'
 import { BACK_POINTS, BADGE_POINTS, DexFace } from './DexCard'
 import { HeartIcon } from './icons'
@@ -85,8 +85,8 @@ export type LadderRow = { need?: CardRarity; key: string; n?: number; scope?: st
 
 const ARENA_SHAPE = 43
 
-export const Ward = ({ breaking = false, frost = false, sand = false }: { look?: string; breaking?: boolean; frost?: boolean; sand?: boolean }) => (
-  <span className={`ar-ward ${breaking ? 'is-breaking' : ''} ${frost ? 'is-frost' : ''} ${sand ? 'is-sand' : ''}`} aria-hidden>
+export const Ward = ({ breaking = false, frost = false, sand = false, thawing = false }: { look?: string; breaking?: boolean; frost?: boolean; sand?: boolean; thawing?: boolean }) => (
+  <span className={`ar-ward ${breaking ? 'is-breaking' : ''} ${frost ? 'is-frost' : ''} ${sand ? 'is-sand' : ''} ${thawing ? 'is-thawing' : ''}`} aria-hidden>
     <i className="ar-ward-edge">
       <svg viewBox="0 0 300 400" preserveAspectRatio="none">
         <polygon points={BACK_POINTS} />
@@ -97,6 +97,23 @@ export const Ward = ({ breaking = false, frost = false, sand = false }: { look?:
     </i>
   </span>
 )
+
+const THAW_MS = 420
+
+const useThaw = (frost: boolean) => {
+  const [prev, setPrev] = useState(frost)
+  const [thawing, setThawing] = useState(false)
+  if (prev !== frost) {
+    setPrev(frost)
+    setThawing(!frost)
+  }
+  useEffect(() => {
+    if (!thawing) return
+    const timer = window.setTimeout(() => setThawing(false), THAW_MS)
+    return () => window.clearTimeout(timer)
+  }, [thawing])
+  return thawing
+}
 
 const oneWord = (name: string) => name.replace(/\(.*?\)/g, '').trim().split(/[\s/]+/)[0] || name
 
@@ -164,6 +181,7 @@ export const ArenaFace = memo(function ArenaFace({
   boost?: { atk: number; hp: number }
 }) {
   const { t } = useI18n()
+  const thawing = useThaw(!!frost)
   if (!entity) return <span className="arena-slot" aria-hidden />
   return (
     <span
@@ -194,7 +212,7 @@ export const ArenaFace = memo(function ArenaFace({
         {guard && <span className="ar-taunt is-guard">{t('arena.guard')}</span>}
         {!!dodge && <span className={`ar-taunt is-dodge ${kamui ? 'is-kamui' : ''}`}>{t(kamui ? 'arena.myth.kamui' : 'arena.dodge')}</span>}
         {clone && <span className="ar-taunt is-clone">{t('arena.clone')}</span>}
-        {shield ? <Ward look={shield} /> : frost ? <Ward frost /> : null}
+        {shield ? <Ward look={shield} /> : frost || thawing ? <Ward frost thawing={thawing} /> : null}
         <span className="ar-stats">
           <span className={`is-atk ${boost?.atk ? 'is-boosted' : ''}`}>
             <svg className="icon" viewBox="0 0 24 24" aria-hidden>
