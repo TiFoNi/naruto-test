@@ -143,14 +143,14 @@ const FlameGallery = ({ children }: { children: ReactNode }) => {
   )
 }
 
-const CASTS = new Set(['amaterasu', 'meteor', 'seal', 'blast', 'reaper', 'burn', 'gatesOpen', 'lava', 'coffin', 'benihisago', 'jinton'])
+const CASTS = new Set(['juken', 'amaterasu', 'meteor', 'seal', 'blast', 'reaper', 'burn', 'gatesOpen', 'lava', 'coffin', 'benihisago', 'jinton'])
 
 const METEOR_FALL_MS = 700
 
 const COFFIN_FILL_MS = 750
 
 
-const HOLD_MS: Record<string, number> = { jinton: 600, koto: 700, chains: 600, shadow: 900, dimension: 600, lava: 700, coffin: 700, benihisago: 600, mind: 700, gatesOpen: 600, gates: 300, amaterasu: 600, burn: 300, meteor: 700, seal: 600, blast: 400, raikiri: 400, reaper: 300 }
+const HOLD_MS: Record<string, number> = { juken: 600, jinton: 600, koto: 700, chains: 600, shadow: 900, dimension: 600, lava: 700, coffin: 700, benihisago: 600, mind: 700, gatesOpen: 600, gates: 300, amaterasu: 600, burn: 300, meteor: 700, seal: 600, blast: 400, raikiri: 400, reaper: 300 }
 
 const holdOf = (step: Step) => (step.ability ? (HOLD_MS[step.ability] ?? 0) : 0) + (step.swapFrom ? 400 : 0) + (step.dodged?.length ? 300 : 0) + (step.marks?.some(([, key]) => key === 'izanagi') ? 900 : 0)
 
@@ -221,6 +221,7 @@ const LABEL: Record<string, UiKey> = {
   coffin: 'arena.myth.coffin',
   benihisago: 'arena.myth.benihisago',
   jinton: 'arena.myth.jinton',
+  juken: 'arena.juken',
   genjutsu: 'arena.skill.genjutsu',
   shadow: 'arena.skill.shadow',
   mind: 'arena.skill.mind',
@@ -2351,7 +2352,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                       <i key={i} className={i < one.count ? 'is-full' : ''} />
                     ))}
                   </span>
-                  <small>{[t(`arena.tip.clan.${one.clan}` as UiKey), clanExtra(one.clan)].filter(Boolean).join(' ')}</small>
+                  <small>{[one.count < one.need ? t('arena.clanNeed', { n: one.need }) : '', t(`arena.tip.clan.${one.clan}` as UiKey), clanExtra(one.clan)].filter(Boolean).join(' ')}</small>
                 </li>
               ))}
               {(view.crew?.teams ?? []).map((one) => (

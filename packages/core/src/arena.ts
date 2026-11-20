@@ -93,6 +93,7 @@ const singers = listOf('sound')
 const furies = listOf('fury')
 const scorchers = listOf('scorch')
 const bombers = listOf('bomb')
+const jukens = listOf('juken')
 const biters = listOf('bite')
 const tailed = listOf('tailed')
 const shooters = mapOf<string>('ranged')
@@ -141,6 +142,7 @@ export const furyOf = (id: number, rarity: CardRarity) => level(furies.has(id), 
 export const scorchOf = (id: number, rarity: CardRarity) => level(scorchers.has(id), rarity)
 
 export const bombOf = (id: number, rarity: CardRarity) => [0, BOMB_HIT, BOMB_HIT + 1][level(bombers.has(id), rarity)]!
+export const jukenOf = (id: number, rarity: CardRarity) => [0, JUKEN_HIT, JUKEN_HIT_UP][level(jukens.has(id), rarity)]!
 
 export const healOf = (id: number, rarity: CardRarity) => {
   const base = healers.get(id) ?? 0
@@ -189,6 +191,7 @@ const PASSIVES = [
   ['fury', furies],
   ['scorch', scorchers],
   ['bomb', bombers],
+  ['juken', jukens],
   ['guard', new Set(wardens.keys())],
 ] as const
 
@@ -360,6 +363,9 @@ const AMATERASU_BURN = 3
 const BLAST_HIT = 5
 
 const BOMB_HIT = 2
+const JUKEN_HIT = 2
+const JUKEN_HIT_UP = 4
+const OPENERS = new Set(['koto', 'sixpaths', 'seal', 'benihisago', 'meteor', 'dimension', 'chains', 'edo', 'jinton', 'lava', 'coffin', 'puppet', 'gates', 'gates2', 'flash'])
 const METEOR_HIT = 3
 const CURSE_ATK = 5
 
@@ -382,6 +388,8 @@ const PUPPET_STATS: [number, number] = [6, 8]
 const PIERCERS = new Set(['tenseigan', 'hellfist'])
 
 const MEDIC_CHARGES = 3
+
+const SAGE_WARDS = 3
 
 export function toggleAbility(doc: ArenaDoc, uid: string, key: string, target?: string) {
   const card = onBoard(doc.board).find((one) => one.uid === uid)
@@ -494,7 +502,7 @@ const FIGHT_HEAL_MS = 650
 const FIGHT_CALL_MS = 300
 const FIGHT_CLAY_MS = 450
 
-const FIGHT_HOLD_MS: Record<string, number> = { jinton: 600, koto: 700, chains: 600, shadow: 900, dimension: 600, lava: 700, coffin: 700, benihisago: 600, mind: 700, gatesOpen: 600, gates: 300, amaterasu: 600, burn: 300, meteor: 700, seal: 600, blast: 400, raikiri: 400, reaper: 300 }
+const FIGHT_HOLD_MS: Record<string, number> = { juken: 600, jinton: 600, koto: 700, chains: 600, shadow: 900, dimension: 600, lava: 700, coffin: 700, benihisago: 600, mind: 700, gatesOpen: 600, gates: 300, amaterasu: 600, burn: 300, meteor: 700, seal: 600, blast: 400, raikiri: 400, reaper: 300 }
 
 const holdMs = (step: ArenaStep) => (step.ability ? (FIGHT_HOLD_MS[step.ability] ?? 0) : 0) + (step.swapFrom ? 400 : 0) + (step.dodged?.length ? 300 : 0) + (step.marks?.some(([, key]) => key === 'izanagi') ? 900 : 0)
 
@@ -584,13 +592,21 @@ export const upCostOf = (doc: ArenaDoc) => (tavernOf(doc) >= ARENA_TIERS ? 0 : (
 
 const TAVERN_MAIN = 3
 const TAVERN_BELOW = 2
+const TAVERN_FAR = 1
 
-const roll = (all: number[], top: number, seen: number[] = []) => {
+const KONOHA_WEIGHT = 0.5
+
+const leanOf = (id: number, active: string[]) => {
+  const own = clansOf(id)
+  return own.includes('konoha') && !own.some((clan) => clan !== 'konoha' && active.includes(clan)) ? KONOHA_WEIGHT : 1
+}
+
+const roll = (all: number[], top: number, seen: number[] = [], active: string[] = []) => {
   const fresh = all.filter((id) => !seen.includes(id))
   const pool = fresh.filter((id) => Math.abs(tierOf(id) - top) <= 1).length >= ARENA_TAVERN ? fresh : all
-  const at = (tier: number, weight: number) => pool.filter((id) => tierOf(id) === tier).map((id) => ({ id, weight }))
-  let bag = [...at(top, TAVERN_MAIN), ...at(top - 1, TAVERN_BELOW)]
-  for (let down = top - 2; bag.length < ARENA_TAVERN && down >= 1; down--) bag.push(...at(down, 1))
+  const at = (tier: number, weight: number) => pool.filter((id) => tierOf(id) === tier).map((id) => ({ id, weight: weight * leanOf(id, active) }))
+  let bag = [...at(top, TAVERN_MAIN), ...at(top - 1, TAVERN_BELOW), ...at(top - 2, TAVERN_FAR)]
+  for (let down = top - 3; bag.length < ARENA_TAVERN && down >= 1; down--) bag.push(...at(down, 1))
   for (let up = top + 1; bag.length < ARENA_TAVERN && up <= ARENA_TIERS; up++) bag.push(...at(up, 1))
   if (!bag.length) bag = pool.map((id) => ({ id, weight: 1 }))
   const picked: number[] = []
@@ -642,7 +658,7 @@ export async function startArena(userId: ObjectId, game: GameId) {
     startedAt: new Date(),
     updatedAt: new Date(),
   }
-  doc.tavern = roll(doc.pool, 1)
+  doc.tavern = roll(doc.pool, 1, [], doc.clans ?? [])
   doc.spellOffer = offerSpell()
   doc.turnEndsAt = turnFrom(Date.now(), 1)
   doc.fightEndsAt = null
@@ -714,7 +730,7 @@ function fuse(doc: ArenaDoc, id: number) {
   doc.hand.push(makeCard(id, rarity, first.summon, doc.seq, true, powerOf(doc.powers, id)))
   const tier = tavernOf(doc)
   const exact = shuffled(doc.pool.filter((one) => tierOf(one) === tier && !doc.summons.includes(one)))
-  doc.discover = (exact.length >= DISCOVER_N ? exact : roll(doc.pool, tier)).slice(0, DISCOVER_N)
+  doc.discover = (exact.length >= DISCOVER_N ? exact : roll(doc.pool, tier, [], doc.clans ?? [])).slice(0, DISCOVER_N)
 }
 
 const DISCOVER_N = 3
@@ -884,7 +900,7 @@ export function playCard(doc: ArenaDoc, uid: string, to = -1) {
 export function rollTavern(doc: ArenaDoc) {
   if (doc.coins < ARENA_ROLL_COST) return false
   doc.coins -= ARENA_ROLL_COST
-  doc.tavern = roll(doc.pool, tavernOf(doc), doc.tavern)
+  doc.tavern = roll(doc.pool, tavernOf(doc), doc.tavern, doc.clans ?? [])
   doc.spellOffer = offerSpell()
   doc.frozen = false
   return true
@@ -1037,7 +1053,7 @@ function botTurn(doc: ArenaDoc) {
     const card = makeCard(id, rarityOf(doc.foeRanks, id), doc.summons.includes(id), doc.seq, false, powerOf(doc.foePowers, id))
     return { id, card, value: noisy(botWorth(doc, card, doc.foeBoard, true)) }
   }
-  let offers = roll(doc.pool, tier).map(priced).sort((a, b) => b.value - a.value)
+  let offers = roll(doc.pool, tier, [], doc.clans ?? []).map(priced).sort((a, b) => b.value - a.value)
   let rolls = plan === 'rush' ? 3 : 2
   while (left >= cost) {
     const pick = offers.shift()
@@ -1047,7 +1063,7 @@ function botTurn(doc: ArenaDoc) {
       if (!rolls || left < cost + ARENA_ROLL_COST) break
       rolls -= 1
       left -= ARENA_ROLL_COST
-      offers = roll(doc.pool, tier).map(priced).sort((a, b) => b.value - a.value)
+      offers = roll(doc.pool, tier, [], doc.clans ?? []).map(priced).sort((a, b) => b.value - a.value)
       continue
     }
     if (!room && poorest) {
@@ -1179,6 +1195,7 @@ function fight(doc: ArenaDoc) {
 
   const clanOn = (one: ArenaCard, clan: ArenaClan) => hasAura(auras.get(one.uid), clan)
   const myth = (one: ArenaCard) => mythicOf(one.id, one.rarity)
+  const opener = (one: ArenaCard) => (one.sealed ? null : myth(one))
   const sideOf = (one: ArenaCard) => (onBoard(ours).includes(one) ? ours : foes)
   const across = (side: ArenaSide) => (side === ours ? foes : ours)
   const isFoe = (side: ArenaSide) => side === foes
@@ -1591,7 +1608,33 @@ function fight(doc: ArenaDoc) {
   const order = weStart ? sides : [sides[1], sides[0]]
 
   for (const [team, rivals, foe] of order) {
-    const shisui = alive(team).find((one) => myth(one) === 'koto' && !one.summon)
+    for (const card of alive(team)) {
+      const hit = card.stun || card.summon ? 0 : jukenOf(card.id, card.rarity)
+      if (!hit || card.hp <= 0) continue
+      const open = alive(rivals).filter((one) => !one.sealed && !one.fake)
+      const target = strongest(open.filter((one) => one.armed?.length)) ?? strongest(open.filter((one) => OPENERS.has(myth(one) ?? ''))) ?? strongest(open)
+      if (!target) continue
+      target.sealed = true
+      const warded: string[] = []
+      let damage = 0
+      if (target.ward) {
+        target.ward = false
+        warded.push(target.uid)
+      } else {
+        damage = hit
+        target.hp -= damage
+        wake(target, damage)
+        killers.set(target.uid, card)
+      }
+      const dead = target.hp <= 0
+      bury()
+      steps.push({ from: card.uid, to: target.uid, ...(warded.length ? { warded } : {}), ability: 'juken', damage, dead, foe, ...snap() })
+      settle()
+    }
+  }
+
+  for (const [team, rivals, foe] of order) {
+    const shisui = alive(team).find((one) => opener(one) === 'koto' && !one.summon)
     const others = rivals.heroes.filter((one) => one.hp > 0 && !one.fake)
     if (!shisui || !others.length) continue
     const puppet = weakestOf(others)
@@ -1635,12 +1678,12 @@ function fight(doc: ArenaDoc) {
     for (const card of alive(team)) {
       if (card.hp <= 0) continue
       if (soundOf(card.id, card.rarity)) card.sonic = true
-      if (myth(card) === 'gates' && !card.gated) {
+      if (opener(card) === 'gates' && !card.gated) {
         card.gated = true
         card.hp = Math.max(1, Math.ceil(card.hp / 2))
         steps.push({ from: card.uid, to: null, ability: 'gatesOpen', damage: 0, dead: false, foe, ...snap() })
       }
-      if (myth(card) === 'meteor' && once(card, 'meteor')) {
+      if (opener(card) === 'meteor' && once(card, 'meteor')) {
         const hit = alive(rivals)
         if (hit.length) {
           const warded: string[] = []
@@ -1660,26 +1703,26 @@ function fight(doc: ArenaDoc) {
           settle()
         }
       }
-      if (myth(card) === 'dimension' && once(card, 'dimension')) {
+      if (opener(card) === 'dimension' && once(card, 'dimension')) {
         const target = strongest(alive(rivals).filter((one) => !one.away))
         if (target) {
           target.away = AWAY_TURNS
           steps.push({ from: card.uid, to: target.uid, charm: true, ability: 'dimension', damage: 0, dead: false, foe, ...snap() })
         }
       }
-      if (myth(card) === 'chains' && once(card, 'chains')) {
+      if (opener(card) === 'chains' && once(card, 'chains')) {
         const target = strongest(alive(rivals).filter((one) => !one.away && !one.chained))
         if (target) {
           target.chained = CHAIN_TURNS
           steps.push({ from: card.uid, to: target.uid, charm: true, ability: 'chains', damage: 0, dead: false, foe, ...snap() })
         }
       }
-      if (myth(card) === 'edo' && once(card, 'edo')) {
+      if (opener(card) === 'edo' && once(card, 'edo')) {
         const was = raisers.get(team)
         if (was) was.left += 1
         else raisers.set(team, { by: card, left: 1 })
       }
-      if (myth(card) === 'jinton' && once(card, 'jinton')) {
+      if (opener(card) === 'jinton' && once(card, 'jinton')) {
         const target = strongest(alive(rivals))
         if (target) {
           target.ward = false
@@ -1692,7 +1735,7 @@ function fight(doc: ArenaDoc) {
           settle()
         }
       }
-      if (myth(card) === 'lava' && once(card, 'lava')) {
+      if (opener(card) === 'lava' && once(card, 'lava')) {
         const hit = alive(rivals)
         if (hit.length) {
           for (const one of hit) {
@@ -1703,7 +1746,7 @@ function fight(doc: ArenaDoc) {
           steps.push({ from: card.uid, to: null, splash: hit.map((one) => one.uid), ability: 'lava', damage: 0, dead: false, foe, ...snap() })
         }
       }
-      if (myth(card) === 'coffin' && once(card, 'coffin')) {
+      if (opener(card) === 'coffin' && once(card, 'coffin')) {
         const target = strongest(alive(rivals))
         if (target?.ward) {
           target.ward = false
@@ -1718,19 +1761,19 @@ function fight(doc: ArenaDoc) {
           settle()
         }
       }
-      if (myth(card) === 'puppet' && team.summons.length < ARENA_SUMMON_SLOTS && once(card, 'puppet')) {
+      if (opener(card) === 'puppet' && team.summons.length < ARENA_SUMMON_SLOTS && once(card, 'puppet')) {
         doc.seq += 1
         const spawn: ArenaCard = { uid: `${doc.seq}`, id: card.id, rarity: card.rarity, atk: PUPPET_STATS[0], hp: PUPPET_STATS[1], max: PUPPET_STATS[1], summon: true, art: 'kazekage' }
         team.summons.push(spawn)
         mark(card.uid, 'puppet')
         steps.push({ from: card.uid, to: spawn.uid, summoned: [spawn.uid], ability: 'summon', damage: 0, dead: false, foe, ...snap() })
       }
-      if (myth(card) === 'gates2' && !card.gated) {
+      if (opener(card) === 'gates2' && !card.gated) {
         card.gated = true
         mark(card.uid, 'gates2')
         steps.push({ from: card.uid, to: null, ability: 'gatesOpen', damage: 0, dead: false, foe, ...snap() })
       }
-      for (const ability of card.armed ?? []) {
+      for (const ability of card.sealed ? [] : (card.armed ?? [])) {
         if (!once(card, ability)) continue
         if (ability === 'genjutsu') {
           const target = strongest(alive(rivals).filter((one) => !one.stun && !one.away))
@@ -1795,7 +1838,7 @@ function fight(doc: ArenaDoc) {
           raisers.set(team, { by: card, left: myth(card) === 'revive2' ? 2 : 1 })
         }
       }
-      if (myth(card) === 'flash' && card.hp > 0 && alive(rivals).length && doc.hp && doc.foeHp) strike(card, rivals, foe, false)
+      if (opener(card) === 'flash' && card.hp > 0 && alive(rivals).length && doc.hp && doc.foeHp) strike(card, rivals, foe, false)
     }
     for (const card of alive(team)) {
       const reach = wardOf(card.id, card.rarity)
@@ -1808,8 +1851,8 @@ function fight(doc: ArenaDoc) {
       for (const one of fresh) one.ward = lookOf(card.id)
       steps.push({ from: card.uid, to: null, wards: fresh.map((one) => one.uid), ability: 'ward', damage: 0, dead: false, foe, ...snap() })
     }
-    const sage = alive(team).find((one) => myth(one) === 'sixpaths')
-    const blessed = sage ? alive(team).filter((one) => !one.ward) : []
+    const sage = alive(team).find((one) => opener(one) === 'sixpaths')
+    const blessed = sage ? alive(team).filter((one) => !one.ward && !one.summon).sort((a, b) => b.atk + b.hp - (a.atk + a.hp)).slice(0, SAGE_WARDS) : []
     if (sage && blessed.length) {
       for (const one of blessed) one.ward = 'wood'
       mark(sage.uid, 'sixpaths')
@@ -1824,7 +1867,7 @@ function fight(doc: ArenaDoc) {
   }
 
   for (const [team, rivals, foe] of order) {
-    const nagato = alive(team).find((one) => myth(one) === 'seal')
+    const nagato = alive(team).find((one) => opener(one) === 'seal')
     const statue = nagato ? team.summons.find((one) => one.hp > 0 && one.id === beastOf(nagato.id)) : undefined
     if (!statue) continue
     const prey = rivals.summons.filter((one) => one.hp > 0 && tailed.has(one.id))
@@ -1836,7 +1879,7 @@ function fight(doc: ArenaDoc) {
   }
 
   for (const [team, rivals, foe] of order) {
-    const brothers = alive(team).filter((one) => myth(one) === 'benihisago')
+    const brothers = alive(team).filter((one) => opener(one) === 'benihisago')
     if (new Set(brothers.map((one) => one.id)).size < 2) continue
     const prey = weakestOf(alive(rivals).filter((one) => !one.summon).length ? alive(rivals).filter((one) => !one.summon) : alive(rivals))
     if (!prey) continue
@@ -1940,7 +1983,7 @@ export function endTurn(doc: ArenaDoc) {
   growAll(doc.foeBoard, [], doc.foeShop ?? arenaTierAt(doc.turn))
   if (grown.length) pulse(doc, grown)
   const kept = doc.frozen ? doc.tavern : []
-  doc.tavern = [...kept, ...roll(doc.pool, doc.shopTier, doc.tavern)].slice(0, Math.max(ARENA_TAVERN, kept.length))
+  doc.tavern = [...kept, ...roll(doc.pool, doc.shopTier, doc.tavern, doc.clans ?? [])].slice(0, Math.max(ARENA_TAVERN, kept.length))
   if (!doc.frozen || !doc.spellOffer) doc.spellOffer = offerSpell()
   doc.frozen = false
   return doc
