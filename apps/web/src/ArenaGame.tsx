@@ -1637,7 +1637,12 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       const on = have >= tierOf(row.need)
       const [group, name = ''] = row.key.split('.') as [string, string | undefined]
       const base = { need: row.need, on }
-      if (group === 'clan') lines.push({ ...base, kind: 'clan', head: t(`arena.clan.${name}` as UiKey), text: [t(`arena.tip.clan.${name}` as UiKey), clanExtra(name)].filter(Boolean).join(' ') })
+      if (group === 'clan') {
+        const named = t(`arena.clan.${name}` as UiKey)
+        const joined = lines.find((one) => one.kind === 'clan')
+        if (joined) joined.text = joined.text.replace(` (${t('arena.factions.hint')})`, `, ${named} (${t('arena.factions.hint')})`)
+        else lines.push({ ...base, kind: 'clan', head: t('arena.factions'), text: `${named} (${t('arena.factions.hint')})` })
+      }
       else if (group === 'up') lines.push({ ...base, kind: 'up', head: t('arena.up'), text: t(`arena.tip.up.${name}` as UiKey) })
       else if (group === 'myth') lines.push({ ...base, kind: 'myth', head: t(`arena.myth.${name}` as UiKey), text: t(`arena.tip.myth.${name}` as UiKey) })
       else if (group === 'skill') {

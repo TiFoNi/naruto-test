@@ -5346,12 +5346,12 @@ html:has(.app.is-stage .ar) .topbar {
 
 .ar-book {
   position: fixed;
-  right: 14px;
-  bottom: 14px;
+  right: 18px;
+  bottom: 18px;
   z-index: 30;
   display: grid;
-  width: 52px;
-  height: 52px;
+  width: 60px;
+  height: 60px;
   place-items: center;
   border: 0;
   border-radius: 20px;
@@ -5372,8 +5372,8 @@ html:has(.app.is-stage .ar) .topbar {
 }
 
 .ar-book .icon {
-  width: 30px;
-  height: 30px;
+  width: 31px;
+  height: 31px;
 }
 
 .ar-book.is-open {
@@ -5474,16 +5474,8 @@ html:has(.app.is-stage .ar) .topbar {
 
 @media (max-height: 520px) {
   .ar-book {
-    right: 8px;
-    bottom: 8px;
-    width: 40px;
-    height: 40px;
-    border-radius: 13px;
-  }
-
-  .ar-book .icon {
-    width: 21px;
-    height: 21px;
+    right: 14px;
+    bottom: 14px;
   }
 }
 
@@ -6011,11 +6003,11 @@ html:has(.app.is-stage .ar) .topbar {
 }
 
 .ar .ar-dock-right {
-  margin-right: calc(66px / var(--stage-s, 1) - 16px);
+  margin-right: calc(78px / var(--stage-s, 1) - 16px);
 }
 
 .ar-stage.is-compact .ar .ar-dock-right {
-  margin-right: calc(48px / var(--stage-s, 1) - 16px);
+  margin-right: calc(74px / var(--stage-s, 1) - 16px);
 }
 
 .ar .ar-row li > .ar-skills {
