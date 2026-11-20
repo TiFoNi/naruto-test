@@ -397,6 +397,7 @@ export function toggleAbility(doc: ArenaDoc, uid: string, key: string, target?: 
     return true
   }
   if (doc.chakra < cost) return false
+  if (twinArmed(doc.board, card, ability)) return false
   if (armedOn(doc.board) >= ARENA_SKILL_CAP) return false
   if (callsFor(doc.board) + (SLOTS_OF[ability] ?? 0) > ARENA_SUMMON_SLOTS) return false
   if (ability === 'sacrifice') {
@@ -410,6 +411,8 @@ export function toggleAbility(doc: ArenaDoc, uid: string, key: string, target?: 
 
 const armedOn = (side: ArenaSide) => onBoard(side).reduce((sum, one) => sum + (one.armed?.length ?? 0), 0)
 
+const twinArmed = (side: ArenaSide, card: ArenaCard, ability: string) => onBoard(side).some((one) => one !== card && one.id === card.id && !!one.armed?.includes(ability as ArenaAbility))
+
 function botAbilities(doc: ArenaDoc) {
   let left = doc.chakraCap
   const options = shuffled(onBoard(doc.foeBoard))
@@ -419,6 +422,7 @@ function botAbilities(doc: ArenaDoc) {
     {
       if (armedOn(doc.foeBoard) >= ARENA_SKILL_CAP) return
       if (left < cost) continue
+      if (twinArmed(doc.foeBoard, card, ability)) continue
       if (callsFor(doc.foeBoard) + (SLOTS_OF[ability] ?? 0) > ARENA_SUMMON_SLOTS) continue
       if (ability === 'sacrifice') {
         const mates = doc.foeBoard.heroes.filter((one) => one.uid !== card.uid)
@@ -1621,6 +1625,13 @@ function fight(doc: ArenaDoc) {
   }
 
   for (const [team, rivals, foe] of order) {
+    const cast = new Set<string>()
+    const once = (card: ArenaCard, key: string) => {
+      const tag = `${card.id}:${key}`
+      if (cast.has(tag)) return false
+      cast.add(tag)
+      return true
+    }
     for (const card of alive(team)) {
       if (card.hp <= 0) continue
       if (soundOf(card.id, card.rarity)) card.sonic = true
@@ -1629,7 +1640,7 @@ function fight(doc: ArenaDoc) {
         card.hp = Math.max(1, Math.ceil(card.hp / 2))
         steps.push({ from: card.uid, to: null, ability: 'gatesOpen', damage: 0, dead: false, foe, ...snap() })
       }
-      if (myth(card) === 'meteor') {
+      if (myth(card) === 'meteor' && once(card, 'meteor')) {
         const hit = alive(rivals)
         if (hit.length) {
           const warded: string[] = []
@@ -1649,26 +1660,26 @@ function fight(doc: ArenaDoc) {
           settle()
         }
       }
-      if (myth(card) === 'dimension') {
+      if (myth(card) === 'dimension' && once(card, 'dimension')) {
         const target = strongest(alive(rivals).filter((one) => !one.away))
         if (target) {
           target.away = AWAY_TURNS
           steps.push({ from: card.uid, to: target.uid, charm: true, ability: 'dimension', damage: 0, dead: false, foe, ...snap() })
         }
       }
-      if (myth(card) === 'chains') {
+      if (myth(card) === 'chains' && once(card, 'chains')) {
         const target = strongest(alive(rivals).filter((one) => !one.away && !one.chained))
         if (target) {
           target.chained = CHAIN_TURNS
           steps.push({ from: card.uid, to: target.uid, charm: true, ability: 'chains', damage: 0, dead: false, foe, ...snap() })
         }
       }
-      if (myth(card) === 'edo') {
+      if (myth(card) === 'edo' && once(card, 'edo')) {
         const was = raisers.get(team)
         if (was) was.left += 1
         else raisers.set(team, { by: card, left: 1 })
       }
-      if (myth(card) === 'jinton') {
+      if (myth(card) === 'jinton' && once(card, 'jinton')) {
         const target = strongest(alive(rivals))
         if (target) {
           target.ward = false
@@ -1681,7 +1692,7 @@ function fight(doc: ArenaDoc) {
           settle()
         }
       }
-      if (myth(card) === 'lava') {
+      if (myth(card) === 'lava' && once(card, 'lava')) {
         const hit = alive(rivals)
         if (hit.length) {
           for (const one of hit) {
@@ -1692,7 +1703,7 @@ function fight(doc: ArenaDoc) {
           steps.push({ from: card.uid, to: null, splash: hit.map((one) => one.uid), ability: 'lava', damage: 0, dead: false, foe, ...snap() })
         }
       }
-      if (myth(card) === 'coffin') {
+      if (myth(card) === 'coffin' && once(card, 'coffin')) {
         const target = strongest(alive(rivals))
         if (target?.ward) {
           target.ward = false
@@ -1707,7 +1718,7 @@ function fight(doc: ArenaDoc) {
           settle()
         }
       }
-      if (myth(card) === 'puppet' && team.summons.length < ARENA_SUMMON_SLOTS) {
+      if (myth(card) === 'puppet' && team.summons.length < ARENA_SUMMON_SLOTS && once(card, 'puppet')) {
         doc.seq += 1
         const spawn: ArenaCard = { uid: `${doc.seq}`, id: card.id, rarity: card.rarity, atk: PUPPET_STATS[0], hp: PUPPET_STATS[1], max: PUPPET_STATS[1], summon: true, art: 'kazekage' }
         team.summons.push(spawn)
@@ -1720,6 +1731,7 @@ function fight(doc: ArenaDoc) {
         steps.push({ from: card.uid, to: null, ability: 'gatesOpen', damage: 0, dead: false, foe, ...snap() })
       }
       for (const ability of card.armed ?? []) {
+        if (!once(card, ability)) continue
         if (ability === 'genjutsu') {
           const target = strongest(alive(rivals).filter((one) => !one.stun && !one.away))
           if (!target) continue

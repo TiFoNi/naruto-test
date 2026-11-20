@@ -416,7 +416,8 @@ const MERCHANT_PIC = '/avatars/fox.webp?v=1'
 const STAGE_W = 1600
 const STAGE_COMPACT_W = 1400
 const STAGE_H = 900
-const STAGE_MIN_H = 620
+const STAGE_MIN_H = 650
+const STAGE_FULL_MIN_H = 860
 const COMPACT_BELOW = 520
 let stageScale = 1
 const unscale = (n: number) => Math.round(n / stageScale)
@@ -521,7 +522,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
 
   useLayoutEffect(() => {
     const fit = () => {
-      const width = window.innerHeight < COMPACT_BELOW ? STAGE_COMPACT_W : STAGE_W
+      const width = window.innerHeight < COMPACT_BELOW || (STAGE_W * window.innerHeight) / window.innerWidth < STAGE_FULL_MIN_H ? STAGE_COMPACT_W : STAGE_W
       const height = Math.round(Math.min(STAGE_H, Math.max(STAGE_MIN_H, (width * window.innerHeight) / window.innerWidth)))
       const next = Math.min(window.innerWidth / width, window.innerHeight / height)
       stageScale = next
@@ -2023,14 +2024,14 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
       {leaving && (
         <ul className="ar-row is-shop is-old" aria-hidden>
           {leaving.map((one, i) => (
-            <li key={`out${deal}:${i}`} style={{ '--j': leaving.length - i - (leavingSpell ? 0 : 1) } as CSSProperties}>
+            <li key={`out${deal}:${i}`} style={{ '--j': leaving.length - i - (leavingSpell ? 0 : 1), '--slot': i - (leaving.length - (leavingSpell ? 0 : 1)) / 2 } as CSSProperties}>
               <span className="ar-old">
                 <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} charm={one.charm} sound={one.sound} poison={one.poison} medic={one.medic} fury={one.fury} scorch={one.scorch} bomb={one.bomb} guard={one.guard} />
               </span>
             </li>
           ))}
           {leavingSpell && (
-            <li key={`out${deal}:spell`} style={{ '--j': 0 } as CSSProperties}>
+            <li key={`out${deal}:spell`} style={{ '--j': 0, '--slot': leaving.length / 2 } as CSSProperties}>
               <span className="ar-old">
                 <SpellFace kind={leavingSpell.kind} cost={leavingSpell.cost} />
               </span>
@@ -2179,7 +2180,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                                 key={skill.key}
                                 type="button"
                                 className={`ar-skill ${on ? 'is-on' : ''}`}
-                                disabled={!on && (view.chakra < skill.cost || armedCount >= ARENA_SKILL_CAP || callsOf(view.board) + (SLOTS_OF[skill.key] ?? 0) > ARENA_SUMMON_SLOTS)}
+                                disabled={!on && (view.chakra < skill.cost || armedCount >= ARENA_SKILL_CAP || line(view.board).some((one) => one.uid !== card.uid && one.id === card.id && !!one.armed?.includes(skill.key)) || callsOf(view.board) + (SLOTS_OF[skill.key] ?? 0) > ARENA_SUMMON_SLOTS)}
                                 title={`${t(`arena.skill.${skill.key}` as UiKey)}: ${t(`arena.skill.${skill.key}.hint` as UiKey, { beast: (skill.beast && byId.get(skill.beast)?.name) || '' })}`}
                                 aria-label={t(`arena.skill.${skill.key}` as UiKey)}
                                 onPointerDown={(event) => event.stopPropagation()}
