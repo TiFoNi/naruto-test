@@ -1598,6 +1598,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
 
   const namesOf = (ids: number[]) => ids.map((id) => (byId.get(id)?.name ?? '').split(' ')[0]).join(', ')
 
+  const leading = new Set([...view.board.heroes, ...view.foeBoard.heroes].filter((one) => one.captain).map((one) => one.uid))
   const captainText = (scope: string, atk: number, hp: number) =>
     scope === 'all'
         ? t('arena.tip.captain.all', { stats: statsText(atk, hp) })
@@ -1727,7 +1728,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
         const undone = hit && marked === 'izanagi'
         const struck = hit && !dodging && !blocked && !mirrored && !!now?.damage && (now?.to === card.uid || !!now?.splash?.includes(card.uid) || now?.swapTo === card.uid)
         const face = (
-          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} kamui={card.mythic === 'kamui'} shield={shield.get(card.uid)} ghost={card.ghost} fake={card.fake} away={!!card.away} art={card.art} />
+          <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? 0)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} kamui={card.mythic === 'kamui'} shield={shield.get(card.uid)} ghost={card.ghost} fake={card.fake} away={!!card.away} art={card.art} leader={card.leader} captain={leading.has(card.uid)} />
         )
         const swallowed = !!now?.sealed?.includes(card.uid)
         const clips = dying && !swallowed ? tearOf(seedOf(card.uid)) : null
@@ -1763,7 +1764,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                   </span>
                 </span>
               ) : (
-                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} kamui={card.mythic === 'kamui'} shield={shield.get(card.uid)} ghost={card.ghost} fake={card.fake} away={!!card.away} art={card.art} />
+                <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={power.get(card.uid) ?? card.atk} hp={Math.max(0, hp ?? card.hp)} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={usedWard.has(card.uid) ? null : card.guard} dodge={guard.get(card.uid) ?? card.dodge} kamui={card.mythic === 'kamui'} shield={shield.get(card.uid)} ghost={card.ghost} fake={card.fake} away={!!card.away} art={card.art} leader={card.leader} captain={leading.has(card.uid)} />
               )}
               {struck && !blasted && !burning && !falling && <Slash seed={seedOf(card.uid)} />}
               {shocked && <RaikiriFx />}
@@ -2011,7 +2012,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                 </span>
               )}
               <span className="ar-move" onPointerDown={poor ? undefined : take('shop', card, i)}>
-                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} charm={one.charm} sound={one.sound} poison={one.poison} medic={one.medic} fury={one.fury} scorch={one.scorch} bomb={one.bomb} guard={one.guard} frost={view.frozen} />
+                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} charm={one.charm} sound={one.sound} poison={one.poison} medic={one.medic} fury={one.fury} scorch={one.scorch} bomb={one.bomb} guard={one.guard} frost={view.frozen} leader={one.leader} />
               </span>
             </li>
           )
@@ -2036,7 +2037,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           {leaving.map((one, i) => (
             <li key={`out${deal}:${i}`} style={{ '--j': leaving.length - i - (leavingSpell ? 0 : 1), '--slot': i - (leaving.length - (leavingSpell ? 0 : 1)) / 2 } as CSSProperties}>
               <span className="ar-old">
-                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} charm={one.charm} sound={one.sound} poison={one.poison} medic={one.medic} fury={one.fury} scorch={one.scorch} bomb={one.bomb} guard={one.guard} />
+                <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} charm={one.charm} sound={one.sound} poison={one.poison} medic={one.medic} fury={one.fury} scorch={one.scorch} bomb={one.bomb} guard={one.guard} leader={one.leader} />
               </span>
             </li>
           ))}
@@ -2206,7 +2207,6 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                           })}
                         </span>
                       )}
-                      {card.captain && <b className="ar-captain">{t('arena.captain')}</b>}
                       {cheer?.labels[card.uid] && (
                         <>
                           <b key={cheer.at} className="ar-cheer" aria-hidden>
@@ -2216,7 +2216,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                         </>
                       )}
                       <span data-uid={card.uid} className="ar-move" onPointerDown={take('board', card, i)}>
-                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={card.guard} dodge={card.dodge} clone={card.clone} boost={card.boost} />
+                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={card.guard} dodge={card.dodge} clone={card.clone} boost={card.boost} leader={card.leader} captain={card.captain} />
                       </span>
                     </li>
                   ))}
@@ -2277,7 +2277,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
                       {card.spell ? (
                         <SpellFace kind={card.spell} />
                       ) : (
-                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={card.guard} dodge={card.dodge} />
+                        <ArenaFace game={game.id} entity={byId.get(card.id)} rarity={card.rarity} atk={card.atk} hp={card.hp} summon={card.summon} triple={card.triple} tier={card.tier} taunt={card.taunt} cleave={card.cleave} shot={card.shot} charm={card.charm} sound={card.sound} poison={card.poison} medic={card.medic} fury={card.fury} scorch={card.scorch} bomb={card.bomb} guard={card.guard} dodge={card.dodge} leader={card.leader} />
                       )}
                     </span>
                   </li>
@@ -2296,7 +2296,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
             {view.discover.map((one, i) => (
               <li key={`${one.id}:${i}`} style={{ '--i': i } as CSSProperties}>
                 <button type="button" className="ar-discover-pick" onClick={() => pickDiscover(i)}>
-                  <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} charm={one.charm} sound={one.sound} poison={one.poison} medic={one.medic} fury={one.fury} scorch={one.scorch} bomb={one.bomb} guard={one.guard} />
+                  <ArenaFace game={game.id} entity={byId.get(one.id)} rarity={one.rarity} atk={one.atk} hp={one.hp} summon={one.summon} tier={one.tier} taunt={one.taunt} cleave={one.cleave} shot={one.shot} charm={one.charm} sound={one.sound} poison={one.poison} medic={one.medic} fury={one.fury} scorch={one.scorch} bomb={one.bomb} guard={one.guard} leader={one.leader} />
                 </button>
               </li>
             ))}

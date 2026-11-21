@@ -113,7 +113,7 @@ export async function notePointer(userId: ObjectId, request: Request) {
   if (!raw) return
   const [moved, centered, leap] = raw.split(',').map(Number)
   if (!Number.isFinite(moved) || !Number.isFinite(centered)) return
-  const bad = moved! < 2 || centered === 1 || leap === 1 ? 1 : 0
+  const bad = centered === 1 || leap === 1 ? 1 : 0
   const doc = await (await users()).findOneAndUpdate(
     { _id: userId },
     [{ $set: { ptrN: { $add: [{ $ifNull: ['$ptrN', 0] }, 1] }, ptrScore: { $add: [{ $multiply: [{ $ifNull: ['$ptrScore', 0] }, POINTER_KEEP] }, (1 - POINTER_KEEP) * bad] } } }],

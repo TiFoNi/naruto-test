@@ -62,6 +62,8 @@ const onBoard = (side: ArenaSide) => [...side.heroes, ...side.summons]
 
 const alive = (side: ArenaSide) => onBoard(side).filter((card) => card.hp > 0)
 
+const gold = (card: ArenaCard) => (card.triple ? 2 : 1)
+
 const drop = (side: ArenaSide) => {
   side.heroes = side.heroes.filter((card) => card.hp > 0)
   side.summons = side.summons.filter((card) => card.hp > 0)
@@ -330,7 +332,7 @@ export const liftOf = (side: ArenaSide) => {
   const rule = boss ? captains.get(boss.id) : undefined
   if (rule) {
     const [scope, atk, hp] = rule
-    const twice = hasAura(out.get(boss!.uid), 'hokage') ? 2 : 1
+    const twice = (hasAura(out.get(boss!.uid), 'hokage') ? 2 : 1) * gold(boss!)
     for (const one of side.heroes) if (one !== boss && (scope === 'all' || inClan(one.id, scope))) add(one.uid, atk * twice, hp * twice)
   }
   for (const team of teamsOn(side)) for (const uid of team.uids) add(uid, team.atk, team.hp)
@@ -898,7 +900,7 @@ const feast = (side: ArenaSide, card: ArenaCard, out: Buff[], tavern: number) =>
   for (const one of side.heroes) {
     if (one.uid === card.uid) continue
     const rule = engine(feeders, one)
-    if (rule && inClan(card.id, rule[0])) bless(one, rule[1] * k, rule[2] * k, out)
+    if (rule && inClan(card.id, rule[0])) bless(one, rule[1] * k * gold(one), rule[2] * k * gold(one), out)
   }
 }
 
@@ -910,7 +912,7 @@ const growAll = (side: ArenaSide, out: Buff[], tavern: number) => {
     const rule = engine(growers, one)
     if (!rule) continue
     const kin = side.heroes.filter((other) => other.uid !== one.uid && inClan(other.id, rule[0]))
-    if (kin.length) bless(weakestOf(kin), rule[1] * k, rule[2] * k, out)
+    if (kin.length) bless(weakestOf(kin), rule[1] * k * gold(one), rule[2] * k * gold(one), out)
   }
 }
 
@@ -930,7 +932,9 @@ const shout = (doc: ArenaDoc, card: ArenaCard, side: ArenaSide = doc.board) => {
   feast(side, card, out, side === doc.board ? tavernOf(doc) : (doc.foeShop ?? arenaTierAt(doc.turn)))
   const cry = cries.get(card.id)
   if (cry && !card.summon) {
-    const [reach, atk, hp] = cry
+    const [reach, base, life] = cry
+    const atk = base * gold(card)
+    const hp = life * gold(card)
     const mates = side.heroes.filter((one) => one.uid !== card.uid)
     const at = side.heroes.indexOf(card)
     const kin = reach in ARENA_CLANS ? mates.filter((one) => inClan(one.id, reach)) : mates
@@ -1406,7 +1410,7 @@ function fight(doc: ArenaDoc) {
     const rule = boss && boss.hp > 0 && living.includes(boss) ? captains.get(boss.id) : undefined
     if (rule) {
       const [scope, atk, hp] = rule
-      const twice = hasAura(out.get(boss!.uid), 'hokage') ? 2 : 1
+      const twice = (hasAura(out.get(boss!.uid), 'hokage') ? 2 : 1) * gold(boss!)
       for (const one of living) if (one !== boss && (scope === 'all' || inClan(one.id, scope))) add(one.uid, atk * twice, hp * twice)
     }
     for (const team of squads.get(side) ?? [])
@@ -1481,14 +1485,14 @@ function fight(doc: ArenaDoc) {
         const killer = killers.get(card.uid)
         if (!card.stun && own === 'blast') echoes.push({ kind: 'blast', card, side })
         else if (!card.stun && own === 'paperbomb') echoes.push({ kind: 'blast', card, side, hit: PAPER_HIT })
-        else if (!card.stun && bombOf(card.id, card.rarity)) echoes.push({ kind: 'blast', card, side, hit: bombOf(card.id, card.rarity) })
+        else if (!card.stun && bombOf(card.id, card.rarity)) echoes.push({ kind: 'blast', card, side, hit: bombOf(card.id, card.rarity) * gold(card) })
         if (!card.stun && own === 'reaper' && killer && killer.hp > 0) echoes.push({ kind: 'reaper', card, side, killer })
         for (const mate of side.heroes)
           if (mate.hp > 0 && !mate.stun && clanOn(mate, 'root')) mate.atk += 1
         for (const avenger of side.heroes) {
           const rule = avenger.hp > 0 && !avenger.stun ? engine(avengers, avenger) : undefined
           if (!rule || !inClan(card.id, rule[0])) continue
-          const k = engineScale(side === ours ? tavernOf(doc) : (doc.foeShop ?? arenaTierAt(doc.turn)))
+          const k = engineScale(side === ours ? tavernOf(doc) : (doc.foeShop ?? arenaTierAt(doc.turn))) * gold(avenger)
           for (const mate of side.heroes)
             if (mate.hp > 0 && inClan(mate.id, rule[0])) {
               mate.atk += rule[1] * k
@@ -1656,7 +1660,7 @@ function fight(doc: ArenaDoc) {
       for (const other of medics) beats.set(other.uid, (beats.get(other.uid) ?? 0) + 1)
       if (!medics.length) return
       const before = one.hp
-      one.hp = Math.min(one.max, one.hp + medics.reduce((sum, other) => sum + healOf(other.id, other.rarity), 0))
+      one.hp = Math.min(one.max, one.hp + medics.reduce((sum, other) => sum + healOf(other.id, other.rarity) * gold(other), 0))
       heals[one.uid] = (heals[one.uid] ?? 0) + one.hp - before
       for (const other of medics) if (biters.has(other.id) && other.hp > 1) other.hp -= 1
     }
@@ -1737,7 +1741,7 @@ function fight(doc: ArenaDoc) {
         killers.set(card.uid, one)
       }
       if ((furyOf(one.id, one.rarity) || clanOn(one, 'youth')) && one.hp > 0 && !one.stun) {
-        one.atk += 1
+        one.atk += gold(one)
         raged.push(one.uid)
       }
       curse(one)
@@ -2228,12 +2232,18 @@ export function endTurn(doc: ArenaDoc) {
   const grown: Buff[] = []
   clanGrow(doc.board, doc.turn, grown)
   clanGrow(doc.foeBoard, doc.turn, [])
+  const payers = new Map<number, ArenaCard>()
   for (const one of doc.board.heroes) {
-    const gain = !one.summon && reach(one.rarity, BRONZE) ? earners.get(one.id) : undefined
-    if (!gain) continue
-    if (gain[0] === 'coin') doc.coins += gain[1]
-    else doc.chakra += gain[1]
-    grown.push({ to: one.uid, atk: 0, hp: 0, [gain[0]]: gain[1] })
+    if (one.summon || !reach(one.rarity, BRONZE) || !earners.has(one.id)) continue
+    const was = payers.get(one.id)
+    if (!was || gold(one) > gold(was)) payers.set(one.id, one)
+  }
+  for (const one of payers.values()) {
+    const [kind, amount] = earners.get(one.id)!
+    const gain = amount * gold(one)
+    if (kind === 'coin') doc.coins += gain
+    else doc.chakra += gain
+    grown.push({ to: one.uid, atk: 0, hp: 0, [kind]: gain })
   }
   growAll(doc.board, grown, tavernOf(doc))
   growAll(doc.foeBoard, [], doc.foeShop ?? arenaTierAt(doc.turn))
@@ -2261,6 +2271,7 @@ const faceOf = (id: number, rarity: CardRarity) => ({
   clan: clanOf(id),
   clans: clansOf(id),
   skills: skillView(id, rarity),
+  leader: captains.has(id),
 })
 
 const offerOf = (doc: ArenaDoc, id: number) => {
@@ -2331,7 +2342,7 @@ export const arenaView = (doc: ArenaDoc) => ({
   opened: doc.opened ?? null,
   clash: doc.clash ? { mine: doc.clash.mine.map(ranked), theirs: doc.clash.theirs.map(ranked) } : null,
   synergy: synergyOf(doc.board),
-  clans: doc.clans ?? [],
+  clans: [...new Set(doc.pool.flatMap((id) => clansOf(id)))],
   cried: doc.cried ?? null,
   discover: (doc.discover ?? []).map((id) => offerOf(doc, id)),
   buffs: doc.buffs ?? null,
