@@ -1,6 +1,6 @@
 import BackButton from './BackButton'
 
-export type Section = { heading: string; paragraphs: string[]; list?: string[] }
+export type Section = { id?: string; heading: string; paragraphs: string[]; list?: string[] }
 
 export default function Legal({ title, updated, intro, sections }: { title: string; updated: string; intro: string; sections: Section[] }) {
   return (
@@ -10,7 +10,7 @@ export default function Legal({ title, updated, intro, sections }: { title: stri
       <p className="legal-updated">{updated}</p>
       <p className="legal-intro">{intro}</p>
       {sections.map((section) => (
-        <section key={section.heading}>
+        <section key={section.heading} id={section.id}>
           <h2>{section.heading}</h2>
           {section.paragraphs.map((text) => (
             <p key={text}>{text}</p>

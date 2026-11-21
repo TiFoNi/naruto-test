@@ -216,6 +216,7 @@ const TERMS: Record<Lang, Omit<Doc, 'updated'>> = {
         ],
       },
       {
+        id: 'fair-play',
         heading: 'Честная игра',
         paragraphs: [
           'Запрещены боты, скрипты, автокликеры и ИИ-агенты, которые играют за тебя, вытягивание ответов из запросов к серверу, игра с нескольких аккаунтов и создание аккаунтов пачками ради таблицы лидеров, а также любые попытки мешать игре других.',
@@ -267,6 +268,7 @@ const TERMS: Record<Lang, Omit<Doc, 'updated'>> = {
         ],
       },
       {
+        id: 'fair-play',
         heading: 'Чесна гра',
         paragraphs: [
           'Заборонені боти, скрипти, автоклікери та ШІ-агенти, які грають за тебе, витягання відповідей із запитів до сервера, гра з кількох акаунтів і створення акаунтів пачками заради таблиці лідерів, а також будь-які спроби заважати грі інших.',
@@ -318,6 +320,7 @@ const TERMS: Record<Lang, Omit<Doc, 'updated'>> = {
         ],
       },
       {
+        id: 'fair-play',
         heading: 'Fair play',
         paragraphs: [
           'No bots, scripts, auto-clickers or AI agents playing for you, no digging answers out of server responses, no playing from several accounts or creating accounts in bulk to game the leaderboard, and no interfering with other people.',

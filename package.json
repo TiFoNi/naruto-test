@@ -50,6 +50,7 @@
     "cards:cap": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/cap-cards.mjs",
     "cards:recalc": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/recalc-cards.mjs",
     "news:system": "node --env-file-if-exists=.env.local scripts/system-news.mjs",
+    "warn:cheat": "node --env-file-if-exists=.env.local scripts/warn-cheat.mjs",
     "pics:mark": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/mark-admin-pics.mjs",
     "pics:clean": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/clean-pics.mjs",
     "dev:api": "npm run dev --workspace @nanda/api",

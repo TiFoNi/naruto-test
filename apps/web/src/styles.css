@@ -5688,6 +5688,10 @@ html[data-auth] .guest-note {
   color: var(--text);
 }
 
+.legal section[id] {
+  scroll-margin-top: calc(var(--topbar-h, 64px) + 20px);
+}
+
 .legal h2 {
   margin: 28px 0 8px;
   font-size: 17px;
