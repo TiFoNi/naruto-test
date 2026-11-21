@@ -426,6 +426,14 @@ const armedOn = (side: ArenaSide) => onBoard(side).reduce((sum, one) => sum + (o
 
 const twinArmed = (side: ArenaSide, card: ArenaCard, ability: string) => onBoard(side).some((one) => one !== card && one.id === card.id && !!one.armed?.includes(ability as ArenaAbility))
 
+function botSpell(doc: ArenaDoc, spell: string | null, left: number) {
+  if (!spell || left < ARENA_SPELL_COST) return
+  const aim = spellAim(doc, spell)
+  if (!aim) return
+  if (spell === 'clone') aim.clone = true
+  else aim.dodge = 1
+}
+
 function botAbilities(doc: ArenaDoc, spent = 0) {
   let left = doc.chakraCap - spent
   const options = shuffled(onBoard(doc.foeBoard))
@@ -433,7 +441,7 @@ function botAbilities(doc: ArenaDoc, spent = 0) {
     .sort((a, b) => b.cost - a.cost)
   for (const { card, ability, cost } of options) {
     {
-      if (armedOn(doc.foeBoard) >= ARENA_SKILL_CAP) return
+      if (armedOn(doc.foeBoard) >= ARENA_SKILL_CAP) return left
       if (left < cost) continue
       if (twinArmed(doc.foeBoard, card, ability)) continue
       if (callsFor(doc.foeBoard) + (SLOTS_OF[ability] ?? 0) > ARENA_SUMMON_SLOTS) continue
@@ -446,6 +454,7 @@ function botAbilities(doc: ArenaDoc, spent = 0) {
       card.armed = [...(card.armed ?? []), ability]
     }
   }
+  return left
 }
 
 const CACHE_MS = 15_000
@@ -1066,7 +1075,6 @@ const BOT_COPY = 7
 const BOT_TRIPLE = 12
 const BOT_MARGIN = 2
 const BOT_PIVOT = 5
-const BOT_SPELL_CHANCE = 0.9
 const BOT_POISON = 2
 
 const focusOf = (doc: ArenaDoc) => {
@@ -1217,19 +1225,10 @@ function botTurn(doc: ArenaDoc) {
   if (left < cost && offers.some((one) => wanted(doc, one))) doc.foeFrozen = offers.map((one) => one.id)
 
   oddForCaptain(doc)
-  const spell = offerSpell(doc)
-  const aim = spell ? spellAim(doc, spell) : undefined
-  let spent = 0
-  if (spell && aim && doc.chakraCap >= ARENA_SPELL_COST && Math.random() < BOT_SPELL_CHANCE) {
-    if (spell === 'clone') aim.clone = true
-    else aim.dodge = 1
-    spent = ARENA_SPELL_COST
-  }
-
   arrangeAgainst(doc)
   doc.foeShop = tier
   doc.foeUp = up
-  return spent
+  return offerSpell(doc)
 }
 
 const BOT_LOOK = 6
@@ -2207,7 +2206,8 @@ function fight(doc: ArenaDoc) {
 export function endTurn(doc: ArenaDoc) {
   if (doc.status !== 'playing') return doc
   if (doc.discover?.length) discoverCard(doc, 0)
-  botAbilities(doc, botTurn(doc))
+  const spell = botTurn(doc)
+  botSpell(doc, spell, botAbilities(doc))
   doc.armed = [...onBoard(doc.board), ...onBoard(doc.foeBoard)].filter((card) => (card.dodge ?? 0) > 0).map((card) => card.uid)
   fight(doc)
   for (const card of [...onBoard(doc.board), ...onBoard(doc.foeBoard)]) {
