@@ -7,7 +7,7 @@ export const GET = handle(async (request) => {
   const found = await currentUser(request)
   if (!found) return json({ user: null })
   await rememberLang(await users(), found.doc._id!, request)
-  const profile = toProfile(found.doc)
+  const profile = { ...toProfile(found.doc), ...(found.doc.suspect ? { suspect: true } : {}) }
   const boss = await adminSession(request)
   return json(boss ? { ...profile, user: { ...profile.user, admin: true } } : profile)
 })

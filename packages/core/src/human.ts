@@ -13,7 +13,8 @@ const MARATHON_HOUR_ROUNDS = 90
 const NONSTOP_HOURS = 2
 const BREAK_MS = 15 * MINUTE_MS
 const CLEAR_FOR_MS = 60_000
-const TRUST_MS = 6 * HOUR_MS
+const TRUST_MS = HOUR_MS
+const ASK_EVERY_MS = 10 * MINUTE_MS
 const VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
 
 const clearUntil = new Map<string, number>()
@@ -56,17 +57,30 @@ export async function humanCheck(owner: { id: ObjectId; guest: boolean }) {
   const key = owner.id.toHexString()
   const now = Date.now()
   if ((clearUntil.get(key) ?? 0) > now) return null
-  if (await looksAutomated(owner.id, now)) return fail(428, 'human_check')
+  const person = await (await users()).findOne({ _id: owner.id }, { projection: { suspect: 1, suspectAskedAt: 1 } })
+  if (person?.suspect) {
+    clearUntil.set(key, now + CLEAR_FOR_MS)
+    if (now - (person.suspectAskedAt?.getTime() ?? 0) < ASK_EVERY_MS) return null
+    await (await users()).updateOne({ _id: owner.id }, { $set: { suspectAskedAt: new Date(now) } })
+    return fail(428, 'human_check')
+  }
+  if (await looksAutomated(owner.id, now)) {
+    await (await users()).updateOne({ _id: owner.id }, { $set: { suspect: true, suspectAskedAt: new Date(now) } })
+    clearUntil.set(key, now + CLEAR_FOR_MS)
+    return fail(428, 'human_check')
+  }
   clearUntil.set(key, now + CLEAR_FOR_MS)
   return null
 }
+
+export const isSuspect = async (userId: ObjectId) => !!(await (await users()).findOne({ _id: userId, suspect: true }, { projection: { _id: 1 } }))
 
 export async function verifyHuman(userId: ObjectId, token: string) {
   if (!secret()) return true
   const response = await fetch(VERIFY_URL, { method: 'POST', body: new URLSearchParams({ secret: secret(), response: token }) })
   const { success } = (await response.json()) as { success?: boolean }
   if (!success) return false
-  await (await users()).updateOne({ _id: userId }, { $set: { humanAt: new Date() } })
+  await (await users()).updateOne({ _id: userId }, { $set: { humanAt: new Date() }, $unset: { suspect: '', suspectAskedAt: '' } })
   clearUntil.set(userId.toHexString(), Date.now() + CLEAR_FOR_MS)
   return true
 }

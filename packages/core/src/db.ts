@@ -39,6 +39,8 @@ export type UserDoc = {
   duelSolved?: number
   visit?: { lastDay: string; streak: number; best: number; days: string[] }
   humanAt?: Date
+  suspect?: boolean
+  suspectAskedAt?: Date
   awards?: Record<string, Date>
   tally?: import('./achievements').Tally
   awardsSolved?: number

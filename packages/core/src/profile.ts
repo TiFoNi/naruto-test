@@ -157,7 +157,7 @@ export async function addXp(
   const after = capped ?? (mode ? MODE_XP_AFTER[mode] : 1)
 
   const doc = await collection.findOneAndUpdate(
-    { _id: userId },
+    { _id: userId, suspect: { $ne: true } },
     [
       { $set: { xpToday: { day, daily: carry('daily'), endless: carry('endless') } } },
       {

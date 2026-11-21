@@ -39,8 +39,13 @@ const loadTurnstile = () =>
 export default function HumanCheck() {
   const { t, error } = useI18n()
   const [open, setOpen] = useState(false)
+  const [owed, setOwed] = useState(false)
   const [problem, setProblem] = useState('')
   const box = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    void api<{ suspect?: boolean }>('me').then(({ data }) => setOwed(!!data.suspect))
+  }, [])
 
   useEffect(() => {
     const ask = () => {
@@ -65,8 +70,9 @@ export default function HumanCheck() {
           'error-callback': failed,
           callback: async (token) => {
             const { ok } = await api('human', { token })
-            if (ok) setOpen(false)
-            else failed()
+            if (!ok) return failed()
+            setOpen(false)
+            setOwed(false)
           },
         })
       })
@@ -77,12 +83,31 @@ export default function HumanCheck() {
     }
   }, [open, error])
 
-  if (!open) return null
+  if (!open)
+    return owed
+      ? createPortal(
+          <div className="human-owed" role="status">
+            <span>{t('human.owed')}</span>
+            <button type="button" className="primary" onClick={() => setOpen(true)}>
+              {t('human.verify')}
+            </button>
+          </div>,
+          document.body,
+        )
+      : null
 
   return createPortal(
     <div className="modal-backdrop" role="presentation">
       <section className="card modal give-up-ask human-check" role="dialog" aria-modal="true" aria-label={t('human.title')}>
-        <button type="button" className="modal-close" onClick={() => setOpen(false)} aria-label={t('human.close')}>
+        <button
+          type="button"
+          className="modal-close"
+          onClick={() => {
+            setOpen(false)
+            setOwed(true)
+          }}
+          aria-label={t('human.close')}
+        >
           <CloseIcon />
         </button>
         <h2>{t('human.title')}</h2>

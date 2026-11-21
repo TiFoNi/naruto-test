@@ -1,5 +1,6 @@
 import type { ObjectId } from 'mongodb'
 import { seasonCloses, seasons } from './db'
+import { isSuspect } from './human'
 
 const ZONE = 'Europe/Kyiv'
 const FIRST = { year: 2026, month: 9, day: 28 }
@@ -65,7 +66,7 @@ export function seasonAt(now = new Date()): Season {
 const key = (season: string, userId: ObjectId) => `${season}:${userId.toHexString()}`
 
 export async function addSeasonXp(userId: ObjectId, xp: number, now = new Date()) {
-  if (xp <= 0) return
+  if (xp <= 0 || (await isSuspect(userId))) return
   const season = seasonAt(now)
   await (await seasons()).updateOne(
     { _id: key(season.id, userId) },
@@ -75,6 +76,7 @@ export async function addSeasonXp(userId: ObjectId, xp: number, now = new Date()
 }
 
 export async function touchSeasonDay(userId: ObjectId, day: string, now = new Date()) {
+  if (await isSuspect(userId)) return
   const season = seasonAt(now)
   await (await seasons()).updateOne(
     { _id: key(season.id, userId) },
@@ -94,6 +96,7 @@ export async function markSeasonDuel(userId: ObjectId, won: boolean, now = new D
 }
 
 export async function markSeasonSolved(userId: ObjectId, now = new Date()) {
+  if (await isSuspect(userId)) return
   const season = seasonAt(now)
   await (await seasons()).updateOne(
     { _id: key(season.id, userId) },
@@ -121,6 +124,7 @@ export async function takeSeasonClose(season: Season) {
 }
 
 export async function markSeasonPlay(userId: ObjectId, won: boolean, day: string, now = new Date()) {
+  if (await isSuspect(userId)) return
   const season = seasonAt(now)
   await (await seasons()).updateOne(
     { _id: key(season.id, userId) },
