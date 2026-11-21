@@ -421,6 +421,24 @@ export default function SeasonBoard({ initial = null }: { initial?: Board | null
               </li>
             </ol>
           </section>
+
+          <section className="card season-how season-fair">
+            <span className="play-card-title">{t('lb.fairTitle')}</span>
+            <ol>
+              <li>
+                <i>!</i>
+                {t('lb.fair1')}
+              </li>
+              <li>
+                <i>!</i>
+                {t('lb.fair2')}
+              </li>
+              <li>
+                <i>!</i>
+                {t('lb.fair3')}
+              </li>
+            </ol>
+          </section>
         </aside>
       </div>
 

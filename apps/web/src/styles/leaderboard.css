@@ -1508,3 +1508,8 @@
     filter: none;
   }
 }
+
+.season-fair i {
+  background: color-mix(in srgb, #e5483b 16%, transparent);
+  color: #f0796e;
+}

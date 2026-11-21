@@ -3034,6 +3034,22 @@ const ui = {
     en: 'Every world and mode has its own board, and results update right after the round.',
   },
   'lb.howTitle': { ru: 'Как считается', uk: 'Як рахується', en: 'How it works' },
+  'lb.fairTitle': { ru: 'Честная игра', uk: 'Чесна гра', en: 'Fair play' },
+  'lb.fair1': {
+    ru: 'Боты, скрипты, автокликеры и игра с нескольких аккаунтов запрещены.',
+    uk: 'Боти, скрипти, автоклікери й гра з кількох акаунтів заборонені.',
+    en: 'Bots, scripts, auto-clickers and playing from several accounts are not allowed.',
+  },
+  'lb.fair2': {
+    ru: 'Подозрительную игру проверяем: пока не пройдёшь проверку, опыт не начисляется.',
+    uk: 'Підозрілу гру перевіряємо: поки не пройдеш перевірку, досвід не нараховується.',
+    en: 'We check suspicious play: until you pass the check, you earn no XP.',
+  },
+  'lb.fair3': {
+    ru: 'За нечестную игру — снятие опыта, удаление из рейтинга и бан аккаунта.',
+    uk: 'За нечесну гру — зняття досвіду, видалення з рейтингу й бан акаунта.',
+    en: 'Cheating means losing XP, removal from the leaderboard and an account ban.',
+  },
   'lb.how1': {
     ru: 'Опыт из всех игр: ежедневные, бесконечные раунды, дуэли, задания.',
     uk: 'Досвід з усіх ігор: щоденні, нескінченні раунди, дуелі, завдання.',
