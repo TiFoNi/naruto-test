@@ -1642,8 +1642,9 @@ body:has(.chat-panel) .duel-dock {
 .bout-card .lv-badge {
   right: -5.6cqw;
   bottom: -5.6cqw;
-  width: 26cqw;
+  min-width: 26cqw;
   height: 21cqw;
+  padding: 0 4cqw;
   font-size: 10cqw;
 }
 

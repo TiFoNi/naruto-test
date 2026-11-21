@@ -791,7 +791,7 @@ const DexSoon = () => {
   )
 }
 
-const OldHelp = ({ modes }: { modes: ModeId[] }) => {
+const OldHelp = ({ modes, capped }: { modes: ModeId[]; capped: boolean }) => {
   const { t } = useI18n()
   const groups = [...new Set(modes.map((mode) => CARD_POINTS[mode] ?? 0))]
     .filter((points) => points > 0)
@@ -814,7 +814,7 @@ const OldHelp = ({ modes }: { modes: ModeId[] }) => {
             ))}
           </ul>
           <p className="dex-help-note">{t('dex.help.daily', { factor: CARD_DAILY_FACTOR })}</p>
-          <span className="dex-help-label">{t('dex.help.rarity', { max: CARD_MAX_LEVEL })}</span>
+          <span className="dex-help-label">{capped ? t('dex.help.rarity', { max: CARD_MAX_LEVEL }) : t('dex.help.rarityOpen', { max: CARD_MAX_LEVEL })}</span>
           <ul className="dex-help-rarities">
             {CARD_STEPS.map((step, tier) => (
               <li key={tier} className={`lv-${tier + 1}`}>
@@ -1557,8 +1557,8 @@ export default function Bestiary({ game: gameId, owner }: { game: string; owner?
           <div className="dex-head-main">
             <div className="dex-title">
               <h1>{owner ? t('dex.titleOf', { world: l(game.label) }) : t('dex.title')}</h1>
-              {fresh ? <DexHelp modes={game.modes} /> : <OldHelp modes={game.modes} />}
-              {!fresh && <DexSoon />}
+              {fresh ? <DexHelp modes={game.modes} /> : <OldHelp modes={game.modes} capped={shardGame(game.id)} />}
+              {!fresh && shardGame(game.id) && <DexSoon />}
             </div>
           </div>
           {waiting && (

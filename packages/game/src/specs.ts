@@ -941,7 +941,7 @@ export function cardRank(xp: number) {
   let tier = 0
   while (tier + 1 < CARD_STEPS.length && total >= CARD_STEPS[tier + 1]!.xp) tier++
   const next = CARD_STEPS[tier + 1]
-  const level = Math.max(1, Math.min(total, CARD_MAX_LEVEL))
+  const level = Math.max(1, total)
   return { tier, rarity: CARD_RARITIES[tier]!, level, xp: total, next: next ? { xp: next.xp, rarity: CARD_RARITIES[tier + 1]! } : null }
 }
 

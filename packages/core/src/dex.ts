@@ -30,7 +30,7 @@ export async function openDex(userId: ObjectId, game: string | undefined, id: nu
           userId: { $ifNull: ['$userId', userId] },
           game: { $ifNull: ['$game', game] },
           entityId: { $ifNull: ['$entityId', id!] },
-          gained: { $max: [0, { $min: [gain.xp, { $subtract: [CARD_MAX_LEVEL, { $ifNull: ['$xp', 0] }] }] }] },
+          gained: shardGame(game) ? { $max: [0, { $min: [gain.xp, { $subtract: [CARD_MAX_LEVEL, { $ifNull: ['$xp', 0] }] }] }] } : gain.xp,
         },
       },
       {
