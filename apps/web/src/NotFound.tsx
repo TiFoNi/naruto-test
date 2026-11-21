@@ -44,7 +44,7 @@ export default function NotFound({ games }: { games: GameMeta[] }) {
             <ul>
               {found.slice(0, 6).map((game) => (
                 <li key={game.id}>
-                  <Link href={href.play(game.id, game.modes[0])} style={{ '--game': game.accent } as React.CSSProperties}>
+                  <Link prefetch={false} href={href.play(game.id, game.modes[0])} style={{ '--game': game.accent } as React.CSSProperties}>
                     <i />
                     {l(game.label)}
                   </Link>
@@ -57,7 +57,7 @@ export default function NotFound({ games }: { games: GameMeta[] }) {
         </div>
       )}
 
-      <Link className="primary oops-home" href={href.home}>
+      <Link prefetch={false} className="primary oops-home" href={href.home}>
         {t('oops.home')}
       </Link>
     </div>

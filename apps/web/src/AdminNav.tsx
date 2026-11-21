@@ -27,7 +27,7 @@ export default function AdminNav() {
       <span className="admin-nav-brand">Админка</span>
       <div className="admin-nav-tabs">
         {tabs.map((tab) => (
-          <Link key={tab.href} href={tab.href} className={tab === current ? 'on' : ''} aria-current={tab === current ? 'page' : undefined}>
+          <Link prefetch={false} key={tab.href} href={tab.href} className={tab === current ? 'on' : ''} aria-current={tab === current ? 'page' : undefined}>
             {tab.icon}
             {tab.label}
           </Link>

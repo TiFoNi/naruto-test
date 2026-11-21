@@ -124,7 +124,7 @@ export default function PlaySide({ game, mode, daily, stats, playing, busy, lege
       <div className="play-actions">
         {!daily && <ChallengeMaker game={game} mode={mode} />}
         {user && (
-          <Link className="lb-link" href={href.leaderboard(game.id, mode)}>
+          <Link prefetch={false} className="lb-link" href={href.leaderboard(game.id, mode)}>
             <PodiumIcon /> {t('nav.leaderboard')}
           </Link>
         )}

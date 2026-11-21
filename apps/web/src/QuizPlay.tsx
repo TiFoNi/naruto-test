@@ -539,7 +539,7 @@ function Recap({
           <span className="is-short">{t('quiz.againShort')}</span>
         </button>
         {moreHref && (
-          <Link className="quiz-btn" href={moreHref}>
+          <Link prefetch={false} className="quiz-btn" href={moreHref}>
             <span className="is-long">{t('quiz.more')}</span>
             <span className="is-short">{t('quiz.moreShort')}</span>
           </Link>

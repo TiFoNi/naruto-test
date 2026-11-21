@@ -33,7 +33,7 @@ export default function BackButton({ href, children, onClick, fixed, anywhere = 
   }
 
   return (
-    <Link className="back" href={href} onClick={handle}>
+    <Link prefetch={false} className="back" href={href} onClick={handle}>
       <BackIcon />
       {profile ? t('nav.profile') : returning && anywhere && !fixed ? t('common.back') : children}
     </Link>

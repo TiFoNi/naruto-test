@@ -134,7 +134,7 @@ export default function QuizMake({ id, game }: { id?: string; game?: string }) {
           <span className="qz-mark">{BRAND.mark}</span>
           <b>{t('qb.mine.login')}</b>
           <p>{t('qb.mine.lead')}</p>
-          <Link className="quiz-btn" href={href.login}>
+          <Link prefetch={false} className="quiz-btn" href={href.login}>
             {t('qb.mine.loginBtn')}
           </Link>
         </div>

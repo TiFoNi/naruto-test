@@ -347,9 +347,9 @@ export default function Support() {
           )}
 
           <p className="support-fine">
-            {t('support.agree')} <Link href={href.terms}>{t('footer.terms')}</Link>
+            {t('support.agree')} <Link prefetch={false} href={href.terms}>{t('footer.terms')}</Link>
             {' · '}
-            <Link href={href.refunds}>{t('footer.refunds')}</Link>
+            <Link prefetch={false} href={href.refunds}>{t('footer.refunds')}</Link>
           </p>
         </aside>
       </div>

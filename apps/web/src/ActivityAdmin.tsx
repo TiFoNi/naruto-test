@@ -61,7 +61,7 @@ export function ActivityTable({ rows, profileOf }: { rows: ActivityRow[]; profil
             return (
               <tr key={row.id}>
                 <td>
-                  <Link href={profileOf(row.id)}>{row.nickname}</Link>
+                  <Link prefetch={false} href={profileOf(row.id)}>{row.nickname}</Link>
                 </td>
                 <td>{row.total}</td>
                 <td className={hot ? 'is-hot' : ''}>{row.peak}</td>

@@ -40,10 +40,10 @@ export default function GameView({ game, mode, daily }: { game: Game; mode: Mode
         {hasDaily(mode) && (
           <div className="game-switches">
             <div className="variant-tabs" role="tablist" aria-label={t('daily.variant')}>
-              <Link role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
+              <Link prefetch={false} role="tab" aria-selected={!daily} className={!daily ? 'active' : ''} href={href.play(game.id, mode)}>
                 <InfinityIcon /> {t('daily.endless')}
               </Link>
-              <Link role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, mode, true)}>
+              <Link prefetch={false} role="tab" aria-selected={daily} className={daily ? 'active' : ''} href={href.play(game.id, mode, true)}>
                 <CalendarIcon /> {t('daily.daily')}
               </Link>
             </div>

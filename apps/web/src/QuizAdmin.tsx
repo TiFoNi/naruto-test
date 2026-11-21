@@ -118,7 +118,7 @@ export default function QuizAdmin() {
               author && (
                 <div className="quiz-admin-field">
                   <span className="quiz-admin-label">Автор</span>
-                  <Link className="qb-author" href={href.player(author.id)} target="_blank">
+                  <Link prefetch={false} className="qb-author" href={href.player(author.id)} target="_blank">
                     {author.nickname}
                     {author.tag && <small>#{author.tag}</small>}
                   </Link>

@@ -1174,7 +1174,7 @@ export function Ask({ ask, onClose }: { ask: Asking; onClose: () => void }) {
         )}
         <div className="qb-ask-actions">
           {ask.link ? (
-            <Link className="qb-ask-btn is-gold" href={ask.link.href} onClick={onClose}>
+            <Link prefetch={false} className="qb-ask-btn is-gold" href={ask.link.href} onClick={onClose}>
               <CrownIcon />
               {ask.link.label}
             </Link>
@@ -1620,7 +1620,7 @@ export default function QuizBuilder({
               <button type="button" className="quiz-btn is-ghost" onClick={() => setSent(false)}>
                 {t('qb.sent.edit')}
               </button>
-              <Link className="quiz-btn" href={href.myTests}>
+              <Link prefetch={false} className="quiz-btn" href={href.myTests}>
                 {t('qb.sent.mine')}
               </Link>
             </div>
@@ -1643,7 +1643,7 @@ export default function QuizBuilder({
           <footer className="qb-bar">
             <span className="qb-bar-gap" />
             {quiz.id && quiz.status === 'published' && (
-              <Link className="qb-save-link" href={href.test(quiz.game, quiz.id)} target="_blank">
+              <Link prefetch={false} className="qb-save-link" href={href.test(quiz.game, quiz.id)} target="_blank">
                 {t('qb.open')}
               </Link>
             )}

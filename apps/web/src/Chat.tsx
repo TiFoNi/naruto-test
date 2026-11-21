@@ -1369,7 +1369,7 @@ export default function Chat() {
               </form>
             </>
           ) : (
-            <Link className="chat-join" href={href.login}>
+            <Link prefetch={false} className="chat-join" href={href.login}>
               {t('chat.join')}
             </Link>
           )}
