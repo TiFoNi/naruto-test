@@ -564,7 +564,7 @@ export async function plays(): Promise<Collection<PlayDoc>> {
   return collection
 }
 
-export type ArenaCard = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; spell?: string; dodge?: number; stun?: boolean; armed?: string[]; burn?: number; swap?: boolean; bound?: string | null; link?: string | null; sonic?: boolean; ward?: string | false; ghost?: boolean; aim?: string; clay?: boolean; opened?: boolean; cursed?: boolean; reborn?: boolean; mirror?: boolean; gated?: boolean; mist?: boolean; boost?: { atk: number; hp: number }; clone?: boolean; fake?: boolean; away?: number; gone?: boolean; art?: string; shade?: boolean; chained?: number; parried?: boolean; molten?: boolean; scorched?: boolean; sealed?: boolean }
+export type ArenaCard = { uid: string; id: number; rarity: CardRarity; atk: number; hp: number; max: number; summon: boolean; triple?: boolean; spell?: string; dodge?: number; stun?: boolean; armed?: string[]; burn?: number; swap?: boolean; bound?: string | null; link?: string | null; sonic?: boolean; ward?: string | false; ghost?: boolean; aim?: string; clay?: boolean; opened?: boolean; cursed?: boolean; reborn?: boolean; mirror?: boolean; gated?: boolean; mist?: boolean; boost?: { atk: number; hp: number }; clone?: boolean; fake?: boolean; away?: number; gone?: boolean; art?: string; shade?: boolean; chained?: number; parried?: boolean; molten?: boolean; scorched?: boolean; sealed?: boolean; held?: number }
 
 export type ArenaSide = { heroes: ArenaCard[]; summons: ArenaCard[] }
 
@@ -624,6 +624,8 @@ export type ArenaDoc = {
   hand: ArenaCard[]
   board: ArenaSide
   foeBoard: ArenaSide
+  foeHand?: ArenaCard[]
+  foeFrozen?: number[] | null
   shopTier?: number
   turnEndsAt?: Date
   fightEndsAt?: Date | null

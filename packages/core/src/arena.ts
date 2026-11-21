@@ -659,6 +659,7 @@ export async function startArena(userId: ObjectId, game: GameId) {
     hand: [],
     board: blankSide(),
     foeBoard: blankSide(),
+    foeHand: [],
     shopTier: 1,
     foePlan: pickOne([...BOT_PLANS]),
     up: arenaUpCost(1),
@@ -736,12 +737,35 @@ function fuse(doc: ArenaDoc, id: number) {
   const first = found[0]!
   const rarity = CARD_RARITIES[Math.min(rankOf(first.rarity) + 1, CARD_RARITIES.length - 1)]!
   doc.hand.push(makeCard(id, rarity, first.summon, doc.seq, true, powerOf(doc.powers, id)))
-  const tier = tavernOf(doc)
-  const exact = shuffled(doc.pool.filter((one) => tierOf(one) === tier && !doc.summons.includes(one)))
-  doc.discover = (exact.length >= DISCOVER_N ? exact : roll(doc.pool, tier, [], doc.clans ?? [])).slice(0, DISCOVER_N)
+  doc.discover = discoverFor(doc, id)
 }
 
 const DISCOVER_N = 3
+const DISCOVER_KONOHA = 1
+
+function discoverFor(doc: ArenaDoc, id: number) {
+  const tier = tavernOf(doc)
+  const open = doc.pool.filter((one) => one !== id && !doc.summons.includes(one) && tierOf(one) <= tier)
+  const ranked = (ids: number[]) => shuffled(ids).sort((a, b) => tierOf(b) - tierOf(a))
+  const own = clansOf(id)
+  const kin = own.length > 1 ? own.filter((clan) => clan !== 'konoha') : own
+  const picked: number[] = []
+  const family = ranked(open.filter((one) => clansOf(one).some((clan) => kin.includes(clan))))
+  if (family.length) picked.push(family[0]!)
+  const rest = [...shuffled(open.filter((one) => tierOf(one) === tier)), ...ranked(open.filter((one) => tierOf(one) < tier))]
+  const konoha = () => picked.filter((one) => inClan(one, 'konoha')).length
+  const shared = (one: number) => clansOf(one).some((clan) => picked.some((other) => clansOf(other).includes(clan)))
+  for (const [capKonoha, distinct] of [[true, true], [true, false], [false, false]] as const) {
+    for (const one of rest) {
+      if (picked.length >= DISCOVER_N) break
+      if (picked.includes(one)) continue
+      if (capKonoha && inClan(one, 'konoha') && konoha() >= DISCOVER_KONOHA) continue
+      if (distinct && shared(one)) continue
+      picked.push(one)
+    }
+  }
+  return picked.length ? picked.slice(0, DISCOVER_N) : roll(doc.pool, tier, [], doc.clans ?? []).slice(0, DISCOVER_N)
+}
 
 export function discoverCard(doc: ArenaDoc, at: number) {
   const id = doc.discover?.[at]
@@ -990,9 +1014,9 @@ const cardValue = (doc: ArenaDoc, card: ArenaCard, side: ArenaSide, fresh = fals
 const noisy = (value: number) => value * (1 - BOT_NOISE + Math.random() * BOT_NOISE * 2)
 
 const UP_CURVE: Record<(typeof BOT_PLANS)[number], number[]> = {
-  greedy: [2, 5, 7, 9, 11],
-  steady: [3, 5, 7, 9, 11],
-  rush: [3, 5, 7, 9, 12],
+  greedy: [2, 5, 6, 8, 9],
+  steady: [3, 5, 6, 8, 9],
+  rush: [3, 5, 6, 8, 10],
 }
 
 const wantsUp = (doc: ArenaDoc, plan: (typeof BOT_PLANS)[number], tier: number, left: number, up: number) => {
@@ -1005,7 +1029,8 @@ const BOT_COPY = 7
 const BOT_TRIPLE = 12
 const BOT_MARGIN = 2
 const BOT_PIVOT = 5
-const BOT_SPELL_CHANCE = 0.5
+const BOT_SPELL_CHANCE = 0.9
+const BOT_POISON = 2
 
 const focusOf = (doc: ArenaDoc) => {
   if (doc.foeClan || doc.turn < BOT_PIVOT) return doc.foeClan ?? null
@@ -1017,21 +1042,78 @@ const focusOf = (doc: ArenaDoc) => {
 
 const botWorth = (doc: ArenaDoc, card: ArenaCard, side: ArenaSide, fresh: boolean) => {
   const focus = doc.foeClan
-  const copies = side.heroes.filter((one) => one.id === card.id && one.uid !== card.uid && !one.triple).length
   const base = statsOf(card.id, card.rarity, !!card.triple, powerOf(doc.foePowers, card.id))
   const grown = fresh ? 0 : (card.atk - base.atk) * 2 + (card.max - base.hp)
-  return cardValue(doc, card, side, fresh) + (focus && inClan(card.id, focus) ? BOT_FOCUS : 0) + copies * BOT_COPY + (card.triple ? BOT_TRIPLE : 0) + grown
+  return cardValue(doc, card, side, fresh) + (focus && inClan(card.id, focus) ? BOT_FOCUS : 0) + (card.triple ? BOT_TRIPLE : 0) + grown
+}
+
+const foeHandOf = (doc: ArenaDoc) => (doc.foeHand ??= [])
+
+const wanted = (doc: ArenaDoc, offer: { id: number; card: ArenaCard }) => ownedCopies(doc, offer.id) >= ARENA_TRIPLE - 1 && worthHolding(doc, offer.card)
+
+const BOT_HOLD_TURNS = 3
+const BOT_HOLD_TIERS = 2
+
+const worthHolding = (doc: ArenaDoc, card: ArenaCard) =>
+  doc.turn - (card.held ?? doc.turn) < BOT_HOLD_TURNS && tierOf(card.id) > (doc.foeShop ?? arenaTierAt(doc.turn)) - BOT_HOLD_TIERS
+
+const ownedCopies = (doc: ArenaDoc, id: number, except?: string) =>
+  [...doc.foeBoard.heroes, ...foeHandOf(doc)].filter((one) => one.id === id && !one.triple && one.uid !== except).length
+
+const weakestOnBoard = (doc: ArenaDoc) =>
+  doc.foeBoard.heroes.slice().sort((a, b) => botWorth(doc, a, doc.foeBoard, false) - botWorth(doc, b, doc.foeBoard, false))[0]
+
+function benchOrSell(doc: ArenaDoc, card: ArenaCard) {
+  relay(doc.foeBoard, onBoard(doc.foeBoard).filter((one) => one.uid !== card.uid))
+  const hand = foeHandOf(doc)
+  if (ownedCopies(doc, card.id) >= 1 && hand.length < ARENA_HAND && worthHolding(doc, card)) {
+    hand.push({ ...card, held: doc.turn })
+    return 0
+  }
+  return ARENA_SELL_BACK
+}
+
+function seatOnBoard(doc: ArenaDoc, card: ArenaCard) {
+  if (freeSlot(doc.foeBoard, card.summon)) {
+    place(doc.foeBoard, card)
+    return 0
+  }
+  const poorest = weakestOnBoard(doc)
+  if (!poorest) return 0
+  const back = benchOrSell(doc, poorest)
+  place(doc.foeBoard, card)
+  return back
+}
+
+function tidyFoeHand(doc: ArenaDoc) {
+  let back = 0
+  const hand = foeHandOf(doc)
+  for (const card of hand.slice().sort((a, b) => botWorth(doc, b, doc.foeBoard, false) - botWorth(doc, a, doc.foeBoard, false))) {
+    const poorest = weakestOnBoard(doc)
+    const fits = freeSlot(doc.foeBoard, card.summon)
+    const better = poorest && botWorth(doc, card, doc.foeBoard, false) > botWorth(doc, poorest, doc.foeBoard, false) + BOT_MARGIN
+    if (!fits && !better) continue
+    doc.foeHand = foeHandOf(doc).filter((one) => one.uid !== card.uid)
+    back += seatOnBoard(doc, card)
+    shout(doc, card, doc.foeBoard)
+  }
+  const keep = foeHandOf(doc).filter((one) => ownedCopies(doc, one.id, one.uid) >= 1 && worthHolding(doc, one))
+  back += (foeHandOf(doc).length - keep.length) * ARENA_SELL_BACK
+  doc.foeHand = keep.sort((a, b) => ownedCopies(doc, b.id) - ownedCopies(doc, a.id)).slice(0, ARENA_HAND)
+  return back
 }
 
 function foeFuse(doc: ArenaDoc, id: number, tier: number) {
-  const same = doc.foeBoard.heroes.filter((card) => card.id === id && !card.triple)
+  const hand = foeHandOf(doc)
+  const same = [...hand, ...doc.foeBoard.heroes].filter((card) => card.id === id && !card.triple)
   if (same.length < ARENA_TRIPLE) return
   const burn = new Set(same.slice(0, ARENA_TRIPLE).map((card) => card.uid))
   const first = same[0]!
+  doc.foeHand = hand.filter((card) => !burn.has(card.uid))
   relay(doc.foeBoard, onBoard(doc.foeBoard).filter((card) => !burn.has(card.uid)))
   doc.seq += 1
   const rarity = CARD_RARITIES[Math.min(rankOf(first.rarity) + 1, CARD_RARITIES.length - 1)]!
-  place(doc.foeBoard, makeCard(id, rarity, false, doc.seq, true, powerOf(doc.foePowers, id)))
+  seatOnBoard(doc, makeCard(id, rarity, false, doc.seq, true, powerOf(doc.foePowers, id)))
   const found = shuffled(doc.pool.filter((one) => tierOf(one) === tier && !doc.summons.includes(one))).slice(0, DISCOVER_N)
   const offers = found.map((one) => {
     doc.seq += 1
@@ -1064,44 +1146,153 @@ function botTurn(doc: ArenaDoc) {
   const priced = (id: number) => {
     doc.seq += 1
     const card = makeCard(id, rarityOf(doc.foeRanks, id), doc.summons.includes(id), doc.seq, false, powerOf(doc.foePowers, id))
-    return { id, card, value: noisy(botWorth(doc, card, doc.foeBoard, true)) }
+    const value = noisy(botWorth(doc, card, doc.foeBoard, true))
+    return { id, card, value, pair: worthHolding(doc, card) ? ownedCopies(doc, id) * BOT_COPY : 0 }
   }
-  let offers = roll(doc.pool, tier, [], doc.clans ?? []).map(priced).sort((a, b) => b.value - a.value)
-  let rolls = plan === 'rush' ? 3 : 2
+  const order = (list: ReturnType<typeof priced>[]) => list.sort((a, b) => b.value + b.pair - (a.value + a.pair))
+  const kept = (doc.foeFrozen ?? []).filter((id) => doc.pool.includes(id))
+  doc.foeFrozen = null
+  let offers = order([...kept, ...roll(doc.pool, tier, kept, doc.clans ?? [])].slice(0, Math.max(ARENA_TAVERN, kept.length)).map(priced))
+  let rolls = plan === 'rush' ? 5 : 4
+  left += tidyFoeHand(doc)
   while (left >= cost) {
-    const pick = offers.shift()
-    const poorest = doc.foeBoard.heroes.slice().sort((a, b) => botWorth(doc, a, doc.foeBoard, false) - botWorth(doc, b, doc.foeBoard, false))[0]
+    const pick = chooseOffer(doc, offers)
+    const poorest = weakestOnBoard(doc)
     const room = freeSlot(doc.foeBoard, pick?.card.summon)
-    if (!pick || (!room && poorest && botWorth(doc, poorest, doc.foeBoard, false) + BOT_MARGIN >= pick.value)) {
+    const strong = !!pick && (room || !poorest || pick.value > botWorth(doc, poorest, doc.foeBoard, false) + BOT_MARGIN)
+    const pairing = !!pick && !strong && pick.pair > 0 && foeHandOf(doc).length < ARENA_HAND && worthHolding(doc, pick.card)
+    if (!pick || (!strong && !pairing)) {
       if (!rolls || left < cost + ARENA_ROLL_COST) break
       rolls -= 1
       left -= ARENA_ROLL_COST
-      offers = roll(doc.pool, tier, [], doc.clans ?? []).map(priced).sort((a, b) => b.value - a.value)
+      offers = order(roll(doc.pool, tier, [], doc.clans ?? []).map(priced))
       continue
     }
-    if (!room && poorest) {
-      relay(doc.foeBoard, onBoard(doc.foeBoard).filter((card) => card.uid !== poorest.uid))
-      left += ARENA_SELL_BACK
-    }
     left -= cost
-    place(doc.foeBoard, pick.card)
-    shout(doc, pick.card, doc.foeBoard)
+    if (strong) {
+      left += seatOnBoard(doc, pick.card)
+      shout(doc, pick.card, doc.foeBoard)
+    } else foeHandOf(doc).push({ ...pick.card, held: doc.turn })
     foeFuse(doc, pick.id, tier)
+    offers = order(offers.map((one) => ({ ...one, pair: worthHolding(doc, one.card) ? ownedCopies(doc, one.id) * BOT_COPY : 0 })))
   }
+  tidyFoeHand(doc)
+  if (left < cost && offers.some((one) => wanted(doc, one))) doc.foeFrozen = offers.map((one) => one.id)
 
+  oddForCaptain(doc)
   const spell = offerSpell()
-  const star = doc.foeBoard.heroes.slice().sort((x, y) => y.atk * 2 + y.hp - (x.atk * 2 + x.hp))[0]
+  const aim = spell ? spellAim(doc, spell) : undefined
   let spent = 0
-  if (spell && star && doc.chakraCap >= ARENA_SPELL_COST && Math.random() < BOT_SPELL_CHANCE) {
-    if (spell === 'clone') star.clone = true
-    else if (!star.dodge) star.dodge = 1
+  if (spell && aim && doc.chakraCap >= ARENA_SPELL_COST && Math.random() < BOT_SPELL_CHANCE) {
+    if (spell === 'clone') aim.clone = true
+    else aim.dodge = 1
     spent = ARENA_SPELL_COST
   }
 
-  arrange(doc.foeBoard)
+  arrangeAgainst(doc)
   doc.foeShop = tier
   doc.foeUp = up
   return spent
+}
+
+const BOT_LOOK = 6
+const BOT_WILD = 4
+const BOT_RUNS = 6
+
+const BOT_CHOICES = 3
+const BOT_GUESS = 4
+const BOT_HEURISTIC = 0.3
+
+function trialWith(doc: ArenaDoc, card: ArenaCard) {
+  const side = copySide(doc.foeBoard)
+  const fresh = { ...card }
+  if (!freeSlot(side, fresh.summon)) {
+    const poorest = side.heroes.slice().sort((a, b) => botWorth(doc, a, side, false) - botWorth(doc, b, side, false))[0]
+    if (poorest) relay(side, onBoard(side).filter((one) => one.uid !== poorest.uid))
+  }
+  place(side, fresh)
+  shout(doc, fresh, side)
+  arrange(side)
+  return side
+}
+
+function chooseOffer<T extends { card: ArenaCard; value: number; pair: number }>(doc: ArenaDoc, offers: T[]) {
+  if (!onBoard(doc.board).length || offers.length < 2) return offers.shift()
+  const options = offers.slice(0, BOT_CHOICES)
+  let best = options[0]!
+  let top = -Infinity
+  for (const one of options) {
+    const score = imagine(doc, trialWith(doc, one.card), BOT_GUESS) + (one.value + one.pair) * BOT_HEURISTIC
+    if (score > top) {
+      top = score
+      best = one
+    }
+  }
+  offers.splice(offers.indexOf(best), 1)
+  return best
+}
+
+function arrangeAgainst(doc: ArenaDoc) {
+  const side = doc.foeBoard
+  if (!onBoard(doc.board).length || side.heroes.length < 2) {
+    arrange(side)
+    return
+  }
+  const orders = permutations(side.heroes)
+    .map((heroes) => ({ heroes, lift: liftSum({ heroes, summons: side.summons }) }))
+    .sort((a, b) => b.lift - a.lift)
+  const shortlist = [...orders.slice(0, BOT_LOOK), ...shuffled(orders.slice(BOT_LOOK)).slice(0, BOT_WILD)]
+  let best = shortlist[0]!
+  let top = -Infinity
+  for (const one of shortlist) {
+    const score = imagine(doc, { heroes: one.heroes, summons: side.summons }, BOT_RUNS)
+    if (score > top) {
+      top = score
+      best = one
+    }
+  }
+  side.heroes = best.heroes
+}
+
+const sideScore = (doc: ArenaDoc, side: ArenaSide) => {
+  const trial = { heroes: side.heroes.slice(), summons: side.summons }
+  return trial.heroes.reduce((sum, one) => sum + one.atk * 2 + one.hp, 0) + arrange(trial)
+}
+
+function oddForCaptain(doc: ArenaDoc) {
+  const side = doc.foeBoard
+  if (side.heroes.length % 2 || !side.heroes.some((one) => captains.has(one.id))) return
+  const spare = side.heroes
+    .filter((one) => !captains.has(one.id))
+    .sort((a, b) => botWorth(doc, a, side, false) - botWorth(doc, b, side, false))[0]
+  if (!spare) return
+  const without = { heroes: side.heroes.filter((one) => one.uid !== spare.uid), summons: side.summons }
+  if (sideScore(doc, without) > sideScore(doc, side)) relay(side, onBoard(side).filter((one) => one.uid !== spare.uid))
+}
+
+function spellAim(doc: ArenaDoc, spell: string) {
+  const mine = doc.foeBoard.heroes
+  const worth = (one: ArenaCard) => botWorth(doc, one, doc.foeBoard, false)
+  const best = (list: ArenaCard[]) => list.slice().sort((a, b) => worth(b) - worth(a))[0]
+  if (spell === 'clone') return best(mine.filter((one) => !one.clone && !one.summon))
+  const open = mine.filter((one) => !(one.dodge ?? 0))
+  const venom = doc.board.heroes.filter((one) => poisonOf(one.id, one.rarity)).length >= BOT_POISON
+  const walls = open.filter(guards)
+  return venom || !walls.length ? best(open) : best(walls)
+}
+
+const SIM_HP = 1000
+
+export function imagine(doc: ArenaDoc, foeSide: ArenaSide, runs: number) {
+  let score = 0
+  const armed = [...onBoard(doc.board), ...onBoard(foeSide)].filter((card) => (card.dodge ?? 0) > 0).map((card) => card.uid)
+  for (let i = 0; i < runs; i++) {
+    const trial: ArenaDoc = { ...doc, foeBoard: foeSide, hp: SIM_HP, foeHp: SIM_HP, status: 'playing', armed }
+    fight(trial)
+    const margin = trial.foeHp - trial.hp
+    score += Math.sign(margin) * 10 + margin
+  }
+  return score / runs
 }
 
 const copySide = (side: ArenaSide): ArenaSide => ({ heroes: side.heroes.map((one) => ({ ...one })), summons: side.summons.map((one) => ({ ...one })) })

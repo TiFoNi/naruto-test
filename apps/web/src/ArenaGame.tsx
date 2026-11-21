@@ -521,17 +521,17 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const [pendingCheer, setPendingCheer] = useState<{ labels: Record<string, string>; at: number } | null>(null)
   const tipBox = useRef<HTMLDivElement | null>(null)
   const [scale, setScale] = useState(1)
-  const [stage, setStage] = useState({ w: STAGE_W, h: STAGE_H })
+  const [stage, setStage] = useState({ w: STAGE_W, h: STAGE_H, desktop: false })
 
   useLayoutEffect(() => {
     const fit = () => {
       const width = window.innerHeight < COMPACT_BELOW || (STAGE_W * window.innerHeight) / window.innerWidth < STAGE_FULL_MIN_H ? STAGE_COMPACT_W : STAGE_W
-      const height = Math.round(Math.min(STAGE_H, Math.max(STAGE_MIN_H, (width * window.innerHeight) / window.innerWidth)))
       const desktop = window.innerWidth >= DESKTOP_FROM && window.matchMedia('(pointer: fine)').matches
+      const height = Math.round(Math.min(STAGE_H, Math.max(STAGE_MIN_H, (width * window.innerHeight) / window.innerWidth)))
       const next = Math.min(window.innerWidth / width, window.innerHeight / height) * (desktop ? DESKTOP_SHRINK : 1)
       stageScale = next
       setScale(next)
-      setStage({ w: width, h: height })
+      setStage({ w: width, h: height, desktop })
     }
     fit()
     window.addEventListener('resize', fit)
@@ -2053,7 +2053,7 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   )
 
   return (
-    <div className={`ar-stage ${stage.w < STAGE_W ? 'is-compact' : ''}`} style={{ '--stage-s': scale, '--stage-w': `${stage.w}px`, '--stage-h': `${stage.h}px`, '--dex': game.accent } as CSSProperties}>
+    <div className={`ar-stage ${stage.w < STAGE_W ? 'is-compact' : ''} ${stage.desktop ? 'is-desktop' : ''}`} style={{ '--stage-s': scale, '--stage-w': `${stage.w}px`, '--stage-h': `${stage.h}px`, '--dex': game.accent } as CSSProperties}>
     <div className={`ar ${dragging ? 'is-dragging' : ''} ${fight ? 'is-fighting' : ''} ${waitLeft !== null ? 'is-waiting' : ''}`} style={{ '--dex': game.accent } as CSSProperties} onPointerOver={peek} onPointerDown={press} onPointerMove={slide} onPointerUp={lift} onPointerCancel={lift} onPointerLeave={hideTip} onContextMenu={(event) => event.preventDefault()}>
       {demo === 'gallery' && (
         <nav className="ar-fx-pick">

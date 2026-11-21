@@ -5859,7 +5859,7 @@ html:has(.app.is-stage .ar) .topbar {
 @media (hover: hover) {
   .ar:not(.is-dragging) .ar-hand li:hover {
     z-index: 5;
-    translate: 0 calc(var(--hide) * -1.6);
+    translate: 0 min(-14px, calc(var(--hide) * -1.6));
     rotate: 0deg;
   }
 }
@@ -6059,4 +6059,12 @@ html:has(.app.is-stage .ar) .topbar {
   width: 13px;
   height: 13px;
   rotate: 0deg;
+  background:
+    radial-gradient(circle at 36% 34%, #e6f5ff 0 18%, transparent 19%),
+    radial-gradient(circle at 50% 50%, #7cc4ff 0 68%, #2f6fd6 70%);
+}
+
+.ar-stage.is-desktop .ar .ar-hand,
+.ar-stage.is-desktop.is-compact .ar .ar-hand {
+  --hide: 0px;
 }
