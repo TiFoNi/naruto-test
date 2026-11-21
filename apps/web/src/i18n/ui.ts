@@ -3009,6 +3009,7 @@ const ui = {
   'quizNews.rejected': { ru: 'Тест отклонён', uk: 'Тест відхилено', en: 'Quiz rejected' },
   'quizNews.why': { ru: 'Причина: {note}', uk: 'Причина: {note}', en: 'Reason: {note}' },
   'quizNews.noWhy': { ru: 'Открой свои тесты, чтобы поправить и отправить снова', uk: 'Відкрий свої тести, щоб виправити й надіслати знову', en: 'Open your quizzes to fix it and send it again' },
+  'systemNews.new': { ru: 'Системное сообщение', uk: 'Системне повідомлення', en: 'System message' },
   'titleNews.new': { ru: 'Новый титул', uk: 'Новий титул', en: 'New title' },
   'titleNews.patron': { ru: 'Спасибо за поддержку проекта!', uk: 'Дякуємо за підтримку проєкту!', en: 'Thanks for supporting the project!' },
   'titleNews.any': { ru: 'Титул уже в профиле', uk: 'Титул уже в профілі', en: 'The title is in your profile' },

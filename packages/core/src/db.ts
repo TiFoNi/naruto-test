@@ -23,6 +23,10 @@ export type UserDoc = {
   pity?: Record<string, number>
   titleNews?: string | null
   quizNews?: QuizNews[]
+  systemNews?: SystemNews[]
+  cheats?: Partial<Record<CheatKind, number>>
+  cheatLog?: CheatLog[]
+  cheatAt?: Date
   commentNews?: CommentNews[]
   dex?: Record<string, number[]>
   mentionPush?: boolean
@@ -222,6 +226,12 @@ export type DuelDoc = {
 }
 
 export type QuizNews = { id: string; quizId: string; title: string; note: string; at: Date }
+
+export type SystemNews = { id: string; title: string; text: string; at: Date }
+
+export type CheatKind = 'decoy' | 'pointer' | 'pace'
+
+export type CheatLog = { kind: CheatKind; at: Date; game?: string; entityId?: number; score?: number }
 
 export type CommentNews = { id: string; quizId: string; game: string; title: string; fromId: string; from: string; text: string; at: Date; reply?: boolean }
 

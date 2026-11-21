@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { rounds, users } from './db'
+import { rounds, users, type CheatLog } from './db'
 import { fail } from './http'
 import { isDecoy } from './decoy'
 
@@ -66,7 +66,7 @@ export async function humanCheck(owner: { id: ObjectId; guest: boolean }) {
     return fail(428, 'human_check')
   }
   if (await looksAutomated(owner.id, now)) {
-    await (await users()).updateOne({ _id: owner.id }, { $set: { suspect: true, suspectAskedAt: new Date(now) } })
+    await (await users()).updateOne({ _id: owner.id }, { $set: { suspect: true, suspectAskedAt: new Date(now), cheatAt: new Date(now) }, ...caught({ kind: 'pace', at: new Date(now) }) })
     clearUntil.set(key, now + CLEAR_FOR_MS)
     return fail(428, 'human_check')
   }
@@ -86,9 +86,20 @@ export async function verifyHuman(userId: ObjectId, token: string) {
   return true
 }
 
-export async function caughtByDecoy(userId: ObjectId, entityId: number) {
+const CHEAT_LOG = 20
+
+const caught = (entry: CheatLog) => ({
+  $inc: { [`cheats.${entry.kind}`]: 1 },
+  $push: { cheatLog: { $each: [entry], $slice: -CHEAT_LOG } },
+})
+
+export async function caughtByDecoy(userId: ObjectId, entityId: number, game?: string) {
   if (!isDecoy(entityId)) return false
-  await (await users()).updateOne({ _id: userId }, { $set: { suspect: true, suspectAskedAt: new Date(0) }, $unset: { humanAt: '' } })
+  const at = new Date()
+  await (await users()).updateOne(
+    { _id: userId },
+    { $set: { suspect: true, suspectAskedAt: new Date(0), cheatAt: at }, $unset: { humanAt: '' }, ...caught({ kind: 'decoy', at, entityId, ...(game ? { game } : {}) }) },
+  )
   clearUntil.delete(userId.toHexString())
   return true
 }
@@ -110,6 +121,10 @@ export async function notePointer(userId: ObjectId, request: Request) {
   )
   if (!doc || doc.suspect || (doc.ptrN ?? 0) < POINTER_MIN || (doc.ptrScore ?? 0) < POINTER_BAD) return
   if (doc.humanAt && Date.now() - doc.humanAt.getTime() < TRUST_MS) return
-  await (await users()).updateOne({ _id: userId }, { $set: { suspect: true, suspectAskedAt: new Date(0), ptrScore: 0, ptrN: 0 } })
+  const at = new Date()
+  await (await users()).updateOne(
+    { _id: userId },
+    { $set: { suspect: true, suspectAskedAt: new Date(0), ptrScore: 0, ptrN: 0, cheatAt: at }, ...caught({ kind: 'pointer', at, score: Math.round((doc.ptrScore ?? 0) * 100) / 100 }) },
+  )
   clearUntil.delete(userId.toHexString())
 }

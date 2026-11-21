@@ -23,7 +23,7 @@ import BannerArt from './BannerArt'
 import { MARKS } from './Profile'
 import { shownTone, watchTone } from './tone'
 import HumanCheck from './HumanCheck'
-import { AWARDS_FILTER, dropComments, dropCoins, dropFrames, dropQuizzes, dropTitle, dropInvite, dropMentions, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed, type FriendAsk } from './awards'
+import { AWARDS_FILTER, dropComments, dropCoins, dropFrames, dropQuizzes, dropTitle, dropSystem, dropInvite, dropMentions, dropRequest, freshFeed, refreshFeed, watchFeed, type CoinNews, type DuelInvite, type Feed, type FriendAsk } from './awards'
 import { openChat } from './chatEvents'
 import { pushPlay, pushRound } from './roundPush'
 import { FRAMES, frameUrl, loadTune, tuneStamp, watchTune } from './frames'
@@ -495,7 +495,7 @@ function Bell() {
     }
   }, [])
 
-  const [feed, setFeed] = useState<Feed>({ awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false, title: null, quizzes: [], comments: [] })
+  const [feed, setFeed] = useState<Feed>({ system: [], awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false, title: null, quizzes: [], comments: [] })
   const [hidden, setHidden] = useState<Set<string>>(() => new Set())
   const [busy, setBusy] = useState(false)
   const [toast, setToast] = useState<DuelInvite | null>(null)
@@ -619,6 +619,11 @@ function Bell() {
     void api('profile', { action: 'seenComments', id }).catch(() => null)
   }
 
+  const seenSystem = (id: string) => {
+    dropSystem(id)
+    void api('profile', { action: 'seenSystem', id }).catch(() => null)
+  }
+
   const seenTitle = () => {
     dropTitle()
     void api('profile', { action: 'seenTitle' }).catch(() => null)
@@ -634,7 +639,7 @@ function Bell() {
   const askKey = (one: FriendAsk) => `friend:${one.id}:${one.at}`
   const requests = feed.requests.filter((one) => !hidden.has(askKey(one)))
   const frames = feed.frames.map((id) => FRAMES.find((one) => one.id === id)).filter((one) => one !== undefined)
-  const count = awards.length + feed.invites.length + requests.length + frames.length + (feed.coins ? 1 : 0) + feed.mentions.length + (googleDue ? 1 : 0) + (feed.title ? 1 : 0) + feed.quizzes.length + feed.comments.length
+  const count = feed.system.length + awards.length + feed.invites.length + requests.length + frames.length + (feed.coins ? 1 : 0) + feed.mentions.length + (googleDue ? 1 : 0) + (feed.title ? 1 : 0) + feed.quizzes.length + feed.comments.length
 
   return (
     <div ref={box} className={`bell-box ${open ? 'open' : ''}`}>
@@ -780,6 +785,25 @@ function Bell() {
                   </span>
                 </Link>
                 <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={() => seenQuizzes(one.id)}>
+                  <CloseIcon />
+                </button>
+              </li>
+            ))}
+            {feed.system.map((one) => (
+              <li key={one.id} className="bell-item is-system">
+                <div className="bell-card">
+                  <small>{t('systemNews.new')}</small>
+                  <span className="bell-main">
+                    <span className="bell-mark" aria-hidden>
+                      !
+                    </span>
+                    <span className="bell-body">
+                      <b>{one.title}</b>
+                      <span className="bell-hint">{one.text}</span>
+                    </span>
+                  </span>
+                </div>
+                <button type="button" className="bell-hide" aria-label={t('nav.bellHide')} title={t('nav.bellHide')} onClick={() => seenSystem(one.id)}>
                   <CloseIcon />
                 </button>
               </li>

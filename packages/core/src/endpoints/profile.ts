@@ -272,6 +272,12 @@ export const POST = handle(async (request) => {
     return json(toProfile(doc ?? found.doc))
   }
 
+  if (body.action === 'seenSystem') {
+    if (typeof body.id !== 'string') return fail(400, 'bad_request')
+    const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $pull: { systemNews: { id: body.id } } }, { returnDocument: 'after' })
+    return json(toProfile(doc ?? found.doc))
+  }
+
   if (body.action === 'seenTitle') {
     const doc = await found.collection.findOneAndUpdate({ _id: found.doc._id }, { $unset: { titleNews: '' } }, { returnDocument: 'after' })
     return json(toProfile(doc ?? found.doc))

@@ -49,3 +49,39 @@
   color: var(--wrong, #e5484d);
   font-weight: 700;
 }
+
+.flagged {
+  margin-bottom: 24px;
+}
+
+.flagged h2,
+.activity-heading {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.flagged-table td:nth-child(6),
+.flagged-table th:nth-child(6) {
+  text-align: left;
+  white-space: normal;
+  min-width: 320px;
+}
+
+.flagged-table th:nth-child(8),
+.flagged-table td:nth-child(8) {
+  text-align: right;
+}
+
+.flagged-log {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+}
+
+.flagged-log time {
+  color: var(--text-3);
+  font-variant-numeric: tabular-nums;
+}

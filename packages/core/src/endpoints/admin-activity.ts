@@ -44,7 +44,9 @@ export async function activityRows(hours: number, now = Date.now()) {
     .toArray()
 
   const ids = summaries.map((row) => row._id as ObjectId)
-  const people = await (await users()).find({ _id: { $in: ids } }, { projection: { nickname: 1, username: 1, xp: 1, humanAt: 1 } }).toArray()
+  const people = await (await users())
+    .find({ _id: { $in: ids } }, { projection: { nickname: 1, username: 1, xp: 1, humanAt: 1, cheats: 1, ptrScore: 1, ptrN: 1, suspect: 1 } })
+    .toArray()
   const personOf = new Map(people.map((person) => [String(person._id), person]))
 
   const favorites = await collection
@@ -85,8 +87,35 @@ export async function activityRows(hours: number, now = Date.now()) {
       favorite: favoriteOf.get(id) ?? null,
       lastAt: row.lastAt,
       humanAt: person?.humanAt ?? null,
+      cheats: person?.cheats ?? {},
+      pointer: pointerOf(person),
+      suspect: !!person?.suspect,
     }
   })
+}
+
+const FLAGGED = 50
+const SHOWN_LOG = 6
+
+const pointerOf = (person?: { ptrScore?: number; ptrN?: number } | null) => (person?.ptrN ? { score: Math.round((person.ptrScore ?? 0) * 100), n: person.ptrN } : null)
+
+export async function flaggedRows() {
+  const found = await (await users())
+    .find(
+      { cheatAt: { $exists: true } },
+      { projection: { nickname: 1, username: 1, cheats: 1, cheatLog: 1, cheatAt: 1, ptrScore: 1, ptrN: 1, suspect: 1, humanAt: 1 }, sort: { cheatAt: -1 }, limit: FLAGGED },
+    )
+    .toArray()
+  return found.map((person) => ({
+    id: String(person._id),
+    nickname: person.nickname ?? person.username ?? String(person._id).slice(-6),
+    cheats: person.cheats ?? {},
+    log: (person.cheatLog ?? []).slice(-SHOWN_LOG).reverse(),
+    lastAt: person.cheatAt ?? null,
+    pointer: pointerOf(person),
+    suspect: !!person.suspect,
+    humanAt: person.humanAt ?? null,
+  }))
 }
 
 export const GET = handle(async (request) => {
@@ -94,5 +123,6 @@ export const GET = handle(async (request) => {
   const range = new URL(request.url).searchParams.get('range') ?? 'day'
   const hours = RANGES[range]
   if (!hours) return fail(400, 'bad_request')
-  return json({ range, rows: await activityRows(hours) })
+  const [rows, flagged] = await Promise.all([activityRows(hours), flaggedRows()])
+  return json({ range, rows, flagged })
 })

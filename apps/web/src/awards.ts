@@ -13,9 +13,10 @@ export type CoinNews = { coins: number; at: string }
 export type QuizNews = { id: string; quizId: string; title: string; note: string; at: string }
 export type MentionNews = { id: string; fromId: string; from: string; text: string; at: string; reply?: boolean }
 export type CommentNews = { id: string; quizId: string; game: string; title: string; fromId: string; from: string; text: string; at: string; reply?: boolean }
-export type Feed = { awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[]; frames: string[]; coins: CoinNews | null; mentions: MentionNews[]; linkGoogle: boolean; title: string | null; quizzes: QuizNews[]; comments: CommentNews[] }
+export type SystemNews = { id: string; title: string; text: string; at: string }
+export type Feed = { system: SystemNews[]; awards: FreshAward[]; invites: DuelInvite[]; requests: FriendAsk[]; frames: string[]; coins: CoinNews | null; mentions: MentionNews[]; linkGoogle: boolean; title: string | null; quizzes: QuizNews[]; comments: CommentNews[] }
 
-const EMPTY: Feed = { awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false, title: null, quizzes: [], comments: [] }
+const EMPTY: Feed = { system: [], awards: [], invites: [], requests: [], frames: [], coins: null, mentions: [], linkGoogle: false, title: null, quizzes: [], comments: [] }
 
 const watchers = new Set<(feed: Feed) => void>()
 
@@ -51,6 +52,10 @@ export function dropQuizzes(id?: string) {
 
 export function dropComments(id?: string) {
   return publish({ ...(cache ?? EMPTY), comments: id ? (cache?.comments ?? []).filter((one) => one.id !== id) : [] })
+}
+
+export function dropSystem(id: string) {
+  return publish({ ...(cache ?? EMPTY), system: (cache?.system ?? []).filter((one) => one.id !== id) })
 }
 
 export function dropTitle() {
@@ -91,6 +96,7 @@ export function freshFeed() {
     .then(({ ok, data }) =>
       ok
         ? publish({
+            system: data.system ?? [],
             awards: data.awards ?? [],
             invites: data.invites ?? [],
             requests: data.requests ?? [],

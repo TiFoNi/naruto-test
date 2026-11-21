@@ -21,6 +21,99 @@ export type ActivityRow = {
   favorite: { game: string; mode: string; n: number } | null
   lastAt: string
   humanAt: string | null
+  cheats: Cheats
+  pointer: Pointer | null
+  suspect: boolean
+}
+
+type CheatKind = 'decoy' | 'pointer' | 'pace'
+
+type Cheats = Partial<Record<CheatKind, number>>
+
+type Pointer = { score: number; n: number }
+
+type CheatLog = { kind: CheatKind; at: string; game?: string; entityId?: number; score?: number }
+
+export type FlaggedRow = {
+  id: string
+  nickname: string
+  cheats: Cheats
+  log: CheatLog[]
+  lastAt: string | null
+  pointer: Pointer | null
+  suspect: boolean
+  humanAt: string | null
+}
+
+const CHEAT_LABEL: Record<CheatKind, string> = {
+  decoy: 'Выбрал несуществующего персонажа',
+  pointer: 'Курсор телепортировался',
+  pace: 'Слишком быстрый темп',
+}
+
+const POINTER_BAD = 80
+const POINTER_MIN = 30
+
+const cheatText = (one: CheatLog) => {
+  if (one.kind === 'decoy') return `${CHEAT_LABEL.decoy}${one.game ? ` · ${one.game}` : ''}${one.entityId !== undefined ? ` #${one.entityId}` : ''}`
+  if (one.kind === 'pointer') return `${CHEAT_LABEL.pointer}${one.score !== undefined ? ` · ${Math.round(one.score * 100)}% ходов` : ''}`
+  return CHEAT_LABEL.pace
+}
+
+const PointerCell = ({ pointer }: { pointer: Pointer | null }) =>
+  pointer ? (
+    <td className={pointer.n >= POINTER_MIN && pointer.score >= POINTER_BAD ? 'is-hot' : ''} title={`Доля ходов без движения мыши или точно в центр кнопки, по ${pointer.n} ходам`}>
+      {pointer.score}% · {pointer.n}
+    </td>
+  ) : (
+    <td>—</td>
+  )
+
+const CheatCount = ({ n }: { n?: number }) => <td className={n ? 'is-hot' : ''}>{n ?? 0}</td>
+
+export function FlaggedTable({ rows, profileOf }: { rows: FlaggedRow[]; profileOf: (id: string) => string }) {
+  return (
+    <div className="activity-scroll">
+      <table className="activity-table flagged-table">
+        <thead>
+          <tr>
+            <th>Игрок</th>
+            <th title={CHEAT_LABEL.decoy}>Ловушка</th>
+            <th title={CHEAT_LABEL.pointer}>Телепорт</th>
+            <th title={CHEAT_LABEL.pace}>Темп</th>
+            <th title="Доля подозрительных ходов сейчас и сколько ходов посчитано">Курсор</th>
+            <th>Последние случаи</th>
+            <th>Проверка</th>
+            <th>Сейчас</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.id}>
+              <td>
+                <Link prefetch={false} href={profileOf(row.id)}>{row.nickname}</Link>
+              </td>
+              <CheatCount n={row.cheats.decoy} />
+              <CheatCount n={row.cheats.pointer} />
+              <CheatCount n={row.cheats.pace} />
+              <PointerCell pointer={row.pointer} />
+              <td>
+                <ul className="flagged-log">
+                  {row.log.map((one) => (
+                    <li key={`${one.kind}:${one.at}`}>
+                      <time>{when(one.at)}</time> {cheatText(one)}
+                    </li>
+                  ))}
+                </ul>
+              </td>
+              <td>{row.humanAt ? when(row.humanAt) : '—'}</td>
+              <td className={row.suspect ? 'is-hot' : ''}>{row.suspect ? 'под подозрением' : 'чисто'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
 }
 
 const RANGES: { id: Range; label: string }[] = [
@@ -52,6 +145,8 @@ export function ActivityTable({ rows, profileOf }: { rows: ActivityRow[]; profil
             <th>Чаще всего</th>
             <th>Последний</th>
             <th>Проверка</th>
+            <th title="Сколько раз ловили: несуществующий персонаж / телепорт курсора / темп">Античит</th>
+            <th title="Доля ходов без движения мыши или точно в центр кнопки">Курсор</th>
           </tr>
         </thead>
         <tbody>
@@ -72,6 +167,10 @@ export function ActivityTable({ rows, profileOf }: { rows: ActivityRow[]; profil
                 <td>{row.favorite ? `${row.favorite.game}/${row.favorite.mode} · ${row.favorite.n}` : '—'}</td>
                 <td>{when(row.lastAt)}</td>
                 <td>{row.humanAt ? when(row.humanAt) : '—'}</td>
+                <td className={row.suspect || row.cheats.decoy || row.cheats.pointer ? 'is-hot' : ''} title={row.suspect ? 'Сейчас под подозрением' : undefined}>
+                  {row.cheats.decoy ?? 0} / {row.cheats.pointer ?? 0} / {row.cheats.pace ?? 0}
+                </td>
+                <PointerCell pointer={row.pointer} />
               </tr>
             )
           })}
@@ -85,13 +184,15 @@ export default function ActivityAdmin() {
   const href = useHref()
   const [range, setRange] = useState<Range>('day')
   const [rows, setRows] = useState<ActivityRow[] | null>(null)
+  const [flagged, setFlagged] = useState<FlaggedRow[]>([])
   const [denied, setDenied] = useState(false)
 
   const load = useCallback(async (next: Range) => {
     setRows(null)
-    const { ok, status, data } = await api<{ rows?: ActivityRow[] }>(`admin/activity?range=${next}`)
+    const { ok, status, data } = await api<{ rows?: ActivityRow[]; flagged?: FlaggedRow[] }>(`admin/activity?range=${next}`)
     if (status === 404) return setDenied(true)
     setRows(ok ? (data.rows ?? []) : [])
+    setFlagged(ok ? (data.flagged ?? []) : [])
   }, [])
 
   useEffect(() => {
@@ -117,6 +218,16 @@ export default function ActivityAdmin() {
         </div>
       </header>
 
+      <section className="flagged">
+        <h2>Пойманные античитом</h2>
+        {rows === null ? null : flagged.length ? (
+          <FlaggedTable rows={flagged} profileOf={(id) => href.player(id)} />
+        ) : (
+          <div className="card center muted">Пока никого не ловили</div>
+        )}
+      </section>
+
+      <h2 className="activity-heading">Самые активные</h2>
       {rows === null ? (
         <div className="card center muted">Загрузка…</div>
       ) : rows.length === 0 ? (

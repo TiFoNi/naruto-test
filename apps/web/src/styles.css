@@ -761,6 +761,19 @@ button.bell-card {
   --tier: var(--accent);
 }
 
+.bell-item.is-system {
+  --tier: var(--wrong);
+}
+
+.bell-item.is-system .bell-mark {
+  font-weight: 900;
+  font-size: 28px;
+}
+
+.bell-item.is-system .bell-hint {
+  white-space: pre-line;
+}
+
 .bell-item.is-comment .bell-hint,
 .bell-item.is-mention .bell-hint {
   display: -webkit-box;

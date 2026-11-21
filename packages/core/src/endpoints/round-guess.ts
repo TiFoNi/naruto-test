@@ -20,9 +20,9 @@ export const POST = handle(async (request) => {
   const body = await readJson(request)
   const entityId = Number(body.entityId)
   if (typeof body.roundId !== 'string' || !ObjectId.isValid(body.roundId) || !Number.isInteger(entityId)) return fail(400, 'bad_request')
-  if (!owner.guest && (await caughtByDecoy(userId, entityId))) return fail(400, 'bad_request')
-  if (!owner.guest) await notePointer(userId, request)
   const game = typeof body.game === 'string' && isGame(body.game) ? body.game : null
+  if (!owner.guest && (await caughtByDecoy(userId, entityId, game ?? undefined))) return fail(400, 'bad_request')
+  if (!owner.guest) await notePointer(userId, request)
   if (game && !(await gameData(game)).byId.has(entityId)) return fail(400, 'bad_request')
 
   const collection = await rounds()
