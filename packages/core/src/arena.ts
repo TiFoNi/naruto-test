@@ -668,7 +668,7 @@ export async function startArena(userId: ObjectId, game: GameId) {
     updatedAt: new Date(),
   }
   doc.tavern = roll(doc.pool, 1, [], doc.clans ?? [])
-  doc.spellOffer = offerSpell()
+  doc.spellOffer = offerSpell(doc)
   doc.turnEndsAt = turnFrom(Date.now(), 1)
   doc.fightEndsAt = null
   await (await arenas()).replaceOne({ _id: userId }, doc, { upsert: true })
@@ -807,7 +807,9 @@ export function moveCard(doc: ArenaDoc, uid: string, at: number) {
 
 export const SPELLS = ['kawarimi', 'clone'] as const
 
-const offerSpell = () => (Math.random() < ARENA_SPELL_CHANCE ? pickOne([...SPELLS]) : null)
+const SPELL_FROM_TURN = 2
+
+const offerSpell = (doc: ArenaDoc) => (doc.turn >= SPELL_FROM_TURN && Math.random() < ARENA_SPELL_CHANCE ? pickOne([...SPELLS]) : null)
 
 const enchant = (doc: ArenaDoc, spell: string, aim: ArenaCard) => {
   if (spell === 'kawarimi') {
@@ -938,7 +940,7 @@ export function rollTavern(doc: ArenaDoc) {
   if (doc.coins < ARENA_ROLL_COST) return false
   doc.coins -= ARENA_ROLL_COST
   doc.tavern = roll(doc.pool, tavernOf(doc), doc.tavern, doc.clans ?? [])
-  doc.spellOffer = offerSpell()
+  doc.spellOffer = offerSpell(doc)
   doc.frozen = false
   return true
 }
@@ -1180,7 +1182,7 @@ function botTurn(doc: ArenaDoc) {
   if (left < cost && offers.some((one) => wanted(doc, one))) doc.foeFrozen = offers.map((one) => one.id)
 
   oddForCaptain(doc)
-  const spell = offerSpell()
+  const spell = offerSpell(doc)
   const aim = spell ? spellAim(doc, spell) : undefined
   let spent = 0
   if (spell && aim && doc.chakraCap >= ARENA_SPELL_COST && Math.random() < BOT_SPELL_CHANCE) {
@@ -2192,7 +2194,7 @@ export function endTurn(doc: ArenaDoc) {
   if (grown.length) pulse(doc, grown)
   const kept = doc.frozen ? doc.tavern : []
   doc.tavern = [...kept, ...roll(doc.pool, doc.shopTier, doc.tavern, doc.clans ?? [])].slice(0, Math.max(ARENA_TAVERN, kept.length))
-  if (!doc.frozen || !doc.spellOffer) doc.spellOffer = offerSpell()
+  if (!doc.frozen || !doc.spellOffer) doc.spellOffer = offerSpell(doc)
   doc.frozen = false
   return doc
 }
