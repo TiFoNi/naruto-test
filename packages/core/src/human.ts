@@ -1,6 +1,7 @@
 import type { ObjectId } from 'mongodb'
 import { rounds, users } from './db'
 import { fail } from './http'
+import { isDecoy } from './decoy'
 
 const HOUR_MS = 3_600_000
 const MINUTE_MS = 60_000
@@ -83,4 +84,32 @@ export async function verifyHuman(userId: ObjectId, token: string) {
   await (await users()).updateOne({ _id: userId }, { $set: { humanAt: new Date() }, $unset: { suspect: '', suspectAskedAt: '' } })
   clearUntil.set(userId.toHexString(), Date.now() + CLEAR_FOR_MS)
   return true
+}
+
+export async function caughtByDecoy(userId: ObjectId, entityId: number) {
+  if (!isDecoy(entityId)) return false
+  await (await users()).updateOne({ _id: userId }, { $set: { suspect: true, suspectAskedAt: new Date(0) }, $unset: { humanAt: '' } })
+  clearUntil.delete(userId.toHexString())
+  return true
+}
+
+const POINTER_MIN = 30
+const POINTER_BAD = 0.8
+const POINTER_KEEP = 0.95
+
+export async function notePointer(userId: ObjectId, request: Request) {
+  const raw = request.headers.get('x-nanda-ptr')
+  if (!raw) return
+  const [moved, centered] = raw.split(',').map(Number)
+  if (!Number.isFinite(moved) || !Number.isFinite(centered)) return
+  const bad = moved! < 2 || centered === 1 ? 1 : 0
+  const doc = await (await users()).findOneAndUpdate(
+    { _id: userId },
+    [{ $set: { ptrN: { $add: [{ $ifNull: ['$ptrN', 0] }, 1] }, ptrScore: { $add: [{ $multiply: [{ $ifNull: ['$ptrScore', 0] }, POINTER_KEEP] }, (1 - POINTER_KEEP) * bad] } } }],
+    { returnDocument: 'after', projection: { ptrN: 1, ptrScore: 1, suspect: 1, humanAt: 1 } },
+  )
+  if (!doc || doc.suspect || (doc.ptrN ?? 0) < POINTER_MIN || (doc.ptrScore ?? 0) < POINTER_BAD) return
+  if (doc.humanAt && Date.now() - doc.humanAt.getTime() < TRUST_MS) return
+  await (await users()).updateOne({ _id: userId }, { $set: { suspect: true, suspectAskedAt: new Date(0), ptrScore: 0, ptrN: 0 } })
+  clearUntil.delete(userId.toHexString())
 }

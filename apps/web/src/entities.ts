@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { isDecoy } from '@nanda/core/decoy'
 import { api } from './api'
 import type { Entity, Game } from './games/types'
 
@@ -16,7 +17,7 @@ const FRESH_GAP_MS = 4_000
 async function fetchInto(game: Game, fresh = false) {
   const { ok, data } = await api<{ entities?: Entity[]; updated?: string; atlas?: string }>(`entities?game=${game.id}${fresh ? `&fresh=${Date.now()}` : ''}`)
   if (!ok || !Array.isArray(data.entities)) throw new Error('entities')
-  game.entities = data.entities
+  game.entities = data.entities.filter((one) => !isDecoy(one.id))
   game.updated = data.updated
   if (data.atlas) game.atlas = { ...game.atlas, version: data.atlas }
   loaded.add(game.id)

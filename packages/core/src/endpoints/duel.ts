@@ -1,3 +1,4 @@
+import { notePointer } from '../human'
 import { lookOf } from '@nanda/game'
 import { automated, fail, handle, json, readJson, robot } from '../http'
 import { currentUser, searchPlayers, unauthorized } from '../profile'
@@ -199,6 +200,7 @@ export const POST = handle(async (request) => {
     if (automated(request)) return robot()
     const entityId = Number(body.entityId)
     if (!Number.isInteger(entityId)) return fail(400, 'bad_request')
+    await notePointer(userId, request)
     const result = await duelGuess(await settle(live), userId, entityId)
     if (result.error === 'too_fast') return fail(429, 'too_fast')
     if (result.error) return fail(result.error === 'not_found' ? 404 : result.error === 'duplicate' ? 409 : 400, result.error)

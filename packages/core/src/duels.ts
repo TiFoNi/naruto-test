@@ -1,3 +1,4 @@
+import { caughtByDecoy } from './human'
 import { randomInt } from 'node:crypto'
 import { ObjectId } from 'mongodb'
 import {
@@ -1024,6 +1025,7 @@ export async function duelGuess(duel: DuelDoc, userId: ObjectId, entityId: numbe
   if (index < 0) return { error: 'not_found' as const }
   const side = duel.players[index]
   if (duel.status !== 'playing' || done(side)) return { error: 'round_over' as const }
+  if (await caughtByDecoy(userId, entityId)) return { error: 'bad_request' as const }
   if (!(await gameData(duel.game as GameId)).byId.has(entityId)) return { error: 'bad_request' as const }
   if (side.guesses.includes(entityId)) return { error: 'duplicate' as const }
 

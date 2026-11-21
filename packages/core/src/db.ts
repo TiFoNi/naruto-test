@@ -41,6 +41,8 @@ export type UserDoc = {
   humanAt?: Date
   suspect?: boolean
   suspectAskedAt?: Date
+  ptrN?: number
+  ptrScore?: number
   awards?: Record<string, Date>
   tally?: import('./achievements').Tally
   awardsSolved?: number

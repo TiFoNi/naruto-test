@@ -6,6 +6,7 @@ export type Doc = { title: string; updated: string; intro: string; sections: Sec
 const UPDATED_LABEL: Record<Lang, string> = { ru: 'Обновлено', uk: 'Оновлено', en: 'Updated' }
 
 const UPDATED: Record<Lang, string> = { ru: '15 октября 2026', uk: '15 жовтня 2026', en: '15 October 2026' }
+const TERMS_UPDATED: Record<Lang, string> = { ru: '21 ноября 2026', uk: '21 листопада 2026', en: '21 November 2026' }
 const CONTACT = 'hello@nandaguessr.com'
 
 const PRIVACY: Record<Lang, Omit<Doc, 'updated'>> = {
@@ -217,7 +218,9 @@ const TERMS: Record<Lang, Omit<Doc, 'updated'>> = {
       {
         heading: 'Честная игра',
         paragraphs: [
-          'Нельзя автоматизировать подбор ответов, вытягивать ответы из запросов к серверу, создавать аккаунты пачками ради таблицы лидеров и мешать игре других. Аккаунты, замеченные в этом, мы удаляем.',
+          'Запрещены боты, скрипты, автокликеры и ИИ-агенты, которые играют за тебя, вытягивание ответов из запросов к серверу, игра с нескольких аккаунтов и создание аккаунтов пачками ради таблицы лидеров, а также любые попытки мешать игре других.',
+          'Подозрительно частую или долгую игру без перерывов мы проверяем. Пока проверка не пройдена, опыт и угаданные за сезон не начисляются.',
+          'Если нечестная игра подтвердится, мы можем снять набранный опыт, убрать аккаунт из рейтинга, отобрать сезонные награды и заблокировать или удалить аккаунт — на своё усмотрение и без предупреждения.',
         ],
       },
       {
@@ -266,7 +269,9 @@ const TERMS: Record<Lang, Omit<Doc, 'updated'>> = {
       {
         heading: 'Чесна гра',
         paragraphs: [
-          'Не можна автоматизувати добір відповідей, витягати відповіді із запитів до сервера, створювати акаунти пачками заради таблиці лідерів і заважати грі інших. Акаунти, помічені в цьому, ми видаляємо.',
+          'Заборонені боти, скрипти, автоклікери та ШІ-агенти, які грають за тебе, витягання відповідей із запитів до сервера, гра з кількох акаунтів і створення акаунтів пачками заради таблиці лідерів, а також будь-які спроби заважати грі інших.',
+          'Підозріло часту або довгу гру без перерв ми перевіряємо. Поки перевірку не пройдено, досвід і угадані за сезон не нараховуються.',
+          'Якщо нечесна гра підтвердиться, ми можемо зняти набраний досвід, прибрати акаунт із рейтингу, забрати сезонні нагороди та заблокувати або видалити акаунт — на власний розсуд і без попередження.',
         ],
       },
       {
@@ -315,7 +320,9 @@ const TERMS: Record<Lang, Omit<Doc, 'updated'>> = {
       {
         heading: 'Fair play',
         paragraphs: [
-          'No automating guesses, no digging answers out of the server responses, no creating accounts in bulk to game the leaderboard, no interfering with other people. Accounts caught doing this get deleted.',
+          'No bots, scripts, auto-clickers or AI agents playing for you, no digging answers out of server responses, no playing from several accounts or creating accounts in bulk to game the leaderboard, and no interfering with other people.',
+          'We check suspiciously frequent or long non-stop play. Until the check is passed, you earn no XP or season solves.',
+          'If cheating is confirmed, we may remove the XP you earned, take the account off the leaderboard, revoke season rewards and block or delete the account, at our discretion and without warning.',
         ],
       },
       {
@@ -517,5 +524,5 @@ const REFUNDS: Record<Lang, Omit<Doc, 'updated'>> = {
 const stamp = (lang: Lang) => `${UPDATED_LABEL[lang]} ${UPDATED[lang]}`
 
 export const privacy = (lang: Lang): Doc => ({ ...PRIVACY[lang], updated: stamp(lang) })
-export const terms = (lang: Lang): Doc => ({ ...TERMS[lang], updated: stamp(lang) })
+export const terms = (lang: Lang): Doc => ({ ...TERMS[lang], updated: `${UPDATED_LABEL[lang]} ${TERMS_UPDATED[lang]}` })
 export const refunds = (lang: Lang): Doc => ({ ...REFUNDS[lang], updated: stamp(lang) })
