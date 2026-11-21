@@ -34,6 +34,7 @@ export const GET = handle(async (request) => {
       { $sort: { xp: -1, xpAt: 1, _id: 1 } },
       { $lookup: { from: 'users', localField: 'userId', foreignField: '_id', as: 'player' } },
       { $unwind: '$player' },
+      { $match: { 'player.rankBan': { $exists: false } } },
       {
         $project: {
           userId: 1,
@@ -72,6 +73,9 @@ export const GET = handle(async (request) => {
 
   const all = entries.map(view)
   const me = all.find((row) => row.me) ?? null
+  const banned = found.doc.rankBan
+    ? { xp: (await (await seasons()).findOne({ _id: `${season.id}:${mine}` }, { projection: { xp: 1 } }))?.xp ?? 0 }
+    : null
   const cutoff = all[TOP - 1]?.xp ?? 0
 
   return json({
@@ -80,5 +84,6 @@ export const GET = handle(async (request) => {
     rows: all.slice(0, TOP),
     me,
     toTop: me && me.rank > TOP ? Math.max(1, cutoff - me.xp) : 0,
+    banned,
   })
 })

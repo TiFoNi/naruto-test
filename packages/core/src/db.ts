@@ -27,6 +27,7 @@ export type UserDoc = {
   cheats?: Partial<Record<CheatKind, number>>
   cheatLog?: CheatLog[]
   cheatAt?: Date
+  rankBan?: Date
   commentNews?: CommentNews[]
   dex?: Record<string, number[]>
   mentionPush?: boolean

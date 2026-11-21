@@ -1,5 +1,5 @@
 import type { ObjectId } from 'mongodb'
-import { seasonCloses, seasons } from './db'
+import { seasonCloses, seasons, users } from './db'
 import { isSuspect } from './human'
 
 const ZONE = 'Europe/Kyiv'
@@ -107,9 +107,12 @@ export async function markSeasonSolved(userId: ObjectId, now = new Date()) {
 
 export const previousSeason = (now = new Date()): Season => seasonAt(new Date(seasonAt(now).from.getTime() - 86_400_000))
 
+export const rankBanned = async () => (await users()).distinct('_id', { rankBan: { $exists: true } })
+
 export async function seasonStanding(seasonId: string, limit = 100) {
+  const banned = await rankBanned()
   return (await seasons())
-    .find({ season: seasonId, xp: { $gt: 0 } }, { projection: { userId: 1, xp: 1 }, sort: { xp: -1, xpAt: 1, _id: 1 }, limit })
+    .find({ season: seasonId, xp: { $gt: 0 }, ...(banned.length ? { userId: { $nin: banned } } : {}) }, { projection: { userId: 1, xp: 1 }, sort: { xp: -1, xpAt: 1, _id: 1 }, limit })
     .toArray()
 }
 

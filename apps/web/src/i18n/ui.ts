@@ -3040,6 +3040,13 @@ const ui = {
     en: 'Every world and mode has its own board, and results update right after the round.',
   },
   'lb.howTitle': { ru: 'Как считается', uk: 'Як рахується', en: 'How it works' },
+  'lb.banTitle': { ru: 'Ты вне рейтинга', uk: 'Ти поза рейтингом', en: 'You are off the ranking' },
+  'lb.banXp': { ru: 'XP за сезон', uk: 'XP за сезон', en: 'season XP' },
+  'lb.banText': {
+    ru: 'Опыт копится, но в таблицу ты не попадаешь: в аккаунте замечена нечестная активность. Если это ошибка — напиши нам, разберёмся и вернём тебя в рейтинг.',
+    uk: 'Досвід накопичується, але в таблицю ти не потрапляєш: в акаунті помічено нечесну активність. Якщо це помилка — напиши нам, розберемося й повернемо тебе в рейтинг.',
+    en: 'Your XP still counts, but you are not shown in the table: unfair activity was noticed on your account. If this is a mistake, write to us — we will look into it and bring you back.',
+  },
   'lb.fairTitle': { ru: 'Честная игра', uk: 'Чесна гра', en: 'Fair play' },
   'lb.fair1': {
     ru: 'Боты, скрипты, автокликеры и игра с нескольких аккаунтов запрещены.',

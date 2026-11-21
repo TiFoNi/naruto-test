@@ -67,7 +67,7 @@ export const GET = handle(async (request) => {
 
   const stats = found.doc.stats?.[key]
   const counted = day ? (stats?.day === day ? (stats.dayBest ?? 0) : 0) : (stats?.solved ?? 0)
-  const mine: Row | null = counted
+  const mine: Row | null = counted && !found.doc.rankBan
     ? {
         _id: found.doc._id!,
         username: found.doc.username,
@@ -91,8 +91,8 @@ export const GET = handle(async (request) => {
     .aggregate([
       {
         $match: day
-          ? { [`stats.${key}.day`]: day, [`stats.${key}.dayBest`]: { $gte: 1 } }
-          : { [`stats.${key}.solved`]: { $gte: 1 } },
+          ? { [`stats.${key}.day`]: day, [`stats.${key}.dayBest`]: { $gte: 1 }, rankBan: { $exists: false } }
+          : { [`stats.${key}.solved`]: { $gte: 1 }, rankBan: { $exists: false } },
       },
       {
         $project: {

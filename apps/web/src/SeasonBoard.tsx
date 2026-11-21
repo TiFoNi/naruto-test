@@ -39,6 +39,7 @@ export type Board = {
   rows: Row[]
   me: Row | null
   toTop: number
+  banned?: { xp: number } | null
 }
 
 const PRIZES = [
@@ -377,7 +378,20 @@ export default function SeasonBoard({ initial = null }: { initial?: Board | null
         </section>
 
         <aside className="lb-side">
-          {!!board && (
+          {!!board?.banned && (
+            <section className="card season-me is-banned">
+              <span className="play-card-title">{t('lb.banTitle')}</span>
+              <p className="season-place">
+                <b>{count(board.banned.xp)}</b>
+                <em>{t('lb.banXp')}</em>
+              </p>
+              <p className="season-gap">{t('lb.banText')}</p>
+              <a className="season-ban-mail" href="mailto:hello@nandaguessr.com">
+                hello@nandaguessr.com
+              </a>
+            </section>
+          )}
+          {!!board && !board.banned && (
             <section className="card season-me">
               <span className="play-card-title">{t('lb.myPlace')}</span>
               {board.me ? (

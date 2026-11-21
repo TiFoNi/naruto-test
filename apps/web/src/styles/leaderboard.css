@@ -1513,3 +1513,27 @@
   background: color-mix(in srgb, #e5483b 16%, transparent);
   color: #f0796e;
 }
+
+.season-me.is-banned {
+  border-color: color-mix(in srgb, var(--wrong) 45%, var(--line));
+}
+
+.season-me.is-banned .play-card-title {
+  color: var(--wrong-text, var(--wrong));
+}
+
+.season-me.is-banned .season-gap {
+  line-height: 1.5;
+}
+
+.season-ban-mail {
+  align-self: flex-start;
+  color: var(--accent-text, var(--accent));
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.season-ban-mail:hover {
+  text-decoration: underline;
+}
