@@ -221,7 +221,7 @@ const LABEL: Record<string, UiKey> = {
   coffin: 'arena.myth.coffin',
   benihisago: 'arena.myth.benihisago',
   jinton: 'arena.myth.jinton',
-  juken: 'arena.juken',
+  juken: 'arena.skill.juken',
   genjutsu: 'arena.skill.genjutsu',
   shadow: 'arena.skill.shadow',
   mind: 'arena.skill.mind',
@@ -707,9 +707,9 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
     (at: number) => {
       if (at < 0) {
         setView((now) => {
-          if (!now?.spellOffer || now.coins < now.spellOffer.cost) return now
+          if (!now?.spellOffer || now.chakra < now.spellOffer.cost) return now
           const card: Card = { uid: `${now.seq + 1}`, id: 0, rarity: 'paper', atk: 0, hp: 0, max: 0, summon: false, spell: now.spellOffer.kind }
-          return { ...now, seq: now.seq + 1, coins: now.coins - now.spellOffer.cost, hand: [...now.hand, card], spellOffer: null }
+          return { ...now, seq: now.seq + 1, chakra: now.chakra - now.spellOffer.cost, hand: [...now.hand, card], spellOffer: null }
         })
         send({ action: 'spell' })
         return
@@ -745,11 +745,11 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const buyCast = useCallback(
     (target: string) => {
       setView((now) => {
-        if (!now?.spellOffer || now.coins < now.spellOffer.cost) return now
+        if (!now?.spellOffer || now.chakra < now.spellOffer.cost) return now
         const kind = now.spellOffer.kind
         if (!spellFits(kind, now.board, target)) return now
         const bless = (list: Card[]) => list.map((one) => (one.uid === target ? spellOn(kind, one) : one))
-        return { ...now, coins: now.coins - now.spellOffer.cost, spellOffer: null, board: { heroes: bless(now.board.heroes), summons: bless(now.board.summons) } }
+        return { ...now, chakra: now.chakra - now.spellOffer.cost, spellOffer: null, board: { heroes: bless(now.board.heroes), summons: bless(now.board.summons) } }
       })
       send({ action: 'spell', target })
     },
@@ -1603,7 +1603,8 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
   const clanExtra = (clan: string) => {
     const rule = (ARENA_CLANS as Record<string, { grow?: readonly [number, number]; every?: number; full?: number }>)[clan]
     if (!rule) return ''
-    const stats = rule.grow ? `+${rule.grow[0]}/+${rule.grow[1]}` : ''
+    const [atk = 0, hp = 0] = rule.grow ?? []
+    const stats = atk && hp ? `+${atk}/+${hp}` : atk ? t('arena.short.atk', { n: atk }) : hp ? t('arena.short.hp', { n: hp }) : ''
     const grow = !rule.grow ? '' : rule.every && rule.every > 1 ? t('arena.clanGrowEvery', { n: rule.every, stats }) : t('arena.clanGrow', { stats })
     const full = rule.full ? t('arena.clanFull', { n: rule.full, b: ARENA_FULL_BONUS }) : ''
     return [grow, full].filter(Boolean).join(' ')
@@ -2013,11 +2014,11 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
           )
         })}
         {view.spellOffer && (
-          <li key={`spell${deal}`} style={{ '--i': view.tavern.length, '--slot': view.tavern.length / 2, '--wait': `${dealWait}ms` } as CSSProperties} className={`is-held is-spell ${view.spellOffer.cost > view.coins ? 'is-poor' : ''}`}>
+          <li key={`spell${deal}`} style={{ '--i': view.tavern.length, '--slot': view.tavern.length / 2, '--wait': `${dealWait}ms` } as CSSProperties} className={`is-held is-spell ${view.spellOffer.cost > view.chakra ? 'is-poor' : ''}`}>
             <span
               className="ar-move"
               onPointerDown={
-                view.spellOffer.cost > view.coins
+                view.spellOffer.cost > view.chakra
                   ? undefined
                   : take('shop', { uid: 'spell', id: 0, rarity: 'paper', atk: 0, hp: 0, max: 0, summon: false, spell: view.spellOffer.kind }, -1)
               }

@@ -6053,3 +6053,10 @@ html:has(.app.is-stage .ar) .topbar {
   color: #12924a;
   text-shadow: 0 0 6px rgb(18 146 74 / 35%);
 }
+
+.ar-tier.ar-price-tag .ar-orb {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  rotate: 0deg;
+}

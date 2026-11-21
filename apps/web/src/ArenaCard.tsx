@@ -248,7 +248,7 @@ export const SpellFace = memo(function SpellFace({ kind, cost }: { kind: string;
             <svg viewBox="0 0 130 100" preserveAspectRatio="none" aria-hidden>
               <polygon points={BADGE_POINTS} vectorEffect="non-scaling-stroke" />
             </svg>
-            <i className="ar-coin" />
+            <i className="ar-orb is-full" />
             <b>{cost}</b>
           </span>
         )}
