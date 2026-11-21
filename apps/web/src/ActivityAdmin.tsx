@@ -43,6 +43,59 @@ export type FlaggedRow = {
   pointer: Pointer | null
   suspect: boolean
   humanAt: string | null
+  rankBan: string | null
+}
+
+type Person = { id: string; nickname: string; tag: string | null; rankBan: string | null; cheats: Cheats }
+
+const BanPanel = ({ banned, onBanned, profileOf }: { banned: Person[]; onBanned: (list: Person[]) => void; profileOf: (id: string) => string }) => {
+  const [ask, setAsk] = useState('')
+  const [found, setFound] = useState<Person[]>([])
+  const [busy, setBusy] = useState<string | null>(null)
+
+  useEffect(() => {
+    const query = ask.trim()
+    if (!query) return setFound([])
+    const timer = window.setTimeout(async () => {
+      const { ok, data } = await api<{ people?: Person[] }>(`admin/activity?q=${encodeURIComponent(query)}`)
+      if (ok) setFound(data.people ?? [])
+    }, 250)
+    return () => window.clearTimeout(timer)
+  }, [ask])
+
+  const toggle = async (one: Person, ban: boolean) => {
+    if (ban && !window.confirm(`Убрать ${one.nickname} из рейтинга?`)) return
+    setBusy(one.id)
+    const { ok, data } = await api<{ person?: Person; banned?: Person[] }>('admin/activity', { id: one.id, ban })
+    setBusy(null)
+    if (!ok || !data.person) return
+    onBanned(data.banned ?? [])
+    setFound((list) => list.map((row) => (row.id === one.id ? data.person! : row)))
+  }
+
+  const row = (one: Person) => (
+    <li key={one.id} className={one.rankBan ? 'is-banned' : ''}>
+      <Link prefetch={false} href={profileOf(one.id)}>
+        {one.nickname}
+        {one.tag && <small>#{one.tag}</small>}
+      </Link>
+      <span className="rank-ban-when">{one.rankBan ? `вне рейтинга с ${when(one.rankBan)}` : 'в рейтинге'}</span>
+      <button type="button" className={one.rankBan ? '' : 'is-danger'} disabled={busy === one.id} onClick={() => void toggle(one, !one.rankBan)}>
+        {one.rankBan ? 'Снять' : 'В бан'}
+      </button>
+    </li>
+  )
+
+  return (
+    <section className="rank-ban card">
+      <h2>Бан рейтинга</h2>
+      <p className="muted">Игрок продолжает копить опыт, но пропадает из всех таблиц и наград сезона. У себя видит, что он вне рейтинга и куда писать.</p>
+      <input type="search" value={ask} onChange={(event) => setAsk(event.target.value)} placeholder="Ник или ник#ТЕГ" aria-label="Найти игрока" />
+      {found.length > 0 && <ul className="rank-ban-list">{found.map(row)}</ul>}
+      <h3>Сейчас вне рейтинга · {banned.length}</h3>
+      {banned.length ? <ul className="rank-ban-list">{banned.map(row)}</ul> : <p className="muted">Никого</p>}
+    </section>
+  )
 }
 
 const CHEAT_LABEL: Record<CheatKind, string> = {
@@ -107,7 +160,7 @@ export function FlaggedTable({ rows, profileOf }: { rows: FlaggedRow[]; profileO
                 </ul>
               </td>
               <td>{row.humanAt ? when(row.humanAt) : '—'}</td>
-              <td className={row.suspect ? 'is-hot' : ''}>{row.suspect ? 'под подозрением' : 'чисто'}</td>
+              <td className={row.suspect || row.rankBan ? 'is-hot' : ''}>{row.rankBan ? 'вне рейтинга' : row.suspect ? 'под подозрением' : 'чисто'}</td>
             </tr>
           ))}
         </tbody>
@@ -185,14 +238,16 @@ export default function ActivityAdmin() {
   const [range, setRange] = useState<Range>('day')
   const [rows, setRows] = useState<ActivityRow[] | null>(null)
   const [flagged, setFlagged] = useState<FlaggedRow[]>([])
+  const [banned, setBanned] = useState<Person[]>([])
   const [denied, setDenied] = useState(false)
 
   const load = useCallback(async (next: Range) => {
     setRows(null)
-    const { ok, status, data } = await api<{ rows?: ActivityRow[]; flagged?: FlaggedRow[] }>(`admin/activity?range=${next}`)
+    const { ok, status, data } = await api<{ rows?: ActivityRow[]; flagged?: FlaggedRow[]; banned?: Person[] }>(`admin/activity?range=${next}`)
     if (status === 404) return setDenied(true)
     setRows(ok ? (data.rows ?? []) : [])
     setFlagged(ok ? (data.flagged ?? []) : [])
+    if (ok) setBanned(data.banned ?? [])
   }, [])
 
   useEffect(() => {
@@ -217,6 +272,16 @@ export default function ActivityAdmin() {
           <span className="admin-found">красным выделено то, что не похоже на человека</span>
         </div>
       </header>
+
+      <BanPanel
+        banned={banned}
+        profileOf={(id) => href.player(id)}
+        onBanned={(list) => {
+          setBanned(list)
+          const off = new Set(list.map((one) => one.id))
+          setFlagged((rows) => rows.map((one) => ({ ...one, rankBan: off.has(one.id) ? (list.find((p) => p.id === one.id)?.rankBan ?? null) : null })))
+        }}
+      />
 
       <section className="flagged">
         <h2>Пойманные античитом</h2>

@@ -1,7 +1,8 @@
-import type { Filter, ObjectId } from 'mongodb'
+import { ObjectId, type Filter } from 'mongodb'
 import { adminSession } from '../admin'
-import { rounds, users, type RoundDoc } from '../db'
-import { fail, handle, json } from '../http'
+import { rounds, users, type RoundDoc, type UserDoc } from '../db'
+import { fail, handle, json, readJson } from '../http'
+import { defaultNickname, parseTag } from '../profile'
 
 const HOUR_MS = 3_600_000
 const RANGES: Record<string, number> = { hour: 1, day: 24, week: 24 * 7 }
@@ -103,7 +104,7 @@ export async function flaggedRows() {
   const found = await (await users())
     .find(
       { cheatAt: { $exists: true } },
-      { projection: { nickname: 1, username: 1, cheats: 1, cheatLog: 1, cheatAt: 1, ptrScore: 1, ptrN: 1, suspect: 1, humanAt: 1 }, sort: { cheatAt: -1 }, limit: FLAGGED },
+      { projection: { nickname: 1, username: 1, cheats: 1, cheatLog: 1, cheatAt: 1, ptrScore: 1, ptrN: 1, suspect: 1, humanAt: 1, rankBan: 1 }, sort: { cheatAt: -1 }, limit: FLAGGED },
     )
     .toArray()
   return found.map((person) => ({
@@ -115,14 +116,59 @@ export async function flaggedRows() {
     pointer: pointerOf(person),
     suspect: !!person.suspect,
     humanAt: person.humanAt ?? null,
+    rankBan: person.rankBan ?? null,
   }))
+}
+
+const FOUND = 12
+
+type Person = { _id?: ObjectId; nickname?: string; username: string; tag?: string; rankBan?: Date; cheats?: Record<string, number> }
+
+const personRow = (person: Person) => ({
+  id: String(person._id),
+  nickname: person.nickname ?? defaultNickname(person.username),
+  tag: person.tag ?? null,
+  rankBan: person.rankBan ?? null,
+  cheats: person.cheats ?? {},
+})
+
+const PERSON = { nickname: 1, username: 1, tag: 1, rankBan: 1, cheats: 1 }
+
+export async function bannedRows() {
+  const found = await (await users()).find({ rankBan: { $exists: true } }, { projection: PERSON, sort: { rankBan: -1 } }).toArray()
+  return found.map(personRow)
+}
+
+export async function findPeople(raw: string) {
+  const [namePart, tagPart] = raw.trim().slice(0, 40).split('#')
+  const name = namePart!.trim().toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  if (!name && !ObjectId.isValid(raw)) return []
+  const tag = tagPart === undefined ? null : parseTag(tagPart)
+  const filter: Filter<UserDoc> = ObjectId.isValid(raw) ? { _id: new ObjectId(raw) } : { nicknameLower: { $regex: `^${name}` }, ...(tag ? { tag } : {}) }
+  const found = await (await users()).find(filter, { projection: PERSON, sort: { nicknameLower: 1 }, limit: FOUND }).toArray()
+  return found.map(personRow)
 }
 
 export const GET = handle(async (request) => {
   if (!(await adminSession(request))) return fail(404, 'not_found')
+  const ask = new URL(request.url).searchParams.get('q')
+  if (ask !== null) return json({ people: await findPeople(ask) })
   const range = new URL(request.url).searchParams.get('range') ?? 'day'
   const hours = RANGES[range]
   if (!hours) return fail(400, 'bad_request')
-  const [rows, flagged] = await Promise.all([activityRows(hours), flaggedRows()])
-  return json({ range, rows, flagged })
+  const [rows, flagged, banned] = await Promise.all([activityRows(hours), flaggedRows(), bannedRows()])
+  return json({ range, rows, flagged, banned })
+})
+
+export const POST = handle(async (request) => {
+  if (!(await adminSession(request))) return fail(404, 'not_found')
+  const { id, ban } = (await readJson(request)) as { id?: unknown; ban?: unknown }
+  if (typeof id !== 'string' || !ObjectId.isValid(id) || typeof ban !== 'boolean') return fail(400, 'bad_request')
+  const done = await (await users()).findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    ban ? { $set: { rankBan: new Date() } } : { $unset: { rankBan: '' } },
+    { projection: PERSON, returnDocument: 'after' },
+  )
+  if (!done) return fail(404, 'not_found')
+  return json({ person: personRow(done), banned: await bannedRows() })
 })

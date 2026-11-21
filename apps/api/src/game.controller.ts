@@ -127,6 +127,11 @@ export class GameController {
     return bridge(adminActivity.GET, req, res)
   }
 
+  @Post('admin/activity')
+  adminActivitySave(@Req() req: Request, @Res() res: Response) {
+    return bridge(adminActivity.POST, req, res)
+  }
+
   @Get('admin/difficulty')
   adminDifficultyList(@Req() req: Request, @Res() res: Response) {
     return bridge(adminDifficulty.GET, req, res)
