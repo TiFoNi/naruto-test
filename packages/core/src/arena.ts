@@ -254,8 +254,14 @@ export const skillsOf = (id: number, rarity: CardRarity) =>
 export type Aura = { clan: ArenaClan; n: number }
 
 export const aurasOf = (side: ArenaSide) => {
-  const count = new Map<ArenaClan, number>()
-  for (const one of side.heroes) for (const clan of clansOf(one.id)) count.set(clan, (count.get(clan) ?? 0) + 1)
+  const members = new Map<ArenaClan, Set<number>>()
+  for (const one of side.heroes)
+    for (const clan of clansOf(one.id)) {
+      const ids = members.get(clan) ?? new Set<number>()
+      ids.add(one.id)
+      members.set(clan, ids)
+    }
+  const count = new Map<ArenaClan, number>([...members].map(([clan, ids]) => [clan, ids.size]))
   for (const [clan, groups] of kin)
     if (count.has(clan)) count.set(clan, groups.filter((ids) => side.heroes.some((one) => ids.includes(one.id))).length)
   const out = new Map<string, Aura[]>()
@@ -482,6 +488,18 @@ export const statsOf = (id: number, rarity: CardRarity, triple = false, power = 
   const base = baseOf(id)
   const mul = (triple ? 2 : 1) * (power || 1) * (TIER_SCALE[tierOf(id)] ?? 1)
   return { atk: Math.round(base.atk * mul), hp: Math.round(base.hp * mul * ARENA_HP_MUL) }
+}
+
+const withGains = (card: ArenaCard, from: ArenaCard[], powers?: Record<number, number>) => {
+  for (const one of from) {
+    const base = statsOf(one.id, one.rarity, false, powerOf(powers, one.id))
+    const atk = Math.max(0, one.atk - base.atk)
+    const hp = Math.max(0, one.max - base.hp)
+    card.atk += atk
+    card.hp += hp
+    card.max += hp
+  }
+  return card
 }
 
 const makeCard = (id: number, rarity: CardRarity, summon: boolean, seq: number, triple = false, power = 1): ArenaCard => {
@@ -731,13 +749,13 @@ function fuse(doc: ArenaDoc, id: number) {
   const found = [...doc.hand.filter(same), ...onBoard(doc.board).filter(same)]
   if (found.length < ARENA_TRIPLE) return
   const burn = new Set(found.slice(0, ARENA_TRIPLE).map((card) => card.uid))
+  for (const card of found.slice(0, ARENA_TRIPLE)) refundChakra(doc, card)
   doc.hand = doc.hand.filter((card) => !burn.has(card.uid))
   relay(doc.board, onBoard(doc.board).filter((card) => !burn.has(card.uid)))
   doc.seq += 1
   const first = found[0]!
   const rarity = CARD_RARITIES[Math.min(rankOf(first.rarity) + 1, CARD_RARITIES.length - 1)]!
-  doc.hand.push(makeCard(id, rarity, first.summon, doc.seq, true, powerOf(doc.powers, id)))
-  doc.discover = discoverFor(doc, id)
+  doc.hand.push({ ...withGains(makeCard(id, rarity, first.summon, doc.seq, true, powerOf(doc.powers, id)), found.slice(0, ARENA_TRIPLE), doc.powers), gift: true })
 }
 
 const DISCOVER_N = 3
@@ -777,6 +795,15 @@ export function discoverCard(doc: ArenaDoc, at: number) {
   return true
 }
 
+const spentOn = (card: ArenaCard) =>
+  (card.armed ?? []).reduce((sum, ability) => sum + (ability in ARENA_ABILITIES ? costOf(card.id, ability as ArenaAbility, card.rarity) : 0), 0) +
+  ((card.dodge ?? 0) > 0 ? ARENA_SPELL_COST : 0) +
+  (card.clone ? ARENA_SPELL_COST : 0)
+
+const refundChakra = (doc: ArenaDoc, card: ArenaCard) => {
+  doc.chakra = Math.min(doc.chakra + spentOn(card), doc.chakraCap)
+}
+
 export function sellCard(doc: ArenaDoc, uid: string) {
   const inHand = doc.hand.findIndex((card) => card.uid === uid)
   if (inHand >= 0 && doc.hand[inHand]!.spell) {
@@ -789,7 +816,7 @@ export function sellCard(doc: ArenaDoc, uid: string) {
     const line = onBoard(doc.board)
     const sold = line.find((card) => card.uid === uid)
     if (!sold) return false
-    for (const ability of sold.armed ?? []) doc.chakra = Math.min(doc.chakra + (ability in ARENA_ABILITIES ? costOf(sold.id, ability as ArenaAbility, sold.rarity) : 0), doc.chakraCap)
+    refundChakra(doc, sold)
     relay(doc.board, line.filter((card) => card.uid !== uid))
   }
   doc.coins = Math.min(doc.coins + ARENA_SELL_BACK, ARENA_COIN_MAX)
@@ -933,6 +960,10 @@ export function playCard(doc: ArenaDoc, uid: string, to = -1) {
   const group = card.summon ? doc.board.summons : doc.board.heroes
   group.splice(Number.isInteger(to) && to >= 0 ? Math.min(to, group.length) : group.length, 0, card)
   shout(doc, card)
+  if (card.gift) {
+    delete card.gift
+    doc.discover = discoverFor(doc, card.id)
+  }
   return true
 }
 
@@ -1115,7 +1146,7 @@ function foeFuse(doc: ArenaDoc, id: number, tier: number) {
   relay(doc.foeBoard, onBoard(doc.foeBoard).filter((card) => !burn.has(card.uid)))
   doc.seq += 1
   const rarity = CARD_RARITIES[Math.min(rankOf(first.rarity) + 1, CARD_RARITIES.length - 1)]!
-  seatOnBoard(doc, makeCard(id, rarity, false, doc.seq, true, powerOf(doc.foePowers, id)))
+  seatOnBoard(doc, withGains(makeCard(id, rarity, false, doc.seq, true, powerOf(doc.foePowers, id)), same.slice(0, ARENA_TRIPLE), doc.foePowers))
   const found = shuffled(doc.pool.filter((one) => tierOf(one) === tier && !doc.summons.includes(one))).slice(0, DISCOVER_N)
   const offers = found.map((one) => {
     doc.seq += 1
@@ -1339,7 +1370,7 @@ function fight(doc: ArenaDoc) {
     }
   }
 
-  const twinOf = (one: ArenaCard): ArenaCard => ({ ...one, uid: `${one.uid}~`, hp: 1, max: 1, fake: true, clone: false, armed: [], ward: false, dodge: 0, aim: undefined, mist: false, bound: null, link: null, shade: false, chained: 0, burn: 0, stun: false })
+  const twinOf = (one: ArenaCard): ArenaCard => ({ ...one, uid: `${one.uid}~`, hp: 1, max: 1, fake: true, clone: false, gated: false, armed: [], ward: false, dodge: 0, aim: undefined, mist: false, bound: null, link: null, shade: false, chained: 0, burn: 0, stun: false })
   const waiting = new Map<ArenaSide, ArenaCard[]>()
   for (const side of [ours, foes]) {
     const late: ArenaCard[] = []
@@ -1404,7 +1435,7 @@ function fight(doc: ArenaDoc) {
 
   const clanOn = (one: ArenaCard, clan: ArenaClan) => hasAura(auras.get(one.uid), clan)
   const myth = (one: ArenaCard) => mythicOf(one.id, one.rarity)
-  const opener = (one: ArenaCard) => (one.sealed ? null : myth(one))
+  const opener = (one: ArenaCard) => (one.sealed || one.fake ? null : myth(one))
   const sideOf = (one: ArenaCard) => (onBoard(ours).includes(one) ? ours : foes)
   const across = (side: ArenaSide) => (side === ours ? foes : ours)
   const isFoe = (side: ArenaSide) => side === foes
@@ -1466,13 +1497,18 @@ function fight(doc: ArenaDoc) {
             }
         }
         const late = waiting.get(side)
-        const owner = late?.find((one) => one.hp > 0 && side.heroes.includes(one))
+        const owner = late?.find((one) => one.hp > 0 && side.heroes.includes(one) && !held(one))
         if (late && owner) {
           late.splice(late.indexOf(owner), 1)
           graves.push({ side, card: twinOf(owner), at, by: owner, hp: 1, kind: 'clone' })
         }
       }
     }
+    for (const side of [ours, foes])
+      for (const twin of side.heroes.filter((one) => one.fake && one.hp > 0)) {
+        const owner = side.heroes.find((one) => `${one.uid}~` === twin.uid)
+        if (!owner || owner.hp <= 0) twin.hp = 0
+      }
     drop(ours)
     drop(foes)
     regear()
@@ -1484,7 +1520,7 @@ function fight(doc: ArenaDoc) {
       if (grave) {
         const { side, card, at, by, hp, kind } = grave
         card.hp = hp
-        card.atk = start.get(card.uid) ?? card.atk
+        card.atk = kind === 'clone' ? Math.max(0, by.atk - (worn.get(by.uid)?.atk ?? 0)) : (start.get(card.uid) ?? card.atk)
         card.stun = false
         card.burn = 0
         card.bound = null
@@ -1492,7 +1528,7 @@ function fight(doc: ArenaDoc) {
         card.ward = false
         card.dodge = 0
         side.heroes.splice(Math.min(at, side.heroes.length), 0, card)
-        worn.set(card.uid, firstWorn.get(card.uid) ?? { atk: 0, hp: 0 })
+        worn.set(card.uid, kind === 'clone' ? { atk: 0, hp: 0 } : (firstWorn.get(card.uid) ?? { atk: 0, hp: 0 }))
         regear()
         steps.push({ from: by.uid, to: card.uid, ...(kind === 'clone' ? { summoned: [card.uid] } : { risen: card.uid }), ability: kind, damage: 0, dead: false, foe: isFoe(side), ...snap() })
         continue
@@ -1541,6 +1577,8 @@ function fight(doc: ArenaDoc) {
   const inoOf = (one: ArenaCard) => (one.bound ? [...alive(ours), ...alive(foes)].find((other) => other.uid === one.bound) : undefined)
 
   const dreaming = (one: ArenaCard) => !one.shade && !!inoOf(one)
+
+  const held = (one: ArenaCard) => !!inoOf(one) || !!one.stun || !!one.sealed
 
   const wake = (one: ArenaCard, damage: number) => {
     const ino = one.shade ? undefined : inoOf(one)
@@ -1822,9 +1860,17 @@ function fight(doc: ArenaDoc) {
       const hit = card.stun || card.summon || card.sealed || !card.armed?.includes('juken') ? 0 : JUKEN_HIT
       if (!hit || card.hp <= 0) continue
       const open = alive(rivals).filter((one) => !one.sealed && !one.fake)
-      const target = strongest(open.filter((one) => one.armed?.length)) ?? strongest(open.filter((one) => OPENERS.has(myth(one) ?? ''))) ?? strongest(open)
+      const target = strongest(open.filter((one) => one.armed?.length || one.clone || (one.dodge ?? 0) > 0)) ?? strongest(open.filter((one) => OPENERS.has(myth(one) ?? ''))) ?? strongest(open)
       if (!target) continue
       target.sealed = true
+      target.dodge = 0
+      if (target.clone) {
+        target.clone = false
+        const twin = rivals.heroes.find((one) => one.uid === `${target.uid}~` && one.hp > 0)
+        if (twin) twin.hp = 0
+        const late = waiting.get(rivals)
+        if (late?.includes(target)) late.splice(late.indexOf(target), 1)
+      }
       const warded: string[] = []
       let damage = 0
       if (target.ward) {
@@ -2004,14 +2050,14 @@ function fight(doc: ArenaDoc) {
           settle()
         } else if (ability === 'mind') {
           const target = alive(rivals)
-            .filter((one) => !one.bound)
+            .filter((one) => !one.bound && !one.fake)
             .sort((a, b) => b.atk - a.atk)[0]
           if (!target) continue
           target.bound = card.uid
           card.link = target.uid
           steps.push({ from: card.uid, to: target.uid, ability, damage: 0, dead: false, foe, ...snap() })
         } else if (ability === 'shadow') {
-          const target = strongest(alive(rivals).filter((one) => !one.bound && !one.away))
+          const target = strongest(alive(rivals).filter((one) => !one.bound && !one.away && !one.fake))
           if (!target) continue
           target.bound = card.uid
           target.shade = true
