@@ -419,6 +419,8 @@ const STAGE_COMPACT_W = 1400
 const STAGE_H = 900
 const STAGE_MIN_H = 650
 const STAGE_FULL_MIN_H = 860
+const DESKTOP_SHRINK = 0.9
+const DESKTOP_FROM = 1024
 const COMPACT_BELOW = 520
 let stageScale = 1
 const unscale = (n: number) => Math.round(n / stageScale)
@@ -525,7 +527,8 @@ export default function ArenaGame({ game: gameId, demo = false }: { game: string
     const fit = () => {
       const width = window.innerHeight < COMPACT_BELOW || (STAGE_W * window.innerHeight) / window.innerWidth < STAGE_FULL_MIN_H ? STAGE_COMPACT_W : STAGE_W
       const height = Math.round(Math.min(STAGE_H, Math.max(STAGE_MIN_H, (width * window.innerHeight) / window.innerWidth)))
-      const next = Math.min(window.innerWidth / width, window.innerHeight / height)
+      const desktop = window.innerWidth >= DESKTOP_FROM && window.matchMedia('(pointer: fine)').matches
+      const next = Math.min(window.innerWidth / width, window.innerHeight / height) * (desktop ? DESKTOP_SHRINK : 1)
       stageScale = next
       setScale(next)
       setStage({ w: width, h: height })

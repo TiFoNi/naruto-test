@@ -5262,11 +5262,11 @@ html:has(.app.is-stage .ar) .topbar {
   top: 50%;
   left: 50%;
   translate: -50% -50%;
-  scale: var(--stage-s, 1);
+  zoom: var(--stage-s, 1);
 }
 
 .ar-stage {
-  animation: ar-stage-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+  animation: ar-stage-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.1s backwards;
 }
 
 @keyframes ar-stage-in {

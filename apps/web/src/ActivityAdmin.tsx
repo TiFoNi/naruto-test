@@ -115,7 +115,7 @@ const cheatText = (one: CheatLog) => {
 
 const PointerCell = ({ pointer }: { pointer: Pointer | null }) =>
   pointer ? (
-    <td className={pointer.n >= POINTER_MIN && pointer.score >= POINTER_BAD ? 'is-hot' : ''} title={`Доля ходов без движения мыши или точно в центр кнопки, по ${pointer.n} ходам`}>
+    <td className={pointer.n >= POINTER_MIN && pointer.score >= POINTER_BAD ? 'is-hot' : ''} title={`Доля ходов, где курсор телепортировался, шёл идеально ровной линией, не двигался или попал точно в центр кнопки, по ${pointer.n} ходам`}>
       {pointer.score}% · {pointer.n}
     </td>
   ) : (
@@ -199,7 +199,7 @@ export function ActivityTable({ rows, profileOf }: { rows: ActivityRow[]; profil
             <th>Последний</th>
             <th>Проверка</th>
             <th title="Сколько раз ловили: несуществующий персонаж / телепорт курсора / темп">Античит</th>
-            <th title="Доля ходов без движения мыши или точно в центр кнопки">Курсор</th>
+            <th title="Доля ходов, где курсор телепортировался, шёл идеально ровной линией, не двигался или попал точно в центр кнопки">Курсор</th>
           </tr>
         </thead>
         <tbody>

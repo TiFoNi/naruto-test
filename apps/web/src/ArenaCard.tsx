@@ -5,6 +5,7 @@ import { useI18n, type UiKey } from './i18n'
 import { memo, useEffect, useState, type CSSProperties } from 'react'
 import { CARD_RARITIES, type CardRarity } from '@nanda/game'
 import { BACK_POINTS, BADGE_POINTS, DexFace } from './DexCard'
+import { hdUrl } from './pics'
 import { HeartIcon } from './icons'
 import type { Entity, GameId } from './games/types'
 
@@ -189,7 +190,7 @@ export const ArenaFace = memo(function ArenaFace({
       className={`arena-card ${summon ? 'is-summon' : ''} ${triple ? 'is-triple' : ''} ${shield ? 'is-shielded' : ''} ${ghost ? 'is-ghost' : ''} ${fake ? 'is-fake' : ''} ${away ? 'is-away' : ''}`}
       style={{ '--tilt': `${(((entity.id * 7919) % 9) - 4) * 0.55}deg` } as CSSProperties}
     >
-      <DexFace game={game} id={entity.id} image={entity.image} src={art ? `/arena/${art}.webp` : undefined} label={art ? t(`arena.art.${art}` as UiKey) : oneWord(entity.name)} tier={Math.max(0, tierOf(rarity ?? 'paper'))} seed={ARENA_SHAPE}>
+      <DexFace game={game} id={entity.id} image={entity.image} src={art ? `/arena/${art}.webp` : hdUrl(game, entity.id, entity.image)} label={art ? t(`arena.art.${art}` as UiKey) : oneWord(entity.name)} tier={Math.max(0, tierOf(rarity ?? 'paper'))} seed={ARENA_SHAPE}>
         {!!tier && (
           <span className={`ar-tier is-t${tier}`} aria-hidden>
             <svg viewBox="0 0 130 100" preserveAspectRatio="none">
