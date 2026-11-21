@@ -1514,12 +1514,10 @@
   color: #f0796e;
 }
 
-.season-me.is-banned {
-  border-color: color-mix(in srgb, var(--wrong) 45%, var(--line));
-}
-
-.season-me.is-banned .play-card-title {
+.season-place.is-banned b {
   color: var(--wrong-text, var(--wrong));
+  font-size: 32px;
+  letter-spacing: -0.5px;
 }
 
 .season-me.is-banned .season-gap {

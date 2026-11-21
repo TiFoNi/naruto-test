@@ -3040,12 +3040,12 @@ const ui = {
     en: 'Every world and mode has its own board, and results update right after the round.',
   },
   'lb.howTitle': { ru: 'Как считается', uk: 'Як рахується', en: 'How it works' },
-  'lb.banTitle': { ru: 'Ты вне рейтинга', uk: 'Ти поза рейтингом', en: 'You are off the ranking' },
-  'lb.banXp': { ru: 'XP за сезон', uk: 'XP за сезон', en: 'season XP' },
+  'lb.banTitle': { ru: 'Вне рейтинга', uk: 'Поза рейтингом', en: 'Not ranked' },
+  'lb.banXp': { ru: '{xp} XP за сезон', uk: '{xp} XP за сезон', en: '{xp} XP this season' },
   'lb.banText': {
-    ru: 'Опыт копится, но в таблицу ты не попадаешь: в аккаунте замечена нечестная активность. Если это ошибка — напиши нам, разберёмся и вернём тебя в рейтинг.',
-    uk: 'Досвід накопичується, але в таблицю ти не потрапляєш: в акаунті помічено нечесну активність. Якщо це помилка — напиши нам, розберемося й повернемо тебе в рейтинг.',
-    en: 'Your XP still counts, but you are not shown in the table: unfair activity was noticed on your account. If this is a mistake, write to us — we will look into it and bring you back.',
+    ru: 'Мы заметили нечестную активность, поэтому тебя нет в таблице. Опыт продолжает копиться. Если это ошибка — напиши нам, и мы вернём тебя в рейтинг.',
+    uk: 'Ми помітили нечесну активність, тому тебе немає в таблиці. Досвід далі накопичується. Якщо це помилка — напиши нам, і ми повернемо тебе в рейтинг.',
+    en: 'We noticed unfair activity, so you are hidden from the table. Your XP keeps counting. If this is a mistake, write to us and we will put you back.',
   },
   'lb.fairTitle': { ru: 'Честная игра', uk: 'Чесна гра', en: 'Fair play' },
   'lb.fair1': {

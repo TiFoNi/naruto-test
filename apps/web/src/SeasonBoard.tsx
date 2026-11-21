@@ -380,10 +380,10 @@ export default function SeasonBoard({ initial = null }: { initial?: Board | null
         <aside className="lb-side">
           {!!board?.banned && (
             <section className="card season-me is-banned">
-              <span className="play-card-title">{t('lb.banTitle')}</span>
-              <p className="season-place">
-                <b>{count(board.banned.xp)}</b>
-                <em>{t('lb.banXp')}</em>
+              <span className="play-card-title">{t('lb.myPlace')}</span>
+              <p className="season-place is-banned">
+                <b>{t('lb.banTitle')}</b>
+                <em>{t('lb.banXp', { xp: count(board.banned.xp) })}</em>
               </p>
               <p className="season-gap">{t('lb.banText')}</p>
               <a className="season-ban-mail" href="mailto:hello@nandaguessr.com">
